@@ -1,0 +1,85 @@
+.pkg h3 {
+	padding-left: 34px;
+	font: normal 11px verdana, helvetica, tahoma, sans-serif;
+	height: 18px;
+	cursor: auto;
+}
+
+h3.collapser-expanded {
+	background: #fff url(../images/pkg-open.gif) no-repeat 0px -1px;
+}
+
+h3.collapser-collapsed {
+	background: #fff url(../images/pkg-closed.gif) no-repeat 0px -1px;
+}
+
+.pkg-body {
+	margin-left: 16px;
+	font: normal 11px verdana, helvetica, tahoma, sans-serif;
+}
+
+#classes a {
+	font: normal 11px verdana, helvetica, tahoma, sans-serif;
+	display: block;
+	text-decoration: none;
+	height: 18px;
+	color: black;
+	padding-left: 34px;
+}
+
+#classes a:hover {
+	text-decoration: underline;
+}
+
+#classes a.ex {
+	background: #fff url(../images/view.gif) no-repeat 16px -1px;
+}
+
+#classes a.document {
+	background: #fff url(../images/document.gif) no-repeat 16px -1px;
+}
+
+#classes a.word {
+	background: #fff url(../images/mydocument.gif) no-repeat 16px -1px;
+}
+
+#classes a.picture {
+	background: #fff url(../images/picture.gif) no-repeat 16px -1px;
+}
+
+#classes a.music {
+	background: #fff url(../images/music.gif) no-repeat 16px -1px;
+}
+
+#classes a.setting {
+	background: #fff url(../images/setting.gif) no-repeat 16px -1px;
+}
+
+#classes a.folder_setting {
+	background: #fff url(../images/folder-setting.gif) no-repeat 16px -1px;
+}
+
+#classes {
+	overflow: auto;
+	padding: 5px;
+}
+
+#class .loading-indicator {
+	font-size: 12px;
+	height: 18px;
+}
+
+#docs .ylayout-collapsed-west {
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#header {
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	color: white;
+}
+
+a#welcome-link {
+	background: #fff url(../images/docs.gif) no-repeat 0px 0px;
+	padding-left: 18px;
+}

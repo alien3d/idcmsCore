@@ -1,0 +1,276 @@
+Ext.onReady(function(){
+		
+		if(leafCreateAccessValue  == 1 ) {
+			var page_create = false;
+		} else { 
+			var page_create = true;
+		}
+		if(leafReadAccessValue  == 1 ){ 
+			var page_reload=false;
+		} else { 
+			var page_reload=true;
+		} 
+		if(leafPrintAccessValue == 1 ) {
+			var page_print=false;
+		} else {
+			var page_print=true;
+		}
+		// form panel + grid.When choose the form then activated filter the grid.Grid will automatically update on demand
+		// first viewport
+		var per_page		= 	10;
+		var encode 			=	false;
+		var local 			= 	false;
+		var acs_store 			= 	new Ext.data.JsonStore({
+			autoDestroy		:	true,
+			url				: 	'../controller/folderSecurityAccessController.php',
+			remoteSort		: 	true,
+			storeId			:	'myStore',
+			root			:	'data',
+			totalProperty	:	'total',
+			baseParams		: 	{  
+									method			:	'read',	
+									mode			:	'view',
+									leafId	:	leafId
+								}, 
+			fields			: 
+					[	{	name		:	'accordionId',
+                            type        :   'int'					
+					    },{
+							name		:	'accordionName',
+                            type        :   'string'							
+						},{ 
+						 	name		:	'groupId',
+                            type        :   'int'							
+						},{
+							name		:	'groupName',
+                            type        :   'string'							
+						},{
+						    name		:	'folderId',
+                            type        :   'int'							
+						},{
+						 	name		:	'folderAccessId',
+                            type        :   'int'							
+						},{
+						    name		:	'folderName',
+                            type        :   'string'							
+						},{
+							name		: 	'folderAccessValue',
+                            type        :   'boolean'							
+						}
+					]
+		});
+	
+	
+	
+	var folderAccessValue = new Ext.ux.grid.CheckColumn({ 
+		header		:	'Access',
+		dataIndex	:	'folderAccessValue'
+    });
+
+	
+	// the id for administrator to see  in any problem.User cannot see this page information
+	var columnModel = new Ext.grid.ColumnModel({
+		columns:[{ 
+			header: accordionNameLabel,
+			dataIndex:'accordionName'
+		},{
+			header: accordionIdLabel,
+			dataIndex:'accordionId'
+		},{
+			header: groupNameLabel,
+			dataIndex:'groupName'
+		},{ 
+			header: groupIdLabel,
+			dataIndex:'groupId'
+		},{
+			header: folderNameLabel,
+			dataIndex:'folderName'
+		},{ 
+			header: folderIdLabel,
+			dataIndex:'folderId'
+		},folderAccessValue]
+	});
+	
+	var group_reader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
+	var group_store 		= 	new Ext.data.Store({
+			proxy		: 	new Ext.data.HttpProxy({
+        			url	: 	'../controller/folderSecurityAccessController.php?method=read&field=groupId&leafId='+leafId,
+					method:'GET'
+				}),
+			reader		:	group_reader,
+			remoteSort	:	false 
+	});
+	group_store.load();
+	
+	var accordion_reader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionNote']);
+	var accordion_store 		= 	new Ext.data.Store({
+			proxy		: 	new Ext.data.HttpProxy({
+        			url	: 	'../controller/folderSecurityAccessController.php?method=read&type=2&field=accordionId&leafId='+leafId,
+					method:'GET'
+				}),
+			reader		:	accordion_reader,
+			remoteSort	:	false 
+	});
+	
+	
+	var formPanel = new Ext.Panel({
+		region	:	'center',
+		layout	:	'form',
+		frame	:	true,
+		title	:	'Folder Form',
+		iconCls :   'application_form',
+		items	:	[{
+			   		xtype:'combo',
+					name			:	'groupId',
+					hiddenName		:	'groupId',
+					id				:	'group_fake',
+					store			:	 group_store,
+					emptyText		:	'Please Choose Group',
+					fieldLabel		:	'Group',
+					anchor			: 	'95%',
+					triggerAction	: 	'all',
+					valueField		: 	'groupId',
+					displayField	: 	'groupNote',
+					mode			:	'remote',
+					listeners		:	{
+							'select'	:	function () {
+								Ext.getCmp('accordion_fake').reset(); // force the combobox to clear
+								accordion_store.proxy= new Ext.data.HttpProxy({
+									url			: 	'../controller/folderSecurityAccessController.php?method=read&field=accordionId&value=' + this.value+'&leafId='+leafId,
+									method		:	'GET'
+													
+												
+								});
+								Ext.getCmp('accordion_fake').enable();
+							}
+						}
+					},{
+			   		xtype:'combo',
+					name			:	'accordionId',
+					id				:	'accordion_fake',
+					hiddenName		:	'accordionId',
+					store			:	 accordion_store,
+					emptyText		:	'Please Choose accordion',
+					fieldLabel		:	'accordion',
+					anchor			: 	'95%',
+					triggerAction	: 	'all',
+					valueField		: 	'accordionId',
+					displayField	: 	'accordionNote',
+					mode			:	'remote',
+					disabled		:	true,
+					listeners		:	{
+							'select'	:	function () {
+								if(this.value =='' ) { 
+									gridPanel.disable();
+								} else { 
+									gridPanel.enable(); 
+								}
+								acs_store.proxy= new Ext.data.HttpProxy({
+									url			: 	'../controller/folderSecurityAccessController.php?method=read&type=2&groupId='+Ext.getCmp('group_fake').value+'&accordionId=' + this.value+'&leafId='+leafId,
+									method		:	'POST'
+													
+												
+								});
+	
+								acs_store.reload();
+							}
+					}
+			   }]							  
+	});
+	var access_array = ['folderAccessValue'];
+	
+	var gridPanel = new Ext.grid.GridPanel({ 
+		region		:	'west',
+		store		:	acs_store,
+		cm			:	columnModel,
+		frame		:	true,
+		title		:	'Folder Access Grid',
+		autoHeight	:	true,
+		disabled	:	true,
+		selModel	: 	folderAccessValue,
+        iconCls		:	'application_view_detail',
+		tbar 		: 	{ 
+			items:[{
+				   		text:'Check All',
+						iconCls:'row-check-sprite-check',
+						listeners : { 
+							'click':function () {
+								var count = acs_store.getCount();
+								 acs_store.each(function(rec) {
+									for (var access in access_array) { 
+										//alert(access);
+										rec.set(access_array[access], true);
+									}
+								 });
+							} 
+						} 
+				   },{
+				   		text:'Clear All',
+						iconCls:'row-check-sprite-uncheck',
+						listeners : { 
+							'click':function () { 
+								 acs_store.each(function(rec) {
+									for (var access in access_array) { 
+										rec.set(access_array[access], false);
+									}
+								 });
+							} 
+						}
+				   },{ 
+				text:'save',
+				iconCls:'bullet_disk',
+				listeners: { 
+					'click':function(c) { 
+					var url;
+					var count = acs_store.getCount();
+
+					url ='../controller/folderSecurityAccessController.php?method=update&leafId='+leafId;
+					var sub_url;
+					sub_url='';
+					 for (i = count - 1; i >= 0; i--) {
+						var record = acs_store.getAt(i);
+						sub_url = sub_url+'&groupId='+Ext.getCmp('group_fake').getValue()+'&accordionId='+Ext.getCmp('accordion_fake').value+'&folderAccessId[]='+record.get('folderAccessId')+'&folderAccessValue[]='+record.get('folderAccessValue');
+					}
+					url = url+sub_url;
+					// reques and ajax
+					Ext.Ajax.request ({ 
+						url:url,
+						success:function(response,options) {
+							x = Ext.decode(response.responseText);
+							title='Update ';
+							if(x.success=='true') { 
+								title = title +' Success';
+								Ext.MessageBox.alert(title,x.message);
+							} else if (x.success=='false') { 
+								title = title +'Failure';
+								Ext.MessageBox.alert(title,x.message);
+							}	 
+							// reload the store 
+							acs_store.reload(); 
+						} ,
+						failure : function(response, options) 
+							{
+								status_code = response.status;
+								status_message = response.statusText;
+								Ext.MessageBox.alert(systemErrorLabel,escape(status_code)
+								+ ":"+ status_message);
+							} 
+					});	
+					//  refresh the store
+					}
+
+				} 
+			}]
+		}
+	});
+	
+	
+	
+	
+	var viewPort		=	new Ext.Viewport({
+			id			 	:	'viewport',
+			layout			:	'form',
+			frame			:	true,
+			items	:	[formPanel,gridPanel]
+		});
+	});
