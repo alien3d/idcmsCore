@@ -38,79 +38,24 @@ Ext.onReady(function() {
 					leafId : leafId
 				},
 				fields: [
-				{name : 'log_advance_uniqueId',
+				{name : 'logAdvanceId',
                  type : 'int'				
 				},{
-				 name : 'log_advance_text',
+				 name : 'logAdvanceText',
 				 type : 'string'
 				},{
-				 name : 'log_advance_type',
+				 name : '',
 				 type : 'string'
 				},{
-				 name : 'log_advance_comparison',
+				 name : 'logAdvanceComparison',
 				 type : 'string'
 				},{
-				 name : 'ref_uniqueId',
+				 name : 'refId',
 				 type : 'int'
-				},{
-				 name : 'createBy',
-				 type : 'int'
-				},{
-				 name : 'createTime',
-				 type : 'date',
-				 dateFormat : 'Y-m-d H:i:s'
-				},{
-				 name : 'updatedBy',
-				 type : 'int'
-				},{
-				 name : 'updatedTime',
-				 type : 'date',
-				 dateFormat : 'Y-m-d H:i:s'
 				}]
 	 });
 	 
-	var storeList = new Ext.data.JsonStore({
-				autoDestroy : true,
-				url : '../controller/logAdvanceController.php',
-				remoteSort : true,
-				root : 'data',
-				totalProperty : 'total',
-				baseParams : {
-					method : 'read',
-					mode : 'view',
-					leafId : leafId
-				},
-				fields: [
-				{name : 'log_advance_uniqueId',
-                 type : 'int'				
-				},{
-				 name : 'log_advance_text',
-				 type : 'string'
-				},{
-				 name : 'log_advance_type',
-				 type : 'string'
-				},{
-				 name : 'log_advance_comparison',
-				 type : 'string'
-				},{
-				 name : 'ref_uniqueId',
-				 type : 'int'
-				},{
-				 name : 'createBy',
-				 type : 'int'
-				},{
-				 name : 'createTime',
-				 type : 'date',
-				 dateFormat : 'Y-m-d H:i:s'
-				},{
-				 name : 'updatedBy',
-				 type : 'int'
-				},{
-				 name : 'updatedTime',
-				 type : 'date',
-				 dateFormat : 'Y-m-d H:i:s'
-				}]
-	 });
+	
 	var staff_reader = new Ext.data.JsonReader({
 				root : 'staff',
 				id : 'staffId'
@@ -130,28 +75,28 @@ Ext.onReady(function() {
 				filters: [
 	
 				{type : 'numeric',
-				dataIndex : 'log_advance_uniqueId',
-				column : 'log_advance_uniqueId',
+				dataIndex : 'logAdvanceId',
+				column : 'logAdvanceId',
 				table : 'log_advance'},
 	
 				{type : 'string',
-				dataIndex : 'log_advance_text',
-				column : 'log_advance_text',
+				dataIndex : 'logAdvanceText',
+				column : 'logAdvanceText',
 				table : 'log_advance'},
 	
 				{type : 'string',
-				dataIndex : 'log_advance_type',
-				column : 'log_advance_type',
+				dataIndex : 'logAdvanceType',
+				column : 'logAdvanceType',
 				table : 'log_advance'},
 	
 				{type : 'string',
-				dataIndex : 'log_advance_comparison',
-				column : 'log_advance_comparison',
+				dataIndex : 'logAdvanceComparison',
+				column : 'logAdvanceComparison',
 				table : 'log_advance'},
 	
 				{type : 'numeric',
-				dataIndex : 'ref_uniqueId',
-				column : 'ref_uniqueId',
+				dataIndex : 'refId',
+				column : 'refId',
 				table : 'log_advance'},
 	
 				{type : 'list',
@@ -181,71 +126,16 @@ Ext.onReady(function() {
 				table : 'log_advance'}]
 	 });
 
-	var filtersList = new Ext.ux.grid.GridFilters({
-				encode : encode,
-				local : false,
-				filters: [
 	
-				{type : 'numeric',
-				dataIndex : 'log_advance_uniqueId',
-				column : 'log_advance_uniqueId',
-				table : 'log_advance'},
-	
-				{type : 'string',
-				dataIndex : 'log_advance_text',
-				column : 'log_advance_text',
-				table : 'log_advance'},
-	
-				{type : 'string',
-				dataIndex : 'log_advance_type',
-				column : 'log_advance_type',
-				table : 'log_advance'},
-	
-				{type : 'string',
-				dataIndex : 'log_advance_comparison',
-				column : 'log_advance_comparison',
-				table : 'log_advance'},
-	
-				{type : 'numeric',
-				dataIndex : 'ref_uniqueId',
-				column : 'ref_uniqueId',
-				table : 'log_advance'},
-	
-				{type : 'list',
-				dataIndex : 'createBy',
-				column : 'createBy',
-				table : 'log_advance',
-				labelField : 'staffName',
-				store : staff_store,
-				phpMode : true},
-	
-				{type : 'date',
-				dataIndex : 'createTime',
-				column : 'createTime',
-				table : 'log_advance'},
-	
-				{type : 'list',
-				dataIndex : 'updatedBy',
-				column : 'updatedBy',
-				table : 'log_advance',
-				labelField : 'staffName',
-				store : staff_store,
-				phpMode : true},
-	
-				{type : 'date',
-				dataIndex : 'updatedTime',
-				column : 'updatedTime',
-				table : 'log_advance'}]
-	 });
 	 
 	this.action = new Ext.ux.grid.RowActions({
 			header : actionLabel,
- 			dataIndex : 'log_advance_uniqueId',
+ 			dataIndex : 'logAdvanceId',
                 actions : [{
 			iconCls : 'application_edit',
 			tooltip : updateRecordToolTipLabel,
 			callback : function(grid, record, action, row, col) {
-				//Ext.MessageBox.alert('message', 'This is for update button');
+				// Ext.MessageBox.alert('message', 'This is for update button');
 				formPanel.getForm().reset();
 				formPanel.form.load({
 				url : '../controller/logAdvanceController.php',
@@ -254,7 +144,7 @@ Ext.onReady(function() {
 							params : {
 								method : 'read',
 								mode : 'update',
-				                                                log_advance_uniqueId : record.data.log_advance_uniqueId,
+				                                                logAdvanceId : record.data.logAdvanceId,
 								leafId : leafId
 							},
 							success : function(form, action) {
@@ -269,129 +159,35 @@ Ext.onReady(function() {
 		}]
 	});
 
-	this.actionList = new Ext.ux.grid.RowActions({
-			header : actionLabel,
- 			dataIndex : 'log_advance_uniqueId',
-                actions : [{
-			iconCls : 'application_edit',
-			tooltip :  updateRecordToolTipLabel,
-			callback : function(grid, record, action, row, col) {
-				//Ext.MessageBox.alert('message', 'This is for update button');
-				formPanel.getForm().reset();
-				formPanel.form.load({
-				url : '../controller/logAdvanceController.php',
-							method : 'POST',
-							waitMsg : waitMessageLabel,
-							params : {
-								method : 'read',
-								mode : 'update',
-				                log_advance_uniqueId : record.data.log_advance_uniqueId,
-								leafId : leafId
-							},
-							success : function(form, action) {
-								viewPort.items.get(1).expand();
-							},
-							failure : function(action) {
-								Ext.MessageBox.alert('Message',
-										'Load failed.grid');
-							}
-						});
-						win.hide();
-			}
-		}]
-	});
+	
 
 				var columnModel = [new Ext.grid.RowNumberer(), this.action,
-					{dataIndex : 'log_advance_uniqueId',
-					header : log_advance_uniqueIdLabel,
+					{dataIndex : 'logAdvanceId',
+					header : logAdvanceIdLabel,
 					sortable : true,
 					hidden : false},
 					
-					{dataIndex : 'log_advance_text',
-					header : log_advance_textLabel,
+					{dataIndex : 'logAdvanceText',
+					header : logAdvanceTextLabel,
 					sortable : true,
 					hidden : false},
 					
-					{dataIndex : 'log_advance_type',
-					header : log_advance_typeLabel,
+					{dataIndex : 'logAdvanceType',
+					header : logAdvanceTypeLabel,
 					sortable : true,
 					hidden : false},
 					
-					{dataIndex : 'log_advance_comparison',
-					header : log_advance_comparisonLabel,
+					{dataIndex : 'logAdvanceComparison',
+					header : logAdvanceComparisonLabel,
 					sortable : true,
 					hidden : false},
 					
-					{dataIndex : 'ref_uniqueId',
-					header : ref_uniqueIdLabel,
+					{dataIndex : 'refId',
+					header : refIdLabel,
 					sortable : true,
-					hidden : false},
+					hidden : false}];
 					
-					{dataIndex : 'createBy',
-					header : createByLabel,
-					sortable : true,
-					hidden : true},
-					
-					{dataIndex : 'createTime',
-					header : createTimeLabel,
-					sortable : true,
-					hidden : true},
-					
-					{dataIndex : 'updatedBy',
-					header : updatedByLabel,
-					sortable : true,
-					hidden : true},
-					
-					{dataIndex : 'updatedTime',
-					header : updatedTimeLabel,
-					sortable : true,
-					hidden : true}];
-					
-				var columnModelList = [new Ext.grid.RowNumberer(), this.action,
-					{dataIndex : 'log_advance_uniqueId',
-					header : log_advance_uniqueIdLabel,
-					sortable : true,
-					hidden : false},
-					
-					{dataIndex : 'log_advance_text',
-					header : log_advance_textLabel,
-					sortable : true,
-					hidden : false},
-					
-					{dataIndex : 'log_advance_type',
-					header : log_advance_typeLabel,
-					sortable : true,
-					hidden : false},
-					
-					{dataIndex : 'log_advance_comparison',
-					header : log_advance_comparisonLabel,
-					sortable : true,
-					hidden : false},
-					
-					{dataIndex : 'ref_uniqueId',
-					header : ref_uniqueIdLabel,
-					sortable : true,
-					hidden : false},
-					
-					{dataIndex : 'createBy',
-					header : createByLabel,
-					sortable : true,
-					hidden : true},
-					
-					{dataIndex : 'createTime',
-					header : createTimeLabel,
-					sortable : true,
-					hidden : true},
-					
-					{dataIndex : 'updatedBy',
-					header : updatedByLabel,
-					sortable : true,
-					hidden : true},
-					
-					{dataIndex : 'updatedTime',
-					header : updatedTimeLabel,
-					sortable : true,
-					hidden : true}];
+				
 					
 	var grid = new Ext.grid.GridPanel({
 				border : false,
@@ -430,42 +226,7 @@ Ext.onReady(function() {
 							plugins : [new Ext.ux.plugins.PageComboResizer()]
 						})
 			});
-	var gridList = new Ext.grid.GridPanel({
-				border : false,
-				store : storeList,
-				autoHeight : false,
-				columns : columnModelList,
-				loadMask : true,
-				plugins : [this.actionList, filtersList],
-				sm : new Ext.grid.RowSelectionModel({
-							singleSelect : true
-						}),
-				viewConfig : {
-					forceFit : true,
-					emptyText : 'No rows to display'
-				},
-				iconCls : 'application_view_detail',
-				listeners : {
-					render : {
-						fn : function() {
-							storeList.load({
-										params : {
-											start : 0,
-											limit : per_page,
-											method : 'read',
-											mode : 'view',
-											plugin : [filtersList]
-										}
-									});
-						}
-					}
-				},
-				bbar : new Ext.PagingToolbar({
-							store : storeList,
-							pageSize : per_page,
-							plugins : [new Ext.ux.plugins.PageComboResizer()]
-						})
-			});
+
 
 	var toolbarPanel = new Ext.Toolbar({
 				items : [{
@@ -500,7 +261,7 @@ Ext.onReady(function() {
 							success : function(response,options) {
 								x = Ext.decode(response.responseText);
 								if(x.success=='true') {
-								//	Ext.MessageBox.alert('SYSTEM',x.message);
+								// Ext.MessageBox.alert('SYSTEM',x.message);
 									window.open("../security/document/excel/log_advance.xlsx");
 								} else{
 									Ext.MessageBox.alert('SYSTEM',x.message);
@@ -519,109 +280,7 @@ Ext.onReady(function() {
 					}
 				}]
 	});
-	var toolbarPanelList = new Ext.Toolbar(
-			{
-				items : [
-						{
-							text : reloadToolbarLabel,
-							iconCls : 'database_refresh',
-							id : 'page_reloadList',
-							disabled : page_reloadList,
-							handler : function() {
-								storeList.reload();
-							}
-						},
-						{
-							text : printerToolbarLabel,
-							iconCls : 'printer',
-							id : 'printerList',
-							disabled : page_printList,
-							handler : function() {
-								Ext.ux.GridPrinter.print(grid);
-							}
-						},
-						{
-							text : wordToolbarLabel,
-							iconCls : 'page_word',
-							id : 'page_wordList',
-							disabled : page_printList,
-							handler : function() {
-								Ext.Ajax
-								.request( {
-									url : '../controller/logAdvanceController.php?method=report&mode=word&limit='
-										+ per_page
-										+ '&leafId='
-										+ leafId,
-									method : 'GET',
-									success : function(response,options) {
-										x = Ext.decode(response.responseText);
-										if(x.success=='true') {
-										//	Ext.MessageBox.alert('SYSTEM',x.message);
-											window.open("../security/document/word/log_advance.docx");
-										} else{
-											Ext.MessageBox.alert('SYSTEM',x.message);
-										}
-											
-									},
-									failure : function(response, options) 
-									{
-										status_code = response.status;
-										status_message = response.statusText;
-										Ext.MessageBox.alert('system',escape(status_code)
-										+ ":"+ status_message);
-									}
-										
-								});
-							}
-						},
-						{
-							text :  excelToolbarLabel,
-							iconCls : 'page_excel',
-							id : 'page_excelList',
-							disabled : page_printList,
-							handler : function() {
-								Ext.Ajax
-								.request( {
-									url : '../controller/logAdvanceController.php?method=report&mode=excel&limit='
-										+ per_page
-										+ '&leafId='
-										+ leafId,
-									method : 'GET',
-									success : function(response,options) {
-										x = Ext.decode(response.responseText);
-										if(x.success=='true') {
-										//	Ext.MessageBox.alert('SYSTEM',x.message);
-											window.open("../security/document/excel/log_advance.xlsx");
-										} else{
-											Ext.MessageBox.alert('SYSTEM',x.message);
-										}
-											
-									},
-									failure : function(response, options) 
-									{
-										status_code = response.status;
-										status_message = response.statusText;
-										Ext.MessageBox.alert('system',escape(status_code)
-										+ ":"+ status_message);
-									}
-										
-								});
-							}
-						},
-						{
-							text : PDFToolbarLabel,
-							iconCls : 'page_white_acrobat',
-							id : 'page_white_acrobatList',
-							disabled : page_print,
-							handler : function() {
-								window.location
-										.replace('../controller/logAdvanceController.php?method=report&mode=pdf&limit='
-												+ per_page
-												+ '&leafId='
-												+ leafId);
-							}
-						} ]
-			});
+	
 
 	        var gridPanel = new Ext.Panel({
 				title :  leafName,
@@ -632,45 +291,45 @@ Ext.onReady(function() {
                 items : [grid]
 			});
 
-                var log_advance_uniqueId = new Ext.form.Hidden({
-				name : 'log_advance_uniqueId'
+                var logAdvanceId = new Ext.form.Hidden({
+				name : 'logAdvanceId'
 				});
 				
-                var log_advance_text         = new Ext.form.TextArea({
+                var logAdvanceText         = new Ext.form.TextArea({
 				         labelAlign : 'left',
-				         fieldLabel : log_advance_text_view_Label,
-				         hiddenName : 'log_advance_text',
+				         fieldLabel : logAdvanceText_view_Label,
+				         hiddenName : 'logAdvanceText',
 						 style: 'height: 20%',
-				         name : 'log_advance_text',
+				         name : 'logAdvanceText',
 				         anchor : '95%'
 				    });
 				
-		      	var log_advance_type = new Ext.form.TextField({
+		      	var logAdvanceType = new Ext.form.TextField({
 						labelAlign  :	'left',
-			            fieldLabel  :	log_advance_type_Label,
-			            hiddenName  :	'log_advance_type',
-			            name		:	'log_advance_type',
+			            fieldLabel  :	logAdvanceType_Label,
+			            hiddenName  :	'logAdvanceType',
+			            name		:	'logAdvanceType',
 						vtype       :   'alpha',
 						allowBlank : false,
 						blankText :  blankTextLabel,
 			            anchor      :	'95%'
 					});
 				
-                var log_advance_comparison = new Ext.form.TextArea({
+                var logAdvanceComparison = new Ext.form.TextArea({
 				       labelAlign : 'left',
 				       fieldLabel : 'log advance comparison view',
-				       hiddenName : 'log_advance_comparison',
+				       hiddenName : 'logAdvanceComparison',
 					   style: 'height: 60%',
-			       	   name : 'log_advance_comparison',
+			       	   name : 'logAdvanceComparison',
 				       anchor : '95%'
 				    });
 					
-			    var ref_uniqueId = new Ext.form.NumberField(
+			    var refId = new Ext.form.NumberField(
 					{
 						labelAlign  :	'left',
-			            fieldLabel  :	ref_uniqueId_Label,
-			            hiddenName  :	'ref_uniqueId',
-			            name		:	'ref_uniqueId',
+			            fieldLabel  :	refId_Label,
+			            hiddenName  :	'refId',
+			            name		:	'refId',
 						allowBlank  :  false,
 						blankText   :  blankTextLabel,
 			            anchor      :	'95%'
@@ -688,104 +347,24 @@ Ext.onReady(function() {
 				items : [
  
 	
-				log_advance_uniqueId, 
+				logAdvanceId, 
 	
-				log_advance_text, 
+				logAdvanceText, 
 	
-				log_advance_type, 
+				logAdvanceType, 
 	
-				log_advance_comparison, 
+				logAdvanceComparison, 
 	
-				ref_uniqueId, 
+				refId, 
 
 				],
 				buttonVAlign : 'top',
 				buttonAlign : 'left',
-				iconCls : 'application_form',
-				bbar : new Ext.ux.StatusBar({
-							id : 'form-statusbar',
-							defaultText : 'Ready',
-							plugins : new Ext.ux.ValidationStatus({
-										form : 'formPanel'
-									})
-						}),
-				buttons : [{
-					text : saveButtonLabel,
-					iconCls : 'bullet_disk',
-					handler : function() {
-						if (formPanel.getForm().isValid()) {
-							formPanel.getForm().submit({
-								waitMsg : waitMessageLabel,
-								params : {
-									method : 'save',
-									leafId : leafId
-								},
-								success : function(form, action) {
-									Ext.MessageBox.alert('Message',
-											'Data have been saved');
-									formPanel.getForm().reset();
-									store.reload();
-								},
-								failure : function(form, action) {
-									var title='Message Failure';
-								    if (action.failureType === Ext.form.Action.LOAD_FAILURE){
-									    alert(loadFailureMessageLabel);
-									}
-									else if (action.failureType === Ext.form.Action.CLIENT_INVALID){
-										// here will be error if duplicate code
-										alert(clientInvalidMessageLabel);
-									}
-									else if (action.failureType === Ext.form.Action.CONNECT_FAILURE){
-                                    	Ext.Msg.alert(connectFailureLabel+form.response.status+' '+form.response.statusText);
-                                	}
-                                	else if (action.failureType === Ext.form.Action.SERVER_INVALID){
-                                    	Ext.Msg.alert(title, action.result.message);
-                                	}
-								}
-							});
-						}
-					}
-				}, {
-					text : resetButtonLabel,
-					type : 'reset',
-					iconCls : 'table_refresh',
-					handler : function() {
-						formPanel.getForm().reset();
-					}
-				}, {
-					text :  listButtonLabel,
-					type : 'button',
-					iconCls : 'table',
-					handler : function() {
-						if (win) {
-							win.show().center();
-						}
-					}
-				}, {
-					text : cancelButtonLabel,
-					type : 'button',
-					iconCls : 'delete',
-					handler : function() {
-						if (win) {
-							win.hide();
-						}
-						formPanel.getForm().reset();
-						store.reload();
-						viewPort.items.get(0).expand();
-					}
-				}]
+				iconCls : 'application_form'
+				
 			});
 
-	var win = new Ext.Window({
-				tbar : toolbarPanelList,
-				items : [gridList],
-				title :  leafName,
-				closeAction : 'hide',
-				maximizable : true,
-				layout : 'fit',
-				width : 500,
-				autoScroll : true
-			});
+
 
 	var viewPort = new Ext.Viewport({
 				id : 'viewport',

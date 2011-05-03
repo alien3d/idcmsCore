@@ -1,6 +1,5 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
-require_once ("../../class/classValidation.php");
 require_once ("../../class/classAudit.php");
 require_once("../model/accordionModel.php");
 require_once("../../class/classSecurity.php");
@@ -151,7 +150,7 @@ class accordionClass extends  configClass{
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
 		$this->audit = new auditClass();
-		$this->validation = new validationClass();
+
 
 	}
 

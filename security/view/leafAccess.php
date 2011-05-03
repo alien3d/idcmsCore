@@ -21,6 +21,6 @@ if($_SESSION['theme']) { ?>
 <script language="javascript" type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
 <script language="javascript" type="text/javascript"
-	src="../javascript/leafSecurityAccess.js"></script>
+	src="../javascript/leafAccess.js"></script>
 
 </html>

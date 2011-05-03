@@ -4,7 +4,7 @@ Ext.onReady(function(){
 			var page_create = false;
 		} else { 
 			var page_create = true;
-		}
+		
 		if(leafReadAccessValue  == 1 ){ 
 			var page_reload=false;
 		} else { 
@@ -22,7 +22,7 @@ Ext.onReady(function(){
 		var local 			= 	false;
 		var acs_store 			= 	new Ext.data.JsonStore({
 			autoDestroy		:	true,
-			url				: 	'../controller/folderSecurityAccessController.php',
+			url				: 	'../controller/folderAccessController.php',
 			remoteSort		: 	true,
 			storeId			:	'myStore',
 			root			:	'data',
@@ -42,7 +42,7 @@ Ext.onReady(function(){
 						 	name		:	'groupId',
                             type        :   'int'							
 						},{
-							name		:	'groupName',
+							name		:	'groupNote',
                             type        :   'string'							
 						},{
 						    name		:	'folderId',
@@ -51,7 +51,7 @@ Ext.onReady(function(){
 						 	name		:	'folderAccessId',
                             type        :   'int'							
 						},{
-						    name		:	'folderName',
+						    name		:	'folderNote',
                             type        :   'string'							
 						},{
 							name		: 	'folderAccessValue',
@@ -78,13 +78,13 @@ Ext.onReady(function(){
 			dataIndex:'accordionId'
 		},{
 			header: groupNameLabel,
-			dataIndex:'groupName'
+			dataIndex:'groupNote'
 		},{ 
 			header: groupIdLabel,
 			dataIndex:'groupId'
 		},{
 			header: folderNameLabel,
-			dataIndex:'folderName'
+			dataIndex:'folderNote'
 		},{ 
 			header: folderIdLabel,
 			dataIndex:'folderId'
@@ -94,7 +94,7 @@ Ext.onReady(function(){
 	var group_reader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
 	var group_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/folderSecurityAccessController.php?method=read&field=groupId&leafId='+leafId,
+        			url	: 	'../controller/folderAccessController.php?method=read&field=groupId&leafId='+leafId,
 					method:'GET'
 				}),
 			reader		:	group_reader,
@@ -105,7 +105,7 @@ Ext.onReady(function(){
 	var accordion_reader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionNote']);
 	var accordion_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/folderSecurityAccessController.php?method=read&type=2&field=accordionId&leafId='+leafId,
+        			url	: 	'../controller/folderAccessController.php?method=read&type=2&field=accordionId&leafId='+leafId,
 					method:'GET'
 				}),
 			reader		:	accordion_reader,
@@ -136,7 +136,7 @@ Ext.onReady(function(){
 							'select'	:	function () {
 								Ext.getCmp('accordion_fake').reset(); // force the combobox to clear
 								accordion_store.proxy= new Ext.data.HttpProxy({
-									url			: 	'../controller/folderSecurityAccessController.php?method=read&field=accordionId&value=' + this.value+'&leafId='+leafId,
+									url			: 	'../controller/folderAccessController.php?method=read&field=accordionId&value=' + this.value+'&leafId='+leafId,
 									method		:	'GET'
 													
 												
@@ -166,7 +166,7 @@ Ext.onReady(function(){
 									gridPanel.enable(); 
 								}
 								acs_store.proxy= new Ext.data.HttpProxy({
-									url			: 	'../controller/folderSecurityAccessController.php?method=read&type=2&groupId='+Ext.getCmp('group_fake').value+'&accordionId=' + this.value+'&leafId='+leafId,
+									url			: 	'../controller/folderAccessController.php?method=read&type=2&groupId='+Ext.getCmp('group_fake').value+'&accordionId=' + this.value+'&leafId='+leafId,
 									method		:	'POST'
 													
 												
@@ -224,7 +224,7 @@ Ext.onReady(function(){
 					var url;
 					var count = acs_store.getCount();
 
-					url ='../controller/folderSecurityAccessController.php?method=update&leafId='+leafId;
+					url ='../controller/folderAccessController.php?method=update&leafId='+leafId;
 					var sub_url;
 					sub_url='';
 					 for (i = count - 1; i >= 0; i--) {

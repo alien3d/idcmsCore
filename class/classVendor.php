@@ -863,11 +863,11 @@ class vendor {
 					$text = $this->removeComa($text);
 					$text = "{".$text."}"; // using json data format ?
 					$sql_log_advance		=	 "
-					INSERT INTO 	`log_advance`
+					INSERT INTO 	`logAdvance`
 					(
-					`log_advance_text`,
-					`log_advance_type`,
-					`ref_uniqueId`
+					`logAdvanceText`,
+					`logAdvanceType`,
+					`refId`
 					)
 					VALUES 		(
 					'".$text."',
@@ -929,9 +929,9 @@ class vendor {
 					$text_comparison = "{ \"tablename\":\"".$this->tableName."\",\"ref_uniqueId\":\"".$this->primaryKeyValue."\",".$text_comparison."}"; // json format
 					// update back comparision the previous record
 					$sql="
-					UPDATE	`log_advance`
-					SET 	`log_advance_comparison`='".addslashes($text_comparison)."'
-					WHERE 	`log_advance_uniqueId`='".$log_advance_uniqueId."'";
+					UPDATE	`logAdvance`
+					SET 	`logAdvanceComparison`='".addslashes($text_comparison)."'
+					WHERE 	`logAdvanceId`='".$log_advance_uniqueId."'";
 					if($this->vendor=='normal'){
 						$result=mysql_query($sql,$this->link);
 						if(!$result) {

@@ -12,7 +12,6 @@
  */ 
 class calendarModel extends validationClass{
 	public $calendarId;
-	public $religionDesc;
 	public $isDefaut;
 	public $isNew;
 	public $isDraft;

@@ -23,7 +23,7 @@ Ext.onReady(function(){
 		var local 			= 	false;
 		var acs_store 			= 	new Ext.data.JsonStore({
 			autoDestroy		:	true,
-			url				: 	'../data/accordionSecurityAccessData.php',
+			url				: 	'../controller/accordionAccessController.php',
 			remoteSort		: 	true,
 			storeId			:	'myStore',
 			root			:	'data',
@@ -82,7 +82,7 @@ Ext.onReady(function(){
 	var group_reader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
 	var group_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../data/accordionSecurityAccessData.php?method=read&field=groupId&leafId='+leafId,
+        			url	: 	'../controller/accordionAccessController.php?method=read&field=groupId&leafId='+leafId,
 					method:'GET'
 				}),
 			reader		:	group_reader,
@@ -97,7 +97,7 @@ Ext.onReady(function(){
 		hiddenName			:	'groupId',
 		valueField			:  	'groupId',
 		id					:	'group_fake',
-		displayField		:	'groupName',
+		displayField		:	'groupNote',
 		typeAhead			: 	false,
     	triggerAction		: 	'all',
 		store				: 	group_store,
@@ -122,7 +122,7 @@ Ext.onReady(function(){
 					gridPanel.enable(); 
 				}
 				acs_store.proxy= new Ext.data.HttpProxy({
-					url			: 	'../data/accordionSecurityAccessData.php?method=read&groupId=' + this.value+'&leafId='+leafId,
+					url			: 	'../controller/accordionAccessController.php?method=read&groupId=' + this.value+'&leafId='+leafId,
 					method		: 'POST'				
 								
 				});
@@ -190,7 +190,7 @@ Ext.onReady(function(){
 					var url;
 					var count = acs_store.getCount();
 
-					url ='../data/accordionSecurityAccessData.php?method=update&leafId='+leafId;
+					url ='../controller/accordionAccessController.php?method=update&leafId='+leafId;
 					var sub_url;
 					sub_url='';
 					 for (i = count - 1; i >= 0; i--) {
@@ -205,7 +205,7 @@ Ext.onReady(function(){
 							Ext.MessageBox.alert('success updated');
 							// reload the store
 								acs_store.proxy= new Ext.data.HttpProxy({
-									url			: 	'../data/accordionSecurityAccessData.php?method=read&groupId=' + Ext.getCmp('group_fake').value,
+									url			: 	'../controller/accordionAccessController.php?method=read&groupId=' + Ext.getCmp('group_fake').value,
 									method		: 'POST'
 								});
 								

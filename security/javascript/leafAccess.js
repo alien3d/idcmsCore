@@ -25,7 +25,7 @@ Ext.onReady(function(){
 		var local 			= 	false;
 		var acs_store 			= 	new Ext.data.JsonStore({
 			autoDestroy		:	true,
-			url				: 	'../data/leafSecurityAccessController.php',
+			url				: 	'../controller/leafAccessController.php',
 			remoteSort		: 	true,
 			storeId			:	'myStore',
 			root			:	'data',
@@ -48,7 +48,7 @@ Ext.onReady(function(){
 						 	name		:	'groupId',
                             type        :   'int'							
 						},{
-							name		:	'groupName',
+							name		:	'groupNote',
                             type        :   'string'							
 						},{
 							name		:	'folderId',
@@ -148,10 +148,10 @@ Ext.onReady(function(){
 		},leafCreateAccessValue,leafReadAccessValue,leafUpdateAccessValue,leafDeleteAccessValue,leafPrintAccessValue,leafPostAccessValue]
 	});
 	
-	var group_reader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupName']);
+	var group_reader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
 	var group_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../data/leafSecurityAccessController.php?method=read&field=groupId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafAccessController.php?method=read&field=groupId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
 			reader		:	group_reader,
@@ -159,10 +159,10 @@ Ext.onReady(function(){
 	});
 	group_store.load();
 	
-	var accordion_reader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionName']);
+	var accordion_reader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionNote']);
 	var accordion_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../data/leafSecurityAccessController.php?method=read&field=accordionId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafAccessController.php?method=read&field=accordionId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
 			reader		:	accordion_reader,
@@ -170,10 +170,10 @@ Ext.onReady(function(){
 	});
 	accordion_store.load();
 	
-	var folder_reader	= new Ext.data.JsonReader({ root:'folder' }, [ 'folderId', 'folderName']);
+	var folder_reader	= new Ext.data.JsonReader({ root:'folder' }, [ 'folderId', 'folderNote']);
 	var folder_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../data/leafSecurityAccessController.php?method=read&field=folderId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafAccessController.php?method=read&field=folderId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
 			reader		:	folder_reader,
@@ -184,7 +184,7 @@ Ext.onReady(function(){
 	var staff_reader	= new Ext.data.JsonReader({ root:'staff' }, [ 'staffId', 'staffName']);
 	var staff_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../data/leafSecurityAccessController.php?method=read&field=staffId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafAccessController.php?method=read&field=staffId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
 			reader		:	staff_reader,
@@ -356,7 +356,7 @@ Ext.onReady(function(){
 					gridPanel.enable(); 
 				}
 				acs_store.proxy= new Ext.data.HttpProxy({
-					url			: 	'../data/leafSecurityAccessController.php?accordionId='+Ext.getCmp('accordion_fake').value+'&folderId='+Ext.getCmp('folder_fake').value+'&staffId_temp=' + this.value+'&leafId_temp='+leafId_temp,
+					url			: 	'../controller/leafAccessController.php?accordionId='+Ext.getCmp('accordion_fake').value+'&folderId='+Ext.getCmp('folder_fake').value+'&staffId_temp=' + this.value+'&leafId_temp='+leafId_temp,
 					method:'GET'					
 				});
 
@@ -429,7 +429,7 @@ Ext.onReady(function(){
 					var url;
 					var count = acs_store.getCount();
 
-					url ='../data/leafSecurityAccessController.php?method=update&leafId_temp='+leafId_temp;
+					url ='../controller/leafAccessController.php?method=update&leafId_temp='+leafId_temp;
 					var sub_url;
 					sub_url='';
 					 for (i = count - 1; i >= 0; i--) {

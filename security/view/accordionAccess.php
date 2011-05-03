@@ -23,7 +23,7 @@ if($_SESSION[$theme]) { ?>
 <script language="javascript" type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
 <script language="javascript" type="text/javascript"
-	src="../javascript/accordionSecurity.js"></script>
+	src="../javascript/accordionAccess.js"></script>
 </html>
 
 

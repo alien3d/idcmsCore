@@ -25,7 +25,7 @@ Ext.onReady(function(){
 		var local 			= 	false;
 		var acs_store 		 = 	 new Ext.data.JsonStore({
 			autoDestroy		:	true,
-			url				: 	'../controller/leafGroupSecurityAccessController.php',
+			url				: 	'../controller/leafGroupAccessController.php',
 			remoteSort		: 	true,
 			storeId			:	'myStore',
 			root			:	'data',
@@ -157,7 +157,7 @@ Ext.onReady(function(){
 	var group_reader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
 	var group_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupSecurityAccessController.php?method=read&field=groupId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=groupId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
 			reader		:	group_reader,
@@ -168,7 +168,7 @@ Ext.onReady(function(){
 	var accordion_reader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionNote']);
 	var accordion_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupSecurityAccessController.php?method=read&field=accordionId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=accordionId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
 			reader		:	accordion_reader,
@@ -178,7 +178,7 @@ Ext.onReady(function(){
 	var folder_reader	= new Ext.data.JsonReader({ root:'folder' }, [ 'folderId', 'folderNote']);
 	var folder_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupSecurityAccessController.php?method=read&field=folderId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
 			reader		:	folder_reader,
@@ -188,7 +188,7 @@ Ext.onReady(function(){
 	var staff_reader	= new Ext.data.JsonReader({ root:'staff' }, [ 'staffId', 'staffName']);
 	var staff_store 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupSecurityAccessController.php?method=read&field=staffId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=staffId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
 			reader		:	staff_reader,
@@ -223,7 +223,7 @@ Ext.onReady(function(){
 			'select'	:	function () {
 				Ext.getCmp('accordionId').reset();
 				accordion_store.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/leafGroupSecurityAccessController.php?method=read&field=accordionId&groupId=' + Ext.getCmp('groupId').getValue()+'&leafId_temp='+leafId_temp,
+					url			: 	'../controller/leafGroupAccessController.php?method=read&field=accordionId&groupId=' + Ext.getCmp('groupId').getValue()+'&leafId_temp='+leafId_temp,
 					method		:	'GET'
 				});
 
@@ -231,7 +231,7 @@ Ext.onReady(function(){
 				Ext.getCmp('accordionId').enable();
 				Ext.getCmp('gridPanel').enable();
 				acs_store.proxy= new Ext.data.HttpProxy({
-					url		: 	'../controller/leafGroupSecurityAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&leafId_temp='+leafId_temp,
+					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&leafId_temp='+leafId_temp,
 					method	:	'GET'					
 				});
 				acs_store.reload();
@@ -268,7 +268,7 @@ Ext.onReady(function(){
 			'select'	:	function () {
 				Ext.getCmp('folderId').reset();
 				folder_store.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/leafGroupSecurityAccessController.php?method=read&field=folderId&groupId='+Ext.getCmp('groupId').getValue()+'&accordionId=' +Ext.getCmp('accordionId').getValue()+'&leafId_temp='+leafId_temp,
+					url			: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&groupId='+Ext.getCmp('groupId').getValue()+'&accordionId=' +Ext.getCmp('accordionId').getValue()+'&leafId_temp='+leafId_temp,
 					method		:	'GET'
 				});
 
@@ -276,7 +276,7 @@ Ext.onReady(function(){
 				Ext.getCmp('folderId').enable();
 				Ext.getCmp('gridPanel').enable();
 				acs_store.proxy= new Ext.data.HttpProxy({
-					url		: 	'../controller/leafGroupSecurityAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&accordionId='+Ext.getCmp('accordionId').getValue()+'&leafId_temp='+leafId_temp,
+					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&accordionId='+Ext.getCmp('accordionId').getValue()+'&leafId_temp='+leafId_temp,
 					method	:	'GET'					
 				});
 				acs_store.reload();
@@ -317,7 +317,7 @@ Ext.onReady(function(){
 					Ext.getCmp('gridPanel').enable();
 				}
 				acs_store.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/leafGroupSecurityAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&accordionId='+Ext.getCmp('accordionId').getValue()+'&folderId=' + Ext.getCmp('folderId').getValue()+'&leafId_temp='+leafId_temp,
+					url			: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&accordionId='+Ext.getCmp('accordionId').getValue()+'&folderId=' + Ext.getCmp('folderId').getValue()+'&leafId_temp='+leafId_temp,
 					method:'GET'					
 				});
 					acs_store.reload();
@@ -393,7 +393,7 @@ Ext.onReady(function(){
 					var url;
 					var count = acs_store.getCount();
 
-					url ='../controller/leafGroupSecurityAccessController.php?method=update&leafId_temp='+leafId_temp;
+					url ='../controller/leafGroupAccessController.php?method=update&leafId_temp='+leafId_temp;
 					var sub_url;
 					sub_url='';
 					 for (i = count - 1; i >= 0; i--) {
