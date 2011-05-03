@@ -13,18 +13,17 @@
 class eventModel extends validationClass{
 	public $tableName;
 	public $primaryKeyName;
-	public $religionId;
-	public $religionDesc;
-	public $isDefaut;
-	public $isNew;
-	public $isDraft;
-	public $isUpdate;
-	public $isActive;
-	public $isDelete;
-	public $isApproved;
-	public $By;
-	public $Time;
-	public $vendor;
+	public $eventId;
+	public $calendarId;
+	public $eventTitle;
+	public $eventStart;
+	public $eventEnd;
+	public $eventAddress;
+	public $eventNotes;
+	public $reminder;
+	public $eventUrl;
+	public $eventLocation;
+	public $eventN;
 	public $staffId;
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
@@ -38,12 +37,37 @@ class eventModel extends validationClass{
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['religionId'])){
-			$this->religionId = $this->strict($_POST['religionId'],'numeric');
+		if(isset($_POST['eventId'])){
+			$this->eventId = $this->strict($_POST['eventId'],'numeric');
 		}
-		if(isset($_POST['religionDesc'])){
-			$this->religionDesc = $this->strict($_POST['religionDesc'],'memo');
+		if(isset($_POST['calendarId'])){
+			$this->calendarId = $this->strict($_POST['calendarId'],'numeric');
 		}
+		if(isset($_POST['eventTitle'])){
+			$this->eventTitle = $this->strict($_POST['eventTitle'],'string');
+		}
+		if(isset($_POST['eventStart'])){
+			$this->eventStart = $this->strict($_POST['eventStart'],'datetime');
+		}
+		if(isset($_POST['eventEnd'])){
+			$this->eventEnd = $this->strict($_POST['eventEnd'],'datetime');
+		}
+		if(isset($_POST['eventAddress'])){
+			$this->eventAddress = $this->strict($_POST['eventAddress'],'numeric');
+		}
+		if(isset($_POST['eventNotes'])){
+			$this->eventNotes = $this->strict($_POST['eventNotes'],'memo');
+		}
+		if(isset($_POST['eventUrl'])){
+			$this->eventUrl = $this->strict($_POST['eventUrl'],'string');
+		}
+		if(isset($_POST['eventLocation'])){
+			$this->eventLocation = $this->strict($_POST['eventLocation'],'numeric');
+		}
+		if(isset($_POST['eventN'])){
+			$this->eventN = $this->strict($_POST['eventN'],'numeric');
+		}
+
 		if(isset($_SESSION['staffId'])){
 			$this->staffId = $_SESSION['staffId'];
 		}
@@ -57,57 +81,30 @@ class eventModel extends validationClass{
 
 
 	}
+	
 	/* (non-PHPdoc)
-	 * @see configClass::create()
+	 * @see validationClass::create()
 	 */
 	function create() {
-		$this-> isDefaut =0;
-		$this-> isNew =1;
-		$this-> isDraft=0;
-		$this-> isUpdate=0;
-		$this-> isActive=0;
-		$this-> isDelete=0;
-		$this-> isApproved=0;
+	
 
 	}
-	/* (non-PHPdoc)
-	 * @see configClass::read()
-	 */
-	function read() {
 
-	}
 	/* (non-PHPdoc)
-	 * @see configClass::update()
-	 */
-	/* (non-PHPdoc)
-	 * @see configClass::update()
+	 * @see validationClass::update()
 	 */
 	function update() {
-		$this-> isDefaut =0;
-		$this-> isNew =0;
-		$this-> isDraft=0;
-		$this-> isUpdate=1;
-		$this-> isActive=1;
-		$this-> isDelete=0;
-		$this-> isApproved=0;
+	
 	}
 	/* (non-PHPdoc)
 	 * @see configClass::delete()
 	 */
-	function delete() {
-		$this-> isDefaut =0;
-		$this-> isNew =0;
-		$this-> isDraft=0;
-		$this-> isUpdate=0;
-		$this-> isActive=0;
-		$this-> isDelete=1;
-		$this-> isApproved=0;
-	}
 	/* (non-PHPdoc)
-	 * @see configClass::excel()
+	 * @see validationClass::delete()
 	 */
-	function excel() {
-
+	function delete() {
+	
 	}
+	
 }
 ?>

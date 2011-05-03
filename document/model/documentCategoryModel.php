@@ -1,7 +1,7 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is religion model file.This is to ensure strict setting enable for all variable enter to database
+ * this is document category model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
@@ -9,10 +9,11 @@
  * @package religion
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- */ 
+ */
 class documentCategoryModel extends validationClass{
-	public $religionId;
-	public $religionDesc;
+	public $documentCategoryId;
+	public $documentCategoryTitle;
+	public $documentCategoryDesc;
 	public $isDefaut;
 	public $isNew;
 	public $isDraft;
@@ -36,11 +37,14 @@ class documentCategoryModel extends validationClass{
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['religionId'])){
-			$this->religionId = $this->strict($_POST['religionId'],'numeric');
+		if(isset($_POST['documentCategoryId'])){
+			$this->documentCategory = $this->strict($_POST['documentCategoryId'],'numeric');
 		}
-		if(isset($_POST['religionDesc'])){
-			$this->religionDesc = $this->strict($_POST['religionDesc'],'memo');
+		if(isset($_POST['documentCategoryTitle'])){
+			$this->documentCategoryTitle = $this->strict($_POST['documentCategoryTitle'],'memo');
+		}
+		if(isset($_POST['documentCategoryDesc'])){
+			$this->documentCategoryDesc = $this->strict($_POST['documentCategoryDesc'],'memo');
 		}
 		if(isset($_SESSION['staffId'])){
 			$this->staffId = $_SESSION['staffId'];

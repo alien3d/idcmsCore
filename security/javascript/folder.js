@@ -363,7 +363,7 @@ Ext
 						header : iconNameLabel,
 						renderer : function(value, metaData, record, rowIndex,
 								colIndex, store) {
-							return '<img src=\'../../js/resources/images/icon/'
+							return '<img src=\'../../javascript/resources/images/icon/'
 									+ value
 									+ '.png\' width=\'12\' height=\'12\'> '
 									+ value;

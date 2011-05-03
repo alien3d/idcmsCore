@@ -3,7 +3,7 @@ require_once("../../class/classAbstract.php");
 require_once ("../../class/classValidation.php");
 require_once ("../../class/classAudit.php");
 require_once("../model/accordionModel.php");
-require_once("../../class/class_security.php");
+require_once("../../class/classSecurity.php");
 
 /**
  * this is main setting files

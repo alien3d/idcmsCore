@@ -9,10 +9,15 @@
  * @package religion
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- */ 
+ */
 class documentModel extends validationClass{
-	public $religionId;
-	public $religionDesc;
+	public $documentId;
+	public $documentCategoryId;
+	public $leafId;
+	public $documentTitle;
+	public $documentDesc;
+	public $documentPath;
+	public $documentFilename;
 	public $isDefaut;
 	public $isNew;
 	public $isDraft;
@@ -28,15 +33,33 @@ class documentModel extends validationClass{
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute(){
-
+		/*
+		 *  Basic Information Table
+		 */
+		$this->tableName 		=	'document';
+		$this->primaryKeyName 	=	'documentId';
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['religionId'])){
-			$this->religionId = $this->strict($_POST['religionId'],'numeric');
+		if(isset($_POST['documentId'])){
+			$this->documentId = $this->strict($_POST['documentId'],'numeric');
 		}
-		if(isset($_POST['religionDesc'])){
-			$this->religionDesc = $this->strict($_POST['religionDesc'],'memo');
+		if(isset($_POST['documentCategoryId'])){
+			$this->documentCategory = $this->strict($_POST['documentCategoryId'],'numeric');
+		}
+		if(isset($_POST['documentTitle'])){
+			$this->documentTitle = $this->strict($_POST['docuementTitle'],'memo');
+		}
+		if(isset($_POST['documentDesc'])){
+			$this->documentDesc = $this->strict($_POST['docuementDesc'],'memo');
+		}
+
+		if(isset($_POST['documentPath'])){
+			$this->documentPatj = $this->strict($_POST['docuementPath'],'memo');
+		}
+
+		if(isset($_POST['documentFilename'])){
+			$this->documentTitle = $this->strict($_POST['docuementFilename'],'memo');
 		}
 		if(isset($_SESSION['staffId'])){
 			$this->staffId = $_SESSION['staffId'];

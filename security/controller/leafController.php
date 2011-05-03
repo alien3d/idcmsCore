@@ -1,6 +1,6 @@
 <?php	session_start();
-require_once("../../class/class_abstract.php");
-require_once("../../class/class_security.php");
+require_once("../../class/classAbstract.php");
+require_once("../../class/classSecurity.php");
 /**
  * this is leaf creation
  * @name IDCMS
