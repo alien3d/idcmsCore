@@ -142,7 +142,8 @@ class religionClass extends  configClass {
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
 		$this->audit = new auditClass();
-
+	
+	
 	}
 
 

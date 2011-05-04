@@ -9,41 +9,41 @@ Ext.onReady(function(){
     	var local 			= 	false;
 		var store 			= 	new Ext.data.JsonStore({
         	autoDestroy		:	true,
-        	url				: 	'calendars_data.php',
+        	url				: 	'calendarsController.php',
         	remoteSort		: 	true,
         	storeId			:	'myStore',
         	root			:	'data',
         	totalProperty	:	'total',
 			baseParams			: 	{  method:'read',	mode:'view' ,leaf_uniqueId	:	leaf_uniqueId	}, 
-        	fields: [	{	name		:	'cal_own_uniqueId'		},
-        	         	{ 	name		:	'cal_title'	}
+        	fields: [	{	name		:	'cal_ownId'		},
+        	         	{ 	name		:	'calendarTitle'	}
 					]
     	});
 
-		var staff_reader	= new Ext.data.JsonReader({ root:'staff',id:'staffId' }, 
+		var staffReader	= new Ext.data.JsonReader({ root:'staff',id:'staffId' }, 
 				[ 'staffId', 'staffName']);
 	    
 		
-		var staff_store 		= 	new Ext.data.Store({
+		var staffStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'calendars_data.php?method=read&field=staffId',
+        			url	: 	'calendarsController.php?method=read&field=staffId',
 					method:'GET'
 				}),
-			reader		:	staff_reader,
+			reader		:	staffReader,
 			remoteSort	:	false 
 		});
 		
 
 		var columnModel 	=	[ new Ext.grid.RowNumberer(),{
-			    dataIndex : 'cal_title',
+			    dataIndex : 'calendarTitle',
 				header : 'Tajuk',
 				sortable : true,
 				editor : {
 					xtype : 'textfield',
 					labelAlign : 'left',
-					hiddenName : 'cal_title',
-					name : 'cal_title',
-					id : 'cal_title',		
+					hiddenName : 'calendarTitle',
+					name : 'calendarTitle',
+					id : 'calendarTitle',		
 					allowBlank : false,
 					blankText : 'Sila isi Tajuk',
 					anchor : '95%'
@@ -59,13 +59,13 @@ Ext.onReady(function(){
 					var curr_store = this.grid.getStore();
 					var record = curr_store.getAt(rowIndex);
 					Ext.Ajax.request( {
-						url : 'calendars_data.php',
+						url : 'calendarsController.php',
 						method : 'POST',
 						params : {
 							method 		  :	'update',
-							cal_own_uniqueId  : record.get('cal_own_uniqueId'),
+							cal_ownId  : record.get('cal_ownId'),
 							leaf_uniqueId : leaf_uniqueId,
-							cal_title : record.get('cal_title')
+							calendarTitle : record.get('calendarTitle')
 						},
 						success : function(response, options) {
 							x = Ext.decode(response.responseText);

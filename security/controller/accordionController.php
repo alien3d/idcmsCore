@@ -1,8 +1,9 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
 require_once ("../../class/classAudit.php");
-require_once("../model/accordionModel.php");
 require_once("../../class/classSecurity.php");
+require_once("../model/accordionModel.php");
+
 
 /**
  * this is main setting files

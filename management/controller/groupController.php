@@ -1,5 +1,6 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
+require_once("../model/groupModel.php");
 /**
  * this is main setting files
  * @name IDCMS
@@ -133,11 +134,8 @@ class groupClass  extends configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->execute=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		$this->q->start();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -399,11 +397,8 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->execute=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		// everything given flexibility  on todo
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -505,11 +500,8 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->execute=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
@@ -553,11 +545,8 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->execute=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="

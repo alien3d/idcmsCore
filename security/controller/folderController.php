@@ -1,6 +1,9 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
+require_once ("../../class/classAudit.php");
 require_once("../../class/classSecurity.php");
+require_once("../model/folderModel.php");
+
 /**
  * this folder menu creation
  * @name IDCMS
@@ -143,11 +146,8 @@ class folderClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->redirect=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		$this->q->start();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -341,11 +341,8 @@ class folderClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->redirect=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		// everything given flexibility  on todo
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -584,11 +581,8 @@ class folderClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->redirect=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		$this->q->start();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -647,11 +641,8 @@ class folderClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->redirect=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		$this->q->start();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -697,14 +688,7 @@ class folderClass extends  configClass {
 			 **/
 			$sql	=	'SET NAMES "utf8"';
 			$this->q->fast($sql);
-			if($this->q->execute=='fail'){
-				echo json_encode(
-				array(
-						  	"success"	=>	false,
-							"message"	=>	$this->q->result_text
-				));
-				exit();
-			}
+			
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor='lite'){
 			$sql="
@@ -867,11 +851,8 @@ class folderClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->redirect=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		if($_SESSION['start']==0) {
 			$sql=str_replace("LIMIT","",$_SESSION['sql']);

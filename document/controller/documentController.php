@@ -1,5 +1,6 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
+require_once("../model/documentModel.php");
 /**
  * this is main setting files
  * @name IDCMS
@@ -91,7 +92,8 @@ class documentClass extends  configClass {
 	 * Current Table Document  Indentification Value
 	 * @var numeric $docId
 	 */
-	public $docId;
+	public $documentId;
+	public $model;
 	function __construct() {
 		parent :: __construct();
 
@@ -113,6 +115,7 @@ class documentClass extends  configClass {
 
 		$this->audit 				=	0;
 
+		$this->model = new documentModel();
 	}
 
 

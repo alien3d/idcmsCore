@@ -1,5 +1,6 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
+require_once("../model/staffModel.php");
 /**
  * this is main setting files
  * @name IDCMS
@@ -132,13 +133,8 @@ class staffClass extends  configClass {
 		//UTF8
 		if($this->q->vendor=='mysql' || $this->q->vendor=='lite'){
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
+			$this->q->fast($sql);
 
-			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
-				exit();
-
-			}
 		}
 
 		$this->q->start();
@@ -573,11 +569,8 @@ class staffClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
-				exit();
-			}
+			$this->q->fast($sql);
+			
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
@@ -703,12 +696,8 @@ class staffClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
-				exit();
-
-			}
+			$this->q->fast($sql);
+			
 		}
 
 		$this->q->start();
@@ -969,12 +958,8 @@ class staffClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
-				exit();
-
-			}
+			$this->q->fast($sql);
+			
 		}
 
 		$this->q->start();
@@ -1033,12 +1018,8 @@ class staffClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
-				exit();
-
-			}
+			$this->q->fast($sql);
+			
 		}
 		if($_SESSION['start']==0) {
 			$sql=str_replace("LIMIT","",$_SESSION['sql']);

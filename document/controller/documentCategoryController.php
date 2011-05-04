@@ -1,6 +1,6 @@
 <?php	session_start();
-require_once '../class/PHPExcel/IOFactory.php';
 require_once("../../class/classAbstract.php");
+require_once("../model/documentCategoryModel.php");
 /**
  * this is main setting files
  * @name IDCMS
@@ -89,9 +89,10 @@ class documentCategoryClass extends  configClass {
 	private $audit;
 	/**
 	 * Current Table Document Category Indentification Value
-	 * @var numeric $docCategoryId
+	 * @var numeric $documentCategoruyId
 	 */
-	public $docCatId;
+	public $documentCategoryId;
+	public $model;
 	/**
 	 * Class Loader
 	 */
@@ -119,6 +120,9 @@ class documentCategoryClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
+	
+		$this->model 				= new documentCategoryModel();
+		
 	}
 
 	/**
@@ -129,28 +133,21 @@ class documentCategoryClass extends  configClass {
 
 		$this->q->start();
 		$sql="
-					INSERT INTO `doc_cat`
+					INSERT INTO `documentCategory`
 							(
-								`doc_cat_uniqueId`,
-								`doc_cat_nme`,
-								`leafId`
+								`documentCategoryTitle`,
+								`documentCategoryDesc`
 							)
 					VALUES	(
-								'".$this->strict($_POST['doc_cat_uniqueId'],'n')."',
-								'".$this->strict($_POST['doc_cat_nme'],'s')."',
-								'".$this->strict($_POST['leafId'],'n')."'
+							
+								'".$this->model->documentCategoryTitle."',
+								'".$this->model->documentCategoryDesc."'
 							);";
 
 		$this->q->create($sql);
 		$this->q->commit();
 
-		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->result_text);
-			exit();
-		} else {
-			$this->msg(true,'Create query success');
-			exit();
-		}
+		
 
 
 	}
@@ -163,18 +160,11 @@ class documentCategoryClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		$sql	=	"
 				SELECT
-				        `doc_cat`.`doc_cat_uniqueId`,
-				        `doc_cat`.`doc_cat_nme`,
-						`doc_cat`.`leafId`,
-						`leaf`.`leafName`,
-						`leaf`.`leafId`,
-						CONCAT('(','ID ',`leafId`,') ',`leafName`) AS `Nleaf`
-				FROM 	`doc_cat`
-                JOIN    `leaf`
-                USING   (`leafId`)
+				        
+				FROM 	`documentCategory`
 				WHERE 	1";
-		if($_POST['doc_cat_uniqueId']) {
-			$sql.=" AND `doc_cat_uniqueId`='".$this->strict($_POST['doc_cat_uniqueId'],'n')."'";
+		if($_POST['documentCategoryId']) {
+			$sql.=" AND `documentCategoryId`='".$this->strict($this->documentCategoryId,'n')."'";
 		}
 
 		// searching filtering
@@ -252,13 +242,13 @@ class documentCategoryClass extends  configClass {
 	function update() 				{
 
 		header('Content-Type','application/json; charset=utf-8');
-
+		$this->model->update();
 		$this->q->start();
+		
 		$sql="
 					UPDATE 	`doc_cat`
 					SET 	`doc_cat_uniqueId`	    =	'".$this->strict($_POST['doc_cat_uniqueId'],'n')."',
 					     	`doc_cat_nme`	            =	'".$this->strict($_POST['doc_cat_nme'],'s')."',
-					     	`leafId`	        =	'".$this->strict($_POST['leafId'],'n')."'
 					WHERE 	`doc_cat_uniqueId`		=	'".$this->strict($_POST['doc_cat_uniqueId'],'n')."'";
 
 		$this->q->update($sql);
@@ -274,39 +264,14 @@ class documentCategoryClass extends  configClass {
 
 	}
 
-	/**
-	 * Enter description here ...
-	 */
-	function leafId() {
-		header('Content-Type','application/json; charset=utf-8');
-		$sql	=	"
-				SELECT
-				       `leaf`.`leafId`,
-				       `leaf`.`leafName`,
-					   CONCAT('(','ID ',`leafId`,') ',`leafName`) AS leafN
-				FROM   `leaf`
-				WHERE   1 ";
-		$this->q->read($sql);
-		$total = $this->q->numberRows();
-		$items		 =	array();
-
-		while($row   = 	$this->q->fetch_array()) {
-			$items[] =	$row;
-		}
-		echo json_encode(
-		array(
-											'totalCount' 		=>	$total,
-											'leaf'	=> 	$items
-		)
-		);
-	}
+	
 
 	/* (non-PHPdoc)
 	 * @see config::delete()
 	 */
 	function delete()				{
 		header('Content-Type','application/json; charset=utf-8');
-
+		$this->model->delete();
 		$this->q->start();
 		$sql	=	"
 					DELETE	FROM 	`doc_cat`
