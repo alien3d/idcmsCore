@@ -101,6 +101,11 @@ class folderClass extends  configClass {
 	 */
 	private $security;
 	/**
+	 * Folder Model
+	 * @var string $model
+	 */
+	public $model;
+	/**
 	 * Class Loader
 	 */
 	function execute() {
@@ -134,6 +139,10 @@ class folderClass extends  configClass {
 		$this->security->vendor = $this->vendor;
 		$this->security->leafId = $this->leafId;
 		$this->security->execute();
+		$this->model = new folderModel();
+		$this->model->vendor = $this->vendor;
+		$this->model->execute();
+		$this->audit = new auditClass();
 
 
 	}
@@ -147,99 +156,73 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-				
+
 		}
 		$this->q->start();
+		$this->model->create();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
-			$sql="INSERT INTO `folder` (
-								  `accordionId`,
-								  `folderNote`,
-								  `folderSequence`,
-								`folderPath`,
-								  `iconId`,
-								  `isNew`,
-								  `isDraft`,
-								  `isUpdate`,
-								  `isDelete`,
-								  `isActive`,
-								  `isApproved`,
-								  `By`,
-								  `Time`)
-				VALUES	(		  '".$this->strict($_POST['accordionId'],'numeric')."',
-								  '".$this->strict($_POST['folderNote'],'string')."',
-								  '".$this->strict($_POST['folderSequence'],'numeric')."',
-
-								  '".$this->strict($_POST['folderPath'],'string')."',
-								  '".$this->strict($_POST['iconId'],'string')."',
-								  '1',
-								  '0',
-								  '0',
-								  '0',
-								  '1',
-								  '0',
-								  '".$_SESSION['staffId']."',
-								  '".date("Y-m-d H:i:s")."');";
+			$sql="
+			INSERT INTO `folder` 
+					(
+						`accordionId`,						`folderNote`,
+						`folderSequence`,					`folderPath`,
+						`iconId`,							`isNew`,
+						`isDraft`,							`isUpdate`,
+						`isDelete`,							`isActive`,
+						`isApproved`,						`By`,
+						`Time`
+					)
+			VALUES	
+					(
+						'".$this->model->accordionId."',	'".$this->model->folderNote."',
+						'".$this->model->folderSequence."', '".$this->model->folderPath."',
+						'".$this->model->iconId."',			'".$this->model->isNew."',
+						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
+						'".$this->model->isDelete."',		'".$this->model->isActive."',
+						'".$this->model->isApproved."',		'".$this->model->isApproved."',
+						".$this->model->Time."
+					);";
 		}else if ($this->q->vendor=='microsoft') {
-			$sql="INSERT INTO [folder] (
-								  [accordionId],
-								  [folderNote],
-								  [folderSequence],
-
-								  [folderPath],
-								  [iconId],
-								  [isNew],
-								  [isDraft],
-								  [isUpdate],
-								  [isDelete],
-								  [isActive],
-								  [isApproved],
-								  [By],
-								  [Time]
-				)VALUES	(		  '".$this->strict($_POST['accordionId'],'numeric')."',
-								  '".$this->strict($_POST['folderNote'],'string')."',
-								  '".$this->strict($_POST['folderSequence'],'numeric')."',
-
-								  '".$this->strict($_POST['folderPath'],'string')."',
-								  '".$this->strict($_POST['iconId'],'string')."',
-								    '1',
-								  '0',
-								  '0',
-								  '0',
-								  '1'
-								  '0',
-								  '".$_SESSION['staffId']."',
-								  '".date("Y-m-d H:i:s")."');";
+			$sql="
+			INSERT INTO [folder] 
+					(
+						[accordionId],						[folderNote],
+						[folderSequence],					[folderPath],
+						[iconId],							[isNew],
+						[isDraft],							[isUpdate],
+						[isDelete],							[isActive],
+						[isApproved],						[By],
+						[Time]
+				)
+			VALUES	
+				(		
+						'".$this->model->accordionId."',	'".$this->model->folderNote."',
+						'".$this->model->folderSequence."', '".$this->model->folderPath."',
+						'".$this->model->iconId."',			'".$this->model->isNew."',
+						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
+						'".$this->model->isDelete."',		'".$this->model->isActive."',
+						'".$this->model->isApproved."',		'".$this->model->isApproved."',
+						".$this->model->Time."
+				);";
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
-					INSERT INTO 	\"folder\" (
-									\"accordionId\",
-								  \"folderNote\",
-								  \"folderSequence\",
-
-								  \"folderPath\",
-								  \"iconId\",
-								  \"isNew\",
-								  \"isDraft\",
-								  \"isUpdate\",
-								  \"isDelete\",
-								  \"isActive\",
-								  \"isApproved\",
-								  \"By\",
-								  \"Time\")
-				VALUES	(		  '".$this->strict($_POST['accordionId'],'numeric')."',
-								  '".$this->strict($_POST['folderNote'],'string')."',
-								  '".$this->strict($_POST['folderSequence'],'numeric')."',
-
-								  '".$this->strict($_POST['folderPath'],'string')."',
-								  '".$this->strict($_POST['iconId'],'string')."',
-								  '1',
-								  '0',
-								  '0',
-								  '0',
-								  '1',
-								  '0',
-								  '".$this->strict($_SESSION['staffId'],'n')."',
-								 to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS'
+			INSERT INTO 	\"folder\" 
+						(
+							\"accordionId\",					\"folderNote\",
+							\"folderSequence\",					\"folderPath\",
+							 \"iconId\",				 		\"isNew\",
+							\"isDraft\",						\"isUpdate\",
+							\"isDelete\",						\"isActive\",
+							\"isApproved\",						\"By\",
+							\"Time\")
+				VALUES	(		
+							'".$this->model->accordionId."',	'".$this->model->folderNote."',
+							'".$this->model->folderSequence."', '".$this->model->folderPath."',
+							'".$this->model->iconId."',			'".$this->model->isNew."',
+							'".$this->model->isDraft."',		'".$this->model->isUpdate."',
+							'".$this->model->isDelete."',		'".$this->model->isActive."',
+							'".$this->model->isApproved."',		'".$this->model->isApproved."',
+							".$this->model->Time."
 						);";
 		}
 		$this->q->create($sql);
@@ -298,29 +281,46 @@ class folderClass extends  configClass {
 			// by default no access
 			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 				$sql="
-						INSERT INTO 	`folderAccess` (
-										`folderId`,
-										`groupId`,
-										`folderAccessValue`
-					) VALUES(			'".$lastId."',
-							 			'".$row['groupId']."',
-							 			'0'	)	";
+				INSERT INTO	`folderAccess` 
+						(
+							`folderId`,
+							`groupId`,
+							`folderAccessValue`
+						) 
+				VALUES
+						(
+							'".$lastId."',
+							 '".$row['groupId']."',
+							 '0'	
+						)	";
 			} else if ($this->q->vendor=='microsoft') {
-				$sql="INSERT INTO 	[folderAccess] (
-										[folderId],
-										[groupId],
-										[folderAccessValue]
-					) VALUES(			'".$lastId."',
-							 			'".$row['groupId']."',
-							 			'0'	)	";
+				$sql="
+				INSERT INTO 	[folderAccess] 
+							(
+								[folderId],
+								[groupId],
+								[folderAccessValue]
+							) 
+				VALUES
+							(	
+								'".$lastId."',
+							 	'".$row['groupId']."',
+							 	'0'	
+							 )	";
 			} else if ($this->q->vendor=='oracle') {
-				$sql="INSERT INTO 	\"folderAccess\" (
-										\"folderId\",
-										\"groupId\",
-										\"folderAccessValue\"
-						) VALUES(			'".$lastId."',
-							 			'".$row['groupId']."',
-							 			'0'	)	";
+				$sql="
+				INSERT INTO 	\"folderAccess\" 
+							(
+								\"folderId\",
+								\"groupId\",
+								\"folderAccessValue\"
+							) 
+					VALUES
+							(	
+								'".$lastId."',
+							 	'".$row['groupId']."',
+							 	'0'	
+							 )	";
 			}
 			$this->q->update($sql);
 			if($this->q->redirect=='fail') {
@@ -342,7 +342,7 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-				
+
 		}
 		// everything given flexibility  on todo
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -355,8 +355,8 @@ class folderClass extends  configClass {
 			ON			`folder`.`iconId`=`icon`.`iconId`
 			WHERE		`accordion`.`isActive`	=	1
 			AND			`folder`.`isActive`		=	1";
-			if(isset($_POST['folderId'])) {
-				$sql.=" AND `folderId`='".$this->strict($_POST['folderId'],'numeric')."'";
+			if($this->folderId) {
+				$sql.=" AND `folderId`='".$this->folderId."'";
 			}
 		} else if ($this->q->vendor=='microsoft') {
 			$sql	=	"
@@ -369,8 +369,8 @@ class folderClass extends  configClass {
 			ON			[folder].[iconId]=[icon].[iconId]
 			WHERE		[accordion].[isActive]	=	1
 			AND			[folder].[isActive]		=	1";
-			if(isset($_POST['folderId'])) {
-				$sql.=" AND `folderId`='".$this->strict($_POST['folderId'],'numeric')."'";
+			if($this->folderId) {
+				$sql.=" AND `folderId`='".$this->folderId."'";
 			}
 		} else if ($this->q->vendor=='oracle') {
 			$sql	=	"
@@ -382,8 +382,8 @@ class folderClass extends  configClass {
 			USING(\"iconId\")
 			WHERE		\"accordion\".\"isActive\"=1
 			AND			\"folder\".\"isActive\"=1";
-			if(isset($_POST['folderId'])) {
-				$sql.=" AND \"folderId\"='".$this->strict($_POST['folderId'],'numeric')."'";
+			if($this->folderId) {
+				$sql.=" AND \"folderId\"='".$this->folderId."'";
 			}
 		}
 		/**
@@ -582,9 +582,10 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-				
+
 		}
 		$this->q->start();
+		$this->model->update();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
 					UPDATE 	`folder`
@@ -593,9 +594,14 @@ class folderClass extends  configClass {
 							`folderSequence`	=	'".$this->strict($_POST['folderSequence'],'numeric')."',
 							`folderPath`		=	'".$this->strict($_POST['folderPath'],'string')."',
 							`iconId`			=	'".$this->strict($_POST['iconId'],'string')."',
-							`isUpdate`			=	1
-							`By`				=	'".$_SESSION['staffId']."',
-							`Time`				=	'".date("Y-m-d H:i:s")."'
+							`isActive`			=	'".$this->model->isActive."',
+							`isNew`				=	'".$this->model->isNew."',
+							`isDraft`			=	'".$this->model->isDraft."',
+							`isUpdate`			=	'".$this->model->isUpdate."',
+							`isDelete`			=	'".$this->model->isDelete."',
+							`isApproved`		=	'".$this->model->isApproved."',
+							`By`				=	'".$this->model->By."',
+							`Time				=	".$this->model->Time."
 					WHERE 	`folderId`			=	'".$this->strict($_POST['folderId'],'numeric')."'";
 		}  else if ( $this->q->vendor=='microsoft') {
 			$sql="
@@ -605,9 +611,14 @@ class folderClass extends  configClass {
 							[folderSequence]	=	'".$this->strict($_POST['folderSequence'],'numeric')."',
 							[folderPath]		=	'".$this->strict($_POST['folderPath'],'string')."',
 							[iconId]			=	'".$this->strict($_POST['iconId'],'string')."',
-							[isUpdate]			=	1
-							[By]				=	'".$_SESSION['staffId']."',
-							[Time]				=	'".date("Y-m-d H:i:s")."'
+							[isActive]			=	'".$this->model->isActive."',
+							[isNew]				=	'".$this->model->isNew."',
+							[isDraft]			=	'".$this->model->isDraft."',
+							[isUpdate]			=	'".$this->model->isUpdate."',
+							[isDelete]			=	'".$this->model->isDelete."',
+							[isApproved]		=	'".$this->model->isApproved."',
+							[By]				=	'".$this->model->By."',
+							[Time]				=	".$this->model->Time."
 					WHERE 	[folderId]			=	'".$this->strict($_POST['folderId'],'numeric')."'";
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
@@ -616,10 +627,14 @@ class folderClass extends  configClass {
 							\"folderNote\"		=	'".$this->strict($_POST['folderNote'],'memo')."',
 							\"folderSequence\"	=	'".$this->strict($_POST['folderSequence'],'numeric')."',
 							\"folderPath\"		=	'".$this->strict($_POST['folderPath'],'string')."',
-							\"iconId\"			=	'".$this->strict($_POST['iconId'],'string')."',
-							\"isUpdate\"		= 	1
-							\"By\"				=	'".$_SESSION['staffId']."',
-							\"Time\"			=	'".date("Y-m-d H:i:s")."'
+							\"isActive\"	=	'".$this->model->isActive."',
+							\"isNew\"		=	'".$this->model->isNew."',
+							\"isDraft\"		=	'".$this->model->isDraft."',
+							\"isUpdate\"	=	'".$this->model->isUpdate."',
+							\"isDelete\"	=	'".$this->model->isDelete."',
+							\"isApproved\"	=	'".$this->model->isApproved."',
+							\"By\"			=	'".$this->model->By."',
+							\"Time\"		=	".$this->model->Time."
 					WHERE 	\"folderId\"		=	'".$this->strict($_POST['folderId'],'numeric')."'";
 		}
 		$this->q->update($sql);
@@ -642,27 +657,46 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-				
+
 		}
 		$this->q->start();
+		$this->model->delete();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
 					UPDATE	`folder`
-					SET		`isActive`	=	0,
-					AND		`isDelete`	=	1
+					SET		`isActive`			=	'".$this->model->isActive."',
+							`isNew`				=	'".$this->model->isNew."',
+							`isDraft`			=	'".$this->model->isDraft."',
+							`isUpdate`			=	'".$this->model->isUpdate."',
+							`isDelete`			=	'".$this->model->isDelete."',
+							`isApproved`		=	'".$this->model->isApproved."',
+							`By`				=	'".$this->model->By."',
+							`Time				=	".$this->model->Time."
 					WHERE 	`folderId`	=	'".$this->strict($_POST['folderId'],'numeric')."'";
 
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
 					UPDATE	[folder]
-					SET		[isActive]	=	0,
-					AND		[isDelete]	=	1
+					SET		[isActive]			=	'".$this->model->isActive."',
+							[isNew]				=	'".$this->model->isNew."',
+							[isDraft]			=	'".$this->model->isDraft."',
+							[isUpdate]			=	'".$this->model->isUpdate."',
+							[isDelete]			=	'".$this->model->isDelete."',
+							[isApproved]		=	'".$this->model->isApproved."',
+							[By]				=	'".$this->model->By."',
+							[Time]				=	".$this->model->Time."
 					WHERE 	[folderId]	=	'".$this->strict($_POST['folderId'],'numeric')."'";
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
 					UPDATE	\"folder\"
-					SET		\"isActive\"	=	0,
-					AND		\"isDelete\"	=	1
+					SET		\"isActive\"	=	'".$this->model->isActive."',
+							\"isNew\"		=	'".$this->model->isNew."',
+							\"isDraft\"		=	'".$this->model->isDraft."',
+							\"isUpdate\"	=	'".$this->model->isUpdate."',
+							\"isDelete\"	=	'".$this->model->isDelete."',
+							\"isApproved\"	=	'".$this->model->isApproved."',
+							\"By\"			=	'".$this->model->By."',
+							\"Time\"		=	".$this->model->Time."
 					WHERE 	\"folderId\"	=	'".$this->strict($_POST['folderId'],'numeric')."'";
 		}
 		$this->q->update($sql);
@@ -688,7 +722,7 @@ class folderClass extends  configClass {
 			 **/
 			$sql	=	'SET NAMES "utf8"';
 			$this->q->fast($sql);
-				
+
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor='lite'){
 			$sql="
@@ -919,7 +953,7 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-				
+
 		}
 		if($_SESSION['start']==0) {
 			$sql=str_replace("LIMIT","",$_SESSION['sql']);
@@ -974,7 +1008,7 @@ class folderClass extends  configClass {
 		$filename="folder".rand(0,10000000).".xlsx";
 		$path=$_SERVER['DOCUMENT_ROOT']."/".$this->application."/security/document/excel/".$filename;
 		$objWriter->save($path);
-		$this->create_trail($this->leafId, $path,$filename);
+		$this->audit->create_trail($this->leafId, $path,$filename);
 		$file = fopen($path,'r');
 		if($file){
 			echo json_encode(array("success"=>"true","message"=>"File generated"));

@@ -97,6 +97,8 @@ class groupClass  extends configClass {
 	 * @var numeric $insert_id
 	 */
 	private $insert_id;
+	
+	public $model;
 	/**
 	 * Class Loader
 	 */
@@ -125,6 +127,7 @@ class groupClass  extends configClass {
 
 		$this->q->log 				= $this->log;
 
+		$this->model 				= new groupModel();			
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -138,30 +141,46 @@ class groupClass  extends configClass {
 			
 		}
 		$this->q->start();
+		$this->model->create();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
-			$sql="INSERT INTO `group` (
-
-								`groupNote`
-								`isNew`,
-								`isActive`)
-				VALUES	(		   '".$this->strict($_POST['groupNote'],'string')."'
-								1,1);";
+			$sql="
+			INSERT INTO `group` 
+					(
+						`groupDesc`
+						`isNew`,
+						`isActive`
+					)
+			VALUES	
+					(	
+						'".$this->model->groupDesc."'
+						1,1);";
 		}  else if ( $this->q->vendor=='microsoft') {
-			$sql="INSERT INTO [group] (
-
-								[groupNote],
-								[isNew],
-								[isActive])
-				VALUES	(		   '".$this->strict($_POST['groupNote'],'string')."'
-								1,1);";
+			$sql="
+			INSERT INTO [group] 
+					(
+						[groupDesc],
+						[isNew],
+						[isActive]
+					)
+			VALUES	
+					(	
+						'".$this->strict($_POST['groupDesc'],'string')."'
+						1,
+						1);";
 		}  else if ($this->q->vendor=='oracle') {
-			$sql="INSERT INTO \"group\" (
-
-								\"groupNote\",
-								\"isNew\",
-								\"isActive\")
-				VALUES	(		   '".$this->strict($_POST['groupNote'],'string')."'
-								1,1);";
+			$sql="
+			INSERT INTO \"group\" 
+					(
+						\"groupDesc\",
+						\"isNew\",
+						\"isActive\"
+					)
+				VALUES	
+					(	
+						'".$this->strict($_POST['groupDesc'],'string')."'
+						1,
+						1
+					);";
 
 		}
 		$this->q->create($sql);
@@ -503,30 +522,47 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 			$this->q->fast($sql);
 			
 		}
+		$this->q->commit();
+		$this->model->update();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
-				UPDATE 	`group`
-				SET 	`groupNote`		=	'".$this->strict($_POST['groupNote'],'string')."',
-				AND		`isUpdate`		=	1
-				AND		`isActive`		=	1
-				AND		`isNew`			=	0
-				WHERE 	`groupId`		=	'".$this->strict($_POST['groupId'],'numeric')."'";
+			UPDATE 	`group`
+			SET 	`groupDesc`		=	'".$this->model->groupDesc."',
+					`isActive`		=	'".$this->model->isActive."',
+					`isNew`			=	'".$this->model->isNew."',
+					`isDraft`		=	'".$this->model->isDraft."',
+					`isUpdate`		=	'".$this->model->isUpdate."',
+					`isDelete`		=	'".$this->model->isDelete."',
+					`isApproved`	=	'".$this->model->isApproved."',
+					`By`			=	'".$this->model->By."',
+					`Time			=	".$this->model->Time."
+			WHERE 	`groupId`		=	'".$this->groupId."'";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
-				UPDATE 	[group]
-				SET 	[groupNote]		=	'".$this->strict($_POST['groupNote'],'string')."',
-				AND		[isUpdate]		=	1
-				AND		[isActive]		=	1
-				AND		[isNew]			=	0
-				WHERE 	[groupId]		=	'".$this->strict($_POST['groupId'],'numeric')."'";
+			UPDATE 	[group]
+			SET 	[groupDesc]		=	'".$this->model->groupDesc."',
+					[isActive]		=	'".$this->model->isActive."',
+					[isNew]			=	'".$this->model->isNew."',
+					[isDraft]		=	'".$this->model->isDraft."',
+					[isUpdate]		=	'".$this->model->isUpdate."',
+					[isDelete]		=	'".$this->model->isDelete."',
+					[isApproved]	=	'".$this->model->isApproved."',
+					[By]			=	'".$this->model->By."',
+					[Time]			=	".$this->model->Time."
+			WHERE 	[groupId]		=	'".$this->groupId."'";
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
-				UPDATE 	\"group\"
-				SET 	\"groupNote\"		=	'".$this->strict($_POST['groupNote'],'string')."',
-				AND		\"isUpdate\"		=	1
-				AND		\"isActive\"		=	1
-				AND		\"isNew\"			=	0
-				WHERE 	\"groupId\"		=	'".$this->strict($_POST['groupId'],'numeric')."'";
+			UPDATE 	\"group\"
+			SET 	\"groupDesc\"	=	'".$this->model->groupDesc."',
+					\"isActive\"	=	'".$this->model->isActive."',
+					\"isNew\"		=	'".$this->model->isNew."',
+					\"isDraft\"		=	'".$this->model->isDraft."',
+					\"isUpdate\"	=	'".$this->model->isUpdate."',
+					\"isDelete\"	=	'".$this->model->isDelete."',
+					\"isApproved\"	=	'".$this->model->isApproved."',
+					\"By\"			=	'".$this->model->By."',
+					\"Time\"		=	".$this->model->Time."
+			WHERE 	\"groupId\"		=	'".$this->groupId."'";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
@@ -548,31 +584,45 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 			$this->q->fast($sql);
 			
 		}
+		$this->q->commit();
+		$this->model->delete();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
 				UPDATE 	`group`
-				SET 	`groupNote`		=	'".$this->strict($_POST['groupNote'],'string')."',
-				AND		`isDelete`		=	1
-				AND		`isActive`		=	0
-				AND		`isNew`			=	0
-				WHERE 	`groupId`		=	'".$this->strict($_POST['groupId'],'numeric')."'";
+				SET 	`isActive`		=	'".$this->model->isActive."',
+						`isNew`			=	'".$this->model->isNew."',
+						`isDraft`		=	'".$this->model->isDraft."',
+						`isUpdate`		=	'".$this->model->isUpdate."',
+						`isDelete`		=	'".$this->model->isDelete."',
+						`isApproved`	=	'".$this->model->isApproved."',
+						`By`			=	'".$this->model->By."',
+						`Time			=	".$this->model->Time."
+				WHERE 	`groupId`		=	'".$this->groupId."'";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
 				UPDATE 	[group]
-				SET 	[groupNote]		=	'".$this->strict($_POST['groupNote'],'string')."',
-				AND		[isDelete]		=	1
-				AND		[isActive]		=	0
-				AND		[isNew]			=	0
-				WHERE 	[groupId]		=	'".$this->strict($_POST['groupId'],'numeric')."'";
+				SET 	[isActive]		=	'".$this->model->isActive."',
+						[isNew]			=	'".$this->model->isNew."',
+						[isDraft]		=	'".$this->model->isDraft."',
+						[isUpdate]		=	'".$this->model->isUpdate."',
+						[isDelete]		=	'".$this->model->isDelete."',
+						[isApproved]	=	'".$this->model->isApproved."',
+						[By]			=	'".$this->model->By."',
+						[Time]			=	".$this->model->Time."
+				WHERE 	[groupId]		=	'".$this->groupId."'";
 
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
 				UPDATE 	\"group\"
-				SET 	\"groupNote\"		=	'".$this->strict($_POST['groupNote'],'string')."',
-				AND		\"isDelete\"		=	1
-				AND		\"isActive\"		=	0
-				AND		\"isNew\"			=	0
-				WHERE 	\"groupId\"			=	'".$this->strict($_POST['groupId'],'numeric')."'";
+				SET 	\"isActive\"	=	'".$this->model->isActive."',
+						\"isNew\"		=	'".$this->model->isNew."',
+						\"isDraft\"		=	'".$this->model->isDraft."',
+						\"isUpdate\"	=	'".$this->model->isUpdate."',
+						\"isDelete\"	=	'".$this->model->isDelete."',
+						\"isApproved\"	=	'".$this->model->isApproved."',
+						\"By\"			=	'".$this->model->By."',
+						\"Time\"		=	".$this->model->Time."
+				WHERE 	\"groupId\"		=	'".$this->groupId."'";
 
 		}
 		$this->q->update($sql);
@@ -586,74 +636,7 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		exit();
 
 	}
-	/**
-	 * Enter description here ...
-	 */
-	function translateMe() {
-
-		$this->q->start();
-
-		$sql="SELECT * FROM `group` WHERE `groupId`='".$this->groupId."'";
-		$resultDefault= $this->q->fast($sql);
-		if($this->q->numberRows($resultDefault) > 0 ) {
-			$rowDefault = $this->q->fetch_array($resultDefault);
-			$value 		= $rowDefault['groupNote'];
-		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
-			$sql="SELECT * FROM `language`";
-		} else if ($this->q->vendor=='microsoft') {
-			$sql="SELECT * FROM [language] ";
-		} else if ($this->q->vendor=='oracle') {
-			$sql="SELECT * FROM \"language\" ";
-		}
-		$result= $this->q->fast($sql);
-		while ($row = $this->q->fetchAssoc($result)) {
-			$languageId = $row['languageId'];
-			$languageCode = $row['languageCode'];
-			$to 		  =	$languageCode;
-			$googleTranslate = $this->changeLanguage($from="en",$to,$value);
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
-				$sql="SELECT * FROM `groupTranslate` WHERE `groupId`='".$groupId."' AND `languageId`='".$languageId."'";
-			} else if ($this->q->vendor=='microsoft') {
-				$sql="SELECT * FROM [groupTranslate] WHERE [groupId]='".$groupId."' AND [languageId]='".$languageId."'";
-			}  else if ($this->q->vendor=='oracle') {
-				$sql="SELECT * FROM \"groupTranslate\" WHERE \"groupId\"='".$groupId."' AND \"languageId\"='".$languageId."'";
-			}
-			$resultgroupTranslate = $this->q->fast($sql);
-			if($this->q->numberRows($resultgroupTranslate) >  0 ) {
-				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
-					$sql="UPDATE `groupTranslate` SET `groupTranslate`='".$googleTranslate."' WHERE `groupTranslateId`='".$groupTranslateId."' and `languageId`='".$languageId."'";
-				} else if ($this->q->vendor=='microsoft') {
-					$sql="UPDATE [groupTranslate] SET [groupTranslate]='".$googleTranslate."' WHERE [groupTranslateId]='".$groupTranslateId."' and [languageId]='".$languageId."'";
-				} else if ($this->q->vendor=='oracle') {
-					$sql="UPDATE \"groupTranslate\" SET \"groupTranslate\"='".$googleTranslate."' WHERE \"groupTranslateId\"='".$groupTranslateId."' and \"languageId\"='".$languageId."'";
-				}
-				$this->q->update($sql);
-				if($this->q->execute=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
-					exit();
-
-				}
-			} else {
-				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
-					$sql="INSERT INTO `groupTranslate` (`groupId`,`languageId`,`groupTranslate`) VALUES('".$groupId."','".$languageId."','".$googleTranslate."')";
-				} else if ($this->q->vendor=='microsoft') {
-					$sql="INSERT INTO [groupTranslate] ([groupId],[languageId],[groupTranslate]) VALUES('".$groupId."','".$languageId."','".$googleTranslate."')";
-				} else if ($this->q->vendor=='oracle') {
-					$sql="INSERT INTO \"groupTranslate\" (\"groupId\",\"languageId\",\"groupTranslate\") VALUES('".$groupId."','".$languageId."','".$googleTranslate."')";
-				}
-				$this->q->create($sql);
-				if($this->q->execute=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
-					exit();
-
-				}
-			}
-		}
-		$this->q->commit();
-
-
-	}
+	
 	/* (non-PHPdoc)
 	 * @see config::excel()
 	 */

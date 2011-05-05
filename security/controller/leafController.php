@@ -137,7 +137,7 @@ class leafClass extends  configClass {
 		$this->security->vendor = $this->vendor;
 		$this->security->leafId =$this->leafId_temp;
 		$this->security->execute();
-		
+
 		$this->model = new leafModel();
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
@@ -154,7 +154,7 @@ class leafClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
-		
+
 		$this->q->start();
 		$this->model->create();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -231,7 +231,7 @@ class leafClass extends  configClass {
 					);";
 		}
 		$this->q->create($sql);
-	if($this->q->execute=='fail'){
+		if($this->q->execute=='fail'){
 			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
 			exit();
 		}
@@ -373,9 +373,8 @@ class leafClass extends  configClass {
 			WHERE 		`folder`.`isActive`		=	1
 			AND			`accordion`.`isActive`	=	1
 			AND			`leaf`.`isActive`		=	1 ";
-			if($_POST['leafId']) {
-				$_SESSION['leafId'] = $_POST['leafId'];
-				$sql.=" AND `leafId`='".$this->strict($_POST['leafId'],'numeric')."'";
+			if($this->leafId) {
+				$sql.=" AND `leafId`='".$this->leafId."'";
 			}
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
@@ -391,9 +390,8 @@ class leafClass extends  configClass {
 			WHERE 		[folder].[isActive]			=	1
 			AND			[accordion].[isActive]		=	1
 			AND			[leaf].[isActive]			=	1 ";
-			if($_POST['leafId']) {
-				$_SESSION['leafId'] = $_POST['leafId'];
-				$sql.=" AND `leafId`='".$this->strict($_POST['leafId'],'numeric')."'";
+			if($this->leafId) {
+				$sql.=" AND `leafId`='".$this->leafId."'";
 			}
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
@@ -408,9 +406,9 @@ class leafClass extends  configClass {
 			WHERE 		\"folder\".\"isActive\"		=	1
 			AND			\"accordion\".`isActive\"	=	1
 			AND			\"leaf\".`isActive\"		=	1 ";
-			if($_POST['leafId']) {
-				$_SESSION['leafId'] = $_POST['leafId'];
-				$sql.=" AND `leafId`='".$this->strict($_POST['leafId'],'numeric')."'";
+			if($this->leafId) {
+				
+				$sql.=" AND `leafId`='".$this->leafId."'";
 			}
 		}
 		/**
@@ -599,46 +597,46 @@ class leafClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
-		
+
 		$this->q->start();
 		$this->model->update();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite')  {
+		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
-			UPDATE 	`leaf`
-			SET 	`accordionId`	=	'".$this->strict($_POST['accordionId'],'numeric')."',
-					`folderId`		=	'".$this->strict($_POST['folderId'],'numeric')."',
-					`leafNote`		=	'".$this->strict($_POST['leafNote'],'string')."',
-					`leafSequence`	=	'".$this->strict($_POST['leafSequence'],'numeric')."',
-					`leafFilename`	=   '".$this->strict($_POST['leafFilename'],'filename')."',
-					`iconId`		=   '".$this->strict($_POST['iconId'],'iconname')."',
-					`By`			=	'".$_SESSION['staffId']."',
-					`Time`			=	'".date("Y-m-d H:i:s")."'
-			WHERE 	`leafId`		=	'".$this->strict($_POST['leafId'],'numeric')."'";
+			UPDATE	`leaf`
+			SET		`isActive`	=	'".$this->model->isActive."',
+					`isNew`		=	'".$this->model->isNew."',
+					`isDraft`	=	'".$this->model->isDraft."',
+					`isUpdate`	=	'".$this->model->isUpdate."',
+					`isDelete`	=	'".$this->model->isDelete."',
+					`isApproved`=	'".$this->model->isApproved."',
+					`By`		=	'".$this->model->By."',
+					`Time		=	".$this->model->Time."
+			WHERE 	`leafId`	=	'".$this->leafId."'";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
-			UPDATE 	[leaf]
-			SET 	[accordionId]	=	'".$this->strict($_POST['accordionId'],'numeric')."',
-					[folderId]		=	'".$this->strict($_POST['folderId'],'numeric')."',
-					[leafNote]		=	'".$this->strict($_POST['leafNote'],'string')."',
-					[leafSequence]	=	'".$this->strict($_POST['leafSequence'],'numeric')."',
-					[leafFilename]	=   '".$this->strict($_POST['leafFilename'],'filename')."',
-					[iconId]		=   '".$this->strict($_POST['iconId'],'iconname')."',
-					[By]			=	'".$_SESSION['staffId']."',
-					[Time]			=	'".date("Y-m-d H:i:s")."'
-			WHERE 	[leafId]		=	'".$this->strict($_POST['leafId'],'numeric')."'";
+			UPDATE	[leaf]
+			SET		[isActive]	=	'".$this->model->isActive."',
+					[isNew]		=	'".$this->model->isNew."',
+					[isDraft]	=	'".$this->model->isDraft."',
+					[isUpdate]	=	'".$this->model->isUpdate."',
+					[isDelete]	=	'".$this->model->isDelete."',
+					[isApproved]=	'".$this->model->isApproved."',
+					[By]		=	'".$this->model->By."',
+					[Time]		=	".$this->model->Time."
+			WHERE 	[leafId]	=	'".$this->leafId."'";
 
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
-			UPDATE 	\"leaf\"
-			SET 	\"accordionId\"		=	'".$this->strict($_POST['accordionId'],'numeric')."',
-					\"folderId\"		=	'".$this->strict($_POST['folderId'],'numeric')."',
-					\"leafNote\"		=	'".$this->strict($_POST['leafNote'],'string')."',
-					\"leafSequence\"	=	'".$this->strict($_POST['leafSequence'],'numeric')."',
-					\"leafFilename\"	=   '".$this->strict($_POST['leafFilename'],'filename')."',
-					\"iconId\"			=   '".$this->strict($_POST['iconId'],'iconname')."',
-					\"By\"				=	'".$_SESSION['staffId']."',
-					\"Time\"			=	'".date("Y-m-d H:i:s")."'
-			WHERE 	\"leafId\"			=	'".$this->strict($_POST['leafId'],'numeric')."'";
+			UPDATE	\"leaf\"
+			SET		\"isActive\"	=	'".$this->model->isActive."',
+					\"isNew\"		=	'".$this->model->isNew."',
+					\"isDraft\"		=	'".$this->model->isDraft."',
+					\"isUpdate\"	=	'".$this->model->isUpdate."',
+					\"isDelete\"	=	'".$this->model->isDelete."',
+					\"isApproved\"	=	'".$this->model->isApproved."',
+					\"By\"			=	'".$this->model->By."',
+					\"Time\"		=	".$this->model->Time."
+			WHERE 	\"leafId\"		=	'".$this->leafId."'";
 
 		}
 		$this->q->update($sql);
@@ -660,34 +658,46 @@ class leafClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
-		
+
 		$this->q->start();
 		$this->model->delete();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
 			UPDATE	`leaf`
-			SET		`isActive`	=	0
-					`isNew`		=	0
-					`isUpdate`	=	0
-					`isDelete`	=	0
-			WHERE 	`leafId`	=	'".$this->strict($_POST['leafId'],'numeric')."'";
+			SET		`isActive`	=	'".$this->model->isActive."',
+					`isNew`		=	'".$this->model->isNew."',
+					`isDraft`	=	'".$this->model->isDraft."',
+					`isUpdate`	=	'".$this->model->isUpdate."',
+					`isDelete`	=	'".$this->model->isDelete."',
+					`isApproved`=	'".$this->model->isApproved."',
+					`By`		=	'".$this->model->By."',
+					`Time		=	".$this->model->Time."
+			WHERE 	`leafId`	=	'".$this->leafId."'";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
 			UPDATE	[leaf]
-			SET		[isActive]	=	0
-					[isNew]		=	0
-					[isUpdate]	=	0
-					[isDelete]	=	0
-			WHERE 	[leafId]	=	'".$this->strict($_POST['leafId'],'numeric')."'";
+			SET		[isActive]	=	'".$this->model->isActive."',
+					[isNew]		=	'".$this->model->isNew."',
+					[isDraft]	=	'".$this->model->isDraft."',
+					[isUpdate]	=	'".$this->model->isUpdate."',
+					[isDelete]	=	'".$this->model->isDelete."',
+					[isApproved]=	'".$this->model->isApproved."',
+					[By]		=	'".$this->model->By."',
+					[Time]		=	".$this->model->Time."
+			WHERE 	[leafId]	=	'".$this->leafId."'";
 
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
 			UPDATE	\"leaf\"
-			SET		\"isActive\"	=	0
-					\"isNew\"		=	0
-					\"isUpdate\"	=	0
-					\"isDelete\"	=	0
-			WHERE 	\"leafId\"		=	'".$this->strict($_POST['leafId'],'numeric')."'";
+			SET		\"isActive\"	=	'".$this->model->isActive."',
+					\"isNew\"		=	'".$this->model->isNew."',
+					\"isDraft\"		=	'".$this->model->isDraft."',
+					\"isUpdate\"	=	'".$this->model->isUpdate."',
+					\"isDelete\"	=	'".$this->model->isDelete."',
+					\"isApproved\"	=	'".$this->model->isApproved."',
+					\"By\"			=	'".$this->model->By."',
+					\"Time\"		=	".$this->model->Time."
+			WHERE 	\"leafId\"		=	'".$this->leafId."'";
 
 		}
 		$this->q->update($sql);
@@ -794,7 +804,7 @@ class leafClass extends  configClass {
 	 * Create Translation leaf Note to the leafTranslate Table
 	 */
 	function translateMe() {
-	//	header('Content-Type','application/json; charset=utf-8');
+		//	header('Content-Type','application/json; charset=utf-8');
 		$this->q->start();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite'){
 			$sql="SELECT * FROM `leaf` WHERE `leafId`='".$this->leafId."'";
@@ -803,7 +813,7 @@ class leafClass extends  configClass {
 		} else if($this->q->vendor=='oracle'){
 			$sql="SELECT * FROM \"leaf\" WHERE \"leafId\"='".$this->leafId."'";
 		}
-		
+
 		$resultDefault= $this->q->fast($sql);
 		if($this->q->numberRows($resultDefault) > 0 ) {
 			$rowDefault = $this->q->fetchAssoc($resultDefault);
@@ -843,7 +853,7 @@ class leafClass extends  configClass {
 			}
 			$resultleafTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultleafTranslate) >  0 ) {
-				
+
 				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
 					$sql="
 					UPDATE 	`leafTranslate` 

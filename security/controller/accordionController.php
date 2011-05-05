@@ -676,12 +676,14 @@ class accordionClass extends  configClass{
 			SET 	`accordionSequence`	= 	'".$this->model->accordionSequence."',
 					`accordionNote`		=	'".$this->model->accordionNote."',
 					`iconId`			=	'".$this->model->iconId."',
+					`isActive`			=	'".$this->model->isActive."',
 					`isNew`				=	'".$this->model->isNew."',
 					`isDraft`			=	'".$this->model->isDraft."',
 					`isUpdate`			=	'".$this->model->isUpdate."',
-					`isActive`			=	'".$this->model->isActive."',
+					`isDelete`			=	'".$this->model->isDelete."',
+					`isApproved`		=	'".$this->model->isApproved."',
 					`By`				=	'".$this->model->By."',
-					`Time`				=	".$this->model->Time."
+					`Time				=	".$this->model->Time."
 			WHERE 	`accordionId`		=	'".$this->model->accordionId."'";
 		} else if ($this->q->vendor=='microsoft') {
 
@@ -690,12 +692,14 @@ class accordionClass extends  configClass{
 			SET 	[accordionSequence]	= 	'".$this->model->accordionSequence."',
 					[accordionNote]		=	'".$this->model->accordionNote."',
 					[iconId]			=	'".$this->model->iconId."',
+					[isActive]			=	'".$this->model->isActive."',
 					[isNew]				=	'".$this->model->isNew."',
 					[isDraft]			=	'".$this->model->isDraft."',
 					[isUpdate]			=	'".$this->model->isUpdate."',
-					[isActive]			=	'".$this->model->isActive."',,
+					[isDelete]			=	'".$this->model->isDelete."',
+					[isApproved]		=	'".$this->model->isApproved."',
 					[By]				=	'".$this->model->By."',
-					[Time]				=	 ".$this->model->Time."
+					[Time]				=	".$this->model->Time."
 			WHERE 	[accordionId]		=	'".$this->model->accordionId."'";
 		} else if ($this->q->vendor=='oracle') {
 
@@ -704,10 +708,12 @@ class accordionClass extends  configClass{
 			SET 	\"accordionSequence\"	= 	'".$this->model->accordionSequence."',
 					\"accordionNote\"		=	'".$this->model->accordionNote."',
 					\"iconId\"				=	'".$this->model->iconId."',
+					\"isActive\"			=	'".$this->model->isActive."',
 					\"isNew\"				=	'".$this->model->isNew."',
 					\"isDraft\"				=	'".$this->model->isDraft."',
 					\"isUpdate\"			=	'".$this->model->isUpdate."',
-					\"isActive\"			=	'".$this->model->isActive."',
+					\"isDelete\"			=	'".$this->model->isDelete."',
+					\"isApproved\"			=	'".$this->model->isApproved."',
 					\"By\"					=	'".$this->model->By."',
 					\"Time\"				=	".$this->model->Time."
 			WHERE 	\"accordionId\"			=	'".$this->model->accordionId."'";
@@ -749,41 +755,38 @@ class accordionClass extends  configClass{
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 					$sql="
 			UPDATE 	`accordion`
-			SET 	`accordionSequence`	= 	'".$this->model->accordionSequence."',
-					`accordionNote`		=	'".$this->model->accordionNote."',
-					`iconId`			=	'".$this->model->iconId."',
+			SET 	`isActive`			=	'".$this->model->isActive."',
 					`isNew`				=	'".$this->model->isNew."',
 					`isDraft`			=	'".$this->model->isDraft."',
 					`isUpdate`			=	'".$this->model->isUpdate."',
-					`isActive`			=	'".$this->model->isActive."',
+					`isDelete`			=	'".$this->model->isDelete."',
+					`isApproved`		=	'".$this->model->isApproved."',
 					`By`				=	'".$this->model->By."',
-					`Time`				=	".$this->model->Time."
+					`Time				=	".$this->model->Time."
 			WHERE 	`accordionId`		=	'".$this->model->accordionId."'";
 		}  else if ($this->q->vendor=='microsoft') {
 					$sql="
 			UPDATE 	[accordion]
-			SET 	[accordionSequence]	= 	'".$this->model->accordionSequence."',
-					[accordionNote]		=	'".$this->model->accordionNote."',
-					[iconId]			=	'".$this->model->iconId."',
+			SET 	[isActive]			=	'".$this->model->isActive."',
 					[isNew]				=	'".$this->model->isNew."',
 					[isDraft]			=	'".$this->model->isDraft."',
 					[isUpdate]			=	'".$this->model->isUpdate."',
-					[isActive]			=	'".$this->model->isActive."',,
+					[isDelete]			=	'".$this->model->isDelete."',
+					[isApproved]		=	'".$this->model->isApproved."',
 					[By]				=	'".$this->model->By."',
-					[Time]				=	 ".$this->model->Time."
+					[Time]				=	".$this->model->Time."
 			WHERE 	[accordionId]		=	'".$this->model->accordionId."'";
 		}  else if ($this->q->vendor=='oracle') {
 			$sql="
 			UPDATE 	\"accordion\"
-			SET 	\"accordionSequence\"	= 	'".$this->model->accordionSequence."',
-					\"accordionNote\"		=	'".$this->model->accordionNote."',
-					\"iconId\"				=	'".$this->model->iconId."',
-					\"isNew\"				=	'".$this->model->isNew."',
-					\"isDraft\"				=	'".$this->model->isDraft."',
-					\"isUpdate\"			=	'".$this->model->isUpdate."',
-					\"isActive\"			=	'".$this->model->isActive."',
-					\"By\"					=	'".$this->model->By."',
-					\"Time\"				=	".$this->model->Time."
+			SET 	\"isActive\"	=	'".$this->model->isActive."',
+					\"isNew\"		=	'".$this->model->isNew."',
+					\"isDraft\"		=	'".$this->model->isDraft."',
+					\"isUpdate\"	=	'".$this->model->isUpdate."',
+					\"isDelete\"	=	'".$this->model->isDelete."',
+					\"isApproved\"	=	'".$this->model->isApproved."',
+					\"By\"			=	'".$this->model->By."',
+					\"Time\"		=	".$this->model->Time."
 			WHERE 	\"accordionId\"			=	'".$this->model->accordionId."'";
 		}
 		$this->q->update($sql);

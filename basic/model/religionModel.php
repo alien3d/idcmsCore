@@ -62,7 +62,8 @@ class religionModel extends validationClass{
 			$this->religionDesc = $this->strict($_POST['religionDesc'],'memo');
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->staffId = $_SESSION['staffId'];
+			$this->By = $_SESSION['staffId'];
+			
 		}
 		if($this->vendor=='normal' || $this->vendor=='lite'){
 			$this->Time = "'".date("Y-m-d H:i:s")."'";
@@ -79,13 +80,13 @@ class religionModel extends validationClass{
 	 * @see validationClass::create()
 	 */
 	function create() {
-		$this-> isDefaut =0;
-		$this-> isNew =1;
-		$this-> isDraft=0;
-		$this-> isUpdate=0;
-		$this-> isActive=0;
-		$this-> isDelete=0;
-		$this-> isApproved=0;
+		$this->isDefaut =0;
+		$this->isNew =1;
+		$this->isDraft=0;
+		$this->isUpdate=0;
+		$this->isActive=0;
+		$this->isDelete=0;
+		$this->isApproved=0;
 
 	}
 
@@ -94,26 +95,26 @@ class religionModel extends validationClass{
 	 * @see validationClass::update()
 	 */
 	function update() {
-		$this-> isDefaut =0;
-		$this-> isNew =0;
-		$this-> isDraft=0;
-		$this-> isUpdate=1;
-		$this-> isActive=1;
-		$this-> isDelete=0;
-		$this-> isApproved=0;
+		$this->isDefaut =0;
+		$this->isNew =0;
+		$this->isDraft=0;
+		$this->isUpdate=1;
+		$this->isActive=1;
+		$this->isDelete=0;
+		$this->isApproved=0;
 	}
 
 	/* (non-PHPdoc)
 	 * @see validationClass::delete()
 	 */
 	function delete() {
-		$this-> isDefaut =0;
-		$this-> isNew =0;
-		$this-> isDraft=0;
-		$this-> isUpdate=0;
-		$this-> isActive=0;
-		$this-> isDelete=1;
-		$this-> isApproved=0;
+		$this->isDefaut =0;
+		$this->isNew =0;
+		$this->isDraft=0;
+		$this->isUpdate=0;
+		$this->isActive=0;
+		$this->isDelete=1;
+		$this->isApproved=0;
 	}
 
 

@@ -69,7 +69,7 @@ class eventModel extends validationClass{
 		}
 
 		if(isset($_SESSION['staffId'])){
-			$this->staffId = $_SESSION['staffId'];
+			$this->By = $_SESSION['staffId'];
 		}
 		if($this->vendor=='normal' || $this->vendor=='lite'){
 			$this->Time = "'".date("Y-m-d H:i:s")."'";

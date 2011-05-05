@@ -11,7 +11,7 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class staffModel extends validationClass{
-	public $staffId_temp;
+
 	public $groupId;
 	public $languageId;
 	public $staffPassword;
@@ -42,9 +42,10 @@ class staffModel extends validationClass{
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['staffId_temp'])){
-			$this->staffId_temp = $this->strict($_POST['staffId_temp'],'numeric');
+		if(isset($_POST['staffId'])){
+			$this->staffId = $this->strict($_POST['staffId'],'numeric');
 		}
+		
 		if(isset($_POST['groupId'])){
 			$this->groupId = $this->strict($_POST['groupId'],'numeric');
 		}
@@ -63,6 +64,9 @@ class staffModel extends validationClass{
 		if(isset($_POST['staffIc'])){
 			$this->staffIc = $this->strict($_POST['staffIc'],'string');
 		}
+		if(isset($_SESSION['staffId'])){
+			$this->By = $_SESSION['staffId'];
+		}
 		if($this->vendor=='normal' || $this->vendor=='lite'){
 			$this->Time = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='microsoft'){
@@ -77,13 +81,13 @@ class staffModel extends validationClass{
 	 * @see configClass::create()
 	 */
 	function create() {
-		$this-> isDefaut =0;
-		$this-> isNew =1;
-		$this-> isDraft=0;
-		$this-> isUpdate=0;
-		$this-> isActive=0;
-		$this-> isDelete=0;
-		$this-> isApproved=0;
+		$this->isDefaut 	=	0;
+		$this->isNew 		=	1;
+		$this->isDraft=0;
+		$this->isUpdate=0;
+		$this->isActive=0;
+		$this->isDelete=0;
+		$this->isApproved=0;
 
 	}
 	
@@ -91,26 +95,26 @@ class staffModel extends validationClass{
 	 * @see validationClass::update()
 	 */
 	function update() {
-		$this-> isDefaut =0;
-		$this-> isNew =0;
-		$this-> isDraft=0;
-		$this-> isUpdate=1;
-		$this-> isActive=1;
-		$this-> isDelete=0;
-		$this-> isApproved=0;
+		$this->isDefaut =0;
+		$this->isNew =0;
+		$this->isDraft=0;
+		$this->isUpdate=1;
+		$this->isActive=1;
+		$this->isDelete=0;
+		$this->isApproved=0;
 	}
 	
 	/* (non-PHPdoc)
 	 * @see validationClass::delete()
 	 */
 	function delete() {
-		$this-> isDefaut =0;
-		$this-> isNew =0;
-		$this-> isDraft=0;
-		$this-> isUpdate=0;
-		$this-> isActive=0;
-		$this-> isDelete=1;
-		$this-> isApproved=0;
+		$this->isDefaut =0;
+		$this->isNew =0;
+		$this->isDraft=0;
+		$this->isUpdate=0;
+		$this->isActive=0;
+		$this->isDelete=1;
+		$this->isApproved=0;
 	}
 
 }

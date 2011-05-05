@@ -486,33 +486,42 @@ class religionClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
 			UPDATE 	`religion`
-			SET 			`religionDesc`	=	'".$this->model->religionDesc."',
-							`isUpdate`		=	'".$this->model->isUpdate.",
-							`isNew`			=	'".$this->model->isNew."',
-							`By`			=	'".$this->model->By."',
-							`Time`			=	".$this->model->Time."
-			WHERE 		`religionId`		=	'".$this->model->religionId."'";
+			SET 	`religionDesc`		=	'".$this->model->religionDesc."',
+					`isActive`			=	'".$this->model->isActive."',
+					`isNew`				=	'".$this->model->isNew."',
+					`isDraft`			=	'".$this->model->isDraft."',
+					`isUpdate`			=	'".$this->model->isUpdate."',
+					`isDelete`			=	'".$this->model->isDelete."',
+					`isApproved`		=	'".$this->model->isApproved."',
+					`By`				=	'".$this->model->By."',
+					`Time				=	".$this->model->Time."
+			WHERE 	`religionId`		=	'".$this->model->religionId."'";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
-						UPDATE 	[religion]
-						SET 			[religionDesc]	=	'".$this->strict($_POST['religionDesc'],'s')."',
-										[isUpdate]		=	1,
-										[isActive]		=	1,
-										[isNew]			=	0,
-										[By]			=	'".$_SESSION['staffId']."',
-										[Time]			=	'".date("Y-m-d H:i:s")."'
-						WHERE 		[religionId]		=	'".$this->strict($_POST['religionId'],'n')."'";
+			UPDATE 	[religion]
+			SET 	[religionDesc]		=	'".$this->strict($_POST['religionDesc'],'s')."',
+					[isActive]			=	'".$this->model->isActive."',
+					[isNew]				=	'".$this->model->isNew."',
+					[isDraft]			=	'".$this->model->isDraft."',
+					[isUpdate]			=	'".$this->model->isUpdate."',
+					[isDelete]			=	'".$this->model->isDelete."',
+					[isApproved]		=	'".$this->model->isApproved."',
+					[By]				=	'".$this->model->By."',
+					[Time]				=	".$this->model->Time."
+			WHERE 	[religionId]		=	'".$this->strict($_POST['religionId'],'n')."'";
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
-						UPDATE 	\"religion\"
-						SET 	\"religionDesc\"	=	'".$this->strict($_POST['religionDesc'],'s')."',
-								\"isUpdate\"		=	1,
-								\"isActive\"		=	1,
-								\"isNew\"			=	0,
-								\"By\"				=	'".$_SESSION['staffId']."',
-								\"Time\"			=	to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')
-
-						WHERE 	\"religionId\"		=	'".$this->strict($_POST['religionId'],'n')."'";
+			UPDATE 	\"religion\"
+			SET 	\"religionDesc\"	=	'".$this->model->religionDesc."',
+					\"isActive\"		=	'".$this->model->isActive."',
+					\"isNew\"			=	'".$this->model->isNew."',
+					\"isDraft\"			=	'".$this->model->isDraft."',
+					\"isUpdate\"		=	'".$this->model->isUpdate."',
+					\"isDelete\"		=	'".$this->model->isDelete."',
+					\"isApproved\"		=	'".$this->model->isApproved."',
+					\"By\"				=	'".$this->model->By."',
+					\"Time\"			=	".$this->model->Time."
+			WHERE 	\"religionId\"		=	'".$this->model->religionId."'";
 		}
 		/*
 		 *  require three variable below to track  table audit
@@ -558,23 +567,23 @@ class religionClass extends  configClass {
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
 			UPDATE 	`religion`
-			SET 	`isDelete`			=	'".$this->model->isDelete."',
-					`isActive`			=	'".$this->model->isActive."',
+			SET 	`isActive`			=	'".$this->model->isActive."',
 					`isNew`				=	'".$this->model->isNew."',
-					`isUpdate`			=	'".$this->model->isUpdate."',
 					`isDraft`			=	'".$this->model->isDraft."',
+					`isUpdate`			=	'".$this->model->isUpdate."',
+					`isDelete`			=	'".$this->model->isDelete."',
 					`isApproved`		=	'".$this->model->isApproved."',
 					`By`				=	'".$this->model->By."',
-					`Time`				=	".$this->model->Time."
+					`Time				=	".$this->model->Time."
 			WHERE 	`religionId`		=	'".$this->model->religionId."'";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
 			UPDATE 	[religion]
-			SET 	[isDelete]			=	'".$this->model->isDelete."',
-					[isActive]			=	'".$this->model->isActive."',
+			SET 	[isActive]			=	'".$this->model->isActive."',
 					[isNew]				=	'".$this->model->isNew."',
-					[isUpdate]			=	'".$this->model->isUpdate."',
 					[isDraft]			=	'".$this->model->isDraft."',
+					[isUpdate]			=	'".$this->model->isUpdate."',
+					[isDelete]			=	'".$this->model->isDelete."',
 					[isApproved]		=	'".$this->model->isApproved."',
 					[By]				=	'".$this->model->By."',
 					[Time]				=	".$this->model->Time."
@@ -583,11 +592,11 @@ class religionClass extends  configClass {
 			$sql="
 			UPDATE 	\"religion\"
 			SET 	\"religionDesc\"	=	'".$this->model->religionDesc."',
-					\"isDelete\"		=	'".$this->model->isDelete."',
 					\"isActive\"		=	'".$this->model->isActive."',
 					\"isNew\"			=	'".$this->model->isNew."',
-					\"isUpdate\"		=	'".$this->model->isUpdate."',
 					\"isDraft\"			=	'".$this->model->isDraft."',
+					\"isUpdate\"		=	'".$this->model->isUpdate."',
+					\"isDelete\"		=	'".$this->model->isDelete."',
 					\"isApproved\"		=	'".$this->model->isApproved."',
 					\"By\"				=	'".$this->model->By."',
 					\"Time\"			=	".$this->model->Time."

@@ -1,5 +1,6 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
+require_once ("../../class/classAudit.php");
 require_once("../model/staffModel.php");
 /**
  * this is main setting files
@@ -97,6 +98,7 @@ class staffClass extends  configClass {
 	 * @var numeric $staffSessionId
 	 */
 	public $staffSessionId;
+	
 	/**
 	 * Class Loader
 	 */
@@ -124,6 +126,12 @@ class staffClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
+		
+		$this->model				= new staffModel();
+		$this->model->vendor = $this->vendor;
+		$this->model->execute();
+		$this->audit = new auditClass();
+	
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -512,9 +520,9 @@ class staffClass extends  configClass {
 		for ($i = 1; $i <= 10; $i++) {
 			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 				$sql = "
-				INSERT INTO 	`cal_own`
+				INSERT INTO 	`calendar`
 							(
-								`calendarId`,
+								`calendarColorId`,
 								`calendarTitle`,
 								`staffId`
 							) VALUES	(
@@ -524,9 +532,9 @@ class staffClass extends  configClass {
 							)";
 			} else if ($this->q->vendor=='microsoft') {
 				$sql = "
-				INSERT INTO 	[cal_own]
+				INSERT INTO 	[calendar]
 							(
-								[calendarId],
+								[calendarColorId],
 								[calendarTitle],
 								[staffId]
 							) VALUES	(
@@ -536,9 +544,9 @@ class staffClass extends  configClass {
 							)";
 			} else if ($this->q->vendor=='oracle') {
 				$sql = "
-				INSERT INTO 	\"cal_own`
+				INSERT INTO 	\"calemdar\"
 							(
-								\"calendarId\",
+								\"calendarColorId\",
 								\"calendarTitle\",
 								\"staffId\"
 							) VALUES	(
@@ -597,8 +605,8 @@ class staffClass extends  configClass {
 			WHERE 	\"staff\".\"isActive\"=1
 			AND		\"group\".\"isActive\"=1";
 		}
-		if($_POST['staffId']) {
-			$sql.=" AND `staffId`='".$this->strict($_POST['staffId'],'numeric')."'";
+		if($this->staffId) {
+			$sql.=" AND `staffId`='".$this->staffId."'";
 		}
 
 		/**
@@ -701,13 +709,26 @@ class staffClass extends  configClass {
 		}
 
 		$this->q->start();
+		$this->model->update();
 		//  original group
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
-			$sql="SELECT `groupId`,staffPassword FROM `staff` WHERE `staffNo`='".$this->strict($_POST['staffNo'],'string')."'";
+			$sql="
+			SELECT	`groupId`,
+					`staffPassword` 
+			FROM 	`staff` 
+			WHERE 	`staffId`	=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor=='microsoft') {
-			$sql="SELECT [groupId],[staffPassword] FROM [staff] WHERE [staffNo]='".$this->strict($_POST['staffNo'],'string')."'";
+			$sql="
+			SELECT 	[groupId],
+					[staffPassword] 
+			FROM 	[staff] 
+			WHERE 	[staffId]	=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor=='oracle') {
-			$sql="SELECT \"groupId\",\"staffPassword\" FROM \"staff\" WHERE \"staffNo\"='".$this->strict($_POST['staffNo'],'string')."'";
+			$sql="
+			SELECT 	\"groupId\",
+					\"staffPassword\" 
+			FROM 	\"staff\" 
+			WHERE 	\"staffId\"	=	'".$this->model->staffId."'";
 		}
 		$this->q->read($sql);
 		if($this->q->execute=='fail') {
@@ -716,10 +737,10 @@ class staffClass extends  configClass {
 		}
 		$data = $this->q->fetchAssoc();
 
-		if($data['staffPassword'] == $_POST['staffPassword']){
+		if($data['staffPassword'] == $this->model->staffPassword){
 			$staffPassword = $data['staffPassword'];
 		}else{
-			$staffPassword = md5($_POST['staffPassword']);
+			$staffPassword = $this->model->staffPassword;
 		}
 
 		$groupId = $data['groupId'];
@@ -732,9 +753,15 @@ class staffClass extends  configClass {
 						`staffPassword`	=	'".$this->strict($staffPassword,'password')."',
 						`staffName`		=	'".$this->strict($_POST['staffName'],'string')."',
 						`groupId`		=	'".$this->strict($_POST['groupId'],'numeric')."',
-						`By`			=	'".$_SESSION['staffId']."',
-						`Time`			=	'".date("Y-m-d H:i:s")."'
-				WHERE 	`staffId`		=	'".$this->strict($_POST['staffId'],'numeric')."'";
+						`isActive`		=	'".$this->model->isActive."',
+						`isNew`			=	'".$this->model->isNew."',
+						`isDraft`		=	'".$this->model->isDraft."',
+						`isUpdate`		=	'".$this->model->isUpdate."',
+						`isDelete`		=	'".$this->model->isDelete."',
+						`isApproved`	=	'".$this->model->isApproved."',
+						`By`			=	'".$this->model->By."',
+						`Time			=	".$this->model->Time."'
+				WHERE 	`staffId`		=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
 				UPDATE 	[staff]
@@ -744,9 +771,15 @@ class staffClass extends  configClass {
 						[staffPassword]	=	'".$this->strict($staffPassword,'password')."',
 						[staffName]		=	'".$this->strict($_POST['staffName'],'string')."',
 						[groupId]		=	'".$this->strict($_POST['groupId'],'numeric')."',
-						[By]			=	'".$_SESSION['staffId']."',
-						[Time]			=	'".date("Y-m-d H:i:s")."'
-				WHERE 	[staffId]		=	'".$this->strict($_POST['staffId'],'numeric')."'";
+						[isActive]		=	'".$this->model->isActive."',
+						[isNew]			=	'".$this->model->isNew."',
+						[isDraft]		=	'".$this->model->isDraft."',
+						[isUpdate]		=	'".$this->model->isUpdate."',
+						[isDelete]		=	'".$this->model->isDelete."',
+						[isApproved]	=	'".$this->model->isApproved."',
+						[By]			=	'".$this->model->By."',
+						[Time]			=	".$this->model->Time."
+				WHERE 	[staffId]		=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
 				UPDATE 	\"staff\"
@@ -756,9 +789,15 @@ class staffClass extends  configClass {
 						\"staffPassword\"	=	'".$this->strict($staffPassword,'password')."',
 						\"staffName\"		=	'".$this->strict($_POST['staffName'],'string')."',
 						\"groupId\"			=	'".$this->strict($_POST['groupId'],'numeric')."',
-						\"By\"				=	'".$_SESSION['staffId']."',
-						\"Time\"			=	to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')
-				WHERE 	\"staffId\"			=	'".$this->strict($_POST['staffId'],'numeric')."'";
+						\"isActive\"		=	'".$this->model->isActive."',
+						\"isNew\"			=	'".$this->model->isNew."',
+						\"isDraft\"			=	'".$this->model->isDraft."',
+						\"isUpdate\"		=	'".$this->model->isUpdate."',
+						\"isDelete\"		=	'".$this->model->isDelete."',
+						\"isApproved\"		=	'".$this->model->isApproved."',
+						\"By\"				=	'".$this->model->By."',
+						\"Time\"			=	".$this->model->Time."
+				WHERE 	\"staffId\"			=	'".$this->model->staffId."'";
 		}
 
 		$this->q->update($sql);
@@ -768,7 +807,7 @@ class staffClass extends  configClass {
 
 		}
 		// check change group or not
-		if($_POST['groupId']!= $groupId){
+		if($this->model->groupId != $groupId){
 
 			/**
 			 *  update  leaf group access
@@ -777,17 +816,17 @@ class staffClass extends  configClass {
 				$sql="
 					SELECT	*
 					FROM 	`leafGroupAccess`
-					WHERE 	`groupId`='".$this->strict($_POST['groupId'],'numeric')."' ";
+					WHERE 	`groupId`='".$this->model->groupId."' ";
 			} else if ($this->q->vendor=='microsoft') {
 				$sql="
 					SELECT	*
 					FROM 	[leafGroupAccess]
-					WHERE 	[groupId]='".$this->strict($_POST['groupId'],'numeric')."' ";
+					WHERE 	[groupId]='".$this->model->groupId."' ";
 			} else if ($this->q->vendor=='oracle') {
 				$sql="
 					SELECT	*
 					FROM 	\"leafGroupAccess\"
-					WHERE 	\"groupId\"='".$this->strict($_POST['groupId'],'numeric')."' ";
+					WHERE 	\"groupId\"='".$this->model->groupId."' ";
 			}
 
 			$this->q->read($sql);
@@ -802,20 +841,20 @@ class staffClass extends  configClass {
 					$sql="
 					SELECT	*
 					FROM 	`leafAccess`
-					WHERE 	`staffId`			=	'".$this->strict($_POST['staffId'],'numeric')."'
-					AND		`leafId`				=	'".$row_group_acs['leafId']."' ";
+					WHERE 	`staffId`			=	'".$this->model->staffId."'
+					AND		`leafId`			=	'".$row_group_acs['leafId']."' ";
 				} else if ($this->q->vendor=='microsoft') {
 					$sql="
 					SELECT	*
 					FROM 	[leafAccess]
-					WHERE 	[staffId]			=	'".$this->strict($_POST['staffId'],'numeric')."'
-					AND		[leafId]				=	'".$row_group_acs['leafId']."' ";
+					WHERE 	[staffId]			=	'".$this->model->staffId."'
+					AND		[leafId]			=	'".$row_group_acs['leafId']."' ";
 				} else if ($this->q->vendor=='oracle') {
 					$sql="
 					SELECT	*
 					FROM 	\"leafAccess\"
-					WHERE 	\"staffId\"			=	'".$this->strict($_POST['staffId'],'numeric')."'
-					AND		\"leafId\"				=	'".$row_group_acs['leafId']."' ";
+					WHERE 	\"staffId\"			=	'".$this->model->staffId."'
+					AND		\"leafId\"			=	'".$row_group_acs['leafId']."' ";
 				}
 				$this->q->read($sql);
 				if($this->q->numberRows()> 0 ) {
@@ -827,11 +866,9 @@ class staffClass extends  configClass {
 								`leafPostAccessValue`			=	'".$row_group_acs['leafUpdateAccessValue']."',
 								`leafPrintAccessValue`			=	'".$row_group_acs['leafDeleteAccessValue']."',
 								`leafReadAccessValue`			=	'".$row_group_acs['leafPrintAccessValue']."',
-								`leafUpdateAccessValue`			=	'".$row_group_acs['leafPostAccessValue']."',
-								`By`				=	'".$_SESSION['staffId']."',
-								`Time`				=	'".date("Y-m-d H:i:s")."'
-						WHERE 	`staffId`			=	'".$this->strict($_POST['staffId'],'numeric')."'
-						AND		`leafId`				=	'".$row_group_acs['leafId']."'";
+								`leafUpdateAccessValue`			=	'".$row_group_acs['leafPostAccessValue']."'
+						WHERE 	`staffId`						=	'".$this->model->staffId."'
+						AND		`leafId`						=	'".$row_group_acs['leafId']."'";
 					} else if ($this->q->vendor=='microsoft') {
 						$sql="
 						UPDATE 	[leafAccess]
@@ -840,24 +877,20 @@ class staffClass extends  configClass {
 								[leafPostAccessValue]			=	'".$row_group_acs['leafUpdateAccessValue']."',
 								[leafPrintAccessValue]			=	'".$row_group_acs['leafDeleteAccessValue']."',
 								[leafReadAccessValue]			=	'".$row_group_acs['leafPrintAccessValue']."',
-								[leafUpdateAccessValue]			=	'".$row_group_acs['leafPostAccessValue']."',
-								[By]				=	'".$_SESSION['staffId']."',
-								[Time]				=	'".date("Y-m-d H:i:s")."'
-						WHERE 	[staffId]			=	'".$this->strict($_POST['staffId'],'numeric')."'
-						AND		[leafId]				=	'".$row_group_acs['leafId']."'";
+								[leafUpdateAccessValue]			=	'".$row_group_acs['leafPostAccessValue']."'
+						WHERE 	[staffId]						=	'".$this->model->staffId."'
+						AND		[leafId]						=	'".$row_group_acs['leafId']."'";
 					} else if ($this->q->vendor=='oracle') {
 						$sql="
 								UPDATE 	\"leafAccess\"
-						SET 	\"leafCreateAccessValue\"			=	'".$row_group_acs['leafCreateAccessValue']."',
-								\"leafDeleteAccessValue\"			=	'".$row_group_acs['leafReadAccessValue']."',
+						SET 	\"leafCreateAccessValue\"		=	'".$row_group_acs['leafCreateAccessValue']."',
+								\"leafDeleteAccessValue\"		=	'".$row_group_acs['leafReadAccessValue']."',
 								\"leafPostAccessValue\"			=	'".$row_group_acs['leafUpdateAccessValue']."',
-								\"leafPrintAccessValue\"			=	'".$row_group_acs['leafDeleteAccessValue']."',
+								\"leafPrintAccessValue\"		=	'".$row_group_acs['leafDeleteAccessValue']."',
 								\"leafReadAccessValue\"			=	'".$row_group_acs['leafPrintAccessValue']."',
-								\"leafUpdateAccessValue\"			=	'".$row_group_acs['leafPostAccessValue']."',
-								\"By\"				=	'".$_SESSION['staffId']."',
-								\"Time\"				=	'".date("Y-m-d H:i:s")."'
-						WHERE 	\"staffId\"			=	'".$this->strict($_POST['staffId'],'numeric')."'
-						AND		\"leafId\"				=	'".$row_group_acs['leafId']."'";
+								\"leafUpdateAccessValue\"		=	'".$row_group_acs['leafPostAccessValue']."'
+						WHERE 	\"staffId\"						=	'".$this->model->staffId."'
+						AND		\"leafId\"						=	'".$row_group_acs['leafId']."'";
 					}
 					$this->q->update($sql);
 					if($this->q->execute=='fail') {
@@ -881,7 +914,7 @@ class staffClass extends  configClass {
 							VALUES
 								(
 										'".$row_group_acs['leafId']."',
-										'".$this->strict($_POST['staffId'],'numeric')."',
+										'".$this->model->staffId."',
 										'".$row_group_acs['leafReadAccessValue']."',
 										'".$row_group_acs['leafUpdateAccessValue']."',
 										'".$row_group_acs['leafDeleteAccessValue']."',
@@ -903,7 +936,7 @@ class staffClass extends  configClass {
 							VALUES
 								(
 										'".$row_group_acs['leafId']."',
-										'".$this->strict($_POST['staffId'],'numeric')."',
+										'".$this->model->staffId."',
 										'".$row_group_acs['leafReadAccessValue']."',
 										'".$row_group_acs['leafUpdateAccessValue']."',
 										'".$row_group_acs['leafDeleteAccessValue']."',
@@ -963,22 +996,31 @@ class staffClass extends  configClass {
 		}
 
 		$this->q->start();
+		$this->model->delete();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
 				UPDATE	`staff`
-				SET		`isActive`	=	0,
-						`isNew`		=	0,
-						`isUpdate`	=	0,
-						`isDelete`	=	1
-				WHERE 	`staffId`='".$this->strict($_POST['staffId'],'numeric')."'";
+				SET		`isActive`			=	'".$this->model->isActive."',
+						`isNew`				=	'".$this->model->isNew."',
+						`isDraft`			=	'".$this->model->isDraft."',
+						`isUpdate`			=	'".$this->model->isUpdate."',
+						`isDelete`			=	'".$this->model->isDelete."',
+						`isApproved`		=	'".$this->model->isApproved."',
+						`By`				=	'".$this->model->By."',
+						`Time				=	".$this->model->Time."
+				WHERE 	`staffId`			=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="
 				UPDATE	[staff]
-				SET		[isActive]	=	0,
-						[isNew]		=	0,
-						[isUpdate]	=	0,
-						[isDelete]	=	1
-				WHERE 	[staffId]	=	'".$this->strict($_POST['staffId'],'numeric')."'";
+				SET		[isActive]	=	'".$this->model->isActive."',
+					[isNew]		=	'".$this->model->isNew."',
+					[isDraft]	=	'".$this->model->isDraft."',
+					[isUpdate]	=	'".$this->model->isUpdate."',
+					[isDelete]	=	'".$this->model->isDelete."',
+					[isApproved]=	'".$this->model->isApproved."',
+					[By]		=	'".$this->model->By."',
+					[Time]		=	".$this->model->Time."
+				WHERE 	[staffId]	=	'".$this->model->staffId."'";
 
 		} else if ($this->q->vendor=='oracle') {
 			$sql="
@@ -987,7 +1029,7 @@ class staffClass extends  configClass {
 						\"isNew\"		=	0,
 						\"isUpdate\"	=	0,
 						\"isDelete\"	=	1
-				WHERE 	\"staffId\"		=	'".$this->strict($_POST['staffId'],'numeric')."'";
+				WHERE 	\"staffId\"		=	'".$this->model->staffId."'";
 
 		}
 		$this->q->update($sql);

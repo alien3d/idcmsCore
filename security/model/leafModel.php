@@ -64,7 +64,7 @@ class leafModel extends validationClass{
 			$this->leafNote = $this->strict($_POST['leafNote'],'memo');
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->staffId = $_SESSION['staffId'];
+			$this->By = $_SESSION['staffId'];
 		}
 		if($this->vendor=='normal' || $this->vendor=='lite'){
 			$this->Time = "'".date("Y-m-d H:i:s")."'";
@@ -95,13 +95,13 @@ class leafModel extends validationClass{
 	 * @see validationClass::update()
 	 */
 	function update() {
-		$this-> isDefaut 	=	0;
-		$this-> isNew 		=	0;
+		$this->isDefaut 	=	0;
+		$this->isNew 		=	0;
 		$this-> isDraft		=	0;
-		$this-> isUpdate	=	1;
-		$this-> isActive	=	1;
-		$this-> isDelete	=	0;
-		$this-> isApproved	=	0;
+		$this->isUpdate	=	1;
+		$this->isActive	=	1;
+		$this->isDelete	=	0;
+		$this->isApproved	=	0;
 	}
 
 	/* (non-PHPdoc)
