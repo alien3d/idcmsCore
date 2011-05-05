@@ -142,14 +142,14 @@ class folderAccessClass  extends configClass {
 	function create() {}
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 			
 		}
 		// by default if add new group will add access to accordion and folder.
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 				SELECT	`accordion`.`accordionName`,
 						`accordion`.`accordionId`,
@@ -284,7 +284,7 @@ class folderAccessClass  extends configClass {
 	 */
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -302,7 +302,7 @@ class folderAccessClass  extends configClass {
 			} else {
 				$_GET[$folderAccessValue][$i]=0;
 			}
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql="
 					UPDATE 	`folderAccess`
 					SET 	`folderAccessValue`		= 	'".$this->strict($_GET[$folderAccessValue][$i],'string')."'

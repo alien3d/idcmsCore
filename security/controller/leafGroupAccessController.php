@@ -138,7 +138,7 @@ class leafGroupAccessClass  extends  configClass {
 	 */
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -146,7 +146,7 @@ class leafGroupAccessClass  extends  configClass {
 		// by default if add new group will add access to accordion and leaf.
 		// just checking
 		//	$this->checkLeaf();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 				SELECT	`leaf`.`accordionId`,
 						`leaf`.`folderId`,
@@ -416,7 +416,7 @@ class leafGroupAccessClass  extends  configClass {
 
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -430,7 +430,7 @@ class leafGroupAccessClass  extends  configClass {
 			$data_array = explode(",",$data[$i]);
 			//echo print_r($data_array);
 
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql="
 					UPDATE 	`leafGroupAccess`
 					SET 	`leafCreateAccessValue`	=	'".$this->strict($data_array[2],'boolean')."',

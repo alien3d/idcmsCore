@@ -160,13 +160,13 @@ class security extends configClass {
 	public function group() 				{
 		header('Content-Type','application/json; charset=utf-8');
 
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			SELECT 	`group`.`groupId`,
 					`group`.`groupNote`
@@ -215,13 +215,13 @@ class security extends configClass {
 		if(isset($_GET['type'])) {
 			$type = intval($_GET['type']);
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 			
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 
 			if($type==1) {
 				$sql="
@@ -321,13 +321,13 @@ class security extends configClass {
 		if(isset($_GET['type'])) {
 			$type = intval($_GET['type']);
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			if($type ==1 ) {
 				$sql	=	"
 			SELECT	`folder`.`folderId`,
@@ -426,7 +426,7 @@ class security extends configClass {
 		 * initilize dummy value  to 0 
 		 */
 		$nextSequence=0;
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -435,7 +435,7 @@ class security extends configClass {
 		if(isset($_GET['table'])){
 			$table = $_GET['table'];
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite'){
+		if( $this->q->vendor=='mysql'){
 			$sql="
 			SELECT 	(MAX(`".$table."Sequence`)+1) AS `nextSequence`
 			FROM 	`".$table."`

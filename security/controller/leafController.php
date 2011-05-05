@@ -148,7 +148,7 @@ class leafClass extends  configClass {
 	 */
 	function create() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -157,7 +157,7 @@ class leafClass extends  configClass {
 
 		$this->q->start();
 		$this->model->create();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql	=	"
 			INSERT INTO `leaf` 
 					(
@@ -267,7 +267,7 @@ class leafClass extends  configClass {
 		$lastId = $rowLastId['lastId'];
 
 		// loop the group
-		if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
+		if($this->q->vendor=='normal'  || $this->q->vendor=='mysql') {
 			$sql="
 			SELECT 	* 
 			FROM 	`staff` 
@@ -277,14 +277,14 @@ class leafClass extends  configClass {
 			SELECT 	* 
 			FROM 	[staff] 
 			WHERE 	[isActive]	=	1 ";
-		} else if ($this->q->vendor=='lite') {
+		} else if ($this->q->vendor=='mysql') {
 			$sql="SELECT * FROM \"staff\" WHERE \"isActive\"	=	1 ";
 		}
 		$this->q->read($sql);
 		$data= $this->q->activeRecord();
 		foreach ($data as $row) {
 			// by default no access
-			if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
+			if($this->q->vendor=='normal'  || $this->q->vendor=='mysql') {
 				$sql="
 				INSERT INTO	`leafAccess` 
 						(
@@ -320,7 +320,7 @@ class leafClass extends  configClass {
 							'0',						'0',
 							'0'
 						)	";
-			} else if ($this->q->vendor=='lite') {
+			} else if ($this->q->vendor=='mysql') {
 				$sql="
 				INSERT INTO 	\"leafAccess\" 
 							(
@@ -353,14 +353,14 @@ class leafClass extends  configClass {
 	}
 	function read() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
 		}
 		// everything given flexibility  on todo
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			SELECT		*
 			FROM 		`leaf`
@@ -429,7 +429,7 @@ class leafClass extends  configClass {
 			$query = $_POST['query'];
 		}
 		if($query) {
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql.=$this->q->quickSearch($tableArray,$filterArray);
 			} else if ($this->q->vendor=='microsoft') {
 				$tempSql=$this->q->quickSearch($tableArray,$filterArray);
@@ -442,7 +442,7 @@ class leafClass extends  configClass {
 		/**
 		 *	Extjs filtering mode
 		 */
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 
 			$sql.=$this->q->searching();
 		} else if ($this->q->vendor=='microsoft') {
@@ -466,7 +466,7 @@ class leafClass extends  configClass {
 		} else {
 			$sort_field = $_POST['sort'];
 		}
-		if($this->q->vendor=='lite' || $this->q->vendor=='normal') {
+		if($this->q->vendor=='mysql' || $this->q->vendor=='normal') {
 			$sql.="	ORDER BY `".$sort_field."` ".$dir." ";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql.="	ORDER BY [".$sort_field."] ".$dir." ";
@@ -484,7 +484,7 @@ class leafClass extends  configClass {
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 				// only mysql have limit
 
-				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+				if( $this->q->vendor=='mysql') {
 					$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
 				} else if ($this->q->vendor=='microsoft') {
 					/**
@@ -592,7 +592,7 @@ class leafClass extends  configClass {
 	function update() 							{
 		header('Content-Type','application/json; charset=utf-8');
 		//UTF8
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
@@ -600,7 +600,7 @@ class leafClass extends  configClass {
 
 		$this->q->start();
 		$this->model->update();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			UPDATE	`leaf`
 			SET		`isActive`	=	'".$this->model->isActive."',
@@ -652,7 +652,7 @@ class leafClass extends  configClass {
 	}
 	function delete()							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -661,7 +661,7 @@ class leafClass extends  configClass {
 
 		$this->q->start();
 		$this->model->delete();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			UPDATE	`leaf`
 			SET		`isActive`	=	'".$this->model->isActive."',
@@ -721,7 +721,7 @@ class leafClass extends  configClass {
 	 */
 	function translateRead() {
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			/**
 			 *	UTF 8
 			 **/
@@ -729,7 +729,7 @@ class leafClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor='lite'){
+		if( $this->q->vendor='lite'){
 			$sql="
 			SELECT	*
 			FROM 	`leafTranslate`
@@ -774,7 +774,7 @@ class leafClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 
 		$this->q->commit();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite'){
+		if( $this->q->vendor=='mysql'){
 			$sql="
 		UPDATE	`leafTranslate`
 		SET		`leafTranslate` 	=	'".$this->strict($_POST['accordionTranslate'],'string')."'
@@ -806,7 +806,7 @@ class leafClass extends  configClass {
 	function translateMe() {
 		//	header('Content-Type','application/json; charset=utf-8');
 		$this->q->start();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite'){
+		if( $this->q->vendor=='mysql'){
 			$sql="SELECT * FROM `leaf` WHERE `leafId`='".$this->leafId."'";
 		} else if($this->q->vendor=='microsoft'){
 			$sql="SELECT * FROM [leaf] WHERE [leafId]='".$this->leafId."'";
@@ -819,7 +819,7 @@ class leafClass extends  configClass {
 			$rowDefault = $this->q->fetchAssoc($resultDefault);
 			$value 		= $rowDefault['leafNote'];
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="SELECT * FROM `language`";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="SELECT * FROM [language] ";
@@ -832,7 +832,7 @@ class leafClass extends  configClass {
 			$languageCode = $row['languageCode'];
 			$to 		  =	$languageCode;
 			$googleTranslate = $this->security->changeLanguage($from="en",$to,$value);
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql="
 				SELECT 	* 
 				FROM 	`leafTranslate` 
@@ -854,7 +854,7 @@ class leafClass extends  configClass {
 			$resultleafTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultleafTranslate) >  0 ) {
 
-				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
+				if($this->q->vendor=='normal'  || $this->q->vendor=='mysql') {
 					$sql="
 					UPDATE 	`leafTranslate` 
 					SET 	`leafTranslate`	=	'".$googleTranslate."' 
@@ -880,7 +880,7 @@ class leafClass extends  configClass {
 
 				}
 			} else {
-				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
+				if($this->q->vendor=='normal'  || $this->q->vendor=='mysql') {
 					$sql="
 					INSERT INTO `leafTranslate` 
 							(
@@ -939,7 +939,7 @@ class leafClass extends  configClass {
 	 */
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);

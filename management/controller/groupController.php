@@ -134,7 +134,7 @@ class groupClass  extends configClass {
 	 */
 	function create() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -142,7 +142,7 @@ class groupClass  extends configClass {
 		}
 		$this->q->start();
 		$this->model->create();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			INSERT INTO `group` 
 					(
@@ -201,7 +201,7 @@ class groupClass  extends configClass {
 		$data = $this->q->activeRecord();
 		if($this->q->numberRows()> 0 ){
 			foreach($data as $row){
-				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+				if( $this->q->vendor=='mysql') {
 				$sql =	"
 				INSERT INTO	`accordionAccess`
 				(
@@ -253,7 +253,7 @@ class groupClass  extends configClass {
 }
 
 // loop the folder and create new record;
-if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+if( $this->q->vendor=='mysql') {
 	$sql		=	"
 		SELECT 	*
 		FROM 	`folder`
@@ -278,7 +278,7 @@ if($this->q->numberRows()> 0 ){
 	$data = $this->q->activeRecord();
 	foreach($data as $row){
 
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql =	"
 					INSERT INTO 	`folderAccess`
 								(
@@ -321,7 +321,7 @@ if($this->q->numberRows()> 0 ){
 }
 
 // create a template access which user can access to
-if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+if( $this->q->vendor=='mysql') {
 	$sql			=	"SELECT * FROM `leaf` WHERE `isActive`=1  ";
 } else if ($this->q->vendor=='microsoft') {
 	$sql			=	"SELECT * FROM [leaf] WHERE [isActive]=1  ";
@@ -337,7 +337,7 @@ if($this->q->execute=='fail'){
 if($total > 0 ){
 	$data = $this->q->activeRecord();
 	foreach($data as $row){
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql =	"
 					INSERT INTO 	[leafGroupAccess]
 								(	[leafId],
@@ -413,14 +413,14 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 	 */
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 			
 		}
 		// everything given flexibility  on todo
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 		SELECT	*
 		FROM 	`group`
@@ -516,7 +516,7 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 	 */
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -524,7 +524,7 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		}
 		$this->q->commit();
 		$this->model->update();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			UPDATE 	`group`
 			SET 	`groupDesc`		=	'".$this->model->groupDesc."',
@@ -578,7 +578,7 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 	 */
 	function delete()				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -586,7 +586,7 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		}
 		$this->q->commit();
 		$this->model->delete();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 				UPDATE 	`group`
 				SET 	`isActive`		=	'".$this->model->isActive."',

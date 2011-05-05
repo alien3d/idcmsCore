@@ -152,7 +152,7 @@ class folderClass extends  configClass {
 	 */
 	function create() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -160,7 +160,7 @@ class folderClass extends  configClass {
 		}
 		$this->q->start();
 		$this->model->create();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			INSERT INTO `folder` 
 					(
@@ -268,7 +268,7 @@ class folderClass extends  configClass {
 
 		//  create a record  in accordionAccess.update no effect
 		// loop the group
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="SELECT * FROM `group` WHERE `isActive`=1 ";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql="SELECT * FROM [group] WHERE [isActive]=1 ";
@@ -279,7 +279,7 @@ class folderClass extends  configClass {
 		$data = $this->q->activeRecord();
 		foreach ($data as $row ) {
 			// by default no access
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql="
 				INSERT INTO	`folderAccess` 
 						(
@@ -338,14 +338,14 @@ class folderClass extends  configClass {
 	 */
 	function read() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
 		}
 		// everything given flexibility  on todo
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			SELECT 		*
 			FROM 		`folder`
@@ -404,7 +404,7 @@ class folderClass extends  configClass {
 			$query = $_POST['query'];
 		}
 		if(isset($query)) {
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql.=$this->q->quickSearch($tableArray,$filterArray);
 			} else if ($this->q->vendor=='microsoft') {
 				$tempSql=$this->q->quickSearch($tableArray,$filterArray);
@@ -417,7 +417,7 @@ class folderClass extends  configClass {
 		/**
 		 *	Extjs filtering mode
 		 */
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 
 			$sql.=$this->q->searching();
 		} else if ($this->q->vendor=='microsoft') {
@@ -436,7 +436,7 @@ class folderClass extends  configClass {
 		$total	= $this->q->numberRows();
 
 		if($this->order && $this->sort_field){
-			if($this->q->vendor=='lite' || $this->q->vendor=='normal') {
+			if($this->q->vendor=='mysql' || $this->q->vendor=='normal') {
 				$sql.="	ORDER BY `".$sort_field."` ".$dir." ";
 			} else if ($this->q->vendor=='microsoft') {
 				$sql.="	ORDER BY [".$sort_field."] ".$dir." ";
@@ -453,7 +453,7 @@ class folderClass extends  configClass {
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 				// only mysql have limit
 
-				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+				if( $this->q->vendor=='mysql') {
 					$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
 					$sqlLimit = $sql;
 				} else if ($this->q->vendor=='microsoft') {
@@ -578,7 +578,7 @@ class folderClass extends  configClass {
 	 */
 	function update() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -586,7 +586,7 @@ class folderClass extends  configClass {
 		}
 		$this->q->start();
 		$this->model->update();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 					UPDATE 	`folder`
 					SET 	`accordionId`		=	'".$this->strict($_POST['accordionId'],'string')."',
@@ -653,7 +653,7 @@ class folderClass extends  configClass {
 	 */
 	function delete()							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -661,7 +661,7 @@ class folderClass extends  configClass {
 		}
 		$this->q->start();
 		$this->model->delete();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 					UPDATE	`folder`
 					SET		`isActive`			=	'".$this->model->isActive."',
@@ -716,7 +716,7 @@ class folderClass extends  configClass {
 	 **/
 	function translateRead() {
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			/**
 			 *	UTF 8
 			 **/
@@ -724,7 +724,7 @@ class folderClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor='lite'){
+		if( $this->q->vendor='lite'){
 			$sql="
 			SELECT	*
 			FROM 	`folderTranslate`
@@ -769,7 +769,7 @@ class folderClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 
 		$this->q->commit();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite'){
+		if( $this->q->vendor=='mysql'){
 			$sql="
 		UPDATE	`folderTranslate`
 		SET		`folderTranslate` 	=	'".$this->strict($_POST['folderTranslate'],'string')."'
@@ -811,7 +811,7 @@ class folderClass extends  configClass {
 			$rowDefault = $this->q->fetch_array($resultDefault);
 			$value 		= $rowDefault['folderNote'];
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			SELECT	* 
 			FROM 	`language`";
@@ -830,7 +830,7 @@ class folderClass extends  configClass {
 			$languageCode	= 	$row['languageCode'];
 			$to 		  	=	$languageCode;
 			$googleTranslate = $this->security->changeLanguage($from="en",$to,$value);
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql="
 				SELECT	* 
 				FROM 	`folderTranslate` 
@@ -851,7 +851,7 @@ class folderClass extends  configClass {
 			}
 			$resultfolderTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultfolderTranslate) >  0 ) {
-				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
+				if($this->q->vendor=='normal'  || $this->q->vendor=='mysql') {
 					$sql="
 					UPDATE 	`folderTranslate` 
 					SET 	`folderTranslate`		=	'".$googleTranslate."' 
@@ -877,7 +877,7 @@ class folderClass extends  configClass {
 
 				}
 			} else {
-				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
+				if($this->q->vendor=='normal'  || $this->q->vendor=='mysql') {
 					$sql="
 					INSERT INTO `folderTranslate` 
 							(
@@ -949,7 +949,7 @@ class folderClass extends  configClass {
 	 */
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);

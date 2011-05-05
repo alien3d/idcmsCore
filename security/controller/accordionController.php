@@ -167,7 +167,7 @@ class accordionClass extends  configClass{
 		 */
 		$sql=" INSERT INTO `".accordionModel::tableName."` (`".accordionModel::accordionNote."`)  VALUES ('".$this->model->accordionNote."')";
 		
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 
 			$sql="
 			INSERT INTO `accordion`
@@ -309,7 +309,7 @@ class accordionClass extends  configClass{
 			/**
 			 *	By Default  No Access
 			 **/
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 
 				$sql	=	"
 				INSERT INTO	`accordionAccess`
@@ -364,7 +364,7 @@ class accordionClass extends  configClass{
 		/**
 		 *	 insert default value to detail table .English only
 		 **/
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 
 			$sql	= "
 		 	INSERT INTO `leafTranslate`
@@ -434,7 +434,7 @@ class accordionClass extends  configClass{
 	function read() 							{
 
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			/**
 			 *	UTF 8
 			 **/
@@ -516,7 +516,7 @@ class accordionClass extends  configClass{
 		/**
 		 *	Extjs filtering mode
 		 */
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 
 			$sql.=$this->q->searching();
 
@@ -547,7 +547,7 @@ class accordionClass extends  configClass{
 		$total	= $this->q->numberRows();
 
 		if($this->order && $this->sort_field){
-			if($this->q->vendor=='lite' || $this->q->vendor=='normal') {
+			if($this->q->vendor=='mysql' || $this->q->vendor=='normal') {
 				$sql.="	ORDER BY `".$sort_field."` ".$dir." ";
 			} else if ($this->q->vendor=='microsoft') {
 				$sql.="	ORDER BY [".$sort_field."] ".$dir." ";
@@ -565,7 +565,7 @@ class accordionClass extends  configClass{
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 
 
-				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+				if( $this->q->vendor=='mysql') {
 					/**
 					 *	Mysql,Postgress and IBM using LIMIT
 					 **/
@@ -660,7 +660,7 @@ class accordionClass extends  configClass{
 	function update() 							{
 		header('Content-Type','application/json; charset=utf-8');
 
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 
 			//UTF8
 			$sql='SET NAMES "utf8"';
@@ -670,7 +670,7 @@ class accordionClass extends  configClass{
 
 		$this->q->start();
 		$this->model->update();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			UPDATE 	`accordion`
 			SET 	`accordionSequence`	= 	'".$this->model->accordionSequence."',
@@ -744,7 +744,7 @@ class accordionClass extends  configClass{
 	 */
 	function delete()							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql	=	'SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -752,7 +752,7 @@ class accordionClass extends  configClass{
 		}
 		$this->q->start();
 		$this->model->delete();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 					$sql="
 			UPDATE 	`accordion`
 			SET 	`isActive`			=	'".$this->model->isActive."',
@@ -805,7 +805,7 @@ class accordionClass extends  configClass{
 	 */
 	function translateRead() {
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			/**
 			 *	UTF 8
 			 **/
@@ -813,7 +813,7 @@ class accordionClass extends  configClass{
 			$this->q->fast($sql);
 				
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor='lite'){
+		if( $this->q->vendor='lite'){
 			$sql="
 			SELECT	*
 			FROM 	`accordionTranslate`
@@ -858,7 +858,7 @@ class accordionClass extends  configClass{
 		header('Content-Type','application/json; charset=utf-8');
 
 		$this->q->commit();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite'){
+		if( $this->q->vendor=='mysql'){
 			$sql="
 		UPDATE	`accordionTranslate`
 		SET		`accordionTranslate` 	=	'".$this->strict($_POST['accordionTranslate'],'string')."'
@@ -916,7 +916,7 @@ class accordionClass extends  configClass{
 			$value 		= $rowDefault['accordionNote'];
 
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql	=	"
 			SELECT	*
 			FROM 	`language`";
@@ -998,7 +998,7 @@ class accordionClass extends  configClass{
 
 				}
 			} else {
-				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
+				if($this->q->vendor=='normal'  || $this->q->vendor=='mysql') {
 
 					$sql	=	"
 					INSERT INTO	`accordionTranslate`
@@ -1069,7 +1069,7 @@ class accordionClass extends  configClass{
 	 */
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);

@@ -139,14 +139,14 @@ class staffClass extends  configClass {
 	public function create() 				{
 		header('Content-Type','application/json; charset=utf-8');
 		//UTF8
-		if($this->q->vendor=='mysql' || $this->q->vendor=='lite'){
+		if($this->q->vendor=='mysql' || $this->q->vendor=='mysql'){
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
 		}
 
 		$this->q->start();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql	=	"
 				INSERT INTO `staff` 	(
 							`staffName`,		`staffNo`,
@@ -205,7 +205,7 @@ class staffClass extends  configClass {
 		}
 		$this->insert_id = $this->q->last_insert_id();
 		// insert accordion access
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 				SELECT	*
 				FROM 	`accordion`
@@ -231,7 +231,7 @@ class staffClass extends  configClass {
 
 			foreach($data as $row) {
 				// check if group access define in  accordionAccess else insert
-				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+				if( $this->q->vendor=='mysql') {
 					$sql="
 						SELECT *
 						FROM 	`accordionAccess`
@@ -258,7 +258,7 @@ class staffClass extends  configClass {
 				if($this->q->numberRows() ==  0 ){
 
 					// record don't exist create new
-					if($this->q->vendor=='lite' || $this->q->vendor='lite'){
+					if($this->q->vendor=='mysql' || $this->q->vendor='lite'){
 						$sql="
 						INSERT INTO `accordionAccess`	(
 									`accordionId`,				`groupId`,
@@ -304,7 +304,7 @@ class staffClass extends  configClass {
 			}
 		}
 		// insert folder access
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 				SELECT	*
 				FROM 	`folder`
@@ -329,7 +329,7 @@ class staffClass extends  configClass {
 			$data = $this->q->activeRecord();
 			foreach($data as $row) {
 				// check if group access define in  accordionAccess else insert
-				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+				if( $this->q->vendor=='mysql') {
 					$sql="
 					SELECT *
 					FROM 	`folderAccess`
@@ -357,7 +357,7 @@ class staffClass extends  configClass {
 					// record exist do nothing
 				} else {
 					// record don't exist create new
-					if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+					if( $this->q->vendor=='mysql') {
 						$sql="
 					INSERT INTO `folderAccess`
 						(
@@ -406,7 +406,7 @@ class staffClass extends  configClass {
 			}
 		}
 		// insert leaf access according to the group choosen
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			SELECT	*
 			FROM 	`leafGroupAccess`
@@ -433,7 +433,7 @@ class staffClass extends  configClass {
 			$data = $this->q->activeRecord();
 
 			foreach ($data as  $row_group_acs) {
-				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+				if( $this->q->vendor=='mysql') {
 					$sql="
 				INSERT INTO	`leafAccess`
 					(
@@ -518,7 +518,7 @@ class staffClass extends  configClass {
 		 * generate category for each staff
 		 */
 		for ($i = 1; $i <= 10; $i++) {
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql = "
 				INSERT INTO 	`calendar`
 							(
@@ -574,13 +574,13 @@ class staffClass extends  configClass {
 	 */
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 			
 		}
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			SELECT	*
 			FROM 	`staff`
@@ -701,7 +701,7 @@ class staffClass extends  configClass {
 	 */
 	public function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -711,7 +711,7 @@ class staffClass extends  configClass {
 		$this->q->start();
 		$this->model->update();
 		//  original group
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 			SELECT	`groupId`,
 					`staffPassword` 
@@ -744,7 +744,7 @@ class staffClass extends  configClass {
 		}
 
 		$groupId = $data['groupId'];
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 				UPDATE 	`staff`
 				SET 	`staffIc`		=	'".$this->strict($_POST['staffIc'],'string')."',
@@ -812,7 +812,7 @@ class staffClass extends  configClass {
 			/**
 			 *  update  leaf group access
 			 * */
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql="
 					SELECT	*
 					FROM 	`leafGroupAccess`
@@ -837,7 +837,7 @@ class staffClass extends  configClass {
 			$data = $this->q->activeRecord();
 			foreach($data as  $row_group_acs) {
 				// check if exist record or not
-				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+				if( $this->q->vendor=='mysql') {
 					$sql="
 					SELECT	*
 					FROM 	`leafAccess`
@@ -858,7 +858,7 @@ class staffClass extends  configClass {
 				}
 				$this->q->read($sql);
 				if($this->q->numberRows()> 0 ) {
-					if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+					if( $this->q->vendor=='mysql') {
 						$sql="
 						UPDATE 	`leafAccess`
 						SET 	`leafCreateAccessValue`			=	'".$row_group_acs['leafCreateAccessValue']."',
@@ -899,7 +899,7 @@ class staffClass extends  configClass {
 
 					}
 				} else {
-					if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+					if( $this->q->vendor=='mysql') {
 						$sql="
 							INSERT INTO	`leafAccess`
 								(
@@ -988,7 +988,7 @@ class staffClass extends  configClass {
 	 */
 	public function delete()				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -997,7 +997,7 @@ class staffClass extends  configClass {
 
 		$this->q->start();
 		$this->model->delete();
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 				UPDATE	`staff`
 				SET		`isActive`			=	'".$this->model->isActive."',
@@ -1057,7 +1057,7 @@ class staffClass extends  configClass {
 	 * @see config::excel()
 	 */
 	public function excel() {
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);

@@ -128,7 +128,7 @@ Ext
 				root : "staff",
 				id : "staffId"
 			}, [ "staffId", "staffName" ]);
-			var staff_store = new Ext.data.Store(
+			var staffStore = new Ext.data.Store(
 					{
 						proxy : new Ext.data.HttpProxy(
 								{

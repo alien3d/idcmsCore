@@ -74,7 +74,7 @@ abstract	class  configClass {
 	 */
 	public function staffId() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql	=	"
 			SELECT 	`staffId`,
 					`staffNo`,

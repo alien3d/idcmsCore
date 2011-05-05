@@ -73,14 +73,14 @@ class loginClass extends configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		//UTF8
 
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
 		/**
 		 *  Most Vendor don't much implement ansi 92 standard.Sql Statement Prefer Follow  Vendor Database Rule Standard.
 		 **/
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql	=	"
 			SELECT	*
 			FROM 	`staff`

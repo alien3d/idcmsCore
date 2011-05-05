@@ -131,13 +131,13 @@ class leafAccessClass extends  configClass {
 	 */
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
 		// by default if add new group will add access to accordion and leaf.
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			$sql="
 				SELECT	`leaf`.`accordionId`,
 						`leaf`.`folderId`,
@@ -431,7 +431,7 @@ class leafAccessClass extends  configClass {
 	 */
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+		if( $this->q->vendor=='mysql') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->read($sql);
@@ -452,7 +452,7 @@ class leafAccessClass extends  configClass {
 				}
 			}
 
-			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
+			if( $this->q->vendor=='mysql') {
 				$sql="
 					UPDATE 	`leafAccess`
 					SET 	`leafCreateAccessValue`	=	'".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."',
