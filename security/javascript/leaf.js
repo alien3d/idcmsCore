@@ -867,7 +867,7 @@ Ext
 					return new RegExp('\\b(' + value + ')', 'i');
 				},
 				listeners : {
-					'select' : function(combo,record,index) {
+					'select' : function(combo, record, index) {
 						Ext.Ajax.request({
 							url : '../controller/leafController.php',
 							method : 'GET',
@@ -1108,10 +1108,12 @@ Ext
 																page : 'master',
 																leafId_temp : leafId_temp
 															},
-															success : function(form,action) {
+															success : function(
+																	form,
+																	action) {
 																Ext.MessageBox
 																		.alert(
-																				title,
+																				systemLabel,
 																				action.result.message);
 
 																formPanel
@@ -1120,7 +1122,7 @@ Ext
 																leafStore
 																		.reload({
 																			params : {
-																				leafId : leafId,
+																				leafId : leafId_temp,
 																				start : 0,
 																				limit : per_page
 																			}

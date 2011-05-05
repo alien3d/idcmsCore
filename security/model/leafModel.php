@@ -81,13 +81,13 @@ class leafModel extends validationClass{
 	 * @see validationClass::create()
 	 */
 	function create() {
-		$this-> isDefaut =0;
-		$this-> isNew =1;
-		$this-> isDraft=0;
-		$this-> isUpdate=0;
-		$this-> isActive=0;
-		$this-> isDelete=0;
-		$this-> isApproved=0;
+		$this->isDefaut 	=	0;
+		$this->isNew 		=	1;
+		$this->isDraft		=	0;
+		$this->isUpdate		=	0;
+		$this->isActive		=	1;
+		$this->isDelete		=	0;
+		$this->isApproved	=	0;
 
 	}
 
@@ -95,27 +95,28 @@ class leafModel extends validationClass{
 	 * @see validationClass::update()
 	 */
 	function update() {
-		$this-> isDefaut =0;
-		$this-> isNew =0;
-		$this-> isDraft=0;
-		$this-> isUpdate=1;
-		$this-> isActive=1;
-		$this-> isDelete=0;
-		$this-> isApproved=0;
+		$this-> isDefaut 	=	0;
+		$this-> isNew 		=	0;
+		$this-> isDraft		=	0;
+		$this-> isUpdate	=	1;
+		$this-> isActive	=	1;
+		$this-> isDelete	=	0;
+		$this-> isApproved	=	0;
 	}
 
 	/* (non-PHPdoc)
 	 * @see validationClass::delete()
 	 */
 	function delete() {
-		$this-> isDefaut =0;
-		$this-> isNew =0;
-		$this-> isDraft=0;
-		$this-> isUpdate=0;
-		$this-> isActive=0;
-		$this-> isDelete=1;
-		$this-> isApproved=0;
+		$this->isDefaut 	=	0;
+		$this->isNew 		=	0;
+		$this->isDraft		=	0;
+		$this->isUpdate		=	0;
+		$this->isActive		=	0;
+		$this->isDelete		=	1;
+		$this->isApproved	=	0;
 	}
+	
 
 }
 ?>

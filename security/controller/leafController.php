@@ -164,7 +164,10 @@ class leafClass extends  configClass {
 						`accordionId`,						`folderId`,							
 						`leafNote`,							`leafSequence`,						
 						`leafcode`,							`leafFilename`,						
-						`iconId`,							`By`,								
+						`iconId`,							`isNew`,
+						`isDraft`,							`isUpdate`,
+						`isDelete`,							`isActive`,
+						`isApproved`,						`By`,								
 						`Time`
 					)
 			VALUES	
@@ -172,7 +175,10 @@ class leafClass extends  configClass {
 						'".$this->model->accordionId."',	'".$this->model->folderId."',		
 						'".$this->model->leafNote."',		'".$this->model->leafSequence."',	
 						'".$this->model->leafCode."',		'".$this->model->leafFilename."',	
-						'".$this->model->iconId."',			'".$this->model->staffId."',		
+						'".$this->model->iconId."',			'".$this->model->isNew."',
+						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
+						'".$this->model->isDelete."',		'".$this->model->isActive."',
+						'".$this->model->isApproved."',		'".$this->model->staffId."',		
 						".$this->model->Time."
 					) ";
 		} else if ($this->q->vendor=='microsoft') {
@@ -182,7 +188,10 @@ class leafClass extends  configClass {
 						[accordionId],					[folderId],						
 						[leafName],						[leafSequence],					
 						[leafCode],						[leafFilename],					
-						[iconId],						[By],							
+						[iconId],						[isNew],
+						[isDraft],						[isUpdate],
+						[isDelete],						[isActive],
+						[isApproved],					[By],							
 						[Time]
 					)
 			VALUES
@@ -190,7 +199,10 @@ class leafClass extends  configClass {
 						'".$this->model->accordionId."',	'".$this->model->folderId."',		
 						'".$this->model->leafNote."',		'".$this->model->leafSequence."',	
 						'".$this->model->leafCode."',		'".$this->model->leafFilename."',	
-						'".$this->model->iconId."',			'".$this->model->staffId."',		
+						'".$this->model->iconId."',			'".$this->model->isNew."',
+						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
+						'".$this->model->isDelete."',		'".$this->model->isActive."',
+						'".$this->model->isApproved."',		'".$this->model->staffId."',		
 						".$this->model->Time."
 					)";
 		} else if ($this->q->vendor=='oracle') {
@@ -200,7 +212,10 @@ class leafClass extends  configClass {
 						\"accordionId\",					\"folderId\",
 						\"leafName\",						\"leafSequence\",
 						\"leafCode\",						\"leafFilename\",			
-						\"iconId\",							\"By\",
+						\"iconId\",							\"isNew\",
+						\"isDraft\",						\"isUpdate\",
+						\"isDelete\",						\"isActive\",
+						\"isApproved\",						\"By\",
 						\"Time\"
 					)
 			VALUES	
@@ -208,7 +223,10 @@ class leafClass extends  configClass {
 						'".$this->model->accordionId."',	'".$this->model->folderId."',		
 						'".$this->model->leafNote."',		'".$this->model->leafSequence."',	
 						'".$this->model->leafCode."',		'".$this->model->leafFilename."',	
-						'".$this->model->iconId."',			'".$this->model->staffId."',		
+						'".$this->model->iconId."',			'".$this->model->isNew."',
+						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
+						'".$this->model->isDelete."',		'".$this->model->isActive."',
+						'".$this->model->isApproved."',		'".$this->model->staffId."',		
 						".$this->model->Time."
 					);";
 		}
@@ -911,7 +929,7 @@ class leafClass extends  configClass {
 
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);
 			$this->excel->getActiveSheet()->setCellValue('C'.$loopRow,$row['leafName']);
-			$this->excel->getActiveSheet()->setCellValue('D'.$loopRow,$row['leafDesc']);
+			$this->excel->getActiveSheet()->setCellValue('D'.$loopRow,$row['leafCode']);
 			$loopRow++;
 			$lastRow='D'.$loopRow;
 		}
