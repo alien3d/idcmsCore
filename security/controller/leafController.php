@@ -241,7 +241,7 @@ class leafClass extends  configClass {
 
 		$resultd =$this->q->fast($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
 			exit();
 		}
 
@@ -323,13 +323,13 @@ class leafClass extends  configClass {
 			}
 			$this->q->update($sql);
 			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
 				exit();
 			}
 		}
 
 		$this->q->commit();
-		echo json_encode(array("success"=>"true","leafId"=>$lastId,"message"=>"Record Created"));
+		echo json_encode(array("success"=>true,"leafId"=>$lastId,"message"=>"Record Created"));
 		exit();
 
 	}
@@ -629,7 +629,7 @@ class leafClass extends  configClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success"=>"true","message"=>"Record Update"));
+		echo json_encode(array("success"=>true,"message"=>"Record Update"));
 		exit();
 
 

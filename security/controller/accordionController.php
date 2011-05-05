@@ -235,7 +235,7 @@ class accordionClass extends  configClass{
 		$this->q->create($sql);
 
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
 			exit();
 		}
 
@@ -298,7 +298,7 @@ class accordionClass extends  configClass{
 		if($this->q->execute=='fail') {
 			echo json_encode(
 			array(
-					  	"success"	=>	"false",
+					  	"success"	=>	false,
 						"message"	=>	$this->q->result_text
 			));
 			exit();
@@ -411,7 +411,7 @@ class accordionClass extends  configClass{
 		if($this->q->execute	==	'fail') {
 			echo json_encode(
 			array(
-				  		"success"	=>	"false",
+				  		"success"	=>	false,
 						"message"	=>	$this->q->result_text
 			));
 			exit();
@@ -420,7 +420,7 @@ class accordionClass extends  configClass{
 		$this->q->commit();
 		echo json_encode(
 		array(
-				  	"success"	=>	"true",
+				  	"success"	=>	true,
 					"message"	=>	"Insert Sucess",
 					"accordionId"=> $lastId
 		));
@@ -717,7 +717,7 @@ class accordionClass extends  configClass{
 		if($this->q->execute=='fail') {
 			echo json_encode(
 			array(
-					  	"success"	=>	"false",
+					  	"success"	=>	false,
 						"message"	=>	$this->q->result_text
 			));
 			exit();
@@ -725,7 +725,7 @@ class accordionClass extends  configClass{
 		$this->q->commit();
 		echo json_encode(
 		array(
-				  	"success"	=>	"success",
+				  	"success"	=>	success,
 					"message"	=>	"update success"
 					));
 					exit();

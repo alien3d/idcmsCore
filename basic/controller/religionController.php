@@ -238,7 +238,7 @@ class religionClass extends  configClass {
 		if($this->q->execute=='fail') {
 			echo json_encode(
 				array(
-						"success"	=>	"false",
+						"success"	=>	false,
 						"message"	=>	$this->q->result_text
 				)
 			);
@@ -247,7 +247,7 @@ class religionClass extends  configClass {
 		$this->q->commit();
 		echo json_encode(
 			array(
-					"success"	=>	"true",
+					"success"	=>	true,
 					"message"	=>	"Record Created"
 			)
 		);

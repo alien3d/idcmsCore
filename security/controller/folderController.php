@@ -246,7 +246,7 @@ class folderClass extends  configClass {
 		if($this->q->execute=='fail') {
 			echo json_encode(
 			array(
-					  	"success"	=>	"false",
+					  	"success"	=>	false,
 
 						"message"	=>	$this->q->result_text
 			));
@@ -276,7 +276,7 @@ class folderClass extends  configClass {
 
 		$resultd =$this->q->fast($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
 			exit();
 		}
 
@@ -324,13 +324,13 @@ class folderClass extends  configClass {
 			}
 			$this->q->update($sql);
 			if($this->q->redirect=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
 				exit();
 			}
 		}
 
 		$this->q->commit();
-		echo json_encode(array("success"=>"true","folderId"=>$lastId,"message"=>"Record Created"));
+		echo json_encode(array("success"=>true,"folderId"=>$lastId,"message"=>"Record Created"));
 		exit();
 	}
 	/* (non-PHPdoc)
@@ -624,11 +624,11 @@ class folderClass extends  configClass {
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success"=>"true","message"=>"Record Update"));
+		echo json_encode(array("success"=>true,"message"=>"Record Update"));
 		exit();
 
 
