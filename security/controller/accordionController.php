@@ -104,14 +104,10 @@ class accordionClass extends  configClass{
 	private $security;
 	/**
 	 * Accordion Model
-	 * @var string $religionModel
+	 * @var string $model
 	 */
 	public $model;
-	/**
-	 * Outside Variable from $_GET,POST validation
-	 * @var string $validation
-	 */
-	public $validation;
+	
 
 	/**
 	 * Class Loader
@@ -165,8 +161,12 @@ class accordionClass extends  configClass{
 			$this->q->fast($sql);
 		}
 		$this->q->start();
-
-
+		$this->model->create();
+		/**
+		 * Example  using Constant .This much cleaner approch  to Sql Statement
+		 */
+		$sql=" INSERT INTO `".accordionModel::tableName."` (`".accordionModel::accordionNote."`)  VALUES ('".$this->model->accordionNote."')";
+		
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 
 			$sql="

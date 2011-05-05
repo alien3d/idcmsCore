@@ -325,9 +325,12 @@ Ext
 																.setValue(
 																		record.data.leafId);
 
-														Ext.getCmp('folderId').enable(); // enable
+														Ext.getCmp('folderId')
+																.enable(); // enable
 														// cascading
-														Ext.getCmp('translation').enable(); // information
+														Ext.getCmp(
+																'translation')
+																.enable(); // information
 														folderStore.proxy = new Ext.data.HttpProxy(
 																{
 																	url : '../controller/leafController.php?method=read&field=folderId&type=1&accordionId='
@@ -625,7 +628,7 @@ Ext
 					var encoded_array = Ext.encode(prez);
 
 					Ext.Ajax.request({
-						url : 'leafData.php',
+						url : '../controller/leafController.php',
 						method : 'POST',
 						params : {
 							method : "DELETE",
@@ -670,108 +673,85 @@ Ext
 				layout : 'fit',
 				plugins : [ editor ]
 			});
-			
-			var gridPanel = new Ext.Panel({
-				title : 'Menu Listing',
-				height : 50,
-				layout : 'fit',
-				iconCls : 'application_view_detail',
-				tbar : [ ' ',{
-					text : reloadToolbarLabel,
-					iconCls : 'database_refresh',
-					id : 'page_reload',
-					disabled : page_reload,
-					handler : function() {
-						leafStore.reload();
-					}
-				}, '-',{
-					text : addToolbarLabel,
-					iconCls : 'add',
-					id : 'page_create',
-					disabled : page_create,
-					handler : function() {
-						Ext.Ajax
-						.request({
-							url : '../data/accordionData.php',
-							method : 'GET',
-							params : {
-								method:'read',
-								field : 'sequence',
-								table : 'leaf',
-								leafId : leafId
-							},
-							success : function(response, options) {
-								x = Ext.decode(response.responseText);
-								if (x.success == 'false') {
-									Ext.MessageBox.alert('system',
-											x.message);
-								} else {
-									
-									Ext.getCmp('leafSequence').setValue(x.nextSequence);
-									
-								}
 
-							},
-							failure : function(response, options) {
-								statusCode = response.status;
-								statusMessage = response.statusText;
-								Ext.MessageBox.alert('system',
-										escape(statusCode) + ":"
-												+ statusMessage);
-							}
-
-						});
-						viewPort.items.get(1).expand();
-					}
-				},'-',{
-					text : excelToolbarLabel,
-					iconCls : 'page_excel',
-					id : 'page_excel',
-					disabled : page_print,
-					handler : function() {
-						Ext.Ajax
-								.request({
-									url : '../controller/leafController.php?method=report&mode=excel&limit='
-											+ per_page
-											+ '&leafId='
-											+ leafId,
-									method : 'GET',
-									success : function(
-											response, options) {
-										x = Ext
-												.decode(response.responseText);
-										if (x.success == 'true') {
-
-											window
-													.open("../security/document/excel/leaf.xlsx");
-										} else {
-											Ext.MessageBox
-													.alert(
-															systemErrorLabel,
-															x.message);
-										}
-
-									},
-									failure : function(
-											response, options) {
-										status_code = response.status;
-										status_message = response.statusText;
-										Ext.MessageBox
-												.alert(
-														systemErrorLabel,
-														escape(status_code)
-																+ ":"
-																+ status_message);
+			var gridPanel = new Ext.Panel(
+					{
+						title : 'Menu Listing',
+						height : 50,
+						layout : 'fit',
+						iconCls : 'application_view_detail',
+						tbar : [
+								' ',
+								{
+									text : reloadToolbarLabel,
+									iconCls : 'database_refresh',
+									id : 'page_reload',
+									disabled : page_reload,
+									handler : function() {
+										leafStore.reload();
 									}
+								},
+								'-',
+								{
+									text : addToolbarLabel,
+									iconCls : 'add',
+									id : 'page_create',
+									disabled : page_create,
+									handler : function() {
 
-								});
-					}
-				},'->', new Ext.ux.form.SearchField({
-					store : leafStore,
-					width : 320
-				}) ],
-				items : [ gridMaster ]
-			});
+										viewPort.items.get(1).expand();
+									}
+								},
+								'-',
+								{
+									text : excelToolbarLabel,
+									iconCls : 'page_excel',
+									id : 'page_excel',
+									disabled : page_print,
+									handler : function() {
+										Ext.Ajax
+												.request({
+													url : '../controller/leafController.php?method=report&mode=excel&limit='
+															+ per_page
+															+ '&leafId='
+															+ leafId,
+													method : 'GET',
+													success : function(
+															response, options) {
+														x = Ext
+																.decode(response.responseText);
+														if (x.success == 'true') {
+
+															window
+																	.open("../security/document/excel/leaf.xlsx");
+														} else {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			x.message);
+														}
+
+													},
+													failure : function(
+															response, options) {
+														status_code = response.status;
+														status_message = response.statusText;
+														Ext.MessageBox
+																.alert(
+																		systemErrorLabel,
+																		escape(status_code)
+																				+ ":"
+																				+ status_message);
+													}
+
+												});
+									}
+								}, '->', new Ext.ux.form.SearchField({
+									store : leafStore,
+									width : 320
+								}) ],
+						items : [ gridMaster ]
+					});
 			// viewport just save information,items will do separate
 
 			var accordionId = new Ext.ux.form.ComboBoxMatch(
@@ -802,59 +782,54 @@ Ext
 						},
 						listeners : {
 							'select' : function() {
-								
+
 								folderStore.proxy = new Ext.data.HttpProxy(
 										{
 											url : '../controller/leafController.php?method=read&field=folderId&type=1&accordionId='
 													+ this.value
 													+ '&leafId_temp='
 													+ leafId_temp,
-													success : function(
-															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if(x.totalCount ==0 ){
-															
-															folderId.disable();
-														} else {
-															
-															folderId.enable();
-														}
-														if (x.success == "true") {
-															/*
-															Ext.MessageBox
-																	.alert(
-																			systemLabel,
-																			x.message);
+											success : function(response,
+													options) {
+												x = Ext
+														.decode(response.responseText);
+												if (x.totalCount == 0) {
 
-															leafTranslateStore
-																	.reload();
-															*/
-															
-														} else {
-															/*
-															Ext.MessageBox
-																	.alert(
-																			systemLabel,
-																			x.message);
-															*/
-														}
-													},
-													listeners : {
-												
-												
+													folderId.disable();
+												} else {
+
+													folderId.enable();
+												}
+												if (x.success == "true") {
+													/*
+													 * Ext.MessageBox .alert(
+													 * systemLabel, x.message);
+													 * 
+													 * leafTranslateStore
+													 * .reload();
+													 */
+
+												} else {
+													/*
+													 * Ext.MessageBox .alert(
+													 * systemLabel, x.message);
+													 */
+												}
+											},
+											listeners : {
+
 												exception : function(DataProxy,
 														type, action, options,
 														response, arg) {
 													var serverMessage = Ext.util.JSON
 															.decode(response.responseText);
-													
-													
+
 													if (serverMessage.success == false) {
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
-																		'Error ka'+serverMessage.message);
+																		'Error ka'
+																				+ serverMessage.message);
 													}
 												}
 											}
@@ -890,6 +865,43 @@ Ext
 					value = Ext.escapeRe(value.split('').join('\\s*')).replace(
 							/\\\\s\\\*/g, '\\s*');
 					return new RegExp('\\b(' + value + ')', 'i');
+				},
+				listeners : {
+					'select' : function(combo,record,index) {
+						Ext.Ajax.request({
+							url : '../controller/leafController.php',
+							method : 'GET',
+							params : {
+								method : 'read',
+								field : 'sequence',
+								table : 'leaf',
+								accordionId : Ext.getCmp('accordion_fake')
+										.getValue(),
+								folderId : combo.value,
+								leafId : leafId_temp
+							},
+							success : function(response, options) {
+								x = Ext.decode(response.responseText);
+								if (x.success == 'false') {
+									Ext.MessageBox.alert('system', x.message);
+								} else {
+
+									Ext.getCmp('leafSequence').setValue(
+											x.nextSequence);
+
+								}
+
+							},
+							failure : function(response, options) {
+								statusCode = response.status;
+								statusMessage = response.statusText;
+								Ext.MessageBox.alert('system',
+										escape(statusCode) + ":"
+												+ statusMessage);
+							}
+
+						});
+					}
 				}
 			});
 
@@ -906,7 +918,7 @@ Ext
 				fieldLabel : leafSequenceLabel,
 				hiddenName : 'leafSequence',
 				name : 'leafSequence',
-				id :'leafSequence',
+				id : 'leafSequence',
 				anchor : '95%'
 			});
 
@@ -1043,7 +1055,7 @@ Ext
 			// hidden id for updated
 			var leafId = new Ext.form.Hidden({
 				name : 'leafId',
-				id :'leafId'
+				id : 'leafId'
 			});
 
 			var formPanel = new Ext.form.FormPanel(
@@ -1093,7 +1105,7 @@ Ext
 															waitMsg : waitMessageLabel,
 															params : {
 																method : method,
-																page :'master',
+																page : 'master',
 																leafId_temp : leafId_temp
 															},
 															success : function(form,action) {
@@ -1113,14 +1125,19 @@ Ext
 																				limit : per_page
 																			}
 																		});
-																Ext.getCmp('translation').enable();
+																Ext
+																		.getCmp(
+																				'translation')
+																		.enable();
 																Ext
 																		.getCmp(
 																				'leafId')
 																		.setValue(
-																				action.result.leafId);	
+																				action.result.leafId);
 															},
-															failure : function(form,action) {
+															failure : function(
+																	form,
+																	action) {
 
 																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																	alert(loadFailureMessageLabel);

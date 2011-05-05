@@ -293,7 +293,7 @@ class folderClass extends  configClass {
 			$sql="SELECT * FROM \"group\" WHERE \"isActive\"=1 ";
 		}
 		$this->q->read($sql);
-		$data = $this->q->active_record();
+		$data = $this->q->activeRecord();
 		foreach ($data as $row ) {
 			// by default no access
 			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {

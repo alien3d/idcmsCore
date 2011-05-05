@@ -24,8 +24,24 @@ class religionModel extends validationClass{
 	public $isApproved;
 	public $By;
 	public $Time;
-	public $vendor;
 	public $staffId;
+	public $vendor;
+	private $test;
+	// constant method if lazy
+	const tableName			=	'tableName';
+	const primaryKeyName	=	'primaryKeyName';
+	const religionId		=	'religionId';
+	const religionDesc		=	'religionDesc';
+	const isDefaut			=	'isDefault';
+	const isNew				=	'isNew';
+	const isDraft			=	'isDraft';
+	const isUpdate			=	'isUpdate';
+	const isActive			=	'isActive';
+	const isDelete			=	'isDelete';
+	const isApproved		=	'isApproved';
+	const By				=	'By';
+	const Time				=	'Time';
+	const staffId			=	'staffId';
 
 	/* (non-PHPdoc)
 	 * @see validationClass::execute()
@@ -49,16 +65,16 @@ class religionModel extends validationClass{
 			$this->staffId = $_SESSION['staffId'];
 		}
 		if($this->vendor=='normal' || $this->vendor=='lite'){
-			$this->Time = date("Y-m-d H:i:s");
+			$this->Time = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = date("Y-m-d H:i:s");
+			$this->Time = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='oracle'){
 			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
 		}
 
 
 	}
-
+	
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
 	 */

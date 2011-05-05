@@ -179,7 +179,7 @@ class groupClass  extends configClass {
 			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
 			exit();
 		}
-		$data = $this->q->active_record();
+		$data = $this->q->activeRecord();
 		if($this->q->numberRows()> 0 ){
 			foreach($data as $row){
 				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -256,7 +256,7 @@ if($this->q->execute=='fail'){
 	exit();
 }
 if($this->q->numberRows()> 0 ){
-	$data = $this->q->active_record();
+	$data = $this->q->activeRecord();
 	foreach($data as $row){
 
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -316,7 +316,7 @@ if($this->q->execute=='fail'){
 	exit();
 }
 if($total > 0 ){
-	$data = $this->q->active_record();
+	$data = $this->q->activeRecord();
 	foreach($data as $row){
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql =	"

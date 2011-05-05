@@ -219,7 +219,7 @@ class staffClass extends  configClass {
 			exit();
 		}
 		if($this->q->numberRows()> 0 ){
-			$data = $this->q->active_record();
+			$data = $this->q->activeRecord();
 
 			foreach($data as $row) {
 				// check if group access define in  accordionAccess else insert
@@ -318,7 +318,7 @@ class staffClass extends  configClass {
 			exit();
 		}
 		if($this->q->numberRows()>0){
-			$data = $this->q->active_record();
+			$data = $this->q->activeRecord();
 			foreach($data as $row) {
 				// check if group access define in  accordionAccess else insert
 				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -422,7 +422,7 @@ class staffClass extends  configClass {
 			exit();
 		}
 		if($this->q->numberRows()> 0 ) {
-			$data = $this->q->active_record();
+			$data = $this->q->activeRecord();
 
 			foreach ($data as  $row_group_acs) {
 				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -795,7 +795,7 @@ class staffClass extends  configClass {
 				$this->msg(false,$this->q->result_text);
 				exit();
 			}
-			$data = $this->q->active_record();
+			$data = $this->q->activeRecord();
 			foreach($data as  $row_group_acs) {
 				// check if exist record or not
 				if($this->q->vendor=='normal' || $this->q->vendor=='lite') {

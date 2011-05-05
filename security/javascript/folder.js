@@ -669,7 +669,7 @@ Ext
 					'select': function (combo,record,index) { 
 						Ext.Ajax
 						.request({
-							url : '../data/accordionData.php',
+							url : '../controller/folderController.php',
 							method : 'GET',
 							params : {
 								method:'read',

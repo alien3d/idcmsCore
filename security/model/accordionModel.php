@@ -28,6 +28,11 @@ class accordionModel extends validationClass{
 	public $Time;
 	public $vendor;
 	public $staffId;
+	// const value if lazy
+	const tableName='accordion';
+	const primaryKeyName='accordionId';
+	const accordionId='accordionId';
+	const accordionNote='accordionNote';
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -56,9 +61,9 @@ class accordionModel extends validationClass{
 			$this->staffId = $_SESSION['staffId'];
 		}
 		if($this->vendor=='normal' || $this->vendor=='lite'){
-			$this->Time = date("Y-m-d H:i:s");
+			$this->Time = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = date("Y-m-d H:i:s");
+			$this->Time = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='oracle'){
 			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
 		}

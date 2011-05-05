@@ -101,6 +101,11 @@ class leafClass extends  configClass {
 	 */
 	public $security;
 	/**
+	 * Leaf Model
+	 * @var string $model
+	 */
+	public $model;
+	/**
 	 *  Class Loader
 	 */
 	public function execute() {
@@ -132,7 +137,10 @@ class leafClass extends  configClass {
 		$this->security->vendor = $this->vendor;
 		$this->security->leafId =$this->leafId_temp;
 		$this->security->execute();
-
+		
+		$this->model = new leafModel();
+		$this->model->vendor = $this->vendor;
+		$this->model->execute();
 	}
 
 	/* (non-PHPdoc)
@@ -144,82 +152,72 @@ class leafClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
+		
 		$this->q->start();
+		$this->model->create();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql	=	"
-		INSERT INTO `leaf` (
-								`leafId`,
-								`accordionId`,
-								`folderId`,
-								`leafName`,
-								`leafSequence`,
-								`leafDesc`,
-								`leafFilename`,
-								`iconId`,
-								`By`,
-								`Time`)
-				VALUES	(		  '".$this->strict($_POST['leafId'],'numeric')."',
-								'".$this->strict($_POST['accordionId'],'numeric')."',
-								'".$this->strict($_POST['folderId'],'numeric')."',
-								'".$this->strict($_POST['leafName'],'string')."',
-								'".$this->strict($_POST['leafSequence'],'numeric')."',
-								'".$this->strict($_POST['leafDesc'],'memo')."',
-								'".$this->strict($_POST['leafFilename'],'filename')."',
-								'".$this->strict($_POST['iconId'],'numeric')."',
-								'".$this->strict($_SESSION['staffId'],'n')."',
-								'".date("Y-m-d H:i:s")."'";
+			INSERT INTO `leaf` 
+					(
+						`accordionId`,						`folderId`,							
+						`leafNote`,							`leafSequence`,						
+						`leafcode`,							`leafFilename`,						
+						`iconId`,							`By`,								
+						`Time`
+					)
+			VALUES	
+					(	
+						'".$this->model->accordionId."',	'".$this->model->folderId."',		
+						'".$this->model->leafNote."',		'".$this->model->leafSequence."',	
+						'".$this->model->leafCode."',		'".$this->model->leafFilename."',	
+						'".$this->model->iconId."',			'".$this->model->staffId."',		
+						".$this->model->Time."
+					) ";
 		} else if ($this->q->vendor=='microsoft') {
 			$sql	=	"
-			INSERT INTO [leaf] (
-								[leafId],
-								[accordionId],
-								[folderId],
-								[leafName],
-								[leafSequence],
-								[leafDesc],
-								[leafFilename],
-								[iconId],
-								[By],
-								[Time])
-				VALUES	(		  '".$this->strict($_POST['leafId'],'numeric')."',
-								'".$this->strict($_POST['accordionId'],'numeric')."',
-								'".$this->strict($_POST['folderId'],'numeric')."',
-								'".$this->strict($_POST['leafName'],'string')."',
-								'".$this->strict($_POST['leafSequence'],'numeric')."',
-								'".$this->strict($_POST['leafDesc'],'memo')."',
-								'".$this->strict($_POST['leafFilename'],'filename')."',
-								'".$this->strict($_POST['iconId'],'numeric')."',
-								'".$this->strict($_SESSION['staffId'],'n')."',
-								to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS');";
+			INSERT INTO [leaf] 
+					(
+						[accordionId],					[folderId],						
+						[leafName],						[leafSequence],					
+						[leafCode],						[leafFilename],					
+						[iconId],						[By],							
+						[Time]
+					)
+			VALUES
+					(	
+						'".$this->model->accordionId."',	'".$this->model->folderId."',		
+						'".$this->model->leafNote."',		'".$this->model->leafSequence."',	
+						'".$this->model->leafCode."',		'".$this->model->leafFilename."',	
+						'".$this->model->iconId."',			'".$this->model->staffId."',		
+						".$this->model->Time."
+					)";
 		} else if ($this->q->vendor=='oracle') {
 			$sql	=	"
-		INSERT INTO `leaf` (
-								\"leafId\",
-								\"accordionId\",
-								\"folderId\",
-								\"leafName\",
-								\"leafSequence\",
-								\"leafDesc\",
-								\"leafFilename\",
-								\"iconId\",
-								\"By\",
-								\"Time\")
-				VALUES	(		  '".$this->strict($_POST['leafId'],'numeric')."',
-								'".$this->strict($_POST['accordionId'],'numeric')."',
-								'".$this->strict($_POST['folderId'],'numeric')."',
-								'".$this->strict($_POST['leafName'],'string')."',
-								'".$this->strict($_POST['leafSequence'],'numeric')."',
-								'".$this->strict($_POST['leafDesc'],'memo')."',
-								'".$this->strict($_POST['leafFilename'],'filename')."',
-								'".$this->strict($_POST['iconId'],'numeric')."',
-								'".$this->strict($_SESSION['staffId'],'n')."',
-								to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS');";
+			INSERT INTO \"leaf\" 
+					(
+						\"accordionId\",					\"folderId\",
+						\"leafName\",						\"leafSequence\",
+						\"leafCode\",						\"leafFilename\",			
+						\"iconId\",							\"By\",
+						\"Time\"
+					)
+			VALUES	
+					(		
+						'".$this->model->accordionId."',	'".$this->model->folderId."',		
+						'".$this->model->leafNote."',		'".$this->model->leafSequence."',	
+						'".$this->model->leafCode."',		'".$this->model->leafFilename."',	
+						'".$this->model->iconId."',			'".$this->model->staffId."',		
+						".$this->model->Time."
+					);";
 		}
 		$this->q->create($sql);
-
-				if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite' ) {
+	if($this->q->execute=='fail'){
+			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			exit();
+		}
+		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite' ) {
 			/*
 			 * 	If anything wrong use this instead  SELECT LAST_INSERT_ID();
 			 **/
@@ -252,76 +250,76 @@ class leafClass extends  configClass {
 
 		// loop the group
 		if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
-			$sql="SELECT * FROM `staff` WHERE `isActive`	=	1 ";
+			$sql="
+			SELECT 	* 
+			FROM 	`staff` 
+			WHERE 	`isActive`	=	1 ";
 		} else if ($this->q->vendor=='microsoft') {
-			$sql="SELECT * FROM [staff] WHERE [isActive]	=	1 ";
+			$sql="
+			SELECT 	* 
+			FROM 	[staff] 
+			WHERE 	[isActive]	=	1 ";
 		} else if ($this->q->vendor=='lite') {
 			$sql="SELECT * FROM \"staff\" WHERE \"isActive\"	=	1 ";
 		}
 		$this->q->read($sql);
-		$data= $this->q->active_record();
+		$data= $this->q->activeRecord();
 		foreach ($data as $row) {
 			// by default no access
 			if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
-				$sql="INSERT INTO 	`leafAccess` (
-										`leafId`,
-										`staffId`,
-										`leafReadAccessValue`,
-										`leafCreateAccessValue`,
-										`leafUpdateAccessValue`,
-										`leafDeleteAccessValue`,
-										`leafPrintAccessValue`,
-										`leafPostAccessValue`,
-										`leafDraftAccessValue`
-					) VALUES(			'".$lastId."',
-										'".$row['staffId']."',
-										'0'
-										'0',
-										'0',
-										'0',
-										'0',
-										'0',
-										'0')	";
+				$sql="
+				INSERT INTO	`leafAccess` 
+						(
+							`leafId`,					`staffId`,
+							`leafReadAccessValue`,		`leafCreateAccessValue`,
+							`leafUpdateAccessValue`,	`leafDeleteAccessValue`,
+							`leafPrintAccessValue`,		`leafPostAccessValue`,
+							`leafDraftAccessValue`
+						) 
+					VALUES
+						(	
+							'".$lastId."',				'".$row['staffId']."',
+							'0',						'0',
+							'0',						'0',
+							'0',						'0',
+							'0'
+						)	";
 			} else if ($this->q->vendor=='microsoft') {
-				$sql="INSERT INTO 	[leafAccess] (
-										[leafId],
-										[staffId],
-										[leafReadAccessValue],
-										[leafCreateAccessValue],
-										[leafUpdateAccessValue],
-										[leafDeleteAccessValue],
-										[leafPrintAccessValue],
-										[leafPostAccessValue],
-										[leafDraftAccessValue]
-					) VALUES(			'".$lastId."',
-										'".$row['staffId']."',
-										'0'
-										'0',
-										'0',
-										'0',
-										'0',
-										'0',
-										'0')	";
+				$sql="
+				INSERT INTO	[leafAccess] 
+						(
+							[leafId],					[staffId],
+							[leafReadAccessValue],		[leafCreateAccessValue],
+							[leafUpdateAccessValue],	[leafDeleteAccessValue],
+							[leafPrintAccessValue],		[leafPostAccessValue],
+							[leafDraftAccessValue]
+						) 
+					VALUES
+						(
+							'".$lastId."',				'".$row['staffId']."',
+							'0',						'0',
+							'0',						'0',
+							'0',						'0',
+							'0'
+						)	";
 			} else if ($this->q->vendor=='lite') {
-				$sql="INSERT INTO 	\"leafAccess\" (
-										\"leafId\",
-										\"staffId\",
-										\"leafReadAccessValue\",
-										\"leafCreateAccessValue\",
-										\"leafUpdateAccessValue\",
-										\"leafDeleteAccessValue\",
-										\"leafPrintAccessValue\",
-										\"leafPostAccessValue\",
-										\"leafDraftAccessValue\"
-					) VALUES(			'".$lastId."',
-										'".$row['staffId']."',
-										'0'
-										'0',
-										'0',
-										'0',
-										'0',
-										'0',
-										'0')	";
+				$sql="
+				INSERT INTO 	\"leafAccess\" 
+							(
+								\"leafId\",					\"staffId\",
+								\"leafReadAccessValue\",	\"leafCreateAccessValue\",
+								\"leafUpdateAccessValue\",	\"leafDeleteAccessValue\",
+								\"leafPrintAccessValue\",	\"leafPostAccessValue\",
+								\"leafDraftAccessValue\"
+						) 
+				VALUES
+						(			
+							'".$lastId."',				'".$row['staffId']."',
+							'0',						'0',
+							'0',						'0',
+							'0',						'0',
+							'0'
+						)	";
 			}
 			$this->q->update($sql);
 			if($this->q->execute=='fail') {
@@ -341,7 +339,7 @@ class leafClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		// everything given flexibility  on todo
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -439,8 +437,8 @@ class leafClass extends  configClass {
 			$sql.=$tempSql2;
 		}
 		//echo $sql;
-		$record_all 	= $this->q->read($sql);
-		$this->total	= $this->q->numberRows();
+		$this->q->read($sql);
+		$total	= $this->q->numberRows();
 
 		if(empty($_GET['dir'])) {
 			$dir = 'ASC';
@@ -583,7 +581,9 @@ class leafClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
+		
 		$this->q->start();
+		$this->model->update();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite')  {
 			$sql="
 			UPDATE 	`leaf`
@@ -625,7 +625,7 @@ class leafClass extends  configClass {
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
 			exit();
 		}
 		$this->q->commit();
@@ -640,9 +640,11 @@ class leafClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
+		
 		$this->q->start();
+		$this->model->delete();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			$sql="
 			UPDATE	`leaf`
@@ -697,7 +699,7 @@ class leafClass extends  configClass {
 			 **/
 			$sql	=	'SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor='lite'){
 			$sql="
@@ -851,7 +853,11 @@ class leafClass extends  configClass {
 
 	}
 
+	public function nextSequence() {
+		$this->security->nextSequence();
 
+
+	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
 	 */
@@ -861,7 +867,7 @@ class leafClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		if($_SESSION['start']==0) {
 			$sql=str_replace("LIMIT","",$_SESSION['sql']);
@@ -1034,6 +1040,10 @@ if(isset($_GET['method'])) {
 		}
 		if($_GET['field']=='folderId'){
 			$leafObject->folder();
+		}
+		if($_GET['field']=='sequence'){
+
+			$leafObject->nextSequence();
 		}
 	}
 

@@ -44,9 +44,9 @@ class groupModel extends validationClass{
 			$this->staffId = $_SESSION['staffId'];
 		}
 		if($this->vendor=='normal' || $this->vendor=='lite'){
-			$this->Time = date("Y-m-d H:i:s");
+			$this->Time = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = date("Y-m-d H:i:s");
+			$this->Time = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='oracle'){
 			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
 		}

@@ -158,7 +158,23 @@ class religionClass extends  configClass {
 			$this->q->fast($sql);
 			
 		}
-
+		$sql="
+			INSERT INTO `".religionModel::tableName."`	
+					(
+						`".religionModel::religionDesc."`,	`".religionModel::isDefaut."`,
+						`".religionModel::isNew."`,			`".religionModel::isDraft."`,
+						`".religionModel::isUpdate."`,		`".religionModel::isDelete."`,
+						`".religionModel::isActive."`,		`".religionModel::isApproved."`,
+						`".religionModel::By."`,			`".religionModel::Time."`
+					)
+			VALUES	
+					(
+						'".$this->model->religionDesc."',	'".$this->model->isDefaut."',
+						'".$this->model->isNew."',			'".$this->model->isDraft."',
+						'".$this->model->isUpdate."',		'".$this->model->isDelete."',
+						'".$this->model->isActive."',		'".$this->model->isApproved."',
+						'".$this->model->By."',				".$this->model->Time."
+					);";
 		$this->q->start();
 		$this->model->create();
 		if($this->q->vendor=='mysql' || $this->q->vendor=='lite') {

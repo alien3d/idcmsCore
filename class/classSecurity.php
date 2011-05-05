@@ -219,10 +219,7 @@ class security extends configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
-				exit();
-			}
+			
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 
@@ -425,7 +422,10 @@ class security extends configClass {
 	 */
 	public function nextSequence() {
 		header('Content-Type','application/json; charset=utf-8');
-
+		/**
+		 * initilize dummy value  to 0 
+		 */
+		$nextSequence=0;
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
 			//UTF8
 			$sql='SET NAMES "utf8"';
@@ -467,8 +467,11 @@ class security extends configClass {
 			}
 		}
 		$result = $this->q->fast($sql);
-		$row = $this->q->fetch_array($result);
+		$row = $this->q->fetchAssoc($result);
 		$nextSequence = $row['nextSequence'];
+		if($nextSequence==0){
+			$nextSequence=1;
+		}
 		echo  json_encode(array("success"=>"true","nextSequence"=>$nextSequence));
 	}
  /**
