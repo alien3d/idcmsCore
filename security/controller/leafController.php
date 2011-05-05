@@ -794,9 +794,7 @@ class leafClass extends  configClass {
 	 * Create Translation leaf Note to the leafTranslate Table
 	 */
 	function translateMe() {
-		if(isset($_GET['leafId'])) {
-			$leafId = $_GET['leafId'];
-		}
+	//	header('Content-Type','application/json; charset=utf-8');
 		$this->q->start();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite'){
 			$sql="SELECT * FROM `leaf` WHERE `leafId`='".$this->leafId."'";
@@ -805,9 +803,10 @@ class leafClass extends  configClass {
 		} else if($this->q->vendor=='oracle'){
 			$sql="SELECT * FROM \"leaf\" WHERE \"leafId\"='".$this->leafId."'";
 		}
+		
 		$resultDefault= $this->q->fast($sql);
 		if($this->q->numberRows($resultDefault) > 0 ) {
-			$rowDefault = $this->q->fetch_array($resultDefault);
+			$rowDefault = $this->q->fetchAssoc($resultDefault);
 			$value 		= $rowDefault['leafNote'];
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -822,22 +821,47 @@ class leafClass extends  configClass {
 			$languageId = $row['languageId'];
 			$languageCode = $row['languageCode'];
 			$to 		  =	$languageCode;
-			$googleTranslate = $this->changeLanguage($from="en",$to,$value);
+			$googleTranslate = $this->security->changeLanguage($from="en",$to,$value);
 			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
-				$sql="SELECT * FROM `leafTranslate` WHERE `leafId`='".$leafId."' AND `languageId`='".$languageId."'";
+				$sql="
+				SELECT 	* 
+				FROM 	`leafTranslate` 
+				WHERE 	`leafId`		=	'".$this->leafId."' 
+				AND 	`languageId`	=	'".$languageId."'";
 			} else if ($this->q->vendor=='microsoft') {
-				$sql="SELECT * FROM [leafTranslate] WHERE [leafId]='".$leafId."' AND [languageId]='".$languageId."'";
+				$sql="
+				SELECT 	* 
+				FROM 	[leafTranslate] 
+				WHERE 	[leafId]		=	'".$leafId."' 
+				AND 	[languageId]	=	'".$languageId."'";
 			}  else if ($this->q->vendor=='oracle') {
-				$sql="SELECT * FROM \"leafTranslate\" WHERE \"leafId\"='".$leafId."' AND \"languageId\"='".$languageId."'";
+				$sql="
+				SELECT 	* 
+				FROM 	\"leafTranslate\" 
+				WHERE 	\"leafId\"		=	'".$this->leafId."' 
+				AND 	\"languageId\"='".$languageId."'";
 			}
 			$resultleafTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultleafTranslate) >  0 ) {
+				
 				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
-					$sql="UPDATE `leafTranslate` SET `leafTranslate`='".$googleTranslate."' WHERE `leafTranslateId`='".$leafTranslateId."' and `languageId`='".$languageId."'";
+					$sql="
+					UPDATE 	`leafTranslate` 
+					SET 	`leafTranslate`	=	'".$googleTranslate."' 
+					WHERE 	`leafId`		=	'".$this->leafId."' 
+					AND		`languageId`	=	'".$languageId."'";
 				} else if ($this->q->vendor=='microsoft') {
-					$sql="UPDATE [leafTranslate] SET [leafTranslate]='".$googleTranslate."' WHERE [leafTranslateId]='".$leafTranslateId."' and [languageId]='".$languageId."'";
+					$sql="
+					UPDATE 	[leafTranslate] 
+					SET 	[leafTranslate]	=	'".$googleTranslate."' 
+					WHERE 	[leafId]		=	'".$this->leafId."' 
+					AND 	[languageId]	=	'".$languageId."'";
 				} else if ($this->q->vendor=='oracle') {
-					$sql="UPDATE \"leafTranslate\" SET \"leafTranslate\"='".$googleTranslate."' WHERE \"leafTranslateId\"='".$leafTranslateId."' and \"languageId\"='".$languageId."'";
+					$sql="
+					UPDATE 	\"leafTranslate\" 
+					SET 	\"leafTranslate\"	=	'".$googleTranslate."' 
+					WHERE 	\"leafId\"			=	'".$this->leafId."' 
+					AND 	\"languageId\"		=	'".$languageId."'";
 				}
 				$this->q->update($sql);
 				if($this->q->execute=='fail') {
@@ -847,9 +871,33 @@ class leafClass extends  configClass {
 				}
 			} else {
 				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
-					$sql="INSERT INTO `leafTranslate` (`leafId`,`languageId`,`leafTranslate`) VALUES('".$leafId."','".$languageId."','".$googleTranslate."')";
+					$sql="
+					INSERT INTO `leafTranslate` 
+							(
+								`leafId`,
+								`languageId`,
+								`leafTranslate`
+							) 
+					VALUES
+							(
+								'".$this->leafId."',
+								'".$languageId."',
+								'".$googleTranslate."'
+							)";
 				} else if ($this->q->vendor=='microsoft') {
-					$sql="INSERT INTO [leafTranslate] ([leafId],[languageId],[leafTranslate]) VALUES('".$leafId."','".$languageId."','".$googleTranslate."')";
+					$sql="
+					INSERT INTO [leafTranslate] 
+							(
+								[leafId],
+								[languageId],
+								[leafTranslate]
+							) 
+					VALUES
+							(
+								'".$this->leafId."',
+								'".$languageId."',
+								'".$googleTranslate."'
+							)";
 				} else if ($this->q->vendor=='oracle') {
 					$sql="INSERT INTO \"leafTranslate\" (\"leafId\",\"languageId\",\"leafTranslate\") VALUES('".$leafId."','".$languageId."','".$googleTranslate."')";
 				}
@@ -1043,7 +1091,9 @@ if(isset($_GET['method'])) {
 	if(isset($_GET['leafId_temp'])){
 		$leafObject->leafId_temp  = $_GET['leafId_temp'];
 	}
-
+	if(isset($_GET['leafId'])){
+		$leafObject->leafId  = $_GET['leafId'];
+	}
 	/*
 	 *  Load the dynamic value
 	 */

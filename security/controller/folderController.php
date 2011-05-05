@@ -147,7 +147,7 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+				
 		}
 		$this->q->start();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -342,7 +342,7 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+				
 		}
 		// everything given flexibility  on todo
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -582,7 +582,7 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+				
 		}
 		$this->q->start();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -642,7 +642,7 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+				
 		}
 		$this->q->start();
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
@@ -688,7 +688,7 @@ class folderClass extends  configClass {
 			 **/
 			$sql	=	'SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+				
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor='lite'){
 			$sql="
@@ -765,45 +765,76 @@ class folderClass extends  configClass {
 	 * Create Translation Folder Note to the folderTranslate Table
 	 */
 	function translateMe() {
-		if(isset($_GET['folderId'])) {
-			$folderId = $_GET['folderId'];
-		}
+		header('Content-Type','application/json; charset=utf-8');
 		$this->q->start();
 
-		$sql="SELECT * FROM `folder` WHERE `folderId`='".$folderId."'";
+		$sql="
+		SELECT	* 
+		FROM 	`folder` 
+		WHERE 	`folderId`	=	'".$this->folderId."'";
 		$resultDefault= $this->q->fast($sql);
 		if($this->q->numberRows($resultDefault) > 0 ) {
 			$rowDefault = $this->q->fetch_array($resultDefault);
 			$value 		= $rowDefault['folderNote'];
 		}
 		if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
-			$sql="SELECT * FROM `language`";
+			$sql="
+			SELECT	* 
+			FROM 	`language`";
 		} else if ($this->q->vendor=='microsoft') {
-			$sql="SELECT * FROM [language] ";
+			$sql="
+			SELECT 	* 
+			FROM 	[language] ";
 		} else if ($this->q->vendor=='oracle') {
-			$sql="SELECT * FROM \"language\" ";
+			$sql="
+			SELECT 	* 
+			FROM 	\"language\" ";
 		}
 		$result= $this->q->fast($sql);
 		while ($row = $this->q->fetchAssoc($result)) {
-			$languageId = $row['languageId'];
-			$languageCode = $row['languageCode'];
-			$to 		  =	$languageCode;
-			$googleTranslate = $this->changeLanguage($from="en",$to,$value);
+			$languageId 	= 	$row['languageId'];
+			$languageCode	= 	$row['languageCode'];
+			$to 		  	=	$languageCode;
+			$googleTranslate = $this->security->changeLanguage($from="en",$to,$value);
 			if($this->q->vendor=='normal' || $this->q->vendor=='lite') {
-				$sql="SELECT * FROM `folderTranslate` WHERE `folderId`='".$folderId."' AND `languageId`='".$languageId."'";
+				$sql="
+				SELECT	* 
+				FROM 	`folderTranslate` 
+				WHERE 	`folderId`			=	'".$this->folderId."' 
+				AND 	`languageId`		=	'".$languageId."'";
 			} else if ($this->q->vendor=='microsoft') {
-				$sql="SELECT * FROM [folderTranslate] WHERE [folderId]='".$folderId."' AND [languageId]='".$languageId."'";
+				$sql="
+				SELECT 	* 
+				FROM 	[folderTranslate] 
+				WHERE 	[folderId]			=	'".$this->folderId."' 
+				AND 	[languageId]		=	'".$languageId."'";
 			}  else if ($this->q->vendor=='oracle') {
-				$sql="SELECT * FROM \"folderTranslate\" WHERE \"folderId\"='".$folderId."' AND \"languageId\"='".$languageId."'";
+				$sql="
+				SELECT 	* 
+				FROM 	\"folderTranslate\" 
+				WHERE 	\"folderId\"		=	'".$this->folderId."' 
+				AND 	\"languageId\"		=	'".$languageId."'";
 			}
 			$resultfolderTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultfolderTranslate) >  0 ) {
 				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
-					$sql="UPDATE `folderTranslate` SET `folderTranslate`='".$googleTranslate."' WHERE `folderTranslateId`='".$folderTranslateId."' and `languageId`='".$languageId."'";
+					$sql="
+					UPDATE 	`folderTranslate` 
+					SET 	`folderTranslate`		=	'".$googleTranslate."' 
+					WHERE 	`folderId`				=	'".$this->folderId."' 
+					AND 	`languageId`			=	'".$languageId."'";
 				} else if ($this->q->vendor=='microsoft') {
-					$sql="UPDATE [folderTranslate] SET [folderTranslate]='".$googleTranslate."' WHERE [folderTranslateId]='".$folderTranslateId."' and [languageId]='".$languageId."'";
+					$sql="
+					UPDATE 	[folderTranslate] 
+					SET 	[folderTranslate]		=	'".$googleTranslate."' 
+					WHERE 	[folderId]				=	'".$this->folderId."' 
+					AND 	[languageId]			=	'".$languageId."'";
 				} else if ($this->q->vendor=='oracle') {
-					$sql="UPDATE \"folderTranslate\" SET \"folderTranslate\"='".$googleTranslate."' WHERE \"folderTranslateId\"='".$folderTranslateId."' and \"languageId\"='".$languageId."'";
+					$sql="
+					UPDATE 	\"folderTranslate\" 
+					SET 	\"folderTranslate\"		=	'".$googleTranslate."' 
+					WHERE 	\"folderId\"			=	'".$this->folderId."' 
+					AND 	\"languageId\"			=	'".$languageId."'";
 				}
 				$this->q->update($sql);
 				if($this->q->redirect=='fail') {
@@ -813,11 +844,47 @@ class folderClass extends  configClass {
 				}
 			} else {
 				if($this->q->vendor=='normal'  || $this->q->vendor=='lite') {
-					$sql="INSERT INTO `folderTranslate` (`folderId`,`languageId`,`folderTranslate`) VALUES('".$folderId."','".$languageId."','".$googleTranslate."')";
+					$sql="
+					INSERT INTO `folderTranslate` 
+							(
+								`folderId`,		
+								`languageId`,
+								`folderTranslate`
+							) 
+					VALUES
+						(	
+							'".$folderId."',
+							'".$languageId."',
+							'".$googleTranslate."'
+						)";
 				} else if ($this->q->vendor=='microsoft') {
-					$sql="INSERT INTO [folderTranslate] ([folderId],[languageId],[folderTranslate]) VALUES('".$folderId."','".$languageId."','".$googleTranslate."')";
+					$sql="
+					INSERT INTO [folderTranslate] 
+							(
+								[folderId],
+								[languageId],
+								[folderTranslate]
+							) 
+					VALUES
+							(
+								'".$folderId."',
+								'".$languageId."',
+								'".$googleTranslate."'
+						)";
 				} else if ($this->q->vendor=='oracle') {
-					$sql="INSERT INTO \"folderTranslate\" (\"folderId\",\"languageId\",\"folderTranslate\") VALUES('".$folderId."','".$languageId."','".$googleTranslate."')";
+					$sql="
+					INSERT INTO \"folderTranslate\" 
+							(
+								\"folderId\",
+								\"languageId\",
+								\"folderTranslate\"
+							) 
+					VALUES
+							(
+								'".$folderId."',
+								'".$languageId."',
+								'".$googleTranslate."'
+							)";
 				}
 				$this->q->create($sql);
 				if($this->q->redirect=='fail') {
@@ -852,7 +919,7 @@ class folderClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+				
 		}
 		if($_SESSION['start']==0) {
 			$sql=str_replace("LIMIT","",$_SESSION['sql']);

@@ -932,7 +932,7 @@ class accordionClass extends  configClass{
 			$languageId 		= 	$row['languageId'];
 			$languageCode 		=	$row['languageCode'];
 			$to 		  		=	$languageCode;
-			$googleTranslate	= 	$this->changeLanguage($from="en",$to,$value);
+			$googleTranslate	= 	$this->security->changeLanguage($from="en",$to,$value);
 			if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite') {
 				$sql	=	"
 				SELECT	*
@@ -955,6 +955,7 @@ class accordionClass extends  configClass{
 			$resultaccordionTranslate = $this->q->fast($sql);
 
 			if($this->q->numberRows($resultaccordionTranslate) >  0 ) {
+				
 				if($this->q->vendor	==	'normal'  || $this->q->vendor	==	'lite') {
 
 					$sql	=	"

@@ -325,8 +325,7 @@ Ext
 																.setValue(
 																		record.data.leafId);
 
-														Ext.getCmp('folderId')
-																.enable(); // enable
+														Ext.getCmp('folder_fake').enable(); // enable
 														// cascading
 														Ext.getCmp(
 																'translation')
@@ -1116,9 +1115,7 @@ Ext
 																				systemLabel,
 																				action.result.message);
 
-																formPanel
-																		.getForm()
-																		.reset();
+															
 																leafStore
 																		.reload({
 																			params : {
@@ -1185,9 +1182,9 @@ Ext
 													url : "../controller/leafController.php",
 													method : 'GET',
 													params : {
-														leafId : leafId,
+														leafId_temp : leafId_temp,
 														method : 'translate',
-														accordionId : Ext
+														leafId : Ext
 																.getCmp(
 																		'leafId')
 																.getValue()
