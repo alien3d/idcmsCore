@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once("../../class/classAbstract.php");
-require_once("../../class/classAudit.php");
+require_once("../../class/classDocumentTrail.php");
 require_once("../model/religionModel.php");
 /**
  * this is religion setting files.This sample template file for master record
@@ -61,9 +61,9 @@ class religionClass extends configClass
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private $doc_trail;
+	private $documentTrail;
 	/**
 	 *  Ascending ,Descending ASC,DESC
 	 * @var string $order;`
@@ -119,7 +119,7 @@ class religionClass extends configClass
 		$this->model         = new religionModel();
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
-		$this->audit = new auditClass();
+		$this->documentTrail = new documentTrailClass();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -128,7 +128,7 @@ class religionClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->q->vendor == 'mysql' || $this->q->vendor == 'lite') {
+		if ($this->q->vendor == 'mysql' || $this->q->vendor == 'mysql') {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
@@ -206,7 +206,14 @@ class religionClass extends configClass
 						'" . $this->model->isActive . "',		" . $this->model->Time . "
 					)";
 		}
+		//advance logging future
+		$this->q->table           = $this->model->tableName;
+		$this->q->primaryKeyName  = $this->model->primaryKeyName;
+		// $this->q->primaryKeyValue = $this->q->lastInsertId();  not use here
+		echo "audit value".$this->audit;
+		$this->q->audit           = $this->audit;
 		$this->q->create($sql);
+		
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(
                 "success" => false,
@@ -214,6 +221,8 @@ class religionClass extends configClass
 			));
 			exit();
 		}
+		
+		
 		$this->q->commit();
 		echo json_encode(array(
             "success" => true,
@@ -540,9 +549,10 @@ class religionClass extends configClass
 					\"Time\"			=	" . $this->model->Time . "
 			WHERE 	\"religionId\"		=	'" . $this->model->religionId . "'";
 		}
-		$this->q->table           = 'religion';
-		$this->q->primaryKeyName  = 'religionId';
-		$this->q->primaryKeyValue = $_POST['religionId'];
+		// advance logging future
+		$this->q->table           = $this->model->tableName;
+		$this->q->primaryKeyName  = $this->model->primaryKeyName;
+		$this->q->primaryKeyValue = $this->model->religionId;
 		$this->q->audit           = $this->audit;
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {

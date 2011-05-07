@@ -1,11 +1,11 @@
 <html>
 <head>
-<title>PHPMailer Lite - DKIM and Callback Function test</title>
+<title>PHPMailer mysql - DKIM and Callback Function test</title>
 </head>
 <body>
 
 <?php
-/* This is a sample callback function for PHPMailer Lite.
+/* This is a sample callback function for PHPMailer mysql.
  * This callback function will echo the results of PHPMailer processing.
  */
 
@@ -30,11 +30,11 @@ function callbackAction ($result, $to, $cc, $bcc, $subject, $body) {
 	return true;
 }
 
-$testLite = false;
+$testmysql = false;
 
-if ($testLite) {
-	require_once '../class.phpmailer-lite.php';
-	$mail = new PHPMailerLite();
+if ($testmysql) {
+	require_once '../class.phpmailer-mysql.php';
+	$mail = new PHPMailermysql();
 } else {
 	require_once '../class.phpmailer.php';
 	$mail = new PHPMailer();
@@ -44,7 +44,7 @@ try {
 	$mail->IsMail(); // telling the class to use SMTP
 	$mail->SetFrom('you@yourdomain.com', 'Your Name');
 	$mail->AddAddress('another@yourdomain.com', 'John Doe');
-	$mail->Subject = 'PHPMailer Lite Test Subject via Mail()';
+	$mail->Subject = 'PHPMailer mysql Test Subject via Mail()';
 	$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!'; // optional - MsgHTML will create an alternate automatically
 	$mail->MsgHTML(file_get_contents('contents.html'));
 	$mail->AddAttachment('images/phpmailer.gif');      // attachment

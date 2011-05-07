@@ -1,5 +1,5 @@
 <?php
-class auditClass {
+class auditTrailClass {
 	/**
 	 * File Information
 	 * @param string $filename

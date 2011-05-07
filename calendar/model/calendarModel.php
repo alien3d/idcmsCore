@@ -44,7 +44,7 @@ class calendarModel extends validationClass{
 		if(isset($_SESSION['staffId'])){
 			$this->By = $_SESSION['staffId'];
 		}
-		if($this->vendor=='normal' || $this->vendor=='lite'){
+		if($this->vendor=='normal' || $this->vendor=='mysql'){
 			$this->Time = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='microsoft'){
 			$this->Time = "'".date("Y-m-d H:i:s")."'";

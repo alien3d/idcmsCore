@@ -258,7 +258,7 @@ class staffClass extends  configClass {
 				if($this->q->numberRows() ==  0 ){
 
 					// record don't exist create new
-					if($this->q->vendor=='mysql' || $this->q->vendor='lite'){
+					if($this->q->vendor=='mysql' || $this->q->vendor='mysql'){
 						$sql="
 						INSERT INTO `accordionAccess`	(
 									`accordionId`,				`groupId`,

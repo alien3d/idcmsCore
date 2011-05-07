@@ -167,12 +167,12 @@ Ext.ux.form.LoginDialog = function (config) {
         },{
             xtype           : 'combo',
             name      		: 'vendor',
-            id					: 'vendorX',
+            id				: 'vendorX',
             hiddenId		: 'vendor',
             hiddenName	:  'vendor',
             fieldLabel      : this.vendorLabel,
             store           : [
-                    ['lite', 'Mysql'],
+                    ['mysql', 'Mysql'],
                     ['oracle','Oracle'],
 					['microsoft','Microsft Sql Server']
                 ],

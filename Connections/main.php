@@ -69,7 +69,7 @@ $username =   $shared->u; 												// your username
 $password =   $shared->p;  												// your database usernamer
 $q=new vendor();													// declare object
 
-$q->vendor =	$_SESSION['vendor']; 									// normal for mysql and lite for mysqli
+$q->vendor =	$_SESSION['vendor']; 									// normal for mysql and mysql for mysqli
 $q->staffId =   $_SESSION['staffId'];
 $q->connect($connection, $username, $database, $password);
 

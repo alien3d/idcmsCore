@@ -235,7 +235,7 @@ class folderClass extends  configClass {
 			));
 			exit();
 		}
-		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite' ) {
+		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'mysql' ) {
 			/*
 			 * 	If anything wrong use this instead  SELECT LAST_INSERT_ID();
 			 **/
@@ -724,7 +724,7 @@ class folderClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
-		if( $this->q->vendor='lite'){
+		if( $this->q->vendor='mysql'){
 			$sql="
 			SELECT	*
 			FROM 	`folderTranslate`

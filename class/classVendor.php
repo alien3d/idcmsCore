@@ -126,7 +126,7 @@ class vendor {
 		$this->oracleCloseTag="\"";
 		switch($_SESSION['vendor']){
 			case 'normal':
-			case 'lite':
+			case 'mysql':
 				$this->globalOpenTag=$this->mysqlOpenTag;
 				$this->globalCloseTag= $this->mysqlCloseTag;
 				break;
@@ -164,7 +164,7 @@ class vendor {
 
 		if($this->vendor=='normal')    {
 			$this->link=mysql_connect($this->connection,$this->username,$this->password);
-		}	elseif($this->vendor=='lite') {
+		}	elseif($this->vendor=='mysql') {
 			$this->link=mysqli_connect($this->connection,$this->username,$this->password,$this->databaseName,$this->port,$this->socket);
 		} elseif($this->vendor=='microsoft') {
 
@@ -184,7 +184,7 @@ class vendor {
 				$this->result_text=mysql_error($this->link)."Error Code".mysql_errno($this->link);
 				echo json_encode(array("success"=>false,"message"=>$this->result_text));
 				exit();
-			}	elseif($this->vendor=='lite') {
+			}	elseif($this->vendor=='mysql') {
 				if (mysqli_connect_errno()) {
 					$this->result_text=mysqli_connect_errno();
 					echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->result_text));
@@ -216,7 +216,7 @@ class vendor {
 		} else {
 			if($this->vendor=="normal")   {
 				$resources	=	mysql_select_db($this->databaseName,$this->link);
-			} elseif($this->vendor=="lite") {
+			} elseif($this->vendor=="mysql") {
 				$resources	=	mysqli_select_db($this->link,$this->databaseName);
 			}
 			if(!$resources) {
@@ -224,7 +224,7 @@ class vendor {
 					$this->result_text	=	mysql_error($this->link)."Error Code".mysql_errno($this->link);
 					echo json_encode(array("success"=>false,"message"=>$this->result_text));
 					exit();
-				} elseif ($this->vendor	==	'lite'){
+				} elseif ($this->vendor	==	'mysql'){
 					$this->result_text	=	mysqli_error($this->link)."Error Code".mysqli_errno($this->link);
 					echo json_encode(array("success"=>false,"message"=>$this->result_text));
 					exit();
@@ -242,7 +242,7 @@ class vendor {
 		
 		if($this->vendor=="normal")   {
 			mysql_query("SET autocommit=0",$this->link);
-		} elseif($this->vendor=="lite") {
+		} elseif($this->vendor=="mysql") {
 			mysqli_autocommit($this->link, FALSE);
 		} elseif ($this->vendor =='microsoft') {
 			if ( sqlsrv_begin_transaction( $this->link ) === false )	{
@@ -281,7 +281,7 @@ class vendor {
 		if($this->vendor=='normal') {
 
 			$this->result=mysql_query($this->sql,$this->link);
-		} elseif($this->vendor=='lite') {
+		} elseif($this->vendor=='mysql') {
 			$this->result	=mysqli_query($this->link,$this->sql);
 		} elseif($this->vendor=='microsoft') {
 			$this->result 	=	sqlsrv_query($this->link,$this->sql);
@@ -322,7 +322,7 @@ class vendor {
 			if($this->vendor=='normal') {
 				$this->result_text=mysql_error($this->link)."Error Code : ".mysql_errno($this->link);
 				$error=1;
-			}elseif($this->vendor=='lite') {
+			}elseif($this->vendor=='mysql') {
 				$this->result_text="Sql Stament Error".$this->sql." \n\r".mysqli_error($this->link)." <br> Error Code :x ". mysqli_errno($this->link);
 				$error=1;
 			} else if ($this->vendor=='microsoft') {
@@ -355,7 +355,7 @@ class vendor {
 		//	print"<br><br><br>[]";
 			if($this->vendor=='normal') {
 				$result_row=mysql_query($sql_log,$this->link);
-			} 	elseif($this->vendor=='lite') {
+			} 	elseif($this->vendor=='mysql') {
 				$result_row=mysqli_query($this->link,$sql_log);
 			}   elseif($this->vendor=='microsoft') {
 				$result_row=sqlsrv_query($this->link,$sql_log);
@@ -394,7 +394,7 @@ class vendor {
 					echo "error la query[".$sql_log."]";
 					$this->result_text=$sql_log."<br>".mysql_error();
 
-				}	elseif($this->vendor=='lite') {
+				}	elseif($this->vendor=='mysql') {
 					echo "error la query[".$sql_log."]";
 					//		$this->result_text=$sql_log."<br>".mysqli_error($this->link)."<br> Error Code :y ".mysqli_errno($this->link);
 				} else if ($this->vendor=='microsoft') {
@@ -435,7 +435,7 @@ class vendor {
 			} else {
 				$result_row=mysql_num_rows($result);
 			}
-		}elseif($this->vendor=='lite') {
+		}elseif($this->vendor=='mysql') {
 
 			$result=mysqli_query($this->link,$sql);
 			if(!$result) {
@@ -547,7 +547,7 @@ class vendor {
 
 				mysql_query($sql_log,$this->link);
 
-			}	elseif($this->vendor=='lite') {
+			}	elseif($this->vendor=='mysql') {
 
 
 				$test1=mysqli_query($this->link,$sql_log);
@@ -624,7 +624,7 @@ class vendor {
 				$sql_column 	= "SHOW COLUMNS FROM `".$this->tableName."`";
 				if($this->vendor=='normal'){
 					$result_column 	= mysql_query($sql_column,$this->link);
-				} else if ($this->vendor=='lite'){
+				} else if ($this->vendor=='mysql'){
 					$result_column = mysqli_query($this->link,$sql_column);
 				}
 				if(!$result_column){
@@ -641,7 +641,7 @@ class vendor {
 							// create the field value
 							$field_val[]=  $row_column['Field'];
 						}
-					} else if ($this->vendor=='lite'){
+					} else if ($this->vendor=='mysql'){
 						while ( $row_column  = mysqli_fetch_array($result_column))  {
 							// create the field value
 							$field_val[]=  $row_column['Field'];
@@ -652,7 +652,7 @@ class vendor {
 				$sql_prev =" SELECT * FROM `".$this->tableName."` WHERE `".$this->primaryKeyName."` = '".$this->primaryKeyValue."'";
 				if($this->vendor=='normal'){
 					$result_prev = mysql_query($sql_prev);
-				}else if ($this->vendor=='lite'){
+				}else if ($this->vendor=='mysql'){
 					$result_prev= mysqli_query($this->link,$sql_prev);
 				}
 				if(!$result_prev){
@@ -670,7 +670,7 @@ class vendor {
 								$prev[$field]=$row_prev[$field];
 							}
 						}
-					} else if ($this->vendor=='lite'){
+					} else if ($this->vendor=='mysql'){
 
 						while ( $row_prev = mysqli_fetch_array($result_prev)) {
 
@@ -701,7 +701,7 @@ class vendor {
 				// here should create a backup file to restore back sql statement
 				if($this->vendor=='normal') {
 					$result=mysql_query($sql_log_advance,$this->link);
-				}	elseif($this->vendor=='lite') {
+				}	elseif($this->vendor=='mysql') {
 					$result=mysqli_query($this->link,$sql_log_advance);
 				}
 				/**
@@ -710,7 +710,7 @@ class vendor {
 				if($this->vendor=='normal') {
 
 					$result=mysql_query($sql,$this->link);
-				}	elseif($this->vendor=='lite') {
+				}	elseif($this->vendor=='mysql') {
 					$result=mysqli_query($this->link,$sql);
 
 				}
@@ -719,7 +719,7 @@ class vendor {
 					$this->execute=='fail';
 					if($this->vendor=='normal') {
 						$this->result_text=mysql_error()." Error Code".mysql_errno();
-					} elseif($this->vendor=='lite') {
+					} elseif($this->vendor=='mysql') {
 						// check back relationship database.cascading update,delete not done by now.dangerous
 						$this->result_text= mysqli_error($this->link)."Error code".mysqli_errno($this->link);
 						$this->rollback();
@@ -785,7 +785,7 @@ class vendor {
 							$this->execute='fail';
 							$this->result_text="Error selecting table";
 						}
-					} else if($this->vendor=='lite'){
+					} else if($this->vendor=='mysql'){
 						$result_column = mysqli_query($this->link,$sql_column);
 						if(!$result_column){
 							$this->execute='fail';
@@ -805,7 +805,7 @@ class vendor {
 
 							}
 						}
-					} elseif ($this->vendor=='lite'){
+					} elseif ($this->vendor=='mysql'){
 
 						if(!$result_column){
 							$this->execute='fail';
@@ -840,7 +840,7 @@ class vendor {
 								}
 							}
 						}
-					}else if($this->vendor=='lite') {
+					}else if($this->vendor=='mysql') {
 
 						$result_prev = mysqli_query($this->link,$sql_prev);
 						if(!$result_prev){
@@ -882,7 +882,7 @@ class vendor {
 							$this->execute='fail';
 							$this->result_text="Error inserting Query Advance insert";
 						}
-					}else if($this->vendor=='lite') {
+					}else if($this->vendor=='mysql') {
 						$result_log_advance 	=	 mysqli_query($this->link,$sql_log_advance);
 						if($result_log_advance){
 
@@ -914,7 +914,7 @@ class vendor {
 							$this->execute='fail';
 							$this->result_text="Error Query on advance select";
 						}
-					} else if($this->vendor=='lite'){
+					} else if($this->vendor=='mysql'){
 						$result_curr  = mysqli_query($this->link,$sql_curr);
 						if($result_curr){
 							while	($row_curr = mysqli_fetch_array($result_curr)) {
@@ -939,7 +939,7 @@ class vendor {
 							$this->result_text="Error Query update log advance";
 						}
 
-					} else if($this->vendor=='lite'){
+					} else if($this->vendor=='mysql'){
 						$result= mysqli_query($this->link,$sql);
 						if(!$result){
 							$this->execute='fail';
@@ -1007,7 +1007,7 @@ class vendor {
 		if(strlen($sql)> 0 ) {
 			if($this->vendor=='normal') {
 				$result = mysql_query($this->sql,$this->link);
-			}else if($this->vendor=='lite') {
+			}else if($this->vendor=='mysql') {
 				$result = mysqli_query($this->link,$this->sql);
 			} else if ($this->vendor=='microsoft') {
 				$result = sqlsrv_query($this->link,$this->sql);
@@ -1040,7 +1040,7 @@ class vendor {
 				$result = mysql_query($this->sql,$this->link);
 
 			}
-			else if($this->vendor=='lite') {
+			else if($this->vendor=='mysql') {
 				$result = mysqli_query($this->link,$this->sql);
 
 			} else if ($this->vendor=='microsoft') {
@@ -1095,7 +1095,7 @@ class vendor {
 		if($result) {
 			if($this->vendor=='normal') {
 				$this->countRecord = mysql_num_rows($result);
-			} else if ($this->vendor=='lite') {
+			} else if ($this->vendor=='mysql') {
 				$this->countRecord = mysqli_num_rows($result);
 			} else if ($this->vendor=='microsoft') {
 
@@ -1149,7 +1149,7 @@ class vendor {
 		}  else{
 			if($this->vendor=='normal') {
 				$this->countRecord = mysql_num_rows($this->result);
-			} else if ($this->vendor=='lite') {
+			} else if ($this->vendor=='mysql') {
 
 				$this->countRecord = mysqli_num_rows($this->result);
 			} else if ($this->vendor=='microsoft') {
@@ -1213,7 +1213,7 @@ class vendor {
 		// must include this before q->commit; after commit will no output
 		if($this->vendor =='normal') {
 			$this->insert_id	= mysql_insert_id();
-		} else  if ($this->vendor=='lite') {
+		} else  if ($this->vendor=='mysql') {
 			$this->insert_id 	= mysqli_insert_id($this->link);
 
 		} else if ($this->vendor=='microsoft') {
@@ -1239,7 +1239,7 @@ class vendor {
 	public function affectedRows(){
 		if($this->vendor =='normal') {
 			return mysql_affected_rows();
-		} else if($this->vendor=='lite'){
+		} else if($this->vendor=='mysql'){
 
 			return mysqli_affected_rows($this->link);
 
@@ -1254,7 +1254,7 @@ class vendor {
 		// this is begun statement
 		if($this->vendor=='normal')  {
 			mysql_query("SET autocommit=1",$this->link);
-		} else  if ($this->vendor=='lite'){
+		} else  if ($this->vendor=='mysql'){
 			mysqli_commit($this->link);
 		} else if ($this->vendor=='microsoft') {
 			sqlsrv_commit($this->link);
@@ -1270,7 +1270,7 @@ class vendor {
 		if($this->vendor=='normal')  {
 			mysql_query("ROLLBACK", $this->link);
 			$this->execute='fail';
-		} else if($this->vendor=='lite') {
+		} else if($this->vendor=='mysql') {
 			mysqli_rollback($this->link);
 			$this->execute='fail';
 		} else if ($this->vendor=='microsoft') {
@@ -1290,7 +1290,7 @@ class vendor {
 		if($this->vendor =='normal') {
 			if($this->result)	{  return mysql_fetch_array($this->result); }
 			if($result) 		   	{  return mysql_fetch_array($result); }
-		} elseif ($this->vendor=='lite') {
+		} elseif ($this->vendor=='mysql') {
 			if($this->result)	{  return @mysqli_fetch_array($this->result); }
 			if($result) 		   	{  return @mysqli_fetch_array($result); }
 		} elseif($this->vendor=='microsoft') {
@@ -1322,7 +1322,7 @@ class vendor {
 					$d[]=$row;
 				}
 			}
-		}elseif ($this->vendor=='lite') {
+		}elseif ($this->vendor=='mysql') {
 			if($result) {
 				while($row=mysqli_fetch_assoc($result)){
 					$d[]=$row;
@@ -1368,7 +1368,7 @@ class vendor {
 		if($this->vendor =='normal') {
 			if($this->result && is_null($result)) { return mysql_fetch_assoc($this->result);  }
 			if($result) { return mysql_fetch_assoc($result); }
-		} elseif ($this->vendor=='lite') {
+		} elseif ($this->vendor=='mysql') {
 			if($this->result && is_null($result)) {
 				
 				 return mysqli_fetch_assoc($this->result); }
@@ -1396,7 +1396,7 @@ class vendor {
 		if($this->vendor=='normal') {
 			if($this->result) { mysql_free_result($this->result);  }
 			if($result) { mysql_free_result($result);  }
-		} elseif($this->vendor=='lite') {
+		} elseif($this->vendor=='mysql') {
 			if($this->result) {  mysqli_free_result($this->result); }
 			if($result) {  mysqli_free_result($result); }
 		} elseif($this->vendor=='microsoft'){
@@ -1415,7 +1415,7 @@ class vendor {
 		// close mysql connections
 		if($this->vendor=='normal')  {
 			$result=mysql_close($this->link);
-		} elseif($this->vendor=='lite') {
+		} elseif($this->vendor=='mysql') {
 			$result=mysqli_close($this->link);
 		} elseif($this->vendor=='microsoft'){
 			$result = sqlsrv_close($this->link);
@@ -1512,7 +1512,7 @@ class vendor {
 		if($this->vendor=='normal'){
 			return mysql_escape_string($data);
 		}
-		if($this->vendor=='lite'){
+		if($this->vendor=='mysql'){
 
 			return mysqli_real_escape_string($this->link,$data);
 		}
@@ -1541,7 +1541,7 @@ class vendor {
 		$strSearch = "AND ( ";
 
 		foreach ($tableArray as $tableSearch){
-			if($this->vendor=='normal' || $this->vendor=='lite') {
+			if($this->vendor=='normal' || $this->vendor=='mysql') {
 				$sql="DESCRIBE	`".$tableSearch."`";
 			} else if ($this->vendor=='microsoft') {
 				$sql="
@@ -1557,7 +1557,7 @@ class vendor {
 
 				while($row = $this->fetch_array()) {
 
-					if($this->vendor=='normal' || $this->vendor=='lite') {
+					if($this->vendor=='normal' || $this->vendor=='mysql') {
 						$strField 	= "`".$tableSearch."`.`".$row['Field']."`";
 					} else if ($this->vendor=='microsoft') {
 						$strField 	= "[".$tableSearch."].[".$row['COLUMN_NAME']."]";

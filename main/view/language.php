@@ -1,7 +1,7 @@
 <?php	session_start();
 $_SESSION['languageId']=$_GET['languageId'];
 include('../../Connections/main.php');
-if($q->vendor=='normal' || $q->vendor=='lite') {
+if($q->vendor=='normal' || $q->vendor=='mysql') {
 	$sql="
 	UPDATE	`staff`
 	SET 	`languageId`='".$_SESSION['languageId']."'";

@@ -154,7 +154,7 @@ class accordionClass extends  configClass{
 	function create() 							{
 		header('Content-Type','application/json; charset=utf-8');
 
-		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite') {
+		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'mysql') {
 
 			//UTF8
 			$sql	=	'SET NAMES "utf8"';
@@ -239,7 +239,7 @@ class accordionClass extends  configClass{
 			exit();
 		}
 
-		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite' ) {
+		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'mysql' ) {
 			/*
 			 * 	If anything wrong use this instead  SELECT LAST_INSERT_ID();
 			 **/
@@ -271,7 +271,7 @@ class accordionClass extends  configClass{
 
 		//  create a record  in accordionAccess.update no effect
 		// loop the group
-		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite' ) {
+		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'mysql' ) {
 
 			$sql	=	"
 			SELECT 	*
@@ -442,7 +442,7 @@ class accordionClass extends  configClass{
 			$this->q->fast($sql);
 
 		}
-		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite') {
+		if($this->q->vendor	==	'normal' || $this->q->vendor	==	'mysql') {
 
 			$sql	=	"
 			SELECT		*
@@ -497,7 +497,7 @@ class accordionClass extends  configClass{
 			 *  @variables $tableArray
 			 */
 			$tableArray	= array('accordion','accordionTranslate');
-			if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite') {
+			if($this->q->vendor	==	'normal' || $this->q->vendor	==	'mysql') {
 
 				$sql.=	$this->q->quickSearch($tableArray,$filterArray);
 
@@ -813,7 +813,7 @@ class accordionClass extends  configClass{
 			$this->q->fast($sql);
 				
 		}
-		if( $this->q->vendor='lite'){
+		if( $this->q->vendor='mysql'){
 			$sql="
 			SELECT	*
 			FROM 	`accordionTranslate`
@@ -890,7 +890,7 @@ class accordionClass extends  configClass{
 	function translateMe() {
 		header('Content-Type','application/json; charset=utf-8');
 		$this->q->start();
-		if($this->q->vendor	==	'normal'	||	$this->q->vendor	==	'lite') {
+		if($this->q->vendor	==	'normal'	||	$this->q->vendor	==	'mysql') {
 
 			$sql	=	"
 			SELECT	*
@@ -936,7 +936,7 @@ class accordionClass extends  configClass{
 			$languageCode 		=	$row['languageCode'];
 			$to 		  		=	$languageCode;
 			$googleTranslate	= 	$this->security->changeLanguage($from="en",$to,$value);
-			if($this->q->vendor	==	'normal' || $this->q->vendor	==	'lite') {
+			if($this->q->vendor	==	'normal' || $this->q->vendor	==	'mysql') {
 				$sql	=	"
 				SELECT	*
 				FROM 	`accordionTranslate`
@@ -959,7 +959,7 @@ class accordionClass extends  configClass{
 
 			if($this->q->numberRows($resultaccordionTranslate) >  0 ) {
 				
-				if($this->q->vendor	==	'normal'  || $this->q->vendor	==	'lite') {
+				if($this->q->vendor	==	'normal'  || $this->q->vendor	==	'mysql') {
 
 					$sql	=	"
 					UPDATE	`accordionTranslate`

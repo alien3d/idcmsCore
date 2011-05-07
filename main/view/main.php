@@ -36,11 +36,11 @@ echo $_SESSION[$theme];
 		
     	Ext.BLANK_IMAGE_URL ='../../javascript/resources/images/s.gif';
     	<?php
-				if($q->vendor=='normal' || $q->vendor=='lite') {
+				if($q->vendor=='normal' || $q->vendor=='mysql') {
 					$sql='SET NAMES "utf8"';
 					$q->fast($sql);
 				}
-				if($q->vendor=='normal' || $q->vendor=='lite') {
+				if($q->vendor=='normal' || $q->vendor=='mysql') {
 					$sql="SELECT * FROM `staff` WHERE `staffId`='".$_SESSION[$staffId]."' LIMIT 1";
 				} else if ($q->vendor=='microsoft') {
 						$sql="SELECT TOP 1 * FROM [staff] WHERE [staffId]='".$_SESSION[$staffId]."'";
@@ -76,7 +76,7 @@ echo $_SESSION[$theme];
 						['Ubuntu','../../js/resources/css/xtheme-human.css']]
 		});
 		<?php 	$str=null;
-					if($q->vendor=='normal' || $q->vendor=='lite') {
+					if($q->vendor=='normal' || $q->vendor=='mysql') {
 						$sql="SELECT * FROM `language`";
 					} else if ($q->vendor=='microsoft') {
 						$sql="SELECT * FROM [language]";
@@ -123,12 +123,11 @@ echo $_SESSION[$theme];
      	//	tabUrl='http://www.yahoo.com';
 			var tab = tabPanel.add({
             	xtype      : 'iframepanel',
-            	title      : tabTitle,
-            	defaultSrc : tabUrl,
-            	loadMask   : false,
-            	closable   : true,
-            	autoScroll : true
-
+           	title      : tabTitle,
+           	defaultSrc : tabUrl,
+           	loadMask   : false,
+           	closable   : true,
+           	autoScroll : true
 		   });
         	tabPanel.rendered && tabPanel.doLayout();
         	tabPanel.setActiveTab(tab);
@@ -222,7 +221,7 @@ echo $_SESSION[$theme];
 			items		: [
 				<?php // module configuration
 				$counter_accordion = 0;
-				if($q->vendor=='normal' || $q->vendor=='lite') {
+				if($q->vendor=='normal' || $q->vendor=='mysql') {
 					$sql_accordion		=	"
 					SELECT 	*
 					FROM 	`accordionAccess`
@@ -321,7 +320,7 @@ echo $_SESSION[$theme];
 
 							<?php	// folder configuration
 									$counter_folder=0;
-							   		if($q->vendor=='normal' || $q->vendor=='lite') {
+							   		if($q->vendor=='normal' || $q->vendor=='mysql') {
 										$sql_folder	="
 										SELECT		*
 										FROM 		`folderAccess`
@@ -401,7 +400,7 @@ echo $_SESSION[$theme];
 							children	: [
 						<?php  //  program configuration
 							    $counter_leaf=0;
-							   	if($q->vendor=='normal' || $q->vendor=='lite') {
+							   	if($q->vendor=='normal' || $q->vendor=='mysql') {
 									$sql_leaf	="
 									SELECT		*
 									FROM		`leafAccess`
