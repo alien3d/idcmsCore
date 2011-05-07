@@ -181,13 +181,13 @@ class vendor {
 			$this->execute='fail';
 
 			if($this->vendor=='normal')    {
-				$this->result_text=mysql_error($this->link)."Error Code".mysql_errno($this->link);
-				echo json_encode(array("success"=>false,"message"=>$this->result_text));
+				$this->responce=mysql_error($this->link)."Error Code".mysql_errno($this->link);
+				echo json_encode(array("success"=>false,"message"=>$this->responce));
 				exit();
 			}	elseif($this->vendor=='mysql') {
 				if (mysqli_connect_errno()) {
-					$this->result_text=mysqli_connect_errno();
-					echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->result_text));
+					$this->responce=mysqli_connect_errno();
+					echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->responce));
 					exit();
 				}
 			} else if ($this->vendor=='microsoft') {
@@ -196,8 +196,8 @@ class vendor {
 				$error.=" CE Sql State : ".$errorArray[0]['SQLSTATE'];
 				$error.=" Code : ".$errorArray[0]['code'];
 				$error.=" Message : ".$errorArray[0]['message'];
-				$this->result_text=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->result_text));
+				$this->responce=$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->responce));
 				exit();
 
 			} else if($this->vendor=='oracle') {
@@ -207,8 +207,8 @@ class vendor {
 				$error.=	"Message: " . $errorArray["message"] . "<br>";
 				$error.=	"Position: " . $errorArray["offset"] . "<br>";
 				$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
-				$this->result_text	=	$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->result_text));
+				$this->responce	=	$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->responce));
 				exit();
 			}
 
@@ -221,12 +221,12 @@ class vendor {
 			}
 			if(!$resources) {
 				if($this->vendor=='normal') {
-					$this->result_text	=	mysql_error($this->link)."Error Code".mysql_errno($this->link);
-					echo json_encode(array("success"=>false,"message"=>$this->result_text));
+					$this->responce	=	mysql_error($this->link)."Error Code".mysql_errno($this->link);
+					echo json_encode(array("success"=>false,"message"=>$this->responce));
 					exit();
 				} elseif ($this->vendor	==	'mysql'){
-					$this->result_text	=	mysqli_error($this->link)."Error Code".mysqli_errno($this->link);
-					echo json_encode(array("success"=>false,"message"=>$this->result_text));
+					$this->responce	=	mysqli_error($this->link)."Error Code".mysqli_errno($this->link);
+					echo json_encode(array("success"=>false,"message"=>$this->responce));
 					exit();
 				}
 			}
@@ -251,8 +251,8 @@ class vendor {
 				$error.=	" TE Sql State : ".$errorArray[0]['SQLSTATE'];
 				$error.=	" Code : ".$errorArray[0]['code'];
 				$error.=	" Message : ".$errorArray[0]['message'];
-				$this->result_text	=	$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Commit Transaction : '.$this->result_text));
+				$this->responce	=	$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Commit Transaction : '.$this->responce));
 				exit();
 			}
 		} elseif($this->vendor=='oracle') {
@@ -300,8 +300,8 @@ class vendor {
 					$error.=	"Message: " . $errorArray["message"] . "<br>";
 					$error.=	"Position: " . $errorArray["offset"] . "<br>";
 					$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
-					$this->result_text=$error; // contain special character
-					echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->result_text));
+					$this->responce=$error; // contain special character
+					echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
 					exit();
 				}
 			} else {
@@ -311,8 +311,8 @@ class vendor {
 				$error.=	"Message: " . $errorArray["message"] . "<br>";
 				$error.=	"Position: " . $errorArray["offset"] . "<br>";
 				$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
-				$this->result_text=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->result_text));
+				$this->responce=$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
 				exit();
 			}
 
@@ -320,14 +320,14 @@ class vendor {
 		if(!$this->result) {
 			$this->execute='fail';
 			if($this->vendor=='normal') {
-				$this->result_text=mysql_error($this->link)."Error Code : ".mysql_errno($this->link);
+				$this->responce=mysql_error($this->link)."Error Code : ".mysql_errno($this->link);
 				$error=1;
 			}elseif($this->vendor=='mysql') {
-				$this->result_text="Sql Stament Error".$this->sql." \n\r".mysqli_error($this->link)." <br> Error Code :x ". mysqli_errno($this->link);
+				$this->responce="Sql Stament Error".$this->sql." \n\r".mysqli_error($this->link)." <br> Error Code :x ". mysqli_errno($this->link);
 				$error=1;
 			} else if ($this->vendor=='microsoft') {
 
-				$this->result_text= " Query Error -> Sql State : ".$errorArray[0]['SQLSTATE']. " Code : ".$errorArray[0]['code']." Message : ".$errorArray[0]['message'];
+				$this->responce= " Query Error -> Sql State : ".$errorArray[0]['SQLSTATE']. " Code : ".$errorArray[0]['code']." Message : ".$errorArray[0]['message'];
 				$error =1;
 
 			}
@@ -350,7 +350,7 @@ class vendor {
 									\"".trim(addslashes($this->sql))."\",
 									\"".date("Y-m-d H:i:s")."\",
 									\"".$this->staffId."\",
-									\"".$this->realEscapeString($this->result_text)."\"
+									\"".$this->realEscapeString($this->responce)."\"
 								)";
 		//	print"<br><br><br>[]";
 			if($this->vendor=='normal') {
@@ -372,8 +372,8 @@ class vendor {
 						$error.=		"Message: " . $errorArray["message"] . "<br>";
 						$error.=		"Position: " . $errorArray["offset"] . "<br>";
 						$error.=		"Statement: " . addslashes($errorArray["sqltext"]) . "<br>";
-						$this->result_text	=	$error;
-						echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->result_text));
+						$this->responce	=	$error;
+						echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
 						exit();
 					}
 				} else {
@@ -383,8 +383,8 @@ class vendor {
 					$error.=	"Message: " . $errorArray["message"] . "<br>";
 					$error.=	"Position: " . $errorArray["offset"] . "<br>";
 					$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
-					$this->result_text=$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->result_text));
+					$this->responce=$error;
+					echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
 					exit();
 				}
 			}
@@ -392,13 +392,13 @@ class vendor {
 				$this->execute='fail';
 				if($this->vendor=='normal') {
 					echo "error la query[".$sql_log."]";
-					$this->result_text=$sql_log."<br>".mysql_error();
+					$this->responce=$sql_log."<br>".mysql_error();
 
 				}	elseif($this->vendor=='mysql') {
 					echo "error la query[".$sql_log."]";
-					//		$this->result_text=$sql_log."<br>".mysqli_error($this->link)."<br> Error Code :y ".mysqli_errno($this->link);
+					//		$this->responce=$sql_log."<br>".mysqli_error($this->link)."<br> Error Code :y ".mysqli_errno($this->link);
 				} else if ($this->vendor=='microsoft') {
-					//		$this->result_text=sqlsrv_errors();
+					//		$this->responce=sqlsrv_errors();
 				}
 			}
 			//	$this->rollback();
@@ -430,7 +430,7 @@ class vendor {
 			$result=mysql_query($sql,$this->link);
 			if(!$result) {
 				$this->execute='false';
-				$this->result_text=$sql."x2<br>".mysql_error();
+				$this->responce=$sql."x2<br>".mysql_error();
 				$result_row=0;
 			} else {
 				$result_row=mysql_num_rows($result);
@@ -440,7 +440,7 @@ class vendor {
 			$result=mysqli_query($this->link,$sql);
 			if(!$result) {
 				$this->execute='false';
-				$this->result_text=$sql.mysqli_error($this->link);
+				$this->responce=$sql.mysqli_error($this->link);
 				$result_row=0;
 
 			} else {
@@ -457,7 +457,7 @@ class vendor {
 				$error.=	" MS Sql State : ".$errorArray[0]['SQLSTATE'];
 				$error.=	" Code : ".$errorArray[0]['code'];
 				$error.=	" Message : ".$errorArray[0]['message'];
-				$this->result_text	=	$error;
+				$this->responce	=	$error;
 				$result_row=0;
 
 			} else {
@@ -465,7 +465,7 @@ class vendor {
 
 				$row_count = sqlsrv_num_rows( $result );
 				if ($row_count === false)	{
-					$this->result_text=$sql.sqlsrv_errors();
+					$this->responce=$sql.sqlsrv_errors();
 				}else if ($row_count >=0)	{
 					$result_row=$row_count;
 				}
@@ -486,8 +486,8 @@ class vendor {
 					$error.="Message: " . $errorArray["message"] . "<br>";
 					$error.="Position: " . $errorArray["offset"] . "<br>";
 					$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-					$this->result_text=$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->result_text));
+					$this->responce=$error;
+					echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
 					exit();
 				}
 			} else {
@@ -497,8 +497,8 @@ class vendor {
 				$error.="Message: " . $errorArray["message"] . "<br>";
 				$error.="Position: " . $errorArray["offset"] . "<br>";
 				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-				$this->result_text=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->result_text));
+				$this->responce=$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
 				exit();
 			}
 		}
@@ -553,7 +553,7 @@ class vendor {
 				$test1=mysqli_query($this->link,$sql_log);
 				if(!$test1){
 					$this->execute='fail';
-					$this->result_text=$sql_log."[".mysqli_error($this->link)."]";
+					$this->responce=$sql_log."[".mysqli_error($this->link)."]";
 				}
 			}
 		} else if ($this->vendor=='microsoft') {
@@ -563,7 +563,7 @@ class vendor {
 			$error.=	" IL Sql State : ".$errorArray[0]['SQLSTATE'];
 			$error.=	" Code : ".$errorArray[0]['code'];
 			$error.=	" Message : ".$errorArray[0]['message'];
-			$this->result_text	=	$error;
+			$this->responce	=	$error;
 		} else  if ($this->vendor=='oracle') {
 			$result = oci_parse($this->link,$sql_log);
 			if($result != false) {
@@ -577,7 +577,7 @@ class vendor {
 					$error.="Message: " . $errorArray["message"] . "<br>";
 					$error.="Position: " . $errorArray["offset"] . "<br>";
 					$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-					$this->result_text=$error;
+					$this->responce=$error;
 					echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query ACCESS : '.$result));
 					exit();
 				}
@@ -588,7 +588,7 @@ class vendor {
 				$error.="Message: " . $errorArray["message"] . "<br>";
 				$error.="Position: " . $errorArray["offset"] . "<br>";
 				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-				$this->result_text=$error;
+				$this->responce=$error;
 				echo json_encode(array("success"=>false,"message"=>'Fail To Prepara Query ACCESS :  : '.$result));
 				exit();
 			}
@@ -608,7 +608,7 @@ class vendor {
 			return($this->query($this->sql));
 		} else {
 			$this->execute='fail';
-			$this->result_text="Where's the query forgot Yax! ..[".$sql."]";
+			$this->responce="Where's the query forgot Yax! ..[".$sql."]";
 		}
 	}
 	/**
@@ -620,64 +620,64 @@ class vendor {
 	public function delete($sql) {
 		if(strlen($sql)> 0 ){
 			if($this->module('leafDeleteAccessValue')== 1) {
-				$log_advance_type='D';
-				$sql_column 	= "SHOW COLUMNS FROM `".$this->tableName."`";
+				$logAdvanceType='D';
+				$sqlColumn 	= "SHOW COLUMNS FROM `".$this->tableName."`";
 				if($this->vendor=='normal'){
-					$result_column 	= mysql_query($sql_column,$this->link);
+					$resultColumn 	= mysql_query($sqlColumn,$this->link);
 				} else if ($this->vendor=='mysql'){
-					$result_column = mysqli_query($this->link,$sql_column);
+					$resultColumn = mysqli_query($this->link,$sqlColumn);
 				}
-				if(!$result_column){
+				if(!$resultColumn){
 					$this->execute='fail';
 					if($this->vendor='normal'){
-						$this->result_text=mysql_error()."Error Code ".mysql_errno();
+						$this->responce=mysql_error()."Error Code ".mysql_errno();
 					} else {
-						$this->result_text=mysqli_error($result_column). " Error Code".mysqli_errno($result_column);
+						$this->responce=mysqli_error($resultColumn). " Error Code".mysqli_errno($resultColumn);
 					}
 				} else {
-					$field_val = array();
+					$fieldValue = array();
 					if($this->vendor=='normal'){
-						while ( $row_column  = mysql_fetch_array($result_column))  {
+						while ( $rowColumn  = mysql_fetch_array($resultColumn))  {
 							// create the field value
-							$field_val[]=  $row_column['Field'];
+							$fieldValue[]=  $rowColumn['Field'];
 						}
 					} else if ($this->vendor=='mysql'){
-						while ( $row_column  = mysqli_fetch_array($result_column))  {
+						while ( $rowColumn  = mysqli_fetch_array($resultColumn))  {
 							// create the field value
-							$field_val[]=  $row_column['Field'];
+							$fieldValue[]=  $rowColumn['Field'];
 						}
 					}
 				}
 
-				$sql_prev =" SELECT * FROM `".$this->tableName."` WHERE `".$this->primaryKeyName."` = '".$this->primaryKeyValue."'";
+				$sqlPrevious =" SELECT * FROM `".$this->tableName."` WHERE `".$this->primaryKeyName."` = '".$this->primaryKeyValue."'";
 				if($this->vendor=='normal'){
-					$result_prev = mysql_query($sql_prev);
+					$resultPrevious = mysql_query($sqlPrevious);
 				}else if ($this->vendor=='mysql'){
-					$result_prev= mysqli_query($this->link,$sql_prev);
+					$resultPrevious= mysqli_query($this->link,$sqlPrevious);
 				}
-				if(!$result_prev){
+				if(!$resultPrevious){
 					$this->execute='fail';
 					if($this->vendor='normal'){
-						$this->result_text=mysql_error()."Error Code ".mysql_errno();
+						$this->responce=mysql_error()."Error Code ".mysql_errno();
 					} else {
-						$this->result_text=mysqli_error($this->link). " Error Code".mysqli_errno($this->link);
+						$this->responce=mysqli_error($this->link). " Error Code".mysqli_errno($this->link);
 					}
 				} else {
 					if($this->vendor=='normal'){
-						while ( $row_prev = mysql_fetch_array($result_prev)) {
-							foreach ($field_val as $field) {
-								$text  .= "\"".$field."\":\"".$row_prev[$field]."\",";
-								$prev[$field]=$row_prev[$field];
+						while ( $rowPrevious = mysql_fetch_array($resultPrevious)) {
+							foreach ($fieldValue as $field) {
+								$text  .= "\"".$field."\":\"".$rowPrevious[$field]."\",";
+								$previous[$field]=$rowPrevious[$field];
 							}
 						}
 					} else if ($this->vendor=='mysql'){
 
-						while ( $row_prev = mysqli_fetch_array($result_prev)) {
+						while ( $rowPrevious = mysqli_fetch_array($resultPrevious)) {
 
 
-							foreach ($field_val as $field) {
-								$text  .= "\"".$field."\":\"".$row_prev[$field]."\",";
-								$prev[$field]=$row_prev[$field];
+							foreach ($fieldValue as $field) {
+								$text  .= "\"".$field."\":\"".$rowPrevious[$field]."\",";
+								$previous[$field]=$rowPrevious[$field];
 							}
 						}
 					}
@@ -685,7 +685,7 @@ class vendor {
 
 				$text = substr($text,0,-1); // remove last coma
 				$text = "{".$text."}"; // using json data format ?
-				$sql_log_advance		=	 "
+				$sqlLogAdvance		=	 "
 					INSERT INTO `log_advance`
 							(
 								`log_advance_text`,
@@ -695,14 +695,14 @@ class vendor {
 					VALUES
 							(
 								'".$text."',
-								'".$log_advance_type."',
+								'".$logAdvanceType."',
 								'".$this->leafId."'
 							)";
 				// here should create a backup file to restore back sql statement
 				if($this->vendor=='normal') {
-					$result=mysql_query($sql_log_advance,$this->link);
+					$result=mysql_query($sqlLogAdvance,$this->link);
 				}	elseif($this->vendor=='mysql') {
-					$result=mysqli_query($this->link,$sql_log_advance);
+					$result=mysqli_query($this->link,$sqlLogAdvance);
 				}
 				/**
 				 *	sql not required because it parse from form itself
@@ -718,10 +718,10 @@ class vendor {
 				if(!$result) {
 					$this->execute=='fail';
 					if($this->vendor=='normal') {
-						$this->result_text=mysql_error()." Error Code".mysql_errno();
+						$this->responce=mysql_error()." Error Code".mysql_errno();
 					} elseif($this->vendor=='mysql') {
 						// check back relationship database.cascading update,delete not done by now.dangerous
-						$this->result_text= mysqli_error($this->link)."Error code".mysqli_errno($this->link);
+						$this->responce= mysqli_error($this->link)."Error code".mysqli_errno($this->link);
 						$this->rollback();
 					}
 				}
@@ -730,11 +730,11 @@ class vendor {
 				return $this->affectedRows();
 				} else {
 				$this->execute='fail';
-				$this->result_text='Record not deleted because it\'s not founded.';
+				$this->responce='Record not deleted because it\'s not founded.';
 				}*/
 		} else{
 			$this->execute='fail';
-			$this->result_text="Where's the query forgot Ya!";
+			$this->responce="Where's the query forgot Ya!";
 		}
 
 	}
@@ -757,7 +757,7 @@ class vendor {
 			}
 		} else {
 			$this->execute='fail';
-			$this->result_text="Where's the query forgot Ya!";
+			$this->responce="Where's the query forgot Ya!";
 		}
 	}
 	/**
@@ -777,84 +777,84 @@ class vendor {
 
 			if(	$this->module('leafUpdateAccessValue')	==	1) {
 				if($this->audit == 1 ){
-					$log_advance_type 	= 'U'; // aka update
-					$sql_column 	= "SHOW COLUMNS FROM `".$this->tableName."`";
+					$logAdvanceType 	= 'U'; // aka update
+					$sqlColumn 	= "SHOW COLUMNS FROM `".$this->tableName."`";
 					if($this->vendor=='normal'){
-						$result_column 	= mysql_query($sql_column,$this->link);
-						if(!$result_column){
+						$resultColumn 	= mysql_query($sqlColumn,$this->link);
+						if(!$resultColumn){
 							$this->execute='fail';
-							$this->result_text="Error selecting table";
+							$this->responce="Error selecting table";
 						}
 					} else if($this->vendor=='mysql'){
-						$result_column = mysqli_query($this->link,$sql_column);
-						if(!$result_column){
+						$resultColumn = mysqli_query($this->link,$sqlColumn);
+						if(!$resultColumn){
 							$this->execute='fail';
-							$this->result_text="Error selecting table";
+							$this->responce="Error selecting table";
 						}
 					}
 
-					$field_val = array();
+					$fieldValue = array();
 					if($this->vendor=='normal') {
-						if(!$result_column){
+						if(!$resultColumn){
 							$this->execute='fail';
-							$this->result_text=mysql_error()."Error Code".mysql_errno();
+							$this->responce=mysql_error()."Error Code".mysql_errno();
 						}else {
-							while ( $row_column  = mysql_fetch_array($result_column))  {
+							while ( $rowColumn  = mysql_fetch_array($resultColumn))  {
 								// create the field value
-								$field_val[]=  $row_column['Field'];
+								$fieldValue[]=  $rowColumn['Field'];
 
 							}
 						}
 					} elseif ($this->vendor=='mysql'){
 
-						if(!$result_column){
+						if(!$resultColumn){
 							$this->execute='fail';
-							$this->result_text=mysqli_error($this->link)."Error Code".mysqli_errno($$this->link);
+							$this->responce=mysqli_error($this->link)."Error Code".mysqli_errno($$this->link);
 						} else {
-							//	echo "Jumlah Rekod".mysqli_num_rows($result_column);
-							while ( $row_column  = mysqli_fetch_array($result_column))  {
+							//	echo "Jumlah Rekod".mysqli_num_rows($resultColumn);
+							while ( $rowColumn  = mysqli_fetch_array($resultColumn))  {
 								// create the field value
 
-								$field_val[]=  $row_column['Field'];
+								$fieldValue[]=  $rowColumn['Field'];
 
 							}
 						}
 					}
 
 
-					$sql_prev ="
+					$sqlPrevious ="
 					SELECT 	*
 					FROM 	`".$this->tableName."`
 					WHERE 	`".$this->primaryKeyName."` = '".$this->primaryKeyValue."'";
 
 					if($this->vendor=='normal'){
-						$result_prev = mysql_query($sql_prev,$this->link);
-						if(!$result_prev){
+						$resultPrevious = mysql_query($sqlPrevious,$this->link);
+						if(!$resultPrevious){
 							$this->execute='fail';
-							$this->result_text=mysql_error." Error Code".mysql_errno();
+							$this->responce=mysql_error." Error Code".mysql_errno();
 						}else {
-							while ( $row_prev = mysql_fetch_array($result_prev)) {
-								foreach ($field_val as $field) {
-									$text  .= "\"".$field."\":\"".$row_prev[$field]."\",";
-									$prev[$field]=$row_prev[$field];
+							while ( $rowPrevious = mysql_fetch_array($resultPrevious)) {
+								foreach ($fieldValue as $field) {
+									$text  .= "\"".$field."\":\"".$rowPrevious[$field]."\",";
+									$previous[$field]=$rowPrevious[$field];
 								}
 							}
 						}
 					}else if($this->vendor=='mysql') {
 
-						$result_prev = mysqli_query($this->link,$sql_prev);
-						if(!$result_prev){
+						$resultPrevious = mysqli_query($this->link,$sqlPrevious);
+						if(!$resultPrevious){
 							$this->execute='fail';
-							$this->result_text=mysqli_error($this->link)."Error Code".mysqli_errno($this->link);
+							$this->responce=mysqli_error($this->link)."Error Code".mysqli_errno($this->link);
 						} else {
 							// successfully
 
-							//	echo "Jumlah Rekod ".mysqli_num_rows($result_prev);
-							while ( $row_prev = mysqli_fetch_array($result_prev)) {
+							//	echo "Jumlah Rekod ".mysqli_num_rows($resultPrevious);
+							while ( $rowPrevious = mysqli_fetch_array($resultPrevious)) {
 
-								foreach ($field_val as $field) {
-									$text  .= "\"".$field."\":\"".$row_prev[$field]."\",";
-									$prev[$field]=$row_prev[$field];
+								foreach ($fieldValue as $field) {
+									$text  .= "\"".$field."\":\"".$rowPrevious[$field]."\",";
+									$previous[$field]=$rowPrevious[$field];
 								}
 							}
 						}
@@ -862,7 +862,7 @@ class vendor {
 
 					$text = $this->removeComa($text);
 					$text = "{".$text."}"; // using json data format ?
-					$sql_log_advance		=	 "
+					$sqlLogAdvance		=	 "
 					INSERT INTO 	`logAdvance`
 					(
 					`logAdvanceText`,
@@ -871,27 +871,27 @@ class vendor {
 					)
 					VALUES 		(
 					'".$text."',
-					'".$log_advance_type."',
+					'".$logAdvanceType."',
 					'".$this->leafId."'
 					)";
 					if($this->vendor=='normal'){
-						$result_log_advance 	=	 mysql_query($sql_log_advance,$this->link);
-						if($result_log_advance){
-							$log_advance_uniqueId 	= 	 mysql_insert_id(); // take the last id for references
+						$resultLogAdvance 	=	 mysql_query($sqlLogAdvance,$this->link);
+						if($resultLogAdvance){
+							$logAdvanceId 	= 	 mysql_insert_id(); // take the last id for references
 						}else {
 							$this->execute='fail';
-							$this->result_text="Error inserting Query Advance insert";
+							$this->responce="Error inserting Query Advance insert";
 						}
 					}else if($this->vendor=='mysql') {
-						$result_log_advance 	=	 mysqli_query($this->link,$sql_log_advance);
-						if($result_log_advance){
+						$resultLogAdvance 	=	 mysqli_query($this->link,$sqlLogAdvance);
+						if($resultLogAdvance){
 
 							// take the last id for references
 
-							$log_advance_uniqueId 	= 	 mysqli_insert_id($this->link); //
+							$logAdvanceId 	= 	 mysqli_insert_id($this->link); //
 						}else {
 							$this->execute='fail';
-							$this->result_text="error inserting query update insert";
+							$this->responce="error inserting query update insert";
 						}
 					}
 				}
@@ -899,63 +899,63 @@ class vendor {
 				$record_affected = $this->affectedRows(); // direct call for can now how much record have been deleted and make error handling
 				if($this->audit==1){
 					// select the current update file
-					$sql_curr="
+					$sqlCurrent="
 					SELECT 	*
 					FROM 	`".$this->tableName."`
 					WHERE 	`".$this->primaryKeyName."`='".$this->primaryKeyValue."'";
 					if($this->vendor=='normal'){
-						$result_curr  = mysql_query($sql_curr,$this->link);
-						if($result_curr) {
-							while	($row_curr = mysql_fetch_array($result_curr)) {
-								$text_comparison.= $this->compare($field_val, $row_curr, $prev);
+						$resultCurrent  = mysql_query($sqlCurrent,$this->link);
+						if($resultCurrent) {
+							while	($rowCurrent = mysql_fetch_array($resultCurrent)) {
+								$textComparison.= $this->compare($fieldValue, $rowCurrent, $previous);
 
 							}
 						} else {
 							$this->execute='fail';
-							$this->result_text="Error Query on advance select";
+							$this->responce="Error Query on advance select";
 						}
 					} else if($this->vendor=='mysql'){
-						$result_curr  = mysqli_query($this->link,$sql_curr);
-						if($result_curr){
-							while	($row_curr = mysqli_fetch_array($result_curr)) {
-								$text_comparison.= $this->compare($field_val, $row_curr, $prev);
+						$resultCurrent  = mysqli_query($this->link,$sqlCurrent);
+						if($resultCurrent){
+							while	($rowCurrent = mysqli_fetch_array($resultCurrent)) {
+								$textComparison.= $this->compare($fieldValue, $rowCurrent, $previous);
 							}
 						}else {
 							$this->execute='fail';
-							$this->result_text="Error Query on advance select".$sql_curr;
+							$this->responce="Error Query on advance select".$sqlCurrent;
 						}
 					}
-					$text_comparison = substr($text_comparison,0,-1); // remove last coma
-					$text_comparison = "{ \"tablename\":\"".$this->tableName."\",\"ref_uniqueId\":\"".$this->primaryKeyValue."\",".$text_comparison."}"; // json format
+					$textComparison = substr($textComparison,0,-1); // remove last coma
+					$textComparison = "{ \"tablename\":\"".$this->tableName."\",\"ref_uniqueId\":\"".$this->primaryKeyValue."\",".$textComparison."}"; // json format
 					// update back comparision the previous record
 					$sql="
 					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparison`='".addslashes($text_comparison)."'
-					WHERE 	`logAdvanceId`='".$log_advance_uniqueId."'";
+					SET 	`logAdvanceComparison`='".addslashes($textComparison)."'
+					WHERE 	`logAdvanceId`='".$logAdvanceId."'";
 					if($this->vendor=='normal'){
 						$result=mysql_query($sql,$this->link);
 						if(!$result) {
 							$this->execute='fail';
-							$this->result_text="Error Query update log advance";
+							$this->responce="Error Query update log advance";
 						}
 
 					} else if($this->vendor=='mysql'){
 						$result= mysqli_query($this->link,$sql);
 						if(!$result){
 							$this->execute='fail';
-							$this->result_text="Error Query update log advance";
+							$this->responce="Error Query update log advance";
 						}
 					}
 
 				}
 			}else {
 				$this->execute='fail';
-				$this->result_text='access denied lol';
+				$this->responce='access denied lol';
 			}
 			return $record_affected;
 		} else {
 			$this->execute='fail';
-			$this->result_text="Where's the query forgot Ya!";
+			$this->responce="Where's the query forgot Ya!";
 		}
 	}
 
@@ -991,11 +991,11 @@ class vendor {
 				return($this->query($this->sql));
 			} else {
 				$this->execute='fail';
-				$this->result_text=" Access Denied View ";
+				$this->responce=" Access Denied View ";
 			}
 		} else {
 			$this->execute='fail';
-			$this->result_text="Where's the query forgot Ya!";
+			$this->responce="Where's the query forgot Ya!";
 		}
 	}
 	public function file($sql) {
@@ -1018,7 +1018,7 @@ class vendor {
 			return $result;
 		} else {
 			$this->execute='fail';
-			$this->result_text="Where's the query forgot Ya!";
+			$this->responce="Where's the query forgot Ya!";
 		}
 	}
 
@@ -1060,8 +1060,8 @@ class vendor {
 						$error.="Message: " . $errorArray["message"] . "<br>";
 						$error.="Position: " . $errorArray["offset"] . "<br>";
 						$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-						$this->result_text=$error;
-						echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->result_text));
+						$this->responce=$error;
+						echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
 						exit();
 					}
 				} else {
@@ -1071,8 +1071,8 @@ class vendor {
 					$error.="Message: " . $errorArray["message"] . "<br>";
 					$error.="Position: " . $errorArray["offset"] . "<br>";
 					$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-					$this->result_text=$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->result_text));
+					$this->responce=$error;
+					echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
 					exit();
 				}
 
@@ -1080,7 +1080,7 @@ class vendor {
 			return $result;
 		} else {
 			$this->execute='fail';
-			$this->result_text="Where's the query forgot Ya!";
+			$this->responce="Where's the query forgot Ya!";
 		}
 	}
 
@@ -1127,8 +1127,8 @@ class vendor {
 						$error.="Message: " . $errorArray["message"] . "<br>";
 						$error.="Position: " . $errorArray["offset"] . "<br>";
 						$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-						$this->result_text=$error;
-						echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->result_text));
+						$this->responce=$error;
+						echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
 						exit();
 					}
 				} else {
@@ -1138,8 +1138,8 @@ class vendor {
 					$error.="Message: " . $errorArray["message"] . "<br>";
 					$error.="Position: " . $errorArray["offset"] . "<br>";
 					$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-					$this->result_text=$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->result_text));
+					$this->responce=$error;
+					echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
 					exit();
 				}
 
@@ -1182,8 +1182,8 @@ class vendor {
 						$error.="Message: " . $errorArray["message"] . "<br>";
 						$error.="Position: " . $errorArray["offset"] . "<br>";
 						$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-						$this->result_text=$error;
-						echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->result_text));
+						$this->responce=$error;
+						echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
 						exit();
 					}
 				} else {
@@ -1193,8 +1193,8 @@ class vendor {
 					$error.="Message: " . $errorArray["message"] . "<br>";
 					$error.="Position: " . $errorArray["offset"] . "<br>";
 					$error.="Statement: " . $errorArray["sqltext"] . "<br>";
-					$this->result_text=$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->result_text));
+					$this->responce=$error;
+					echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
 					exit();
 				}
 
@@ -1434,8 +1434,8 @@ class vendor {
 	 * @param string prev_value come from first value before edit.
 	 * @return string
 	 */
-	private function compare($field_val,$curr_value,$prev_value){
-		foreach ($field_val as $field) {
+	private function compare($fieldValue,$curr_value,$prev_value){
+		foreach ($fieldValue as $field) {
 
 			switch ($curr_value[$field]) {
 				case is_float($curr_value[$field]):
@@ -1501,12 +1501,12 @@ class vendor {
 					break;
 			}
 			// json format ?
-			$text_comparison  .= "\"".$field."\":[{ \"prev\":\"".$prev_value[$field]."\"},
+			$textComparison  .= "\"".$field."\":[{ \"prev\":\"".$prev_value[$field]."\"},
 														{ \"curr\":\"".$curr_value[$field]."\"},
 														{ \"type\":\"".$type."\"},
 														{ \"diff\":\"".$diff."\"}],";
 		}
-		return $text_comparison;
+		return $textComparison;
 	}
 	private function realEscapeString($data) {
 		if($this->vendor=='normal'){

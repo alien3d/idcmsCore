@@ -60,9 +60,9 @@ class security extends configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -72,9 +72,9 @@ class security extends configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId

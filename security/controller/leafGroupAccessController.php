@@ -62,9 +62,9 @@ class leafGroupAccessClass  extends  configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -74,9 +74,9 @@ class leafGroupAccessClass  extends  configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -381,7 +381,7 @@ class leafGroupAccessClass  extends  configClass {
 
 		$record_all 	= $this->q->read($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->total	= $this->q->numberRows();
@@ -392,7 +392,7 @@ class leafGroupAccessClass  extends  configClass {
 
 		$this->q->read($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		while($row  = 	$this->q->fetchAssoc()) {
@@ -464,7 +464,7 @@ class leafGroupAccessClass  extends  configClass {
 			}
 			$this->q->update($sql);
 			if($this->q->execute=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+				echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 				exit();
 			}
 		}

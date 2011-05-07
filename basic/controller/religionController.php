@@ -71,9 +71,9 @@ class religionClass extends configClass
 	public $order;
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -113,7 +113,7 @@ class religionClass extends configClass
 		$this->q->quickFilter = $this->quickFilter;
 		$this->q->connect($this->connection, $this->username, $this->database, $this->password);
 		$this->excel         = new PHPExcel();
-		$this->audit         = 0;
+		$this->audit         = 1;
 		$this->log           = 0;
 		$this->q->log        = $this->log;
 		$this->model         = new religionModel();
@@ -143,11 +143,11 @@ class religionClass extends configClass
 					)
 			VALUES	
 					(
-						'" . $this->model->religionDesc . "',	'" . $this->model->isDefaut . "',
-						'" . $this->model->isNew . "',			'" . $this->model->isDraft . "',
-						'" . $this->model->isUpdate . "',		'" . $this->model->isDelete . "',
-						'" . $this->model->isActive . "',		'" . $this->model->isApproved . "',
-						'" . $this->model->By . "',				" . $this->model->Time . "
+						\"". $this->model->religionDesc . "\",	\"". $this->model->isDefaut . "\",
+						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
+						\"". $this->model->isUpdate . "\",		\"". $this->model->isDelete . "\",
+						\"". $this->model->isActive . "\",		\"". $this->model->isApproved . "\",
+						\"". $this->model->By . "\",				" . $this->model->Time . "
 					);";
 		$this->q->start();
 		$this->model->create();
@@ -163,11 +163,11 @@ class religionClass extends configClass
 					)
 			VALUES	
 					(
-						'" . $this->model->religionDesc . "',	'" . $this->model->isDefaut . "',
-						'" . $this->model->isNew . "',			'" . $this->model->isDraft . "',
-						'" . $this->model->isUpdate . "',		'" . $this->model->isDelete . "',
-						'" . $this->model->isActive . "',		'" . $this->model->isApproved . "',
-						'" . $this->model->By . "',				" . $this->model->Time . "
+						\"". $this->model->religionDesc . "\",	\"". $this->model->isDefaut . "\",
+						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
+						\"". $this->model->isUpdate . "\",		\"". $this->model->isDelete . "\",
+						\"". $this->model->isActive . "\",		\"". $this->model->isApproved . "\",
+						\"". $this->model->By . "\",				" . $this->model->Time . "
 					);";
 		} else if ($this->q->vendor == 'microsoft') {
 			$sql = "
@@ -181,11 +181,11 @@ class religionClass extends configClass
 					)
 			VALUES	
 					(
-						'" . $this->model->religionDesc . "',	'" . $this->model->isDefaut . "',
-						'" . $this->model->isNew . "',			'" . $this->model->isDraft . "',
-						'" . $this->model->isDraft . "',		'" . $this->model->isDelete . "',
-						'" . $this->model->isUpdate . "',		'" . $this->model->isApproved . "',
-						'" . $this->model->isActive . "',		" . $this->model->Time . "
+						\"". $this->model->religionDesc . "\",	\"". $this->model->isDefaut . "\",
+						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
+						\"". $this->model->isDraft . "\",		\"". $this->model->isDelete . "\",
+						\"". $this->model->isUpdate . "\",		\"". $this->model->isApproved . "\",
+						\"". $this->model->isActive . "\",		" . $this->model->Time . "
 					);";
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
@@ -199,25 +199,25 @@ class religionClass extends configClass
 					)	
 			VALUES	
 					(
-						'" . $this->model->religionDesc . "',	'" . $this->model->isDefaut . "',
-						'" . $this->model->isNew . "',			'" . $this->model->isDraft . "',
-						'" . $this->model->isDraft . "',		'" . $this->model->isDelete . "',
-						'" . $this->model->isUpdate . "',		'" . $this->model->isApproved . "',
-						'" . $this->model->isActive . "',		" . $this->model->Time . "
+						\"". $this->model->religionDesc . "\",	\"". $this->model->isDefaut . "\",
+						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
+						\"". $this->model->isDraft . "\",		\"". $this->model->isDelete . "\",
+						\"". $this->model->isUpdate . "\",		\"". $this->model->isApproved . "\",
+						\"". $this->model->isActive . "\",		" . $this->model->Time . "
 					)";
 		}
 		//advance logging future
-		$this->q->table           = $this->model->tableName;
+		$this->q->tableName          = $this->model->tableName;
 		$this->q->primaryKeyName  = $this->model->primaryKeyName;
 		// $this->q->primaryKeyValue = $this->q->lastInsertId();  not use here
-		echo "audit value".$this->audit;
+	
 		$this->q->audit           = $this->audit;
 		$this->q->create($sql);
 		
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(
                 "success" => false,
-                "message" => $this->q->result_text
+                "message" => $this->q->responce
 			));
 			exit();
 		}
@@ -247,7 +247,7 @@ class religionClass extends configClass
 					FROM 	`religion`
 					WHERE 	`isActive` ='1'	";
 			if ($this->religionId) {
-				$sql .= " AND `religionId`='" . $this->strict($this->religionId, 'n') . "'";
+				$sql .= " AND `religionId`=\"". $this->strict($this->religionId, 'n') . "\"";
 			}
 		} else if ($this->q->vendor == 'microsoft') {
 			$sql = "
@@ -255,7 +255,7 @@ class religionClass extends configClass
 					FROM 	[religion]
 					WHERE 	[isActive] ='1'	";
 			if ($this->religionId) {
-				$sql .= " AND [religionId]='" . $this->strict($this->religionId, 'n') . "'";
+				$sql .= " AND [religionId]=\"". $this->strict($this->religionId, 'n') . "\"";
 			}
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
@@ -263,7 +263,7 @@ class religionClass extends configClass
 					FROM 	\"religion\"
 					WHERE \"isActive\"='1'	";
 			if ($this->religionId) {
-				$sql .= " AND \"religionId\"='" . $this->strict($this->religionId, 'n') . "'";
+				$sql .= " AND \"religionId\"=\"". $this->strict($this->religionId, 'n') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -318,18 +318,18 @@ class religionClass extends configClass
             if ($this->q->execute == 'fail') {
             	echo json_encode(array(
                 "success" => false,
-                "message" => $this->q->result_text
+                "message" => $this->q->responce
             	));
             	exit();
             }
             $total = $this->q->numberRows();
             if ($this->order && $this->sort_field) {
             	if ($this->q->vendor == 'mysql' || $this->q->vendor == 'normal') {
-            		$sql .= "	ORDER BY `" . $sort_field . "` " . $dir . " ";
+            		$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
             	} else if ($this->q->vendor == 'microsoft') {
-            		$sql .= "	ORDER BY [" . $sort_field . "] " . $dir . " ";
+            		$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
             	} else if ($this->q->vendor == 'oracle') {
-            		$sql .= "	ORDER BY \"" . $sort_field . "\"  " . $dir . " ";
+            		$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
@@ -371,8 +371,8 @@ class religionClass extends configClass
 									FROM 	\"religion\"
 									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= '" . ($_POST['start'] + $_POST['limit'] - 1) . "' )
-						where r >=  '" . $_POST['start'] . "'";
+						where rownum <= \"". ($_POST['start'] + $_POST['limit'] - 1) . "\" )
+						where r >=  \"". $_POST['start'] . "\"";
             		} else {
             			echo "undefine vendor";
             		}
@@ -386,7 +386,7 @@ class religionClass extends configClass
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
                     "success" => false,
-                    "message" => $this->q->result_text
+                    "message" => $this->q->responce
             		));
             		exit();
             	}
@@ -429,7 +429,7 @@ class religionClass extends configClass
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array(
                     "success" => false,
-                    "message" => $this->q->result_text
+                    "message" => $this->q->responce
 				));
 				exit();
 			}
@@ -439,42 +439,42 @@ class religionClass extends configClass
 		if ($this->q->vendor == 'mysql') {
 			$sql = "
 			UPDATE 	`religion`
-			SET 	`religionDesc`		=	'" . $this->model->religionDesc . "',
-					`isActive`			=	'" . $this->model->isActive . "',
-					`isNew`				=	'" . $this->model->isNew . "',
-					`isDraft`			=	'" . $this->model->isDraft . "',
-					`isUpdate`			=	'" . $this->model->isUpdate . "',
-					`isDelete`			=	'" . $this->model->isDelete . "',
-					`isApproved`		=	'" . $this->model->isApproved . "',
-					`By`				=	'" . $this->model->By . "',
+			SET 	`religionDesc`		=	\"". $this->model->religionDesc . "\",
+					`isActive`			=	\"". $this->model->isActive . "\",
+					`isNew`				=	\"". $this->model->isNew . "\",
+					`isDraft`			=	\"". $this->model->isDraft . "\",
+					`isUpdate`			=	\"". $this->model->isUpdate . "\",
+					`isDelete`			=	\"". $this->model->isDelete . "\",
+					`isApproved`		=	\"". $this->model->isApproved . "\",
+					`By`				=	\"". $this->model->By . "\",
 					`Time				=	" . $this->model->Time . "
-			WHERE 	`religionId`		=	'" . $this->model->religionId . "'";
+			WHERE 	`religionId`		=	\"". $this->model->religionId . "\"";
 		} else if ($this->q->vendor == 'microsoft') {
 			$sql = "
 			UPDATE 	[religion]
-			SET 	[religionDesc]		=	'" . $this->strict($_POST['religionDesc'], 's') . "',
-					[isActive]			=	'" . $this->model->isActive . "',
-					[isNew]				=	'" . $this->model->isNew . "',
-					[isDraft]			=	'" . $this->model->isDraft . "',
-					[isUpdate]			=	'" . $this->model->isUpdate . "',
-					[isDelete]			=	'" . $this->model->isDelete . "',
-					[isApproved]		=	'" . $this->model->isApproved . "',
-					[By]				=	'" . $this->model->By . "',
+			SET 	[religionDesc]		=	\"". $this->strict($_POST['religionDesc'], 's') . "\",
+					[isActive]			=	\"". $this->model->isActive . "\",
+					[isNew]				=	\"". $this->model->isNew . "\",
+					[isDraft]			=	\"". $this->model->isDraft . "\",
+					[isUpdate]			=	\"". $this->model->isUpdate . "\",
+					[isDelete]			=	\"". $this->model->isDelete . "\",
+					[isApproved]		=	\"". $this->model->isApproved . "\",
+					[By]				=	\"". $this->model->By . "\",
 					[Time]				=	" . $this->model->Time . "
-			WHERE 	[religionId]		=	'" . $this->strict($_POST['religionId'], 'n') . "'";
+			WHERE 	[religionId]		=	\"". $this->strict($_POST['religionId'], 'n') . "\"";
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
 			UPDATE 	\"religion\"
-			SET 	\"religionDesc\"	=	'" . $this->model->religionDesc . "',
-					\"isActive\"		=	'" . $this->model->isActive . "',
-					\"isNew\"			=	'" . $this->model->isNew . "',
-					\"isDraft\"			=	'" . $this->model->isDraft . "',
-					\"isUpdate\"		=	'" . $this->model->isUpdate . "',
-					\"isDelete\"		=	'" . $this->model->isDelete . "',
-					\"isApproved\"		=	'" . $this->model->isApproved . "',
-					\"By\"				=	'" . $this->model->By . "',
+			SET 	\"religionDesc\"	=	\"". $this->model->religionDesc . "\",
+					\"isActive\"		=	\"". $this->model->isActive . "\",
+					\"isNew\"			=	\"". $this->model->isNew . "\",
+					\"isDraft\"			=	\"". $this->model->isDraft . "\",
+					\"isUpdate\"		=	\"". $this->model->isUpdate . "\",
+					\"isDelete\"		=	\"". $this->model->isDelete . "\",
+					\"isApproved\"		=	\"". $this->model->isApproved . "\",
+					\"By\"				=	\"". $this->model->By . "\",
 					\"Time\"			=	" . $this->model->Time . "
-			WHERE 	\"religionId\"		=	'" . $this->model->religionId . "'";
+			WHERE 	\"religionId\"		=	\"". $this->model->religionId . "\"";
 		}
 		/*
 		 *  require three variable below to track  table audit
@@ -487,7 +487,7 @@ class religionClass extends configClass
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(
                 "success" => "false",
-                "message" => $this->q->result_text
+                "message" => $this->q->responce
 			));
 			exit();
 		}
@@ -514,43 +514,43 @@ class religionClass extends configClass
 		if ($this->q->vendor == 'mysql') {
 			$sql = "
 			UPDATE 	`religion`
-			SET 	`isActive`			=	'" . $this->model->isActive . "',
-					`isNew`				=	'" . $this->model->isNew . "',
-					`isDraft`			=	'" . $this->model->isDraft . "',
-					`isUpdate`			=	'" . $this->model->isUpdate . "',
-					`isDelete`			=	'" . $this->model->isDelete . "',
-					`isApproved`		=	'" . $this->model->isApproved . "',
-					`By`				=	'" . $this->model->By . "',
+			SET 	`isActive`			=	\"". $this->model->isActive . "\",
+					`isNew`				=	\"". $this->model->isNew . "\",
+					`isDraft`			=	\"". $this->model->isDraft . "\",
+					`isUpdate`			=	\"". $this->model->isUpdate . "\",
+					`isDelete`			=	\"". $this->model->isDelete . "\",
+					`isApproved`		=	\"". $this->model->isApproved . "\",
+					`By`				=	\"". $this->model->By . "\",
 					`Time				=	" . $this->model->Time . "
-			WHERE 	`religionId`		=	'" . $this->model->religionId . "'";
+			WHERE 	`religionId`		=	\"". $this->model->religionId . "\"";
 		} else if ($this->q->vendor == 'microsoft') {
 			$sql = "
 			UPDATE 	[religion]
-			SET 	[isActive]			=	'" . $this->model->isActive . "',
-					[isNew]				=	'" . $this->model->isNew . "',
-					[isDraft]			=	'" . $this->model->isDraft . "',
-					[isUpdate]			=	'" . $this->model->isUpdate . "',
-					[isDelete]			=	'" . $this->model->isDelete . "',
-					[isApproved]		=	'" . $this->model->isApproved . "',
-					[By]				=	'" . $this->model->By . "',
+			SET 	[isActive]			=	\"". $this->model->isActive . "\",
+					[isNew]				=	\"". $this->model->isNew . "\",
+					[isDraft]			=	\"". $this->model->isDraft . "\",
+					[isUpdate]			=	\"". $this->model->isUpdate . "\",
+					[isDelete]			=	\"". $this->model->isDelete . "\",
+					[isApproved]		=	\"". $this->model->isApproved . "\",
+					[By]				=	\"". $this->model->By . "\",
 					[Time]				=	" . $this->model->Time . "
-			WHERE 	[religionId]		=	'" . $this->model->religionId . "'";
+			WHERE 	[religionId]		=	\"". $this->model->religionId . "\"";
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
 			UPDATE 	\"religion\"
-			SET 	\"religionDesc\"	=	'" . $this->model->religionDesc . "',
-					\"isActive\"		=	'" . $this->model->isActive . "',
-					\"isNew\"			=	'" . $this->model->isNew . "',
-					\"isDraft\"			=	'" . $this->model->isDraft . "',
-					\"isUpdate\"		=	'" . $this->model->isUpdate . "',
-					\"isDelete\"		=	'" . $this->model->isDelete . "',
-					\"isApproved\"		=	'" . $this->model->isApproved . "',
-					\"By\"				=	'" . $this->model->By . "',
+			SET 	\"religionDesc\"	=	\"". $this->model->religionDesc . "\",
+					\"isActive\"		=	\"". $this->model->isActive . "\",
+					\"isNew\"			=	\"". $this->model->isNew . "\",
+					\"isDraft\"			=	\"". $this->model->isDraft . "\",
+					\"isUpdate\"		=	\"". $this->model->isUpdate . "\",
+					\"isDelete\"		=	\"". $this->model->isDelete . "\",
+					\"isApproved\"		=	\"". $this->model->isApproved . "\",
+					\"By\"				=	\"". $this->model->By . "\",
 					\"Time\"			=	" . $this->model->Time . "
-			WHERE 	\"religionId\"		=	'" . $this->model->religionId . "'";
+			WHERE 	\"religionId\"		=	\"". $this->model->religionId . "\"";
 		}
 		// advance logging future
-		$this->q->table           = $this->model->tableName;
+		$this->q->tableName          = $this->model->tableName;
 		$this->q->primaryKeyName  = $this->model->primaryKeyName;
 		$this->q->primaryKeyValue = $this->model->religionId;
 		$this->q->audit           = $this->audit;
@@ -558,7 +558,7 @@ class religionClass extends configClass
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(
                 "success" => "false",
-                "message" => $this->q->result_text
+                "message" => $this->q->responce
 			));
 			exit();
 		}
@@ -584,19 +584,19 @@ class religionClass extends configClass
 			$sql = "
 			SELECT	*
 			FROM 	`religion`
-			WHERE 	`religionDesc` 	= 	'" . $this->model->religionDesc . "'
+			WHERE 	`religionDesc` 	= 	\"". $this->model->religionDesc . "\"
 			AND		`isActive`		=	1";
 		} else if ($this->q->vendor == 'microsoft') {
 			$sql = "
 			SELECT	*
 			FROM 	[religion]
-			WHERE 	[religionDesc] 	= 	'" . $this->model->religionDesc . "'
+			WHERE 	[religionDesc] 	= 	\"". $this->model->religionDesc . "\"
 			AND		[isActive]		=	1";
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
 			SELECT	*
 			FROM 	\"religion\"
-			WHERE 	\"religionDesc\" 	= 	'" . $this->model->religionDesc . "'
+			WHERE 	\"religionDesc\" 	= 	\"". $this->model->religionDesc . "\"
 			AND		\"isActive\"		=	1";
 		}
 		$this->q->read($sql);
@@ -605,7 +605,7 @@ class religionClass extends configClass
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(
                 "success" => false,
-                "message" => $this->q->result_text
+                "message" => $this->q->responce
 			));
 			exit();
 		} else {
@@ -640,7 +640,7 @@ class religionClass extends configClass
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(
                 "success" => false,
-                "message" => $this->q->result_text
+                "message" => $this->q->responce
 			));
 			exit();
 		}
@@ -691,7 +691,7 @@ class religionClass extends configClass
                         $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
                         $filename  = "religion" . rand(0, 10000000) . ".xlsx";
                         $path      = $_SERVER['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
-                        $this->audit->create_trail($this->leafId, $path, $filename);
+                        $this->documentTrail->create_trail($this->leafId, $path, $filename);
                         $objWriter->save($path);
                         $file = fopen($path, 'r');
                         if ($file) {

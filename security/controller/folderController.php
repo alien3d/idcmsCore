@@ -65,9 +65,9 @@ class folderClass extends  configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -77,9 +77,9 @@ class folderClass extends  configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -231,7 +231,7 @@ class folderClass extends  configClass {
 			array(
 					  	"success"	=>	false,
 
-						"message"	=>	$this->q->result_text
+						"message"	=>	$this->q->responce
 			));
 			exit();
 		}
@@ -259,7 +259,7 @@ class folderClass extends  configClass {
 
 		$resultd =$this->q->fast($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 
@@ -324,7 +324,7 @@ class folderClass extends  configClass {
 			}
 			$this->q->update($sql);
 			if($this->q->redirect=='fail') {
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+				echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 				exit();
 			}
 		}
@@ -430,18 +430,18 @@ class folderClass extends  configClass {
 		//echo $sql;
 		$this->q->read($sql);
 		if($this->q->redirect=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		$total	= $this->q->numberRows();
 
 		if($this->order && $this->sort_field){
 			if($this->q->vendor=='mysql' || $this->q->vendor=='normal') {
-				$sql.="	ORDER BY `".$sort_field."` ".$dir." ";
+				$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 			} else if ($this->q->vendor=='microsoft') {
-				$sql.="	ORDER BY [".$sort_field."] ".$dir." ";
+				$sql.="	ORDER BY [".$sortField."] ".$dir." ";
 			} else if ($this->q->vendor=='oracle') {
-				$sql.="	ORDER BY \"".$sort_field."\"  ".$dir." ";
+				$sql.="	ORDER BY \"".$sortField."\"  ".$dir." ";
 			}
 		}
 		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf
@@ -531,7 +531,7 @@ class folderClass extends  configClass {
 				echo json_encode(
 				array(
 					  	"success"	=>	false,
-						"message"	=>	$this->q->result_text
+						"message"	=>	$this->q->responce
 				));
 				exit();
 			}
@@ -639,7 +639,7 @@ class folderClass extends  configClass {
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
@@ -701,7 +701,7 @@ class folderClass extends  configClass {
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
@@ -787,7 +787,7 @@ class folderClass extends  configClass {
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 		}
 
@@ -872,7 +872,7 @@ class folderClass extends  configClass {
 				}
 				$this->q->update($sql);
 				if($this->q->redirect=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 					exit();
 
 				}
@@ -922,7 +922,7 @@ class folderClass extends  configClass {
 				}
 				$this->q->create($sql);
 				if($this->q->redirect=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 					exit();
 
 				}

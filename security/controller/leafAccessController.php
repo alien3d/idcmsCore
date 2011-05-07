@@ -62,9 +62,9 @@ class leafAccessClass extends  configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -74,9 +74,9 @@ class leafAccessClass extends  configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -372,7 +372,7 @@ class leafAccessClass extends  configClass {
 
 		$record_all 	= $this->q->read($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->total	= $this->q->numberRows();
@@ -386,7 +386,7 @@ class leafAccessClass extends  configClass {
 
 		$this->q->read($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 
@@ -436,7 +436,7 @@ class leafAccessClass extends  configClass {
 			$sql='SET NAMES "utf8"';
 			$this->q->read($sql);
 			if($this->q->execute=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+				echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 				exit();
 			}
 		}
@@ -490,7 +490,7 @@ class leafAccessClass extends  configClass {
 		}
 		if($this->q->execute=='fail') {
 
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 		} else {
 			echo json_encode(array("success"=>"true","message"=>"Update Succes"));

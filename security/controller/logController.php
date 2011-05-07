@@ -62,9 +62,9 @@ class logClass extends  configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -74,9 +74,9 @@ class logClass extends  configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -174,7 +174,7 @@ class logClass extends  configClass {
 		$total	= $this->q->numberRows();
 		//paging
 
-		$sql.="	ORDER BY `".$sort_field."` ".$dir." ";
+		$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 		if(empty($_POST['filter']))      {
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 				$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";

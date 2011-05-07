@@ -62,9 +62,9 @@ class documentCategoryClass extends  configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -74,9 +74,9 @@ class documentCategoryClass extends  configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -180,11 +180,11 @@ class documentCategoryClass extends  configClass {
 			$dir  = $_POST['dir'];
 		}
 		if(empty($_POST['sort'])) {
-			$sort_field = "doc_cat_uniqueId";
+			$sortField = "doc_cat_uniqueId";
 		} else {
-			$sort_field = $_POST['sort'];
+			$sortField = $_POST['sort'];
 		}
-		$sql.="	ORDER BY `".$sort_field."` ".$dir." ";
+		$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 		if(empty($_POST['filter']))      {
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 				$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
@@ -202,7 +202,7 @@ class documentCategoryClass extends  configClass {
 
 
 		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->result_text);
+			$this->msg(false,$this->q->responce);
 			exit();
 		}else {
 			// bugs on extjs
@@ -263,7 +263,7 @@ class documentCategoryClass extends  configClass {
 		$this->q->commit();
 
 		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->result_text);
+			$this->msg(false,$this->q->responce);
 			exit();
 		} else {
 			$this->msg(true,'Update query Sucess');
@@ -296,7 +296,7 @@ class documentCategoryClass extends  configClass {
 		$this->q->commit();
 
 		if($this->q->execute=='fail') {
-			$this->msg('false',$this->q->result_text);
+			$this->msg('false',$this->q->responce);
 			exit();
 		} else {
 			$this->msg(true,'Remove query Sucess');

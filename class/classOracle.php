@@ -89,7 +89,7 @@ class vendor
 	 *  to inform user if error
 	 * @var string
 	 */
-	public $result_text;
+	public $responce;
 	/**
 	 *  to inform user if error
 	 * @var string $execute
@@ -101,18 +101,7 @@ class vendor
 	 */
 	public $filter; //  bugs must filter the  special character with sql escape
 	public $staffId;
-	/**
-	 * predefine commit constructor for oracle database extension
-	 */
-	public $oracleCommit = 0;
-	private $mysqlOpenTag;
-	private $mysqlCloseTag;
-	private $sqlServerOpenTag;
-	private $sqlServerCloseTag;
-	private $oracleOpenTag;
-	private $oracleCloseTag;
-	private $globalOpenTag;
-	private $globalCloseTag;
+	public $insertId;
 	public function __construct()
 	{
 	}
@@ -141,20 +130,20 @@ class vendor
 		if (!$this->link) {
 			$this->execute = 'fail';
 			if (mysqli_connect_errno()) {
-				$this->result_text = mysqli_connect_errno();
+				$this->responce = mysqli_connect_errno();
 				echo json_encode(array(
                     "success" => false,
-                    "message" => 'Fail To Connect Database : ' . $this->result_text
+                    "message" => 'Fail To Connect Database : ' . $this->responce
 				));
 				exit();
 			}
 		} else {
 			$resources = mysqli_select_db($this->link, $this->databaseName);
 			if (!$resources) {
-				$this->result_text = mysqli_error($this->link) . "Error Code" . mysqli_errno($this->link);
+				$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($this->link);
 				echo json_encode(array(
                     "success" => false,
-                    "message" => $this->result_text
+                    "message" => $this->responce
 				));
 				exit();
 			}
@@ -196,8 +185,8 @@ class vendor
 				$error.=		"Message: " . $errorArray["message"] . "<br>";
 				$error.=		"Position: " . $errorArray["offset"] . "<br>";
 				$error.=		"Statement: " . addslashes($errorArray["sqltext"]) . "<br>";
-				$this->result_text	=	$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->result_text));
+				$this->responce	=	$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
 				exit();
 			}
 		} else {
@@ -207,8 +196,8 @@ class vendor
 			$error.=	"Message: " . $errorArray["message"] . "<br>";
 			$error.=	"Position: " . $errorArray["offset"] . "<br>";
 			$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
-			$this->result_text=$error;
-			echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->result_text));
+			$this->responce=$error;
+			echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
 			exit();
 		}
 		if ($error == 1) {
@@ -245,8 +234,8 @@ class vendor
 					$error.=		"Message: " . $errorArray["message"] . "<br>";
 					$error.=		"Position: " . $errorArray["offset"] . "<br>";
 					$error.=		"Statement: " . addslashes($errorArray["sqltext"]) . "<br>";
-					$this->result_text	=	$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->result_text));
+					$this->responce	=	$error;
+					echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
 					exit();
 				}
 			} else {
@@ -256,8 +245,8 @@ class vendor
 				$error.=	"Message: " . $errorArray["message"] . "<br>";
 				$error.=	"Position: " . $errorArray["offset"] . "<br>";
 				$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
-				$this->result_text=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->result_text));
+				$this->responce=$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
 				exit();
 			}
 		}
@@ -279,13 +268,13 @@ class vendor
 		$sql             = "
 				SELECT 	*
 				FROM 	\"leafAccess\"
-				WHERE  \"leafAccess\".\"leafId\"			=	'" . $this->leafId . "'
+				WHERE  \"leafAccess\".\"leafId\"			=	\"". $this->leafId . "\"
 				AND   	\"leafAccess\".\"" . $operation . "\"	=	'1'
-				AND   	\"leafAccess\".\"staffId\"		=	'" . $this->staffId . "'";
+				AND   	\"leafAccess\".\"staffId\"		=	\"". $this->staffId . "\"";
 		$result          = mysqli_query($this->link, $sql);
 		if (!$result) {
 			$this->execute     = 'false';
-			$this->result_text = $sql . mysqli_error($this->link);
+			$this->responce = $sql . mysqli_error($this->link);
 			$result_row        = 0;
 		} else {
 			$result_row = mysqli_num_rows($result);
@@ -323,7 +312,7 @@ class vendor
 			$test1   = mysqli_query($this->link, $sql_log);
 			if (!$test1) {
 				$this->execute     = 'fail';
-				$this->result_text = $sql_log . "[" . mysqli_error($this->link) . "]";
+				$this->responce = $sql_log . "[" . mysqli_error($this->link) . "]";
 			}
 		}
 		return ($result_row);
@@ -340,7 +329,7 @@ class vendor
 			return ($this->query($this->sql));
 		} else {
 			$this->execute     = 'fail';
-			$this->result_text = "Where's the query forgot Yax! ..[" . $sql . "]";
+			$this->responce = "Where's the query forgot Yax! ..[" . $sql . "]";
 		}
 	}
 	/**
@@ -369,7 +358,7 @@ class vendor
 			}
 		} else {
 			$this->execute     = 'fail';
-			$this->result_text = "Where's the query forgot Ya!";
+			$this->responce = "Where's the query forgot Ya!";
 		}
 	}
 	/**
@@ -389,45 +378,45 @@ class vendor
 		if (strlen($sql) > 0) {
 			if ($this->module('leafUpdateAccessValue') == 1) {
 				if ($this->audit == 1) {
-					$log_advance_type = 'U'; // aka update
-					$sql_column       = "SHOW COLUMNS FROM `" . $this->tableName . "`";
-					$result_column    = mysqli_query($this->link, $sql_column);
-					if (!$result_column) {
+					$logAdvanceType = 'U'; // aka update
+					$sqlColumn       = "SHOW COLUMNS FROM `" . $this->tableName . "`";
+					$resultColumn    = mysqli_query($this->link, $sqlColumn);
+					if (!$resultColumn) {
 						$this->execute     = 'fail';
-						$this->result_text = "Error selecting table";
+						$this->responce = "Error selecting table";
 					}
-					$field_val = array();
-					if (!$result_column) {
+					$fieldValue = array();
+					if (!$resultColumn) {
 						$this->execute     = 'fail';
-						$this->result_text = mysqli_error($this->link) . "Error Code" . mysqli_errno($$this->link);
+						$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($$this->link);
 					} else {
-						//	echo "Jumlah Rekod".mysqli_num_rows($result_column);
-						while ($row_column = mysqli_fetch_array($result_column)) {
+						//	echo "Jumlah Rekod".mysqli_num_rows($resultColumn);
+						while ($rowColumn = mysqli_fetch_array($resultColumn)) {
 							// create the field value
-							$field_val[] = $row_column['Field'];
+							$fieldValue[] = $rowColumn['Field'];
 						}
 					}
-					$sql_prev    = "
+					$sqlPrevious    = "
 					SELECT 	*
 					FROM 	`" . $this->tableName . "`
-					WHERE 	`" . $this->primaryKeyName . "` = '" . $this->primaryKeyValue . "'";
-					$result_prev = mysqli_query($this->link, $sql_prev);
-					if (!$result_prev) {
+					WHERE 	`" . $this->primaryKeyName . "` = \"". $this->primaryKeyValue . "\"";
+					$resultPrevious = mysqli_query($this->link, $sqlPrevious);
+					if (!$resultPrevious) {
 						$this->execute     = 'fail';
-						$this->result_text = mysqli_error($this->link) . "Error Code" . mysqli_errno($this->link);
+						$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($this->link);
 					} else {
 						// successfully
-						//	echo "Jumlah Rekod ".mysqli_num_rows($result_prev);
-						while ($row_prev = mysqli_fetch_array($result_prev)) {
-							foreach ($field_val as $field) {
-								$text .= "\"" . $field . "\":\"" . $row_prev[$field] . "\",";
-								$prev[$field] = $row_prev[$field];
+						//	echo "Jumlah Rekod ".mysqli_num_rows($resultPrevious);
+						while ($rowPrevious = mysqli_fetch_array($resultPrevious)) {
+							foreach ($fieldValue as $field) {
+								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
+								$previous[$field] = $rowPrevious[$field];
 							}
 						}
 					}
 					$text               = $this->removeComa($text);
 					$text               = "{" . $text . "}"; // using json data format ?
-					$sql_log_advance    = "
+					$sqlLogAdvance    = "
 					INSERT INTO 	`logAdvance`
 					(
 					`logAdvanceText`,
@@ -435,57 +424,57 @@ class vendor
 					`refId`
 					)
 					VALUES 		(
-					'" . $text . "',
-					'" . $log_advance_type . "',
-					'" . $this->leafId . "'
+					\"". $text . "\",
+					\"". $logAdvanceType . "\",
+					\"". $this->leafId . "\"
 					)";
-					$result_log_advance = mysqli_query($this->link, $sql_log_advance);
-					if ($result_log_advance) {
+					$resultLogAdvance = mysqli_query($this->link, $sqlLogAdvance);
+					if ($resultLogAdvance) {
 						// take the last id for references
-						$log_advance_uniqueId = mysqli_insert_id($this->link); //
+						$logAdvanceId = mysqli_insert_id($this->link); //
 					} else {
 						$this->execute     = 'fail';
-						$this->result_text = "error inserting query update insert";
+						$this->responce = "error inserting query update insert";
 					}
 				}
 				$this->query($this->sql);
 				$record_affected = $this->affectedRows(); // direct call for can now how much record have been deleted and make error handling
 				if ($this->audit == 1) {
 					// select the current update file
-					$sql_curr    = "
+					$sqlCurrent    = "
 					SELECT 	*
 					FROM 	`" . $this->tableName . "`
-					WHERE 	`" . $this->primaryKeyName . "`='" . $this->primaryKeyValue . "'";
-					$result_curr = mysqli_query($this->link, $sql_curr);
-					if ($result_curr) {
-						while ($row_curr = mysqli_fetch_array($result_curr)) {
-							$text_comparison .= $this->compare($field_val, $row_curr, $prev);
+					WHERE 	`" . $this->primaryKeyName . "`=\"". $this->primaryKeyValue . "\"";
+					$resultCurrent = mysqli_query($this->link, $sqlCurrent);
+					if ($resultCurrent) {
+						while ($rowCurrent = mysqli_fetch_array($resultCurrent)) {
+							$textComparison .= $this->compare($fieldValue, $rowCurrent, $previous);
 						}
 					} else {
 						$this->execute     = 'fail';
-						$this->result_text = "Error Query on advance select" . $sql_curr;
+						$this->responce = "Error Query on advance select" . $sqlCurrent;
 					}
-					$text_comparison = substr($text_comparison, 0, -1); // remove last coma
-					$text_comparison = "{ \"tablename\":\"" . $this->tableName . "\",\"ref_uniqueId\":\"" . $this->primaryKeyValue . "\"," . $text_comparison . "}"; // json format
+					$textComparison = substr($textComparison, 0, -1); // remove last coma
+					$textComparison = "{ \"tablename\":\"" . $this->tableName . "\",\"ref_uniqueId\":\"" . $this->primaryKeyValue . "\"," . $textComparison . "}"; // json format
 					// update back comparision the previous record
 					$sql             = "
 					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparison`='" . addslashes($text_comparison) . "'
-					WHERE 	`logAdvanceId`='" . $log_advance_uniqueId . "'";
+					SET 	`logAdvanceComparison`=\"". addslashes($textComparison) . "\"
+					WHERE 	`logAdvanceId`=\"". $logAdvanceId . "\"";
 					$result          = mysqli_query($this->link, $sql);
 					if (!$result) {
 						$this->execute     = 'fail';
-						$this->result_text = "Error Query update log advance";
+						$this->responce = "Error Query update log advance";
 					}
 				}
 			} else {
 				$this->execute     = 'fail';
-				$this->result_text = 'access denied lol';
+				$this->responce = 'access denied lol';
 			}
 			return $record_affected;
 		} else {
 			$this->execute     = 'fail';
-			$this->result_text = "Where's the query forgot Ya!";
+			$this->responce = "Where's the query forgot Ya!";
 		}
 	}
 	/**
@@ -518,11 +507,11 @@ class vendor
 				return ($this->query($this->sql));
 			} else {
 				$this->execute     = 'fail';
-				$this->result_text = " Access Denied View ";
+				$this->responce = " Access Denied View ";
 			}
 		} else {
 			$this->execute     = 'fail';
-			$this->result_text = "Where's the query forgot Ya!";
+			$this->responce = "Where's the query forgot Ya!";
 		}
 	}
 	public function file($sql)
@@ -537,7 +526,7 @@ class vendor
 			return $result;
 		} else {
 			$this->execute     = 'fail';
-			$this->result_text = "Where's the query forgot Ya!";
+			$this->responce = "Where's the query forgot Ya!";
 		}
 	}
 	/**
@@ -559,7 +548,7 @@ class vendor
 			return $result;
 		} else {
 			$this->execute     = 'fail';
-			$this->result_text = "Where's the query forgot Ya!";
+			$this->responce = "Where's the query forgot Ya!";
 		}
 	}
 	/**
@@ -691,9 +680,9 @@ class vendor
 	 * @param string prev_value come from first value before edit.
 	 * @return string
 	 */
-	private function compare($field_val, $curr_value, $prev_value)
+	private function compare($fieldValue, $curr_value, $prev_value)
 	{
-		foreach ($field_val as $field) {
+		foreach ($fieldValue as $field) {
 			switch ($curr_value[$field]) {
 				case is_float($curr_value[$field]):
 					// $type='float';
@@ -751,12 +740,12 @@ class vendor
 					break;
 			}
 			// json format ?
-			$text_comparison .= "\"" . $field . "\":[{ \"prev\":\"" . $prev_value[$field] . "\"},
+			$textComparison .= "\"" . $field . "\":[{ \"prev\":\"" . $prev_value[$field] . "\"},
 														{ \"curr\":\"" . $curr_value[$field] . "\"},
 														{ \"type\":\"" . $type . "\"},
 														{ \"diff\":\"" . $diff . "\"}],";
 		}
-		return $text_comparison;
+		return $textComparison;
 	}
 	private function realEscapeString($data)
 	{
@@ -811,7 +800,7 @@ class vendor
 					case 'list':
 						$split = explode(",", $filter[$i]['data']['value']);
 						foreach ($split as $split_a) {
-							$str .= "'" . $split_a . "',";
+							$str .= "\"". $split_a . "\",";
 						}
 						$str = $this->removeComa($str);
 						if (count($split) > 0 && strlen($filter[$i]['data']['value']) > 0) {
@@ -840,16 +829,16 @@ class vendor
 					case 'date':
 						switch ($filter[$i]['data']['comparison']) {
 							case 'ne':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" != '" . date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
+								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" != \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
 								break;
 							case 'eq':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" = '" . date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
+								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" = \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
 								break;
 							case 'lt':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" < '" . date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
+								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" < \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
 								break;
 							case 'gt':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" > '" . date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
+								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" > \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
 								break;
 						}
 						break;

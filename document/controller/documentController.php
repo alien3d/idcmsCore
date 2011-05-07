@@ -63,9 +63,9 @@ class documentClass extends  configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -75,9 +75,9 @@ class documentClass extends  configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -160,11 +160,11 @@ class documentClass extends  configClass {
 			$dir  = $_POST['dir'];
 		}
 		if(empty($_POST['sort'])) {
-			$sort_field = "doc_uniqueId";
+			$sortField = "doc_uniqueId";
 		} else {
-			$sort_field = $_POST['sort'];
+			$sortField = $_POST['sort'];
 		}
-		$sql.="	ORDER BY `".$sort_field."` ".$dir." ";
+		$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 		if(empty($_POST['filter']))      {
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 				$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
@@ -185,7 +185,7 @@ class documentClass extends  configClass {
 
 
 		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->result_text);
+			$this->msg(false,$this->q->responce);
 			exit();
 		}else {
 			// bugs on extjs
@@ -362,7 +362,7 @@ class documentClass extends  configClass {
 			$this->q->commit();
 
 			if($this->q->execute=='fail') {
-				$this->msg('false',$this->q->result_text);
+				$this->msg('false',$this->q->responce);
 				exit();
 			} else {
 				$this->msg(true,'Remove query Sucess');

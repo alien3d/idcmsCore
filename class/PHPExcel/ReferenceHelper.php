@@ -465,7 +465,7 @@ class PHPExcel_ReferenceHelper
 				if (!is_null($cell) && $cell->getDataType() == PHPExcel_Cell_DataType::TYPE_FORMULA) {
 					$formula = $cell->getValue();
 					if (strpos($formula, $oldName) !== false) {
-						$formula = str_replace("'" . $oldName . "'!", "'" . $newName . "'!", $formula);
+						$formula = str_replace("\"". $oldName . "\"!", "\"". $newName . "\"!", $formula);
 						$formula = str_replace($oldName . "!", $newName . "!", $formula);
 						$cell->setValueExplicit($formula, PHPExcel_Cell_DataType::TYPE_FORMULA);
 					}

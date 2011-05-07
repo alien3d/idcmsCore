@@ -105,7 +105,7 @@ class loginClass extends configClass {
 
 		$result=$this->q->fast($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 

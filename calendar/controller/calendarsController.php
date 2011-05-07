@@ -1,7 +1,6 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
 require_once("../model/calendarModel.php");
-require_once ("../model/calendarModel.php");;
 /**
  * this is main setting files
  * @name IDCMS
@@ -63,9 +62,9 @@ class calendarsClass extends  configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -75,9 +74,9 @@ class calendarsClass extends  configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -181,11 +180,11 @@ class calendarsClass extends  configClass {
 			$dir  = $_POST['dir'];
 		}
 		if(empty($_POST['sort'])) {
-			$sort_field = "calendar_uniqueId";
+			$sortField = "calendar_uniqueId";
 		} else {
-			$sort_field = $_POST['sort'];
+			$sortField = $_POST['sort'];
 		}
-		$sql.="	ORDER BY `".$sort_field."` ".$dir." ";
+		$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 		if(isset($_POST['start']) && isset($_POST['limit'])) {
 			$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
 		}
@@ -243,7 +242,7 @@ class calendarsClass extends  configClass {
 		$this->q->commit();
 
 		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->result_text);
+			$this->msg(false,$this->q->responce);
 			exit();
 		} else {
 			$this->msg(true,'Update query Sucess');

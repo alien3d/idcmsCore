@@ -64,9 +64,9 @@ class folderAccessClass  extends configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -76,9 +76,9 @@ class folderAccessClass  extends configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -266,7 +266,7 @@ class folderAccessClass  extends configClass {
 		}
 
 		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->result_text);
+			$this->msg(false,$this->q->responce);
 			exit();
 		}else {
 			echo json_encode(
@@ -321,7 +321,7 @@ class folderAccessClass  extends configClass {
 			}
 			$this->q->update($sql);
 			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+				echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 				exit();
 
 			}

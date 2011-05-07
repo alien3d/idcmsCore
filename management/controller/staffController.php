@@ -63,9 +63,9 @@ class staffClass extends  configClass {
 
 	/**
 	 * Document Trail Audit.
-	 * @var string $doc_$trail;
+	 * @var string $documentTrail;
 	 */
-	private  $doc_trail;
+	private  $documentTrail;
 
 	/**
 	 *  Ascending ,Descending ASC,DESC
@@ -75,9 +75,9 @@ class staffClass extends  configClass {
 
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sort_field
+	 * @var string $sortField
 	 */
-	public $sort_field;
+	public $sortField;
 	/**
 	 * Default Language  : English
 	 * @var numeric $defaultLanguageId
@@ -200,7 +200,7 @@ class staffClass extends  configClass {
 		}
 		$this->q->create($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->insert_id = $this->q->last_insert_id();
@@ -223,7 +223,7 @@ class staffClass extends  configClass {
 		}
 		$this->q->read($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		if($this->q->numberRows()> 0 ){
@@ -252,7 +252,7 @@ class staffClass extends  configClass {
 				}
 				$this->q->read($sql);
 				if($this->q->execute=='fail'){
-					echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 					exit();
 				}
 				if($this->q->numberRows() ==  0 ){
@@ -297,7 +297,7 @@ class staffClass extends  configClass {
 					}
 					$this->q->create($sql);
 					if($this->q->execute=='fail'){
-						echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+						echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 						exit();
 					}
 				}
@@ -322,7 +322,7 @@ class staffClass extends  configClass {
 		}
 		$this->q->read($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		if($this->q->numberRows()>0){
@@ -350,7 +350,7 @@ class staffClass extends  configClass {
 				}
 				$this->q->read($sql);
 				if($this->q->execute=='fail'){
-					echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 					exit();
 				}
 				if($this->q->numberRows()> 0 ){
@@ -399,7 +399,7 @@ class staffClass extends  configClass {
 					}
 					$this->q->create($sql);
 					if($this->q->execute=='fail'){
-						echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+						echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 						exit();
 					}
 				}
@@ -426,7 +426,7 @@ class staffClass extends  configClass {
 
 
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		if($this->q->numberRows()> 0 ) {
@@ -508,7 +508,7 @@ class staffClass extends  configClass {
 				}
 				$this->q->create($sql);
 				if($this->q->execute=='fail'){
-					echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 					exit();
 				}
 			}
@@ -557,7 +557,7 @@ class staffClass extends  configClass {
 			}
 			$this->q->create($sql);
 			if($this->q->execute=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+				echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 				exit();
 			}
 		}
@@ -630,7 +630,7 @@ class staffClass extends  configClass {
 		}
 		$record_all 	= $this->q->read($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 
 		}
@@ -643,11 +643,11 @@ class staffClass extends  configClass {
 			$dir  = $_GET['dir'];
 		}
 		if(empty($_GET['sort'])) {
-			$sort_field = "staffId";
+			$sortField = "staffId";
 		} else {
-			$sort_field = $_GET['sort'];
+			$sortField = $_GET['sort'];
 		}
-		$sql.="	ORDER BY `".$sort_field."` ".$dir." ";
+		$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 		if(empty($_POST['filter']))      {
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 				$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
@@ -658,7 +658,7 @@ class staffClass extends  configClass {
 
 		$this->q->read($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 
 		}
@@ -732,7 +732,7 @@ class staffClass extends  configClass {
 		}
 		$this->q->read($sql);
 		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->result_text);
+			$this->msg(false,$this->q->responce);
 			exit();
 		}
 		$data = $this->q->fetchAssoc();
@@ -802,7 +802,7 @@ class staffClass extends  configClass {
 
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 
 		}
@@ -831,7 +831,7 @@ class staffClass extends  configClass {
 
 			$this->q->read($sql);
 			if($this->q->execute=='fail') {
-				$this->msg(false,$this->q->result_text);
+				$this->msg(false,$this->q->responce);
 				exit();
 			}
 			$data = $this->q->activeRecord();
@@ -894,7 +894,7 @@ class staffClass extends  configClass {
 					}
 					$this->q->update($sql);
 					if($this->q->execute=='fail') {
-						echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+						echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 						exit();
 
 					}
@@ -968,7 +968,7 @@ class staffClass extends  configClass {
 					}
 					$this->q->create($sql);
 					if($this->q->execute=='fail'){
-						echo json_encode(array("success"=>false,"message"=>$this->q->result_text));
+						echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 						exit();
 					}
 				}
@@ -1034,7 +1034,7 @@ class staffClass extends  configClass {
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
@@ -1071,7 +1071,7 @@ class staffClass extends  configClass {
 		}
 		$this->q->read($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->result_text));
+			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 
 		}
