@@ -447,7 +447,7 @@ class religionClass extends configClass
 					`isDelete`			=	\"". $this->model->isDelete . "\",
 					`isApproved`		=	\"". $this->model->isApproved . "\",
 					`By`				=	\"". $this->model->By . "\",
-					`Time				=	" . $this->model->Time . "
+					`Time`				=	" . $this->model->Time . "
 			WHERE 	`religionId`		=	\"". $this->model->religionId . "\"";
 		} else if ($this->q->vendor == 'microsoft') {
 			$sql = "
@@ -461,7 +461,7 @@ class religionClass extends configClass
 					[isApproved]		=	\"". $this->model->isApproved . "\",
 					[By]				=	\"". $this->model->By . "\",
 					[Time]				=	" . $this->model->Time . "
-			WHERE 	[religionId]		=	\"". $this->strict($_POST['religionId'], 'n') . "\"";
+			WHERE 	[religionId]		=	\"". $this->model->religionId . "\"";
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
 			UPDATE 	\"religion\"
@@ -521,7 +521,7 @@ class religionClass extends configClass
 					`isDelete`			=	\"". $this->model->isDelete . "\",
 					`isApproved`		=	\"". $this->model->isApproved . "\",
 					`By`				=	\"". $this->model->By . "\",
-					`Time				=	" . $this->model->Time . "
+					`Time`				=	" . $this->model->Time . "
 			WHERE 	`religionId`		=	\"". $this->model->religionId . "\"";
 		} else if ($this->q->vendor == 'microsoft') {
 			$sql = "

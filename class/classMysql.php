@@ -439,12 +439,14 @@ class vendor
 							(
 								`logAdvanceText`,
 								`logAdvanceType`,
+								`refTableName`,
 								`refId`
 							)
 					VALUES 		
 							(
-								\"" . $text . "\",
+								\"" . $this->realEscapeString($text) . "\",
 								\"" . $logAdvanceType . "\",
+								\"" . $this->tableName . "\",
 								\"" . $this->leafId . "\"
 					)";
 					$resultLogAdvance = mysqli_query($this->link, $sqlLogAdvance);
@@ -474,11 +476,13 @@ class vendor
 						$this->responce = "Error Query on advance select" . $sqlCurrent;
 					}
 					$textComparison = substr($textComparison, 0, -1); // remove last coma
-					$textComparison = "{ \"tablename\":\"" . $this->tableName . "\",\"ref_uniqueId\":\"" . $this->primaryKeyValue . "\"," . $textComparison . "}"; // json format
+					$textComparison = "{ \"tablename\":\"" . $this->tableName . "\",\"refId\":\"" . $this->primaryKeyValue . "\"," . $textComparison . "}"; // json format
 					// update back comparision the previous record
 					$sql             = "
 					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparison`	=	\"" . addslashes($textComparison) . "\"
+					SET 	`logAdvanceComparison`	=	\"" . $this->realEscapeString($textComparison) . "\",
+							`By`					=   \"".$this->staffId."\",
+							`Time`					=	\"".date("Y-m-d H:i:s")."\"
 					WHERE 	`logAdvanceId`			=	\"" . $logAdvanceId . "\"";
 
 					$result          = mysqli_query($this->link, $sql);
