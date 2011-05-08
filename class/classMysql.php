@@ -202,7 +202,7 @@ class vendor
 							\"" . trim(addslashes($this->sql)) . "\",
 							\"" . date("Y-m-d H:i:s") . "\",
 							\"" . $this->staffId . "\",
-							\"" . $this->realEscapeString($sql) . "\"
+							\"" . trim($this->realEscapeString($sql)) . "\"
 					)";
 			$result_row = mysqli_query($this->link, $sql_log);
 			if (!$result_row) {
@@ -259,7 +259,7 @@ class vendor
 			values 
 					(
 						\"" . $this->leafId . "\",								\"" . $operation . "\",
-						\"X" . $this->realEscapeString($this->sql) . "\",		\"" . date("Y-m-d H:i:s") . "\",
+						\"" . trim($this->realEscapeString($this->sql)) . "\",		\"" . date("Y-m-d H:i:s") . "\",
 						\"" . $_SESSION['staffId'] . "\",						\"" . $access . "\",
 						\"" . $logError . "\"
 					)";

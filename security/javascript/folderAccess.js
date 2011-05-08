@@ -36,7 +36,7 @@ Ext.onReady(function(){
 					[	{	name		:	'accordionId',
                             type        :   'int'					
 					    },{
-							name		:	'accordionName',
+							name		:	'accordionNote',
                             type        :   'string'							
 						},{ 
 						 	name		:	'groupId',
@@ -72,7 +72,7 @@ Ext.onReady(function(){
 	var columnModel = new Ext.grid.ColumnModel({
 		columns:[{ 
 			header: accordionNameLabel,
-			dataIndex:'accordionName'
+			dataIndex:'accordionNote'
 		},{
 			header: accordionIdLabel,
 			dataIndex:'accordionId'
@@ -91,24 +91,24 @@ Ext.onReady(function(){
 		},folderAccessValue]
 	});
 	
-	var group_reader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
-	var group_store 		= 	new Ext.data.Store({
+	var groupReader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
+	var groupStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
         			url	: 	'../controller/folderAccessController.php?method=read&field=groupId&leafId='+leafId,
 					method:'GET'
 				}),
-			reader		:	group_reader,
+			reader		:	groupReader,
 			remoteSort	:	false 
 	});
-	group_store.load();
+	groupStore.load();
 	
-	var accordion_reader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionNote']);
-	var accordion_store 		= 	new Ext.data.Store({
+	var accordionReader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionNote']);
+	var accordionStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
         			url	: 	'../controller/folderAccessController.php?method=read&type=2&field=accordionId&leafId='+leafId,
 					method:'GET'
 				}),
-			reader		:	accordion_reader,
+			reader		:	accordionReader,
 			remoteSort	:	false 
 	});
 	

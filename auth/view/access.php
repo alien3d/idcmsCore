@@ -73,26 +73,26 @@ class loginClass extends configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		//UTF8
 
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
 		/**
 		 *  Most Vendor don't much implement ansi 92 standard.Sql Statement Prefer Follow  Vendor Database Rule Standard.
 		 **/
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			$sql	=	"
 			SELECT	*
 			FROM 	`staff`
 			WHERE 	`staffName`		=	'".$this->strict($this->User,'s')."'
 			AND		`staffPassword`	=	'".$this->strict(md5($this->Pass),'p')."'";
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 			$sql	=	"
 			SELECT	*
 			FROM 	[staff]
 			WHERE 	[staffName]		=	'".$this->strict($this->User,'s')."'
 			AND		[staffPassword]	=	'".$this->strict(md5($this->Pass),'p')."'";
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 			$sql	=	"
 			SELECT	*
 			FROM 	\"staff\"

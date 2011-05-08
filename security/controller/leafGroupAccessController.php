@@ -138,7 +138,7 @@ class leafGroupAccessClass  extends  configClass {
 	 */
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -146,7 +146,7 @@ class leafGroupAccessClass  extends  configClass {
 		// by default if add new group will add access to accordion and leaf.
 		// just checking
 		//	$this->checkLeaf();
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			$sql="
 				SELECT	`leaf`.`accordionId`,
 						`leaf`.`folderId`,
@@ -222,7 +222,7 @@ class leafGroupAccessClass  extends  configClass {
 			if($_GET['folderId']) {
 				$sql.=" AND `leaf`.`folderId`='".$this->strict($_GET['folderId'],'numeric')."'";
 			}
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 				SELECT	[leaf].[accordionId],
 						[leaf].[folderId],
@@ -298,7 +298,7 @@ class leafGroupAccessClass  extends  configClass {
 			if($_GET['folderId']) {
 				$sql.=" AND [leaf].[folderId]='".$this->strict($_GET['folderId'],'numeric')."'";
 			}
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 				SELECT	\"leaf\".\"accordionId\",
 						\"leaf\".\"folderId\",
@@ -416,7 +416,7 @@ class leafGroupAccessClass  extends  configClass {
 
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -430,7 +430,7 @@ class leafGroupAccessClass  extends  configClass {
 			$data_array = explode(",",$data[$i]);
 			//echo print_r($data_array);
 
-			if( $this->q->vendor=='mysql') {
+			if( $this->q->vendor==self::mysql) {
 				$sql="
 					UPDATE 	`leafGroupAccess`
 					SET 	`leafCreateAccessValue`	=	'".$this->strict($data_array[2],'boolean')."',
@@ -441,7 +441,7 @@ class leafGroupAccessClass  extends  configClass {
 							`leafPostAccessValue`	=	'".$this->strict($data_array[6],'boolean')."'
 					WHERE 	`leafGroupAccessId`	=	'".$this->strict($data_array[0],'numeric')."'";
 				//echo $sql."<br>";
-			} else if ($this->q->vendor=='microsoft') {
+			} else if ($this->q->vendor==self::mssql) {
 				$sql="
 					UPDATE 	[leafGroupAccess]
 					SET 	[leafCreateAccessValue]	=	'".$this->strict($data_array[2],'boolean')."',
@@ -451,7 +451,7 @@ class leafGroupAccessClass  extends  configClass {
 							[leafPrintAccessValue]	=	'".$this->strict($data_array[5],'boolean')."',
 							[leafPostAccessValue]	=	'".$this->strict($data_array[6],'boolean')."'
 					WHERE 	[leafGroupAccessId]	=	'".$this->strict($data_array[0],'numeric')."'";
-			} else if ($this->q->vendor=='oracle') {
+			} else if ($this->q->vendor==self::oracle) {
 				$sql="
 					UPDATE 	\"leafGroupAccess\"
 					SET 	\"leafCreateAccessValue\"	=	'".$this->strict($data_array[2],'boolean')."',

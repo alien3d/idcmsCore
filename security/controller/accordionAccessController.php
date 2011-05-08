@@ -89,6 +89,15 @@ class accordionAccessClass extends configClass {
 	 * @var numeric $accordionId
 	 */
 	public $accordionId;
+	/**
+	 *  Table Group Indentification Value
+	 * @var numeric $groupId
+	 */
+	public $groupId;
+	/**
+	 * Common class function for security menu
+	 * @var  string $security
+	 */
 	private $security;
 
 	/**
@@ -115,7 +124,7 @@ class accordionAccessClass extends configClass {
 
 		$this->audit 				=	0;
 
-		$this->log					=   0;
+		$this->log					=   1;
 
 		$this->q->log 				= $this->log;
 
@@ -135,10 +144,35 @@ class accordionAccessClass extends configClass {
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
 		//UTF8
-		$sql='SET NAMES "utf8"';
-		$this->q->fast($sql);
-
+		if($this->q->vendor==self::mysql) {
+			$sql='SET NAMES "utf8"';
+			$this->q->fast($sql);
+		}
 		// by default if add new group will add access to accordion and folder.
+		if($this->q->vendor==self::mysql){
+			$sql="
+				SELECT	`accordionAccess`.`accordionAccessId`,
+						`accordion`.`accordionId`,
+						`accordion`.`accordionNote`,
+						`group`.`groupId`,
+						`group`.`groupNote`,
+						(CASE `accordionAccess`.`accordionAccessValue`
+							WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS `accordionAccessValue`
+				FROM 	`accordionAccess`
+				JOIN	`accordion`
+				USING 	(`accordionId`)
+				JOIN 	`group`
+				USING 	(`groupId`)
+				WHERE 	`accordion`.`isActive` 	=	1
+				AND		`group`.`isActive`		=	1";
+			if($this->groupId) {
+				$sql.=" AND `group`.`groupId`='".$this->strict($this->groupId,'numeric')."'";
+			}
+		} else if ($this->q->vendor==self::mssql){
 		$sql="
 				SELECT	`accordionAccess`.`accordionAccessId`,
 						`accordion`.`accordionId`,
@@ -156,22 +190,48 @@ class accordionAccessClass extends configClass {
 				USING 	(`accordionId`)
 				JOIN 	`group`
 				USING 	(`groupId`)
-				WHERE 	1
-				AND		`accordion`.`languageId`='".$_SESSION['languageId']."'";
-		if($_POST['groupId']) {
-			$sql.=" AND `group`.`groupId`='".$this->strict($_POST['groupId'],'numeric')."'";
+				WHERE 	`accordion`.`isActive` 	=	1
+				AND		`group`.`isActive`		=	1";
+			if($this->groupId) {
+				$sql.=" AND `group`.`groupId`='".$this->strict($this->groupId,'numeric')."'";
+			}
+		} else if ($this->q->vendor==self::oracle){
+			$sql="
+				SELECT	`accordionAccess`.`accordionAccessId`,
+						`accordion`.`accordionId`,
+						`accordion`.`accordionName`,
+						`group`.`groupId`,
+						`group`.`groupName`,
+						(CASE `accordionAccess`.`accordionAccessValue`
+							WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS `accordionAccessValue`
+				FROM 	`accordionAccess`
+				JOIN	`accordion`
+				USING 	(`accordionId`)
+				JOIN 	`group`
+				USING 	(`groupId`)
+				WHERE 	`accordion`.`isActive` 	=	1
+				AND		`group`.`isActive`		=	1";
+			if($this->groupId) {
+				$sql.=" AND `group`.`groupId`='".$this->strict($this->groupId,'numeric')."'";
+			}
 		}
 		//echo $sql;
 		// searching filtering
 		$sql.=$this->q->searching();
 
 		$this->q->read($sql);
-		$total	= $this->q->numberRows();
-		//paging
 		if($this->q->execute=='fail') {
-			$this->msg('false',$this->q->responce);
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+
 			exit();
 		}
+
+		$total	= $this->q->numberRows();
+		//paging
 
 		if(isset($_POST['start']) && isset($_POST['limit'])) {
 			$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
@@ -208,7 +268,7 @@ class accordionAccessClass extends configClass {
 		//UTF8
 		$sql='SET NAMES "utf8"';
 		$this->q->fast($sql);
-		
+
 		// first check the group.if exist update else create new one
 		$accordionAccessId		=	'accordionAccessId';
 		$accordionAccessValue	=	'accordionAccessValue';
@@ -274,6 +334,9 @@ if(isset($_POST['method'])){
 	 */
 	if(isset($_POST['leafId'])){
 		$accordionAccessObject ->leafId = $_POST['leafId'];
+	}
+	if(isset($_POST['groupId'])){
+		$accordionAccessObject->groupId = $_POST['groupId'];
 	}
 	/*
 	 *  Load the dynamic value

@@ -21,7 +21,7 @@ Ext.onReady(function(){
 		var per_page		= 	10;
 		var encode 			=	false;
 		var local 			= 	false;
-		var acs_store 			= 	new Ext.data.JsonStore({
+		var accordionAccessStore 			= 	new Ext.data.JsonStore({
 			autoDestroy		:	true,
 			url				: 	'../controller/accordionAccessController.php',
 			remoteSort		: 	true,
@@ -66,7 +66,7 @@ Ext.onReady(function(){
 	var columnModel = new Ext.grid.ColumnModel({
 		columns:[{ 
 			header: accordionNameLabel,
-			dataIndex:'accordionName'
+			dataIndex:'accordionNote'
 		},{
 			header: accordionIdLabel,
 			dataIndex:'accordionId'
@@ -79,16 +79,16 @@ Ext.onReady(function(){
 		},accordionAccessValue]
 	});
 	
-	var group_reader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
-	var group_store 		= 	new Ext.data.Store({
+	var groupReader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
+	var groupStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
         			url	: 	'../controller/accordionAccessController.php?method=read&field=groupId&leafId='+leafId,
 					method:'GET'
 				}),
-			reader		:	group_reader,
+			reader		:	groupReader,
 			remoteSort	:	false 
 	});
-	group_store.load();	
+	groupStore.load();	
 	
 	var groupId  		=	new Ext.ux.form.ComboBoxMatch({ 
 		labelAlign			:	'left',
@@ -100,7 +100,7 @@ Ext.onReady(function(){
 		displayField		:	'groupNote',
 		typeAhead			: 	false,
     	triggerAction		: 	'all',
-		store				: 	group_store,
+		store				: 	groupStore,
 		anchor      		:	'95%',
 		selectOnFocus		:	true,
 		mode				:	'local',
@@ -121,13 +121,13 @@ Ext.onReady(function(){
 				} else { 
 					gridPanel.enable(); 
 				}
-				acs_store.proxy= new Ext.data.HttpProxy({
+				accordionAccessStore.proxy= new Ext.data.HttpProxy({
 					url			: 	'../controller/accordionAccessController.php?method=read&groupId=' + this.value+'&leafId='+leafId,
 					method		: 'POST'				
 								
 				});
 
-				acs_store.reload();
+				accordionAccessStore.reload();
 			}
 	}
 	});
@@ -144,7 +144,7 @@ Ext.onReady(function(){
 	var access_array = ['accordionAccessValue'];
 	var gridPanel = new Ext.grid.GridPanel({ 
 		region		:	'west',
-		store		:	acs_store,
+		store		:	accordionAccessStore,
 		cm			:	columnModel,
 		frame		:	true,
 		title		:	'Accordian Access Grid',
@@ -161,8 +161,8 @@ Ext.onReady(function(){
 						iconCls:'row-check-sprite-check',
 						listeners : { 
 							'click':function () {
-								var count = acs_store.getCount();
-								 acs_store.each(function(rec) {
+								var count = accordionAccessStore.getCount();
+								 accordionAccessStore.each(function(rec) {
 									for (var access in access_array) { 
 										// alert(access);
 										rec.set(access_array[access], true);
@@ -175,7 +175,7 @@ Ext.onReady(function(){
 						iconCls:'row-check-sprite-uncheck',
 						listeners : { 
 							'click':function () { 
-								 acs_store.each(function(rec) {
+								 accordionAccessStore.each(function(rec) {
 									for (var access in access_array) { 
 										rec.set(access_array[access], false);
 									}
@@ -188,13 +188,13 @@ Ext.onReady(function(){
 				listeners: { 
 					'click':function(c) { 
 					var url;
-					var count = acs_store.getCount();
+					var count = accordionAccessStore.getCount();
 
 					url ='../controller/accordionAccessController.php?method=update&leafId='+leafId;
 					var sub_url;
 					sub_url='';
 					 for (i = count - 1; i >= 0; i--) {
-						var record = acs_store.getAt(i);
+						var record = accordionAccessStore.getAt(i);
 						sub_url = sub_url+'&accordionAccessId[]='+record.get('accordionAccessId')+'&accordionAccessValue[]='+record.get('accordionAccessValue');
 					}
 					url = url+sub_url;
@@ -204,12 +204,12 @@ Ext.onReady(function(){
 						success:function(response,options) { 
 							Ext.MessageBox.alert('success updated');
 							// reload the store
-								acs_store.proxy= new Ext.data.HttpProxy({
+								accordionAccessStore.proxy= new Ext.data.HttpProxy({
 									url			: 	'../controller/accordionAccessController.php?method=read&groupId=' + Ext.getCmp('group_fake').value,
 									method		: 'POST'
 								});
 								
-							acs_store.reload(); 
+							accordionAccessStore.reload(); 
 							x = Ext.decode(response.responseText);
 							title='Updated ';
 							if(x.success=='true') {

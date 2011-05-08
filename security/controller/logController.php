@@ -135,13 +135,13 @@ class logClass extends  configClass {
 	public function read() 				{
 
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 			
 		}
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			$sql	=	"
 			SELECT	*
 			FROM 	`log`";
@@ -246,7 +246,7 @@ class logClass extends  configClass {
 	 */
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);

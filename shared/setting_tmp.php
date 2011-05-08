@@ -1,7 +1,7 @@
 <script language="javascript" type="text/javascript">
 <?php
 
-		if($q->vendor=='normal' || $q->vendor=='mysql') {
+		if($q->vendor=='mysql') {
 			/**
 			*
 			* set global output UTF8
@@ -15,7 +15,7 @@
 	*
 	*	 all label language
 	*/
-	if($q->vendor=='normal' || $q->vendor=='mysql') {
+	if($q->vendor=='mysql') {
 		$sql="
 		SELECT DISTINCT `tableMappingColumnName`,
 						`tableMappingNativeLabel`
@@ -45,7 +45,7 @@ while ($row = $q->fetchAssoc($result)) {
 *
 *	language pack javascript default
 */
-	if($q->vendor=='normal' || $q->vendor=='mysql') {
+	if($q->vendor=='mysql') {
 	$sql="
 	SELECT	*
 	FROM 	`defaultLabel`
@@ -85,7 +85,7 @@ $phpself='PHP_SELF';
 var filename = '<?php echo basename($_SERVER[$phpself]); ?>';
 <?php  // get uniqueid
 
-if($q->vendor=='normal' || $q->vendor=='mysql') {
+if($q->vendor=='mysql') {
  	$sql	=
 "	SELECT	*
 	FROM	`leaf`

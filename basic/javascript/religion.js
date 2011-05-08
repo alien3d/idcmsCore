@@ -488,6 +488,7 @@ Ext
 				height : 400,
 				columns : columnModel,
 				loadMask : true,
+				stripRows : true,
 				plugins : [ this.action, filters ],
 				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true

@@ -11,17 +11,69 @@ date_default_timezone_set("Asia/Kuala_Lumpur");
 require_once('classMysql.php');
 require_once 'PHPExcel.php';
 require_once 'PHPExcel/IOFactory.php';
+/**
+ * Database Configuration File and Database
+ * @author hafizan
+ *
+ */
 abstract class configClass
 {
+    /**
+     * Enter description here ...
+     * @var unknown_type
+     */
     public $value;
+    /**
+     * Enter description here ...
+     * @var unknown_type
+     */
     public $type;
+    /**
+     * Enter description here ...
+     * @var unknown_type
+     */
     public $connection;
+    /**
+     * Enter description here ...
+     * @var unknown_type
+     */
     public $database;
     public $username;
+    /**
+     * Enter description here ...
+     * @var unknown_type
+     */
     public $password;
+    /**
+     * Enter description here ...
+     * @var unknown_type
+     */
     public $staffId;
+    /**
+     * Enter description here ...
+     * @var unknown_type
+     */
     public $currUserSession;
+    /**
+     * Path Of the application
+     * @var string $application
+     */
     public $application;
+    /**
+     * Mysql Database
+     * @var const string
+     */
+    const mysql ='mysql';
+     /**
+     * Microsoft Sql Server Database
+     * @var const string
+     */
+    const mssql ='microsoft';
+     /**
+     * Oracle Database
+     * @var const string
+     */
+    const oracle = 'oracle';
     // end basic access database
     
     /*

@@ -95,15 +95,20 @@ class folderAccessClass  extends configClass {
 	 */
 	public $folderAccessId;
 	/**
-	 * Accordion Indentification
+	 *  Table Accordion Indentification
 	 * @var numeric $accordionId
 	 */
 	public  $accordionId;
 	/**
-	 *  Group Indentification
+	 *  Table Group Indentification Value
 	 * @var numeric $groupId
 	 */
 	public $groupId;
+	/**
+	 * Common class function for security menu
+	 * @var  string $security
+	 */
+	private $security;
 	/**
 	 * Class Loader
 	 */
@@ -142,14 +147,14 @@ class folderAccessClass  extends configClass {
 	function create() {}
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 			
 		}
 		// by default if add new group will add access to accordion and folder.
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			$sql="
 				SELECT	`accordion`.`accordionName`,
 						`accordion`.`accordionId`,
@@ -179,7 +184,7 @@ class folderAccessClass  extends configClass {
 			if($_GET['accordionId']) {
 				$sql.=" AND `folder`.`accordionId`='".$this->strict($_GET['accordionId'],'numeric')."'";
 			}
-		}  else if ( $this->q->vendor=='microsoft') {
+		}  else if ( $this->q->vendor==self::mssql) {
 			$sql="
 				SELECT	[accordion].[accordionName],
 						[accordion].[accordionId],
@@ -210,7 +215,7 @@ class folderAccessClass  extends configClass {
 			if($_GET['accordionId']) {
 				$sql.=" AND [folder].[accordionId]='".$this->strict($_GET['accordionId'],'numeric')."'";
 			}
-		}  else if ($this->q->vendor=='oracle') {
+		}  else if ($this->q->vendor==self::oracle) {
 			$sql="
 				SELECT	\"accordion\".\"accordionName\",
 						\"accordion\".\"accordionId\",
@@ -284,7 +289,7 @@ class folderAccessClass  extends configClass {
 	 */
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -302,18 +307,18 @@ class folderAccessClass  extends configClass {
 			} else {
 				$_GET[$folderAccessValue][$i]=0;
 			}
-			if( $this->q->vendor=='mysql') {
+			if( $this->q->vendor==self::mysql) {
 				$sql="
 					UPDATE 	`folderAccess`
 					SET 	`folderAccessValue`		= 	'".$this->strict($_GET[$folderAccessValue][$i],'string')."'
 					WHERE 	`folderAccessId`		=	'".$this->strict($_GET[$folderAccessId][$i],'numeric')."'";
 				//	echo $sql."<br>";
-			} else if($this->q->vendor=='microsoft') {
+			} else if($this->q->vendor==self::mssql) {
 				$sql="
 					UPDATE 	[folderAccess]
 					SET 	[folderAccessValue]		= 	'".$this->strict($_GET[$folderAccessValue][$i],'string')."'
 					WHERE 	[folderAccessId]		=	'".$this->strict($_GET[$folderAccessId][$i],'numeric')."'";
-			} else if ($this->q->vendor=='oracle') {
+			} else if ($this->q->vendor==self::oracle) {
 				$sql="
 					UPDATE 	\"folderAccess\"
 					SET 	\"folderAccessValue\"	= 	'".$this->strict($_GET[$folderAccessValue][$i],'string')."'

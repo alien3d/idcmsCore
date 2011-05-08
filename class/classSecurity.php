@@ -160,25 +160,25 @@ class security extends configClass {
 	public function group() 				{
 		header('Content-Type','application/json; charset=utf-8');
 
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
 		}
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			$sql="
 			SELECT 	`group`.`groupId`,
 					`group`.`groupNote`
 			FROM   	`group`
 			WHERE   `isActive`=1 ";
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 			SELECT 	[group].[groupId],
 					[group].[groupNote]
 			FROM   	[group]
 			WHERE   [isActive]=1 ";
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 			SELECT 	\"group\".\"groupId\",
 					\"group\".\"groupNote\"
@@ -215,13 +215,13 @@ class security extends configClass {
 		if(isset($_GET['type'])) {
 			$type = intval($_GET['type']);
 		}
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 			
 		}
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 
 			if($type==1) {
 				$sql="
@@ -242,7 +242,7 @@ class security extends configClass {
 					$sql.=" AND `accordionAccess`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
 				}
 			}
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 			if($type ==1 ) {
 				$sql="
 			SELECT 	[accordion].[accordionId],
@@ -264,7 +264,7 @@ class security extends configClass {
 					$sql.=" AND [ccordionAccess].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
 				}
 			}
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 			if($type == 1) {
 				$sql="
 			SELECT 	\"accordion\".\"accordionId\",
@@ -321,13 +321,13 @@ class security extends configClass {
 		if(isset($_GET['type'])) {
 			$type = intval($_GET['type']);
 		}
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
 		}
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			if($type ==1 ) {
 				$sql	=	"
 			SELECT	`folder`.`folderId`,
@@ -351,7 +351,7 @@ class security extends configClass {
 			if(isset($_GET['accordionId'])) {
 				$sql.=" AND `accordionId`	=	'".$this->strict($_GET['accordionId'],'numeric')."'";
 			}
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 			if($type==1){
 				$sql	=	"
 			SELECT	[folder].[folderId],
@@ -375,7 +375,7 @@ class security extends configClass {
 			if(isset($_GET['accordionId'])) {
 				$sql.=" AND [folder].[accordionId]='".$this->strict($_GET['accordionId'],'numeric')."'";
 			}
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 			if($type==1){
 				$sql	=	"
 			SELECT 	\"folder\".\"folderId\",
@@ -426,7 +426,7 @@ class security extends configClass {
 		 * initilize dummy value  to 0 
 		 */
 		$nextSequence=0;
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -435,17 +435,17 @@ class security extends configClass {
 		if(isset($_GET['table'])){
 			$table = $_GET['table'];
 		}
-		if( $this->q->vendor=='mysql'){
+		if( $this->q->vendor==self::mysql){
 			$sql="
 			SELECT 	(MAX(`".$table."Sequence`)+1) AS `nextSequence`
 			FROM 	`".$table."`
 			WHERE	`isActive` = 1";
-		} else if ($this->q->vendor=='microsoft'){
+		} else if ($this->q->vendor==self::mssql){
 			$sql="
 			SELECT 	(MAX([".$table."Sequence])+1) AS [nextSequence]
 			FROM 	[".$table."]
 			WHERE 	[isActive]=1";
-		} else if ($this->q->vendor=='oracle'){
+		} else if ($this->q->vendor==self::oracle){
 			$sql="
 			SELECT 	(MAX(\"".$table."Sequence\")+1) AS \"nextSequence\"
 			FROM 	\"".$table."\"

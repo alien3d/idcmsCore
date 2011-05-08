@@ -1,6 +1,6 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
-require_once ("../../class/classAudit.php");
+require_once("../../class/classDocumentTrail.php");
 require_once("../../class/classSecurity.php");
 require_once("../model/accordionModel.php");
 
@@ -146,7 +146,7 @@ class accordionClass extends  configClass{
 		$this->model = new accordionModel();
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
-		$this->audit = new auditClass();
+		$this->documentTrail = new documentTrailClass();
 
 
 	}
@@ -167,7 +167,7 @@ class accordionClass extends  configClass{
 		 */
 		$sql=" INSERT INTO `".accordionModel::tableName."` (`".accordionModel::accordionNote."`)  VALUES ('".$this->model->accordionNote."')";
 		
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 
 			$sql="
 			INSERT INTO `accordion`
@@ -188,7 +188,7 @@ class accordionClass extends  configClass{
 						'".$this->model->isApproved."'		'".$this->model->By."'
 						".$this->model->Time."
 					);";
-		}  else if ($this->q->vendor=='microsoft') {
+		}  else if ($this->q->vendor==self::mssql) {
 
 			$sql="
 			INSERT INTO [accordion]
@@ -209,7 +209,7 @@ class accordionClass extends  configClass{
 						'".$this->model->isApproved."'		'".$this->model->By."'
 						".$this->model->Time."
 						);";
-		}  else if ($this->q->vendor=='oracle') {
+		}  else if ($this->q->vendor==self::oracle) {
 
 			$sql="
 			INSERT INTO \"accordion\"
@@ -309,7 +309,7 @@ class accordionClass extends  configClass{
 			/**
 			 *	By Default  No Access
 			 **/
-			if( $this->q->vendor=='mysql') {
+			if( $this->q->vendor==self::mysql) {
 
 				$sql	=	"
 				INSERT INTO	`accordionAccess`
@@ -323,7 +323,7 @@ class accordionClass extends  configClass{
 							 '0'
 						)";
 
-			}  else if ($this->q->vendor=='microsoft') {
+			}  else if ($this->q->vendor==self::mssql) {
 
 				$sql	=	"
 				INSERT INTO	[accordionAccess]
@@ -337,7 +337,7 @@ class accordionClass extends  configClass{
 						'0'
 					)	";
 
-			}  else if ( $this->q->vendor=='oracle'){
+			}  else if ( $this->q->vendor==self::oracle){
 
 				$sql	=	"
 				INSERT INTO	\"accordionAccess\"
@@ -364,7 +364,7 @@ class accordionClass extends  configClass{
 		/**
 		 *	 insert default value to detail table .English only
 		 **/
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 
 			$sql	= "
 		 	INSERT INTO `leafTranslate`
@@ -378,7 +378,7 @@ class accordionClass extends  configClass{
 					'".$_POST['accordionNote']."'
 				);";
 
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 
 			$sql	= "
 		 	INSERT INTO  [leafTranslate]
@@ -392,7 +392,7 @@ class accordionClass extends  configClass{
 						'".$_POST['accordionNote']."'
 					);";
 
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 
 			$sql	= "
 		 	INSERT INTO	\"leafTranslate\"
@@ -434,7 +434,7 @@ class accordionClass extends  configClass{
 	function read() 							{
 
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			/**
 			 *	UTF 8
 			 **/
@@ -456,7 +456,7 @@ class accordionClass extends  configClass{
 				$sql.=	" AND `accordionId`='".$this->strict($this->accordionId,'numeric')."'";
 			}
 
-		} else if ( $this->q->vendor=='microsoft') {
+		} else if ( $this->q->vendor==self::mssql) {
 			$sql	=	"
 			SELECT		*
 			FROM 		[accordion]
@@ -469,7 +469,7 @@ class accordionClass extends  configClass{
 				$sql.=	" AND `accordionId`='".$this->strict($this->accordionId,'numeric')."'";
 			}
 
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 
 			$sql	=	"
 			SELECT		*
@@ -516,16 +516,16 @@ class accordionClass extends  configClass{
 		/**
 		 *	Extjs filtering mode
 		 */
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 
 			$sql.=$this->q->searching();
 
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 
 			$tempSql2=$this->q->searching();
 			$sql.=$tempSql2;
 
-		}else if ($this->q->vendor=='oracle') {
+		}else if ($this->q->vendor==self::oracle) {
 
 			$tempSql2=$this->q->searching();
 			$sql.=$tempSql2;
@@ -547,11 +547,11 @@ class accordionClass extends  configClass{
 		$total	= $this->q->numberRows();
 
 		if($this->order && $this->sort_field){
-			if($this->q->vendor=='mysql' || $this->q->vendor=='normal') {
+			if($this->q->vendor==self::mysql || $this->q->vendor=='normal') {
 				$sql.="	ORDER BY `".$sortField."` ".$dir." ";
-			} else if ($this->q->vendor=='microsoft') {
+			} else if ($this->q->vendor==self::mssql) {
 				$sql.="	ORDER BY [".$sortField."] ".$dir." ";
-			} else if ($this->q->vendor=='oracle') {
+			} else if ($this->q->vendor==self::oracle) {
 				$sql.="	ORDER BY \"".$sortField."\"  ".$dir." ";
 			}
 		}
@@ -565,12 +565,12 @@ class accordionClass extends  configClass{
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 
 
-				if( $this->q->vendor=='mysql') {
+				if( $this->q->vendor==self::mysql) {
 					/**
 					 *	Mysql,Postgress and IBM using LIMIT
 					 **/
 					$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
-				} else if ($this->q->vendor=='microsoft') {
+				} else if ($this->q->vendor==self::mssql) {
 					/**
 					 *	 Sql Server and Oracle used row_number
 					 *	 Parameterize Query We don't support
@@ -590,7 +590,7 @@ class accordionClass extends  configClass{
 					AND 			".($_POST['start']+$_POST['limit']-1).";";
 
 
-				}  else if ($this->q->vendor=='oracle') {
+				}  else if ($this->q->vendor==self::oracle) {
 					/**
 					 *  Oracle using derived table also
 					 */
@@ -660,7 +660,7 @@ class accordionClass extends  configClass{
 	function update() 							{
 		header('Content-Type','application/json; charset=utf-8');
 
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 
 			//UTF8
 			$sql='SET NAMES "utf8"';
@@ -670,7 +670,7 @@ class accordionClass extends  configClass{
 
 		$this->q->start();
 		$this->model->update();
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			$sql="
 			UPDATE 	`accordion`
 			SET 	`accordionSequence`	= 	'".$this->model->accordionSequence."',
@@ -685,7 +685,7 @@ class accordionClass extends  configClass{
 					`By`				=	'".$this->model->By."',
 					`Time				=	".$this->model->Time."
 			WHERE 	`accordionId`		=	'".$this->model->accordionId."'";
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 
 			$sql="
 			UPDATE 	[accordion]
@@ -701,7 +701,7 @@ class accordionClass extends  configClass{
 					[By]				=	'".$this->model->By."',
 					[Time]				=	".$this->model->Time."
 			WHERE 	[accordionId]		=	'".$this->model->accordionId."'";
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 
 			$sql="
 			UPDATE 	\"accordion\"
@@ -744,7 +744,7 @@ class accordionClass extends  configClass{
 	 */
 	function delete()							{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql	=	'SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -752,7 +752,7 @@ class accordionClass extends  configClass{
 		}
 		$this->q->start();
 		$this->model->delete();
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 					$sql="
 			UPDATE 	`accordion`
 			SET 	`isActive`			=	'".$this->model->isActive."',
@@ -764,7 +764,7 @@ class accordionClass extends  configClass{
 					`By`				=	'".$this->model->By."',
 					`Time				=	".$this->model->Time."
 			WHERE 	`accordionId`		=	'".$this->model->accordionId."'";
-		}  else if ($this->q->vendor=='microsoft') {
+		}  else if ($this->q->vendor==self::mssql) {
 					$sql="
 			UPDATE 	[accordion]
 			SET 	[isActive]			=	'".$this->model->isActive."',
@@ -776,7 +776,7 @@ class accordionClass extends  configClass{
 					[By]				=	'".$this->model->By."',
 					[Time]				=	".$this->model->Time."
 			WHERE 	[accordionId]		=	'".$this->model->accordionId."'";
-		}  else if ($this->q->vendor=='oracle') {
+		}  else if ($this->q->vendor==self::oracle) {
 			$sql="
 			UPDATE 	\"accordion\"
 			SET 	\"isActive\"	=	'".$this->model->isActive."',
@@ -805,7 +805,7 @@ class accordionClass extends  configClass{
 	 */
 	function translateRead() {
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			/**
 			 *	UTF 8
 			 **/
@@ -820,7 +820,7 @@ class accordionClass extends  configClass{
 			JOIN 	`language`
 			USING (`languageId`)
 			WHERE	`accordionTranslate`.`accordionId`='".$this->strict($_POST['accordionId'],'numeric')."'";
-		} else if ($this->q->vendor=='microsoft'){
+		} else if ($this->q->vendor==self::mssql){
 			$sql="
 			SELECT	*
 			FROM 	[accordionTranslate]
@@ -858,17 +858,17 @@ class accordionClass extends  configClass{
 		header('Content-Type','application/json; charset=utf-8');
 
 		$this->q->commit();
-		if( $this->q->vendor=='mysql'){
+		if( $this->q->vendor==self::mysql){
 			$sql="
 		UPDATE	`accordionTranslate`
 		SET		`accordionTranslate` 	=	'".$this->strict($_POST['accordionTranslate'],'string')."'
 		WHERE 	`accordionTranslateId`	=	'".$this->strict($_POST['accordionTranslateId'],'numeric')."'";
-		} else if ($this->q->vendor=='microsoft'){
+		} else if ($this->q->vendor==self::mssql){
 			$sql="
 		UPDATE	[accordionTranslate]
 		SET		[accordionTranslate] 	=	'".$this->strict($_POST['accordionTranslate'],'string')."'
 		WHERE 	[accordionTranslateId]	=	'".$this->strict($_POST['accordionTranslateId'],'numeric')."'";
-		} else if ($this->q->vendor=='oracle'){
+		} else if ($this->q->vendor==self::oracle){
 			$sql="
 		UPDATE	\"accordionTranslate\"
 		SET		\"accordionTranslate\" 		=	'".$this->strict($_POST['accordionTranslate'],'string')."'
@@ -897,12 +897,12 @@ class accordionClass extends  configClass{
 			FROM 	`accordion`
 			WHERE 	`accordionId`	=	'".$this->accordionId."'";
 
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 			$sql	=	"
 			SELECT	*
 			FROM 	[accordion]
 			WHERE 	`accordionId`	=	'".$this->accordionId."'";
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 			$sql	=	"
 			SELECT	*
 			FROM 	\"accordion\"
@@ -916,15 +916,15 @@ class accordionClass extends  configClass{
 			$value 		= $rowDefault['accordionNote'];
 
 		}
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			$sql	=	"
 			SELECT	*
 			FROM 	`language`";
-		} else if ($this->q->vendor=='microsoft') {
+		} else if ($this->q->vendor==self::mssql) {
 			$sql	=	"
 			SELECT 	*
 			FROM 	[language] ";
-		} else if ($this->q->vendor=='oracle') {
+		} else if ($this->q->vendor==self::oracle) {
 			$sql	=	"
 			SELECT 	*
 			FROM 	\"language\" ";
@@ -942,13 +942,13 @@ class accordionClass extends  configClass{
 				FROM 	`accordionTranslate`
 				WHERE 	`accordionId`			=	'".$this->accordionId."'
 				AND 	`languageId`			=	'".$languageId."'";
-			} else if ($this->q->vendor=='microsoft') {
+			} else if ($this->q->vendor==self::mssql) {
 				$sql="
 				SELECT	*
 				FROM 	[accordionTranslate]
 				WHERE 	[accordionId]			=	'".$this->accordionId."'
 				AND 	[languageId]			=	'".$languageId."'";
-			}  else if ($this->q->vendor=='oracle') {
+			}  else if ($this->q->vendor==self::oracle) {
 				$sql	=	"
 				SELECT	*
 				FROM 	\"accordionTranslate\"
@@ -976,7 +976,7 @@ class accordionClass extends  configClass{
 					AND		[languageId]				=	'".$languageId."'";
 
 
-				} else if ($this->q->vendor=='oracle') {
+				} else if ($this->q->vendor==self::oracle) {
 
 					$sql	=	"
 					UPDATE 	\"accordionTranslate\"
@@ -998,7 +998,7 @@ class accordionClass extends  configClass{
 
 				}
 			} else {
-				if($this->q->vendor=='normal'  || $this->q->vendor=='mysql') {
+				if($this->q->vendor=='normal'  || $this->q->vendor==self::mysql) {
 
 					$sql	=	"
 					INSERT INTO	`accordionTranslate`
@@ -1011,7 +1011,7 @@ class accordionClass extends  configClass{
 								'".$languageId."',
 								'".$googleTranslate."'
 					)";
-				} else if ($this->q->vendor=='microsoft') {
+				} else if ($this->q->vendor==self::mssql) {
 
 					$sql	=	"
 					INSERT INTO [accordionTranslate]
@@ -1024,7 +1024,7 @@ class accordionClass extends  configClass{
 								'".$languageId."',
 								'".$googleTranslate."'
 							)";
-				} else if ($this->q->vendor=='oracle') {
+				} else if ($this->q->vendor==self::oracle) {
 
 					$sql	=	"
 					INSERT INTO \"accordionTranslate\"
@@ -1069,7 +1069,7 @@ class accordionClass extends  configClass{
 	 */
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor=='mysql') {
+		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);

@@ -142,9 +142,9 @@ class eventClass extends  configClass {
 		header('Content-type: application/json');
 		$this->model->create();
 		$this->q->start();
-		if($this->q->vendor=='mysql' || $this->q->vendor=='normal'){
+		if($this->q->vendor==self::mysql || $this->q->vendor=='normal'){
 			
-		} else if ($this->q->vendor=='microsoft')
+		} else if ($this->q->vendor==self::mssql)
 		$sql="
 					INSERT INTO `event`
 							(

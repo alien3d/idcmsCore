@@ -17,6 +17,12 @@ if($_SESSION[$theme]) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>"></link>
 <?php } ?>
 </head>
+<style>
+x-grid3-row-alt {
+   background-color: red !important;
+}
+
+</style>
 <body>
 </body>
 <?php require_once("../../shared/setting.php"); ?>
