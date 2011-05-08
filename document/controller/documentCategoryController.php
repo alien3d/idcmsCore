@@ -355,7 +355,7 @@ class documentCategoryClass extends  configClass {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);
 			$this->excel->getActiveSheet()->setCellValue('C'.$loopRow,$row['doc_cat_nme']);
-			$this->excel->getActiveSheet()->setCellValue('D'.$loopRow,$row['leafName']);
+			$this->excel->getActiveSheet()->setCellValue('D'.$loopRow,$row['leafNote']);
 			$loopRow++;
 			$lastRow='D'.$loopRow;
 		}

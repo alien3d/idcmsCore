@@ -119,6 +119,11 @@ class logClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
+		
+		$this->model         = new logModel();
+        $this->model->vendor = $this->vendor;
+        $this->model->execute();
+        $this->documentTrail = new documentTrailClass();
 	}
 
 

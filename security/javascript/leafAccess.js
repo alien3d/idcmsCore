@@ -42,7 +42,7 @@ Ext.onReady(function(){
 					 	    name		:	'leafAccessId',
                             type        :   'int'							
 					    },{
-							name		:	'accordionName',
+							name		:	'accordionNote',
                             type        :   'string'							
 						},{ 
 						 	name		:	'groupId',
@@ -54,13 +54,13 @@ Ext.onReady(function(){
 							name		:	'folderId',
                             type        :   'int'							
 						},{
-						    name		:	'folderName',
+						    name		:	'folderNote',
                             type        :   'string'							
 						},{
 						    name		:	'leafId',
                             type        :   'int'							
 						},{
-						    name		:	'leafName',
+						    name		:	'leafNote',
                             type        :   'string'							
 						},{
 						 	name		: 	'leafCreateAccessValue',
@@ -132,16 +132,16 @@ Ext.onReady(function(){
 	var columnModel = new Ext.grid.ColumnModel({
 		columns:[{ 
 			header		:	accordionNameLabel,
-			dataIndex	:	'accordionName'
+			dataIndex	:	'accordionNote'
 		},{
 			header		:	groupNameLabel,
-			dataIndex	:	'groupName'
+			dataIndex	:	'groupNote'
 		},{
 			header		:	folderNameLabel,
-			dataIndex	:	'folderName'
+			dataIndex	:	'folderNote'
 		},{
 			header		:	leafNameLabel,
-			dataIndex	:	'leafName'
+			dataIndex	:	'leafNote'
 		},{
 			header		:	staffNameLabel,
 			dataIndex	:	'staffName'
@@ -149,7 +149,7 @@ Ext.onReady(function(){
 	});
 	
 	var group_reader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
-	var group_store 		= 	new Ext.data.Store({
+	var groupStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
         			url	: 	'../controller/leafAccessController.php?method=read&field=groupId&leafId_temp='+leafId_temp,
 					method:'GET'
@@ -157,40 +157,40 @@ Ext.onReady(function(){
 			reader		:	group_reader,
 			remoteSort	:	false 
 	});
-	group_store.load();
+	groupStore.load();
 	
-	var accordion_reader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionNote']);
-	var accordion_store 		= 	new Ext.data.Store({
+	var accordionReader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionNote']);
+	var accordionStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
         			url	: 	'../controller/leafAccessController.php?method=read&field=accordionId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
-			reader		:	accordion_reader,
+			reader		:	accordionReader,
 			remoteSort	:	false 
 	});
-	accordion_store.load();
+	accordionStore.load();
 	
-	var folder_reader	= new Ext.data.JsonReader({ root:'folder' }, [ 'folderId', 'folderNote']);
-	var folder_store 		= 	new Ext.data.Store({
+	var folderReader	= new Ext.data.JsonReader({ root:'folder' }, [ 'folderId', 'folderNote']);
+	var folderStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
         			url	: 	'../controller/leafAccessController.php?method=read&field=folderId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
-			reader		:	folder_reader,
+			reader		:	folderReader,
 			remoteSort	:	false 
 	});
-	folder_store.load();	
+	folderStore.load();	
 	
-	var staff_reader	= new Ext.data.JsonReader({ root:'staff' }, [ 'staffId', 'staffName']);
-	var staff_store 		= 	new Ext.data.Store({
+	var staffReader	= new Ext.data.JsonReader({ root:'staff' }, [ 'staffId', 'staffName']);
+	var staffStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
         			url	: 	'../controller/leafAccessController.php?method=read&field=staffId&leafId_temp='+leafId_temp,
 					method:'GET'
 				}),
-			reader		:	staff_reader,
+			reader		:	staffReader,
 			remoteSort	:	false 
 	});
-	staff_store.load();	
+	staffStore.load();	
 	
 	var groupId  		=	new Ext.ux.form.ComboBoxMatch({ 
 		labelAlign			:	'left',
@@ -202,7 +202,7 @@ Ext.onReady(function(){
 		displayField		:	'groupNote',
 		typeAhead			: 	false,
     	triggerAction		: 	'all',
-		store				: 	group_store,
+		store				: 	groupStore,
 		anchor      		:	'95%',
 		selectOnFocus		:	true,
 		mode				:	'local',
@@ -219,12 +219,12 @@ Ext.onReady(function(){
     	listeners		:	{
 			'select'	:	function () {
 				Ext.getCmp('accordionId').reset();
-				accordion_store.proxy= new Ext.data.HttpProxy({
+				accordionStore.proxy= new Ext.data.HttpProxy({
 					url			: 	'leaf_group_sec_data.php?method=read&field=accordionId&groupId=' + Ext.getCmp('groupId').getValue()+'&leafId_temp='+leafId_temp,
 					method		:	'GET'
 				});
 
-				accordion_store.reload();
+				accordionStore.reload();
 				Ext.getCmp('accordionId').enable();
 				Ext.getCmp('gridPanel').enable();
 				acs_store.proxy= new Ext.data.HttpProxy({
@@ -246,7 +246,7 @@ Ext.onReady(function(){
 		displayField		:	'accordionNote',
 		typeAhead			: 	false,
     	triggerAction		: 	'all',
-		store				: 	accordion_store,
+		store				: 	accordionStore,
 		anchor      		:	'95%',
 		selectOnFocus		:	true,
 		mode				:	'local',
@@ -264,12 +264,12 @@ Ext.onReady(function(){
 		listeners		:	{
 			'select'	:	function () {
 				Ext.getCmp('folderId').reset();
-				folder_store.proxy= new Ext.data.HttpProxy({
+				folderStore.proxy= new Ext.data.HttpProxy({
 					url			: 	'leaf_group_sec_data.php?method=read&field=folderId&groupId='+Ext.getCmp('groupId').getValue()+'&accordionId=' +Ext.getCmp('accordionId').getValue()+'&leafId_temp='+leafId_temp,
 					method		:	'GET'
 				});
 
-				folder_store.reload();
+				folderStore.reload();
 				Ext.getCmp('folderId').enable();
 				Ext.getCmp('gridPanel').enable();
 				acs_store.proxy= new Ext.data.HttpProxy({
@@ -291,7 +291,7 @@ Ext.onReady(function(){
 		displayField		:	'folderNote',
 		typeAhead			: 	false,
     	triggerAction		: 	'all',
-		store				: 	folder_store,
+		store				: 	folderStore,
 		anchor      		:	'95%',
 		selectOnFocus		:	true,
 		mode				:	'local',
@@ -333,7 +333,7 @@ Ext.onReady(function(){
 		displayField		:	'staffName',
 		typeAhead			: 	false,
     	triggerAction		: 	'all',
-		store				: 	staff_store,
+		store				: 	staffStore,
 		anchor      		:	'95%',
 		selectOnFocus		:	true,
 		mode				:	'local',
@@ -372,7 +372,7 @@ Ext.onReady(function(){
 		frame	:	true,
 		title	:	'leaf Form',
 		iconCls	:	'application_form',
-		items	:	[groupId,accordionId,folderId,staffId],
+		items	:	[groupId,accordionId,folderId,staffId]
 									  
 	});
 	var  access_array = ['leafCreateAccessValue','leafReadAccessValue','leafUpdateAccessValue','leafDeleteAccessValue','leafPrintAccessValue','leafPostAccessValue'];

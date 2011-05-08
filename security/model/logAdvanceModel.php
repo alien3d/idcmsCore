@@ -1,7 +1,7 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is accordion model file.This is to ensure strict setting enable for all variable enter to database
+ * this is logAdvance model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
@@ -10,7 +10,7 @@
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class accordionModel extends validationClass{
+class logAdvanceModel extends validationClass{
 	public $tableName;
 	public $primaryKeyName;
 	public $iconId;

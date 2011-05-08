@@ -109,6 +109,11 @@ class folderAccessClass  extends configClass {
 	 * @var  string $security
 	 */
 	private $security;
+	  /**
+     * Folder Access Model
+     * @var string $model
+     */
+    public $model;
 	/**
 	 * Class Loader
 	 */
@@ -156,12 +161,12 @@ class folderAccessClass  extends configClass {
 		// by default if add new group will add access to accordion and folder.
 		if( $this->q->vendor==self::mysql) {
 			$sql="
-				SELECT	`accordion`.`accordionName`,
+				SELECT	`accordion`.`accordionNote`,
 						`accordion`.`accordionId`,
 						`folder`.`folderId`,
-						`folder`.`folderName`,
+						`folder`.`folderNote`,
 						`group`.`groupId`,
-						`group`.`groupName`,
+						`group`.`groupNote`,
 						`folderAccess`.`folderAccessId`,
 						(CASE `folderAccess`.`folderAccessValue`
 							WHEN '1' THEN
@@ -176,22 +181,23 @@ class folderAccessClass  extends configClass {
 				USING 	(`groupId`)
 				JOIN 	`accordion`
 				USING	(`accordionId`)
-				WHERE 	1
-				AND		`folder`.`languageId`='".$_SESSION['languageId']."'";
-			if($_GET['groupId']) {
-				$sql.=" AND `group`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
+				WHERE 	`accordion`.`isActive` =1
+				AND		`folder`.`isActive`=1
+				AND		`group`.`isActive` =1";
+			if($this->groupId) {
+				$sql.=" AND `group`.`groupId`='".$this->strict($this->groupId,'numeric')."'";
 			}
-			if($_GET['accordionId']) {
-				$sql.=" AND `folder`.`accordionId`='".$this->strict($_GET['accordionId'],'numeric')."'";
+			if($this->accordionId) {
+				$sql.=" AND `folder`.`accordionId`='".$this->strict($this->accordionId,'numeric')."'";
 			}
 		}  else if ( $this->q->vendor==self::mssql) {
 			$sql="
-				SELECT	[accordion].[accordionName],
+				SELECT	[accordion].[accordionNote],
 						[accordion].[accordionId],
 						[folder].[folderId],
-						[folder].[folderName],
+						[folder].[folderNote],
 						[group].[groupId],
-						[group].[groupName],
+						[group].[groupNote],
 						[folderAccess].[folderAccessId],
 						(CASE [folderAccess].[folderAccessValue]
 							WHEN '1' THEN
@@ -209,20 +215,20 @@ class folderAccessClass  extends configClass {
 				WHERE 	[folder].[isActive]=1
 				AND		[group].[isActive]=1
 				AND		[accordion].[accordionId]=1";
-			if($_GET['groupId']) {
-				$sql.=" AND [group].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
+			if($this->groupId) {
+				$sql.=" AND [group].[groupId]='".$this->strict($this->groupId,'numeric')."'";
 			}
-			if($_GET['accordionId']) {
-				$sql.=" AND [folder].[accordionId]='".$this->strict($_GET['accordionId'],'numeric')."'";
+			if($this->accordionId) {
+				$sql.=" AND [folder].[accordionId]='".$this->strict($this->accordionId,'numeric')."'";
 			}
 		}  else if ($this->q->vendor==self::oracle) {
 			$sql="
-				SELECT	\"accordion\".\"accordionName\",
+				SELECT	\"accordion\".\"accordionNote\",
 						\"accordion\".\"accordionId\",
 						\"folder\".\"folderId\",
-						\"folder\".\"folderName\",
+						\"folder\".\"folderNote\",
 						\"group\".\"groupId\",
-						\"group\".\"groupName\",
+						\"group\".\"groupNote\",
 						\"folderAccess\".\"folderAccessId\",
 						(CASE	\"folderAccess\".\"folderAccessValue\"
 							WHEN '1' THEN
@@ -240,11 +246,11 @@ class folderAccessClass  extends configClass {
 				WHERE 	\"folder\".\"isActive\"		=	1
 				AND		\"accordion\".`isActive\"	=	1
 				AND		\"group\".`isActive\"		=	1";
-			if($_GET['groupId']) {
-				$sql.=" AND \"group\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
+			if($this->groupId) {
+				$sql.=" AND \"group\".\"groupId\"='".$this->strict($this->groupId,'numeric')."'";
 			}
-			if($_GET['accordionId']) {
-				$sql.=" AND \"folder\".\"accordionId\"='".$this->strict($_GET['accordionId'],'numeric')."'";
+			if($this->accordionId) {
+				$sql.=" AND \"folder\".\"accordionId\"='".$this->strict($this->accordionId,'numeric')."'";
 			}
 		}
 		//echo $sql;
@@ -262,8 +268,17 @@ class folderAccessClass  extends configClass {
 
 
 		$this->q->read($sql);
+		if($this->q->execute=='fail') {
 
-		while($row  = 	$this->q->fetch_array()) {
+			echo json_encode(
+			array(
+					  	"success"	=>	false,
+						"message"	=>	$this->q->responce
+			));
+			exit();
+
+		}
+		while($row  = 	$this->q->fetchAssoc()) {
 			// select accordion access
 
 			$items[]=$row;

@@ -42,25 +42,25 @@ Ext.onReady(function(){
 					 	    name		:	'leafGroupAccessId',
                             type        :   'int'							
 						},{
-							name		:	'accordionName',
+							name		:	'accordionNote',
                             type        :   'string'							
 						},{ 
 						 	name		:	'groupId',
                             type        :   'int'							
 						},{
-							name		:	'groupName',
+							name		:	'groupNote',
                             type        :   'string'							
 						},{
 							name		:	'folderId',
                             type        :   'int'							
 						},{
-						    name		:	'folderName',
+						    name		:	'folderNote',
                             type        :   'string'							
 						},{
 						    name		:	'leafId',
  							type        :   'int'
 						},{
-						    name		:	'leafName',
+						    name		:	'leafNote',
                             type        :   'string'							
 						},{
 						 	name		:	'staffName',
@@ -138,16 +138,16 @@ Ext.onReady(function(){
 	var columnModel = new Ext.grid.ColumnModel({
 		columns:[{ 
 			header		:	accordionNameLabel,
-			dataIndex	:	'accordionName'
+			dataIndex	:	'accordionNote'
 		},{
 			header		:	groupNameLabel,
-			dataIndex	:	'groupName'
+			dataIndex	:	'groupNote'
 		},{
 			header		:	folderNameLabel,
-			dataIndex	:	'folderName'
+			dataIndex	:	'folderNote'
 		},{
 			header		:	leafNameLabel,
-			dataIndex	:	'leafName'
+			dataIndex	:	'leafNote'
 		},{
 			header		:	staffNameLabel,
 			dataIndex	:	'staffName'

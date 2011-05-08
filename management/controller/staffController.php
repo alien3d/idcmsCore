@@ -1112,7 +1112,7 @@ class staffClass extends  configClass {
 
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);
 			$this->excel->getActiveSheet()->setCellValue('C'.$loopRow,$row['staffName']);
-			$this->excel->getActiveSheet()->setCellValue('D'.$loopRow,$row['groupName']);
+			$this->excel->getActiveSheet()->setCellValue('D'.$loopRow,$row['groupNote']);
 			$loopRow++;
 			$lastRow='D'.$loopRow;
 		}

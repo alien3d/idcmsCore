@@ -99,6 +99,11 @@ class accordionAccessClass extends configClass {
 	 * @var  string $security
 	 */
 	private $security;
+	  /**
+     * Accordion Access Model
+     * @var string $model
+     */
+    public $model;
 
 	/**
 	 * Class Loader
@@ -133,6 +138,10 @@ class accordionAccessClass extends configClass {
 		$this->security->leafId		= $this->leafId;
 		$this->security->staffId	= $this->staffId;
 		$this->security->execute();
+		$this->model         = new accordionAccessModel();
+        $this->model->vendor = $this->vendor;
+        $this->model->execute();
+        $this->documentTrail = new documentTrailClass();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -176,9 +185,9 @@ class accordionAccessClass extends configClass {
 		$sql="
 				SELECT	`accordionAccess`.`accordionAccessId`,
 						`accordion`.`accordionId`,
-						`accordion`.`accordionName`,
+						`accordion`.`accordionNote`,
 						`group`.`groupId`,
-						`group`.`groupName`,
+						`group`.`groupNote`,
 						(CASE `accordionAccess`.`accordionAccessValue`
 							WHEN '1' THEN
 								'true'
@@ -199,9 +208,9 @@ class accordionAccessClass extends configClass {
 			$sql="
 				SELECT	`accordionAccess`.`accordionAccessId`,
 						`accordion`.`accordionId`,
-						`accordion`.`accordionName`,
+						`accordion`.`accordionNote`,
 						`group`.`groupId`,
-						`group`.`groupName`,
+						`group`.`groupNote`,
 						(CASE `accordionAccess`.`accordionAccessValue`
 							WHEN '1' THEN
 								'true'

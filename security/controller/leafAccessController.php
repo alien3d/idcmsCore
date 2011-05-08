@@ -26,7 +26,7 @@ class leafAccessClass extends  configClass {
 	 * User Identification
 	 * @var numeric $staffId
 	 */
-	public $staffId;
+	public $staffIdTemporally;
 	/**
 	 *	 Database Selected
 	 *   string $database;
@@ -93,6 +93,26 @@ class leafAccessClass extends  configClass {
 	 */
 	public $leafAccessId;
 	/**
+	 *  Table Accordion Indentification Value
+	 * @var numeric $accordionId
+	 */
+	public $accordionId;
+	/**
+	 *  Table Folder Indentification Value
+	 * @var numeric $folderId
+	 */
+	public $folderId;
+	/**
+	 *  Table Group Indentification Value
+	 * @var numeric $groupId
+	 */
+	public $staffId;
+	  /**
+     * Leaf Access Model
+     * @var string $model
+     */
+    public $model;
+	/**
 	 * Class Loader
 	 */
 	function execute() {
@@ -104,7 +124,7 @@ class leafAccessClass extends  configClass {
 
 		$this->q->leafId			=	$this->leafId;
 
-		$this->q->staffId			=	$this->staffId;
+		$this->q->staffId			=	$this->staffIdTemporally;
 
 		$this->q->filter 			= 	$this->filter;
 
@@ -119,6 +139,8 @@ class leafAccessClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
+	
+		$this->model                = new leafAccessModel();	
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -141,11 +163,11 @@ class leafAccessClass extends  configClass {
 			$sql="
 				SELECT	`leaf`.`accordionId`,
 						`leaf`.`folderId`,
-						`folder`.`folderName`,
-						`leaf`.`leafName`,
-						`accordion`.`accordionName`,
+						`folder`.`folderNote`,
+						`leaf`.`leafNote`,
+						`accordion`.`accordionNote`,
 						`staff`.`staffName`,
-						`group`.`groupName`,
+						`group`.`groupNote`,
 						`leafAccess`.`leafId`,
 						`leafAccess`.`staffId`,
 						`leafAccess`.`leafAccessId`,
@@ -202,25 +224,27 @@ class leafAccessClass extends  configClass {
 				USING	(`staffId`,`languageId`)
 				JOIN	`group`
 				USING	(`groupId`,`languageId`)
-				WHERE 	1 ";
-			if($_GET['accordionId']) {
-				$sql.=" AND `leaf`.`accordionId`='".$this->strict($_GET['accordionId'],'numeric')."'";
+				WHERE 	`accordion`.`isActive` 	=	1
+				AND		`folder`.`isActive` 	=	1
+				AND		`leaf`.`isActive`		=	1 ";
+			if($this->accordionId) {
+				$sql.=" AND `leaf`.`accordionId`='".$this->strict($this->accordionId,'numeric')."'";
 			}
-			if($_GET['folderId']) {
-				$sql.=" AND `leaf`.`folderId`='".$this->strict($_GET['folderId'],'numeric')."'";
+			if($this->folderId) {
+				$sql.=" AND `leaf`.`folderId`='".$this->strict($this->folderId,'numeric')."'";
 			}
-			if($_GET['staffId']) {
-				$sql.=" AND `leafAccess`.`staffId`='".$this->strict($_GET['staffId'],'numeric')."'";
+			if($this->staffId) {
+				$sql.=" AND `leafAccess`.`staffId`='".$this->strict($this->staffId,'numeric')."'";
 			}
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 				SELECT	[leaf].[accordionId],
 						[leaf].[folderId],
-						[folder].[folderName],
-						[leaf].[leafName],
-						[accordion].[accordionName],
+						[folder].[folderNote],
+						[leaf].[leafNote],
+						[accordion].[accordionNote],
 						[staff].[staffName],
-						[group].[groupName],
+						[group].[groupNote],
 						[leafAccess].[leafId],
 						[leafAccess].[staffId],
 						[leafAccess].[leafAccessId],
@@ -277,25 +301,27 @@ class leafAccessClass extends  configClass {
 				ON		[leaf].[staffId]=[staff].[staffId]
 				JOIN	[group]
 				USING	[group].[groupId]=[leafAccess].[groupId]
-				WHERE 	1 ";
-			if($_GET['accordionId']) {
-				$sql.=" AND [leaf].[accordionId]='".$this->strict($_GET['accordionId'],'numeric')."'";
+				WHERE 	[accordion].[isActive] 	=	1
+				AND		[folder].[isActive] 	=	1
+				AND		[leaf].[isActive]		=	1  ";
+			if($this->accordionId) {
+				$sql.=" AND [leaf].[accordionId]='".$this->strict($this->accordionId,'numeric')."'";
 			}
-			if($_GET['folderId']) {
-				$sql.=" AND [leaf].[folderId]='".$this->strict($_GET['folderId'],'numeric')."'";
+			if($this->folderId) {
+				$sql.=" AND [leaf].[folderId]='".$this->strict($this->folderId,'numeric')."'";
 			}
-			if($_GET['staffId']) {
-				$sql.=" AND [leafAccess`.[staffId]='".$this->strict($_GET['staffId'],'numeric')."'";
+			if($this->staffId) {
+				$sql.=" AND [leafAccess`.[staffId]='".$this->strict($this->staffId,'numeric')."'";
 			}
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 				SELECT	\"leaf\".\"accordionId\",
 						\"leaf\".\"folderId\",
-						\"folder\".\"folderName\",
-						\"leaf\".\"leafName\",
-						\"accordion\".\"accordionName\",
+						\"folder\".\"folderNote\",
+						\"leaf\".\"leafNote\",
+						\"accordion\".\"accordionNote\",
 						\"staff\".\"staffName\",
-						\"group\".\"groupName\",
+						\"group\".\"groupNote\",
 						\"leafAccess\".\"leafId\",
 						\"leafAccess\".\"staffId\",
 						\"leafAccess\".\"leafAccessId\",
@@ -356,14 +382,14 @@ class leafAccessClass extends  configClass {
 				AND		\"folder\".\"isActive\"=1
 				AND		\"accordion\".\"isActive\"=1
 				AND		\"staff\".\"isActive\"=1";
-			if($_GET['accordionId']) {
-				$sql.=" AND \"leaf\".\"accordionId\"='".$this->strict($_GET['accordionId'],'numeric')."'";
+			if($this->accordionId) {
+				$sql.=" AND \"leaf\".\"accordionId\"='".$this->strict($this->accordionId,'numeric')."'";
 			}
-			if($_GET['folderId']) {
-				$sql.=" AND \"leaf\".\"folderId\"='".$this->strict($_GET['folderId'],'numeric')."'";
+			if($this->folderId) {
+				$sql.=" AND \"leaf\".\"folderId\"='".$this->strict($this->folderId,'numeric')."'";
 			}
-			if($_GET['staffId']) {
-				$sql.=" AND \"leafAccess\".\"staffId\"='".$this->strict($_GET['staffId'],'numeric')."'";
+			if($this->staffId) {
+				$sql.=" AND \"leafAccess\".\"staffId\"='".$this->strict($this->staffId,'numeric')."'";
 			}
 		}
 		//echo $sql;
@@ -375,7 +401,8 @@ class leafAccessClass extends  configClass {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
-		$this->total	= $this->q->numberRows();
+		
+		$total	= $this->q->numberRows();
 		//paging
 
 		if(isset($_POST['start']) && isset($_POST['limit'])) {
@@ -401,7 +428,7 @@ class leafAccessClass extends  configClass {
 
 			echo json_encode(
 			array('success'=>'true',
-									   'total' => $this->total,
+									   'total' => $total,
        								   'data' => $items
 			));
 			exit();
@@ -441,7 +468,7 @@ class leafAccessClass extends  configClass {
 			}
 		}
 		$loop=count($_GET['leafAccessId']);
-		$access_array = array('c','r','u','d','pr','p');
+	
 		for($i=0;$i<$loop;$i++) {
 			// mysql doesn't support bolean expression
 			foreach($access_array as $access_type)  {
@@ -493,7 +520,7 @@ class leafAccessClass extends  configClass {
 			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 		} else {
-			echo json_encode(array("success"=>"true","message"=>"Update Succes"));
+			echo json_encode(array("success"=>"true","message"=>"Update Success"));
 			exit();
 		}
 
@@ -522,7 +549,7 @@ class leafAccessClass extends  configClass {
 $leafAccessObject  	= 	new leafAccessClass();
 
 if(isset($_SESSION['staffId'])){
-	$leafAccessObject->staffId = $_SESSION['staffId'];
+	$leafAccessObject->staffIdTemporally = $_SESSION['staffId'];
 }
 if(isset($_SESSION['vendor'])){
 	$leafAccessObject-> vendor = $_SESSION['vendor'];
@@ -532,7 +559,7 @@ if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-	if(iset($_GET['leafId'])){
+	if(isset($_GET['leafId'])){
 		$leafAccessObject->leafId  = $_GET['leafId'];
 	}
 	/*
@@ -547,7 +574,7 @@ if(isset($_GET['method'])) {
 	}
 	if(isset($_GET['field'])){
 		if($_GET['field']=='staffId'){
-			$leafAccessObject -> staffId();
+			$leafAccessObject ->staffId;
 		}
 		if($_GET['field']=='groupId'){
 			$leafAccessObject -> group;

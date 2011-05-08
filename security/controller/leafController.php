@@ -186,7 +186,7 @@ class leafClass extends  configClass {
 			INSERT INTO [leaf] 
 					(
 						[accordionId],					[folderId],						
-						[leafName],						[leafSequence],					
+						[leafNote],						[leafSequence],					
 						[leafCode],						[leafFilename],					
 						[iconId],						[isNew],
 						[isDraft],						[isUpdate],
@@ -210,7 +210,7 @@ class leafClass extends  configClass {
 			INSERT INTO \"leaf\" 
 					(
 						\"accordionId\",					\"folderId\",
-						\"leafName\",						\"leafSequence\",
+						\"leafNote\",						\"leafSequence\",
 						\"leafCode\",						\"leafFilename\",			
 						\"iconId\",							\"isNew\",
 						\"isDraft\",						\"isUpdate\",
@@ -986,7 +986,7 @@ class leafClass extends  configClass {
 			//	echo print_r($row);
 
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);
-			$this->excel->getActiveSheet()->setCellValue('C'.$loopRow,$row['leafName']);
+			$this->excel->getActiveSheet()->setCellValue('C'.$loopRow,$row['leafNote']);
 			$this->excel->getActiveSheet()->setCellValue('D'.$loopRow,$row['leafCode']);
 			$loopRow++;
 			$lastRow='D'.$loopRow;

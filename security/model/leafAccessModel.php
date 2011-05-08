@@ -10,7 +10,7 @@
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class leafSecurityAccessModel extends validationClass{
+class leafAccessModel extends validationClass{
 	public $tableName;
 	public $primaryKeyName;
 	public $leafAccessId;
