@@ -1,5 +1,6 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
+require_once("../../class/classDocumentTrail.php");
 require_once("../../class/classSecurity.php");
 require_once("../model/folderAccessModel.php");
 /**
@@ -109,11 +110,11 @@ class folderAccessClass  extends configClass {
 	 * @var  string $security
 	 */
 	private $security;
-	  /**
-     * Folder Access Model
-     * @var string $model
-     */
-    public $model;
+	/**
+	 * Folder Access Model
+	 * @var string $model
+	 */
+	public $model;
 	/**
 	 * Class Loader
 	 */
@@ -148,15 +149,20 @@ class folderAccessClass  extends configClass {
 		$this->security->leafId = $this->leafId;
 		$this->security->staffId = $this->staffId;
 		$this->security->execute();
+		$this->model         = new folderAccessModel();
+		$this->model->vendor = $this->vendor;
+		$this->model->execute();
+		$this->documentTrail = new documentTrailClass();
 	}
 	function create() {}
 	function read() 				{
-		header('Content-Type','application/json; charset=utf-8');
+			header('Content-Type','application/json; charset=utf-8');
+		$items =array();
 		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		// by default if add new group will add access to accordion and folder.
 		if( $this->q->vendor==self::mysql) {
@@ -180,7 +186,7 @@ class folderAccessClass  extends configClass {
 				JOIN 	`group`
 				USING 	(`groupId`)
 				JOIN 	`accordion`
-				USING	(`accordionId`)
+				USING	(`accordionId`)kjghghhhhhhhhhhhhhhhhhh
 				WHERE 	`accordion`.`isActive` =1
 				AND		`folder`.`isActive`=1
 				AND		`group`.`isActive` =1";
@@ -190,6 +196,7 @@ class folderAccessClass  extends configClass {
 			if($this->accordionId) {
 				$sql.=" AND `folder`.`accordionId`='".$this->strict($this->accordionId,'numeric')."'";
 			}
+				
 		}  else if ( $this->q->vendor==self::mssql) {
 			$sql="
 				SELECT	[accordion].[accordionNote],
@@ -258,6 +265,17 @@ class folderAccessClass  extends configClass {
 		$sql.=$this->q->searching();
 
 		$this->q->read($sql);
+		if($this->q->execute=='fail') {
+
+			echo json_encode(
+			array(
+					  	"success"	=>	false,
+						"message"	=>	$this->q->responce
+			));
+			exit();
+
+		}
+		$total  = 0 ;  //assign as number
 		$total	= $this->q->numberRows();
 		//paging
 
@@ -278,6 +296,7 @@ class folderAccessClass  extends configClass {
 			exit();
 
 		}
+		
 		while($row  = 	$this->q->fetchAssoc()) {
 			// select accordion access
 
@@ -285,17 +304,14 @@ class folderAccessClass  extends configClass {
 			// select accordion access
 		}
 
-		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->responce);
-			exit();
-		}else {
-			echo json_encode(
-			array('success'=>'true',
-			'total' => $this->total,
-			'data' => $items
-			));
 
-		}
+		echo json_encode(
+		array('success'=>true,
+			'total' => $total,
+			'data' => $items
+		));
+
+
 
 	}
 
@@ -308,36 +324,29 @@ class folderAccessClass  extends configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
-		// first check the group.if exist update else create new one
-		$folderAccessId		=	'folderAccessId';
-		$folderAccessValue 	= 	'folderAccessValue';
-		$loop=count($_GET[$folderAccessId]);
+		$this->model->update();
+		$loop=$this->model->totalfolderAccessId;
 
 		for($i=0;$i<$loop;$i++) {
-			// mysql doesn't support bolean expression
-			if($_GET[$folderAccessValue][$i]=='true') {
-				$_GET[$folderAccessValue][$i]=1;
-			} else {
-				$_GET[$folderAccessValue][$i]=0;
-			}
+
 			if( $this->q->vendor==self::mysql) {
 				$sql="
 					UPDATE 	`folderAccess`
-					SET 	`folderAccessValue`		= 	'".$this->strict($_GET[$folderAccessValue][$i],'string')."'
-					WHERE 	`folderAccessId`		=	'".$this->strict($_GET[$folderAccessId][$i],'numeric')."'";
+					SET 	`folderAccessValue`		= 	'".$this->model->folderAccesValue[$i]."'
+					WHERE 	`folderAccessId`		=	'".$this->model->folderAccessId[$i]."'";
 				//	echo $sql."<br>";
 			} else if($this->q->vendor==self::mssql) {
 				$sql="
 					UPDATE 	[folderAccess]
-					SET 	[folderAccessValue]		= 	'".$this->strict($_GET[$folderAccessValue][$i],'string')."'
-					WHERE 	[folderAccessId]		=	'".$this->strict($_GET[$folderAccessId][$i],'numeric')."'";
+					SET 	[folderAccessValue]		= 	'".$this->model->folderAccesValue[$i]."'
+					WHERE 	[folderAccessId]		=	'".$this->model->folderAccessId[$i]."'";
 			} else if ($this->q->vendor==self::oracle) {
 				$sql="
 					UPDATE 	\"folderAccess\"
-					SET 	\"folderAccessValue\"	= 	'".$this->strict($_GET[$folderAccessValue][$i],'string')."'
-					WHERE 	\"folderAccessId\"		=	'".$this->strict($_GET[$folderAccessId][$i],'numeric')."'";
+					SET 	\"folderAccessValue\"	= 	'".$this->model->folderAccesValue[$i]."'
+					WHERE 	\"folderAccessId\"		=	'".$this->model->folderAccessId[$i]."'";
 			}
 			$this->q->update($sql);
 			if($this->q->execute=='fail') {
@@ -401,6 +410,12 @@ if(isset($_POST['method'])){
 
 	if(isset($_POST['leafId'])){
 		$folderAccessObject->leafId = $_POST['leafId'];
+	}
+	if(isset($_POST['groupId'])){
+		$folderAccessObject->groupId = $_POST['groupId'];
+	}
+	if(isset($_POST['accordionId'])){
+		$folderAccessObject->accordionId = $_POST['accordionId'];
 	}
 	/*
 	 *  Load the dynamic value

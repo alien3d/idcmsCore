@@ -180,8 +180,9 @@ class vendor
 		$error             = 0;
 		$this->result      = mysqli_query($this->link, $this->sql);
 		if (!$this->result) {
-			$this->responce = "Sql Stament Error" . $this->sql . " \n\r" . mysqli_error($this->link) . " <br> Error Code :x " . mysqli_errno($this->link);
-			$error             = 1;
+			$this->execute 	=	'fail';
+			$this->responce = 	"Sql Stament Error" . $this->sql . " \n\r" . mysqli_error($this->link) . " <br> Error Code :x " . mysqli_errno($this->link);
+			$error          = 	1;
 		}
 		if ($error == 1) {
 				
@@ -770,7 +771,7 @@ class vendor
 		}
 		return $textComparison;
 	}
-	private function realEscapeString($data)
+	public function realEscapeString($data)
 	{
 		return mysqli_real_escape_string($this->link, $data);
 	}

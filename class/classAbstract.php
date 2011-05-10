@@ -130,32 +130,31 @@ abstract class configClass
 					`staffNo`,
 					`staffName`
 			FROM   	`staff`
-			WHERE	`isActive`=1
-			AND		`groupId`=22";
+			WHERE	`isActive`=1";
         } else if ($this->q->vendor == 'microsoft') {
             $sql = "
 			SELECT 	[staffId],
 					[staffNo],
 					[staffName]
 			FROM   	[staff]
-			WHERE  	[isActive]=1
-			AND		[groupId]=22";
+			WHERE  	[isActive]=1";
         } else if ($this->q->vendor == 'oracle') {
             $sql = "
 			SELECT 	\"staffId\",
 					\"staffNo\",
 					\"staffName\"
 			FROM   	\"staff\"
-			WHERE  	\"isActive\"=1
-			AND		\"groupId\"=22";
+			WHERE  	\"isActive\"=1";
         }
         $result = $this->q->fast($sql);
+		$total = $this->q->numberRows($result);
         $items  = array();
         while ($row = $this->q->fetchArray($result)) {
             $items[] = $row;
         }
         echo json_encode(array(
-            'sucess' => "true",
+            'success' => true,
+			'total'=>$total,
             'staff' => $items
         ));
     }

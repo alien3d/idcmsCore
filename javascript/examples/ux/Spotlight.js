@@ -1,12 +1,12 @@
 /*!
- * Ext JS Library 3.3.0
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
+ * Ext JS Library 3.3.3
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
  */
 Ext.ux.Spotlight = function(config){
     Ext.apply(this, config);
-};
+}
 Ext.ux.Spotlight.prototype = {
     active : false,
     animate : true,

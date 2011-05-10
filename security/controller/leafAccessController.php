@@ -1,5 +1,6 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
+require_once("../../class/classDocumentTrail.php");
 require_once("../model/leafGroupAccessModel.php");
 /**
  * this is  leaf security access
@@ -107,11 +108,11 @@ class leafAccessClass extends  configClass {
 	 * @var numeric $groupId
 	 */
 	public $staffId;
-	  /**
-     * Leaf Access Model
-     * @var string $model
-     */
-    public $model;
+	/**
+	 * Leaf Access Model
+	 * @var string $model
+	 */
+	public $model;
 	/**
 	 * Class Loader
 	 */
@@ -139,8 +140,13 @@ class leafAccessClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
-	
-		$this->model                = new leafAccessModel();	
+
+		$this->model                = new leafAccessModel();
+
+
+		$this->model->vendor = $this->vendor;
+		$this->model->execute();
+		$this->documentTrail = new documentTrailClass();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -401,7 +407,7 @@ class leafAccessClass extends  configClass {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
-		
+
 		$total	= $this->q->numberRows();
 		//paging
 
@@ -426,12 +432,12 @@ class leafAccessClass extends  configClass {
 
 
 
-			echo json_encode(
-			array('success'=>'true',
+		echo json_encode(
+		array('success'=>'true',
 									   'total' => $total,
        								   'data' => $items
-			));
-			exit();
+		));
+		exit();
 
 
 	}
@@ -461,14 +467,11 @@ class leafAccessClass extends  configClass {
 		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
-			$this->q->read($sql);
-			if($this->q->execute=='fail'){
-				echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-				exit();
-			}
+			$this->q->fast($sql);
+
 		}
 		$loop=count($_GET['leafAccessId']);
-	
+
 		for($i=0;$i<$loop;$i++) {
 			// mysql doesn't support bolean expression
 			foreach($access_array as $access_type)  {
@@ -553,6 +556,30 @@ if(isset($_SESSION['staffId'])){
 }
 if(isset($_SESSION['vendor'])){
 	$leafAccessObject-> vendor = $_SESSION['vendor'];
+}
+if(isset($_POST['method'])){
+	/*
+	 *  Initilize Value before load in the loader
+	 */
+	if(isset($_POST['leafId'])){
+		$folderAccessObject->leafId = $_POST['leafId'];
+	}
+	if(isset($_POST['staffId'])){
+		$folderAccessObject->staffId = $_POST['staffId'];
+	}
+	if(isset($_POST['accordionId'])){
+		$folderAccessObject->accordionId = $_POST['accordionId'];
+	}
+	if(isset($_POST['folderId'])){
+		$folderAccessObject->folderId = $_POST['folderId'];
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$folderAccessObject->execute();
+	if($_POST['method']=='read'){
+		$folderAccessObject -> read();
+	}
 }
 // crud -create,read,update,delete.
 if(isset($_GET['method'])) {

@@ -115,15 +115,19 @@ Ext.onReady(function(){
         	return new RegExp('\\b(' + value + ')', 'i');
     	},
     	listeners		:	{
-			'select'	:	function () {
+			'select'	:	function (combo,record,index) {
 				if(this.value =='' ) { 
 					gridPanel.disable();
 				} else { 
 					gridPanel.enable(); 
 				}
 				accordionAccessStore.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/accordionAccessController.php?method=read&groupId=' + this.value+'&leafId='+leafId,
-					method		: 'POST'				
+					url			: 	'../controller/accordionAccessController.php',
+					method		: 'POST',
+					params		: {
+						leafId : leafId,
+						groupId : Ext.getCmp('group_fake').getValue()
+					}
 								
 				});
 

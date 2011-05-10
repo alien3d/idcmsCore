@@ -1,4 +1,9 @@
 <?php
+/**
+ * Document Trail Audit.All Preprint Microsoft Excel Will Be Tracked
+ * @author hafizan
+ *
+ */
 class documentTrailClass {
 	/**
 	 * File Information

@@ -1,5 +1,6 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
+require_once("../../class/classDocumentTrail.php");
 require_once("../model/leafGroupAccessModel.php");
 /**
  * this is  leaf security access
@@ -97,11 +98,11 @@ class leafGroupAccessClass  extends  configClass {
 	 * @var string $security
 	 */
 	private $security;
-	  /**
-     * leaf Group Access Model
-     * @var string $model
-     */
-    public $model;
+	/**
+	 * leaf Group Access Model
+	 * @var string $model
+	 */
+	public $model;
 	/**
 	 *  Table Accordion Indentification Value
 	 * @var numeric $accordionId
@@ -143,11 +144,11 @@ class leafGroupAccessClass  extends  configClass {
 		$this->audit 				=	0;
 
 		$this->security 	= 	new security();
-		
+
 		$this->model         = new leafGroupAccessModel();
-        $this->model->vendor = $this->vendor;
-        $this->model->execute();
-        $this->documentTrail = new documentTrailClass();
+		$this->model->vendor = $this->vendor;
+		$this->model->execute();
+		$this->documentTrail = new documentTrailClass();
 
 
 	}
@@ -445,7 +446,7 @@ class leafGroupAccessClass  extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+				
 		}
 		$data	= explode("|",$_POST['info']); // still using & for future reference
 		$loop=count($data);
@@ -529,12 +530,21 @@ if(isset($_POST['method'])){
 	 */
 
 	if(isset($_POST['leafId'])){
-		$leafGroupAccessObject->leafId = $_POST['leafId'];
+		$folderAccessObject->leafId = $_POST['leafId'];
+	}
+	if(isset($_POST['groupId'])){
+		$folderAccessObject->groupId = $_POST['groupId'];
+	}
+	if(isset($_POST['accordionId'])){
+		$folderAccessObject->accordionId = $_POST['accordionId'];
+	}
+	if(isset($_POST['folderId'])){
+		$folderAccessObject->folderId = $_POST['folderId'];
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$folderAccess_obj->execute();
+	$leafGroupAccess_obj->execute();
 	if($_POST['method']=='read'){
 		$leafGroupAccessObject-> read();
 	}

@@ -1,8 +1,8 @@
 /*!
- * Ext JS Library 3.2.1
- * Copyright(c) 2006-2010 Ext JS, Inc.
- * licensing@extjs.com
- * http://www.extjs.com/license
+ * Ext JS Library 3.3.3
+ * Copyright(c) 2006-2011 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
  */
 Ext.ns('Ext.ux.grid');
 
@@ -18,7 +18,7 @@ Ext.ns('Ext.ux.grid');
 Ext.ux.grid.RowEditor = Ext.extend(Ext.Panel, {
     floating: true,
     shadow: false,
-    layout: 'columnwithmargins',
+    layout: 'hbox',
     cls: 'x-small-editor',
     buttonAlign: 'center',
     baseCls: 'x-row-editor',
@@ -101,7 +101,7 @@ Ext.ux.grid.RowEditor = Ext.extend(Ext.Panel, {
             scope: this,
             keydown: this.onGridKey,
             columnresize: this.verifyLayout,
-            columnmove: this.columnMove,
+            columnmove: this.refreshFields,
             reconfigure: this.refreshFields,
             beforedestroy : this.beforedestroy,
             destroy : this.destroy,
@@ -219,6 +219,8 @@ Ext.ux.grid.RowEditor = Ext.extend(Ext.Panel, {
             });
             r.endEdit();
             this.fireEvent('afteredit', this, changes, r, this.rowIndex);
+        } else {
+            this.fireEvent('canceledit', this, false);
         }
         this.hide();
     },
@@ -254,25 +256,11 @@ Ext.ux.grid.RowEditor = Ext.extend(Ext.Panel, {
     initFields: function(){
         var cm = this.grid.getColumnModel(), pm = Ext.layout.ContainerLayout.prototype.parseMargins;
         this.removeAll(false);
-        if(this.displayFields){
-            Ext.each(this.displayFields, function(){
-                this.destroy();
-            });
-        }
         for(var i = 0, len = cm.getColumnCount(); i < len; i++){
             var c = cm.getColumnAt(i),
                 ed = c.getEditor();
             if(!ed){
-                if(c.displayEditor){
-                    ed = c.displayEditor;
-                } else{
-                    ed = new Ext.form.DisplayField({html:'&nbsp;',style:{minHeight:'1px'}});
-                    if(!this.displayFields)
-                        this.displayFields = [];
-                    this.displayFields.push(ed);
-                }
-            } else if(ed.rendered){
-                this.getLayout().configureItem(ed);
+                ed = c.displayEditor || new Ext.form.DisplayField();
             }
             if(i == 0){
                 ed.margins = pm('0 1 2 1');
@@ -295,17 +283,6 @@ Ext.ux.grid.RowEditor = Ext.extend(Ext.Panel, {
             this.insert(i, ed);
         }
         this.initialized = true;
-    },
-
-    columnMove: function(oldIndex, newIndex) {
-        if(this.initialized){
-            this.items.insert(newIndex, this.items.removeAt(oldIndex));
-            var layout = this.getLayout();
-            var targetEl = layout.innerCt ? layout.innerCt : this.getLayoutTarget();
-            var node = targetEl.dom.childNodes.item(oldIndex);
-            var refNode = targetEl.dom.childNodes.item(newIndex);
-            targetEl.dom.insertBefore(node, refNode);
-        }
     },
 
     onKey: function(f, e){

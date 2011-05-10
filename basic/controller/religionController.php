@@ -235,8 +235,10 @@ class religionClass extends configClass
 	 */
 	public function read()
 	{
-		header('Content-Type', 'application/json; charset=utf-8');
+		//header('Content-Type', 'application/json; charset=utf-8');
+			header('Content-type: application/json');
 		//UTF8
+		$items=array();
 		if ($this->q->vendor == 'mysql' || $this->q->vendor == 'mysql') {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -244,7 +246,7 @@ class religionClass extends configClass
 		if ($this->q->vendor == 'mysql' || $this->q->vendor == 'mysql') {
 			$sql = "
 					SELECT	*
-					FROM 	`religion`
+ 					FROM 	`religion``
 					WHERE 	`isActive` ='1'	";
 			if ($this->religionId) {
 				$sql .= " AND `religionId`=\"". $this->strict($this->religionId, 'n') . "\"";
@@ -314,10 +316,19 @@ class religionClass extends configClass
             		$sql .= $tempSql2;
             	}
             }
+            // optional debugger.uncomment if wanted to used
+	 		//if ($this->q->execute == 'fail') {
+            //	echo json_encode(array(
+             //   "success" => false,
+            //   "message" => $this->q->realEscapeString($sql)
+            //	));
+            //	exit();
+            //}
+            // end of optional debugger
             $this->q->read($sql);
             if ($this->q->execute == 'fail') {
             	echo json_encode(array(
-                "success" => false,
+                "success" =>false,
                 "message" => $this->q->responce
             	));
             	exit();

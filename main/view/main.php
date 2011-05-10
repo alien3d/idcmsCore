@@ -24,6 +24,7 @@ echo $_SESSION[$theme];
 <?php } ?>
 </head>
 <body></body>
+<script language="javascript" type="text/javascript" src="../../javascript/adapter/ext/ext-base.js"></script>
 <script language="javascript" type="text/javascript" src="../../javascript/ext-all.js"></script>
 <script type="text/javascript" src="../../javascript/examples/ux/iframe.js"></script>
 <script type="text/javascript" src="../../javascript/examples/ux/Ext.ux.TabCloseMenu/Ext.ux.TabCloseMenu.js"></script>

@@ -37,7 +37,7 @@ class leafAccessModel extends validationClass{
 		 */
 		$this->leafAccessId 		= array();
 		$this->leafAccessValue 	= array();
-		$this->totalleafAccessId	=	count($_GET[$leafAccessId]);
+		$this->totalleafAccessId	=	count($_GET['leafAccessId']);
 
 
 		for($i=0;$i<$this->totalleafAccessId;$i++) {

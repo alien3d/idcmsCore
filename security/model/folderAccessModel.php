@@ -10,7 +10,7 @@
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class folderSecurityAccessModel extends validationClass{
+class folderAccessModel extends validationClass{
 	public $tableName;
 	public $primaryKeyName;
 	public $folderAccessId;
@@ -32,7 +32,7 @@ class folderSecurityAccessModel extends validationClass{
 		 */
 		$this->folderAccessId 		= array();
 		$this->folderAccessValue 	= array();
-		$this->totalfolderAccessId	=	count($_GET[$folderAccessId]);
+		$this->totalfolderAccessId	=	count($_GET['folderAccessId']);
 
 
 		for($i=0;$i<$this->totalfolderAccessId;$i++) {

@@ -41,7 +41,7 @@ class leafGroupAccessModel extends validationClass{
 
 
 		for($i=0;$i<$this->totalleafGroupAccessId;$i++) {
-			$this->leafAccessId[$i]  = $this->strict($_GET['leafAccessId'][$i],'numeric');
+			$this->leafAccessId[$i]  = $this->strict($_GET['leafGroupAccessId'][$i],'numeric');
 
 
 

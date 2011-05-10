@@ -220,7 +220,7 @@ Ext.onReady(function(){
         	return new RegExp('\\b(' + value + ')', 'i');
     	},
     	listeners		:	{
-			'select'	:	function () {
+			'select'	:	function (combo,record,index) {
 				Ext.getCmp('accordionId').reset();
 				accordion_store.proxy= new Ext.data.HttpProxy({
 					url			: 	'../controller/leafGroupAccessController.php?method=read&field=accordionId&groupId=' + Ext.getCmp('groupId').getValue()+'&leafId_temp='+leafId_temp,
@@ -265,7 +265,7 @@ Ext.onReady(function(){
     	},
     	disabled		:	true,
 		listeners		:	{
-			'select'	:	function () {
+			'select'	:	function (combo,record,index) {
 				Ext.getCmp('folderId').reset();
 				folder_store.proxy= new Ext.data.HttpProxy({
 					url			: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&groupId='+Ext.getCmp('groupId').getValue()+'&accordionId=' +Ext.getCmp('accordionId').getValue()+'&leafId_temp='+leafId_temp,
@@ -310,7 +310,7 @@ Ext.onReady(function(){
     	},
     	disabled		:	true,
     	listeners		:	{
-			'select'	:	function () {
+			'select'	:	function (combo,record,index) {
 				if(this.value =='' ) { 
 					Ext.getCmp('gridPanel').disable();
 				} else { 

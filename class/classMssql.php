@@ -819,7 +819,7 @@ class vendor
 		}
 		return $textComparison;
 	}
-	private function realEscapeString($data)
+	public function realEscapeString($data)
 	{
 		$singQuotePattern = "'";
 		$singQuoteReplace = "''";

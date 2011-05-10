@@ -24,7 +24,22 @@ Ext
 			var local = false;
 			var folderAccessStore = new Ext.data.JsonStore({
 				autoDestroy : true,
-				url : '../controller/folderAccessController.php',
+			
+				proxy : new Ext.data.HttpProxy({
+					url : "../controller/folderAccessController.php",
+					method : "POST",
+					listeners : {
+						exception : function(DataProxy, type, action, options,
+								response, arg) {
+							var serverMessage = Ext.util.JSON
+									.decode(response.responseText);
+							if (serverMessage.success == false) {
+								Ext.MessageBox.alert(systemErrorLabel,
+										serverMessage.message);
+							}
+						}
+					}
+				}),
 				remoteSort : true,
 				storeId : 'myStore',
 				root : 'data',
@@ -60,7 +75,7 @@ Ext
 					type : 'boolean'
 				} ]
 			});
-
+			folderAccessStore.load();
 			var folderAccessValue = new Ext.ux.grid.CheckColumn({
 				header : 'Access',
 				dataIndex : 'folderAccessValue'
@@ -149,13 +164,14 @@ Ext
 							return new RegExp('\\b(' + value + ')', 'i');
 						},
 						listeners : {
-							'select' : function() {
+							'select' : function(combo, record, index) {
 								Ext.getCmp('accordion_fake').reset(); // force
 								// the
 								// combobox
 								// to
 								// clear
-								accordionStore.proxy = new Ext.data.HttpProxy({
+								accordionStore.proxy = new Ext.data.HttpProxy(
+										{
 											url : '../controller/folderAccessController.php?method=read&field=accordionId&value='
 													+ this.value
 													+ '&leafId='
@@ -167,68 +183,62 @@ Ext
 							}
 						}
 					});
-			
-			var	accordionId  		=	new Ext.ux.form.ComboBoxMatch({ 
-				labelAlign			:	'left',
-				fieldLabel			:   accordionIdLabel,
-				name				:  	'accordionId',
-				hiddenName			:	'accordionId',
-				valueField			:  	'accordionId',
-				id					:	'accordion_fake',
-				displayField		:	'accordionNote',
-				typeAhead			: 	false,
-		    	triggerAction		: 	'all',
-				store				: 	accordionStore,
-				anchor      		:	'95%',
-				selectOnFocus		:	true,
-				mode				:	'local',
-				allowBlank			: 	false ,
-				blankText			:	blankTextLabel,
-				createValueMatcher	: function(value) {
-		        	value = String(value).replace(/\s*/g, '');
-		        	if(Ext.isEmpty(value, false)){
-		            	return new RegExp('^');
-		        	}
-		        	value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-		        	return new RegExp('\\b(' + value + ')', 'i');
-		    	},
-		    	disabled		:	true,
-				listeners		:	{
-					'select'	:	function () {
+
+			var accordionId = new Ext.ux.form.ComboBoxMatch({
+				labelAlign : 'left',
+				fieldLabel : accordionIdLabel,
+				name : 'accordionId',
+				hiddenName : 'accordionId',
+				valueField : 'accordionId',
+				id : 'accordion_fake',
+				displayField : 'accordionNote',
+				typeAhead : false,
+				triggerAction : 'all',
+				store : accordionStore,
+				anchor : '95%',
+				selectOnFocus : true,
+				mode : 'local',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				createValueMatcher : function(value) {
+					value = String(value).replace(/\s*/g, '');
+					if (Ext.isEmpty(value, false)) {
+						return new RegExp('^');
+					}
+					value = Ext.escapeRe(value.split('').join('\\s*')).replace(
+							/\\\\s\\\*/g, '\\s*');
+					return new RegExp('\\b(' + value + ')', 'i');
+				},
+				disabled : true,
+				listeners : {
+					'select' : function(combo, record, index) {
 						if (this.value == '') {
 							gridPanel.disable();
 						} else {
 							gridPanel.enable();
 						}
-						folderAccessStore.proxy = new Ext.data.HttpProxy(
-								{
-									url : '../controller/folderAccessController.php?method=read&type=2&groupId='
-											+ Ext
-													.getCmp('group_fake').value
-											+ '&accordionId='
-											+ this.value
-											+ '&leafId='
-											+ leafId,
-									method : 'POST'
+						
+						folderAccessStore.load({
+							params : {
+								leafId : leafId,
+								groupId : Ext.getCmp('group_fake').getValue(),
+								accordionId : Ext.getCmp('accordion_fake')
+										.getValue()
+							}
 
-								});
-
-						folderAccessStore.reload();
+						});
 					}
 				}
 			});
-			
-			
-			
-			var formPanel = new Ext.Panel(
-					{
-						region : 'center',
-						layout : 'form',
-						frame : true,
-						title : 'Folder Form',
-						iconCls : 'application_form',
-						items : [groupId,accordionId ]
-					});
+
+			var formPanel = new Ext.Panel({
+				region : 'center',
+				layout : 'form',
+				frame : true,
+				title : 'Folder Form',
+				iconCls : 'application_form',
+				items : [ groupId, accordionId ]
+			});
 			var access_array = [ 'folderAccessValue' ];
 
 			var gridPanel = new Ext.grid.GridPanel(
@@ -242,6 +252,10 @@ Ext
 						disabled : true,
 						selModel : folderAccessValue,
 						iconCls : 'application_view_detail',
+						viewConfig : {
+							forceFit : true,
+							emptyText : emptyTextLabel
+						},
 						tbar : {
 							items : [
 									{
