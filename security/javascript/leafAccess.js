@@ -23,20 +23,36 @@ Ext.onReady(function(){
 		var per_page		= 	10;
 		var encode 			=	false;
 		var local 			= 	false;
-		var acs_store 			= 	new Ext.data.JsonStore({
-			autoDestroy		:	true,
-			url				: 	'../controller/leafAccessController.php',
-			remoteSort		: 	true,
-			storeId			:	'myStore',
-			root			:	'data',
-			totalProperty	:	'total',
-			baseParams		: 	{  
-									method				:	'read',	
-									mode				:	'view',
-									leafId_temp	:	leafId_temp	
-								}, 
-			fields			: 
-					[	{	name		:	'accordionId',
+		leafAccessProxy 	=	new Ext.data.HttpProxy({
+				url : "../controller/leafAccessController.php",
+				method : 'POST',
+				baseParams : {
+					method : "read",
+					page : "master",
+					leafId_temp : leafId_temp
+				},
+				success : function(response, options) {
+					var x = Ext.decode(response.responseText);
+					if (x.success == "true") {
+						title = successLabel;
+					} else {
+						title = failureLabel;
+					}
+					Ext.MessageBox.alert(systemLabel, x.message);
+				},
+				failure : function(response, options) {
+
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+		leafAccessReader = new Ext.data.JsonReader({
+				root : "data",
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				fields : [{	name		:	'accordionId',
                             type        :   'int'					
 					    },{
 					 	    name		:	'leafAccessId',
@@ -82,6 +98,12 @@ Ext.onReady(function(){
                             type        :   'boolean'							
 						}
 					]
+		});
+		
+		var leafAccessStore 			= 	new Ext.data.JsonStore({
+			autoDestroy		:	true,
+			proxy 			: leafAccessProxy,
+			reader			: leafAccessReader
 		});
 	
   var  leafCreateAccessValue = new Ext.grid.CheckColumn({
@@ -227,11 +249,11 @@ Ext.onReady(function(){
 				accordionStore.reload();
 				Ext.getCmp('accordionId').enable();
 				Ext.getCmp('gridPanel').enable();
-				acs_store.proxy= new Ext.data.HttpProxy({
+				leafAccessStore.proxy= new Ext.data.HttpProxy({
 					url		: 	'leaf_group_sec_data.php?groupId='+Ext.getCmp('groupId').getValue()+'&leafId_temp='+leafId_temp,
 					method	:	'GET'					
 				});
-				acs_store.reload();
+				leafAccessStore.reload();
 			}
 		}
 	});
@@ -272,11 +294,11 @@ Ext.onReady(function(){
 				folderStore.reload();
 				Ext.getCmp('folderId').enable();
 				Ext.getCmp('gridPanel').enable();
-				acs_store.proxy= new Ext.data.HttpProxy({
+				leafAccessStore.proxy= new Ext.data.HttpProxy({
 					url		: 	'leaf_group_sec_data.php?groupId='+Ext.getCmp('groupId').getValue()+'&accordionId='+Ext.getCmp('accordionId').getValue()+'&leafId_temp='+leafId_temp,
 					method	:	'GET'					
 				});
-				acs_store.reload();
+				leafAccessStore.reload();
 			}
 		}
 	});
@@ -313,11 +335,11 @@ Ext.onReady(function(){
 				} else { 
 					Ext.getCmp('gridPanel').enable();
 				}
-				acs_store.proxy= new Ext.data.HttpProxy({
+				leafAccessStore.proxy= new Ext.data.HttpProxy({
 					url			: 	'leaf_group_sec_data.php?groupId='+Ext.getCmp('groupId').getValue()+'&accordionId='+Ext.getCmp('accordionId').getValue()+'&folderId=' + Ext.getCmp('folderId').getValue()+'&leafId_temp='+leafId_temp,
 					method:'GET'					
 				});
-					acs_store.reload();
+					leafAccessStore.reload();
 			
 			}
 		}
@@ -355,12 +377,12 @@ Ext.onReady(function(){
 				} else { 
 					gridPanel.enable(); 
 				}
-				acs_store.proxy= new Ext.data.HttpProxy({
+				leafAccessStore.proxy= new Ext.data.HttpProxy({
 					url			: 	'../controller/leafAccessController.php?accordionId='+Ext.getCmp('accordion_fake').value+'&folderId='+Ext.getCmp('folder_fake').value+'&staffId_temp=' + this.value+'&leafId_temp='+leafId_temp,
 					method:'GET'					
 				});
 
-					acs_store.reload();
+					leafAccessStore.reload();
 					gridPanel.store.reload(); // force the grid the reload
 			
 			}
@@ -378,7 +400,7 @@ Ext.onReady(function(){
 	var  access_array = ['leafCreateAccessValue','leafReadAccessValue','leafUpdateAccessValue','leafDeleteAccessValue','leafPrintAccessValue','leafPostAccessValue'];
 	var gridPanel = new Ext.grid.GridPanel({ 
 		region		:	'west',
-		store		:	acs_store,
+		store		:	leafAccessStore,
 		cm			:	columnModel,
 		autoHeight  :   false,
 		height      : 	360,
@@ -400,8 +422,8 @@ Ext.onReady(function(){
 						iconCls:'row-check-sprite-check',
 						listeners : { 
 							'click':function () {
-								var count = acs_store.getCount();
-								 acs_store.each(function(rec) {
+								var count = leafAccessStore.getCount();
+								 leafAccessStore.each(function(rec) {
 									for (var access in access_array) { 
 										//alert(access);
 										rec.set(access_array[access], true);
@@ -414,7 +436,7 @@ Ext.onReady(function(){
 						iconCls:'row-check-sprite-uncheck',
 						listeners : { 
 							'click':function () { 
-								 acs_store.each(function(rec) {
+								 leafAccessStore.each(function(rec) {
 									for (var access in access_array) { 
 										rec.set(access_array[access], false);
 									}
@@ -427,13 +449,13 @@ Ext.onReady(function(){
 				listeners: { 
 					'click':function(c) { 
 					var url;
-					var count = acs_store.getCount();
+					var count = leafAccessStore.getCount();
 
 					url ='../controller/leafAccessController.php?method=update&leafId_temp='+leafId_temp;
 					var sub_url;
 					sub_url='';
 					 for (i = count - 1; i >= 0; i--) {
-						var record = acs_store.getAt(i);
+						var record = leafAccessStore.getAt(i);
 						sub_url = sub_url + '&leafAccessId[]='+record.get('leafAccessId');
 						sub_url = sub_url + '&leafCreateAccessValue[]='+record.get('leafCreateAccessValue');
 						sub_url = sub_url + '&leafReadAccessValue[]='+record.get('leafReadAccessValue');
@@ -458,7 +480,7 @@ Ext.onReady(function(){
 							}	 
 							
 							// reload the store 
-							acs_store.reload(); 
+							leafAccessStore.reload(); 
 						} ,
 						failure : function(response, options) 
 							{

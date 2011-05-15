@@ -54,7 +54,11 @@ class religionModel extends validationClass
         $this->tableName      = 'religion';
         $this->primaryKeyName = 'religionId';
         /*
-         *  All the $_POST enviroment.
+         * SET ALL OUTSIDE VARIABLE FROM POST OR GET OR PUT OR DELETE
+		 * Restfull Format  POST 			-->Is to View Data
+		 *                  GET  			-->Is to Receive Data
+		 *                  PUT  			-->Is To Update Data
+		 *                  DELETE/Destroy  -->Is To Delete/Destroy Data
          */
         if (isset($_POST['religionId'])) {
             $this->religionId = $this->strict($_POST['religionId'], 'numeric');
@@ -112,5 +116,6 @@ class religionModel extends validationClass
         $this->isDelete   = 1;
         $this->isApproved = 0;
     }
+	
 }
 ?>

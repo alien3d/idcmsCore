@@ -1,6 +1,6 @@
 Ext
 		.onReady(function() {
-			Ext.Ajax.timeout = 90000000;	
+			Ext.Ajax.timeout = 90000000;
 			Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
 
 			var page_create;
@@ -24,19 +24,37 @@ Ext
 			var per_page = 10;
 			var encode = false;
 			var local = false;
-			var folderStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				url : '../controller/folderController.php',
-				remoteSort : true,
-				storeId : 'myStore',
-				root : 'data',
-				totalProperty : 'total',
+			var folderProxy = new Ext.data.HttpProxy({
+				url : "../controller/folderController.php",
+				method : 'POST',
 				baseParams : {
-					method : 'read',
-					page : 'master',
+					method : "read",
+					page : "master",
 					leafId : leafId
 				},
-				fields : [ {
+				success : function(response, options) {
+					var x = Ext.decode(response.responseText);
+					if (x.success == "true") {
+						title = successLabel;
+					} else {
+						title = failureLabel;
+					}
+					Ext.MessageBox.alert(systemLabel, x.message);
+				},
+				failure : function(response, options) {
+
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			
+			var folderReader = new Ext.data.JsonReader({
+				root : "data",
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				fields : [{
 					name : 'folderId',
 					type : 'int'
 				}, {
@@ -67,32 +85,44 @@ Ext
 					name : 'Time',
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s'
-				} ],
-				listeners : {
-					exception : function(DataProxy, type, action, options,
-							response, arg) {
-						var serverMessage = Ext.util.JSON
-								.decode(response.responseText);
-						if (serverMessage.success == false) {
-							Ext.MessageBox.alert(systemErrorLabel,
-									serverMessage.message);
-						}
-					}
-				}
+				} ]
+			});	
+			var folderStore = new Ext.data.JsonStore({
+				autoDestroy : true,
+				proxy : folderProxy,
+				reader : folderReader
 			});
 
-			var folderTranslateStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				url : '../controller/folderController.php',
-				remoteSort : true,
-				storeId : 'folderTranslateStore',
-				root : 'data',
-				totalProperty : 'total',
+			var folderTranslateProxy = new Ext.data.HttpProxy({
+				url : "../controller/folderController.php",
+				method : 'POST',
 				baseParams : {
-					method : 'read',
-					page : 'detail',
+					method : "read",
+					page  : "detail",
 					leafId : leafId
 				},
+				success : function(response, options) {
+					var x = Ext.decode(response.responseText);
+					if (x.success == "true") {
+						title = successLabel;
+					} else {
+						title = failureLabel;
+					}
+					Ext.MessageBox.alert(systemLabel, x.message);
+				},
+				failure : function(response, options) {
+
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			
+			var folderTranslateReader =  new Ext.data.JsonReader({
+				root : "data",
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
 				fields : [ {
 					name : 'folderTranslateId',
 					type : 'int'
@@ -111,46 +141,49 @@ Ext
 				}, {
 					name : 'folderTranslate',
 					type : 'string'
-				} ],
-				listeners : {
-					exception : function(DataProxy, type, action, options,
-							response, arg) {
-						var serverMessage = Ext.util.JSON
-								.decode(response.responseText);
-						if (serverMessage.success == false) {
-							Ext.MessageBox.alert(systemErrorLabel,
-									serverMessage.message);
-						}
+				}]
+				
+			});
+			var folderTranslateStore = new Ext.data.JsonStore({
+				autoDestroy : true,
+				proxy : folderTranslateProxy,
+				reader : folderTranslateReader
+			});
+
+			var staffProxy = new Ext.data.HttpProxy({
+				url : "../controller/folderController.php",
+				method : "GET",
+				params : {
+					method : 'read',
+					field : 'staffId',
+					leafId : leafId
+				},
+				success : function(response, options) {
+					var x = Ext.decode(response.responseText);
+					if (x.success == "true") {
+						title = successLabel;
+					} else {
+						title = failureLabel;
 					}
+					Ext.MessageBox.alert(systemLabel, x.message);
+				},
+				failure : function(response, options) {
+
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
 				}
+
 			});
 			var staffReader = new Ext.data.JsonReader({
 				root : "staff",
 				id : "staffId"
 			}, [ "staffId", "staffName" ]);
-			var staffStore = new Ext.data.Store(
-					{
-						proxy : new Ext.data.HttpProxy(
-								{
-									url : "../controller/folderController.php?method=read&field=staffId&leafId="
-											+ leafId,
-									method : "GET",
-									listeners : {
-										exception : function(DataProxy, type,
-												action, options, response, arg) {
-											var serverMessage = Ext.util.JSON
-													.decode(response.responseText);
-											if (serverMessage.success == false) {
-												Ext.MessageBox.alert(
-														systemErrorLabel,
-														serverMessage.message);
-											}
-										}
-									}
-								}),
-						reader : staffReader,
-						remoteSort : false
-					});
+			var staffStore = new Ext.data.Store({
+				proxy : staffProxy,
+				reader : staffReader,
+				remoteSort : false
+			});
 			staffStore.load();
 
 			var accordionReader = new Ext.data.JsonReader({
@@ -249,21 +282,24 @@ Ext
 													waitMsg : waitMessageLabel,
 													params : {
 														method : 'read',
-														page :'master',
+														page : 'master',
 														folderId : record.data.folderId,
 														leafId : leafId
 													},
 													success : function(form,
 															action) {
-														folderTranslateStore.load({
-															params : {
-																leafId:leafId,
-																folderId : record.data.folderId
-															}
-														})
+														folderTranslateStore
+																.load({
+																	params : {
+																		leafId : leafId,
+																		folderId : record.data.folderId
+																	}
+																})
 														viewPort.items.get(1)
 																.expand();
-														Ext.getCmp('translation').enable();
+														Ext.getCmp(
+																'translation')
+																.enable();
 													},
 													failure : function(action) {
 														Ext.MessageBox
@@ -315,10 +351,10 @@ Ext
 																			folderStore
 																					.reload();
 																			Ext
-																			.getCmp(
-																					'folderId')
-																			.setValue(
-																					action.result.folderId);
+																					.getCmp(
+																							'folderId')
+																					.setValue(
+																							action.result.folderId);
 																		},
 																		failure : function(
 																				response,
@@ -559,82 +595,86 @@ Ext
 				layout : 'fit',
 				plugins : [ editor ]
 			});
-		
 
-			var gridPanel = new Ext.Panel({
-				title : 'Folder Listing',
-				height : 50,
-				layout : 'fit',
-				iconCls : 'application_view_detail',
-				tbar : [' ', {
-					text : reloadToolbarLabel,
-					iconCls : 'database_refresh',
-					id : 'page_reload',
-					disabled : page_reload,
-					handler : function() {
-						folderStore.reload();
-					}
-				},'-',
-				{
-					text : addToolbarLabel,
-					iconCls : 'add',
-					id : 'page_create',
-					disabled : page_create,
-					handler : function() {
-						
-						viewPort.items.get(1).expand();
-					}
-				},'-',
-
-				{
-					text : excelToolbarLabel,
-					iconCls : 'page_excel',
-					id : 'page_excel',
-					disabled : page_print,
-					handler : function() {
-						Ext.Ajax
-								.request({
-									url : '../controller/folderController.php?method=report&mode=excel&limit='
-											+ per_page
-											+ '&leafId='
-											+ leafId,
-									method : 'GET',
-									success : function(
-											response, options) {
-										x = Ext
-												.decode(response.responseText);
-										if (x.success == 'true') {
-
-											window
-													.open("../../security/document/excel/folder.xlsx");
-										} else {
-											Ext.MessageBox
-													.alert(
-															successLabel,
-															x.message);
-										}
-
-									},
-									failure : function(
-											response, options) {
-										statusCode = response.status;
-										statusMessage = response.statusText;
-										Ext.MessageBox
-												.alert(
-														systemErrorLabel,
-														escape(statusCode)
-																+ ":"
-																+ statusMessage);
+			var gridPanel = new Ext.Panel(
+					{
+						title : 'Folder Listing',
+						height : 50,
+						layout : 'fit',
+						iconCls : 'application_view_detail',
+						tbar : [
+								' ',
+								{
+									text : reloadToolbarLabel,
+									iconCls : 'database_refresh',
+									id : 'page_reload',
+									disabled : page_reload,
+									handler : function() {
+										folderStore.reload();
 									}
+								},
+								'-',
+								{
+									text : addToolbarLabel,
+									iconCls : 'add',
+									id : 'page_create',
+									disabled : page_create,
+									handler : function() {
 
-								});
-					}
-				}, '->', new Ext.ux.form.SearchField({
-					store : folderStore,
-					width : 320
-				}) ],
-				items : [ gridMaster ]
-			});
+										viewPort.items.get(1).expand();
+									}
+								},
+								'-',
+
+								{
+									text : excelToolbarLabel,
+									iconCls : 'page_excel',
+									id : 'page_excel',
+									disabled : page_print,
+									handler : function() {
+										Ext.Ajax
+												.request({
+													url : '../controller/folderController.php?method=report&mode=excel&limit='
+															+ per_page
+															+ '&leafId='
+															+ leafId,
+													method : 'GET',
+													success : function(
+															response, options) {
+														x = Ext
+																.decode(response.responseText);
+														if (x.success == 'true') {
+
+															window
+																	.open("../../security/document/excel/folder.xlsx");
+														} else {
+															Ext.MessageBox
+																	.alert(
+																			successLabel,
+																			x.message);
+														}
+
+													},
+													failure : function(
+															response, options) {
+														statusCode = response.status;
+														statusMessage = response.statusText;
+														Ext.MessageBox
+																.alert(
+																		systemErrorLabel,
+																		escape(statusCode)
+																				+ ":"
+																				+ statusMessage);
+													}
+
+												});
+									}
+								}, '->', new Ext.ux.form.SearchField({
+									store : folderStore,
+									width : 320
+								}) ],
+						items : [ gridMaster ]
+					});
 
 			// viewport just save information,items will do separate
 			// only load store when viewport is open
@@ -665,14 +705,13 @@ Ext
 					return new RegExp('\\b(' + value + ')', 'i');
 				},
 				listeners : {
-			
-					'select': function (combo,record,index) { 
-						Ext.Ajax
-						.request({
+
+					'select' : function(combo, record, index) {
+						Ext.Ajax.request({
 							url : '../controller/folderController.php',
 							method : 'GET',
 							params : {
-								method:'read',
+								method : 'read',
 								field : 'sequence',
 								table : 'folder',
 								accordionId : combo.value,
@@ -681,12 +720,12 @@ Ext
 							success : function(response, options) {
 								x = Ext.decode(response.responseText);
 								if (x.success == 'false') {
-									Ext.MessageBox.alert('system',
-											x.message);
+									Ext.MessageBox.alert('system', x.message);
 								} else {
-									
-									Ext.getCmp('folderSequence').setValue(x.nextSequence);
-									
+
+									Ext.getCmp('folderSequence').setValue(
+											x.nextSequence);
+
 								}
 
 							},
@@ -850,12 +889,10 @@ Ext
 				iconClsTpl : '{iconName}'
 			});
 
-			
-
 			// hidden id for updated
 			var folderId = new Ext.form.Hidden({
 				name : 'folderId',
-				id :'folderId'
+				id : 'folderId'
 			});
 
 			var formPanel = new Ext.form.FormPanel(
@@ -868,19 +905,18 @@ Ext
 
 						width : 600,
 						items : [ {
-									xtype:'panel',
-									title:leafName,
-									bodyStyle : "padding:5px",
-									layout:'form',
-									items : [folderId, accordionId, folderNote,
-									
-								folderSequence, folderPath, iconId,
-								folderId ]
-						},{
-							xtype:'panel',
-							title:'Folder Translation',
-							items:[gridDetail]
-						}],
+							xtype : 'panel',
+							title : leafName,
+							bodyStyle : "padding:5px",
+							layout : 'form',
+							items : [ folderId, accordionId, folderNote,
+
+							folderSequence, folderPath, iconId, folderId ]
+						}, {
+							xtype : 'panel',
+							title : 'Folder Translation',
+							items : [ gridDetail ]
+						} ],
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
 						iconCls : 'application_form',
@@ -904,10 +940,12 @@ Ext
 															waitMsg : waitMessageLabel,
 															params : {
 																method : method,
-																page   : 'master',
+																page : 'master',
 																leafId : leafId
 															},
-															success : function(form,action) {
+															success : function(
+																	form,
+																	action) {
 																Ext.MessageBox
 																		.alert(
 																				systemLabel,
@@ -921,14 +959,19 @@ Ext
 																				limit : per_page
 																			}
 																		});
-																Ext.getCmp('translation').enable();
+																Ext
+																		.getCmp(
+																				'translation')
+																		.enable();
 																Ext
 																		.getCmp(
 																				'folderId')
 																		.setValue(
-																				action.result.folderId);	
+																				action.result.folderId);
 															},
-															failure : function(form,action) {
+															failure : function(
+																	form,
+																	action) {
 
 																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																	alert(loadFailureMessageLabel);
@@ -981,9 +1024,8 @@ Ext
 													params : {
 														leafId : leafId,
 														method : 'translate',
-														folderId : Ext
-																.getCmp(
-																		'folderId')
+														folderId : Ext.getCmp(
+																'folderId')
 																.getValue()
 													},
 													success : function(

@@ -23,20 +23,36 @@ Ext.onReady(function(){
 		var per_page		= 	10;
 		var encode 			=	false;
 		var local 			= 	false;
-		var leafGroupAccessStore 		 = 	 new Ext.data.JsonStore({
-			autoDestroy		:	true,
-			url				: 	'../controller/leafGroupAccessController.php',
-			remoteSort		: 	true,
-			storeId			:	'myStore',
-			root			:	'data',
-			totalProperty	:	'total',
-			baseParams		: 	{  
-									method				:	'read',	
-									mode				:	'view',
-									leafId_temp	:	leafId_temp	
-								}, 
-			fields			: 
-					[	{	name		:	'accordionId',
+		var leafGroupAccessProxy  =  new Ext.data.HttpProxy({
+				url : "../controller/leaf/GroupAccessController.php",
+				method : 'POST',
+				baseParams : {
+					method : "read",
+					page : "master",
+					leafId_temp : leafId_temp
+				},
+				success : function(response, options) {
+					var x = Ext.decode(response.responseText);
+					if (x.success == "true") {
+						title = successLabel;
+					} else {
+						title = failureLabel;
+					}
+					Ext.MessageBox.alert(systemLabel, x.message);
+				},
+				failure : function(response, options) {
+
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+		var leafGroupAccessReader = new Ext.data.JsonReader({
+				root : "data",
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				fields : [{	name		:	'accordionId',
                             type        :   'int'					
 					    },{
 					 	    name		:	'leafGroupAccessId',
@@ -88,6 +104,11 @@ Ext.onReady(function(){
                             type        :   'boolean'							
 						}
 					]
+		});
+		var leafGroupAccessStore 		 = 	 new Ext.data.JsonStore({
+			autoDestroy		:	true,
+			proxy : leafGroupAccessProxy,
+			reader : leafGroupAccessReader
 		});
 	
   var  leafCreateAccessValue = new Ext.grid.CheckColumn({

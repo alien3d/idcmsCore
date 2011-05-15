@@ -26,7 +26,10 @@ Ext.onReady(function() {
 	var per_page = 10;
 	var encode = false;
 	var local = false;
-	var store = new Ext.data.JsonStore({
+	var logAdvanceProxy =
+	var logAdvanceReader =
+	
+	var logAdvanceStore = new Ext.data.JsonStore({
 				autoDestroy : true,
 				url : '../controller/logAdvanceController.php',
 				remoteSort : true,

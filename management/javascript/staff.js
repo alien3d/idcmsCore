@@ -154,29 +154,41 @@ Ext.onReady(function(){
     	});
 		
 		
-		var staff_reader	= new Ext.data.JsonReader({ root:'staff',id:'staffId' }, [ 'staffId', 'staffName']);
-	    
-		
-		var staff_store 		= 	new Ext.data.Store({
-			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/staffController.php?method=read&field=staffId&leafId='+leafId,
-					method:'GET',
-									listeners : {
-										exception : function(DataProxy, type,
-												action, options, response, arg) {
-											var serverMessage = Ext.util.JSON
-													.decode(response.responseText);
-											if (serverMessage.success == false
-													) {
-												Ext.MessageBox.alert(systemErrorLabel,
-														serverMessage.message);
-											}
-										}
-									}
-				}),
-			reader		:	staff_reader,
-			remoteSort	:	false 
+		var staffProxy = new Ext.data.HttpProxy({
+			url : "../controller/religionController.php",
+			method : "GET",
+			params : {
+				method : 'read',
+				field : 'staffId',
+				leafId : leafId
+			},
+			success : function(response, options) {
+				var x = Ext.decode(response.responseText);
+				if (x.success == "true") {
+					title = successLabel;
+				} else {
+					title = failureLabel;
+				}
+				Ext.MessageBox.alert(systemLabel, x.message);
+			},
+			failure : function(response, options) {
+
+				Ext.MessageBox.alert(systemErrorLabel,
+						escape(response.Status) + ":"
+								+ escape(response.statusText));
+			}
+
 		});
+		var staffReader = new Ext.data.JsonReader({
+			root : "staff",
+			id : "staffId"
+		}, [ "staffId", "staffName" ]);
+		var staffStore = new Ext.data.Store({
+			proxy : staffProxy,
+			reader : staffReader,
+			remoteSort : false
+		});
+		staffStore.load();
 		
 		var group_reader	= new Ext.data.JsonReader({ root:'group',id:'groupId' }, [ 'groupId', 'groupName']);
 	    

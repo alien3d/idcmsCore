@@ -149,12 +149,13 @@ abstract class configClass
         $result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result);
         $items  = array();
-        while ($row = $this->q->fetchArray($result)) {
+        while ($row = $this->q->fetchAssoc($result)) {
             $items[] = $row;
         }
         echo json_encode(array(
             'success' => true,
 			'total'=>$total,
+			'message'=>'Data loaded',
             'staff' => $items
         ));
     }

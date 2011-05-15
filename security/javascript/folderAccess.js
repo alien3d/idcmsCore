@@ -22,34 +22,36 @@ Ext
 			var per_page = 10;
 			var encode = false;
 			var local = false;
-			var folderAccessStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-			
-				proxy : new Ext.data.HttpProxy({
-					url : "../controller/folderAccessController.php",
-					method : "POST",
-					listeners : {
-						exception : function(DataProxy, type, action, options,
-								response, arg) {
-							var serverMessage = Ext.util.JSON
-									.decode(response.responseText);
-							if (serverMessage.success == false) {
-								Ext.MessageBox.alert(systemErrorLabel,
-										serverMessage.message);
-							}
-						}
-					}
-				}),
-				remoteSort : true,
-				storeId : 'myStore',
-				root : 'data',
-				totalProperty : 'total',
+			var folderAccessProxy =  new Ext.data.HttpProxy({
+				url : "../controller/folderAccessController.php",
+				method : 'POST',
 				baseParams : {
-					method : 'read',
-					mode : 'view',
+					method : "read",
+					page : "master",
 					leafId : leafId
 				},
-				fields : [ {
+				success : function(response, options) {
+					var x = Ext.decode(response.responseText);
+					if (x.success == "true") {
+						title = successLabel;
+					} else {
+						title = failureLabel;
+					}
+					Ext.MessageBox.alert(systemLabel, x.message);
+				},
+				failure : function(response, options) {
+
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var folderAccessReader = new Ext.data.JsonReader({
+				root : "data",
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				fields : [{
 					name : 'accordionId',
 					type : 'int'
 				}, {
@@ -75,7 +77,14 @@ Ext
 					type : 'boolean'
 				} ]
 			});
-			folderAccessStore.load();
+			var folderAccessStore = new Ext.data.JsonStore({
+				autoDestroy : true,
+			
+				proxy : folderAccessProxy
+				reader : folderAccessReader
+				
+			});
+			
 			var folderAccessValue = new Ext.ux.grid.CheckColumn({
 				header : 'Access',
 				dataIndex : 'folderAccessValue'

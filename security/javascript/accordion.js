@@ -23,18 +23,36 @@ Ext
 			var per_page = 15;
 			var encode = false;
 			var local = false;
-			var accordionStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				url : '../controller/accordionController.php',
-				remoteSort : true,
-				storeId : 'accordionStore',
-				root : 'data',
-				totalProperty : 'total',
+			var accordionProxy = new Ext.data.HttpProxy({
+				url : "../controller/accordionController.php",
+				method : 'POST',
 				baseParams : {
-					method : 'read',
-					page : 'master',
+					method : "read",
+					page : "master",
 					leafId : leafId
 				},
+				success : function(response, options) {
+					var x = Ext.decode(response.responseText);
+					if (x.success == "true") {
+						title = successLabel;
+					} else {
+						title = failureLabel;
+					}
+					Ext.MessageBox.alert(systemLabel, x.message);
+				},
+				failure : function(response, options) {
+
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			
+			var accordionReader = new Ext.data.JsonReader({
+				root : "data",
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
 				fields : [ {
 					name : 'accordionId',
 					type : 'int'
@@ -57,33 +75,45 @@ Ext
 					name : 'Time',
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s'
-				} ],
-				listeners : {
-					exception : function(DataProxy, type, action, options,
-							response, arg) {
-						var serverMessage = Ext.util.JSON
-								.decode(response.responseText);
-						if (serverMessage.success == false) {
-							Ext.MessageBox.alert(systemErrorLabel,
-									serverMessage.message);
-						}
-					}
-				}
+				}]
+			});	
+			var accordionStore = new Ext.data.JsonStore({
+				autoDestroy : true,
+				proxy : accordionProxy,
+				reader : accordionReader
 			});
 
-			var accordionTranslateStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				url : '../controller/accordionController.php',
-				remoteSort : true,
-				storeId : 'accordionTranslateStore',
-				root : 'data',
-				totalProperty : 'total',
+			var accordionTranslateProxy = new Ext.data.HttpProxy({
+				url : "../controller/accordionController.php",
+				method : 'POST',
 				baseParams : {
-					method : 'read',
-					page : 'detail',
+					method : "read",
+					page  : "detail",
 					leafId : leafId
 				},
-				fields : [ {
+				success : function(response, options) {
+					var x = Ext.decode(response.responseText);
+					if (x.success == "true") {
+						title = successLabel;
+					} else {
+						title = failureLabel;
+					}
+					Ext.MessageBox.alert(systemLabel, x.message);
+				},
+				failure : function(response, options) {
+
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			
+			var accordionTranslateReader = new Ext.data.JsonReader({
+				root : "data",
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				fields : [{
 					name : 'accordionTranslateId',
 					type : 'int'
 				}, {
@@ -101,46 +131,47 @@ Ext
 				}, {
 					name : 'accordionTranslate',
 					type : 'string'
-				} ],
-				listeners : {
-					exception : function(DataProxy, type, action, options,
-							response, arg) {
-						var serverMessage = Ext.util.JSON
-								.decode(response.responseText);
-						if (serverMessage.success == false) {
-							Ext.MessageBox.alert(systemErrorLabel,
-									serverMessage.message);
-						}
+				}]
+			}); 
+			var accordionTranslateStore = new Ext.data.JsonStore({
+				autoDestroy : true,
+				proxy : accordionTranslateProxy,
+				reader : accordionTranslateReader
+			});
+			var staffProxy = new Ext.data.HttpProxy({
+				url : "../controller/accordionController.php",
+				method : "GET",
+				params : {
+					method : 'read',
+					field : 'staffId',
+					leafId : leafId
+				},
+				success : function(response, options) {
+					var x = Ext.decode(response.responseText);
+					if (x.success == "true") {
+						title = successLabel;
+					} else {
+						title = failureLabel;
 					}
+					Ext.MessageBox.alert(systemLabel, x.message);
+				},
+				failure : function(response, options) {
+
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
 				}
+
 			});
 			var staffReader = new Ext.data.JsonReader({
 				root : "staff",
 				id : "staffId"
 			}, [ "staffId", "staffName" ]);
-			var staffStore = new Ext.data.Store(
-					{
-						proxy : new Ext.data.HttpProxy(
-								{
-									url : "../controller/accordionController.php?method=read&field=staffId&leafId="
-											+ leafId,
-									method : "GET",
-									listeners : {
-										exception : function(DataProxy, type,
-												action, options, response, arg) {
-											var serverMessage = Ext.util.JSON
-													.decode(response.responseText);
-											if (serverMessage.success == false) {
-												Ext.MessageBox.alert(
-														systemErrorLabel,
-														serverMessage.message);
-											}
-										}
-									}
-								}),
-						reader : staffReader,
-						remoteSort : false
-					});
+			var staffStore = new Ext.data.Store({
+				proxy : staffProxy,
+				reader : staffReader,
+				remoteSort : false
+			});
 			staffStore.load();
 
 			var filters = new Ext.ux.grid.GridFilters({
@@ -287,6 +318,7 @@ Ext
 									}
 								} ]
 					});
+					
 
 			var columnModelMaster = [
 					new Ext.grid.RowNumberer(),

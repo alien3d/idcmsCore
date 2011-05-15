@@ -47,6 +47,42 @@ fields: [
 		}
 		]
 	});
+	
+	var staffProxy = new Ext.data.HttpProxy({
+		url : "../controller/religionController.php",
+		method : "GET",
+		params : {
+			method : 'read',
+			field : 'staffId',
+			leafId : leafId
+		},
+		success : function(response, options) {
+			var x = Ext.decode(response.responseText);
+			if (x.success == "true") {
+				title = successLabel;
+			} else {
+				title = failureLabel;
+			}
+			Ext.MessageBox.alert(systemLabel, x.message);
+		},
+		failure : function(response, options) {
+
+			Ext.MessageBox.alert(systemErrorLabel,
+					escape(response.Status) + ":"
+							+ escape(response.statusText));
+		}
+
+	});
+	var staffReader = new Ext.data.JsonReader({
+		root : "staff",
+		id : "staffId"
+	}, [ "staffId", "staffName" ]);
+	var staffStore = new Ext.data.Store({
+		proxy : staffProxy,
+		reader : staffReader,
+		remoteSort : false
+	});
+	staffStore.load();
 	var filters 		= 	new Ext.ux.grid.GridFilters({
 	
 		encode	:	encode,

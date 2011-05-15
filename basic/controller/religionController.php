@@ -105,6 +105,7 @@ class religionClass extends configClass
 	function execute()
 	{
 		parent::__construct();
+		
 		$this->q              = new vendor();
 		$this->q->vendor      = $this->vendor;
 		$this->q->leafId      = $this->leafId;
@@ -116,6 +117,7 @@ class religionClass extends configClass
 		$this->audit         = 1;
 		$this->log           = 0;
 		$this->q->log        = $this->log;
+		
 		$this->model         = new religionModel();
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
@@ -235,8 +237,12 @@ class religionClass extends configClass
 	 */
 	public function read()
 	{
-		//header('Content-Type', 'application/json; charset=utf-8');
-			header('Content-type: application/json');
+		header('Content-Type', 'application/json; charset=utf-8');
+		if($this->auditMode == 0) {
+			$this->auditFilter = "`isActive`=1";
+		} else {
+			$this->auditFilter = "`".$this->auditColumn."` =1";
+		}
 		//UTF8
 		$items=array();
 		if ($this->q->vendor == 'mysql' || $this->q->vendor == 'mysql') {
@@ -245,25 +251,61 @@ class religionClass extends configClass
 		}
 		if ($this->q->vendor == 'mysql' || $this->q->vendor == 'mysql') {
 			$sql = "
-					SELECT	*
- 					FROM 	`religion``
-					WHERE 	`isActive` ='1'	";
+					SELECT	`religion`.`religionId`,
+							`religion`.`religionDesc`
+							`religion`.`isDefault`,
+							`religion`.`isNew`,
+							`religion`.`isDraft`,
+							`religion`.`isUpdate`,
+							`religion`.`isDelete`,
+							`religion`.`isApproved`,
+							`religion`.`By`,
+							`religion`.`Time`,
+							`staff`.`staffName`							
+ 					FROM 	`religion`
+					JOIN	`staff`
+					ON		`religion`.`By` = `staff`.`staffId`
+					WHERE 	`religion`.`isActive` ='1'	";
 			if ($this->religionId) {
 				$sql .= " AND `religionId`=\"". $this->strict($this->religionId, 'n') . "\"";
 			}
 		} else if ($this->q->vendor == 'microsoft') {
 			$sql = "
-					SELECT	*
+					SELECT	[religion].[religionId],
+							[religion].[religionDesc]
+							[religion].[isDefault],
+							[religion].[isNew],
+							[religion].[isDraft],
+							[religion].[isUpdate],
+							[religion].[isDelete],
+							[religion].[isApproved],
+							[religion].[By],
+							[religion].[Time],
+							[staff].[staffName]	
 					FROM 	[religion]
-					WHERE 	[isActive] ='1'	";
+					JOIN	[staff]
+					ON		[religion].[By] = [staff].[staffId]
+					WHERE 	[religion].[isActive] ='1'	";
 			if ($this->religionId) {
 				$sql .= " AND [religionId]=\"". $this->strict($this->religionId, 'n') . "\"";
 			}
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
-					SELECT	*
+					SELECT	\"religion\".\"religionId\",
+							\"religion\".\"religionDesc\"
+							\"religion\".\"isDefault\",
+							\"religion\".\"isNew\",
+							\"religion\".\"isDraft\",
+							\"religion\".\"isUpdate\",
+							\"religion\".\"isDelete\",
+							\"religion\".\"isApproved\",
+							\"religion\".\"By\",
+							\"religion\".\"Time\",
+							\"staff\".\"staffName\"	
 					FROM 	\"religion\"
-					WHERE \"isActive\"='1'	";
+					JOIN	\"staff\"
+					ON		\"religion\".\"By\" = \"staff\".\"staffId\"
+					WHERE 	\"isActive\"='1'	";
 			if ($this->religionId) {
 				$sql .= " AND \"religionId\"=\"". $this->strict($this->religionId, 'n') . "\"";
 			}
@@ -364,7 +406,17 @@ class religionClass extends configClass
 								FROM [religion]
 								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
 							)
-							SELECT		*
+							SELECT		[religion].[religionId],
+										[religion].[religionDesc]
+										[religion].[isDefault],
+										[religion].[isNew],
+										[religion].[isDraft],
+										[religion].[isUpdate],
+										[religion].[isDelete],
+										[religion].[isApproved],
+										[religion].[By],
+										[religion].[Time],
+										[staff].[staffName]	
 							FROM 		[religionDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
@@ -378,7 +430,17 @@ class religionClass extends configClass
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT *
+									SELECT  \"religion\".\"religionId\",
+											\"religion\".\"religionDesc\"
+											\"religion\".\"isDefault\",
+											\"religion\".\"isNew\",
+											\"religion\".\"isDraft\",
+											\"religion\".\"isUpdate\",
+											\"religion\".\"isDelete\",
+											\"religion\".\"isApproved\",
+											\"religion\".\"By\",
+											\"religion\".\"Time\",
+											\"staff\".\"staffName\"	
 									FROM 	\"religion\"
 									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
@@ -410,6 +472,7 @@ class religionClass extends configClass
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
+				'message' => 'Data Loaded',
                 'data' => $items
             	));
             	$json_encode = str_replace("[", "", $json_encode);
@@ -422,6 +485,7 @@ class religionClass extends configClass
             	echo json_encode(array(
                 'success' => true,
                 'total' => $total,
+				'message'=>'data loaded',
                 'data' => $items
             	));
             	exit();
@@ -575,7 +639,7 @@ class religionClass extends configClass
 		}
 		$this->q->commit();
 		echo json_encode(array(
-            "success" => "true",
+            "success" => true,
             "message" => "Deleted"
             ));
             exit();
