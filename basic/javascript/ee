@@ -1,0 +1,115 @@
+
+					{
+						xtype : 'actioncolumn',
+						width : '50',
+						items : [
+								{
+									iconCls : 'application_edit',
+									handler : function(grid, rowIndex, colIndex) {
+										formPanel.getForm().reset();
+										formPanel.form
+												.load({
+													url : "../controller/religionController.php",
+													method : "POST",
+													waitMsg : waitMessageLabel,
+													params : {
+														method : "read",
+														mode : "update",
+														religionId : record.data.religionId,
+														leafId : leafId
+													},
+													success : function(form,
+															action) {
+														Ext
+																.getCmp(
+																		"religionDesc_temp")
+																.setValue(
+																		record.data.religionDesc);
+														viewPort.items.get(1)
+																.expand();
+													},
+													failure : function(form,
+															action) {
+
+														Ext.MessageBox
+																.alert(
+																		systemErrorLabel,
+																		action.result.message);
+													}
+												});
+										win.hide();
+									}
+								},
+								{
+									iconCls : 'trash',
+									handler : function(grid, rowIndex, colIndex) {
+										Ext.Msg
+												.show({
+													title : deleteRecordTitleMessageLabel,
+													msg : deleteRecordMessageLabel,
+													icon : Ext.Msg.QUESTION,
+													buttons : Ext.Msg.YESNO,
+													scope : this,
+													fn : function(response) {
+														if ("yes" == response) {
+															Ext.Ajax
+																	.request({
+																		url : "../controller/religionController.php",
+																		params : {
+																			method : "delete",
+																			religionId : record.data.religionId,
+																			leafId : leafId
+																		},
+																		success : function(
+																				response,
+																				options) {
+																			var x = Ext
+																					.decode(response.responseText);
+
+																			if (x.success == "true") {
+																				title = successLabel;
+																			} else {
+																				title = failureLabel;
+																			}
+																			religionStore
+																					.reload({
+																						params : {
+																							leafId : leafId,
+																							start : 0,
+																							limit : per_page
+																						}
+
+																					});
+																			religionStoreList
+																					.reload({
+																						params : {
+																							leafId : leafId,
+																							start : 0,
+																							limit : per_page
+																						}
+
+																					});
+																			Ext.MessageBox
+																					.alert(
+																							title,
+																							x.message);
+																		},
+																		failure : function(
+																				response,
+																				options) {
+																			status_code = response.status;
+																			status_message = response.statusText;
+																			Ext.MessageBox
+																					.alert(
+																							systemErrorLabel,
+																							escape(status_code)
+																									+ ":"
+																									+ status_message);
+																		}
+																	});
+														}
+													}
+												});
+									}
+								} ]
+					},
