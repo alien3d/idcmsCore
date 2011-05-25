@@ -16,24 +16,63 @@ include('../../Connections/main.php'); ?>
 
 <link rel="stylesheet" type="text/css"
 	href="../../javascript/resources/css/ext-all.css"></link>
+    <link rel="stylesheet" type="text/css"
+	href="../../javascript/extensible/resources/css/extensible-all.css"></link>
 <?php if(isset($_SESSION[$theme])) { ?>
 <link rel="stylesheet"
 	href="<?php if(isset($_SESSION['theme'])) {
 echo $_SESSION[$theme];
 } ?>"></link>
 <?php } ?>
+<style>
+.header {
+	background: #7F99BE url(../../javascript/examples/layout-browser/images/layout-browser-hd-bg.gif) repeat-x center;
+	 font-size: 16px;
+    color: #fff;
+    font-weight:bold;
+    padding: 5px 10px;
+}
+  .paste-icon {background-image:url(../../javascript/ribbon/images/paste_32.png) !important;}
+            .copy-icon {background-image:url(../../javascript/ribbon/images/copy_16.png) !important;}
+            .cut-icon {background-image:url(../../javascript/ribbon/images/cut_16.png) !important;}
+            .add-icon {background-image:url(../../javascript/ribbon/images/add.png) !important;}
+            .add2-icon {background-image:url(../../javascript/ribbon/images/add2.png) !important;}
+            .book-icon {background-image:url(../../javascript/ribbon/images/book.png) !important;}
+            .pencil-icon {background-image:url(../../javascript/ribbon/images/pencil.png) !important;}
+            .branch1-icon {background-image:url(../../javascript/ribbon/images/branch1.png) !important;}
+            .branch2-icon {background-image:url(../../javascript/ribbon/images/branch2.png) !important;}
+            .t1-icon {background-image:url(../../javascript/ribbon/images/table1.png) !important;}
+            .t2-icon {background-image:url(../../javascript/ribbon/images/table2.png) !important;}
+            .t3-icon {background-image:url(../../javascript/ribbon/images/table3.png) !important;}
+            .db1-icon {background-image:url(../../javascript/ribbon/images/t1.png) !important;}
+            .db2-icon {background-image:url(../../javascript/ribbon/images/t2.png) !important;}
+            .spy-icon {background-image:url(../../javascript/ribbon/images/spy.png) !important;}
+            .jar-icon {background-image:url(../../javascript/ribbon/images/jar.png) !important;}
+ </style>
 </head>
-<body></body>
+<body>
+</body>
 <script language="javascript" type="text/javascript" src="../../javascript/adapter/ext/ext-base.js"></script>
 <script language="javascript" type="text/javascript" src="../../javascript/ext-all.js"></script>
 <script type="text/javascript" src="../../javascript/examples/ux/iframe.js"></script>
+  <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridSorter.js"></script>
+        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridColumnResizer.js"></script>
+        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridNodeUI.js"></script>
+        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridLoader.js"></script>
+
+        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridColumns.js"></script>
+        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGrid.js"></script>
 <script type="text/javascript" src="../../javascript/examples/ux/Ext.ux.TabCloseMenu/Ext.ux.TabCloseMenu.js"></script>
+<script type="text/javascript" src="../../javascript/examples/ux/TabScrollerMenu.js"></script>
+<script type="text/javascript" src="../../javascript/ribbon/Ext.ux.Ribbon.js"></script>
+<?php require_once("../../shared/setting.php"); ?>
 <script language="javascript" type="text/javascript">
+
 	// used Dreamweaver for easy javascript viewing.
 
 	Ext.onReady(function(){
 		// remember new code style
-	
+	var perPage=100;
 		
     	Ext.BLANK_IMAGE_URL ='../../javascript/resources/images/s.gif';
     	<?php
@@ -46,7 +85,7 @@ echo $_SESSION[$theme];
 				} else if ($q->vendor=='microsoft') {
 						$sql="SELECT TOP 1 * FROM [staff] WHERE [staffId]='".$_SESSION[$staffId]."'";
 				} else if ($q->vendor=='oracle') {
-						$sql="SELECT * FROM \"staff\"						WHERE \"staffId\"='".$_SESSION[$staffId]."' AND  rownum <=1 ";
+						$sql="SELECT * FROM \"staff\"	WHERE \"staffId\"='".$_SESSION[$staffId]."' AND  rownum <=1 ";
 				}
 
 
@@ -101,10 +140,213 @@ echo $_SESSION[$theme];
 						<?php echo  $str; ?>
 					]
 		});
+		
+		var leafUserProxy = new Ext.data.HttpProxy({
+        url: "../controller/leafUserController.php",
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { //Ext.MessageBox.alert(systemLabel, jsonResponse.message); //uncomment it for debugging purpose
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+        }
+    });
+    var leafUserReader = new Ext.data.JsonReader({
+        totalProperty: "total",
+        successProperty: "success",
+        messageProperty: "message",
+        idProperty: "leafUserId"
+    });
+    var leafUserStore = new Ext.data.JsonStore({
+        proxy: leafUserProxy,
+        reader: leafUserReader,
+        autoLoad: true,
+        autoDestroy: true,
+        baseParams: {
+            method: "read",
+            grid: "master",
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: "data",
+        fields: [{
+            name: "leafUserId",
+            type: "int"
+        },
+        {
+            name: "leafId",
+            type: "int"
+        },
+        {
+            name: "leafSequence",
+            type: "int"
+        },
+        {
+            name: "staffId",
+            type: "int"
+        },
+        {
+            name: "leafTranslate",
+            type: "string"
+        }]
+    });
+	
+	var columnModel = [new Ext.grid.RowNumberer(), 
+		   {
+        dataIndex: "leafTranslate",
+        header: 'Application ',
+        sortable: true,
+        hidden: false
+    },{
+        id: 'action',
+        header: 'Task',
+        xtype: 'actioncolumn',
+        width: 75,
+        items: [{
+            icon: '../../javascript/resources/images/icon/arrow_up.png',
+            tooltip: updateRecordToolTipLabel,
+            handler: function(grid, rowIndex, colIndex) {
+                var record = leafUserStore.getAt(rowIndex);
+                Ext.Ajax.request({
+                                url: "../controller/leafUserController.php",
+                                params: {
+                                    method: "up",
+                                    leafUserId: record.data.leafUserId,
+                                    leafId: leafId
+                                },
+                                success: function(response, options) {
+                                    jsonResponse = Ext.decode(response.responseText);
+                                    if (jsonResponse.success == true) {
+                                        title = successLabel;
+                                    } else {
+                                        title = failureLabel;
+                                    }
+                                    leafUserStore.reload({
+                                        params: {
+                                            leafId: leafId,
+                                            start: 0,
+                                            limit: perPage
+                                        }
+                                    });
+                                    leafUserStoreList.reload({
+                                        params: {
+                                            leafId: leafId,
+                                            start: 0,
+                                            limit: perPage
+                                        }
+                                    });
+                                    Ext.MessageBox.alert(title, jsonResponse.message);
+                                },
+                                failure: function(response, options) {
+                                    Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
+                                }
+                            });
+            }
+        },{
+            icon: '../../javascript/resources/images/icon/arrow_down.png',
+            tooltip: updateRecordToolTipLabel,
+            handler: function(grid, rowIndex, colIndex) {
+                var record = leafUserStore.getAt(rowIndex);
+                Ext.Ajax.request({
+                                url: "../controller/leafUserController.php",
+                                params: {
+                                    method: "down",
+                                    leafUserStore: record.data.leafUserStore,
+                                    leafId: leafId
+                                },
+                                success: function(response, options) {
+                                    jsonResponse = Ext.decode(response.responseText);
+                                    if (jsonResponse.success == true) {
+                                        title = successLabel;
+                                    } else {
+                                        title = failureLabel;
+                                    }
+                                    leafUserStore.reload({
+                                        params: {
+                                            leafId: leafId,
+                                            start: 0,
+                                            limit: perPage
+                                        }
+                                    });
+                                    leafUserStoreList.reload({
+                                        params: {
+                                            leafId: leafId,
+                                            start: 0,
+                                            limit: perPage
+                                        }
+                                    });
+                                    Ext.MessageBox.alert(title, jsonResponse.message);
+                                },
+                                failure: function(response, options) {
+                                    Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
+                                }
+                            });
+            }
+        },
+        {
+            icon: '../../javascript/resources/images/icon/trash.gif',
+            tooltip: deleteRecordToolTipLabel,
+            handler: function(grid, rowIndex, colIndex) {
+                var record = leafUserStore.getAt(rowIndex);
+                Ext.Msg.show({
+                    title: deleteRecordTitleMessageLabel,
+                    msg: deleteRecordMessageLabel,
+                    icon: Ext.Msg.QUESTION,
+                    buttons: Ext.Msg.YESNO,
+                    scope: this,
+                    fn: function(response) {
+                        if ("yes" == response) {
+                            Ext.Ajax.request({
+                                url: "../controller/leafUserController.php",
+                                params: {
+                                    method: "delete",
+                                    leafUserStore: record.data.leafUserStore,
+                                    leafId: leafId
+                                },
+                                success: function(response, options) {
+                                    jsonResponse = Ext.decode(response.responseText);
+                                    if (jsonResponse.success == true) {
+                                        title = successLabel;
+                                    } else {
+                                        title = failureLabel;
+                                    }
+                                    leafUserStore.reload({
+                                        params: {
+                                            leafId: leafId,
+                                            start: 0,
+                                            limit: perPage
+                                        }
+                                    });
+                                    leafUserStoreList.reload({
+                                        params: {
+                                            leafId: leafId,
+                                            start: 0,
+                                            limit: perPage
+                                        }
+                                    });
+                                    Ext.MessageBox.alert(title, jsonResponse.message);
+                                },
+                                failure: function(response, options) {
+                                    Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }]
+    }];
 		var tabPanel 		= new Ext.TabPanel({
         	region			: 'center',
         	id				: 'centerTabs',
         	deferredRender	: true,
+			height : 50,
         	activeTab		: 0,
         	defaults		: {	closable: true	},
 			autoScroll: true,
@@ -134,362 +376,322 @@ echo $_SESSION[$theme];
         	tabPanel.setActiveTab(tab);
         	return tab;
     	}
+		var ribbon = new Ext.ux.Ribbon({
+                   
+                    activeTab : 0,
+                    items : [{
+                            title : 'Home',
+                            ribbon : [{
+                                    title : 'Clipboard',
+                                    cfg : {
+                                        columns : 2,
+                                        defaults : {
+                                            width : 60
+                                        }
+                                    },
+                                    items : [{
+                                            text : 'Paste',
+                                            iconCls : "paste-icon",
+                                            rowspan : 3,
+                                            width : 50,
+                                            height : 70
+                                        },{
+                                            text : 'Edit',
+                                            iconCls : 'pencil-icon',
+                                            scale : 'small',
+                                            iconAlign : 'left'
+                                        },{
+                                            text : 'Copy',
+                                            scale : 'small',
+                                            iconCls : 'copy-icon',
+                                            iconAlign : 'left'
+                                        },{
+                                            text    : "Cut",
+                                            iconCls : "cut-icon",
+                                            scale : 'small',
+                                            iconAlign : 'left'
+                                        }]
+                                },{
+                                    title : 'Records',
+                                    cfg : {
+                                        defaults : {
+                                            width : 60
+                                        }
+                                    },
+                                    items : [{
+                                            text : 'Simple Add',
+                                            iconCls : 'add-icon'
+                                        },{
+                                            text : 'Complex Add',
+                                            iconCls : 'add2-icon'
+                                        },{
+                                            text : 'Grid Search',
+                                            iconCls : 'book-icon'
+                                        }]
+                                },{
+                                    title : 'Database',
+                                    cfg : {
+                                        columns: 3,
+                                        defaults: {
+                                            allowDepress : true,
+                                            enableToggle : true,
+                                            toggleGroup : 'tg-ribbon'
+                                        }
+                                    },
+                                    items : [{
+                                            text : 'Scheme Branch',
+                                            iconCls : 'branch1-icon',
+                                            rowspan : 3,
+                                            pressed : true
+                                        },{
+                                            text : 'Table Element',
+                                            iconCls : 'branch2-icon',
+                                            rowspan : 3
+                                        },{
+                                            text : 'Create a new table',
+                                            iconCls : 't1-icon',
+                                            scale : 'small',
+                                            iconAlign : 'left'
+                                        },{
+                                            text : 'Connect an existing table',
+                                            iconCls : 't2-icon',
+                                            scale : 'small',
+                                            iconAlign : 'left'
+                                        },{
+                                            text : 'Delete an existing table',
+                                            iconCls : 't3-icon',
+                                            scale : 'small',
+                                            iconAlign : 'left'
+                                        }]
+                                }]
+                        },{
+                            title : 'Office Sample',
+                            ribbon : [{
+                                    title : '<blink>Click me</blink>',
+                                    onTitleClick : function(){
+                                        Ext.Msg.alert('Yes','You have been clicked on ribbon title.');
+                                    },
+                                    items :[{
+                                            text : 'Connect',
+                                            iconCls : 'db1-icon',
+                                            arrowAlign : 'bottom',
+                                            menu : [{
+                                                    text : 'Option1',
+                                                    iconCls : 't1-icon'
+                                                }]
+                                        },{
+                                            text : 'Select',
+                                            iconCls : 'db2-icon',
+                                            arrowAlign : 'bottom',
+                                            menu : [{
+                                                    text : 'Option1',
+                                                    iconCls : 't2-icon'
+                                                }]
+                                        }]
+                                },{
+                                    title : 'Title on Top',
+                                    topTitle : true,
+                                    cfg : {
+                                        columns : 2
+                                    },
+                                    items : [{
+                                            text : 'Personal Info',
+                                            iconCls : 'spy-icon',
+                                            rowspan : 3,
+                                            style : 'padding-right:5px'
+                                        },{
+                                            xtype : 'textfield',
+                                            anchor : '100%',
+                                            emptyText : 'Display text'
+                                        },{
+                                            xtype : 'textfield',
+                                            anchor : '100%',
+                                            emptyText : 'Display text'
+                                        },{
+                                            text : "Work Exp. & Others",
+                                            iconCls : "pencil-icon",
+                                            scale : "small",
+                                            iconAlign : "left"
+                                        }]
+                                },{
+                                    title : 'Only icons',
+                                    cfg : {
+                                        columns : 3,
+                                        defaults : {
+                                            height : 25,
+                                            scale : 'small',
+                                            iconAlign : 'left'
+                                        }
+                                    },
+                                    items :[{
+                                            text : '',
+                                            iconCls : 'pencil-icon'
+                                        },{
+                                            text : '',
+                                            iconCls : 't1-icon'
+                                        },{
+                                            text : '',
+                                            iconCls : 'pencil-icon'
+                                        },{
+                                            text : '',
+                                            iconCls : 't1-icon'
+                                        },{
+                                            text : '',
+                                            iconCls : 'pencil-icon'
+                                        },{
+                                            text : '',
+                                            iconCls : 't1-icon'
+                                        },{
+                                            text : '',
+                                            iconCls : 'pencil-icon'
+                                        },{
+                                            text : '',
+                                            iconCls : 't1-icon'
+                                        },{
+                                            text : '',
+                                            iconCls : 'pencil-icon'
+                                        }]
+                                },{
+                                    title : 'Form components',
+                                    topTitle : true,
+                                    cfg : {
+                                        columns : 2
+                                    },
+                                    items : [{
+                                            text : 'JAR Preferences',
+                                            iconCls : 'jar-icon',
+                                            rowspan : 3,
+                                            style : 'padding-right:5px'
+                                        },{
+                                            xtype : 'checkbox',
+                                            anchor : '100%',
+                                            boxLabel : 'This is a checkbox'
+                                        },{
+                                            xtype : 'radio',
+                                            anchor : '100%',
+                                            name : 'radion1',
+                                            boxLabel : 'This a radio option1'
+                                        },{
+                                            xtype : 'radio',
+                                            anchor : '100%',
+                                            name : 'radion1',
+                                            boxLabel : 'This a radio option2'
+                                        }]
+                                }]
+                        }]
+                });
+		var clock =new Ext.Toolbar.TextItem('');
 		new Ext.Viewport({
 			id			: 'screenPage',
 			layout		: 'border',
-			items		: [
-			{ // raw
-              
-				xtype:'panel',
-                height:30,
-            id:'north',
-			name:'north',
-			region		: 'north',
-
-			tbar		:	[{
-							 	xtype	:	'label',
-								text	:	'Welcome '+username,
-								iconCls	:	'user'
-							 },'->',
-							{
-									xtype	:	'button',
-									text	:	'Log Out',
-									iconCls	:	'house',
-									handler	:	function() {
-											window.location.replace("../../index.php");
-									}
-							},'->',
-							{
-									xtype			:	'combo',
-									fieldLabel		:	'Change Language',
-									displayField	:	'language',
-									mode			: 	'local',
-									triggerAction	: 	'all',
-									selectOnFocus	:	true,
-									resizable		:	false,
-									listWidth		: 	100,
-									width			: 	100,
-									valueField		: 	'languageId',
-									emptyText		:	'Language',
-									store			:	language_selecter,
-									listeners		: 	{
-										select: function () {
-											window.location.replace("language.php?languageId="+this.getValue());
-										}
-									}
-							},'->',
-							{
-							 	xtype	:	'label',
-								html	:	'  &nbsp;'
-							},'->',{
-									xtype			:	'combo',
-									fieldLabel		:	'Change Theme',
-									displayField	:	'display',
-									mode			: 	'local',
-									triggerAction	: 	'all',
-									selectOnFocus	:	true,
-									resizable		:	false,
-									listWidth		: 	100,
-									width			: 	100,
-									valueField		: 	'value',
-									emptyText		:	'Color',
-									store			:	theme_selecter,
-									listeners		: 	{
-										select: function () {
-											window.location.replace("theme.php?theme="+this.getValue());
-										}
-									}
-
-			}]
+			items		: [{
+						   	xtype: 'panel',
+							height: 60,
+							region :'north',
+							items :[{
+										xtype: 'box',
+										html:'IDCMS Core System',
+										cls: 'header',
+										height: 30,
+									},{ 
+										xtype:'panel',
+                						height:30,
+										bbar		:	[{
+															xtype	:	'label',
+															text	:	'Welcome '+username,
+															iconCls	:	'user'
+														 },'->',{
+																xtype			:	'combo',
+																fieldLabel		:	'Change Language',
+																displayField	:	'language',
+																mode			: 	'local',
+																triggerAction	: 	'all',
+																selectOnFocus	:	true,
+																resizable		:	false,
+																listWidth		: 	100,
+																width			: 	100,
+																valueField		: 	'languageId',
+																emptyText		:	'Language',
+																store			:	language_selecter,
+																listeners		: 	{
+																	select: function () {
+																		window.location.replace("language.php?languageId="+this.getValue());
+																	}
+																}
+														},'-',{
+																xtype			:	'combo',
+																fieldLabel		:	'Change Theme',
+																displayField	:	'display',
+																mode			: 	'local',
+																triggerAction	: 	'all',
+																selectOnFocus	:	true,
+																resizable		:	false,
+																listWidth		: 	100,
+																width			: 	100,
+																valueField		: 	'value',
+																emptyText		:	'Color',
+																store			:	theme_selecter,
+																listeners		: 	{
+																	select: function () {
+																		window.location.replace("theme.php?theme="+this.getValue());
+																	}
+																}
+														},'-',{
+																xtype	:	'button',
+																text	:	'Log Out',
+																iconCls	:	'house',
+																handler	:	function() {
+																		window.location.replace("../../index.php");
+																}
+							
+														}]
+			 }]
 			
-		} , {
-			region		: 'west',
-			id			: 'west-panel',
-			title		: 'Menu',
-			width		: 200,
-			minSize		: 200,
-			maxSize		: 400,
-			collapsible	: true,
-			layout		: 'accordion',
-			iconCls		:	'house',
-			animCollapse: false,
-			    layoutConfig: {
-        // layout-specific configs go here
-        titleCollapse: true,
-        animate: false,
-        activeOnTop: true
-    },
-			items		: [
-				<?php // module configuration
-				$counter_accordion = 0;
-				if($q->vendor=='normal' || $q->vendor=='mysql') {
-					$sql_accordion		=	"
-					SELECT 	*
-					FROM 	`accordionAccess`
-					JOIN 	`accordion`
-					USING 	(`accordionId`)
-					JOIN	`accordionTranslate`
-					USING	(`accordionId`)
-					JOIN	`icon`
-					USING   (`iconId`)
-					WHERE 	`accordionAccess`.`groupId`=(
-																SELECT `groupId`
-																FROM 	`staff`
-																WHERE 	`staffId`='".$_SESSION[$staffId]."'
-																LIMIT 1
-															  )
-					AND 	`accordionAccess`.`accordionAccessValue`=	1
-					AND		`accordionTranslate`.`languageId`='".$_SESSION['languageId']."'
-					ORDER BY `accordion`.`accordionSequence` ";
-				}  else if($q->vendor=='microsoft') {
-
-					$sql_accordion		=	"
-					SELECT 	*
-					FROM 	[accordionAccess]
-					JOIN 	[accordion]
-					ON		[accordionAccess].[accordionId]=[accordion].[accordionId]
-					JOIN		[accordionTranslate]
-					ON		[accordionTranslate].[accordionId]=[accordion].[accordionId]
-					JOIN		[icon]
-					ON		[icon].[iconId]=[accordion].[iconId]
-					WHERE 	[accordionAccess].[groupId]=(
-																SELECT TOP 1 [groupId]
-																FROM 	[staff]
-																WHERE 	[staffId]='".$_SESSION[$staffId]."'
-
-															  )
-					AND 	[accordionAccess].[accordionAccessValue]=	1
-					AND	[accordionTranslate].[languageId]='".$_SESSION['languageId']."'
-					ORDER BY [accordion].[accordionSequence] ";
-				} else if ($q->vendor=='oracle') {
-
-					$sql_accordion		=	"
-					SELECT 	*
-					FROM 	\"accordionAccess\"
-					JOIN 	\"accordion\"
-					USING	(\"accordionId\")
-					JOIN	\"accordionTranslate\"
-					USING	(\"accordionId\")
-					JOIN	\"icon\"
-					USING	(\"iconId\")
-					WHERE 	\"accordionAccess\".\"groupId\"=(
-																SELECT  \"groupId\"
-																FROM 	\"staff\"
-																WHERE 	\"staffId\"='".$_SESSION[$staffId]."'
-																AND		rownum <=1
-															  )
-					AND \"accordionAccess\".\"accordionAccessValue\"=	1
-					AND	\"accordionTranslate\".\"languageId\"='".$_SESSION['languageId']."'
-					ORDER BY \"accordion\".\"accordionSequence\"";
-				}
-				$result_accordion 	= $q->fast($sql_accordion);
-
-
-
-				$total_accordion  = $q->numberRows($result_accordion,$sql_accordion);
-
-				if($total_accordion >  0 ) {
-
-					while($row_accordion  = $q->fetchArray($result_accordion)) {
-
-							$accordionTranslate =$row_accordion['accordionTranslate'];
-							$iconName=$row_accordion['iconName'];
-							$accordionId =$row_accordion['accordionId'];
-
-						$counter_accordion++; ?>
-				<?php echo " { "; ?>
-				title		: '<?php echo $accordionTranslate; ?>',
-				border		: false,
-				layout		: 'border',
-				iconCls		: '<?php echo $iconName; ?>',
-				items		: [	new Ext.tree.TreePanel({
-					id			: 'tree-panel',
-					autoScroll	: true,
-					width		: 200,
-					region		: 'center',
-					minSize		: 200,
-					maxSize		: 400,
-					// tree-specific configs:
-					rootVisible : false,
-					lines		: false,
-					singleExpand: true,
-					useArrows	: true,
-					animate		: false,
-					root		: new Ext.tree.AsyncTreeNode({
-						expanded	: true,
-						children	: [
-
-							<?php	// folder configuration
-									$counter_folder=0;
-							   		if($q->vendor=='normal' || $q->vendor=='mysql') {
-										$sql_folder	="
-										SELECT		*
-										FROM 		`folderAccess`
-										JOIN		`folder`
-										USING		(`folderId`)
-										JOIN		`folderTranslate`
-										USING		(`folderId`)
-										JOIN		`icon`
-										USING		(`iconId`)
-										WHERE 		`accordionId`='".$accordionId."'
-										AND 		`folderAccess`.`groupId`=(
-																SELECT `groupId`
-																FROM 	`staff`
-																WHERE	`staff`.`staffId`='".$_SESSION[$staffId]."'
-																LIMIT 1
-															  )
-										AND 	`folderAccess`.`folderAccessValue`=	1
-										AND		`folderTranslate`.`languageId`='".$_SESSION['languageId']."'
-										ORDER BY 	`folder`.`folderSequence`	";
-									} else  if ($q->vendor=='microsoft') {
-										$sql_folder	="
-										SELECT		*
-										FROM 		[folderAccess]
-										JOIN			[folder]
-										ON			[folderAccess].[folderId]=[folder].[folderId]
-										JOIN			[folderTranslate]
-										ON			[folderTranslate].[folderId]=[folder].[folderId]
-										JOIN			[icon]
-										ON			[icon].[iconId]=[folder].[iconId]
-										WHERE 		[accordionId]='".$accordionId."'
-										AND 			[folderAccess].[groupId]=(
-																SELECT TOP 1 [groupId]
-																FROM 	[staff]
-																WHERE	[staff].[staffId]='".$_SESSION[$staffId]."'
-															  )
-										AND 	[folderAccess].[folderAccessValue]=	1
-										AND		[folderTranslate].[languageId]='".$_SESSION['languageId']."'
-										ORDER BY 	[folder].[folderSequence]	";
-
-									} else if ($q->vendor=='oracle') {
-
-									$sql_folder	="
-										SELECT		*
-										FROM 		\"folderAccess\"
-										JOIN		\"folder\"
-										USING		(\"folderId\")
-										JOIN		\"folderTranslate\"
-										USING		(\"folderId\")
-										JOIN		\"icon\"
-										USING		(\"iconId\")
-										WHERE 		\"accordionId\"='".$accordionId."'
-										AND 		\"folderAccess\".\"groupId\"=(
-																SELECT \"groupId\"
-																FROM 	\"staff\"
-																WHERE	\"staff\".\"staffId\"='".$_SESSION[$staffId]."'
-																AND		rownum <=1
-															  )
-										AND 		\"folderAccess\".\"folderAccessValue\"=	1
-										AND			\"folderTranslate\".\"languageId\"='".$_SESSION['languageId']."'
-										ORDER BY 	\"folder\".\"folderSequence\"	";
-									}
-							   		//echo $sql_fol/der;
-									$result_folder = $q->fast($sql_folder);
-									$total_folder  = $q->numberRows($result_folder,$sql_folder);
-									if( $total_folder > 0 ) {
-										while($row_folder = $q->fetchArray($result_folder)) {
-												$folderTranslate =$row_folder['folderTranslate'];
-												$iconName=$row_folder['iconName'];
-												$folderId	=$row_folder['folderId'];
-												$folderPath = $row_folder['folderPath'];
-
-											$counter_folder++; ?>
-											<?php echo " { "; ?>
-							expanded	: true,
-							text		: '<?php echo $folderTranslate ; ?>',
-							iconCls 	: '<?php echo $iconName; ?>',
-							children	: [
-						<?php  //  program configuration
-							    $counter_leaf=0;
-							   	if($q->vendor=='normal' || $q->vendor=='mysql') {
-									$sql_leaf	="
-									SELECT		*
-									FROM		`leafAccess`
-									JOIN		`leaf`
-									USING		(`leafId`)
-									JOIN		`leafTranslate`
-									USING		(`leafId`)
-									JOIN		`icon`
-									USING		(`iconId`)
-									WHERE 		`folderId`='".$folderId."'
-									AND			`accordionId`='".$accordionId."'
-									AND			`leafAccess`.`staffId`='".$_SESSION[$staffId]."'
-									AND			`leafTranslate`.`languageId`='".$_SESSION['languageId']."'
-								ORDER BY	`leaf`.`leafSequence`";
-								} else if ($q->vendor=='microsoft') {
-									$sql_leaf	="
-									SELECT		*
-									FROM		[leafAccess]
-									JOIN			[leaf]
-									ON			[leafAccess].[leafId]=[leaf].[leafId]
-									JOIN			[leafTranslate]
-									ON			[leafTranslate].[leafId]=[leaf].[leafId]
-									JOIN			[icon]
-									ON			[icon].[iconId]=[leaf].[iconId]
-									WHERE 		[folderId]='".$folderId."'
-									AND			[accordionId]='".$accordionId."'
-									AND			[leafAccess].[staffId]='".$_SESSION[$staffId]."'
-									AND			[leafTranslate].[languageId]='".$_SESSION['languageId']."'
-									ORDER BY	[leaf].[leafSequence]";
-								} else if ( $q->vendor=='oracle') {
-									$sql_leaf	="
-									SELECT		*
-									FROM		\"leafAccess\"
-									JOIN		\"leaf\"
-									USING		(\"leafId\")
-									JOIN		\"leafTranslate\"
-									USING		(\"leafId\")
-									JOIN		\"icon\"
-									USING		(\"iconId\")
-									WHERE 		\"folderId\"='".$folderId."'
-									AND			\"accordionId\"='".$accordionId."'
-									AND			\"leafAccess\".\"staffId\"='".$_SESSION[$staffId]."'
-									AND			\"leafTranslate\".\"languageId\"='".$_SESSION['languageId']."'";
-								}
-								$result_leaf = $q->fast($sql_leaf);
-								$total_leaf  = $q->numberRows($result_leaf,$sql_leaf);
-								if($total_leaf > 0 ) {
-									while($row_leaf = $q->fetchArray($result_leaf)) {
-
-												$leafTranslate =	$row_leaf['leafTranslate'];
-												$iconName	=	$row_leaf['iconName'];
-												$leafFilename	=	$row_leaf['leafFilename'];
-
-										$counter_leaf++;
-										 echo " { "; ?>
-
-									text		: '<?php echo $leafTranslate ; ?>\n',
-									leaf		: true,
-									iconCls 	: '<?php echo $iconName; ?>',
-									listeners	: {
-										click		:
-										function	()	{
-										Ext.getCmp('west-panel').collapse() ;
-											// just alert to see the path
-
-											AddCenterTabIF('<?php echo $leafTranslate; ?>','../../<?php echo $folderPath; ?>/view/<?php echo $leafFilename; ?>') ;
-
-										}
-
-
-									}
-								} <?php if($counter_leaf != $total_leaf) { echo ","; } else { echo "]"; } // this is for javascript ',' ?>
-									<?php } }  else { echo "{ text:'No Leaf Identify',leaf:true }]"; } //end looping ?>
-							}<?php if($counter_folder != $total_folder) { echo ","; } else { echo "]"; } // this is for javascript ',' ?>
-								<?php } }  else { echo "{ text:'No Folder Identify',expanded:true }]";  } //end looping ?>
-
-						 })
-				      })]
-				} <?php if($counter_accordion != $total_accordion) { echo ","; } else { echo "]"; } // this is for javascript ',' ?>
-
-
-
-				<?php }   }  // end menu configuration ?>
-			}, {
+		} ,  {
 				region		: 	'center',
 				layout		:	'border',
+				html        :  'tstin',
+				margins		: 	'5 0 5 5',
 				items		: 	[tabPanel]
-		      }]
+		      },{
+			  	region  :'south',
+				xtype :'panel',
+				bbar :['->',{
+			xtype :'button',
+			title :'calendar',
+			iconCls :'calendar'
+	   },'-',{
+			xtype :'button',
+			title :'chat',
+			iconCls :'group'
+	   },'-',{
+			xtype :'button',
+			title :'mail',
+			iconCls :'email'
+	   },'-',{
+			xtype :'button',
+			title :'todo',
+			iconCls :'lightbulb'
+	   },'-',clock]
+			  }], listeners: {
+            render: {
+                fn: function(){
+                   
+
+                    // Kick off the clock timer that updates the clock el every second:
+				    Ext.TaskMgr.start({
+				        run: function(){
+				            Ext.fly(clock.getEl()).update(new Date().format('g:i:s A'));
+							// check status whos'online for chatting
+							//check status email
+							
+				        },
+				        interval: 1000
+				    });
+                },
+                delay: 100
+            }
+        }
     });
 });
 </script>

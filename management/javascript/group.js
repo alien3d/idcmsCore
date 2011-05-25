@@ -1,25 +1,25 @@
 Ext.onReady(function(){
 	// get current information  of the page
-	var page_create;
-	var page_reload;
-	var page_print;
+	var pageCreate;
+	var pageReload;
+	var pagePrint;
 	if(leafCreateAccessValue  == 1 ) {
-		page_create = false;
+		pageCreate = false;
 	} else { 
-		page_create = true;
+		pageCreate = true;
 	}
 	if(leafReadAccessValue  == 1 ){ 
-		page_reload=false;
+		pageReload=false;
 	} else { 
-		page_reload=true;
+		pageReload=true;
 	} 
 	if(leafPrintAccessValue == 1 ) {
-		page_print=false;
+		pagePrint=false;
 	} else {
-		page_print=true;
+		pagePrint=true;
 	}				
 	Ext.BLANK_IMAGE_URL ='../../javascript/resources/images/s.gif';
-	var per_page		= 	10;
+	var perPage		= 	10;
 	var encode 			=	false;
 	var local 			= 	false;
 	var store 			= 	new Ext.data.JsonStore({
@@ -44,7 +44,32 @@ fields: [
 		},{
 			name		:	'groupNote',
 			type        :   'string'							
-		}
+		}, {
+            name: "isDefault",
+            type: "boolean"
+        }, {
+            name: "isNew",
+            type: "boolean"
+        }, {
+            name: "isDraft",
+            type: "boolean"
+        }, {
+            name: "isUpdate",
+            type: "boolean"
+        }, {
+            name: "isDelete",
+            type: "boolean"
+        }, {
+            name: "isActive",
+            type: "boolean"
+        }, {
+            name: "isApproved",
+            type: "boolean"
+        }, {
+            name: "Time",
+            type: "date",
+            dateFormat: "Y-m-d H:i:s"
+        }
 		]
 	});
 	
@@ -201,7 +226,7 @@ filters: [
 					store.load({
 						params	:	{
 							start	:	0,
-							limit	: 	per_page,
+							limit	: 	perPage,
 							method	:	'read',
 							mode	:	'view'
 						}
@@ -211,7 +236,7 @@ filters: [
 		},
 		bbar				: 	new Ext.PagingToolbar({
 			store				:	store,
-			pageSize			:	per_page,
+			pageSize			:	perPage,
 			plugins				:	[filters]
 		})
 	});
@@ -233,12 +258,12 @@ items:[{
 									text : excelToolbarLabel,
 									iconCls : "page_excel",
 									id : "page_excelList",
-									disabled : page_print,
+									disabled : pagePrint,
 									handler : function() {
 										Ext.Ajax
 												.request({
 													url : "../data/religion_data.php?method=report&mode=excel&limit="
-															+ per_page
+															+ perPage
 															+ "&leafId="
 															+ leafId,
 													method : "GET",
@@ -334,7 +359,7 @@ buttonVAlign: 	'top',
 							params: {
 								leafId:leafId,
 								start:0,
-								limit:per_page
+								limit:perPage
 							}
 						});
 						// should be refresh back the main parent.

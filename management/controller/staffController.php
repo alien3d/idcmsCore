@@ -1161,8 +1161,8 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['order'])){
 		$staffObject-> order= $_POST['order'];
 	}
-	if(isset($_POST['sort_field'])){
-		$staffObject-> sort_field= $_POST['sort_field'];
+	if(isset($_POST['sortField'])){
+		$staffObject-> sortField= $_POST['sortField'];
 	}
 	if($_POST['method']=='read') 	{
 		$staffObject->read();

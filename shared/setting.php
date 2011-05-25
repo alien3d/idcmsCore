@@ -132,4 +132,69 @@ var leafCreateAccessValue	= '<?php echo $row_leafAccess['leafCreateAccessValue']
 var leafReadAccessValue		= '<?php echo $row_leafAccess['leafReadAccessValue'];   ?>';
 var leafPrintAccessValue	= '<?php echo $row_leafAccess['leafPrintAccessValue'];   ?>';
 
+<?php
+		if( $q->vendor==sharedx::mysql) {
+			$sql	=	"
+			SELECT	`group`.`isAdmin`
+			FROM 	`staff`
+			JOIN	`group`
+			USING	(`groupId`)
+			WHERE 	`staff`.`staffId`	=	'".$_SESSION['staffId']."'
+			AND		`group`.`groupId`	=	'".$_SESSION['groupId']."'";
+		} else if ($q->vendor==sharedx::mssql) {
+			$sql	=	"
+			SELECT	[group].[isAdmin]
+			FROM 	[staff]
+			JOIN	[group]
+			ON		[staff].[groupId]  	= 	[group].[groupId]
+			WHERE 	[staff].[staffId]	=	'".$_SESSION['staffId']."'
+			AND		[group].[groupId]	=	'".$_SESSION['groupId']."'";
+		} else if ($q->vendor==sharedx::oracle) {
+			$sql	=	"
+			SELECT	\"group\".\"isAdmin\"
+			FROM 	\"staff\"
+			JOIN	\"group\"
+			USING   (\"groupId\")
+			WHERE 	\"staff\".\"staffId\"	=	'".$_SESSION['staffId']."'
+			AND		\"group\".\"groupId\"	=	'".$_SESSION['groupId']."'";
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$this->vendor."]"));
+			exit();
+		}
+
+		$result=$q->fast($sql);
+		if($q->execute=='fail'){
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			exit();
+		}
+
+		if($q->numberRows($result) > 0 ) {
+
+			$rowAdmin = $q->fetchAssoc($result);
+		
+		}
+?>
+		var isAdmin = '<?php echo $rowAdmin['isAdmin']; ?>';
+		if (isAdmin  == 1 ) { 
+			isDefaultHidden 	= false;
+			isNewHidden   		= false;
+			isUpdateHidden  	= false;
+			isDeleteHidden      = false;
+			isActiveHidden		= false;
+			isApprovedHidden	= false;
+		} else { 
+			isDefaultHidden 	= true;
+			isNewHidden   		= true;
+			isUpdateHidden  	= true;
+			isDeleteHidden      = true;
+			isActiveHidden		= true;
+			isApprovedHidden	= true;
+		}
+		var isDefaultLabel='Default Value';
+		var isNewLabel ='New';
+        var isUpdateLabel='Update';
+        var isDeleteLabel='Delete';
+        var isActive ='Active';
+		var isApprovedLabel='Approved';
+           		
 </script>

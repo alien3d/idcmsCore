@@ -1,36 +1,36 @@
 Ext.onReady(function() {
 			Ext.QuickTips.init();
 			Ext.form.Field.prototype.msgTarget = 'under';
-			var page_create;
-			var page_createList;
-			var page_reload;
-			var page_reloadList;
-			var page_print;
-			var page_printList;
+			var pageCreate;
+			var pageCreateList;
+			var pageReload;
+			var pageReloadList;
+			var pagePrint;
+			var pagePrintList;
 			var duplicate =0; // bypassing the extjs bugs
 			if (leafCreateAccessValue == 1) {
-				page_create = false;
-				page_createList = false;
+				pageCreate = false;
+				pageCreateList = false;
 			} else {
-				page_create = true;
-				page_createList = true;
+				pageCreate = true;
+				pageCreateList = true;
 			}
 			if (leafReadAccessValue == 1) {
-				page_reload = false;
-				page_reloadList = false;
+				pageReload = false;
+				pageReloadList = false;
 			} else {
-				page_reload = true;
-				page_reloadList = true;
+				pageReload = true;
+				pageReloadList = true;
 			}
 			if (leafPrintAccessValue == 1) {
-				page_print = false;
-				page_printList = false;
+				pagePrint = false;
+				pagePrintList = false;
 			} else {
-				page_print = true;
-				page_printList = true;
+				pagePrint = true;
+				pagePrintList = true;
 			}
 			Ext.BLANK_IMAGE_URL = '../javascript/resources/images/s.gif';
-			var per_page = 10;
+			var perPage = 10;
 			var encode = false;
 			var local = false;
 			var store = new Ext.data.JsonStore( {
@@ -142,40 +142,47 @@ Ext.onReady(function() {
 			});
 
 			var staffProxy = new Ext.data.HttpProxy({
-				url : "../controller/religionController.php",
-				method : "GET",
-				params : {
-					method : 'read',
-					field : 'staffId',
-					leafId : leafId
-				},
-				success : function(response, options) {
-					var x = Ext.decode(response.responseText);
-					if (x.success == "true") {
-						title = successLabel;
-					} else {
-						title = failureLabel;
-					}
-					Ext.MessageBox.alert(systemLabel, x.message);
-				},
-				failure : function(response, options) {
+		        url: "../controller/documentController.php?",
+		        method: "GET",
+		        success: function (response, options) {
+		            jsonResponse = Ext.decode(response.responseText);
+		            if (jsonResponse.success == true) {
+		                //Ext.MessageBox.alert(successLabel, jsonResponse.message); //uncommen for testing purpose
+		            } else {
+		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		            }
 
-					Ext.MessageBox.alert(systemErrorLabel,
-							escape(response.Status) + ":"
-									+ escape(response.statusText));
-				}
+		        },
+		        failure: function (response, options) {
+		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+		        }
 
-			});
-			var staffReader = new Ext.data.JsonReader({
-				root : "staff",
-				id : "staffId"
-			}, [ "staffId", "staffName" ]);
-			var staffStore = new Ext.data.Store({
-				proxy : staffProxy,
-				reader : staffReader,
-				remoteSort : false
-			});
-			staffStore.load();
+		    });
+		    var staffReader = new Ext.data.JsonReader({
+		        totalProperty: "total",
+		        successProperty: "success",
+		        messageProperty: "message",
+		        idProperty: "staffId"
+		    });
+		    var staffStore = new Ext.data.JsonStore({
+		        proxy: staffProxy,
+		        reader: staffReader,
+		        autoLoad: true,
+		        autoDestroy: true,
+		        baseParams: {
+		            method: 'read',
+		            field: 'staffId',
+		            leafId: leafId
+		        },
+		        root: 'staff',
+		        fields: [{
+		            name: "staffId",
+		            type: "int"
+		        }, {
+		            name: "staffName",
+		            type: "string"
+		        }]
+		    });
 			
 			var documentCategoryReader = new Ext.data.JsonReader({
 				root : 'documentCategory',
@@ -596,7 +603,7 @@ Ext.onReady(function() {
 							store.load( {
 								params : {
 									start : 0,
-									limit : per_page,
+									limit : perPage,
 									method : 'read',
 									mode : 'view',
 									plugin : [ filters ]
@@ -607,7 +614,7 @@ Ext.onReady(function() {
 				},
 				bbar : new Ext.PagingToolbar( {
 					store : store,
-					pageSize : per_page,
+					pageSize : perPage,
 					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
 				})
 			});
@@ -634,7 +641,7 @@ Ext.onReady(function() {
 							storeList.load( {
 								params : {
 									start : 0,
-									limit : per_page,
+									limit : perPage,
 									method : 'read',
 									mode : 'view',
 									plugin : [ filtersList ]
@@ -645,7 +652,7 @@ Ext.onReady(function() {
 				},
 				bbar : new Ext.PagingToolbar( {
 					store : storeList,
-					pageSize : per_page,
+					pageSize : perPage,
 					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
 				})
 			});
@@ -655,8 +662,8 @@ Ext.onReady(function() {
 								{
 									text : reloadToolbarLabel,
 									iconCls : 'database_refresh',
-									id : 'page_reload',
-									disabled : page_reload,
+									id : 'pageReload',
+									disabled : pageReload,
 									handler : function() {
 										store.reload();
 									}
@@ -664,8 +671,8 @@ Ext.onReady(function() {
 								{
 									text : addToolbarLabel,
 									iconCls : 'add',
-									id : 'page_create',
-									disabled : page_create,
+									id : 'pageCreate',
+									disabled : pageCreate,
 									handler : function() {
 										viewPort.items.get(1).expand();
 									}
@@ -675,12 +682,12 @@ Ext.onReady(function() {
 									text : excelToolbarLabel,
 									iconCls : 'page_excel',
 									id : 'page_excel',
-									disabled : page_print,
+									disabled : pagePrint,
 									handler : function() {
 										Ext.Ajax
 												.request( {
 													url : '../controller/documentController.php?method=report&mode=excel&limit='
-															+ per_page
+															+ perPage
 															+ '&leafId='
 															+ leafId,
 													method : 'GET',
@@ -708,11 +715,11 @@ Ext.onReady(function() {
 									text : PDFToolbarLabel,
 									iconCls : 'page_white_acrobat',
 									id : 'page_white_acrobat',
-									disabled : page_print,
+									disabled : pagePrint,
 									handler : function() {
 										window.location
 												.replace('../controller/documentController.php?method=report&mode=pdf&limit='
-														+ per_page
+														+ perPage
 														+ '&leafId='
 														+ leafId);
 									}
@@ -724,8 +731,8 @@ Ext.onReady(function() {
 								{
 									text : reloadToolbarLabel,
 									iconCls : 'database_refresh',
-									id : 'page_reloadList',
-									disabled : page_reloadList,
+									id : 'pageReloadList',
+									disabled : pageReloadList,
 									handler : function() {
 										storeList.reload();
 									}
@@ -733,8 +740,8 @@ Ext.onReady(function() {
 								{
 									text : addToolbarLabel,
 									iconCls : 'add',
-									id : 'page_createList',
-									disabled : page_createList,
+									id : 'pageCreateList',
+									disabled : pageCreateList,
 									handler : function() {
 										viewPort.items.get(1).expand();
 										win.hide();
@@ -744,7 +751,7 @@ Ext.onReady(function() {
 									text : printerToolbarLabel,
 									iconCls : 'printer',
 									id : 'printerList',
-									disabled : page_printList,
+									disabled : pagePrintList,
 									handler : function() {
 										Ext.ux.GridPrinter.print(grid);
 									}
@@ -753,12 +760,12 @@ Ext.onReady(function() {
 									text : wordToolbarLabel,
 									iconCls : 'page_word',
 									id : 'page_wordList',
-									disabled : page_printList,
+									disabled : pagePrintList,
 									handler : function() {
 										Ext.Ajax
 												.request( {
 													url : '../controller/documentController.php?method=report&mode=word&limit='
-															+ per_page
+															+ perPage
 															+ '&leafId='
 															+ leafId,
 													method : 'GET',
@@ -786,12 +793,12 @@ Ext.onReady(function() {
 									text : excelToolbarLabel,
 									iconCls : 'page_excel',
 									id : 'page_excelList',
-									disabled : page_printList,
+									disabled : pagePrintList,
 									handler : function() {
 										Ext.Ajax
 												.request( {
 													url : '../controller/documentController.php?method=report&mode=excel&limit='
-															+ per_page
+															+ perPage
 															+ '&leafId='
 															+ leafId,
 													method : 'GET',
@@ -819,11 +826,11 @@ Ext.onReady(function() {
 									text : PDFToolbarLabel,
 									iconCls : 'page_white_acrobat',
 									id : 'page_white_acrobatList',
-									disabled : page_print,
+									disabled : pagePrint,
 									handler : function() {
 										window.location
 												.replace('../controller/documentController.php?method=report&mode=pdf&limit='
-														+ per_page
+														+ perPage
 														+ '&leafId='
 														+ leafId);
 									}

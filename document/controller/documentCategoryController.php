@@ -408,8 +408,8 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['order'])){
 		$documenCategoryObject-> order= $_POST['order'];
 	}
-	if(isset($_POST['sort_field'])){
-		$documenCategoryObject-> sort_field= $_POST['sort_field'];
+	if(isset($_POST['sortField'])){
+		$documenCategoryObject-> sortField= $_POST['sortField'];
 	}
 	if($_POST['method']=='read') 	{
 		$documenCategoryObject->read();

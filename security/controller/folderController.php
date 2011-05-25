@@ -435,7 +435,7 @@ class folderClass extends  configClass {
 		}
 		$total	= $this->q->numberRows();
 
-		if($this->order && $this->sort_field){
+		if($this->order && $this->sortField){
 			if($this->q->vendor==self::mysql || $this->q->vendor=='normal') {
 				$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 			} else if ($this->q->vendor==self::mssql) {
@@ -1053,8 +1053,8 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['order'])){
 		$folderObject->order= $_POST['order'];
 	}
-	if(isset($_POST['sort_field'])){
-		$folderObject-> sort_field= $_POST['sort_field'];
+	if(isset($_POST['sortField'])){
+		$folderObject-> sortField= $_POST['sortField'];
 	}
 	/*
 	 *  Load the dynamic value

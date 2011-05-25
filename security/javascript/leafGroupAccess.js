@@ -1,26 +1,26 @@
 Ext.onReady(function(){
 		Ext.form.Field.prototype.msgTarget = 'under';
-	    var page_create;
-	    var page_reload;
-	    var page_print;
+	    var pageCreate;
+	    var pageReload;
+	    var pagePrint;
 		if(leafCreateAccessValue  == 1 ) {
-			var page_create = false;
+			var pageCreate = false;
 		} else { 
-			var page_create = true;
+			var pageCreate = true;
 		}
 		if(leafReadAccessValue  == 1 ){ 
-			var page_reload=false;
+			var pageReload=false;
 		} else { 
-			var page_reload=true;
+			var pageReload=true;
 		} 
 		if(leafPrintAccessValue == 1 ) {
-			var page_print=false;
+			var pagePrint=false;
 		} else {
-			var page_print=true;
+			var pagePrint=true;
 		}
 		// form panel + grid.When choose the form then activated filter the grid.Grid will automatically update on demand
 		// first viewport
-		var per_page		= 	10;
+		var perPage		= 	10;
 		var encode 			=	false;
 		var local 			= 	false;
 		var leafGroupAccessProxy  =  new Ext.data.HttpProxy({

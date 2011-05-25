@@ -84,18 +84,24 @@ class loginClass extends configClass {
 			$sql	=	"
 			SELECT	*
 			FROM 	`staff`
+			JOIN	`group`
+			USING	(`groupId`)
 			WHERE 	`staffName`		=	'".$this->strict($this->User,'s')."'
 			AND		`staffPassword`	=	'".$this->strict(md5($this->Pass),'p')."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql	=	"
 			SELECT	*
 			FROM 	[staff]
+			JOIN	[group]
+			ON		[staff].[groupId]  = [group].[groupId]
 			WHERE 	[staffName]		=	'".$this->strict($this->User,'s')."'
 			AND		[staffPassword]	=	'".$this->strict(md5($this->Pass),'p')."'";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql	=	"
 			SELECT	*
 			FROM 	\"staff\"
+			JOIN	\"group\"
+			USING   (\"groupId\")
 			WHERE 	\"staffName\"		=	'".$this->strict($this->User,'s')."'
 			AND		\"staffPassword\"	=	'".$this->strict(md5($this->Pass),'p')."'";
 		} else {
@@ -116,6 +122,7 @@ class loginClass extends configClass {
 			$_SESSION['staffId']		=	$row['staffId'];
 			$_SESSION['staffNo'] 		= 	$row['staffNo'];
 			$_SESSION['languageId']		=  	$row['languageId'];
+			$_SESSION['groupId']		=   $row['groupId'];
 			$_SESSION['database']		=	$_POST['database'];
 			$_SESSION['vendor']			= 	$_POST['vendor'];
 			echo json_encode(array("success"=>"true","message"=>"sucess login"));

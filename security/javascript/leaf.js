@@ -4,27 +4,27 @@ Ext
 		
 			var temp;
 
-			var page_create;
-			var page_reload;
-			var page_print;
+			var pageCreate;
+			var pageReload;
+			var pagePrint;
 			var xg = Ext.grid;
 			if (leafCreateAccessValue == 1) {
-				var page_create = false;
+				var pageCreate = false;
 			} else {
-				var page_create = true;
+				var pageCreate = true;
 			}
 			if (leafReadAccessValue == 1) {
-				var page_reload = false;
+				var pageReload = false;
 			} else {
-				var page_reload = true;
+				var pageReload = true;
 			}
 			if (leafPrintAccessValue == 1) {
-				var page_print = false;
+				var pagePrint = false;
 			} else {
-				var page_print = true;
+				var pagePrint = true;
 			}
 			Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
-			var per_page = 15;
+			var perPage = 15;
 			var encode = false;
 			var local = false;
 			
@@ -92,13 +92,31 @@ Ext
 					name : 'iconName',
 					type : 'string'
 				}, {
-					name : 'By',
-					type : 'int'
-				}, {
-					name : 'Time',
-					type : 'date',
-					dateFormat : 'Y-m-d H:i:s'
-				}]
+            name: "isDefault",
+            type: "boolean"
+        }, {
+            name: "isNew",
+            type: "boolean"
+        }, {
+            name: "isDraft",
+            type: "boolean"
+        }, {
+            name: "isUpdate",
+            type: "boolean"
+        }, {
+            name: "isDelete",
+            type: "boolean"
+        }, {
+            name: "isActive",
+            type: "boolean"
+        }, {
+            name: "isApproved",
+            type: "boolean"
+        }, {
+            name: "Time",
+            type: "date",
+            dateFormat: "Y-m-d H:i:s"
+        }]
 			});			
 			var leafStore = new Ext.data.JsonStore({
 				autoDestroy : true,
@@ -258,6 +276,49 @@ Ext
 			leafStore.load();
 			accordionStore.load();
 			folderStore.load();
+			
+			var staffProxy = new Ext.data.HttpProxy({
+		        url: "../controller/religionController.php?",
+		        method: "GET",
+		        success: function (response, options) {
+		            jsonResponse = Ext.decode(response.responseText);
+		            if (jsonResponse.success == true) {
+		                //Ext.MessageBox.alert(successLabel, jsonResponse.message); //uncommen for testing purpose
+		            } else {
+		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		            }
+
+		        },
+		        failure: function (response, options) {
+		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+		        }
+
+		    });
+		    var staffReader = new Ext.data.JsonReader({
+		        totalProperty: "total",
+		        successProperty: "success",
+		        messageProperty: "message",
+		        idProperty: "staffId"
+		    });
+		    var staffStore = new Ext.data.JsonStore({
+		        proxy: staffProxy,
+		        reader: staffReader,
+		        autoLoad: true,
+		        autoDestroy: true,
+		        baseParams: {
+		            method: 'read',
+		            field: 'staffId',
+		            leafId: leafId
+		        },
+		        root: 'staff',
+		        fields: [{
+		            name: "staffId",
+		            type: "int"
+		        }, {
+		            name: "staffName",
+		            type: "string"
+		        }]
+		    });
 
 			var filters = new Ext.ux.grid.GridFilters({
 
@@ -442,7 +503,7 @@ Ext
 																							params : {
 																								start : 0,
 																								leafId : leafId,
-																								limit : per_page
+																								limit : perPage
 																							}
 																						});
 																			}
@@ -573,7 +634,7 @@ Ext
 							leafStore.load({
 								params : {
 									start : 0,
-									limit : per_page,
+									limit : perPage,
 									method : 'read',
 									page : 'master',
 									plugin : [ filters ]
@@ -584,7 +645,7 @@ Ext
 				},
 				bbar : new Ext.PagingToolbar({
 					store : leafStore,
-					pageSize : per_page
+					pageSize : perPage
 				})
 			});
 
@@ -713,8 +774,8 @@ Ext
 								{
 									text : reloadToolbarLabel,
 									iconCls : 'database_refresh',
-									id : 'page_reload',
-									disabled : page_reload,
+									id : 'pageReload',
+									disabled : pageReload,
 									handler : function() {
 										leafStore.reload();
 									}
@@ -723,8 +784,8 @@ Ext
 								{
 									text : addToolbarLabel,
 									iconCls : 'add',
-									id : 'page_create',
-									disabled : page_create,
+									id : 'pageCreate',
+									disabled : pageCreate,
 									handler : function() {
 
 										viewPort.items.get(1).expand();
@@ -735,12 +796,12 @@ Ext
 									text : excelToolbarLabel,
 									iconCls : 'page_excel',
 									id : 'page_excel',
-									disabled : page_print,
+									disabled : pagePrint,
 									handler : function() {
 										Ext.Ajax
 												.request({
 													url : '../controller/leafController.php?method=report&mode=excel&limit='
-															+ per_page
+															+ perPage
 															+ '&leafId='
 															+ leafId,
 													method : 'GET',
@@ -1150,7 +1211,7 @@ Ext
 																			params : {
 																				leafId : leafId_temp,
 																				start : 0,
-																				limit : per_page
+																				limit : perPage
 																			}
 																		});
 																Ext

@@ -3,25 +3,25 @@ Ext
 			Ext.Ajax.timeout = 90000000;
 			Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
 
-			var page_create;
-			var page_reload;
-			var page_print;
+			var pageCreate;
+			var pageReload;
+			var pagePrint;
 			if (leafCreateAccessValue == 1) {
-				var page_create = false;
+				var pageCreate = false;
 			} else {
-				var page_create = true;
+				var pageCreate = true;
 			}
 			if (leafReadAccessValue == 1) {
-				var page_reload = false;
+				var pageReload = false;
 			} else {
-				var page_reload = true;
+				var pageReload = true;
 			}
 			if (leafPrintAccessValue == 1) {
-				var page_print = false;
+				var pagePrint = false;
 			} else {
-				var page_print = true;
+				var pagePrint = true;
 			}
-			var per_page = 10;
+			var perPage = 10;
 			var encode = false;
 			var local = false;
 			var folderProxy = new Ext.data.HttpProxy({
@@ -79,13 +79,31 @@ Ext
 					name : 'iconName',
 					type : 'string'
 				}, {
-					name : 'By',
-					type : 'int'
-				}, {
-					name : 'Time',
-					type : 'date',
-					dateFormat : 'Y-m-d H:i:s'
-				} ]
+            name: "isDefault",
+            type: "boolean"
+        }, {
+            name: "isNew",
+            type: "boolean"
+        }, {
+            name: "isDraft",
+            type: "boolean"
+        }, {
+            name: "isUpdate",
+            type: "boolean"
+        }, {
+            name: "isDelete",
+            type: "boolean"
+        }, {
+            name: "isActive",
+            type: "boolean"
+        }, {
+            name: "isApproved",
+            type: "boolean"
+        }, {
+            name: "Time",
+            type: "date",
+            dateFormat: "Y-m-d H:i:s"
+        }]
 			});	
 			var folderStore = new Ext.data.JsonStore({
 				autoDestroy : true,
@@ -151,40 +169,47 @@ Ext
 			});
 
 			var staffProxy = new Ext.data.HttpProxy({
-				url : "../controller/folderController.php",
-				method : "GET",
-				params : {
-					method : 'read',
-					field : 'staffId',
-					leafId : leafId
-				},
-				success : function(response, options) {
-					var x = Ext.decode(response.responseText);
-					if (x.success == "true") {
-						title = successLabel;
-					} else {
-						title = failureLabel;
-					}
-					Ext.MessageBox.alert(systemLabel, x.message);
-				},
-				failure : function(response, options) {
+		        url: "../controller/religionController.php?",
+		        method: "GET",
+		        success: function (response, options) {
+		            jsonResponse = Ext.decode(response.responseText);
+		            if (jsonResponse.success == true) {
+		                //Ext.MessageBox.alert(successLabel, jsonResponse.message); //uncommen for testing purpose
+		            } else {
+		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		            }
 
-					Ext.MessageBox.alert(systemErrorLabel,
-							escape(response.Status) + ":"
-									+ escape(response.statusText));
-				}
+		        },
+		        failure: function (response, options) {
+		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+		        }
 
-			});
-			var staffReader = new Ext.data.JsonReader({
-				root : "staff",
-				id : "staffId"
-			}, [ "staffId", "staffName" ]);
-			var staffStore = new Ext.data.Store({
-				proxy : staffProxy,
-				reader : staffReader,
-				remoteSort : false
-			});
-			staffStore.load();
+		    });
+		    var staffReader = new Ext.data.JsonReader({
+		        totalProperty: "total",
+		        successProperty: "success",
+		        messageProperty: "message",
+		        idProperty: "staffId"
+		    });
+		    var staffStore = new Ext.data.JsonStore({
+		        proxy: staffProxy,
+		        reader: staffReader,
+		        autoLoad: true,
+		        autoDestroy: true,
+		        baseParams: {
+		            method: 'read',
+		            field: 'staffId',
+		            leafId: leafId
+		        },
+		        root: 'staff',
+		        fields: [{
+		            name: "staffId",
+		            type: "int"
+		        }, {
+		            name: "staffName",
+		            type: "string"
+		        }]
+		    });
 
 			var accordionReader = new Ext.data.JsonReader({
 				root : 'accordion',
@@ -470,7 +495,7 @@ Ext
 							folderStore.load({
 								params : {
 									start : 0,
-									limit : per_page,
+									limit : perPage,
 									method : 'read',
 									mode : 'view'
 								}
@@ -480,7 +505,7 @@ Ext
 				},
 				bbar : new Ext.PagingToolbar({
 					store : folderStore,
-					pageSize : per_page,
+					pageSize : perPage,
 					plugins : [ filters ]
 				})
 			});
@@ -607,8 +632,8 @@ Ext
 								{
 									text : reloadToolbarLabel,
 									iconCls : 'database_refresh',
-									id : 'page_reload',
-									disabled : page_reload,
+									id : 'pageReload',
+									disabled : pageReload,
 									handler : function() {
 										folderStore.reload();
 									}
@@ -617,8 +642,8 @@ Ext
 								{
 									text : addToolbarLabel,
 									iconCls : 'add',
-									id : 'page_create',
-									disabled : page_create,
+									id : 'pageCreate',
+									disabled : pageCreate,
 									handler : function() {
 
 										viewPort.items.get(1).expand();
@@ -630,12 +655,12 @@ Ext
 									text : excelToolbarLabel,
 									iconCls : 'page_excel',
 									id : 'page_excel',
-									disabled : page_print,
+									disabled : pagePrint,
 									handler : function() {
 										Ext.Ajax
 												.request({
 													url : '../controller/folderController.php?method=report&mode=excel&limit='
-															+ per_page
+															+ perPage
 															+ '&leafId='
 															+ leafId,
 													method : 'GET',
@@ -956,7 +981,7 @@ Ext
 																			params : {
 																				leafId : leafId,
 																				start : 0,
-																				limit : per_page
+																				limit : perPage
 																			}
 																		});
 																Ext

@@ -4,7 +4,7 @@ Ext.onReady(function(){
 		 Ext.Ajax.timeout = 90000;
 		
 		Ext.BLANK_IMAGE_URL ='../js/resources/images/s.gif';
-    	var per_page		= 	15;
+    	var perPage		= 	15;
 		var encode 			=	false;
     	var local 			= 	false;
 		var store 			= 	new Ext.data.JsonStore({
@@ -103,7 +103,7 @@ Ext.onReady(function(){
 									store.load({
 										params	:	{
 											start	:	0,
-											limit	: 	per_page,
+											limit	: 	perPage,
 											method	:	'read',
 											mode	:	'view'
 										}
@@ -113,7 +113,7 @@ Ext.onReady(function(){
 				},
 			bbar				: 	new Ext.PagingToolbar({
 				store				:	store,
-				pageSize			:	per_page,
+				pageSize			:	perPage,
                                 displayInfo : true,
 				plugins             : [ new Ext.ux.plugins.PageComboResizer()]
 			})

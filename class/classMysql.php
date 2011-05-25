@@ -788,10 +788,10 @@ class vendor
 		$strSearch = "AND ( ";
 		foreach ($tableArray as $tableSearch) {
 			$sql = "DESCRIBE	`" . $tableSearch . "`";
-			$this->query_view($sql);
-			if ($this->num_rows() > 0) {
-				while ($row = $this->fetch_array()) {
-					$strField = "\"" . $tableSearch . "\".\"" . $row['Name'] . "\"";
+			$result = mysqli_query($this->link,$sql);
+			if (mysqli_num_rows($result) > 0) {
+				while ($row = mysqli_fetch_array($result)) {
+					$strField = "`" . $tableSearch . "`.`" . $row['Field'] . "`";
 					$key      = array_search($strField, $filterArray, true);
 					if ($i > 0 && strlen($key) == 0) {
 						$strSearch .= " OR  ";

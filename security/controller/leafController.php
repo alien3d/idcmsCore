@@ -1045,8 +1045,8 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['order'])){
 		$leafObject-> order= $_POST['order'];
 	}
-	if(isset($_POST['sort_field'])){
-		$leafObject-> sort_field= $_POST['sort_field'];
+	if(isset($_POST['sortField'])){
+		$leafObject-> sortField= $_POST['sortField'];
 	}
 	/*
 	 *  Load the dynamic value

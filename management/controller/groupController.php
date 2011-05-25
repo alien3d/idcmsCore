@@ -674,8 +674,8 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['order'])){
 		$groupObject-> order= $_POST['order'];
 	}
-	if(isset($_POST['sort_field'])){
-		$groupObject-> sort_field= $_POST['sort_field'];
+	if(isset($_POST['sortField'])){
+		$groupObject-> sortField= $_POST['sortField'];
 	}
 	if($_POST['method']=='read') 	{
 		$groupObject->read();

@@ -36,7 +36,6 @@ x-grid3-row-alt {
 	src="../../javascript/ext-all.js"></script>
 	<script type="text/javascript" src="../../javascript/examples/ux/gridfilters/menu/RangeMenu.js"></script>
 	<script type="text/javascript" src="../../javascript/examples/ux/gridfilters/menu/ListMenu.js"></script>
-	
 	<script type="text/javascript" src="../../javascript/examples/ux/gridfilters/GridFilters.js"></script>
 	<script type="text/javascript" src="../../javascript/examples/ux/gridfilters/filter/Filter.js"></script>
 	<script type="text/javascript" src="../../javascript/examples/ux/gridfilters/filter/StringFilter.js"></script>
