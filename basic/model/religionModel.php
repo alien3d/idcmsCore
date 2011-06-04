@@ -19,7 +19,7 @@ class religionModel extends validationClass
 	// table field
 	private $religionId;
 	private $religionDesc;
-	private $isDefaut;
+	private $isDefault;
 	private $isNew;
 	private $isDraft;
 	private $isUpdate;
@@ -29,6 +29,7 @@ class religionModel extends validationClass
 	private $By;
 	private $Time;
 	private $staffId;
+	private $religionIdAll; // this is not table field but collection of religionId
 
 	// database vendor
 	public  $vendor;
@@ -142,14 +143,14 @@ class religionModel extends validationClass
 			}
 			$this->religionIdAll.= $this->religionId[$i].",";
 		}
-		$this->religionIdAll = substr($this->religionIdAll,0,-1);
+		$this->setReligionIdAll = substr($this->religionIdAll,0,-1);
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
 	 */
 	public function create()
 	{
-		$this->setIsDefaut(0,'','string');
+		$this->setIsDefault(0,'','string');
 		$this->setIsNew(1,'','string');
 		$this->setIsDraft(0,'','string');
 		$this->setIsUpdate(0,'','string');
@@ -162,7 +163,7 @@ class religionModel extends validationClass
 	 */
 	public function update()
 	{
-		$this->setIsDefaut(0,'','string');
+		$this->setIsDefault(0,'','string');
 		$this->setIsNew(0,'','string');
 		$this->setIsDraft(0,'','string');
 		$this->setIsUpdate(1,'','string');
@@ -224,16 +225,22 @@ class religionModel extends validationClass
 	public function setIsDefault($value,$key=NULL,$type=NULL) {
 		if($type=='string'){
 			$this->isDefault = $value;
-		} else {
+		} else if ($type=='array') {
 			$this->isDefaut[$key]=$value;
 		}
 	}
 	/**
 	 * Return isDefault Value
+	 * @params numeric $key  Array as value
+	 *  @params enum   $type   1->string,2->array
 	 * @return boolean isDefault
 	 */
-	public function getIsDefault() {
-		return $this->isDefault;
+	public function getIsDefault($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isDefault;
+		} else if ($type=='array'){
+			return $this->isDefault[$key];
+		}
 	}
 
 	/**
@@ -243,30 +250,51 @@ class religionModel extends validationClass
 	 * @params enum   $type   1->string,2->array
 	 */
 	public function setIsNew($value,$key=NULL,$type=NULL) {
-		$this->isNew = $value;
+		if($type=='string'){
+			$this->isNew = $value;
+		} else if ($type=='array'){
+			$this->isNew[$key];
+		}
 	}
 	/**
 	 * Return isNew value
+	 * @params numeric $key  Array as value
+	 * @params enum   $type   1->string,2->array
 	 * @return boolean isNew
 	 */
-	public function getIsNew() {
-		return $this->isNew;
+	public function getIsNew($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isNew;
+		} else if ($type=='array'){
+			return $this->isNew[$key];
+		}
 	}
 
 	/**
 	 * Set IsDraft Value
-
+	 * @params numeric $key  Array as value
+	 * @params enum   $type   1->string,2->array
 	 * @param boolean $value
 	 */
 	public function setIsDraft($value,$key=NULL,$type=NULL) {
-		$this->isDraft = $value;
+		if($type=='string'){
+			$this->isDraft = $value;
+		} elseif ($type=='array'){
+			$this->isDraft[$key];
+		}
 	}
 	/**
 	 * Return isDraftValue
+	 * @params numeric $key  Array as value
+	 * @params enum   $type   1->string,2->array
 	 * @return boolean isDraft
 	 */
-	public function getIsDraft() {
-		return $this->isDraft;
+	public function getIsDraft($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isDraft;
+		} else if ($type=='array'){
+			return $this->isDraft[$key];
+		}
 	}
 
 	/**
@@ -276,14 +304,22 @@ class religionModel extends validationClass
 	 * @params enum   $type   1->string,2->array
 	 */
 	public function setIsUpdate($value,$key=NULL,$type=NULL) {
-		$this->isUpdate = $value;
+		if($type=='string'){
+			$this->isUpdate = $value;
+		} elseif ($type=='array'){
+			$this->isUpdate[$key];
+		}
 	}
 	/**
 	 * Return isUpdate Value
 	 * @return boolean isUpdate
 	 */
-	public function getIsUpdate() {
-		return $this->isUpdate;
+	public function getIsUpdate($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isUpdate;
+		} else if ($type=='array'){
+			return $this->isUpdate[$key];
+		}
 	}
 
 	/**
@@ -293,14 +329,24 @@ class religionModel extends validationClass
 	 * @params enum   $type   1->string,2->array
 	 */
 	public function setIsActive($value,$key=NULL,$type=NULL) {
-		$this->isActive = $value;
+		if($type=='string'){
+			$this->isActive = $value;
+		} elseif ($type=='array'){
+			$this->isActive[$key];
+		}
 	}
 	/**
 	 * Return isActive value
+	 * @params numeric $key  Array as value
+	 * @params enum   $type   1->string,2->array
 	 * @return boolean isActive
 	 */
-	public function getIsActive() {
-		return $this->isActive;
+	public function getIsActive($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isActive;
+		} else if ($type=='array'){
+			return $this->isActive[$key];
+		}
 	}
 
 	/**
@@ -310,14 +356,24 @@ class religionModel extends validationClass
 	 * @params enum   $type   1->string,2->array
 	 */
 	public function setIsDelete($value,$key=NULL,$type=NULL) {
-		$this->isDelete = $value;
+		if($type=='string'){
+			$this->isDelete = $value;
+		} elseif ($type=='array'){
+			$this->isDelete[$key];
+		}
 	}
 	/**
 	 * Return isDelete Value
+	 * @params numeric $key  Array as value
+	 * @params enum   $type   1->string,2->array
 	 * @return boolean isDelete
 	 */
-	public function getIsDelete() {
-		return $this->isDelete;
+	public function getIsDelete($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isDelete;
+		} else if ($type=='array'){
+			return $this->isDelete[$key];
+		}
 	}
 
 	/**
@@ -327,21 +383,29 @@ class religionModel extends validationClass
 	 * @params enum   $type   1->string,2->array
 	 */
 	public function setIsApproved($value,$key=NULL,$type=NULL) {
-		$this->isApproved = $value;
+		if($type=='string'){
+			$this->isApproved = $value;
+		} elseif ($type=='array'){
+			$this->isApproved[$key];
+		}
 	}
 	/**
 	 * Return isApproved Value
+	 * @params numeric $key  Array as value
+	 * @params enum   $type   1->string,2->array
 	 * @return boolean isApproved
 	 */
-	public function getIsApproved() {
-		return $this->isApproved;
+	public function getIsApproved($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isApproved;
+		} else if ($type=='array'){
+			return $this->isApproved[$key];
+		}
 	}
 
 	/**
 	 * Set Activity User
 	 * @param integet $value
-	 * @params numeric $key  Array as value
-	 * @params enum   $type   1->string,2->array
 	 */
 	public function setIsBy($value) {
 		$this->isBy = $value;
@@ -369,5 +433,19 @@ class religionModel extends validationClass
 		return $this->isTime;
 	}
 
+	/**
+	 * Set All Religion Identification Array To Sql Statement
+	 * @param string $value
+	 */
+	public function setReligionIdAll($value){
+		$this->religionIdAll= $value;
+	}
+	/**
+	 * Return Religion Id
+	 * @return string $religionIdAll
+	 */
+	public function getReligionIdAll() {
+		return $this->religionIdAll;
+	}
 }
 ?>
