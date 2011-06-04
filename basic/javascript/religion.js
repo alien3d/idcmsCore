@@ -307,41 +307,42 @@ Ext.onReady(function() {
             table: "religion"
         }]
     });
-    var isDefault = new Ext.ux.grid.CheckColumn({
+    var isDefaultGrid = new Ext.ux.grid.CheckColumn({
         header: 'Default',
         dataIndex: 'isDefault',
         hidden: isDefaultHidden
     });
-    var isNew = new Ext.ux.grid.CheckColumn({
+    var isNewGrid = new Ext.ux.grid.CheckColumn({
         header: 'New',
         dataIndex: 'isNew',
         hidden: isNewHidden
     });
-    var isDraft = new Ext.ux.grid.CheckColumn({
+    var isDraftGrid = new Ext.ux.grid.CheckColumn({
         header: 'Draft',
         dataIndex: 'isDraft',
         hidden: isDraftHidden
     });
-    var isUpdate = new Ext.ux.grid.CheckColumn({
+    var isUpdateGrid = new Ext.ux.grid.CheckColumn({
         header: 'Update',
         dataIndex: 'isUpdate',
         hidden: isUpdateHidden
     });
-    var isDelete = new Ext.ux.grid.CheckColumn({
+    var isDeleteGrid = new Ext.ux.grid.CheckColumn({
         header: 'Delete',
         dataIndex: 'isDelete'
     });
-    var isActive = new Ext.ux.grid.CheckColumn({
+    var isActiveGrid = new Ext.ux.grid.CheckColumn({
         header: 'Active',
         dataIndex: 'isActive',
         hidden: isActiveHidden
     });
-    var isApproved = new Ext.ux.grid.CheckColumn({
+    var isApprovedGrid = new Ext.ux.grid.CheckColumn({
         header: 'Approved',
         dataIndex: 'isApproved',
         hidden: isApprovedHidden
     });
-    var columnModel = [new Ext.grid.RowNumberer(), isDefault, isNew,isDraft, isUpdate, isDelete, isActive, isApproved, {
+    var columnModel = [new Ext.grid.RowNumberer(), 
+                       isDefaultGrid, isNewGrid,isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, {
         dataIndex: "religionDesc",
         header: religionDescLabel,
         sortable: true,
@@ -676,6 +677,7 @@ Ext.onReady(function() {
                     },
                     success: function(form, action) {
                         Ext.getCmp("religionDesc_temp").setValue(record.data.religionDesc);
+                        Ext.getCmp('deleteButton').enable();
                         viewPort.items.get(1).expand();
                     },
                     failure: function(form, action) {
@@ -966,6 +968,7 @@ Ext.onReady(function() {
         name: "religionDesc_temp",
         id: "religionDesc_temp"
     });
+    // form entry
     var religionDesc = new Ext.form.TextField({
         labelAlign: "left",
         fieldLabel: religionDescLabel + '<span style="color: red;">*</span>',
@@ -1012,10 +1015,64 @@ Ext.onReady(function() {
             }
         }
     });
+    
+    
     var religionId = new Ext.form.Hidden({
         name: "religionId",
         id: "religionId"
     });
+    // end form entry
+    // start System Validation
+    
+    var isDefault  = new Ext.form.Checkbox({
+    	name:'isDefault',
+    	id:'isDefault',
+    	fieldLabel:isDefaultLabel,
+    	hidden:	isDefaultHidden
+    });
+    
+    var isNew  = new Ext.form.Checkbox({
+    	name:'isNew',
+    	id:'isNew',
+    	fieldLabel:isNewLabel,
+    	hidden:isNewHidden
+    });
+    
+    var isDraft  = new Ext.form.Checkbox({
+    	name:'isDraft',
+    	id:'isDraft',
+    	fieldLabel:isDraftLabel,
+    	hidden:isDraftHidden
+    });
+    var isUpdate  = new Ext.form.Checkbox({
+    	name:'isUpdate',
+    	id:'isUpdate',
+    	fieldLabel:isUpdateLabel,
+    	hidden:isUpdateHidden
+    });
+    
+    var isDelete  = new Ext.form.Checkbox({
+    	name:'isDelete',
+    	id:'isDelete',
+    	fieldLabel:isDeleteLabel,
+    	hidden:isDeleteHidden
+    });
+    
+    var isActive  = new Ext.form.Checkbox({
+    	name:'isActive',
+    	id:'isActive',
+    	fieldLabel:isActiveLabel,
+    	hidden:isActiveHidden
+    });
+    
+    var isApproved  = new Ext.form.Checkbox({
+    	name:'isApproved',
+    	id:'isApproved',
+    	fieldLabel:isApprovedLabel,
+    	hidden:isApprovedHidden
+    });
+    
+    // end System Validation
     var formPanel = new Ext.form.FormPanel({
         url: "../controller/religionController.php",
         id: "formPanel",
@@ -1025,7 +1082,15 @@ Ext.onReady(function() {
         border: false,
         bodyStyle: "padding:5px",
         width: 600,
-        items: [religionId, religionDesc, religionDesc_temp],
+        items: [{
+        	xtype:'fieldset',
+        	title :'Form Entry',
+        	items:[religionId, religionDesc, religionDesc_temp]
+        },{
+        	xtype:'fieldset',
+        	title :'System Administration',
+        	items :[isDefault,isNew,isDraft,isUpdate,isDelete,isActive,isApproved]
+        }],
         buttonVAlign: "top",
         buttonAlign: "left",
         iconCls: "application_form",
@@ -1037,6 +1102,7 @@ Ext.onReady(function() {
             })
         }),
         buttons: [{
+        	id:'saveButton',
             text: saveButtonLabel,
             iconCls: "bullet_disk",
             handler: function() {
@@ -1093,7 +1159,18 @@ Ext.onReady(function() {
             }
         },
         {
-            text: newButtonLabel,
+        	id  :'deleteButton',
+        	text:'Delete',
+        	type:'button',
+        	iconCls:'trash',
+        	disabled:true,
+        	handler : function() {
+        		alert('please delete me');
+        	}
+        },
+        {
+            id  : 'newButton',
+        	text: newButtonLabel,
             type: "button",
             iconCls: "add",
             handler: function() {
@@ -1101,7 +1178,8 @@ Ext.onReady(function() {
             }
         },
         {
-            text: resetButtonLabel,
+            id :'resetButton',
+        	text: resetButtonLabel,
             type: "reset",
             iconCls: "table_refresh",
             handler: function() {
@@ -1109,7 +1187,8 @@ Ext.onReady(function() {
             }
         },
         {
-            text: listButtonLabel,
+            id:'listButton',
+        	text: listButtonLabel,
             type: "button",
             iconCls: "table",
             handler: function() {
@@ -1119,7 +1198,8 @@ Ext.onReady(function() {
             }
         },
         {
-            text: cancelButtonLabel,
+            id:'cancelButton',
+        	text: cancelButtonLabel,
             type: "button",
             iconCls: "delete",
             handler: function() {

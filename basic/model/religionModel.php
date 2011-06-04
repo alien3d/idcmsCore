@@ -405,7 +405,7 @@ class religionModel extends validationClass
 
 	/**
 	 * Set Activity User
-	 * @param integet $value
+	 * @param integer $value
 	 */
 	public function setIsBy($value) {
 		$this->isBy = $value;

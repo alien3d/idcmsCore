@@ -324,6 +324,7 @@ Ext.onReady(function() {
                     },
                     success: function(form, action) {
                         Ext.getCmp("religionDesc_temp").setValue(record.data.religionDesc);
+                        Ext.getCmp('deleteButton').enable();
                         viewPort.items.get(1).expand();
                     },
                     failure: function(form, action) {
@@ -929,7 +930,15 @@ Ext.onReady(function() {
         border: false,
         bodyStyle: "padding:5px",
         width: 600,
-        items: [religionId, religionDesc, religionDesc_temp],
+        items: [{
+        	xtype:'fieldset',
+        	title :'Form Entry',
+        	items:[religionId, religionDesc, religionDesc_temp]
+        },{
+        	xtype:'fieldset',
+        	title :'System Administration'
+        }],
+        
         buttonVAlign: "top",
         buttonAlign: "left",
         iconCls: "application_form",
@@ -941,6 +950,7 @@ Ext.onReady(function() {
             })
         }),
         buttons: [{
+        	id:'saveButton',
             text: saveButtonLabel,
             iconCls: "bullet_disk",
             handler: function() {
@@ -992,7 +1002,18 @@ Ext.onReady(function() {
             }
         },
         {
-            text: newButtonLabel,
+        	id  :'deleteButton',
+        	text:'Delete',
+        	type:'button',
+        	iconCls:'trash',
+        	disabled:true,
+        	handler : function() {
+        		alert('please delete me');
+        	}
+        },
+        {
+            id:'newButton',
+        	text: newButtonLabel,
             type: "button",
             iconCls: "add",
             handler: function() {
@@ -1000,7 +1021,8 @@ Ext.onReady(function() {
             }
         },
         {
-            text: resetButtonLabel,
+            id:'resetButton',
+        	text: resetButtonLabel,
             type: "reset",
             iconCls: "table_refresh",
             handler: function() {
@@ -1008,7 +1030,8 @@ Ext.onReady(function() {
             }
         },
         {
-            text: listButtonLabel,
+            id:'listButton',
+        	text: listButtonLabel,
             type: "button",
             iconCls: "table",
             handler: function() {
