@@ -106,6 +106,16 @@ class folderClass extends  configClass {
 	 */
 	public $model;
 	/**
+	 * Folder Translation Identification
+	 * @var  numeric $folderTranslateId
+	 */
+	public $folderTranslateId;
+	/**
+	 * Translation update
+	 * @var string $folderTranslate
+	 */
+	public $folderTranslate;
+	/**
 	 * Class Loader
 	 */
 	function execute() {
@@ -1055,6 +1065,12 @@ if(isset($_POST['method']))	{
 	}
 	if(isset($_POST['sortField'])){
 		$folderObject-> sortField= $_POST['sortField'];
+	}
+	if(isset($_POST['folderTranslateId'])){
+		$folderObject->leafTranslateId= $_POST['folderTranslateId'];
+	}
+	if(isset($_POST['folderTranslate'])){
+		$folderObject->leafTranslate= $_POST['folderTranslate'];
 	}
 	/*
 	 *  Load the dynamic value

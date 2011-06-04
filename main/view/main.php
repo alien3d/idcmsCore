@@ -586,7 +586,7 @@ echo $_SESSION[$theme];
 			layout		: 'border',
 			items		: [{
 						   	xtype: 'panel',
-							height: 60,
+							height: 105,
 							region :'north',
 							items :[{
 										xtype: 'box',
@@ -601,6 +601,25 @@ echo $_SESSION[$theme];
 															text	:	'Welcome '+username,
 															iconCls	:	'user'
 														 },'->',{
+																xtype			:	'combo',
+																fieldLabel		:	'Quick Code',
+																displayField	:	'Quick Code',
+																mode			: 	'local',
+																triggerAction	: 	'all',
+																selectOnFocus	:	true,
+																resizable		:	false,
+																listWidth		: 	300,
+																width			: 	300,
+																valueField		: 	'leafId',
+																emptyText		:	'Quick Menu',
+																store			:	language_selecter,
+																listeners		: 	{
+																	select: function () {
+																		// if user type in name or code similiar to it.. open new tab
+																		//window.location.replace("language.php?languageId="+this.getValue());
+																	}
+																}
+														},'-',{
 																xtype			:	'combo',
 																fieldLabel		:	'Change Language',
 																displayField	:	'language',
@@ -645,9 +664,33 @@ echo $_SESSION[$theme];
 																}
 							
 														}]
+			 },{
+					xtype:'panel',
+					padding :'8px',
+					
+					tbar :[{
+								xtype:'button',
+								scale :'large',
+								text:'setting',
+								iconCls:'cog'
+					},'-',{
+								xtype:'button',
+								scale :'large',
+								text:'Management',
+								iconCls:'user'
+					},'-',{
+								xtype:'button',
+								scale :'large',
+								text:'security',
+								iconCls:'key'
+					}]
 			 }]
 			
 		} ,  {
+				xtype:'panel',
+				region :'west',
+				html :'<p> this is where <br>tree loader execute<br>And it will load the lastest folder and leaf</p>'
+		},{
 				region		: 	'center',
 				layout		:	'border',
 				html        :  'tstin',

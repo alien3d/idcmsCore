@@ -171,30 +171,33 @@ var leafPrintAccessValue	= '<?php echo $row_leafAccess['leafPrintAccessValue']; 
 		if($q->numberRows($result) > 0 ) {
 
 			$rowAdmin = $q->fetchAssoc($result);
-		
+
 		}
 ?>
 		var isAdmin = '<?php echo $rowAdmin['isAdmin']; ?>';
-		if (isAdmin  == 1 ) { 
+		if (isAdmin  == 1 ) {
 			isDefaultHidden 	= false;
 			isNewHidden   		= false;
+			isDraftHidden 		= false;
 			isUpdateHidden  	= false;
 			isDeleteHidden      = false;
 			isActiveHidden		= false;
 			isApprovedHidden	= false;
-		} else { 
+		} else {
 			isDefaultHidden 	= true;
 			isNewHidden   		= true;
+			isDraftHidden 		= true;
 			isUpdateHidden  	= true;
 			isDeleteHidden      = true;
 			isActiveHidden		= true;
 			isApprovedHidden	= true;
 		}
-		var isDefaultLabel='Default Value';
-		var isNewLabel ='New';
-        var isUpdateLabel='Update';
-        var isDeleteLabel='Delete';
-        var isActive ='Active';
-		var isApprovedLabel='Approved';
-           		
+		var isDefaultLabel		= 'Default Value';
+		var isNewLabel	 		= 'New';
+		var isDraftLabel 		= 'Draft';
+        var isUpdateLabel		= 'Update';
+        var isDeleteLabel		= 'Delete';
+        var isActive 			= 'Active';
+		var isApprovedLabel		= 'Approved';
+
 </script>

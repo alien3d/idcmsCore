@@ -125,7 +125,13 @@ class loginClass extends configClass {
 			$_SESSION['groupId']		=   $row['groupId'];
 			$_SESSION['database']		=	$_POST['database'];
 			$_SESSION['vendor']			= 	$_POST['vendor'];
-			echo json_encode(array("success"=>"true","message"=>"sucess login"));
+			
+			// audit Log Time In
+			$sql="INSERT INTO `staffWebAccessId` (`staffId`,`staffWebAccessLogIn`)
+			VALUES ('".$_SESSION['staffId."']."','".date("Y-m-d H:i:s")."')";
+			$this->q->update($sql);
+			
+			echo json_encode(array("success"=>"true","message"=>"success login"));
 			exit();
 
 		} else {

@@ -106,6 +106,16 @@ class leafClass extends  configClass {
 	 */
 	public $model;
 	/**
+	 * Leaf Translation Identification
+	 * @var  numeric $leafTranslateId
+	 */
+	public $leafTranslateId;
+	/**
+	 * Translation update
+	 * @var string $leafTranslate
+	 */
+	public $leafTranslate;
+	/**
 	 *  Class Loader
 	 */
 	public function execute() {
@@ -282,70 +292,65 @@ class leafClass extends  configClass {
 		}
 		$this->q->read($sql);
 		$data= $this->q->activeRecord();
+		if($this->q->vendor == self::mysql) {
+			$sql="
+			INSERT INTO	`leafAccess` 
+					(
+						`leafId`,					`staffId`,
+						`leafReadAccessValue`,		`leafCreateAccessValue`,
+						`leafUpdateAccessValue`,	`leafDeleteAccessValue`,
+						`leafPrintAccessValue`,		`leafPostAccessValue`,
+						`leafDraftAccessValue`
+					) 
+			VALUES";
+		}  else if ($this->q->vendor == self::mssql) { 
+			$sql="
+			INSERT INTO	[leafAccess] 
+				(
+					[leafId],					[staffId],
+					[leafReadAccessValue],		[leafCreateAccessValue],
+					[leafUpdateAccessValue],	[leafDeleteAccessValue],
+					[leafPrintAccessValue],		[leafPostAccessValue],
+					[leafDraftAccessValue]
+				) 
+			VALUES";
+		} else if ($this->q->vendor == self::oracle) {
+			$sql="
+			INSERT INTO 	\"leafAccess\" 
+						(	
+							\"leafId\",					\"staffId\",
+							\"leafReadAccessValue\",	\"leafCreateAccessValue\",
+							\"leafUpdateAccessValue\",	\"leafDeleteAccessValue\",
+							\"leafPrintAccessValue\",	\"leafPostAccessValue\",
+							\"leafDraftAccessValue\"
+						) 
+			VALUES";
+		}
 		foreach ($data as $row) {
 			// by default no access
-			if($this->q->vendor=='normal'  || $this->q->vendor==self::mysql) {
-				$sql="
-				INSERT INTO	`leafAccess` 
-						(
-							`leafId`,					`staffId`,
-							`leafReadAccessValue`,		`leafCreateAccessValue`,
-							`leafUpdateAccessValue`,	`leafDeleteAccessValue`,
-							`leafPrintAccessValue`,		`leafPostAccessValue`,
-							`leafDraftAccessValue`
-						) 
-					VALUES
-						(	
-							'".$lastId."',				'".$row['staffId']."',
-							'0',						'0',
-							'0',						'0',
-							'0',						'0',
-							'0'
-						)	";
-			} else if ($this->q->vendor==self::mssql) {
-				$sql="
-				INSERT INTO	[leafAccess] 
-						(
-							[leafId],					[staffId],
-							[leafReadAccessValue],		[leafCreateAccessValue],
-							[leafUpdateAccessValue],	[leafDeleteAccessValue],
-							[leafPrintAccessValue],		[leafPostAccessValue],
-							[leafDraftAccessValue]
-						) 
-					VALUES
-						(
-							'".$lastId."',				'".$row['staffId']."',
-							'0',						'0',
-							'0',						'0',
-							'0',						'0',
-							'0'
-						)	";
-			} else if ($this->q->vendor==self::mysql) {
-				$sql="
-				INSERT INTO 	\"leafAccess\" 
-							(
-								\"leafId\",					\"staffId\",
-								\"leafReadAccessValue\",	\"leafCreateAccessValue\",
-								\"leafUpdateAccessValue\",	\"leafDeleteAccessValue\",
-								\"leafPrintAccessValue\",	\"leafPostAccessValue\",
-								\"leafDraftAccessValue\"
-						) 
-				VALUES
-						(			
-							'".$lastId."',				'".$row['staffId']."',
-							'0',						'0',
-							'0',						'0',
-							'0',						'0',
-							'0'
-						)	";
-			}
-			$this->q->update($sql);
-			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-				exit();
-			}
+			
+				$sqlLooping.="
+				(	
+					'".$lastId."',				'".$row['staffId']."',
+					'0',						'0',
+					'0',						'0',
+					'0',						'0',
+					'0'
+				),";
+			
+			
+			
 		}
-
+		// optimize to 1 Query
+		// remove last comma
+		$sqlLooping = substr($sqlLooping,0,-1);
+		// combine SQL Statement
+		$sql.=$sq1Looping;
+		$this->q->update($sql);
+		if($this->q->execute=='fail') {
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			exit();
+		}
 		$this->q->commit();
 		echo json_encode(array("success"=>true,"leafId"=>$lastId,"message"=>"Record Created"));
 		exit();
@@ -603,39 +608,39 @@ class leafClass extends  configClass {
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 			UPDATE	`leaf`
-			SET		`isActive`	=	'".$this->model->isActive."',
-					`isNew`		=	'".$this->model->isNew."',
-					`isDraft`	=	'".$this->model->isDraft."',
-					`isUpdate`	=	'".$this->model->isUpdate."',
-					`isDelete`	=	'".$this->model->isDelete."',
-					`isApproved`=	'".$this->model->isApproved."',
-					`By`		=	'".$this->model->By."',
-					`Time		=	".$this->model->Time."
+			SET		`isActive`	=	'".$this->model->getIsActive."',
+					`isNew`		=	'".$this->model->getIsNew."',
+					`isDraft`	=	'".$this->model->getIsDraft."',
+					`isUpdate`	=	'".$this->model->getIsUpdate."',
+					`isDelete`	=	'".$this->model->getIsDelete."',
+					`isApproved`=	'".$this->model->getIsApproved."',
+					`By`		=	'".$this->model->getBy."',
+					`Time		=	".$this->model->getTime."
 			WHERE 	`leafId`	=	'".$this->leafId."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 			UPDATE	[leaf]
-			SET		[isActive]	=	'".$this->model->isActive."',
-					[isNew]		=	'".$this->model->isNew."',
-					[isDraft]	=	'".$this->model->isDraft."',
-					[isUpdate]	=	'".$this->model->isUpdate."',
-					[isDelete]	=	'".$this->model->isDelete."',
-					[isApproved]=	'".$this->model->isApproved."',
-					[By]		=	'".$this->model->By."',
-					[Time]		=	".$this->model->Time."
+			SET		[isActive]	=	'".$this->model->getIsActive."',
+					[isNew]		=	'".$this->model->getIsNew."',
+					[isDraft]	=	'".$this->model->getIsDraft."',
+					[isUpdate]	=	'".$this->model->getIsUpdate."',
+					[isDelete]	=	'".$this->model->getIsDelete."',
+					[isApproved]=	'".$this->model->getIsApproved."',
+					[By]		=	'".$this->model->getBy."',
+					[Time]		=	".$this->model->getTime."
 			WHERE 	[leafId]	=	'".$this->leafId."'";
 
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 			UPDATE	\"leaf\"
-			SET		\"isActive\"	=	'".$this->model->isActive."',
-					\"isNew\"		=	'".$this->model->isNew."',
-					\"isDraft\"		=	'".$this->model->isDraft."',
-					\"isUpdate\"	=	'".$this->model->isUpdate."',
-					\"isDelete\"	=	'".$this->model->isDelete."',
-					\"isApproved\"	=	'".$this->model->isApproved."',
-					\"By\"			=	'".$this->model->By."',
-					\"Time\"		=	".$this->model->Time."
+			SET		\"isActive\"	=	'".$this->model->getIsActive."',
+					\"isNew\"		=	'".$this->model->getIsNew."',
+					\"isDraft\"		=	'".$this->model->getIsDraft."',
+					\"isUpdate\"	=	'".$this->model->getIsUpdate."',
+					\"isDelete\"	=	'".$this->model->getIsDelete."',
+					\"isApproved\"	=	'".$this->model->getIsApproved."',
+					\"By\"			=	'".$this->model->getBy."',
+					\"Time\"		=	".$this->model->getTime."
 			WHERE 	\"leafId\"		=	'".$this->leafId."'";
 
 		}
@@ -664,39 +669,39 @@ class leafClass extends  configClass {
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 			UPDATE	`leaf`
-			SET		`isActive`	=	'".$this->model->isActive."',
-					`isNew`		=	'".$this->model->isNew."',
-					`isDraft`	=	'".$this->model->isDraft."',
-					`isUpdate`	=	'".$this->model->isUpdate."',
-					`isDelete`	=	'".$this->model->isDelete."',
-					`isApproved`=	'".$this->model->isApproved."',
-					`By`		=	'".$this->model->By."',
-					`Time		=	".$this->model->Time."
+			SET		`isActive`	=	'".$this->model->getIsActive."',
+					`isNew`		=	'".$this->model->getIsNew."',
+					`isDraft`	=	'".$this->model->getIsDraft."',
+					`isUpdate`	=	'".$this->model->getIsUpdate."',
+					`isDelete`	=	'".$this->model->getIsDelete."',
+					`isApproved`=	'".$this->model->getIsApproved."',
+					`By`		=	'".$this->model->getBy."',
+					`Time		=	".$this->model->getTime."
 			WHERE 	`leafId`	=	'".$this->leafId."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 			UPDATE	[leaf]
-			SET		[isActive]	=	'".$this->model->isActive."',
-					[isNew]		=	'".$this->model->isNew."',
-					[isDraft]	=	'".$this->model->isDraft."',
-					[isUpdate]	=	'".$this->model->isUpdate."',
-					[isDelete]	=	'".$this->model->isDelete."',
-					[isApproved]=	'".$this->model->isApproved."',
-					[By]		=	'".$this->model->By."',
-					[Time]		=	".$this->model->Time."
+			SET		[isActive]	=	'".$this->model->getIsActive."',
+					[isNew]		=	'".$this->model->getIsNew."',
+					[isDraft]	=	'".$this->model->getIsDraft."',
+					[isUpdate]	=	'".$this->model->getIsUpdate."',
+					[isDelete]	=	'".$this->model->getIsDelete."',
+					[isApproved]=	'".$this->model->getIsApproved."',
+					[By]		=	'".$this->model->getBy."',
+					[Time]		=	".$this->model->getTime."
 			WHERE 	[leafId]	=	'".$this->leafId."'";
 
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 			UPDATE	\"leaf\"
-			SET		\"isActive\"	=	'".$this->model->isActive."',
-					\"isNew\"		=	'".$this->model->isNew."',
-					\"isDraft\"		=	'".$this->model->isDraft."',
-					\"isUpdate\"	=	'".$this->model->isUpdate."',
-					\"isDelete\"	=	'".$this->model->isDelete."',
-					\"isApproved\"	=	'".$this->model->isApproved."',
-					\"By\"			=	'".$this->model->By."',
-					\"Time\"		=	".$this->model->Time."
+			SET		\"isActive\"	=	'".$this->model->getIsActive."',
+					\"isNew\"		=	'".$this->model->getIsNew."',
+					\"isDraft\"		=	'".$this->model->getIsDraft."',
+					\"isUpdate\"	=	'".$this->model->getIsUpdate."',
+					\"isDelete\"	=	'".$this->model->getIsDelete."',
+					\"isApproved\"	=	'".$this->model->getIsApproved."',
+					\"By\"			=	'".$this->model->getBy."',
+					\"Time\"		=	".$this->model->getTime."
 			WHERE 	\"leafId\"		=	'".$this->leafId."'";
 
 		}
@@ -777,17 +782,17 @@ class leafClass extends  configClass {
 		if( $this->q->vendor==self::mysql){
 			$sql="
 		UPDATE	`leafTranslate`
-		SET		`leafTranslate` 	=	'".$this->strict($_POST['accordionTranslate'],'string')."'
-		WHERE 	`leafTranslateId`	=	'".$this->strict($_POST['accordionTranslateId'],'numeric')."'";
+		SET		`leafTranslate` 	=	'".$this->strict($_POST['leafTranslate'],'string')."'
+		WHERE 	`leafTranslateId`	=	'".$this->strict($_POST['TranslateId'],'numeric')."'";
 		} else if ($this->q->vendor==self::mssql){
 			$sql="
 		UPDATE	[leafTranslate]
-		SET		[leafTranslate] 	=	'".$this->strict($_POST['accordionTranslate'],'string')."'
-		WHERE 	[leafTranslateId]	=	'".$this->strict($_POST['accordionTranslateId'],'numeric')."'";
+		SET		[leafTranslate] 	=	'".$this->strict($_POST['leafTranslate'],'string')."'
+		WHERE 	[leafTranslateId]	=	'".$this->strict($_POST['leafTranslateId'],'numeric')."'";
 		} else if ($this->q->vendor==self::oracle){
 			$sql="
 		UPDATE	\"leafTranslate\"
-		SET		\"leafTranslate\" 		=	'".$this->strict($_POST['accordionTranslate'],'string')."'
+		SET		\"leafTranslate\" 		=	'".$this->strict($_POST['leafTranslate'],'string')."'
 		WHERE 	\"leafTranslateId\"	=	'".$this->strict($_POST['accordionTranslateId'],'numeric')."'";
 		}
 		$this->q->update($sql);
@@ -909,7 +914,17 @@ class leafClass extends  configClass {
 								'".$googleTranslate."'
 							)";
 				} else if ($this->q->vendor==self::oracle) {
-					$sql="INSERT INTO \"leafTranslate\" (\"leafId\",\"languageId\",\"leafTranslate\") VALUES('".$leafId."','".$languageId."','".$googleTranslate."')";
+					$sql="
+					INSERT INTO \"leafTranslate\" 
+							(
+								\"leafId\",
+								\"languageId\",
+								\"leafTranslate\"
+							) VALUES(
+								'".$leafId."',
+								'".$languageId."',
+								'".$googleTranslate."'
+							)";
 				}
 				$this->q->create($sql);
 				if($this->q->execute=='fail') {
@@ -920,12 +935,11 @@ class leafClass extends  configClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(
-		array(
+		echo json_encode(array(
 							  	"success"	=>	"true",
 								"message"	=>	"Translation Complete"
-								));
-								exit();
+		));
+		exit();
 
 	}
 
@@ -1047,6 +1061,12 @@ if(isset($_POST['method']))	{
 	}
 	if(isset($_POST['sortField'])){
 		$leafObject-> sortField= $_POST['sortField'];
+	}
+	if(isset($_POST['leafTranslateId'])){
+		$leafObject->leafTranslateId= $_POST['leafTranslateId'];
+	}
+	if(isset($_POST['leafTranslate'])){
+		$leafObject->leafTranslate= $_POST['leafTranslate'];
 	}
 	/*
 	 *  Load the dynamic value

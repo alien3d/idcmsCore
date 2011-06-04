@@ -470,6 +470,7 @@ class leafAccessClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
+		$this->model->update();
 		$loop=count($_GET['leafAccessId']);
 
 		for($i=0;$i<$loop;$i++) {

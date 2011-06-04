@@ -33,83 +33,204 @@ class documentCategoryModel extends validationClass{
 		 *  Basic Information Table
 		 */
 		$this->tableName 		=	'documentCategory';
-		$this->primaryKeyName 	=	'documentCategoryId';
+		$this->PrimaryKeyName 	=	'documentCategoryId';
 		/*
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['documentCategoryId'])){
-			$this->documentCategory = $this->strict($_POST['documentCategoryId'],'numeric');
+			$this->setDocumentCategory = $this->strict($_POST['documentCategoryId'],'numeric');
 		}
 		if(isset($_POST['documentCategoryTitle'])){
-			$this->documentCategoryTitle = $this->strict($_POST['documentCategoryTitle'],'memo');
+			$this->setDocumentCategoryTitle = $this->strict($_POST['documentCategoryTitle'],'memo');
 		}
 		if(isset($_POST['documentCategoryDesc'])){
-			$this->documentCategoryDesc = $this->strict($_POST['documentCategoryDesc'],'memo');
+			$this->setDocumentCategoryDesc = $this->strict($_POST['documentCategoryDesc'],'memo');
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->By = $_SESSION['staffId'];
+			$this->setBy = $_SESSION['staffId'];
 		}
 		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime = "'".date("Y-m-d H:i:s")."'";
 		} else if ($this->vendor=='oracle'){
-			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
 		}
 
 
 	}
 	/* (non-PHPdoc)
-	 * @see configClass::create()
+	 * @see validationClass::create()
 	 */
-	function create() {
-		$this->isDefaut =0;
-		$this->isNew =1;
-		$this->isDraft=0;
-		$this->isUpdate=0;
-		$this->isActive=0;
-		$this->isDelete=0;
-		$this->isApproved=0;
+	public function create()
+	{
+		$this->setIsDefaut(0);
+		$this->setIsNew(1);
+		$this->setIsDraft(0);
+		$this->setIsUpdate(0);
+		$this->setIsActive(1);
+		$this->setIsDelete(0);
+		$this->setIsApproved(0);
+	}
+	/* (non-PHPdoc)
+	 * @see validationClass::update()
+	 */
+	public function update()
+	{
+		$this->setIsDefaut(0);
+		$this->setIsNew(0);
+		$this->setIsDraft(0);
+		$this->setIsUpdate(1);
+		$this->setIsActive(1);
+		$this->setIsDelete(0);
+		$this->setIsApproved(0);
+	}
+	/* (non-PHPdoc)
+	 * @see validationClass::delete()
+	 */
+	public function delete()
+	{
+		$this->setIsDefault(0);
+		$this->setIsNew(0);
+		$this->setIsDraft(0);
+		$this->setIsUpdate(0);
+		$this->setIsActive(0);
+		$this->setIsDelete(1);
+		$this->setIsApproved(0);
+	}
+	/**
+	 * Set isDefault Value
+	 * @param boolean $value
+	 */
+	public function setIsDefault($value) {
+		$this->isDefault = $value;
+	}
+	/**
+	 * Return isDefault Value
+	 * @return boolean isDefault
+	 */
+	public function getIsDefault() {
+		return $this->isDefault;
+	}
 
-	}
-	/* (non-PHPdoc)
-	 * @see configClass::read()
+	/**
+	 * Set isNew value
+	 * @param boolean $value
 	 */
-	function read() {
+	public function setIsNew($value) {
+		$this->isNew = $value;
+	}
+	/**
+	 * Return isNew value
+	 * @return boolean isNew
+	 */
+	public function getIsNew() {
+		return $this->isNew;
+	}
 
+	/**
+	 * Set IsDraft Value
+	 * @param boolean $value
+	 */
+	public function setIsDraft($value) {
+		$this->isDraft = $value;
 	}
-	/* (non-PHPdoc)
-	 * @see configClass::update()
+	/**
+	 * Return isDraftValue
+	 * @return boolean isDraft
 	 */
-	/* (non-PHPdoc)
-	 * @see configClass::update()
-	 */
-	function update() {
-		$this->isDefaut =0;
-		$this->isNew =0;
-		$this->isDraft=0;
-		$this->isUpdate=1;
-		$this->isActive=1;
-		$this->isDelete=0;
-		$this->isApproved=0;
+	public function getIsDraft() {
+		return $this->isDraft;
 	}
-	/* (non-PHPdoc)
-	 * @see configClass::delete()
-	 */
-	function delete() {
-		$this->isDefaut =0;
-		$this->isNew =0;
-		$this->isDraft=0;
-		$this->isUpdate=0;
-		$this->isActive=0;
-		$this->isDelete=1;
-		$this->isApproved=0;
-	}
-	/* (non-PHPdoc)
-	 * @see configClass::excel()
-	 */
-	function excel() {
 
+	/**
+	 * Set isUpdate Value
+	 * @param boolean $value
+	 */
+	public function setIsUpdate($value) {
+		$this->isUpdate = $value;
+	}
+	/**
+	 * Return isUpdate Value
+	 * @return boolean isUpdate
+	 */
+	public function getIsUpdate() {
+		return $this->isUpdate;
+	}
+
+	/**
+	 * Set isActive Value
+	 * @param boolean $value
+	 */
+	public function setIsActive($value) {
+		$this->isActive = $value;
+	}
+	/**
+	 * Return isActive value
+	 * @return boolean isActive
+	 */
+	public function getIsActive() {
+		return $this->isActive;
+	}
+
+	/**
+	 * Set isDelete Value
+	 * @param boolean $value
+	 */
+	public function setIsDelete($value) {
+		$this->isDelete = $value;
+	}
+	/**
+	 * Return isDelete Value
+	 * @return boolean isDelete
+	 */
+	public function getIsDelete() {
+		return $this->isDelete;
+	}
+
+	/**
+	 * Set isApproved Value
+	 * @param boolean $value
+	 */
+	public function setIsApproved($value) {
+		$this->isApproved = $value;
+	}
+	/**
+	 * Return isApproved Value
+	 * @return boolean isApproved
+	 */
+	public function getIsApproved() {
+		return $this->isApproved;
+	}
+
+	/**
+	 * Set Activity User
+	 * @param integet $value
+	 */
+	public function setIsBy($value) {
+		$this->isBy = $value;
+	}
+	/**
+	 * Get Activity User
+	 * @return integer User
+	 */
+	public function getIsBy() {
+		return $this->isBy;
+	}
+
+	/**
+	 * Set Time Activity User
+	 * @param date $value
+	 */
+	public function setIsTime($value) {
+		$this->isTime = $value;
+	}
+	/**
+	 *  Return Time Activity User
+	 *  @return date Time Activity User
+	 */
+	public function getIsTime() {
+		return $this->isTime;
 	}
 }
 ?>

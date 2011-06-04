@@ -75,7 +75,7 @@ class religionClass extends configClass
 	 */
 	public $limit;
 	/**
-	/**
+	 /**
 	 *  Ascending ,Descending ASC,DESC
 	 * @var string $order;`
 	 */
@@ -131,7 +131,7 @@ class religionClass extends configClass
 	function execute()
 	{
 		parent::__construct();
-		
+
 		$this->q              = new vendor();
 		$this->q->vendor      = $this->vendor;
 		$this->q->leafId      = $this->leafId;
@@ -143,7 +143,7 @@ class religionClass extends configClass
 		$this->audit         = 0;
 		$this->log           = 1;
 		$this->q->log        = $this->log;
-		
+
 		$this->model         = new religionModel();
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
@@ -160,8 +160,9 @@ class religionClass extends configClass
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
+
 		$sql = "
-			INSERT INTO `" . religionModel::tableName . "`	
+			INSERT INTO `" . religionModel::tableName . "`
 					(
 						`" . religionModel::religionDesc . "`,	`" . religionModel::isDefaut . "`,
 						`" . religionModel::isNew . "`,			`" . religionModel::isDraft . "`,
@@ -169,19 +170,19 @@ class religionClass extends configClass
 						`" . religionModel::isActive . "`,		`" . religionModel::isApproved . "`,
 						`" . religionModel::By . "`,			`" . religionModel::Time . "`
 					)
-			VALUES	
+			VALUES
 					(
-						\"". $this->model->religionDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
-						\"". $this->model->isUpdate . "\",		\"". $this->model->isDelete . "\",
-						\"". $this->model->isActive . "\",		\"". $this->model->isApproved . "\",
-						\"". $this->model->By . "\",				" . $this->model->Time . "
+						\"". $this->model->getReligionDesc . "\",	\"". $this->model->getIsDefaut . "\",
+						\"". $this->model->getIsNew . "\",			\"". $this->model->getIsDraft . "\",
+						\"". $this->model->getIsUpdate . "\",		\"". $this->model->getIsDelete . "\",
+						\"". $this->model->getIsActive . "\",		\"". $this->model->getIsApproved . "\",
+						\"". $this->model->getBy . "\",				" . $this->model->getTime . "
 					);";
 		$this->q->start();
 		$this->model->create();
 		if ($this->q->vendor == self::mysql) {
 			$sql = "
-			INSERT INTO `religion`	
+			INSERT INTO `religion`
 					(
 						`religionDesc`,						`isDefault`,
 						`isNew`,							`isDraft`,
@@ -189,7 +190,7 @@ class religionClass extends configClass
 						`isActive`,							`isApproved`,
 						`By`,								`Time`
 					)
-			VALUES	
+			VALUES
 					(
 						\"". $this->model->religionDesc . "\",	\"". $this->model->isDefaut . "\",
 						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
@@ -207,7 +208,7 @@ class religionClass extends configClass
 						[isActive],							[isApproved],
 						[By],								[Time]
 					)
-			VALUES	
+			VALUES
 					(
 						\"". $this->model->religionDesc . "\",	\"". $this->model->isDefaut . "\",
 						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
@@ -224,8 +225,8 @@ class religionClass extends configClass
 						\"isUpdate\",						\"isDelete\",
 						\"isActive\",						\"isApproved\",
 						\"By\",								\"Time\"
-					)	
-			VALUES	
+					)
+			VALUES
 					(
 						\"". $this->model->religionDesc . "\",	\"". $this->model->isDefaut . "\",
 						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
@@ -238,7 +239,7 @@ class religionClass extends configClass
 		$this->q->tableName          = $this->model->tableName;
 		$this->q->primaryKeyName  = $this->model->primaryKeyName;
 		// $this->q->primaryKeyValue = $this->q->lastInsertId();  not use here
-	
+
 		$this->q->audit           = $this->audit;
 		$this->q->create($sql);
 		$religionId = $this->q->lastInsertId();
@@ -249,15 +250,15 @@ class religionClass extends configClass
 			));
 			exit();
 		}
-		
-		
+
+
 		$this->q->commit();
 		echo json_encode(array(
             "success" => true,
             "message" => "Record Created",
 			"religionId"=>$religionId
-            ));
-            exit();
+		));
+		exit();
 	}
 	/* (non-PHPdoc)
 	 * @see config::read()
@@ -266,7 +267,7 @@ class religionClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
-			if($this->q->vendor == self :: mysql) { 
+			if($this->q->vendor == self :: mysql) {
 				$this->auditFilter = "	`religion`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[religion].[isActive]		=	1	";
@@ -274,12 +275,12 @@ class religionClass extends configClass
 				$this->auditFilter = "	\"religion\".\"isActive\"	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
-			if($this->q->vendor == self :: mysql) { 
+			if($this->q->vendor == self :: mysql) {
 				$this->auditFilter = "	 1 ";
-			} else if ($this->q->vendor == self :: mssql) {	
-			    $this->auditFilter = "	or 1 ";
+			} else if ($this->q->vendor == self :: mssql) {
+				$this->auditFilter = "	or 1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
-                  $this->auditFilter = " or 1 ";			
+				$this->auditFilter = " or 1 ";
 			}
 		}
 		//UTF8
@@ -301,7 +302,7 @@ class religionClass extends configClass
 							`religion`.`isApproved`,
 							`religion`.`By`,
 							`religion`.`Time`,
-							`staff`.`staffName							
+							`staff`.`staffName`
  					FROM 	`religion`
 					JOIN	`staff`
 					ON		`religion`.`By` = `staff`.`staffId`
@@ -322,7 +323,7 @@ class religionClass extends configClass
 							[religion].[isApproved],
 							[religion].[By],
 							[religion].[Time],
-							[staff].[staffName]	
+							[staff].[staffName]
 					FROM 	[religion]
 					JOIN	[staff]
 					ON		[religion].[By] = [staff].[staffId]
@@ -343,7 +344,7 @@ class religionClass extends configClass
 							\"religion\".\"isApproved\",
 							\"religion\".\"By\",
 							\"religion\".\"Time\",
-							\"staff\".\"staffName\"	
+							\"staff\".\"staffName\"
 					FROM 	\"religion\"
 					JOIN	\"staff\"
 					ON		\"religion\".\"By\" = \"staff\".\"staffId\"
@@ -401,9 +402,9 @@ class religionClass extends configClass
             	}
             }
             // optional debugger.uncomment if wanted to used
-	 		//if ($this->q->execute == 'fail') {
+            //if ($this->q->execute == 'fail') {
             //	echo json_encode(array(
-             //   "success" => false,
+            //   "success" => false,
             //   "message" => $this->q->realEscapeString($sql)
             //	));
             //	exit();
@@ -458,7 +459,7 @@ class religionClass extends configClass
 										[religion].[isApproved],
 										[religion].[By],
 										[religion].[Time],
-										[staff].[staffName]	
+										[staff].[staffName]
 							FROM 		[religionDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
@@ -482,7 +483,7 @@ class religionClass extends configClass
 											\"religion\".\"isApproved\",
 											\"religion\".\"By\",
 											\"religion\".\"Time\",
-											\"staff\".\"staffName\"	
+											\"staff\".\"staffName\"
 									FROM 	\"religion\"
 									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
@@ -631,40 +632,40 @@ class religionClass extends configClass
 		if ($this->q->vendor == self::mysql) {
 			$sql = "
 			UPDATE 	`religion`
-			SET 	`isActive`			=	\"". $this->model->isActive . "\",
-					`isNew`				=	\"". $this->model->isNew . "\",
-					`isDraft`			=	\"". $this->model->isDraft . "\",
-					`isUpdate`			=	\"". $this->model->isUpdate . "\",
-					`isDelete`			=	\"". $this->model->isDelete . "\",
-					`isApproved`		=	\"". $this->model->isApproved . "\",
-					`By`				=	\"". $this->model->By . "\",
-					`Time`				=	" . $this->model->Time . "
-			WHERE 	`religionId`		=	\"". $this->model->religionId . "\"";
+			SET 	`isActive`			=	\"". $this->model->getIsActive . "\",
+					`isNew`				=	\"". $this->model->getIsNew . "\",
+					`isDraft`			=	\"". $this->model->getIsDraft . "\",
+					`isUpdate`			=	\"". $this->model->getIsUpdate . "\",
+					`isDelete`			=	\"". $this->model->getIsDelete . "\",
+					`isApproved`		=	\"". $this->model->getIsApproved . "\",
+					`By`				=	\"". $this->model->getBy . "\",
+					`Time`				=	" . $this->model->getTime . "
+			WHERE 	`religionId`		=	\"". $this->model->getReligionId() . "\"";
 		} else if ($this->q->vendor == self::mssql) {
 			$sql = "
 			UPDATE 	[religion]
-			SET 	[isActive]			=	\"". $this->model->isActive . "\",
-					[isNew]				=	\"". $this->model->isNew . "\",
-					[isDraft]			=	\"". $this->model->isDraft . "\",
-					[isUpdate]			=	\"". $this->model->isUpdate . "\",
-					[isDelete]			=	\"". $this->model->isDelete . "\",
-					[isApproved]		=	\"". $this->model->isApproved . "\",
-					[By]				=	\"". $this->model->By . "\",
-					[Time]				=	" . $this->model->Time . "
-			WHERE 	[religionId]		=	\"". $this->model->religionId . "\"";
+			SET 	[isActive]			=	\"". $this->model->getIsActive . "\",
+					[isNew]				=	\"". $this->model->getIsNew . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved . "\",
+					[By]				=	\"". $this->model->getBy . "\",
+					[Time]				=	" . $this->model->getTime . "
+			WHERE 	[religionId]		=	\"". $this->model->getReligionId . "\"";
 		} else if ($this->q->vendor == self::oracle) {
 			$sql = "
 			UPDATE 	\"religion\"
-			SET 	\"religionDesc\"	=	\"". $this->model->religionDesc . "\",
-					\"isActive\"		=	\"". $this->model->isActive . "\",
-					\"isNew\"			=	\"". $this->model->isNew . "\",
-					\"isDraft\"			=	\"". $this->model->isDraft . "\",
-					\"isUpdate\"		=	\"". $this->model->isUpdate . "\",
-					\"isDelete\"		=	\"". $this->model->isDelete . "\",
-					\"isApproved\"		=	\"". $this->model->isApproved . "\",
-					\"By\"				=	\"". $this->model->By . "\",
-					\"Time\"			=	" . $this->model->Time . "
-			WHERE 	\"religionId\"		=	\"". $this->model->religionId . "\"";
+			SET 	\"religionDesc\"	=	\"". $this->model->getReligionDesc . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved . "\",
+					\"By\"				=	\"". $this->model->getBy . "\",
+					\"Time\"			=	" . $this->model->getTime . "
+			WHERE 	\"religionId\"		=	\"". $this->model->getReligionId . "\"";
 		}
 		// advance logging future
 		$this->q->tableName          = $this->model->tableName;
@@ -685,6 +686,57 @@ class religionClass extends configClass
             "message" => "Deleted"
             ));
             exit();
+	}
+	/**
+	 *  To Update flag Status
+	 */
+	function updateStatus () {
+
+		if($this->isAdmin==0){
+			$this->model->delete();
+			if ($this->q->vendor == self::mysql) {
+				$sql = "
+			UPDATE 	`religion`
+			SET 	`isActive`			=	\"". $this->model->getIsActive() . "\",
+					`isNew`				=	\"". $this->model->getIsNew() . "\",
+					`isDraft`			=	\"". $this->model->getIsDraft() . "\",
+					`isUpdate`			=	\"". $this->model->getIsUpdate() . "\",
+			UPDATE 	\"religion\"
+					`isDelete`			=	\"". $this->model->getIsDelete() . "\",
+					`isApproved`		=	\"". $this->model->getIsApproved() . "\",
+					`By`				=	\"". $this->model->getBy() . "\",
+					`Time`				=	" . $this->model->getTime() . "
+			WHERE 	`religionId`		IN	(". $this->model->religionIdAll. ")";
+			} else if ($this->q->vendor == self::mssql) {
+				$sql = "
+			UPDATE 	[religion]
+			SET 	[isActive]			=	\"". $this->model->getIsActive() . "\",
+					[isNew]				=	\"". $this->model->getIsNew() . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft() . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate() . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete() . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved() . "\",
+					[By]				=	\"". $this->model->getBy() . "\",
+					[Time]				=	" . $this->model->getTime() . "
+			WHERE 	[religionId]		=	\"". $this->model->getReligionIdAll . "\"";
+			} else if ($this->q->vendor == self::oracle) {
+				$sql = "
+				UPDATE	\"religion\"
+				SET 	\"isActive\"		=	\"". $this->model->getIsActive() . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew() . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft() . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate() . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete() . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved() . "\",
+					\"By\"				=	\"". $this->model->getBy() . "\",
+					\"Time\"			=	" . $this->model->getTime() . "
+			WHERE 	\"religionId\"		=	\"". $this->model->getReligionIdAll . "\"";
+			}
+		} else if ($this->isAdmin ==1){
+			$this->model->updateStatus();
+			$sql="";
+		}
+
 	}
 	/**
 	 *  To check if a key duplicate or not
@@ -858,10 +910,10 @@ if (isset($_POST['method'])) {
 	}
 	if (isset($_POST['start'])) {
 		$religionObject->start = $_POST['start'];
-	} 
+	}
 	if (isset($_POST['perPage'])) {
 		$religionObject->limit = $_POST['perPage'];
-	} 
+	}
 	if (isset($_POST['order'])) {
 		$religionObject->order = $_POST['order'];
 	}
@@ -871,7 +923,7 @@ if (isset($_POST['method'])) {
 	if (isset($_POST['isAdmin'])) {
 		$religionObject->isAdmin = $_POST['isAdmin'];
 	}
-	
+
 	/*
 	 *  Load the dynamic value
 	 */
@@ -887,6 +939,9 @@ if (isset($_POST['method'])) {
 	}
 	if ($_POST['method'] == 'delete') {
 		$religionObject->delete();
+	}
+	if($_POST['method'] =='updateStatus'){
+		$religionObject->updateStatus();
 	}
 }
 if (isset($_GET['method'])) {
