@@ -1,0 +1,75 @@
+.x-btn-group-ribbonstyle .x-btn-group-bc {
+    background-image: url(../images/ribbon-group-bt.gif);
+    text-align: center;
+    vertical-align: top;
+    padding: 2px 2px 4px 2px;
+}
+
+.x-btn-group-ribbonstyle .x-btn-group-header {
+    /*font-size: 10px !important;*/
+    cursor: default;
+}
+
+.ui-ribbon .x-tab-strip-spacer {
+    border: 0px;
+    display: none;
+}
+
+.ui-ribbon .x-toolbar {
+    background-image: url(../images/ribbon-bg.gif);
+}
+
+.ui-ribbon .x-tab-strip-top .x-tab-right,
+.ui-ribbon .x-tab-strip-top .x-tab-left,
+.ui-ribbon .x-tab-strip-top .x-tab-strip-inner {
+    background-image: url(../images/ribbon-tabs-sprite.gif);
+}
+
+.ui-ribbon .x-tab-strip-text {
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: 10px;
+    font-weight: normal !important;
+}
+
+.ui-ribbon ul.x-tab-strip-top,
+.ui-ribbon .x-panel-noborder .x-panel-tbar-noborder .x-toolbar {
+    border-bottom-color: #a9bfd3;
+}
+
+.ui-ribbon .x-tab-strip span.x-tab-strip-text,
+.ui-ribbon .x-tab-strip-active span.x-tab-strip-text {
+    color: #1e395b;
+}
+
+.ui-ribbon .x-toolbar-ct {
+    padding: 0px !important;
+}
+
+.ui-ribbon .x-btn-text {
+    text-align    : center;
+    width         : 100%;
+    display       : block;
+    white-space   : normal !important;
+}
+
+.ui-ribbon .x-btn-as-arrow .x-btn-mc em {
+    /*display:block;
+    background-color:transparent;*/
+    padding-bottom: 13px;
+}
+
+.ui-ribbon .x-btn-group-mc {
+    padding-bottom: 2px;
+}
+
+/* FIXES FOR IE: */
+.x-btn-group.x-btn-group-ribbonstyle .x-btn-group-footer .x-panel-btns.x-panel-btns-right .x-clear {
+    font:                0 sans-serif;
+}
+.x-btn-group.x-btn-group-ribbonstyle .x-btn-group-footer .x-panel-btns .x-toolbar-left {
+    text-align:            center;
+}
+.x-btn-group.x-btn-group-ribbonstyle .x-btn-group-tc {
+    vertical-align:        top;
+}
