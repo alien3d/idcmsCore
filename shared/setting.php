@@ -162,19 +162,15 @@ var leafPrintAccessValue	= '<?php echo $row_leafAccess['leafPrintAccessValue']; 
 			exit();
 		}
 
-		$result=$q->fast($sql);
-		if($q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-			exit();
-		}
+		$resultAdmin=$q->fast($sql);
 
-		if($q->numberRows($result) > 0 ) {
+		if($q->numberRows($resultAdmin) > 0 ) {
 
-			$rowAdmin = $q->fetchAssoc($result);
+			$rowAdmin = $q->fetchAssoc($resultAdmin);
 
 		}
 ?>
-		var isAdmin = '<?php echo $rowAdmin['isAdmin']; ?>';
+		var isAdmin = <?php echo $rowAdmin['isAdmin']; ?>;
 		if (isAdmin  == 1 ) {
 			isDefaultHidden 	= false;
 			isNewHidden   		= false;

@@ -307,10 +307,11 @@ class religionClass extends configClass
 					JOIN	`staff`
 					ON		`religion`.`By` = `staff`.`staffId`
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getReligionId()) {
-				$sql .= " AND `religionId`=\"". $this->model->getReligionId() . "\"";
+			if ($this->model->getReligionId('','string')) {
+				$sql .= " AND `religionId`=\"". $this->model->getReligionId('','string') . "\"";
 
 			}
+
 		} else if ($this->q->vendor == self::mssql) {
 			$sql = "
 					SELECT	[religion].[religionId],
@@ -329,8 +330,8 @@ class religionClass extends configClass
 					JOIN	[staff]
 					ON		[religion].[By] = [staff].[staffId]
 					WHERE 	[religion].[isActive] ='1'	";
-			if ($this->model->getReligionId()) {
-				$sql .= " AND [religionId]=\"". $this->model->getReligionId() . "\"";
+			if ($this->model->getReligionId('','string')) {
+				$sql .= " AND [religionId]=\"". $this->model->getReligionId('','string') . "\"";
 			}
 		} else if ($this->q->vendor == self::oracle) {
 			$sql = "
@@ -350,8 +351,8 @@ class religionClass extends configClass
 					JOIN	\"staff\"
 					ON		\"religion\".\"By\" = \"staff\".\"staffId\"
 					WHERE 	\"isActive\"='1'	";
-			if ($this->model->getReligionId()) {
-				$sql .= " AND \"religionId\"=\"". $this->model->getReligionId() . "\"";
+			if ($this->model->getReligionId('','string')) {
+				$sql .= " AND \"religionId\"=\"". $this->model->getReligionId('','string') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -498,7 +499,7 @@ class religionClass extends configClass
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getReligionId())) {
+            if (!($this->model->getReligionId('','string'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -512,7 +513,7 @@ class religionClass extends configClass
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getReligionId()) {
+            if ($this->model->getReligionId('','string')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -559,41 +560,44 @@ class religionClass extends configClass
 			$sql = "
 			UPDATE 	`religion`
 			SET 	`religionDesc`		=	\"". $this->model->getReligionDesc() . "\",
-					`isActive`			=	\"". $this->model->getIsActive() . "\",
-					`isNew`				=	\"". $this->model->getIsNew() . "\",
-					`isDraft`			=	\"". $this->model->getIsDraft() . "\",
-					`isUpdate`			=	\"". $this->model->getIsUpdate() . "\",
-					`isDelete`			=	\"". $this->model->getIsDelete() . "\",
-					`isApproved`		=	\"". $this->model->getIsApproved() . "\",
+					`isDefault`			=	\"". $this->model->getIsDefault('','string') . "\",
+					`isNew`				=	\"". $this->model->getIsNew('','string') . "\",
+					`isDraft`			=	\"". $this->model->getIsDraft('','string') . "\",
+					`isUpdate`			=	\"". $this->model->getIsUpdate('','string') . "\",
+					`isDelete`			=	\"". $this->model->getIsDelete('','string') . "\",
+					`isActive`			=	\"". $this->model->getIsActive('','string') . "\",
+					`isApproved`		=	\"". $this->model->getIsApproved('','string') . "\",
 					`By`				=	\"". $this->model->getBy() . "\",
 					`Time`				=	" . $this->model->getTime() . "
-			WHERE 	`religionId`		=	\"". $this->model->getReligionId() . "\"";
+			WHERE 	`religionId`		=	\"". $this->model->getReligionId('','string') . "\"";
 		} else if ($this->q->vendor ==  self::mssql) {
 			$sql = "
 			UPDATE 	[religion]
 			SET 	[religionDesc]		=	\"". $this->model->getReligionDesc() . "\",
-					[isActive]			=	\"". $this->model->getIsActive() . "\",
-					[isNew]				=	\"". $this->model->getIsNew() . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft() . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate() . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete() . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved() . "\",
+					[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
+					[isNew]				=	\"". $this->model->getIsNew('','string') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft('','string') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate('','string') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete('','string') . "\",
+					[isActive]			=	\"". $this->model->getIsActive('','string') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved('','string') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
-			WHERE 	[religionId]		=	\"". $this->model->getReligionId() . "\"";
+			WHERE 	[religionId]		=	\"". $this->model->getReligionId('','string') . "\"";
 		} else if ($this->q->vendor == self::oracle) {
 			$sql = "
 			UPDATE 	\"religion\"
 			SET 	\"religionDesc\"	=	\"". $this->model->getReligionDesc() . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive() . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew() . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft() . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate() . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete() . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved() . "\",
+					\"isDefault\"		=	\"". $this->model->getIsDefault('','string') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew('','string') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft('','string') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','string') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete('','string') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive('','string') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved('','string') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
-			WHERE 	\"religionId\"		=	\"". $this->model->getReligionId() . "\"";
+			WHERE 	\"religionId\"		=	\"". $this->model->getReligionId('','string') . "\"";
 		}
 		/*
 		 *  require three variable below to track  table audit
@@ -633,37 +637,40 @@ class religionClass extends configClass
 		if ($this->q->vendor == self::mysql) {
 			$sql = "
 			UPDATE 	`religion`
-			SET 	`isActive`			=	\"". $this->model->getIsActive() . "\",
-					`isNew`				=	\"". $this->model->getIsNew() . "\",
-					`isDraft`			=	\"". $this->model->getIsDraft() . "\",
-					`isUpdate`			=	\"". $this->model->getIsUpdate() . "\",
-					`isDelete`			=	\"". $this->model->getIsDelete() . "\",
-					`isApproved`		=	\"". $this->model->getIsApproved() . "\",
+			SET 	`isDefault`			=	\"". $this->model->getIsDefault('','string') . "\",
+					`isNew`				=	\"". $this->model->getIsNew('','string') . "\",
+					`isDraft`			=	\"". $this->model->getIsDraft('','string') . "\",
+					`isUpdate`			=	\"". $this->model->getIsUpdate('','string') . "\",
+					`isDelete`			=	\"". $this->model->getIsDelete('','string') . "\",
+					`isActive`			=	\"". $this->model->getIsActive('','string') . "\",
+					`isApproved`		=	\"". $this->model->getIsApproved('','string') . "\",
 					`By`				=	\"". $this->model->getBy() . "\",
 					`Time`				=	" . $this->model->getTime() . "
-			WHERE 	`religionId`		=	\"". $this->model->getReligionId() . "\"";
+			WHERE 	`religionId`		=	\"". $this->model->getReligionId('','string') . "\"";
 		} else if ($this->q->vendor == self::mssql) {
 			$sql = "
 			UPDATE 	[religion]
-			SET 	[isActive]			=	\"". $this->model->getIsActive() . "\",
-					[isNew]				=	\"". $this->model->getIsNew() . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft() . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate() . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete() . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved() . "\",
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
+					[isNew]				=	\"". $this->model->getIsNew('','string') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft('','string') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate('','string') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete('','string') . "\",
+					[isActive]			=	\"". $this->model->getIsActive('','string') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved('','string') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[religionId]		=	\"". $this->model->getReligionId . "\"";
 		} else if ($this->q->vendor == self::oracle) {
 			$sql = "
 			UPDATE 	\"religion\"
-			SET 	\"religionDesc\"	=	\"". $this->model->getReligionDesc() . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive() . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew() . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft() . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate() . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete() . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved() . "\",
+			SET 	\"religionDesc\"	=	\"". $this->model->getReligionDesc('','string') . "\",
+					\"isDefault\"		=	\"". $this->model->getIsDefault('','string') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew('','string') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft('','string') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','string') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete('','string') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive('','string') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved('','string') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"religionId\"		=	\"". $this->model->getReligionId() . "\"";
@@ -692,49 +699,83 @@ class religionClass extends configClass
 	 *  To Update flag Status
 	 */
 	function updateStatus () {
-
+		$loop  = $this->model->getTotal();
 		if($this->isAdmin==0){
 			$this->model->delete();
 			if ($this->q->vendor == self::mysql) {
 				$sql = "
 			UPDATE 	`religion`
-			SET 	`isActive`			=	\"". $this->model->getIsActive() . "\",
-					`isNew`				=	\"". $this->model->getIsNew() . "\",
-					`isDraft`			=	\"". $this->model->getIsDraft() . "\",
-					`isUpdate`			=	\"". $this->model->getIsUpdate() . "\",
-			UPDATE 	\"religion\"
-					`isDelete`			=	\"". $this->model->getIsDelete() . "\",
-					`isApproved`		=	\"". $this->model->getIsApproved() . "\",
-					`By`				=	\"". $this->model->getBy() . "\",
-					`Time`				=	" . $this->model->getTime() . "
-			WHERE 	`religionId`		IN	(". $this->model->getReligionIdAll(). ")";
+			SET 	";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$religionIdDelete.=$this->model->getReligionId($i,'array').",";
+						$sql.="
+						        `isDefault`			=	case `religionId`
+					            	WHEN '".$this->model->getReligionId($i,'array')."'
+									THEN '".$this->model->getIsDefault('','string')."'
+								END,
+						       `isNew`			=	case `religionId`
+					            	WHEN '".$this->model->getReligionId($i,'array')."'
+									THEN '".$this->model->getIsNew('','string')."'
+								END,
+								`isDraft`			=	case `religionId`
+					            	WHEN '".$this->model->getReligionId($i,'array')."'
+									THEN '".$this->model->getIsDraft('','string')."'
+								END,
+								`isUpdate`			=	case `religionId`
+					            	WHEN '".$this->model->getReligionId($i,'array')."'
+									THEN '".$this->model->getIsUpdate('','string')."'
+								END,
+								`isDelete`			=	case `religionId`
+									WHEN '".$this->model->getReligionId($i,'array')."'
+									THEN '".$this->model->getIsDelete($i,'array')."'
+								END,
+								`isActive`			=	case `religionId`
+					            	WHEN '".$this->model->getReligionId($i,'array')."'
+									THEN '".$this->model->getIsActive('','string')."'
+								END,
+								`isApproved`			=	case `religionId`
+					            	WHEN '".$this->model->getReligionId($i,'array')."'
+									THEN '".$this->model->getIsApproved('','string')."'
+								END,
+								`By`				=	\"". $this->model->getBy('','string') . "\",
+								`Time`				=	" . $this->model->getTime() . ",";
+					}
+
+				}
+				$sql =substr($sql,0,-1);
+				$this->model->setReligionIdAll(substr($religionIdDelete,0,-1));
+				$sql.=" WHERE 	`religionId`		IN	(". $this->model->getReligionIdAll(). ")";
+
 			} else if ($this->q->vendor == self::mssql) {
 				$sql = "
 			UPDATE 	[religion]
-			SET 	[isActive]			=	\"". $this->model->getIsActive() . "\",
-					[isNew]				=	\"". $this->model->getIsNew() . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft() . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate() . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete() . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved() . "\",
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
+					[isNew]				=	\"". $this->model->getIsNew('','string') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft('','string') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate('','string') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete('','string') . "\",
+					[isActive]			=	\"". $this->model->getIsActive('','string') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved('','string') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[religionId]		IN	(". $this->model->getReligionIdAll() . ")";
 			} else if ($this->q->vendor == self::oracle) {
 				$sql = "
 				UPDATE	\"religion\"
-				SET 	\"isActive\"		=	\"". $this->model->getIsActive() . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew() . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft() . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate() . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete() . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved() . "\",
+				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault('','string') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew('','string') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft('','string') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','string') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete('','string') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive('','string') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved('','string') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"religionId\"		IN	(". $this->model->getReligionIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){
-			$loop=$this->model->totalfolderAccessId;
+
 			if( $this->q->vendor==self::mysql) {
 				$sql="
 				UPDATE `religion`
@@ -811,19 +852,19 @@ class religionClass extends configClass
 			$sql.=$sqlLooping;
 			if( $this->q->vendor==self::mysql) {
 				$sql.="
-			WHERE `religionId` IN (".$this->model->getfolderAccessIdAll.")";
+			WHERE `religionId` IN (".$this->model->getReligionIdAll().")";
 			} else if($this->q->vendor==self::mssql) {
 				$sql.="
-			WHERE `=[religionId] IN (".$this->model->getfolderAccessIdAll.")";
+			WHERE `=[religionId] IN (".$this->model->getReligionIdAll().")";
 			} else if ($this->q->vendor==self::oracle) {
 				$sql.="
-			WHERE \"religionId\" IN (".$this->model->getfolderAccessIdAll.")";
+			WHERE \"religionId\" IN (".$this->model->getReligionIdAll().")";
 			}
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(
-                "success" => "false",
+                "success" => false,
                 "message" => $this->q->responce
 			));
 			exit();
@@ -997,9 +1038,7 @@ if (isset($_POST['method'])) {
 	if (isset($_POST['leafId'])) {
 		$religionObject->leafId = $_POST['leafId'];
 	}
-	if (isset($_POST['religionId'])) {
-		$religionObject->religionId = $_POST['religionId'];
-	}
+
 	if (isset($_POST['filter'])) {
 		$religionObject->filter = $_POST['filter'];
 	}
@@ -1059,15 +1098,18 @@ if (isset($_GET['method'])) {
 			$religionObject->staffId();
 		}
 	}
+	if($_GET['method']=='updateStatus'){
+		$religionObject->updateStatus();
+	}
 	if (isset($_GET['religionDesc'])) {
 		if (strlen($_GET['religionDesc']) > 0) {
 			$religionObject->duplicate();
 		}
 	}
-	if (isset($_GET['mode'])) {
-		if ($_GET['mode'] == 'excel') {
-			$religionObject->excel();
-		}
+
+	if ($_GET['method'] == 'excel') {
+		$religionObject->excel();
 	}
+
 }
 ?>

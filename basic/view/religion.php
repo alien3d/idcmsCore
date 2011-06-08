@@ -19,6 +19,8 @@ include('../../Connections/main.php');	?>
 	href="../../javascript/examples/ux/gridfilters/css/RangeMenu.css" />
 <link rel="stylesheet" type="text/css"
 	href="../../javascript/examples/ux/statusbar/css/statusbar.css">
+    <link rel="stylesheet" type="text/css"
+	href="../../javascript/examples/ux/css/RowEditor.css">
 <?php // only execute when exist
 if($_SESSION[$theme]) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
@@ -63,6 +65,8 @@ x-grid3-row-alt {
 	src="../../javascript/examples/ux/statusbar/ValidationStatus.js"></script>
 	<script type="text/javascript"
 	src="../../javascript/examples/ux/checkColumn.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/RowEditor.js"></script>
 <script language="javascript" type="text/javascript"
 	src="../javascript/religion.js"></script>
 </html>
