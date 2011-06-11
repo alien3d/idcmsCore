@@ -6,7 +6,7 @@ Ext.onReady(function() {
     var pageCreate;
     var pageCreateList;
     var pageReload;
-    var pageReloadList;
+    var pageReloadList;		
     var pagePrint;
     var pagePrintList;
     var perPage = 15;
@@ -208,40 +208,7 @@ Ext.onReady(function() {
         style: {
             textTransform: "uppercase"
         },
-        anchor: "95%",
-        listeners: {
-            blur: function() {
-                if (Ext.getCmp("religionDesc").getValue().length > 0) {
-                    Ext.Ajax.request({
-                        url: "../controller/religionController.php",
-                        method: "GET",
-                        params: {
-                            method: "duplicate",
-                            leafId: leafId,
-                            religionDesc: Ext.getCmp("religionDesc").getValue()
-                        },
-                        success: function(response, options) {
-                            jsonResponse = Ext.decode(response.responseText);
-                            if (jsonResponse.success == true) {
-                                if (jsonResponse.total > 0) {
-                                    if (Ext.getCmp("religionDesc_temp").getValue() != Ext.getCmp("religionDesc").getValue()) {
-                                        duplicate = 1;
-                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp("religionDesc").getValue()) + ":" + +Ext.util.Format.uppercase(jsonResponse.religionDesc);
-                                        Ext.MessageBox.alert(systemErrorLabel, duplicateMessageLabel);
-                                        Ext.getCmp("religionDesc").setValue("");
-                                    }
-                                }
-                            } else {
-                                Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                            }
-                        },
-                        failure: function(response, options) {
-                            Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
-                        }
-                    });
-                }
-            }
-        }
+        anchor: "95%"
     });
 	 
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({
@@ -295,20 +262,30 @@ Ext.onReady(function() {
                 religionStore.reload();
             },
             afteredit: function(rowEditor, changes, record, rowIndex) {
-                this.save = true; // update record manually
+                var method;
+				this.save = true; // update record manually
                 var record = this.grid.getStore().getAt(rowIndex);
+				if(record.get('religionId')  > 0 ) {
+					method ='save';
+				} else {
+					method='create';
+				}
+			
                 Ext.Ajax.request({
-                    url: 'religion_data.php',
+                    url: '../controller/religionController.php',
                     method: 'POST',
                     params: {
-                        method: 'update',
+                        method: method,
                         leafId: leafId,
-                        religionDesc: record.get('religionDesc')
+                        religionDesc: record.get('religionDesc'),
+						religionId:record.get('religionId'),
+						duplicateTest : true,
+						test:test
                     },
                     success: function(response, options) {
                         jsonResponse = Ext.decode(response.responseText);
                         if (jsonResponse.success == false) {
-                            Ext.MessageBox.alert(systemLabel, x.message);
+                            Ext.MessageBox.alert(systemLabel, jsonResponse.message);
                         }
                     },
                     failure: function(response, options) {
@@ -446,14 +423,18 @@ Ext.onReady(function() {
                         url = '../controller/religionController.php?';
                         var sub_url;
                         sub_url = '';
-                        for (i = count - 1; i >= 0; i--) {
+                      //  selectedRow = religionGrid.getSelectionModel().getSelections();
+                        var modified = religionStore.getModifiedRecords();
+                        for(var i = 0; i < modified.length; i++) {
                             var record = religionStore.getAt(i);
+                            
                             sub_url = sub_url + '&religionId[]=' + record.get('religionId');
                             if (isAdmin == 1) {
                                 sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
                                 sub_url = sub_url + '&isNew[]=' + record.get('isNew');
                                 sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
                             }
+                           	
                             sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
                             if (isAdmin == 1) {
                                 sub_url = sub_url + '&isActive[]=' + record.get('isActive');
@@ -461,6 +442,8 @@ Ext.onReady(function() {
                             }
                         }
                         url = url + sub_url; // reques and ajax
+                    	
+        				
                         Ext.Ajax.request({
                             url: url,
                             method: 'GET',
@@ -546,15 +529,7 @@ Ext.onReady(function() {
                 religionStore.reload();
             }
         },
-        '-', {
-            text: addToolbarLabel,
-            iconCls: "add",
-            id: "pageCreate",
-            disabled: pageCreate,
-            handler: function() {
-                viewPort.items.get(1).expand();
-            }
-        },
+        
         '-', {
             text: excelToolbarLabel,
             iconCls: "page_excel",

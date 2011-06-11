@@ -1,7 +1,7 @@
 <script language="javascript" type="text/javascript">
 <?php
 
-		if($q->vendor=='mysql') {
+		if( $q->vendor==sharedx::mysql) {
 			/***
 			* set global output UTF8
 			*/
@@ -12,19 +12,19 @@
 	/**
 	*	 all label language
 	**/
-	if($q->vendor=='mysql') {
+	if( $q->vendor==sharedx::mysql) {
 		$sql="
 		SELECT DISTINCT `tableMappingColumnName`,
 						`tableMappingNativeLabel`
 		FROM 			`tableMapping`
 		WHERE 			`tableMapping`.`languageId`='".$_SESSION['languageId']."'";
-	} else if ($q->vendor=='microsoft') {
+		} else if ($q->vendor==sharedx::mssql) {
 		$sql="
 		SELECT DISTINCT [tableMappingColumnName],
 						[tableMappingNativeLabel]
 		FROM 			[tableMapping]
 		WHERE 			[tableMapping].[languageId]='".$_SESSION['languageId']."'";
-	} else if ($q->vendor=='oracle') {
+		} else if ($q->vendor==sharedx::oracle) {
 		$sql="
 		SELECT DISTINCT \"tableMappingColumnName\",
 						\"tableMappingNativeLabel\"
@@ -43,21 +43,21 @@ while ($row = $q->fetchAssoc($result)) {
 /**
 *	language pack javascript default
 **/
-	if($q->vendor=='mysql') {
+	if( $q->vendor==sharedx::mysql) {
 	$sql="
 	SELECT	*
 	FROM 	`defaultLabel`
 	JOIN 	`defaultLabelTranslate`
 	USING 	(`defaultLabelId`)
 	WHERE 	`defaultLabelTranslate`.`languageId`='".$_SESSION['languageId']."'";
-	} else if ($q->vendor=='microsoft') {
+	} else if ($q->vendor==sharedx::mssql) {
 			$sql="
 			SELECT	*
 			FROM 	[defaultLabel]
 			JOIN 	[defaultLabelTranslate]
 			ON		[defaultLabel] .[defaultLabelId]=  [defaultLabelTranslate] .[defaultLabelId]
 			WHERE 	[defaultLabelTranslate].[languageId]='".$_SESSION['languageId']."'";
-	} else if ($q->vendor=='oracle') {
+	} else if ($q->vendor==sharedx::oracle) {
 	$sql="
 			SELECT	*
 			FROM 	\"defaultLabel\"
@@ -82,7 +82,7 @@ $phpself='PHP_SELF';
 var filename = '<?php echo basename($_SERVER[$phpself]); ?>';
 <?php  // get uniqueid
 
-if($q->vendor=='mysql') {
+if( $q->vendor==sharedx::mysql) {
  	$sql	=
 "	SELECT	*
 	FROM	`leaf`
@@ -93,7 +93,7 @@ if($q->vendor=='mysql') {
 	WHERE  	`leaf`.`leafFilename`			=	'".basename($_SERVER[$phpself])."'
 	AND  	`leafAccess`.`staffId`			=	'".$_SESSION[$staffId]."'
 	AND		`leafTranslate`.`languageId`	=	'".$_SESSION['languageId']."'";
-	} else if ($q->vendor=='microsoft') {
+	} else if ($q->vendor==sharedx::mssql) {
 			$sql	=
 "	SELECT	*
 	FROM	[leaf]
@@ -105,7 +105,7 @@ if($q->vendor=='mysql') {
 	WHERE  	[leaf].[leafFilename]			=	'".basename($_SERVER[$phpself])."'
 	AND  	[leafAccess].[staffId]			=	'".$_SESSION[$staffId]."'
 	AND		[leafTranslate].[languageId]	=	'".$_SESSION['languageId']."'";
-	} else if ($q->vendor=='oracle') {
+		} else if ($q->vendor==sharedx::oracle) {
 
 			$sql	=
 "	SELECT	*
@@ -162,6 +162,7 @@ var leafPrintAccessValue	= '<?php echo $row_leafAccess['leafPrintAccessValue']; 
 			exit();
 		}
 
+		//echo $sql;
 		$resultAdmin=$q->fast($sql);
 
 		if($q->numberRows($resultAdmin) > 0 ) {

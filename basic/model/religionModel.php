@@ -64,8 +64,8 @@ class religionModel extends validationClass
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName      = 'religion';
-		$this->primaryKeyName = 'religionId';
+		$this->setTableName('religion');
+		$this->setPrimaryKeyName('religionId');
 		/*
 		 * SET ALL OUTSIDE VARIABLE FROM POST OR GET OR PUT OR DELETE
 		 * Restfull Format  POST 			-->Is to View Data
@@ -93,6 +93,7 @@ class religionModel extends validationClass
 			$this->setTime("to_date(\"". date("Y-m-d H:i:s") . "\",'YYYY-MM-DD HH24:MI:SS')");
 		}
 		// updateStatus
+	//	echo "Jumlah record ".count($_GET['religionId']);
 		$this->setTotal(count($_GET['religionId']));
 		$accessArray = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved");
 		// auto assign as array if true
@@ -118,6 +119,7 @@ class religionModel extends validationClass
 			$this->isApproved = array();
 		}
 		for($i=0;$i<$this->getTotal();$i++) {
+			echo "tepat daaa";
 			$this->setReligionId($this->strict($_GET['religionId'][$i],'numeric'),$i,'array');
 			if($_GET['isDefault'][$i]=='true') {
 
@@ -254,6 +256,20 @@ class religionModel extends validationClass
 			$this->setIsApproved(0,'','string');
 		}
 	}
+	public function setTableName($value) {
+		$this->tableName = $value;
+
+	}
+	public function getTableName() {
+		return $this->tableName;
+	}
+	public function setPrimaryKeyName($value) {
+		$this->primaryKeyName = $value;
+
+	}
+	public function getPrimaryKeyName() {
+		return $this->primaryKeyName;
+	}
 	// generate basic information from outside
 	/**
 	 * Set isDefault Value
@@ -307,7 +323,8 @@ class religionModel extends validationClass
 
 			$this->isDefault[$key]=$value;
 		} else {
-
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 	/**
@@ -323,8 +340,8 @@ class religionModel extends validationClass
 
 			return $this->isDefault[$key];
 		} else {
-
-
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 
@@ -339,6 +356,9 @@ class religionModel extends validationClass
 			$this->isNew = $value;
 		} else if ($type=='array'){
 			$this->isNew[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 	/**
@@ -352,6 +372,9 @@ class religionModel extends validationClass
 			return $this->isNew;
 		} else if ($type=='array'){
 			return $this->isNew[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 
@@ -366,6 +389,9 @@ class religionModel extends validationClass
 			$this->isDraft = $value;
 		} elseif ($type=='array'){
 			$this->isDraft[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 	/**
@@ -379,6 +405,9 @@ class religionModel extends validationClass
 			return $this->isDraft;
 		} else if ($type=='array'){
 			return $this->isDraft[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 
@@ -393,6 +422,9 @@ class religionModel extends validationClass
 			$this->isUpdate = $value;
 		} elseif ($type=='array'){
 			$this->isUpdate[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 	/**
@@ -404,6 +436,9 @@ class religionModel extends validationClass
 			return $this->isUpdate;
 		} else if ($type=='array'){
 			return $this->isUpdate[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 	/**
@@ -418,6 +453,9 @@ class religionModel extends validationClass
 		} elseif ($type=='array'){
 
 			$this->isDelete[$key]=$value;
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 
 	}
@@ -434,6 +472,9 @@ class religionModel extends validationClass
 		} else if ($type=='array'){
 
 			return $this->isDelete[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 	/**
@@ -447,6 +488,9 @@ class religionModel extends validationClass
 			$this->isActive = $value;
 		} elseif ($type=='array'){
 			$this->isActive[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 	/**
@@ -460,6 +504,9 @@ class religionModel extends validationClass
 			return $this->isActive;
 		} else if ($type=='array'){
 			return $this->isActive[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 
@@ -476,6 +523,9 @@ class religionModel extends validationClass
 			$this->isApproved = $value;
 		} elseif ($type=='array'){
 			$this->isApproved[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 	/**
@@ -489,6 +539,9 @@ class religionModel extends validationClass
 			return $this->isApproved;
 		} else if ($type=='array'){
 			return $this->isApproved[$key];
+		} else {
+			echo "Cannot Identifiy Type";
+			exit();
 		}
 	}
 
