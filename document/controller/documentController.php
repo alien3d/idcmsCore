@@ -214,7 +214,7 @@ class documentClass extends  configClass {
 				exit();
 			}
 		}
-		
+
 
 
 	}
@@ -472,8 +472,8 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['leafId'])){
 		$documentObject-> leafId = $_POST['leafId'];
 	}
-	if(isset($_POST['religionId'])) {
-		$documentObject->religionId = $_POST['religionId'];
+	if(isset($_POST['documentd'])) {
+		$documentObject->documentId = $_POST['documentId'];
 	}
 	if($_POST['method']=='create')	{
 		$documentObject->create();

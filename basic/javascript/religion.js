@@ -40,18 +40,14 @@ Ext.onReady(function() {
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
-            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,
+            if (jsonResponse.success == true) { 
+            	// Ext.MessageBox.alert(systemLabel,
                 // jsonResponse.message);
                 // //uncomment it for debugging
                 // purpose
-            } else { // Ext.MessageBox.alert(systemErrorLabel,
-                // jsonResponse.message);
-                Ext.MessageBox.show({
-                    title: systemErrorLabel,
-                    msg: jsonResponse.message,
-                    buttons: Ext.Msg.WARNING,
-                    warning: 'emoticon_unhappy'
-                });
+            } else { 
+            	Ext.MessageBox.alert(systemErrorLabel,jsonResponse.message);
+               
             }
         },
         failure: function(response, options) {
@@ -69,6 +65,7 @@ Ext.onReady(function() {
         reader: religionReader,
         autoLoad: true,
         autoDestroy: true,
+    	pruneModifiedRecords :true,
         baseParams: {
             method: "read",
             grid: "master",
@@ -423,15 +420,20 @@ Ext.onReady(function() {
                         url = '../controller/religionController.php?';
                         var sub_url;
                         sub_url = '';
-                      //  selectedRow = religionGrid.getSelectionModel().getSelections();
+                   
                         var modified = religionStore.getModifiedRecords();
                         for(var i = 0; i < modified.length; i++) {
                             var record = religionStore.getAt(i);
                             
-                            sub_url = sub_url + '&religionId[]=' + record.get('religionId');
+                            if(record.get('religionId')){
+                            	sub_url = sub_url + '&religionId[]=' + record.get('religionId');
+                            } else {
+                            	alert("testing for error"+i)
+                            }
                             if (isAdmin == 1) {
-                                sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+                            	sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
                                 sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+                                sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
                                 sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
                             }
                            	
@@ -449,12 +451,14 @@ Ext.onReady(function() {
                             method: 'GET',
                             params: {
                                 leafId: leafId,
-                                method: 'updateStatus'
+                                method: 'updateStatus',
+                                isAdmin :isAdmin
                             },
                             success: function(response, options) {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                                    religionStore.removeAll(); // force to remove all data
                                     religionStore.reload();
                                 } else if (jsonResponse.success == false) {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);

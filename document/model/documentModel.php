@@ -1,34 +1,64 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is religion model file.This is to ensure strict setting enable for all variable enter to database
+ * this is document model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package religion
+ * @package Document
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class documentModel extends validationClass{
-	public $documentId;
-	public $documentCategoryId;
-	public $leafId;
-	public $documentTitle;
-	public $documentDesc;
-	public $documentPath;
-	public $documentFilename;
-	public $isDefaut;
-	public $isNew;
-	public $isDraft;
-	public $isUpdate;
-	public $isActive;
-	public $isDelete;
-	public $isApproved;
-	public $By;
-	public $Time;
-	public $vendor;
-	public $staffId;
+	
+	// table property
+	private $tableName;
+	private $primaryKeyName;
+	
+	//table field
+	private $documentId;
+	private $documentCategoryId;
+	private $leafId;
+	private $isDefault;
+	private $isNew;
+	private $isDraft;
+	private $isUpdate;
+	private $isActive;
+	private $isDelete;
+	private $isApproved;
+	private $By;
+	private $Time;
+	private $staffId;
+	private $religionIdAll; // this is not table field but collection of religionId
+	/**
+	 * Total Record receive from checkbox grid
+	 * @var numeric
+	 */
+	private $total;
+	// database vendor
+	public  $vendor;
+
+
+	// table property
+	const tableName = 'document';
+	const primaryKeyName = 'documentId';
+
+	// table field
+	const documentId = 'documentId';
+	const documentCategoryId = 'documentCategoryId';
+	const documentDesc = 'documentDesc';
+	const leafId = 'leafId';
+	const isDefault = 'isDefault';
+	const isNew = 'isNew';
+	const isDraft = 'isDraft';
+	const isUpdate = 'isUpdate';
+	const isActive = 'isActive';
+	const isDelete = 'isDelete';
+	const isApproved = 'isApproved';
+	const By = 'By';
+	const Time = 'Time';
+	const staffId = 'staffId';
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -36,8 +66,8 @@ class documentModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'document';
-		$this->primaryKeyName 	=	'documentId';
+		$this->setTableName 		('document');
+		$this->setPrimaryKeyName 	('documentId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
@@ -79,7 +109,7 @@ class documentModel extends validationClass{
 	 */
 	public function create()
 	{
-		$this->setIsDefaut(0);
+		$this->setIsDefault(0);
 		$this->setIsNew(1);
 		$this->setIsDraft(0);
 		$this->setIsUpdate(0);
@@ -92,7 +122,7 @@ class documentModel extends validationClass{
 	 */
 	public function update()
 	{
-		$this->setIsDefaut(0);
+		$this->setIsDefault(0);
 		$this->setIsNew(0);
 		$this->setIsDraft(0);
 		$this->setIsUpdate(1);
@@ -112,6 +142,104 @@ class documentModel extends validationClass{
 		$this->setIsActive(0);
 		$this->setIsDelete(1);
 		$this->setIsApproved(0);
+	}
+	public function setTableName($value) {
+		$this->tableName = $value;
+
+	}
+	public function getTableName() {
+		return $this->tableName;
+	}
+	public function setPrimaryKeyName($value) {
+		$this->primaryKeyName = $value;
+
+	}
+	public function getPrimaryKeyName() {
+		return $this->primaryKeyName;
+	}
+	// generate basic information from outside
+	/**
+	 * Set isDefault Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setDocumentId($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->documentId = $value;
+		} else if ($type=='array'){
+			$this->documentId[$key]=$value;
+		}
+	}
+	/**
+	 * Return isDocumentId Value
+	 * @return integer documentId
+	 */
+	public function getDocumentId($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->documentId;
+		} else if ($type=='array'){
+			return $this->documentId[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+	/**
+	 * Set Document Title Value
+	 * @param boolean $value
+	 */
+	public function setDocumentTitle($value) {
+		$this->documentTitle = $value;
+	}
+	/**
+	 * Return Document title
+	 * @return string document title
+	 */
+	public function getDocumentTitle() {
+		return $this->documentTitle;
+	}
+	/**
+	 * Set Document Description Value
+	 * @param boolean $value
+	 */
+	public function setDocumentDesc($value) {
+		$this->documentTitle = $value;
+	}
+	/**
+	 * Return Document Description
+	 * @return string document description
+	 */
+	public function getDocumentDesc() {
+		return $this->documentDesc;
+	}
+	/**
+	 * Set Document Path Value
+	 * @param boolean $value
+	 */
+	public function setDocumentPath($value) {
+		$this->documentPath = $value;
+	}
+	/**
+	 * Return Document title
+	 * @return string document title
+	 */
+	public function getDocumentPath() {
+		return $this->documentPath;
+	}
+	/**
+	 * Set Document Filename Value
+	 * @param boolean $value
+	 */
+	public function setDocumentFilename($value) {
+		$this->documentFilename = $value;
+	}
+	/**
+	 * Return Document Filename
+	 * @return string document title
+	 */
+	public function getDocumentFilename() {
+		return $this->documentFilename;
 	}
 	/**
 	 * Set isDefault Value

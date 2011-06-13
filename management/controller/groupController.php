@@ -11,12 +11,11 @@ require_once("../model/groupModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class groupClass  extends configClass {
-	/**
+	/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
 	public $q;
-
 	/**
 	 * Program Identification
 	 * @var numeric $leafId
@@ -28,8 +27,8 @@ class groupClass  extends configClass {
 	 */
 	public $staffId;
 	/**
-	 *	 Database Selected
-	 *   string $database;
+	 * Selected Database or Tablespace
+	 * @var string $database
 	 */
 	public $database;
 	/**
@@ -52,26 +51,32 @@ class groupClass  extends configClass {
 	 * @var string $quickFilter
 	 */
 	public $quickFilter;
-
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
 	 */
-	private  $excel;
-
-
+	private $excel;
 	/**
 	 * Document Trail Audit.
 	 * @var string $documentTrail;
 	 */
-	private  $documentTrail;
-
+	private $documentTrail;
 	/**
+	 * Start
+	 * @var string $start;`
+	 */
+	public $start;
+	/**
+	 *  Limit
+	 * @var string $limit
+	 */
+	public $limit;
+	/**
+	 /**
 	 *  Ascending ,Descending ASC,DESC
 	 * @var string $order;`
 	 */
 	public $order;
-
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
 	 * @var string $sortField
@@ -88,17 +93,41 @@ class groupClass  extends configClass {
 	 */
 	private $audit;
 	/**
-	 * Current Table Group Indentification Value
+	 * Log Sql Statement True or False
+	 * @var unknown_type
+	 */
+	private $log;
+	/**
+	 * Current Table group Indentification Value
 	 * @var numeric $groupId
 	 */
 	public $groupId;
 	/**
-	 * Last Insert Record
-	 * @var numeric $insert_id
+	 * group Model
+	 * @var string $groupModel
 	 */
-	private $insert_id;
-	
 	public $model;
+	/**
+	 * Open To See Audit  Column --> approved,new,delete and e.g
+	 * @var numeric $isAdmin
+	 */
+	public $isAdmin;
+
+	/**
+	 * Audit Filter
+	 * @var string $auditFilter
+	 */
+	public $auditFilter;
+	/**
+	 * Audit Column
+	 * @var string $auditColumn
+	 */
+	public $auditColumn;
+	/**
+	 * Duplicate Testing either the key of table same or have been created.
+	 * @var boolean $duplicateTest;
+	 */
+	public $duplicateTest;
 	/**
 	 * Class Loader
 	 */
@@ -127,7 +156,7 @@ class groupClass  extends configClass {
 
 		$this->q->log 				= $this->log;
 
-		$this->model 				= new groupModel();			
+		$this->model 				= new groupModel();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -138,45 +167,45 @@ class groupClass  extends configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		$this->q->start();
 		$this->model->create();
 		if( $this->q->vendor==self::mysql) {
 			$sql="
-			INSERT INTO `group` 
+			INSERT INTO `group`
 					(
 						`groupDesc`
 						`isNew`,
 						`isActive`
 					)
-			VALUES	
-					(	
+			VALUES
+					(
 						'".$this->model->groupDesc."'
 						1,1);";
 		}  else if ( $this->q->vendor==self::mssql) {
 			$sql="
-			INSERT INTO [group] 
+			INSERT INTO [group]
 					(
 						[groupDesc],
 						[isNew],
 						[isActive]
 					)
-			VALUES	
-					(	
+			VALUES
+					(
 						'".$this->strict($_POST['groupDesc'],'string')."'
 						1,
 						1);";
 		}  else if ($this->q->vendor==self::oracle) {
 			$sql="
-			INSERT INTO \"group\" 
+			INSERT INTO \"group\"
 					(
 						\"groupDesc\",
 						\"isNew\",
 						\"isActive\"
 					)
-				VALUES	
-					(	
+				VALUES
+					(
 						'".$this->strict($_POST['groupDesc'],'string')."'
 						1,
 						1
@@ -202,7 +231,7 @@ class groupClass  extends configClass {
 		if($this->q->numberRows()> 0 ){
 			foreach($data as $row){
 				if( $this->q->vendor==self::mysql) {
-				$sql =	"
+					$sql =	"
 				INSERT INTO	`accordionAccess`
 				(
 									`accordionId`,
@@ -216,7 +245,7 @@ class groupClass  extends configClass {
 									'".$this->insert_id."'
 									)";
 				} else if ($this->q->vendor==self::mssql) {
-				$sql =	"
+					$sql =	"
 				INSERT INTO	[accordionAccess]
 				(
 				[accordionId],
@@ -230,7 +259,7 @@ class groupClass  extends configClass {
 									'".$this->insert_id."'
 									)";
 				} else if ($this->q->vendor==self::oracle) {
-				$sql =	"
+					$sql =	"
 				INSERT INTO	\"accordionAccess`
 							(
 									\"accordionId\",
@@ -243,43 +272,43 @@ class groupClass  extends configClass {
 									'0',
 									'".$this->insert_id."'
 							)";
+				}
+				$this->q->create($sql);
+				if($this->q->execute=='fail'){
+					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+					exit();
+				}
+			}
 		}
-		$this->q->create($sql);
+
+		// loop the folder and create new record;
+		if( $this->q->vendor==self::mysql) {
+			$sql		=	"
+		SELECT 	*
+		FROM 	`folder`
+		WHERE 	`isActive`=1";
+		}	else if ($this->q->vendor==self::mssql) {
+			$sql		=	"
+		SELECT 	*
+		FROM 	[folder]
+		WHERE 	[isActive]=1";
+		} else if ( $this->q->vendor==self::oracle) {
+			$sql		=	"
+		SELECT 	*
+		FROM 	\"folder\"
+		WHERE 	\"isActive\"=1";
+		}
+		$this->q->read($sql);
 		if($this->q->execute=='fail'){
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
-	}
-}
+		if($this->q->numberRows()> 0 ){
+			$data = $this->q->activeRecord();
+			foreach($data as $row){
 
-// loop the folder and create new record;
-if( $this->q->vendor==self::mysql) {
-	$sql		=	"
-		SELECT 	*
-		FROM 	`folder`
-		WHERE 	`isActive`=1";
-}	else if ($this->q->vendor==self::mssql) {
-	$sql		=	"
-		SELECT 	*
-		FROM 	[folder]
-		WHERE 	[isActive]=1";
-} else if ( $this->q->vendor==self::oracle) {
-	$sql		=	"
-		SELECT 	*
-		FROM 	\"folder\"
-		WHERE 	\"isActive\"=1";
-}
-$this->q->read($sql);
-if($this->q->execute=='fail'){
-	echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-	exit();
-}
-if($this->q->numberRows()> 0 ){
-	$data = $this->q->activeRecord();
-	foreach($data as $row){
-
-		if( $this->q->vendor==self::mysql) {
-			$sql =	"
+				if( $this->q->vendor==self::mysql) {
+					$sql =	"
 					INSERT INTO 	`folderAccess`
 								(
 									`folderId`,
@@ -289,8 +318,8 @@ if($this->q->numberRows()> 0 ){
 					VALUES(			'".$row['folderId']."',
 									'0',
 									'".$this->insert_id."')";
-		} else if ($this->q->vendor==self::mssql) {
-			$sql =	"
+				} else if ($this->q->vendor==self::mssql) {
+					$sql =	"
 					INSERT INTO 	[folderAccess]
 								(
 									[folderId],
@@ -300,8 +329,8 @@ if($this->q->numberRows()> 0 ){
 					VALUES(			'".$row['folderId']."',
 									'0',
 									'".$this->insert_id."')";
-		} else if ($this->q->vendor==self::oracle) {
-			$sql =	"
+				} else if ($this->q->vendor==self::oracle) {
+					$sql =	"
 					INSERT INTO 	`folderAccess`
 								(
 									\"folderId\",
@@ -311,34 +340,34 @@ if($this->q->numberRows()> 0 ){
 					VALUES(			'".$row['folderId']."',
 									'0',
 									'".$this->insert_id."')";
+				}
+				$this->q->create($sql);
+				if($this->q->execute=='fail'){
+					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+					exit();
+				}
+			}
 		}
-		$this->q->create($sql);
+
+		// create a template access which user can access to
+		if( $this->q->vendor==self::mysql) {
+			$sql			=	"SELECT * FROM `leaf` WHERE `isActive`=1  ";
+		} else if ($this->q->vendor==self::mssql) {
+			$sql			=	"SELECT * FROM [leaf] WHERE [isActive]=1  ";
+		} else if ($this->q->vendor==self::oracle) {
+			$sql			=	"SELECT * FROM \"leaf\" WHERE \"isActive\"=1  ";
+		}
+		$this->q->read($sql);
+		$total = $this->q->numberRows();
 		if($this->q->execute=='fail'){
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
-	}
-}
-
-// create a template access which user can access to
-if( $this->q->vendor==self::mysql) {
-	$sql			=	"SELECT * FROM `leaf` WHERE `isActive`=1  ";
-} else if ($this->q->vendor==self::mssql) {
-	$sql			=	"SELECT * FROM [leaf] WHERE [isActive]=1  ";
-} else if ($this->q->vendor==self::oracle) {
-	$sql			=	"SELECT * FROM \"leaf\" WHERE \"isActive\"=1  ";
-}
-$this->q->read($sql);
-$total = $this->q->numberRows();
-if($this->q->execute=='fail'){
-	echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-	exit();
-}
-if($total > 0 ){
-	$data = $this->q->activeRecord();
-	foreach($data as $row){
-		if( $this->q->vendor==self::mysql) {
-			$sql =	"
+		if($total > 0 ){
+			$data = $this->q->activeRecord();
+			foreach($data as $row){
+				if( $this->q->vendor==self::mysql) {
+					$sql =	"
 					INSERT INTO 	[leafGroupAccess]
 								(	[leafId],
 									[leafReadAccessValue],
@@ -356,8 +385,8 @@ if($total > 0 ){
 									'0',
 									'0',
 									'".$this->insert_id."')";
-		} else if ($this->q->vendor==self::mssql) {
-			$sql =	"
+				} else if ($this->q->vendor==self::mssql) {
+					$sql =	"
 					INSERT INTO 	`leafGroupAccess`
 								(	`leafId`,
 									`leafReadAccessValue`,
@@ -375,8 +404,8 @@ if($total > 0 ){
 									'0',
 									'0',
 									'".$this->insert_id."')";
-		} else if ($this->q->vendor==self::oracle) {
-			$sql =	"
+				} else if ($this->q->vendor==self::oracle) {
+					$sql =	"
 					INSERT INTO 	\"leafGroupAccess\"
 								(	\"leafId\",
 									\"leafReadAccessValue\",
@@ -394,17 +423,17 @@ if($total > 0 ){
 									'0',
 									'0',
 									'".$this->insert_id."')";
+				}
+				$this->q->create($sql);
+				if($this->q->execute=='fail'){
+					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+					exit();
+				}
+			}
 		}
-		$this->q->create($sql);
-		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-			exit();
-		}
-	}
-}
 
-$this->q->commit();
-echo json_encode(array("success"=>"true","message"=>"Record Created"));
+		$this->q->commit();
+		echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		exit();
 
 	}
@@ -413,20 +442,42 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 	 */
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
+		if($this->isAdmin == 0) {
+			if($this->q->vendor == self :: mysql) {
+				$this->auditFilter = "	`Group`.`isActive`		=	1	";
+			} else if ($this->q->vendor == self :: mssql) {
+				$this->auditFilter = "	[Group].[isActive]		=	1	";
+			} else if  ($this->q->vendor == self :: oracle) {
+				$this->auditFilter = "	\"Group\".\"isActive\"	=	1	";
+			}
+		} else if($this->isAdmin ==1) {
+			if($this->q->vendor == self :: mysql) {
+				$this->auditFilter = "	 1 ";
+			} else if ($this->q->vendor == self :: mssql) {
+				$this->auditFilter = "	or 1 ";
+			} else if  ($this->q->vendor == self :: oracle) {
+				$this->auditFilter = " or 1 ";
+			}
+		}
+		//UTF8
+		$items=array();
 		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		// everything given flexibility  on todo
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 		SELECT	*
 		FROM 	`group`
+		JOIN	`staff`
+		ON		`Group`.`By` = `staff`.`staffId`
 		WHERE 	`group`.`isActive`=1 ";
-			if($_POST['groupId']) {
-				$sql.=" AND `group`.`groupId`='".$this->strict($_POST['groupId'],'numeric')."'";
+			if ($this->model->getGroupId('','string')) {
+				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getGroupId('','string') . "\"";
+
 			}
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
@@ -434,16 +485,16 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		FROM 	[group]
 
 		WHERE 	[group].[isActive]=1 ";
-			if($_POST['groupId']) {
-				$sql.=" AND [group].[groupId]='".$this->strict($_POST['groupId'],'numeric')."'";
+			if ($this->model->getGroupId('','string')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getGroupId('','string') . "\"";
 			}
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 		SELECT	*
 		FROM 	\"group\"
 		WHERE 	\"group\".\"isActive\"=1";
-			if($_POST['groupId']) {
-				$sql.=" AND \"group\".\"groupId\"='".$this->strict($_POST['groupId'],'numeric')."'";
+			if ($this->model->getGroupId('','string')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getGroupId('','string') . "\"";
 			}
 		}
 		$filterArray=array('groupId','groupTranslateId');
@@ -485,28 +536,28 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		}
 
 
-			// bugs on extjs
-			if($_POST['method']=='read' && $_POST['mode']=='update') {
-				$json_encode = json_encode(
-				array('success'=>'true',
-				'total' => $this->total,
-				'data' => $items
-				));
-				$json_encode=str_replace("[","",$json_encode);
-				$json_encode=str_replace("]","",$json_encode);
-				echo $json_encode;
-				exit();
-			} else {
-				if(count($items)==0) {
-					$items='';
-				}
-				echo json_encode(
-				array('success'=>'true',
-				'total' => $this->total,
-				'data' => $items
-				));
-				exit();
+		if ($this->model->getGroupId('','string')) {
+			$json_encode = json_encode(array(
+                'success' => true,
+                'total' => $total,
+				'message' => 'Data Loaded',
+                'data' => $items
+			));
+			$json_encode = str_replace("[", "", $json_encode);
+			$json_encode = str_replace("]", "", $json_encode);
+			echo $json_encode;
+		} else {
+			if (count($items) == 0) {
+				$items = '';
 			}
+			echo json_encode(array(
+                'success' => true,
+                'total' => $total,
+				'message'=>'data loaded',
+                'data' => $items
+			));
+			exit();
+		}
 
 
 	}
@@ -520,7 +571,7 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		$this->q->commit();
 		$this->model->update();
@@ -582,7 +633,7 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		$this->q->commit();
 		$this->model->delete();
@@ -636,7 +687,370 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 		exit();
 
 	}
-	
+	function delete()
+	{
+		header('Content-Type', 'application/json; charset=utf-8');
+		//UTF8
+		if ($this->q->vendor   == self :: mysql) {
+			$sql = 'SET NAMES "utf8"';
+			$this->q->fast($sql);
+		}
+		$this->q->start();
+		$this->model->delete();
+		if ($this->q->vendor == self::mysql) {
+			$sql = "
+			UPDATE 	`Group`
+			SET 	`isDefault`			=	\"". $this->model->getIsDefault('','string') . "\",
+					`isNew`				=	\"". $this->model->getIsNew('','string') . "\",
+					`isDraft`			=	\"". $this->model->getIsDraft('','string') . "\",
+					`isUpdate`			=	\"". $this->model->getIsUpdate('','string') . "\",
+					`isDelete`			=	\"". $this->model->getIsDelete('','string') . "\",
+					`isActive`			=	\"". $this->model->getIsActive('','string') . "\",
+					`isApproved`		=	\"". $this->model->getIsApproved('','string') . "\",
+					`By`				=	\"". $this->model->getBy() . "\",
+					`Time`				=	" . $this->model->getTime() . "
+			WHERE 	`GroupId`		=	\"". $this->model->getGroupId('','string') . "\"";
+		} else if ($this->q->vendor == self::mssql) {
+			$sql = "
+			UPDATE 	[Group]
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
+					[isNew]				=	\"". $this->model->getIsNew('','string') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft('','string') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate('','string') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete('','string') . "\",
+					[isActive]			=	\"". $this->model->getIsActive('','string') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved('','string') . "\",
+					[By]				=	\"". $this->model->getBy() . "\",
+					[Time]				=	" . $this->model->getTime() . "
+			WHERE 	[GroupId]		=	\"". $this->model->getGroupId . "\"";
+		} else if ($this->q->vendor == self::oracle) {
+			$sql = "
+			UPDATE 	\"Group\"
+			SET 	\"GroupDesc\"	=	\"". $this->model->getGroupDesc('','string') . "\",
+					\"isDefault\"		=	\"". $this->model->getIsDefault('','string') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew('','string') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft('','string') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','string') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete('','string') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive('','string') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved('','string') . "\",
+					\"By\"				=	\"". $this->model->getBy() . "\",
+					\"Time\"			=	" . $this->model->getTime() . "
+			WHERE 	\"GroupId\"		=	\"". $this->model->getGroupId() . "\"";
+		}
+		// advance logging future
+		$this->q->tableName       = $this->model->getTableName();
+		$this->q->primaryKeyName  = $this->model->getPrimaryKeyName();
+		$this->q->primaryKeyValue = $this->model->getGroupId();
+		$this->q->audit           = $this->audit;
+		$this->q->update($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                "success" => "false",
+                "message" => $this->q->responce
+			));
+			exit();
+		}
+		$this->q->commit();
+		echo json_encode(array(
+            "success" => true,
+            "message" => "Deleted"
+            ));
+            exit();
+	}
+	/**
+	 *  To Update flag Status
+	 */
+	function updateStatus () {
+		$loop  = $this->model->getTotal();
+
+		if($this->isAdmin==0){
+
+			$this->model->delete();
+			if ($this->q->vendor == self::mysql) {
+				$sql = "
+				UPDATE 	`".$this->model->getTableName()."`
+				SET 	";
+
+				$sql.="	   `isDefault`			=	case `".$this->model->getPrimaryKeyName()."` ";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$GroupIdDelete.=$this->model->getGroupId($i,'array').",";
+						$sql.="
+						WHEN '".$this->model->getGroupId($i,'array')."'
+						THEN '".$this->model->getIsDefault('','string')."'";
+					}
+				}
+				$sql.="	END, ";
+				$sql.="	`isNew`	=	case `".$this->model->getPrimaryKeyName()."` ";
+
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$GroupIdDelete.=$this->model->getGroupId($i,'array').",";
+						$sql.="
+						WHEN '".$this->model->getGroupId($i,'array')."'
+						THEN '".$this->model->getIsNew('','string')."'";
+					}
+				}
+				$sql.="	END,";
+				$sql.="	`isDraft`	=	case `".$this->model->getPrimaryKeyName()."` ";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$GroupIdDelete.=$this->model->getGroupId($i,'array').",";
+						$sql.="
+						WHEN '".$this->model->getGroupId($i,'array')."'
+						THEN '".$this->model->getIsDraft('','string')."'";
+					}
+				}
+				$sql.="	END,";
+				$sql.="	`isUpdate`	=	case `".$this->model->getPrimaryKeyName()."`";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$GroupIdDelete.=$this->model->getGroupId($i,'array').",";
+						$sql.="
+						WHEN '".$this->model->getGroupId($i,'array')."'
+						THEN '".$this->model->getIsUpdate('','string')."'";
+					}
+				}
+				$sql.="	END,";
+				$sql.="	`isDelete`	=	case `".$this->model->getPrimaryKeyName()."`";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$GroupIdDelete.=$this->model->getGroupId($i,'array').",";
+						$sql.="
+						WHEN '".$this->model->getGroupId($i,'array')."'
+						THEN '".$this->model->getIsDelete($i,'array')."'";
+					}
+				}
+				$sql.="	END,	";
+				$sql.="	`isActive`	=		case `".$this->model->getPrimaryKeyName()."` ";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$GroupIdDelete.=$this->model->getGroupId($i,'array').",";
+						$sql.="
+						WHEN '".$this->model->getGroupId($i,'array')."'
+						THEN '".$this->model->getIsActive('','string')."'";
+					}
+				}
+				$sql.="	END,";
+				$sql.="	`isApproved`			=	case `".$this->model->getPrimaryKeyName()."` ";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$GroupIdDelete.=$this->model->getGroupId($i,'array').",";
+						$sql.="
+						WHEN '".$this->model->getGroupId($i,'array')."'
+						THEN '".$this->model->getIsApproved('','string')."'";
+
+					}
+				}
+				$sql.="
+				END,
+				`By`				=	\"". $this->model->getBy('','string') . "\",
+				`Time`				=	" . $this->model->getTime() . " ";
+
+
+				$this->model->setGroupIdAll(substr($GroupIdDelete,0,-1));
+				$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getGroupIdAll(). ")";
+
+			} else if ($this->q->vendor == self::mssql) {
+				$sql = "
+			UPDATE 	[Group]
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
+					[isNew]				=	\"". $this->model->getIsNew('','string') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft('','string') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate('','string') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete('','string') . "\",
+					[isActive]			=	\"". $this->model->getIsActive('','string') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved('','string') . "\",
+					[By]				=	\"". $this->model->getBy() . "\",
+					[Time]				=	" . $this->model->getTime() . "
+			WHERE 	[GroupId]		IN	(". $this->model->getGroupIdAll() . ")";
+			} else if ($this->q->vendor == self::oracle) {
+				$sql = "
+				UPDATE	\"Group\"
+				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault('','string') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew('','string') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft('','string') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','string') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete('','string') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive('','string') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved('','string') . "\",
+					\"By\"				=	\"". $this->model->getBy() . "\",
+					\"Time\"			=	" . $this->model->getTime() . "
+			WHERE 	\"GroupId\"		IN	(". $this->model->getGroupIdAll() . ")";
+			}
+		} else if ($this->isAdmin ==1){
+
+			if( $this->q->vendor==self::mysql) {
+				$sql="
+				UPDATE `".$this->model->getTableName()."`
+				SET";
+			} else if($this->q->vendor==self::mssql) {
+				$sql="
+			UPDATE 	[".$this->model->getTableName()."]
+			SET 	";
+
+			} else if ($this->q->vendor==self::oracle) {
+				$sql="
+			UPDATE \"".$this->model->getTableName()."\"
+			SET    ";
+			}
+			//	echo "arnab[".$this->model->getGroupId(0,'array')."]";
+			/**
+			 *	System Validation Checking
+			 *  @var $access
+			 */
+			$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved");
+			foreach($access as $systemCheck) {
+
+
+				if( $this->q->vendor==self::mysql) {
+					$sqlLooping.=" `".$systemCheck."` = CASE `".$this->model->getPrimaryKeyName()."`";
+				} else if($this->q->vendor==self::mssql) {
+					$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
+
+				} else if ($this->q->vendor==self::oracle) {
+					$sqlLooping.="	\"".$systemCheck."\" = CASE \"".$this->model->getPrimaryKeyName()."\"";
+				}
+				switch ($systemCheck){
+					case 'isDefault':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN '".$this->model->getGroupId($i,'array')."'
+							THEN '".$this->model->getIsDefault($i,'array')."'";
+						}
+						break;
+					case 'isNew':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN '".$this->model->getGroupId($i,'array')."'
+							THEN '".$this->model->getIsNew($i,'array')."'";
+
+						} break;
+					case 'isDraft':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN '".$this->model->getGroupId($i,'array')."'
+							THEN '".$this->model->getIsDraft($i,'array')."'";
+						}
+						break;
+					case 'isUpdate':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN '".$this->model->getGroupId($i,'array')."'
+							THEN '".$this->model->getIsUpdate($i,'array')."'";
+						}
+						break;
+					case 'isDelete':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN '".$this->model->getGroupId($i,'array')."'
+							THEN '".$this->model->getIsDelete($i,'array')."'";
+						}
+						break;
+					case 'isActive':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN '".$this->model->getGroupId($i,'array')."'
+							THEN '".$this->model->getIsActive($i,'array')."'";
+						}
+						break;
+					case 'isApproved':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN '".$this->model->getGroupId($i,'array')."'
+							THEN '".$this->model->getIsApproved($i,'array')."'";
+						}
+						break;
+				}
+
+
+				$sqlLooping.= " END,";
+			}
+
+			$sql.=substr($sqlLooping,0,-1);
+			if( $this->q->vendor==self::mysql) {
+				$sql.="
+			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getGroupIdAll().")";
+			} else if($this->q->vendor==self::mssql) {
+				$sql.="
+			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getGroupIdAll().")";
+			} else if ($this->q->vendor==self::oracle) {
+				$sql.="
+			WHERE \"".$this->model->getPrimaryKeyName()."\" IN (".$this->model->getGroupIdAll().")";
+			}
+		}
+		$this->q->update($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                "success" => false,
+                "message" => $this->q->responce
+			));
+			exit();
+		}
+		$this->q->commit();
+		echo json_encode(array(
+            "success" => true,
+            "message" => "Deleted"
+            ));
+            exit();
+
+	}
+	/**
+	 *  To check if a key duplicate or not
+	 */
+	function duplicate()
+	{
+		header('Content-Type', 'application/json; charset=utf-8');
+		if ($this->q->vendor == self::mysql) {
+			//UTF8
+			$sql = 'SET NAMES "utf8"';
+			$this->q->fast($sql);
+		}
+		if ($this->q->vendor == self::mysql) {
+			$sql = "
+			SELECT	*
+			FROM 	`group`
+			WHERE 	`groupCode` 	= 	\"". $this->model->getGroupCode(). "\"
+			AND		`isActive`		=	1";
+		} else if ($this->q->vendor == self::mssql) {
+			$sql = "
+			SELECT	*
+			FROM 	[group]
+			WHERE 	[groupCode] 	= 	\"". $this->model->getGroupCode() . "\"
+			AND		[isActive]		=	1";
+		} else if ($this->q->vendor == self::oracle) {
+			$sql = "
+			SELECT	*
+			FROM 	\"group\"
+			WHERE 	\"groupCode\" 	= 	\"". $this->model->getGroupCode() . "\"
+			AND		\"isActive\"		=	1";
+		}
+		$this->q->read($sql);
+		$total = 0;
+		$total = $this->q->numberRows();
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                "success" => false,
+                "message" => $this->q->responce
+			));
+			exit();
+		} else {
+			$row = $this->q->fetchArray();
+			if($this->duplicateTest == 1) {
+				return $total."|".$row['groupCode'];
+			} else {
+
+				echo json_encode(array(
+					"success" => "true",
+					"total" => $total,
+					"message" => "Duplicate Record",
+					"groupCode" => $row['groupCode']
+				));
+				exit();
+			}
+		}
+	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
 	 */
@@ -648,7 +1062,9 @@ echo json_encode(array("success"=>"true","message"=>"Record Created"));
 }
 
 
-$groupObject  	= 	new groupClass();
+
+
+$groupObject  	= 	new departmentClass();
 if(isset($_SESSION['staffId'])){
 	$groupObject->staffId = $_SESSION['staffId'];
 }
@@ -701,6 +1117,14 @@ if(isset($_GET['method'])) {
 		}
 	}
 
+	if($_GET['method']=='updateStatus'){
+		$groupObject->updateStatus();
+	}
+	if (isset($_GET['groupCode'])) {
+		if (strlen($_GET['groupCode']) > 0) {
+			$groupObject->duplicate();
+		}
+	}
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
 			$groupObject->excel();

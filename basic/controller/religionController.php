@@ -115,6 +115,7 @@ class religionClass extends configClass
 	 * @var numeric $isAdmin
 	 */
 	public $isAdmin;
+
 	/**
 	 * Audit Filter
 	 * @var string $auditFilter
@@ -313,7 +314,7 @@ class religionClass extends configClass
 					ON		`religion`.`By` = `staff`.`staffId`
 					WHERE 	".$this->auditFilter;
 			if ($this->model->getReligionId('','string')) {
-				$sql .= " AND `religionId`=\"". $this->model->getReligionId('','string') . "\"";
+				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getReligionId('','string') . "\"";
 
 			}
 
@@ -336,7 +337,7 @@ class religionClass extends configClass
 					ON		[religion].[By] = [staff].[staffId]
 					WHERE 	[religion].[isActive] ='1'	";
 			if ($this->model->getReligionId('','string')) {
-				$sql .= " AND [religionId]=\"". $this->model->getReligionId('','string') . "\"";
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getReligionId('','string') . "\"";
 			}
 		} else if ($this->q->vendor == self::oracle) {
 			$sql = "
@@ -357,7 +358,7 @@ class religionClass extends configClass
 					ON		\"religion\".\"By\" = \"staff\".\"staffId\"
 					WHERE 	\"isActive\"='1'	";
 			if ($this->model->getReligionId('','string')) {
-				$sql .= " AND \"religionId\"=\"". $this->model->getReligionId('','string') . "\"";
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getReligionId('','string') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -705,7 +706,9 @@ class religionClass extends configClass
 	 */
 	function updateStatus () {
 		$loop  = $this->model->getTotal();
+
 		if($this->isAdmin==0){
+
 			$this->model->delete();
 			if ($this->q->vendor == self::mysql) {
 				$sql = "
@@ -823,19 +826,19 @@ class religionClass extends configClass
 
 			if( $this->q->vendor==self::mysql) {
 				$sql="
-				UPDATE `religion`
+				UPDATE `".$this->model->getTableName()."`
 				SET";
 			} else if($this->q->vendor==self::mssql) {
 				$sql="
-			UPDATE 	[religion]
+			UPDATE 	[".$this->model->getTableName()."]
 			SET 	";
 
 			} else if ($this->q->vendor==self::oracle) {
 				$sql="
-			UPDATE \"religion\"
+			UPDATE \"".$this->model->getTableName()."\"
 			SET    ";
 			}
-
+		//	echo "arnab[".$this->model->getReligionId(0,'array')."]";
 			/**
 			 *	System Validation Checking
 			 *  @var $access
@@ -905,10 +908,10 @@ class religionClass extends configClass
 				}
 
 
-				$sqlLooping.= " END";
+				$sqlLooping.= " END,";
 			}
 
-			$sql.=$sqlLooping;
+			$sql.=substr($sqlLooping,0,-1);
 			if( $this->q->vendor==self::mysql) {
 				$sql.="
 			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getReligionIdAll().")";
@@ -1082,100 +1085,73 @@ class religionClass extends configClass
                         }
 	}
 }
-/**
- *	Declare object
- **/
-$religionObject = new religionClass();
-if (isset($_SESSION['staffId'])) {
+
+
+$religionObject  	= 	new religionClass();
+if(isset($_SESSION['staffId'])){
 	$religionObject->staffId = $_SESSION['staffId'];
 }
-if (isset($_SESSION['vendor'])) {
-	$religionObject->vendor = $_SESSION['vendor'];
+if(isset($_SESSION['vendor'])){
+	$religionObject-> vendor = $_SESSION['vendor'];
 }
 /**
  *	crud -create,read,update,delete
  **/
-if (isset($_POST['method'])) {
-	/*
-	 *  Initilize Value before load in the loader
-	 */
-	if (isset($_POST['leafId'])) {
-		$religionObject->leafId = $_POST['leafId'];
+if(isset($_POST['method']))	{
+	if(isset($_POST['leafId'])){
+		$religionObject-> leafId = $_POST['leafId'];
 	}
-
-	if (isset($_POST['filter'])) {
-		$religionObject->filter = $_POST['filter'];
-	}
-	if (isset($_POST['query'])) {
-		$religionObject->quickFilter = $_POST['query'];
-	}
-	if (isset($_POST['start'])) {
-		$religionObject->start = $_POST['start'];
-	}
-	if (isset($_POST['perPage'])) {
-		$religionObject->limit = $_POST['perPage'];
-	}
-	if (isset($_POST['order'])) {
-		$religionObject->order = $_POST['order'];
-	}
-	if (isset($_POST['sortField'])) {
-		$religionObject->sortField = $_POST['sortField'];
-	}
-	if (isset($_POST['isAdmin'])) {
-		$religionObject->isAdmin = $_POST['isAdmin'];
-	}
-	if(isset($_POST['duplicateTest'])) {
-		$religionObject->duplicateTest = $_POST['duplicateTest'];
-	}
-	/*
-	 *  Load the dynamic value
-	 */
-	$religionObject->execute();
-	if ($_POST['method'] == 'create') {
+	if($_POST['method']=='create')	{
 		$religionObject->create();
 	}
-	if ($_POST['method'] == 'read') {
+	if(isset($_POST['filter'])){
+		$religionObject->filter = $_POST['filter'];
+	}
+	if(isset($_POST['query'])){
+		$religionObject->query = $_POST['query'];
+	}
+	if(isset($_POST['order'])){
+		$religionObject-> order= $_POST['order'];
+	}
+	if(isset($_POST['sortField'])){
+		$religionObject-> sortField= $_POST['sortField'];
+	}
+	if($_POST['method']=='read') 	{
 		$religionObject->read();
 	}
-	if ($_POST['method'] == 'save') {
-		$religionObject->update();
-	}
-	if ($_POST['method'] == 'delete') {
-		$religionObject->delete();
-	}
-	if($_POST['method'] =='updateStatus'){
-		$religionObject->updateStatus();
+	if(isset($_POST['staffId'])) {
+		$religionObject->staffId = $_POST['staffId'];
+		if($_POST['method']=='save') 	{
+			$religionObject->read();
+		}
+		if($_POST['method']=='delete') 	{
+			$religionObject->delete();
+		}
 	}
 }
-if (isset($_GET['method'])) {
-	/*
-	 *  Initilize Value before load in the loader
-	 */
-	if (isset($_GET['leafId'])) {
-		$religionObject->leafId = $_GET['leafId'];
-	}
 
-	/*
-	 *  Load the dynamic value
-	 */
-	$religionObject->execute();
-	if (isset($_GET['field'])) {
-		if ($_GET['field'] == 'staffId') {
+if(isset($_GET['method'])) {
+	if(isset($_GET['leafId'])){
+		$religionObject-> leafId  = $_GET['leafId'];
+	}
+	if(isset($_GET['field'])) {
+		if($_GET['field']=='staffId') {
 			$religionObject->staffId();
 		}
 	}
+
 	if($_GET['method']=='updateStatus'){
 		$religionObject->updateStatus();
 	}
-	if (isset($_GET['religionDesc'])) {
-		if (strlen($_GET['religionDesc']) > 0) {
+	if (isset($_GET['religionCode'])) {
+		if (strlen($_GET['religionCode']) > 0) {
 			$religionObject->duplicate();
 		}
 	}
-
-	if ($_GET['method'] == 'excel') {
-		$religionObject->excel();
+	if(isset($_GET['mode'])){
+		if($_GET['mode']=='excel') {
+			$religionObject->excel();
+		}
 	}
-
 }
 ?>

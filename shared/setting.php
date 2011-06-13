@@ -12,6 +12,7 @@
 	/**
 	*	 all label language
 	**/
+
 	if( $q->vendor==sharedx::mysql) {
 		$sql="
 		SELECT DISTINCT `tableMappingColumnName`,
@@ -33,6 +34,7 @@
 	} else {
 
 	}
+
 	$result	=	$q->fast($sql);
 
 while ($row = $q->fetchAssoc($result)) {

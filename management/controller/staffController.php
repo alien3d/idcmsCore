@@ -12,12 +12,11 @@ require_once("../model/staffModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class staffClass extends  configClass {
-	/**
+	/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
 	public $q;
-
 	/**
 	 * Program Identification
 	 * @var numeric $leafId
@@ -29,8 +28,8 @@ class staffClass extends  configClass {
 	 */
 	public $staffId;
 	/**
-	 *	 Database Selected
-	 *   string $database;
+	 * Selected Database or Tablespace
+	 * @var string $database
 	 */
 	public $database;
 	/**
@@ -53,26 +52,32 @@ class staffClass extends  configClass {
 	 * @var string $quickFilter
 	 */
 	public $quickFilter;
-
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
 	 */
-	private  $excel;
-
-
+	private $excel;
 	/**
 	 * Document Trail Audit.
 	 * @var string $documentTrail;
 	 */
-	private  $documentTrail;
-
+	private $documentTrail;
 	/**
+	 * Start
+	 * @var string $start;`
+	 */
+	public $start;
+	/**
+	 *  Limit
+	 * @var string $limit
+	 */
+	public $limit;
+	/**
+	 /**
 	 *  Ascending ,Descending ASC,DESC
 	 * @var string $order;`
 	 */
 	public $order;
-
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
 	 * @var string $sortField
@@ -89,16 +94,41 @@ class staffClass extends  configClass {
 	 */
 	private $audit;
 	/**
-	 * Current Table Staff Indentification Value
+	 * Log Sql Statement True or False
+	 * @var unknown_type
+	 */
+	private $log;
+	/**
+	 * Current Table staff Indentification Value
 	 * @var numeric $staffId
 	 */
 	public $staffId;
 	/**
-	 * Current Staff Session Indentification Value
-	 * @var numeric $staffSessionId
+	 * staff Model
+	 * @var string $staffModel
 	 */
-	public $staffSessionId;
-	
+	public $model;
+	/**
+	 * Open To See Audit  Column --> approved,new,delete and e.g
+	 * @var numeric $isAdmin
+	 */
+	public $isAdmin;
+
+	/**
+	 * Audit Filter
+	 * @var string $auditFilter
+	 */
+	public $auditFilter;
+	/**
+	 * Audit Column
+	 * @var string $auditColumn
+	 */
+	public $auditColumn;
+	/**
+	 * Duplicate Testing either the key of table same or have been created.
+	 * @var boolean $duplicateTest;
+	 */
+	public $duplicateTest;
 	/**
 	 * Class Loader
 	 */
@@ -126,12 +156,12 @@ class staffClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
-		
+
 		$this->model				= new staffModel();
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
 		$this->documentTrail = new documentTrailClass();
-	
+
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -574,11 +604,30 @@ class staffClass extends  configClass {
 	 */
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
+		if($this->isAdmin == 0) {
+			if($this->q->vendor == self :: mysql) {
+				$this->auditFilter = "	`staff`.`isActive`		=	1	";
+			} else if ($this->q->vendor == self :: mssql) {
+				$this->auditFilter = "	[staff].[isActive]		=	1	";
+			} else if  ($this->q->vendor == self :: oracle) {
+				$this->auditFilter = "	\"staff\".\"isActive\"	=	1	";
+			}
+		} else if($this->isAdmin ==1) {
+			if($this->q->vendor == self :: mysql) {
+				$this->auditFilter = "	 1 ";
+			} else if ($this->q->vendor == self :: mssql) {
+				$this->auditFilter = "	or 1 ";
+			} else if  ($this->q->vendor == self :: oracle) {
+				$this->auditFilter = " or 1 ";
+			}
+		}
+		//UTF8
+		$items=array();
 		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		if( $this->q->vendor==self::mysql) {
 			$sql="
@@ -586,16 +635,22 @@ class staffClass extends  configClass {
 			FROM 	`staff`
 			JOIN 	`group`
 			USING 	(`groupId`)
-			WHERE 	`staff`.`isActive`=1
-			AND		`group`.`isActive`=1";
+			JOIN	`department`
+			USING	(`departmentId`)
+			WHERE 	`staff`.`isActive`		=	1
+			AND		`group`.`isActive`		=	1
+			AND		`department`.`isActive`	=	1	";
 		}  else if ($this->q->vendor==self::mssql) {
 			$sql="
 			SELECT	*
 			FROM 	[staff]
 			JOIN 	[group]
 			ON		[group].[groupId]=[staff].[groupId]
+			JOIN	[department]
+			USING	[department].[departmentId]=[staff].[departmentId]
 			WHERE 	[staff].[isActive]=1
-			AND		[group].[isActive]=1";
+			AND		[group].[isActive]=1
+			AND		[department].[departmentId]";
 		}  else if ($this->q->vendor==self::oracle) {
 			$sql="
 			SELECT	*
@@ -603,9 +658,10 @@ class staffClass extends  configClass {
 			JOIN 	\"group\"
 			USING 	(\"groupId\")
 			WHERE 	\"staff\".\"isActive\"=1
-			AND		\"group\".\"isActive\"=1";
+			AND		\"group\".\"isActive\"=1
+			AND		\"department\".\"isActive\"=1";
 		}
-		if($this->staffId) {
+		if($this->model->staffId) {
 			$sql.=" AND `staffId`='".$this->staffId."'";
 		}
 
@@ -705,7 +761,7 @@ class staffClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 
 		$this->q->start();
@@ -714,20 +770,20 @@ class staffClass extends  configClass {
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 			SELECT	`groupId`,
-					`staffPassword` 
-			FROM 	`staff` 
+					`staffPassword`
+			FROM 	`staff`
 			WHERE 	`staffId`	=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 			SELECT 	[groupId],
-					[staffPassword] 
-			FROM 	[staff] 
+					[staffPassword]
+			FROM 	[staff]
 			WHERE 	[staffId]	=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 			SELECT 	\"groupId\",
-					\"staffPassword\" 
-			FROM 	\"staff\" 
+					\"staffPassword\"
+			FROM 	\"staff\"
 			WHERE 	\"staffId\"	=	'".$this->model->staffId."'";
 		}
 		$this->q->read($sql);
@@ -992,7 +1048,7 @@ class staffClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 
 		$this->q->start();
@@ -1061,7 +1117,7 @@ class staffClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		if($_SESSION['start']==0) {
 			$sql=str_replace("LIMIT","",$_SESSION['sql']);
@@ -1135,9 +1191,11 @@ class staffClass extends  configClass {
 
 }
 
-$staffObject  		= 	new staffClass();
+
+
+$staffObject  	= 	new departmentClass();
 if(isset($_SESSION['staffId'])){
-	$staffObject->staffSessionId = $_SESSION['staffId'];
+	$staffObject->staffId = $_SESSION['staffId'];
 }
 if(isset($_SESSION['vendor'])){
 	$staffObject-> vendor = $_SESSION['vendor'];
@@ -1188,6 +1246,14 @@ if(isset($_GET['method'])) {
 		}
 	}
 
+	if($_GET['method']=='updateStatus'){
+		$staffObject->updateStatus();
+	}
+	if (isset($_GET['departmentCode'])) {
+		if (strlen($_GET['departmentCode']) > 0) {
+			$staffObject->duplicate();
+		}
+	}
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
 			$staffObject->excel();

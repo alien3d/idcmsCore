@@ -69,6 +69,7 @@ Ext.onReady(function() {
         reader: religionReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords :true,
         baseParams: {
             method: "read",
             grid: "master",
@@ -155,6 +156,7 @@ Ext.onReady(function() {
         reader: religionListProxy,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords :true,
         baseParams: {
             method: "read",
             grid: "master",

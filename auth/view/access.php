@@ -55,9 +55,9 @@ class loginClass extends configClass {
 		//$this->excel				=	new  PHPExcel();
 
 		//$this->audit 				=	0;
-		
-		 
-		
+
+
+
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -86,24 +86,30 @@ class loginClass extends configClass {
 			FROM 	`staff`
 			JOIN	`group`
 			USING	(`groupId`)
-			WHERE 	`staffName`		=	'".$this->strict($this->User,'s')."'
-			AND		`staffPassword`	=	'".$this->strict(md5($this->Pass),'p')."'";
+			JOIN	`department`
+			USING	(`departmentId`)
+			WHERE 	`staff`.`staffName`		=	'".$this->strict($this->User,'s')."'
+			AND		`staff`.`staffPassword`	=	'".$this->strict(md5($this->Pass),'p')."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql	=	"
 			SELECT	*
 			FROM 	[staff]
 			JOIN	[group]
 			ON		[staff].[groupId]  = [group].[groupId]
-			WHERE 	[staffName]		=	'".$this->strict($this->User,'s')."'
-			AND		[staffPassword]	=	'".$this->strict(md5($this->Pass),'p')."'";
+			JOIN	[department]
+			USING	[department].[departmentId] = [staff].[departmentId]
+			WHERE 	[staff].[staffName]		=	'".$this->strict($this->User,'s')."'
+			AND		[staff].[staffPassword]	=	'".$this->strict(md5($this->Pass),'p')."'";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql	=	"
 			SELECT	*
 			FROM 	\"staff\"
 			JOIN	\"group\"
 			USING   (\"groupId\")
-			WHERE 	\"staffName\"		=	'".$this->strict($this->User,'s')."'
-			AND		\"staffPassword\"	=	'".$this->strict(md5($this->Pass),'p')."'";
+			JOIN	`department`
+			USING	(\"departmentId\")
+			WHERE 	\"staff\".\"staffName\"		=	'".$this->strict($this->User,'s')."'
+			AND		\"staff\".\"staffPassword\"	=	'".$this->strict(md5($this->Pass),'p')."'";
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$this->vendor."]"));
 			exit();
@@ -121,16 +127,18 @@ class loginClass extends configClass {
 
 			$_SESSION['staffId']		=	$row['staffId'];
 			$_SESSION['staffNo'] 		= 	$row['staffNo'];
+			$_SESSION['staffName']		=   $row['staffName'];
 			$_SESSION['languageId']		=  	$row['languageId'];
 			$_SESSION['groupId']		=   $row['groupId'];
+			$_SESSION['departmentId']	=   $row['departmentId'];
 			$_SESSION['database']		=	$_POST['database'];
 			$_SESSION['vendor']			= 	$_POST['vendor'];
-			
+
 			// audit Log Time In
 			$sql="INSERT INTO `staffWebAccessId` (`staffId`,`staffWebAccessLogIn`)
 			VALUES ('".$_SESSION['staffId."']."','".date("Y-m-d H:i:s")."')";
 			$this->q->update($sql);
-			
+
 			echo json_encode(array("success"=>"true","message"=>"success login"));
 			exit();
 

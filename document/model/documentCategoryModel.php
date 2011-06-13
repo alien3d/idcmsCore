@@ -6,11 +6,16 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package religion
+ * @package Document Category
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class documentCategoryModel extends validationClass{
+	// table property
+	private $tableName;
+	private $primaryKeyName;
+	
+	//table field
 	public $documentCategoryId;
 	public $documentCategoryTitle;
 	public $documentCategoryDesc;
@@ -64,7 +69,7 @@ class documentCategoryModel extends validationClass{
 	 */
 	public function create()
 	{
-		$this->setIsDefaut(0);
+		$this->setIsDefault(0);
 		$this->setIsNew(1);
 		$this->setIsDraft(0);
 		$this->setIsUpdate(0);
@@ -77,7 +82,7 @@ class documentCategoryModel extends validationClass{
 	 */
 	public function update()
 	{
-		$this->setIsDefaut(0);
+		$this->setIsDefault(0);
 		$this->setIsNew(0);
 		$this->setIsDraft(0);
 		$this->setIsUpdate(1);

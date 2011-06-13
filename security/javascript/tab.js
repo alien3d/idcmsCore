@@ -1,66 +1,94 @@
 Ext
 		.onReady(function() {
-			Ext.Ajax.timeout = 90000000;
-			Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
+			Ext.QuickTips.init();
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
+			Ext.form.Field.prototype.msgTarget = "under";
+			Ext.Ajax.timeout = 90000;
 			var pageCreate;
+			var pageCreateList;
 			var pageReload;
+			var pageReloadList;
 			var pagePrint;
-			if (leafCreateAccessValue == 1) {
-				var pageCreate = false;
-			} else {
-				var pageCreate = true;
-			}
-			if (leafReadAccessValue == 1) {
-				var pageReload = false;
-			} else {
-				var pageReload = true;
-			}
-			if (leafPrintAccessValue == 1) {
-				var pagePrint = false;
-			} else {
-				var pagePrint = true;
-			}
+			var pagePrintList;
 			var perPage = 15;
 			var encode = false;
 			var local = false;
-			var accordionProxy = new Ext.data.HttpProxy({
-				url : "../controller/accordionController.php",
-				method : 'POST',
-				baseParams : {
-					method : "read",
-					page : "master",
-					leafId : leafId
-				},
+			var jsonResponse;
+			var duplicate = 0;
+			if (leafReadAccessValue == 1) {
+				pageCreate = false;
+				pageCreateList = false;
+			} else {
+				pageCreate = true;
+				pageCreateList = true;
+			}
+			if (leafReadAccessValue == 1) {
+				pageReload = false;
+				pageReloadList = false;
+			} else {
+				pageReload = true;
+				pageReloadList = true;
+			}
+			if (leafPrintAccessValue == 1) {
+				pagePrint = false;
+				pagePrintList = false;
+			} else {
+				pagePrint = true;
+				pagePrintList = true;
+			}
+
+			var tabProxy = new Ext.data.HttpProxy({
+				url : "../controller/tabController.php",
+			
 				success : function(response, options) {
-					var x = Ext.decode(response.responseText);
-					if (x.success == "true") {
-						title = successLabel;
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,
+						// jsonResponse.message);
+						// //uncomment it for debugging
+						// purpose
 					} else {
-						title = failureLabel;
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+
 					}
-					Ext.MessageBox.alert(systemLabel, x.message);
 				},
 				failure : function(response, options) {
-
 					Ext.MessageBox.alert(systemErrorLabel,
 							escape(response.Status) + ":"
 									+ escape(response.statusText));
 				}
 			});
-			
-			var accordionReader = new Ext.data.JsonReader({
-				root : "data",
+
+			var tabReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
+				idProperty : "tabId"
+			});
+
+			var tabStore = new Ext.data.JsonStore({
+				proxy : tabProxy,
+				reader : tabReader,
+				autoLoad : true,
+				autoDestroy : true,
+				pruneModifiedRecords : true,
+				baseParams : {
+					method : "read",
+					grid : "master",
+					leafId : leafId,
+					isAdmin : isAdmin,
+					start : 0,
+					perPage : perPage
+				},
+				root : "data",
 				fields : [ {
-					name : 'accordionId',
+					name : 'tabId',
 					type : 'int'
 				}, {
-					name : 'accordionSequence',
+					name : 'tabSequence',
 					type : 'int'
 				}, {
-					name : 'accordionNote',
+					name : 'tabNote',
 					type : 'string'
 				}, {
 					name : 'iconId',
@@ -69,73 +97,82 @@ Ext
 					name : 'iconName',
 					type : 'string'
 				}, {
-            name: "isDefault",
-            type: "boolean"
-        }, {
-            name: "isNew",
-            type: "boolean"
-        }, {
-            name: "isDraft",
-            type: "boolean"
-        }, {
-            name: "isUpdate",
-            type: "boolean"
-        }, {
-            name: "isDelete",
-            type: "boolean"
-        }, {
-            name: "isActive",
-            type: "boolean"
-        }, {
-            name: "isApproved",
-            type: "boolean"
-        }, {
-            name: "Time",
-            type: "date",
-            dateFormat: "Y-m-d H:i:s"
-        }]
-			});	
-			var accordionStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				proxy : accordionProxy,
-				reader : accordionReader
+					name : "isDefault",
+					type : "boolean"
+				}, {
+					name : "isNew",
+					type : "boolean"
+				}, {
+					name : "isDraft",
+					type : "boolean"
+				}, {
+					name : "isUpdate",
+					type : "boolean"
+				}, {
+					name : "isDelete",
+					type : "boolean"
+				}, {
+					name : "isActive",
+					type : "boolean"
+				}, {
+					name : "isApproved",
+					type : "boolean"
+				}, {
+					name : "Time",
+					type : "date",
+					dateFormat : "Y-m-d H:i:s"
+				} ]
 			});
 
-			var accordionTranslateProxy = new Ext.data.HttpProxy({
-				url : "../controller/accordionController.php",
+			var tabStore = new Ext.data.JsonStore({
+				autoDestroy : true,
+				proxy : tabProxy,
+				reader : tabReader
+			});
+
+			var tabTranslateProxy = new Ext.data.HttpProxy({
+				url : "../controller/tabController.php",
 				method : 'POST',
 				baseParams : {
 					method : "read",
-					page  : "detail",
+					page : "detail",
 					leafId : leafId
 				},
 				success : function(response, options) {
-					var x = Ext.decode(response.responseText);
-					if (x.success == "true") {
-						title = successLabel;
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,
+						// jsonResponse.message);
+						// //uncomment it for debugging
+						// purpose
 					} else {
-						title = failureLabel;
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+
 					}
-					Ext.MessageBox.alert(systemLabel, x.message);
 				},
 				failure : function(response, options) {
-
 					Ext.MessageBox.alert(systemErrorLabel,
 							escape(response.Status) + ":"
 									+ escape(response.statusText));
 				}
 			});
-			
-			var accordionTranslateReader = new Ext.data.JsonReader({
-				root : "data",
+			var tabTranslateReader = new Ext.data.JsonReader({
+
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
-				fields : [{
-					name : 'accordionTranslateId',
+				idProperty : "religionId"
+			});
+			var tabTranslateStore = new Ext.data.JsonStore({
+				autoDestroy : true,
+				proxy : tabTranslateProxy,
+				reader : tabTranslateReader,
+				root : "data",
+				fields : [ {
+					name : 'tabTranslateId',
 					type : 'int'
 				}, {
-					name : 'accordionId',
+					name : 'tabId',
 					type : 'int'
 				}, {
 					name : 'languageId',
@@ -147,57 +184,56 @@ Ext
 					name : 'languageDesc',
 					type : 'string'
 				}, {
-					name : 'accordionTranslate',
+					name : 'tabTranslate',
 					type : 'string'
-				}]
-			}); 
-			var accordionTranslateStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				proxy : accordionTranslateProxy,
-				reader : accordionTranslateReader
+				} ]
 			});
 			var staffProxy = new Ext.data.HttpProxy({
-		        url: "../controller/accordionController.php?",
-		        method: "GET",
-		        success: function (response, options) {
-		            jsonResponse = Ext.decode(response.responseText);
-		            if (jsonResponse.success == true) {
-		                //Ext.MessageBox.alert(successLabel, jsonResponse.message); //uncommen for testing purpose
-		            } else {
-		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-		            }
+				url : "../controller/tabController.php?",
+				method : "GET",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,
+						// jsonResponse.message); //uncommen for testing purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
 
-		        },
-		        failure: function (response, options) {
-		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
-		        }
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
 
-		    });
-		    var staffReader = new Ext.data.JsonReader({
-		        totalProperty: "total",
-		        successProperty: "success",
-		        messageProperty: "message",
-		        idProperty: "staffId"
-		    });
-		    var staffStore = new Ext.data.JsonStore({
-		        proxy: staffProxy,
-		        reader: staffReader,
-		        autoLoad: true,
-		        autoDestroy: true,
-		        baseParams: {
-		            method: 'read',
-		            field: 'staffId',
-		            leafId: leafId
-		        },
-		        root: 'staff',
-		        fields: [{
-		            name: "staffId",
-		            type: "int"
-		        }, {
-		            name: "staffName",
-		            type: "string"
-		        }]
-		    });
+			});
+			var staffReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "staffId"
+			});
+			var staffStore = new Ext.data.JsonStore({
+				proxy : staffProxy,
+				reader : staffReader,
+				autoLoad : true,
+				autoDestroy : true,
+				baseParams : {
+					method : 'read',
+					field : 'staffId',
+					leafId : leafId
+				},
+				root : 'staff',
+				fields : [ {
+					name : "staffId",
+					type : "int"
+				}, {
+					name : "staffName",
+					type : "string"
+				} ]
+			});
 
 			var filters = new Ext.ux.grid.GridFilters({
 				// encode and local configuration options defined previously for
@@ -206,19 +242,19 @@ Ext
 				local : false, // defaults to false (remote filtering)
 				filters : [ {
 					type : 'numeric',
-					dataIndex : 'accordionSequence',
-					column : 'accordionSequence',
-					table : 'accordion'
+					dataIndex : 'tabSequence',
+					column : 'tabSequence',
+					table : 'tab'
 				}, {
 					type : 'string',
-					dataIndex : 'accordionNote',
-					column : 'accordionNote',
-					table : 'accordion'
+					dataIndex : 'tabNote',
+					column : 'tabNote',
+					table : 'tab'
 				}, {
 					type : 'string',
 					dataIndex : 'iconId',
 					column : 'iconId',
-					table : 'accordion'
+					table : 'tab'
 				}, {
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
@@ -230,134 +266,58 @@ Ext
 					dateFormat : 'Y-m-d H:i:s',
 					dataIndex : 'updatedTime',
 					column : 'Time',
-					table : 'accordion'
+					table : 'tab'
 				} ]
 			});
-			this.action = new Ext.ux.grid.RowActions(
-					{
-						header : actionLabel,
-						dataIndex : 'accordionId',
-						actions : [
-								{
-									iconCls : 'application_edit',
-									callback : function(grid, record, action,
-											row, col) {
-										formPanel.getForm().reset();
-										formPanel.form
-												.load({
-													url : '../controller/accordionController.php',
-													method : 'POST',
-													waitMsg : waitMessageLabel,
-													params : {
-														method : 'read',
-														page : 'master',
-														accordionId : record.data.accordionId,
-														leafId : leafId
-													},
-													success : function(form,
-															action) {
-														accordionTranslateStore
-																.load({
-																	params : {
-																		leafId : leafId,
-																		accordionId : record.data.accordionId
-																	}
-																});
-														Ext.getCmp('translation').enable();
-														viewPort.items.get(1)
-																.expand();
-													},
-													failure : function(form,
-															action) {
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		action.result.errorMessage);
-													}
-												});
-									}
-								},
-								{
-									iconCls : 'trash',
-									callback : function(grid, record, action,
-											row, col) {
-										Ext.Msg
-												.show({
-													title : deleteRecordTitleMessageLabel,
-													msg : deleteRecordMessageLabel,
-													icon : Ext.Msg.QUESTION,
-													buttons : Ext.Msg.YESNO,
-													scope : this,
-													fn : function(response) {
-														if ('yes' == response) {
-															Ext.Ajax
-																	.request({
-																		url : '../controller/accordionController.php',
-																		params : {
-																			method : 'delete',
-																			accordionId : record.data.accordionId,
-																			leafId : leafId
-																		},
-																		success : function(
-																				response,
-																				options) {
-																			var x = Ext
-																					.decode(response.responseText);
 
-																			if (x.success == "true") {
-																				title = successLabel;
-																			} else {
-																				title = failureLabel;
-																			}
-																			Ext.MessageBox
-																					.alert(
-																							systemLabel,
-																							x.message);
-																			accordionStore
-																					.reload({
-																						params : {
-																							leafId : leafId,
-																							start : 0,
-																							limit : perPage
-																						}
+			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Default',
+				dataIndex : 'isDefault',
+				hidden : isDefaultHidden
+			});
+			var isNewGrid = new Ext.ux.grid.CheckColumn({
+				header : 'New',
+				dataIndex : 'isNew',
+				hidden : isNewHidden
+			});
+			var isDraftGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Draft',
+				dataIndex : 'isDraft',
+				hidden : isDraftHidden
+			});
+			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Update',
+				dataIndex : 'isUpdate',
+				hidden : isUpdateHidden
+			});
+			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Delete',
+				dataIndex : 'isDelete'
+			});
+			var isActiveGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Active',
+				dataIndex : 'isActive',
+				hidden : isActiveHidden
+			});
+			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Approved',
+				dataIndex : 'isApproved',
+				hidden : isApprovedHidden
+			});
 
-																					});
-
-																		},
-																		failure : function(
-																				response,
-																				options) {
-																			statusCode = response.status;
-																			statusMessage = response.statusText;
-																			Ext.MessageBox
-																					.alert(
-																							systemErrorLabel,
-																							escape(statusCode)
-																									+ ":"
-																									+ statusMessage);
-																		}
-																	});
-														}
-													}
-												});
-									}
-								} ]
-					});
-					
-
-			var columnModelMaster = [
+			var columnModelTab = [
 					new Ext.grid.RowNumberer(),
 					this.action,
 					{
-						dataIndex : "accordionSequence",
-						header : accordionSequenceLabel,
+						dataIndex : "tabSequence",
+						header : tabSequenceLabel,
 						sortable : true,
 						hidden : false,
 						width : 50
 					},
 					{
-						dataIndex : "accordionNote",
-						header : accordionNoteLabel,
+						dataIndex : "tabNote",
+						header : tabNoteLabel,
 						sortable : true,
 						hidden : false,
 						width : 100
@@ -376,7 +336,8 @@ Ext
 									+ '.png\' width=\'12\' height=\'12\'> '
 									+ value;
 						}
-					}, {
+					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
+					isDeleteGrid, isActiveGrid, isApprovedGrid, {
 						dataIndex : 'By',
 						header : createByLabel,
 						sortable : true,
@@ -391,9 +352,9 @@ Ext
 						width : 100
 					} ];
 
-			var columnModelDetail = [ new Ext.grid.RowNumberer(), {
-				dataIndex : "accordionNote",
-				header : accordionSequenceLabel,
+			var columnModelTabTranslate = [ new Ext.grid.RowNumberer(), {
+				dataIndex : "tabNote",
+				header : tabSequenceLabel,
 				sortable : true,
 				hidden : true,
 				width : 50
@@ -411,61 +372,203 @@ Ext
 				width : 100
 
 			}, {
-				dataIndex : "accordionTranslate",
-				header : "accordionTranslate",
+				dataIndex : "tabTranslate",
+				header : "tabTranslate",
 				sortable : true,
 				hidden : false,
 				width : 100,
 
 				editor : {
 					xtype : 'textfield',
-					id : 'accordionTranslate'
+					id : 'tabTranslate'
 				}
 
 			} ];
-			var gridMaster = new Ext.grid.GridPanel({
-				border : false,
-				store : accordionStore,
-				autoHeight : false,
-				columns : columnModelMaster,
-				loadMask : true,
-				plugins : [ this.action, filters ],
-				sm : new Ext.grid.RowSelectionModel({
-					singleSelect : true
-				}),
-				viewConfig : {
-					forceFit : true
-				},
-				iconCls : 'application_view_detail',
-				listeners : {
-					render : {
-						fn : function() {
-							accordionStore.load({
-								params : {
-									start : 0,
-									limit : perPage,
-									method : 'read',
-									mode : 'view',
-									plugin : [ filters ]
-								}
-							});
-						}
-					}
-				},
-				bbar : new Ext.PagingToolbar({
-					store : accordionStore,
-					pageSize : perPage,
-					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
-				})
-			});
+			var gridTab = new Ext.grid.GridPanel(
+					{
+						border : false,
+						store : tabStore,
+						autoHeight : false,
+						columns : columnModelTab,
+						loadMask : true,
+						plugins : [ filters ],
+						sm : new Ext.grid.RowSelectionModel({
+							singleSelect : true
+						}),
+						viewConfig : {
+							forceFit : true
+						},
+						iconCls : 'application_view_detail',
+						listeners : {
+							'rowclick' : function(object, rowIndex, e) {
+								var record = tabStore.getAt(rowIndex);
+								formPanel.getForm().reset();
+								formPanel.form.load({
+									url : "../controller/tabController.php",
+									method : "POST",
+									waitTitle : systemLabel,
+									waitMsg : waitMessageLabel,
+									params : {
+										method : "read",
+										mode : "update",
+										tabId : record.data.tabId,
+										leafId : leafId
+									},
+									success : function(form, action) {
 
-			var editor = new Ext.ux.grid.RowEditor(
+										Ext.getCmp('deleteButton').enable();
+										viewPort.items.get(1).expand();
+									},
+									failure : function(form, action) {
+										Ext.MessageBox.alert(systemErrorLabel,
+												action.result.message);
+									}
+								});
+							}
+						},
+						tbar : {
+							items : [
+									{
+										text : 'Check All',
+										iconCls : 'row-check-sprite-check',
+										listeners : {
+											'click' : function() {
+												var count = tabStore.getCount();
+												tabStore
+														.each(function(rec) {
+															for ( var access in accessArray) { // alert(access);
+																rec
+																		.set(
+																				accessArray[access],
+																				true);
+															}
+														});
+											}
+										}
+									},
+									{
+										text : 'Clear All',
+										iconCls : 'row-check-sprite-uncheck',
+										listeners : {
+											'click' : function() {
+												tabStore
+														.each(function(rec) {
+															for ( var access in accessArray) {
+																rec
+																		.set(
+																				accessArray[access],
+																				false);
+															}
+														});
+											}
+										}
+									},
+									{
+										text : 'save',
+										iconCls : 'bullet_disk',
+										listeners : {
+											'click' : function(c) {
+												var url;
+												var count = tabStore.getCount();
+												url = '../controller/tabController.php?';
+												var sub_url;
+												sub_url = '';
+												var modified = tabStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
+													var record = tabStore
+															.getAt(i);
+													sub_url = sub_url
+															+ '&tabId[]='
+															+ record
+																	.get('tabId');
+													if (isAdmin == 1) {
+														sub_url = sub_url
+																+ '&isDraft[]='
+																+ record
+																		.get('isDraft');
+														sub_url = sub_url
+																+ '&isNew[]='
+																+ record
+																		.get('isNew');
+														sub_url = sub_url
+																+ '&isUpdate[]='
+																+ record
+																		.get('isUpdate');
+													}
+													sub_url = sub_url
+															+ '&isDelete[]='
+															+ record
+																	.get('isDelete');
+													if (isAdmin == 1) {
+														sub_url = sub_url
+																+ '&isActive[]='
+																+ record
+																		.get('isActive');
+														sub_url = sub_url
+																+ '&isApproved[]='
+																+ record
+																		.get('isApproved');
+													}
+												}
+												url = url + sub_url; // reques
+																		// and
+																		// ajax
+												Ext.Ajax
+														.request({
+															url : url,
+															method : 'GET',
+															params : {
+																leafId : leafId,
+																method : 'updateStatus'
+															},
+															success : function(
+																	response,
+																	options) {
+																jsonResponse = Ext
+																		.decode(response.responseText);
+																if (jsonResponse.success == true) {
+																	Ext.MessageBox
+																			.alert(
+																					systemLabel,
+																					jsonResponse.message);
+																	tabStore
+																			.reload();
+																} else if (jsonResponse.success == false) {
+																	Ext.MessageBox
+																			.alert(
+																					systemErrorLabel,
+																					jsonResponse.message);
+																}
+															},
+															failure : function(
+																	response,
+																	options) {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				escape(response.status)
+																						+ ":"
+																						+ escape(response.statusText));
+															}
+														}); // refresh the store
+											}
+										}
+									} ]
+						},
+						bbar : new Ext.PagingToolbar({
+							store : tabStore,
+							pageSize : perPage
+						})
+					});
+
+			var tabTranslateEditor = new Ext.ux.grid.RowEditor(
 					{
 						saveText : 'Save',
 						listeners : {
-							CancelEdit : function(rowEditor, changes, record,
+							cancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
-								accordionStore.reload();
+								tabStore.reload();
 
 							},
 							afteredit : function(rowEditor, changes, record,
@@ -473,44 +576,34 @@ Ext
 
 								this.save = true;
 								// update record manually
-								var curr_store = this.grid.getStore();
-								var record = curr_store.getAt(rowIndex);
+								var record = this.grid.getStore().getAt(
+										rowIndex);
 
 								Ext.Ajax.request({
-									url : '../controller/accordionController.php',
+									url : '../controller/tabController.php',
 									method : 'POST',
-									waitMsg : 'Harap Bersabar',
 									params : {
 										leafId : leafId,
 										method : 'save',
 										page : 'detail',
-										accordionTranslateId : record
-												.get('accordionTranslateId'),
-										accordionTranslate : Ext.getCmp(
-												'accordionTranslate')
-												.getValue()
+										tabTranslateId : record
+												.get('tabTranslateId'),
+										tabTranslate : Ext.getCmp(
+												'tabTranslate').getValue()
 
 									},
 									success : function(response, options) {
-										x = Ext.decode(response.responseText);
-										if (x.success == 'false') {
-											Ext.MessageBox.alert('system',
-													x.message);
-										} else {
-											// if required messagebox to check
-											// status uncomment below
-											Ext.MessageBox.alert('system',
-													x.message);
-											accordionTranslateStore.reload();
+										jsonResponse = Ext
+												.decode(response.responseText);
+										if (jsonResponse.success == false) {
+											Ext.MessageBox.alert(systemLabel,
+													jsonResponse.message);
 										}
-
 									},
 									failure : function(response, options) {
-										statusCode = response.status;
-										statusMessage = response.statusText;
-										Ext.MessageBox.alert('system',
-												escape(statusCode) + ":"
-														+ statusMessage);
+										Ext.MessageBox.alert(systemErrorLabel,
+												escape(response.status) + ":"
+														+ response.statusText);
 									}
 								});
 
@@ -518,178 +611,156 @@ Ext
 						}
 					});
 
-			function deleteRow(btn) {
-				if (btn == 'yes') {
-					var selections = approved.selModel.getSelections();
-					var prez = [];
-					for (i = 0; i < approved.selModel.getCount(); i++) {
-						prez.push(selections[i].json.accordionTranslateId);
-					}
-					var encoded_array = Ext.encode(prez);
-
-					Ext.Ajax.request({
-						url : 'accordionData.php',
-						method : 'POST',
-						params : {
-							method : "DELETE",
-							ids : encoded_array,
-							leafId : leafId
-						},
-						success : function(response, options) {
-							var x = Ext.decode(response.responseText);
-							if (x.success == 'true') {
-								Ext.MessageBox.alert('Message', x.message);
-							} else {
-								Ext.MessageBox.alert('Message', x.message);
-							}
-
-						},
-						failure : function(response, options) {
-							statusCode = response.status;
-							statusMessage = response.statusText;
-							Ext.MessageBox.alert('system', escape(statusCode)
-									+ ":" + statusMessage);
-						}
-					});
-
-					accordionTranslate.reload();
-				}
-			}
-
-			var gridDetail = new Ext.grid.GridPanel({
+			var gridTranslate = new Ext.grid.GridPanel({
 				border : false,
-				store : accordionTranslateStore,
+				store : tabTranslateStore,
 				height : 400,
 				autoScroll : true,
-				columns : columnModelDetail,
+				columns : columnModelTranslate,
 				viewConfig : {
 					autoFill : true,
 					forceFit : true
 				},
 
 				layout : 'fit',
-				plugins : [ editor ]
+				plugins : [ tabTranslateEditor ]
 			});
-			
 
-			var gridPanel = new Ext.Panel({
-				title : leafName,
-				height : 50,
-				layout : 'fit',
-				iconCls : 'application_view_detail',
-				tbar : [ ' ', {
-					text : reloadToolbarLabel,
-					iconCls : 'database_refresh',
-					id : 'pageReload',
-					disabled : pageReload,
-					handler : function() {
-						accordionStore.reload();
-					}
-				},'-',
-				{
-					text : addToolbarLabel,
-					iconCls : 'add',
-					id : 'pageCreate',
-					disabled : pageCreate,
-					xtype:'button',
-					handler : function() {
-						Ext.Ajax
-						.request({
-							url : '../controller/accordionController.php',
-							method : 'GET',
-							params : {
-								method:'read',
-								field : 'sequence',
-								table : 'accordion',
-								leafId : leafId
-							},
-							success : function(response, options) {
-								x = Ext.decode(response.responseText);
-								if (x.success == 'false') {
-									Ext.MessageBox.alert('system',
-											x.message);
-								} else {
-									
-									Ext.getCmp('accordionSequence').setValue(x.nextSequence);
-									
-								}
-
-							},
-							failure : function(response, options) {
-								statusCode = response.status;
-								statusMessage = response.statusText;
-								Ext.MessageBox.alert('system',
-										escape(statusCode) + ":"
-												+ statusMessage);
-							}
-
-						});
-						viewPort.items.get(1).expand();
-					}
-				},'-',
-				{
-					text : excelToolbarLabel,
-					iconCls : 'page_excel',
-					id : 'page_excel',
-					disabled : pagePrint,
-					handler : function() {
-						Ext.Ajax
-								.request({
-									url : '../accordionData.php?method=report&mode=excel&limit='
-											+ perPage
-											+ '&leafId='
-											+ leafId,
-									method : 'GET',
-									success : function(
-											response, options) {
-										x = Ext
-												.decode(response.responseText);
-										if (x.success == 'true') {
-
-											window
-													.open("../security/document/excel/accordion.xlsx");
-										} else {
-											Ext.MessageBox
-													.alert(
-															successLabel,
-															x.message);
-										}
-
-									},
-									failure : function(
-											response, options) {
-										statusCode = response.status;
-										statusMessage = response.statusText;
-										Ext.MessageBox
-												.alert(
-														systemErrorLabel,
-														escape(statusCode)
-																+ ":"
-																+ statusMessage);
+			var gridPanel = new Ext.Panel(
+					{
+						title : leafName,
+						height : 50,
+						layout : 'fit',
+						iconCls : 'application_view_detail',
+						tbar : [
+								' ',
+								{
+									text : reloadToolbarLabel,
+									iconCls : 'database_refresh',
+									id : 'pageReload',
+									disabled : pageReload,
+									handler : function() {
+										tabStore.reload();
 									}
-								});
-					}
-				} , '->', new Ext.ux.form.SearchField({
-					store : accordionStore,
-					width : 320
-				}) ],
-				items : [ gridMaster ]
-			});
+								},
+								'-',
+								{
+									text : addToolbarLabel,
+									iconCls : 'add',
+									id : 'pageCreate',
+									disabled : pageCreate,
+									xtype : 'button',
+									handler : function() {
+										Ext.Ajax
+												.request({
+													url : '../controller/tabController.php',
+													method : 'GET',
+													params : {
+														method : 'read',
+														field : 'sequence',
+														table : 'tab',
+														leafId : leafId
+													},
+													success : function(
+															response, options) {
+														x = Ext
+																.decode(response.responseText);
+														if (x.success == 'false') {
+															Ext.MessageBox
+																	.alert(
+																			'system',
+																			x.message);
+														} else {
+
+															Ext
+																	.getCmp(
+																			'tabSequence')
+																	.setValue(
+																			x.nextSequence);
+
+														}
+
+													},
+													failure : function(
+															response, options) {
+														statusCode = response.status;
+														statusMessage = response.statusText;
+														Ext.MessageBox
+																.alert(
+																		'system',
+																		escape(statusCode)
+																				+ ":"
+																				+ statusMessage);
+													}
+
+												});
+										viewPort.items.get(1).expand();
+									}
+								},
+								'-',
+								{
+									text : excelToolbarLabel,
+									iconCls : 'page_excel',
+									id : 'page_excel',
+									disabled : pagePrint,
+									handler : function() {
+										Ext.Ajax
+												.request({
+													url : '../tabData.php?method=report&mode=excel&limit='
+															+ perPage
+															+ '&leafId='
+															+ leafId,
+													method : 'GET',
+													success : function(
+															response, options) {
+														x = Ext
+																.decode(response.responseText);
+														if (x.success == 'true') {
+
+															window
+																	.open("../security/document/excel/tab.xlsx");
+														} else {
+															Ext.MessageBox
+																	.alert(
+																			successLabel,
+																			x.message);
+														}
+
+													},
+													failure : function(
+															response, options) {
+														statusCode = response.status;
+														statusMessage = response.statusText;
+														Ext.MessageBox
+																.alert(
+																		systemErrorLabel,
+																		escape(statusCode)
+																				+ ":"
+																				+ statusMessage);
+													}
+												});
+									}
+								}, '->', new Ext.ux.form.SearchField({
+									store : tabStore,
+									width : 320
+								}) ],
+						items : [ gridMaster ]
+					});
 			// viewport just save information,items will do separate
-			var accordionNote = new Ext.form.TextField({
+			var tabNote = new Ext.form.TextField({
 				labelAlign : 'left',
-				fieldLabel : accordionNoteLabel,
-				hiddenName : 'accordionNote',
-				name : 'accordionNote',
+				fieldLabel : tabNoteLabel,
+				hiddenName : 'tabNote',
+				name : 'tabNote',
 				anchor : '40%'
 			});
 
-			var accordionSequence = new Ext.form.NumberField({
+			var tabSequence = new Ext.form.NumberField({
 				labelAlign : 'left',
-				fieldLabel : accordionSequenceLabel,
-				hiddenName : 'accordionSequence',
-				name : 'accordionSequence',
-				id :'accordionSequence',
+				fieldLabel : tabSequenceLabel,
+				hiddenName : 'tabSequence',
+				name : 'tabSequence',
+				id : 'tabSequence',
 				anchor : '40%'
 			});
 			var iconData = [ [ '29', 'accept' ], [ '31', 'acroread' ],
@@ -815,189 +886,10 @@ Ext
 			});
 
 			// hidden id for updated
-			var accordionId = new Ext.form.Hidden({
-				name : 'accordionId',
-				id : 'accordionId'
+			var tabId = new Ext.form.Hidden({
+				name : 'tabId',
+				id : 'tabId'
 			});
-
-			var formPanel = new Ext.form.FormPanel(
-					{
-						url : '../controller/accordionController.php',
-						method : 'post',
-						frame : true,
-						title : 'Menu Administration',
-						border : false,
-
-						width : 600,
-
-						items : [
-								{
-									xtype : 'panel',
-
-									items : [ {
-										xtype : 'panel',
-										layout : 'form',
-										title : leafName,
-										bodyStyle : "padding:5px",
-										items : [ accordionId,
-												accordionSequence,
-												accordionNote, iconId,
-												accordionId ]
-									} ]
-								}, {
-									xtype : 'panel',
-									title : 'Accordion Translation',
-									items : [ gridDetail ]
-								} ],
-						buttonVAlign : 'top',
-						buttonAlign : 'left',
-						buttons : [
-								{
-									text : saveButtonLabel,
-									iconCls : 'bullet_disk',
-									handler : function() {
-										var id = 0;
-										var id = Ext.getCmp('accordionId')
-												.getValue();
-										var method;
-
-										if (id.length > 0) {
-											method = 'save';
-
-										} else {
-											method = 'create';
-										}
-										formPanel
-												.getForm()
-												.submit(
-														{
-															waitMsg : waitMessageLabel,
-															params : {
-																method : method,
-																leafId : leafId,
-																page : 'master'
-															},
-															success : function(
-																	form,
-																	action) {
-																var title = successLabel;
-																Ext.MessageBox
-																		.alert(
-																				title,
-																				action.result.message);
-																Ext
-																		.getCmp(
-																				'translation')
-																		.enable();
-																accordionStore
-																		.reload({
-																		params : {
-																				leafId : leafId,
-																				start : 0,
-																				limit : perPage
-																		}
-																			});
-																Ext
-																		.getCmp(
-																				'accordionId')
-																		.setValue(
-																				action.result.accordionId);
-																			
-
-															},
-															failure : function(
-																	form,
-																	action) {
-
-																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
-																	alert(loadFailureMessageLabel);
-																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																	// here will
-																	// be error
-																	// if
-																	// duplicate
-																	// code
-																	alert(clientInvalidMessageLabel);
-																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
-																	Ext.Msg
-																			.alert(form.response.status
-																					+ ' '
-																					+ form.response.statusText);
-																} else if (action.failureType === Ext.form.Action.SERVER_INVALID) {
-																	Ext.Msg
-																			.alert(
-																					failureLabel,
-																					action.result.message);
-																}
-															}
-														});
-									}
-								},
-								{
-									text : resetButtonLabel,
-									type : 'reset',
-									iconCls : 'table_refresh',
-									handler : function() {
-										formPanel.getForm().reset();
-									}
-								},
-								{
-									text : 'Translation',
-									id : 'translation',
-									disabled : true,
-									handler : function() {
-										var box = Ext.MessageBox.wait(
-												'Be patient',
-												'Translation In Progress');
-										Ext.Ajax
-												.request({
-
-													url : "../controller/accordionController.php",
-													method : 'GET',
-													params : {
-														leafId : leafId,
-														method : 'translate',
-														accordionId : Ext
-																.getCmp(
-																		'accordionId')
-																.getValue()
-													},
-													success : function(
-															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == "true") {
-															Ext.MessageBox
-																	.alert(
-																			systemLabel,
-																			x.message);
-
-															accordionTranslateStore
-																	.reload();
-															box.hide();
-														} else {
-															Ext.MessageBox
-																	.alert(
-																			systemLabel,
-																			x.message);
-														}
-													},
-													failure : function(
-															response, options) {
-														statusCode = response.status;
-														statusMessage = response.statusText;
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		escape(statusCode)
-																				+ ":"
-																				+ statusMessage);
-													}
-												});
-
-									}
-								} ]
-					});
 
 			var viewPort = new Ext.Viewport({
 				id : 'viewport',

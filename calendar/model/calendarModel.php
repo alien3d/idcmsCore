@@ -59,7 +59,7 @@ class calendarModel extends validationClass{
 	 */
 	public function create()
 	{
-		$this->setIsDefaut(0);
+		$this->setIsDefault(0);
 		$this->setIsNew(1);
 		$this->setIsDraft(0);
 		$this->setIsUpdate(0);
@@ -72,7 +72,7 @@ class calendarModel extends validationClass{
 	 */
 	public function update()
 	{
-		$this->setIsDefaut(0);
+		$this->setIsDefault(0);
 		$this->setIsNew(0);
 		$this->setIsDraft(0);
 		$this->setIsUpdate(1);
