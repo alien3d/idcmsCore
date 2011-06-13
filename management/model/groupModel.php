@@ -18,7 +18,9 @@ class groupModel extends validationClass{
 
 	// table field
 	private $groupId;
-	private $groupDesc;
+	private $groupCode;
+	private $groupNote;
+	private $isAdmin;
 	private $isDefault;
 	private $isNew;
 	private $isDraft;
@@ -31,7 +33,7 @@ class groupModel extends validationClass{
 	private $vendor;
 	private $staffId;
 
-	private $staffIdAll; // this is not table field but collection of staffId
+	private $groupIdAll; // this is not table field but collection of staffId
 	/**
 	 * Total Record receive from checkbox grid
 	 * @var numeric
@@ -41,18 +43,14 @@ class groupModel extends validationClass{
 	public  $vendor;
 
 	// table property
-	const	tableName = 'staff';
-	const 	primaryKeyName = 'staffId';
+	const	tableName = 'group';
+	const 	primaryKeyName = 'groupId';
 
 	// table field
-	const 	staffId='staffId';
 	const   groupId='groupId';
-	const   departmentId='departmentId';
-	const   languageId='languageId';
-	const   staffPassword='staffPassword';
-	const   staffName='staffName';
-	const   staffNo='staffNo';
-	const  	staffIc='staffIc';
+	const   groupCode='groupCode';
+	const   groupNote='groupNote';
+	const   isAdmin ='isAdmin';
 	const 	isDefault = 'isDefault';
 	const 	isNew = 'isNew';
 	const 	isDraft = 'isDraft';
@@ -73,10 +71,16 @@ class groupModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['groupId'])){
-			$this->groupId = $this->strict($_POST['groupId'],'numeric');
+			$this->setGroupId($this->strict($_POST['groupId'],'numeric'));
 		}
-		if(isset($_POST['groupDesc'])){
-			$this->groupDesc = $this->strict($_POST['groupDesc'],'memo');
+		if(isset($_POST['groupSequence'])){
+			$this->setGroupSequence($this->strict($_POST['groupSequence'],'numeric'));
+		}
+		if(isset($_POST['groupCode'])){
+			$this->setGroupCode($this->strict($_POST['groupCode'],'memo'));
+		}
+		if(isset($_POST['groupNote'])){
+			$this->setGroupNote = $this->strict($_POST['groupNote'],'memo');
 		}
 		if(isset($_SESSION['staffId'])){
 			$this->By = $_SESSION['staffId'];
@@ -91,7 +95,7 @@ class groupModel extends validationClass{
 
 
 	}
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::create()
 	 */
 	public function create()
@@ -137,6 +141,119 @@ class groupModel extends validationClass{
 
 	}
 
+
+	/**
+	 * Update Religion Table Status
+	 */
+	public function updateStatus() {
+		if(!(is_array($_GET['isDefault']))) {
+			$this->setIsDefault(0,'','string');
+		}
+		if(!(is_array($_GET['isNew']))) {
+			$this->setIsNew(0,'','string');
+		}
+		if(!(is_array($_GET['isDraft']))) {
+			$this->setIsDraft(0,'','string');
+		}
+		if(!(is_array($_GET['isUpdate']))) {
+			$this->setIsUpdate(0,'','string');
+		}
+		if(!(is_array($_GET['isDelete']))) {
+
+			$this->setIsDelete(1,'','string');
+		}
+		if(!(is_array($_GET['isActive']))) {
+			$this->setIsActive(0,'','string');
+		}
+
+		if(!(is_array($_GET['isApproved']))) {
+			$this->setIsApproved(0,'','string');
+		}
+	}
+	public function setTableName($value) {
+		$this->tableName = $value;
+
+	}
+	public function getTableName() {
+		return $this->tableName;
+	}
+	public function setPrimaryKeyName($value) {
+		$this->primaryKeyName = $value;
+
+	}
+	public function getPrimaryKeyName() {
+		return $this->primaryKeyName;
+	}
+	// generate basic information from outside
+	/**
+	 * Set Group Identification  Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setGroupId($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->groupId = $value;
+		} else if ($type=='array'){
+			$this->groupId[$key]=$value;
+		}
+	}
+	/**
+	 * Return Group Indentification Value
+	 * @return integer groupId
+	 */
+	public function getGroupId($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->groupId;
+		} else if ($type=='array'){
+			return $this->groupId[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+/**
+	 * Set  Group Sequence (english)
+	 * @param boolean $value
+	 */
+	public function setGroupSequence($value) {
+		$this->groupSequence = $value;
+	}
+	/**
+	 * Return Group  Description (english)
+	 * @return  string Group Sequence
+	 */
+	public function getGroupSequence() {
+		return $this->groupSequence;
+	}
+/**
+	 * Set  Group  Code (english)
+	 * @param string $value
+	 */
+	public function setGroupCode($value) {
+		$this->groupCode = $value;
+	}
+	/**
+	 * Return Group  Code
+	 * @return  string Group Description
+	 */
+	public function getGroupCode() {
+		return $this->groupCode;
+	}
+	/**
+	 * Set  Group Translation (english)
+	 * @param string $value
+	 */
+	public function setGroupNote($value) {
+		$this->religionNote = $value;
+	}
+	/**
+	 * Return Group  Description (english)
+	 * @return  string Group Description
+	 */
+	public function getGroupNote() {
+		return $this->groupNote;
+	}
 	public function setIsDefault($value,$key=NULL,$type=NULL) {
 		if($type=='string'){
 
@@ -402,15 +519,15 @@ class groupModel extends validationClass{
 	 * Set All Group Identification Array To Sql Statement
 	 * @param string $value
 	 */
-	public function setReligionIdAll($value){
-		$this->religionIdAll= $value;
+	public function setGroupIdAll($value){
+		$this->groupIdAll= $value;
 	}
 	/**
 	 * Return Group Identification Array
 	 * @return string $departmentIdAll
 	 */
-	public function getReligionIdAll() {
-		return $this->religionIdAll;
+	public function getGroupIdAll() {
+		return $this->groupIdAll;
 	}
 	public function setTotal($value){
 		$this->total = $value;

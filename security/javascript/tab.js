@@ -36,20 +36,16 @@ Ext
 				pagePrint = true;
 				pagePrintList = true;
 			}
-
 			var tabProxy = new Ext.data.HttpProxy({
 				url : "../controller/tabController.php",
-			
+				method:'POST',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,
-						// jsonResponse.message);
-						// //uncomment it for debugging
-						// purpose
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
-
 					}
 				},
 				failure : function(response, options) {
@@ -58,14 +54,12 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-
 			var tabReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
 				idProperty : "tabId"
 			});
-
 			var tabStore = new Ext.data.JsonStore({
 				proxy : tabProxy,
 				reader : tabReader,
@@ -124,12 +118,6 @@ Ext
 				} ]
 			});
 
-			var tabStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				proxy : tabProxy,
-				reader : tabReader
-			});
-
 			var tabTranslateProxy = new Ext.data.HttpProxy({
 				url : "../controller/tabController.php",
 				method : 'POST',
@@ -140,14 +128,12 @@ Ext
 				},
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,
-						// jsonResponse.message);
-						// //uncomment it for debugging
-						// purpose
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
-
 					}
 				},
 				failure : function(response, options) {
@@ -157,16 +143,16 @@ Ext
 				}
 			});
 			var tabTranslateReader = new Ext.data.JsonReader({
-
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
-				idProperty : "religionId"
+				idProperty : "tabTranslateId"
 			});
 			var tabTranslateStore = new Ext.data.JsonStore({
-				autoDestroy : true,
 				proxy : tabTranslateProxy,
 				reader : tabTranslateReader,
+				autoDestroy : true,
+				pruneModifiedRecords : true,
 				root : "data",
 				fields : [ {
 					name : 'tabTranslateId',
@@ -193,21 +179,18 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message); //uncommen for testing purpose
+					if (jsonResponse.success == true) { 
+						// Ext.MessageBox.alert(successLabel, jsonResponse.message);
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
 					}
-
 				},
 				failure : function(response, options) {
 					Ext.MessageBox.alert(systemErrorLabel,
 							escape(response.Status) + ":"
 									+ escape(response.statusText));
 				}
-
 			});
 			var staffReader = new Ext.data.JsonReader({
 				totalProperty : "total",
@@ -220,6 +203,7 @@ Ext
 				reader : staffReader,
 				autoLoad : true,
 				autoDestroy : true,
+				pruneModifiedRecords : true,
 				baseParams : {
 					method : 'read',
 					field : 'staffId',
@@ -234,12 +218,15 @@ Ext
 					type : "string"
 				} ]
 			});
-
-			var filters = new Ext.ux.grid.GridFilters({
-				// encode and local configuration options defined previously for
+			var filters = new Ext.ux.grid.GridFilters({ // encode and local
+				// configuration options
+				// defined previously
+				// for
 				// easier reuse
-				encode : encode, // json encode the filter query
-				local : false, // defaults to false (remote filtering)
+				encode : encode,
+				// json encode the filter query
+				local : false,
+				// defaults to false (remote filtering)
 				filters : [ {
 					type : 'numeric',
 					dataIndex : 'tabSequence',
@@ -269,7 +256,6 @@ Ext
 					table : 'tab'
 				} ]
 			});
-
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
 				header : 'Default',
 				dataIndex : 'isDefault',
@@ -304,10 +290,9 @@ Ext
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
-
-			var columnModelTab = [
+			var tabColumnModel = [
 					new Ext.grid.RowNumberer(),
-					this.action,
+				
 					{
 						dataIndex : "tabSequence",
 						header : tabSequenceLabel,
@@ -321,7 +306,6 @@ Ext
 						sortable : true,
 						hidden : false,
 						width : 100
-
 					},
 					{
 						dataIndex : 'iconName',
@@ -351,8 +335,7 @@ Ext
 						hidden : true,
 						width : 100
 					} ];
-
-			var columnModelTabTranslate = [ new Ext.grid.RowNumberer(), {
+			var tabTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
 				dataIndex : "tabNote",
 				header : tabSequenceLabel,
 				sortable : true,
@@ -370,26 +353,23 @@ Ext
 				sortable : true,
 				hidden : false,
 				width : 100
-
 			}, {
 				dataIndex : "tabTranslate",
 				header : "tabTranslate",
 				sortable : true,
 				hidden : false,
 				width : 100,
-
 				editor : {
 					xtype : 'textfield',
 					id : 'tabTranslate'
 				}
-
 			} ];
-			var gridTab = new Ext.grid.GridPanel(
+			var tabGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
 						store : tabStore,
 						autoHeight : false,
-						columns : columnModelTab,
+						columns : tabColumnModel,
 						loadMask : true,
 						plugins : [ filters ],
 						sm : new Ext.grid.RowSelectionModel({
@@ -415,7 +395,6 @@ Ext
 										leafId : leafId
 									},
 									success : function(form, action) {
-
 										Ext.getCmp('deleteButton').enable();
 										viewPort.items.get(1).expand();
 									},
@@ -512,8 +491,8 @@ Ext
 													}
 												}
 												url = url + sub_url; // reques
-																		// and
-																		// ajax
+												// and
+												// ajax
 												Ext.Ajax
 														.request({
 															url : url,
@@ -561,7 +540,6 @@ Ext
 							pageSize : perPage
 						})
 					});
-
 			var tabTranslateEditor = new Ext.ux.grid.RowEditor(
 					{
 						saveText : 'Save',
@@ -569,16 +547,12 @@ Ext
 							cancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
 								tabStore.reload();
-
 							},
 							afteredit : function(rowEditor, changes, record,
 									rowIndex) {
-
-								this.save = true;
-								// update record manually
+								this.save = true; // update record manually
 								var record = this.grid.getStore().getAt(
 										rowIndex);
-
 								Ext.Ajax.request({
 									url : '../controller/tabController.php',
 									method : 'POST',
@@ -590,7 +564,6 @@ Ext
 												.get('tabTranslateId'),
 										tabTranslate : Ext.getCmp(
 												'tabTranslate').getValue()
-
 									},
 									success : function(response, options) {
 										jsonResponse = Ext
@@ -606,29 +579,25 @@ Ext
 														+ response.statusText);
 									}
 								});
-
 							}
 						}
 					});
-
-			var gridTranslate = new Ext.grid.GridPanel({
+			var tabTranslateGridTranslate = new Ext.grid.GridPanel({
 				border : false,
 				store : tabTranslateStore,
 				height : 400,
 				autoScroll : true,
-				columns : columnModelTranslate,
+				columns : tabTranslateColumnModel,
 				viewConfig : {
 					autoFill : true,
 					forceFit : true
 				},
-
 				layout : 'fit',
 				plugins : [ tabTranslateEditor ]
 			});
-
 			var gridPanel = new Ext.Panel(
 					{
-						title : leafName,
+						title : leafNote,
 						height : 50,
 						layout : 'fit',
 						iconCls : 'application_view_detail',
@@ -663,36 +632,31 @@ Ext
 													},
 													success : function(
 															response, options) {
-														x = Ext
+														jsonResponse = Ext
 																.decode(response.responseText);
 														if (x.success == 'false') {
 															Ext.MessageBox
 																	.alert(
-																			'system',
-																			x.message);
+																			systemLabel,
+																			jsonResponse.message);
 														} else {
-
 															Ext
 																	.getCmp(
 																			'tabSequence')
 																	.setValue(
-																			x.nextSequence);
-
+																			jsonResponse.nextSequence);
 														}
-
 													},
 													failure : function(
 															response, options) {
-														statusCode = response.status;
-														statusMessage = response.statusText;
+														
 														Ext.MessageBox
 																.alert(
-																		'system',
-																		escape(statusCode)
+																		systemErrorLabel,
+																		escape(response.status)
 																				+ ":"
-																				+ statusMessage);
+																				+ escape(response.statusText));
 													}
-
 												});
 										viewPort.items.get(1).expand();
 									}
@@ -713,30 +677,27 @@ Ext
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
+														jsonResponse = Ext
 																.decode(response.responseText);
 														if (x.success == 'true') {
-
 															window
 																	.open("../security/document/excel/tab.xlsx");
 														} else {
 															Ext.MessageBox
 																	.alert(
 																			successLabel,
-																			x.message);
+																			jsonResponse.message);
 														}
-
 													},
 													failure : function(
 															response, options) {
-														statusCode = response.status;
-														statusMessage = response.statusText;
+													
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
-																		escape(statusCode)
+																		escape(response.status)
 																				+ ":"
-																				+ statusMessage);
+																				+ escape(response.statusText));
 													}
 												});
 									}
@@ -744,9 +705,8 @@ Ext
 									store : tabStore,
 									width : 320
 								}) ],
-						items : [ gridMaster ]
-					});
-			// viewport just save information,items will do separate
+						items : [ tabGrid ]
+					}); // viewport just save information,items will do separate
 			var tabNote = new Ext.form.TextField({
 				labelAlign : 'left',
 				fieldLabel : tabNoteLabel,
@@ -754,7 +714,6 @@ Ext
 				name : 'tabNote',
 				anchor : '40%'
 			});
-
 			var tabSequence = new Ext.form.NumberField({
 				labelAlign : 'left',
 				fieldLabel : tabSequenceLabel,
@@ -808,7 +767,6 @@ Ext
 					[ '290', 'colors' ], [ '291', 'color_swatch' ],
 					[ '292', 'color_wheel' ], [ '300', 'compress' ],
 					[ '301', 'computer' ], [ '309', 'connect' ],
-
 					[ '339', 'cookie' ], [ '341', 'creditcards' ],
 					[ '342', 'cross' ], [ '461', 'female' ], [ '481', 'find' ],
 					[ '526', 'gimp' ], [ '491', 'folder' ], [ '527', 'group' ],
@@ -832,7 +790,6 @@ Ext
 					[ '675', 'newspaper' ], [ '680', 'note' ],
 					[ '685', 'note_go' ], [ '686', 'ooo_gulls' ],
 					[ '687', 'openoffice' ], [ '688', 'overlays' ],
-
 					[ '783', 'paintbrush' ], [ '784', 'paintcan' ],
 					[ '785', 'palette' ], [ '789', 'pencil' ],
 					[ '793', 'phone' ], [ '797', 'photo' ],
@@ -866,42 +823,26 @@ Ext
 					[ '1088', 'vector' ], [ '1091', 'video' ],
 					[ '1093', 'wand' ], [ '1123', 'zoom' ],
 					[ '1124', 'zoom_in' ], [ '1125', 'zoom_out' ] ];
-			var iconId = new Ext.ux.form.IconCombo({
+		
+			
+			var iconId = new Ext.form.Hidden({
 				name : 'iconId',
-				hiddenName : 'iconId',
-				mode : 'local',
-				id : 'iconId',
-				hiddenId : 'FakeiconId',
-				store : new Ext.data.ArrayStore({
-					fields : [ 'iconId', 'iconName' ],
-					data : iconData
-				}),
-				emptyText : emptyTextLabel,
-				fieldLabel : iconIdLabel,
-				anchor : '40%',
-				triggerAction : 'all',
-				valueField : 'iconId',
-				displayField : 'iconName',
-				iconClsTpl : '{iconName}'
+				id : 'iconId'
 			});
-
-			// hidden id for updated
+			
 			var tabId = new Ext.form.Hidden({
 				name : 'tabId',
 				id : 'tabId'
 			});
-
 			var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',
 				layout : 'accordion',
-				layoutConfig : {
-					// layout-specific configs go here
+				layoutConfig : { // layout-specific configs go here
 					titleCollapse : true,
 					animate : false,
 					activeOnTop : true
 				},
-				items : [ gridPanel, formPanel ]
+				items : [ gridPanel ]
 			});
-
 		});

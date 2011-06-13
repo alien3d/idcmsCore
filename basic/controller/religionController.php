@@ -788,7 +788,7 @@ class religionClass extends configClass
 				}
 				$sql.="
 				END,
-				`By`				=	\"". $this->model->getBy('','string') . "\",
+				`By`				=	\"". $this->model->getBy()('','string') . "\",
 				`Time`				=	" . $this->model->getTime() . " ";
 
 

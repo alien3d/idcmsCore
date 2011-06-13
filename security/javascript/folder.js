@@ -26,34 +26,45 @@ Ext
 			var local = false;
 			var folderProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderController.php",
-				method : 'POST',
-				baseParams : {
-					method : "read",
-					page : "master",
-					leafId : leafId
-				},
+				method:'POST',
 				success : function(response, options) {
-					var x = Ext.decode(response.responseText);
-					if (x.success == "true") {
-						title = successLabel;
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 					} else {
-						title = failureLabel;
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
 					}
-					Ext.MessageBox.alert(systemLabel, x.message);
 				},
 				failure : function(response, options) {
-
 					Ext.MessageBox.alert(systemErrorLabel,
 							escape(response.Status) + ":"
 									+ escape(response.statusText));
 				}
 			});
 			
+			
 			var folderReader = new Ext.data.JsonReader({
-				root : "data",
+				
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
+				idProperty : "folderId"
+				
+			});	
+			var folderStore = new Ext.data.JsonStore({
+				proxy : folderProxy,
+				reader : folderReader,
+				autoLoad : true,
+				autoDestroy : true,
+				pruneModifiedRecords : true,
+				method : 'POST',
+				baseParams : {
+					method : "read",
+					page : "master",
+					leafId : leafId
+				},
+				root : "data",
 				fields : [{
 					name : 'folderId',
 					type : 'int'
@@ -61,10 +72,10 @@ Ext
 					name : 'folderSequence',
 					type : 'int'
 				}, {
-					name : 'accordionId',
+					name : 'tabId',
 					type : 'int'
 				}, {
-					name : 'accordionNote',
+					name : 'tabNote',
 					type : 'string'
 				}, {
 					name : 'folderNote',
@@ -104,32 +115,22 @@ Ext
             type: "date",
             dateFormat: "Y-m-d H:i:s"
         }]
-			});	
-			var folderStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				proxy : folderProxy,
-				reader : folderReader
 			});
 
 			var folderTranslateProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderController.php",
 				method : 'POST',
-				baseParams : {
-					method : "read",
-					page  : "detail",
-					leafId : leafId
-				},
 				success : function(response, options) {
-					var x = Ext.decode(response.responseText);
-					if (x.success == "true") {
-						title = successLabel;
+					jsonResponse = Ext.decode(response.responseText);
+					
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 					} else {
-						title = failureLabel;
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
 					}
-					Ext.MessageBox.alert(systemLabel, x.message);
 				},
 				failure : function(response, options) {
-
 					Ext.MessageBox.alert(systemErrorLabel,
 							escape(response.Status) + ":"
 									+ escape(response.statusText));
@@ -137,10 +138,23 @@ Ext
 			});
 			
 			var folderTranslateReader =  new Ext.data.JsonReader({
-				root : "data",
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
+				idProperty : "folderTranslateId"
+				
+				
+			});
+			var folderTranslateStore = new Ext.data.JsonStore({
+				autoDestroy : true,
+				proxy : folderTranslateProxy,
+				reader : folderTranslateReader,
+				baseParams : {
+					method : "read",
+					page  : "detail",
+					leafId : leafId
+				},
+				root:'data',
 				fields : [ {
 					name : 'folderTranslateId',
 					type : 'int'
@@ -160,21 +174,16 @@ Ext
 					name : 'folderTranslate',
 					type : 'string'
 				}]
-				
-			});
-			var folderTranslateStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				proxy : folderTranslateProxy,
-				reader : folderTranslateReader
 			});
 
 			var staffProxy = new Ext.data.HttpProxy({
-		        url: "../controller/religionController.php?",
+		        url: "../controller/folderController.php?",
 		        method: "GET",
 		        success: function (response, options) {
 		            jsonResponse = Ext.decode(response.responseText);
 		            if (jsonResponse.success == true) {
-		                //Ext.MessageBox.alert(successLabel, jsonResponse.message); //uncommen for testing purpose
+		                // Ext.MessageBox.alert(successLabel,
+						// jsonResponse.message); //uncommen for testing purpose
 		            } else {
 		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
 		            }
@@ -210,36 +219,58 @@ Ext
 		            type: "string"
 		        }]
 		    });
+		    
+		    
+			var tabProxy = new Ext.data.HttpProxy({
+		        url: "../controller/folderController.php?",
+		        method: "GET",
+		        success: function (response, options) {
+		            jsonResponse = Ext.decode(response.responseText);
+		            if (jsonResponse.success == true) {
+		                // Ext.MessageBox.alert(successLabel,
+						// jsonResponse.message); //uncommen for testing purpose
+		            } else {
+		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		            }
 
-			var accordionReader = new Ext.data.JsonReader({
-				root : 'accordion',
-				id : 'accordionId'
-			}, [ 'accordionId', 'accordionNote' ]);
+		        },
+		        failure: function (response, options) {
+		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+		        }
 
-			var accordionStore = new Ext.data.Store(
-					{
-						proxy : new Ext.data.HttpProxy(
-								{
-									url : '../controller/folderController.php?method=read&field=accordionId&type=1&leafId='
-											+ leafId,
-									method : 'GET',
-									listeners : {
-										exception : function(DataProxy, type,
-												action, options, response, arg) {
-											var serverMessage = Ext.util.JSON
-													.decode(response.responseText);
-											if (serverMessage.success == false) {
-												Ext.MessageBox.alert(
-														systemErrorLabel,
-														serverMessage.message);
-											}
-										}
-									}
-								}),
-						reader : accordionReader,
-						remoteSort : false
-					});
-			accordionStore.load();
+		    });
+
+			var tabReader = new Ext.data.JsonReader({
+				
+				   totalProperty: "total",
+			        successProperty: "success",
+			        messageProperty: "message",
+			        idProperty:"tabId"
+			});
+
+			
+			
+		    var tabStore = new Ext.data.JsonStore({
+		        proxy: tabProxy,
+		        reader: tabReader,
+		        autoLoad: true,
+		        autoDestroy: true,
+		        baseParams: {
+		            method: 'read',
+		            field: 'tabId',
+		            type :1,
+		            leafId: leafId
+		        },
+		        root: 'tab',
+		        fields: [{
+		            name: "tabId",
+		            type: "int"
+		        }, {
+		            name: "tabNote",
+		            type: "string"
+		        }]
+		    });
+			
 
 			var filters = new Ext.ux.grid.GridFilters({
 				// encode and local configuration options defined previously for
@@ -248,11 +279,11 @@ Ext
 				local : false, // defaults to false (remote filtering)
 				filters : [ {
 					type : 'list',
-					dataIndex : 'accordionNote',
-					column : 'accordionId',
-					table : 'accordion',
-					labelField : 'accordionNote',
-					store : accordionStore,
+					dataIndex : 'tabNote',
+					column : 'tabId',
+					table : 'tab',
+					labelField : 'tabNote',
+					store : tabStore,
 					phpMode : true
 				}, {
 					type : 'numeric',
@@ -290,126 +321,102 @@ Ext
 					table : 'folder'
 				} ]
 			});
-			this.action = new Ext.ux.grid.RowActions(
-					{
-						header : actionLabel,
-						dataIndex : 'folderId',
-						actions : [
-								{
-									iconCls : 'application_edit',
-									callback : function(grid, record, action,
-											row, col) {
-										formPanel.getForm().reset();
-										formPanel.form
-												.load({
-													url : '../controller/folderController.php',
-													method : 'POST',
-													waitMsg : waitMessageLabel,
-													params : {
-														method : 'read',
-														page : 'master',
-														folderId : record.data.folderId,
-														leafId : leafId
-													},
-													success : function(form,
-															action) {
-														folderTranslateStore
-																.load({
-																	params : {
-																		leafId : leafId,
-																		folderId : record.data.folderId
-																	}
-																})
-														viewPort.items.get(1)
-																.expand();
-														Ext.getCmp(
-																'translation')
-																.enable();
-													},
-													failure : function(action) {
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		action.result.message);
-													}
-												});
-									}
-								},
-								{
-									iconCls : 'trash',
-									callback : function(grid, record, action,
-											row, col) {
-										Ext.Msg
-												.show({
-													title : deleteRecordTitleMessageLabel,
-													msg : deleteRecordMessageLabel,
-													icon : Ext.Msg.QUESTION,
-													buttons : Ext.Msg.YESNO,
-													scope : this,
-													fn : function(response) {
-														if ('yes' == response) {
-															Ext.Ajax
-																	.request({
-																		url : '../controller/folderController.php',
-																		params : {
-																			method : 'delete',
-																			folderId : record.data.folderId,
-																			leafId : leafId
-																		},
-																		success : function(
-																				response,
-																				options) {
-																			var x = Ext
-																					.decode(response.responseText);
-																			if (x.success == 'false') {
-																				Ext.MessageBox
-																						.alert(
-																								systemLabel,
-																								x.message);
-																			} else {
-																				Ext.MessageBox
-																						.alert(
-																								systemLabel,
-																								x.message);
-
-																			}
-																			folderStore
-																					.reload();
-																			Ext
-																					.getCmp(
-																							'folderId')
-																					.setValue(
-																							action.result.folderId);
-																		},
-																		failure : function(
-																				response,
-																				options) {
-																			statusCode = response.status;
-																			statusMessage = response.statusText;
-																			Ext.MessageBox
-																					.alert(
-																							systemErrorLabel,
-																							escape(statusCode)
-																									+ ":"
-																									+ statusMessage);
-																		}
-																	});
-														}
-													}
-												});
-									}
-								} ]
-					});
-			var columnModelMaster = [
+			
+			var folderColumnModel = [
 					new Ext.grid.RowNumberer(),
-					this.action,
+					{
+				        id: 'action',
+				        header: 'Task',
+				        xtype: 'actioncolumn',
+				        width: 50,
+				        items: [{
+				            icon: '../../javascript/resources/images/icon/application_edit.png',
+				            tooltip: updateRecordToolTipLabel,
+				            handler: function(grid, rowIndex, colIndex) {
+				                var record = folderStore.getAt(rowIndex);
+				                formPanel.getForm().reset();
+				                formPanel.form.load({
+				                    url: "../controller/folderController.php",
+				                    method: "POST",
+				                    waitTitle: systemLabel,
+				                    waitMsg: waitMessageLabel,
+				                    params: {
+				                        method: "read",
+				                        mode: "update",
+				                        folderId: record.data.folderId,
+				                        leafId: leafId
+				                    },
+				                    success: function(form, action) {
+				                        Ext.getCmp("folderDesc_temp").setValue(record.data.folderDesc);
+				                        viewPort.items.get(1).expand();
+				                    },
+				                    failure: function(form, action) {
+				                        Ext.MessageBox.alert(systemErrorLabel, action.result.message);
+				                    }
+				                });
+				                win.hide();
+				            }
+				        },
+				        {
+				            icon: '../../javascript/resources/images/icon/trash.gif',
+				            tooltip: deleteRecordToolTipLabel,
+				            handler: function(grid, rowIndex, colIndex) {
+				                var record = folderStore.getAt(rowIndex);
+				                Ext.Msg.show({
+				                    title: deleteRecordTitleMessageLabel,
+				                    msg: deleteRecordMessageLabel,
+				                    icon: Ext.Msg.QUESTION,
+				                    buttons: Ext.Msg.YESNO,
+				                    scope: this,
+				                    fn: function(response) {
+				                        if ("yes" == response) {
+				                            Ext.Ajax.request({
+				                                url: "../controller/folderController.php",
+				                                params: {
+				                                    method: "delete",
+				                                    folderId: record.data.folderId,
+				                                    leafId: leafId
+				                                },
+				                                success: function(response, options) {
+				                                    jsonResponse = Ext.decode(response.responseText);
+				                                    if (jsonResponse.success == true) {
+				                                        title = successLabel;
+				                                    } else {
+				                                        title = failureLabel;
+				                                    }
+				                                    folderStore.reload({
+				                                        params: {
+				                                            leafId: leafId,
+				                                            start: 0,
+				                                            limit: perPage
+				                                        }
+				                                    });
+				                                    folderStoreList.reload({
+				                                        params: {
+				                                            leafId: leafId,
+				                                            start: 0,
+				                                            limit: perPage
+				                                        }
+				                                    });
+				                                    Ext.MessageBox.alert(title, jsonResponse.message);
+				                                },
+				                                failure: function(response, options) {
+				                                    Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
+				                                }
+				                            });
+				                        }
+				                    }
+				                });
+				            }
+				        }]
+				    },
 					{
 						dataIndex : 'folderSequence',
 						header : folderSequenceLabel
 					},
 					{
-						dataIndex : 'accordionNote',
-						header : accordionTranslateLabel
+						dataIndex : 'tabNote',
+						header : tabTranslateLabel
 					},
 					{
 						dataIndex : 'folderNote',
@@ -443,9 +450,9 @@ Ext
 						}
 					} ];
 
-			var columnModelDetail = [ new Ext.grid.RowNumberer(), {
+			var folderTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
 				dataIndex : "folderNote",
-				header : accordionSequenceLabel,
+				header : folderSequenceLabel,
 				sortable : true,
 				hidden : true,
 				width : 50
@@ -475,13 +482,13 @@ Ext
 				}
 
 			} ];
-			var gridMaster = new Ext.grid.GridPanel({
+			var folderGrid = new Ext.grid.GridPanel({
 				border : false,
 				store : folderStore,
 				autoHeight : false,
-				columns : columnModelMaster,
+				columns : folderColumnModel,
 				loadMask : true,
-				plugins : [ this.action, filters ],
+				plugins : [ filters ],
 				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true
 				}),
@@ -489,28 +496,116 @@ Ext
 					forceFit : true
 				},
 				iconCls : 'application_view_detail',
-				listeners : {
-					render : {
-						fn : function() {
-							folderStore.load({
-								params : {
-									start : 0,
-									limit : perPage,
-									method : 'read',
-									mode : 'view'
-								}
-							});
-						}
-					}
-				},
-				bbar : new Ext.PagingToolbar({
-					store : folderStore,
-					pageSize : perPage,
-					plugins : [ filters ]
-				})
+				 listeners: {
+			            'rowclick': function(object, rowIndex, e) {
+			                var record = folderStore.getAt(rowIndex);
+			                formPanel.getForm().reset();
+			                formPanel.form.load({
+			                    url: "../controller/folderController.php",
+			                    method: "POST",
+			                    waitTitle: systemLabel,
+			                    waitMsg: waitMessageLabel,
+			                    params: {
+			                        method: "read",
+			                        mode: "update",
+			                        folderId: record.data.folderId,
+			                        leafId: leafId
+			                    },
+			                    success: function(form, action) {
+			                        Ext.getCmp("folderDesc_temp").setValue(record.data.folderDesc);
+			                        Ext.getCmp('deleteButton').enable();
+			                        viewPort.items.get(1).expand();
+			                    },
+			                    failure: function(form, action) {
+			                        Ext.MessageBox.alert(systemErrorLabel, action.result.message);
+			                    }
+			                });
+			            }
+			        },
+			        tbar: {
+			            items: [{
+			                text: 'Check All',
+			                iconCls: 'row-check-sprite-check',
+			                listeners: {
+			                    'click': function() {
+			                        var count = folderStore.getCount();
+			                        folderStore.each(function(rec) {
+			                            for (var access in accessArray) { // alert(access);
+			                                rec.set(accessArray[access], true);
+			                            }
+			                        });
+			                    }
+			                }
+			            },
+			            {
+			                text: 'Clear All',
+			                iconCls: 'row-check-sprite-uncheck',
+			                listeners: {
+			                    'click': function() {
+			                        folderStore.each(function(rec) {
+			                            for (var access in accessArray) {
+			                                rec.set(accessArray[access], false);
+			                            }
+			                        });
+			                    }
+			                }
+			            },
+			            {
+			                text: 'save',
+			                iconCls: 'bullet_disk',
+			                listeners: {
+			                    'click': function(c) {
+			                        var url;
+			                        var count = folderStore.getCount();
+			                        url = '../controller/folderController.php?';
+			                        var sub_url;
+			                        sub_url = '';
+			                        for (i = count - 1; i >= 0; i--) {
+			                            var record = folderStore.getAt(i);
+			                            sub_url = sub_url + '&folderId[]=' + record.get('folderId');
+			                            if (isAdmin==1) {
+			                                sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+			                                sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+			                                sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
+			                            }
+			                            sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
+			                            if (isAdmin==1) {
+			                                sub_url = sub_url + '&isActive[]=' + record.get('isActive');
+			                                sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+			                            }
+			                        }
+			                        url = url + sub_url; // reques and ajax
+			                        Ext.Ajax.request({
+			                            url: url,
+			                            method : 'GET',
+			                            params :{
+			                            	leafId:leafId,
+			                            	method:'updateStatus'
+			                            },
+			                            success: function(response, options) {
+			                                jsonResponse = Ext.decode(response.responseText);
+			                                if (jsonResponse.success == true) {
+			                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+			                                    folderStore.reload();
+			                                } else if (jsonResponse.success == false) {
+			                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+			                                }
+			                            },
+			                            failure: function(response, options) {
+			                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
+			                            }
+			                        }); // refresh the store
+			                    }
+			                }
+			            }]
+			        },
+			        bbar: new Ext.PagingToolbar({
+			            store: folderStore,
+			            pageSize: perPage
+			        })
 			});
 
-			var editor = new Ext.ux.grid.RowEditor(
+			var folderTranslateEditor = new Ext.ux.grid.RowEditor(
 					{
 						saveText : 'Save',
 						listeners : {
@@ -524,8 +619,7 @@ Ext
 
 								this.save = true;
 								// update record manually
-								var curr_store = this.grid.getStore();
-								var record = curr_store.getAt(rowIndex);
+								var curr_store = this.grid.getStore().getAt(rowIndex);
 
 								Ext.Ajax.request({
 									url : '../controller/folderController.php',
@@ -568,57 +662,21 @@ Ext
 						}
 					});
 
-			function deleteRow(btn) {
-				if (btn == 'yes') {
-					var selections = approved.selModel.getSelections();
-					var prez = [];
-					for (i = 0; i < approved.selModel.getCount(); i++) {
-						prez.push(selections[i].json.folderTranslateId);
-					}
-					var encoded_array = Ext.encode(prez);
+			
 
-					Ext.Ajax.request({
-						url : 'folderData.php',
-						method : 'POST',
-						params : {
-							method : "DELETE",
-							ids : encoded_array,
-							leafId : leafId
-						},
-						success : function(response, options) {
-							var x = Ext.decode(response.responseText);
-							if (x.success == 'true') {
-								Ext.MessageBox.alert('Message', x.message);
-							} else {
-								Ext.MessageBox.alert('Message', x.message);
-							}
-
-						},
-						failure : function(response, options) {
-							statusCode = response.status;
-							statusMessage = response.statusText;
-							Ext.MessageBox.alert('system', escape(statusCode)
-									+ ":" + statusMessage);
-						}
-					});
-
-					folderTranslate.reload();
-				}
-			}
-
-			var gridDetail = new Ext.grid.GridPanel({
+			var folderTranslateGrid = new Ext.grid.GridPanel({
 				border : false,
 				store : folderTranslateStore,
 				height : 400,
 				autoScroll : true,
-				columns : columnModelDetail,
+				columns : folderTranslateColumnModel,
 				viewConfig : {
 					autoFill : true,
 					forceFit : true
 				},
 
 				layout : 'fit',
-				plugins : [ editor ]
+				plugins : [ folderTranslateEditor ]
 			});
 
 			var gridPanel = new Ext.Panel(
@@ -698,23 +756,23 @@ Ext
 									store : folderStore,
 									width : 320
 								}) ],
-						items : [ gridMaster ]
+						items : [ folderGrid ]
 					});
 
 			// viewport just save information,items will do separate
 			// only load store when viewport is open
 
-			var accordionId = new Ext.ux.form.ComboBoxMatch({
+			var tabId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
-				fieldLabel : accordionIdLabel,
-				name : 'accordionId',
-				hiddenName : 'accordionId',
-				valueField : 'accordionId',
-				id : 'accordion_fake',
-				displayField : 'accordionNote',
+				fieldLabel : tabIdLabel,
+				name : 'tabId',
+				hiddenName : 'tabId',
+				valueField : 'tabId',
+				id : 'tab_fake',
+				displayField : 'tabNote',
 				typeAhead : false,
 				triggerAction : 'all',
-				store : accordionStore,
+				store : tabStore,
 				anchor : '95%',
 				selectOnFocus : true,
 				mode : 'local',
@@ -739,7 +797,7 @@ Ext
 								method : 'read',
 								field : 'sequence',
 								table : 'folder',
-								accordionId : combo.value,
+								tabId : combo.value,
 								leafId : leafId
 							},
 							success : function(response, options) {
@@ -931,16 +989,16 @@ Ext
 						width : 600,
 						items : [ {
 							xtype : 'panel',
-							title : leafName,
+							title : leafNote,
 							bodyStyle : "padding:5px",
 							layout : 'form',
-							items : [ folderId, accordionId, folderNote,
+							items : [ folderId, tabId, folderNote,
 
 							folderSequence, folderPath, iconId, folderId ]
 						}, {
 							xtype : 'panel',
 							title : 'Folder Translation',
-							items : [ gridDetail ]
+							items : [ folderTranslateGrid ]
 						} ],
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
@@ -1055,9 +1113,9 @@ Ext
 													},
 													success : function(
 															response, options) {
-														x = Ext
+														jsonResponse = Ext
 																.decode(response.responseText);
-														if (x.success == "true") {
+														if (jsonResponse.success == true) {
 															Ext.MessageBox
 																	.alert(
 																			systemLabel,
@@ -1069,20 +1127,19 @@ Ext
 														} else {
 															Ext.MessageBox
 																	.alert(
-																			systemLabel,
-																			x.message);
+																			systemErrorLabel,
+																			jsonResponse.message);
 														}
 													},
 													failure : function(
 															response, options) {
-														statusCode = response.status;
-														statusMessage = response.statusText;
+													
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
 																		escape(statusCode)
 																				+ ":"
-																				+ statusMessage);
+																				+ escape(response.statusText));
 													}
 												});
 

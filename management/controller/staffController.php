@@ -809,14 +809,14 @@ class staffClass extends  configClass {
 						`staffPassword`	=	'".$this->strict($staffPassword,'password')."',
 						`staffName`		=	'".$this->strict($_POST['staffName'],'string')."',
 						`groupId`		=	'".$this->strict($_POST['groupId'],'numeric')."',
-						`isActive`		=	'".$this->model->isActive."',
-						`isNew`			=	'".$this->model->isNew."',
-						`isDraft`		=	'".$this->model->isDraft."',
-						`isUpdate`		=	'".$this->model->isUpdate."',
-						`isDelete`		=	'".$this->model->isDelete."',
-						`isApproved`	=	'".$this->model->isApproved."',
-						`By`			=	'".$this->model->By."',
-						`Time			=	".$this->model->Time."'
+						`isActive`		=	'".$this->model->getIsActive('','string')."',
+						`isNew`			=	'".$this->model->getIsNew('','string')."',
+						`isDraft`		=	'".$this->model->getIsDraft('','string')."',
+						`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
+						`isDelete`		=	'".$this->model->getIsDelete('','string')."',
+						`isApproved`	=	'".$this->model->getIsApproved('','string')."',
+						`By`			=	'".$this->model->getBy()."',
+						`Time			=	".$this->model->getTime()."'
 				WHERE 	`staffId`		=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
@@ -827,14 +827,14 @@ class staffClass extends  configClass {
 						[staffPassword]	=	'".$this->strict($staffPassword,'password')."',
 						[staffName]		=	'".$this->strict($_POST['staffName'],'string')."',
 						[groupId]		=	'".$this->strict($_POST['groupId'],'numeric')."',
-						[isActive]		=	'".$this->model->isActive."',
-						[isNew]			=	'".$this->model->isNew."',
-						[isDraft]		=	'".$this->model->isDraft."',
-						[isUpdate]		=	'".$this->model->isUpdate."',
-						[isDelete]		=	'".$this->model->isDelete."',
-						[isApproved]	=	'".$this->model->isApproved."',
-						[By]			=	'".$this->model->By."',
-						[Time]			=	".$this->model->Time."
+						[isActive]		=	'".$this->model->getIsActive('','string')."',
+						[isNew]			=	'".$this->model->getIsNew('','string')."',
+						[isDraft]		=	'".$this->model->getIsDraft('','string')."',
+						[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
+						[isDelete]		=	'".$this->model->getIsDelete('','string')."',
+						[isApproved]	=	'".$this->model->getIsApproved('','string')."',
+						[By]			=	'".$this->model->getBy()."',
+						[Time]			=	".$this->model->getTime()."
 				WHERE 	[staffId]		=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
@@ -845,14 +845,14 @@ class staffClass extends  configClass {
 						\"staffPassword\"	=	'".$this->strict($staffPassword,'password')."',
 						\"staffName\"		=	'".$this->strict($_POST['staffName'],'string')."',
 						\"groupId\"			=	'".$this->strict($_POST['groupId'],'numeric')."',
-						\"isActive\"		=	'".$this->model->isActive."',
-						\"isNew\"			=	'".$this->model->isNew."',
-						\"isDraft\"			=	'".$this->model->isDraft."',
-						\"isUpdate\"		=	'".$this->model->isUpdate."',
-						\"isDelete\"		=	'".$this->model->isDelete."',
-						\"isApproved\"		=	'".$this->model->isApproved."',
-						\"By\"				=	'".$this->model->By."',
-						\"Time\"			=	".$this->model->Time."
+						\"isActive\"		=	'".$this->model->getIsActive('','string')."',
+						\"isNew\"			=	'".$this->model->getIsNew('','string')."',
+						\"isDraft\"			=	'".$this->model->getIsDraft('','string')."',
+						\"isUpdate\"		=	'".$this->model->getIsUpdate('','string')."',
+						\"isDelete\"		=	'".$this->model->getIsDelete('','string')."',
+						\"isApproved\"		=	'".$this->model->getIsApproved('','string')."',
+						\"By\"				=	'".$this->model->getBy()."',
+						\"Time\"			=	".$this->model->getTime()."
 				WHERE 	\"staffId\"			=	'".$this->model->staffId."'";
 		}
 
@@ -1056,26 +1056,26 @@ class staffClass extends  configClass {
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 				UPDATE	`staff`
-				SET		`isActive`			=	'".$this->model->isActive."',
-						`isNew`				=	'".$this->model->isNew."',
-						`isDraft`			=	'".$this->model->isDraft."',
-						`isUpdate`			=	'".$this->model->isUpdate."',
-						`isDelete`			=	'".$this->model->isDelete."',
-						`isApproved`		=	'".$this->model->isApproved."',
-						`By`				=	'".$this->model->By."',
-						`Time				=	".$this->model->Time."
+				SET		`isActive`			=	'".$this->model->getIsActive('','string')."',
+						`isNew`				=	'".$this->model->getIsNew('','string')."',
+						`isDraft`			=	'".$this->model->getIsDraft('','string')."',
+						`isUpdate`			=	'".$this->model->getIsUpdate('','string')."',
+						`isDelete`			=	'".$this->model->getIsDelete('','string')."',
+						`isApproved`		=	'".$this->model->getIsApproved('','string')."',
+						`By`				=	'".$this->model->getBy()."',
+						`Time				=	".$this->model->getTime()."
 				WHERE 	`staffId`			=	'".$this->model->staffId."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 				UPDATE	[staff]
-				SET		[isActive]	=	'".$this->model->isActive."',
-					[isNew]		=	'".$this->model->isNew."',
-					[isDraft]	=	'".$this->model->isDraft."',
-					[isUpdate]	=	'".$this->model->isUpdate."',
-					[isDelete]	=	'".$this->model->isDelete."',
-					[isApproved]=	'".$this->model->isApproved."',
-					[By]		=	'".$this->model->By."',
-					[Time]		=	".$this->model->Time."
+				SET		[isActive]	=	'".$this->model->getIsActive('','string')."',
+					[isNew]		=	'".$this->model->getIsNew('','string')."',
+					[isDraft]	=	'".$this->model->getIsDraft('','string')."',
+					[isUpdate]	=	'".$this->model->getIsUpdate('','string')."',
+					[isDelete]	=	'".$this->model->getIsDelete('','string')."',
+					[isApproved]=	'".$this->model->getIsApproved('','string')."',
+					[By]		=	'".$this->model->getBy()."',
+					[Time]		=	".$this->model->getTime()."
 				WHERE 	[staffId]	=	'".$this->model->staffId."'";
 
 		} else if ($this->q->vendor==self::oracle) {

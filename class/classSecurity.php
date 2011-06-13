@@ -1,6 +1,6 @@
 <?php
 /**
- * this is common library output for security program like icon,folder,accordion and leaf.Here we don't require log..Slower the process
+ * this is common library output for security program like icon,folder,tab and leaf.Here we don't require log..Slower the process
  * @name IDCMS
  * @version 2
  * @author hafizan
@@ -89,7 +89,7 @@ class security extends configClass {
 	 * Current Table Log Indentification Value
 	 **/
 
-	private $accordionId;
+	private $tabId;
 	/**
 	 * Folder Identification
 	 * @var numeric $folderId
@@ -202,14 +202,14 @@ class security extends configClass {
 	}
 
 	/**
-	 * Give Output Accordion
+	 * Give Output tab
 	 * @version  0.1 remove the session  language
 	 */
-	function accordion() {
-		// only filter accordion which have access group
+	function tab() {
+		// only filter tab which have access group
 		//	header('Content-Type','application/json; charset=utf-8');
 		/**
-		 * $type =1 accordion only ,$type=2  accordion  + access
+		 * $type =1 tab only ,$type=2  tab  + access
 		 **/
 
 		if(isset($_GET['type'])) {
@@ -219,47 +219,47 @@ class security extends configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		if( $this->q->vendor==self::mysql) {
 
 			if($type==1) {
 				$sql="
-				SELECT 	`accordion`.`accordionId`,
-						`accordion`.`accordionNote`
-				FROM   	`accordion`
-				WHERE   `accordion`.`isActive`=1";
+				SELECT 	`tab`.`tabId`,
+						`tab`.`tabNote`
+				FROM   	`tab`
+				WHERE   `tab`.`isActive`=1";
 			} else if ($type ==2) {
 				$sql="
-				SELECT 	`accordionAccess`.`accordionId`,
-						`accordionAccess`.`groupId`,
-						`accordionAccess`.`accordionAccessValue`
-				FROM   	`accordionAccess`
-				JOIN	`accordion`
-				USING	(`accordionId`)
-				WHERE   `accordion`.`isActive`=1";
+				SELECT 	`tabAccess`.`tabId`,
+						`tabAccess`.`groupId`,
+						`tabAccess`.`tabAccessValue`
+				FROM   	`tabAccess`
+				JOIN	`tab`
+				USING	(`tabId`)
+				WHERE   `tab`.`isActive`=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND `accordionAccess`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
+					$sql.=" AND `tabAccess`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
 				}
 			}
 		} else if ($this->q->vendor==self::mssql) {
 			if($type ==1 ) {
 				$sql="
-			SELECT 	[accordion].[accordionId],
-					[accordion].[accordionNote]
-			FROM   	[accordion]
-			WHERE   [accordion].[isActive]=1";
+			SELECT 	[tab].[tabId],
+					[tab].[tabNote]
+			FROM   	[tab]
+			WHERE   [tab].[isActive]=1";
 
 
 			} else if ($type==2) {
 				$sql="
-			SELECT 	[accordionAccess].[accordionId],
-					[accordionAccess].[groupId],
-					[accordionAccess].[accordionAccessValue]
-			FROM   	[accordionAccess]
-			JOIN	[accordion]
-			ON		[accordion].[accordionId]=[accordionAccess].[accordionId]
-			WHERE   [accordion].[isActive]=1";
+			SELECT 	[tabAccess].[tabId],
+					[tabAccess].[groupId],
+					[tabAccess].[tabAccessValue]
+			FROM   	[tabAccess]
+			JOIN	[tab]
+			ON		[tab].[tabId]=[tabAccess].[tabId]
+			WHERE   [tab].[isActive]=1";
 				if(isset($_GET['groupId'])) {
 					$sql.=" AND [ccordionAccess].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
 				}
@@ -267,21 +267,21 @@ class security extends configClass {
 		} else if ($this->q->vendor==self::oracle) {
 			if($type == 1) {
 				$sql="
-			SELECT 	\"accordion\".\"accordionId\",
-					\"accordion\".\"accordionNote\"
-			FROM   	\"accordion\"
-			WHERE   \"accordion\".\"isActive\"=1";
+			SELECT 	\"tab\".\"tabId\",
+					\"tab\".\"tabNote\"
+			FROM   	\"tab\"
+			WHERE   \"tab\".\"isActive\"=1";
 			} else if ($type==2) {
 				$sql="
-			SELECT 	\"accordionAccess\".\"accordionId\",
-					\"accordionAccess\".\"groupId\",
-					\"accordionAccess\".\"accordionAccessValue\",
-			FROM   	\"accordionAccess\"
-			JOIN	\"accordion\"
-			USING	(\"accordionId\")
-			WHERE   \"accordion\".\"isActive\"=1";
+			SELECT 	\"tabAccess\".\"tabId\",
+					\"tabAccess\".\"groupId\",
+					\"tabAccess\".\"tabAccessValue\",
+			FROM   	\"tabAccess\"
+			JOIN	\"tab\"
+			USING	(\"tabId\")
+			WHERE   \"tab\".\"isActive\"=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND \"accordionAccess\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
+					$sql.=" AND \"tabAccess\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
 				}
 			}
 		}
@@ -300,23 +300,23 @@ class security extends configClass {
 		array(
 											'success'	=>"true",
 											'totalCount' => $total,
-       								    	'accordion' => $items
+       								    	'tab' => $items
 		));
 		exit();
 
 	}
 	/**
 	 * Enter description here ...
-	 * @param unknown_type $accordionId
+	 * @param unknown_type $tabId
 	 * @param unknown_type $folderId
 	 * @param unknown_type $languageId
 	 */
 	function folder() {
 
-		//  have to distinct group from accordion acs  table
+		//  have to distinct group from tab acs  table
 		header('Content-Type','application/json; charset=utf-8');
 		/**
-		 * $type =1 accordion only ,$type=2  accordion  + access
+		 * $type =1 tab only ,$type=2  tab  + access
 		 **/
 		if(isset($_GET['type'])) {
 			$type = intval($_GET['type']);
@@ -336,9 +336,9 @@ class security extends configClass {
 			WHERE   `isActive`	=	1";
 			} else {
 				$sql="
-			SELECT 	`folderAccess`.`accordionId`,
+			SELECT 	`folderAccess`.`tabId`,
 					`folderAccess`.`groupId`,
-					`folderAccess`.`accordionAccessValue`,
+					`folderAccess`.`tabAccessValue`,
 			FROM   	`folderAccess`
 			JOIN	`folder`
 			USING	(`folderId`)
@@ -346,10 +346,10 @@ class security extends configClass {
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND `accordionAccess`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
+				$sql.=" AND `tabAccess`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
 			}
-			if(isset($_GET['accordionId'])) {
-				$sql.=" AND `accordionId`	=	'".$this->strict($_GET['accordionId'],'numeric')."'";
+			if(isset($_GET['tabId'])) {
+				$sql.=" AND `tabId`	=	'".$this->strict($_GET['tabId'],'numeric')."'";
 			}
 		} else if ($this->q->vendor==self::mssql) {
 			if($type==1){
@@ -360,9 +360,9 @@ class security extends configClass {
 			WHERE   [isActive]=1 ";
 			} else {
 				$sql="
-			SELECT 	[folderAccess].[accordionId],
+			SELECT 	[folderAccess].[tabId],
 					[folderAccess].[groupId],
-					[folderAccess].[accordionAccessValue],
+					[folderAccess].[tabAccessValue],
 			FROM   	[folderAccess]
 			JOIN	[folder]
 			ON		[folder].[folderId] = [folderAccess].[folderId]
@@ -370,10 +370,10 @@ class security extends configClass {
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND [accordionAccess].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
+				$sql.=" AND [tabAccess].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
 			}
-			if(isset($_GET['accordionId'])) {
-				$sql.=" AND [folder].[accordionId]='".$this->strict($_GET['accordionId'],'numeric')."'";
+			if(isset($_GET['tabId'])) {
+				$sql.=" AND [folder].[tabId]='".$this->strict($_GET['tabId'],'numeric')."'";
 			}
 		} else if ($this->q->vendor==self::oracle) {
 			if($type==1){
@@ -384,9 +384,9 @@ class security extends configClass {
 			WHERE   \"isActive\"=1";
 			} else {
 				$sql="
-			SELECT 	\"folderAccess\".\"accordionId\",
+			SELECT 	\"folderAccess\".\"tabId\",
 					\"folderAccess\".\"groupId\",
-					\"folderAccess\".\"accordionAccessValue\",
+					\"folderAccess\".\"tabAccessValue\",
 			FROM   	\"folderAccess\"
 			JOIN	\"folder\"
 			USING	(\"folderId\")
@@ -394,10 +394,10 @@ class security extends configClass {
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND \"accordionAccess\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
+				$sql.=" AND \"tabAccess\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
 			}
-			if(isset($_GET['accordionId'])) {
-				$sql.=" AND \"folder\".\"accordionId\"='".$this->strict($_GET['accordionId'],'numeric')."'";
+			if(isset($_GET['tabId'])) {
+				$sql.=" AND \"folder\".\"tabId\"='".$this->strict($_GET['tabId'],'numeric')."'";
 			}
 
 		}
@@ -423,7 +423,7 @@ class security extends configClass {
 	public function nextSequence() {
 		header('Content-Type','application/json; charset=utf-8');
 		/**
-		 * initilize dummy value  to 0 
+		 * initilize dummy value  to 0
 		 */
 		$nextSequence=0;
 		if( $this->q->vendor==self::mysql) {
@@ -452,15 +452,15 @@ class security extends configClass {
 			WHERE	\"isActive\"=1";
 		}
 		if($table=='folder'){
-			if(isset($_GET['accordionId'])){
-				$sql.=" AND `accordionId`='".$_GET['accordionId']."'";
+			if(isset($_GET['tabId'])){
+				$sql.=" AND `tabId`='".$_GET['tabId']."'";
 			}
 
 
 		}
 		if($table=='leaf'){
-			if(isset($_GET['accordionId'])){
-				$sql.=" AND `accordionId`='".$_GET['accordionId']."'";
+			if(isset($_GET['tabId'])){
+				$sql.=" AND `tabId`='".$_GET['tabId']."'";
 			}
 			if(isset($_GET['folderId'])){
 				$sql.=" AND `folderId`='".$_GET['folderId']."'";

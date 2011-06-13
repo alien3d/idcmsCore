@@ -119,65 +119,10 @@ Ext
 				} ]
 			});
 
-			var staffStoreList = new Ext.data.JsonStore({
-				autoDestroy : true,
-				url : '../controller/staffController.php',
-				remoteSort : true,
-				root : 'data',
-				totalProperty : 'total',
-				baseParams : {
-					method : 'read',
-					mode : 'view',
-					leafId : leafId
-				},
-				fields : [ {
-					name : 'staffId',
-					type : 'int'
-				}, {
-					name : 'groupId',
-					type : 'int'
-				}, {
-					name : 'groupName',
-					type : 'string'
-				}, {
-					name : 'staffName',
-					type : 'string'
-				}, {
-					name : 'staffIc',
-					type : 'string'
-				}, {
-					name : 'staffNo',
-					type : 'string'
-				}, {
-					name : 'createBy',
-					type : 'int'
-				}, {
-					name : 'createTime',
-					type : 'date',
-					dateFormat : 'Y-m-d H:i:s'
-				}, {
-					name : 'updatedBy',
-					type : 'int'
-				}, {
-					name : 'updatedTime',
-					type : 'date',
-					dateFormat : 'Y-m-d H:i:s'
-				} ],
-				listeners : {
-					exception : function(DataProxy, type, action, options,
-							response, arg) {
-						var serverMessage = Ext.util.JSON
-								.decode(response.responseText);
-						if (serverMessage.success == false) {
-							Ext.MessageBox.alert(systemErrorLabel,
-									serverMessage.message);
-						}
-					}
-				}
-			});
+			
 
 			var staffByProxy = new Ext.data.HttpProxy({
-				url : "../controller/religionController.php?",
+				url : "../controller/staffController.php?",
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
@@ -223,6 +168,35 @@ Ext
 				} ]
 			});
 
+			var groupProxy = new Ext.data.HttpProxy({
+				url : "../controller/staffController.php",
+				method:'GET',
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			
+			
+			var groupReader = new Ext.data.JsonReader({
+				
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "groupId"
+				
+			});	
+			
 			var group_reader = new Ext.data.JsonReader({
 				root : 'group',
 				id : 'groupId'
@@ -917,7 +891,7 @@ Ext
 								} ]
 					});
 			var gridPanel = new Ext.Panel({
-				title : leafName,
+				title : leafNote,
 				height : 50,
 				layout : 'fit',
 				iconCls : 'application_view_detail',
@@ -1015,7 +989,7 @@ Ext
 						url : '../controller/staffController.php',
 						method : 'post',
 						frame : true,
-						title : leafName,
+						title : leafNote,
 						border : false,
 
 						width : 600,
@@ -1146,7 +1120,7 @@ Ext
 											items : [ gridPanelList ],
 											closeAction : 'hide',
 											maximizable : true,
-											title : leafName,
+											title : leafNote,
 											layout : 'fit',
 											width : 500,
 											autoScroll : true

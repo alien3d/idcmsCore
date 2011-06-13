@@ -190,10 +190,10 @@ class leafUserClass extends configClass
 			VALUES
 					(
 						\"". $this->model->leafUserDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
-						\"". $this->model->isDraft . "\",		\"". $this->model->isDelete . "\",
-						\"". $this->model->isUpdate . "\",		\"". $this->model->isApproved . "\",
-						\"". $this->model->isActive . "\",		" . $this->model->Time . "
+						\"". $this->model->getIsNew('','string') . "\",			\"". $this->model->getIsDraft('','string') . "\",
+						\"". $this->model->getIsDraft('','string') . "\",		\"". $this->model->getIsDelete('','string') . "\",
+						\"". $this->model->getIsUpdate('','string') . "\",		\"". $this->model->getIsApproved('','string') . "\",
+						\"". $this->model->getIsActive('','string') . "\",		" . $this->model->getTime() . "
 					);";
 		} else if ($this->q->vendor == self::oracle) {
 			$sql = "
@@ -208,10 +208,10 @@ class leafUserClass extends configClass
 			VALUES
 					(
 						\"". $this->model->leafUserDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->isNew . "\",			\"". $this->model->isDraft . "\",
-						\"". $this->model->isDraft . "\",		\"". $this->model->isDelete . "\",
-						\"". $this->model->isUpdate . "\",		\"". $this->model->isApproved . "\",
-						\"". $this->model->isActive . "\",		" . $this->model->Time . "
+						\"". $this->model->getIsNew('','string') . "\",			\"". $this->model->getIsDraft('','string') . "\",
+						\"". $this->model->getIsDraft('','string') . "\",		\"". $this->model->getIsDelete('','string') . "\",
+						\"". $this->model->getIsUpdate('','string') . "\",		\"". $this->model->getIsApproved('','string') . "\",
+						\"". $this->model->getIsActive('','string') . "\",		" . $this->model->getTime() . "
 					)";
 		}
 		//advance logging future

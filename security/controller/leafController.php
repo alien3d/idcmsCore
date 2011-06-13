@@ -185,11 +185,11 @@ class leafClass extends  configClass {
 						'".$this->model->accordionId."',	'".$this->model->folderId."',		
 						'".$this->model->leafNote."',		'".$this->model->leafSequence."',	
 						'".$this->model->leafCode."',		'".$this->model->leafFilename."',	
-						'".$this->model->iconId."',			'".$this->model->isNew."',
-						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
-						'".$this->model->isDelete."',		'".$this->model->isActive."',
-						'".$this->model->isApproved."',		'".$this->model->staffId."',		
-						".$this->model->Time."
+						'".$this->model->iconId."',			'".$this->model->getIsNew('','string')."',
+						'".$this->model->getIsDraft('','string')."',		'".$this->model->getIsUpdate('','string')."',
+						'".$this->model->getIsDelete('','string')."',		'".$this->model->getIsActive('','string')."',
+						'".$this->model->getIsApproved('','string')."',		'".$this->model->staffId."',		
+						".$this->model->getTime()."
 					) ";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql	=	"
@@ -209,11 +209,11 @@ class leafClass extends  configClass {
 						'".$this->model->accordionId."',	'".$this->model->folderId."',		
 						'".$this->model->leafNote."',		'".$this->model->leafSequence."',	
 						'".$this->model->leafCode."',		'".$this->model->leafFilename."',	
-						'".$this->model->iconId."',			'".$this->model->isNew."',
-						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
-						'".$this->model->isDelete."',		'".$this->model->isActive."',
-						'".$this->model->isApproved."',		'".$this->model->staffId."',		
-						".$this->model->Time."
+						'".$this->model->iconId."',			'".$this->model->getIsNew('','string')."',
+						'".$this->model->getIsDraft('','string')."',		'".$this->model->getIsUpdate('','string')."',
+						'".$this->model->getIsDelete('','string')."',		'".$this->model->getIsActive('','string')."',
+						'".$this->model->getIsApproved('','string')."',		'".$this->model->staffId."',		
+						".$this->model->getTime()."
 					)";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql	=	"
@@ -233,11 +233,11 @@ class leafClass extends  configClass {
 						'".$this->model->accordionId."',	'".$this->model->folderId."',		
 						'".$this->model->leafNote."',		'".$this->model->leafSequence."',	
 						'".$this->model->leafCode."',		'".$this->model->leafFilename."',	
-						'".$this->model->iconId."',			'".$this->model->isNew."',
-						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
-						'".$this->model->isDelete."',		'".$this->model->isActive."',
-						'".$this->model->isApproved."',		'".$this->model->staffId."',		
-						".$this->model->Time."
+						'".$this->model->iconId."',			'".$this->model->getIsNew('','string')."',
+						'".$this->model->getIsDraft('','string')."',		'".$this->model->getIsUpdate('','string')."',
+						'".$this->model->getIsDelete('','string')."',		'".$this->model->getIsActive('','string')."',
+						'".$this->model->getIsApproved('','string')."',		'".$this->model->staffId."',		
+						".$this->model->getTime()."
 					);";
 		}
 		$this->q->create($sql);
@@ -614,7 +614,7 @@ class leafClass extends  configClass {
 					`isUpdate`	=	'".$this->model->getIsUpdate."',
 					`isDelete`	=	'".$this->model->getIsDelete."',
 					`isApproved`=	'".$this->model->getIsApproved."',
-					`By`		=	'".$this->model->getBy."',
+					`By`		=	'".$this->model->getBy()."',
 					`Time		=	".$this->model->getTime."
 			WHERE 	`leafId`	=	'".$this->leafId."'";
 		} else if ($this->q->vendor==self::mssql) {
@@ -626,7 +626,7 @@ class leafClass extends  configClass {
 					[isUpdate]	=	'".$this->model->getIsUpdate."',
 					[isDelete]	=	'".$this->model->getIsDelete."',
 					[isApproved]=	'".$this->model->getIsApproved."',
-					[By]		=	'".$this->model->getBy."',
+					[By]		=	'".$this->model->getBy()."',
 					[Time]		=	".$this->model->getTime."
 			WHERE 	[leafId]	=	'".$this->leafId."'";
 
@@ -639,7 +639,7 @@ class leafClass extends  configClass {
 					\"isUpdate\"	=	'".$this->model->getIsUpdate."',
 					\"isDelete\"	=	'".$this->model->getIsDelete."',
 					\"isApproved\"	=	'".$this->model->getIsApproved."',
-					\"By\"			=	'".$this->model->getBy."',
+					\"By\"			=	'".$this->model->getBy()."',
 					\"Time\"		=	".$this->model->getTime."
 			WHERE 	\"leafId\"		=	'".$this->leafId."'";
 
@@ -675,7 +675,7 @@ class leafClass extends  configClass {
 					`isUpdate`	=	'".$this->model->getIsUpdate."',
 					`isDelete`	=	'".$this->model->getIsDelete."',
 					`isApproved`=	'".$this->model->getIsApproved."',
-					`By`		=	'".$this->model->getBy."',
+					`By`		=	'".$this->model->getBy()."',
 					`Time		=	".$this->model->getTime."
 			WHERE 	`leafId`	=	'".$this->leafId."'";
 		} else if ($this->q->vendor==self::mssql) {
@@ -687,7 +687,7 @@ class leafClass extends  configClass {
 					[isUpdate]	=	'".$this->model->getIsUpdate."',
 					[isDelete]	=	'".$this->model->getIsDelete."',
 					[isApproved]=	'".$this->model->getIsApproved."',
-					[By]		=	'".$this->model->getBy."',
+					[By]		=	'".$this->model->getBy()."',
 					[Time]		=	".$this->model->getTime."
 			WHERE 	[leafId]	=	'".$this->leafId."'";
 
@@ -700,7 +700,7 @@ class leafClass extends  configClass {
 					\"isUpdate\"	=	'".$this->model->getIsUpdate."',
 					\"isDelete\"	=	'".$this->model->getIsDelete."',
 					\"isApproved\"	=	'".$this->model->getIsApproved."',
-					\"By\"			=	'".$this->model->getBy."',
+					\"By\"			=	'".$this->model->getBy()."',
 					\"Time\"		=	".$this->model->getTime."
 			WHERE 	\"leafId\"		=	'".$this->leafId."'";
 

@@ -74,7 +74,7 @@ fields: [
 	});
 	
 	var staffProxy = new Ext.data.HttpProxy({
-		url : "../controller/religionController.php",
+		url : "../controller/groupController.php",
 		method : "GET",
 		params : {
 			method : 'read',
@@ -262,7 +262,7 @@ items:[{
 									handler : function() {
 										Ext.Ajax
 												.request({
-													url : "../data/religion_data.php?method=report&mode=excel&limit="
+													url : "../controller/groupController.php?method=report&mode=excel&limit="
 															+ perPage
 															+ "&leafId="
 															+ leafId,
@@ -292,7 +292,7 @@ items:[{
 								}] 
 	});
 	var gridPanel	  	= 	new Ext.Panel ({ 
-title:leafName,
+title:leafNote,
 height:50,
 tbar:[ toolbarPanel,'->',new Ext.ux.form.SearchField({
                 store: store,
@@ -328,7 +328,7 @@ items:[grid]
 		params		:	{ method:'save',groupId:groupId.value }, 
 		method		:  	'post',
 		frame       : 	 true,
-		title       : 	leafName,
+		title       : 	leafNote,
 		border      : 	false,
 
 		width		: 	600,

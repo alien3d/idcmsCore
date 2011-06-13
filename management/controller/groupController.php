@@ -579,40 +579,40 @@ class groupClass  extends configClass {
 			$sql="
 			UPDATE 	`group`
 			SET 	`groupDesc`		=	'".$this->model->groupDesc."',
-					`isActive`		=	'".$this->model->isActive."',
-					`isNew`			=	'".$this->model->isNew."',
-					`isDraft`		=	'".$this->model->isDraft."',
-					`isUpdate`		=	'".$this->model->isUpdate."',
-					`isDelete`		=	'".$this->model->isDelete."',
-					`isApproved`	=	'".$this->model->isApproved."',
-					`By`			=	'".$this->model->By."',
-					`Time			=	".$this->model->Time."
+					`isActive`		=	'".$this->model->getIsActive('','string')."',
+					`isNew`			=	'".$this->model->getIsNew('','string')."',
+					`isDraft`		=	'".$this->model->getIsDraft('','string')."',
+					`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
+					`isDelete`		=	'".$this->model->getIsDelete('','string')."',
+					`isApproved`	=	'".$this->model->getIsApproved('','string')."',
+					`By`			=	'".$this->model->getBy()."',
+					`Time			=	".$this->model->getTime()."
 			WHERE 	`groupId`		=	'".$this->groupId."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 			UPDATE 	[group]
 			SET 	[groupDesc]		=	'".$this->model->groupDesc."',
-					[isActive]		=	'".$this->model->isActive."',
-					[isNew]			=	'".$this->model->isNew."',
-					[isDraft]		=	'".$this->model->isDraft."',
-					[isUpdate]		=	'".$this->model->isUpdate."',
-					[isDelete]		=	'".$this->model->isDelete."',
-					[isApproved]	=	'".$this->model->isApproved."',
-					[By]			=	'".$this->model->By."',
-					[Time]			=	".$this->model->Time."
+					[isActive]		=	'".$this->model->getIsActive('','string')."',
+					[isNew]			=	'".$this->model->getIsNew('','string')."',
+					[isDraft]		=	'".$this->model->getIsDraft('','string')."',
+					[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
+					[isDelete]		=	'".$this->model->getIsDelete('','string')."',
+					[isApproved]	=	'".$this->model->getIsApproved('','string')."',
+					[By]			=	'".$this->model->getBy()."',
+					[Time]			=	".$this->model->getTime()."
 			WHERE 	[groupId]		=	'".$this->groupId."'";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 			UPDATE 	\"group\"
 			SET 	\"groupDesc\"	=	'".$this->model->groupDesc."',
-					\"isActive\"	=	'".$this->model->isActive."',
-					\"isNew\"		=	'".$this->model->isNew."',
-					\"isDraft\"		=	'".$this->model->isDraft."',
-					\"isUpdate\"	=	'".$this->model->isUpdate."',
-					\"isDelete\"	=	'".$this->model->isDelete."',
-					\"isApproved\"	=	'".$this->model->isApproved."',
-					\"By\"			=	'".$this->model->By."',
-					\"Time\"		=	".$this->model->Time."
+					\"isActive\"	=	'".$this->model->getIsActive('','string')."',
+					\"isNew\"		=	'".$this->model->getIsNew('','string')."',
+					\"isDraft\"		=	'".$this->model->getIsDraft('','string')."',
+					\"isUpdate\"	=	'".$this->model->getIsUpdate('','string')."',
+					\"isDelete\"	=	'".$this->model->getIsDelete('','string')."',
+					\"isApproved\"	=	'".$this->model->getIsApproved('','string')."',
+					\"By\"			=	'".$this->model->getBy()."',
+					\"Time\"		=	".$this->model->getTime()."
 			WHERE 	\"groupId\"		=	'".$this->groupId."'";
 		}
 		$this->q->update($sql);
@@ -640,39 +640,39 @@ class groupClass  extends configClass {
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 				UPDATE 	`group`
-				SET 	`isActive`		=	'".$this->model->isActive."',
-						`isNew`			=	'".$this->model->isNew."',
-						`isDraft`		=	'".$this->model->isDraft."',
-						`isUpdate`		=	'".$this->model->isUpdate."',
-						`isDelete`		=	'".$this->model->isDelete."',
-						`isApproved`	=	'".$this->model->isApproved."',
-						`By`			=	'".$this->model->By."',
-						`Time			=	".$this->model->Time."
+				SET 	`isActive`		=	'".$this->model->getIsActive('','string')."',
+						`isNew`			=	'".$this->model->getIsNew('','string')."',
+						`isDraft`		=	'".$this->model->getIsDraft('','string')."',
+						`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
+						`isDelete`		=	'".$this->model->getIsDelete('','string')."',
+						`isApproved`	=	'".$this->model->getIsApproved('','string')."',
+						`By`			=	'".$this->model->getBy()."',
+						`Time			=	".$this->model->getTime()."
 				WHERE 	`groupId`		=	'".$this->groupId."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 				UPDATE 	[group]
-				SET 	[isActive]		=	'".$this->model->isActive."',
-						[isNew]			=	'".$this->model->isNew."',
-						[isDraft]		=	'".$this->model->isDraft."',
-						[isUpdate]		=	'".$this->model->isUpdate."',
-						[isDelete]		=	'".$this->model->isDelete."',
-						[isApproved]	=	'".$this->model->isApproved."',
-						[By]			=	'".$this->model->By."',
-						[Time]			=	".$this->model->Time."
+				SET 	[isActive]		=	'".$this->model->getIsActive('','string')."',
+						[isNew]			=	'".$this->model->getIsNew('','string')."',
+						[isDraft]		=	'".$this->model->getIsDraft('','string')."',
+						[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
+						[isDelete]		=	'".$this->model->getIsDelete('','string')."',
+						[isApproved]	=	'".$this->model->getIsApproved('','string')."',
+						[By]			=	'".$this->model->getBy()."',
+						[Time]			=	".$this->model->getTime()."
 				WHERE 	[groupId]		=	'".$this->groupId."'";
 
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 				UPDATE 	\"group\"
-				SET 	\"isActive\"	=	'".$this->model->isActive."',
-						\"isNew\"		=	'".$this->model->isNew."',
-						\"isDraft\"		=	'".$this->model->isDraft."',
-						\"isUpdate\"	=	'".$this->model->isUpdate."',
-						\"isDelete\"	=	'".$this->model->isDelete."',
-						\"isApproved\"	=	'".$this->model->isApproved."',
-						\"By\"			=	'".$this->model->By."',
-						\"Time\"		=	".$this->model->Time."
+				SET 	\"isActive\"	=	'".$this->model->getIsActive('','string')."',
+						\"isNew\"		=	'".$this->model->getIsNew('','string')."',
+						\"isDraft\"		=	'".$this->model->getIsDraft('','string')."',
+						\"isUpdate\"	=	'".$this->model->getIsUpdate('','string')."',
+						\"isDelete\"	=	'".$this->model->getIsDelete('','string')."',
+						\"isApproved\"	=	'".$this->model->getIsApproved('','string')."',
+						\"By\"			=	'".$this->model->getBy()."',
+						\"Time\"		=	".$this->model->getTime()."
 				WHERE 	\"groupId\"		=	'".$this->groupId."'";
 
 		}
@@ -845,7 +845,7 @@ class groupClass  extends configClass {
 				}
 				$sql.="
 				END,
-				`By`				=	\"". $this->model->getBy('','string') . "\",
+				`By`				=	\"". $this->model->getBy()('','string') . "\",
 				`Time`				=	" . $this->model->getTime() . " ";
 
 

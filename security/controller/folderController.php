@@ -172,9 +172,9 @@ class folderClass extends  configClass {
 		$this->model->create();
 		if( $this->q->vendor==self::mysql) {
 			$sql="
-			INSERT INTO `folder` 
+			INSERT INTO `folder`
 					(
-						`accordionId`,						`folderNote`,
+						`tabId`,						`folderNote`,
 						`folderSequence`,					`folderPath`,
 						`iconId`,							`isNew`,
 						`isDraft`,							`isUpdate`,
@@ -182,21 +182,21 @@ class folderClass extends  configClass {
 						`isApproved`,						`By`,
 						`Time`
 					)
-			VALUES	
+			VALUES
 					(
-						'".$this->model->accordionId."',	'".$this->model->folderNote."',
+						'".$this->model->tabId."',	'".$this->model->folderNote."',
 						'".$this->model->folderSequence."', '".$this->model->folderPath."',
-						'".$this->model->iconId."',			'".$this->model->isNew."',
-						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
-						'".$this->model->isDelete."',		'".$this->model->isActive."',
-						'".$this->model->isApproved."',		'".$this->model->isApproved."',
-						".$this->model->Time."
+						'".$this->model->iconId."',			'".$this->model->getIsNew('','string')."',
+						'".$this->model->getIsDraft('','string')."',		'".$this->model->getIsUpdate('','string')."',
+						'".$this->model->getIsDelete('','string')."',		'".$this->model->getIsActive('','string')."',
+						'".$this->model->getIsApproved('','string')."',		'".$this->model->getIsApproved('','string')."',
+						".$this->model->getTime()."
 					);";
 		}else if ($this->q->vendor==self::mssql) {
 			$sql="
-			INSERT INTO [folder] 
+			INSERT INTO [folder]
 					(
-						[accordionId],						[folderNote],
+						[tabId],						[folderNote],
 						[folderSequence],					[folderPath],
 						[iconId],							[isNew],
 						[isDraft],							[isUpdate],
@@ -204,35 +204,35 @@ class folderClass extends  configClass {
 						[isApproved],						[By],
 						[Time]
 				)
-			VALUES	
-				(		
-						'".$this->model->accordionId."',	'".$this->model->folderNote."',
+			VALUES
+				(
+						'".$this->model->tabId."',	'".$this->model->folderNote."',
 						'".$this->model->folderSequence."', '".$this->model->folderPath."',
-						'".$this->model->iconId."',			'".$this->model->isNew."',
-						'".$this->model->isDraft."',		'".$this->model->isUpdate."',
-						'".$this->model->isDelete."',		'".$this->model->isActive."',
-						'".$this->model->isApproved."',		'".$this->model->isApproved."',
-						".$this->model->Time."
+						'".$this->model->iconId."',			'".$this->model->getIsNew('','string')."',
+						'".$this->model->getIsDraft('','string')."',		'".$this->model->getIsUpdate('','string')."',
+						'".$this->model->getIsDelete('','string')."',		'".$this->model->getIsActive('','string')."',
+						'".$this->model->getIsApproved('','string')."',		'".$this->model->getIsApproved('','string')."',
+						".$this->model->getTime()."
 				);";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
-			INSERT INTO 	\"folder\" 
+			INSERT INTO 	\"folder\"
 						(
-							\"accordionId\",					\"folderNote\",
+							\"tabId\",					\"folderNote\",
 							\"folderSequence\",					\"folderPath\",
 							 \"iconId\",				 		\"isNew\",
 							\"isDraft\",						\"isUpdate\",
 							\"isDelete\",						\"isActive\",
 							\"isApproved\",						\"By\",
 							\"Time\")
-				VALUES	(		
-							'".$this->model->accordionId."',	'".$this->model->folderNote."',
+				VALUES	(
+							'".$this->model->tabId."',	'".$this->model->folderNote."',
 							'".$this->model->folderSequence."', '".$this->model->folderPath."',
-							'".$this->model->iconId."',			'".$this->model->isNew."',
-							'".$this->model->isDraft."',		'".$this->model->isUpdate."',
-							'".$this->model->isDelete."',		'".$this->model->isActive."',
-							'".$this->model->isApproved."',		'".$this->model->isApproved."',
-							".$this->model->Time."
+							'".$this->model->iconId."',			'".$this->model->getIsNew('','string')."',
+							'".$this->model->getIsDraft('','string')."',		'".$this->model->getIsUpdate('','string')."',
+							'".$this->model->getIsDelete('','string')."',		'".$this->model->getIsActive('','string')."',
+							'".$this->model->getIsApproved('','string')."',		'".$this->model->getIsApproved('','string')."',
+							".$this->model->getTime()."
 						);";
 		}
 		$this->q->create($sql);
@@ -260,7 +260,7 @@ class folderClass extends  configClass {
 			SELECT MAX([folderId]) AS [lastId] FROM [folder] ";
 		} else if ( $this->q->vendor	==	'oracle') {
 			/**
-			 *  If anthing wrong use this instead  SELECT accordionIdSeq
+			 *  If anthing wrong use this instead  SELECT tabIdSeq
 			 */
 			$sql="
 			SELECT MAX(\"folderId\") AS \"lastId\"
@@ -276,7 +276,7 @@ class folderClass extends  configClass {
 		$rowLastId= $this->q->fetchAssoc($resultd);
 		$lastId = $rowLastId['lastId'];
 
-		//  create a record  in accordionAccess.update no effect
+		//  create a record  in tabAccess.update no effect
 		// loop the group
 		if( $this->q->vendor==self::mysql) {
 			$sql="SELECT * FROM `group` WHERE `isActive`=1 ";
@@ -291,45 +291,45 @@ class folderClass extends  configClass {
 			// by default no access
 			if( $this->q->vendor==self::mysql) {
 				$sql="
-				INSERT INTO	`folderAccess` 
+				INSERT INTO	`folderAccess`
 						(
 							`folderId`,
 							`groupId`,
 							`folderAccessValue`
-						) 
+						)
 				VALUES
 						(
 							'".$lastId."',
 							 '".$row['groupId']."',
-							 '0'	
+							 '0'
 						)	";
 			} else if ($this->q->vendor==self::mssql) {
 				$sql="
-				INSERT INTO 	[folderAccess] 
+				INSERT INTO 	[folderAccess]
 							(
 								[folderId],
 								[groupId],
 								[folderAccessValue]
-							) 
+							)
 				VALUES
-							(	
+							(
 								'".$lastId."',
 							 	'".$row['groupId']."',
-							 	'0'	
+							 	'0'
 							 )	";
 			} else if ($this->q->vendor==self::oracle) {
 				$sql="
-				INSERT INTO 	\"folderAccess\" 
+				INSERT INTO 	\"folderAccess\"
 							(
 								\"folderId\",
 								\"groupId\",
 								\"folderAccessValue\"
-							) 
+							)
 					VALUES
-							(	
+							(
 								'".$lastId."',
 							 	'".$row['groupId']."',
-							 	'0'	
+							 	'0'
 							 )	";
 			}
 			$this->q->update($sql);
@@ -359,11 +359,11 @@ class folderClass extends  configClass {
 			$sql="
 			SELECT 		*
 			FROM 		`folder`
-			JOIN 		`accordion`
-			ON			`accordion`.`accordionId` = `folder`.`accordionId`
+			JOIN 		`tab`
+			ON			`tab`.`tabId` = `folder`.`tabId`
 			LEFT JOIN	`icon`
 			ON			`folder`.`iconId`=`icon`.`iconId`
-			WHERE		`accordion`.`isActive`	=	1
+			WHERE		`tab`.`isActive`	=	1
 			AND			`folder`.`isActive`		=	1";
 			if($this->folderId) {
 				$sql.=" AND `folderId`='".$this->folderId."'";
@@ -373,11 +373,11 @@ class folderClass extends  configClass {
 			SELECT 		*
 			FROM 		[folder]
 			JOIN		[folderTranslate]
-			JOIN 		[accordion]
-			ON			[accordion].[accordionId] = [folder].[accordionId]
+			JOIN 		[tab]
+			ON			[tab].[tabId] = [folder].[tabId]
 			LEFT JOIN	[icon]
 			ON			[folder].[iconId]=[icon].[iconId]
-			WHERE		[accordion].[isActive]	=	1
+			WHERE		[tab].[isActive]	=	1
 			AND			[folder].[isActive]		=	1";
 			if($this->folderId) {
 				$sql.=" AND `folderId`='".$this->folderId."'";
@@ -386,11 +386,11 @@ class folderClass extends  configClass {
 			$sql	=	"
 			SELECT 		*
 			FROM 		\"folder\"
-			JOIN 		\"accordion\"
-			ON			\"accordion\".\"accordionId\" = \"folder\".\"accordionId\"
+			JOIN 		\"tab\"
+			ON			\"tab\".\"tabId\" = \"folder\".\"tabId\"
 			LEFT JOIN	\"icon\"
 			USING(\"iconId\")
-			WHERE		\"accordion\".\"isActive\"=1
+			WHERE		\"tab\".\"isActive\"=1
 			AND			\"folder\".\"isActive\"=1";
 			if($this->folderId) {
 				$sql.=" AND \"folderId\"='".$this->folderId."'";
@@ -401,12 +401,12 @@ class folderClass extends  configClass {
 		 *  E.g  $filterArray=array('`leaf`.`leafId`');
 		 *  @variables $filterArray;
 		 */
-		$filterArray =array('accordionId','accordionTranslateId','folderId','folderTranslateId');
+		$filterArray =array('tabId','tabTranslateId','folderId','folderTranslateId');
 		/**
 		 *	filter table
 		 * @variables $tableArray
 		 */
-		$tableArray = array('accordian','accordionTranslate','folder','folderTranslate');
+		$tableArray = array('accordian','tabTranslate','folder','folderTranslate');
 
 		if(isset($_GET['query'])) {
 			$query = $_GET['query'];
@@ -472,7 +472,7 @@ class folderClass extends  configClass {
 					 *	 Parameterize Query We don't support
 					 */
 					$sqlLimit="
-							WITH [religionDerived] AS
+							WITH [folderDerived] AS
 							(
 								SELECT	*,
 								[folder].[By],
@@ -480,16 +480,16 @@ class folderClass extends  configClass {
 								ROW_NUMBER() OVER (ORDER BY [folderId]) AS 'RowNumber'
 								FROM 		[folder]
 
-								JOIN 		[accordion]
-								ON			[accordion].[accordionId` = `folder`.`accordionId`
+								JOIN 		[tab]
+								ON			[tab].[tabId` = `folder`.`tabId`
 
 								LEFT JOIN	[icon]
 								ON			[folder].[iconId]=[icon].[iconId]
-								WHERE		[accordion].[isActive]	=	1
+								WHERE		[tab].[isActive]	=	1
 								AND			[folder].[isActive]		=	1  ".$tempSql.$tempSql2."
 							)
 							SELECT		*
-							FROM 		[religionDerived]
+							FROM 		[folderDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	".$_POST['start']."
 							AND 			".($_POST['start']+$_POST['limit']-1).";";
@@ -512,14 +512,14 @@ class folderClass extends  configClass {
 									FROM 		\"folder\"
 									JOIN		\"folderTranslate\"
 									ON			\"folder\".\"folderId\"	=\"folderTranslate\".\"folderId\"
-									JOIN 		\"accordion\"
-									ON			\"accordion\".\"accordionId\" = \"folder\".\"accordionId\"
-									JOIN		\"accordionTranslate\"
-									ON			\"accordion\".\"accordionId\"=	\"accordionTranslate\".\"accordionId\"
-									AND			\"accordionTranslate\".\"accordionId\" =\"folder\".\"accordionId\"
+									JOIN 		\"tab\"
+									ON			\"tab\".\"tabId\" = \"folder\".\"tabId\"
+									JOIN		\"tabTranslate\"
+									ON			\"tab\".\"tabId\"=	\"tabTranslate\".\"tabId\"
+									AND			\"tabTranslate\".\"tabId\" =\"folder\".\"tabId\"
 									LEFT JOIN	\"icon\"
 									ON			\"folder\".\"iconId\"=\"icon\".\"iconId\"
-									WHERE		\"accordion\".\"isActive\"=1
+									WHERE		\"tab\".\"isActive\"=1
 									AND			\"folder\".\"isActive\"=1 ".$tempSql.$tempSql2.$orderBy."
 								 ) a
 						where rownum <= '".($_POST['start']+$_POST['limit']-1)."' )
@@ -599,53 +599,53 @@ class folderClass extends  configClass {
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 					UPDATE 	`folder`
-					SET 	`accordionId`		=	'".$this->strict($_POST['accordionId'],'string')."',
-							`folderNote`		=	'".$this->strict($_POST['folderNote'],'memo')."',
-							`folderSequence`	=	'".$this->strict($_POST['folderSequence'],'numeric')."',
-							`folderPath`		=	'".$this->strict($_POST['folderPath'],'string')."',
-							`iconId`			=	'".$this->strict($_POST['iconId'],'string')."',
-							`isActive`			=	'".$this->model->isActive."',
-							`isNew`				=	'".$this->model->isNew."',
-							`isDraft`			=	'".$this->model->isDraft."',
-							`isUpdate`			=	'".$this->model->isUpdate."',
-							`isDelete`			=	'".$this->model->isDelete."',
-							`isApproved`		=	'".$this->model->isApproved."',
-							`By`				=	'".$this->model->By."',
-							`Time				=	".$this->model->Time."
-					WHERE 	`folderId`			=	'".$this->strict($_POST['folderId'],'numeric')."'";
+					SET 	`tabId`				=	'".$this->model->getTabId()."',
+							`folderNote`		=	'".$this->model->getfolderNote()."',
+							`folderSequence`	=	'".$this->model->getfolderSequence()."',
+							`folderPath`		=	'".$this->model->getfolderPath()."',
+							`iconId`			=	'".$this->model->getIconId()."',
+							`isActive`			=	'".$this->model->getIsActive('','string')."',
+							`isNew`				=	'".$this->model->getIsNew('','string')."',
+							`isDraft`			=	'".$this->model->getIsDraft('','string')."',
+							`isUpdate`			=	'".$this->model->getIsUpdate('','string')."',
+							`isDelete`			=	'".$this->model->getIsDelete('','string')."',
+							`isApproved`		=	'".$this->model->getIsApproved('','string')."',
+							`By`				=	'".$this->model->getBy()."',
+							`Time				=	".$this->model->getTime()."
+					WHERE 	`folderId`			=	'".$this->model->getFolderId()."'";
 		}  else if ( $this->q->vendor==self::mssql) {
 			$sql="
 					UPDATE 	[folder]
-					SET 	[accordionId]		=	'".$this->strict($_POST['accordionId'],'string')."',
-							[folderNote]		=	'".$this->strict($_POST['folderNote'],'memo')."',
-							[folderSequence]	=	'".$this->strict($_POST['folderSequence'],'numeric')."',
-							[folderPath]		=	'".$this->strict($_POST['folderPath'],'string')."',
+					SET 	[tabId]		=	'".$this->model->getTabId()."',
+							[folderNote]		=	'".$this->model->getfolderNote()."',
+							[folderSequence]	=	'".$this->model->getfolderSequence()."',
+							[folderPath]		=	'".$this->model->getfolderPath()."',
 							[iconId]			=	'".$this->strict($_POST['iconId'],'string')."',
-							[isActive]			=	'".$this->model->isActive."',
-							[isNew]				=	'".$this->model->isNew."',
-							[isDraft]			=	'".$this->model->isDraft."',
-							[isUpdate]			=	'".$this->model->isUpdate."',
-							[isDelete]			=	'".$this->model->isDelete."',
-							[isApproved]		=	'".$this->model->isApproved."',
-							[By]				=	'".$this->model->By."',
-							[Time]				=	".$this->model->Time."
-					WHERE 	[folderId]			=	'".$this->strict($_POST['folderId'],'numeric')."'";
+							[isActive]			=	'".$this->model->getIsActive('','string')."',
+							[isNew]				=	'".$this->model->getIsNew('','string')."',
+							[isDraft]			=	'".$this->model->getIsDraft('','string')."',
+							[isUpdate]			=	'".$this->model->getIsUpdate('','string')."',
+							[isDelete]			=	'".$this->model->getIsDelete('','string')."',
+							[isApproved]		=	'".$this->model->getIsApproved('','string')."',
+							[By]				=	'".$this->model->getBy()."',
+							[Time]				=	".$this->model->getTime()."
+					WHERE 	[folderId]			=	'".$this->model->getFolderId()."'";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 					UPDATE 	\"folder\"
-					SET 	\"accordionId\"		=	'".$this->strict($_POST['accordionId'],'string')."',
-							\"folderNote\"		=	'".$this->strict($_POST['folderNote'],'memo')."',
-							\"folderSequence\"	=	'".$this->strict($_POST['folderSequence'],'numeric')."',
-							\"folderPath\"		=	'".$this->strict($_POST['folderPath'],'string')."',
-							\"isActive\"	=	'".$this->model->isActive."',
-							\"isNew\"		=	'".$this->model->isNew."',
-							\"isDraft\"		=	'".$this->model->isDraft."',
-							\"isUpdate\"	=	'".$this->model->isUpdate."',
-							\"isDelete\"	=	'".$this->model->isDelete."',
-							\"isApproved\"	=	'".$this->model->isApproved."',
-							\"By\"			=	'".$this->model->By."',
-							\"Time\"		=	".$this->model->Time."
-					WHERE 	\"folderId\"		=	'".$this->strict($_POST['folderId'],'numeric')."'";
+					SET 	\"tabId\"		=	'".$this->model->getTabId()."',
+							\"folderNote\"		=	'".$this->model->getfolderNote()."',
+							\"folderSequence\"	=	'".$this->model->getfolderSequence()."',
+							\"folderPath\"		=	'".$this->model->getfolderPath()."',
+							\"isActive\"	=	'".$this->model->getIsActive('','string')."',
+							\"isNew\"		=	'".$this->model->getIsNew('','string')."',
+							\"isDraft\"		=	'".$this->model->getIsDraft('','string')."',
+							\"isUpdate\"	=	'".$this->model->getIsUpdate('','string')."',
+							\"isDelete\"	=	'".$this->model->getIsDelete('','string')."',
+							\"isApproved\"	=	'".$this->model->getIsApproved('','string')."',
+							\"By\"			=	'".$this->model->getBy()."',
+							\"Time\"		=	".$this->model->getTime()."
+					WHERE 	\"folderId\"		=	'".$this->model->getFolderId()."'";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
@@ -674,40 +674,40 @@ class folderClass extends  configClass {
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 					UPDATE	`folder`
-					SET		`isActive`			=	'".$this->model->isActive."',
-							`isNew`				=	'".$this->model->isNew."',
-							`isDraft`			=	'".$this->model->isDraft."',
-							`isUpdate`			=	'".$this->model->isUpdate."',
-							`isDelete`			=	'".$this->model->isDelete."',
-							`isApproved`		=	'".$this->model->isApproved."',
-							`By`				=	'".$this->model->By."',
-							`Time				=	".$this->model->Time."
-					WHERE 	`folderId`	=	'".$this->strict($_POST['folderId'],'numeric')."'";
+					SET		`isActive`			=	'".$this->model->getIsActive('','string')."',
+							`isNew`				=	'".$this->model->getIsNew('','string')."',
+							`isDraft`			=	'".$this->model->getIsDraft('','string')."',
+							`isUpdate`			=	'".$this->model->getIsUpdate('','string')."',
+							`isDelete`			=	'".$this->model->getIsDelete('','string')."',
+							`isApproved`		=	'".$this->model->getIsApproved('','string')."',
+							`By`				=	'".$this->model->getBy()."',
+							`Time				=	".$this->model->getTime()."
+					WHERE 	`folderId`	=	'".$this->model->getFolderId()."'";
 
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 					UPDATE	[folder]
-					SET		[isActive]			=	'".$this->model->isActive."',
-							[isNew]				=	'".$this->model->isNew."',
-							[isDraft]			=	'".$this->model->isDraft."',
-							[isUpdate]			=	'".$this->model->isUpdate."',
-							[isDelete]			=	'".$this->model->isDelete."',
-							[isApproved]		=	'".$this->model->isApproved."',
-							[By]				=	'".$this->model->By."',
-							[Time]				=	".$this->model->Time."
-					WHERE 	[folderId]	=	'".$this->strict($_POST['folderId'],'numeric')."'";
+					SET		[isActive]			=	'".$this->model->getIsActive('','string')."',
+							[isNew]				=	'".$this->model->getIsNew('','string')."',
+							[isDraft]			=	'".$this->model->getIsDraft('','string')."',
+							[isUpdate]			=	'".$this->model->getIsUpdate('','string')."',
+							[isDelete]			=	'".$this->model->getIsDelete('','string')."',
+							[isApproved]		=	'".$this->model->getIsApproved('','string')."',
+							[By]				=	'".$this->model->getBy()."',
+							[Time]				=	".$this->model->getTime()."
+					WHERE 	[folderId]	=	'".$this->model->getFolderId()."'";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 					UPDATE	\"folder\"
-					SET		\"isActive\"	=	'".$this->model->isActive."',
-							\"isNew\"		=	'".$this->model->isNew."',
-							\"isDraft\"		=	'".$this->model->isDraft."',
-							\"isUpdate\"	=	'".$this->model->isUpdate."',
-							\"isDelete\"	=	'".$this->model->isDelete."',
-							\"isApproved\"	=	'".$this->model->isApproved."',
-							\"By\"			=	'".$this->model->By."',
-							\"Time\"		=	".$this->model->Time."
-					WHERE 	\"folderId\"	=	'".$this->strict($_POST['folderId'],'numeric')."'";
+					SET		\"isActive\"	=	'".$this->model->getIsActive('','string')."',
+							\"isNew\"		=	'".$this->model->getIsNew('','string')."',
+							\"isDraft\"		=	'".$this->model->getIsDraft('','string')."',
+							\"isUpdate\"	=	'".$this->model->getIsUpdate('','string')."',
+							\"isDelete\"	=	'".$this->model->getIsDelete('','string')."',
+							\"isApproved\"	=	'".$this->model->getIsApproved('','string')."',
+							\"By\"			=	'".$this->model->getBy()."',
+							\"Time\"		=	".$this->model->getTime()."
+					WHERE 	\"folderId\"	=	'".$this->model->getFolderId()."'";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
@@ -722,7 +722,7 @@ class folderClass extends  configClass {
 	}
 
 	/**
-	 *  Read Record From accordionTranslate Table
+	 *  Read Record From tabTranslate Table
 	 **/
 	function translateRead() {
 		header('Content-Type','application/json; charset=utf-8');
@@ -740,21 +740,21 @@ class folderClass extends  configClass {
 			FROM 	`folderTranslate`
 			JOIN 	`language`
 			USING (`languageId`)
-			WHERE	`folderTranslate`.`folderId`='".$this->strict($_POST['folderId'],'numeric')."'";
+			WHERE	`folderTranslate`.`folderId`='".$this->model->getFolderId()."'";
 		} else if ($this->q->vendor==self::mssql){
 			$sql="
 			SELECT	*
-			FROM 	[accordionTranslate]
+			FROM 	[tabTranslate]
 			JOIN 	[language]
 			ON 		[folderTranslate].[languageId] =[language].[languageId]
-			WHERE	[folderTranslate].[folderId]='".$this->strict($_POST['folderId'],'numeric')."'";
+			WHERE	[folderTranslate].[folderId]='".$this->model->getFolderId()."'";
 		} else if ($this->q->vendor=='oralce'){
 			$sql="
 			SELECT	*
 			FROM 	\"folderTranslate\"
 			JOIN 	\"language\"
 			USING (\"languageId\")
-			WHERE	\"folderTranslate\".\"folderId\"='".$this->strict($_POST['folderId'],'numeric')."'";
+			WHERE	\"folderTranslate\".\"folderId\"='".$this->model->getFolderId()."'";
 		}
 		$this->q->read($sql);
 		$total =$this->q->numberRows();
@@ -773,7 +773,7 @@ class folderClass extends  configClass {
 	}
 
 	/**
-	 * Update Accordion Translation in accordionTranslate Table
+	 * Update tab Translation in tabTranslate Table
 	 */
 	public function translateUpdate(){
 		header('Content-Type','application/json; charset=utf-8');
@@ -813,8 +813,8 @@ class folderClass extends  configClass {
 		$this->q->start();
 
 		$sql="
-		SELECT	* 
-		FROM 	`folder` 
+		SELECT	*
+		FROM 	`folder`
 		WHERE 	`folderId`	=	'".$this->folderId."'";
 		$resultDefault= $this->q->fast($sql);
 		if($this->q->numberRows($resultDefault) > 0 ) {
@@ -823,15 +823,15 @@ class folderClass extends  configClass {
 		}
 		if( $this->q->vendor==self::mysql) {
 			$sql="
-			SELECT	* 
+			SELECT	*
 			FROM 	`language`";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
-			SELECT 	* 
+			SELECT 	*
 			FROM 	[language] ";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
-			SELECT 	* 
+			SELECT 	*
 			FROM 	\"language\" ";
 		}
 		$result= $this->q->fast($sql);
@@ -842,42 +842,42 @@ class folderClass extends  configClass {
 			$googleTranslate = $this->security->changeLanguage($from="en",$to,$value);
 			if( $this->q->vendor==self::mysql) {
 				$sql="
-				SELECT	* 
-				FROM 	`folderTranslate` 
-				WHERE 	`folderId`			=	'".$this->folderId."' 
+				SELECT	*
+				FROM 	`folderTranslate`
+				WHERE 	`folderId`			=	'".$this->folderId."'
 				AND 	`languageId`		=	'".$languageId."'";
 			} else if ($this->q->vendor==self::mssql) {
 				$sql="
-				SELECT 	* 
-				FROM 	[folderTranslate] 
-				WHERE 	[folderId]			=	'".$this->folderId."' 
+				SELECT 	*
+				FROM 	[folderTranslate]
+				WHERE 	[folderId]			=	'".$this->folderId."'
 				AND 	[languageId]		=	'".$languageId."'";
 			}  else if ($this->q->vendor==self::oracle) {
 				$sql="
-				SELECT 	* 
-				FROM 	\"folderTranslate\" 
-				WHERE 	\"folderId\"		=	'".$this->folderId."' 
+				SELECT 	*
+				FROM 	\"folderTranslate\"
+				WHERE 	\"folderId\"		=	'".$this->folderId."'
 				AND 	\"languageId\"		=	'".$languageId."'";
 			}
 			$resultfolderTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultfolderTranslate) >  0 ) {
 				if($this->q->vendor=='normal'  || $this->q->vendor==self::mysql) {
 					$sql="
-					UPDATE 	`folderTranslate` 
-					SET 	`folderTranslate`		=	'".$googleTranslate."' 
-					WHERE 	`folderId`				=	'".$this->folderId."' 
+					UPDATE 	`folderTranslate`
+					SET 	`folderTranslate`		=	'".$googleTranslate."'
+					WHERE 	`folderId`				=	'".$this->folderId."'
 					AND 	`languageId`			=	'".$languageId."'";
 				} else if ($this->q->vendor==self::mssql) {
 					$sql="
-					UPDATE 	[folderTranslate] 
-					SET 	[folderTranslate]		=	'".$googleTranslate."' 
-					WHERE 	[folderId]				=	'".$this->folderId."' 
+					UPDATE 	[folderTranslate]
+					SET 	[folderTranslate]		=	'".$googleTranslate."'
+					WHERE 	[folderId]				=	'".$this->folderId."'
 					AND 	[languageId]			=	'".$languageId."'";
 				} else if ($this->q->vendor==self::oracle) {
 					$sql="
-					UPDATE 	\"folderTranslate\" 
-					SET 	\"folderTranslate\"		=	'".$googleTranslate."' 
-					WHERE 	\"folderId\"			=	'".$this->folderId."' 
+					UPDATE 	\"folderTranslate\"
+					SET 	\"folderTranslate\"		=	'".$googleTranslate."'
+					WHERE 	\"folderId\"			=	'".$this->folderId."'
 					AND 	\"languageId\"			=	'".$languageId."'";
 				}
 				$this->q->update($sql);
@@ -889,26 +889,26 @@ class folderClass extends  configClass {
 			} else {
 				if($this->q->vendor=='normal'  || $this->q->vendor==self::mysql) {
 					$sql="
-					INSERT INTO `folderTranslate` 
+					INSERT INTO `folderTranslate`
 							(
-								`folderId`,		
+								`folderId`,
 								`languageId`,
 								`folderTranslate`
-							) 
+							)
 					VALUES
-						(	
+						(
 							'".$folderId."',
 							'".$languageId."',
 							'".$googleTranslate."'
 						)";
 				} else if ($this->q->vendor==self::mssql) {
 					$sql="
-					INSERT INTO [folderTranslate] 
+					INSERT INTO [folderTranslate]
 							(
 								[folderId],
 								[languageId],
 								[folderTranslate]
-							) 
+							)
 					VALUES
 							(
 								'".$folderId."',
@@ -917,12 +917,12 @@ class folderClass extends  configClass {
 						)";
 				} else if ($this->q->vendor==self::oracle) {
 					$sql="
-					INSERT INTO \"folderTranslate\" 
+					INSERT INTO \"folderTranslate\"
 							(
 								\"folderId\",
 								\"languageId\",
 								\"folderTranslate\"
-							) 
+							)
 					VALUES
 							(
 								'".$folderId."',
@@ -951,8 +951,8 @@ class folderClass extends  configClass {
 	/**
 	 * Enter description here ...
 	 */
-	function accordion(){
-		return $this->security->accordion();
+	function tab(){
+		return $this->security->tab();
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
@@ -1125,8 +1125,8 @@ if(isset($_GET['method'])) {
 		}
 	}
 	if(isset($_GET['field'])){
-		if($_GET['field']=='accordionId'){
-			$folderObject->accordion();
+		if($_GET['field']=='tabId'){
+			$folderObject->tab();
 		}
 	}
 
