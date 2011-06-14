@@ -35,8 +35,8 @@ class logAdvanceModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'accordion';
-		$this->primaryKeyName 	=	'accordionId';
+		$this->settableName('accordion');
+		$this->setPrimaryKeyName('accordionId');
 		/*
 		 *  All the $_POST enviroment.
 		 */

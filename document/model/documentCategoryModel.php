@@ -14,7 +14,7 @@ class documentCategoryModel extends validationClass{
 	// table property
 	private $tableName;
 	private $primaryKeyName;
-	
+
 	//table field
 	public $documentCategoryId;
 	public $documentCategoryTitle;
@@ -37,29 +37,29 @@ class documentCategoryModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'documentCategory';
-		$this->PrimaryKeyName 	=	'documentCategoryId';
+		$this->settableName('documentCategory');
+		$this->setPrimaryKeyName('documentCategoryId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['documentCategoryId'])){
-			$this->setDocumentCategory = $this->strict($_POST['documentCategoryId'],'numeric');
+			$this->setDocumentCategory ($this->strict($_POST['documentCategoryId'],'numeric'));
 		}
 		if(isset($_POST['documentCategoryTitle'])){
-			$this->setDocumentCategoryTitle = $this->strict($_POST['documentCategoryTitle'],'memo');
+			$this->setDocumentCategoryTitle($this->strict($_POST['documentCategoryTitle'],'memo'));
 		}
 		if(isset($_POST['documentCategoryDesc'])){
-			$this->setDocumentCategoryDesc = $this->strict($_POST['documentCategoryDesc'],'memo');
+			$this->setDocumentCategoryDesc($this->strict($_POST['documentCategoryDesc'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->setBy = $_SESSION['staffId'];
+			$this->setBy($_SESSION['staffId']);
 		}
-		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->setTime = "'".date("Y-m-d H:i:s")."'";
+		if($this->vendor=='mysql'){
+			$this->setTime = ("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='microsoft'){
-			$this->setTime = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='oracle'){
-			$this->setTime = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 
@@ -103,123 +103,336 @@ class documentCategoryModel extends validationClass{
 		$this->setIsDelete(1);
 		$this->setIsApproved(0);
 	}
+
+	public function setTableName($value) {
+		$this->tableName = $value;
+
+	}
+	public function getTableName() {
+		return $this->tableName;
+	}
+	public function setPrimaryKeyName($value) {
+		$this->primaryKeyName = $value;
+
+	}
+	public function getPrimaryKeyName() {
+		return $this->primaryKeyName;
+	}
+	// generate basic information from outside
+	/**
+	 * Set  Document Category Indentification Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setDocumentCategoryId($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->documentId = $value;
+		} else if ($type=='array'){
+			$this->documentId[$key]=$value;
+		}
+	}
+	/**
+	 * Return Document Category Indentification Value
+	 * @return integer documentId
+	 */
+	public function getDocumentCategoryId($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->documentId;
+		} else if ($type=='array'){
+			return $this->documentId[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+	/**
+	 * Set Document Category  Title  Value
+	 * @param string $value
+	 */
+	public function setDocumentCategoryTitle() {
+
+		$this->documentCategoryTitle = $value;
+
+	}
+	/**
+	 * Return Document Category Desc Value
+	 * @return string $groupId
+	 */
+	public function getDocumentCategoryTitle() {
+
+		return $this->documentCategoryTitle;
+
+	}
+	/**
+	 * Set Document Category  Description Value
+	 * @param string $value
+	 */
+	public function setDocumentCategoryDesc() {
+
+		$this->documentCategoryDesc = $value;
+
+	}
+	/**
+	 * Return Document Category Description Value
+	 * @return string $groupId
+	 */
+	public function getDocumentCategoryDesc() {
+
+		return $this->documentCategoryDesc;
+
+	}
 	/**
 	 * Set isDefault Value
 	 * @param boolean $value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 */
-	public function setIsDefault($value) {
-		$this->isDefault = $value;
+	public function setIsDefault($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+
+			$this->isDefault = $value;
+		} else if ($type=='array') {
+
+			$this->isDefault[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
+
+
 	/**
 	 * Return isDefault Value
+	 * @param numeric $key  Array as value
+	 *  @param enum   $type   1->string,2->array
 	 * @return boolean isDefault
 	 */
-	public function getIsDefault() {
-		return $this->isDefault;
+	public function getIsDefault($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isDefault;
+		} else if ($type=='array'){
+
+			return $this->isDefault[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
 
 	/**
 	 * Set isNew value
 	 * @param boolean $value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 */
-	public function setIsNew($value) {
-		$this->isNew = $value;
+	public function setIsNew($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->isNew = $value;
+		} else if ($type=='array'){
+			$this->isNew[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
 	/**
 	 * Return isNew value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 * @return boolean isNew
 	 */
-	public function getIsNew() {
-		return $this->isNew;
+	public function getIsNew($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isNew;
+		} else if ($type=='array'){
+			return $this->isNew[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
 
 	/**
 	 * Set IsDraft Value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 * @param boolean $value
 	 */
-	public function setIsDraft($value) {
-		$this->isDraft = $value;
+	public function setIsDraft($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->isDraft = $value;
+		} elseif ($type=='array'){
+			$this->isDraft[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
 	/**
 	 * Return isDraftValue
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 * @return boolean isDraft
 	 */
-	public function getIsDraft() {
-		return $this->isDraft;
+	public function getIsDraft($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isDraft;
+		} else if ($type=='array'){
+			return $this->isDraft[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
 
 	/**
 	 * Set isUpdate Value
 	 * @param boolean $value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 */
-	public function setIsUpdate($value) {
-		$this->isUpdate = $value;
+	public function setIsUpdate($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->isUpdate = $value;
+		} elseif ($type=='array'){
+			$this->isUpdate[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
 	/**
 	 * Return isUpdate Value
 	 * @return boolean isUpdate
 	 */
-	public function getIsUpdate() {
-		return $this->isUpdate;
+	public function getIsUpdate($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isUpdate;
+		} else if ($type=='array'){
+			return $this->isUpdate[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
-
-	/**
-	 * Set isActive Value
-	 * @param boolean $value
-	 */
-	public function setIsActive($value) {
-		$this->isActive = $value;
-	}
-	/**
-	 * Return isActive value
-	 * @return boolean isActive
-	 */
-	public function getIsActive() {
-		return $this->isActive;
-	}
-
 	/**
 	 * Set isDelete Value
 	 * @param boolean $value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 */
-	public function setIsDelete($value) {
-		$this->isDelete = $value;
+	public function setIsDelete($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->isDelete = $value;
+		} elseif ($type=='array'){
+
+			$this->isDelete[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+
 	}
 	/**
 	 * Return isDelete Value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 * @return boolean isDelete
 	 */
-	public function getIsDelete() {
-		return $this->isDelete;
+	public function getIsDelete($key=NULL,$type=NULL) {
+		if($type=='string'){
+
+			return $this->isDelete;
+		} else if ($type=='array'){
+
+			return $this->isDelete[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
+	/**
+	 * Set isActive Value
+	 * @param boolean $value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setIsActive($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->isActive = $value;
+		} elseif ($type=='array'){
+			$this->isActive[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+
+	}
+	/**
+	 * Return isActive value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 * @return boolean isActive
+	 */
+	public function getIsActive($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isActive;
+		} else if ($type=='array'){
+			return $this->isActive[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+
+
 
 	/**
 	 * Set isApproved Value
 	 * @param boolean $value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 */
-	public function setIsApproved($value) {
-		$this->isApproved = $value;
+	public function setIsApproved($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->isApproved = $value;
+		} elseif ($type=='array'){
+			$this->isApproved[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
 	/**
 	 * Return isApproved Value
+	 * @param numeric $key  Array as value
+	 * @param enum   $type   1->string,2->array
 	 * @return boolean isApproved
 	 */
-	public function getIsApproved() {
-		return $this->isApproved;
+	public function getIsApproved($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->isApproved;
+		} else if ($type=='array'){
+			return $this->isApproved[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
 	}
 
 	/**
 	 * Set Activity User
-	 * @param integet $value
+	 * @param integer $value
 	 */
-	public function setIsBy($value) {
+	public function setBy($value) {
 		$this->isBy = $value;
 	}
 	/**
 	 * Get Activity User
 	 * @return integer User
 	 */
-	public function getIsBy() {
+	public function getBy() {
 		return $this->isBy;
 	}
 
@@ -227,15 +440,36 @@ class documentCategoryModel extends validationClass{
 	 * Set Time Activity User
 	 * @param date $value
 	 */
-	public function setIsTime($value) {
+	public function setTime($value) {
 		$this->isTime = $value;
 	}
 	/**
 	 *  Return Time Activity User
 	 *  @return date Time Activity User
 	 */
-	public function getIsTime() {
+	public function getTime() {
 		return $this->isTime;
+	}
+
+	/**
+	 * Set All tab Identification Array To Sql Statement
+	 * @param string $value
+	 */
+	public function settTabIdAll($value){
+		$this->tabIdAll= $value;
+	}
+	/**
+	 * Return tab Identification Array
+	 * @return string $tabIdAll
+	 */
+	public function gettTabIdAll() {
+		return $this->tabIdAll;
+	}
+	public function setTotal($value){
+		$this->total = $value;
+	}
+	public function getTotal(){
+		return $this->total;
 	}
 }
 ?>

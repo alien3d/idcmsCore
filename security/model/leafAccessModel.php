@@ -30,8 +30,8 @@ class leafAccessModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'leafAccess';
-		$this->primaryKeyName 	=	'leafAccessId';
+		$this->setTableName('leafAccess');
+		$this->setPrimaryKeyName('leafAccessId');
 		/*
 		 *  All the $_POST enviroment.
 		 */

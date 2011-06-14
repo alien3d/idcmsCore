@@ -837,7 +837,7 @@ Ext.onReady(function() {
 								} ]
 					});
 			var gridPanel = new Ext.Panel( {
-				title : leafName,
+				title : leafNote,
 				height : 50,
 				layout : 'fit',
 				iconCls : 'application_view_detail',
@@ -891,7 +891,7 @@ Ext.onReady(function() {
 			method		:  	'post',
 			id			:	'formPanel',
 			url			: 	'../controller/documentController.php',
-			title       : 	leafName,
+			title       : 	leafNote,
         	border      : 	false,
             width		: 	600,       
 	        fileUpload	: 	true,
@@ -989,7 +989,7 @@ Ext.onReady(function() {
 			var win = new Ext.Window( {
 				tbar : toolbarPanelList,
 				items : [ gridList ],
-				title : leafName,
+				title : leafNote,
 				closeAction : 'hide',
 				maximizable : true,
 				layout : 'fit',

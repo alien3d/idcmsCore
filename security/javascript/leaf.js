@@ -1160,7 +1160,7 @@ Ext
 						items : [
 								{
 									xtype : 'panel',
-									title : leafName,
+									title : leafNote,
 									bodyStyle : "padding:5px",
 									layout : 'form',
 									frame : true,

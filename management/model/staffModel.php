@@ -74,87 +74,269 @@ class staffModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'staff';
-		$this->primaryKeyName 	=	'staffId';
+		$this->setTableName('staff');
+		$this->setPrimaryKeyName('staffId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['staffId'])){
-			$this->staffId = $this->strict($_POST['staffId'],'numeric');
+			$this->setStaffId($this->strict($_POST['staffId'],'numeric'));
 		}
 
 		if(isset($_POST['groupId'])){
-			$this->groupId = $this->strict($_POST['groupId'],'numeric');
+			$this->setGroupId($this->strict($_POST['groupId'],'numeric'));
+		}
+		if(isset($_POST['departmentId'])){
+			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'));
 		}
 		if(isset($_POST['languageId'])){
-			$this->languageId = $this->strict($_POST['languageId'],'numeric');
+			$this->setLanguageId($this->strict($_POST['languageId'],'numeric'));
 		}
 		if(isset($_POST['staffPassword'])){
-			$this->staffPassword = $this->strict($_POST['staffPassword'],'password');
+			$this->setStaffPassword($this->strict($_POST['staffPassword'],'password'));
 		}
 		if(isset($_POST['staffName'])){
-			$this->staffName = $this->strict($_POST['staffName'],'string');
+			$this->setStaffName($this->strict($_POST['staffName'],'string'));
 		}
 		if(isset($_POST['staffNo'])){
-			$this->staffNo = $this->strict($_POST['staffNo'],'numeric');
+			$this->setStaffNo($this->strict($_POST['staffNo'],'numeric'));
 		}
 		if(isset($_POST['staffIc'])){
-			$this->staffIc = $this->strict($_POST['staffIc'],'string');
+			$this->setStaffIc($this->strict($_POST['staffIc'],'string'));
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->By = $_SESSION['staffId'];
+			$this->setBy($_SESSION['staffId']);
 		}
-		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+		if($this->vendor=='mysql'){
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='oracle'){
-			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 
 	}
 	/* (non-PHPdoc)
-	 * @see configClass::create()
+	 * @see validationClass::create()
 	 */
-	function create() {
-		$this->isDefaut 	=	0;
-		$this->isNew 		=	1;
-		$this->isDraft=0;
-		$this->isUpdate=0;
-		$this->isActive=0;
-		$this->isDelete=0;
-		$this->isApproved=0;
-
+	public function create()
+	{
+		$this->setIsDefault(0,'','string');
+		$this->setIsNew(1,'','string');
+		$this->setIsDraft(0,'','string');
+		$this->setIsUpdate(0,'','string');
+		$this->setIsActive(1,'','string');
+		$this->setIsDelete(0,'','string');
+		$this->setIsApproved(0,'','string');
 	}
-
 	/* (non-PHPdoc)
 	 * @see validationClass::update()
 	 */
-	function update() {
-		$this->isDefaut =0;
-		$this->isNew =0;
-		$this->isDraft=0;
-		$this->isUpdate=1;
-		$this->isActive=1;
-		$this->isDelete=0;
-		$this->isApproved=0;
+	public function update()
+	{
+		$this->setIsDefault(0,'','string');
+		$this->setIsNew(0,'','string');
+		$this->setIsDraft(0,'','string');
+		$this->setIsUpdate(1,'','string');
+		$this->setIsActive(1,'','string');
+		$this->setIsDelete(0,'','string');
+		$this->setIsApproved(0,'','string');
 	}
-
 	/* (non-PHPdoc)
 	 * @see validationClass::delete()
 	 */
-	function delete() {
-		$this->isDefaut =0;
-		$this->isNew =0;
-		$this->isDraft=0;
-		$this->isUpdate=0;
-		$this->isActive=0;
-		$this->isDelete=1;
-		$this->isApproved=0;
+	public function delete()
+	{
+		$this->setIsDefault(0,'','string');
+		$this->setIsNew(0,'','string');
+		$this->setIsDraft(0,'','string');
+		$this->setIsUpdate(0,'','string');
+		$this->setIsActive(0,'','string');
+		$this->setIsDelete(1,'','string');
+		$this->setIsApproved(0,'','string');
+	}
+	/* (non-PHPdoc)
+	 * @see configClass::excel()
+	 */
+	function excel() {
+
 	}
 
-	public function setIsDefault($value,$key=NULL,$type=NULL) {
+
+	/**
+	 * Update Religion Table Status
+	 */
+	public function updateStatus() {
+		if(!(is_array($_GET['isDefault']))) {
+			$this->setIsDefault(0,'','string');
+		}
+		if(!(is_array($_GET['isNew']))) {
+			$this->setIsNew(0,'','string');
+		}
+		if(!(is_array($_GET['isDraft']))) {
+			$this->setIsDraft(0,'','string');
+		}
+		if(!(is_array($_GET['isUpdate']))) {
+			$this->setIsUpdate(0,'','string');
+		}
+		if(!(is_array($_GET['isDelete']))) {
+
+			$this->setIsDelete(1,'','string');
+		}
+		if(!(is_array($_GET['isActive']))) {
+			$this->setIsActive(0,'','string');
+		}
+
+		if(!(is_array($_GET['isApproved']))) {
+			$this->setIsApproved(0,'','string');
+		}
+	}
+	public function setTableName($value) {
+		$this->tableName = $value;
+
+	}
+	public function getTableName() {
+		return $this->tableName;
+	}
+	public function setPrimaryKeyName($value) {
+		$this->primaryKeyName = $value;
+
+	}
+	public function getPrimaryKeyName() {
+		return $this->primaryKeyName;
+	}
+
+	/**
+	 * Set Staff Identification  Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setStaffId($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->groupId = $value;
+		} else if ($type=='array'){
+			$this->groupId[$key]=$value;
+		}
+	}
+	/**
+	 * Return Staff Indentification Value
+	 * @return integer groupId
+	 */
+	public function getStaffId($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->groupId;
+		} else if ($type=='array'){
+			return $this->groupId[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+
+	/**
+	 * Set  Group Identification (english)
+	 * @param numeric $value
+	 */
+	public function setGroupId($value) {
+		$this->groupId = $value;
+	}
+	/**
+	 * Return Group  Description (english)
+	 * @return  string Group Sequence
+	 */
+	public function getGroupId() {
+		return $this->groupId;
+	}
+	/**
+	 * Set  Department Indentification
+	 * @param numeric $value
+	 */
+	public function setDepartmentId($value) {
+		$this->departmentId = $value;
+	}
+	/**
+	 * Return Department Identification
+	 * @return  numeric $value
+	 */
+	public function getDepartmentId() {
+		return $this->departmentId;
+	}
+
+	/**
+	 * Set  Language Indentification
+	 * @param numeric $value
+	 */
+	public function setLanguageId($value) {
+		$this->languageId = $value;
+	}
+	/**
+	 * Return Language Identification
+	 * @return  numeric $value
+	 */
+	public function getLanguageId() {
+		return $this->languageId;
+	}
+
+	/**
+	 * Set  Staff Password
+	 * @param numeric $value
+	 */
+	public function setStaffPassword($value) {
+		$this->staffPassword = $value;
+	}
+	/**
+	 * Return Staff Password
+	 * @return  numeric $value
+	 */
+	public function getStaffPassword() {
+		return $this->staffPassword;
+	}
+/**
+	 * Set  Staff Name
+	 * @param numeric $value
+	 */
+	public function setStaffName($value) {
+		$this->staffName = $value;
+	}
+	/**
+	 * Return Staff No
+	 * @return  numeric $value
+	 */
+	public function getStaffName() {
+		return $this->staffName;
+	}
+	/**
+	 * Set  Staff No
+	 * @param numeric $value
+	 */
+	public function setStaffNo($value) {
+		$this->departmentId = $value;
+	}
+	/**
+	 * Return Staff No
+	 * @return  numeric $value
+	 */
+	public function getStaffNo() {
+		return $this->staffNo;
+	}
+
+	/**
+	 * Set  Staff Indentification
+	 * @param numeric $value
+	 */
+	public function setStaffIc($value) {
+		$this->staffIc = $value;
+	}
+	/**
+	 * Return Staff Identification
+	 * @return  numeric $value
+	 */
+	public function getStaffIc() {
+		return $this->staffIc;
+	}
+		public function setIsDefault($value,$key=NULL,$type=NULL) {
 		if($type=='string'){
 
 			$this->isDefault = $value;
@@ -424,7 +606,7 @@ class staffModel extends validationClass{
 	}
 	/**
 	 * Return Staff Identification Array
-	 * @return string $staffIdAll
+	 * @return string $departmentIdAll
 	 */
 	public function getStaffIdAll() {
 		return $this->staffIdAll;
@@ -435,5 +617,6 @@ class staffModel extends validationClass{
 	public function getTotal(){
 		return $this->total;
 	}
+
 }
 ?>

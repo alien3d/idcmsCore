@@ -27,8 +27,8 @@ class tabAccessModel extends tab
         /*
          *  Basic Information Table
          */
-        $this->tableName              = 'tabAccess';
-        $this->primaryKeyName         = 'tabAccessId';
+        $this->setTableName('tabAccess');
+        $this->setPrimaryKeyName('tabAccessId');
         /*
          *  All the $_POST enviroment.
          */

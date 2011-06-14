@@ -54,7 +54,7 @@ Ext.onReady(function() {
 					name : 'leafId',
 					type : 'int'
 				}, {
-					name : 'leafName',
+					name : 'leafNote',
 					type : 'string'
 				}, {
 				    name : 'Nleaf',
@@ -95,7 +95,7 @@ Ext.onReady(function() {
 					name : 'leafId',
 					type : 'int'
 				}, {
-					name : 'leafName',
+					name : 'leafNote',
 					type : 'string'
 				}, {
 				    name : 'Nleaf',
@@ -192,7 +192,7 @@ Ext.onReady(function() {
 				}, {
 				    type : 'string',
 					dataIndex : 'Nleaf',
-					column : 'leafName',
+					column : 'leafNote',
 					table : 'leaf'
 				} ]
 			});
@@ -208,7 +208,7 @@ Ext.onReady(function() {
 				}, {
 				    type : 'string',
 					dataIndex : 'Nleaf',
-					column : 'leafName',
+					column : 'leafNote',
 					table : 'leaf'
 				} ]
 			});
@@ -761,7 +761,7 @@ Ext.onReady(function() {
 								} ]
 					});
 			var gridPanel = new Ext.Panel( {
-				title : 'Senarai ' + leafName,
+				title : 'Senarai ' + leafNote,
 				height : 50,
 				layout : 'fit',
 				iconCls : 'application_view_detail',
@@ -818,7 +818,7 @@ Ext.onReady(function() {
 						id : 'formPanel',
 						method : 'post',
 						frame : true,
-						title : 'Borang ' + leafName,
+						title : 'Borang ' + leafNote,
 						border : false,
 						bodyStyle : 'padding:5px',
 						width : 600,
@@ -940,7 +940,7 @@ Ext.onReady(function() {
 			var win = new Ext.Window( {
 				tbar : toolbarPanelList,
 				items : [ gridList ],
-				title : 'Senarai ' + leafName,
+				title : 'Senarai ' + leafNote,
 				closeAction : 'hide',
 				maximizable : true,
 				layout : 'fit',

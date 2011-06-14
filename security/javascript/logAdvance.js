@@ -316,7 +316,7 @@ Ext.onReady(function() {
 	
 
 	        var gridPanel = new Ext.Panel({
-				title :  leafName,
+				title :  leafNote,
 				height : 50,
 				layout : 'fit',
 				iconCls : 'application_view_detail',
@@ -373,7 +373,7 @@ Ext.onReady(function() {
                 id : 'formPanel',
 				method : 'post',
 				frame : true,
-				title :  leafName,
+				title :  leafNote,
 				border : false,
 				width : 600,
 				bodyStyle : 'padding:5px',

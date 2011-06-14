@@ -167,11 +167,11 @@ class tabClass extends configClass
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',			'" . $this->model->gettabSequence() . "',
-						'" . $this->model->getTabNote() . "',			'".$this->model->getIsDefault()."',
-						'" . $this->model->getIsNew() . "',				'" . $this->model->getIsDraft() . "',
-						'" . $this->model->getIsNew() . "'				'" . $this->model->getIsDelete() . "',
-						'" . $this->model->getIsActive() . "',			'" . $this->model->getIsApproved() . "',
+						'" . $this->model->getIconId() . "',			'" . $this->model->getTabSequence() . "',
+						'" . $this->model->getTabNote() . "',			'".$this->model->getIsDefault('','string')."',
+						'" . $this->model->getIsNew('','string') . "',				'" . $this->model->getIsDraft('','string') . "',
+						'" . $this->model->getIsUpdate('','string') . "'				'" . $this->model->getIsDelete('','string') . "',
+						'" . $this->model->getIsActive('','string') . "',			'" . $this->model->getIsApproved('','string') . "',
 						'" . $this->model->getBy() . "',				" . $this->model->getTime() . "
 					);";
 		} else if ($this->q->vendor == self::mssql) {
@@ -187,11 +187,11 @@ class tabClass extends configClass
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',			'" . $this->model->gettabSequence() . "',
-						'" . $this->model->getTabNote() . "',			'".$this->model->getIsDefault()."',
-						'" . $this->model->getIsNew() . "',				'" . $this->model->getIsDraft() . "',
-						'" . $this->model->getIsNew() . "'				'" . $this->model->getIsDelete() . "',
-						'" . $this->model->getIsActive() . "',			'" . $this->model->getIsApproved() . "',
+						'" . $this->model->getIconId() . "',			'" . $this->model->getTabSequence() . "',
+						'" . $this->model->getTabNote() . "',			'".$this->model->getIsDefault('','string')."',
+						'" . $this->model->getIsNew('','string') . "',				'" . $this->model->getIsDraft('','string') . "',
+						'" . $this->model->getIsUpdate('','string') . "'				'" . $this->model->getIsDelete('','string') . "',
+						'" . $this->model->getIsActive('','string') . "',			'" . $this->model->getIsApproved('','string') . "',
 						'" . $this->model->getBy() . "',				" . $this->model->getTime() . "
 					);";
 		} else if ($this->q->vendor == self::oracle) {
@@ -207,11 +207,11 @@ class tabClass extends configClass
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',			'" . $this->model->gettabSequence() . "',
-						'" . $this->model->getTabNote() . "',			'".$this->model->getIsDefault()."',
-						'" . $this->model->getIsNew() . "',				'" . $this->model->getIsDraft() . "',
-						'" . $this->model->getIsNew() . "'				'" . $this->model->getIsDelete() . "',
-						'" . $this->model->getIsActive() . "',			'" . $this->model->getIsApproved() . "',
+												'" . $this->model->getIconId() . "',			'" . $this->model->getTabSequence() . "',
+						'" . $this->model->getTabNote() . "',			'".$this->model->getIsDefault('','string')."',
+						'" . $this->model->getIsNew('','string') . "',				'" . $this->model->getIsDraft('','string') . "',
+						'" . $this->model->getIsUpdate('','string') . "'				'" . $this->model->getIsDelete('','string') . "',
+						'" . $this->model->getIsActive('','string') . "',			'" . $this->model->getIsApproved('','string') . "',
 						'" . $this->model->getBy() . "',				" . $this->model->getTime() . "
 					);";
 		}
@@ -604,9 +604,9 @@ class tabClass extends configClass
 		if ($this->q->vendor == self::mysql) {
 			$sql = "
 			UPDATE 	`tab`
-			SET 	`tabSequence`	= 	'" . $this->model->tabSequence . "',
-					`tabNote`		=	'" . $this->model->tabNote . "',
-					`iconId`			=	'" . $this->model->iconId . "',
+			SET 	`tabSequence`	= 	'" . $this->model->getTabSequence() . "',
+					`tabNote`		=	'" . $this->model->getTabNote() . "',
+					`iconId`			=	'" . $this->model->getIconId() . "',
 					`isActive`			=	'" . $this->model->getIsActive('','string') . "',
 					`isNew`				=	'" . $this->model->getIsNew('','string') . "',
 					`isDraft`			=	'" . $this->model->getIsDraft('','string') . "',

@@ -186,7 +186,7 @@ class tabModel extends validationClass{
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
 	 */
-	public function settabId($value,$key=NULL,$type=NULL) {
+	public function setTabId($value,$key=NULL,$type=NULL) {
 		if($type=='string'){
 			$this->tabId = $value;
 		} else if ($type=='array'){
@@ -197,7 +197,7 @@ class tabModel extends validationClass{
 	 * Return istabId Value
 	 * @return integer tabId
 	 */
-	public function gettabId($key=NULL,$type=NULL) {
+	public function getTabId($key=NULL,$type=NULL) {
 		if($type=='string'){
 			return $this->tabId;
 		} else if ($type=='array'){
@@ -226,14 +226,14 @@ class tabModel extends validationClass{
 	 * Set Tab Sequence Value
 	 * @param numeric $value
 	 */
-	public function settabSequence($value) {
+	public function setTabSequence($value) {
 		$this->tabSequence = $value;
 	}
 	/**
 	 * Return tab Sequence Value
 	 * @return string tab sequence
 	 */
-	public function gettabSequence() {
+	public function getTabSequence() {
 		return $this->tabSequence;
 	}
 	/**
@@ -521,14 +521,14 @@ class tabModel extends validationClass{
 	 * Set All tab Identification Array To Sql Statement
 	 * @param string $value
 	 */
-	public function settabIdAll($value){
+	public function settTabIdAll($value){
 		$this->tabIdAll= $value;
 	}
 	/**
 	 * Return tab Identification Array
 	 * @return string $tabIdAll
 	 */
-	public function gettabIdAll() {
+	public function gettTabIdAll() {
 		return $this->tabIdAll;
 	}
 	public function setTotal($value){

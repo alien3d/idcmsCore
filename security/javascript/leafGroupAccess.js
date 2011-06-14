@@ -167,7 +167,7 @@ Ext.onReady(function(){
 			header		:	folderNameLabel,
 			dataIndex	:	'folderNote'
 		},{
-			header		:	leafNameLabel,
+			header		:	leafNoteLabel,
 			dataIndex	:	'leafNote'
 		},{
 			header		:	staffNameLabel,

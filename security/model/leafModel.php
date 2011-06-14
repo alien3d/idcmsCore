@@ -42,36 +42,36 @@ class leafModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['leafId'])){
-			$this->leafId = $this->strict($_POST['leafId'],'numeric');
+			$this->setLeafId($this->strict($_POST['leafId'],'numeric'));
 		}
-		if(isset($_POST['accordionId'])){
-			$this->accordionId = $this->strict($_POST['accordionId'],'numeric');
+		if(isset($_POST['tabId'])){
+			$this->setTabId($this->strict($_POST['tabId'],'numeric'));
 		}
 		if(isset($_POST['folderId'])){
-			$this->folderId = $this->strict($_POST['folderId'],'numeric');
+			$this->setFolderId($this->strict($_POST['folderId'],'numeric'));
 		}
 		if(isset($_POST['iconId'])){
-			$this->iconId = $this->strict($_POST['iconId'],'numeric');
+			$this->setIconId($this->strict($_POST['iconId'],'numeric'));
 		}
 		if(isset($_POST['leafSequence'])){
-			$this->leafSequence = $this->strict($_POST['leafSequence'],'numeric');
+			$this->setLeafSequence($this->strict($_POST['leafSequence'],'numeric'));
 		}
 		if(isset($_POST['leafFilename'])){
-			$this->leafFilename = $this->strict($_POST['leafFilename'],'memo');
+			$this->setLeafFilename($this->strict($_POST['leafFilename'],'memo'));
 		}
 
 		if(isset($_POST['leafNote'])){
-			$this->leafNote = $this->strict($_POST['leafNote'],'memo');
+			$this->setLeafNote($this->strict($_POST['leafNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->By = $_SESSION['staffId'];
+			$this->setBy($_SESSION['staffId']);
 		}
-		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+		if($this->vendor=='mysql'){
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='oracle'){
-			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 
@@ -116,7 +116,7 @@ class leafModel extends validationClass{
 		$this->isDelete		=	1;
 		$this->isApproved	=	0;
 	}
-	
+
 
 }
 ?>

@@ -845,7 +845,7 @@ class groupClass  extends configClass {
 				}
 				$sql.="
 				END,
-				`By`				=	\"". $this->model->getBy()('','string') . "\",
+				`By`				=	\"". $this->model->getBy() . "\",
 				`Time`				=	" . $this->model->getTime() . " ";
 
 
@@ -1064,7 +1064,7 @@ class groupClass  extends configClass {
 
 
 
-$groupObject  	= 	new departmentClass();
+$groupObject  	= 	new groupClass();
 if(isset($_SESSION['staffId'])){
 	$groupObject->staffId = $_SESSION['staffId'];
 }
@@ -1075,12 +1075,13 @@ if(isset($_SESSION['vendor'])){
  *	crud -create,read,update,delete
  **/
 if(isset($_POST['method']))	{
+		/*
+	 *  Initilize Value before load in the loader
+	 */
 	if(isset($_POST['leafId'])){
 		$groupObject-> leafId = $_POST['leafId'];
 	}
-	if($_POST['method']=='create')	{
-		$groupObject->create();
-	}
+
 	if(isset($_POST['filter'])){
 		$groupObject->filter = $_POST['filter'];
 	}
@@ -1093,21 +1094,30 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['sortField'])){
 		$groupObject-> sortField= $_POST['sortField'];
 	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$groupObject->execute();
+	if($_POST['method']=='create'){
+		$groupObject->create();
+	}
 	if($_POST['method']=='read') 	{
 		$groupObject->read();
 	}
-	if(isset($_POST['staffId'])) {
-		$groupObject->staffId = $_POST['staffId'];
-		if($_POST['method']=='save') 	{
-			$groupObject->read();
-		}
-		if($_POST['method']=='delete') 	{
-			$groupObject->delete();
-		}
+
+	if($_POST['method']=='save') 	{
+		$groupObject->read();
 	}
+	if($_POST['method']=='delete') 	{
+		$groupObject->delete();
+	}
+
 }
 
 if(isset($_GET['method'])) {
+		/*
+	 *  Initilize Value before load in the loader
+	 */
 	if(isset($_GET['leafId'])){
 		$groupObject-> leafId  = $_GET['leafId'];
 	}
@@ -1116,7 +1126,10 @@ if(isset($_GET['method'])) {
 			$groupObject->staffId();
 		}
 	}
-
+	/*
+	 *  Load the dynamic value
+	 */
+	$groupObject->execute();
 	if($_GET['method']=='updateStatus'){
 		$groupObject->updateStatus();
 	}

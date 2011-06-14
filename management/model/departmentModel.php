@@ -29,8 +29,6 @@ class departmentModel extends validationClass{
 	private $isApproved;
 	private $By;
 	private $Time;
-	private $vendor;
-	private $staffId;
 
 	private $departmentIdAll; // this is not table field but collection of departmentId
 	/**
@@ -63,29 +61,32 @@ class departmentModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'department';
-		$this->primaryKeyName 	=	'departmentId';
+		$this->setTableName('department');
+		$this->setPrimaryKeyName('departmentId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['departmentId'])){
-			$this->departmentId = $this->strict($_POST['departmentId'],'numeric');
+			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'));
 		}
 		if(isset($_POST['departmentSequence'])){
-			$this->departmentSequence = $this->strict($_POST['departmentSequence'],'memo');
+			$this->setDepartmentSequence($this->strict($_POST['departmentSequence'],'memo'));
+		}
+		if(isset($_POST['departmentCode'])){
+			$this->setDepartmentCode($this->strict($_POST['departmentCode'],'memo'));
 		}
 		if(isset($_POST['departmentNote'])){
-			$this->departmentNote = $this->strict($_POST['departmentNote'],'memo');
+			$this->setDepartmentNote($this->strict($_POST['departmentNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->By = $_SESSION['staffId'];
+			$this->setBy($_SESSION['staffId']);
 		}
-		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+		if($this->vendor=='mysql'){
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='oracle'){
-			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 
@@ -129,10 +130,120 @@ class departmentModel extends validationClass{
 		$this->setIsDelete(1,'','string');
 		$this->setIsApproved(0,'','string');
 	}
-	function excel() {
+
+
+	/**
+	 * Update Religion Table Status
+	 */
+	public function updateStatus() {
+		if(!(is_array($_GET['isDefault']))) {
+			$this->setIsDefault(0,'','string');
+		}
+		if(!(is_array($_GET['isNew']))) {
+			$this->setIsNew(0,'','string');
+		}
+		if(!(is_array($_GET['isDraft']))) {
+			$this->setIsDraft(0,'','string');
+		}
+		if(!(is_array($_GET['isUpdate']))) {
+			$this->setIsUpdate(0,'','string');
+		}
+		if(!(is_array($_GET['isDelete']))) {
+
+			$this->setIsDelete(1,'','string');
+		}
+		if(!(is_array($_GET['isActive']))) {
+			$this->setIsActive(0,'','string');
+		}
+
+		if(!(is_array($_GET['isApproved']))) {
+			$this->setIsApproved(0,'','string');
+		}
+	}
+	public function setTableName($value) {
+		$this->tableName = $value;
 
 	}
+	public function getTableName() {
+		return $this->tableName;
+	}
+	public function setPrimaryKeyName($value) {
+		$this->primaryKeyName = $value;
 
+	}
+	public function getPrimaryKeyName() {
+		return $this->primaryKeyName;
+	}
+	// generate basic information from outside
+	/**
+	 * Set Group Identification  Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setGroupId($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->groupId = $value;
+		} else if ($type=='array'){
+			$this->groupId[$key]=$value;
+		}
+	}
+	/**
+	 * Return Group Indentification Value
+	 * @return integer groupId
+	 */
+	public function getGroupId($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->groupId;
+		} else if ($type=='array'){
+			return $this->groupId[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+	/**
+	 * Set  Group Sequence (english)
+	 * @param boolean $value
+	 */
+	public function setGroupSequence($value) {
+		$this->groupSequence = $value;
+	}
+	/**
+	 * Return Group  Description (english)
+	 * @return  string Group Sequence
+	 */
+	public function getGroupSequence() {
+		return $this->groupSequence;
+	}
+	/**
+	 * Set  Group  Code (english)
+	 * @param string $value
+	 */
+	public function setGroupCode($value) {
+		$this->groupCode = $value;
+	}
+	/**
+	 * Return Group  Code
+	 * @return  string Group Description
+	 */
+	public function getGroupCode() {
+		return $this->groupCode;
+	}
+	/**
+	 * Set  Group Translation (english)
+	 * @param string $value
+	 */
+	public function setGroupNote($value) {
+		$this->religionNote = $value;
+	}
+	/**
+	 * Return Group  Description (english)
+	 * @return  string Group Description
+	 */
+	public function getGroupNote() {
+		return $this->groupNote;
+	}
 	public function setIsDefault($value,$key=NULL,$type=NULL) {
 		if($type=='string'){
 
@@ -395,15 +506,15 @@ class departmentModel extends validationClass{
 	}
 
 	/**
-	 * Set All Religion Identification Array To Sql Statement
+	 * Set All Group Identification Array To Sql Statement
 	 * @param string $value
 	 */
 	public function setDepartmentIdAll($value){
-		$this->religionIdAll= $value;
+		$this->departmentIdAll= $value;
 	}
 	/**
-	 * Return Department Identification Array
-	 * @return string $religionIdAll
+	 * Return Group Identification Array
+	 * @return string $departmentIdAll
 	 */
 	public function getDepartmentIdAll() {
 		return $this->departmentIdAll;
@@ -414,5 +525,11 @@ class departmentModel extends validationClass{
 	public function getTotal(){
 		return $this->total;
 	}
+
+	function excel() {
+
+	}
+
+
 }
 ?>

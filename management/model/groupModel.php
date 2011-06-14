@@ -65,8 +65,8 @@ class groupModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'group';
-		$this->primaryKeyName 	=	'groupId';
+		$this->setTableName('group');
+		$this->setPrimaryKeyName('groupId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
@@ -83,14 +83,14 @@ class groupModel extends validationClass{
 			$this->setGroupNote = $this->strict($_POST['groupNote'],'memo');
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->By = $_SESSION['staffId'];
+			$this->setBy = $_SESSION['staffId'];
 		}
-		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+		if($this->vendor=='mysql'){
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='oracle'){
-			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 
@@ -535,5 +535,6 @@ class groupModel extends validationClass{
 	public function getTotal(){
 		return $this->total;
 	}
+
 }
 ?>

@@ -271,9 +271,13 @@ class religionClass extends configClass
 	 */
 	public function read()
 	{
-		header('Content-Type', 'application/json; charset=utf-8');
+		//	header('Content-Type', 'application/json; charset=utf-8');
+		echo "vendor".$this->vendor;
+		echo " q vendor".$this->q->vendor;
+		echo " model vendor".$this->model->vendor;
 		if($this->isAdmin == 0) {
-			if($this->q->vendor == self :: mysql) {
+			if($this->q->vendor ==self::mysql) {
+				echo "true la bongok";
 				$this->auditFilter = "	`religion`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[religion].[isActive]		=	1	";
@@ -788,7 +792,7 @@ class religionClass extends configClass
 				}
 				$sql.="
 				END,
-				`By`				=	\"". $this->model->getBy()('','string') . "\",
+				`By`				=	\"". $this->model->getBy() . "\",
 				`Time`				=	" . $this->model->getTime() . " ";
 
 
@@ -838,7 +842,7 @@ class religionClass extends configClass
 			UPDATE \"".$this->model->getTableName()."\"
 			SET    ";
 			}
-		//	echo "arnab[".$this->model->getReligionId(0,'array')."]";
+			//	echo "arnab[".$this->model->getReligionId(0,'array')."]";
 			/**
 			 *	System Validation Checking
 			 *  @var $access
@@ -1098,11 +1102,11 @@ if(isset($_SESSION['vendor'])){
  *	crud -create,read,update,delete
  **/
 if(isset($_POST['method']))	{
+	/*
+	 *  Initilize Value before load in the loader
+	 */
 	if(isset($_POST['leafId'])){
 		$religionObject-> leafId = $_POST['leafId'];
-	}
-	if($_POST['method']=='create')	{
-		$religionObject->create();
 	}
 	if(isset($_POST['filter'])){
 		$religionObject->filter = $_POST['filter'];
@@ -1116,21 +1120,27 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['sortField'])){
 		$religionObject-> sortField= $_POST['sortField'];
 	}
-	if($_POST['method']=='read') 	{
+	/*
+	 *  Load the dynamic value
+	 */
+	$religionObject->execute();
+	if($_POST['method']=='create') 	{
+		$religionObject->create();
+	}
+
+	if($_POST['method']=='save') 	{
 		$religionObject->read();
 	}
-	if(isset($_POST['staffId'])) {
-		$religionObject->staffId = $_POST['staffId'];
-		if($_POST['method']=='save') 	{
-			$religionObject->read();
-		}
-		if($_POST['method']=='delete') 	{
-			$religionObject->delete();
-		}
+	if($_POST['method']=='delete') 	{
+		$religionObject->delete();
 	}
+
 }
 
 if(isset($_GET['method'])) {
+	/*
+	 *  Initilize Value before load in the loader
+	 */
 	if(isset($_GET['leafId'])){
 		$religionObject-> leafId  = $_GET['leafId'];
 	}
@@ -1139,7 +1149,10 @@ if(isset($_GET['method'])) {
 			$religionObject->staffId();
 		}
 	}
-
+	/*
+	 *  Load the dynamic value
+	 */
+	$religionObject-> execute();
 	if($_GET['method']=='updateStatus'){
 		$religionObject->updateStatus();
 	}

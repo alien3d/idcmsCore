@@ -11,13 +11,27 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class folderAccessModel extends validationClass{
-	public $tableName;
-	public $primaryKeyName;
-	public $folderAccessId;
-	public $folderId;
-	public $groupId;
-	public $folderAccessValue;
-	public $totalfolderAccessId;
+	// table property
+	private $tableName;
+	private $primaryKeyName;
+
+	// table field
+	private $folderAccessId;
+	private $folderId;
+	private $groupId;
+	private $folderAccessValue;
+	private $totalfolderAccessId;
+
+	// table property
+	const tableName = 'folderAcces';
+	const primaryKeyName = 'folderAccesId';
+
+	// table field
+	const folderAccessId = 'folderAccessId';
+	const folderId  ='folderId';
+	const groupId = 'groupId';
+	const folderAccessValue = 'folderAccessValue';
+
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -25,22 +39,22 @@ class folderAccessModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'folderAccess';
-		$this->primaryKeyName 	=	'folderAccessId';
+		$this->setTableName 		('folderAccess');
+		$this->setPrimaryKeyName 	('folderAccessId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
 		$this->folderAccessId 		= array();
 		$this->folderAccessValue 	= array();
-		$this->totalfolderAccessId	=	count($_GET['folderAccessId']);
+		$this->setTotal(count($_GET['folderAccessId']));
 
 
-		for($i=0;$i<$this->totalfolderAccessId;$i++) {
-			$this->folderAccessId[$i]  = $this->strict($_GET['folderAccessId'][$i],'numeric');
+		for($i=0;$i<$this->getTotalfolderAccessId;$i++) {
+			$this->setFolderAccessId($this->strict($_GET['folderAccessId'][$i],'numeric'),$i);
 			if($_GET[$folderAccessValue][$i]=='true') {
-				$this->folderAccessValue[$i] =1;
+				$this->setFolderAccessValue(1,$i);
 			} else {
-				$this->folderAccessValue[$i]=0;
+				$this->setFolderAccessValue(0,$i);
 			}
 		}
 
@@ -66,5 +80,92 @@ class folderAccessModel extends validationClass{
 	function delete() {
 	}
 
+	public function setTableName($value) {
+		$this->tableName = $value;
+
+	}
+	public function getTableName() {
+		return $this->tableName;
+	}
+	public function setPrimaryKeyName($value) {
+		$this->primaryKeyName = $value;
+
+	}
+	public function getPrimaryKeyName() {
+		return $this->primaryKeyName;
+	}
+	// generate basic information from outside
+	/**
+	 * Set folder indentification  Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setFolderAccessId($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->folderAccessId = $value;
+		} else if ($type=='array'){
+			$this->folderAccessId[$key]=$value;
+		}
+	}
+	/**
+	 * Return folder indentication Value
+	 * @return integer folderId
+	 */
+	public function getFolderAccessId($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->folderId;
+		} else if ($type=='array'){
+			return $this->folderId[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+	/**
+	 * Set Group indentification  Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setGroupId() {
+
+		$this->groupId = $value;
+
+	}
+	/**
+	 * Return Group indentication Value
+	 * @return integer folderId
+	 */
+	public function getGroupId() {
+
+		return $this->groupId;
+
+	}
+	/**
+	 * Set folder Access indentification  Value
+	 * @param boolean $value
+	 * @param integer $key  Array as value
+	 */
+	public function setFolderAccessValue($value,$key=NULL) {
+
+		$this->folderAccessId[$key]=$value;
+
+	}
+	/**
+	 * Return folder Access indentication Value
+	 * @return boolean folderAccessId
+	 */
+	public function getFolderAccessValue($key=NULL) {
+
+		return $this->folderValue[$key];
+
+	}
+	public function setTotal($value){
+		$this->total = $value;
+	}
+	public function getTotal(){
+		return $this->total;
+	}
 }
 ?>

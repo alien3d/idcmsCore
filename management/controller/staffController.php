@@ -1204,12 +1204,13 @@ if(isset($_SESSION['vendor'])){
  *	crud -create,read,update,delete
  **/
 if(isset($_POST['method']))	{
+	/*
+	 *  Initilize Value before load in the loader
+	 */
 	if(isset($_POST['leafId'])){
 		$staffObject-> leafId = $_POST['leafId'];
 	}
-	if($_POST['method']=='create')	{
-		$staffObject->create();
-	}
+
 	if(isset($_POST['filter'])){
 		$staffObject->filter = $_POST['filter'];
 	}
@@ -1222,21 +1223,30 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['sortField'])){
 		$staffObject-> sortField= $_POST['sortField'];
 	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$staffObject->execute();
+	if($_POST['method']=='create'){
+		$staffObject->create();
+	}
 	if($_POST['method']=='read') 	{
 		$staffObject->read();
 	}
-	if(isset($_POST['staffId'])) {
-		$staffObject->staffId = $_POST['staffId'];
-		if($_POST['method']=='save') 	{
-			$staffObject->read();
-		}
-		if($_POST['method']=='delete') 	{
-			$staffObject->delete();
-		}
+
+	if($_POST['method']=='save') 	{
+		$staffObject->read();
 	}
+	if($_POST['method']=='delete') 	{
+		$staffObject->delete();
+	}
+
 }
 
 if(isset($_GET['method'])) {
+	/*
+	 *  Initilize Value before load in the loader
+	 */
 	if(isset($_GET['leafId'])){
 		$staffObject-> leafId  = $_GET['leafId'];
 	}
@@ -1245,7 +1255,10 @@ if(isset($_GET['method'])) {
 			$staffObject->staffId();
 		}
 	}
-
+	/*
+	 *  Load the dynamic value
+	 */
+	$staffObject->execute();
 	if($_GET['method']=='updateStatus'){
 		$staffObject->updateStatus();
 	}

@@ -1,5 +1,7 @@
-<?php	session_start();
+<?php
+session_start();
 require_once("../../class/classAbstract.php");
+require_once("../../class/classDocumentTrail.php");
 require_once("../model/departmentModel.php");
 /**
  * this is main setting files
@@ -11,9 +13,10 @@ require_once("../model/departmentModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class departmentClass  extends configClass {
-	* Connection to the database
-	* @var string $excel
-	*/
+	/*
+	 * Connection to the database
+	 * @var string $excel
+	 */
 	public $q;
 	/**
 	 * Program Identification
@@ -131,31 +134,24 @@ class departmentClass  extends configClass {
 	 * Class Loader
 	 */
 	function execute() {
-		parent :: __construct();
+		parent::__construct();
 
-		$this->q 					=	new vendor();
+		$this->q              = new vendor();
+		$this->q->vendor      = $this->vendor;
+		$this->q->leafId      = $this->leafId;
+		$this->q->staffId     = $this->staffId;
+		$this->q->filter      = $this->filter;
+		$this->q->quickFilter = $this->quickFilter;
+		$this->q->connect($this->connection, $this->username, $this->database, $this->password);
+		$this->excel         = new PHPExcel();
+		$this->audit         = 0;
+		$this->log           = 1;
+		$this->q->log        = $this->log;
 
-		$this->q->vendor			=	$this->vendor;
-
-		$this->q->leafId			=	$this->leafId;
-
-		$this->q->staffId			=	$this->staffId;
-
-		$this->q->filter 			= 	$this->filter;
-
-		$this->q->quickFilter		=	$this->quickFilter;
-
-		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
-
-		$this->excel				=	new  PHPExcel();
-
-		$this->audit 				=	0;
-
-		$this->log					=   0;
-
-		$this->q->log 				= $this->log;
-
-		$this->model 				= new departmentModel();
+		$this->model         = new departmentModel();
+		$this->model->vendor = $this->vendor;
+		$this->model->execute();
+		$this->documentTrail = new documentTrailClass();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -312,7 +308,7 @@ class departmentClass  extends configClass {
 	 * @see config::read()
 	 */
 	function read() 				{
-		header('Content-Type','application/json; charset=utf-8');
+		header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
 			if($this->q->vendor == self :: mysql) {
 				$this->auditFilter = "	`department`.`isActive`		=	1	";
@@ -332,100 +328,267 @@ class departmentClass  extends configClass {
 		}
 		//UTF8
 		$items=array();
-		if( $this->q->vendor==self::mysql) {
-			//UTF8
-			$sql='SET NAMES "utf8"';
+		if ($this->q->vendor == self::mysql) {
+			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
-
 		}
-		// everything given flexibility  on todo
-		if( $this->q->vendor==self::mysql) {
-			$sql="
-		SELECT	*
-		FROM 	`department`
-		WHERE 	`department`.`isActive`=1 ";
-			if($_POST['departmentId']) {
-				$sql.=" AND `department`.`departmentId`='".$this->strict($_POST['departmentId'],'numeric')."'";
-			}
-		} else if ($this->q->vendor==self::mssql) {
-			$sql="
-		SELECT	*
-		FROM 	[department]
+		if ($this->q->vendor == self::mysql) {
+			$sql = "
+					SELECT	`department`.`departmentId`,
+							`department`.`departmentSequence`,
+							`department`.`departmentCode`,
+							`department`.`departmentNote`,
+							`department`.`isDefault`,
+							`department`.`isNew`,
+							`department`.`isDraft`,
+							`department`.`isUpdate`,
+							`department`.`isDelete`,
+							`department`.`isActive`,
+							`department`.`isApproved`,
+							`department`.`By`,
+							`department`.`Time`,
+							`staff`.`staffName`
+ 					FROM 	`department`
+					JOIN	`staff`
+					ON		`department`.`By` = `staff`.`staffId`
+					WHERE 	".$this->auditFilter;
+			if ($this->model->getDepartmentId('','string')) {
+				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getDepartmentId('','string') . "\"";
 
-		WHERE 	[department].[isActive]=1 ";
-			if($_POST['departmentId']) {
-				$sql.=" AND [department].[departmentId]='".$this->strict($_POST['departmentId'],'numeric')."'";
 			}
-		} else if ($this->q->vendor==self::oracle) {
-			$sql="
-		SELECT	*
-		FROM 	\"department\"
-		WHERE 	\"department\".\"isActive\"=1";
-			if($_POST['departmentId']) {
-				$sql.=" AND \"department\".\"departmentId\"='".$this->strict($_POST['departmentId'],'numeric')."'";
+
+		} else if ($this->q->vendor == self::mssql) {
+			$sql = "
+					SELECT	[department].[departmentId],
+							[department].[departmentSequence],
+							[department].[departmentCode],
+							[department].[departmentNote],
+							[department].[isDefault],
+							[department].[isNew],
+							[department].[isDraft],
+							[department].[isUpdate],
+							[department].[isDelete],
+							[department].[isActive],
+							[department].[isApproved],
+							[department].[By],
+							[department].[Time],
+							[staff].[staffName]
+					FROM 	[department]
+					JOIN	[staff]
+					ON		[department].[By] = [staff].[staffId]
+					WHERE 	[department].[isActive] ='1'	";
+			if ($this->model->getDepartmentId('','string')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getDepartmentId('','string') . "\"";
 			}
+		} else if ($this->q->vendor == self::oracle) {
+			$sql = "
+					SELECT	\"department\".\"departmentId\",
+							\"department\".\"departmentCode\",
+							\"department\".\"departmentSequence\",
+							\"department\".\"departmentNote\",
+							\"department\".\"isDefault\",
+							\"department\".\"isNew\",
+							\"department\".\"isDraft\",
+							\"department\".\"isUpdate\",
+							\"department\".\"isDelete\",
+							\"department\".\"isActive\",
+							\"department\".\"isApproved\",
+							\"department\".\"By\",
+							\"department\".\"Time\",
+							\"staff\".\"staffName\"
+					FROM 	\"department\"
+					JOIN	\"staff\"
+					ON		\"department\".\"By\" = \"staff\".\"staffId\"
+					WHERE 	\"isActive\"='1'	";
+			if ($this->model->getDepartmentId('','string')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getDepartmentId('','string') . "\"";
+			}
+		} else {
+			echo json_encode(array(
+                "success" => false,
+                "message" => "Undefine Database Vendor"
+                ));
+                exit();
 		}
-		$filterArray=array('departmentId','departmentTranslateId');
-		/**
-			*	filter table
-			* @variables $tableArray
-			*/
-		$tableArray = array('department','departmentTranslate');
 		/**
 		 *	filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
 		 *  E.g  $filterArray=array('`leaf`.`leafId`');
 		 *  @variables $filterArray;
 		 */
-		//$filterArray	=	array();
-		if(isset($_GET['query'])) {
-			$query = $_GET['query'];
-		}  else if (isset($_POST['query'])) {
-			$query = $_POST['query'];
-		}
-		if($query) {
-			$sql.=$this->q->quickSearch($tableArray,$filterArray);
-		}
-
-		$record_all 	= $this->q->read($sql);
-		$this->total	= $this->q->numberRows();
-		//paging
-
-		$sql.="	ORDER BY `departmentId` ";
-		if(isset($_POST['start']) && isset($_POST['limit'])) {
-			$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
-		}
-
-
-
-		$this->q->read($sql);
-
-		while($row  = 	$this->q->fetch_array()) {
-			$items[]=$row;
-		}
-
-
-		// bugs on extjs
-		if($_POST['method']=='read' && $_POST['mode']=='update') {
-			$json_encode = json_encode(
-			array('success'=>'true',
-				'total' => $this->total,
-				'data' => $items
-			));
-			$json_encode=str_replace("[","",$json_encode);
-			$json_encode=str_replace("]","",$json_encode);
-			echo $json_encode;
-			exit();
-		} else {
-			if(count($items)==0) {
-				$items='';
-			}
-			echo json_encode(
-			array('success'=>'true',
-				'total' => $this->total,
-				'data' => $items
-			));
-			exit();
-		}
+		$filterArray = null;
+		$filterArray = array(
+            'departmentId'
+            );
+            /**
+             *	filter table
+             * @variables $tableArray
+             */
+            $tableArray  = null;
+            $tableArray  = array(
+            'department'
+            );
+            if ($this->quickFilter) {
+            	if ($this->q->vendor == self::mysql) {
+            		$sql .= $this->q->quickSearch($tableArray, $filterArray);
+            	} else if ($this->q->vendor == self::microsoft) {
+            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $tempSql;
+            	} else if ($this->q->vendor == self::oracle) {
+            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $tempSql;
+            	}
+            }
+            /**
+             *	Extjs filtering mode
+             */
+            if ($this->filter) {
+            	if ($this->q->vendor == self::mysql) {
+            		$sql .= $this->q->searching();
+            	} else if ($this->q->vendor == self::microsoft) {
+            		$tempSql2 = $this->q->searching();
+            		$sql .= $tempSql2;
+            	} else if ($this->q->vendor == self::oracle) {
+            		$tempSql2 = $this->q->searching();
+            		$sql .= $tempSql2;
+            	}
+            }
+            // optional debugger.uncomment if wanted to used
+            //if ($this->q->execute == 'fail') {
+            //	echo json_encode(array(
+            //   "success" => false,
+            //   "message" => $this->q->realEscapeString($sql)
+            //	));
+            //	exit();
+            //}
+            // end of optional debugger
+            $this->q->read($sql);
+            if ($this->q->execute == 'fail') {
+            	echo json_encode(array(
+                "success" =>false,
+                "message" => $this->q->responce
+            	));
+            	exit();
+            }
+            $total = $this->q->numberRows();
+            if ($this->order && $this->sortField) {
+            	if ($this->q->vendor == self::mysql) {
+            		$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
+            	} else if ($this->q->vendor  == self::mssql) {
+            		$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
+            	} else if ($this->q->vendor == self::oracle) {
+            		$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
+            	}
+            }
+            $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
+            $_SESSION['start'] = $this->start;
+            $_SESSION['limit'] = $this->limit;
+            if (empty($this->filter)) {
+            	if ($this->limit) {
+            		// only mysql have limit
+            		if ($this->q->vendor == self::mysql) {
+            			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
+            		} else if ($this->q->vendor == self::microsoft) {
+            			/**
+            			 *	 Sql Server and Oracle used row_number
+            			 *	 Parameterize Query We don't support
+            			 */
+            			$sql = "
+							WITH [departmentDerived] AS
+							(
+								SELECT *,
+								ROW_NUMBER() OVER (ORDER BY [departmentId]) AS 'RowNumber'
+								FROM [department]
+								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
+							)
+							SELECT		[department].[departmentId],
+										[department].[departmentSequence],
+										[department].[departmentCode],
+										[department].[departmentNote],
+										[department].[isDefault],
+										[department].[isNew],
+										[department].[isDraft],
+										[department].[isUpdate],
+										[department].[isDelete],
+										[department].[isApproved],
+										[department].[By],
+										[department].[Time],
+										[staff].[staffName]
+							FROM 		[departmentDerived]
+							WHERE 		[RowNumber]
+							BETWEEN	" . $_POST['start'] . "
+							AND 			" . ($this->start + $this->limit - 1) . ";";
+            		} else if ($this->q->vendor == self::oracle) {
+            			/**
+            			 *  Oracle using derived table also
+            			 */
+            			$sql = "
+						SELECT *
+						FROM ( SELECT	a.*,
+												rownum r
+						FROM (
+									SELECT  \"department\".\"departmentId\",
+											\"department\".\"departmentSequence\",
+											\"department\".\"departmentCode\",
+											\"department\".\"departmentNote\",
+											\"department\".\"isDefault\",
+											\"department\".\"isNew\",
+											\"department\".\"isDraft\",
+											\"department\".\"isUpdate\",
+											\"department\".\"isDelete\",
+											\"department\".\"isApproved\",
+											\"department\".\"By\",
+											\"department\".\"Time\",
+											\"staff\".\"staffName\"
+									FROM 	\"department\"
+									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
+								 ) a
+						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
+						where r >=  \"". $this->start . "\"";
+            		} else {
+            			echo "undefine vendor";
+            			exit();
+            		}
+            	}
+            }
+            /*
+             *  Only Execute One Query
+             */
+            if (!($this->model->getDepartmentId('','string'))) {
+            	$this->q->read($sql);
+            	if ($this->q->execute == 'fail') {
+            		echo json_encode(array(
+                    "success" => false,
+                    "message" => $this->q->responce
+            		));
+            		exit();
+            	}
+            }
+            $items = array();
+            while ($row = $this->q->fetchAssoc()) {
+            	$items[] = $row;
+            }
+            if ($this->model->getDepartmentId('','string')) {
+            	$json_encode = json_encode(array(
+                'success' => true,
+                'total' => $total,
+				'message' => 'Data Loaded',
+                'data' => $items
+            	));
+            	$json_encode = str_replace("[", "", $json_encode);
+            	$json_encode = str_replace("]", "", $json_encode);
+            	echo $json_encode;
+            } else {
+            	if (count($items) == 0) {
+            		$items = '';
+            	}
+            	echo json_encode(array(
+                'success' => true,
+                'total' => $total,
+				'message'=>'data loaded',
+                'data' => $items
+            	));
+            	exit();
+            }
 
 
 	}
@@ -643,7 +806,7 @@ class departmentClass  extends configClass {
 				}
 				$sql.="
 				END,
-				`By`				=	\"". $this->model->getBy()('','string') . "\",
+				`By`				=	\"". $this->model->getBy() . "\",
 				`Time`				=	" . $this->model->getTime() . " ";
 
 
@@ -871,6 +1034,9 @@ if(isset($_SESSION['vendor'])){
  *	crud -create,read,update,delete
  **/
 if(isset($_POST['method']))	{
+	/*
+	 *  Initilize Value before load in the loader
+	 */
 	if(isset($_POST['leafId'])){
 		$departmentObject-> leafId = $_POST['leafId'];
 	}
@@ -889,21 +1055,29 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['sortField'])){
 		$departmentObject-> sortField= $_POST['sortField'];
 	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$departmentObject->execute();
 	if($_POST['method']=='read') 	{
 		$departmentObject->read();
 	}
-	if(isset($_POST['staffId'])) {
-		$departmentObject->staffId = $_POST['staffId'];
-		if($_POST['method']=='save') 	{
-			$departmentObject->read();
-		}
-		if($_POST['method']=='delete') 	{
-			$departmentObject->delete();
-		}
+	if($_POST['method']=='create') 	{
+		$departmentObject->create();
 	}
+	if($_POST['method']=='save') 	{
+		$departmentObject->read();
+	}
+	if($_POST['method']=='delete') 	{
+		$departmentObject->delete();
+	}
+
 }
 
 if(isset($_GET['method'])) {
+	/*
+	 *  Initilize Value before load in the loader
+	 */
 	if(isset($_GET['leafId'])){
 		$departmentObject-> leafId  = $_GET['leafId'];
 	}
@@ -927,4 +1101,5 @@ if(isset($_GET['method'])) {
 		}
 	}
 }
+echo print_r($_SESSION);
 ?>

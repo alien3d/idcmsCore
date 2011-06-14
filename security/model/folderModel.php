@@ -71,36 +71,36 @@ class folderModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'folder';
-		$this->primaryKeyName 	=	'folderId';
+		$this->setTableName('folder');
+		$this->setPrimaryKeyName('folderId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['folderId'])){
-			$this->folderId = $this->strict($_POST['folderId'],'numeric');
+			$this->setFolderId = $this->strict($_POST['folderId'],'numeric');
 		}
 		if(isset($_POST['accordionId'])){
-			$this->accordionId = $this->strict($_POST['accordionId'],'numeric');
+			$this->setTabId = $this->strict($_POST['accordionId'],'numeric');
 		}
 		if(isset($_POST['iconId'])){
-			$this->iconId = $this->strict($_POST['iconId'],'numeric');
+			$this->setIconId = $this->strict($_POST['iconId'],'numeric');
 		}
 		if(isset($_POST['folderPath'])){
-			$this->folderPath = $this->strict($_POST['folderPath'],'memo');
+			$this->setFolderPath = $this->strict($_POST['folderPath'],'memo');
 		}
 
 		if(isset($_POST['folderNote'])){
-			$this->folderNote = $this->strict($_POST['folderNote'],'memo');
+			$this->setFolderNote = $this->strict($_POST['folderNote'],'memo');
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->By = $_SESSION['staffId'];
+			$this->setBy ($_SESSION['staffId']);
 		}
-		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+		if($this->vendor=='mysql'){
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='oracle'){
-			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 
@@ -222,26 +222,19 @@ class folderModel extends validationClass{
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
 	 */
-	public function setTabId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+	public function setTabId() {
+
 			$this->tabId = $value;
-		} else if ($type=='array'){
-			$this->tabId[$key]=$value;
-		}
+
 	}
 	/**
 	 * Return folder indentication Value
 	 * @return integer folderId
 	 */
-	public function getTabId($key=NULL,$type=NULL) {
-		if($type=='string'){
+	public function getTabId() {
+
 			return $this->tabId;
-		} else if ($type=='array'){
-			return $this->tabId[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
+
 	}
 /**
 	 * Set icon indentification  Value
@@ -249,26 +242,19 @@ class folderModel extends validationClass{
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
 	 */
-	public function setIconId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+	public function setIconId() {
+
 			$this->iconId = $value;
-		} else if ($type=='array'){
-			$this->iconId[$key]=$value;
-		}
+
 	}
 	/**
 	 * Return folder indentication Value
 	 * @return integer folderId
 	 */
-	public function getIconId($key=NULL,$type=NULL) {
-		if($type=='string'){
+	public function getIconId() {
+
 			return $this->IconId;
-		} else if ($type=='array'){
-			return $this->IconId[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
+
 	}
 /**
 	 * Set Folder Sequence Value (english)
