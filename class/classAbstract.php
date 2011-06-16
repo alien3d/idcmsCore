@@ -75,7 +75,7 @@ abstract class configClass
      */
     const oracle = 'oracle';
     // end basic access database
-    
+
     /*
      *   @version  0.1  filter strict php setting
      */
@@ -124,21 +124,21 @@ abstract class configClass
     public function staffId()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->q->vendor == 'mysql') {
+        if ($this->q->vendor== self::mysql) {
             $sql = "
 			SELECT 	`staffId`,
 					`staffNo`,
 					`staffName`
 			FROM   	`staff`
 			WHERE	`isActive`=1";
-        } else if ($this->q->vendor == 'microsoft') {
+        } else if ($this->q->vendor == self::mssql) {
             $sql = "
 			SELECT 	[staffId],
 					[staffNo],
 					[staffName]
 			FROM   	[staff]
 			WHERE  	[isActive]=1";
-        } else if ($this->q->vendor == 'oracle') {
+        } else if ($this->q->vendor == self::oracle) {
             $sql = "
 			SELECT 	\"staffId\",
 					\"staffNo\",

@@ -39,15 +39,15 @@ class leafGroupAccessClass  extends  configClass {
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -133,7 +133,9 @@ class leafGroupAccessClass  extends  configClass {
 
 		$this->q->staffId			=	$this->staffId;
 
-		$this->q->filter 			= 	$this->filter;
+		$this->q->fieldQuery 		= 	$this->fieldQuery;
+
+		$this->q->gridQuery         =	$this->gridQuery;
 
 		$this->q->quickFilter		=	$this->quickFilter;
 
@@ -144,6 +146,8 @@ class leafGroupAccessClass  extends  configClass {
 		$this->audit 				=	0;
 
 		$this->security 	= 	new security();
+		$this->security->vendor= $this->vendor;
+		$this->security->execute();
 
 		$this->model         = new leafGroupAccessModel();
 		$this->model->vendor = $this->vendor;
@@ -446,7 +450,7 @@ class leafGroupAccessClass  extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-				
+
 		}
 		$data	= explode("|",$_POST['info']); // still using & for future reference
 		$loop=count($data);
@@ -528,23 +532,34 @@ if(isset($_POST['method'])){
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_POST['leafId'])){
-		$folderAccessObject->leafId = $_POST['leafId'];
+		$leafGroupAccessObject->leafId = $_POST['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_POST['isAdmin'])){
+		$leafGroupAccessObject->isAdmin = $_POST['isAdmin'];
 	}
 	if(isset($_POST['groupId'])){
-		$folderAccessObject->groupId = $_POST['groupId'];
+		$leafGroupAccessObject->groupId = $_POST['groupId'];
 	}
 	if(isset($_POST['accordionId'])){
-		$folderAccessObject->accordionId = $_POST['accordionId'];
+		$leafGroupAccessObject->accordionId = $_POST['accordionId'];
 	}
 	if(isset($_POST['folderId'])){
-		$folderAccessObject->folderId = $_POST['folderId'];
+		$leafGroupAccessObject->folderId = $_POST['folderId'];
 	}
 	/*
 	 *  Load the dynamic value
 	 */
 	$leafGroupAccess_obj->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if($_POST['method']=='read'){
 		$leafGroupAccessObject-> read();
 	}
@@ -553,17 +568,26 @@ if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-
-	if(iset($_GET['leafId'])){
+	/*
+	 *  Leaf / Application Indentification
+	 */
+	if(isset($_GET['leafId'])){
 		$leafGroupAccessObject->leafId  = $_GET['leafId'];
 	}
 	/*
+	 * Admin Only
+	 */
+	if(isset($_GET['isAdmin'])){
+		$leafGroupAccessObject->isAdmin = $_GET['isAdmin'];
+	}
+	/*
+	 *
 	 *  Load the dynamic value
 	 */
 	$leafGroupAccessObject->execute();
-	if($_GET['method']=='read'){
-		$leafGroupAccessObject -> read();
-	}
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if($_GET['method']=='update') {
 		$leafGroupAccessObject -> update();
 	}

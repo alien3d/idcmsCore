@@ -169,21 +169,31 @@ class security extends configClass {
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 			SELECT 	`group`.`groupId`,
-					`group`.`groupNote`
+					`group`.`groupNote`,
+					`groupTranslate`.`groupTranslate`
 			FROM   	`group`
-			WHERE   `isActive`=1 ";
+			JOIN	`groupTranslate`
+			USING	(`groupId`)
+			WHERE   `group`.`isActive`=1
+			AND		`groupTranslate`.`languageId`='".$this->getLanguageId()."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 			SELECT 	[group].[groupId],
 					[group].[groupNote]
 			FROM   	[group]
-			WHERE   [isActive]=1 ";
+			JOIN	[groupTranslate]
+			ON		[group].[groupId] = [groupTranslate].[groupId]
+			WHERE   [group].[isActive]=1
+			AND		[groupTranslate].[languageId]='".$this->getLanguageId()."'";
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 			SELECT 	\"group\".\"groupId\",
 					\"group\".\"groupNote\"
-			FROM   	\"group`
-			WHERE   \"isActive\"=1 ";
+			FROM   	\"group\"
+			JOIN	\"groupTranslate\"
+			USING  (\"groupId\")
+			WHERE   \"isActive\"=1
+			AND		\"groupTranslate\".\"languageId\"='".$this->getLanguageId()."'";
 		}
 
 		$result =$this->q->fast($sql);
@@ -197,6 +207,59 @@ class security extends configClass {
 		}
 		echo json_encode(array('totalCount' => $total,
 		'group' => $items
+		));
+		exit();
+	}
+	public function department() 				{
+		header('Content-Type','application/json; charset=utf-8');
+
+		if( $this->q->vendor==self::mysql) {
+			//UTF8
+			$sql='SET NAMES "utf8"';
+			$this->q->fast($sql);
+
+		}
+		if( $this->q->vendor==self::mysql) {
+			$sql="
+			SELECT 	`department`.`departmentId`,
+					`department`.`departmentNote`,
+					`departmentTranslate`.`departmentTranslate`
+			FROM   	`department`
+			JOIN	`departmentTranslate`
+			USING	(`departmentId`)
+			WHERE   `department`.`isActive`=1
+			AND		`departmentTranslate`.`languageId`='".$this->getLanguageId()."'";
+		} else if ($this->q->vendor==self::mssql) {
+			$sql="
+			SELECT 	[department].[departmentId],
+					[department].[departmentNote]
+			FROM   	[department]
+			JOIN	[departmentTranslate]
+			ON		[department].[departmentId] = [departmentTranslate].[departmentId]
+			WHERE   [department].[isActive]=1
+			AND		[departmentTranslate].[languageId]='".$this->getLanguageId()."'";
+		} else if ($this->q->vendor==self::oracle) {
+			$sql="
+			SELECT 	\"department\".\"departmentId\",
+					\"department\".\"departmentNote\"
+			FROM   	\"department\"
+			JOIN	\"departmentTranslate\"
+			USING  (\"departmentId\")
+			WHERE   \"isActive\"=1
+			AND		\"departmentTranslate\".\"languageId\"='".$this->getLanguageId()."'";
+		}
+
+		$result =$this->q->fast($sql);
+
+		$total	= $this->q->numberRows($result);
+		$items =array();
+		if($total > 0 ) {
+			while($row  = 	$this->q->fetchAssoc($result)) {
+				$items[] =$row;
+			}
+		}
+		echo json_encode(array('totalCount' => $total,
+		'department' => $items
 		));
 		exit();
 	}
@@ -474,14 +537,14 @@ class security extends configClass {
 		}
 		echo  json_encode(array("success"=>"true","nextSequence"=>$nextSequence));
 	}
- /**
-     * Google Api Change Language
-     * @param string $from
-     * @param string $to
-     * @param string $value
-     * @return Ambigous <string, multitype:>
-     */
-    function changeLanguage($from,$to,$value) {
+	/**
+	 * Google Api Change Language
+	 * @param string $from
+	 * @param string $to
+	 * @param string $value
+	 * @return Ambigous <string, multitype:>
+	 */
+	function changeLanguage($from,$to,$value) {
 
 		$value = urlencode($value);
 		$handle = fopen("https://www.googleapis.com/language/translate/v2?key=AIzaSyCKRpBlJzhuO0GWEvgq4WwlYus0O2qI0Ws&q=".$value."&source=".$from."&target=".$to."&callback=handleResponse&prettyprint=true", "rb");
@@ -496,6 +559,13 @@ class security extends configClass {
 
 		return $x[1];
 
+	}
+
+	function setLanguageId($value) {
+		$this->languageId= $value;
+	}
+	function getLanguageId(){
+		return $this->languageId;
 	}
 }
 ?>

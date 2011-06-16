@@ -11,18 +11,39 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class leafAccessModel extends validationClass{
+	//table property
 	public $tableName;
 	public $primaryKeyName;
-	public $leafAccessId;
-	public $leafId;
-	public $staffId;
-	public $leafCreateAccessValue;
-	public $leafReadAccessValue;
-	public $leafUpdateAccessValue;
-	public $leafDeleteAccessValue;
-	public $leafPrintAccessValue;
-	public $leafPostAccessValue;
-	public $totalleafAccessId;
+
+	//table field
+	private $leafAccessId;
+	private $leafId;
+	private $staffId;
+	private $leafCreateAccessValue;
+	private $leafReadAccessValue;
+	private $leafUpdateAccessValue;
+	private $leafDeleteAccessValue;
+	private $leafPrintAccessValue;
+	private $leafPostAccessValue;
+	private $totalleafAccessId;
+
+	//table property
+	const tableName='tableName';
+	const primaryKeyName='primaryKeyName';
+
+	//table field
+	const leafAccessId='leafAccessId';
+	const leafId='leafAccessId';
+	const staffId='staffId';
+	const leafCreateAccessValue='leafAccessId';
+	const leafReadAccessValue='leafAccessId';
+	const leafUpdateAccessValue='leafAccessId';
+	const leafDeleteAccessValue='leafAccessId';
+	const leafPrintAccessValue='leafAccessId';
+	const leafPostAccessValue='leafAccessId';
+	const totalleafAccessId='leafAccessId';
+
+
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */

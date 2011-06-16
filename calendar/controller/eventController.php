@@ -38,15 +38,15 @@ class eventClass extends  configClass {
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -124,7 +124,7 @@ class eventClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
-		
+
 		$this->model				= new eventModel();
 	}
 
@@ -143,7 +143,7 @@ class eventClass extends  configClass {
 		$this->model->create();
 		$this->q->start();
 		if($this->q->vendor==self::mysql || $this->q->vendor=='normal'){
-			
+
 		} else if ($this->q->vendor==self::mssql)
 		$sql="
 					INSERT INTO `event`
@@ -183,16 +183,16 @@ class eventClass extends  configClass {
 		$this->q->create($sql);
 		$this->q->commit();
 
-		
+
 
 
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see configClass::read()
 	 */
 	public function read() 				{
-		
+
 		header('Content-type: application/json');
 		$sql	=	"
 				SELECT	*
@@ -212,7 +212,7 @@ class eventClass extends  configClass {
 		));
 	}
 
-	
+
 	/* (non-PHPdoc)
 	 * @see configClass::update()
 	 */
@@ -238,10 +238,10 @@ class eventClass extends  configClass {
 		$this->q->update($sql);
 		$this->q->commit();
 
-		
+
 
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see configClass::delete()
 	 */
@@ -259,7 +259,7 @@ class eventClass extends  configClass {
 			WHERE 	`eventId`	=	'".$this->strict($_POST['event_uniqueId'],'n')."'";
 		$this->q->update($sql);
 		$this->q->commit();
-		
+
 
 	}
 	/* (non-PHPdoc)
@@ -274,31 +274,47 @@ if(isset($_POST['method'])){
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-	if(isset($_GET['leafId'])){
-		$eventObject-> leafId  = $_GET['leafId'];
+	/*
+	 *  Leaf / Application Indentification
+	 */
+	if(isset($_POST['leafId'])){
+		$eventObject-> leafId  = $_POST['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_POST['isAdmin'])){
+		$eventObject->isAdmin = $_POST['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value
 	 */
 	$eventObject -> execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if($_POST['method']=='create'){
-		$eventObject->create_event();
+		$eventObject->create();
+	}
+	if($_POST['method']=='raed'){
+		$eventObject->read();
 	}
 
-	if(isset($_POST['eventId'])){
-		$eventObject -> eventId = $_POST['eventId'];
-		if($_POST['method']=='update') {
-			$eventObject ->update_event();
-		}
-		if($_POST['method']=='delete') {
-			$eventObject ->delete_event();
-		}
+	if($_POST['method']=='update') {
+		$eventObject ->update();
 	}
+	if($_POST['method']=='delete') {
+		$eventObject ->delete();
+	}
+
 }
 if(isset($_GET['method'])){
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_GET['leafId'])){
 		$eventObject-> leafId  = $_GET['leafId'];
 	}
@@ -306,15 +322,7 @@ if(isset($_GET['method'])){
 	 *  Load the dynamic value
 	 */
 	$eventObject -> execute();
-	if(isset($_GET['mode'])){
-		if($_GET['mode']=='calendar'){
-			$eventObject ->read_calendar();
-		}
-		if($_GET['mode']=='event'){
-			$eventObject ->read_event();
-		}
 
-	}
 	if(isset($_GET['field'])){
 		if($_GET['field']=='staffId'){
 			$eventObject->staffId();

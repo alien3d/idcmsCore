@@ -40,15 +40,15 @@ class religionClass extends configClass
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -272,12 +272,10 @@ class religionClass extends configClass
 	public function read()
 	{
 		//	header('Content-Type', 'application/json; charset=utf-8');
-		echo "vendor".$this->vendor;
-		echo " q vendor".$this->q->vendor;
-		echo " model vendor".$this->model->vendor;
+
 		if($this->isAdmin == 0) {
 			if($this->q->vendor ==self::mysql) {
-				echo "true la bongok";
+
 				$this->auditFilter = "	`religion`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[religion].[isActive]		=	1	";
@@ -1056,7 +1054,7 @@ class religionClass extends configClass
                         //
                         $loopRow = 4;
                         $i       = 0;
-                        while ($row = $this->q->fetch_array()) {
+                        while ($row = $this->q->fetchAssoc()) {
                         	//	echo print_r($row);
                         	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
                         	$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row['religionDesc']);
@@ -1088,6 +1086,49 @@ class religionClass extends configClass
                 exit();
                         }
 	}
+
+	/**
+	 *  Return Staff Name
+	 */
+	public function staffId()
+	{
+		header('Content-Type', 'application/json; charset=utf-8');
+		if ($this->q->vendor== self::mysql) {
+			$sql = "
+			SELECT 	`staffId`,
+					`staffNo`,
+					`staffName`
+			FROM   	`staff`
+			WHERE	`isActive`=1";
+		} else if ($this->q->vendor == self::mssql) {
+			$sql = "
+			SELECT 	[staffId],
+					[staffNo],
+					[staffName]
+			FROM   	[staff]
+			WHERE  	[isActive]=1";
+		} else if ($this->q->vendor == self::oracle) {
+			$sql = "
+			SELECT 	\"staffId\",
+					\"staffNo\",
+					\"staffName\"
+			FROM   	\"staff\"
+			WHERE  	\"isActive\"=1";
+		}
+		$this->q->fast($sql);
+		$result = $this->q->fast($sql);
+		$total = $this->q->numberRows($result);
+		$items  = array();
+		while ($row = $this->q->fetchAssoc($result)) {
+			$items[] = $row;
+		}
+		echo json_encode(array(
+            'success' => true,
+			'total'=>$total,
+			'message'=>'Data loaded',
+            'staff' => $items
+		));
+	}
 }
 
 
@@ -1108,6 +1149,19 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['leafId'])){
 		$religionObject-> leafId = $_POST['leafId'];
 	}
+
+	/*
+	 *  Paging
+	 */
+	if(isset($_POST['start'])){
+		$religionObject->start = $_POST['start'];
+	}
+	if(isset($_POST['limit'])){
+		$religionObject->limit = $_POST['perPage'];
+	}
+	/*
+	 *  Paging
+	 */
 	if(isset($_POST['filter'])){
 		$religionObject->filter = $_POST['filter'];
 	}
@@ -1120,6 +1174,9 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['sortField'])){
 		$religionObject-> sortField= $_POST['sortField'];
 	}
+	if(isset($_POST['isAdmin'])){
+		$religionObject->isAdmin=$_POST['isAdmin'];
+	}
 	/*
 	 *  Load the dynamic value
 	 */
@@ -1128,7 +1185,7 @@ if(isset($_POST['method']))	{
 		$religionObject->create();
 	}
 
-	if($_POST['method']=='save') 	{
+	if($_POST['method']=='read') 	{
 		$religionObject->read();
 	}
 	if($_POST['method']=='delete') 	{
@@ -1144,15 +1201,16 @@ if(isset($_GET['method'])) {
 	if(isset($_GET['leafId'])){
 		$religionObject-> leafId  = $_GET['leafId'];
 	}
+
+	/*
+	 *  Load the dynamic value
+	 */
+	$religionObject-> execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
 			$religionObject->staffId();
 		}
 	}
-	/*
-	 *  Load the dynamic value
-	 */
-	$religionObject-> execute();
 	if($_GET['method']=='updateStatus'){
 		$religionObject->updateStatus();
 	}

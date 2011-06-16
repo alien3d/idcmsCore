@@ -38,16 +38,16 @@ class documentClass extends  configClass {
 	 */
 
 	public $vendor;
-	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+		/**
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -337,7 +337,7 @@ class documentClass extends  configClass {
 		$this->q->read($sql);
 		$this->total = $this->q->numberRows();
 		$items		 =	array();
-		while($row   = 	$this->q->fetch_array()) {
+		while($row   = 	$this->q->fetchAssoc()) {
 			$items[] =	$row;
 		}
 		echo json_encode(
@@ -422,7 +422,7 @@ class documentClass extends  configClass {
 		//
 		$loopRow=4;
 		$i=0;
-		while($row  = 	$this->q->fetch_array()) {
+		while($row  = 	$this->q->fetchAssoc()) {
 			//	echo print_r($row);
 
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);
@@ -469,21 +469,28 @@ if(isset($_POST['method']))	{
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+		/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_POST['leafId'])){
 		$documentObject-> leafId = $_POST['leafId'];
 	}
-	if(isset($_POST['documentd'])) {
-		$documentObject->documentId = $_POST['documentId'];
-	}
+
 	if($_POST['method']=='create')	{
 		$documentObject->create();
 	}
+	/*
+	 *  Filtering
+	 */
 	if(isset($_POST['filter'])){
 		$documentObject->filter = $_POST['filter'];
 	}
 	if(isset($_POST['query'])){
 		$documentObject->quickFilter = $_POST['query'];
 	}
+	/*
+	 *  Ordering
+	 */
 	if(isset($_POST['order'])){
 		$documentObject->order= $_POST['order'];
 	}
@@ -494,7 +501,9 @@ if(isset($_POST['method']))	{
 	 *  Load the dynamic value
 	 */
 	$documentObject -> execute();
-
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if($_POST['method']=='read') 	{
 		$documentObject->read();
 	}
@@ -512,6 +521,9 @@ if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+		/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_GET['leafId'])){
 		$documentObject->leafId  = $_GET['leafId'];
 	}
@@ -524,7 +536,9 @@ if(isset($_GET['method'])) {
 			$documentObject->staffId();
 		}
 	}
-
+	/*
+	 *  Excel Reporting
+	 */
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
 			$documentObject->excel();

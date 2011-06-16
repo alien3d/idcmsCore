@@ -19,6 +19,7 @@ class departmentModel extends validationClass{
 	// table field
 	private $departmentId;
 	private $departmentSequence;
+	private $departmentCode;
 	private $departmentNote;
 	private $isDefault;
 	private $isNew;
@@ -46,6 +47,7 @@ class departmentModel extends validationClass{
 	// table field
 	const   departmentId	=	'departmentId';
 	const   departmentSequence  ='departmentSequence';
+	const   departmentCode = 'departmentCode';
 	const  	departmentNote	=	'departmentNote';
 	const 	isDefault = 'isDefault';
 	const 	isNew = 'isNew';
@@ -176,73 +178,73 @@ class departmentModel extends validationClass{
 	}
 	// generate basic information from outside
 	/**
-	 * Set Group Identification  Value
+	 * Set department Identification  Value
 	 * @param integer $value
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
 	 */
-	public function setGroupId($value,$key=NULL,$type=NULL) {
+	public function setDepartmentId($value,$key=NULL,$type=NULL) {
 		if($type=='string'){
-			$this->groupId = $value;
+			$this->departmentId = $value;
 		} else if ($type=='array'){
-			$this->groupId[$key]=$value;
+			$this->departmentId[$key]=$value;
 		}
 	}
 	/**
-	 * Return Group Indentification Value
-	 * @return integer groupId
+	 * Return department Indentification Value
+	 * @return integer departmentId
 	 */
-	public function getGroupId($key=NULL,$type=NULL) {
+	public function getDepartmentId($key=NULL,$type=NULL) {
 		if($type=='string'){
-			return $this->groupId;
+			return $this->departmentId;
 		} else if ($type=='array'){
-			return $this->groupId[$key];
+			return $this->departmentId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();
 		}
 	}
 	/**
-	 * Set  Group Sequence (english)
+	 * Set  department Sequence (english)
 	 * @param boolean $value
 	 */
-	public function setGroupSequence($value) {
-		$this->groupSequence = $value;
+	public function setDepartmentSequence($value) {
+		$this->departmentSequence = $value;
 	}
 	/**
-	 * Return Group  Description (english)
-	 * @return  string Group Sequence
+	 * Return department  Description (english)
+	 * @return  string department Sequence
 	 */
-	public function getGroupSequence() {
-		return $this->groupSequence;
+	public function getDepartmentSequence() {
+		return $this->departmentSequence;
 	}
 	/**
-	 * Set  Group  Code (english)
+	 * Set  department  Code (english)
 	 * @param string $value
 	 */
-	public function setGroupCode($value) {
-		$this->groupCode = $value;
+	public function setDepartmentCode($value) {
+		$this->departmentCode = $value;
 	}
 	/**
-	 * Return Group  Code
-	 * @return  string Group Description
+	 * Return department  Code
+	 * @return  string department Description
 	 */
-	public function getGroupCode() {
-		return $this->groupCode;
+	public function getDepartmentCode() {
+		return $this->departmentCode;
 	}
 	/**
-	 * Set  Group Translation (english)
+	 * Set  department Translation (english)
 	 * @param string $value
 	 */
-	public function setGroupNote($value) {
-		$this->religionNote = $value;
+	public function setDepartmentNote($value) {
+		$this->departmentNote = $value;
 	}
 	/**
-	 * Return Group  Description (english)
-	 * @return  string Group Description
+	 * Return department  Description (english)
+	 * @return  string department Description
 	 */
-	public function getGroupNote() {
-		return $this->groupNote;
+	public function getdepartmentNote() {
+		return $this->departmentNote;
 	}
 	public function setIsDefault($value,$key=NULL,$type=NULL) {
 		if($type=='string'){
@@ -506,14 +508,14 @@ class departmentModel extends validationClass{
 	}
 
 	/**
-	 * Set All Group Identification Array To Sql Statement
+	 * Set All department Identification Array To Sql Statement
 	 * @param string $value
 	 */
 	public function setDepartmentIdAll($value){
 		$this->departmentIdAll= $value;
 	}
 	/**
-	 * Return Group Identification Array
+	 * Return department Identification Array
 	 * @return string $departmentIdAll
 	 */
 	public function getDepartmentIdAll() {

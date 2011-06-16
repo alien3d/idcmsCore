@@ -38,15 +38,15 @@ class calendarsClass extends  configClass {
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -144,7 +144,7 @@ class calendarsClass extends  configClass {
 		$this->q->read($sql);
 		$this->total	= $this->q->numberRows();
 		$items =array();
-	
+
 		while($row  = 	$this->q->fetchAssoc()) {
 			$items[] =$row;
 		}
@@ -219,7 +219,7 @@ class calendarsClass extends  configClass {
 				));
 			}
 		}
-		
+
 
 	}
 
@@ -263,7 +263,7 @@ class calendarsClass extends  configClass {
 	/**
 	 *  Event Creation
 	 */
-	
+
 	function excel(){}
 }
 
@@ -273,31 +273,44 @@ if(isset($_POST['method'])){
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-	if(isset($_GET['leafId'])){
-		$calendarsObject-> leafId  = $_GET['leafId'];
+	/*
+	 *  Leaf / Application Indentification
+	 */
+	if(isset($_POST['leafId'])){
+		$calendarsObject-> leafId  = $_POST['leafId'];
+	}
+	if(isset($_POST['isAdmin'])){
+		$calendarsObject->isAdmin = $_POST['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value
 	 */
 	$calendarsObject -> execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 
-	if(isset($_POST['calendarId'])){
-		$calendarsObject -> calendarId = $_POST['calendarId'];
-		if($_POST['method']=='update') {
-			$calendarsObject ->update();
-		}
-		if($_POST['method']=='delete') {
-			$calendarsObject ->delete();
-		}
+	if($_POST['method']=='update') {
+		$calendarsObject ->update();
 	}
-	
+	if($_POST['method']=='delete') {
+		$calendarsObject ->delete();
+	}
+
+
 }
 if(isset($_GET['method'])){
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_GET['leafId'])){
 		$calendarsObject-> leafId  = $_GET['leafId'];
+	}
+	if(isset($_GET['isAdmin'])) {
+		$calendarsObject->isAdmin  = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value

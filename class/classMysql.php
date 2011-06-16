@@ -96,17 +96,26 @@ class vendor
 	 */
 	public $execute;
 	/**
-	 *  to filter sql statement
-	 * @var string
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter; //  bugs must filter the  special character with sql escape
+	public $fieldQuery;
+	/**
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
+	 */
+	public $gridQuery;
+	/**
+	 * Staff Identification
+	 * @var numeric $staffId
+	 */
 	public $staffId;
 	/**
 	 * predefine commit constructor for oracle database extension
 	 */
 	public $oracleCommit = 0;
 	public $insertId;
-	
+
 	public function __construct()
 	{
 	}
@@ -156,7 +165,7 @@ class vendor
 	}
 	/**
 	 * Turns on or off auto-commit mode on queries for the database connection.
-	  
+
 	 To determine the current state of autocommit use the SQL command SELECT @@autocommit.
 	 */
 	public function start()
@@ -185,7 +194,7 @@ class vendor
 			$error          = 	1;
 		}
 		if ($error == 1) {
-				
+
 			$sql_log    = "
 			INSERT	INTO	`log`
 					(
@@ -250,14 +259,14 @@ class vendor
 		if ($result_row == 0  || $this->log == 1) {
 
 			$sql_log = "
-			INSERT INTO `log` 
+			INSERT INTO `log`
 					(
 						`leafId`,		`operation`,
 						`sql`,			`date`,
 						`staffId`,		`access`,
 						`logError`
-					) 
-			values 
+					)
+			values
 					(
 						\"" . $this->leafId . "\",								\"" . $operation . "\",
 						\"" . trim($this->realEscapeString($this->sql)) . "\",		\"" . date("Y-m-d H:i:s") . "\",
@@ -322,9 +331,9 @@ class vendor
 						$this->execute     = 'fail';
 						$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($this->link);
 					} else {
-						
+
 						while ($rowColumn = mysqli_fetch_array($resultColumn)) {
-							
+
 							$fieldValue[] = $rowColumn['Field'];
 						}
 					}
@@ -337,7 +346,7 @@ class vendor
 						$this->execute     = 'fail';
 						$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($this->link);
 					} else {
-						
+
 						while ($rowPrevious = mysqli_fetch_array($resultPrevious)) {
 							foreach ($fieldValue as $field) {
 								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
@@ -357,7 +366,7 @@ class vendor
 								`By`,
 								`Time`
 							)
-					VALUES 	
+					VALUES
 							(
 								\"" . $this->realEscapeString($text) . "\",
 								\"" . $logAdvanceType . "\",
@@ -443,7 +452,7 @@ class vendor
 								`refTableName`,
 								`refId`
 							)
-					VALUES 		
+					VALUES
 							(
 								\"" . $this->realEscapeString($text) . "\",
 								\"" . $logAdvanceType . "\",
@@ -797,7 +806,7 @@ class vendor
 						$strSearch .= " OR  ";
 					}
 					if (strlen($key) == 0) {
-						$strSearch .= $strField . " like '%" . $this->quickFilter . "%'";
+						$strSearch .= $strField . " like '%" . $this->fieldQuery . "%'";
 					}
 					$i++;
 				}
@@ -814,7 +823,7 @@ class vendor
 	 */
 	public function searching()
 	{
-		$filter = $this->filter;
+		$filter = $this->gridQuery;
 		if (is_array($filter)) {
 			for ($i = 0; $i < count($filter); $i++) {
 				switch ($filter[$i]['data']['type']) {
@@ -870,6 +879,7 @@ class vendor
 			}
 			//$where .= $qs;
 		}
+
 		if (isset($qs)) {
 			return $qs;
 		}

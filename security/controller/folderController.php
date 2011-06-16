@@ -41,15 +41,15 @@ class folderClass extends  configClass {
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -1002,7 +1002,7 @@ class folderClass extends  configClass {
 		//
 		$loopRow=4;
 		$i=0;
-		while($row  = 	$this->q->fetch_array()) {
+		while($row  = 	$this->q->fetchAssoc()) {
 
 
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);
@@ -1048,24 +1048,42 @@ if(isset($_POST['method']))	{
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_POST['leafId'])){
 		$folderObject->leafId = $_POST['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_POST['isAdmin'])){
+		$folderObject->isAdmin = $_POST['isAdmin'];
 	}
 	if(isset($_POST['folderId'])) {
 		$folderObject->folderId = $_POST['folderId'];
 	}
+	/*
+	 *  Filtering
+	 */
 	if(isset($_POST['filter'])){
 		$folderObject->filter = $_POST['filter'];
 	}
 	if(isset($_POST['query'])){
 		$folderObject->quickFilter = $_POST['query'];
 	}
+	/*
+	 * Ordering
+	 */
 	if(isset($_POST['order'])){
 		$folderObject->order= $_POST['order'];
 	}
 	if(isset($_POST['sortField'])){
 		$folderObject-> sortField= $_POST['sortField'];
 	}
+	/*
+	 *  Translation
+	 */
 	if(isset($_POST['folderTranslateId'])){
 		$folderObject->leafTranslateId= $_POST['folderTranslateId'];
 	}
@@ -1076,7 +1094,9 @@ if(isset($_POST['method']))	{
 	 *  Load the dynamic value
 	 */
 	$folderObject->execute();
-
+		/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if($_POST['method']=='create')	{
 		$folderObject->create();
 	}
@@ -1111,8 +1131,17 @@ if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_GET['leafId'])){
 		$folderObject->leafId  = $_GET['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_GET['isAdmin'])){
+		$folderObject->isAdmin = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value

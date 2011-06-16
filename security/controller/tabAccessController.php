@@ -35,16 +35,16 @@ class tabAccessClass extends configClass
 	 * @var string $vendor
 	 */
 	public $vendor;
-	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+		/**
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -119,8 +119,6 @@ class tabAccessClass extends configClass
 		$this->q->log            = $this->log;
 		$this->security          = new security();
 		$this->security->vendor  = $this->vendor;
-		$this->security->leafId  = $this->leafId;
-		$this->security->staffId = $this->staffId;
 		$this->security->execute();
 		$this->model         = new tabAccessModel();
 		$this->model->vendor = $this->vendor;
@@ -265,14 +263,14 @@ class tabAccessClass extends configClass
 		for ($i = 0; $i < $loop; $i++) {
 			if($this->q->vendor == self::mysql){
 				$sql = "
-			UPDATE 	`tabAccess`	
+			UPDATE 	`tabAccess`
 			SET 	`tabAccessValue`	= 	'" . $this->model->tabAccessValue[$i] . "'
 			WHERE 	`tabAccessId`		=	'" . $this->model->tabAccessId[$i] . "'";
 			} else if ($this->q->vendor == self::mssql){
 				$sql = "
 			UPDATE 	[tabAccess]
 			SET 	[tabAccessValue]	= 	'" . $this->model->tabAccessValue[$i] . "'
-			WHERE 	[tabAccessId]		=	'" . $this->model->tabAccessId[$i] . "'";	
+			WHERE 	[tabAccessId]		=	'" . $this->model->tabAccessId[$i] . "'";
 			} else if ($this->q->vendor==self::oracle){
 				$sql = "
 			UPDATE 	\"tabAccess\"
@@ -327,8 +325,17 @@ if (isset($_POST['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if (isset($_POST['leafId'])) {
 		$tabAccessObject->leafId = $_POST['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_POST['isAdmin'])){
+		$tabAccessObject->isAdmin = $_POST['isAdmin'];
 	}
 	if (isset($_POST['groupId'])) {
 		$tabAccessObject->groupId = $_POST['groupId'];
@@ -345,8 +352,14 @@ if (isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if (isset($_GET['leafId'])) {
 		$tabAccessObject->leafId = $_GET['leafId'];
+	}
+	if(isset($_GET['isAdmin'])) {
+		$tabAccessObject->isAdmin = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value

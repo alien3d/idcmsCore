@@ -41,15 +41,15 @@ class folderAccessClass  extends configClass {
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -156,7 +156,7 @@ class folderAccessClass  extends configClass {
 	}
 	function create() {}
 	function read() 				{
-			header('Content-Type','application/json; charset=utf-8');
+		header('Content-Type','application/json; charset=utf-8');
 		$items =array();
 		if( $this->q->vendor==self::mysql) {
 			//UTF8
@@ -196,7 +196,7 @@ class folderAccessClass  extends configClass {
 			if($this->accordionId) {
 				$sql.=" AND `folder`.`accordionId`='".$this->strict($this->accordionId,'numeric')."'";
 			}
-				
+
 		}  else if ( $this->q->vendor==self::mssql) {
 			$sql="
 				SELECT	[accordion].[accordionNote],
@@ -296,7 +296,7 @@ class folderAccessClass  extends configClass {
 			exit();
 
 		}
-		
+
 		while($row  = 	$this->q->fetchAssoc()) {
 			// select accordion access
 
@@ -332,17 +332,17 @@ class folderAccessClass  extends configClass {
 			$sql="
 			UPDATE `folderAccess`
 			SET    `folderAccessValue` = CASE `folderAccessId`";
-        } else if($this->q->vendor==self::mssql) {
+		} else if($this->q->vendor==self::mssql) {
 			$sql="
 			UPDATE 	[folderAccess]
 			SET 	[folderAccessValue] = CASE [folderAccessId]";
 
-        } else if ($this->q->vendor==self::oracle) {
+		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 			UPDATE \"folderAccess\"
 			SET    \"folderAccessValue\" = CASE \"folderAccessId\"";
 		}
-        for($i=0;$i<$loop;$i++) {
+		for($i=0;$i<$loop;$i++) {
 			$sql.="
 			WHEN '".$this->model->folderAccessId[$i]."' THEN '".$this->model->folderAccesValue[$i]."'";
 		}
@@ -352,7 +352,7 @@ class folderAccessClass  extends configClass {
 		} else if($this->q->vendor==self::mssql) {
 			$sql.=" END
 			WHERE `=[folderAccessId] IN (".$this->model->getfolderAccessIdAll.")";
-		} else if ($this->q->vendor==self::oracle) {	
+		} else if ($this->q->vendor==self::oracle) {
 			$sql.=" END
 			WHERE \"folderAccessId\" IN (".$this->model->getfolderAccessIdAll.")";
 		}
@@ -410,12 +410,21 @@ if(isset($_SESSION['vendor'])){
 	$folderAccessObject->vendor = $_SESSION['vendor'];
 }
 if(isset($_POST['method'])){
+
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_POST['leafId'])){
-		$folderAccessObject->leafId = $_POST['leafId'];
+		$folderAccessObject-> leafId = $_POST['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_POST['isAdmin'])){
+		$folderAccessObject->isAdmin = $_POST['isAdmin'];
 	}
 	if(isset($_POST['groupId'])){
 		$folderAccessObject->groupId = $_POST['groupId'];
@@ -423,10 +432,39 @@ if(isset($_POST['method'])){
 	if(isset($_POST['accordionId'])){
 		$folderAccessObject->accordionId = $_POST['accordionId'];
 	}
+
+	/*
+	 *  Paging
+	 */
+	if(isset($_POST['start'])){
+		$folderAccessObject->start = $_POST['start'];
+	}
+	if(isset($_POST['limit'])){
+		$folderAccessObject->limit = $_POST['perPage'];
+	}
+	/**
+	 *  Filtering
+	 */
+	if(isset($_POST['query'])){
+		$folderAccessObject->fieldQuery = $_POST['query'];
+	}
+	if(isset($_POST['filter'])){
+		$folderAccessObject->gridQuery = $_POST['filter'];
+	}
+	if(isset($_POST['order'])){
+		$folderAccessObject-> order= $_POST['order'];
+	}
+	if(isset($_POST['sortField'])){
+		$folderAccessObject-> sortField= $_POST['sortField'];
+	}
+
 	/*
 	 *  Load the dynamic value
 	 */
 	$folderAccessObject->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if($_POST['method']=='read'){
 		$folderAccessObject -> read();
 	}
@@ -435,19 +473,43 @@ if(isset($_GET['method'])){
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_GET['method'])){
 		$folderAccessObject ->leafId = $_GET['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_GET['isAdmin'])){
+		$folderAccessObject->isAdmin = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value
 	 */
 	$folderAccessObject->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
+	if($_GET['method']=='update'){
+		$folderAccessObject->update();
+	}
+
 	if(isset($_GET['field'])){
 		if($_GET['field']=='groupId') {
 			$folderAccessObject->group();
 		}
 		if($_GET['field']=='accordionId'){
 			$folderAccessObject->accordion();
+		}
+	}
+	/*
+	 *  Excel Reporing
+	 */
+	if(isset($_GET['mode'])){
+		if($_GET['mode']=='excel') {
+			$folderAccessObject->excel();
 		}
 	}
 }

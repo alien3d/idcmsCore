@@ -37,16 +37,16 @@ class logClass extends  configClass {
 	 * @var string $vendor
 	 */
 	public $vendor;
-	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+		/**
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -119,7 +119,7 @@ class logClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
-		
+
 		$this->model         = new logModel();
         $this->model->vendor = $this->vendor;
         $this->model->execute();
@@ -144,7 +144,7 @@ class logClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		if( $this->q->vendor==self::mysql) {
 			$sql	=	"
@@ -255,7 +255,7 @@ class logClass extends  configClass {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
-			
+
 		}
 		if($_SESSION['start']==0) {
 			$sql=str_replace("LIMIT","",$_SESSION['sql']);
@@ -317,7 +317,7 @@ class logClass extends  configClass {
 		//
 		$loopRow=4;
 		$i=0;
-		while($row  = 	$this->q->fetch_array()) {
+		while($row  = 	$this->q->fetchAssoc()) {
 			//	echo print_r($row);
 
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);
@@ -386,9 +386,17 @@ if(isset($_POST['method'])){
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-	
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_POST['leafId'])){
 		$logObject->leafId  = $_POST['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_POST['isAdmin'])){
+		$logObject->isAdmin = $_POST['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value
@@ -402,9 +410,17 @@ if(isset($_GET['method'])){
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_GET['leafId'])){
 		$logObject->leafId = $_GET['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_GET['isAdmin'])){
+		$logObject->isAdmin = $_GET['isAdmin'];
 	}
 	if(isset($_GET['field'])){
 		$logObject-> staffId = $_GET['staffId'];
@@ -413,6 +429,9 @@ if(isset($_GET['method'])){
 	 *  Load the dynamic value
 	 */
 	$logObject->execute();
+	/*
+	 * Reporting Only
+	 */
 	if(isset($_GET['mode'])){
 		$logObject->excel();
 	}

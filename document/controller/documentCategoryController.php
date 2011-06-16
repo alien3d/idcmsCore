@@ -38,15 +38,15 @@ class documentCategoryClass extends  configClass {
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -120,9 +120,9 @@ class documentCategoryClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
-	
+
 		$this->model 				= new documentCategoryModel();
-		
+
 	}
 
 	/**
@@ -139,7 +139,7 @@ class documentCategoryClass extends  configClass {
 								`documentCategoryDesc`
 							)
 					VALUES	(
-							
+
 								'".$this->model->documentCategoryTitle."',
 								'".$this->model->documentCategoryDesc."'
 							);";
@@ -147,7 +147,7 @@ class documentCategoryClass extends  configClass {
 		$this->q->create($sql);
 		$this->q->commit();
 
-		
+
 
 
 	}
@@ -160,7 +160,7 @@ class documentCategoryClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		$sql	=	"
 				SELECT
-				        
+
 				FROM 	`documentCategory`
 				WHERE 	1";
 		if($_POST['documentCategoryId']) {
@@ -231,7 +231,7 @@ class documentCategoryClass extends  configClass {
 				exit();
 			}
 		}
-		
+
 
 
 	}
@@ -244,7 +244,7 @@ class documentCategoryClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		$this->model->update();
 		$this->q->start();
-		
+
 		$sql="
 		UPDATE 	`doc_cat`
 		SET 	`doc_cat_uniqueId`	    =	'".$this->strict($_POST['doc_cat_uniqueId'],'n')."',
@@ -272,7 +272,7 @@ class documentCategoryClass extends  configClass {
 
 	}
 
-	
+
 
 	/* (non-PHPdoc)
 	 * @see config::delete()
@@ -351,7 +351,7 @@ class documentCategoryClass extends  configClass {
 		//
 		$loopRow=4;
 		$i=0;
-		while($row  = 	$this->q->fetch_array()) {
+		while($row  = 	$this->q->fetchAssoc()) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);
 			$this->excel->getActiveSheet()->setCellValue('C'.$loopRow,$row['doc_cat_nme']);
@@ -393,41 +393,54 @@ if(isset($_POST['method']))	{
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_POST['leafId'])){
 		$documenCategoryObject-> leafId = $_POST['leafId'];
 	}
-	if($_POST['method']=='create')	{
-		$documenCategoryObject->create();
+	/*
+	 * Filtering
+	 */
+	if(isset($_POST['query'])){
+		$documenCategoryObject->fieldQuery = $_POST['query'];
 	}
 	if(isset($_POST['filter'])){
-		$documenCategoryObject->filter = $_POST['filter'];
+		$documenCategoryObject->gridQuery = $_POST['filter'];
 	}
-	if(isset($_POST['query'])){
-		$documenCategoryObject->query = $_POST['query'];
-	}
+
+	/*
+	 * Ordering
+	 */
 	if(isset($_POST['order'])){
 		$documenCategoryObject-> order= $_POST['order'];
 	}
 	if(isset($_POST['sortField'])){
 		$documenCategoryObject-> sortField= $_POST['sortField'];
 	}
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
+	if($_POST['method']=='create')	{
+		$documenCategoryObject->create();
+	}
 	if($_POST['method']=='read') 	{
 		$documenCategoryObject->read();
 	}
-	if(isset($_POST['docCatId'])) {
-		$documenCategoryObject->docCatId = $_POST['docCatId'];
-		if($_POST['method']=='save') 	{
-			$documenCategoryObject->read();
-		}
-		if($_POST['method']=='delete') 	{
-			$documenCategoryObject->delete();
-		}
+	if($_POST['method']=='save') 	{
+		$documenCategoryObject->read();
+	}
+	if($_POST['method']=='delete') 	{
+		$documenCategoryObject->delete();
 	}
 }
 
 if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
+	 */
+	/*
+	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
 		$documenCategoryObject-> leafId  = $_GET['leafId'];
@@ -437,11 +450,9 @@ if(isset($_GET['method'])) {
 			$documenCategoryObject->staffId();
 		}
 	}
-	if(isset($_GET['religionDesc'])) {
-		if(strlen($_GET['religionDesc']) > 0 ) {
-			$documenCategoryObject->duplicate();
-		}
-	}
+	/*
+	 *  Excel Reporting
+	 */
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
 			$documenCategoryObject->excel();

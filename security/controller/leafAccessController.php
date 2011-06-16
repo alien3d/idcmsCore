@@ -38,16 +38,16 @@ class leafAccessClass extends  configClass {
 	 * @var string $vendor
 	 */
 	public $vendor;
-	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+		/**
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -562,24 +562,33 @@ if(isset($_POST['method'])){
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_POST['leafId'])){
-		$folderAccessObject->leafId = $_POST['leafId'];
+		$leafAccessObject->leafId = $_POST['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_POST['isAdmin'])){
+		$leafAccessObject->isAdmin = $_POST['isAdmin'];
 	}
 	if(isset($_POST['staffId'])){
-		$folderAccessObject->staffId = $_POST['staffId'];
+		$leafAccessObject->staffId = $_POST['staffId'];
 	}
 	if(isset($_POST['accordionId'])){
-		$folderAccessObject->accordionId = $_POST['accordionId'];
+		$leafAccessObject->accordionId = $_POST['accordionId'];
 	}
 	if(isset($_POST['folderId'])){
-		$folderAccessObject->folderId = $_POST['folderId'];
+		$leafAccessObject->folderId = $_POST['folderId'];
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$folderAccessObject->execute();
+	$leafAccessObject->execute();
 	if($_POST['method']=='read'){
-		$folderAccessObject -> read();
+		$leafAccessObject -> read();
 	}
 }
 // crud -create,read,update,delete.
@@ -587,8 +596,17 @@ if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_GET['leafId'])){
 		$leafAccessObject->leafId  = $_GET['leafId'];
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_GET['isAdmin'])){
+		$leafAccessObject->isAdmin = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value

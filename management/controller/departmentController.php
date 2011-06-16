@@ -39,15 +39,15 @@ class departmentClass  extends configClass {
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -136,12 +136,12 @@ class departmentClass  extends configClass {
 	function execute() {
 		parent::__construct();
 
-		$this->q              = new vendor();
-		$this->q->vendor      = $this->vendor;
-		$this->q->leafId      = $this->leafId;
-		$this->q->staffId     = $this->staffId;
-		$this->q->filter      = $this->filter;
-		$this->q->quickFilter = $this->quickFilter;
+		$this->q              	= new vendor();
+		$this->q->vendor      	= $this->vendor;
+		$this->q->leafId      	= $this->leafId;
+		$this->q->staffId     	= $this->staffId;
+		$this->q->fieldQuery	= $this->fieldQuery;
+		$this->q->gridQuery    = $this->gridQuery;
 		$this->q->connect($this->connection, $this->username, $this->database, $this->password);
 		$this->excel         = new PHPExcel();
 		$this->audit         = 0;
@@ -158,6 +158,7 @@ class departmentClass  extends configClass {
 	 */
 	function create() 				{
 		header('Content-Type','application/json; charset=utf-8');
+		echo $this->q->vendor;
 		if( $this->q->vendor==self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
@@ -229,73 +230,12 @@ class departmentClass  extends configClass {
 
 		}
 		$this->q->create($sql);
-		// take from last insert id
-		$this->insert_id	=	$this->q->last_insert_id();
 
-		// loop the accordion and create new record
-		//** no need to log in db
-		$sql=	"
-		SELECT 	*
-		FROM 	`accordion`
-		WHERE 	`isActive`=1";
-		$this->q->read($sql);
 		if($this->q->execute=='fail'){
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
-		$data = $this->q->activeRecord();
-		if($this->q->numberRows()> 0 ){
-			foreach($data as $row){
-				if( $this->q->vendor==self::mysql) {
-					$sql =	"
-				INSERT INTO	`accordionAccess`
-				(
-									`accordionId`,
-									`accordionAccessValue`,
-									`departmentId`
-				)
-				VALUES
-				(
-									'".$row['accordionId']."',
-									'0',
-									'".$this->insert_id."'
-									)";
-				} else if ($this->q->vendor==self::mssql) {
-					$sql =	"
-				INSERT INTO	[accordionAccess]
-				(
-				[accordionId],
-				[accordionAccessValue],
-				[departmentId]
-				)
-				VALUES
-				(
-									'".$row['accordionId']."',
-									'0',
-									'".$this->insert_id."'
-									)";
-				} else if ($this->q->vendor==self::oracle) {
-					$sql =	"
-				INSERT INTO	\"accordionAccess`
-							(
-									\"accordionId\",
-									\"accordionAccessValue\",
-									\"departmentId\"
-							)
-					VALUES
-							(
-									'".$row['accordionId']."',
-									'0',
-									'".$this->insert_id."'
-							)";
-				}
-				$this->q->create($sql);
-				if($this->q->execute=='fail'){
-					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-					exit();
-				}
-			}
-		}
+
 
 
 
@@ -427,7 +367,7 @@ class departmentClass  extends configClass {
             $tableArray  = array(
             'department'
             );
-            if ($this->quickFilter) {
+            if ($this->fieldQuery) {
             	if ($this->q->vendor == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
             	} else if ($this->q->vendor == self::microsoft) {
@@ -441,7 +381,8 @@ class departmentClass  extends configClass {
             /**
              *	Extjs filtering mode
              */
-            if ($this->filter) {
+            if ($this->gridQuery) {
+
             	if ($this->q->vendor == self::mysql) {
             		$sql .= $this->q->searching();
             	} else if ($this->q->vendor == self::microsoft) {
@@ -452,15 +393,15 @@ class departmentClass  extends configClass {
             		$sql .= $tempSql2;
             	}
             }
-            // optional debugger.uncomment if wanted to used
-            //if ($this->q->execute == 'fail') {
-            //	echo json_encode(array(
-            //   "success" => false,
-            //   "message" => $this->q->realEscapeString($sql)
-            //	));
-            //	exit();
-            //}
-            // end of optional debugger
+            /** // optional debugger.uncomment if wanted to used
+
+            echo json_encode(array(
+            "success" => false,
+            "message" => $this->q->realEscapeString($sql)
+            ));
+            exit();
+
+            // end of optional debugger */
             $this->q->read($sql);
             if ($this->q->execute == 'fail') {
             	echo json_encode(array(
@@ -609,25 +550,25 @@ class departmentClass  extends configClass {
 		if( $this->q->vendor==self::mysql) {
 			$sql="
 				UPDATE 	`department`
-				SET 	`isDefault`		=	'".$this->model->getIsDefault()."',
-						`isActive`		=	'".$this->model->getIsActive()."',
-						`isNew`			=	'".$this->model->getIsNew()."',
-						`isDraft`		=	'".$this->model->getIsDraft()."',
-						`isUpdate`		=	'".$this->model->getIsUpdate()."',
-						`isDelete`		=	'".$this->model->getIsDelete()."',
-						`isApproved`	=	'".$this->model->getIsApproved()."',
+				SET 	`isDefault`		=	'".$this->model->getIsDefault('','string')."',
+						`isActive`		=	'".$this->model->getIsActive('','string')."',
+						`isNew`			=	'".$this->model->getIsNew('','string')."',
+						`isDraft`		=	'".$this->model->getIsDraft('','string')."',
+						`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
+						`isDelete`		=	'".$this->model->getIsDelete('','string')."',
+						`isApproved`	=	'".$this->model->getIsApproved('','string')."',
 						`By`			=	'".$this->model->getBy()."',
 						`Time			=	".$this->model->getTime()."
-				WHERE 	`departmentId`		=	'".$this->getDepartrmentId()."'";
+				WHERE 	`departmentId`		=	'".$this->getDepartmentId()."'";
 		} else if ($this->q->vendor==self::mssql) {
 			$sql="
 				UPDATE 	[department]
-				SET 	[isActive]		=	'".$this->model->getIsActive()."',
-						[isNew]			=	'".$this->model->getIsNew()."',
-						[isDraft]		=	'".$this->model->getIsDraft()."',
-						[isUpdate]		=	'".$this->model->getIsUpdate()."',
-						[isDelete]		=	'".$this->model->getIsDelete()."',
-						[isApproved]	=	'".$this->model->getIsApproved()."',
+				SET 	[isActive]		=	'".$this->model->getIsActive('','string')."',
+						[isNew]			=	'".$this->model->getIsNew('','string')."',
+						[isDraft]		=	'".$this->model->getIsDraft('','string')."',
+						[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
+						[isDelete]		=	'".$this->model->getIsDelete('','string')."',
+						[isApproved]	=	'".$this->model->getIsApproved('','string')."',
 						[By]			=	'".$this->model->getBy()."',
 						[Time]			=	".$this->model->getTime()."
 				WHERE 	[departmentId]		=	'".$this->getDepartmentId()."'";
@@ -635,12 +576,12 @@ class departmentClass  extends configClass {
 		} else if ($this->q->vendor==self::oracle) {
 			$sql="
 				UPDATE 	\"department\"
-				SET 	\"isActive\"	=	'".$this->model->getIsActive()."',
-						\"isNew\"		=	'".$this->model->getIsNew()."',
-						\"isDraft\"		=	'".$this->model->getIsDraft()."',
-						\"isUpdate\"	=	'".$this->model->getIsUpdate()."',
-						\"isDelete\"	=	'".$this->model->getIsDelete()."',
-						\"isApproved\"	=	'".$this->model->getIsApproved()."',
+				SET 	\"isActive\"	=	'".$this->model->getIsActive('','string')."',
+						\"isNew\"		=	'".$this->model->getIsNew('','string')."',
+						\"isDraft\"		=	'".$this->model->getIsDraft('','string')."',
+						\"isUpdate\"	=	'".$this->model->getIsUpdate('','string')."',
+						\"isDelete\"	=	'".$this->model->getIsDelete('','string')."',
+						\"isApproved\"	=	'".$this->model->getIsApproved('','string')."',
 						\"By\"			=	'".$this->model->getBy()."',
 						\"Time\"		=	".$this->model->getTime()."
 				WHERE 	\"departmentId\"		=	'".$this->getdepartmentId()."'";
@@ -1037,18 +978,35 @@ if(isset($_POST['method']))	{
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_POST['leafId'])){
 		$departmentObject-> leafId = $_POST['leafId'];
 	}
-	if($_POST['method']=='create')	{
-		$departmentObject->create();
+
+	/*
+	 *  Paging
+	 */
+	if(isset($_POST['start'])){
+		$departmentObject->start = $_POST['start'];
+	}
+	if(isset($_POST['limit'])){
+		$departmentObject->limit = $_POST['perPage'];
+	}
+	/**
+	 *  Filtering
+	 */
+	if(isset($_POST['query'])){
+		$departmentObject->fieldQuery = $_POST['query'];
 	}
 	if(isset($_POST['filter'])){
-		$departmentObject->filter = $_POST['filter'];
+		$departmentObject->gridQuery = $_POST['filter'];
 	}
-	if(isset($_POST['query'])){
-		$departmentObject->query = $_POST['query'];
-	}
+	/**
+	 * Ordering
+	 */
 	if(isset($_POST['order'])){
 		$departmentObject-> order= $_POST['order'];
 	}
@@ -1056,17 +1014,26 @@ if(isset($_POST['method']))	{
 		$departmentObject-> sortField= $_POST['sortField'];
 	}
 	/*
+	 *  Admin Only
+	 */
+	if(isset($_POST['isAdmin'])){
+		$departmentObject->isAdmin = $_POST['isAdmin'];
+	}
+	/*
 	 *  Load the dynamic value
 	 */
 	$departmentObject->execute();
-	if($_POST['method']=='read') 	{
-		$departmentObject->read();
-	}
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if($_POST['method']=='create') 	{
 		$departmentObject->create();
 	}
-	if($_POST['method']=='save') 	{
+	if($_POST['method']=='read') 	{
 		$departmentObject->read();
+	}
+	if($_POST['method']=='save') 	{
+		$departmentObject->update();
 	}
 	if($_POST['method']=='delete') 	{
 		$departmentObject->delete();
@@ -1078,28 +1045,49 @@ if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if(isset($_GET['leafId'])){
 		$departmentObject-> leafId  = $_GET['leafId'];
 	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_GET['isAdmin'])){
+		$departmentObject->isAdmin = $_GET['isAdmin'];
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$departmentObject->execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
 			$departmentObject->staffId();
 		}
 	}
-
+	/*
+	 * Update Status of The Table. Admin Level Only
+	 */
 	if($_GET['method']=='updateStatus'){
 		$departmentObject->updateStatus();
 	}
+	/*
+	 *  Checking Any Duplication  Key
+	 */
 	if (isset($_GET['departmentCode'])) {
 		if (strlen($_GET['departmentCode']) > 0) {
 			$departmentObject->duplicate();
 		}
 	}
+	/*
+	 *  Excel Reporing
+	 */
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
 			$departmentObject->excel();
 		}
 	}
 }
-echo print_r($_SESSION);
+
 ?>

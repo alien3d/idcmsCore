@@ -37,15 +37,15 @@ class groupClass  extends configClass {
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -441,14 +441,14 @@ class groupClass  extends configClass {
 	 * @see config::read()
 	 */
 	function read() 				{
-		header('Content-Type','application/json; charset=utf-8');
+	header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
 			if($this->q->vendor == self :: mysql) {
-				$this->auditFilter = "	`Group`.`isActive`		=	1	";
+				$this->auditFilter = "	`group`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	[Group].[isActive]		=	1	";
+				$this->auditFilter = "	[group].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"Group\".\"isActive\"	=	1	";
+				$this->auditFilter = "	\"group\".\"isActive\"	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->q->vendor == self :: mysql) {
@@ -461,103 +461,268 @@ class groupClass  extends configClass {
 		}
 		//UTF8
 		$items=array();
-		if( $this->q->vendor==self::mysql) {
-			//UTF8
-			$sql='SET NAMES "utf8"';
+		if ($this->q->vendor == self::mysql) {
+			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
-
 		}
-		// everything given flexibility  on todo
-		if( $this->q->vendor==self::mysql) {
-			$sql="
-		SELECT	*
-		FROM 	`group`
-		JOIN	`staff`
-		ON		`Group`.`By` = `staff`.`staffId`
-		WHERE 	`group`.`isActive`=1 ";
-			if ($this->model->getGroupId('','string')) {
-				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getGroupId('','string') . "\"";
+		if ($this->q->vendor == self::mysql) {
+			$sql = "
+					SELECT	`group`.`groupId`,
+							`group`.`groupSequence`,
+							`group`.`groupCode`,
+							`group`.`groupNote`,
+							`group`.`isDefault`,
+							`group`.`isNew`,
+							`group`.`isDraft`,
+							`group`.`isUpdate`,
+							`group`.`isDelete`,
+							`group`.`isActive`,
+							`group`.`isApproved`,
+							`group`.`By`,
+							`group`.`Time`,
+							`staff`.`staffName`
+ 					FROM 	`group`
+					JOIN	`staff`
+					ON		`group`.`By` = `staff`.`staffId`
+					WHERE 	".$this->auditFilter;
+			if ($this->model->getgroupId('','string')) {
+				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getgroupId('','string') . "\"";
 
 			}
-		} else if ($this->q->vendor==self::mssql) {
-			$sql="
-		SELECT	*
-		FROM 	[group]
 
-		WHERE 	[group].[isActive]=1 ";
-			if ($this->model->getGroupId('','string')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getGroupId('','string') . "\"";
+		} else if ($this->q->vendor == self::mssql) {
+			$sql = "
+					SELECT	[group].[groupId],
+							[group].[groupSequence],
+							[group].[groupCode],
+							[group].[groupNote],
+							[group].[isDefault],
+							[group].[isNew],
+							[group].[isDraft],
+							[group].[isUpdate],
+							[group].[isDelete],
+							[group].[isActive],
+							[group].[isApproved],
+							[group].[By],
+							[group].[Time],
+							[staff].[staffName]
+					FROM 	[group]
+					JOIN	[staff]
+					ON		[group].[By] = [staff].[staffId]
+					WHERE 	[group].[isActive] ='1'	";
+			if ($this->model->getgroupId('','string')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getgroupId('','string') . "\"";
 			}
-		} else if ($this->q->vendor==self::oracle) {
-			$sql="
-		SELECT	*
-		FROM 	\"group\"
-		WHERE 	\"group\".\"isActive\"=1";
-			if ($this->model->getGroupId('','string')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getGroupId('','string') . "\"";
+		} else if ($this->q->vendor == self::oracle) {
+			$sql = "
+					SELECT	\"group\".\"groupId\",
+							\"group\".\"groupCode\",
+							\"group\".\"groupSequence\",
+							\"group\".\"groupNote\",
+							\"group\".\"isDefault\",
+							\"group\".\"isNew\",
+							\"group\".\"isDraft\",
+							\"group\".\"isUpdate\",
+							\"group\".\"isDelete\",
+							\"group\".\"isActive\",
+							\"group\".\"isApproved\",
+							\"group\".\"By\",
+							\"group\".\"Time\",
+							\"staff\".\"staffName\"
+					FROM 	\"group\"
+					JOIN	\"staff\"
+					ON		\"group\".\"By\" = \"staff\".\"staffId\"
+					WHERE 	\"isActive\"='1'	";
+			if ($this->model->getgroupId('','string')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getgroupId('','string') . "\"";
 			}
+		} else {
+			echo json_encode(array(
+                "success" => false,
+                "message" => "Undefine Database Vendor"
+                ));
+                exit();
 		}
-		$filterArray=array('groupId','groupTranslateId');
-		/**
-			*	filter table
-			* @variables $tableArray
-			*/
-		$tableArray = array('group','groupTranslate');
 		/**
 		 *	filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
 		 *  E.g  $filterArray=array('`leaf`.`leafId`');
 		 *  @variables $filterArray;
 		 */
-		//$filterArray	=	array();
-		if(isset($_GET['query'])) {
-			$query = $_GET['query'];
-		}  else if (isset($_POST['query'])) {
-			$query = $_POST['query'];
-		}
-		if($query) {
-			$sql.=$this->q->quickSearch($tableArray,$filterArray);
-		}
+		$filterArray = null;
+		$filterArray = array(
+            'groupId'
+            );
+            /**
+             *	filter table
+             * @variables $tableArray
+             */
+            $tableArray  = null;
+            $tableArray  = array(
+            'group'
+            );
+            if ($this->fieldQuery) {
+            	if ($this->q->vendor == self::mysql) {
+            		$sql .= $this->q->quickSearch($tableArray, $filterArray);
+            	} else if ($this->q->vendor == self::microsoft) {
+            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $tempSql;
+            	} else if ($this->q->vendor == self::oracle) {
+            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $tempSql;
+            	}
+            }
+            /**
+             *	Extjs filtering mode
+             */
+            if ($this->gridQuery) {
 
-		$record_all 	= $this->q->read($sql);
-		$this->total	= $this->q->numberRows();
-		//paging
+            	if ($this->q->vendor == self::mysql) {
+            		$sql .= $this->q->searching();
+            	} else if ($this->q->vendor == self::microsoft) {
+            		$tempSql2 = $this->q->searching();
+            		$sql .= $tempSql2;
+            	} else if ($this->q->vendor == self::oracle) {
+            		$tempSql2 = $this->q->searching();
+            		$sql .= $tempSql2;
+            	}
+            }
+            /** // optional debugger.uncomment if wanted to used
 
-		$sql.="	ORDER BY `groupId` ";
-		if(isset($_POST['start']) && isset($_POST['limit'])) {
-			$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
-		}
+            echo json_encode(array(
+            "success" => false,
+            "message" => $this->q->realEscapeString($sql)
+            ));
+            exit();
 
-
-
-		$this->q->read($sql);
-
-		while($row  = 	$this->q->fetch_array()) {
-			$items[]=$row;
-		}
-
-
-		if ($this->model->getGroupId('','string')) {
-			$json_encode = json_encode(array(
+            // end of optional debugger */
+            $this->q->read($sql);
+            if ($this->q->execute == 'fail') {
+            	echo json_encode(array(
+                "success" =>false,
+                "message" => $this->q->responce
+            	));
+            	exit();
+            }
+            $total = $this->q->numberRows();
+            if ($this->order && $this->sortField) {
+            	if ($this->q->vendor == self::mysql) {
+            		$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
+            	} else if ($this->q->vendor  == self::mssql) {
+            		$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
+            	} else if ($this->q->vendor == self::oracle) {
+            		$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
+            	}
+            }
+            $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
+            $_SESSION['start'] = $this->start;
+            $_SESSION['limit'] = $this->limit;
+            if (empty($this->filter)) {
+            	if ($this->limit) {
+            		// only mysql have limit
+            		if ($this->q->vendor == self::mysql) {
+            			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
+            		} else if ($this->q->vendor == self::microsoft) {
+            			/**
+            			 *	 Sql Server and Oracle used row_number
+            			 *	 Parameterize Query We don't support
+            			 */
+            			$sql = "
+							WITH [groupDerived] AS
+							(
+								SELECT *,
+								ROW_NUMBER() OVER (ORDER BY [groupId]) AS 'RowNumber'
+								FROM [group]
+								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
+							)
+							SELECT		[group].[groupId],
+										[group].[groupSequence],
+										[group].[groupCode],
+										[group].[groupNote],
+										[group].[isDefault],
+										[group].[isNew],
+										[group].[isDraft],
+										[group].[isUpdate],
+										[group].[isDelete],
+										[group].[isApproved],
+										[group].[By],
+										[group].[Time],
+										[staff].[staffName]
+							FROM 		[groupDerived]
+							WHERE 		[RowNumber]
+							BETWEEN	" . $_POST['start'] . "
+							AND 			" . ($this->start + $this->limit - 1) . ";";
+            		} else if ($this->q->vendor == self::oracle) {
+            			/**
+            			 *  Oracle using derived table also
+            			 */
+            			$sql = "
+						SELECT *
+						FROM ( SELECT	a.*,
+												rownum r
+						FROM (
+									SELECT  \"group\".\"groupId\",
+											\"group\".\"groupSequence\",
+											\"group\".\"groupCode\",
+											\"group\".\"groupNote\",
+											\"group\".\"isDefault\",
+											\"group\".\"isNew\",
+											\"group\".\"isDraft\",
+											\"group\".\"isUpdate\",
+											\"group\".\"isDelete\",
+											\"group\".\"isApproved\",
+											\"group\".\"By\",
+											\"group\".\"Time\",
+											\"staff\".\"staffName\"
+									FROM 	\"group\"
+									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
+								 ) a
+						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
+						where r >=  \"". $this->start . "\"";
+            		} else {
+            			echo "undefine vendor";
+            			exit();
+            		}
+            	}
+            }
+            /*
+             *  Only Execute One Query
+             */
+            if (!($this->model->getgroupId('','string'))) {
+            	$this->q->read($sql);
+            	if ($this->q->execute == 'fail') {
+            		echo json_encode(array(
+                    "success" => false,
+                    "message" => $this->q->responce
+            		));
+            		exit();
+            	}
+            }
+            $items = array();
+            while ($row = $this->q->fetchAssoc()) {
+            	$items[] = $row;
+            }
+            if ($this->model->getgroupId('','string')) {
+            	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
 				'message' => 'Data Loaded',
                 'data' => $items
-			));
-			$json_encode = str_replace("[", "", $json_encode);
-			$json_encode = str_replace("]", "", $json_encode);
-			echo $json_encode;
-		} else {
-			if (count($items) == 0) {
-				$items = '';
-			}
-			echo json_encode(array(
+            	));
+            	$json_encode = str_replace("[", "", $json_encode);
+            	$json_encode = str_replace("]", "", $json_encode);
+            	echo $json_encode;
+            } else {
+            	if (count($items) == 0) {
+            		$items = '';
+            	}
+            	echo json_encode(array(
                 'success' => true,
                 'total' => $total,
 				'message'=>'data loaded',
                 'data' => $items
-			));
-			exit();
-		}
+            	));
+            	exit();
+            }
 
 
 	}
@@ -627,66 +792,7 @@ class groupClass  extends configClass {
 	/* (non-PHPdoc)
 	 * @see config::delete()
 	 */
-	function delete()				{
-		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
-			//UTF8
-			$sql='SET NAMES "utf8"';
-			$this->q->fast($sql);
 
-		}
-		$this->q->commit();
-		$this->model->delete();
-		if( $this->q->vendor==self::mysql) {
-			$sql="
-				UPDATE 	`group`
-				SET 	`isActive`		=	'".$this->model->getIsActive('','string')."',
-						`isNew`			=	'".$this->model->getIsNew('','string')."',
-						`isDraft`		=	'".$this->model->getIsDraft('','string')."',
-						`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
-						`isDelete`		=	'".$this->model->getIsDelete('','string')."',
-						`isApproved`	=	'".$this->model->getIsApproved('','string')."',
-						`By`			=	'".$this->model->getBy()."',
-						`Time			=	".$this->model->getTime()."
-				WHERE 	`groupId`		=	'".$this->groupId."'";
-		} else if ($this->q->vendor==self::mssql) {
-			$sql="
-				UPDATE 	[group]
-				SET 	[isActive]		=	'".$this->model->getIsActive('','string')."',
-						[isNew]			=	'".$this->model->getIsNew('','string')."',
-						[isDraft]		=	'".$this->model->getIsDraft('','string')."',
-						[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
-						[isDelete]		=	'".$this->model->getIsDelete('','string')."',
-						[isApproved]	=	'".$this->model->getIsApproved('','string')."',
-						[By]			=	'".$this->model->getBy()."',
-						[Time]			=	".$this->model->getTime()."
-				WHERE 	[groupId]		=	'".$this->groupId."'";
-
-		} else if ($this->q->vendor==self::oracle) {
-			$sql="
-				UPDATE 	\"group\"
-				SET 	\"isActive\"	=	'".$this->model->getIsActive('','string')."',
-						\"isNew\"		=	'".$this->model->getIsNew('','string')."',
-						\"isDraft\"		=	'".$this->model->getIsDraft('','string')."',
-						\"isUpdate\"	=	'".$this->model->getIsUpdate('','string')."',
-						\"isDelete\"	=	'".$this->model->getIsDelete('','string')."',
-						\"isApproved\"	=	'".$this->model->getIsApproved('','string')."',
-						\"By\"			=	'".$this->model->getBy()."',
-						\"Time\"		=	".$this->model->getTime()."
-				WHERE 	\"groupId\"		=	'".$this->groupId."'";
-
-		}
-		$this->q->update($sql);
-		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-			exit();
-		}
-		$this->q->commit();
-
-		echo json_encode(array("success"=>"true","message"=>"Record Remove"));
-		exit();
-
-	}
 	function delete()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
@@ -1075,8 +1181,11 @@ if(isset($_SESSION['vendor'])){
  *	crud -create,read,update,delete
  **/
 if(isset($_POST['method']))	{
-		/*
+	/*
 	 *  Initilize Value before load in the loader
+	 */
+	/*
+	 *  Leaf / Application Indentification
 	 */
 	if(isset($_POST['leafId'])){
 		$groupObject-> leafId = $_POST['leafId'];
@@ -1098,6 +1207,9 @@ if(isset($_POST['method']))	{
 	 *  Load the dynamic value
 	 */
 	$groupObject->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if($_POST['method']=='create'){
 		$groupObject->create();
 	}
@@ -1106,7 +1218,7 @@ if(isset($_POST['method']))	{
 	}
 
 	if($_POST['method']=='save') 	{
-		$groupObject->read();
+		$groupObject->update();
 	}
 	if($_POST['method']=='delete') 	{
 		$groupObject->delete();
@@ -1115,29 +1227,48 @@ if(isset($_POST['method']))	{
 }
 
 if(isset($_GET['method'])) {
-		/*
+	/*
 	 *  Initilize Value before load in the loader
+	 */
+	/*
+	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
 		$groupObject-> leafId  = $_GET['leafId'];
 	}
-	if(isset($_GET['field'])) {
-		if($_GET['field']=='staffId') {
-			$groupObject->staffId();
-		}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_GET['isAdmin'])){
+		$groupObject->isAdmin = $_GET['isAdmin'];
 	}
+
 	/*
 	 *  Load the dynamic value
 	 */
 	$groupObject->execute();
+	if(isset($_GET['field'])) {
+		if($_GET['field']=='staffId') {
+			$staffObject->staffId();
+		}
+	}
+	/*
+	 * Update Status of The Table. Admin Level Only
+	 */
 	if($_GET['method']=='updateStatus'){
 		$groupObject->updateStatus();
 	}
+	/*
+	 *  Checking Any Duplication  Key
+	 */
 	if (isset($_GET['groupCode'])) {
 		if (strlen($_GET['groupCode']) > 0) {
 			$groupObject->duplicate();
 		}
 	}
+	/*
+	 * Excel Reporting
+	 */
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
 			$groupObject->excel();

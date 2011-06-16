@@ -32,7 +32,7 @@ class folderModel extends validationClass{
 	private $isApproved;
 	private $By;
 	private $Time;
-	private $staffId;
+
 	private $folderIdAll; // this is not table field but collection of folderId
 	/**
 	 * Total Record receive from checkbox grid

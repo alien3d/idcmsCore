@@ -18,6 +18,7 @@ class groupModel extends validationClass{
 
 	// table field
 	private $groupId;
+	private $groupSequence;
 	private $groupCode;
 	private $groupNote;
 	private $isAdmin;
@@ -30,8 +31,7 @@ class groupModel extends validationClass{
 	private $isApproved;
 	private $By;
 	private $Time;
-	private $vendor;
-	private $staffId;
+
 
 	private $groupIdAll; // this is not table field but collection of staffId
 	/**
@@ -48,6 +48,7 @@ class groupModel extends validationClass{
 
 	// table field
 	const   groupId='groupId';
+	const   groupSequence ='groupSequence';
 	const   groupCode='groupCode';
 	const   groupNote='groupNote';
 	const   isAdmin ='isAdmin';
@@ -245,7 +246,7 @@ class groupModel extends validationClass{
 	 * @param string $value
 	 */
 	public function setGroupNote($value) {
-		$this->religionNote = $value;
+		$this->groupNote = $value;
 	}
 	/**
 	 * Return Group  Description (english)

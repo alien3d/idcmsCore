@@ -41,15 +41,15 @@ class tabClass extends configClass
 	 */
 	public $vendor;
 	/**
-	 * Extjs Grid Filter Array
-	 * @var string $filter
+	 * Extjs Field Query UX
+	 * @var string $fieldQuery
 	 */
-	public $filter;
+	public $fieldQuery;
 	/**
-	 * Extjs Grid  single query information
-	 * @var string $query
+	 * Extjs Grid  Filter Plugin
+	 * @var string $gridQuery
 	 */
-	public $query;
+	public $gridQuery;
 	/**
 	 * Fast Search Variable
 	 * @var string $quickFilter
@@ -1017,7 +1017,7 @@ class tabClass extends configClass
                         //
                         $loopRow = 4;
                         $i       = 0;
-                        while ($row = $this->q->fetch_array()) {
+                        while ($row = $this->q->fetchAssoc()) {
                         	//	echo print_r($row);
                         	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
                         	$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row['tabNote']);
@@ -1066,34 +1066,53 @@ if (isset($_POST['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if (isset($_POST['leafId'])) {
 		$tabObject->leafId = $_POST['leafId'];
 	}
-	if (isset($_POST['tabId'])) {
-		$tabObject->tabId = $_POST['tabId'];
+	if(isset($_POST['isAdmin'])){
+		$tabObject->isAdmin = $_POST['isAdmin'];
+	}
+
+	/*
+	 * Filtering
+	 */
+	if (isset($_POST['query'])) {
+		$tabObject->fieldQuery = $_POST['query'];
 	}
 	if (isset($_POST['filter'])) {
-		$tabObject->filter = $_POST['filter'];
+		$tabObject->gridQuery = $_POST['filter'];
 	}
-	if (isset($_POST['query'])) {
-		$tabObject->quickFilter = $_POST['query'];
-	}
+
+	/*
+	 * Ordering
+	 */
 	if (isset($_POST['order'])) {
 		$tabObject->order = $_POST['order'];
 	}
 	if (isset($_POST['sortField'])) {
 		$tabObject->sortField = $_POST['sortField'];
 	}
+	/*
+	 * Translation
+	 */
 	if (isset($_POST['tabTranslateId'])) {
 		$tabObject->tabTranslateId = $_POST['tabTranslateId'];
 	}
 	if (isset($_POST['tabTranslate'])) {
 		$tabObject->tabTranslate = $_POST['tabTranslate'];
 	}
+
+
 	/*
 	 *  Load the dynamic value
 	 */
 	$tabObject->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if ($_POST['method'] == 'create') {
 		$tabObject->create();
 	}
@@ -1125,11 +1144,17 @@ if (isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	/*
+	 *  Leaf / Application Indentification
+	 */
 	if (isset($_GET['leafId'])) {
 		$tabObject->leafId = $_GET['leafId'];
 	}
-	if (isset($_GET['tabId'])) {
-		$tabObject->tabId = $_GET['tabId'];
+	/*
+	 * Admin Only
+	 */
+	if(isset($_GET['isAdmin'])){
+		$tabObject->isAdmin = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value
@@ -1143,18 +1168,22 @@ if (isset($_GET['method'])) {
 			$tabObject->nextSequence();
 		}
 	}
-
-	if (isset($_GET['mode'])) {
-		if ($_GET['mode'] == 'report') {
-			$tabObject->excel();
-		}
-	}
 	if($_GET['method']=='updateStatus'){
 		$religionObject->updateStatus();
 	}
 	if ($_GET['method'] == 'translate') {
 		$tabObject->translateMe();
 	}
+	/*
+	 *  Excel Reporting
+	 */
+	if (isset($_GET['mode'])) {
+		if ($_GET['mode'] == 'report') {
+			$tabObject->excel();
+		}
+
+	}
 }
+
 ?>
 

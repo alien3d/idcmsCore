@@ -40,18 +40,11 @@ Ext.onReady(function() {
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
-            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,
-                // jsonResponse.message);
-                // //uncomment it for debugging
-                // purpose
-            } else { // Ext.MessageBox.alert(systemErrorLabel,
-                // jsonResponse.message);
-                Ext.MessageBox.show({
-                    title: systemErrorLabel,
-                    msg: jsonResponse.message,
-                    buttons: Ext.Msg.WARNING,
-                    warning: 'emoticon_unhappy'
-                });
+            if (jsonResponse.success == true) { 
+            	//Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+                
+            } else {
+            	 Ext.MessageBox.alert(systemErrorLabel,jsonResponse.message);
             }
         },
         failure: function(response, options) {
@@ -310,7 +303,7 @@ Ext.onReady(function() {
 		editor : departmentCode
 					
     },{
-        dataIndex: "departmetNote",
+        dataIndex: "departmentNote",
         header: departmentNoteLabel,
         sortable: true,
         hidden: false,
