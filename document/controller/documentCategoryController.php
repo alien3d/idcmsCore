@@ -63,28 +63,17 @@ class documentCategoryClass extends  configClass {
 		parent :: __construct();
 
 		$this->q 					=	new vendor();
-
-		$this->q->vendor			=	$this->vendor;
-
-		$this->q->leafId			=	$this->leafId;
-
-		$this->q->staffId			=	$this->staffId;
-
-		$this->q->filter 			= 	$this->filter;
-
-		$this->q->quickFilter		=	$this->quickFilter;
-
+		$this->q->vendor			=	$this->getVendor();
+		$this->q->leafId			=	$this->getLeafId();
+		$this->q->staffId			=	$this->getStaffId();
+		$this->q->fieldQuery 		= 	$this->getFieldQuery();
+		$this->q->gridQuery			=	$this->getGridQuery();
 		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
-
 		$this->excel				=	new  PHPExcel();
-
 		$this->audit 				=	0;
-
 		$this->log					=   0;
-
-		$this->q->log 				= $this->log;
-
-		$this->model 				= new documentCategoryModel();
+		$this->q->log 				= 	$this->log;
+		$this->model 				= 	new documentCategoryModel();
 
 	}
 

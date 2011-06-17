@@ -11,8 +11,10 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class eventModel extends validationClass{
+
 	public $tableName;
 	public $primaryKeyName;
+
 	public $eventId;
 	public $calendarId;
 	public $eventTitle;
@@ -25,6 +27,7 @@ class eventModel extends validationClass{
 	public $eventLocation;
 	public $eventN;
 	public $staffId;
+
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -81,7 +84,7 @@ class eventModel extends validationClass{
 
 
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
 	 */
@@ -121,140 +124,8 @@ class eventModel extends validationClass{
 		$this->setIsDelete(1);
 		$this->setIsApproved(0);
 	}
-	/**
-	 * Set isDefault Value
-	 * @param boolean $value
-	 */
-	public function setIsDefault($value) {
-		$this->isDefault = $value;
-	}
-	/**
-	 * Return isDefault Value
-	 * @return boolean isDefault
-	 */
-	public function getIsDefault() {
-		return $this->isDefault;
-	}
 
-	/**
-	 * Set isNew value
-	 * @param boolean $value
-	 */
-	public function setIsNew($value) {
-		$this->isNew = $value;
-	}
-	/**
-	 * Return isNew value
-	 * @return boolean isNew
-	 */
-	public function getIsNew() {
-		return $this->isNew;
-	}
 
-	/**
-	 * Set IsDraft Value
-	 * @param boolean $value
-	 */
-	public function setIsDraft($value) {
-		$this->isDraft = $value;
-	}
-	/**
-	 * Return isDraftValue
-	 * @return boolean isDraft
-	 */
-	public function getIsDraft() {
-		return $this->isDraft;
-	}
 
-	/**
-	 * Set isUpdate Value
-	 * @param boolean $value
-	 */
-	public function setIsUpdate($value) {
-		$this->isUpdate = $value;
-	}
-	/**
-	 * Return isUpdate Value
-	 * @return boolean isUpdate
-	 */
-	public function getIsUpdate() {
-		return $this->isUpdate;
-	}
-
-	/**
-	 * Set isActive Value
-	 * @param boolean $value
-	 */
-	public function setIsActive($value) {
-		$this->isActive = $value;
-	}
-	/**
-	 * Return isActive value
-	 * @return boolean isActive
-	 */
-	public function getIsActive() {
-		return $this->isActive;
-	}
-
-	/**
-	 * Set isDelete Value
-	 * @param boolean $value
-	 */
-	public function setIsDelete($value) {
-		$this->isDelete = $value;
-	}
-	/**
-	 * Return isDelete Value
-	 * @return boolean isDelete
-	 */
-	public function getIsDelete() {
-		return $this->isDelete;
-	}
-
-	/**
-	 * Set isApproved Value
-	 * @param boolean $value
-	 */
-	public function setIsApproved($value) {
-		$this->isApproved = $value;
-	}
-	/**
-	 * Return isApproved Value
-	 * @return boolean isApproved
-	 */
-	public function getIsApproved() {
-		return $this->isApproved;
-	}
-
-	/**
-	 * Set Activity User
-	 * @param integet $value
-	 */
-	public function setIsBy($value) {
-		$this->isBy = $value;
-	}
-	/**
-	 * Get Activity User
-	 * @return integer User
-	 */
-	public function getIsBy() {
-		return $this->isBy;
-	}
-
-	/**
-	 * Set Time Activity User
-	 * @param date $value
-	 */
-	public function setIsTime($value) {
-		$this->isTime = $value;
-	}
-	/**
-	 *  Return Time Activity User
-	 *  @return date Time Activity User
-	 */
-	public function getIsTime() {
-		return $this->isTime;
-	}
-	
 }
 ?>

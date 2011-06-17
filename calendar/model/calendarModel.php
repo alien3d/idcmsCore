@@ -9,20 +9,19 @@
  * @package religion
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
- */ 
+ */
 class calendarModel extends validationClass{
-	public $calendarId;
-	public $isDefaut;
-	public $isNew;
-	public $isDraft;
-	public $isUpdate;
-	public $isActive;
-	public $isDelete;
-	public $isApproved;
-	public $By;
-	public $Time;
-	public $vendor;
-	public $staffId;
+	 // table property
+    private $tableName;
+    private $primaryKeyName;
+    // table field
+	private $calendarId;
+	private $calendarColorId;
+	private $calendarTitle;
+	private $staffId;
+
+
+
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -30,26 +29,33 @@ class calendarModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'calendar';
-		$this->primaryKeyName 	=	'calendarId';
+		$this->setTableName('calendar');
+		$this->setPrimaryKeyName('calendarId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['religionId'])){
-			$this->religionId = $this->strict($_POST['religionId'],'numeric');
+		if(isset($_POST['calendarId'])){
+			$this->setCalendarId($this->strict($_POST['calendarId'],'numeric'));
 		}
-		if(isset($_POST['religionDesc'])){
-			$this->religionDesc = $this->strict($_POST['religionDesc'],'memo');
+		if(isset($_POST['calendarColorId'])){
+			$this->setCalendarColorId($this->strict($_POST['calendarTitle'],'numeric'));
 		}
+		if(isset($_POST['calendarTitle'])){
+			$this->setCalendarTitle($this->strict($_POST['calendarTitle'],'memo'));
+		}
+		if(isset($_POST['staffId'])){
+			$this->setStaffId(($this->strict($_POST['calendarId'],'memo'));
+		}
+
 		if(isset($_SESSION['staffId'])){
-			$this->By = $_SESSION['staffId'];
+			$this->setBy($_SESSION['staffId']);
 		}
-		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+		if($this->vendor=='mysql'){
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='oracle'){
-			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 
@@ -93,139 +99,88 @@ class calendarModel extends validationClass{
 		$this->setIsDelete(1);
 		$this->setIsApproved(0);
 	}
-	/**
-	 * Set isDefault Value
-	 * @param boolean $value
-	 */
-	public function setIsDefault($value) {
-		$this->isDefault = $value;
-	}
-	/**
-	 * Return isDefault Value
-	 * @return boolean isDefault
-	 */
-	public function getIsDefault() {
-		return $this->isDefault;
-	}
 
-	/**
-	 * Set isNew value
-	 * @param boolean $value
-	 */
-	public function setIsNew($value) {
-		$this->isNew = $value;
-	}
-	/**
-	 * Return isNew value
-	 * @return boolean isNew
-	 */
-	public function getIsNew() {
-		return $this->isNew;
-	}
+ /**
+     * Set isDefault Value
+     * @param integer $value
+     * @param integer $key  Array as value
+     * @param enum   $type   1->string,2->array
+     */
+    public function setCalendarId($value, $key = NULL, $type = NULL)
+    {
+        if ($type == 'string') {
+            $this->calendarId = $value;
+        } else if ($type == 'array') {
+            $this->calendarId[$key] = $value;
+        }
+    }
+    /**
+     * Return isReligionId Value
+     * @return integer religionId
+     */
+    public function getCalendarId($key = NULL, $type = NULL)
+    {
+        if ($type == 'string') {
+            return $this->calendarId;
+        } else if ($type == 'array') {
+            return $this->calendarId[$key];
+        } else {
+            echo json_encode(array(
+                "success" => false,
+                "message" => "Cannot Identifiy Type"
+            ));
+            exit();
+        }
+    }
+    /**
+     * Set Calendar Color Value
+     * @param numeric $value
+     */
+    public function setCalendarColorId($value)
+    {
+        $this->calendarColorId = $value;
+    }
+    /**
+     * Return Calendar Colro Value
+     * @return string calendar color
+     */
+    public function getCalendarColorId()
+    {
+        return $this->calendarColorId;
+    }
 
-	/**
-	 * Set IsDraft Value
-	 * @param boolean $value
-	 */
-	public function setIsDraft($value) {
-		$this->isDraft = $value;
-	}
-	/**
-	 * Return isDraftValue
-	 * @return boolean isDraft
-	 */
-	public function getIsDraft() {
-		return $this->isDraft;
-	}
+ /**
+     * Set Calendar Title Value
+     * @param numeric $value
+     */
+    public function setCalendarTitle($value)
+    {
+        $this->calendarTitle = $value;
+    }
+    /**
+     * Return Calendar Title Value
+     * @return string calendar title
+     */
+    public function getCalendarTitle()
+    {
+        return $this->calendarTitle;
+    }
 
-	/**
-	 * Set isUpdate Value
-	 * @param boolean $value
-	 */
-	public function setIsUpdate($value) {
-		$this->isUpdate = $value;
-	}
-	/**
-	 * Return isUpdate Value
-	 * @return boolean isUpdate
-	 */
-	public function getIsUpdate() {
-		return $this->isUpdate;
-	}
-
-	/**
-	 * Set isActive Value
-	 * @param boolean $value
-	 */
-	public function setIsActive($value) {
-		$this->isActive = $value;
-	}
-	/**
-	 * Return isActive value
-	 * @return boolean isActive
-	 */
-	public function getIsActive() {
-		return $this->isActive;
-	}
-
-	/**
-	 * Set isDelete Value
-	 * @param boolean $value
-	 */
-	public function setIsDelete($value) {
-		$this->isDelete = $value;
-	}
-	/**
-	 * Return isDelete Value
-	 * @return boolean isDelete
-	 */
-	public function getIsDelete() {
-		return $this->isDelete;
-	}
-
-	/**
-	 * Set isApproved Value
-	 * @param boolean $value
-	 */
-	public function setIsApproved($value) {
-		$this->isApproved = $value;
-	}
-	/**
-	 * Return isApproved Value
-	 * @return boolean isApproved
-	 */
-	public function getIsApproved() {
-		return $this->isApproved;
-	}
-
-	/**
-	 * Set Activity User
-	 * @param integet $value
-	 */
-	public function setIsBy($value) {
-		$this->isBy = $value;
-	}
-	/**
-	 * Get Activity User
-	 * @return integer User
-	 */
-	public function getIsBy() {
-		return $this->isBy;
-	}
-
-	/**
-	 * Set Time Activity User
-	 * @param date $value
-	 */
-	public function setIsTime($value) {
-		$this->isTime = $value;
-	}
-	/**
-	 *  Return Time Activity User
-	 *  @return date Time Activity User
-	 */
-	public function getIsTime() {
-		return $this->isTime;
-	}
+ /**
+     * Set Calendar Color Value
+     * @param numeric $value
+     */
+    public function setStaffId($value)
+    {
+        $this->staffId = $value;
+    }
+    /**
+     * Return Calendar Colro Value
+     * @return numeric $staffId
+     */
+    public function staffId()
+    {
+        return $this->staffId;
+    }
 }
 ?>
