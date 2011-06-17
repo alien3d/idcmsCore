@@ -3,35 +3,24 @@
 /**
  * this is leaf model file.This is to ensure strict setting enable for all variable enter to database
  *
- * @name IDCMS.
- * @version 2
- * @author hafizan
- * @package religion
+ * @category IDCMS
+ * @package security
+ * @subpackage leaf
+ * @copyright IDCMS
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class leafModel extends validationClass{
-	public $tableName;
-	public $primaryKeyName;
-	public $leafId;
-	public $accordionId;
-	public $folderId;
-	public $iconId;
-	public $leafSequence;
-	public $leafCode;
-	public $leafFilename;
-	public $leafNote;
-	public $isDefaut;
-	public $isNew;
-	public $isDraft;
-	public $isUpdate;
-	public $isActive;
-	public $isDelete;
-	public $isApproved;
-	public $By;
-	public $Time;
-	public $vendor;
-	public $staffId;
+
+	private $leafId;
+	private $tabId;
+	private $folderId;
+	private $iconId;
+	private $leafSequence;
+	private $leafCode;
+	private $leafFilename;
+	private $leafNote;
+
 
 	/* (non-PHPdoc)
 	 * @see validationClass::execute()
@@ -117,6 +106,136 @@ class leafModel extends validationClass{
 		$this->isApproved	=	0;
 	}
 
+
+	/**
+	 * Set Leaf Identification  Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setLeafId($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->leafId = $value;
+		} else if ($type=='array'){
+			$this->leafId[$key]=$value;
+		}
+	}
+	/**
+	 * Return Leaf Identication Value
+	 * @return integer $leafId
+	 */
+	public function getLeafId($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->leafId;
+		} else if ($type=='array'){
+			return $this->leafId[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+	/**
+	 * Set Tab/Accordion Identification  Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setTabId() {
+
+		$this->tabId = $value;
+
+	}
+	/**
+	 * Return Tab/Accordion Identication Value
+	 * @return integer $tabId
+	 */
+	public function getTabId() {
+
+		return $this->tabId;
+
+	}
+	/**
+	 * Set Folder Identification  Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setFolderId() {
+
+		$this->folderId = $value;
+
+	}
+	/**
+	 * Return Folder Identication Value
+	 * @return integer folderId
+	 */
+	public function getFolderId() {
+
+		return $this->folderId;
+
+	}
+	/**
+	 * Set Icon Identification  Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setIconId() {
+
+		$this->iconId = $value;
+
+	}
+	/**
+	 * Return Icon Identification Value
+	 * @return integer $iconId
+	 */
+	public function getIconId() {
+
+		return $this->iconId;
+
+	}
+	/**
+	 * Set Leaf Sequence Value
+	 * @param numeric $leafSequence
+	 */
+	public function setLeafSequence($value) {
+		$this->leafSequence = $value;
+	}
+	/**
+	 * Return Leaf Sequence
+	 * @return numeric $folderSequence
+	 */
+	public function getLeafSequence() {
+		return $this->leafSequence;
+	}
+	/**
+	 * Set Leaf Application
+	 * @param string $value
+	 */
+	public function setLeafFilename($value) {
+		$this->leafFilename = $value;
+	}
+	/**
+	 * Return Leaf /Application
+	 * @return string leaf /Application
+	 */
+	public function getLeafFilename() {
+		return $this->leafFilename;
+	}
+	/**
+	 * Set Leaf/Application Note (English Translation Value
+	 * @param string $value
+	 */
+	public function setLeafNote($value) {
+		$this->leafNote = $value;
+	}
+	/**
+	 * Return Leaf/Application Note (English Translation Default)
+	 * @return string folder Note
+	 */
+	public function getLeafNote() {
+		return $this->leafNote;
+	}
 
 }
 ?>

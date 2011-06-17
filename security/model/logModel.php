@@ -11,23 +11,14 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class logModel extends validationClass{
-	public $tableName;
-	public $primaryKeyName;
-	public $iconId;
-	public $accordionId;
-	public $accordionNote;
-	public $accordionSequence;
-	public $isDefaut;
-	public $isNew;
-	public $isDraft;
-	public $isUpdate;
-	public $isActive;
-	public $isDelete;
-	public $isApproved;
-	public $By;
-	public $Time;
-	public $vendor;
-	public $staffId;
+	private $logId;
+	private $leafId;
+	private $operation;
+	private $sql;
+	private $date;
+	private $staffId;
+	private $access;
+	private $logError;
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -35,32 +26,21 @@ class logModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'accordion';
-		$this->primaryKeyName 	=	'accordionId';
+		$this->setTableName('log');
+		$this->setPrimaryKeyName('logId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['iconId'])){
-			$this->iconId = $this->strict($_POST['iconId'],'numeric');
-		}
-		if(isset($_POST['accordionId'])){
-			$this->accordionId = $this->strict($_POST['accordionId'],'numeric');
-		}
-		if(isset($_POST['accordionSequence'])){
-			$this->accordionSequence = $this->strict($_POST['accordionSequence'],'numeric');
-		}
-		if(isset($_POST['accordionNote'])){
-			$this->accordionNote = $this->strict($_POST['accordionNote'],'memo');
-		}
+
 		if(isset($_SESSION['staffId'])){
-			$this->By = $_SESSION['staffId'];
+			$this->setBy($_SESSION['staffId']);
 		}
 		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='oracle'){
-			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 

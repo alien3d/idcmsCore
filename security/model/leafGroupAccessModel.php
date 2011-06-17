@@ -11,18 +11,18 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class leafGroupAccessModel extends validationClass{
-	public $tableName;
-	public $primaryKeyName;
-	public $leafAccessId;
-	public $leafId;
-	public $staffId;
-	public $leafCreateAccessValue;
-	public $leafReadAccessValue;
-	public $leafUpdateAccessValue;
-	public $leafDeleteAccessValue;
-	public $leafPrintAccessValue;
-	public $leafPostAccessValue;
-	public $totalleafAccessId;
+
+	private $leafGrooupAccessId;
+	private $leafId;
+	private $groupId;
+	private $leafCreateAccessValue;
+	private $leafReadAccessValue;
+	private $leafUpdateAccessValue;
+	private $leafDeleteAccessValue;
+	private $leafPrintAccessValue;
+	private $leafPostAccessValue;
+	private $leafDraftAccessValue;
+
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -35,12 +35,14 @@ class leafGroupAccessModel extends validationClass{
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		$this->leafAccessId 		= array();
-		$this->leafAccessValue 	= array();
-		$this->totalleafGroupAccessId	=	count($_GET['leafGroupAccessId']);
+		if(isset($_GET['leafGroupAccessId']){
+			$this->setTotal(count($_GET['leafGroupAccessId']));
+		}
+		if(isset($_GET['groupId'])){
+			$this->setGroupId($_GET['groupId']);
+		}
 
-
-		for($i=0;$i<$this->totalleafGroupAccessId;$i++) {
+		for($i=0;$i<$this->getTotal();$i++) {
 			$this->leafAccessId[$i]  = $this->strict($_GET['leafGroupAccessId'][$i],'numeric');
 
 
@@ -80,6 +82,11 @@ class leafGroupAccessModel extends validationClass{
 			} else {
 				$this->leafPostAccessValue[$i]=0;
 			}
+			if($_GET['leafPostAccessValue'][$i]=='true') {
+				$this->leafPostAccessValue[$i] =1;
+			} else {
+				$this->leafPostAccessValue[$i]=0;
+			}
 
 		}
 
@@ -104,6 +111,180 @@ class leafGroupAccessModel extends validationClass{
 	 */
 	function delete() {
 	}
+
+	public function setLeafGroupAccessId($value,$key=NULL,$type=NULL) {
+		if($type=='string'){
+			$this->leafGroupAccessId = $value;
+		} else if ($type=='array'){
+			$this->leafGroupAccessId[$key]=$value;
+		}
+	}
+	/**
+	 * Return istabId Value
+	 * @return integer tabId
+	 */
+	public function getLeafGroupAccessId($key=NULL,$type=NULL) {
+		if($type=='string'){
+			return $this->leafGroupAccessId;
+		} else if ($type=='array'){
+			return $this->leafGroupAccessId[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+	/**
+	 * Set Tab/Module/Accordion Identification Value
+	 * @param  numeric $value
+	 */
+	public function setTabId($value) {
+		$this->iconId = $value;
+	}
+	/**
+	 * Return Tab/Module/Accordion Identiification Value
+	 * @return numeric tab identification
+	 */
+	public function getTabId() {
+
+		return $this->tabId;
+	}
+	/**
+	 * Set Tab/Module/Accordion Identification Value
+	 * @param  numeric $value
+	 */
+	public function setTabId($value) {
+		$this->iconId = $value;
+	}
+	/**
+	 * Return Tab/Module/Accordion Identiification Value
+	 * @return numeric tab identification
+	 */
+	public function getTabId() {
+
+		return $this->tabId;
+	}
+	/**
+	 * Set Tab/Module/Accordion Identification Value
+	 * @param  numeric $value
+	 */
+	public function setGroupId($value) {
+		$this->groupId = $value;
+	}
+	/**
+	 * Return Tab/Module/Accordion Identiification Value
+	 * @return numeric tab identification
+	 */
+	public function getGroupId() {
+
+		return $this->groupId;
+	}
+	/**
+	 * Set Tab Access  Value
+	 * @param  numeric $value
+	 */
+	public function setLeafCreateAccessValue($value,$key) {
+		$this->leafCreateAccessValue[$key] = $value;
+	}
+	/**
+	 * Return Tab Access Value
+	 * @return numeric tab identification
+	 */
+	public function getleafCreateAccessValue($value,$key) {
+
+		return $this->leafCreateAccessValue[$key]=$value;
+	}
+
+	/**
+	 * Set Tab Access  Value
+	 * @param  numeric $value
+	 */
+	public function setLeafReadAccessValue($value,$key) {
+		$this->leafReadAccessValue[$key] = $value;
+	}
+	/**
+	 * Return Tab Access Value
+	 * @return numeric tab identification
+	 */
+	public function getLeafReadAccessValue($value,$key) {
+
+		return $this->leafReadAccessValue[$key]=$value;
+	}
+	/**
+	 * Set Tab Access  Value
+	 * @param  numeric $value
+	 */
+	public function setLeafUpdateAccessValue($value,$key) {
+		$this->leafUpdateAccessValue[$key] = $value;
+	}
+	/**
+	 * Return Tab Access Value
+	 * @return numeric tab identification
+	 */
+	public function getLeafUpdateAccessValue($value,$key) {
+
+		return $this->leafUpdateAccessValue[$key]=$value;
+	}
+	/**
+	 * Set Tab Access  Value
+	 * @param  numeric $value
+	 */
+	public function setLeafUpdateAccessValue($value,$key) {
+		$this->leafUpdateAccessValue[$key] = $value;
+	}
+	/**
+	 * Return Tab Access Value
+	 * @return numeric tab identification
+	 */
+	public function getLeafDeleteAccessValue($value,$key) {
+
+		return $this->leafDeleteAccessValue[$key]=$value;
+	}
+	/**
+	 * Set Tab Access  Value
+	 * @param  numeric $value
+	 */
+	public function setLeafPrintAccessValue($value,$key) {
+		$this->leafPrintAccessValue[$key] = $value;
+	}
+	/**
+	 * Return Tab Access Value
+	 * @return numeric tab identification
+	 */
+	public function getleafPrintAccessValue($value,$key) {
+
+		return $this->leafPrintAccessValue[$key]=$value;
+	}
+	/**
+	 * Set Tab Access  Value
+	 * @param  numeric $value
+	 */
+	public function setLeafPostAccessValue($value,$key) {
+		$this->leafPostAccessValue[$key] = $value;
+	}
+	/**
+	 * Return Tab Access Value
+	 * @return numeric tab identification
+	 */
+	public function getleafPostAccessValue($value,$key) {
+
+		return $this->leafPostAccessValue[$key]=$value;
+	}
+	/**
+	 * Set Tab Access  Value
+	 * @param  numeric $value
+	 */
+	public function setLeafDraftAccessValue($value,$key) {
+		$this->tabAccessValue[$key] = $value;
+	}
+	/**
+	 * Return Tab Access Value
+	 * @return numeric tab identification
+	 */
+	public function getLeafDraftAccessValue($value,$key) {
+
+		return $this->leafDraftAccessValue[$key]=$value;
+	}
+
 
 }
 ?>

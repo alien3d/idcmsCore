@@ -14,99 +14,52 @@ require_once("../model/folderAccessModel.php");
  */
 
 class folderAccessClass  extends configClass {
-	/**
+			/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
 	public $q;
-
-	/**
-	 * Program Identification
-	 * @var numeric $leafId
-	 */
-	public $leafId;
-	/**
-	 * User Identification
-	 * @var numeric $staffId
-	 */
-	public $staffId;
-	/**
-	 *	 Database Selected
-	 *   string $database;
-	 */
-	public $database;
-	/**
-	 * Database Vendor
-	 * @var string $vendor
-	 */
-	public $vendor;
-	/**
-	 * Extjs Field Query UX
-	 * @var string $fieldQuery
-	 */
-	public $fieldQuery;
-	/**
-	 * Extjs Grid  Filter Plugin
-	 * @var string $gridQuery
-	 */
-	public $gridQuery;
-	/**
-	 * Fast Search Variable
-	 * @var string $quickFilter
-	 */
-	public $quickFilter;
-
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
 	 */
-	private  $excel;
-
-
+	private $excel;
 	/**
 	 * Document Trail Audit.
 	 * @var string $documentTrail;
 	 */
-	private  $documentTrail;
-
-	/**
-	 *  Ascending ,Descending ASC,DESC
-	 * @var string $order;`
-	 */
-	public $order;
-
-	/**
-	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sortField
-	 */
-	public $sortField;
-	/**
-	 * Default Language  : English
-	 * @var numeric $defaultLanguageId
-	 */
-	private $defaultLanguageId;
+	private $documentTrail;
 	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
 	 */
 	private $audit;
 	/**
-	 * Current Table Folder Access Indentification Value
-	 * @var numeric $folderAccessId
+	 * Log Sql Statement True or False
+	 * @var unknown_type
 	 */
-	public $folderAccessId;
+	private $log;
 	/**
-	 *  Table Accordion Indentification
-	 * @var numeric $accordionId
+	 * department Model
+	 * @var string $departmentModel
 	 */
-	public  $accordionId;
+	public $model;
 	/**
-	 *  Table Group Indentification Value
-	 * @var numeric $groupId
+	 * Audit Filter
+	 * @var string $auditFilter
 	 */
-	public $groupId;
+	public $auditFilter;
 	/**
-	 * Common class function for security menu
+	 * Audit Column
+	 * @var string $auditColumn
+	 */
+	public $auditColumn;
+	/**
+	 * Duplicate Testing either the key of table same or have been created.
+	 * @var boolean $duplicateTest;
+	 */
+	public $duplicateTest;
+	/*
 	 * @var  string $security
 	 */
 	private $security;
@@ -123,15 +76,15 @@ class folderAccessClass  extends configClass {
 
 		$this->q 					=	new vendor();
 
-		$this->q->vendor			=	$this->vendor;
+		$this->q->vendor			=	$this->getVendor();
 
-		$this->q->leafId			=	$this->leafId;
+		$this->q->leafId			=	$this->getLeafId();
 
-		$this->q->staffId			=	$this->staffId;
+		$this->q->staffId			=	$this->getStaffId();
 
-		$this->q->filter 			= 	$this->filter;
+		$this->q->filter 			= 	$this->getFieldQuery();
 
-		$this->q->quickFilter		=	$this->quickFilter;
+		$this->q->gridQuery		=	$this->getGridQuery();
 
 		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
 

@@ -5,6 +5,14 @@
  *
  */
 abstract class validationClass {
+	// database property
+	private $vendor;
+	private $tableName;
+	private $primaryKeyName;
+	private $primaryKeyAll;
+	private $total;
+
+	// common field value
 	private $isDefault;
 	private $isNew;
 	private $isDraft;
@@ -14,7 +22,7 @@ abstract class validationClass {
 	private $isApproved;
 	private $By;
 	private $Time;
-	private $primaryKeyAll;
+
 	/**
 	 *  Class Loader
 	 */
@@ -160,7 +168,13 @@ abstract class validationClass {
 		}
 
 	}
+	public function setVendor($value) {
+		$this->vendor = $value;
 
+	}
+	public function getVendor() {
+		return $this->vendor;
+	}
 	public function setTableName($value) {
 		$this->tableName = $value;
 
@@ -315,30 +329,30 @@ abstract class validationClass {
 	 * Set Activity User
 	 * @param integet $value
 	 */
-	public function setIsBy($value) {
-		$this->isBy = $value;
+	public function setBy($value) {
+		$this->By = $value;
 	}
 	/**
 	 * Get Activity User
 	 * @return integer User
 	 */
-	public function getIsBy() {
-		return $this->isBy;
+	public function getBy() {
+		return $this->By;
 	}
 
 	/**
 	 * Set Time Activity User
 	 * @param date $value
 	 */
-	public function setIsTime($value) {
-		$this->isTime = $value;
+	public function setTime($value) {
+		$this->Time = $value;
 	}
 	/**
 	 *  Return Time Activity User
 	 *  @return date Time Activity User
 	 */
-	public function getIsTime() {
-		return $this->isTime;
+	public function getTime() {
+		return $this->Time;
 	}
 
 }

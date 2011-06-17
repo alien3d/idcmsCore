@@ -11,9 +11,7 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class calendarModel extends validationClass{
-	 // table property
-    private $tableName;
-    private $primaryKeyName;
+
     // table field
 	private $calendarId;
 	private $calendarColorId;
@@ -167,7 +165,7 @@ class calendarModel extends validationClass{
     }
 
  /**
-     * Set Calendar Color Value
+     * Set Staff Identification Value
      * @param numeric $value
      */
     public function setStaffId($value)
@@ -175,7 +173,7 @@ class calendarModel extends validationClass{
         $this->staffId = $value;
     }
     /**
-     * Return Calendar Colro Value
+     * Return  Staff Identification value
      * @return numeric $staffId
      */
     public function staffId()

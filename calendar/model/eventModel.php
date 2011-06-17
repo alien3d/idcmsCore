@@ -12,21 +12,20 @@
  */
 class eventModel extends validationClass{
 
-	public $tableName;
-	public $primaryKeyName;
 
-	public $eventId;
-	public $calendarId;
-	public $eventTitle;
-	public $eventStart;
-	public $eventEnd;
-	public $eventAddress;
-	public $eventNotes;
-	public $reminder;
-	public $eventUrl;
-	public $eventLocation;
-	public $eventN;
-	public $staffId;
+
+	private $eventId;
+	private $calendarId;
+	private $eventTitle;
+	private $eventStart;
+	private $eventEnd;
+	private $eventAddress;
+	private $eventNotes;
+	private $reminder;
+	private $eventUrl;
+	private $eventLocation;
+	private $eventN;
+	private $staffId;
 
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
@@ -35,8 +34,8 @@ class eventModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->tableName 		=	'event';
-		$this->primaryKeyName 	=	'eventId';
+		$this->setTableName('event');
+		$this->setPrimaryKeyName('eventId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
@@ -72,14 +71,14 @@ class eventModel extends validationClass{
 		}
 
 		if(isset($_SESSION['staffId'])){
-			$this->By = $_SESSION['staffId'];
+			$this->setBy($_SESSION['staffId']);
 		}
 		if($this->vendor=='normal' || $this->vendor=='mysql'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='microsoft'){
-			$this->Time = "'".date("Y-m-d H:i:s")."'";
+			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->vendor=='oracle'){
-			$this->Time = "to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')";
+			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 
@@ -126,6 +125,223 @@ class eventModel extends validationClass{
 	}
 
 
+	/**
+	 * Set Event Identification Value
+	 * @param integer $value
+	 * @param integer $key  Array as value
+	 * @param enum   $type   1->string,2->array
+	 */
+	public function setEventId($value, $key = NULL, $type = NULL)
+	{
+		if ($type == 'string') {
+			$this->eventId = $value;
+		} else if ($type == 'array') {
+			$this->eventId[$key] = $value;
+		}
+	}
+	/**
+	 * Return Event Identification Value
+	 * @return integer eventId
+	 */
+	public function getEventId($key = NULL, $type = NULL)
+	{
+		if ($type == 'string') {
+			return $this->eventId;
+		} else if ($type == 'array') {
+			return $this->eventId[$key];
+		} else {
+			echo json_encode(array(
+                "success" => false,
+                "message" => "Cannot Identifiy Type"
+                ));
+                exit();
+		}
+	}
+	/**
+	 * Set Calendar Identification Value
+	 * @param numeric $value
+	 */
+	public function setCalendarColorId($value)
+	{
+		$this->calendarId = $value;
+	}
+	/**
+	 * Return Calendar Identification Value
+	 * @return string calendar identification
+	 */
+	public function getCalendarId()
+	{
+		return $this->calendarId;
+	}
+	/**
+	 * Set Event Title Value
+	 * @param string $value
+	 */
+	public function setEventTitle($value)
+	{
+		$this->eventTitle = $value;
+	}
+	/**
+	 * Return Event Title Value
+	 * @return string Event Title
+	 */
+	public function getEventTitle()
+	{
+		return $this->eventTitle;
+	}
 
+	/**
+	 * Set Event Start Value
+	 * @param datetime $value
+	 */
+	public function setEventStart($value)
+	{
+		$this->eventStart = $value;
+	}
+	/**
+	 * Return Event Start Value
+	 * @return datetime Event Start
+	 */
+	public function getEventStart()
+	{
+		return $this->eventStart;
+	}
+
+	/**
+	 * Set Event End Value
+	 * @param datetime $value
+	 */
+	public function setEventEnd($value)
+	{
+		$this->eventEnd = $value;
+	}
+	/**
+	 * Return Event End Value
+	 * @return datetime Event Start
+	 */
+	public function getEventEnd()
+	{
+		return $this->eventEnd;
+	}
+	/**
+	 * Set Event Address Value
+	 * @param string $value
+	 */
+	public function setEventAddress($value)
+	{
+		$this->eventAddress = $value;
+	}
+	/**
+	 * Return Event Address Value
+	 * @return string Event Address
+	 */
+	public function getEventAddress()
+	{
+		return $this->eventAddress;
+	}
+
+	/**
+	 * Set Event Notes Value
+	 * @param string $value
+	 */
+	public function setEventNotes($value)
+	{
+		$this->eventNotes = $value;
+	}
+	/**
+	 * Return Event Notes Value
+	 * @return string Event Notes
+	 */
+	public function getEventNotes()
+	{
+		return $this->eventNotes;
+	}
+
+	/**
+	 * Set Event Start Value
+	 * @param datetime $value
+	 */
+	public function setEventReminder($value)
+	{
+		$this->eventReminder = $value;
+	}
+	/**
+	 * Return Event Start Value
+	 * @return datetime Event Start
+	 */
+	public function getEventReminder()
+	{
+		return $this->eventReminder;
+	}
+
+	/**
+	 * Set Event Start Value
+	 * @param datetime $value
+	 */
+	public function setEventUrl($value)
+	{
+		$this->eventUrl = $value;
+	}
+	/**
+	 * Return Event Start Value
+	 * @return datetime Event Start
+	 */
+	public function getEventUrl()
+	{
+		return $this->eventUrl;
+	}
+
+
+	/**
+	 * Set Event Start Value
+	 * @param datetime $value
+	 */
+	public function setEventLocation($value)
+	{
+		$this->eventLocation = $value;
+	}
+	/**
+	 * Return Event Start Value
+	 * @return datetime Event Start
+	 */
+	public function getEventLocation()
+	{
+		return $this->eventLocation;
+	}
+
+	/**
+	 * Set Event Start Value
+	 * @param datetime $value
+	 */
+	public function setEventN($value)
+	{
+		$this->eventN = $value;
+	}
+	/**
+	 * Return Event Start Value
+	 * @return datetime Event Start
+	 */
+	public function getEventN()
+	{
+		return $this->eventN;
+	}
+
+
+	/**
+	 * Set Staff Identification Value
+	 * @param numeric $value
+	 */
+	public function setStaffId($value)
+	{
+		$this->staffId = $value;
+	}
+	/**
+	 * Return  Staff Identification value
+	 * @return numeric $staffId
+	 */
+	public function staffId()
+	{
+		return $this->staffId;
+	}
 }
 ?>

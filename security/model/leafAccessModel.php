@@ -27,21 +27,7 @@ class leafAccessModel extends validationClass{
 	private $leafPostAccessValue;
 	private $totalleafAccessId;
 
-	//table property
-	const tableName='tableName';
-	const primaryKeyName='primaryKeyName';
 
-	//table field
-	const leafAccessId='leafAccessId';
-	const leafId='leafAccessId';
-	const staffId='staffId';
-	const leafCreateAccessValue='leafAccessId';
-	const leafReadAccessValue='leafAccessId';
-	const leafUpdateAccessValue='leafAccessId';
-	const leafDeleteAccessValue='leafAccessId';
-	const leafPrintAccessValue='leafAccessId';
-	const leafPostAccessValue='leafAccessId';
-	const totalleafAccessId='leafAccessId';
 
 
 	/**

@@ -12,52 +12,12 @@
  */
 class departmentModel extends validationClass{
 
-	// table property
-	private $tableName;
-	private $primaryKeyName;
-
 	// table field
 	private $departmentId;
 	private $departmentSequence;
 	private $departmentCode;
 	private $departmentNote;
-	private $isDefault;
-	private $isNew;
-	private $isDraft;
-	private $isUpdate;
-	private $isActive;
-	private $isDelete;
-	private $isApproved;
-	private $By;
-	private $Time;
 
-	private $departmentIdAll; // this is not table field but collection of departmentId
-	/**
-	 * Total Record receive from checkbox grid
-	 * @var numeric
-	 */
-	private $total;
-	// database vendor
-	public  $vendor;
-
-	// table property
-	const	tableName = 'department';
-	const 	primaryKeyName = 'departmentId';
-
-	// table field
-	const   departmentId	=	'departmentId';
-	const   departmentSequence  ='departmentSequence';
-	const   departmentCode = 'departmentCode';
-	const  	departmentNote	=	'departmentNote';
-	const 	isDefault = 'isDefault';
-	const 	isNew = 'isNew';
-	const 	isDraft = 'isDraft';
-	const 	isUpdate = 'isUpdate';
-	const 	isActive = 'isActive';
-	const 	isDelete = 'isDelete';
-	const 	isApproved = 'isApproved';
-	const 	By = 'By';
-	const 	Time = 'Time';
 
 	function execute(){
 		/*

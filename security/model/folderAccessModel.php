@@ -1,7 +1,7 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is folder security model file.This is to ensure strict setting enable for all variable enter to database
+ * this is folder security model file.This is to ensure strict setting enable for all variable enter to daFolderase
  *
  * @name IDCMS.
  * @version 2
@@ -11,35 +11,23 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class folderAccessModel extends validationClass{
-	// table property
-	private $tableName;
-	private $primaryKeyName;
 
-	// table field
+	// Folderle field
 	private $folderAccessId;
 	private $folderId;
 	private $groupId;
 	private $folderAccessValue;
-	private $totalfolderAccessId;
 
-	// table property
-	const tableName = 'folderAcces';
-	const primaryKeyName = 'folderAccesId';
 
-	// table field
-	const folderAccessId = 'folderAccessId';
-	const folderId  ='folderId';
-	const groupId = 'groupId';
-	const folderAccessValue = 'folderAccessValue';
 
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute(){
 		/*
-		 *  Basic Information Table
+		 *  Basic Information Folderle
 		 */
-		$this->setTableName 		('folderAccess');
+		$this->setFolderleName 		('folderAccess');
 		$this->setPrimaryKeyName 	('folderAccessId');
 		/*
 		 *  All the $_POST enviroment.
@@ -80,92 +68,88 @@ class folderAccessModel extends validationClass{
 	function delete() {
 	}
 
-	public function setTableName($value) {
-		$this->tableName = $value;
-
-	}
-	public function getTableName() {
-		return $this->tableName;
-	}
-	public function setPrimaryKeyName($value) {
-		$this->primaryKeyName = $value;
-
-	}
-	public function getPrimaryKeyName() {
-		return $this->primaryKeyName;
-	}
-	// generate basic information from outside
-	/**
-	 * Set folder indentification  Value
-	 * @param integer $value
-	 * @param integer $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 */
-	public function setFolderAccessId($value,$key=NULL,$type=NULL) {
+		public function setFolderAccessId($value,$key=NULL,$type=NULL) {
 		if($type=='string'){
-			$this->folderAccessId = $value;
+			$this->FolderAccessId = $value;
 		} else if ($type=='array'){
-			$this->folderAccessId[$key]=$value;
+			$this->FolderAccessId[$key]=$value;
 		}
 	}
 	/**
-	 * Return folder indentication Value
-	 * @return integer folderId
+	 * Return isFolderId Value
+	 * @return integer FolderId
 	 */
 	public function getFolderAccessId($key=NULL,$type=NULL) {
 		if($type=='string'){
-			return $this->folderId;
+			return $this->FolderAccessId;
 		} else if ($type=='array'){
-			return $this->folderId[$key];
+			return $this->FolderAccessId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();
 		}
 	}
 	/**
-	 * Set Group indentification  Value
-	 * @param integer $value
-	 * @param integer $key  Array as value
-	 * @param enum   $type   1->string,2->array
+	 * Set Folder/Module/Accordion Identification Value
+	 * @param  numeric $value
 	 */
-	public function setGroupId() {
-
-		$this->groupId = $value;
-
+	public function setFolderId($value) {
+		$this->iconId = $value;
 	}
 	/**
-	 * Return Group indentication Value
-	 * @return integer folderId
+	 * Return Folder/Module/Accordion Identiification Value
+	 * @return numeric Folder identification
+	 */
+	public function getFolderId() {
+
+		return $this->FolderId;
+	}
+	/**
+	 * Set Folder/Module/Accordion Identification Value
+	 * @param  numeric $value
+	 */
+	public function setFolderId($value) {
+		$this->iconId = $value;
+	}
+	/**
+	 * Return Folder/Module/Accordion Identiification Value
+	 * @return numeric Folder identification
+	 */
+	public function getFolderId() {
+
+		return $this->FolderId;
+	}
+	/**
+	 * Set Folder/Module/Accordion Identification Value
+	 * @param  numeric $value
+	 */
+	public function setGroupId($value) {
+		$this->groupId = $value;
+	}
+	/**
+	 * Return Folder/Module/Accordion Identiification Value
+	 * @return numeric Folder identification
 	 */
 	public function getGroupId() {
 
 		return $this->groupId;
-
+	}
+/**
+	 * Set Folder Access  Value
+	 * @param  numeric $value
+	 */
+	public function setFolderAccessValue($value,$key) {
+		$this->folderAccessValue[$key] = $value;
 	}
 	/**
-	 * Set folder Access indentification  Value
-	 * @param boolean $value
-	 * @param integer $key  Array as value
+	 * Return Folder Access Value
+	 * @return numeric Folder identification
 	 */
-	public function setFolderAccessValue($value,$key=NULL) {
+	public function getFolderAccessValue($value,$key) {
 
-		$this->folderAccessId[$key]=$value;
+		return $this->folderAccessValue[$key]=$value;
+	}
 
-	}
-	/**
-	 * Return folder Access indentication Value
-	 * @return boolean folderAccessId
-	 */
-	public function getFolderAccessValue($key=NULL) {
 
-		return $this->folderValue[$key];
-
-	}
-	public function setTotal($value){
-		$this->total = $value;
-	}
-	public function getTotal(){
-		return $this->total;
-	}
 }
 ?>

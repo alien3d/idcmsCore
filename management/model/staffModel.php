@@ -12,9 +12,6 @@
  */
 class staffModel extends validationClass{
 
-	// table property
-	private $tableName;
-	private $primaryKeyName;
 
 	// table field
 	private $staffId;
@@ -25,47 +22,7 @@ class staffModel extends validationClass{
 	private $staffName;
 	private $staffNo;
 	private $staffIc;
-	private $isDefault;
-	private $isNew;
-	private $isDraft;
-	private $isUpdate;
-	private $isActive;
-	private $isDelete;
-	private $isApproved;
-	private $By;
-	private $Time;
 
-	private $staffIdAll; // this is not table field but collection of staffId
-	/**
-	 * Total Record receive from checkbox grid
-	 * @var numeric
-	 */
-	private $total;
-	// database vendor
-	public  $vendor;
-
-	// table property
-	const	tableName = 'staff';
-	const 	primaryKeyName = 'staffId';
-
-	// table field
-	const 	staffId='staffId';
-	const   groupId='groupId';
-	const   departmentId='departmentId';
-	const   languageId='languageId';
-	const   staffPassword='staffPassword';
-	const   staffName='staffName';
-	const   staffNo='staffNo';
-	const  	staffIc='staffIc';
-	const 	isDefault = 'isDefault';
-	const 	isNew = 'isNew';
-	const 	isDraft = 'isDraft';
-	const 	isUpdate = 'isUpdate';
-	const 	isActive = 'isActive';
-	const 	isDelete = 'isDelete';
-	const 	isApproved = 'isApproved';
-	const 	By = 'By';
-	const 	Time = 'Time';
 
 	/* (non-PHPdoc)
 	 * @see validationClass::execute()

@@ -12,9 +12,7 @@ require_once("../../class/classValidation.php");
  */
 class religionModel extends validationClass
 {
-    // table property
-    private $tableName;
-    private $primaryKeyName;
+
     // table field
     private $religionId;
     private $religionDesc;
@@ -48,7 +46,8 @@ class religionModel extends validationClass
         if (isset($_SESSION['staffId'])) {
             $this->setBy($_SESSION['staffId']);
         }
-        if ($this->vendor == 'normal' || $this->vendor == 'mysql') {
+
+        if ($this->vendor == 'mysql') {
             $this->setTime("\"" . date("Y-m-d H:i:s") . "\"");
         } else if ($this->vendor == 'microsoft') {
             $this->setTime("\"" . date("Y-m-d H:i:s") . "\"");

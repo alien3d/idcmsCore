@@ -65,15 +65,15 @@ class calendarsClass extends  configClass {
 
 		$this->q 					=	new vendor();
 
-		$this->q->vendor			=	$this->vendor;
+		$this->q->vendor			=	$this->getVendor();
 
-		$this->q->leafId			=	$this->leafId;
+		$this->q->leafId			=	$this->getLeafId();
 
-		$this->q->staffId			=	$this->staffId;
+		$this->q->staffId			=	$this->getStaffId();
 
-		$this->q->filter 			= 	$this->filter;
+		$this->q->fieldQuery 			= 	$this->getFieldQuery();
 
-		$this->q->quickFilter		=	$this->quickFilter;
+		$this->q->gridQuery		=	$this->getGridQuery();
 
 		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
 
@@ -91,7 +91,7 @@ class calendarsClass extends  configClass {
 	/**
 	 * Read calendar
 	 */
-	public function read_calendar() 				{
+	public function read() 				{
 
 		//header('Content-type: application/json');
 		$sql	=	"

@@ -12,55 +12,13 @@
  */
 class groupModel extends validationClass{
 
-	// table property
-	private $tableName;
-	private $primaryKeyName;
 
 	// table field
 	private $groupId;
 	private $groupSequence;
 	private $groupCode;
 	private $groupNote;
-	private $isAdmin;
-	private $isDefault;
-	private $isNew;
-	private $isDraft;
-	private $isUpdate;
-	private $isActive;
-	private $isDelete;
-	private $isApproved;
-	private $By;
-	private $Time;
 
-
-	private $groupIdAll; // this is not table field but collection of staffId
-	/**
-	 * Total Record receive from checkbox grid
-	 * @var numeric
-	 */
-	private $total;
-	// database vendor
-	public  $vendor;
-
-	// table property
-	const	tableName = 'group';
-	const 	primaryKeyName = 'groupId';
-
-	// table field
-	const   groupId='groupId';
-	const   groupSequence ='groupSequence';
-	const   groupCode='groupCode';
-	const   groupNote='groupNote';
-	const   isAdmin ='isAdmin';
-	const 	isDefault = 'isDefault';
-	const 	isNew = 'isNew';
-	const 	isDraft = 'isDraft';
-	const 	isUpdate = 'isUpdate';
-	const 	isActive = 'isActive';
-	const 	isDelete = 'isDelete';
-	const 	isApproved = 'isApproved';
-	const 	By = 'By';
-	const 	Time = 'Time';
 
 	function execute(){
 		/*
