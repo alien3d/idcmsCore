@@ -18,41 +18,8 @@ class departmentClass  extends configClass {
 	 * @var string $excel
 	 */
 	public $q;
-	/**
-	 * Program Identification
-	 * @var numeric $leafId
-	 */
-	public $leafId;
-	/**
-	 * User Identification
-	 * @var numeric $staffId
-	 */
-	public $staffId;
-	/**
-	 * Selected Database or Tablespace
-	 * @var string $database
-	 */
-	public $database;
-	/**
-	 * Database Vendor
-	 * @var string $vendor
-	 */
-	public $vendor;
-	/**
-	 * Extjs Field Query UX
-	 * @var string $fieldQuery
-	 */
-	public $fieldQuery;
-	/**
-	 * Extjs Grid  Filter Plugin
-	 * @var string $gridQuery
-	 */
-	public $gridQuery;
-	/**
-	 * Fast Search Variable
-	 * @var string $quickFilter
-	 */
-	public $quickFilter;
+
+
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
@@ -63,32 +30,8 @@ class departmentClass  extends configClass {
 	 * @var string $documentTrail;
 	 */
 	private $documentTrail;
-	/**
-	 * Start
-	 * @var string $start;`
-	 */
-	public $start;
-	/**
-	 *  Limit
-	 * @var string $limit
-	 */
-	public $limit;
-	/**
-	 /**
-	 *  Ascending ,Descending ASC,DESC
-	 * @var string $order;`
-	 */
-	public $order;
-	/**
-	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sortField
-	 */
-	public $sortField;
-	/**
-	 * Default Language  : English
-	 * @var numeric $defaultLanguageId
-	 */
-	private $defaultLanguageId;
+
+
 	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
@@ -109,11 +52,7 @@ class departmentClass  extends configClass {
 	 * @var string $departmentModel
 	 */
 	public $model;
-	/**
-	 * Open To See Audit  Column --> approved,new,delete and e.g
-	 * @var numeric $isAdmin
-	 */
-	public $isAdmin;
+
 
 	/**
 	 * Audit Filter
@@ -137,11 +76,11 @@ class departmentClass  extends configClass {
 		parent::__construct();
 
 		$this->q              	= new vendor();
-		$this->q->vendor      	= $this->vendor;
-		$this->q->leafId      	= $this->leafId;
-		$this->q->staffId     	= $this->staffId;
-		$this->q->fieldQuery	= $this->fieldQuery;
-		$this->q->gridQuery    = $this->gridQuery;
+		$this->q->vendor      	= $this->getVendor();
+		$this->q->leafId      	= $this->getLeafId();
+		$this->q->staffId     	= $this->getStaffId();
+		$this->q->fieldQuery	= $this->getFieldQuery();
+		$this->q->gridQuery   = $this->getGridQuery();
 		$this->q->connect($this->connection, $this->username, $this->database, $this->password);
 		$this->excel         = new PHPExcel();
 		$this->audit         = 0;
@@ -966,10 +905,10 @@ class departmentClass  extends configClass {
 
 $departmentObject  	= 	new departmentClass();
 if(isset($_SESSION['staffId'])){
-	$departmentObject->staffId = $_SESSION['staffId'];
+	$departmentObject->setStaffId($_SESSION['staffId']);
 }
 if(isset($_SESSION['vendor'])){
-	$departmentObject-> vendor = $_SESSION['vendor'];
+	$departmentObject->setVendor($_SESSION['vendor']);
 }
 /**
  *	crud -create,read,update,delete
@@ -983,42 +922,43 @@ if(isset($_POST['method']))	{
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_POST['leafId'])){
-		$departmentObject-> leafId = $_POST['leafId'];
-	}
-
-	/*
-	 *  Paging
-	 */
-	if(isset($_POST['start'])){
-		$departmentObject->start = $_POST['start'];
-	}
-	if(isset($_POST['limit'])){
-		$departmentObject->limit = $_POST['perPage'];
-	}
-	/**
-	 *  Filtering
-	 */
-	if(isset($_POST['query'])){
-		$departmentObject->fieldQuery = $_POST['query'];
-	}
-	if(isset($_POST['filter'])){
-		$departmentObject->gridQuery = $_POST['filter'];
-	}
-	/**
-	 * Ordering
-	 */
-	if(isset($_POST['order'])){
-		$departmentObject-> order= $_POST['order'];
-	}
-	if(isset($_POST['sortField'])){
-		$departmentObject-> sortField= $_POST['sortField'];
+		$departmentObject->setLeafId($_POST['leafId']);
 	}
 	/*
 	 *  Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$departmentObject->isAdmin = $_POST['isAdmin'];
+		$departmentObject->setIsAdmin($_POST['isAdmin']);
 	}
+	/*
+	 *  Paging
+	 */
+	if(isset($_POST['start'])){
+		$departmentObject->setStart($_POST['start']);
+	}
+	if(isset($_POST['limit'])){
+		$departmentObject->setLimit($_POST['perPage']);
+	}
+	/**
+	 *  Filtering
+	 */
+	if(isset($_POST['query'])){
+		$departmentObject->setFieldQuery($_POST['query']);
+	}
+	if(isset($_POST['filter'])){
+		echo "jerk";
+		$departmentObject->setGridQuery($_POST['filter']);
+	}
+	/**
+	 * Ordering
+	 */
+	if(isset($_POST['order'])){
+		$departmentObject->setOrder($_POST['order']);
+	}
+	if(isset($_POST['sortField'])){
+		$departmentObject->setSortField($_POST['sortField']);
+	}
+
 	/*
 	 *  Load the dynamic value
 	 */
@@ -1049,13 +989,13 @@ if(isset($_GET['method'])) {
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
-		$departmentObject-> leafId  = $_GET['leafId'];
+		$departmentObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])){
-		$departmentObject->isAdmin = $_GET['isAdmin'];
+		$departmentObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
@@ -1063,7 +1003,7 @@ if(isset($_GET['method'])) {
 	$departmentObject->execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
-			$departmentObject->staffId();
+			$departmentObject->staff();
 		}
 	}
 	/*
