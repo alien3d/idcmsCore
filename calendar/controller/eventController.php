@@ -11,92 +11,51 @@ require_once("../model/eventModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class eventClass extends  configClass {
-	/**
+	/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
 	public $q;
-
-	/**
-	 * Program Identification
-	 * @var numeric $leafId
-	 */
-	public $leafId;
-	/**
-	 * User Identification
-	 * @var numeric $staffId
-	 */
-	public $staffId;
-	/**
-	 *	 Database Selected
-	 *   string $database;
-	 */
-	public $database;
-	/**
-	 * Database Vendor
-	 * @var string $vendor
-	 */
-	public $vendor;
-	/**
-	 * Extjs Field Query UX
-	 * @var string $fieldQuery
-	 */
-	public $fieldQuery;
-	/**
-	 * Extjs Grid  Filter Plugin
-	 * @var string $gridQuery
-	 */
-	public $gridQuery;
-	/**
-	 * Fast Search Variable
-	 * @var string $quickFilter
-	 */
-	public $quickFilter;
-
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
 	 */
-	private  $excel;
-
-
+	private $excel;
 	/**
 	 * Document Trail Audit.
 	 * @var string $documentTrail;
 	 */
-	private  $documentTrail;
-
-	/**
-	 *  Ascending ,Descending ASC,DESC
-	 * @var string $order;`
-	 */
-	public $order;
-
-	/**
-	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sortField
-	 */
-	public $sortField;
-	/**
-	 * Default Language  : English
-	 * @var numeric $defaultLanguageId
-	 */
-	private $defaultLanguageId;
+	private $documentTrail;
 	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
 	 */
 	private $audit;
 	/**
-	 * Current Table calendar Indentification Value
-	 * @var numeric $calendarId
+	 * Log Sql Statement True or False
+	 * @var unknown_type
 	 */
-	public $calendarColorId;
+	private $log;
 	/**
-	 * Current Table Event Indentification Value
-	 * @var numeric $eventId
+	 * department Model
+	 * @var string $departmentModel
 	 */
-	public $eventId;
+	public $model;
+	/**
+	 * Audit Filter
+	 * @var string $auditFilter
+	 */
+	public $auditFilter;
+	/**
+	 * Audit Column
+	 * @var string $auditColumn
+	 */
+	public $auditColumn;
+	/**
+	 * Duplicate Testing either the key of table same or have been created.
+	 * @var boolean $duplicateTest;
+	 */
+	public $duplicateTest;
 	/**
 	 * Class Loader
 	 */
@@ -269,7 +228,15 @@ class eventClass extends  configClass {
 }
 
 $eventObject  	= 	new eventClass();
-
+if(isset($_SESSION['staffId'])){
+	$eventObject->setStaffId($_SESSION['staffId']);
+}
+if(isset($_SESSION['vendor'])){
+	$eventObject->setVendor($_SESSION['vendor']);
+}
+if(isset($_SESSION['languageId'])){
+	$eventObject->setLanguageId($_SESSION['languageId']);
+}
 if(isset($_POST['method'])){
 	/*
 	 *  Initilize Value before load in the loader
@@ -278,13 +245,13 @@ if(isset($_POST['method'])){
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_POST['leafId'])){
-		$eventObject-> leafId  = $_POST['leafId'];
+		$eventObject->setLeafId($_POST['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$eventObject->isAdmin = $_POST['isAdmin'];
+		$eventObject->setIsAdmin($_POST['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
@@ -316,7 +283,10 @@ if(isset($_GET['method'])){
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
-		$eventObject-> leafId  = $_GET['leafId'];
+		$eventObject->setLeafId($_GET['leafId']);
+	}
+	if(isset($_GET['isAdmin'])){
+		$eventObject->setLeafId($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
@@ -325,7 +295,7 @@ if(isset($_GET['method'])){
 
 	if(isset($_GET['field'])){
 		if($_GET['field']=='staffId'){
-			$eventObject->staffId();
+			$eventObject->staff();
 		}
 	}
 }

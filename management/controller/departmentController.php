@@ -18,8 +18,6 @@ class departmentClass  extends configClass {
 	 * @var string $excel
 	 */
 	public $q;
-
-
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
@@ -30,8 +28,6 @@ class departmentClass  extends configClass {
 	 * @var string $documentTrail;
 	 */
 	private $documentTrail;
-
-
 	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
@@ -43,17 +39,10 @@ class departmentClass  extends configClass {
 	 */
 	private $log;
 	/**
-	 * Current Table department Indentification Value
-	 * @var numeric $departmentId
-	 */
-	public $departmentId;
-	/**
 	 * department Model
 	 * @var string $departmentModel
 	 */
 	public $model;
-
-
 	/**
 	 * Audit Filter
 	 * @var string $auditFilter
@@ -909,6 +898,9 @@ if(isset($_SESSION['staffId'])){
 }
 if(isset($_SESSION['vendor'])){
 	$departmentObject->setVendor($_SESSION['vendor']);
+}
+if(isset($_SESSION['languageId'])){
+	$departmentObject->setLanguageId($_SESSION['languageId']);
 }
 /**
  *	crud -create,read,update,delete

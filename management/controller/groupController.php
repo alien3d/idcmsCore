@@ -11,46 +11,11 @@ require_once("../model/groupModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class groupClass  extends configClass {
-	/*
+		/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
 	public $q;
-	/**
-	 * Program Identification
-	 * @var numeric $leafId
-	 */
-	public $leafId;
-	/**
-	 * User Identification
-	 * @var numeric $staffId
-	 */
-	public $staffId;
-	/**
-	 * Selected Database or Tablespace
-	 * @var string $database
-	 */
-	public $database;
-	/**
-	 * Database Vendor
-	 * @var string $vendor
-	 */
-	public $vendor;
-	/**
-	 * Extjs Field Query UX
-	 * @var string $fieldQuery
-	 */
-	public $fieldQuery;
-	/**
-	 * Extjs Grid  Filter Plugin
-	 * @var string $gridQuery
-	 */
-	public $gridQuery;
-	/**
-	 * Fast Search Variable
-	 * @var string $quickFilter
-	 */
-	public $quickFilter;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
@@ -62,32 +27,6 @@ class groupClass  extends configClass {
 	 */
 	private $documentTrail;
 	/**
-	 * Start
-	 * @var string $start;`
-	 */
-	public $start;
-	/**
-	 *  Limit
-	 * @var string $limit
-	 */
-	public $limit;
-	/**
-	 /**
-	 *  Ascending ,Descending ASC,DESC
-	 * @var string $order;`
-	 */
-	public $order;
-	/**
-	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sortField
-	 */
-	public $sortField;
-	/**
-	 * Default Language  : English
-	 * @var numeric $defaultLanguageId
-	 */
-	private $defaultLanguageId;
-	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
 	 */
@@ -98,21 +37,10 @@ class groupClass  extends configClass {
 	 */
 	private $log;
 	/**
-	 * Current Table group Indentification Value
-	 * @var numeric $groupId
-	 */
-	public $groupId;
-	/**
-	 * group Model
-	 * @var string $groupModel
+	 * department Model
+	 * @var string $departmentModel
 	 */
 	public $model;
-	/**
-	 * Open To See Audit  Column --> approved,new,delete and e.g
-	 * @var numeric $isAdmin
-	 */
-	public $isAdmin;
-
 	/**
 	 * Audit Filter
 	 * @var string $auditFilter
@@ -136,13 +64,14 @@ class groupClass  extends configClass {
 
 		$this->q 					=	new vendor();
 
-		$this->q->vendor			=	$this->vendor;
+		$this->q->vendor			=	$this->getVendor();
 
-		$this->q->leafId			=	$this->leafId;
+		$this->q->leafId			=	$this->getLeafId();
 
-		$this->q->staffId			=	$this->staffId;
+		$this->q->staffId			=	$this->getStaffId();
 
-		$this->q->filter 			= 	$this->filter;
+		$this->q->fieldQuery		=   $this->getFieldQuery();
+		$this->q->filter 			= 	$this->getGridQuery();
 
 		$this->q->quickFilter		=	$this->quickFilter;
 
@@ -441,7 +370,7 @@ class groupClass  extends configClass {
 	 * @see config::read()
 	 */
 	function read() 				{
-	header('Content-Type', 'application/json; charset=utf-8');
+		header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
 			if($this->q->vendor == self :: mysql) {
 				$this->auditFilter = "	`group`.`isActive`		=	1	";
@@ -1172,10 +1101,13 @@ class groupClass  extends configClass {
 
 $groupObject  	= 	new groupClass();
 if(isset($_SESSION['staffId'])){
-	$groupObject->staffId = $_SESSION['staffId'];
+	$groupObject->setStaffId($_SESSION['staffId']);
 }
 if(isset($_SESSION['vendor'])){
-	$groupObject-> vendor = $_SESSION['vendor'];
+	$groupObject->setVendor($_SESSION['vendor']);
+}
+if(isset($_SESSION['languageId'])){
+	$groupObject->setLanguageId($_SESSION['languageId']);
 }
 /**
  *	crud -create,read,update,delete
@@ -1188,20 +1120,22 @@ if(isset($_POST['method']))	{
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_POST['leafId'])){
-		$groupObject-> leafId = $_POST['leafId'];
-	}
-
-	if(isset($_POST['filter'])){
-		$groupObject->filter = $_POST['filter'];
+		$groupObject->setLeafId($_POST['leafId']);
 	}
 	if(isset($_POST['query'])){
-		$groupObject->query = $_POST['query'];
+		$groupObject->setFieldQuery($_POST['query']);
 	}
+	if(isset($_POST['filter'])){
+		$groupObject->setGridQuery($_POST['filter']);
+	}
+	/*
+	 * Ordering
+	 */
 	if(isset($_POST['order'])){
-		$groupObject-> order= $_POST['order'];
+		$groupObject->setOrder($_POST['order']);
 	}
 	if(isset($_POST['sortField'])){
-		$groupObject-> sortField= $_POST['sortField'];
+		$groupObject->setSortField($_POST['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
@@ -1234,13 +1168,13 @@ if(isset($_GET['method'])) {
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
-		$groupObject-> leafId  = $_GET['leafId'];
+		$groupObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])){
-		$groupObject->isAdmin = $_GET['isAdmin'];
+		$groupObject->setIsAdmin($_GET['isAdmin']);
 	}
 
 	/*
@@ -1249,7 +1183,7 @@ if(isset($_GET['method'])) {
 	$groupObject->execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
-			$staffObject->staffId();
+			$staffObject->staff();
 		}
 	}
 	/*

@@ -11,88 +11,51 @@ require_once("../model/documentCategoryModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class documentCategoryClass extends  configClass {
-	/**
+		/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
 	public $q;
-
-	/**
-	 * Program Identification
-	 * @var numeric $leafId
-	 */
-	public $leafId;
-	/**
-	 * User Identification
-	 * @var numeric $staffId
-	 */
-	public $staffId;
-	/**
-	 *	 Database Selected
-	 *   string $database;
-	 */
-	public $database;
-	/**
-	 * Database Vendor
-	 * @var string $vendor
-	 */
-	public $vendor;
-	/**
-	 * Extjs Field Query UX
-	 * @var string $fieldQuery
-	 */
-	public $fieldQuery;
-	/**
-	 * Extjs Grid  Filter Plugin
-	 * @var string $gridQuery
-	 */
-	public $gridQuery;
-	/**
-	 * Fast Search Variable
-	 * @var string $quickFilter
-	 */
-	public $quickFilter;
-
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
 	 */
-	private  $excel;
-
-
+	private $excel;
 	/**
 	 * Document Trail Audit.
 	 * @var string $documentTrail;
 	 */
-	private  $documentTrail;
-
-	/**
-	 *  Ascending ,Descending ASC,DESC
-	 * @var string $order;`
-	 */
-	public $order;
-
-	/**
-	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sortField
-	 */
-	public $sortField;
-	/**
-	 * Default Language  : English
-	 * @var numeric $defaultLanguageId
-	 */
-	private $defaultLanguageId;
+	private $documentTrail;
 	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
 	 */
 	private $audit;
 	/**
-	 * Current Table Document Category Indentification Value
-	 * @var numeric $documentCategoruyId
+	 * Log Sql Statement True or False
+	 * @var unknown_type
 	 */
-	public $documentCategoryId;
+	private $log;
+	/**
+	 * department Model
+	 * @var string $departmentModel
+	 */
 	public $model;
+	/**
+	 * Audit Filter
+	 * @var string $auditFilter
+	 */
+	public $auditFilter;
+	/**
+	 * Audit Column
+	 * @var string $auditColumn
+	 */
+	public $auditColumn;
+	/**
+	 * Duplicate Testing either the key of table same or have been created.
+	 * @var boolean $duplicateTest;
+	 */
+	public $duplicateTest;
 	/**
 	 * Class Loader
 	 */
@@ -397,26 +360,32 @@ if(isset($_POST['method']))	{
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_POST['leafId'])){
-		$documenCategoryObject-> leafId = $_POST['leafId'];
+		$documenCategoryObject->setLeafId($_POST['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_POST['isAdmin'])){
+		$documenCategoryObject->setIsAdmin($_POST['isAdmin']);
 	}
 	/*
 	 * Filtering
 	 */
 	if(isset($_POST['query'])){
-		$documenCategoryObject->fieldQuery = $_POST['query'];
+		$documenCategoryObject->setFieldQuery($_POST['query']);
 	}
 	if(isset($_POST['filter'])){
-		$documenCategoryObject->gridQuery = $_POST['filter'];
+		$documenCategoryObject->setGridQuery($_POST['filter']);
 	}
 
 	/*
 	 * Ordering
 	 */
 	if(isset($_POST['order'])){
-		$documenCategoryObject-> order= $_POST['order'];
+		$documenCategoryObject->setOrder($_POST['order']);
 	}
 	if(isset($_POST['sortField'])){
-		$documenCategoryObject-> sortField= $_POST['sortField'];
+		$documenCategoryObject->setSortField($_POST['sortField']);
 	}
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
@@ -443,11 +412,17 @@ if(isset($_GET['method'])) {
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
-		$documenCategoryObject-> leafId  = $_GET['leafId'];
+		$documenCategoryObject->setLeafId($_GET['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if(isset($_GET['isAdmin'])){
+		$documenCategoryObject->setIsAdmin($_GET['isAdmin']);
 	}
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
-			$documenCategoryObject->staffId();
+			$documenCategoryObject->staff();
 		}
 	}
 	/*

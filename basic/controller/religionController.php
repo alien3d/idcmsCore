@@ -14,46 +14,11 @@ require_once("../model/religionModel.php");
  */
 class religionClass extends configClass
 {
-	/**
+		/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
 	public $q;
-	/**
-	 * Program Identification
-	 * @var numeric $leafId
-	 */
-	public $leafId;
-	/**
-	 * User Identification
-	 * @var numeric $staffId
-	 */
-	public $staffId;
-	/**
-	 * Selected Database or Tablespace
-	 * @var string $database
-	 */
-	public $database;
-	/**
-	 * Database Vendor
-	 * @var string $vendor
-	 */
-	public $vendor;
-	/**
-	 * Extjs Field Query UX
-	 * @var string $fieldQuery
-	 */
-	public $fieldQuery;
-	/**
-	 * Extjs Grid  Filter Plugin
-	 * @var string $gridQuery
-	 */
-	public $gridQuery;
-	/**
-	 * Fast Search Variable
-	 * @var string $quickFilter
-	 */
-	public $quickFilter;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
@@ -65,32 +30,6 @@ class religionClass extends configClass
 	 */
 	private $documentTrail;
 	/**
-	 * Start
-	 * @var string $start;`
-	 */
-	public $start;
-	/**
-	 *  Limit
-	 * @var string $limit
-	 */
-	public $limit;
-	/**
-	 /**
-	 *  Ascending ,Descending ASC,DESC
-	 * @var string $order;`
-	 */
-	public $order;
-	/**
-	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sortField
-	 */
-	public $sortField;
-	/**
-	 * Default Language  : English
-	 * @var numeric $defaultLanguageId
-	 */
-	private $defaultLanguageId;
-	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
 	 */
@@ -101,21 +40,10 @@ class religionClass extends configClass
 	 */
 	private $log;
 	/**
-	 * Current Table Religion Indentification Value
-	 * @var numeric $religionId
-	 */
-	public $religionId;
-	/**
-	 * Religion Model
-	 * @var string $religionModel
+	 * department Model
+	 * @var string $departmentModel
 	 */
 	public $model;
-	/**
-	 * Open To See Audit  Column --> approved,new,delete and e.g
-	 * @var numeric $isAdmin
-	 */
-	public $isAdmin;
-
 	/**
 	 * Audit Filter
 	 * @var string $auditFilter
@@ -1134,10 +1062,13 @@ class religionClass extends configClass
 
 $religionObject  	= 	new religionClass();
 if(isset($_SESSION['staffId'])){
-	$religionObject->staffId = $_SESSION['staffId'];
+	$religionObject->setStaffId($_SESSION['staffId']);
 }
 if(isset($_SESSION['vendor'])){
-	$religionObject-> vendor = $_SESSION['vendor'];
+	$religionObject->setVendor($_SESSION['vendor']);
+}
+if(isset($_SESSION['languageId'])){
+	$religionObject->setLanguageId($_SESSION['languageId']);
 }
 /**
  *	crud -create,read,update,delete
@@ -1147,40 +1078,49 @@ if(isset($_POST['method']))	{
 	 *  Initilize Value before load in the loader
 	 */
 	if(isset($_POST['leafId'])){
-		$religionObject-> leafId = $_POST['leafId'];
-	}
-
-	/*
-	 *  Paging
-	 */
-	if(isset($_POST['start'])){
-		$religionObject->start = $_POST['start'];
-	}
-	if(isset($_POST['limit'])){
-		$religionObject->limit = $_POST['perPage'];
+		$religionObject->setLeafId($_POST['leafId']);
 	}
 	/*
-	 *  Paging
+	 * Admin Only
 	 */
-	if(isset($_POST['filter'])){
-		$religionObject->filter = $_POST['filter'];
-	}
-	if(isset($_POST['query'])){
-		$religionObject->query = $_POST['query'];
-	}
-	if(isset($_POST['order'])){
-		$religionObject-> order= $_POST['order'];
-	}
-	if(isset($_POST['sortField'])){
-		$religionObject-> sortField= $_POST['sortField'];
-	}
 	if(isset($_POST['isAdmin'])){
 		$religionObject->isAdmin=$_POST['isAdmin'];
 	}
 	/*
+	 *  Paging
+	 */
+	if(isset($_POST['start'])){
+		$religionObject->setStart($_POST['start']);
+	}
+	if(isset($_POST['limit'])){
+		$religionObject->setLimit($_POST['perPage']);
+	}
+	/*
+	 *  Filtering
+	 */
+	if(isset($_POST['query'])){
+		$religionObject->setFieldQuery($_POST['query']);
+	}
+	if(isset($_POST['filter'])){
+		$religionObject->setGridQuery($_POST['filter']);
+	}
+	/*
+	 * Ordering
+	 */
+	if(isset($_POST['order'])){
+		$religionObject->setOrder($_POST['order']);
+	}
+	if(isset($_POST['sortField'])){
+		$religionObject->setSortField($_POST['sortField']);
+	}
+
+	/*
 	 *  Load the dynamic value
 	 */
 	$religionObject->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
 	if($_POST['method']=='create') 	{
 		$religionObject->create();
 	}
@@ -1208,17 +1148,26 @@ if(isset($_GET['method'])) {
 	$religionObject-> execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
-			$religionObject->staffId();
+			$religionObject->staff();
 		}
 	}
+	/*
+	 * Update Status of The Table. Admin Level Only
+	 */
 	if($_GET['method']=='updateStatus'){
 		$religionObject->updateStatus();
 	}
+	/*
+	 *  Checking Any Duplication  Key
+	 */
 	if (isset($_GET['religionCode'])) {
 		if (strlen($_GET['religionCode']) > 0) {
 			$religionObject->duplicate();
 		}
 	}
+	/*
+	 * Excel Reporting
+	 */
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
 			$religionObject->excel();

@@ -14,42 +14,11 @@ require_once("../model/staffModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class staffClass extends  configClass {
-	/*
+		/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
 	public $q;
-	/**
-	 * Program Identification
-	 * @var numeric $leafId
-	 */
-	public $leafId;
-
-	/**
-	 * Selected Database or Tablespace
-	 * @var string $database
-	 */
-	public $database;
-	/**
-	 * Database Vendor
-	 * @var string $vendor
-	 */
-	public $vendor;
-	/**
-	 * Extjs Field Query UX
-	 * @var string $fieldQuery
-	 */
-	public $fieldQuery;
-	/**
-	 * Extjs Grid  Filter Plugin
-	 * @var string $gridQuery
-	 */
-	public $gridQuery;
-	/**
-	 * Fast Search Variable
-	 * @var string $quickFilter
-	 */
-	public $quickFilter;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
 	 * @var string $excel
@@ -61,32 +30,6 @@ class staffClass extends  configClass {
 	 */
 	private $documentTrail;
 	/**
-	 * Start
-	 * @var string $start;`
-	 */
-	public $start;
-	/**
-	 *  Limit
-	 * @var string $limit
-	 */
-	public $limit;
-	/**
-	 /**
-	 *  Ascending ,Descending ASC,DESC
-	 * @var string $order;`
-	 */
-	public $order;
-	/**
-	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sortField
-	 */
-	public $sortField;
-	/**
-	 * Default Language  : English
-	 * @var numeric $defaultLanguageId
-	 */
-	private $defaultLanguageId;
-	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
 	 */
@@ -97,16 +40,10 @@ class staffClass extends  configClass {
 	 */
 	private $log;
 	/**
-	 * staff Model
-	 * @var string $staffModel
+	 * department Model
+	 * @var string $departmentModel
 	 */
 	public $model;
-	/**
-	 * Open To See Audit  Column --> approved,new,delete and e.g
-	 * @var numeric $isAdmin
-	 */
-	public $isAdmin;
-
 	/**
 	 * Audit Filter
 	 * @var string $auditFilter
@@ -122,7 +59,6 @@ class staffClass extends  configClass {
 	 * @var boolean $duplicateTest;
 	 */
 	public $duplicateTest;
-	public $security;
 	/**
 	 * Class Loader
 	 */
@@ -1673,32 +1609,32 @@ if(isset($_POST['method']))	{
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_POST['leafId'])){
-		$staffObject-> leafId = $_POST['leafId'];
+		$staffObject->setLeafId($_POST['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$staffObject->isAdmin = $_POST['isAdmin'];
+		$staffObject->setIsAdmin($_POST['isAdmin']);
 	}
 	/*
 	 * Filtering
 	 */
 
 	if(isset($_POST['query'])){
-		$staffObject->fieldQuery = $_POST['query'];
+		$staffObject->setFieldQuery($_POST['query']);
 	}
 	if(isset($_POST['filter'])){
-		$staffObject->gridQuery = $_POST['filter'];
+		$staffObject->setGridQuery($_POST['filter']);
 	}
 	/*
 	 *
 	 */
 	if(isset($_POST['order'])){
-		$staffObject-> order= $_POST['order'];
+		$staffObject->setOrder($_POST['order']);
 	}
 	if(isset($_POST['sortField'])){
-		$staffObject-> sortField= $_POST['sortField'];
+		$staffObject->setSortField($_POST['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
@@ -1731,13 +1667,13 @@ if(isset($_GET['method'])) {
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
-		$staffObject-> leafId  = $_GET['leafId'];
+		$staffObject->setlLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])){
-		$staffObject->isAdmin = $_GET['isAdmin'];
+		$staffObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
@@ -1745,7 +1681,7 @@ if(isset($_GET['method'])) {
 	$staffObject->execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
-			$staffObject->staffId();
+			$staffObject->staff();
 		}
 		if($_GET['field']=='group'){
 			$staffObject->group();

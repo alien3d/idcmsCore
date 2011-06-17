@@ -38,7 +38,7 @@ class documentClass extends  configClass {
 	 */
 
 	public $vendor;
-		/**
+	/**
 	 * Extjs Field Query UX
 	 * @var string $fieldQuery
 	 */
@@ -460,6 +460,9 @@ if(isset($_SESSION['staffId'])){
 if(isset($_SESSION['vendor'])){
 	$documentObject-> vendor = $_SESSION['vendor'];
 }
+if(isset($_SESSION['languageId'])){
+	$documentObject->setLanguageId($_SESSION['languageId']);
+}
 
 
 /**
@@ -469,33 +472,34 @@ if(isset($_POST['method']))	{
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-		/*
+	/*
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_POST['leafId'])){
-		$documentObject-> leafId = $_POST['leafId'];
+		$documentObject->setLeafId($_POST['leafId']);
+	}
+	if(isset($_POST['isAdmin'])){
+		$documentObject->setIsAdmin($_POST['isAdmin']);
 	}
 
-	if($_POST['method']=='create')	{
-		$documentObject->create();
-	}
 	/*
 	 *  Filtering
 	 */
-	if(isset($_POST['filter'])){
-		$documentObject->filter = $_POST['filter'];
-	}
+
 	if(isset($_POST['query'])){
-		$documentObject->quickFilter = $_POST['query'];
+		$documentObject->setFieldQuery($_POST['query']);
+	}
+	if(isset($_POST['filter'])){
+		$documentObject->setGridQuery($_POST['filter']);
 	}
 	/*
 	 *  Ordering
 	 */
 	if(isset($_POST['order'])){
-		$documentObject->order= $_POST['order'];
+		$documentObject->setOrder($_POST['order']);
 	}
 	if(isset($_POST['sortField'])){
-		$documentObject-> sortField= $_POST['sortField'];
+		$documentObject->setSortField($_POST['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
@@ -504,6 +508,9 @@ if(isset($_POST['method']))	{
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
+	if($_POST['method']=='create')	{
+		$documentObject->create();
+	}
 	if($_POST['method']=='read') 	{
 		$documentObject->read();
 	}
@@ -521,11 +528,11 @@ if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-		/*
+	/*
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
-		$documentObject->leafId  = $_GET['leafId'];
+		$documentObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 *  Load the dynamic value
@@ -533,7 +540,7 @@ if(isset($_GET['method'])) {
 	$documentObject -> execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
-			$documentObject->staffId();
+			$documentObject->staff();
 		}
 	}
 	/*
