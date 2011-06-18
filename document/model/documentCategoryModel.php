@@ -19,17 +19,7 @@ class documentCategoryModel extends validationClass{
 	public $documentCategoryId;
 	public $documentCategoryTitle;
 	public $documentCategoryDesc;
-	public $isDefaut;
-	public $isNew;
-	public $isDraft;
-	public $isUpdate;
-	public $isActive;
-	public $isDelete;
-	public $isApproved;
-	public $By;
-	public $Time;
-	public $vendor;
-	public $staffId;
+
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -54,11 +44,11 @@ class documentCategoryModel extends validationClass{
 		if(isset($_SESSION['staffId'])){
 			$this->setBy($_SESSION['staffId']);
 		}
-		if($this->vendor=='mysql'){
+		if($this->getVendor()==self::mysql){
 			$this->setTime = ("'".date("Y-m-d H:i:s")."'");
-		} else if ($this->vendor=='microsoft'){
+		} else if ($this->getVendor()==self::microsoft){
 			$this->setTime("'".date("Y-m-d H:i:s")."'");
-		} else if ($this->vendor=='oracle'){
+		} else if ($this->getVendor()==self::oracle){
 			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 

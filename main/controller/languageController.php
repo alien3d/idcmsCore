@@ -177,7 +177,7 @@ class leafUserClass extends configClass
 						),
 						'".$this->staffId."',
 						);";
-		} else if ($this->getVendor() == self::microsoft) {
+		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			INSERT INTO [leafUser]
 					(
@@ -245,7 +245,7 @@ class leafUserClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
-			if($this->q->vendor == self :: mysql) {
+			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	`religion`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[religion].[isActive]		=	1	";
@@ -253,7 +253,7 @@ class leafUserClass extends configClass
 				$this->auditFilter = "	\"religion\".\"isActive\"	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
-			if($this->q->vendor == self :: mysql) {
+			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
 			    $this->auditFilter = "	or 1 ";
@@ -349,7 +349,7 @@ class leafUserClass extends configClass
             if ($this->quickFilter) {
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
-            	} else if ($this->getVendor() == self::microsoft) {
+            	} else if ($this->getVendor() == self::mssql) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
             	} else if ($this->getVendor() == self::oracle) {
@@ -363,7 +363,7 @@ class leafUserClass extends configClass
             if ($this->filter) {
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
-            	} else if ($this->getVendor() == self::microsoft) {
+            	} else if ($this->getVendor() == self::mssql) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
             	} else if ($this->getVendor() == self::oracle) {
@@ -406,7 +406,7 @@ class leafUserClass extends configClass
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
-            		} else if ($this->getVendor() == self::microsoft) {
+            		} else if ($this->getVendor() == self::mssql) {
             			/**
             			 *	 Sql Server and Oracle used row_number
             			 *	 Parameterize Query We don't support

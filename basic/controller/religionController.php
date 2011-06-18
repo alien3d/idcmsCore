@@ -195,7 +195,7 @@ class religionClass extends configClass
 				$this->auditFilter = "	\"religion\".\"isActive\"	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
-			if($this->q->vendor == self :: mysql) {
+			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	or 1 ";
@@ -548,7 +548,7 @@ class religionClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->q->vendor   == self :: mysql) {
+		if ($this->getVendor()==self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
@@ -925,6 +925,7 @@ class religionClass extends configClass
 		} else {
 			$sql = $_SESSION['sql'];
 		}
+		
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(

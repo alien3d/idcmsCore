@@ -200,7 +200,7 @@ class mainClass extends configClass
 						\"". $this->model->getIsActive('','string') . "\",		\"". $this->model->getIsApproved('','string') . "\",
 						\"". $this->model->getBy() . "\",				" . $this->model->getTime() . "
 					);";
-		} else if ($this->getVendor() == self::microsoft) {
+		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			INSERT INTO [main]
 					(
@@ -268,7 +268,7 @@ class mainClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0 || empty($this->auditColumn)) {
-			if($this->q->vendor == self :: mysql) { 
+			if($this->getVendor()==self::mysql) { 
 				$this->auditFilter = "	`main`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[main].[isActive]		=	1	";
@@ -276,7 +276,7 @@ class mainClass extends configClass
 				$this->auditFilter = "	\"main\".\"isActive\"	=	1	";
 			}
 		} else if($this->auditColumn) {
-			if($this->q->vendor == self :: mysql) { 
+			if($this->getVendor()==self::mysql) { 
 				$this->auditFilter = "	`main`.`".$this->auditColumn."` = 1 ";
 			} else if ($this->q->vendor == self :: mssql) {	
 			    $this->auditFilter = "	[main].[".$this->auditColumn."] = 1 ";
@@ -469,7 +469,7 @@ class mainClass extends configClass
             if ($this->quickFilter) {
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
-            	} else if ($this->getVendor() == self::microsoft) {
+            	} else if ($this->getVendor() == self::mssql) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
             	} else if ($this->getVendor() == self::oracle) {
@@ -483,7 +483,7 @@ class mainClass extends configClass
             if ($this->filter) {
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
-            	} else if ($this->getVendor() == self::microsoft) {
+            	} else if ($this->getVendor() == self::mssql) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
             	} else if ($this->getVendor() == self::oracle) {
@@ -526,7 +526,7 @@ class mainClass extends configClass
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
-            		} else if ($this->getVendor() == self::microsoft) {
+            		} else if ($this->getVendor() == self::mssql) {
             			/**
             			 *	 Sql Server and Oracle used row_number
             			 *	 Parameterize Query We don't support

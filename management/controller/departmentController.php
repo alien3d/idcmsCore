@@ -1,7 +1,8 @@
 <?php
 session_start();
 require_once("../../class/classAbstract.php");
-require_once("../../class/classDocumentTrail.php");
+require_once("../../document/class/classDocumentTrail.php");
+require_once("../../document/model/documentModel.php");
 require_once("../model/departmentModel.php");
 /**
  * this is main setting files
@@ -79,7 +80,14 @@ class departmentClass  extends configClass {
 		$this->model         = new departmentModel();
 		$this->model->vendor = $this->getVendor();
 		$this->model->execute();
+
 		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->setStaffId($this->getStaffId());
+		$this->documentTrail->setLanguageId($this->getLanguageId());
+		$this->documentTrail->setLeafId($this->getLeafId());
+		$this->documentTrail->execute();
+
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -178,7 +186,7 @@ class departmentClass  extends configClass {
 	function read() 				{
 		header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
-			if($this->q->vendor == self :: mysql) {
+			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	`department`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[department].[isActive]		=	1	";
@@ -186,7 +194,7 @@ class departmentClass  extends configClass {
 				$this->auditFilter = "	\"department\".\"isActive\"	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
-			if($this->q->vendor == self :: mysql) {
+			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	or 1 ";
@@ -298,7 +306,7 @@ class departmentClass  extends configClass {
             if ($this->getfieldQuery()) {
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
-            	} else if ($this->getVendor() == self::microsoft) {
+            	} else if ($this->getVendor() == self::mssql) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
             	} else if ($this->getVendor() == self::oracle) {
@@ -313,7 +321,7 @@ class departmentClass  extends configClass {
 
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
-            	} else if ($this->getVendor() == self::microsoft) {
+            	} else if ($this->getVendor() == self::mssql) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
             	} else if ($this->getVendor() == self::oracle) {
@@ -349,14 +357,14 @@ class departmentClass  extends configClass {
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
-            $_SESSION['start'] = $this->start;
-            $_SESSION['limit'] = $this->limit;
+            $_SESSION['start'] = $this->getStart();
+            $_SESSION['limit'] = $this->getLimit();
             if (!($this->getGridQuery())) {
             	if ($this->limit) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
-            		} else if ($this->getVendor() == self::microsoft) {
+            		} else if ($this->getVendor() == self::mssql) {
             			/**
             			 *	 Sql Server and Oracle used row_number
             			 *	 Parameterize Query We don't support
@@ -478,40 +486,49 @@ class departmentClass  extends configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 				UPDATE 	`department`
-				SET 	`isDefault`		=	'".$this->model->getIsDefault('','string')."',
-						`isActive`		=	'".$this->model->getIsActive('','string')."',
-						`isNew`			=	'".$this->model->getIsNew('','string')."',
-						`isDraft`		=	'".$this->model->getIsDraft('','string')."',
-						`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
-						`isDelete`		=	'".$this->model->getIsDelete('','string')."',
-						`isApproved`	=	'".$this->model->getIsApproved('','string')."',
-						`By`			=	'".$this->model->getBy()."',
-						`Time`			=	".$this->model->getTime()."
-				WHERE 	`departmentId`	=	'".$this->model->getDepartmentId('','string')."'";
+				SET		`departmentSequence`	=	'".$this->model->getDepartmentSequence()."',
+						`departmentCode`		=	'".$this->model->getDepartmentCode()."',
+						`departmentNote` 		= 	'".$this->model->getDepartmentNote()."',
+						`isDefault`				=	'".$this->model->getIsDefault('','string')."',
+						`isActive`				=	'".$this->model->getIsActive('','string')."',
+						`isNew`					=	'".$this->model->getIsNew('','string')."',
+						`isDraft`				=	'".$this->model->getIsDraft('','string')."',
+						`isUpdate`				=	'".$this->model->getIsUpdate('','string')."',
+						`isDelete`				=	'".$this->model->getIsDelete('','string')."',
+						`isApproved`			=	'".$this->model->getIsApproved('','string')."',
+						`By`					=	'".$this->model->getBy()."',
+						`Time`					=	".$this->model->getTime()."
+				WHERE 	`departmentId`			=	'".$this->model->getDepartmentId('','string')."'";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[department]
-				SET 	[isActive]		=	'".$this->model->getIsActive('','string')."',
-						[isNew]			=	'".$this->model->getIsNew('','string')."',
-						[isDraft]		=	'".$this->model->getIsDraft('','string')."',
-						[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
-						[isDelete]		=	'".$this->model->getIsDelete('','string')."',
-						[isApproved]	=	'".$this->model->getIsApproved('','string')."',
-						[By]			=	'".$this->model->getBy()."',
-						[Time]			=	".$this->model->getTime()."
-				WHERE 	[departmentId]		=	'".$this->model->getDepartmentId('','string')."'";
+				SET 	[departmentSequence]	=	'".$this->model->getDepartmentSequence()."',
+						[departmentCode]		=	'".$this->model->getDepartmentCode()."',
+						[departmentNote] 		= 	'".$this->model->getDepartmentNote()."',
+						[isActive]				=	'".$this->model->getIsActive('','string')."',
+						[isNew]					=	'".$this->model->getIsNew('','string')."',
+						[isDraft]				=	'".$this->model->getIsDraft('','string')."',
+						[isUpdate]				=	'".$this->model->getIsUpdate('','string')."',
+						[isDelete]				=	'".$this->model->getIsDelete('','string')."',
+						[isApproved]			=	'".$this->model->getIsApproved('','string')."',
+						[By]					=	'".$this->model->getBy()."',
+						[Time]					=	".$this->model->getTime()."
+				WHERE 	[departmentId]			=	'".$this->model->getDepartmentId('','string')."'";
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 				UPDATE 	\"department\"
-				SET 	\"isActive\"	=	'".$this->model->getIsActive('','string')."',
-						\"isNew\"		=	'".$this->model->getIsNew('','string')."',
-						\"isDraft\"		=	'".$this->model->getIsDraft('','string')."',
-						\"isUpdate\"	=	'".$this->model->getIsUpdate('','string')."',
-						\"isDelete\"	=	'".$this->model->getIsDelete('','string')."',
-						\"isApproved\"	=	'".$this->model->getIsApproved('','string')."',
-						\"By\"			=	'".$this->model->getBy()."',
-						\"Time\"		=	".$this->model->getTime()."
+				SET 	\"departmentSequence\"	=	'".$this->model->getDepartmentSequence()."',
+						\"departmentCode\"		=	'".$this->model->getDepartmentCode()."',
+						\"departmentNote\" 		= 	'".$this->model->getDepartmentNote()."',
+						\"isActive\"			=	'".$this->model->getIsActive('','string')."',
+						\"isNew\"				=	'".$this->model->getIsNew('','string')."',
+						\"isDraft\"				=	'".$this->model->getIsDraft('','string')."',
+						\"isUpdate\"			=	'".$this->model->getIsUpdate('','string')."',
+						\"isDelete\"			=	'".$this->model->getIsDelete('','string')."',
+						\"isApproved\"			=	'".$this->model->getIsApproved('','string')."',
+						\"By\"					=	'".$this->model->getBy()."',
+						\"Time\"				=	".$this->model->getTime()."
 				WHERE 	\"departmentId\"		=	'".$this->model->getDepartmentId('','string')."'";
 
 		}
@@ -884,7 +901,104 @@ class departmentClass  extends configClass {
 	/* (non-PHPdoc)
 	 * @see config::excel()
 	 */
-	function excel() {}
+	function excel() {
+
+	header('Content-Type', 'application/json; charset=utf-8');
+		//UTF8
+		if ($this->getVendor() == self::mysql) {
+			$sql = 'SET NAMES "utf8"';
+			$this->q->fast($sql);
+		}
+		if ($_SESSION['start'] == 0) {
+			$sql = str_replace("LIMIT", "", $_SESSION['sql']);
+			$sql = str_replace($_SESSION['start'] . "," . $_SESSION['limit'], "", $sql);
+		} else {
+			$sql = $_SESSION['sql'];
+		}
+		$this->q->read($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                "success" => false,
+                "message" => $this->q->responce
+			));
+			exit();
+		}
+		$this->excel->setActiveSheetIndex(0);
+		// check file exist or not and return response
+		$styleThinBlackBorderOutline = array(
+            'borders' => array(
+                'inside' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array(
+                        'argb' => '000000'
+                        )
+                        ),
+                'outline' => array(
+                    'style' => PHPExcel_Style_Border::BORDER_THIN,
+                    'color' => array(
+                        'argb' => '000000'
+                        )
+                        )
+                        )
+                        );
+                        // header all using  3 line  starting b
+                        $this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+                        $this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+                        $this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+                        $this->excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+
+                        $this->excel->getActiveSheet()->setCellValue('B2', $this->title);
+                        $this->excel->getActiveSheet()->setCellValue('C2', '');
+                        $this->excel->getActiveSheet()->mergeCells('B2:E3');
+                        $this->excel->getActiveSheet()->setCellValue('B3', 'No');
+                        $this->excel->getActiveSheet()->setCellValue('C3', 'Sequence');
+                         $this->excel->getActiveSheet()->setCellValue('D3', 'Code');
+                          $this->excel->getActiveSheet()->setCellValue('E3', 'Note');
+                        $this->excel->getActiveSheet()->getStyle('B2:E2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+                        $this->excel->getActiveSheet()->getStyle('B2:E2')->getFill()->getStartColor()->setARGB('66BBFF');
+                        $this->excel->getActiveSheet()->getStyle('B3:E3')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+                        $this->excel->getActiveSheet()->getStyle('B3:E3')->getFill()->getStartColor()->setARGB('66BBFF');
+                        //
+                        $loopRow = 4;
+                        $i       = 0;
+                        while ($row = $this->q->fetchAssoc()) {
+                        	//	echo print_r($row);
+                        	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
+                        	$this->excel->getActiveSheet()->setCellValue('C' . $loopRow,$row['departmentSequence']);
+                        	$this->excel->getActiveSheet()->setCellValue('D' . $loopRow,$row['departmentCode']);
+                        	$this->excel->getActiveSheet()->setCellValue('E' . $loopRow,$row['departmentNote']);
+                        	$loopRow++;
+                        	$lastRow = 'C' . $loopRow;
+                        }
+                        $from    = 'B2';
+                        $to      = $lastRow;
+                        $formula = $from . ":" . $to;
+                        $this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
+                        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
+                        $filename  = "department" . rand(0, 10000000) . ".xlsx";
+                        $path      = $_SERVER['DOCUMENT_ROOT'] . $this->getApplication() . "/management/document/excel/" . $filename;
+
+                        $this->documentTrail->setDocumentPath($path);
+                        $this->documentTrail->setDocumentFilename($filename);
+                        $this->documentTrail->create();
+
+                        $objWriter->save($path);
+                        $file = fopen($path, 'r');
+                        if ($file) {
+                        	echo json_encode(array(
+                "success" => true,
+                "message" => "File generated",
+                "filename" => $filename
+                        	));
+                        	exit();
+                        } else {
+                        	echo json_encode(array(
+                "success" => false,
+                "message" => "File not generated"
+                ));
+                exit();
+                        }
+	}
 
 
 
@@ -1017,6 +1131,7 @@ if(isset($_GET['method'])) {
 	 */
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
+
 			$departmentObject->excel();
 		}
 	}

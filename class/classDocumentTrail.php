@@ -1,16 +1,63 @@
 <?php
+
 /**
  * Document Trail Audit.All Preprint Microsoft Excel Will Be Tracked
  * @author hafizan
  *
  */
-class documentTrailClass {
+class documentTrailClass extends configClass {
+	/*
+	 * Connection to the database
+	 * @var string $excel
+	 */
+	public $q;
+
+	/**
+	 *	Class Loader
+	 */
+	function execute() {
+		parent :: __construct();
+
+		$this->q 					=	new vendor();
+
+		$this->q->vendor			=	$this->getVendor();
+
+		$this->q->leafId			=	$this->getLeafId();
+
+		$this->q->staffId			=	$this->getStaffId();
+
+		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
+
+
+
+
+	}
+	/* (non-PHPdoc)
+	 * @see config::create()
+	 */
+	public function create(){}
+	/* (non-PHPdoc)
+	 * @see config::read()
+	 */
+	public function read() {}
+	/* (non-PHPdoc)
+	 * @see config::update()
+	 */
+	public function update(){}
+	/* (non-PHPdoc)
+	 * @see config::delete()
+	 */
+	public function delete(){}
+	/* (non-PHPdoc)
+	 * @see config::excel()
+	 */
+	public function excel(){}
 	/**
 	 * File Information
 	 * @param string $filename
 	 * @return mixed
 	 */
-	protected function fileExtension($filename)
+	public function fileExtension($filename)
 	{
 		$path_info = pathinfo($filename);
 		return $path_info['extension'];
@@ -21,7 +68,7 @@ class documentTrailClass {
 	 * @param string $filename
 	 * @return mixed
 	 */
-	protected function removeExtension($filename) {
+	public function removeExtension($filename) {
 		return preg_replace('/(.+)\..*$/', '$1', $filename);
 	}
 
@@ -31,7 +78,7 @@ class documentTrailClass {
 	 * @param string $path
 	 * @param string $filename
 	 */
-	protected function createTrail($leafId,$path,$filename){
+	public function createTrail($leafId,$path,$filename){
 		/**
 		 *	Define basic audit trail system...
 		 * 	@params numeric $documentCategoryId = 3
@@ -39,11 +86,11 @@ class documentTrailClass {
 		$documentCategoryId =3;
 
 
-		if($this->access('create') ==1 ) {
-			$this->q->start();
 
+		$this->q->start();
 
-			$sql = "INSERT INTO `document`
+		if($this->getVendor()==self::mysql){
+		$sql = "INSERT INTO `document`
 								(
 									`documentCategoryId`,
 									`leafId`,
@@ -68,17 +115,19 @@ class documentTrailClass {
 									'".$_SESSION['staffId']."',
 									'".date("Y-m-d H:i:s")."'
 								); ";
-			$this->q->create($sql);
-			$this->q->commit();
+		} else if ($this->getVendor()==self::mssql){
 
-			if($this->q->execute=='fail') {
-				echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-				exit();
-			}
+		} else if ($this->getVendor()==self::oracle){
 
-		} else {
+		}
+		$this->q->create($sql);
+		$this->q->commit();
+
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 		}
+
+
 	}
 }

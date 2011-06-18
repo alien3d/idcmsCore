@@ -335,7 +335,7 @@ Ext.onReady(function() {
                         method: method,
                         leafId: leafId,
                         departmentSequence : record.get('departmentSequence'),
-                        deparmentCode : record.get('departmentCode'),
+                        departmentCode : record.get('departmentCode'),
                         departmentNote: record.get('departmentNote'),
 						departmentId:record.get('departmentId'),
 						duplicateTest : true

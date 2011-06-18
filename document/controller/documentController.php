@@ -94,7 +94,7 @@ class documentClass extends  configClass {
 	 */
 	public $documentId;
 	public $model;
-	function __construct() {
+	function execute() {
 		parent :: __construct();
 
 		$this->q 					=	new vendor();

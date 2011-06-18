@@ -164,13 +164,13 @@ class vendor {
 
 		if($this->vendor=='normal')    {
 			$this->link=mysql_connect($this->connection,$this->username,$this->password);
-		}	elseif($this->vendor=='mysql') {
+		}	elseif($this->getVendor()==self::mysql) {
 			$this->link=mysqli_connect($this->connection,$this->username,$this->password,$this->databaseName,$this->port,$this->socket);
-		} elseif($this->vendor=='microsoft') {
+		} elseif($this->getVendor()==self::mssql) {
 
 			$this->link= sqlsrv_connect($this->connection,array("UID" => $this->username, "PWD" => $this->password,"Database"=>$this->databaseName,"CharacterSet" => "UTF-8"
 			));
-		} else if ($this->vendor=='oracle') {
+		} else if ($this->getVendor()==self::oracle) {
 			/**
 			 * Oracle doesn't required database is each user create have access...Kinda lame.SYSDBA also cannot access other user schema.
 			 */
@@ -184,13 +184,13 @@ class vendor {
 				$this->responce=mysql_error($this->link)."Error Code".mysql_errno($this->link);
 				echo json_encode(array("success"=>false,"message"=>$this->responce));
 				exit();
-			}	elseif($this->vendor=='mysql') {
+			}	elseif($this->getVendor()==self::mysql) {
 				if (mysqli_connect_errno()) {
 					$this->responce=mysqli_connect_errno();
 					echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->responce));
 					exit();
 				}
-			} else if ($this->vendor=='microsoft') {
+			} else if ($this->getVendor()==self::mssql) {
 				$errorArray=array();
 				$errorArray=sqlsrv_errors();
 				$error.=" CE Sql State : ".$errorArray[0]['SQLSTATE'];
@@ -200,7 +200,7 @@ class vendor {
 				echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->responce));
 				exit();
 
-			} else if($this->vendor=='oracle') {
+			} else if($this->getVendor()==self::oracle) {
 				$errorArray	=	array();
 				$errorArray	=	oci_error();
 				$error.=	"Code: " . $errorArray["code"] . "<br>";
@@ -224,7 +224,7 @@ class vendor {
 					$this->responce	=	mysql_error($this->link)."Error Code".mysql_errno($this->link);
 					echo json_encode(array("success"=>false,"message"=>$this->responce));
 					exit();
-				} elseif ($this->vendor	==	'mysql'){
+				} elseif ($this->getVendor()==self::mysql){
 					$this->responce	=	mysqli_error($this->link)."Error Code".mysqli_errno($this->link);
 					echo json_encode(array("success"=>false,"message"=>$this->responce));
 					exit();
@@ -244,7 +244,7 @@ class vendor {
 			mysql_query("SET autocommit=0",$this->link);
 		} elseif($this->vendor=="mysql") {
 			mysqli_autocommit($this->link, FALSE);
-		} elseif ($this->vendor =='microsoft') {
+		} elseif ($this->getVendor()==self::mssql) {
 			if ( sqlsrv_begin_transaction( $this->link ) === false )	{
 				$errorArray	=	array();
 				$errorArray	=	sqlsrv_errors();
@@ -255,7 +255,7 @@ class vendor {
 				echo json_encode(array("success"=>false,"message"=>'Fail To Commit Transaction : '.$this->responce));
 				exit();
 			}
-		} elseif($this->vendor=='oracle') {
+		} elseif($this->getVendor()==self::oracle) {
 			/**
 			 * oracle commit on oci_execute
 			 */
@@ -281,11 +281,11 @@ class vendor {
 		if($this->vendor=='normal') {
 
 			$this->result=mysql_query($this->sql,$this->link);
-		} elseif($this->vendor=='mysql') {
+		} elseif($this->getVendor()==self::mysql) {
 			$this->result	=mysqli_query($this->link,$this->sql);
-		} elseif($this->vendor=='microsoft') {
+		} elseif($this->getVendor()==self::mssql) {
 			$this->result 	=	sqlsrv_query($this->link,$this->sql);
-		} else if($this->vendor=='oracle') {
+		} else if($this->getVendor()==self::oracle) {
 
 			$this->result = oci_parse($this->link,$this->sql);
 			if($this->result != false) {
@@ -322,10 +322,10 @@ class vendor {
 			if($this->vendor=='normal') {
 				$this->responce=mysql_error($this->link)."Error Code : ".mysql_errno($this->link);
 				$error=1;
-			}elseif($this->vendor=='mysql') {
+			}elseif($this->getVendor()==self::mysql) {
 				$this->responce="Sql Stament Error".$this->sql." \n\r".mysqli_error($this->link)." <br> Error Code :x ". mysqli_errno($this->link);
 				$error=1;
-			} else if ($this->vendor=='microsoft') {
+			} else if ($this->getVendor()==self::mssql) {
 
 				$this->responce= " Query Error -> Sql State : ".$errorArray[0]['SQLSTATE']. " Code : ".$errorArray[0]['code']." Message : ".$errorArray[0]['message'];
 				$error =1;
@@ -355,11 +355,11 @@ class vendor {
 		//	print"<br><br><br>[]";
 			if($this->vendor=='normal') {
 				$result_row=mysql_query($sql_log,$this->link);
-			} 	elseif($this->vendor=='mysql') {
+			} 	elseif($this->getVendor()==self::mysql) {
 				$result_row=mysqli_query($this->link,$sql_log);
-			}   elseif($this->vendor=='microsoft') {
+			}   elseif($this->getVendor()==self::mssql) {
 				$result_row=sqlsrv_query($this->link,$sql_log);
-			} else if($this->vendor=='oracle') {
+			} else if($this->getVendor()==self::oracle) {
 				$result_row = oci_parse($this->link,$sql_log);
 				if($result_row != false) {
 					$test =@oci_execute($result_row); //suspress warning message.Only handle by exception
@@ -394,10 +394,10 @@ class vendor {
 					echo "error la query[".$sql_log."]";
 					$this->responce=$sql_log."<br>".mysql_error();
 
-				}	elseif($this->vendor=='mysql') {
+				}	elseif($this->getVendor()==self::mysql) {
 					echo "error la query[".$sql_log."]";
 					//		$this->responce=$sql_log."<br>".mysqli_error($this->link)."<br> Error Code :y ".mysqli_errno($this->link);
-				} else if ($this->vendor=='microsoft') {
+				} else if ($this->getVendor()==self::mssql) {
 					//		$this->responce=sqlsrv_errors();
 				}
 			}
@@ -435,7 +435,7 @@ class vendor {
 			} else {
 				$result_row=mysql_num_rows($result);
 			}
-		}elseif($this->vendor=='mysql') {
+		}elseif($this->getVendor()==self::mysql) {
 
 			$result=mysqli_query($this->link,$sql);
 			if(!$result) {
@@ -448,7 +448,7 @@ class vendor {
 				$result_row=mysqli_num_rows($result);
 			}
 
-		} else if($this->vendor=='microsoft') {
+		} else if($this->getVendor()==self::mssql) {
 			$result=sqlsrv_query($this->link,$sql ,array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET));
 			if(!$result) {
 				$this->execute='false';
@@ -470,7 +470,7 @@ class vendor {
 					$result_row=$row_count;
 				}
 			}
-		} else if($this->vendor=='oracle') {
+		} else if($this->getVendor()==self::oracle) {
 			$result = @oci_parse($this->link,$sql);
 			if($result != false) {
 				$test =@oci_execute($result); //suspress warning message.Only handle by exception
@@ -547,7 +547,7 @@ class vendor {
 
 				mysql_query($sql_log,$this->link);
 
-			}	elseif($this->vendor=='mysql') {
+			}	elseif($this->getVendor()==self::mysql) {
 
 
 				$test1=mysqli_query($this->link,$sql_log);
@@ -556,7 +556,7 @@ class vendor {
 					$this->responce=$sql_log."[".mysqli_error($this->link)."]";
 				}
 			}
-		} else if ($this->vendor=='microsoft') {
+		} else if ($this->getVendor()==self::mssql) {
 			sqlsrv_query($this->link,$sql_log);
 			$errorArray	=	array();
 			$errorArray	=	sqlsrv_errors();
@@ -564,7 +564,7 @@ class vendor {
 			$error.=	" Code : ".$errorArray[0]['code'];
 			$error.=	" Message : ".$errorArray[0]['message'];
 			$this->responce	=	$error;
-		} else  if ($this->vendor=='oracle') {
+		} else  if ($this->getVendor()==self::oracle) {
 			$result = oci_parse($this->link,$sql_log);
 			if($result != false) {
 				$test =@oci_execute($result); //suspress warning message.Only handle by exception
@@ -624,7 +624,7 @@ class vendor {
 				$sqlColumn 	= "SHOW COLUMNS FROM `".$this->tableName."`";
 				if($this->vendor=='normal'){
 					$resultColumn 	= mysql_query($sqlColumn,$this->link);
-				} else if ($this->vendor=='mysql'){
+				} else if ($this->getVendor()==self::mysql){
 					$resultColumn = mysqli_query($this->link,$sqlColumn);
 				}
 				if(!$resultColumn){
@@ -641,7 +641,7 @@ class vendor {
 							// create the field value
 							$fieldValue[]=  $rowColumn['Field'];
 						}
-					} else if ($this->vendor=='mysql'){
+					} else if ($this->getVendor()==self::mysql){
 						while ( $rowColumn  = mysqli_fetch_array($resultColumn))  {
 							// create the field value
 							$fieldValue[]=  $rowColumn['Field'];
@@ -652,7 +652,7 @@ class vendor {
 				$sqlPrevious =" SELECT * FROM `".$this->tableName."` WHERE `".$this->primaryKeyName."` = '".$this->primaryKeyValue."'";
 				if($this->vendor=='normal'){
 					$resultPrevious = mysql_query($sqlPrevious);
-				}else if ($this->vendor=='mysql'){
+				}else if ($this->getVendor()==self::mysql){
 					$resultPrevious= mysqli_query($this->link,$sqlPrevious);
 				}
 				if(!$resultPrevious){
@@ -670,7 +670,7 @@ class vendor {
 								$previous[$field]=$rowPrevious[$field];
 							}
 						}
-					} else if ($this->vendor=='mysql'){
+					} else if ($this->getVendor()==self::mysql){
 
 						while ( $rowPrevious = mysqli_fetch_array($resultPrevious)) {
 
@@ -701,7 +701,7 @@ class vendor {
 				// here should create a backup file to restore back sql statement
 				if($this->vendor=='normal') {
 					$result=mysql_query($sqlLogAdvance,$this->link);
-				}	elseif($this->vendor=='mysql') {
+				}	elseif($this->getVendor()==self::mysql) {
 					$result=mysqli_query($this->link,$sqlLogAdvance);
 				}
 				/**
@@ -710,7 +710,7 @@ class vendor {
 				if($this->vendor=='normal') {
 
 					$result=mysql_query($sql,$this->link);
-				}	elseif($this->vendor=='mysql') {
+				}	elseif($this->getVendor()==self::mysql) {
 					$result=mysqli_query($this->link,$sql);
 
 				}
@@ -719,7 +719,7 @@ class vendor {
 					$this->execute=='fail';
 					if($this->vendor=='normal') {
 						$this->responce=mysql_error()." Error Code".mysql_errno();
-					} elseif($this->vendor=='mysql') {
+					} elseif($this->getVendor()==self::mysql) {
 						// check back relationship database.cascading update,delete not done by now.dangerous
 						$this->responce= mysqli_error($this->link)."Error code".mysqli_errno($this->link);
 						$this->rollback();
@@ -785,7 +785,7 @@ class vendor {
 							$this->execute='fail';
 							$this->responce="Error selecting table";
 						}
-					} else if($this->vendor=='mysql'){
+					} else if($this->getVendor()==self::mysql){
 						$resultColumn = mysqli_query($this->link,$sqlColumn);
 						if(!$resultColumn){
 							$this->execute='fail';
@@ -805,7 +805,7 @@ class vendor {
 
 							}
 						}
-					} elseif ($this->vendor=='mysql'){
+					} elseif ($this->getVendor()==self::mysql){
 
 						if(!$resultColumn){
 							$this->execute='fail';
@@ -840,7 +840,7 @@ class vendor {
 								}
 							}
 						}
-					}else if($this->vendor=='mysql') {
+					}else if($this->getVendor()==self::mysql) {
 
 						$resultPrevious = mysqli_query($this->link,$sqlPrevious);
 						if(!$resultPrevious){
@@ -882,7 +882,7 @@ class vendor {
 							$this->execute='fail';
 							$this->responce="Error inserting Query Advance insert";
 						}
-					}else if($this->vendor=='mysql') {
+					}else if($this->getVendor()==self::mysql) {
 						$resultLogAdvance 	=	 mysqli_query($this->link,$sqlLogAdvance);
 						if($resultLogAdvance){
 
@@ -914,7 +914,7 @@ class vendor {
 							$this->execute='fail';
 							$this->responce="Error Query on advance select";
 						}
-					} else if($this->vendor=='mysql'){
+					} else if($this->getVendor()==self::mysql){
 						$resultCurrent  = mysqli_query($this->link,$sqlCurrent);
 						if($resultCurrent){
 							while	($rowCurrent = mysqli_fetch_array($resultCurrent)) {
@@ -939,7 +939,7 @@ class vendor {
 							$this->responce="Error Query update log advance";
 						}
 
-					} else if($this->vendor=='mysql'){
+					} else if($this->getVendor()==self::mysql){
 						$result= mysqli_query($this->link,$sql);
 						if(!$result){
 							$this->execute='fail';
@@ -1007,11 +1007,11 @@ class vendor {
 		if(strlen($sql)> 0 ) {
 			if($this->vendor=='normal') {
 				$result = mysql_query($this->sql,$this->link);
-			}else if($this->vendor=='mysql') {
+			}else if($this->getVendor()==self::mysql) {
 				$result = mysqli_query($this->link,$this->sql);
-			} else if ($this->vendor=='microsoft') {
+			} else if ($this->getVendor()==self::mssql) {
 				$result = sqlsrv_query($this->link,$this->sql);
-			} else if($this->vendor=='oracle') {
+			} else if($this->getVendor()==self::oracle) {
 				$result = oci_parse($this->link,$this->sql);
 				oci_execute($result);
 			}
@@ -1040,13 +1040,13 @@ class vendor {
 				$result = mysql_query($this->sql,$this->link);
 
 			}
-			else if($this->vendor=='mysql') {
+			else if($this->getVendor()==self::mysql) {
 				$result = mysqli_query($this->link,$this->sql);
 
-			} else if ($this->vendor=='microsoft') {
+			} else if ($this->getVendor()==self::mssql) {
 				$result = sqlsrv_query($this->link,$this->sql,array(), array( "Scrollable" =>SQLSRV_CURSOR_KEYSET));
 
-			} else if($this->vendor=='oracle') {
+			} else if($this->getVendor()==self::oracle) {
 				$result = oci_parse($this->link,$this->sql);
 				if($result != false) {
 					$test =oci_execute($result); //suspress warning message.Only handle by exception
@@ -1095,9 +1095,9 @@ class vendor {
 		if($result) {
 			if($this->vendor=='normal') {
 				$this->countRecord = mysql_num_rows($result);
-			} else if ($this->vendor=='mysql') {
+			} else if ($this->getVendor()==self::mysql) {
 				$this->countRecord = mysqli_num_rows($result);
-			} else if ($this->vendor=='microsoft') {
+			} else if ($this->getVendor()==self::mssql) {
 
 				$row_count = sqlsrv_num_rows( $result );
 				if ($row_count === false)	{
@@ -1105,7 +1105,7 @@ class vendor {
 				}else if ($row_count >=0)	{
 					$this->countRecord=$row_count;
 				}
-			}	else if ($this->vendor=='oracle') {
+			}	else if ($this->getVendor()==self::oracle) {
 				/**
 				 * oracle have limitation on this query have to query twice
 				 */
@@ -1149,10 +1149,10 @@ class vendor {
 		}  else{
 			if($this->vendor=='normal') {
 				$this->countRecord = mysql_num_rows($this->result);
-			} else if ($this->vendor=='mysql') {
+			} else if ($this->getVendor()==self::mysql) {
 
 				$this->countRecord = mysqli_num_rows($this->result);
-			} else if ($this->vendor=='microsoft') {
+			} else if ($this->getVendor()==self::mssql) {
 				$result	=	sqlsrv_query($this->link,$this->sql ,array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET));
 				$row_count = sqlsrv_num_rows( $result );
 				if ($row_count === false)	{
@@ -1160,7 +1160,7 @@ class vendor {
 				}else if ($row_count >=0)	{
 					$this->countRecord=$row_count;
 				}
-			}	else if ($this->vendor=='oracle') {
+			}	else if ($this->getVendor()==self::oracle) {
 				/**
 				 * oracle have limitation on this query have to query twice
 				 */
@@ -1213,14 +1213,14 @@ class vendor {
 		// must include this before q->commit; after commit will no output
 		if($this->vendor =='normal') {
 			$this->insert_id	= mysql_insert_id();
-		} else  if ($this->vendor=='mysql') {
+		} else  if ($this->getVendor()==self::mysql) {
 			$this->insert_id 	= mysqli_insert_id($this->link);
 
-		} else if ($this->vendor=='microsoft') {
+		} else if ($this->getVendor()==self::mssql) {
 			$resultId = sqlsrv_query("SELECT LAST_INSERT_ID=@@IDENTITY");
 			$rowId = sqlsrv_fetch_array($resultId,SQLSRV_FETCH_ASSOC);
 			$this->insert_id =$rowId['LAST_INSERT_ID'];
-		}else if ($this->vendor=='oracle') {
+		}else if ($this->getVendor()==self::oracle) {
 			$resultId = oci_parse($this->link,"SELECT '".$sequence.".CURRVAL FROM DUAL");
 			oci_execute($resultId);
 			/**
@@ -1239,7 +1239,7 @@ class vendor {
 	public function affectedRows(){
 		if($this->vendor =='normal') {
 			return mysql_affected_rows();
-		} else if($this->vendor=='mysql'){
+		} else if($this->getVendor()==self::mysql){
 
 			return mysqli_affected_rows($this->link);
 
@@ -1254,11 +1254,11 @@ class vendor {
 		// this is begun statement
 		if($this->vendor=='normal')  {
 			mysql_query("SET autocommit=1",$this->link);
-		} else  if ($this->vendor=='mysql'){
+		} else  if ($this->getVendor()==self::mysql){
 			mysqli_commit($this->link);
-		} else if ($this->vendor=='microsoft') {
+		} else if ($this->getVendor()==self::mssql) {
 			sqlsrv_commit($this->link);
-		} else if ($this->vendor=='oracle') {
+		} else if ($this->getVendor()==self::oracle) {
 			oci_commit($this->link);
 		}
 	}
@@ -1270,10 +1270,10 @@ class vendor {
 		if($this->vendor=='normal')  {
 			mysql_query("ROLLBACK", $this->link);
 			$this->execute='fail';
-		} else if($this->vendor=='mysql') {
+		} else if($this->getVendor()==self::mysql) {
 			mysqli_rollback($this->link);
 			$this->execute='fail';
-		} else if ($this->vendor=='microsoft') {
+		} else if ($this->getVendor()==self::mssql) {
 			sqlsrv_rollback($this->link);
 			$this->execute='fail';
 		}else if ($this->vendor='oracle') {
@@ -1290,13 +1290,13 @@ class vendor {
 		if($this->vendor =='normal') {
 			if($this->result)	{  return mysql_fetch_array($this->result); }
 			if($result) 		   	{  return mysql_fetch_array($result); }
-		} elseif ($this->vendor=='mysql') {
+		} elseif ($this->getVendor()==self::mysql) {
 			if($this->result)	{  return @mysqli_fetch_array($this->result); }
 			if($result) 		   	{  return @mysqli_fetch_array($result); }
-		} elseif($this->vendor=='microsoft') {
+		} elseif($this->getVendor()==self::mssql) {
 			if($this->result)	{  return @sqlsrv_fetch_array($this->result,SQLSRV_FETCH_BOTH); }
 			if($result) 			{	return @sqlsrv_fetch_array($result,SQLSRV_FETCH_BOTH); }
-		}elseif($this->vendor=='oracle') {
+		}elseif($this->getVendor()==self::oracle) {
 			if($this->result)	{  return oci_fetch_array($this->result,OCI_BOTH); }
 			if($result) 			{	return oci_fetch_array($result,OCI_BOTH); }
 		}
@@ -1322,7 +1322,7 @@ class vendor {
 					$d[]=$row;
 				}
 			}
-		}elseif ($this->vendor=='mysql') {
+		}elseif ($this->getVendor()==self::mysql) {
 			if($result) {
 				while($row=mysqli_fetch_assoc($result)){
 					$d[]=$row;
@@ -1333,7 +1333,7 @@ class vendor {
 				}
 			}
 			return $d;
-		}elseif ($this->vendor=='microsoft') {
+		}elseif ($this->getVendor()==self::mssql) {
 			if($result) {
 				while($row=sqlsrv_fetch_array($result,SQLSRV_FETCH_ASSOC)){
 					$d[]=$row;
@@ -1344,7 +1344,7 @@ class vendor {
 				}
 			}
 
-		} elseif($this->vendor=='oracle') {
+		} elseif($this->getVendor()==self::oracle) {
 			if($result) {
 				while($row=oci_fetch_array($result,OCI_ASSOC)){
 					$d[]=$row;
@@ -1368,7 +1368,7 @@ class vendor {
 		if($this->vendor =='normal') {
 			if($this->result && is_null($result)) { return mysql_fetch_assoc($this->result);  }
 			if($result) { return mysql_fetch_assoc($result); }
-		} elseif ($this->vendor=='mysql') {
+		} elseif ($this->getVendor()==self::mysql) {
 			if($this->result && is_null($result)) {
 				
 				 return mysqli_fetch_assoc($this->result); }
@@ -1377,11 +1377,11 @@ class vendor {
 				 return mysqli_fetch_assoc($result); }
 
 		}
-		elseif ($this->vendor=='microsoft') {
+		elseif ($this->getVendor()==self::mssql) {
 			if($this->result && is_null($result)) { return sqlsrv_fetch_array($this->result,SQLSRV_FETCH_ASSOC); }
 			if($result) { return sqlsrv_fetch_array($result,SQLSRV_FETCH_ASSOC); }
 
-		} elseif($this->vendor=='oracle') {
+		} elseif($this->getVendor()==self::oracle) {
 			if($this->result && is_null($result)) { return oci_fetch_assoc($this->result); }
 			if($result) {  return oci_fetch_assoc($result); }
 		}
@@ -1396,13 +1396,13 @@ class vendor {
 		if($this->vendor=='normal') {
 			if($this->result) { mysql_free_result($this->result);  }
 			if($result) { mysql_free_result($result);  }
-		} elseif($this->vendor=='mysql') {
+		} elseif($this->getVendor()==self::mysql) {
 			if($this->result) {  mysqli_free_result($this->result); }
 			if($result) {  mysqli_free_result($result); }
-		} elseif($this->vendor=='microsoft'){
+		} elseif($this->getVendor()==self::mssql){
 			if($this->result) { sqlsrv_free_stmt($this->result); }
 			if($result) { sqlsrv_free_stmt($result); }
-		} elseif($this->vendor=='oracle') {
+		} elseif($this->getVendor()==self::oracle) {
 			/*	if($this->result) { sqlsrv_free_stmt($this->result); }
 			 if($result) { sqlsrv_free_stmt($result); }
 			 */
@@ -1415,11 +1415,11 @@ class vendor {
 		// close mysql connections
 		if($this->vendor=='normal')  {
 			$result=mysql_close($this->link);
-		} elseif($this->vendor=='mysql') {
+		} elseif($this->getVendor()==self::mysql) {
 			$result=mysqli_close($this->link);
-		} elseif($this->vendor=='microsoft'){
+		} elseif($this->getVendor()==self::mssql){
 			$result = sqlsrv_close($this->link);
-		} elseif($this->vendor=='oracle') {
+		} elseif($this->getVendor()==self::oracle) {
 			$result= oci_close($this->link);
 		}
 		//reSETing null too free up resouces
@@ -1512,16 +1512,16 @@ class vendor {
 		if($this->vendor=='normal'){
 			return mysql_escape_string($data);
 		}
-		if($this->vendor=='mysql'){
+		if($this->getVendor()==self::mysql){
 
 			return mysqli_real_escape_string($this->link,$data);
 		}
-		if($this->vendor=='microsoft') {
+		if($this->getVendor()==self::mssql) {
 			$singQuotePattern = "'";
 			$singQuoteReplace = "''";
 			return(stripslashes(eregi_replace($singQuotePattern, $singQuoteReplace, $data)));
 		}
-		if($this->vendor=='oracle'){
+		if($this->getVendor()==self::oracle){
 
 			return str_replace("\"", "\\\"", $data);
 		}
@@ -1541,15 +1541,15 @@ class vendor {
 		$strSearch = "AND ( ";
 
 		foreach ($tableArray as $tableSearch){
-			if($this->vendor=='normal' || $this->vendor=='mysql') {
+			if($this->vendor=='normal' || $this->getVendor()==self::mysql) {
 				$sql="DESCRIBE	`".$tableSearch."`";
-			} else if ($this->vendor=='microsoft') {
+			} else if ($this->getVendor()==self::mssql) {
 				$sql="
 				select *
   				from information_schema.columns
  				where table_name = ".$tableSearch."
  				order by ordinal_position";
-			} else if ($this->vendor=='oracle') {
+			} else if ($this->getVendor()==self::oracle) {
 				$sql="DESCRIBE	\"".$tableSearch."\"";
 			}
 			$this->query_view($sql);
@@ -1557,11 +1557,11 @@ class vendor {
 
 				while($row = $this->fetch_array()) {
 
-					if($this->vendor=='normal' || $this->vendor=='mysql') {
+					if($this->vendor=='normal' || $this->getVendor()==self::mysql) {
 						$strField 	= "`".$tableSearch."`.`".$row['Field']."`";
-					} else if ($this->vendor=='microsoft') {
+					} else if ($this->getVendor()==self::mssql) {
 						$strField 	= "[".$tableSearch."].[".$row['COLUMN_NAME']."]";
-					} else if ($this->vendor=='oracle') {
+					} else if ($this->getVendor()==self::oracle) {
 						$strField 	= "\"".$tableSearch."\".\"".$row['Name']."\"";
 					}
 					$key = array_search($strField,$filterArray,true);

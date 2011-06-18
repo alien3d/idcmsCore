@@ -345,7 +345,7 @@ class tabClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 
 		if($this->isAdmin == 0) {
-			if($this->q->vendor == self :: mysql) {
+			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	`tab`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[tab].[isActive]		=	1	";
@@ -353,7 +353,7 @@ class tabClass extends configClass
 				$this->auditFilter = "	\"tab\".\"isActive\"	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
-			if($this->q->vendor == self :: mysql) {
+			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	or 1 ";

@@ -112,7 +112,7 @@ abstract class configClass
 	 * Path Of the application
 	 * @var string $application
 	 */
-	public $application;
+	private $application;
 	/**
 	 * Mysql Database
 	 * @var const string
@@ -149,7 +149,7 @@ abstract class configClass
 		//$this->username ='JOKERS'; // testing for oracle
 		$this->password        = '123456';
 		//	$this->password="pa\$\$word4sph";
-		$this->application     = 'idcmsCore';
+		$this->setApplication('idcmsCore');
 		// define method
 	}
 	/**
@@ -320,7 +320,12 @@ abstract class configClass
 			}
 		}
 	}
-
+	function setApplication($value){
+		$this->application = $value;
+	}
+	function getApplication(){
+		return $this->application;
+	}
 	function setStaffId($value){
 		$this->staffId = $value;
 	}

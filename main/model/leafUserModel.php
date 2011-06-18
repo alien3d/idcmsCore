@@ -61,11 +61,11 @@ class leafUserModel extends validationClass
         if (isset($_SESSION['staffId'])) {
             $this->By = $_SESSION['staffId'];
         }
-        if ($this->vendor == 'normal' || $this->vendor == 'mysql') {
+        if ($this->vendor == 'normal' || $this->getVendor()==self::mysql) {
             $this->Time = "\"". date("Y-m-d H:i:s") . "\"";
-        } else if ($this->vendor == 'microsoft') {
+        } else if ($this->getVendor()==self::mssql) {
             $this->Time = "\"". date("Y-m-d H:i:s") . "\"";
-        } else if ($this->vendor == 'oracle') {
+        } else if ($this->getVendor()==self::oracle) {
             $this->Time = "to_date(\"". date("Y-m-d H:i:s") . "\",'YYYY-MM-DD HH24:MI:SS')";
         }
     }

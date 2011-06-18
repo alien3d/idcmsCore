@@ -378,7 +378,7 @@ class vendor
 							$this->execute     = 'fail';
 							$this->responce = "Error selecting table";
 						}
-					} else if ($this->vendor == 'mysql') {
+					} else if ($this->getVendor()==self::mysql) {
 						$resultColumn = mysqli_query($this->link, $sqlColumn);
 						if (!$resultColumn) {
 							$this->execute     = 'fail';
@@ -396,7 +396,7 @@ class vendor
 								$fieldValue[] = $rowColumn['Field'];
 							}
 						}
-					} elseif ($this->vendor == 'mysql') {
+					} elseif ($this->getVendor()==self::mysql) {
 						if (!$resultColumn) {
 							$this->execute     = 'fail';
 							$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($$this->link);
@@ -425,7 +425,7 @@ class vendor
 								}
 							}
 						}
-					} else if ($this->vendor == 'mysql') {
+					} else if ($this->getVendor()==self::mysql) {
 						$resultPrevious = mysqli_query($this->link, $sqlPrevious);
 						if (!$resultPrevious) {
 							$this->execute     = 'fail';
@@ -463,7 +463,7 @@ class vendor
 							$this->execute     = 'fail';
 							$this->responce = "Error inserting Query Advance insert";
 						}
-					} else if ($this->vendor == 'mysql') {
+					} else if ($this->getVendor()==self::mysql) {
 						$resultLogAdvance = mysqli_query($this->link, $sqlLogAdvance);
 						if ($resultLogAdvance) {
 							// take the last id for references
@@ -492,7 +492,7 @@ class vendor
 							$this->execute     = 'fail';
 							$this->responce = "Error Query on advance select";
 						}
-					} else if ($this->vendor == 'mysql') {
+					} else if ($this->getVendor()==self::mysql) {
 						$resultCurrent = mysqli_query($this->link, $sqlCurrent);
 						if ($resultCurrent) {
 							while ($rowCurrent = mysqli_fetch_array($resultCurrent)) {
@@ -516,7 +516,7 @@ class vendor
 							$this->execute     = 'fail';
 							$this->responce = "Error Query update log advance";
 						}
-					} else if ($this->vendor == 'mysql') {
+					} else if ($this->getVendor()==self::mysql) {
 						$result = mysqli_query($this->link, $sql);
 						if (!$result) {
 							$this->execute     = 'fail';
@@ -845,11 +845,11 @@ class vendor
 			$this->query_view($sql);
 			if ($this->num_rows() > 0) {
 				while ($row = $this->fetch_array()) {
-					if ($this->vendor == 'normal' || $this->vendor == 'mysql') {
+					if ($this->vendor == 'normal' || $this->getVendor()==self::mysql) {
 						$strField = "`" . $tableSearch . "`.`" . $row['Field'] . "`";
-					} else if ($this->vendor == 'microsoft') {
+					} else if ($this->getVendor()==self::mssql) {
 						$strField = "[" . $tableSearch . "].[" . $row['COLUMN_NAME'] . "]";
-					} else if ($this->vendor == 'oracle') {
+					} else if ($this->getVendor()==self::oracle) {
 						$strField = "\"" . $tableSearch . "\".\"" . $row['Name'] . "\"";
 					}
 					$key = array_search($strField, $filterArray, true);

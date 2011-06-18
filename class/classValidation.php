@@ -22,6 +22,21 @@ abstract class validationClass {
 	private $isApproved;
 	private $By;
 	private $Time;
+	/*
+	 * Mysql Database
+	 * @var const string
+	 */
+	const mysql ='mysql';
+	/**
+	 * Microsoft Sql Server Database
+	 * @var const string
+	 */
+	const mssql ='microsoft';
+	/**
+	 * Oracle Database
+	 * @var const string
+	 */
+	const oracle = 'oracle';
 
 	/**
 	 *  Class Loader
@@ -352,6 +367,7 @@ abstract class validationClass {
 	 *  @return date Time Activity User
 	 */
 	public function getTime() {
+
 		return $this->Time;
 	}
 

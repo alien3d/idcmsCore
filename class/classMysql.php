@@ -379,10 +379,12 @@ class vendor
 					if (!$resultLogAdvance) {
 						$this->execute     = 'fail';
 						$this->responce = "error inserting query update insert";
+
 					}
 				}
 			} else {
-				echo "no access insert ";
+				$this->execute ='fail';
+				$this->responce ="No access ";
 			}
 		} else {
 			$this->execute     = 'fail';
