@@ -992,13 +992,10 @@ class leafClass extends  configClass {
 
 $leafObject 		= 	new leafClass();
 if(isset($_SESSION['staffId'])){
-	$leafObject->setStaffId($_SESSION['staffId']);
+	$leafObject->staffId = $_SESSION['staffId'];
 }
 if(isset($_SESSION['vendor'])){
-	$leafObject->setVendor($_SESSION['vendor']);
-}
-if(isset($_SESSION['languageId'])){
-	$leafObject->setLanguageId($_SESSION['languageId']);
+	$leafObject-> vendor = $_SESSION['vendor'];
 }
 /**
  *	crud -create,read,update,delete
@@ -1007,38 +1004,43 @@ if(isset($_POST['method']))	{
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+
+	if(isset($_POST['leafId_temp'])){
+		$leafObject->leafId_temp = $_POST['leafId_temp'];
+	}
 	/*
 	 *  Leaf / Application Indentification
 	 */
-	if(isset($_POST['leafId_temp'])){
-		$leafObject->setLeafId($_POST['leafId_temp']);
+	if(isset($_POST['leafId'])) {
+		$leafObject-> leafId = $_POST['leafId'];
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$leafObject->setIsAdmin($_POST['isAdmin']);
+		$leafObject->isAdmin = $_POST['isAdmin'];
 	}
 	/*
 	 *  Filtering
 	 */
-
-	if(isset($_POST['query'])){
-		$leafObject->setFieldQuery($_POST['query']);
-	}
 	if(isset($_POST['filter'])){
-		$leafObject->setGridQuery($_POST['filter']);
+		$leafObject->filter = $_POST['filter'];
+	}
+	if(isset($_POST['query'])){
+		$leafObject->query = $_POST['query'];
 	}
 	/*
 	 *  Ordering
 	 */
 	if(isset($_POST['order'])){
-		$leafObject->setOrder($_POST['order']);
+		$leafObject-> order= $_POST['order'];
 	}
 	if(isset($_POST['sortField'])){
-		$leafObject->setSortField($_POST['sortField']);
+		$leafObject-> sortField= $_POST['sortField'];
 	}
-
+	if(isset($_POST['leafTranslateId'])){
+		$leafObject->leafTranslateId= $_POST['leafTranslateId'];
+	}
 	/*
 	 * Translation
 	 */
@@ -1098,17 +1100,17 @@ if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-	/*
-	 *  Leaf /Application
-	 */
 	if(isset($_GET['leafId_temp'])){
-		$leafObject->setLeafId($_GET['leafId_temp']);
+		$leafObject->leafId_temp  = $_GET['leafId_temp'];
+	}
+	if(isset($_GET['leafId'])){
+		$leafObject->leafId  = $_GET['leafId'];
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])) {
-		$leafObject->setIsAdmin($_GET['isAdmin']);
+		$leafObject->isAdmin = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value
@@ -1117,7 +1119,7 @@ if(isset($_GET['method'])) {
 
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
-			$leafObject->staff();
+			$leafObject->staffId();
 		}
 		if($_GET['field']=='accordionId'){
 			$leafObject->accordion();

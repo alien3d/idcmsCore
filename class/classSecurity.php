@@ -118,9 +118,9 @@ class security extends configClass {
 
 		$this->q 					=	new vendor();
 
-		$this->q->vendor			=	$this->vendor;
+		$this->q->vendor			=	$this->getVendor();
 
-		$this->q->leafId			=	$this->leafId;
+		$this->q->leafId			=	$this->getLeafId();
 
 		$this->q->staffId			=	$this->staffId;
 
@@ -204,6 +204,14 @@ class security extends configClass {
 			while($row  = 	$this->q->fetchAssoc($result)) {
 				$items[] =$row;
 			}
+		} else {
+			echo json_encode(array(
+										'success'	=>false,
+										'totalCount' => $total,
+										'group' => $items,
+										'message' =>'Empty Record'
+										));
+										exit();
 		}
 		echo json_encode(array('totalCount' => $total,
 		'group' => $items
@@ -250,18 +258,37 @@ class security extends configClass {
 		}
 
 		$result =$this->q->fast($sql);
+		if($result){
+			$total=0;
+			$total	= $this->q->numberRows($result);
+			$items =array();
+			if($total > 0 ) {
+				while($row  = 	$this->q->fetchAssoc($result)) {
+					$items[] =$row;
+				}
+			} else {
 
-		$total	= $this->q->numberRows($result);
-		$items =array();
-		if($total > 0 ) {
-			while($row  = 	$this->q->fetchAssoc($result)) {
-				$items[] =$row;
+				echo json_encode(array(
+										'success'	=>false,
+										'totalCount' => 0,
+
+										'message' =>'Empty Record'
+										));
+										exit();
+
 			}
-		}
-		echo json_encode(array('totalCount' => $total,
+			echo json_encode(array('totalCount' => $total,
 		'department' => $items
-		));
-		exit();
+			));
+			exit();
+		} else{
+				echo json_encode(array(
+										'success'	=>false,
+										'totalCount' => 0,
+										'message'=>'error sql do'
+										));
+										exit();
+		}
 	}
 
 	/**
@@ -361,7 +388,7 @@ class security extends configClass {
 		}
 		echo json_encode(
 		array(
-											'success'	=>"true",
+											'success'	=>true,
 											'totalCount' => $total,
        								    	'tab' => $items
 		));
@@ -474,7 +501,9 @@ class security extends configClass {
 			}
 		}
 
-		echo json_encode(array('totalCount' => $total,
+		echo json_encode(array(
+		'success'=>true,
+		'totalCount' => $total,
 			'folder' => $items
 		));
 		exit();

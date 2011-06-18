@@ -14,7 +14,7 @@ require_once("../model/folderModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class folderClass extends  configClass {
-	/*
+			/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
@@ -106,14 +106,13 @@ class folderClass extends  configClass {
 		$this->defaultLanguageId  	= 21;
 
 		$this->security 	= 	new security();
-		$this->security->setVendor($this->getVendor());
-		$this->security->setLeafId($this->getLeafId());
+		$this->security->vendor = $this->getVendor();
+		$this->security->leafId = $this->getLeafId();
 		$this->security->execute();
 
 		$this->model = new folderModel();
 		$this->model->vendor = $this->getVendor();
 		$this->model->execute();
-
 		$this->documentTrail = new documentTrailClass();
 
 
@@ -1017,33 +1016,34 @@ if(isset($_POST['method']))	{
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_POST['leafId'])){
-		$folderObject->setLeafId($_POST['leafId']);
+		$folderObject->leafId = $_POST['leafId'];
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$folderObject->setIsAdmin($_POST['isAdmin']);
+		$folderObject->isAdmin = $_POST['isAdmin'];
 	}
-
+	if(isset($_POST['folderId'])) {
+		$folderObject->folderId = $_POST['folderId'];
+	}
 	/*
 	 *  Filtering
 	 */
-
-	if(isset($_POST['query'])){
-		$folderObject->setFieldQuery($_POST['query']);
-	}
 	if(isset($_POST['filter'])){
-		$folderObject->setGridQuery($_POST['filter']);
+		$folderObject->filter = $_POST['filter'];
+	}
+	if(isset($_POST['query'])){
+		$folderObject->quickFilter = $_POST['query'];
 	}
 	/*
 	 * Ordering
 	 */
 	if(isset($_POST['order'])){
-		$folderObject->setOrder($_POST['order']);
+		$folderObject->order= $_POST['order'];
 	}
 	if(isset($_POST['sortField'])){
-		$folderObject->setSortField($_POST['sortField']);
+		$folderObject-> sortField= $_POST['sortField'];
 	}
 	/*
 	 *  Translation
@@ -1058,7 +1058,7 @@ if(isset($_POST['method']))	{
 	 *  Load the dynamic value
 	 */
 	$folderObject->execute();
-	/*
+		/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if($_POST['method']=='create')	{
@@ -1099,13 +1099,13 @@ if(isset($_GET['method'])) {
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
-		$folderObject->setLeafId($_GET['leafId']);
+		$folderObject->leafId  = $_GET['leafId'];
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])){
-		$folderObject->setIsAdmin($_GET['isAdmin']);
+		$folderObject->isAdmin = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value

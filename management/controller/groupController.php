@@ -1171,7 +1171,7 @@ if(isset($_GET['method'])) {
 	$groupObject->execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
-			$staffObject->staff();
+			$groupObject->staff();
 		}
 	}
 	/*

@@ -593,9 +593,13 @@ class vendor
 	public function numberRows($result = null, $sql = null)
 	{
 		if ($result) {
-			$this->countRecord = mysqli_num_rows($result);
+			if(mysqli_num_rows($result)) {
+				$this->countRecord = mysqli_num_rows($result);
+			}
 		} else {
-			$this->countRecord = mysqli_num_rows($this->result);
+			if(mysqli_num_rows($this->result)){
+				$this->countRecord = mysqli_num_rows($this->result);
+			}
 		}
 		return ($this->countRecord);
 	}

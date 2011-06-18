@@ -67,15 +67,15 @@ class staffClass extends  configClass {
 
 		$this->q 					=	new vendor();
 
-		$this->q->vendor			=	$this->vendor;
+		$this->q->vendor			=	$this->getVendor();
 
-		$this->q->leafId			=	$this->leafId;
+		$this->q->leafId			=	$this->getLeafId();
 
-		$this->q->staffId			=	$this->staffSessionId;
+		$this->q->staffId			=	$this->getStaffId();
 
-		$this->q->filter 			= 	$this->filter;
+		$this->q->fieldQuery 			= 	$this->getFieldQuery();
 
-		$this->q->quickFilter		=	$this->quickFilter;
+		$this->q->gridQuery		=	$this->getGridQuery();
 
 		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
 
@@ -91,8 +91,9 @@ class staffClass extends  configClass {
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
 		$this->documentTrail = new documentTrailClass();
+
 		$this->security = new security();
-		$this->security->vendor = $this->vendor;
+		$this->security->setVendor($this->getVendor());
 		$this->security->setLanguageId($this->getLanguageId());
 		$this->security->execute();
 
@@ -970,7 +971,6 @@ class staffClass extends  configClass {
 
 			foreach($data as  $rowLeafGroupAccess) {
 
-
 				// check if exist record or not
 				if( $this->q->vendor==self::mysql) {
 					$sql="
@@ -1565,24 +1565,6 @@ class staffClass extends  configClass {
 
 		}
 	}
-	function setStaffId($value){
-		$this->staffId = $value;
-	}
-	function getStaffId($value){
-		return $this->staffId;
-	}
-	function setVendor($value){
-		$this->vendor = $value;
-	}
-	function getVendor($value){
-		return $this->vendor;
-	}
-	function setLanguageId($value) {
-		$this->languageId= $value;
-	}
-	function getLanguageId(){
-		return $this->languageId;
-	}
 
 }
 
@@ -1667,7 +1649,7 @@ if(isset($_GET['method'])) {
 	 *  Leaf / Application Indentification
 	 */
 	if(isset($_GET['leafId'])){
-		$staffObject->setlLeafId($_GET['leafId']);
+		$staffObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
