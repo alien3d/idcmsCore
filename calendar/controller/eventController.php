@@ -85,8 +85,8 @@ class eventClass extends configClass
         header('Content-type: application/json');
         $this->model->create();
         $this->q->start();
-        if ($this->q->vendor == self::mysql || $this->q->vendor == 'normal') {
-        } else if ($this->q->vendor == self::mssql)
+        if ($this->getVendor() == self::mysql || $this->q->vendor == 'normal') {
+        } else if ($this->getVendor() ==  self::mssql)
             $sql = "
 					INSERT INTO `event`
 							(
@@ -168,7 +168,7 @@ class eventClass extends configClass
 							`eventLocation`	=	'" . $this->strict($_POST['loc'], 's') . "',
 							`eventN`	=	'" . $this->strict($_POST['n'], 'c') . "'
 					WHERE 	`eventId`		=	'" . $this->strict($_POST['eventId'], 'n') . "'";
-     if($this->q->vendor == self::mysql){
+     if($this->getVendor() == self::mysql){
         $sql = "
 			UPDATE	`event`
 			SET
@@ -212,7 +212,7 @@ class eventClass extends configClass
         header('Content-type: application/json');
         $this->model->delete();
         $this->q->start();
-        if($this->q->vendor == self::mysql){
+        if($this->getVendor() == self::mysql){
         $sql = "
 			UPDATE	`event`
 			SET		`isDefault`		=	'".$this->model->getIsDefault('','string')."',
@@ -268,7 +268,7 @@ if (isset($_POST['method'])) {
      *  Initilize Value before load in the loader
      */
     /*
-     *  Leaf / Application Indentification
+     *  Leaf / Application Identification
      */
     if (isset($_POST['leafId'])) {
         $eventObject->setLeafId($_POST['leafId']);
@@ -304,7 +304,7 @@ if (isset($_GET['method'])) {
      *  Initilize Value before load in the loader
      */
     /*
-     *  Leaf / Application Indentification
+     *  Leaf / Application Identification
      */
     if (isset($_GET['leafId'])) {
         $eventObject->setLeafId($_GET['leafId']);

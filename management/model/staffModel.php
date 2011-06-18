@@ -178,7 +178,7 @@ class staffModel extends validationClass{
 		}
 	}
 	/**
-	 * Return Staff Indentification Value
+	 * Return Staff Identification Value
 	 * @return integer groupId
 	 */
 	public function getStaffId($key=NULL,$type=NULL) {
@@ -207,7 +207,7 @@ class staffModel extends validationClass{
 		return $this->groupId;
 	}
 	/**
-	 * Set  Department Indentification
+	 * Set  Department Identification
 	 * @param numeric $value
 	 */
 	public function setDepartmentId($value) {
@@ -222,7 +222,7 @@ class staffModel extends validationClass{
 	}
 
 	/**
-	 * Set  Language Indentification
+	 * Set  Language Identification
 	 * @param numeric $value
 	 */
 	public function setLanguageId($value) {
@@ -280,7 +280,7 @@ class staffModel extends validationClass{
 	}
 
 	/**
-	 * Set  Staff Indentification
+	 * Set  Staff Identification
 	 * @param numeric $value
 	 */
 	public function setStaffIc($value) {

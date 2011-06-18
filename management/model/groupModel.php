@@ -158,7 +158,7 @@ class groupModel extends validationClass{
 		}
 	}
 	/**
-	 * Return Group Indentification Value
+	 * Return Group Identification Value
 	 * @return integer groupId
 	 */
 	public function getGroupId($key=NULL,$type=NULL) {

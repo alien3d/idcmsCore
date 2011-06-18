@@ -104,7 +104,7 @@ class mainClass extends configClass
 	 */
 	private $log;
 	/**
-	 * Current Table main Indentification Value
+	 * Current Table main Identification Value
 	 * @var numeric $mainId
 	 */
 	public $mainId;
@@ -159,7 +159,7 @@ class mainClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
@@ -182,7 +182,7 @@ class mainClass extends configClass
 					);";
 		$this->q->start();
 		$this->model->create();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			INSERT INTO `main`	
 					(
@@ -200,7 +200,7 @@ class mainClass extends configClass
 						\"". $this->model->getIsActive('','string') . "\",		\"". $this->model->getIsApproved('','string') . "\",
 						\"". $this->model->getBy() . "\",				" . $this->model->getTime() . "
 					);";
-		} else if ($this->q->vendor == self::microsoft) {
+		} else if ($this->getVendor() == self::microsoft) {
 			$sql = "
 			INSERT INTO [main]
 					(
@@ -218,7 +218,7 @@ class mainClass extends configClass
 						\"". $this->model->getIsUpdate('','string') . "\",		\"". $this->model->getIsApproved('','string') . "\",
 						\"". $this->model->getIsActive('','string') . "\",		" . $this->model->getTime() . "
 					);";
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			INSERT INTO	\"main\"
 					(
@@ -286,7 +286,7 @@ class mainClass extends configClass
 		}
 		//UTF8
 		$items=array();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
@@ -467,12 +467,12 @@ class mainClass extends configClass
             'main'
             );
             if ($this->quickFilter) {
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
-            	} else if ($this->q->vendor == self::microsoft) {
+            	} else if ($this->getVendor() == self::microsoft) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
             	}
@@ -481,12 +481,12 @@ class mainClass extends configClass
              *	Extjs filtering mode
              */
             if ($this->filter) {
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
-            	} else if ($this->q->vendor == self::microsoft) {
+            	} else if ($this->getVendor() == self::microsoft) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
             	}
@@ -510,11 +510,11 @@ class mainClass extends configClass
             }
             $total = $this->q->numberRows();
             if ($this->order && $this->sortField) {
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
-            	} else if ($this->q->vendor  == self::mssql) {
+            	} else if ($this->getVendor() ==  self::mssql) {
             		$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
             	}
             }
@@ -524,9 +524,9 @@ class mainClass extends configClass
             if (empty($_POST['filter'])) {
             	if ($this->limit) {
             		// only mysql have limit
-            		if ($this->q->vendor == self::mysql) {
+            		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
-            		} else if ($this->q->vendor == self::microsoft) {
+            		} else if ($this->getVendor() == self::microsoft) {
             			/**
             			 *	 Sql Server and Oracle used row_number
             			 *	 Parameterize Query We don't support
@@ -554,7 +554,7 @@ class mainClass extends configClass
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
 							AND 			" . ($this->start + $this->limit - 1) . ";";
-            		} else if ($this->q->vendor == self::oracle) {
+            		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived table also
             			 */

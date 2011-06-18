@@ -120,7 +120,7 @@ class documentCategoryModel extends validationClass{
 	}
 	// generate basic information from outside
 	/**
-	 * Set  Document Category Indentification Value
+	 * Set  Document Category Identification Value
 	 * @param integer $value
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
@@ -133,7 +133,7 @@ class documentCategoryModel extends validationClass{
 		}
 	}
 	/**
-	 * Return Document Category Indentification Value
+	 * Return Document Category Identification Value
 	 * @return integer documentId
 	 */
 	public function getDocumentCategoryId($key=NULL,$type=NULL) {

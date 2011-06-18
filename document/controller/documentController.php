@@ -89,7 +89,7 @@ class documentClass extends  configClass {
 	 */
 	private $audit;
 	/**
-	 * Current Table Document  Indentification Value
+	 * Current Table Document  Identification Value
 	 * @var numeric $docId
 	 */
 	public $documentId;
@@ -473,7 +473,7 @@ if(isset($_POST['method']))	{
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
 		$documentObject->setLeafId($_POST['leafId']);
@@ -529,7 +529,7 @@ if(isset($_GET['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['leafId'])){
 		$documentObject->setLeafId($_GET['leafId']);

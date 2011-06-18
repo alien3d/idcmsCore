@@ -104,12 +104,12 @@ class tabAccessClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
 		// by default if add new group will add access to tab and folder.
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 				SELECT	`tabAccess`.`tabAccessId`,
 						`tab`.`tabId`,
@@ -132,7 +132,7 @@ class tabAccessClass extends configClass
 			if ($this->groupId) {
 				$sql .= " AND `group`.`groupId`='" . $this->strict($this->groupId, 'numeric') . "'";
 			}
-		} else if ($this->q->vendor == self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 				SELECT	`tabAccess`.`tabAccessId`,
 						`tab`.`tabId`,
@@ -155,7 +155,7 @@ class tabAccessClass extends configClass
 			if ($this->groupId) {
 				$sql .= " AND `group`.`groupId`='" . $this->strict($this->groupId, 'numeric') . "'";
 			}
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 				SELECT	`tabAccess`.`tabAccessId`,
 						`tab`.`tabId`,
@@ -227,17 +227,17 @@ class tabAccessClass extends configClass
 		$this->model->update();
 		$loop = $this->model->totaltabAccessId;
 		for ($i = 0; $i < $loop; $i++) {
-			if($this->q->vendor == self::mysql){
+			if($this->getVendor() == self::mysql){
 				$sql = "
 			UPDATE 	`tabAccess`
 			SET 	`tabAccessValue`	= 	'" . $this->model->tabAccessValue[$i] . "'
 			WHERE 	`tabAccessId`		=	'" . $this->model->tabAccessId[$i] . "'";
-			} else if ($this->q->vendor == self::mssql){
+			} else if ($this->getVendor() ==  self::mssql){
 				$sql = "
 			UPDATE 	[tabAccess]
 			SET 	[tabAccessValue]	= 	'" . $this->model->tabAccessValue[$i] . "'
 			WHERE 	[tabAccessId]		=	'" . $this->model->tabAccessId[$i] . "'";
-			} else if ($this->q->vendor==self::oracle){
+			} else if ($this->getVendor()==self::oracle){
 				$sql = "
 			UPDATE 	\"tabAccess\"
 			SET 	\"tabAccessValue\"	= 	'" . $this->model->tabAccessValue[$i] . "'
@@ -260,7 +260,7 @@ class tabAccessClass extends configClass
             exit();
 	}
 	/**
-	 *  Return Group Indentification
+	 *  Return Group Identification
 	 */
 	function group()
 	{
@@ -292,7 +292,7 @@ if (isset($_POST['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if (isset($_POST['leafId'])) {
 		$tabAccessObject->leafId = $_POST['leafId'];
@@ -319,7 +319,7 @@ if (isset($_GET['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if (isset($_GET['leafId'])) {
 		$tabAccessObject->leafId = $_GET['leafId'];

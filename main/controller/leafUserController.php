@@ -100,7 +100,7 @@ class leafUserClass extends configClass
 	 */
 	private $log;
 	/**
-	 * Current Table leafUser Indentification Value
+	 * Current Table leafUser Identification Value
 	 * @var numeric $leafUserId
 	 */
 	public $leafUserId;
@@ -155,13 +155,13 @@ class leafUserClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
 
 		$this->model->create();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			INSERT INTO `leafUser`	
 					(
@@ -177,7 +177,7 @@ class leafUserClass extends configClass
 						),
 						'".$this->staffId."',
 						);";
-		} else if ($this->q->vendor == self::microsoft) {
+		} else if ($this->getVendor() == self::microsoft) {
 			$sql = "
 			INSERT INTO [leafUser]
 					(
@@ -195,7 +195,7 @@ class leafUserClass extends configClass
 						\"". $this->model->getIsUpdate('','string') . "\",		\"". $this->model->getIsApproved('','string') . "\",
 						\"". $this->model->getIsActive('','string') . "\",		" . $this->model->getTime() . "
 					);";
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			INSERT INTO	\"leafUser\"
 					(
@@ -263,11 +263,11 @@ class leafUserClass extends configClass
 		}
 		//UTF8
 		$items=array();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 					SELECT	* 					
  					FROM 	`leafUser`
@@ -284,7 +284,7 @@ class leafUserClass extends configClass
 					AND		`leafUser`.`staffId` ='".$this->staffId."'
 					AND		`leafTranslate`.`languageId` = '".$this->languageId."'";
 			
-		} else if ($this->q->vendor == self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 					SELECT	[religion].[religionId],
 							[religion].[religionDesc],
@@ -303,7 +303,7 @@ class leafUserClass extends configClass
 					ON		[religion].[By] = [staff].[staffId]
 					WHERE 	[religion].[isActive] ='1'	";
 			
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 					SELECT	\"religion\".\"religionId\",
 							\"religion\".\"religionDesc\",
@@ -347,12 +347,12 @@ class leafUserClass extends configClass
             'religion'
             );
             if ($this->quickFilter) {
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
-            	} else if ($this->q->vendor == self::microsoft) {
+            	} else if ($this->getVendor() == self::microsoft) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
             	}
@@ -361,12 +361,12 @@ class leafUserClass extends configClass
              *	Extjs filtering mode
              */
             if ($this->filter) {
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
-            	} else if ($this->q->vendor == self::microsoft) {
+            	} else if ($this->getVendor() == self::microsoft) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
             	}
@@ -390,11 +390,11 @@ class leafUserClass extends configClass
             }
             $total = $this->q->numberRows();
             if ($this->order && $this->sortField) {
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
-            	} else if ($this->q->vendor  == self::mssql) {
+            	} else if ($this->getVendor() ==  self::mssql) {
             		$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
             	}
             }
@@ -404,9 +404,9 @@ class leafUserClass extends configClass
             if (empty($_POST['filter'])) {
             	if ($this->limit) {
             		// only mysql have limit
-            		if ($this->q->vendor == self::mysql) {
+            		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
-            		} else if ($this->q->vendor == self::microsoft) {
+            		} else if ($this->getVendor() == self::microsoft) {
             			/**
             			 *	 Sql Server and Oracle used row_number
             			 *	 Parameterize Query We don't support
@@ -434,7 +434,7 @@ class leafUserClass extends configClass
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
 							AND 			" . ($this->start + $this->limit - 1) . ";";
-            		} else if ($this->q->vendor == self::oracle) {
+            		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived table also
             			 */
@@ -512,7 +512,7 @@ class leafUserClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 			if ($this->q->execute == 'fail') {
@@ -525,17 +525,17 @@ class leafUserClass extends configClass
 		}
 		$this->q->start();
 		$this->leafUserModel->update();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE 	`leafUser`
 			SET 	`leafSequence`		=	\"". $this->leafUserModel->leafSequence . " + ".$leafSequenceIncDec." \"
 			WHERE 	`leafUserId`		=	\"". $this->leafUserModel->leafUserId . "\"";
-		} else if ($this->q->vendor ==  self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[leafUser]
 			SET 	[leafSequence]		=	\"". $this->leafUserModel->leafSequence . " + ".$leafSequenceIncDec." \"
 			WHERE 	[leafUserId]		=	\"". $this->leafUserModel->leafUserId . "\"";
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"leafUser\"
 			SET 	\"leafSequence\"	=	\"". $this->leafUserModel->leafSequence . " + ".$leafSequenceIncDec." \"
@@ -570,7 +570,7 @@ class leafUserClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 			if ($this->q->execute == 'fail') {
@@ -583,15 +583,15 @@ class leafUserClass extends configClass
 		}
 		$this->q->start();
 		$this->leafUserModel->update();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			DELETE 	`leafUser`
 			WHERE 	`leafUserId`		=	\"". $this->leafUserModel->leafUserId . "\"";
-		} else if ($this->q->vendor ==  self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			DELETE 	[leafUser]
 			WHERE 	[leafUserId]		=	\"". $this->leafUserModel->leafUserId . "\"";
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			DELETE 	\"leafUser\"
 			WHERE 	\"leafUserId\"		=	\"". $this->leafUserModel->leafUserId . "\"";

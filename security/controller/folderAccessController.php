@@ -111,14 +111,14 @@ class folderAccessClass  extends configClass {
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
 		$items =array();
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
 		}
 		// by default if add new group will add access to accordion and folder.
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 				SELECT	`accordion`.`accordionNote`,
 						`accordion`.`accordionId`,
@@ -150,7 +150,7 @@ class folderAccessClass  extends configClass {
 				$sql.=" AND `folder`.`accordionId`='".$this->strict($this->accordionId,'numeric')."'";
 			}
 
-		}  else if ( $this->q->vendor==self::mssql) {
+		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 				SELECT	[accordion].[accordionNote],
 						[accordion].[accordionId],
@@ -181,7 +181,7 @@ class folderAccessClass  extends configClass {
 			if($this->accordionId) {
 				$sql.=" AND [folder].[accordionId]='".$this->strict($this->accordionId,'numeric')."'";
 			}
-		}  else if ($this->q->vendor==self::oracle) {
+		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
 				SELECT	\"accordion\".\"accordionNote\",
 						\"accordion\".\"accordionId\",
@@ -273,7 +273,7 @@ class folderAccessClass  extends configClass {
 	 */
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -281,16 +281,16 @@ class folderAccessClass  extends configClass {
 		}
 		$this->model->update();
 		$loop=$this->model->totalfolderAccessId;
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 			UPDATE `folderAccess`
 			SET    `folderAccessValue` = CASE `folderAccessId`";
-		} else if($this->q->vendor==self::mssql) {
+		} else if($this->getVendor()==self::mssql) {
 			$sql="
 			UPDATE 	[folderAccess]
 			SET 	[folderAccessValue] = CASE [folderAccessId]";
 
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			UPDATE \"folderAccess\"
 			SET    \"folderAccessValue\" = CASE \"folderAccessId\"";
@@ -299,13 +299,13 @@ class folderAccessClass  extends configClass {
 			$sql.="
 			WHEN '".$this->model->folderAccessId[$i]."' THEN '".$this->model->folderAccesValue[$i]."'";
 		}
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql.=" END
 			WHERE `folderAccessId` IN (".$this->model->getfolderAccessIdAll.")";
-		} else if($this->q->vendor==self::mssql) {
+		} else if($this->getVendor()==self::mssql) {
 			$sql.=" END
 			WHERE `=[folderAccessId] IN (".$this->model->getfolderAccessIdAll.")";
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql.=" END
 			WHERE \"folderAccessId\" IN (".$this->model->getfolderAccessIdAll.")";
 		}
@@ -368,7 +368,7 @@ if(isset($_POST['method'])){
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
 		$folderAccessObject-> leafId = $_POST['leafId'];
@@ -427,7 +427,7 @@ if(isset($_GET['method'])){
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['method'])){
 		$folderAccessObject ->leafId = $_GET['leafId'];

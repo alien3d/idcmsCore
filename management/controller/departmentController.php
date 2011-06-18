@@ -77,7 +77,7 @@ class departmentClass  extends configClass {
 		$this->q->log        = $this->log;
 
 		$this->model         = new departmentModel();
-		$this->model->vendor = $this->vendor;
+		$this->model->vendor = $this->getVendor();
 		$this->model->execute();
 		$this->documentTrail = new documentTrailClass();
 	}
@@ -86,8 +86,8 @@ class departmentClass  extends configClass {
 	 */
 	function create() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		echo $this->q->vendor;
-		if( $this->q->vendor==self::mysql) {
+
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -95,7 +95,7 @@ class departmentClass  extends configClass {
 		}
 		$this->q->start();
 		$this->model->create();
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 			INSERT INTO `department`
 					(
@@ -115,7 +115,7 @@ class departmentClass  extends configClass {
 						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
-		}  else if ( $this->q->vendor==self::mssql) {
+		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 			INSERT INTO [department]
 					(
@@ -135,7 +135,7 @@ class departmentClass  extends configClass {
 						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
-		}  else if ($this->q->vendor==self::oracle) {
+		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
 			INSERT INTO \"department`
 					(
@@ -196,11 +196,11 @@ class departmentClass  extends configClass {
 		}
 		//UTF8
 		$items=array();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 					SELECT	`department`.`departmentId`,
 							`department`.`departmentSequence`,
@@ -225,7 +225,7 @@ class departmentClass  extends configClass {
 
 			}
 
-		} else if ($this->q->vendor == self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 					SELECT	[department].[departmentId],
 							[department].[departmentSequence],
@@ -248,7 +248,7 @@ class departmentClass  extends configClass {
 			if ($this->model->getDepartmentId('','string')) {
 				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getDepartmentId('','string') . "\"";
 			}
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 					SELECT	\"department\".\"departmentId\",
 							\"department\".\"departmentCode\",
@@ -295,13 +295,13 @@ class departmentClass  extends configClass {
             $tableArray  = array(
             'department'
             );
-            if ($this->fieldQuery) {
-            	if ($this->q->vendor == self::mysql) {
+            if ($this->getfieldQuery()) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
-            	} else if ($this->q->vendor == self::microsoft) {
+            	} else if ($this->getVendor() == self::microsoft) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
             	}
@@ -309,14 +309,14 @@ class departmentClass  extends configClass {
             /**
              *	Extjs filtering mode
              */
-            if ($this->gridQuery) {
+            if ($this->getGridQuery()) {
 
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
-            	} else if ($this->q->vendor == self::microsoft) {
+            	} else if ($this->getVendor() == self::microsoft) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
             	}
@@ -340,23 +340,23 @@ class departmentClass  extends configClass {
             }
             $total = $this->q->numberRows();
             if ($this->order && $this->sortField) {
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
-            	} else if ($this->q->vendor  == self::mssql) {
+            	} else if ($this->getVendor() ==  self::mssql) {
             		$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
             $_SESSION['start'] = $this->start;
             $_SESSION['limit'] = $this->limit;
-            if (empty($this->filter)) {
+            if (!($this->getGridQuery())) {
             	if ($this->limit) {
             		// only mysql have limit
-            		if ($this->q->vendor == self::mysql) {
+            		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
-            		} else if ($this->q->vendor == self::microsoft) {
+            		} else if ($this->getVendor() == self::microsoft) {
             			/**
             			 *	 Sql Server and Oracle used row_number
             			 *	 Parameterize Query We don't support
@@ -386,7 +386,7 @@ class departmentClass  extends configClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
 							AND 			" . ($this->start + $this->limit - 1) . ";";
-            		} else if ($this->q->vendor == self::oracle) {
+            		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived table also
             			 */
@@ -467,7 +467,7 @@ class departmentClass  extends configClass {
 	 */
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -475,7 +475,7 @@ class departmentClass  extends configClass {
 		}
 		$this->q->commit();
 		$this->model->update();
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 				UPDATE 	`department`
 				SET 	`isDefault`		=	'".$this->model->getIsDefault('','string')."',
@@ -486,9 +486,9 @@ class departmentClass  extends configClass {
 						`isDelete`		=	'".$this->model->getIsDelete('','string')."',
 						`isApproved`	=	'".$this->model->getIsApproved('','string')."',
 						`By`			=	'".$this->model->getBy()."',
-						`Time			=	".$this->model->getTime()."
-				WHERE 	`departmentId`		=	'".$this->getDepartmentId()."'";
-		} else if ($this->q->vendor==self::mssql) {
+						`Time`			=	".$this->model->getTime()."
+				WHERE 	`departmentId`	=	'".$this->model->getDepartmentId('','string')."'";
+		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[department]
 				SET 	[isActive]		=	'".$this->model->getIsActive('','string')."',
@@ -499,9 +499,9 @@ class departmentClass  extends configClass {
 						[isApproved]	=	'".$this->model->getIsApproved('','string')."',
 						[By]			=	'".$this->model->getBy()."',
 						[Time]			=	".$this->model->getTime()."
-				WHERE 	[departmentId]		=	'".$this->getDepartmentId()."'";
+				WHERE 	[departmentId]		=	'".$this->model->getDepartmentId('','string')."'";
 
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 				UPDATE 	\"department\"
 				SET 	\"isActive\"	=	'".$this->model->getIsActive('','string')."',
@@ -512,16 +512,16 @@ class departmentClass  extends configClass {
 						\"isApproved\"	=	'".$this->model->getIsApproved('','string')."',
 						\"By\"			=	'".$this->model->getBy()."',
 						\"Time\"		=	".$this->model->getTime()."
-				WHERE 	\"departmentId\"		=	'".$this->getdepartmentId()."'";
+				WHERE 	\"departmentId\"		=	'".$this->model->getDepartmentId('','string')."'";
 
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success"=>"true","message"=>"Record Update"));
+		echo json_encode(array("success"=>true,"message"=>"Record Update"));
 		exit();
 	}
 	/* (non-PHPdoc)
@@ -529,7 +529,7 @@ class departmentClass  extends configClass {
 	 */
 	function delete()				{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -537,54 +537,54 @@ class departmentClass  extends configClass {
 		}
 		$this->q->commit();
 		$this->model->delete();
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 				UPDATE 	`department`
-				SET 	`isDefault`		=	'".$this->model->getIsDefault()."',
-						`isActive`		=	'".$this->model->getIsActive()."',
-						`isNew`			=	'".$this->model->getIsNew()."',
-						`isDraft`		=	'".$this->model->getIsDraft()."',
-						`isUpdate`		=	'".$this->model->getIsUpdate()."',
-						`isDelete`		=	'".$this->model->getIsDelete()."',
-						`isApproved`	=	'".$this->model->getIsApproved()."',
-						`By`			=	'".$this->model->getBy()."',
+				SET 	`isDefault`		=	'".$this->model->getIsDefault('','string')."',
+						`isActive`		=	'".$this->model->getIsActive('','string')."',
+						`isNew`			=	'".$this->model->getIsNew('','string')."',
+						`isDraft`		=	'".$this->model->getIsDraft('','string')."',
+						`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
+						`isDelete`		=	'".$this->model->getIsDelete('','string')."',
+						`isApproved`	=	'".$this->model->getIsApproved('','string')."',
+						`By`			=	'".$this->model->getBy('','string')."',
 						`Time			=	".$this->model->getTime()."
-				WHERE 	`departmentId`		=	'".$this->getDepartrmentId()."'";
-		} else if ($this->q->vendor==self::mssql) {
+				WHERE 	`departmentId`		=	'".$this->model->getDepartrmentId('','string')."'";
+		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[department]
-				SET 	[isActive]		=	'".$this->model->getIsActive()."',
-						[isNew]			=	'".$this->model->getIsNew()."',
-						[isDraft]		=	'".$this->model->getIsDraft()."',
-						[isUpdate]		=	'".$this->model->getIsUpdate()."',
-						[isDelete]		=	'".$this->model->getIsDelete()."',
-						[isApproved]	=	'".$this->model->getIsApproved()."',
-						[By]			=	'".$this->model->getBy()."',
-						[Time]			=	".$this->model->getTime()."
-				WHERE 	[departmentId]		=	'".$this->getDepartmentId()."'";
+				SET 	[isActive]		=	'".$this->model->getIsActive('','string')."',
+						[isNew]			=	'".$this->model->getIsNew('','string')."',
+						[isDraft]		=	'".$this->model->getIsDraft('','string')."',
+						[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
+						[isDelete]		=	'".$this->model->getIsDelete('','string')."',
+						[isApproved]	=	'".$this->model->getIsApproved('','string')."',
+						[By]			=	'".$this->model->getBy('','string')."',
+						[Time]			=	".$this->model->getTime('','string')."
+				WHERE 	[departmentId]		=	'".$this->model->getDepartmentId('','string')."'";
 
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 				UPDATE 	\"department\"
-				SET 	\"isActive\"	=	'".$this->model->getIsActive()."',
-						\"isNew\"		=	'".$this->model->getIsNew()."',
-						\"isDraft\"		=	'".$this->model->getIsDraft()."',
-						\"isUpdate\"	=	'".$this->model->getIsUpdate()."',
-						\"isDelete\"	=	'".$this->model->getIsDelete()."',
-						\"isApproved\"	=	'".$this->model->getIsApproved()."',
+				SET 	\"isActive\"	=	'".$this->model->getIsActive('','string')."',
+						\"isNew\"		=	'".$this->model->getIsNew('','string')."',
+						\"isDraft\"		=	'".$this->model->getIsDraft('','string')."',
+						\"isUpdate\"	=	'".$this->model->getIsUpdate('','string')."',
+						\"isDelete\"	=	'".$this->model->getIsDelete('','string')."',
+						\"isApproved\"	=	'".$this->model->getIsApproved('','string')."',
 						\"By\"			=	'".$this->model->getBy()."',
 						\"Time\"		=	".$this->model->getTime()."
-				WHERE 	\"departmentId\"		=	'".$this->getdepartmentId()."'";
+				WHERE 	\"departmentId\"		=	'".$this->model->getdepartmentId('','string')."'";
 
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
 
-		echo json_encode(array("success"=>"true","message"=>"Record Remove"));
+		echo json_encode(array("success"=>true,"message"=>"Record Remove"));
 		exit();
 
 	}
@@ -597,7 +597,7 @@ class departmentClass  extends configClass {
 		if($this->isAdmin==0){
 
 			$this->model->delete();
-			if ($this->q->vendor == self::mysql) {
+			if ($this->getVendor() == self::mysql) {
 				$sql = "
 				UPDATE 	`".$this->model->getTableName()."`
 				SET 	";
@@ -605,7 +605,7 @@ class departmentClass  extends configClass {
 				$sql.="	   `isDefault`			=	case `".$this->model->getPrimaryKeyName()."` ";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$DepartmentIdDelete.=$this->model->getDepartmentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDepartmentId($i,'array').",";
 						$sql.="
 						WHEN '".$this->model->getDepartmentId($i,'array')."'
 						THEN '".$this->model->getIsDefault('','string')."'";
@@ -616,7 +616,7 @@ class departmentClass  extends configClass {
 
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$DepartmentIdDelete.=$this->model->getDepartmentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDepartmentId($i,'array').",";
 						$sql.="
 						WHEN '".$this->model->getDepartmentId($i,'array')."'
 						THEN '".$this->model->getIsNew('','string')."'";
@@ -626,7 +626,7 @@ class departmentClass  extends configClass {
 				$sql.="	`isDraft`	=	case `".$this->model->getPrimaryKeyName()."` ";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$DepartmentIdDelete.=$this->model->getDepartmentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDepartmentId($i,'array').",";
 						$sql.="
 						WHEN '".$this->model->getDepartmentId($i,'array')."'
 						THEN '".$this->model->getIsDraft('','string')."'";
@@ -636,7 +636,7 @@ class departmentClass  extends configClass {
 				$sql.="	`isUpdate`	=	case `".$this->model->getPrimaryKeyName()."`";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$DepartmentIdDelete.=$this->model->getDepartmentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDepartmentId($i,'array').",";
 						$sql.="
 						WHEN '".$this->model->getDepartmentId($i,'array')."'
 						THEN '".$this->model->getIsUpdate('','string')."'";
@@ -646,7 +646,7 @@ class departmentClass  extends configClass {
 				$sql.="	`isDelete`	=	case `".$this->model->getPrimaryKeyName()."`";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$DepartmentIdDelete.=$this->model->getDepartmentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDepartmentId($i,'array').",";
 						$sql.="
 						WHEN '".$this->model->getDepartmentId($i,'array')."'
 						THEN '".$this->model->getIsDelete($i,'array')."'";
@@ -656,7 +656,7 @@ class departmentClass  extends configClass {
 				$sql.="	`isActive`	=		case `".$this->model->getPrimaryKeyName()."` ";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$DepartmentIdDelete.=$this->model->getDepartmentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDepartmentId($i,'array').",";
 						$sql.="
 						WHEN '".$this->model->getDepartmentId($i,'array')."'
 						THEN '".$this->model->getIsActive('','string')."'";
@@ -666,7 +666,7 @@ class departmentClass  extends configClass {
 				$sql.="	`isApproved`			=	case `".$this->model->getPrimaryKeyName()."` ";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$DepartmentIdDelete.=$this->model->getDepartmentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDepartmentId($i,'array').",";
 						$sql.="
 						WHEN '".$this->model->getDepartmentId($i,'array')."'
 						THEN '".$this->model->getIsApproved('','string')."'";
@@ -679,10 +679,10 @@ class departmentClass  extends configClass {
 				`Time`				=	" . $this->model->getTime() . " ";
 
 
-				$this->model->setDepartmentIdAll(substr($DepartmentIdDelete,0,-1));
-				$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getDepartmentIdAll(). ")";
+				$this->model->setPrimaryKeyAll(substr($primaryKeyAll,0,-1));
+				$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getPrimaryKeyAll(). ")";
 
-			} else if ($this->q->vendor == self::mssql) {
+			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
 			UPDATE 	[Department]
 			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
@@ -695,7 +695,7 @@ class departmentClass  extends configClass {
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[DepartmentId]		IN	(". $this->model->getDepartmentIdAll() . ")";
-			} else if ($this->q->vendor == self::oracle) {
+			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				UPDATE	\"Department\"
 				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault('','string') . "\",
@@ -711,16 +711,16 @@ class departmentClass  extends configClass {
 			}
 		} else if ($this->isAdmin ==1){
 
-			if( $this->q->vendor==self::mysql) {
+			if($this->getVendor() == self::mysql) {
 				$sql="
 				UPDATE `".$this->model->getTableName()."`
 				SET";
-			} else if($this->q->vendor==self::mssql) {
+			} else if($this->getVendor()==self::mssql) {
 				$sql="
 			UPDATE 	[".$this->model->getTableName()."]
 			SET 	";
 
-			} else if ($this->q->vendor==self::oracle) {
+			} else if ($this->getVendor()==self::oracle) {
 				$sql="
 			UPDATE \"".$this->model->getTableName()."\"
 			SET    ";
@@ -734,12 +734,12 @@ class departmentClass  extends configClass {
 			foreach($access as $systemCheck) {
 
 
-				if( $this->q->vendor==self::mysql) {
+				if($this->getVendor() == self::mysql) {
 					$sqlLooping.=" `".$systemCheck."` = CASE `".$this->model->getPrimaryKeyName()."`";
-				} else if($this->q->vendor==self::mssql) {
+				} else if($this->getVendor()==self::mssql) {
 					$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
 
-				} else if ($this->q->vendor==self::oracle) {
+				} else if ($this->getVendor()==self::oracle) {
 					$sqlLooping.="	\"".$systemCheck."\" = CASE \"".$this->model->getPrimaryKeyName()."\"";
 				}
 				switch ($systemCheck){
@@ -799,13 +799,13 @@ class departmentClass  extends configClass {
 			}
 
 			$sql.=substr($sqlLooping,0,-1);
-			if( $this->q->vendor==self::mysql) {
+			if($this->getVendor() == self::mysql) {
 				$sql.="
 			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getDepartmentIdAll().")";
-			} else if($this->q->vendor==self::mssql) {
+			} else if($this->getVendor()==self::mssql) {
 				$sql.="
 			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getDepartmentIdAll().")";
-			} else if ($this->q->vendor==self::oracle) {
+			} else if ($this->getVendor()==self::oracle) {
 				$sql.="
 			WHERE \"".$this->model->getPrimaryKeyName()."\" IN (".$this->model->getDepartmentIdAll().")";
 			}
@@ -832,24 +832,24 @@ class departmentClass  extends configClass {
 	function duplicate()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			SELECT	*
 			FROM 	`department`
 			WHERE 	`departmentCode` 	= 	\"". $this->model->getDepartmentCode(). "\"
 			AND		`isActive`		=	1";
-		} else if ($this->q->vendor == self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			SELECT	*
 			FROM 	[department]
 			WHERE 	[departmentCode] 	= 	\"". $this->model->getDepartmentCode() . "\"
 			AND		[isActive]		=	1";
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT	*
 			FROM 	\"department\"
@@ -911,7 +911,7 @@ if(isset($_POST['method']))	{
 	 */
 
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
 		$departmentObject->setLeafId($_POST['leafId']);
@@ -978,7 +978,7 @@ if(isset($_GET['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['leafId'])){
 		$departmentObject->setLeafId($_GET['leafId']);

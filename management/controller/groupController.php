@@ -11,7 +11,7 @@ require_once("../model/groupModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class groupClass  extends configClass {
-		/*
+	/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
@@ -80,7 +80,7 @@ class groupClass  extends configClass {
 	 */
 	function create() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -88,44 +88,65 @@ class groupClass  extends configClass {
 		}
 		$this->q->start();
 		$this->model->create();
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 			INSERT INTO `group`
 					(
-						`groupDesc`
-						`isNew`,
-						`isActive`
+						`groupSequence`,				`groupCode`,
+						`groupNote`,					`isDefault`,
+						`isNew`,							`isDraft`,
+						`isUpdate`,							`isDelete`,
+						`isActive`,							`isApproved`,
+						`By`,								`Time`
 					)
 			VALUES
 					(
-						'".$this->model->groupDesc."'
-						1,1);";
-		}  else if ( $this->q->vendor==self::mssql) {
+						\"". $this->model->getgroupSequence('','string') . "\",	\"". $this->model->getgroupSequence('','string') . "\",
+						\"". $this->model->getgroupNote('','string') . "\",		\"". $this->model->getIsDefault('','string') . "\",
+						\"". $this->model->getIsNew('','string') . "\",					\"". $this->model->getIsDraft('','string') . "\",
+						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
+						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
+						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+					);";
+		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 			INSERT INTO [group]
 					(
-						[groupDesc],
-						[isNew],
-						[isActive]
+						[groupSequence],				[groupCode],
+						[groupNote],					[isDefault],
+						[isNew],							[isDraft],
+						[isUpdate],							[isDelete],
+						[isActive],							[isApproved],
+						[By],								[Time]
 					)
 			VALUES
 					(
-						'".$this->strict($_POST['groupDesc'],'string')."'
-						1,
-						1);";
-		}  else if ($this->q->vendor==self::oracle) {
+						\"". $this->model->getgroupSequence('','string') . "\",	\"". $this->model->getgroupSequence('','string') . "\",
+						\"". $this->model->getgroupNote('','string') . "\",		\"". $this->model->getIsDefault('','string') . "\",
+						\"". $this->model->getIsNew('','string') . "\",					\"". $this->model->getIsDraft('','string') . "\",
+						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
+						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
+						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+					);";
+		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
-			INSERT INTO \"group\"
+			INSERT INTO \"group`
 					(
-						\"groupDesc\",
-						\"isNew\",
-						\"isActive\"
+						\"groupSequence\",				\"groupCode\",
+						\"groupNote\",					\"isDefault\",
+						\"isNew\",							\"isDraft\",
+						\"isUpdate\",						\"isDelete\",
+						\"isActive\",						\"isApproved\",
+						\"By\",								\"Time\"
 					)
-				VALUES
+			VALUES
 					(
-						'".$this->strict($_POST['groupDesc'],'string')."'
-						1,
-						1
+						\"". $this->model->getgroupSequence('','string') . "\",	\"". $this->model->getgroupSequence('','string') . "\",
+						\"". $this->model->getgroupNote('','string') . "\",		\"". $this->model->getIsDefault('','string') . "\",
+						\"". $this->model->getIsNew('','string') . "\",					\"". $this->model->getIsDraft('','string') . "\",
+						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
+						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
+						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 
 		}
@@ -133,11 +154,11 @@ class groupClass  extends configClass {
 		// take from last insert id
 		$this->insert_id	=	$this->q->last_insert_id();
 
-		// loop the accordion and create new record
+		// loop the tab and create new record
 		//** no need to log in db
 		$sql=	"
 		SELECT 	*
-		FROM 	`accordion`
+		FROM 	`tab`
 		WHERE 	`isActive`=1";
 		$this->q->read($sql);
 		if($this->q->execute=='fail'){
@@ -147,69 +168,98 @@ class groupClass  extends configClass {
 		$data = $this->q->activeRecord();
 		if($this->q->numberRows()> 0 ){
 			foreach($data as $row){
-				if( $this->q->vendor==self::mysql) {
+				if($this->getVendor() == self::mysql) {
 					$sql =	"
-				INSERT INTO	`accordionAccess`
+				INSERT INTO	`tabAccess`
 				(
-									`accordionId`,
-									`accordionAccessValue`,
+									`tabId`,
+									`tabAccessValue`,
 									`groupId`
 				)
 				VALUES
 				(
-									'".$row['accordionId']."',
+									'".$row['tabId']."',
 									'0',
 									'".$this->insert_id."'
 									)";
-				} else if ($this->q->vendor==self::mssql) {
+				} else if ($this->getVendor()==self::mssql) {
 					$sql =	"
-				INSERT INTO	[accordionAccess]
+				INSERT INTO	[tabAccess]
 				(
-				[accordionId],
-				[accordionAccessValue],
+				[tabId],
+				[tabAccessValue],
 				[groupId]
 				)
 				VALUES
 				(
-									'".$row['accordionId']."',
+									'".$row['tabId']."',
 									'0',
 									'".$this->insert_id."'
 									)";
-				} else if ($this->q->vendor==self::oracle) {
+				} else if ($this->getVendor()==self::oracle) {
 					$sql =	"
-				INSERT INTO	\"accordionAccess`
+				INSERT INTO	\"tabAccess\"
 							(
-									\"accordionId\",
-									\"accordionAccessValue\",
+									\"tabId\",
+									\"tabAccessValue\",
 									\"groupId\"
 							)
 					VALUES
 							(
-									'".$row['accordionId']."',
+									'".$row['tabId']."',
 									'0',
 									'".$this->insert_id."'
 							)";
 				}
-				$this->q->create($sql);
-				if($this->q->execute=='fail'){
-					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-					exit();
-				}
+
 			}
 		}
 
+		if($this->getVendor()==self::mysql){
+			$sql="	INSERT INTO	`tabAccess`
+				(
+									`tabId`,
+									`tabAccessValue`,
+									`groupId`
+				)";
+			$sqlLooping.=substr($sqlLooping,0,-1);
+			$sql.=$sqlLooping;
+		} else if ($this->getVendor()==self::mssql){
+			$sql="	INSERT INTO	`tabAccess`
+				(
+									`tabId`,
+									`tabAccessValue`,
+									`groupId`
+				)";
+			$sqlLooping.=substr($sqlLooping,0,-1);
+			$sql.=$sqlLooping;
+		} else if ($this->getVendor()==self::oracle){
+			$sql="	INSERT INTO	`tabAccess`
+				(
+									`tabId`,
+									`tabAccessValue`,
+									`groupId`
+				)";
+			$sqlLooping.=substr($sqlLooping,0,-1);
+			$sql.=$sqlLooping;
+		}
+		$this->q->create($sql);
+		if($this->q->execute=='fail'){
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			exit();
+		}
 		// loop the folder and create new record;
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql		=	"
 		SELECT 	*
 		FROM 	`folder`
 		WHERE 	`isActive`=1";
-		}	else if ($this->q->vendor==self::mssql) {
+		}	else if ($this->getVendor()==self::mssql) {
 			$sql		=	"
 		SELECT 	*
 		FROM 	[folder]
 		WHERE 	[isActive]=1";
-		} else if ( $this->q->vendor==self::oracle) {
+		} else if ( $this->getVendor()==self::oracle) {
 			$sql		=	"
 		SELECT 	*
 		FROM 	\"folder\"
@@ -224,7 +274,7 @@ class groupClass  extends configClass {
 			$data = $this->q->activeRecord();
 			foreach($data as $row){
 
-				if( $this->q->vendor==self::mysql) {
+				if($this->getVendor() == self::mysql) {
 					$sql =	"
 					INSERT INTO 	`folderAccess`
 								(
@@ -235,7 +285,7 @@ class groupClass  extends configClass {
 					VALUES(			'".$row['folderId']."',
 									'0',
 									'".$this->insert_id."')";
-				} else if ($this->q->vendor==self::mssql) {
+				} else if ($this->getVendor()==self::mssql) {
 					$sql =	"
 					INSERT INTO 	[folderAccess]
 								(
@@ -246,7 +296,7 @@ class groupClass  extends configClass {
 					VALUES(			'".$row['folderId']."',
 									'0',
 									'".$this->insert_id."')";
-				} else if ($this->q->vendor==self::oracle) {
+				} else if ($this->getVendor()==self::oracle) {
 					$sql =	"
 					INSERT INTO 	`folderAccess`
 								(
@@ -267,11 +317,11 @@ class groupClass  extends configClass {
 		}
 
 		// create a template access which user can access to
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql			=	"SELECT * FROM `leaf` WHERE `isActive`=1  ";
-		} else if ($this->q->vendor==self::mssql) {
+		} else if ($this->getVendor()==self::mssql) {
 			$sql			=	"SELECT * FROM [leaf] WHERE [isActive]=1  ";
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql			=	"SELECT * FROM \"leaf\" WHERE \"isActive\"=1  ";
 		}
 		$this->q->read($sql);
@@ -283,7 +333,7 @@ class groupClass  extends configClass {
 		if($total > 0 ){
 			$data = $this->q->activeRecord();
 			foreach($data as $row){
-				if( $this->q->vendor==self::mysql) {
+				if($this->getVendor() == self::mysql) {
 					$sql =	"
 					INSERT INTO 	[leafGroupAccess]
 								(	[leafId],
@@ -302,7 +352,7 @@ class groupClass  extends configClass {
 									'0',
 									'0',
 									'".$this->insert_id."')";
-				} else if ($this->q->vendor==self::mssql) {
+				} else if ($this->getVendor()==self::mssql) {
 					$sql =	"
 					INSERT INTO 	`leafGroupAccess`
 								(	`leafId`,
@@ -321,7 +371,7 @@ class groupClass  extends configClass {
 									'0',
 									'0',
 									'".$this->insert_id."')";
-				} else if ($this->q->vendor==self::oracle) {
+				} else if ($this->getVendor()==self::oracle) {
 					$sql =	"
 					INSERT INTO 	\"leafGroupAccess\"
 								(	\"leafId\",
@@ -378,11 +428,11 @@ class groupClass  extends configClass {
 		}
 		//UTF8
 		$items=array();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 					SELECT	`group`.`groupId`,
 							`group`.`groupSequence`,
@@ -407,7 +457,7 @@ class groupClass  extends configClass {
 
 			}
 
-		} else if ($this->q->vendor == self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 					SELECT	[group].[groupId],
 							[group].[groupSequence],
@@ -430,7 +480,7 @@ class groupClass  extends configClass {
 			if ($this->model->getgroupId('','string')) {
 				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getgroupId('','string') . "\"";
 			}
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 					SELECT	\"group\".\"groupId\",
 							\"group\".\"groupCode\",
@@ -478,12 +528,12 @@ class groupClass  extends configClass {
             'group'
             );
             if ($this->fieldQuery) {
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
-            	} else if ($this->q->vendor == self::microsoft) {
+            	} else if ($this->getVendor() == self::microsoft) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
             	}
@@ -493,12 +543,12 @@ class groupClass  extends configClass {
              */
             if ($this->gridQuery) {
 
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
-            	} else if ($this->q->vendor == self::microsoft) {
+            	} else if ($this->getVendor() == self::microsoft) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
             	}
@@ -522,11 +572,11 @@ class groupClass  extends configClass {
             }
             $total = $this->q->numberRows();
             if ($this->order && $this->sortField) {
-            	if ($this->q->vendor == self::mysql) {
+            	if ($this->getVendor() == self::mysql) {
             		$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
-            	} else if ($this->q->vendor  == self::mssql) {
+            	} else if ($this->getVendor() ==  self::mssql) {
             		$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
-            	} else if ($this->q->vendor == self::oracle) {
+            	} else if ($this->getVendor() == self::oracle) {
             		$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
             	}
             }
@@ -536,9 +586,9 @@ class groupClass  extends configClass {
             if (empty($this->filter)) {
             	if ($this->limit) {
             		// only mysql have limit
-            		if ($this->q->vendor == self::mysql) {
+            		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
-            		} else if ($this->q->vendor == self::microsoft) {
+            		} else if ($this->getVendor() == self::microsoft) {
             			/**
             			 *	 Sql Server and Oracle used row_number
             			 *	 Parameterize Query We don't support
@@ -568,7 +618,7 @@ class groupClass  extends configClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
 							AND 			" . ($this->start + $this->limit - 1) . ";";
-            		} else if ($this->q->vendor == self::oracle) {
+            		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived table also
             			 */
@@ -649,7 +699,7 @@ class groupClass  extends configClass {
 	 */
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -657,7 +707,7 @@ class groupClass  extends configClass {
 		}
 		$this->q->commit();
 		$this->model->update();
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 			UPDATE 	`group`
 			SET 	`groupDesc`		=	'".$this->model->groupDesc."',
@@ -670,7 +720,7 @@ class groupClass  extends configClass {
 					`By`			=	'".$this->model->getBy()."',
 					`Time			=	".$this->model->getTime()."
 			WHERE 	`groupId`		=	'".$this->groupId."'";
-		} else if ($this->q->vendor==self::mssql) {
+		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 			UPDATE 	[group]
 			SET 	[groupDesc]		=	'".$this->model->groupDesc."',
@@ -683,7 +733,7 @@ class groupClass  extends configClass {
 					[By]			=	'".$this->model->getBy()."',
 					[Time]			=	".$this->model->getTime()."
 			WHERE 	[groupId]		=	'".$this->groupId."'";
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			UPDATE 	\"group\"
 			SET 	\"groupDesc\"	=	'".$this->model->groupDesc."',
@@ -720,7 +770,7 @@ class groupClass  extends configClass {
 		}
 		$this->q->start();
 		$this->model->delete();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE 	`Group`
 			SET 	`isDefault`			=	\"". $this->model->getIsDefault('','string') . "\",
@@ -733,7 +783,7 @@ class groupClass  extends configClass {
 					`By`				=	\"". $this->model->getBy() . "\",
 					`Time`				=	" . $this->model->getTime() . "
 			WHERE 	`GroupId`		=	\"". $this->model->getGroupId('','string') . "\"";
-		} else if ($this->q->vendor == self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[Group]
 			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
@@ -746,7 +796,7 @@ class groupClass  extends configClass {
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[GroupId]		=	\"". $this->model->getGroupId . "\"";
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"Group\"
 			SET 	\"GroupDesc\"	=	\"". $this->model->getGroupDesc('','string') . "\",
@@ -790,7 +840,7 @@ class groupClass  extends configClass {
 		if($this->isAdmin==0){
 
 			$this->model->delete();
-			if ($this->q->vendor == self::mysql) {
+			if ($this->getVendor() == self::mysql) {
 				$sql = "
 				UPDATE 	`".$this->model->getTableName()."`
 				SET 	";
@@ -875,7 +925,7 @@ class groupClass  extends configClass {
 				$this->model->setGroupIdAll(substr($GroupIdDelete,0,-1));
 				$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getGroupIdAll(). ")";
 
-			} else if ($this->q->vendor == self::mssql) {
+			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
 			UPDATE 	[Group]
 			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
@@ -888,7 +938,7 @@ class groupClass  extends configClass {
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[GroupId]		IN	(". $this->model->getGroupIdAll() . ")";
-			} else if ($this->q->vendor == self::oracle) {
+			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				UPDATE	\"Group\"
 				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault('','string') . "\",
@@ -904,16 +954,16 @@ class groupClass  extends configClass {
 			}
 		} else if ($this->isAdmin ==1){
 
-			if( $this->q->vendor==self::mysql) {
+			if($this->getVendor() == self::mysql) {
 				$sql="
 				UPDATE `".$this->model->getTableName()."`
 				SET";
-			} else if($this->q->vendor==self::mssql) {
+			} else if($this->getVendor()==self::mssql) {
 				$sql="
 			UPDATE 	[".$this->model->getTableName()."]
 			SET 	";
 
-			} else if ($this->q->vendor==self::oracle) {
+			} else if ($this->getVendor()==self::oracle) {
 				$sql="
 			UPDATE \"".$this->model->getTableName()."\"
 			SET    ";
@@ -927,12 +977,12 @@ class groupClass  extends configClass {
 			foreach($access as $systemCheck) {
 
 
-				if( $this->q->vendor==self::mysql) {
+				if($this->getVendor() == self::mysql) {
 					$sqlLooping.=" `".$systemCheck."` = CASE `".$this->model->getPrimaryKeyName()."`";
-				} else if($this->q->vendor==self::mssql) {
+				} else if($this->getVendor()==self::mssql) {
 					$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
 
-				} else if ($this->q->vendor==self::oracle) {
+				} else if ($this->getVendor()==self::oracle) {
 					$sqlLooping.="	\"".$systemCheck."\" = CASE \"".$this->model->getPrimaryKeyName()."\"";
 				}
 				switch ($systemCheck){
@@ -992,13 +1042,13 @@ class groupClass  extends configClass {
 			}
 
 			$sql.=substr($sqlLooping,0,-1);
-			if( $this->q->vendor==self::mysql) {
+			if($this->getVendor() == self::mysql) {
 				$sql.="
 			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getGroupIdAll().")";
-			} else if($this->q->vendor==self::mssql) {
+			} else if($this->getVendor()==self::mssql) {
 				$sql.="
 			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getGroupIdAll().")";
-			} else if ($this->q->vendor==self::oracle) {
+			} else if ($this->getVendor()==self::oracle) {
 				$sql.="
 			WHERE \"".$this->model->getPrimaryKeyName()."\" IN (".$this->model->getGroupIdAll().")";
 			}
@@ -1025,24 +1075,24 @@ class groupClass  extends configClass {
 	function duplicate()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
-		if ($this->q->vendor == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			SELECT	*
 			FROM 	`group`
 			WHERE 	`groupCode` 	= 	\"". $this->model->getGroupCode(). "\"
 			AND		`isActive`		=	1";
-		} else if ($this->q->vendor == self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			SELECT	*
 			FROM 	[group]
 			WHERE 	[groupCode] 	= 	\"". $this->model->getGroupCode() . "\"
 			AND		[isActive]		=	1";
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT	*
 			FROM 	\"group\"
@@ -1105,7 +1155,7 @@ if(isset($_POST['method']))	{
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
 		$groupObject->setLeafId($_POST['leafId']);
@@ -1153,7 +1203,7 @@ if(isset($_GET['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['leafId'])){
 		$groupObject->setLeafId($_GET['leafId']);

@@ -243,7 +243,7 @@ if(isset($_POST['method'])){
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
 		$calendarsObject->setLeafId($_POST['leafId']);
@@ -273,7 +273,7 @@ if(isset($_GET['method'])){
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['leafId'])){
 		$calendarsObject->setLeafId($_GET['leafId']);

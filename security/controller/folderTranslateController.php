@@ -123,7 +123,7 @@ class folderClass extends  configClass {
 	 */
 	function create() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -131,7 +131,7 @@ class folderClass extends  configClass {
 		}
 		$this->q->start();
 		$this->model->create();
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 			INSERT INTO `folder`
 					(
@@ -153,7 +153,7 @@ class folderClass extends  configClass {
 						'".$this->model->getIsApproved('','string')."',		'".$this->model->getIsApproved('','string')."',
 						".$this->model->getTime()."
 					);";
-		}else if ($this->q->vendor==self::mssql) {
+		}else if ($this->getVendor()==self::mssql) {
 			$sql="
 			INSERT INTO [folder]
 					(
@@ -175,7 +175,7 @@ class folderClass extends  configClass {
 						'".$this->model->getIsApproved('','string')."',		'".$this->model->getIsApproved('','string')."',
 						".$this->model->getTime()."
 				);";
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			INSERT INTO 	\"folder\"
 						(
@@ -239,18 +239,18 @@ class folderClass extends  configClass {
 
 		//  create a record  in tabAccess.update no effect
 		// loop the group
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="SELECT * FROM `group` WHERE `isActive`=1 ";
-		} else if ($this->q->vendor==self::mssql) {
+		} else if ($this->getVendor()==self::mssql) {
 			$sql="SELECT * FROM [group] WHERE [isActive]=1 ";
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql="SELECT * FROM \"group\" WHERE \"isActive\"=1 ";
 		}
 		$this->q->read($sql);
 		$data = $this->q->activeRecord();
 		foreach ($data as $row ) {
 			// by default no access
-			if( $this->q->vendor==self::mysql) {
+			if($this->getVendor() == self::mysql) {
 				$sql="
 				INSERT INTO	`folderAccess`
 						(
@@ -264,7 +264,7 @@ class folderClass extends  configClass {
 							 '".$row['groupId']."',
 							 '0'
 						)	";
-			} else if ($this->q->vendor==self::mssql) {
+			} else if ($this->getVendor()==self::mssql) {
 				$sql="
 				INSERT INTO 	[folderAccess]
 							(
@@ -278,7 +278,7 @@ class folderClass extends  configClass {
 							 	'".$row['groupId']."',
 							 	'0'
 							 )	";
-			} else if ($this->q->vendor==self::oracle) {
+			} else if ($this->getVendor()==self::oracle) {
 				$sql="
 				INSERT INTO 	\"folderAccess\"
 							(
@@ -309,14 +309,14 @@ class folderClass extends  configClass {
 	 */
 	function read() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
 
 		}
 		// everything given flexibility  on todo
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 			SELECT 		*
 			FROM 		`folder`
@@ -329,7 +329,7 @@ class folderClass extends  configClass {
 			if($this->folderId) {
 				$sql.=" AND `folderId`='".$this->folderId."'";
 			}
-		} else if ($this->q->vendor==self::mssql) {
+		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		[folder]
@@ -343,7 +343,7 @@ class folderClass extends  configClass {
 			if($this->folderId) {
 				$sql.=" AND `folderId`='".$this->folderId."'";
 			}
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		\"folder\"
@@ -375,12 +375,12 @@ class folderClass extends  configClass {
 			$query = $_POST['query'];
 		}
 		if(isset($query)) {
-			if( $this->q->vendor==self::mysql) {
+			if($this->getVendor() == self::mysql) {
 				$sql.=$this->q->quickSearch($tableArray,$filterArray);
-			} else if ($this->q->vendor==self::mssql) {
+			} else if ($this->getVendor()==self::mssql) {
 				$tempSql=$this->q->quickSearch($tableArray,$filterArray);
 				$sql.=$tempSql;
-			} else if ($this->q->vendor==self::oracle) {
+			} else if ($this->getVendor()==self::oracle) {
 				$tempSql=$this->q->quickSearch($tableArray,$filterArray);
 				$sql.=$tempSql;
 			}
@@ -388,13 +388,13 @@ class folderClass extends  configClass {
 		/**
 		 *	Extjs filtering mode
 		 */
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 
 			$sql.=$this->q->searching();
-		} else if ($this->q->vendor==self::mssql) {
+		} else if ($this->getVendor()==self::mssql) {
 			$tempSql2=$this->q->searching();
 			$sql.=$tempSql2;
-		}else if ($this->q->vendor==self::oracle) {
+		}else if ($this->getVendor()==self::oracle) {
 			$tempSql2=$this->q->searching();
 			$sql.=$tempSql2;
 		}
@@ -409,9 +409,9 @@ class folderClass extends  configClass {
 		if($this->order && $this->sortField){
 			if($this->q->vendor==self::mysql || $this->q->vendor=='normal') {
 				$sql.="	ORDER BY `".$sortField."` ".$dir." ";
-			} else if ($this->q->vendor==self::mssql) {
+			} else if ($this->getVendor()==self::mssql) {
 				$sql.="	ORDER BY [".$sortField."] ".$dir." ";
-			} else if ($this->q->vendor==self::oracle) {
+			} else if ($this->getVendor()==self::oracle) {
 				$sql.="	ORDER BY \"".$sortField."\"  ".$dir." ";
 			}
 		}
@@ -424,10 +424,10 @@ class folderClass extends  configClass {
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 				// only mysql have limit
 
-				if( $this->q->vendor==self::mysql) {
+				if($this->getVendor() == self::mysql) {
 					$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
 					$sqlLimit = $sql;
-				} else if ($this->q->vendor==self::mssql) {
+				} else if ($this->getVendor()==self::mssql) {
 					/**
 					 *	 Sql Server and Oracle used row_number
 					 *	 Parameterize Query We don't support
@@ -456,7 +456,7 @@ class folderClass extends  configClass {
 							AND 			".($_POST['start']+$_POST['limit']-1).";";
 
 
-				}  else if ($this->q->vendor==self::oracle) {
+				}  else if ($this->getVendor()==self::oracle) {
 					/**
 					 *  Oracle using derived table also
 					 */
@@ -549,7 +549,7 @@ class folderClass extends  configClass {
 	 */
 	function update() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -557,7 +557,7 @@ class folderClass extends  configClass {
 		}
 		$this->q->start();
 		$this->model->update();
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE 	`folder`
 					SET 	`tabId`				=	'".$this->model->getTabId()."',
@@ -574,7 +574,7 @@ class folderClass extends  configClass {
 							`By`				=	'".$this->model->getBy()."',
 							`Time				=	".$this->model->getTime()."
 					WHERE 	`folderId`			=	'".$this->model->getFolderId()."'";
-		}  else if ( $this->q->vendor==self::mssql) {
+		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[folder]
 					SET 	[tabId]		=	'".$this->model->getTabId()."',
@@ -591,7 +591,7 @@ class folderClass extends  configClass {
 							[By]				=	'".$this->model->getBy()."',
 							[Time]				=	".$this->model->getTime()."
 					WHERE 	[folderId]			=	'".$this->model->getFolderId()."'";
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	\"folder\"
 					SET 	\"tabId\"		=	'".$this->model->getTabId()."',
@@ -624,7 +624,7 @@ class folderClass extends  configClass {
 	 */
 	function delete()							{
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -632,7 +632,7 @@ class folderClass extends  configClass {
 		}
 		$this->q->start();
 		$this->model->delete();
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE	`folder`
 					SET		`isActive`			=	'".$this->model->getIsActive('','string')."',
@@ -645,7 +645,7 @@ class folderClass extends  configClass {
 							`Time				=	".$this->model->getTime()."
 					WHERE 	`folderId`	=	'".$this->model->getFolderId()."'";
 
-		} else if ($this->q->vendor==self::mssql) {
+		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[folder]
 					SET		[isActive]			=	'".$this->model->getIsActive('','string')."',
@@ -657,7 +657,7 @@ class folderClass extends  configClass {
 							[By]				=	'".$this->model->getBy()."',
 							[Time]				=	".$this->model->getTime()."
 					WHERE 	[folderId]	=	'".$this->model->getFolderId()."'";
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE	\"folder\"
 					SET		\"isActive\"	=	'".$this->model->getIsActive('','string')."',
@@ -687,7 +687,7 @@ class folderClass extends  configClass {
 	 **/
 	function translateRead() {
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			/**
 			 *	UTF 8
 			 **/
@@ -702,7 +702,7 @@ class folderClass extends  configClass {
 			JOIN 	`language`
 			USING (`languageId`)
 			WHERE	`folderTranslate`.`folderId`='".$this->model->getFolderId()."'";
-		} else if ($this->q->vendor==self::mssql){
+		} else if ($this->getVendor()==self::mssql){
 			$sql="
 			SELECT	*
 			FROM 	[tabTranslate]
@@ -740,17 +740,17 @@ class folderClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 
 		$this->q->commit();
-		if( $this->q->vendor==self::mysql){
+		if($this->getVendor() == self::mysql){
 			$sql="
 		UPDATE	`folderTranslate`
 		SET		`folderTranslate` 	=	'".$this->strict($_POST['folderTranslate'],'string')."'
 		WHERE 	`folderTranslateId`	=	'".$this->strict($_POST['folderTranslateId'],'numeric')."'";
-		} else if ($this->q->vendor==self::mssql){
+		} else if ($this->getVendor()==self::mssql){
 			$sql="
 		UPDATE	[folderTranslate]
 		SET		[folderTranslate] 	=	'".$this->strict($_POST['folderTranslate'],'string')."'
 		WHERE 	[folderTranslateId]	=	'".$this->strict($_POST['folderTranslateId'],'numeric')."'";
-		} else if ($this->q->vendor==self::oracle){
+		} else if ($this->getVendor()==self::oracle){
 			$sql="
 		UPDATE	\"folderTranslate\"
 		SET		\"folderTranslate\" 		=	'".$this->strict($_POST['folderTranslate'],'string')."'
@@ -782,15 +782,15 @@ class folderClass extends  configClass {
 			$rowDefault = $this->q->fetch_array($resultDefault);
 			$value 		= $rowDefault['folderNote'];
 		}
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			$sql="
 			SELECT	*
 			FROM 	`language`";
-		} else if ($this->q->vendor==self::mssql) {
+		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 			SELECT 	*
 			FROM 	[language] ";
-		} else if ($this->q->vendor==self::oracle) {
+		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			SELECT 	*
 			FROM 	\"language\" ";
@@ -801,19 +801,19 @@ class folderClass extends  configClass {
 			$languageCode	= 	$row['languageCode'];
 			$to 		  	=	$languageCode;
 			$googleTranslate = $this->security->changeLanguage($from="en",$to,$value);
-			if( $this->q->vendor==self::mysql) {
+			if($this->getVendor() == self::mysql) {
 				$sql="
 				SELECT	*
 				FROM 	`folderTranslate`
 				WHERE 	`folderId`			=	'".$this->folderId."'
 				AND 	`languageId`		=	'".$languageId."'";
-			} else if ($this->q->vendor==self::mssql) {
+			} else if ($this->getVendor()==self::mssql) {
 				$sql="
 				SELECT 	*
 				FROM 	[folderTranslate]
 				WHERE 	[folderId]			=	'".$this->folderId."'
 				AND 	[languageId]		=	'".$languageId."'";
-			}  else if ($this->q->vendor==self::oracle) {
+			}  else if ($this->getVendor()==self::oracle) {
 				$sql="
 				SELECT 	*
 				FROM 	\"folderTranslate\"
@@ -822,19 +822,19 @@ class folderClass extends  configClass {
 			}
 			$resultfolderTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultfolderTranslate) >  0 ) {
-				if($this->q->vendor=='normal'  || $this->q->vendor==self::mysql) {
+				if($this->q->vendor=='normal'  ||$this->getVendor() == self::mysql) {
 					$sql="
 					UPDATE 	`folderTranslate`
 					SET 	`folderTranslate`		=	'".$googleTranslate."'
 					WHERE 	`folderId`				=	'".$this->folderId."'
 					AND 	`languageId`			=	'".$languageId."'";
-				} else if ($this->q->vendor==self::mssql) {
+				} else if ($this->getVendor()==self::mssql) {
 					$sql="
 					UPDATE 	[folderTranslate]
 					SET 	[folderTranslate]		=	'".$googleTranslate."'
 					WHERE 	[folderId]				=	'".$this->folderId."'
 					AND 	[languageId]			=	'".$languageId."'";
-				} else if ($this->q->vendor==self::oracle) {
+				} else if ($this->getVendor()==self::oracle) {
 					$sql="
 					UPDATE 	\"folderTranslate\"
 					SET 	\"folderTranslate\"		=	'".$googleTranslate."'
@@ -848,7 +848,7 @@ class folderClass extends  configClass {
 
 				}
 			} else {
-				if($this->q->vendor=='normal'  || $this->q->vendor==self::mysql) {
+				if($this->q->vendor=='normal'  ||$this->getVendor() == self::mysql) {
 					$sql="
 					INSERT INTO `folderTranslate`
 							(
@@ -862,7 +862,7 @@ class folderClass extends  configClass {
 							'".$languageId."',
 							'".$googleTranslate."'
 						)";
-				} else if ($this->q->vendor==self::mssql) {
+				} else if ($this->getVendor()==self::mssql) {
 					$sql="
 					INSERT INTO [folderTranslate]
 							(
@@ -876,7 +876,7 @@ class folderClass extends  configClass {
 								'".$languageId."',
 								'".$googleTranslate."'
 						)";
-				} else if ($this->q->vendor==self::oracle) {
+				} else if ($this->getVendor()==self::oracle) {
 					$sql="
 					INSERT INTO \"folderTranslate\"
 							(
@@ -920,7 +920,7 @@ class folderClass extends  configClass {
 	 */
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
-		if( $this->q->vendor==self::mysql) {
+		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
 			$this->q->fast($sql);
@@ -1013,7 +1013,7 @@ if(isset($_POST['method']))	{
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
 		$folderObject->leafId = $_POST['leafId'];
@@ -1096,7 +1096,7 @@ if(isset($_GET['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	/*
-	 *  Leaf / Application Indentification
+	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['leafId'])){
 		$folderObject->leafId  = $_GET['leafId'];

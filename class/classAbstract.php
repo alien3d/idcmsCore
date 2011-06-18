@@ -185,14 +185,14 @@ abstract class configClass
 					`staffName`
 			FROM   	`staff`
 			WHERE	`isActive`=1";
-		} else if ($this->q->vendor == self::mssql) {
+		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			SELECT 	[staffId],
 					[staffNo],
 					[staffName]
 			FROM   	[staff]
 			WHERE  	[isActive]=1";
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT 	\"staffId\",
 					\"staffNo\",
