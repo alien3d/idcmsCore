@@ -60,7 +60,7 @@ Ext
 				successProperty : "success",
 				messageProperty : "message",
 				idProperty : "staffId"
-					
+
 			});
 			var staffStore = new Ext.data.JsonStore({
 				proxy : staffProxy,
@@ -73,6 +73,7 @@ Ext
 					mode : 'view',
 					leafId : leafId
 				},
+				root : "data",
 				fields : [ {
 					name : 'staffId',
 					type : 'int'
@@ -284,16 +285,16 @@ Ext
 					dataIndex : 'groupId',
 					column : 'groupId',
 					table : 'staff',
-					labelField : 'groupTranslate',
+					labelField : 'groupNote',
 					store : groupStore,
 					phpMode : true
 				}, {
 					type : 'list',
 					dataIndex : 'departmentId',
-					column : 'groupId',
+					column : 'departmentId',
 					table : 'staff',
-					labelField : 'groupTranslate',
-					store : groupStore,
+					labelField : 'departmentNote',
+					store : departmentStore,
 					phpMode : true
 				}, {
 					type : 'string',
@@ -326,63 +327,325 @@ Ext
 				} ]
 			});
 
-			var staffColumnModel = [ new Ext.grid.RowNumberer(), {
-				dataIndex : 'groupTranslate',
-				header : groupTranslateLabel,
-				hidden : false,
-				sortable : true
-			}, {
-				dataIndex : 'departmentTranslate',
-				header : departmentTranslateLabel,
-				hidden : false,
-				sortable : true
-			}, {
-				dataIndex : 'staffName',
-				header : staffNameLabel,
-				hidden : false,
-				sortable : true
-			}, {
-				dataIndex : 'staffIc',
-				header : staffIcLabel,
-				hidden : false,
-				sortable : true
-			}, {
-				dataIndex : 'staffNo',
-				header : staffNoLabel,
-				hidden : false,
-				sortable : true
-			}, {
-				dataIndex : 'By',
-				header : byLabel,
-				hidden : true,
-				sortable : true
-			}, {
-				dataIndex : 'createTime',
-				header : timeLabel,
-				hidden : true,
-				sortable : true,
-				renderer : function(value) {
-					return Ext.util.Format.date(value, 'Y-m-d H:i:s');
-				}
-			} ];
-
-			var staffGrid = new Ext.grid.GridPanel({
-				border : false,
-				store : staffStore,
-				autoHeight : false,
-				height : 400,
-				columns : staffColumnModel,
-				loadMask : true,
-				plugins : [ staffFilters ],
-				sm : new Ext.grid.RowSelectionModel({
-					singleSelect : true
-				}),
-				viewConfig : {
-					forceFit : true,
-					emptyText : emptyRowLabel
-				},
-				iconCls : 'application_view_detail'
+			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Default',
+				dataIndex : 'isDefault',
+				hidden : isDefaultHidden
 			});
+			var isNewGrid = new Ext.ux.grid.CheckColumn({
+				header : 'New',
+				dataIndex : 'isNew',
+				hidden : isNewHidden
+			});
+			var isDraftGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Draft',
+				dataIndex : 'isDraft',
+				hidden : isDraftHidden
+			});
+			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Update',
+				dataIndex : 'isUpdate',
+				hidden : isUpdateHidden
+			});
+			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Delete',
+				dataIndex : 'isDelete'
+			});
+			var isActiveGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Active',
+				dataIndex : 'isActive',
+				hidden : isActiveHidden
+			});
+			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Approved',
+				dataIndex : 'isApproved',
+				hidden : isApprovedHidden
+			});
+
+			var staffColumnModel = [
+					new Ext.grid.RowNumberer(),
+					{
+						dataIndex : 'groupId',
+						header : groupNoteLabel,
+						hidden : false,
+						sortable : true,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							return record.data.groupNote;
+						}
+					},
+					{
+						dataIndex : 'departmentId',
+						header : departmentNoteLabel,
+						hidden : false,
+						sortable : true,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							return record.data.departmentNote;
+						}
+					},
+					{
+						dataIndex : 'staffName',
+						header : staffNameLabel,
+						hidden : false,
+						sortable : true
+					},
+					{
+						dataIndex : 'staffIc',
+						header : staffIcLabel,
+						hidden : false,
+						sortable : true
+					},
+					{
+						dataIndex : 'staffNo',
+						header : staffNoLabel,
+						hidden : false,
+						sortable : true
+					},
+					isDefaultGrid,
+					isNewGrid,
+					isDraftGrid,
+					isUpdateGrid,
+					isDeleteGrid,
+					isActiveGrid,
+					isApprovedGrid,
+					{
+						dataIndex : "By",
+						header : createByLabel,
+						sortable : true,
+						hidden : false,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							return record.data.staffName;
+						}
+					},
+					{
+						dataIndex : "Time",
+						header : timeLabel,
+						sortable : true,
+						hidden : false,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+						}
+					} ];
+			
+			  var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
+
+			var staffGrid = new Ext.grid.GridPanel(
+					{
+						border : false,
+						store : staffStore,
+						autoHeight : false,
+						height : 400,
+						columns : staffColumnModel,
+						loadMask : true,
+						plugins : [ staffFilters ],
+						sm : new Ext.grid.RowSelectionModel({
+							singleSelect : true
+						}),
+						viewConfig : {
+							forceFit : true,
+							emptyText : emptyRowLabel
+						},
+						iconCls : 'application_view_detail',
+						listeners : {
+							'rowclick' : function(object, rowIndex, e) {
+								var record = staffStore.getAt(rowIndex);
+								formPanel.getForm().reset();
+								formPanel.form.load({
+									url : "../controller/staffController.php",
+									method : "POST",
+									waitTitle : systemLabel,
+									waitMsg : waitMessageLabel,
+									params : {
+										method : "read",
+
+										staffId : record.data.staffId,
+										leafId : leafId,
+										isAdmin : isAdmin
+									},
+									success : function(form, action) {
+
+										viewPort.items.get(1).expand();
+									},
+									failure : function(form, action) {
+										Ext.MessageBox.alert(systemErrorLabel,
+												action.result.message);
+									}
+								});
+							}
+						},
+						tbar : {
+							items : [
+									{
+										iconCls : 'add',
+										id : 'add_record',
+										name : 'add_record',
+										text : 'New Record',
+										handler : function() {
+											formPanel
+											.getForm()
+											.reset();
+											 viewPort.items.get(1).expand();
+										}
+									},
+									{
+										text : 'Check All',
+										iconCls : 'row-check-sprite-check',
+										listeners : {
+											'click' : function() {
+												var count = staffStore
+														.getCount();
+												staffStore
+														.each(function(rec) {
+															for ( var access in accessArray) { // alert(access);
+																rec
+																		.set(
+																				accessArray[access],
+																				true);
+															}
+														});
+											}
+										}
+									},
+									{
+										text : 'Clear All',
+										iconCls : 'row-check-sprite-uncheck',
+										listeners : {
+											'click' : function() {
+												staffStore
+														.each(function(rec) {
+															for ( var access in accessArray) {
+																rec
+																		.set(
+																				accessArray[access],
+																				false);
+															}
+														});
+											}
+										}
+									},
+									{
+										text : 'save',
+										iconCls : 'bullet_disk',
+										listeners : {
+											'click' : function(c) {
+												var url;
+												var count = staffStore
+														.getCount();
+												url = '../controller/staffController.php?';
+												var sub_url;
+												sub_url = '';
+
+												var modified = staffStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
+													var record = staffStore
+															.getAt(i);
+
+													if (record
+															.get('staffId')) {
+														sub_url = sub_url
+																+ '&staffId[]='
+																+ record
+																		.get('staffId');
+													} else {
+														alert("testing for error"
+																+ i)
+													}
+													if (isAdmin == 1) {
+														sub_url = sub_url
+																+ '&isDefault[]='
+																+ record
+																		.get('isDefault');
+														sub_url = sub_url
+																+ '&isNew[]='
+																+ record
+																		.get('isNew');
+														sub_url = sub_url
+																+ '&isDraft[]='
+																+ record
+																		.get('isDraft');
+														sub_url = sub_url
+																+ '&isUpdate[]='
+																+ record
+																		.get('isUpdate');
+													}
+
+													sub_url = sub_url
+															+ '&isDelete[]='
+															+ record
+																	.get('isDelete');
+													if (isAdmin == 1) {
+														sub_url = sub_url
+																+ '&isActive[]='
+																+ record
+																		.get('isActive');
+														sub_url = sub_url
+																+ '&isApproved[]='
+																+ record
+																		.get('isApproved');
+													}
+												}
+												url = url + sub_url; // reques
+																		// and
+																		// ajax
+
+												Ext.Ajax
+														.request({
+															url : url,
+															method : 'GET',
+															params : {
+																leafId : leafId,
+																method : 'updateStatus',
+																isAdmin : isAdmin
+															},
+															success : function(
+																	response,
+																	options) {
+																jsonResponse = Ext
+																		.decode(response.responseText);
+																if (jsonResponse.success == true) {
+																	Ext.MessageBox
+																			.alert(
+																					systemLabel,
+																					jsonResponse.message);
+																	departmentStore
+																			.removeAll(); // force
+																							// to
+																							// remove
+																							// all
+																							// data
+																	departmentStore
+																			.reload();
+																} else if (jsonResponse.success == false) {
+																	Ext.MessageBox
+																			.alert(
+																					systemErrorLabel,
+																					jsonResponse.message);
+																}
+															},
+															failure : function(
+																	response,
+																	options) {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				escape(response.status)
+																						+ ":"
+																						+ escape(response.statusText));
+															}
+														}); // refresh the store
+											}
+										}
+									} ]
+						},
+						bbar : new Ext.PagingToolbar({
+							store : staffStore,
+							pageSize : perPage
+						})
+					});
 
 			var toolbarPanel = new Ext.Toolbar(
 					{
@@ -473,7 +736,7 @@ Ext
 									id : "pageReload",
 									disabled : pageReload,
 									handler : function() {
-										groupStore.reload();
+										staffStore.reload();
 									}
 								},
 
@@ -521,7 +784,7 @@ Ext
 												});
 									}
 								}, '-', new Ext.ux.form.SearchField({
-									store : groupStore,
+									store : staffStore,
 									width : 320
 								}) ],
 						items : [ staffGrid ]
@@ -535,7 +798,7 @@ Ext
 				hiddenName : 'groupId',
 				valueField : 'groupId',
 				id : 'group_fake',
-				displayField : 'groupName',
+				displayField : 'groupNote',
 				typeAhead : false,
 				triggerAction : 'all',
 				store : groupStore,
@@ -562,7 +825,7 @@ Ext
 				hiddenName : 'departmentId',
 				valueField : 'departmentId',
 				id : 'department_fake',
-				displayField : 'departmentName',
+				displayField : 'departmentNote',
 				typeAhead : false,
 				triggerAction : 'all',
 				store : departmentStore,
@@ -600,7 +863,7 @@ Ext
 				fieldLabel : staffIcLabel,
 				hiddenName : 'staffIc',
 				name : 'staffIc',
-				allowBlank : false,
+				allowBlank : true,
 				blankText : blankTextLabel,
 				anchor : '95%'
 			});
@@ -610,7 +873,7 @@ Ext
 				fieldLabel : staffNoLabel,
 				hiddenName : 'staffNo',
 				name : 'staffNo',
-				allowBlank : false,
+				allowBlank : true,
 				blankText : blankTextLabel,
 				anchor : '95%'
 			});
@@ -628,7 +891,8 @@ Ext
 
 			// hidden id for updated
 			var staffId = new Ext.form.Hidden({
-				name : 'staffId'
+				name : 'staffId',
+				id:'staffId'
 			});
 
 			var formPanel = new Ext.form.FormPanel(
@@ -688,9 +952,11 @@ Ext
 																	success : function(
 																			form,
 																			action) {
+																		
+																		if(action.result.success==true){
 																		Ext.MessageBox
 																				.alert(
-																						title,
+																						systemLabel,
 																						action.result.message);
 
 																		formPanel
@@ -715,6 +981,9 @@ Ext
 																				.get(
 																						0)
 																				.expand();
+																		} else {
+																			alert(action.result.message)
+																		}
 																	},
 																	failure : function(
 																			form,
@@ -740,7 +1009,7 @@ Ext
 																		} else if (action.failureType === Ext.form.Action.SERVER_INVALID) {
 																			Ext.Msg
 																					.alert(
-																							title,
+																							systemErrorLabel,
 																							action.result.message);
 																		}
 																	}

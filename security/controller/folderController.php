@@ -1000,15 +1000,7 @@ class folderClass extends  configClass {
 }
 
 $folderObject  	= 	new folderClass();
-if(isset($_SESSION['staffId'])){
-	$folderObject->setStaffId($_SESSION['staffId']);
-}
-if(isset($_SESSION['vendor'])){
-	$folderObject->setVendor($_SESSION['vendor']);
-}
-if(isset($_SESSION['languageId'])){
-	$folderObject->setLanguageId($_SESSION['languageId']);
-}
+
 /**
  *	crud -create,read,update,delete
  **/
@@ -1049,15 +1041,7 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['sortField'])){
 		$folderObject->setSortField($_POST['sortField']);
 	}
-	/*
-	 *  Translation
-	 */
-	if(isset($_POST['folderTranslateId'])){
-		$folderObject->leafTranslateId= $_POST['folderTranslateId'];
-	}
-	if(isset($_POST['folderTranslate'])){
-		$folderObject->leafTranslate= $_POST['folderTranslate'];
-	}
+
 	/*
 	 *  Load the dynamic value
 	 */
@@ -1069,25 +1053,15 @@ if(isset($_POST['method']))	{
 		$folderObject->create();
 	}
 	if($_POST['method']=='read') 	{
-		if(isset($_POST['page'])) {
-			if($_POST['page']=='master') {
-				$folderObject->read();
-			}
-			if($_POST['page']=='detail') {
-				$folderObject->translateRead();
-			}
-		}
+
+		$folderObject->read();
+
 	}
 
 	if($_POST['method']=='save') 	{
-		if(isset($_POST['page'])) {
-			if($_POST['page']=='master') {
-				$folderObject->update();
-			}
-			if($_POST['page']=='detail') {
-				$folderObject->translateUpdate();
-			}
-		}
+
+		$folderObject->update();
+
 	}
 	if($_POST['method']=='delete') 	{
 		$folderObject->delete();
@@ -1120,11 +1094,10 @@ if(isset($_GET['method'])) {
 
 			$folderObject->staff();
 		}
-	}
-	if(isset($_GET['field'])){
 		if($_GET['field']=='tabId'){
 			$folderObject->tab();
 		}
+
 	}
 
 
@@ -1133,10 +1106,7 @@ if(isset($_GET['method'])) {
 			$folderObject->excel();
 		}
 	}
-	if($_GET['method']=='translate'){
-		$folderObject->translateMe();
 
-	}
 }
 
 

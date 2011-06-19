@@ -497,12 +497,7 @@ class leafAccessClass extends  configClass {
 
 $leafAccessObject  	= 	new leafAccessClass();
 
-if(isset($_SESSION['staffId'])){
-	$leafAccessObject->staffIdTemporally = $_SESSION['staffId'];
-}
-if(isset($_SESSION['vendor'])){
-	$leafAccessObject-> vendor = $_SESSION['vendor'];
-}
+
 if(isset($_POST['method'])){
 	/*
 	 *  Initilize Value before load in the loader
@@ -511,27 +506,22 @@ if(isset($_POST['method'])){
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
-		$leafAccessObject->leafId = $_POST['leafId'];
+		$leafAccessObject->setLeafId($_POST['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$leafAccessObject->isAdmin = $_POST['isAdmin'];
+		$leafAccessObject->setIsAdmin($_POST['isAdmin']);
 	}
-	if(isset($_POST['staffId'])){
-		$leafAccessObject->staffId = $_POST['staffId'];
-	}
-	if(isset($_POST['accordionId'])){
-		$leafAccessObject->accordionId = $_POST['accordionId'];
-	}
-	if(isset($_POST['folderId'])){
-		$leafAccessObject->folderId = $_POST['folderId'];
-	}
+
 	/*
 	 *  Load the dynamic value
 	 */
 	$leafAccessObject->execute();
+	/*
+	 *  Crud Operation
+	 */
 	if($_POST['method']=='read'){
 		$leafAccessObject -> read();
 	}
@@ -545,13 +535,13 @@ if(isset($_GET['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['leafId'])){
-		$leafAccessObject->leafId  = $_GET['leafId'];
+		$leafAccessObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])){
-		$leafAccessObject->isAdmin = $_GET['isAdmin'];
+		$leafAccessObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value

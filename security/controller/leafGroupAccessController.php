@@ -461,12 +461,7 @@ class leafGroupAccessClass  extends  configClass {
 
 }
 $leafGroupAccessObject  	= 	new leafGroupAccessClass();
-if(isset($_SESSION['staffId'])){
-	$leafGroupAccessObject->staffId = $_SESSION['staffId'];
-}
-if(isset($_SESSION['vendor'])){
-	$leafGroupAccessObject-> vendor = $_SESSION['vendor'];
-}
+
 // crud -create,read,update,delete.
 if(isset($_POST['method'])){
 	/*
@@ -476,23 +471,15 @@ if(isset($_POST['method'])){
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
-		$leafGroupAccessObject->leafId = $_POST['leafId'];
+		$leafGroupAccessObject->setleafId($_POST['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$leafGroupAccessObject->isAdmin = $_POST['isAdmin'];
+		$leafGroupAccessObject->setIsAdmin($_POST['isAdmin']);
 	}
-	if(isset($_POST['groupId'])){
-		$leafGroupAccessObject->groupId = $_POST['groupId'];
-	}
-	if(isset($_POST['accordionId'])){
-		$leafGroupAccessObject->accordionId = $_POST['accordionId'];
-	}
-	if(isset($_POST['folderId'])){
-		$leafGroupAccessObject->folderId = $_POST['folderId'];
-	}
+
 	/*
 	 *  Load the dynamic value
 	 */
@@ -512,13 +499,13 @@ if(isset($_GET['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['leafId'])){
-		$leafGroupAccessObject->leafId  = $_GET['leafId'];
+		$leafGroupAccessObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])){
-		$leafGroupAccessObject->isAdmin = $_GET['isAdmin'];
+		$leafGroupAccessObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *

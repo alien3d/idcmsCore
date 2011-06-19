@@ -310,7 +310,24 @@ Ext.onReady(function() {
 		editor : groupNote
 					
     },
-    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid];
+    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid{
+        dataIndex: "By",
+        header: createByLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return record.data.staffName;
+        }
+    },
+    {
+        dataIndex: "Time",
+        header: timeLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+        }
+    }];
     var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
     var groupEditor = new Ext.ux.grid.RowEditor({
         saveText: 'Save',

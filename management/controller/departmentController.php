@@ -117,7 +117,7 @@ class departmentClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getDepartmentSequence('','string') . "\",	\"". $this->model->getDepartmentSequence('','string') . "\",
+						\"". $this->model->getDepartmentSequence() . "\",				\"". $this->model->getDepartmentCode() . "\",
 						\"". $this->model->getDepartmentNote('','string') . "\",		\"". $this->model->getIsDefault('','string') . "\",
 						\"". $this->model->getIsNew('','string') . "\",					\"". $this->model->getIsDraft('','string') . "\",
 						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
@@ -137,7 +137,7 @@ class departmentClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getDepartmentSequence('','string') . "\",	\"". $this->model->getDepartmentSequence('','string') . "\",
+						\"". $this->model->getDepartmentSequence() . "\",	\"". $this->model->getDepartmentSequence() . "\",
 						\"". $this->model->getDepartmentNote('','string') . "\",		\"". $this->model->getIsDefault('','string') . "\",
 						\"". $this->model->getIsNew('','string') . "\",					\"". $this->model->getIsDraft('','string') . "\",
 						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
@@ -157,7 +157,7 @@ class departmentClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getDepartmentSequence('','string') . "\",	\"". $this->model->getDepartmentSequence('','string') . "\",
+						\"". $this->model->getDepartmentSequence() . "\",	\"". $this->model->getDepartmentSequence() . "\",
 						\"". $this->model->getDepartmentNote('','string') . "\",		\"". $this->model->getIsDefault('','string') . "\",
 						\"". $this->model->getIsNew('','string') . "\",					\"". $this->model->getIsDraft('','string') . "\",
 						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
@@ -699,7 +699,7 @@ class departmentClass  extends configClass {
 
 
 				$this->model->setPrimaryKeyAll(substr($primaryKeyAll,0,-1));
-				$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getPrimaryKeyAll(). ")";
+		echo		$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getPrimaryKeyAll(). ")";
 
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
@@ -820,13 +820,13 @@ class departmentClass  extends configClass {
 			$sql.=substr($sqlLooping,0,-1);
 			if($this->getVendor() == self::mysql) {
 				$sql.="
-			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getDepartmentIdAll().")";
+			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getPrimaryKeyAll().")";
 			} else if($this->getVendor()==self::mssql) {
 				$sql.="
-			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getDepartmentIdAll().")";
+			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql.="
-			WHERE \"".$this->model->getPrimaryKeyName()."\" IN (".$this->model->getDepartmentIdAll().")";
+			WHERE \"".$this->model->getPrimaryKeyName()."\" IN (".$this->model->getPrimaryKeyAll().")";
 			}
 		}
 		$this->q->update($sql);
@@ -1116,7 +1116,7 @@ if(isset($_POST['method']))	{
 		$departmentObject->setFieldQuery($_POST['query']);
 	}
 	if(isset($_POST['filter'])){
-		echo "jerk";
+
 		$departmentObject->setGridQuery($_POST['filter']);
 	}
 	/**

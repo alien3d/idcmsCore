@@ -775,15 +775,7 @@ class tabClass extends configClass
  *	Declare object
  **/
 $tabObject = new tabClass();
-if (isset($_SESSION['staffId'])) {
-	$tabObject->setStaffId($_SESSION['staffId']);
-}
-if (isset($_SESSION['vendor'])) {
-	$tabObject->setVendor($_SESSION['vendor']);
-}
-if(isset($_SESSION['languageId'])){
-	$tabObject->setLanguageId($_SESSION['languageId']);
-}
+
 
 /**
  *	Form Property .CRUD -create,read,update,delete

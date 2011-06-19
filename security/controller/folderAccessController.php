@@ -357,12 +357,7 @@ class folderAccessClass  extends configClass {
 
 
 $folderAccessObject  	= 	new folderAccessClass();
-if(isset($_SESSION['staffId'])){
-	$folderAccessObject->staffId = $_SESSION['staffId'];
-}
-if(isset($_SESSION['vendor'])){
-	$folderAccessObject->vendor = $_SESSION['vendor'];
-}
+
 if(isset($_POST['method'])){
 
 	/*
@@ -380,36 +375,34 @@ if(isset($_POST['method'])){
 	if(isset($_POST['isAdmin'])){
 		$folderAccessObject->isAdmin = $_POST['isAdmin'];
 	}
-	if(isset($_POST['groupId'])){
-		$folderAccessObject->groupId = $_POST['groupId'];
-	}
-	if(isset($_POST['accordionId'])){
-		$folderAccessObject->accordionId = $_POST['accordionId'];
-	}
+
 
 	/*
 	 *  Paging
 	 */
 	if(isset($_POST['start'])){
-		$folderAccessObject->start = $_POST['start'];
+		$folderAccessObject->setStart($_POST['start']);
 	}
 	if(isset($_POST['limit'])){
-		$folderAccessObject->limit = $_POST['perPage'];
+		$folderAccessObject->setLimit($_POST['perPage']);
 	}
 	/**
 	 *  Filtering
 	 */
 	if(isset($_POST['query'])){
-		$folderAccessObject->fieldQuery = $_POST['query'];
+		$folderAccessObject->setFieldQuery($_POST['query']);
 	}
 	if(isset($_POST['filter'])){
-		$folderAccessObject->gridQuery = $_POST['filter'];
+		$folderAccessObject->setGridQuery($_POST['filter']);
 	}
+	/*
+	 * Ordering
+	 */
 	if(isset($_POST['order'])){
-		$folderAccessObject-> order= $_POST['order'];
+		$folderAccessObject->setOrder($_POST['order']);
 	}
 	if(isset($_POST['sortField'])){
-		$folderAccessObject-> sortField= $_POST['sortField'];
+		$folderAccessObject->setSortField($_POST['sortField']);
 	}
 
 	/*
@@ -431,13 +424,13 @@ if(isset($_GET['method'])){
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['method'])){
-		$folderAccessObject ->leafId = $_GET['leafId'];
+		$folderAccessObject ->setleafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])){
-		$folderAccessObject->isAdmin = $_GET['isAdmin'];
+		$folderAccessObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value

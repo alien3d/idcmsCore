@@ -340,12 +340,7 @@ class logClass extends  configClass {
 }
 
 $logObject  	= 	new logClass();
-if(isset($_SESSION['staffId'])){
-	$logObject->staffId = $_SESSION['staffId'];
-}
-if(isset($_SESSION['vendor'])){
-	$logObject-> vendor = $_SESSION['vendor'];
-}
+
 // crud -create,read,update,delete
 
 if(isset($_POST['method'])){
@@ -356,13 +351,13 @@ if(isset($_POST['method'])){
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
-		$logObject->leafId  = $_POST['leafId'];
+		$logObject->setLeafId($_POST['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$logObject->isAdmin = $_POST['isAdmin'];
+		$logObject->setIsAdmin($_POST['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
@@ -380,17 +375,15 @@ if(isset($_GET['method'])){
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['leafId'])){
-		$logObject->leafId = $_GET['leafId'];
+		$logObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])){
-		$logObject->isAdmin = $_GET['isAdmin'];
+		$logObject->setIsAdmin($_GET['isAdmin']);
 	}
-	if(isset($_GET['field'])){
-		$logObject-> staffId = $_GET['staffId'];
-	}
+
 	/*
 	 *  Load the dynamic value
 	 */

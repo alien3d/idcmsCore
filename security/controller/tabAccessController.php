@@ -281,12 +281,7 @@ class tabAccessClass extends configClass
 	}
 }
 $tabAccessObject = new tabAccessClass();
-if (isset($_SESSION['staffId'])) {
-	$tabAccessObject->staffId = $_SESSION['staffId'];
-}
-if (isset($_SESSION['vendor'])) {
-	$tabAccessObject->vendor = $_SESSION['vendor'];
-}
+
 // crud -create,read,update,delete.
 if (isset($_POST['method'])) {
 	/*
