@@ -71,6 +71,7 @@ class departmentClass  extends configClass {
 		$this->q->staffId     	= $this->getStaffId();
 		$this->q->fieldQuery	= $this->getFieldQuery();
 		$this->q->gridQuery   = $this->getGridQuery();
+
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 		$this->excel         = new PHPExcel();
 		$this->audit         = 0;
@@ -78,7 +79,7 @@ class departmentClass  extends configClass {
 		$this->q->log        = $this->log;
 
 		$this->model         = new departmentModel();
-		$this->model->vendor = $this->getVendor();
+		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
 		$this->documentTrail = new documentTrailClass();

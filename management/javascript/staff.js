@@ -41,9 +41,9 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(systemLabel,
-						// jsonResponse.message); //uncomment it for debugging
-						// purpose
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+						// //uncomment it for debugging
+
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -60,14 +60,14 @@ Ext
 				successProperty : "success",
 				messageProperty : "message",
 				idProperty : "staffId"
+					
 			});
 			var staffStore = new Ext.data.JsonStore({
+				proxy : staffProxy,
+				reader : staffReader,
+				autoLoad : true,
 				autoDestroy : true,
-				url : '../controller/staffController.php',
-				remoteSort : true,
-				storeId : 'myStore',
-				root : 'data',
-				totalProperty : 'total',
+				pruneModifiedRecords : true,
 				baseParams : {
 					method : 'read',
 					mode : 'view',
@@ -80,9 +80,9 @@ Ext
 					name : 'groupId',
 					type : 'int'
 				}, {
-					name :'departmentId',
-					type :'int'
-				},{
+					name : 'departmentId',
+					type : 'int'
+				}, {
 					name : 'groupName',
 					type : 'string'
 				}, {
@@ -116,16 +116,14 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name :"By",
-					type :"int"
-				},{
+					name : "By",
+					type : "int"
+				}, {
 					name : "Time",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
 			});
-
-			
 
 			var staffByProxy = new Ext.data.HttpProxy({
 				url : "../controller/staffController.php?",
@@ -176,7 +174,7 @@ Ext
 
 			var groupProxy = new Ext.data.HttpProxy({
 				url : "../controller/staffController.php",
-				method:'GET',
+				method : 'GET',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -192,17 +190,16 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			
-			
+
 			var groupReader = new Ext.data.JsonReader({
-				
+
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
 				idProperty : "groupId"
-				
-			});	
-			
+
+			});
+
 			var groupStore = new Ext.data.JsonStore({
 				proxy : groupProxy,
 				reader : groupReader,
@@ -220,16 +217,15 @@ Ext
 				}, {
 					name : "groupNote",
 					type : "string"
-				},{
-					name :"groupTranslate",
-					type :"string"
+				}, {
+					name : "groupTranslate",
+					type : "string"
 				} ]
 			});
-	
-			
+
 			var departmentProxy = new Ext.data.HttpProxy({
 				url : "../controller/staffController.php",
-				method:'GET',
+				method : 'GET',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -245,17 +241,16 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			
-			
+
 			var departmentReader = new Ext.data.JsonReader({
-				
+
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
 				idProperty : "departmentId"
-				
-			});	
-			
+
+			});
+
 			var departmentStore = new Ext.data.JsonStore({
 				proxy : departmentProxy,
 				reader : departmentReader,
@@ -273,14 +268,11 @@ Ext
 				}, {
 					name : "departmentNote",
 					type : "string"
-				},{
-					name :"departmentTranslate",
-					type :"string"
+				}, {
+					name : "departmentTranslate",
+					type : "string"
 				} ]
 			});
-			
-
-			
 
 			var staffFilters = new Ext.ux.grid.GridFilters({
 				// encode and local configuration options defined previously for
@@ -295,7 +287,7 @@ Ext
 					labelField : 'groupTranslate',
 					store : groupStore,
 					phpMode : true
-				},{
+				}, {
 					type : 'list',
 					dataIndex : 'departmentId',
 					column : 'groupId',
@@ -333,11 +325,8 @@ Ext
 					table : 'staff'
 				} ]
 			});
-			
-			
-		
 
-			var staffColumnModel = [ new Ext.grid.RowNumberer(),  {
+			var staffColumnModel = [ new Ext.grid.RowNumberer(), {
 				dataIndex : 'groupTranslate',
 				header : groupTranslateLabel,
 				hidden : false,
@@ -375,9 +364,7 @@ Ext
 				renderer : function(value) {
 					return Ext.util.Format.date(value, 'Y-m-d H:i:s');
 				}
-			}];
-
-			
+			} ];
 
 			var staffGrid = new Ext.grid.GridPanel({
 				border : false,
@@ -396,8 +383,6 @@ Ext
 				},
 				iconCls : 'application_view_detail'
 			});
-
-			
 
 			var toolbarPanel = new Ext.Toolbar(
 					{
@@ -474,20 +459,74 @@ Ext
 									}
 								} ]
 					});
-			
-			var gridPanel = new Ext.Panel({
-				title : leafNote,
-				height : 50,
-				layout : 'fit',
-				iconCls : 'application_view_detail',
-				tbar : [ toolbarPanel, '->', new Ext.ux.form.SearchField({
-					store : staffStore,
-					width : 320
-				}) ],
-				items : [ staffGrid ]
-			});
 
-		
+			var gridPanel = new Ext.Panel(
+					{
+						title : leafNote,
+						height : 50,
+						layout : 'fit',
+						iconCls : 'application_view_detail',
+						tbar : [
+								{
+									text : reloadToolbarLabel,
+									iconCls : "database_refresh",
+									id : "pageReload",
+									disabled : pageReload,
+									handler : function() {
+										groupStore.reload();
+									}
+								},
+
+								'-',
+								{
+									text : excelToolbarLabel,
+									iconCls : "page_excel",
+									id : "page_excel",
+									disabled : pagePrint,
+									handler : function() {
+										Ext.Ajax
+												.request({
+													url : "../controller/groupController.php",
+													method : "GET",
+													params : {
+														method : 'report',
+														mode : 'excel',
+														limit : perPage,
+														leafId : leafId
+													},
+													success : function(
+															response, options) {
+														jsonResponse = Ext
+																.decode(response.responseText);
+														if (jsonResponse.success == true) {
+															window
+																	.open("../../management/document/excel/"
+																			+ jsonResponse.filename);
+														} else {
+															Ext.MessageBox
+																	.alert(
+																			successLabel,
+																			jsonResponse.message);
+														}
+													},
+													failure : function(
+															response, options) {
+														Ext.MessageBox
+																.alert(
+																		systemErrorLabel,
+																		escape(response.status)
+																				+ ":"
+																				+ escape(response.statusText));
+													}
+												});
+									}
+								}, '-', new Ext.ux.form.SearchField({
+									store : groupStore,
+									width : 320
+								}) ],
+						items : [ staffGrid ]
+					});
+
 			// viewport just save information,items will do separate
 			var groupId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
@@ -515,7 +554,7 @@ Ext
 					return new RegExp('\\b(' + value + ')', 'i');
 				}
 			});
-			
+
 			var departmentId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
 				fieldLabel : departmentIdLabel,
@@ -542,7 +581,7 @@ Ext
 					return new RegExp('\\b(' + value + ')', 'i');
 				}
 			});
-			
+
 			var staffName = new Ext.form.TextField({
 				labelAlign : 'left',
 				fieldLabel : staffNameLabel,
@@ -602,8 +641,8 @@ Ext
 						border : false,
 
 						width : 600,
-						items : [ groupId,departmentId, staffId, staffName, staffIc,
-								staffNo, staffPassword ],
+						items : [ groupId, departmentId, staffId, staffName,
+								staffIc, staffNo, staffPassword ],
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
 						iconCls : 'application_form',

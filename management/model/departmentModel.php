@@ -51,7 +51,7 @@ class departmentModel extends validationClass{
 			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
-		$this->setTotal(count($_GET['religionId']));
+		$this->setTotal(count($_GET['departmentId']));
         $accessArray = array(
             "isDefault",
             "isNew",
@@ -62,6 +62,9 @@ class departmentModel extends validationClass{
             "isApproved"
         );
         // auto assign as array if true
+        if(is_array($_GET['departmentId'])){
+        	$this->departmentId= array();
+        }
         if (is_array($_GET['isDefault'])) {
             $this->isDefault = array();
         }

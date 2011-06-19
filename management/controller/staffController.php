@@ -567,9 +567,13 @@ class staffClass extends  configClass {
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 					SELECT	`staff`.`staffId`,
-							`staff`.`staffSequence`,
-							`staff`.`staffCode`,
-							`staff`.`staffNote`,
+							`staff`.`groupId`,
+							`staff`.`departmentId`,
+							`staff`.`languageId`,
+							`staff`.`staffPassword`,
+							`staff`.`staffName`,
+							`staff`.`staffNo`,
+							`staff`.`staffIc`,
 							`staff`.`isDefault`,
 							`staff`.`isNew`,
 							`staff`.`isDraft`,
@@ -578,12 +582,16 @@ class staffClass extends  configClass {
 							`staff`.`isActive`,
 							`staff`.`isApproved`,
 							`staff`.`By`,
-							`staff`.`Time`,
-							`staff`.`staffName`
+							`staff`.`Time`
  					FROM 	`staff`
-					JOIN	`staff`
-					ON		`staff`.`By` = `staff`.`staffId`
-					WHERE 	".$this->auditFilter;
+ 					JOIN	`group`
+ 					USING	(`groupId`)
+ 					JOIN	`department`
+ 					USING	(`departmentId`)
+					WHERE 	".$this->auditFilter."
+					AND		`group`.`isActive`=1
+					AND		`department`.`isActive`=1
+					";
 			if ($this->model->getStaffId('','string')) {
 				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getstaffId('','string') . "\"";
 
@@ -592,9 +600,13 @@ class staffClass extends  configClass {
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 					SELECT	[staff].[staffId],
-							[staff].[staffSequence],
-							[staff].[staffCode],
-							[staff].[staffNote],
+							[staff].[groupId],
+							[staff].[departmentId],
+							[staff].[languageId],
+							[staff].[staffPassword],
+							[staff].[staffName],
+							[staff].[staffNo],
+							[staff].[staffIc],
 							[staff].[isDefault],
 							[staff].[isNew],
 							[staff].[isDraft],
@@ -606,18 +618,26 @@ class staffClass extends  configClass {
 							[staff].[Time],
 							[staff].[staffName]
 					FROM 	[staff]
-					JOIN	[staff]
-					ON		[staff].[By] = [staff].[staffId]
-					WHERE 	[staff].[isActive] ='1'	";
+					JOIN	[department]
+					ON		[department].[departmentId]=[staff].[staffId]
+					JOIN	[group]
+					ON		[group].[groupId]=[staff].[staffId]
+					WHERE 	[staff].[isActive]='1'
+					AND		[group].[isActive] ='1'
+					AND		[deparment].[isActive]='1'";
 			if ($this->model->getStaffId('','string')) {
 				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getstaffId('','string') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 					SELECT	\"staff\".\"staffId\",
-							\"staff\".\"staffCode\",
-							\"staff\".\"staffSequence\",
-							\"staff\".\"staffNote\",
+							\"staff\".\"groupId\",
+							\"staff\".\"departmentId\",
+							\"staff\".\"languageId\",
+							\"staff\".\"staffPassword\",
+							\"staff\".\"staffName\",
+							\"staff\".\"staffNo\",
+							\"staff\".\"staffIc\",
 							\"staff\".\"isDefault\",
 							\"staff\".\"isNew\",
 							\"staff\".\"isDraft\",
@@ -629,9 +649,13 @@ class staffClass extends  configClass {
 							\"staff\".\"Time\",
 							\"staff\".\"staffName\"
 					FROM 	\"staff\"
-					JOIN	\"staff\"
-					ON		\"staff\".\"By\" = \"staff\".\"staffId\"
-					WHERE 	\"isActive\"='1'	";
+					JOIN	`group`
+ 					USING	(`groupId`)
+ 					JOIN	`department`
+ 					USING	(`departmentId`)
+					WHERE 	\"staff\".\"isActive\"='1'
+					AND		\"group\".\"isActive\" ='1'
+					AND		\"deparment\".\"isActive\"='1' ";
 			if ($this->model->getStaffId('','string')) {
 				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getstaffId('','string') . "\"";
 			}
@@ -659,7 +683,7 @@ class staffClass extends  configClass {
             $tableArray  = array(
             'staff'
             );
-            if ($this->fieldQuery) {
+            if ($this->getFieldQuery()) {
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
             	} else if ($this->getVendor() == self::mssql) {
@@ -673,7 +697,7 @@ class staffClass extends  configClass {
             /**
              *	Extjs filtering mode
              */
-            if ($this->gridQuery) {
+            if ($this->getGridQuery()) {
 
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
@@ -786,7 +810,7 @@ class staffClass extends  configClass {
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getstaffId('','string'))) {
+            if (!($this->model->getStaffId('','string'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -800,7 +824,7 @@ class staffClass extends  configClass {
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getstaffId('','string')) {
+            if ($this->model->getStaffId('','string')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -1575,15 +1599,7 @@ class staffClass extends  configClass {
 
 
 $staffObject  	= 	new staffClass();
-if(isset($_SESSION['staffId'])){
-	$staffObject->setStaffId($_SESSION['staffId']);
-}
-if(isset($_SESSION['vendor'])){
-	$staffObject->setVendor($_SESSION['vendor']);
-}
-if(isset($_SESSION['languageId'])){
-	$staffObject->setLanguageId($_SESSION['languageId']);
-}
+
 /**
  *	crud -create,read,update,delete
  **/

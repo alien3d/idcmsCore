@@ -52,7 +52,7 @@ class groupModel extends validationClass{
 			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
-		$this->setTotal(count($_GET['religionId']));
+		$this->setTotal(count($_GET['groupId']));
         $accessArray = array(
             "isDefault",
             "isNew",
@@ -63,6 +63,9 @@ class groupModel extends validationClass{
             "isApproved"
         );
         // auto assign as array if true
+        if(is_array($_GET['groupId'])){
+        	$this->groupId =array();
+        }
         if (is_array($_GET['isDefault'])) {
             $this->isDefault = array();
         }
@@ -85,7 +88,7 @@ class groupModel extends validationClass{
             $this->isApproved = array();
         }
         for ($i = 0; $i < $this->getTotal(); $i++) {
-            $this->setGroupId($this->strict($_GET['religionId'][$i], 'numeric'), $i, 'array');
+            $this->setGroupId($this->strict($_GET['groupId'][$i], 'numeric'), $i, 'array');
             if ($_GET['isDefault'][$i] == 'true') {
                 $this->setIsDefault(1, $i, 'array');
             } else if ($_GET['default'] == 'false') {

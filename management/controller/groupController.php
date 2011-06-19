@@ -73,12 +73,19 @@ class groupClass  extends configClass {
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 		$this->excel				=	new  PHPExcel();
 		$this->audit 				=	0;  // By Default 0 - Off  1 - On
-		$this->log					=   0;  // By Default 0 - Off  1 - On
+		$this->log					=   1;  // By Default 0 - Off  1 - On
 		$this->q->log 				= $this->log;
 
 		$this->model 				= new groupModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
+
+		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->setStaffId($this->getStaffId());
+		$this->documentTrail->setLanguageId($this->getLanguageId());
+		$this->documentTrail->setLeafId($this->getLeafId());
+		$this->documentTrail->execute();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()

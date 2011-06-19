@@ -169,31 +169,21 @@ class security extends configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 			SELECT 	`group`.`groupId`,
-					`group`.`groupNote`,
-					`groupTranslate`.`groupTranslate`
+					`group`.`groupNote`
 			FROM   	`group`
-			JOIN	`groupTranslate`
-			USING	(`groupId`)
-			WHERE   `group`.`isActive`=1
-			AND		`groupTranslate`.`languageId`='".$this->getLanguageId()."'";
+			WHERE 	`group`.`isActive`=1";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 			SELECT 	[group].[groupId],
 					[group].[groupNote]
 			FROM   	[group]
-			JOIN	[groupTranslate]
-			ON		[group].[groupId] = [groupTranslate].[groupId]
-			WHERE   [group].[isActive]=1
-			AND		[groupTranslate].[languageId]='".$this->getLanguageId()."'";
+			WHERE   [group].[isActive]=1";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			SELECT 	\"group\".\"groupId\",
 					\"group\".\"groupNote\"
 			FROM   	\"group\"
-			JOIN	\"groupTranslate\"
-			USING  (\"groupId\")
-			WHERE   \"isActive\"=1
-			AND		\"groupTranslate\".\"languageId\"='".$this->getLanguageId()."'";
+			WHERE   \"isActive\"=1";
 		}
 
 		$result =$this->q->fast($sql);
@@ -213,7 +203,9 @@ class security extends configClass {
 										));
 										exit();
 		}
-		echo json_encode(array('totalCount' => $total,
+		echo json_encode(array(
+		'success'=>true,
+		'totalCount' => $total,
 		'group' => $items
 		));
 		exit();
@@ -230,45 +222,35 @@ class security extends configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 			SELECT 	`department`.`departmentId`,
-					`department`.`departmentNote`,
-					`departmentTranslate`.`departmentTranslate`
+					`department`.`departmentNote`
 			FROM   	`department`
-			JOIN	`departmentTranslate`
-			USING	(`departmentId`)
-			WHERE   `department`.`isActive`=1
-			AND		`departmentTranslate`.`languageId`='".$this->getLanguageId()."'";
+			WHERE   `department`.`isActive`=1";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 			SELECT 	[department].[departmentId],
 					[department].[departmentNote]
 			FROM   	[department]
-			JOIN	[departmentTranslate]
-			ON		[department].[departmentId] = [departmentTranslate].[departmentId]
-			WHERE   [department].[isActive]=1
-			AND		[departmentTranslate].[languageId]='".$this->getLanguageId()."'";
+			WHERE   [department].[isActive]=1";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			SELECT 	\"department\".\"departmentId\",
 					\"department\".\"departmentNote\"
 			FROM   	\"department\"
-			JOIN	\"departmentTranslate\"
-			USING  (\"departmentId\")
-			WHERE   \"isActive\"=1
-			AND		\"departmentTranslate\".\"languageId\"='".$this->getLanguageId()."'";
+			WHERE   \"isActive\"=1";
 		}
 
 		$result =$this->q->fast($sql);
-		if($result){
-			$total=0;
-			$total	= $this->q->numberRows($result);
-			$items =array();
-			if($total > 0 ) {
-				while($row  = 	$this->q->fetchAssoc($result)) {
-					$items[] =$row;
-				}
-			} else {
 
-				echo json_encode(array(
+		$total=0;
+		$total	= $this->q->numberRows($result);
+		$items =array();
+		if($total > 0 ) {
+			while($row  = 	$this->q->fetchAssoc($result)) {
+				$items[] =$row;
+			}
+		} else {
+
+			echo json_encode(array(
 										'success'	=>false,
 										'totalCount' => 0,
 
@@ -276,19 +258,16 @@ class security extends configClass {
 										));
 										exit();
 
-			}
-			echo json_encode(array('totalCount' => $total,
-		'department' => $items
-			));
-			exit();
-		} else{
-				echo json_encode(array(
-										'success'	=>false,
-										'totalCount' => 0,
-										'message'=>'error sql do'
-										));
-										exit();
 		}
+
+
+
+		echo json_encode(array(
+		'success'=>true,
+		'totalCount' => $total,
+		'department' => $items
+		));
+		exit();
 	}
 
 	/**
