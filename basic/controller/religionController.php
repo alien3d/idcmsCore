@@ -1,7 +1,8 @@
 <?php
 session_start();
 require_once("../../class/classAbstract.php");
-require_once("../../class/classDocumentTrail.php");
+require_once("../../document/class/classDocumentTrail.php");
+require_once("../../document/model/documentModel.php");
 require_once("../model/religionModel.php");
 /**
  * this is religion setting files.This sample template file for master record
@@ -72,7 +73,7 @@ class religionClass extends configClass
 		$this->q->staffId     = $this->getStaffId();
 		$this->q->fieldQuery  = $this->getFieldQuery();
 		$this->q->gridQuery   = $this->getGridQuery();
-		$this->q->connect($this->connection, $this->username, $this->database, $this->password);
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 		$this->excel         = new PHPExcel();
 		$this->audit         = 0;
 		$this->log           = 1;
@@ -95,7 +96,7 @@ class religionClass extends configClass
 			$this->q->fast($sql);
 		}
 
-	
+
 		$this->q->start();
 		$this->model->create();
 		if ($this->getVendor() == self::mysql) {
@@ -925,7 +926,7 @@ class religionClass extends configClass
 		} else {
 			$sql = $_SESSION['sql'];
 		}
-		
+
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(

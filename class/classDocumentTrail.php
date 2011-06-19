@@ -26,7 +26,7 @@ class documentTrailClass extends configClass {
 
 		$this->q->staffId			=	$this->getStaffId();
 
-		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
 
 

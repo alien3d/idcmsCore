@@ -30,7 +30,7 @@ class groupModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['groupId'])){
-			$this->setGroupId($this->strict($_POST['groupId'],'numeric'));
+			$this->setGroupId($this->strict($_POST['groupId'],'numeric'),'','string');
 		}
 		if(isset($_POST['groupSequence'])){
 			$this->setGroupSequence($this->strict($_POST['groupSequence'],'numeric'));
@@ -39,10 +39,10 @@ class groupModel extends validationClass{
 			$this->setGroupCode($this->strict($_POST['groupCode'],'memo'));
 		}
 		if(isset($_POST['groupNote'])){
-			$this->setGroupNote = $this->strict($_POST['groupNote'],'memo');
+			$this->setGroupNote($this->strict($_POST['groupNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->setBy = $_SESSION['staffId'];
+			$this->setBy($_SESSION['staffId']);
 		}
 		if($this->getVendor()==self::mysql){
 			$this->setTime("'".date("Y-m-d H:i:s")."'");
@@ -52,7 +52,78 @@ class groupModel extends validationClass{
 			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
-
+		$this->setTotal(count($_GET['religionId']));
+        $accessArray = array(
+            "isDefault",
+            "isNew",
+            "isDraft",
+            "isUpdate",
+            "isDelete",
+            "isActive",
+            "isApproved"
+        );
+        // auto assign as array if true
+        if (is_array($_GET['isDefault'])) {
+            $this->isDefault = array();
+        }
+        if (is_array($_GET['isNew'])) {
+            $this->isNew = array();
+        }
+        if (is_array($_GET['isDraft'])) {
+            $this->isDraft = array();
+        }
+        if (is_array($_GET['isUpdate'])) {
+            $this->isUpdate = array();
+        }
+        if (is_array($_GET['isDelete'])) {
+            $this->isDelete = array();
+        }
+        if (is_array($_GET['isActive'])) {
+            $this->isActive = array();
+        }
+        if (is_array($_GET['isApproved'])) {
+            $this->isApproved = array();
+        }
+        for ($i = 0; $i < $this->getTotal(); $i++) {
+            $this->setGroupId($this->strict($_GET['religionId'][$i], 'numeric'), $i, 'array');
+            if ($_GET['isDefault'][$i] == 'true') {
+                $this->setIsDefault(1, $i, 'array');
+            } else if ($_GET['default'] == 'false') {
+                $this->setIsDefault(0, $i, 'array');
+            }
+            if ($_GET['isNew'][$i] == 'true') {
+                $this->setIsNew(1, $i, 'array');
+            } else {
+                $this->setIsNew(0, $i, 'array');
+            }
+            if ($_GET['isDraft'][$i] == 'true') {
+                $this->setIsDraft(1, $i, 'array');
+            } else {
+                $this->setIsDraft(0, $i, 'array');
+            }
+            if ($_GET['isUpdate'][$i] == 'true') {
+                $this->setIsUpdate(1, $i, 'array');
+            } else {
+                $this->setIsUpdate(0, $i, 'array');
+            }
+            if ($_GET['isDelete'][$i] == 'true') {
+                $this->setIsDelete(1, $i, 'array');
+            } else if ($_GET['isDelete'][$i] == 'false') {
+                $this->setIsDelete(0, $i, 'array');
+            }
+            if ($_GET['isActive'][$i] == 'true') {
+                $this->setIsActive(1, $i, 'array');
+            } else {
+                $this->setIsActive(0, $i, 'array');
+            }
+            if ($_GET['isApproved'][$i] == 'true') {
+                $this->setIsApproved(1, $i, 'array');
+            } else {
+                $this->setIsApproved(0, $i, 'array');
+            }
+            $primaryKeyAll .= $this->getGroupId($i, 'array') . ",";
+        }
+        $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
@@ -129,21 +200,9 @@ class groupModel extends validationClass{
 			$this->setIsApproved(0,'','string');
 		}
 	}
-	public function setTableName($value) {
-		$this->tableName = $value;
 
-	}
-	public function getTableName() {
-		return $this->tableName;
-	}
-	public function setPrimaryKeyName($value) {
-		$this->primaryKeyName = $value;
 
-	}
-	public function getPrimaryKeyName() {
-		return $this->primaryKeyName;
-	}
-	// generate basic information from outside
+
 	/**
 	 * Set Group Identification  Value
 	 * @param integer $value
@@ -190,6 +249,7 @@ class groupModel extends validationClass{
 	 * @param string $value
 	 */
 	public function setGroupCode($value) {
+
 		$this->groupCode = $value;
 	}
 	/**
@@ -197,6 +257,7 @@ class groupModel extends validationClass{
 	 * @return  string Group Description
 	 */
 	public function getGroupCode() {
+
 		return $this->groupCode;
 	}
 	/**
@@ -204,6 +265,7 @@ class groupModel extends validationClass{
 	 * @param string $value
 	 */
 	public function setGroupNote($value) {
+
 		$this->groupNote = $value;
 	}
 	/**
@@ -211,288 +273,8 @@ class groupModel extends validationClass{
 	 * @return  string Group Description
 	 */
 	public function getGroupNote() {
+
 		return $this->groupNote;
-	}
-	public function setIsDefault($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
-
-			$this->isDefault = $value;
-		} else if ($type=='array') {
-
-			$this->isDefault[$key]=$value;
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-	/**
-	 * Return isDefault Value
-	 * @param numeric $key  Array as value
-	 *  @param enum   $type   1->string,2->array
-	 * @return boolean isDefault
-	 */
-	public function getIsDefault($key=NULL,$type=NULL) {
-		if($type=='string'){
-			return $this->isDefault;
-		} else if ($type=='array'){
-
-			return $this->isDefault[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-
-	/**
-	 * Set isNew value
-	 * @param boolean $value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 */
-	public function setIsNew($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
-			$this->isNew = $value;
-		} else if ($type=='array'){
-			$this->isNew[$key]=$value;
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-	/**
-	 * Return isNew value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 * @return boolean isNew
-	 */
-	public function getIsNew($key=NULL,$type=NULL) {
-		if($type=='string'){
-			return $this->isNew;
-		} else if ($type=='array'){
-			return $this->isNew[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-
-	/**
-	 * Set IsDraft Value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 * @param boolean $value
-	 */
-	public function setIsDraft($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
-			$this->isDraft = $value;
-		} elseif ($type=='array'){
-			$this->isDraft[$key]=$value;
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-	/**
-	 * Return isDraftValue
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 * @return boolean isDraft
-	 */
-	public function getIsDraft($key=NULL,$type=NULL) {
-		if($type=='string'){
-			return $this->isDraft;
-		} else if ($type=='array'){
-			return $this->isDraft[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-
-	/**
-	 * Set isUpdate Value
-	 * @param boolean $value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 */
-	public function setIsUpdate($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
-			$this->isUpdate = $value;
-		} elseif ($type=='array'){
-			$this->isUpdate[$key]=$value;
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-	/**
-	 * Return isUpdate Value
-	 * @return boolean isUpdate
-	 */
-	public function getIsUpdate($key=NULL,$type=NULL) {
-		if($type=='string'){
-			return $this->isUpdate;
-		} else if ($type=='array'){
-			return $this->isUpdate[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-	/**
-	 * Set isDelete Value
-	 * @param boolean $value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 */
-	public function setIsDelete($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
-			$this->isDelete = $value;
-		} elseif ($type=='array'){
-
-			$this->isDelete[$key]=$value;
-		}else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-
-	}
-	/**
-	 * Return isDelete Value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 * @return boolean isDelete
-	 */
-	public function getIsDelete($key=NULL,$type=NULL) {
-		if($type=='string'){
-
-			return $this->isDelete;
-		} else if ($type=='array'){
-
-			return $this->isDelete[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-	/**
-	 * Set isActive Value
-	 * @param boolean $value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 */
-	public function setIsActive($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
-			$this->isActive = $value;
-		} elseif ($type=='array'){
-			$this->isActive[$key]=$value;
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-
-	}
-	/**
-	 * Return isActive value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 * @return boolean isActive
-	 */
-	public function getIsActive($key=NULL,$type=NULL) {
-		if($type=='string'){
-			return $this->isActive;
-		} else if ($type=='array'){
-			return $this->isActive[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-
-
-
-	/**
-	 * Set isApproved Value
-	 * @param boolean $value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 */
-	public function setIsApproved($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
-			$this->isApproved = $value;
-		} elseif ($type=='array'){
-			$this->isApproved[$key]=$value;
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-	/**
-	 * Return isApproved Value
-	 * @param numeric $key  Array as value
-	 * @param enum   $type   1->string,2->array
-	 * @return boolean isApproved
-	 */
-	public function getIsApproved($key=NULL,$type=NULL) {
-		if($type=='string'){
-			return $this->isApproved;
-		} else if ($type=='array'){
-			return $this->isApproved[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
-		}
-	}
-
-	/**
-	 * Set Activity User
-	 * @param integer $value
-	 */
-	public function setBy($value) {
-		$this->isBy = $value;
-	}
-	/**
-	 * Get Activity User
-	 * @return integer User
-	 */
-	public function getBy() {
-		return $this->isBy;
-	}
-
-	/**
-	 * Set Time Activity User
-	 * @param date $value
-	 */
-	public function setTime($value) {
-		$this->isTime = $value;
-	}
-	/**
-	 *  Return Time Activity User
-	 *  @return date Time Activity User
-	 */
-	public function getTime() {
-		return $this->isTime;
-	}
-
-	/**
-	 * Set All Group Identification Array To Sql Statement
-	 * @param string $value
-	 */
-	public function setGroupIdAll($value){
-		$this->groupIdAll= $value;
-	}
-	/**
-	 * Return Group Identification Array
-	 * @return string $departmentIdAll
-	 */
-	public function getGroupIdAll() {
-		return $this->groupIdAll;
-	}
-	public function setTotal($value){
-		$this->total = $value;
-	}
-	public function getTotal(){
-		return $this->total;
 	}
 
 }

@@ -1,5 +1,7 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
+require_once("../../document/class/classDocumentTrail.php");
+require_once("../../document/model/documentModel.php");
 require_once("../model/groupModel.php");
 /**
  * this is main setting files
@@ -67,13 +69,16 @@ class groupClass  extends configClass {
 		$this->q->leafId			=	$this->getLeafId();
 		$this->q->staffId			=	$this->getStaffId();
 		$this->q->fieldQuery		=   $this->getFieldQuery();
-		$this->q->filter 			= 	$this->getGridQuery();
-		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
+		$this->q->gridQuery 		= 	$this->getGridQuery();
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 		$this->excel				=	new  PHPExcel();
 		$this->audit 				=	0;  // By Default 0 - Off  1 - On
 		$this->log					=   0;  // By Default 0 - Off  1 - On
 		$this->q->log 				= $this->log;
+
 		$this->model 				= new groupModel();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -101,8 +106,8 @@ class groupClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getgroupSequence('','string') . "\",	\"". $this->model->getgroupSequence('','string') . "\",
-						\"". $this->model->getgroupNote('','string') . "\",		\"". $this->model->getIsDefault('','string') . "\",
+						\"". $this->model->getGroupSequence() . "\",					\"". $this->model->getGroupCode(). "\",
+						\"". $this->model->getGroupNote() . "\",						\"". $this->model->getIsDefault('','string') . "\",
 						\"". $this->model->getIsNew('','string') . "\",					\"". $this->model->getIsDraft('','string') . "\",
 						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
 						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
@@ -121,8 +126,8 @@ class groupClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getgroupSequence('','string') . "\",	\"". $this->model->getgroupSequence('','string') . "\",
-						\"". $this->model->getgroupNote('','string') . "\",		\"". $this->model->getIsDefault('','string') . "\",
+						\"". $this->model->getGroupSequence() . "\",	\"". $this->model->getGroupCode(). "\",
+						\"". $this->model->getGroupNote() . "\",		\"". $this->model->getIsDefault('','string') . "\",
 						\"". $this->model->getIsNew('','string') . "\",					\"". $this->model->getIsDraft('','string') . "\",
 						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
 						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
@@ -141,8 +146,8 @@ class groupClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getgroupSequence('','string') . "\",	\"". $this->model->getgroupSequence('','string') . "\",
-						\"". $this->model->getgroupNote('','string') . "\",		\"". $this->model->getIsDefault('','string') . "\",
+						\"". $this->model->getGroupSequence() . "\",	\"". $this->model->getGroupCode() . "\",
+						\"". $this->model->getGroupNote() . "\",		\"". $this->model->getIsDefault('','string') . "\",
 						\"". $this->model->getIsNew('','string') . "\",					\"". $this->model->getIsDraft('','string') . "\",
 						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
 						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
@@ -152,7 +157,7 @@ class groupClass  extends configClass {
 		}
 		$this->q->create($sql);
 		// take from last insert id
-		$this->insert_id	=	$this->q->last_insert_id();
+		$lastInsertId	=	$this->q->lastInsertId();
 
 		// loop the tab and create new record
 		//** no need to log in db
@@ -166,51 +171,15 @@ class groupClass  extends configClass {
 			exit();
 		}
 		$data = $this->q->activeRecord();
+		$sqlLooping=null;
 		if($this->q->numberRows()> 0 ){
 			foreach($data as $row){
-				if($this->getVendor() == self::mysql) {
-					$sql =	"
-				INSERT INTO	`tabAccess`
-				(
-									`tabId`,
-									`tabAccessValue`,
-									`groupId`
-				)
-				VALUES
-				(
+				$sqlLooping.="
+					(
 									'".$row['tabId']."',
 									'0',
-									'".$this->insert_id."'
-									)";
-				} else if ($this->getVendor()==self::mssql) {
-					$sql =	"
-				INSERT INTO	[tabAccess]
-				(
-				[tabId],
-				[tabAccessValue],
-				[groupId]
-				)
-				VALUES
-				(
-									'".$row['tabId']."',
-									'0',
-									'".$this->insert_id."'
-									)";
-				} else if ($this->getVendor()==self::oracle) {
-					$sql =	"
-				INSERT INTO	\"tabAccess\"
-							(
-									\"tabId\",
-									\"tabAccessValue\",
-									\"groupId\"
-							)
-					VALUES
-							(
-									'".$row['tabId']."',
-									'0',
-									'".$this->insert_id."'
-							)";
-				}
+									'".$lastInsertId."'
+					),";
 
 			}
 		}
@@ -221,28 +190,31 @@ class groupClass  extends configClass {
 									`tabId`,
 									`tabAccessValue`,
 									`groupId`
-				)";
-			$sqlLooping.=substr($sqlLooping,0,-1);
-			$sql.=$sqlLooping;
+				)
+				VALUES ";
+
 		} else if ($this->getVendor()==self::mssql){
 			$sql="	INSERT INTO	`tabAccess`
 				(
-									`tabId`,
-									`tabAccessValue`,
-									`groupId`
-				)";
-			$sqlLooping.=substr($sqlLooping,0,-1);
-			$sql.=$sqlLooping;
+									[tabId],
+									[tabAccessValue],
+									[groupId]
+				)
+				VALUES ";
+
 		} else if ($this->getVendor()==self::oracle){
 			$sql="	INSERT INTO	`tabAccess`
 				(
-									`tabId`,
-									`tabAccessValue`,
-									`groupId`
-				)";
-			$sqlLooping.=substr($sqlLooping,0,-1);
-			$sql.=$sqlLooping;
+									\"tabId\",
+									\"tabAccessValue\",
+									\"groupId\"
+				)
+				VALUES ";
+
+
 		}
+		$sqlLooping.=substr($sqlLooping,0,-1);
+		$sql.=$sqlLooping;
 		$this->q->create($sql);
 		if($this->q->execute=='fail'){
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
@@ -270,52 +242,54 @@ class groupClass  extends configClass {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
+		$sqlLooping=null;
 		if($this->q->numberRows()> 0 ){
 			$data = $this->q->activeRecord();
 			foreach($data as $row){
+				$sqlLooping.="
+					(
+						'".$row['folderId']."',
+						'0',
+						'".$lastInsertId."'
+					),";
 
-				if($this->getVendor() == self::mysql) {
-					$sql =	"
+			}
+		}
+		if($this->getVendor() == self::mysql) {
+			$sql =	"
 					INSERT INTO 	`folderAccess`
 								(
 									`folderId`,
 									`folderAccessValue`,
 									`groupId`
 								)
-					VALUES(			'".$row['folderId']."',
-									'0',
-									'".$this->insert_id."')";
-				} else if ($this->getVendor()==self::mssql) {
-					$sql =	"
+					VALUES";
+		} else if ($this->getVendor()==self::mssql) {
+			$sql =	"
 					INSERT INTO 	[folderAccess]
 								(
 									[folderId],
 									[folderAccessValue],
 									[groupId]
 								)
-					VALUES(			'".$row['folderId']."',
-									'0',
-									'".$this->insert_id."')";
-				} else if ($this->getVendor()==self::oracle) {
-					$sql =	"
+					";
+		} else if ($this->getVendor()==self::oracle) {
+			$sql =	"
 					INSERT INTO 	`folderAccess`
 								(
 									\"folderId\",
 									\"folderAccessValue\",
 									\"groupId\"
 								)
-					VALUES(			'".$row['folderId']."',
-									'0',
-									'".$this->insert_id."')";
-				}
-				$this->q->create($sql);
-				if($this->q->execute=='fail'){
-					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-					exit();
-				}
-			}
+					VALUES ";
 		}
-
+		$sqlLooping.=substr($sqlLooping,0,-1);
+		$sql.=$sqlLooping;
+		$this->q->create($sql);
+		if($this->q->execute=='fail'){
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			exit();
+		}
 		// create a template access which user can access to
 		if($this->getVendor() == self::mysql) {
 			$sql			=	"SELECT * FROM `leaf` WHERE `isActive`=1  ";
@@ -325,6 +299,7 @@ class groupClass  extends configClass {
 			$sql			=	"SELECT * FROM \"leaf\" WHERE \"isActive\"=1  ";
 		}
 		$this->q->read($sql);
+		$sqlLooping=null;
 		$total = $this->q->numberRows();
 		if($this->q->execute=='fail'){
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
@@ -333,8 +308,37 @@ class groupClass  extends configClass {
 		if($total > 0 ){
 			$data = $this->q->activeRecord();
 			foreach($data as $row){
-				if($this->getVendor() == self::mysql) {
-					$sql =	"
+				$sqlLooping.="
+					(
+						'".$row['leafId']."',
+						'0',
+						'0',
+						'0',
+						'0',
+						'0',
+						'0',
+						'".$lastInsertId."'
+					),";
+
+			}
+		}
+		if($this->getVendor() == self::mysql) {
+			$sql =	"
+					INSERT INTO 	`leafGroupAccess`
+								(
+									`leafId`,
+									`leafReadAccessValue`,
+									`leafCreateAccessValue`,
+									`leafUpdateAccessValue`,
+									`leafDeleteAccessValue`,
+									`leafPrintAccessValue`,
+									`leafPostAccessValue`,
+									`groupId`
+								)
+					VALUES";
+		} else if ($this->getVendor()==self::mssql) {
+
+			$sql =	"
 					INSERT INTO 	[leafGroupAccess]
 								(	[leafId],
 									[leafReadAccessValue],
@@ -343,60 +347,30 @@ class groupClass  extends configClass {
 									[leafDeleteAccessValue],
 									[leafPrintAccessValue],
 									[leafPostAccessValue],
-									[groupId])
-					VALUES(			'".$row['leafId']."',
-									'0',
-									'0',
-									'0',
-									'0',
-									'0',
-									'0',
-									'".$this->insert_id."')";
-				} else if ($this->getVendor()==self::mssql) {
-					$sql =	"
-					INSERT INTO 	`leafGroupAccess`
-								(	`leafId`,
-									`leafReadAccessValue`,
-									`leafCreateAccessValue`,
-									`leafUpdateAccessValue`,
-									`leafDeleteAccessValue`,
-									`leafPrintAccessValue`,
-									`leafPostAccessValue`,
-									`groupId`)
-					VALUES(			'".$row['leafId']."',
-									'0',
-									'0',
-									'0',
-									'0',
-									'0',
-									'0',
-									'".$this->insert_id."')";
-				} else if ($this->getVendor()==self::oracle) {
-					$sql =	"
+									[groupId]
+								)
+					VALUES";
+		} else if ($this->getVendor()==self::oracle) {
+			$sql =	"
 					INSERT INTO 	\"leafGroupAccess\"
-								(	\"leafId\",
+								(
+									\"leafId\",
 									\"leafReadAccessValue\",
 									\"leafCreateAccessValue\",
 									\"leafUpdateAccessValue\",
 									\"leafDeleteAccessValue\",
 									\"leafPrintAccessValue\",
 									\"leafPostAccessValue\",
-									\"groupId\")
-					VALUES(			'".$row['leafId']."',
-									'0',
-									'0',
-									'0',
-									'0',
-									'0',
-									'0',
-									'".$this->insert_id."')";
-				}
-				$this->q->create($sql);
-				if($this->q->execute=='fail'){
-					echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-					exit();
-				}
-			}
+									\"groupId\"
+								)
+					VALUES ";
+		}
+		$sqlLooping.=substr($sqlLooping,0,-1);
+		$sql.=$sqlLooping;
+		$this->q->create($sql);
+		if($this->q->execute=='fail'){
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			exit();
 		}
 
 		$this->q->commit();
@@ -452,8 +426,8 @@ class groupClass  extends configClass {
 					JOIN	`staff`
 					ON		`group`.`By` = `staff`.`staffId`
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getgroupId('','string')) {
-				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getgroupId('','string') . "\"";
+			if ($this->model->getGroupId('','string')) {
+				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getGroupId('','string') . "\"";
 
 			}
 
@@ -477,8 +451,8 @@ class groupClass  extends configClass {
 					JOIN	[staff]
 					ON		[group].[By] = [staff].[staffId]
 					WHERE 	[group].[isActive] ='1'	";
-			if ($this->model->getgroupId('','string')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getgroupId('','string') . "\"";
+			if ($this->model->getGroupId('','string')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getGroupId('','string') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -501,7 +475,7 @@ class groupClass  extends configClass {
 					ON		\"group\".\"By\" = \"staff\".\"staffId\"
 					WHERE 	\"isActive\"='1'	";
 			if ($this->model->getgroupId('','string')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getgroupId('','string') . "\"";
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getGroupId('','string') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -527,7 +501,7 @@ class groupClass  extends configClass {
             $tableArray  = array(
             'group'
             );
-            if ($this->fieldQuery) {
+            if ($this->getFieldQuery()) {
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
             	} else if ($this->getVendor() == self::mssql) {
@@ -538,10 +512,10 @@ class groupClass  extends configClass {
             		$sql .= $tempSql;
             	}
             }
-            /**
+	 /**
              *	Extjs filtering mode
              */
-            if ($this->gridQuery) {
+            if ($this->getGridQuery()) {
 
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
@@ -668,7 +642,7 @@ class groupClass  extends configClass {
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getgroupId('','string')) {
+            if ($this->model->getGroupId('','string')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -713,14 +687,15 @@ class groupClass  extends configClass {
 			SET 	`groupSequence` =   '".$this->model->getGroupSequence()."',
 					`groupCode`		=	'".$this->model->getGroupCode()."',
 					`groupNote`		=	'".$this->model->getGroupNote()."',
-					`isActive`		=	'".$this->model->getIsActive('','string')."',
+					`isDefault`		=	'".$this->model->getIsDefault('','string')."',
 					`isNew`			=	'".$this->model->getIsNew('','string')."',
 					`isDraft`		=	'".$this->model->getIsDraft('','string')."',
 					`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
 					`isDelete`		=	'".$this->model->getIsDelete('','string')."',
+					`isActive`		=	'".$this->model->getIsActive('','string')."',
 					`isApproved`	=	'".$this->model->getIsApproved('','string')."',
 					`By`			=	'".$this->model->getBy()."',
-					`Time			=	".$this->model->getTime()."
+					`Time`			=	".$this->model->getTime()."
 			WHERE 	`groupId`		=	'".$this->model->getGroupId('','string')."'";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
@@ -728,11 +703,12 @@ class groupClass  extends configClass {
 			SET 	[groupSequence] =   '".$this->model->getGroupSequence()."',
 					[groupCode]		=	'".$this->model->getGroupCode()."',
 					[groupNote]		=	'".$this->model->getGroupNote()."',
-					[isActive]		=	'".$this->model->getIsActive('','string')."',
+					[isDefault]		=	'".$this->model->getIsDefault('','string')."',
 					[isNew]			=	'".$this->model->getIsNew('','string')."',
 					[isDraft]		=	'".$this->model->getIsDraft('','string')."',
 					[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
 					[isDelete]		=	'".$this->model->getIsDelete('','string')."',
+					[isActive]		=	'".$this->model->getIsActive('','string')."',
 					[isApproved]	=	'".$this->model->getIsApproved('','string')."',
 					[By]			=	'".$this->model->getBy()."',
 					[Time]			=	".$this->model->getTime()."
@@ -755,11 +731,11 @@ class groupClass  extends configClass {
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success"=>"true","message"=>"Record Update"));
+		echo json_encode(array("success"=>true,"message"=>"Record Update"));
 		exit();
 	}
 	/* (non-PHPdoc)
@@ -778,7 +754,7 @@ class groupClass  extends configClass {
 		$this->model->delete();
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-			UPDATE 	`Group`
+			UPDATE 	`group`
 			SET 	`isDefault`			=	\"". $this->model->getIsDefault('','string') . "\",
 					`isNew`				=	\"". $this->model->getIsNew('','string') . "\",
 					`isDraft`			=	\"". $this->model->getIsDraft('','string') . "\",
@@ -791,7 +767,7 @@ class groupClass  extends configClass {
 			WHERE 	`groupId`		=	\"". $this->model->getGroupId('','string') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-			UPDATE 	[Group]
+			UPDATE 	[group]
 			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
 					[isNew]				=	\"". $this->model->getIsNew('','string') . "\",
 					[isDraft]			=	\"". $this->model->getIsDraft('','string') . "\",
@@ -804,7 +780,7 @@ class groupClass  extends configClass {
 			WHERE 	[groupId]		=	\"". $this->model->getGroupId . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE 	\"Group\"
+			UPDATE 	\"group\"
 			SET 	\"GroupDesc\"	=	\"". $this->model->getGroupDesc('','string') . "\",
 					\"isDefault\"		=	\"". $this->model->getIsDefault('','string') . "\",
 					\"isNew\"			=	\"". $this->model->getIsNew('','string') . "\",
@@ -841,6 +817,7 @@ class groupClass  extends configClass {
 	 *  To Update flag Status
 	 */
 	function updateStatus () {
+		$this->model->updateStatus();
 		$loop  = $this->model->getTotal();
 
 		if($this->isAdmin==0){
@@ -933,7 +910,7 @@ class groupClass  extends configClass {
 
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
-			UPDATE 	[Group]
+			UPDATE 	[group]
 			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','string') . "\",
 					[isNew]				=	\"". $this->model->getIsNew('','string') . "\",
 					[isDraft]			=	\"". $this->model->getIsDraft('','string') . "\",
@@ -946,7 +923,7 @@ class groupClass  extends configClass {
 			WHERE 	[GroupId]		IN	(". $this->model->getGroupIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
-				UPDATE	\"Group\"
+				UPDATE	\"group\"
 				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault('','string') . "\",
 					\"isNew\"			=	\"". $this->model->getIsNew('','string') . "\",
 					\"isDraft\"			=	\"". $this->model->getIsDraft('','string') . "\",
@@ -1144,15 +1121,8 @@ class groupClass  extends configClass {
 
 
 $groupObject  	= 	new groupClass();
-if(isset($_SESSION['staffId'])){
-	$groupObject->setStaffId($_SESSION['staffId']);
-}
-if(isset($_SESSION['vendor'])){
-	$groupObject->setVendor($_SESSION['vendor']);
-}
-if(isset($_SESSION['languageId'])){
-	$groupObject->setLanguageId($_SESSION['languageId']);
-}
+
+
 /**
  *	crud -create,read,update,delete
  **/

@@ -137,7 +137,7 @@ class leafUserClass extends configClass
 		$this->q->staffId     = $this->staffId;
 		$this->q->filter      = $this->filter;
 		$this->q->quickFilter = $this->quickFilter;
-		$this->q->connect($this->connection, $this->username, $this->database, $this->password);
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 	
 		$this->audit         = 0;
 		$this->log           = 1;

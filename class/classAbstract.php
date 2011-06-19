@@ -29,7 +29,23 @@ abstract class configClass
 	 * @var numeric $staffId
 	 */
 	private $staffId;
+	/**
+	 * Enter description here ...
+	 * @var unknown_type
+	 */
+	public $connection;
 
+	/**
+	 * Enter description here ...
+	 * @var unknown_type
+	 */
+	private $database;
+	private $username;
+	/**
+	 * Enter description here ...
+	 * @var unknown_type
+	 */
+	private $password;
 	/**
 	 * Database Vendor
 	 * @var string $vendor
@@ -87,27 +103,9 @@ abstract class configClass
 	 * @var unknown_type
 	 */
 	public $type;
-	/**
-	 * Enter description here ...
-	 * @var unknown_type
-	 */
-	public $connection;
-	/**
-	 * Enter description here ...
-	 * @var unknown_type
-	 */
-	public $database;
-	public $username;
-	/**
-	 * Enter description here ...
-	 * @var unknown_type
-	 */
-	public $password;
-	/**
-	 * Enter description here ...
-	 * @var unknown_type
-	 */
-	public $currUserSession;
+
+
+
 	/**
 	 * Path Of the application
 	 * @var string $application
@@ -136,18 +134,24 @@ abstract class configClass
 	function __construct()
 	{
 		//optional
-		$this->connection = 'localhost';
+		$this->setConnection('localhost');
 		//	$this->connection   =  'UK0EG6KHE48\LOCALHOST'; // this is for Microsoft Sql Server Testing.
 		if (isset($_SESSION['database'])) {
-			$this->database = $_SESSION['database'];
+			$this->setDatabase($_SESSION['database']);
+		}
+		if (isset($_SESSION['vendor'])) {
+			$this->setVendor($_SESSION['vendor']);
+		}
+		if (isset($_SESSION['languageId'])) {
+			$this->setLanguageId($_SESSION['languageId']);
 		}
 		if (isset($_SESSION['staffId'])) {
-			$this->currUserSession = $_SESSION['staffId'];
+			$this->setStaffId($_SESSION['staffId']);
 		}
-		$this->currUserSession = $_SESSION['staffId'];
-		$this->username        = 'root';
+
+		$this->setUsername('root');
 		//$this->username ='JOKERS'; // testing for oracle
-		$this->password        = '123456';
+		$this->setPassword('123456');
 		//	$this->password="pa\$\$word4sph";
 		$this->setApplication('idcmsCore');
 		// define method
@@ -178,7 +182,7 @@ abstract class configClass
 	public function staff()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->q->vendor== self::mysql) {
+		if ($this->getVendor()== self::mysql) {
 			$sql = "
 			SELECT 	`staffId`,
 					`staffNo`,
@@ -332,11 +336,35 @@ abstract class configClass
 	function getStaffId(){
 		return $this->staffId;
 	}
+	function setConnection($value){
+		$this->connection = $value;
+	}
+	function getConnection(){
+		return $this->connection;
+	}
+	function setDatabase($value){
+		$this->database = $value;
+	}
+	function getDatabase(){
+		return $this->database;
+	}
 	function setVendor($value){
 		$this->vendor = $value;
 	}
 	function getVendor(){
 		return $this->vendor;
+	}
+	function setUsername($value){
+		$this->username = $value;
+	}
+	function getUsername(){
+		return $this->username;
+	}
+	function setPassword($value){
+		$this->password = $value;
+	}
+	function getPassword(){
+		return $this->password;
 	}
 	function setLanguageId($value) {
 		$this->languageId= $value;
@@ -367,6 +395,7 @@ abstract class configClass
 		$this->gridQuery = $value;
 	}
 	public function getGridQuery() {
+
 		return $this->gridQuery;
 	}
 

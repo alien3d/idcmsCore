@@ -305,7 +305,7 @@ Ext.extend (Ext.ux.form.LoginDialog, Ext.util.Observable, {
      *
      * @type {String}
      */
-    usernameField : 'username',
+    usernameField : 'staffName',
 
     /**
      * Username validation
@@ -326,7 +326,7 @@ Ext.extend (Ext.ux.form.LoginDialog, Ext.util.Observable, {
      *
      * @type {String}
      */
-    passwordField : 'password',
+    passwordField : 'staffPassword',
 
     /**
      * Password field validation

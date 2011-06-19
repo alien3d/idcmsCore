@@ -71,7 +71,7 @@ class departmentClass  extends configClass {
 		$this->q->staffId     	= $this->getStaffId();
 		$this->q->fieldQuery	= $this->getFieldQuery();
 		$this->q->gridQuery   = $this->getGridQuery();
-		$this->q->connect($this->connection, $this->username, $this->database, $this->password);
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 		$this->excel         = new PHPExcel();
 		$this->audit         = 0;
 		$this->log           = 1;
@@ -609,6 +609,7 @@ class departmentClass  extends configClass {
 	 *  To Update flag Status
 	 */
 	function updateStatus () {
+		$this->model-> updateStatus();
 		$loop  = $this->model->getTotal();
 
 		if($this->isAdmin==0){
@@ -903,7 +904,7 @@ class departmentClass  extends configClass {
 	 */
 	function excel() {
 
-	header('Content-Type', 'application/json; charset=utf-8');
+		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor() == self::mysql) {
 			$sql = 'SET NAMES "utf8"';
@@ -942,35 +943,105 @@ class departmentClass  extends configClass {
                         )
                         );
                         // header all using  3 line  starting b
-                        $this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-                        $this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-                        $this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
-                        $this->excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
 
-                        $this->excel->getActiveSheet()->setCellValue('B2', $this->title);
-                        $this->excel->getActiveSheet()->setCellValue('C2', '');
-                        $this->excel->getActiveSheet()->mergeCells('B2:E3');
-                        $this->excel->getActiveSheet()->setCellValue('B3', 'No');
-                        $this->excel->getActiveSheet()->setCellValue('C3', 'Sequence');
-                         $this->excel->getActiveSheet()->setCellValue('D3', 'Code');
-                          $this->excel->getActiveSheet()->setCellValue('E3', 'Note');
-                        $this->excel->getActiveSheet()->getStyle('B2:E2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                        $this->excel->getActiveSheet()->getStyle('B2:E2')->getFill()->getStartColor()->setARGB('66BBFF');
-                        $this->excel->getActiveSheet()->getStyle('B3:E3')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                        $this->excel->getActiveSheet()->getStyle('B3:E3')->getFill()->getStartColor()->setARGB('66BBFF');
+                        if($this->isAdmin==1){
+                        	$this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+                        } else {
+                        	$this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+                        	$this->excel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+                        }
+                        if($this->isAdmin==1){
+                        	$start='B';
+                        	$end='0';
+                        } else {
+                        	$start='B';
+                        	$end='F';
+                        }
+                        // merge header title
+                        $this->excel->getActiveSheet()->setCellValue($start.'2', $this->title);
+                        $this->excel->getActiveSheet()->setCellValue($end.'2', '');
+                        $this->excel->getActiveSheet()->mergeCells($start.'2:'.$end.'3');
+                        // header of the row
+                        if($this->isAdmin==1){
+	                        // future should take from table mapping table
+                        	$this->excel->getActiveSheet()->setCellValue('B3', 'No');
+	                        $this->excel->getActiveSheet()->setCellValue('C3', 'Department Id');
+                        	$this->excel->getActiveSheet()->setCellValue('D3', 'Sequence');
+	                        $this->excel->getActiveSheet()->setCellValue('E3', 'Code');
+	                        $this->excel->getActiveSheet()->setCellValue('F3', 'Note');
+
+	                        $this->excel->getActiveSheet()->setCellValue('G3', 'isDefault');
+	                        $this->excel->getActiveSheet()->setCellValue('H3', 'isNew');
+	                        $this->excel->getActiveSheet()->setCellValue('I3', 'isDraft');
+	                        $this->excel->getActiveSheet()->setCellValue('J3', 'isUpdate');
+	                        $this->excel->getActiveSheet()->setCellValue('K3', 'isDelete');
+	                        $this->excel->getActiveSheet()->setCellValue('L3', 'isActive');
+	                        $this->excel->getActiveSheet()->setCellValue('M3', 'isApproved');
+	                        $this->excel->getActiveSheet()->setCellValue('N3', 'By');
+	                        $this->excel->getActiveSheet()->setCellValue('O3', 'Time');
+
+
+                        } else {
+                        	$this->excel->getActiveSheet()->setCellValue('B3', 'No');
+	                        $this->excel->getActiveSheet()->setCellValue('C3', 'Sequence');
+	                        $this->excel->getActiveSheet()->setCellValue('D3', 'Code');
+	                        $this->excel->getActiveSheet()->setCellValue('E3', 'Note');
+                        }
+                        // fill color
+                        $this->excel->getActiveSheet()->getStyle($start.'2:'.$end.'2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+                        $this->excel->getActiveSheet()->getStyle($start.'2:'.$end.'2')->getFill()->getStartColor()->setARGB('66BBFF');
+                        $this->excel->getActiveSheet()->getStyle($start.'3:'.$end.'3')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+                        $this->excel->getActiveSheet()->getStyle($start.'3:'.$end.'3')->getFill()->getStartColor()->setARGB('66BBFF');
                         //
                         $loopRow = 4;
                         $i       = 0;
                         while ($row = $this->q->fetchAssoc()) {
                         	//	echo print_r($row);
                         	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-                        	$this->excel->getActiveSheet()->setCellValue('C' . $loopRow,$row['departmentSequence']);
-                        	$this->excel->getActiveSheet()->setCellValue('D' . $loopRow,$row['departmentCode']);
-                        	$this->excel->getActiveSheet()->setCellValue('E' . $loopRow,$row['departmentNote']);
+                        	if($this->isAdmin==1){
+                        		$this->excel->getActiveSheet()->setCellValue('C' . $loopRow,$row['departmentId']);
+                        		$this->excel->getActiveSheet()->setCellValue('D' . $loopRow,$row['departmentSequence']);
+                        		$this->excel->getActiveSheet()->setCellValue('E' . $loopRow,$row['departmentCode']);
+                        		$this->excel->getActiveSheet()->setCellValue('F' . $loopRow,$row['departmentNote']);
+
+                        		$this->excel->getActiveSheet()->setCellValue('G' . $loopRow,$row['isDefault']);
+                        		$this->excel->getActiveSheet()->setCellValue('H' . $loopRow,$row['isNew']);
+                        		$this->excel->getActiveSheet()->setCellValue('I' . $loopRow,$row['isDraft']);
+                        		$this->excel->getActiveSheet()->setCellValue('J' . $loopRow,$row['isUpdate']);
+                        		$this->excel->getActiveSheet()->setCellValue('K' . $loopRow,$row['isDelete']);
+                        		$this->excel->getActiveSheet()->setCellValue('L' . $loopRow,$row['isActive']);
+                        		$this->excel->getActiveSheet()->setCellValue('M' . $loopRow,$row['isApproved']);
+                        		$this->excel->getActiveSheet()->setCellValue('N' . $loopRow,$row['staffName']);
+                        		$this->excel->getActiveSheet()->setCellValue('O' . $loopRow,$row['Time']);
+                        	} else {
+
+                        		$this->excel->getActiveSheet()->setCellValue('C' . $loopRow,$row['departmentSequence']);
+                        		$this->excel->getActiveSheet()->setCellValue('D' . $loopRow,$row['departmentCode']);
+                        		$this->excel->getActiveSheet()->setCellValue('E' . $loopRow,$row['departmentNote']);
+                        	}
                         	$loopRow++;
-                        	$lastRow = 'C' . $loopRow;
+
                         }
-                        $from    = 'B2';
+
+                        $lastRow = $end . $loopRow;
+
+                        $from    = $start.'2';
                         $to      = $lastRow;
                         $formula = $from . ":" . $to;
                         $this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
@@ -1007,15 +1078,7 @@ class departmentClass  extends configClass {
 
 
 $departmentObject  	= 	new departmentClass();
-if(isset($_SESSION['staffId'])){
-	$departmentObject->setStaffId($_SESSION['staffId']);
-}
-if(isset($_SESSION['vendor'])){
-	$departmentObject->setVendor($_SESSION['vendor']);
-}
-if(isset($_SESSION['languageId'])){
-	$departmentObject->setLanguageId($_SESSION['languageId']);
-}
+
 /**
  *	crud -create,read,update,delete
  **/

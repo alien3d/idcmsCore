@@ -26,15 +26,20 @@ class  sharedx extends  configClass  {
 	 * @var string $d
 	 */
 	public $d;
+	/*
+	 * Vendor
+	 */
+	public $v;
 	function __construct(){
 		/**
 		 * calling basic property of the system
 		 */
 		parent :: __construct();
-		$this->u = $this->username;
-		$this->p = $this->password;
-		$this->c = $this->connection;
-		$this->d = $this->database;
+		$this->u = $this->getUsername();
+		$this->p = $this->getPassword();
+		$this->c = $this->getConnection();
+		$this->d = $this->getDatabase();
+		$this->v = $this->getVendor();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -65,12 +70,13 @@ $shared = new sharedx();
 
 $connection = $shared->c;											// your host name.ip address or dns name
 $database =   $shared->d; 												// your database connection
+$vendor   =   $shared->v;
 $username =   $shared->u; 												// your username
-$password =   $shared->p;  												// your database usernamer
+$password =   $shared->p;
+  												// your database usernamer
 $q=new vendor();													// declare object
 
-$q->vendor =	$_SESSION['vendor']; 									// normal for mysql and mysql for mysqli
-$q->staffId =   $_SESSION['staffId'];
+$q->vendor =$vendor;
 $q->connect($connection, $username, $database, $password);
 
 ?>

@@ -1,5 +1,7 @@
 <?php 	session_start();
 require_once("../../class/classAbstract.php");
+require_once("../../management/model/staffModel.php");
+require_once("../model/staffWebAcessModel.php");
 
 /**
  * this is main setting files
@@ -11,26 +13,11 @@ require_once("../../class/classAbstract.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class loginClass extends configClass {
-	/**
-	 *	Username which login to the system
-	 *	string $user
-	 */
-	public $User;
-	/**
-	 *	Password  user which login to the system
-	 *	string $Pass
-	 */
-	public $Pass;
-	/**
-	 *	 Database vendor
-	 *   string $vendor;
-	 */
-	public $vendor;
-	/**
-	 *	 Database Selected
-	 *   string $database;
-	 */
-	public $database;
+
+
+	public $model;
+
+	public $staffWebAceess;
 
 	/**
 	 * Class Loader
@@ -40,23 +27,17 @@ class loginClass extends configClass {
 
 		$this->q 					=	new vendor();
 
-		$this->q->vendor			=	$this->vendor;
+		$this->q->vendor			=	$this->getVendor();
 
-		//$this->q->leafId			=	$this->leafId;
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-		//$this->q->staffId			=	$this->staffId;
+		$this->model  = new staffModel();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
 
-		//$this->q->filter 			= 	$this->filter;
-
-		//$this->q->quickFilter		=	$this->quickFilter;
-
-		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
-
-		//$this->excel				=	new  PHPExcel();
-
-		//$this->audit 				=	0;
-
-
+		$this->staffWebAceess  = new staffWebAcessModel();
+		$this->staffWebAceess->setVendor($this->getVendor());
+		$this->staffWebAceess->execute();
 
 	}
 	/* (non-PHPdoc)
@@ -88,8 +69,8 @@ class loginClass extends configClass {
 			USING	(`groupId`)
 			JOIN	`department`
 			USING	(`departmentId`)
-			WHERE 	`staff`.`staffName`		=	'".$this->strict($this->User,'s')."'
-			AND		`staff`.`staffPassword`	=	'".$this->strict(md5($this->Pass),'p')."'";
+			WHERE 	`staff`.`staffName`		=	'".$this->model->getStaffName()."'
+			AND		`staff`.`staffPassword`	=	'".md5($this->model->getStaffPassword())."'";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
 			SELECT	*
@@ -98,8 +79,8 @@ class loginClass extends configClass {
 			ON		[staff].[groupId]  = [group].[groupId]
 			JOIN	[department]
 			USING	[department].[departmentId] = [staff].[departmentId]
-			WHERE 	[staff].[staffName]		=	'".$this->strict($this->User,'s')."'
-			AND		[staff].[staffPassword]	=	'".$this->strict(md5($this->Pass),'p')."'";
+			WHERE 	[staff].[staffName]		=	'".$this->model->getStaffName()."'
+			AND		[staff].[staffPassword]	=	'".md5($this->model->getStaffPassword())."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT	*
@@ -108,10 +89,10 @@ class loginClass extends configClass {
 			USING   (\"groupId\")
 			JOIN	`department`
 			USING	(\"departmentId\")
-			WHERE 	\"staff\".\"staffName\"		=	'".$this->strict($this->User,'s')."'
-			AND		\"staff\".\"staffPassword\"	=	'".$this->strict(md5($this->Pass),'p')."'";
+			WHERE 	\"staff\".\"staffName\"		=	'".$this->model->getStaffName()."'
+			AND		\"staff\".\"staffPassword\"	=	'".md5($this->model->getStaffPassword())."'";
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$this->vendor."]"));
+			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$this->getVendor()."]"));
 			exit();
 		}
 
@@ -134,9 +115,19 @@ class loginClass extends configClass {
 			$_SESSION['database']		=	$_POST['database'];
 			$_SESSION['vendor']			= 	$_POST['vendor'];
 
+			$this->staffWebAceess->setStaffId($_SESSION['staffId']);
+
 			// audit Log Time In
-			$sql="INSERT INTO `staffWebAccessId` (`staffId`,`staffWebAccessLogIn`)
-			VALUES ('".$_SESSION['staffId."']."','".date("Y-m-d H:i:s")."')";
+			$sql="
+			INSERT INTO `staffWebAccessId`
+					(
+						`staffId`,
+						`staffWebAccessLogIn`
+					)
+			VALUES (
+						'".$this->staffWebAceess->getStaffId()."',
+						'".$this->staffWebAceess->getStaffWebAccessLogIn()."'
+					)";
 			$this->q->update($sql);
 
 			echo json_encode(array("success"=>"true","message"=>"success login"));
@@ -170,24 +161,15 @@ class loginClass extends configClass {
 
 	}
 
-
-
-
 }
 
 $loginObject = new loginClass;
 
-if(isset($_POST['username'])){
-	$loginObject->User = $_POST['username'];
-}
-if(isset($_POST['password'])){
-	$loginObject->Pass = $_POST['password'];
-}
 if(isset($_POST['database'])){
-	$loginObject->database = $_POST['database'];
+	$loginObject->setDatabase($_POST['database']);
 }
 if(isset($_POST['vendor'])){
-	$loginObject->vendor = $_POST['vendor'];
+	$loginObject->setVendor($_POST['vendor']);
 }
 $loginObject->execute();
 $loginObject->read();

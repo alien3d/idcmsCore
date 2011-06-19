@@ -1,6 +1,7 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
-require_once("../../class/classDocumentTrail.php");
+require_once("../../document/class/classDocumentTrail.php");
+require_once("../../document/model/documentModel.php");
 require_once("../../class/classSecurity.php");
 require_once("../model/folderAccessModel.php");
 /**
@@ -86,7 +87,7 @@ class folderAccessClass  extends configClass {
 
 		$this->q->gridQuery		=	$this->getGridQuery();
 
-		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
 		$this->excel				=	new  PHPExcel();
 

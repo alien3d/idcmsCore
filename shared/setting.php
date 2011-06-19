@@ -160,7 +160,7 @@ var leafPrintAccessValue	= '<?php echo $row_leafAccess['leafPrintAccessValue']; 
 			WHERE 	\"staff\".\"staffId\"	=	'".$_SESSION['staffId']."'
 			AND		\"group\".\"groupId\"	=	'".$_SESSION['groupId']."'";
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$this->vendor."]"));
+			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$q->vendor."]"));
 			exit();
 		}
 

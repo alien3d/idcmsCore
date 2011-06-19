@@ -335,7 +335,7 @@ Ext.onReady(function() {
                         method: method,
                         leafId: leafId,
                         groupSequence : record.get('groupSequence'),
-                        deparmentCode : record.get('groupCode'),
+                        groupCode : record.get('groupCode'),
                         groupNote: record.get('groupNote'),
 						groupId:record.get('groupId'),
 						duplicateTest : true

@@ -1,6 +1,7 @@
 <?php	session_start();
 require_once("../../class/classAbstract.php");
-require_once("../../class/classDocumentTrail.php");
+require_once("../../document/class/classDocumentTrail.php");
+require_once("../../document/model/documentModel.php");
 require_once("../../class/classSecurity.php");
 require_once("../model/folderModel.php");
 
@@ -93,7 +94,7 @@ class folderClass extends  configClass {
 
 		$this->q->gridQuery			=	$this->getGridQuery();
 
-		$this->q->connect($this->connection, $this->username,$this->database,$this->password);
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
 		$this->excel				=	new  PHPExcel();
 
@@ -111,10 +112,13 @@ class folderClass extends  configClass {
 		$this->security->execute();
 
 		$this->model = new folderModel();
-		$this->model->vendor = $this->getVendor();
+		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
 		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->execute();
+
 
 
 	}
