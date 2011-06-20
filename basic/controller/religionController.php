@@ -15,7 +15,7 @@ require_once("../model/religionModel.php");
  */
 class religionClass extends configClass
 {
-		/*
+	/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
@@ -342,13 +342,13 @@ class religionClass extends configClass
             	exit();
             }
             $total = $this->q->numberRows();
-            if ($this->order && $this->sortField) {
+            if ($this->getOrder() && $this->getSortField()) {
             	if ($this->getVendor() == self::mysql) {
-            		$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
+            		$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
             	} else if ($this->getVendor() ==  self::mssql) {
-            		$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
+            		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
             	} else if ($this->getVendor() == self::oracle) {
-            		$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
+            		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf

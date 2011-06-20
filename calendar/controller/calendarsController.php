@@ -13,7 +13,7 @@ require_once("../model/calendarModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class calendarsClass extends  configClass {
-		/*
+	/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
@@ -134,19 +134,15 @@ class calendarsClass extends  configClass {
 
 		$this->q->read($sql);
 		$total	= $this->q->numberRows();
-		//paging
-		// this is sorting  future
-		if(empty($_POST['dir'])) {
-			$dir = 'ASC';
-		} else {
-			$dir  = $_POST['dir'];
+		if ($this->getOrder() && $this->getSortField()) {
+			if ($this->getVendor() == self::mysql) {
+				$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
+			} else if ($this->getVendor() ==  self::mssql) {
+				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
+			} else if ($this->getVendor() == self::oracle) {
+				$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+			}
 		}
-		if(empty($_POST['sort'])) {
-			$sortField = "calendar_uniqueId";
-		} else {
-			$sortField = $_POST['sort'];
-		}
-		$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 		if(isset($_POST['start']) && isset($_POST['limit'])) {
 			$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
 		}
@@ -230,15 +226,7 @@ class calendarsClass extends  configClass {
 }
 
 $calendarsObject  	= 	new calendarsClass();
-if(isset($_SESSION['staffId'])){
-	$calendarsObject->setStaffId($_SESSION['staffId']);
-}
-if(isset($_SESSION['vendor'])){
-	$calendarsObject->setVendor($_SESSION['vendor']);
-}
-if(isset($_SESSION['languageId'])){
-	$calendarsObject->setLanguageId($_SESSION['languageId']);
-}
+
 
 if(isset($_POST['method'])){
 	/*

@@ -308,7 +308,7 @@ class security extends configClass {
 				USING	(`tabId`)
 				WHERE   `tab`.`isActive`=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND `tabAccess`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
+					$sql.=" AND `tab`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
 				}
 			}
 		} else if ($this->getVendor()==self::mssql) {
@@ -330,7 +330,7 @@ class security extends configClass {
 			ON		[tab].[tabId]=[tabAccess].[tabId]
 			WHERE   [tab].[isActive]=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND [ccordionAccess].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
+					$sql.=" AND [tabAccess].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
 				}
 			}
 		} else if ($this->getVendor()==self::oracle) {
@@ -350,11 +350,13 @@ class security extends configClass {
 			USING	(\"tabId\")
 			WHERE   \"tab\".\"isActive\"=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND \"tabAccess\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
+					$sql.=" AND \"tab\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
 				}
 			}
+		} else{
+			echo "undefine";
 		}
-
+		//echo "salah";
 		$result=$this->q->fast($sql);
 
 		$total	= $this->q->numberRows($result);
@@ -383,10 +385,12 @@ class security extends configClass {
 	function folder() {
 
 		//  have to distinct group from tab acs  table
-		header('Content-Type','application/json; charset=utf-8');
+		//header('Content-Type','application/json; charset=utf-8');
 		/**
 		 * $type =1 tab only ,$type=2  tab  + access
 		 **/
+
+
 		if(isset($_GET['type'])) {
 			$type = intval($_GET['type']);
 		}
@@ -396,13 +400,14 @@ class security extends configClass {
 			$this->q->fast($sql);
 
 		}
+
 		if($this->getVendor() == self::mysql) {
 			if($type ==1 ) {
 				$sql	=	"
 			SELECT	`folder`.`folderId`,
 					`folder`.`folderNote`
 			FROM   	`folder`
-			WHERE   `isActive`	=	1";
+			WHERE   `isActive`	=	1 ";
 			} else {
 				$sql="
 			SELECT 	`folderAccess`.`tabId`,
@@ -415,11 +420,12 @@ class security extends configClass {
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND `tabAccess`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
+				$sql.=" AND `folder`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
 			}
 			if(isset($_GET['tabId'])) {
-				$sql.=" AND `tabId`	=	'".$this->strict($_GET['tabId'],'numeric')."'";
+				$sql.=" AND `folder`.`tabId`	=	'".$this->strict($_GET['tabId'],'numeric')."'";
 			}
+
 		} else if ($this->getVendor()==self::mssql) {
 			if($type==1){
 				$sql	=	"
@@ -439,11 +445,12 @@ class security extends configClass {
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND [tabAccess].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
+				$sql.=" AND [folder].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
 			}
 			if(isset($_GET['tabId'])) {
 				$sql.=" AND [folder].[tabId]='".$this->strict($_GET['tabId'],'numeric')."'";
 			}
+
 		} else if ($this->getVendor()==self::oracle) {
 			if($type==1){
 				$sql	=	"
@@ -463,7 +470,7 @@ class security extends configClass {
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND \"tabAccess\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
+				$sql.=" AND \"folder\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
 			}
 			if(isset($_GET['tabId'])) {
 				$sql.=" AND \"folder\".\"tabId\"='".$this->strict($_GET['tabId'],'numeric')."'";

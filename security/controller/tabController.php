@@ -75,11 +75,11 @@ class tabClass extends configClass
 	{
 		parent::__construct();
 		$this->q              = new vendor();
-		$this->q->vendor      = $this->vendor;
-		$this->q->leafId      = $this->leafId;
-		$this->q->staffId     = $this->staffId;
-		$this->q->filter      = $this->filter;
-		$this->q->quickFilter = $this->quickFilter;
+		$this->q->vendor      = $this->getVendor();
+		$this->q->leafId      = $this->getLeafId();
+		$this->q->staffId     = $this->getStaffId();
+		$this->q->fieldQuery     = $this->getFieldQuery();
+		$this->q->gridQuery = $this->getGridQuery();
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 		$this->excel             = new PHPExcel();
 		$this->audit             = 0;
@@ -87,15 +87,15 @@ class tabClass extends configClass
 		$this->q->log            = $this->log;
 		$this->defaultLanguageId = 21;
 		$this->security          = new security();
-		$this->security->vendor  = $this->vendor;
-		$this->security->leafId  = $this->leafId;
+		$this->security->setVendor($this->getVendor());
+		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
 		$this->model         = new tabModel();
-		$this->model->vendor = $this->vendor;
+		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 		$this->documentTrail = new documentTrailClass();
-
-
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->execute();
 	}
 	function create()
 	{
@@ -110,33 +110,36 @@ class tabClass extends configClass
 		/**
 		 * Example  using Constant .This much cleaner approch  to Sql Statement
 		 */
-		$sql = " INSERT INTO `" . tabModel::tableName . "` (`" . tabModel::tabNote . "`)  VALUES ('" . $this->model->tabNote . "')";
+
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			INSERT INTO `tab`
 					(
 						`iconId`,							`tabSequence`,
-						`tabNote`,							`isDefault`
-						`isNew`,							`isDraft`,
-						`isUpdate`,							`isDelete`,
-						`isActive`,							`isApproved`,						\
-						`By`,								`Time`
+						`tabCode`,							`tabNote`,
+						`isDefault`,							`isNew`,
+						`isDraft`,							`isUpdate`,
+						`isDelete`,							`isActive`,
+						`isApproved`,						`By`,
+						`Time`
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',			'" . $this->model->getTabSequence() . "',
-						'" . $this->model->getTabNote() . "',			'".$this->model->getIsDefault('','string')."',
-						'" . $this->model->getIsNew('','string') . "',				'" . $this->model->getIsDraft('','string') . "',
-						'" . $this->model->getIsUpdate('','string') . "'				'" . $this->model->getIsDelete('','string') . "',
-						'" . $this->model->getIsActive('','string') . "',			'" . $this->model->getIsApproved('','string') . "',
-						'" . $this->model->getBy() . "',				" . $this->model->getTime() . "
+						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getTabSequence() . "\",
+						\"" . $this->model->getTabCode() . "\",					\"" . $this->model->getTabNote() . "\",
+						\"".$this->model->getIsDefault('','string')."\",		\"" . $this->model->getIsNew('','string') . "\",
+						\"" . $this->model->getIsDraft('','string') . "\",		\"" . $this->model->getIsUpdate('','string') . "\",
+						\"" . $this->model->getIsDelete('','string') . "\",		\"" . $this->model->getIsActive('','string') . "\",
+						\"" . $this->model->getIsApproved('','string') . "\",	\"" . $this->model->getBy() . "\",
+						" . $this->model->getTime() . "
 					);";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			INSERT INTO [tab]
 					(
 						[iconId],							[tabSequence],
-						[tabNote],					[isNew],
+						[tabCode],							[tabNote],
+						[isDefault],						[isNew],
 						[isDraft],							[isUpdate],
 						[isDelete],							[isActive],
 						[isApproved],						[By],
@@ -144,32 +147,35 @@ class tabClass extends configClass
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',			'" . $this->model->getTabSequence() . "',
-						'" . $this->model->getTabNote() . "',			'".$this->model->getIsDefault('','string')."',
-						'" . $this->model->getIsNew('','string') . "',				'" . $this->model->getIsDraft('','string') . "',
-						'" . $this->model->getIsUpdate('','string') . "'				'" . $this->model->getIsDelete('','string') . "',
-						'" . $this->model->getIsActive('','string') . "',			'" . $this->model->getIsApproved('','string') . "',
-						'" . $this->model->getBy() . "',				" . $this->model->getTime() . "
+						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getTabSequence() . "\",
+						\"" . $this->model->getTabCode() . "\",					\"" . $this->model->getTabNote() . "\",
+						\"".$this->model->getIsDefault('','string')."\",		\"" . $this->model->getIsNew('','string') . "\",
+						\"" . $this->model->getIsDraft('','string') . "\",		\"" . $this->model->getIsUpdate('','string') . "\",
+						\"" . $this->model->getIsDelete('','string') . "\",		\"" . $this->model->getIsActive('','string') . "\",
+						\"" . $this->model->getIsApproved('','string') . "\",	\"" . $this->model->getBy() . "\",
+						" . $this->model->getTime() . "
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			INSERT INTO \"tab\"
 					(
-						iconId\"							\"tabSequence\",
-						\"tabNote\",					\"isNew\"
-						\"isDraft\",							\"isUpdate\"
-						\"isDelete\",							\"isActive\",
+						\"iconId\",							\"tabSequence\",
+						\"tabCode\",						\"tabNote\",
+						\"isDefault\",						\"isNew\",
+						\"isDraft\",						\"isUpdate\",
+						\"isDelete\",						\"isActive\",
 						\"isApproved\",						\"By\",
 						\"Time\"
 					)
 			VALUES
 					(
-												'" . $this->model->getIconId() . "',			'" . $this->model->getTabSequence() . "',
-						'" . $this->model->getTabNote() . "',			'".$this->model->getIsDefault('','string')."',
-						'" . $this->model->getIsNew('','string') . "',				'" . $this->model->getIsDraft('','string') . "',
-						'" . $this->model->getIsUpdate('','string') . "'				'" . $this->model->getIsDelete('','string') . "',
-						'" . $this->model->getIsActive('','string') . "',			'" . $this->model->getIsApproved('','string') . "',
-						'" . $this->model->getBy() . "',				" . $this->model->getTime() . "
+						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getTabSequence() . "\",
+						\"" . $this->model->getTabCode() . "\",					\"" . $this->model->getTabNote() . "\",
+						\"".$this->model->getIsDefault('','string')."\",		\"" . $this->model->getIsNew('','string') . "\",
+						\"" . $this->model->getIsDraft('','string') . "\",		\"" . $this->model->getIsUpdate('','string') . "\",
+						\"" . $this->model->getIsDelete('','string') . "\",		\"" . $this->model->getIsActive('','string') . "\",
+						\"" . $this->model->getIsApproved('','string') . "\",	\"" . $this->model->getBy() . "\",
+						" . $this->model->getTime() . "
 					);";
 		}
 		$this->q->create($sql);
@@ -180,31 +186,8 @@ class tabClass extends configClass
 			));
 			exit();
 		}
-		if ($this->getVendor() == self::mysql) {
-			/*
-			 * 	If anything wrong use this instead  SELECT LAST_INSERT_ID();
-			 **/
-			$sql = "
-			SELECT	MAX(`tabId`)	AS `lastId`
-			FROM 	`tab`";
-		} else if ($this->q->vendor == 'microsoft') {
-			/*
-			 *  If anything wrong use this insert SELECT @@IDENTITY
-			 **/
-			$sql = "
-			SELECT	MAX([tabId]) AS [lastId]
-			FROM 	[tab] ";
-		} else if ($this->q->vendor == 'oracle') {
-			/**
-			 *  If anthing wrong use this instead  SELECT tabIdSeq
-			 */
-			$sql = "
-			SELECT 	MAX(\"tabId\") AS \"lastId\"
-			FROM 	\"tab\"";
-		}
-		$resultd   = $this->q->fast($sql);
-		$rowLastId = $this->q->fetchAssoc($resultd);
-		$lastId    = $rowLastId['lastId'];
+
+		$lastId    = $this->q->lastInsertId();
 		//  create a record  in tabAccess.update no effect
 		// loop the group
 		if ($this->getVendor() == self::mysql) {
@@ -232,7 +215,23 @@ class tabClass extends configClass
 			exit();
 		}
 		$data = $this->q->activeRecord();
-		if ($this->getVendor() == self::mysql) {
+
+		foreach ($data as $row) {
+			/**
+			 *	By Default  No Access
+			 **/
+	echo		$sqlLooping.="(
+							\"" . $lastId . "\",
+							 \"" . $row['groupId'] . "\",
+							 \"0\"
+						),";
+
+
+
+
+
+		}
+	if ($this->getVendor() == self::mysql) {
 			$sql = "
 				INSERT INTO	`tabAccess`
 						(
@@ -257,26 +256,11 @@ class tabClass extends configClass
 							\"tabAccessValue\"
 					) VALUES";
 		}
-		foreach ($data as $row) {
-			/**
-			 *	By Default  No Access
-			 **/
-			$sqlLooping.="(
-							'" . $lastId . "',
-							 '" . $row['groupId'] . "',
-							 '0'
-						)";
-
-
-
-
-
-		}
 		// optimize to 1 Query
 		// remove last comma
 		$sqlLooping = substr($sqlLooping,0,-1);
 		// combine SQL Statement
-		$sql.=$sq1Looping;
+		$sql.=$sqlLooping;
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
@@ -287,39 +271,39 @@ class tabClass extends configClass
 		 **/
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-		 	INSERT INTO `leafTranslate`
+		 	INSERT INTO `tabTranslate`
 		 		(
-				 	`leafId`,
+				 	`tabId`,
 				 	`languageId`,
-					`leafTranslate`
+					`tabTranslate`
 				) VALUES (
-					'" . $lastId . "\",
+					\"" . $lastId . "\",
 					21,
-					'" . $_POST['tabNote'] . "'
+					\"" . $this->model->getTabNote() . "\"
 				);";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-		 	INSERT INTO  [leafTranslate]
+		 	INSERT INTO  [tabTranslate]
 					(
-					 	[leafId],
+					 	[tabId],
 						[languageId],
-						[leafTranslate]
+						[tabTranslate]
 					) VALUES (
-						'" . $lastId . "',
+						\"" . $lastId . "\",
 						21,
-						'" . $_POST['tabNote'] . "'
+						\"" .  $this->model->getTabNote() . "\"
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-		 	INSERT INTO	\"leafTranslate\"
+		 	INSERT INTO	\"tabTranslate\"
 					(
-					 	\"leafId\",
+					 	\"tabId\",
 						\"languageId\",
-						\"leafTranslate\"
+						\"tabTranslate\"
 					) VALUES (
-						'" . $lastId . "',
+						\"" . $lastId . "\",
 						21,
-						'" . $_POST['tabNote'] . "'
+						\"" .  $this->model->getTabNote() . "\"
 					);";
 		}
 		$this->q->create($sql);
@@ -343,8 +327,7 @@ class tabClass extends configClass
 	 */
 	function read()
 	{
-		header('Content-Type', 'application/json; charset=utf-8');
-
+	header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
 			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	`tab`.`isActive`		=	1	";
@@ -365,185 +348,281 @@ class tabClass extends configClass
 		//UTF8
 		$items=array();
 		if ($this->getVendor() == self::mysql) {
-			/**
-			 *	UTF 8
-			 **/
 			$sql = 'SET NAMES "utf8"';
 			$this->q->fast($sql);
 		}
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-			SELECT		*
-			FROM 		`tab`
-			LEFT JOIN 	`icon`
-			USING 		(`iconId`)
-			WHERE 		`tab`.`isActive`	=	1
-			AND			`icon`.`isActive`		=	1 ";
-			if (($this->model->gettabId('','string'))) {
-				$sql .= " AND `".$this->model->getPrimaryKeyName()."`='" . $this->strict($this->model->gettabId('','string'), 'numeric') . "'";
+					SELECT	`tab`.`tabId`,
+							`tab`.`iconId`,
+							`tab`.`tabSequence`,
+							`tab`.`tabCode`,
+							`tab`.`tabNote`,
+							`tab`.`isDefault`,
+							`tab`.`isNew`,
+							`tab`.`isDraft`,
+							`tab`.`isUpdate`,
+							`tab`.`isDelete`,
+							`tab`.`isActive`,
+							`tab`.`isApproved`,
+							`tab`.`By`,
+							`tab`.`Time`,
+							`staff`.`staffName`,
+							`icon`.`iconName`
+ 					FROM 	`tab`
+					JOIN	`staff`
+					ON		`tab`.`By` = `staff`.`staffId`
+					LEFT 	JOIN	`icon`
+					USING			(`iconId`)
+					WHERE 	".$this->auditFilter;
+			if ($this->model->getTabId('','string')) {
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->gettabId('','string') . "\"";
+
 			}
+
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-			SELECT		*
-			FROM 		[tab]
-			LEFT JOIN 	[icon]
-			ON 			[icon].[iconId] = [tab].[iconId]
-			WHERE 		[tab].[isActive]	=	1
-			AND			[icon].[iconId]			=	1";
-			if (($this->model->gettabId('','string'))) {
-				$sql .= " AND [".$this->model->getPrimaryKeyName()."]='" . $this->strict($this->model->gettabId('','string'), 'numeric') . "'";
+					SELECT	[tab].[tabId],
+							[tab].[iconId],
+							[tab].[tabSequence],
+							[tab].[tabCode],
+							[tab].[tabNote],
+							[tab].[isDefault],
+							[tab].[isNew],
+							[tab].[isDraft],
+							[tab].[isUpdate],
+							[tab].[isDelete],
+							[tab].[isActive],
+							[tab].[isApproved],
+							[tab].[By],
+							[tab].[Time],
+							[staff].[staffName],
+							[icon].[iconName]
+					FROM 	[tab]
+					JOIN	[staff]
+					ON		[tab].[By] = [staff].[staffId]
+					LEFT 	JOIN	`icon`
+					ON		[iconId].[iconId] = [tab].[iconId]
+					WHERE 	[tab].[isActive] ='1'	";
+			if ($this->model->getTabId('','string')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->gettabId('','string') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			SELECT		*
-			FROM 		\"tab\"
-			LEFT JOIN 	\"icon\"
-			USING 		(\"iconId\")
-			WHERE 		\"tab\".\"isActive\"	=	1
-			AND			\"icon\".\"isActive\"		=	1";
-			if (($this->model->gettabId('','string'))) {
-				$sql .= " AND \"".$this->model->getPrimaryKeyName()."\"='" . $this->strict($this->model->gettabId('','string'), 'numeric') . "'";
+					SELECT	\"tab\".\"tabId\",
+							\"tab\".\"iconId\",
+							\"tab\".\"tabCode\",
+							\"tab\".\"tabSequence\",
+							\"tab\".\"tabNote\",
+							\"tab\".\"isDefault\",
+							\"tab\".\"isNew\",
+							\"tab\".\"isDraft\",
+							\"tab\".\"isUpdate\",
+							\"tab\".\"isDelete\",
+							\"tab\".\"isActive\",
+							\"tab\".\"isApproved\",
+							\"tab\".\"By\",
+							\"tab\".\"Time\",
+							\"staff\".\"staffName\",
+							\"icon\".\"iconName\"
+					FROM 	\"tab\"
+					JOIN	\"staff\"
+					ON		\"tab\".\"By\" = \"staff\".\"staffId\"
+					LEFT 	JOIN	\"icon\"
+					USING	(\"iconId\")
+					WHERE 	\"isActive\"='1'	";
+			if ($this->model->getTabId('','string')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->gettabId('','string') . "\"";
 			}
-		}
-		if ($this->quickFilter) {
-			/**
-			 *	filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
-			 *  E.g  $filterArray=array('`leaf`.`leafId`');
-			 *  @variables $filterArray;
-			 */
-			$filterArray = array(
-                "tabId",
-                "tabTranslateId"
-                );
-                /**
-                 *	filter table
-                 *  @variables $tableArray
-                 */
-                $tableArray  = array(
-                'tab',
-                'tabTranslate'
-                );
-                if ($this->q->vendor == 'normal' || $this->q->vendor == 'mysql') {
-                	$sql .= $this->q->quickSearch($tableArray, $filterArray);
-                } else if ($this->q->vendor == 'microsoft') {
-                	$tempSql = $this->q->quickSearch($tableArray, $filterArray);
-                	$sql .= $tempSql;
-                } else if ($this->q->vendor == 'oracle') {
-                	$tempSql = $this->q->quickSearch($tableArray, $filterArray);
-                	$sql .= $tempSql;
-                }
+		} else {
+			echo json_encode(array(
+                "success" => false,
+                "message" => "Undefine Database Vendor"
+                ));
+                exit();
 		}
 		/**
-		 *	Extjs filtering mode
+		 *	filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
+		 *  E.g  $filterArray=array('`leaf`.`leafId`');
+		 *  @variables $filterArray;
 		 */
-		if ($this->getVendor() == self::mysql) {
-			$sql .= $this->q->searching();
-		} else if ($this->getVendor() ==  self::mssql) {
-			$tempSql2 = $this->q->searching();
-			$sql .= $tempSql2;
-		} else if ($this->getVendor() == self::oracle) {
-			$tempSql2 = $this->q->searching();
-			$sql .= $tempSql2;
-		}
+		$filterArray = null;
+		$filterArray = array(
+            'tabId'
+            );
+            /**
+             *	filter table
+             * @variables $tableArray
+             */
+            $tableArray  = null;
+            $tableArray  = array(
+            'tab'
+            );
+            if ($this->getFieldQuery()) {
+            	if ($this->getVendor() == self::mysql) {
+            		$sql .= $this->q->quickSearch($tableArray, $filterArray);
+            	} else if ($this->getVendor() == self::mssql) {
+            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $tempSql;
+            	} else if ($this->getVendor() == self::oracle) {
+            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $tempSql;
+            	}
+            }
+            /**
+             *	Extjs filtering mode
+             */
+            if ($this->getGridQuery()) {
 
-		$this->q->read($sql);
-		if ($this->q->execute == 'fail') {
-			echo json_encode(array(
-                "success" => false,
+            	if ($this->getVendor() == self::mysql) {
+            		$sql .= $this->q->searching();
+            	} else if ($this->getVendor() == self::mssql) {
+            		$tempSql2 = $this->q->searching();
+            		$sql .= $tempSql2;
+            	} else if ($this->getVendor() == self::oracle) {
+            		$tempSql2 = $this->q->searching();
+            		$sql .= $tempSql2;
+            	}
+            }
+            /** // optional debugger.uncomment if wanted to used
+
+            echo json_encode(array(
+            "success" => false,
+            "message" => $this->q->realEscapeString($sql)
+            ));
+            exit();
+
+            // end of optional debugger */
+            $this->q->read($sql);
+            if ($this->q->execute == 'fail') {
+            	echo json_encode(array(
+                "success" =>false,
                 "message" => $this->q->responce
-			));
-			exit();
-		}
-		$total = $this->q->numberRows();
-		if ($this->order && $this->sortField) {
-			if ($this->getVendor() == self::mysql || $this->q->vendor == 'normal') {
-				$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
-			} else if ($this->getVendor() ==  self::mssql) {
-				$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
-			} else if ($this->getVendor() == self::oracle) {
-				$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
-			}
-		}
-		$_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
-		$_SESSION['start'] = $_POST['start'];
-		$_SESSION['limit'] = $_POST['limit'];
-		if (empty($_POST['filter'])) {
-			if (isset($_POST['start']) && isset($_POST['limit'])) {
-				if ($this->getVendor() == self::mysql) {
-					/**
-					 *	Mysql,Postgress and IBM using LIMIT
-					 **/
-					$sql .= " LIMIT  " . $_POST['start'] . "," . $_POST['limit'] . " ";
-				} else if ($this->getVendor() ==  self::mssql) {
-					/**
-					 *	 Sql Server and Oracle used row_number
-					 *	 Parameterize Query We don't support
-					 **/
-					$sql = "
-					WITH [tabDerived] AS
-					(
-						SELECT *,
-						ROW_NUMBER() OVER (ORDER BY [tabId]) AS 'RowNumber'
-						FROM [tab]
-						WHERE [tab].[isActive] =1   " . $tempSql . $tempSql2 . "
-					)
-					SELECT		*
-					FROM 		[tabDerived]
-					WHERE 		[RowNumber]
-					BETWEEN	" . $_POST['start'] . "
-					AND 			" . ($_POST['start'] + $_POST['limit'] - 1) . ";";
-				} else if ($this->getVendor() == self::oracle) {
-					/**
-					 *  Oracle using derived table also
-					 */
-					$sql = "
-				SELECT *
-				FROM ( SELECT	a.*,
-										rownum r
-				FROM (
-							SELECT *
-							FROM 	\"tab\"
-							WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
-						 ) a
-				where rownum <= '" . ($_POST['start'] + $_POST['limit'] - 1) . "' )
-				where r >=  '" . $_POST['start'] . "'";
-				}
-			}
-		}
-		$this->q->read($sql);
-		if ($this->q->execute == 'fail') {
-			echo json_encode(array(
-                "success" => false,
-                "message" => $this->q->responce
-			));
-			exit();
-		}
-		$items = array();
-		while ($row = $this->q->fetchAssoc()) {
-			$items[] = $row;
-		}
-	 if ($this->model->getTabId('','string')) {
-	 	$json_encode = json_encode(array(
+            	));
+            	exit();
+            }
+            $total = $this->q->numberRows();
+	if ($this->getOrder() && $this->getSortField()) {
+            	if ($this->getVendor() == self::mysql) {
+            		$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
+            	} else if ($this->getVendor() ==  self::mssql) {
+            		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
+            	} else if ($this->getVendor() == self::oracle) {
+            		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+            	}
+            }
+            $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
+            $_SESSION['start'] = $this->getStart();
+            $_SESSION['limit'] = $this->getLimit();
+            if (!($this->getGridQuery())) {
+            	if ($this->limit) {
+            		// only mysql have limit
+            		if ($this->getVendor() == self::mysql) {
+            			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
+            		} else if ($this->getVendor() == self::mssql) {
+            			/**
+            			 *	 Sql Server and Oracle used row_number
+            			 *	 Parameterize Query We don't support
+            			 */
+            			$sql = "
+							WITH [tabDerived] AS
+							(
+								SELECT *,
+								ROW_NUMBER() OVER (ORDER BY [tabId]) AS 'RowNumber'
+								FROM [tab]
+								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
+							)
+							SELECT		[tab].[tabId],
+										[tab].[iconId],
+										[tab].[tabSequence],
+										[tab].[tabCode],
+										[tab].[tabNote],
+										[tab].[isDefault],
+										[tab].[isNew],
+										[tab].[isDraft],
+										[tab].[isUpdate],
+										[tab].[isDelete],
+										[tab].[isApproved],
+										[tab].[By],
+										[tab].[Time],
+										[staff].[staffName]
+							FROM 		[tabDerived]
+							WHERE 		[RowNumber]
+							BETWEEN	" . $_POST['start'] . "
+							AND 			" . ($this->start + $this->limit - 1) . ";";
+            		} else if ($this->getVendor() == self::oracle) {
+            			/**
+            			 *  Oracle using derived table also
+            			 */
+            			$sql = "
+						SELECT *
+						FROM ( SELECT	a.*,
+												rownum r
+						FROM (
+									SELECT  \"tab\".\"tabId\",
+											\"tab\".\"iconId\",
+											\"tab\".\"tabSequence\",
+											\"tab\".\"tabCode\",
+											\"tab\".\"tabNote\",
+											\"tab\".\"isDefault\",
+											\"tab\".\"isNew\",
+											\"tab\".\"isDraft\",
+											\"tab\".\"isUpdate\",
+											\"tab\".\"isDelete\",
+											\"tab\".\"isApproved\",
+											\"tab\".\"By\",
+											\"tab\".\"Time\",
+											\"staff\".\"staffName\"
+									FROM 	\"tab\"
+									WHERE 	\"tab\".\"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
+								 ) a
+						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
+						where r >=  \"". $this->start . "\"";
+            		} else {
+            			echo "undefine vendor";
+            			exit();
+            		}
+            	}
+            }
+            /*
+             *  Only Execute One Query
+             */
+            if (!($this->model->getTabId('','string'))) {
+            	$this->q->read($sql);
+            	if ($this->q->execute == 'fail') {
+            		echo json_encode(array(
+                    "success" => false,
+                    "message" => $this->q->responce
+            		));
+            		exit();
+            	}
+            }
+            $items = array();
+            while ($row = $this->q->fetchAssoc()) {
+            	$items[] = $row;
+            }
+            if ($this->model->getTabId('','string')) {
+            	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
 				'message' => 'Data Loaded',
                 'data' => $items
-	 	));
-	 	$json_encode = str_replace("[", "", $json_encode);
-	 	$json_encode = str_replace("]", "", $json_encode);
-	 	echo $json_encode;
-	 } else {
-	 	if (count($items) == 0) {
-	 		$items = '';
-	 	}
-	 	echo json_encode(array(
+            	));
+            	$json_encode = str_replace("[", "", $json_encode);
+            	$json_encode = str_replace("]", "", $json_encode);
+            	echo $json_encode;
+            } else {
+            	if (count($items) == 0) {
+            		$items = '';
+            	}
+            	echo json_encode(array(
                 'success' => true,
                 'total' => $total,
 				'message'=>'data loaded',
                 'data' => $items
-	 	));
-	 	exit();
-	 }
+            	));
+            	exit();
+            }
 	}
 	/* (non-PHPdoc)
 	 * @see configClass::update()

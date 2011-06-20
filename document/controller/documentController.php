@@ -155,18 +155,15 @@ class documentClass extends  configClass {
 		$record_all 	= $this->q->read($sql);
 		$this->total	= $this->q->numberRows();
 		//paging
-		// this is sorting  future
-		if(empty($_POST['dir'])) {
-			$dir = 'ASC';
-		} else {
-			$dir  = $_POST['dir'];
+		if ($this->getOrder() && $this->getSortField()) {
+			if ($this->getVendor() == self::mysql) {
+				$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
+			} else if ($this->getVendor() ==  self::mssql) {
+				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
+			} else if ($this->getVendor() == self::oracle) {
+				$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+			}
 		}
-		if(empty($_POST['sort'])) {
-			$sortField = "doc_uniqueId";
-		} else {
-			$sortField = $_POST['sort'];
-		}
-		$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 		if(empty($_POST['filter']))      {
 			if(isset($_POST['start']) && isset($_POST['limit'])) {
 				$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
@@ -456,15 +453,6 @@ class documentClass extends  configClass {
 }
 
 $documentObject  	= 	new documentClass();
-if(isset($_SESSION['staffId'])){
-	$documentObject->staffId = $_SESSION['staffId'];
-}
-if(isset($_SESSION['vendor'])){
-	$documentObject-> vendor = $_SESSION['vendor'];
-}
-if(isset($_SESSION['languageId'])){
-	$documentObject->setLanguageId($_SESSION['languageId']);
-}
 
 
 /**

@@ -1,5 +1,6 @@
 <?php require_once("../../class/classValidation.php");
 
+
 /**
  * this is department model file.This is to ensure strict setting enable for all variable enter to database
  *

@@ -256,15 +256,7 @@ class eventClass extends configClass
     }
 }
 $eventObject = new eventClass();
-if (isset($_SESSION['staffId'])) {
-    $eventObject->setStaffId($_SESSION['staffId']);
-}
-if (isset($_SESSION['vendor'])) {
-    $eventObject->setVendor($_SESSION['vendor']);
-}
-if (isset($_SESSION['languageId'])) {
-    $eventObject->setLanguageId($_SESSION['languageId']);
-}
+
 if (isset($_POST['method'])) {
     /*
      *  Initilize Value before load in the loader

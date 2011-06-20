@@ -334,12 +334,7 @@ class documentCategoryClass extends  configClass {
 }
 
 $documenCategoryObject  	= 	new documentCategoryClass();
-if(isset($_SESSION['staffId'])){
-	$documenCategoryObject->staffId = $_SESSION['staffId'];
-}
-if(isset($_SESSION['vendor'])){
-	$documenCategoryObject-> vendor = $_SESSION['vendor'];
-}
+
 /**
  *	crud -create,read,update,delete
  **/

@@ -174,50 +174,49 @@ Ext
 					type : 'string'
 				} ]
 			});
-			var staffProxy = new Ext.data.HttpProxy({
-				url : "../controller/tabController.php?",
-				method : "GET",
-				success : function(response, options) {
-					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { 
-						// Ext.MessageBox.alert(successLabel, jsonResponse.message);
-					} else {
-						Ext.MessageBox.alert(systemErrorLabel,
-								jsonResponse.message);
-					}
-				},
-				failure : function(response, options) {
-					Ext.MessageBox.alert(systemErrorLabel,
-							escape(response.Status) + ":"
-									+ escape(response.statusText));
-				}
-			});
-			var staffReader = new Ext.data.JsonReader({
-				totalProperty : "total",
-				successProperty : "success",
-				messageProperty : "message",
-				idProperty : "staffId"
-			});
-			var staffStore = new Ext.data.JsonStore({
-				proxy : staffProxy,
-				reader : staffReader,
-				autoLoad : true,
-				autoDestroy : true,
-				pruneModifiedRecords : true,
-				baseParams : {
-					method : 'read',
-					field : 'staffId',
-					leafId : leafId
-				},
-				root : 'staff',
-				fields : [ {
-					name : "staffId",
-					type : "int"
-				}, {
-					name : "staffName",
-					type : "string"
-				} ]
-			});
+			 var staffByProxy = new Ext.data.HttpProxy({
+			        url: "../controller/tabController.php?",
+			        method: "GET",
+			        success: function(response, options) {
+			            jsonResponse = Ext.decode(response.responseText);
+			            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
+			                // jsonResponse.message);
+			                // //uncommen for testing
+			                // purpose
+			            } else {
+			                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+			            }
+			        },
+			        failure: function(response, options) {
+			            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+			        }
+			    });
+			var staffByReader = new Ext.data.JsonReader({
+		        totalProperty: "total",
+		        successProperty: "success",
+		        messageProperty: "message",
+		        idProperty: "staffId"
+		    });
+		    var staffByStore = new Ext.data.JsonStore({
+		        proxy: staffByProxy,
+		        reader: staffByReader,
+		        autoLoad: true,
+		        autoDestroy: true,
+		        baseParams: {
+		            method: 'read',
+		            field: 'staffId',
+		            leafId: leafId
+		        },
+		        root: 'staff',
+		        fields: [{
+		            name: "staffId",
+		            type: "int"
+		        },
+		        {
+		            name: "staffName",
+		            type: "string"
+		        }]
+		    });
 			var filters = new Ext.ux.grid.GridFilters({ // encode and local
 				// configuration options
 				// defined previously
@@ -232,6 +231,11 @@ Ext
 					dataIndex : 'tabSequence',
 					column : 'tabSequence',
 					table : 'tab'
+				},{
+					type : 'numeric',
+					dataIndex : 'tabCode',
+					column : 'tabCode',
+					table : 'tab'
 				}, {
 					type : 'string',
 					dataIndex : 'tabNote',
@@ -242,17 +246,19 @@ Ext
 					dataIndex : 'iconId',
 					column : 'iconId',
 					table : 'tab'
-				}, {
+				},  {
+					type : "list",
+					dataIndex : "By",
+					column : "By",
+					table : "tab",
+					labelField : "staffName",
+					store : staffByStore,
+					phpMode : true
+				},{
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
 					dataIndex : 'createTime',
 					column : 'createTime',
-					table : 'leaf'
-				}, {
-					type : 'date',
-					dateFormat : 'Y-m-d H:i:s',
-					dataIndex : 'updatedTime',
-					column : 'Time',
 					table : 'tab'
 				} ]
 			});
@@ -364,6 +370,9 @@ Ext
 					id : 'tabTranslate'
 				}
 			} ];
+			
+			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
+			 
 			var tabGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
@@ -395,7 +404,7 @@ Ext
 										leafId : leafId
 									},
 									success : function(form, action) {
-										Ext.getCmp('deleteButton').enable();
+									
 										viewPort.items.get(1).expand();
 									},
 									failure : function(form, action) {
@@ -585,7 +594,7 @@ Ext
 			var tabTranslateGridTranslate = new Ext.grid.GridPanel({
 				border : false,
 				store : tabTranslateStore,
-				height : 400,
+				height : 250,
 				autoScroll : true,
 				columns : tabTranslateColumnModel,
 				viewConfig : {
@@ -593,6 +602,7 @@ Ext
 					forceFit : true
 				},
 				layout : 'fit',
+				disabled: true,
 				plugins : [ tabTranslateEditor ]
 			});
 			var gridPanel = new Ext.Panel(
@@ -634,7 +644,7 @@ Ext
 															response, options) {
 														jsonResponse = Ext
 																.decode(response.responseText);
-														if (x.success == 'false') {
+														if (jsonResponse.success == 'false') {
 															Ext.MessageBox
 																	.alert(
 																			systemLabel,
@@ -707,6 +717,14 @@ Ext
 								}) ],
 						items : [ tabGrid ]
 					}); // viewport just save information,items will do separate
+			
+			var tabCode = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : tabCodeLabel,
+				hiddenName : 'tabCode',
+				name : 'tabCode',
+				anchor : '40%'
+			});
 			var tabNote = new Ext.form.TextField({
 				labelAlign : 'left',
 				fieldLabel : tabNoteLabel,
@@ -825,15 +843,206 @@ Ext
 					[ '1124', 'zoom_in' ], [ '1125', 'zoom_out' ] ];
 		
 			
-			var iconId = new Ext.form.Hidden({
+			var iconId = new Ext.ux.form.IconCombo({
 				name : 'iconId',
-				id : 'iconId'
+				hiddenName : 'iconId',
+				mode : 'local',
+				id : 'iconId',
+				hiddenId : 'FakeiconId',
+				store : new Ext.data.ArrayStore({
+					fields : [ 'iconId', 'iconName' ],
+					data : iconData
+				}),
+				emptyText : emptyTextLabel,
+				fieldLabel : iconIdLabel,
+				anchor : '40%',
+				triggerAction : 'all',
+				valueField : 'iconId',
+				displayField : 'iconName',
+				iconClsTpl : '{iconName}'
 			});
 			
 			var tabId = new Ext.form.Hidden({
 				name : 'tabId',
 				id : 'tabId'
 			});
+			
+			var formPanel = new Ext.form.FormPanel(
+					{
+						url : '../controller/tabController.php',
+						method : 'post',
+						frame : true,
+						title : 'Menu Administration',
+						border : false,
+
+						width : 600,
+
+						items : [
+								{
+									xtype : 'panel',
+
+									items : [ {
+										xtype : 'panel',
+										layout : 'form',
+										title : leafNote,
+										bodyStyle : "padding:5px",
+										border: true,
+										frame: true,
+										items : [ tabId,
+										          tabSequence,tabCode,
+												tabNote, iconId,
+												tabId ]
+									} ]
+								}, {
+									xtype : 'panel',
+									title : 'Tab Translation',
+									disable:true,
+									items : [ tabTranslateGridTranslate]
+								} ],
+						buttonVAlign : 'top',
+						buttonAlign : 'left',
+						buttons : [
+								{
+									text : saveButtonLabel,
+									iconCls : 'bullet_disk',
+									handler : function() {
+										var id = 0;
+										var id = Ext.getCmp('tabId')
+												.getValue();
+										var method;
+
+										if (id.length > 0) {
+											method = 'save';
+
+										} else {
+											method = 'create';
+										}
+										formPanel
+												.getForm()
+												.submit(
+														{
+															waitMsg : waitMessageLabel,
+															params : {
+																method : method,
+																leafId : leafId,
+																page : 'master'
+															},
+															success : function(
+																	form,
+																	action) {
+																var title = successLabel;
+																Ext.MessageBox
+																		.alert(
+																				title,
+																				action.result.message);
+																Ext
+																		.getCmp(
+																				'translation')
+																		.enable();
+																tabStore
+																		.reload({
+																		params : {
+																				leafId : leafId,
+																				start : 0,
+																				limit : perPage
+																		}
+																			});
+																Ext
+																		.getCmp(
+																				'tabId')
+																		.setValue(
+																				action.result.tabId);
+																			
+
+															},
+															failure : function(
+																	form,
+																	action) {
+
+																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
+																	alert(loadFailureMessageLabel);
+																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
+																
+																	alert(clientInvalidMessageLabel);
+																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
+																	Ext.Msg
+																			.alert(form.response.status
+																					+ ' '
+																					+ form.response.statusText);
+																} else if (action.failureType === Ext.form.Action.SERVER_INVALID) {
+																	Ext.Msg
+																			.alert(
+																					systemErrorLabel,
+																					action.result.message);
+																}
+															}
+														});
+									}
+								},
+								{
+									text : resetButtonLabel,
+									type : 'reset',
+									iconCls : 'table_refresh',
+									handler : function() {
+										formPanel.getForm().reset();
+									}
+								},
+								{
+									text : 'Translation',
+									id : 'translation',
+									disabled : true,
+									handler : function() {
+										var box = Ext.MessageBox.wait(
+												'Be patient',
+												'Translation In Progress');
+										Ext.Ajax
+												.request({
+
+													url : "../controller/tabController.php",
+													method : 'GET',
+													params : {
+														leafId : leafId,
+														method : 'translate',
+														tabId : Ext
+																.getCmp(
+																		'tabId')
+																.getValue()
+													},
+													success : function(
+															response, options) {
+														jsonResponse = Ext
+																.decode(response.responseText);
+														if (jsonResponse.success == "true") {
+															Ext.MessageBox
+																	.alert(
+																			systemLabel,
+																			jsonResponse.message);
+
+															tabTranslateStore
+																	.reload();
+															box.hide();
+														} else {
+															Ext.MessageBox
+																	.alert(
+																			systemLabel,
+																			jsonResponse.message);
+														}
+													},
+													failure : function(
+															response, options) {
+													
+														Ext.MessageBox
+																.alert(
+																		systemErrorLabel,
+																		escape(response.status)
+																				+ ":"
+																				+ response.statusText);
+													}
+												});
+
+									}
+								} ]
+					});
 			var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',
@@ -843,6 +1052,6 @@ Ext
 					animate : false,
 					activeOnTop : true
 				},
-				items : [ gridPanel ]
+				items : [ gridPanel,formPanel ]
 			});
 		});

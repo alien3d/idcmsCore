@@ -314,6 +314,25 @@ class folderClass extends  configClass {
 	 */
 	function read() 							{
 		header('Content-Type','application/json; charset=utf-8');
+		if($this->isAdmin == 0) {
+			if($this->getVendor()==self::mysql) {
+				$this->auditFilter = "	`folder`.`isActive`		=	1	";
+			} else if ($this->q->vendor == self :: mssql) {
+				$this->auditFilter = "	[folder].[isActive]		=	1	";
+			} else if  ($this->q->vendor == self :: oracle) {
+				$this->auditFilter = "	\"folder\".\"isActive\"	=	1	";
+			}
+		} else if($this->isAdmin ==1) {
+			if($this->getVendor()==self::mysql) {
+				$this->auditFilter = "	 1 ";
+			} else if ($this->q->vendor == self :: mssql) {
+				$this->auditFilter = "	or 1 ";
+			} else if  ($this->q->vendor == self :: oracle) {
+				$this->auditFilter = " or 1 ";
+			}
+		}
+		//UTF8
+		$items=array();
 		if($this->getVendor() == self::mysql) {
 			//UTF8
 			$sql='SET NAMES "utf8"';
@@ -331,8 +350,8 @@ class folderClass extends  configClass {
 			ON			`folder`.`iconId`=`icon`.`iconId`
 			WHERE		`tab`.`isActive`	=	1
 			AND			`folder`.`isActive`		=	1";
-			if($this->folderId) {
-				$sql.=" AND `folderId`='".$this->folderId."'";
+			if($this->model->getFolderId('','string')) {
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`='".$this->model->getFolderId('','string')."'";
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
@@ -345,8 +364,8 @@ class folderClass extends  configClass {
 			ON			[folder].[iconId]=[icon].[iconId]
 			WHERE		[tab].[isActive]	=	1
 			AND			[folder].[isActive]		=	1";
-			if($this->folderId) {
-				$sql.=" AND `folderId`='".$this->folderId."'";
+			if($this->model->getFolderId('','string')) {
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='".$this->model->getFolderId('','string')."'";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
@@ -358,8 +377,8 @@ class folderClass extends  configClass {
 			USING(\"iconId\")
 			WHERE		\"tab\".\"isActive\"=1
 			AND			\"folder\".\"isActive\"=1";
-			if($this->folderId) {
-				$sql.=" AND \"folderId\"='".$this->folderId."'";
+			if($this->model->getFolderId('','string')) {
+				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"='".$this->model->getFolderId('','string')."'";
 			}
 		}
 		/**
@@ -372,37 +391,34 @@ class folderClass extends  configClass {
 		 *	filter table
 		 * @variables $tableArray
 		 */
-		$tableArray = array('accordian','tabTranslate','folder','folderTranslate');
+		$tableArray = array('tab','tabTranslate','folder','folderTranslate');
 
-		if(isset($_GET['query'])) {
-			$query = $_GET['query'];
-		}  else if (isset($_POST['query'])) {
-			$query = $_POST['query'];
-		}
-		if(isset($query)) {
-			if($this->getVendor() == self::mysql) {
-				$sql.=$this->q->quickSearch($tableArray,$filterArray);
-			} else if ($this->getVendor()==self::mssql) {
-				$tempSql=$this->q->quickSearch($tableArray,$filterArray);
-				$sql.=$tempSql;
-			} else if ($this->getVendor()==self::oracle) {
-				$tempSql=$this->q->quickSearch($tableArray,$filterArray);
-				$sql.=$tempSql;
-			}
-		}
-		/**
-		 *	Extjs filtering mode
-		 */
-		if($this->getVendor() == self::mysql) {
+	 if ($this->getFieldQuery()) {
+	 	if ($this->getVendor() == self::mysql) {
+	 		$sql .= $this->q->quickSearch($tableArray, $filterArray);
+	 	} else if ($this->getVendor() == self::mssql) {
+	 		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+	 		$sql .= $tempSql;
+	 	} else if ($this->getVendor() == self::oracle) {
+	 		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+	 		$sql .= $tempSql;
+	 	}
+	 }
+	 /**
+	  *	Extjs filtering mode
+	  */
+	 if ($this->getGridQuery()) {
 
-			$sql.=$this->q->searching();
-		} else if ($this->getVendor()==self::mssql) {
-			$tempSql2=$this->q->searching();
-			$sql.=$tempSql2;
-		}else if ($this->getVendor()==self::oracle) {
-			$tempSql2=$this->q->searching();
-			$sql.=$tempSql2;
-		}
+	 	if ($this->getVendor() == self::mysql) {
+	 		$sql .= $this->q->searching();
+	 	} else if ($this->getVendor() == self::mssql) {
+	 		$tempSql2 = $this->q->searching();
+	 		$sql .= $tempSql2;
+	 	} else if ($this->getVendor() == self::oracle) {
+	 		$tempSql2 = $this->q->searching();
+	 		$sql .= $tempSql2;
+	 	}
+	 }
 		//echo $sql;
 		$this->q->read($sql);
 		if($this->q->redirect=='fail') {
@@ -411,15 +427,15 @@ class folderClass extends  configClass {
 		}
 		$total	= $this->q->numberRows();
 
-		if($this->order && $this->sortField){
-			if($this->q->vendor==self::mysql || $this->q->vendor=='normal') {
-				$sql.="	ORDER BY `".$sortField."` ".$dir." ";
-			} else if ($this->getVendor()==self::mssql) {
-				$sql.="	ORDER BY [".$sortField."] ".$dir." ";
-			} else if ($this->getVendor()==self::oracle) {
-				$sql.="	ORDER BY \"".$sortField."\"  ".$dir." ";
-			}
-		}
+	if ($this->getOrder() && $this->getSortField()) {
+            	if ($this->getVendor() == self::mysql) {
+            		$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
+            	} else if ($this->getVendor() ==  self::mssql) {
+            		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
+            	} else if ($this->getVendor() == self::oracle) {
+            		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+            	}
+            }
 		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf
 		$_SESSION['start'] 	= 	$_POST['start'];
 		$_SESSION['limit'] 	= 	$_POST['limit'];

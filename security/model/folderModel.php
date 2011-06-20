@@ -34,10 +34,10 @@ class folderModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['folderId'])){
-			$this->setFolderId($this->strict($_POST['folderId'],'numeric'));
+			$this->setFolderId($this->strict($_POST['folderId'],'numeric'),'','string');
 		}
-		if(isset($_POST['accordionId'])){
-			$this->setTabId($this->strict($_POST['accordionId'],'numeric'));
+		if(isset($_POST['tabId'])){
+			$this->setTabId($this->strict($_POST['tabId'],'numeric'));
 		}
 		if(isset($_POST['iconId'])){
 			$this->setIconId($this->strict($_POST['iconId'],'numeric'));
@@ -53,14 +53,14 @@ class folderModel extends validationClass{
 			$this->setBy ($_SESSION['staffId']);
 		}
 		if($this->getVendor()==self::mysql){
-			$this->setTime("'".date("Y-m-d H:i:s")."'");
+			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
 			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->getVendor()==self::oracle){
 			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
-		$this->setTotal(count($_GET['religionId']));
+		$this->setTotal(count($_GET['leafId']));
         $accessArray = array(
             "isDefault",
             "isNew",
@@ -93,7 +93,8 @@ class folderModel extends validationClass{
             $this->isApproved = array();
         }
         for ($i = 0; $i < $this->getTotal(); $i++) {
-            $this->setStaffIdAll($this->strict($_GET['staffId'][$i], 'numeric'), $i, 'array');
+
+             $this->setFolderId($this->strict($_GET['folderId'][$i], 'numeric'), $i, 'array');
             if ($_GET['isDefault'][$i] == 'true') {
                 $this->setIsDefault(1, $i, 'array');
             } else if ($_GET['default'] == 'false') {
@@ -129,7 +130,7 @@ class folderModel extends validationClass{
             } else {
                 $this->setIsApproved(0, $i, 'array');
             }
-            $primaryKeyAll .= $this->getStaffIdAll($i, 'array') . ",";
+            $primaryKeyAll .= $this->getFolderId($i, 'array') . ",";
         }
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 

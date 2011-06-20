@@ -34,7 +34,7 @@ x-grid3-row-alt {
 </style>
 <body>
 </body>
-<?php require_once("../../shared/setting_tmp.php"); ?>
+<?php require_once("../../shared/settingTemp.php"); ?>
 <script language="javascript" type="text/javascript"
 	src="../../javascript/adapter/ext/ext-base.js"></script>
 <script language="javascript" type="text/javascript"

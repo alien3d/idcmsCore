@@ -13,8 +13,9 @@
 class tabModel extends validationClass{
 
 	private $tabId;
-	private $tabSequence;
 	private $iconId;
+	private $tabSequence;
+	private $tabCode;
 	private $tabNote;
 
 	/**
@@ -39,6 +40,9 @@ class tabModel extends validationClass{
 		if(isset($_POST['tabSequence'])){
 			$this->setTabSequence($this->strict($_POST['tabSequence'],'numeric'));
 		}
+		if(isset($_POST['tabCode'])){
+			$this->setTabCode($this->strict($_POST['tabCode'],'numeric'));
+		}
 		if(isset($_POST['tabNote'])){
 			$this->setTabNote($this->strict($_POST['tabNote'],'memo'));
 		}
@@ -46,14 +50,14 @@ class tabModel extends validationClass{
 			$this->setBy($_SESSION['staffId']);
 		}
 		if($this->vendor=='normal' || $this->getVendor()==self::mysql){
-			$this->setTime("'".date("Y-m-d H:i:s")."'");
+			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
 			$this->setTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->getVendor()==self::oracle){
 			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
-		$this->setTotal(count($_GET['religionId']));
+		$this->setTotal(count($_GET['tabId']));
         $accessArray = array(
             "isDefault",
             "isNew",
@@ -64,6 +68,9 @@ class tabModel extends validationClass{
             "isApproved"
         );
         // auto assign as array if true
+        if(is_array($_GET['tabId'])){
+        	$this->tabId=array();
+        }
         if (is_array($_GET['isDefault'])) {
             $this->isDefault = array();
         }
@@ -86,7 +93,8 @@ class tabModel extends validationClass{
             $this->isApproved = array();
         }
         for ($i = 0; $i < $this->getTotal(); $i++) {
-            $this->setStaffIdAll($this->strict($_GET['staffId'][$i], 'numeric'), $i, 'array');
+
+              $this->setTabId($this->strict($_GET['tabId'][$i], 'numeric'), $i, 'array');
             if ($_GET['isDefault'][$i] == 'true') {
                 $this->setIsDefault(1, $i, 'array');
             } else if ($_GET['default'] == 'false') {
@@ -122,7 +130,7 @@ class tabModel extends validationClass{
             } else {
                 $this->setIsApproved(0, $i, 'array');
             }
-            $primaryKeyAll .= $this->getStaffIdAll($i, 'array') . ",";
+           $primaryKeyAll .= $this->getTabId($i, 'array') . ",";
         }
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 	}
@@ -258,6 +266,20 @@ class tabModel extends validationClass{
 	 */
 	public function getTabNote() {
 		return $this->tabNote;
+	}
+/**
+	 * Set Tab Code Value
+	 * @param string $value Tab Note
+	 */
+	public function setTabCode($value) {
+		$this->tabCode = $value;
+	}
+	/**
+	 * Return Tab Note
+	 * @return string Tab Note
+	 */
+	public function getTabCode() {
+		return $this->tabCode;
 	}
 
 }

@@ -120,6 +120,15 @@ Ext.onReady(function() {
             type: "boolean"
         },
         {
+			type : "list",
+			dataIndex : "updated_by",
+			column : "updated_by",
+			table : "religion",
+			labelField : "staff_nme",
+			store : staff_store,
+			phpMode : true
+		},
+        {
             name: "Time",
             type: "date",
             dateFormat: "Y-m-d H:i:s"
