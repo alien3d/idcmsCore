@@ -104,16 +104,16 @@ class documentTrailClass extends configClass {
 									`Time`
 								)
 						VALUES	(
-									'".$documentCategoryId."',
-									'".$leafId."',
-									'".$filename."',
-									'".$path."',
-									'".$filename."',
-									'".$filename."',
+									\"".$documentCategoryId."\",
+									\"".$leafId."\",
+									\"".$filename."\",
+									\"".$path."\",
+									\"".$filename."\",
+									\"".$filename."\",
 									'1',
 									'1',
-									'".$_SESSION['staffId']."',
-									'".date("Y-m-d H:i:s")."'
+									\"".$_SESSION['staffId']."\",
+									\"".date("Y-m-d H:i:s")."\"
 								); ";
 		} else if ($this->getVendor()==self::mssql){
 

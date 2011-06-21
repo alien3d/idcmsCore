@@ -94,7 +94,7 @@ class groupClass  extends configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -183,9 +183,9 @@ class groupClass  extends configClass {
 			foreach($data as $row){
 				$sqlLooping.="
 					(
-									'".$row['tabId']."',
+									\"".$row['tabId']."\",
 									'0',
-									'".$lastInsertId."'
+									\"".$lastInsertId."\"
 					),";
 
 			}
@@ -255,9 +255,9 @@ class groupClass  extends configClass {
 			foreach($data as $row){
 				$sqlLooping.="
 					(
-						'".$row['folderId']."',
+						\"".$row['folderId']."\",
 						'0',
-						'".$lastInsertId."'
+						\"".$lastInsertId."\"
 					),";
 
 			}
@@ -317,14 +317,14 @@ class groupClass  extends configClass {
 			foreach($data as $row){
 				$sqlLooping.="
 					(
-						'".$row['leafId']."',
+						\"".$row['leafId']."\",
 						'0',
 						'0',
 						'0',
 						'0',
 						'0',
 						'0',
-						'".$lastInsertId."'
+						\"".$lastInsertId."\"
 					),";
 
 			}
@@ -410,7 +410,7 @@ class groupClass  extends configClass {
 		//UTF8
 		$items=array();
 		if ($this->getVendor() == self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		if ($this->getVendor() == self::mysql) {
@@ -682,7 +682,7 @@ class groupClass  extends configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -691,50 +691,50 @@ class groupClass  extends configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 			UPDATE 	`group`
-			SET 	`groupSequence` =   '".$this->model->getGroupSequence()."',
-					`groupCode`		=	'".$this->model->getGroupCode()."',
-					`groupNote`		=	'".$this->model->getGroupNote()."',
-					`isDefault`		=	'".$this->model->getIsDefault('','string')."',
-					`isNew`			=	'".$this->model->getIsNew('','string')."',
-					`isDraft`		=	'".$this->model->getIsDraft('','string')."',
-					`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
-					`isDelete`		=	'".$this->model->getIsDelete('','string')."',
-					`isActive`		=	'".$this->model->getIsActive('','string')."',
-					`isApproved`	=	'".$this->model->getIsApproved('','string')."',
-					`By`			=	'".$this->model->getBy()."',
+			SET 	`groupSequence` =   \"".$this->model->getGroupSequence()."\",
+					`groupCode`		=	\"".$this->model->getGroupCode()."\",
+					`groupNote`		=	\"".$this->model->getGroupNote()."\",
+					`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
+					`isDelete`		=	\"".$this->model->getIsDelete('','string')."\",
+					`isActive`		=	\"".$this->model->getIsActive('','string')."\",
+					`isApproved`	=	\"".$this->model->getIsApproved('','string')."\",
+					`By`			=	\"".$this->model->getBy()."\",
 					`Time`			=	".$this->model->getTime()."
-			WHERE 	`groupId`		=	'".$this->model->getGroupId('','string')."'";
+			WHERE 	`groupId`		=	\"".$this->model->getGroupId('','string')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 			UPDATE 	[group]
-			SET 	[groupSequence] =   '".$this->model->getGroupSequence()."',
-					[groupCode]		=	'".$this->model->getGroupCode()."',
-					[groupNote]		=	'".$this->model->getGroupNote()."',
-					[isDefault]		=	'".$this->model->getIsDefault('','string')."',
-					[isNew]			=	'".$this->model->getIsNew('','string')."',
-					[isDraft]		=	'".$this->model->getIsDraft('','string')."',
-					[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
-					[isDelete]		=	'".$this->model->getIsDelete('','string')."',
-					[isActive]		=	'".$this->model->getIsActive('','string')."',
-					[isApproved]	=	'".$this->model->getIsApproved('','string')."',
-					[By]			=	'".$this->model->getBy()."',
+			SET 	[groupSequence] =   \"".$this->model->getGroupSequence()."\",
+					[groupCode]		=	\"".$this->model->getGroupCode()."\",
+					[groupNote]		=	\"".$this->model->getGroupNote()."\",
+					[isDefault]		=	\"".$this->model->getIsDefault('','string')."\",
+					[isNew]			=	\"".$this->model->getIsNew('','string')."\",
+					[isDraft]		=	\"".$this->model->getIsDraft('','string')."\",
+					[isUpdate]		=	\"".$this->model->getIsUpdate('','string')."\",
+					[isDelete]		=	\"".$this->model->getIsDelete('','string')."\",
+					[isActive]		=	\"".$this->model->getIsActive('','string')."\",
+					[isApproved]	=	\"".$this->model->getIsApproved('','string')."\",
+					[By]			=	\"".$this->model->getBy()."\",
 					[Time]			=	".$this->model->getTime()."
-			WHERE 	[groupId]		=	'".$this->model->getGroupId('','string')."'";
+			WHERE 	[groupId]		=	\"".$this->model->getGroupId('','string')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			UPDATE 	\"group\"
-			SET 	\"groupSequence\"	=   '".$this->model->getGroupSequence()."',
-					\"groupCode\"		=	'".$this->model->getGroupCode()."',
-					\"groupNote\"		=	'".$this->model->getGroupNote()."',
-					\"isActive\"		=	'".$this->model->getIsActive('','string')."',
-					\"isNew\"			=	'".$this->model->getIsNew('','string')."',
-					\"isDraft\"			=	'".$this->model->getIsDraft('','string')."',
-					\"isUpdate\"		=	'".$this->model->getIsUpdate('','string')."',
-					\"isDelete\"		=	'".$this->model->getIsDelete('','string')."',
-					\"isApproved\"		=	'".$this->model->getIsApproved('','string')."',
-					\"By\"				=	'".$this->model->getBy()."',
+			SET 	\"groupSequence\"	=   \"".$this->model->getGroupSequence()."\",
+					\"groupCode\"		=	\"".$this->model->getGroupCode()."\",
+					\"groupNote\"		=	\"".$this->model->getGroupNote()."\",
+					\"isActive\"		=	\"".$this->model->getIsActive('','string')."\",
+					\"isNew\"			=	\"".$this->model->getIsNew('','string')."\",
+					\"isDraft\"			=	\"".$this->model->getIsDraft('','string')."\",
+					\"isUpdate\"		=	\"".$this->model->getIsUpdate('','string')."\",
+					\"isDelete\"		=	\"".$this->model->getIsDelete('','string')."\",
+					\"isApproved\"		=	\"".$this->model->getIsApproved('','string')."\",
+					\"By\"				=	\"".$this->model->getBy()."\",
 					\"Time\"			=	".$this->model->getTime()."
-			WHERE 	\"groupId\"			=	'".$this->model->getGroupCode('','string')."'";
+			WHERE 	\"groupId\"			=	\"".$this->model->getGroupCode('','string')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
@@ -754,7 +754,7 @@ class groupClass  extends configClass {
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor()==self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
@@ -840,8 +840,8 @@ class groupClass  extends configClass {
 					if($this->model->getIsDelete($i,'array')==1){
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
-						WHEN '".$this->model->getGroupId($i,'array')."'
-						THEN '".$this->model->getIsDefault('','string')."'";
+						WHEN \"".$this->model->getGroupId($i,'array')."\"
+						THEN \"".$this->model->getIsDefault('','string')."\"";
 					}
 				}
 				$sql.="	END, ";
@@ -851,8 +851,8 @@ class groupClass  extends configClass {
 					if($this->model->getIsDelete($i,'array')==1){
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
-						WHEN '".$this->model->getGroupId($i,'array')."'
-						THEN '".$this->model->getIsNew('','string')."'";
+						WHEN \"".$this->model->getGroupId($i,'array')."\"
+						THEN \"".$this->model->getIsNew('','string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -861,8 +861,8 @@ class groupClass  extends configClass {
 					if($this->model->getIsDelete($i,'array')==1){
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
-						WHEN '".$this->model->getGroupId($i,'array')."'
-						THEN '".$this->model->getIsDraft('','string')."'";
+						WHEN \"".$this->model->getGroupId($i,'array')."\"
+						THEN \"".$this->model->getIsDraft('','string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -871,8 +871,8 @@ class groupClass  extends configClass {
 					if($this->model->getIsDelete($i,'array')==1){
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
-						WHEN '".$this->model->getGroupId($i,'array')."'
-						THEN '".$this->model->getIsUpdate('','string')."'";
+						WHEN \"".$this->model->getGroupId($i,'array')."\"
+						THEN \"".$this->model->getIsUpdate('','string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -881,8 +881,8 @@ class groupClass  extends configClass {
 					if($this->model->getIsDelete($i,'array')==1){
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
-						WHEN '".$this->model->getGroupId($i,'array')."'
-						THEN '".$this->model->getIsDelete($i,'array')."'";
+						WHEN \"".$this->model->getGroupId($i,'array')."\"
+						THEN \"".$this->model->getIsDelete($i,'array')."\"";
 					}
 				}
 				$sql.="	END,	";
@@ -891,8 +891,8 @@ class groupClass  extends configClass {
 					if($this->model->getIsDelete($i,'array')==1){
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
-						WHEN '".$this->model->getGroupId($i,'array')."'
-						THEN '".$this->model->getIsActive('','string')."'";
+						WHEN \"".$this->model->getGroupId($i,'array')."\"
+						THEN \"".$this->model->getIsActive('','string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -901,8 +901,8 @@ class groupClass  extends configClass {
 					if($this->model->getIsDelete($i,'array')==1){
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
-						WHEN '".$this->model->getGroupId($i,'array')."'
-						THEN '".$this->model->getIsApproved('','string')."'";
+						WHEN \"".$this->model->getGroupId($i,'array')."\"
+						THEN \"".$this->model->getIsApproved('','string')."\"";
 
 					}
 				}
@@ -979,50 +979,50 @@ class groupClass  extends configClass {
 					case 'isDefault':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN '".$this->model->getGroupId($i,'array')."'
-							THEN '".$this->model->getIsDefault($i,'array')."'";
+							WHEN \"".$this->model->getGroupId($i,'array')."\"
+							THEN \"".$this->model->getIsDefault($i,'array')."\"";
 						}
 						break;
 					case 'isNew':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN '".$this->model->getGroupId($i,'array')."'
-							THEN '".$this->model->getIsNew($i,'array')."'";
+							WHEN \"".$this->model->getGroupId($i,'array')."\"
+							THEN \"".$this->model->getIsNew($i,'array')."\"";
 
 						} break;
 					case 'isDraft':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN '".$this->model->getGroupId($i,'array')."'
-							THEN '".$this->model->getIsDraft($i,'array')."'";
+							WHEN \"".$this->model->getGroupId($i,'array')."\"
+							THEN \"".$this->model->getIsDraft($i,'array')."\"";
 						}
 						break;
 					case 'isUpdate':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN '".$this->model->getGroupId($i,'array')."'
-							THEN '".$this->model->getIsUpdate($i,'array')."'";
+							WHEN \"".$this->model->getGroupId($i,'array')."\"
+							THEN \"".$this->model->getIsUpdate($i,'array')."\"";
 						}
 						break;
 					case 'isDelete':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN '".$this->model->getGroupId($i,'array')."'
-							THEN '".$this->model->getIsDelete($i,'array')."'";
+							WHEN \"".$this->model->getGroupId($i,'array')."\"
+							THEN \"".$this->model->getIsDelete($i,'array')."\"";
 						}
 						break;
 					case 'isActive':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN '".$this->model->getGroupId($i,'array')."'
-							THEN '".$this->model->getIsActive($i,'array')."'";
+							WHEN \"".$this->model->getGroupId($i,'array')."\"
+							THEN \"".$this->model->getIsActive($i,'array')."\"";
 						}
 						break;
 					case 'isApproved':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN '".$this->model->getGroupId($i,'array')."'
-							THEN '".$this->model->getIsApproved($i,'array')."'";
+							WHEN \"".$this->model->getGroupId($i,'array')."\"
+							THEN \"".$this->model->getIsApproved($i,'array')."\"";
 						}
 						break;
 				}
@@ -1067,7 +1067,7 @@ class groupClass  extends configClass {
 		header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		if ($this->getVendor() == self::mysql) {

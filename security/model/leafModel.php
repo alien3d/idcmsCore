@@ -13,6 +13,7 @@
 class leafModel extends validationClass{
 
 	private $leafId;
+	private $leafCategoryId;
 	private $tabId;
 	private $folderId;
 	private $iconId;
@@ -58,14 +59,15 @@ class leafModel extends validationClass{
 			$this->setLeafNote($this->strict($_POST['leafNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
+
 			$this->setBy($_SESSION['staffId']);
 		}
 		if($this->getVendor()==self::mysql){
 			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
-			$this->setTime("'".date("Y-m-d H:i:s")."'");
+			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::oracle){
-			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
+			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
 		}
 
 		$this->setTotal(count($_GET['leafId']));
@@ -137,7 +139,8 @@ class leafModel extends validationClass{
             } else {
                 $this->setIsApproved(0, $i, 'array');
             }
-            $primaryKeyAll .= $this->getLeafIdAll($i, 'array') . ",";
+
+            $primaryKeyAll .= $this->getLeafId($i, 'array') . ",";
         }
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 
@@ -247,9 +250,8 @@ class leafModel extends validationClass{
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
 	 */
-	public function setTabId() {
-
-		$this->tabId = $value;
+	public function setTabId($value) {
+			$this->tabId = $value;
 
 	}
 	/**
@@ -267,7 +269,7 @@ class leafModel extends validationClass{
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
 	 */
-	public function setFolderId() {
+	public function setFolderId($value) {
 
 		$this->folderId = $value;
 
@@ -287,7 +289,7 @@ class leafModel extends validationClass{
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
 	 */
-	public function setIconId() {
+	public function setIconId($value) {
 
 		$this->iconId = $value;
 

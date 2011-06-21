@@ -10041,7 +10041,7 @@ if (!class_exists('TCPDF', false)) {
 				if (strcmp(substr($key, -5), 'Color') == 0) {
 					$val = $this->_JScolor($val);
 				} else {
-					$val = "'".$val."'";
+					$val = "\"".$val."\"";
 				}
 				$this->javascript .= 'f'.$name.'.'.$key.'='.$val.";\n";
 			}
@@ -10646,7 +10646,7 @@ if (!class_exists('TCPDF', false)) {
 				$this->_addfield('listbox', $name, $x, $y, $w, $h, $prop);
 				$s = '';
 				foreach ($values as $value) {
-					$s .= "'".addslashes($value)."',";
+					$s .= "\"".addslashes($value)."\",";
 				}
 				$this->javascript .= 'f'.$name.'.setItems(['.substr($s, 0, -1)."]);\n";
 				return;
@@ -10706,7 +10706,7 @@ if (!class_exists('TCPDF', false)) {
 				$this->_addfield('combobox', $name, $x, $y, $w, $h, $prop);
 				$s = '';
 				foreach ($values as $value) {
-					$s .= "'".addslashes($value)."',";
+					$s .= "\"".addslashes($value)."\",";
 				}
 				$this->javascript .= 'f'.$name.'.setItems(['.substr($s, 0, -1)."]);\n";
 				return;
@@ -10835,8 +10835,8 @@ if (!class_exists('TCPDF', false)) {
 			}
 			if ($js) {
 				$this->_addfield('button', $name, $this->x, $this->y, $w, $h, $prop);
-				$this->javascript .= 'f'.$name.".buttonSetCaption('".addslashes($caption)."');\n";
-				$this->javascript .= 'f'.$name.".setAction('MouseUp','".addslashes($action)."');\n";
+				$this->javascript .= 'f'.$name.".buttonSetCaption(\"".addslashes($caption)."\");\n";
+				$this->javascript .= 'f'.$name.".setAction('MouseUp',\"".addslashes($action)."\");\n";
 				$this->javascript .= 'f'.$name.".highlight='push';\n";
 				$this->javascript .= 'f'.$name.".print=false;\n";
 				return;
@@ -15679,7 +15679,7 @@ if (!class_exists('TCPDF', false)) {
 					$newpage = $pagenum;
 				}
 				--$newpage;
-				return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage."";'), $tmpjavascript);
+				return "this.addField(\\"".$matches[1]."\',\\"".$matches[2]."\',".$newpage."";'), $tmpjavascript);
 			// return to last page
 			$this->lastPage(true);
 			return true;
@@ -15816,7 +15816,7 @@ if (!class_exists('TCPDF', false)) {
 					$newpage = $pagenum;
 				}
 				--$newpage;
-				return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage."";'), $tmpjavascript);
+				return "this.addField(\\"".$matches[1]."\',\\"".$matches[2]."\',".$newpage."";'), $tmpjavascript);
 			// return to last page
 			$this->lastPage(true);
 			return true;

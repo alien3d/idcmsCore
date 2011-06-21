@@ -525,7 +525,7 @@ class PHPExcel_Shared_Font
 				break;
 
 			default:
-				throw new Exception('Unknown font name "'. $name .'". Cannot map to TrueType font file');
+				throw new Exception("Unknown font name ". $name ."Cannot map to TrueType font file");
 				break;
 		}
 

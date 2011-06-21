@@ -106,7 +106,7 @@ class leafAccessClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		// by default if add new group will add access to accordion and leaf.
@@ -179,13 +179,13 @@ class leafAccessClass extends  configClass {
 				AND		`folder`.`isActive` 	=	1
 				AND		`leaf`.`isActive`		=	1 ";
 			if($this->accordionId) {
-				$sql.=" AND `leaf`.`accordionId`='".$this->strict($this->accordionId,'numeric')."'";
+				$sql.=" AND `leaf`.`accordionId`=\"".$this->strict($this->accordionId,'numeric')."\"";
 			}
 			if($this->folderId) {
-				$sql.=" AND `leaf`.`folderId`='".$this->strict($this->folderId,'numeric')."'";
+				$sql.=" AND `leaf`.`folderId`=\"".$this->strict($this->folderId,'numeric')."\"";
 			}
 			if($this->staffId) {
-				$sql.=" AND `leafAccess`.`staffId`='".$this->strict($this->staffId,'numeric')."'";
+				$sql.=" AND `leafAccess`.`staffId`=\"".$this->strict($this->staffId,'numeric')."\"";
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
@@ -256,13 +256,13 @@ class leafAccessClass extends  configClass {
 				AND		[folder].[isActive] 	=	1
 				AND		[leaf].[isActive]		=	1  ";
 			if($this->accordionId) {
-				$sql.=" AND [leaf].[accordionId]='".$this->strict($this->accordionId,'numeric')."'";
+				$sql.=" AND [leaf].[accordionId]=\"".$this->strict($this->accordionId,'numeric')."\"";
 			}
 			if($this->folderId) {
-				$sql.=" AND [leaf].[folderId]='".$this->strict($this->folderId,'numeric')."'";
+				$sql.=" AND [leaf].[folderId]=\"".$this->strict($this->folderId,'numeric')."\"";
 			}
 			if($this->staffId) {
-				$sql.=" AND [leafAccess`.[staffId]='".$this->strict($this->staffId,'numeric')."'";
+				$sql.=" AND [leafAccess`.[staffId]=\"".$this->strict($this->staffId,'numeric')."\"";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -334,13 +334,13 @@ class leafAccessClass extends  configClass {
 				AND		\"accordion\".\"isActive\"=1
 				AND		\"staff\".\"isActive\"=1";
 			if($this->accordionId) {
-				$sql.=" AND \"leaf\".\"accordionId\"='".$this->strict($this->accordionId,'numeric')."'";
+				$sql.=" AND \"leaf\".\"accordionId\"=\"".$this->strict($this->accordionId,'numeric')."\"";
 			}
 			if($this->folderId) {
-				$sql.=" AND \"leaf\".\"folderId\"='".$this->strict($this->folderId,'numeric')."'";
+				$sql.=" AND \"leaf\".\"folderId\"=\"".$this->strict($this->folderId,'numeric')."\"";
 			}
 			if($this->staffId) {
-				$sql.=" AND \"leafAccess\".\"staffId\"='".$this->strict($this->staffId,'numeric')."'";
+				$sql.=" AND \"leafAccess\".\"staffId\"=\"".$this->strict($this->staffId,'numeric')."\"";
 			}
 		}
 		//echo $sql;
@@ -411,7 +411,7 @@ class leafAccessClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -431,36 +431,36 @@ class leafAccessClass extends  configClass {
 			if($this->getVendor() == self::mysql) {
 				$sql="
 					UPDATE 	`leafAccess`
-					SET 	`leafCreateAccessValue`	=	'".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."',
-							`leafReadAccessValue`	=	'".$this->strict($_GET['leafReadAccessValue'][$i],'numeric')."',
-							`leafUpdateAccessValue`	=	'".$this->strict($_GET['leafUpdateAccessValue'][$i],'numeric')."',
-							`leafDeleteAccessValue`	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-							`leafDeleteAccessValue`	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-							`leafPrintAccessValue`	=	'".$this->strict($_GET['leafPrintAccessValue'][$i],'numeric')."',
-							`leafPostAccessValue`	=	'".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."'
-					WHERE 	`leafAccessId`	=	'".$this->strict($_GET['leafAccessId'][$i],'numeric')."'";
+					SET 	`leafCreateAccessValue`	=	\"".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."\",
+							`leafReadAccessValue`	=	\"".$this->strict($_GET['leafReadAccessValue'][$i],'numeric')."\",
+							`leafUpdateAccessValue`	=	\"".$this->strict($_GET['leafUpdateAccessValue'][$i],'numeric')."\",
+							`leafDeleteAccessValue`	=	\"".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."\",
+							`leafDeleteAccessValue`	=	\"".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."\",
+							`leafPrintAccessValue`	=	\"".$this->strict($_GET['leafPrintAccessValue'][$i],'numeric')."\",
+							`leafPostAccessValue`	=	\"".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."\"
+					WHERE 	`leafAccessId`	=	\"".$this->strict($_GET['leafAccessId'][$i],'numeric')."\"";
 			} else if ($this->getVendor()==self::mssql) {
 				$sql="
 					UPDATE 	[leafAccess]
-					SET 	[leafCreateAccessValue]	=	'".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."',
-							[leafReadAccessValue]	=	'".$this->strict($_GET['leafReadAccessValue'][$i],'numeric')."',
-							[leafUpdateAccessValue]	=	'".$this->strict($_GET['leafUpdateAccessValue'][$i],'numeric')."',
-							[leafDeleteAccessValue]	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-							[leafDeleteAccessValue]	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-							[leafPrintAccessValue]	=	'".$this->strict($_GET['leafPrintAccessValue'][$i],'numeric')."',
-							[leafPostAccessValue]	=	'".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."'
-					WHERE 	[leafAccessId]	=	'".$this->strict($_GET['leafAccessId'][$i],'numeric')."'";
+					SET 	[leafCreateAccessValue]	=	\"".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."\",
+							[leafReadAccessValue]	=	\"".$this->strict($_GET['leafReadAccessValue'][$i],'numeric')."\",
+							[leafUpdateAccessValue]	=	\"".$this->strict($_GET['leafUpdateAccessValue'][$i],'numeric')."\",
+							[leafDeleteAccessValue]	=	\"".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."\",
+							[leafDeleteAccessValue]	=	\"".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."\",
+							[leafPrintAccessValue]	=	\"".$this->strict($_GET['leafPrintAccessValue'][$i],'numeric')."\",
+							[leafPostAccessValue]	=	\"".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."\"
+					WHERE 	[leafAccessId]	=	\"".$this->strict($_GET['leafAccessId'][$i],'numeric')."\"";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql="
 				UPDATE 	\"leafAccess\"
-				SET 	\"leafCreateAccessValue\"	=	'".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."',
-						\"leafReadAccessValue\"	=	'".$this->strict($_GET['leafReadAccessValue'][$i],'numeric')."',
-						\"leafUpdateAccessValue\"	=	'".$this->strict($_GET['leafUpdateAccessValue'][$i],'numeric')."',
-						\"leafDeleteAccessValue\"	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-						\"leafDeleteAccessValue\"	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-						\"leafPrintAccessValue\"	=	'".$this->strict($_GET['leafPrintAccessValue'][$i],'numeric')."',
-						\"leafPostAccessValue\"	=	'".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."'
-				WHERE 	\"leafAccessId\"	=	'".$this->strict($_GET['leafAccessId'][$i],'numeric')."'";
+				SET 	\"leafCreateAccessValue\"	=	\"".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."\",
+						\"leafReadAccessValue\"	=	\"".$this->strict($_GET['leafReadAccessValue'][$i],'numeric')."\",
+						\"leafUpdateAccessValue\"	=	\"".$this->strict($_GET['leafUpdateAccessValue'][$i],'numeric')."\",
+						\"leafDeleteAccessValue\"	=	\"".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."\",
+						\"leafDeleteAccessValue\"	=	\"".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."\",
+						\"leafPrintAccessValue\"	=	\"".$this->strict($_GET['leafPrintAccessValue'][$i],'numeric')."\",
+						\"leafPostAccessValue\"	=	\"".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."\"
+				WHERE 	\"leafAccessId\"	=	\"".$this->strict($_GET['leafAccessId'][$i],'numeric')."\"";
 			}
 			$this->q->update($sql);
 		}

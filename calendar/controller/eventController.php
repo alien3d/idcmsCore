@@ -111,17 +111,17 @@ class eventClass extends configClass
 								`Time`
 							)
 					VALUES	(
-								'" . $this->strict($_POST['calendar_uniqueId'], 'n') . "',
-								'" . $this->strict($_POST['title'], 's') . "',
-								'" . date("Y-m-d H:i:s", strtotime($_POST['start'])) . "',
-								'" . date("Y-m-d H:i:s", strtotime($_POST['end'])) . "',
-								'" . $this->strict($_POST['ad'], 'c') . "',
-								'" . $this->strict($_POST['notes'], 's') . "',
-								'" . $this->strict($_POST['rem'], 'c') . "',
-								'" . $this->strict($_POST['url'], 'c') . "',
-								'" . $this->strict($_POST['loc'], 's') . "',
-								'" . $this->strict($_POST['n'], 'c') . "',
-								'" . $_SESSION['staff_uniqueId'] . "'
+								\"". $this->strict($_POST['calendar_uniqueId'], 'n') ."\",
+								\"". $this->strict($_POST['title'], 's') ."\",
+								\"". date("Y-m-d H:i:s", strtotime($_POST['start'])) ."\",
+								\"". date("Y-m-d H:i:s", strtotime($_POST['end'])) ."\",
+								\"". $this->strict($_POST['ad'], 'c') ."\",
+								\"". $this->strict($_POST['notes'], 's') ."\",
+								\"". $this->strict($_POST['rem'], 'c') ."\",
+								\"". $this->strict($_POST['url'], 'c') ."\",
+								\"". $this->strict($_POST['loc'], 's') ."\",
+								\"". $this->strict($_POST['n'], 'c') ."\",
+								\"". $_SESSION['staff_uniqueId'] ."\"
 							);";
         $this->q->create($sql);
         $this->q->commit();
@@ -138,7 +138,7 @@ class eventClass extends configClass
 				JOIN    `calendarColor`
 				USING   (`calendarColorId`)
 				WHERE 	1
-				AND     `calendar`.`staffId` = '" . $this->staffId . "'";
+				AND     `calendar`.`staffId` = \"". $this->staffId ."\"";
         $this->q->read($sql);
         $total = $this->q->numberRows();
         $items = array();
@@ -159,49 +159,49 @@ class eventClass extends configClass
         $this->q->start();
         $sql = "
 					UPDATE 	`event`
-					SET 	`calendarId`	=	'" . $this->strict($_POST['calendar_uniqueId'], 'n') . "',
-							`eventTitle`	=	'" . $this->strict($_POST['title'], 's') . "',
-							`eventStart`	=	'" . date("Y-m-d H:i:s", strtotime($_POST['start'])) . "',
-							`eventEnd`	=	'" . date("Y-m-d H:i:s", strtotime($_POST['end'])) . "',
-							`eventAddress`    = 	'" . $this->strict($_POST['ad'], 'c') . "',
-							`EventNotes` = 	'" . $this->strict($_POST['notes'], 's') . "',
-							`eventReminder`	=	'" . $this->strict($_POST['rem'], 'c') . "',
-							`eventUrl`	=	'" . $this->strict($_POST['url'], 'c') . "',
-							`eventLocation`	=	'" . $this->strict($_POST['loc'], 's') . "',
-							`eventN`	=	'" . $this->strict($_POST['n'], 'c') . "'
-					WHERE 	`eventId`		=	'" . $this->strict($_POST['eventId'], 'n') . "'";
+					SET 	`calendarId`	=	\"". $this->strict($_POST['calendar_uniqueId'], 'n') ."\",
+							`eventTitle`	=	\"". $this->strict($_POST['title'], 's') ."\",
+							`eventStart`	=	\"". date("Y-m-d H:i:s", strtotime($_POST['start'])) ."\",
+							`eventEnd`	=	\"". date("Y-m-d H:i:s", strtotime($_POST['end'])) ."\",
+							`eventAddress`    = 	\"". $this->strict($_POST['ad'], 'c') ."\",
+							`EventNotes` = 	\"". $this->strict($_POST['notes'], 's') ."\",
+							`eventReminder`	=	\"". $this->strict($_POST['rem'], 'c') ."\",
+							`eventUrl`	=	\"". $this->strict($_POST['url'], 'c') ."\",
+							`eventLocation`	=	\"". $this->strict($_POST['loc'], 's') ."\",
+							`eventN`	=	\"". $this->strict($_POST['n'], 'c') ."\"
+					WHERE 	`eventId`		=	\"". $this->strict($_POST['eventId'], 'n') ."\"";
      if($this->getVendor() == self::mysql){
         $sql = "
 			UPDATE	`event`
 			SET
-					`calendarId`	=	'".$this->model->getC."',
-					`isDefault`		=	'".$this->model->getIsDefault('','string')."',
-					`isNew`			=	'".$this->model->getIsNew('','string')."',
-					`isDraft`		=	'".$this->model->getIsDraft('','string')."',
-					`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
-					`isActive`		= 	'".$this->model->getIsActive('','string')."',
-					`isApproved` 	=	'".$this->model->getIsApproved('','string')."'
-			WHERE 	`eventId`		=	'" . $this->model->getEventId('','string'). "'";
+					`calendarId`	=	\"".$this->model->getC."\",
+					`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
+					`isActive`		= 	\"".$this->model->getIsActive('','string')."\",
+					`isApproved` 	=	\"".$this->model->getIsApproved('','string')."\"
+			WHERE 	`eventId`		=	\"". $this->model->getEventId('','string')."\"";
         } else if ($this->q->vendor == self :: mssql){
         	$sql = "
 			UPDATE	[event]
-			SET		[isDefault]		=	'".$this->model->getIsDefault('','string')."',
-					[isNew]			=	'".$this->model->getIsNew('','string')."',
-					[isDraft]		=	'".$this->model->getIsDraft('','string')."',
-					[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
-					[isActive]		= 	'".$this->model->getIsActive('','string')."',
-					[isApproved] 	=	'".$this->model->getIsApproved('','string')."'
-			WHERE 	[eventId]		=	'" . $this->model->getEventId('','string'). "'";
+			SET		[isDefault]		=	\"".$this->model->getIsDefault('','string')."\",
+					[isNew]			=	\"".$this->model->getIsNew('','string')."\",
+					[isDraft]		=	\"".$this->model->getIsDraft('','string')."\",
+					[isUpdate]		=	\"".$this->model->getIsUpdate('','string')."\",
+					[isActive]		= 	\"".$this->model->getIsActive('','string')."\",
+					[isApproved] 	=	\"".$this->model->getIsApproved('','string')."\"
+			WHERE 	[eventId]		=	\"". $this->model->getEventId('','string')."\"";
         } else if ($this->q->vendor == self:: oracle){
         	$sql = "
 			UPDATE	`event`
-			SET		`isDefault`		=	'".$this->model->getIsDefault('','string')."',
-					`isNew`			=	'".$this->model->getIsNew('','string')."',
-					`isDraft`		=	'".$this->model->getIsDraft('','string')."',
-					`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
-					`isActive`		= 	'".$this->model->getIsActive('','string')."',
-					`isApproved` 	=	'".$this->model->getIsApproved('','string')."'
-			WHERE 	`eventId`		=	'" . $this->model->getEventId('','string'). "'";
+			SET		`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
+					`isActive`		= 	\"".$this->model->getIsActive('','string')."\",
+					`isApproved` 	=	\"".$this->model->getIsApproved('','string')."\"
+			WHERE 	`eventId`		=	\"". $this->model->getEventId('','string')."\"";
         }
         $this->q->update($sql);
         $this->q->commit();
@@ -217,33 +217,33 @@ class eventClass extends configClass
         if($this->getVendor() == self::mysql){
         $sql = "
 			UPDATE	`event`
-			SET		`isDefault`		=	'".$this->model->getIsDefault('','string')."',
-					`isNew`			=	'".$this->model->getIsNew('','string')."',
-					`isDraft`		=	'".$this->model->getIsDraft('','string')."',
-					`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
-					`isActive`		= 	'".$this->model->getIsActive('','string')."',
-					`isApproved` 	=	'".$this->model->getIsApproved('','string')."'
-			WHERE 	`eventId`		=	'" . $this->model->getEventId('','string'). "'";
+			SET		`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
+					`isActive`		= 	\"".$this->model->getIsActive('','string')."\",
+					`isApproved` 	=	\"".$this->model->getIsApproved('','string')."\"
+			WHERE 	`eventId`		=	\"". $this->model->getEventId('','string')."\"";
         } else if ($this->q->vendor == self :: mssql){
         	$sql = "
 			UPDATE	[event]
-			SET		[isDefault]		=	'".$this->model->getIsDefault('','string')."',
-					[isNew]			=	'".$this->model->getIsNew('','string')."',
-					[isDraft]		=	'".$this->model->getIsDraft('','string')."',
-					[isUpdate]		=	'".$this->model->getIsUpdate('','string')."',
-					[isActive]		= 	'".$this->model->getIsActive('','string')."',
-					[isApproved] 	=	'".$this->model->getIsApproved('','string')."'
-			WHERE 	[eventId]		=	'" . $this->model->getEventId('','string'). "'";
+			SET		[isDefault]		=	\"".$this->model->getIsDefault('','string')."\",
+					[isNew]			=	\"".$this->model->getIsNew('','string')."\",
+					[isDraft]		=	\"".$this->model->getIsDraft('','string')."\",
+					[isUpdate]		=	\"".$this->model->getIsUpdate('','string')."\",
+					[isActive]		= 	\"".$this->model->getIsActive('','string')."\",
+					[isApproved] 	=	\"".$this->model->getIsApproved('','string')."\"
+			WHERE 	[eventId]		=	\"". $this->model->getEventId('','string')."\"";
         } else if ($this->q->vendor == self:: oracle){
         	$sql = "
 			UPDATE	`event`
-			SET		`isDefault`		=	'".$this->model->getIsDefault('','string')."',
-					`isNew`			=	'".$this->model->getIsNew('','string')."',
-					`isDraft`		=	'".$this->model->getIsDraft('','string')."',
-					`isUpdate`		=	'".$this->model->getIsUpdate('','string')."',
-					`isActive`		= 	'".$this->model->getIsActive('','string')."',
-					`isApproved` 	=	'".$this->model->getIsApproved('','string')."'
-			WHERE 	`eventId`		=	'" . $this->model->getEventId('','string'). "'";
+			SET		`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
+					`isActive`		= 	\"".$this->model->getIsActive('','string')."\",
+					`isApproved` 	=	\"".$this->model->getIsApproved('','string')."\"
+			WHERE 	`eventId`		=	\"". $this->model->getEventId('','string')."\"";
         }
         $this->q->update($sql);
         $this->q->commit();

@@ -10372,7 +10372,7 @@ class PHPExcel_Calculation_Functions {
 												}
 
 												if ($sheetText > '') {
-													if (strpos($sheetText,' ') !== False) { $sheetText = "'".$sheetText."'"; }
+													if (strpos($sheetText,' ') !== False) { $sheetText = "\"".$sheetText."\""; }
 													$sheetText .='!';
 												}
 												if ((!is_bool($referenceStyle)) || $referenceStyle) {

@@ -94,8 +94,8 @@ class documentCategoryClass extends  configClass {
 							)
 					VALUES	(
 
-								'".$this->model->documentCategoryTitle."',
-								'".$this->model->documentCategoryDesc."'
+								\"".$this->model->documentCategoryTitle."\",
+								\"".$this->model->documentCategoryDesc."\"
 							);";
 
 		$this->q->create($sql);
@@ -118,7 +118,7 @@ class documentCategoryClass extends  configClass {
 				FROM 	`documentCategory`
 				WHERE 	1";
 		if($_POST['documentCategoryId']) {
-			$sql.=" AND `documentCategoryId`='".$this->strict($this->documentCategoryId,'n')."'";
+			$sql.=" AND `documentCategoryId`=\"".$this->strict($this->documentCategoryId,'n')."\"";
 		}
 
 		// searching filtering
@@ -201,17 +201,17 @@ class documentCategoryClass extends  configClass {
 
 		$sql="
 		UPDATE 	`doc_cat`
-		SET 	`doc_cat_uniqueId`	    =	'".$this->strict($_POST['doc_cat_uniqueId'],'n')."',
-		     	`doc_cat_nme`	            =	'".$this->strict($_POST['doc_cat_nme'],'s')."',
-		     	`isActive`			=	'".$this->model->getIsActive('','string')."',
-				`isNew`				=	'".$this->model->getIsNew('','string')."',
-				`isDraft`			=	'".$this->model->getIsDraft('','string')."',
-				`isUpdate`			=	'".$this->model->getIsUpdate('','string')."',
-				`isDelete`			=	'".$this->model->getIsDelete('','string')."',
-				`isApproved`		=	'".$this->model->getIsApproved('','string')."',
-				`By`				=	'".$this->model->getBy()."',
+		SET 	`doc_cat_uniqueId`	    =	\"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\",
+		     	`doc_cat_nme`	            =	\"".$this->strict($_POST['doc_cat_nme'],'s')."\",
+		     	`isActive`			=	\"".$this->model->getIsActive('','string')."\",
+				`isNew`				=	\"".$this->model->getIsNew('','string')."\",
+				`isDraft`			=	\"".$this->model->getIsDraft('','string')."\",
+				`isUpdate`			=	\"".$this->model->getIsUpdate('','string')."\",
+				`isDelete`			=	\"".$this->model->getIsDelete('','string')."\",
+				`isApproved`		=	\"".$this->model->getIsApproved('','string')."\",
+				`By`				=	\"".$this->model->getBy()."\",
 				`Time				=	".$this->model->getTime()."
-		WHERE 	`doc_cat_uniqueId`		=	'".$this->strict($_POST['doc_cat_uniqueId'],'n')."'";
+		WHERE 	`doc_cat_uniqueId`		=	\"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\"";
 
 		$this->q->update($sql);
 		$this->q->commit();
@@ -237,15 +237,15 @@ class documentCategoryClass extends  configClass {
 		$this->q->start();
 		$sql	=	"
 					DELETE	FROM 	`doc_cat`
-					`isActive`			=	'".$this->model->getIsActive('','string')."',
-							`isNew`				=	'".$this->model->getIsNew('','string')."',
-							`isDraft`			=	'".$this->model->getIsDraft('','string')."',
-							`isUpdate`			=	'".$this->model->getIsUpdate('','string')."',
-							`isDelete`			=	'".$this->model->getIsDelete('','string')."',
-							`isApproved`		=	'".$this->model->getIsApproved('','string')."',
-							`By`				=	'".$this->model->getBy()."',
+					`isActive`			=	\"".$this->model->getIsActive('','string')."\",
+							`isNew`				=	\"".$this->model->getIsNew('','string')."\",
+							`isDraft`			=	\"".$this->model->getIsDraft('','string')."\",
+							`isUpdate`			=	\"".$this->model->getIsUpdate('','string')."\",
+							`isDelete`			=	\"".$this->model->getIsDelete('','string')."\",
+							`isApproved`		=	\"".$this->model->getIsApproved('','string')."\",
+							`By`				=	\"".$this->model->getBy()."\",
 							`Time				=	".$this->model->getTime()."
-					WHERE 			`doc_cat_uniqueId`='".$this->strict($_POST['doc_cat_uniqueId'],'n')."'";
+					WHERE 			`doc_cat_uniqueId`=\"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\"";
 		$this->q->delete($sql);
 		$this->q->commit();
 

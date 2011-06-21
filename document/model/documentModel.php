@@ -60,11 +60,11 @@ class documentModel extends validationClass{
 			$this->setBy($_SESSION['staffId']);
 		}
 		if($this->getVendor()==self::mysql){
-			$this->setTime("'".date("Y-m-d H:i:s")."'");
+			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
-			$this->setTime("'".date("Y-m-d H:i:s")."'");
+			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::oracle){
-			$this->setTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
+			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
 		} else{
 			echo "udentified vendor ?";
 		}

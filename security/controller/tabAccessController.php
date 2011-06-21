@@ -106,7 +106,7 @@ class tabAccessClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor() == self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		// by default if add new group will add access to tab and folder.
@@ -131,7 +131,7 @@ class tabAccessClass extends configClass
 				WHERE 	`tab`.`isActive` 	=	1
 				AND		`group`.`isActive`		=	1";
 			if ($this->groupId) {
-				$sql .= " AND `group`.`groupId`='" . $this->strict($this->groupId, 'numeric') . "'";
+				$sql .= " AND `group`.`groupId`=\"". $this->strict($this->groupId, 'numeric') ."\"";
 			}
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
@@ -154,7 +154,7 @@ class tabAccessClass extends configClass
 				WHERE 	`tab`.`isActive` 	=	1
 				AND		`group`.`isActive`		=	1";
 			if ($this->groupId) {
-				$sql .= " AND `group`.`groupId`='" . $this->strict($this->groupId, 'numeric') . "'";
+				$sql .= " AND `group`.`groupId`=\"". $this->strict($this->groupId, 'numeric') ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -177,7 +177,7 @@ class tabAccessClass extends configClass
 				WHERE 	`tab`.`isActive` 	=	1
 				AND		`group`.`isActive`		=	1";
 			if ($this->groupId) {
-				$sql .= " AND `group`.`groupId`='" . $this->strict($this->groupId, 'numeric') . "'";
+				$sql .= " AND `group`.`groupId`=\"". $this->strict($this->groupId, 'numeric') ."\"";
 			}
 		}
 		//echo $sql;
@@ -222,7 +222,7 @@ class tabAccessClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		if($this->q->vendor==self::mysql){
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->model->update();
@@ -231,18 +231,18 @@ class tabAccessClass extends configClass
 			if($this->getVendor() == self::mysql){
 				$sql = "
 			UPDATE 	`tabAccess`
-			SET 	`tabAccessValue`	= 	'" . $this->model->tabAccessValue[$i] . "'
-			WHERE 	`tabAccessId`		=	'" . $this->model->tabAccessId[$i] . "'";
+			SET 	`tabAccessValue`	= 	\"". $this->model->tabAccessValue[$i] ."\"
+			WHERE 	`tabAccessId`		=	\"". $this->model->tabAccessId[$i] ."\"";
 			} else if ($this->getVendor() ==  self::mssql){
 				$sql = "
 			UPDATE 	[tabAccess]
-			SET 	[tabAccessValue]	= 	'" . $this->model->tabAccessValue[$i] . "'
-			WHERE 	[tabAccessId]		=	'" . $this->model->tabAccessId[$i] . "'";
+			SET 	[tabAccessValue]	= 	\"". $this->model->tabAccessValue[$i] ."\"
+			WHERE 	[tabAccessId]		=	\"". $this->model->tabAccessId[$i] ."\"";
 			} else if ($this->getVendor()==self::oracle){
 				$sql = "
 			UPDATE 	\"tabAccess\"
-			SET 	\"tabAccessValue\"	= 	'" . $this->model->tabAccessValue[$i] . "'
-			WHERE 	\"tabAccessId\"		=	'" . $this->model->tabAccessId[$i] . "'";
+			SET 	\"tabAccessValue\"	= 	\"". $this->model->tabAccessValue[$i] ."\"
+			WHERE 	\"tabAccessId\"		=	\"". $this->model->tabAccessId[$i] ."\"";
 			}
 			//	echo $sql."<br>";
 			$this->q->update($sql);

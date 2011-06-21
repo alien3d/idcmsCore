@@ -156,7 +156,7 @@ class leafUserClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor() == self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 
@@ -173,9 +173,9 @@ class leafUserClass extends configClass
 						(
 							SELECT 	(MAX(`leafSequence`) + 1)
 							FROM 	`leafUser`
-							WHERE 	`staffId`	=	'".$this->staffId."'
+							WHERE 	`staffId`	=	\"".$this->staffId."\"
 						),
-						'".$this->staffId."',
+						\"".$this->staffId."\",
 						);";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -264,7 +264,7 @@ class leafUserClass extends configClass
 		//UTF8
 		$items=array();
 		if ($this->getVendor() == self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		if ($this->getVendor() == self::mysql) {
@@ -281,8 +281,8 @@ class leafUserClass extends configClass
 					ON		`leafTranslate`.`leafId` = `leafUser`.`leafId`
 					AND		`leafTranslate`.`leafId` = `leaf`.`leafId`
 					WHERE 	`leaf`.`isActive` =1
-					AND		`leafUser`.`staffId` ='".$this->staffId."'
-					AND		`leafTranslate`.`languageId` = '".$this->languageId."'";
+					AND		`leafUser`.`staffId` =\"".$this->staffId."\"
+					AND		`leafTranslate`.`languageId` = \"".$this->languageId."\"";
 
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
@@ -513,7 +513,7 @@ class leafUserClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor() == self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array(
@@ -571,7 +571,7 @@ class leafUserClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor() == self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array(

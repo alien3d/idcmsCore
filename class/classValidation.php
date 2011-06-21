@@ -352,6 +352,7 @@ abstract class validationClass {
 	 * @return integer User
 	 */
 	public function getBy() {
+		echo "dari getter".$this->By;
 		return $this->By;
 	}
 

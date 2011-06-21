@@ -77,15 +77,15 @@ echo $_SESSION[$theme];
     	Ext.BLANK_IMAGE_URL ='../../javascript/resources/images/s.gif';
     	<?php
 				if($q->vendor=='normal' || $q->vendor=='mysql') {
-					$sql='SET NAMES "utf8"';
+					$sql="SET NAMES \"utf8\"";
 					$q->fast($sql);
 				}
 				if($q->vendor=='normal' || $q->vendor=='mysql') {
-					$sql="SELECT * FROM `staff` WHERE `staffId`='".$_SESSION[$staffId]."' LIMIT 1";
+					$sql="SELECT * FROM `staff` WHERE `staffId`=\"".$_SESSION[$staffId]."\" LIMIT 1";
 				} else if ($q->vendor=='microsoft') {
-						$sql="SELECT TOP 1 * FROM [staff] WHERE [staffId]='".$_SESSION[$staffId]."'";
+						$sql="SELECT TOP 1 * FROM [staff] WHERE [staffId]=\"".$_SESSION[$staffId]."\"";
 				} else if ($q->vendor=='oracle') {
-						$sql="SELECT * FROM \"staff\"	WHERE \"staffId\"='".$_SESSION[$staffId]."' AND  rownum <=1 ";
+						$sql="SELECT * FROM \"staff\"	WHERE \"staffId\"=\"".$_SESSION[$staffId]."\" AND  rownum <=1 ";
 				}
 
 
@@ -129,7 +129,7 @@ echo $_SESSION[$theme];
 
 					foreach($data as $row) {
 							
-								$str.="['".$row['languageDesc']."','".$row['languageId']."'],";
+								$str.="[\"".$row['languageDesc']."\",\"".$row['languageId']."\"],";
 							
 					}
 			$str=substr($str,0,-1);

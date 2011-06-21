@@ -55,7 +55,7 @@ class loginClass extends configClass {
 		//UTF8
 
 		if($this->getVendor() == self::mysql) {
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		/**
@@ -69,8 +69,8 @@ class loginClass extends configClass {
 			USING	(`groupId`)
 			JOIN	`department`
 			USING	(`departmentId`)
-			WHERE 	`staff`.`staffName`		=	'".$this->model->getStaffName()."'
-			AND		`staff`.`staffPassword`	=	'".md5($this->model->getStaffPassword())."'";
+			WHERE 	`staff`.`staffName`		=	\"".$this->model->getStaffName()."\"
+			AND		`staff`.`staffPassword`	=	\"".md5($this->model->getStaffPassword())."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
 			SELECT	*
@@ -79,8 +79,8 @@ class loginClass extends configClass {
 			ON		[staff].[groupId]  = [group].[groupId]
 			JOIN	[department]
 			USING	[department].[departmentId] = [staff].[departmentId]
-			WHERE 	[staff].[staffName]		=	'".$this->model->getStaffName()."'
-			AND		[staff].[staffPassword]	=	'".md5($this->model->getStaffPassword())."'";
+			WHERE 	[staff].[staffName]		=	\"".$this->model->getStaffName()."\"
+			AND		[staff].[staffPassword]	=	\"".md5($this->model->getStaffPassword())."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT	*
@@ -89,8 +89,8 @@ class loginClass extends configClass {
 			USING   (\"groupId\")
 			JOIN	`department`
 			USING	(\"departmentId\")
-			WHERE 	\"staff\".\"staffName\"		=	'".$this->model->getStaffName()."'
-			AND		\"staff\".\"staffPassword\"	=	'".md5($this->model->getStaffPassword())."'";
+			WHERE 	\"staff\".\"staffName\"		=	\"".$this->model->getStaffName()."\"
+			AND		\"staff\".\"staffPassword\"	=	\"".md5($this->model->getStaffPassword())."\"";
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$this->getVendor()."]"));
 			exit();
@@ -125,8 +125,8 @@ class loginClass extends configClass {
 						`staffWebAccessLogIn`
 					)
 			VALUES (
-						'".$this->staffWebAceess->getStaffId()."',
-						'".$this->staffWebAceess->getStaffWebAccessLogIn()."'
+						\"".$this->staffWebAceess->getStaffId()."\",
+						\"".$this->staffWebAceess->getStaffWebAccessLogIn()."\"
 					)";
 			$this->q->update($sql);
 

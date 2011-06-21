@@ -111,7 +111,7 @@ echo $_SESSION[$theme];
 
 					foreach($data as $row) {
 
-								$str.="['".$row['languageDesc']."','".$row['languageId']."'],";
+								$str.="[\"".$row['languageDesc']."\",\"".$row['languageId']."\"],";
 
 					}
 			$str=substr($str,0,-1);

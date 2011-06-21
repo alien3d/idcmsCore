@@ -1,5 +1,5 @@
 /*!
- * Ext JS Library 3.3.3
+ * Ext JS Library 3.4.0
  * Copyright(c) 2006-2011 Sencha Inc.
  * licensing@sencha.com
  * http://www.sencha.com/license
@@ -617,9 +617,6 @@ TODO: lazy rendering
                 for (i = 0, len = d.length; i < len; i++) {
                     filters.push({
                         field: f.dataIndex,
-						column: f.column,
-                        table: f.table,
-                        database: f.database,
                         data: d[i]
                     });
                 }
@@ -670,9 +667,7 @@ filters[0][data][value]="someValue3"&
                 f = filters[i];
                 root = [this.paramPrefix, '[', i, ']'].join('');
                 p[root + '[field]'] = f.field;
-				p[root + '[column]'] = f.column;
-                p[root + '[table]'] = f.table;
-                p[root + '[database]'] = f.database;
+
                 dataPrefix = root + '[data]';
                 for (key in f.data) {
                     p[[dataPrefix, '[', key, ']'].join('')] = f.data[key];
@@ -685,11 +680,6 @@ filters[0][data][value]="someValue3"&
                 tmp.push(Ext.apply(
                     {},
                     {field: f.field},
-					{	column: f.column }, {
-                    table: f.table
-                }, {
-                    database: f.database
-                },
                     f.data
                 ));
             }

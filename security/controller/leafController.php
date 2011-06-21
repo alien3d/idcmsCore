@@ -111,7 +111,7 @@ class leafClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
@@ -131,13 +131,13 @@ class leafClass extends configClass
 					)
 			VALUES
 					(
-						\"" . $this->model->getTabId('','string') . "\",			\"" . $this->model->getFolderId() . "\",
+						\"" . $this->model->getTabId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
 						\"" . $this->model->getIconId(). "\",						\"" . $this->model->getIsNew('', 'string') . "\",
 						\"" . $this->model->getIsDraft('', 'string') . "\",			\"" . $this->model->getIsUpdate('', 'string') . "\",
 						\"" . $this->model->getIsDelete('', 'string') . "\",		\"" . $this->model->getIsActive('', 'string') . "\",
-						\"" . $this->model->getIsApproved('', 'string') . "\",		\"" . $this->model->staffId . "\",
+						\"" . $this->model->getIsApproved('', 'string') . "\",		\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					) ";
 		} else if ($this->getVendor() == self::mssql) {
@@ -155,13 +155,13 @@ class leafClass extends configClass
 					)
 			VALUES
 					(
-						\"" . $this->model->getTabId('','string') . "\",			\"" . $this->model->getFolderId() . "\",
+						\"" . $this->model->getTabId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
 						\"" . $this->model->getIconId(). "\",						\"" . $this->model->getIsNew('', 'string') . "\",
 						\"" . $this->model->getIsDraft('', 'string') . "\",			\"" . $this->model->getIsUpdate('', 'string') . "\",
 						\"" . $this->model->getIsDelete('', 'string') . "\",		\"" . $this->model->getIsActive('', 'string') . "\",
-						\"" . $this->model->getIsApproved('', 'string') . "\",		\"" . $this->model->staffId . "\",
+						\"" . $this->model->getIsApproved('', 'string') . "\",		\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					)";
 		} else if ($this->getVendor() == self::oracle) {
@@ -185,7 +185,7 @@ class leafClass extends configClass
 						\"" . $this->model->getIconId(). "\",						\"" . $this->model->getIsNew('', 'string') . "\",
 						\"" . $this->model->getIsDraft('', 'string') . "\",			\"" . $this->model->getIsUpdate('', 'string') . "\",
 						\"" . $this->model->getIsDelete('', 'string') . "\",		\"" . $this->model->getIsActive('', 'string') . "\",
-						\"" . $this->model->getIsApproved('', 'string') . "\",		\"" . $this->model->staffId . "\",
+						\"" . $this->model->getIsApproved('', 'string') . "\",		\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					);";
 		}
@@ -306,7 +306,7 @@ class leafClass extends configClass
 		$items=array();
 		if ($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		// everything given flexibility  on todo
@@ -324,7 +324,7 @@ class leafClass extends configClass
 			AND			`folder`.`isActive`		=	1
 			AND			`tab`.`isActive`	= 1 ";
 			if ($this->model->getLeafId('','string')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`='" . $this->model->getLeafId('','string') . "'";
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLeafId('','string') ."\"";
 			}
 
 		} else if ($this->getVendor() == self::mssql) {
@@ -342,7 +342,7 @@ class leafClass extends configClass
 			AND			[tab].[isActive]		=	1
 			AND			[leaf].[isActive]			=	1 ";
 			if ($this->model->getLeafId('','string')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='" . $this->model->getLeafId('','string') . "'";
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getLeafId('','string') ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -358,7 +358,7 @@ class leafClass extends configClass
 			AND			\"tab\".`isActive\"	=	1
 			AND			\"leaf\".`isActive\"		=	1 ";
 			if ($this->model->getLeafId('','string')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"='" .$this->model->getLeafId('','string') . "'";
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getLeafId('','string') ."\"";
 			}
 		}
 		/**
@@ -468,8 +468,8 @@ class leafClass extends configClass
 									FROM 	\"religion\"
 									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= '" . ($_POST['start'] + $_POST['limit'] - 1) . "' )
-						where r >=  '" . $_POST['start'] . "'";
+						where rownum <= \"". ($_POST['start'] + $_POST['limit'] - 1) ."\" )
+						where r >=  \"". $_POST['start'] ."\"";
             		} else {
             			echo "undefine vendor";
             		}
@@ -537,7 +537,7 @@ class leafClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor() == self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
@@ -545,39 +545,39 @@ class leafClass extends configClass
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE	`leaf`
-			SET		`isActive`	=	'" . $this->model->getIsActive . "',
-					`isNew`		=	'" . $this->model->getIsNew . "',
-					`isDraft`	=	'" . $this->model->getIsDraft . "',
-					`isUpdate`	=	'" . $this->model->getIsUpdate . "',
-					`isDelete`	=	'" . $this->model->getIsDelete . "',
-					`isApproved`=	'" . $this->model->getIsApproved . "',
-					`By`		=	'" . $this->model->getBy() . "',
+			SET		`isActive`	=	\"". $this->model->getIsActive ."\",
+					`isNew`		=	\"". $this->model->getIsNew ."\",
+					`isDraft`	=	\"". $this->model->getIsDraft ."\",
+					`isUpdate`	=	\"". $this->model->getIsUpdate ."\",
+					`isDelete`	=	\"". $this->model->getIsDelete ."\",
+					`isApproved`=	\"". $this->model->getIsApproved ."\",
+					`By`		=	\"". $this->model->getBy() ."\",
 					`Time		=	" . $this->model->getTime . "
-			WHERE 	`leafId`	=	'" . $this->leafId . "'";
+			WHERE 	`leafId`	=	\"". $this->leafId ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
-			SET		[isActive]	=	'" . $this->model->getIsActive . "',
-					[isNew]		=	'" . $this->model->getIsNew . "',
-					[isDraft]	=	'" . $this->model->getIsDraft . "',
-					[isUpdate]	=	'" . $this->model->getIsUpdate . "',
-					[isDelete]	=	'" . $this->model->getIsDelete . "',
-					[isApproved]=	'" . $this->model->getIsApproved . "',
-					[By]		=	'" . $this->model->getBy() . "',
+			SET		[isActive]	=	\"". $this->model->getIsActive ."\",
+					[isNew]		=	\"". $this->model->getIsNew ."\",
+					[isDraft]	=	\"". $this->model->getIsDraft ."\",
+					[isUpdate]	=	\"". $this->model->getIsUpdate ."\",
+					[isDelete]	=	\"". $this->model->getIsDelete ."\",
+					[isApproved]=	\"". $this->model->getIsApproved ."\",
+					[By]		=	\"". $this->model->getBy() ."\",
 					[Time]		=	" . $this->model->getTime . "
-			WHERE 	[leafId]	=	'" . $this->leafId . "'";
+			WHERE 	[leafId]	=	\"". $this->leafId ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE	\"leaf\"
-			SET		\"isActive\"	=	'" . $this->model->getIsActive . "',
-					\"isNew\"		=	'" . $this->model->getIsNew . "',
-					\"isDraft\"		=	'" . $this->model->getIsDraft . "',
-					\"isUpdate\"	=	'" . $this->model->getIsUpdate . "',
-					\"isDelete\"	=	'" . $this->model->getIsDelete . "',
-					\"isApproved\"	=	'" . $this->model->getIsApproved . "',
-					\"By\"			=	'" . $this->model->getBy() . "',
+			SET		\"isActive\"	=	\"". $this->model->getIsActive ."\",
+					\"isNew\"		=	\"". $this->model->getIsNew ."\",
+					\"isDraft\"		=	\"". $this->model->getIsDraft ."\",
+					\"isUpdate\"	=	\"". $this->model->getIsUpdate ."\",
+					\"isDelete\"	=	\"". $this->model->getIsDelete ."\",
+					\"isApproved\"	=	\"". $this->model->getIsApproved ."\",
+					\"By\"			=	\"". $this->model->getBy() ."\",
 					\"Time\"		=	" . $this->model->getTime . "
-			WHERE 	\"leafId\"		=	'" . $this->leafId . "'";
+			WHERE 	\"leafId\"		=	\"". $this->leafId ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -599,7 +599,7 @@ class leafClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
@@ -607,39 +607,39 @@ class leafClass extends configClass
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE	`leaf`
-			SET		`isActive`	=	'" . $this->model->getIsActive . "',
-					`isNew`		=	'" . $this->model->getIsNew . "',
-					`isDraft`	=	'" . $this->model->getIsDraft . "',
-					`isUpdate`	=	'" . $this->model->getIsUpdate . "',
-					`isDelete`	=	'" . $this->model->getIsDelete . "',
-					`isApproved`=	'" . $this->model->getIsApproved . "',
-					`By`		=	'" . $this->model->getBy() . "',
+			SET		`isActive`	=	\"". $this->model->getIsActive ."\",
+					`isNew`		=	\"". $this->model->getIsNew ."\",
+					`isDraft`	=	\"". $this->model->getIsDraft ."\",
+					`isUpdate`	=	\"". $this->model->getIsUpdate ."\",
+					`isDelete`	=	\"". $this->model->getIsDelete ."\",
+					`isApproved`=	\"". $this->model->getIsApproved ."\",
+					`By`		=	\"". $this->model->getBy() ."\",
 					`Time		=	" . $this->model->getTime . "
-			WHERE 	`leafId`	=	'" . $this->leafId . "'";
+			WHERE 	`leafId`	=	\"". $this->model->getLeafId('','string') ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
-			SET		[isActive]	=	'" . $this->model->getIsActive . "',
-					[isNew]		=	'" . $this->model->getIsNew . "',
-					[isDraft]	=	'" . $this->model->getIsDraft . "',
-					[isUpdate]	=	'" . $this->model->getIsUpdate . "',
-					[isDelete]	=	'" . $this->model->getIsDelete . "',
-					[isApproved]=	'" . $this->model->getIsApproved . "',
-					[By]		=	'" . $this->model->getBy() . "',
+			SET		[isActive]	=	\"". $this->model->getIsActive ."\",
+					[isNew]		=	\"". $this->model->getIsNew ."\",
+					[isDraft]	=	\"". $this->model->getIsDraft ."\",
+					[isUpdate]	=	\"". $this->model->getIsUpdate ."\",
+					[isDelete]	=	\"". $this->model->getIsDelete ."\",
+					[isApproved]=	\"". $this->model->getIsApproved ."\",
+					[By]		=	\"". $this->model->getBy() ."\",
 					[Time]		=	" . $this->model->getTime . "
-			WHERE 	[leafId]	=	'" . $this->leafId . "'";
+			WHERE 	[leafId]	=	\"". $this->getLeafId('','string') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE	\"leaf\"
-			SET		\"isActive\"	=	'" . $this->model->getIsActive . "',
-					\"isNew\"		=	'" . $this->model->getIsNew . "',
-					\"isDraft\"		=	'" . $this->model->getIsDraft . "',
-					\"isUpdate\"	=	'" . $this->model->getIsUpdate . "',
-					\"isDelete\"	=	'" . $this->model->getIsDelete . "',
-					\"isApproved\"	=	'" . $this->model->getIsApproved . "',
-					\"By\"			=	'" . $this->model->getBy() . "',
+			SET		\"isActive\"	=	\"". $this->model->getIsActive ."\",
+					\"isNew\"		=	\"". $this->model->getIsNew ."\",
+					\"isDraft\"		=	\"". $this->model->getIsDraft ."\",
+					\"isUpdate\"	=	\"". $this->model->getIsUpdate ."\",
+					\"isDelete\"	=	\"". $this->model->getIsDelete ."\",
+					\"isApproved\"	=	\"". $this->model->getIsApproved ."\",
+					\"By\"			=	\"". $this->model->getBy() ."\",
 					\"Time\"		=	" . $this->model->getTime . "
-			WHERE 	\"leafId\"		=	'" . $this->leafId . "'";
+			WHERE 	\"leafId\"		=	\"". $this->model->getLeafId('','string') ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -669,7 +669,7 @@ class leafClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		if ($_SESSION['start'] == 0) {

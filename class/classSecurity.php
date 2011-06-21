@@ -162,7 +162,7 @@ class security extends configClass {
 
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -215,7 +215,7 @@ class security extends configClass {
 
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -286,7 +286,7 @@ class security extends configClass {
 		}
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -308,7 +308,7 @@ class security extends configClass {
 				USING	(`tabId`)
 				WHERE   `tab`.`isActive`=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND `tab`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
+					$sql.=" AND `tab`.`groupId`=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 				}
 			}
 		} else if ($this->getVendor()==self::mssql) {
@@ -330,7 +330,7 @@ class security extends configClass {
 			ON		[tab].[tabId]=[tabAccess].[tabId]
 			WHERE   [tab].[isActive]=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND [tabAccess].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
+					$sql.=" AND [tabAccess].[groupId]=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 				}
 			}
 		} else if ($this->getVendor()==self::oracle) {
@@ -350,7 +350,7 @@ class security extends configClass {
 			USING	(\"tabId\")
 			WHERE   \"tab\".\"isActive\"=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND \"tab\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
+					$sql.=" AND \"tab\".\"groupId\"=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 				}
 			}
 		} else{
@@ -396,7 +396,7 @@ class security extends configClass {
 		}
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -420,10 +420,10 @@ class security extends configClass {
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND `folder`.`groupId`='".$this->strict($_GET['groupId'],'numeric')."'";
+				$sql.=" AND `folder`.`groupId`=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 			}
 			if(isset($_GET['tabId'])) {
-				$sql.=" AND `folder`.`tabId`	=	'".$this->strict($_GET['tabId'],'numeric')."'";
+				$sql.=" AND `folder`.`tabId`	=	\"".$this->strict($_GET['tabId'],'numeric')."\"";
 			}
 
 		} else if ($this->getVendor()==self::mssql) {
@@ -445,10 +445,10 @@ class security extends configClass {
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND [folder].[groupId]='".$this->strict($_GET['groupId'],'numeric')."'";
+				$sql.=" AND [folder].[groupId]=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 			}
 			if(isset($_GET['tabId'])) {
-				$sql.=" AND [folder].[tabId]='".$this->strict($_GET['tabId'],'numeric')."'";
+				$sql.=" AND [folder].[tabId]=\"".$this->strict($_GET['tabId'],'numeric')."\"";
 			}
 
 		} else if ($this->getVendor()==self::oracle) {
@@ -470,10 +470,10 @@ class security extends configClass {
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND \"folder\".\"groupId\"='".$this->strict($_GET['groupId'],'numeric')."'";
+				$sql.=" AND \"folder\".\"groupId\"=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 			}
 			if(isset($_GET['tabId'])) {
-				$sql.=" AND \"folder\".\"tabId\"='".$this->strict($_GET['tabId'],'numeric')."'";
+				$sql.=" AND \"folder\".\"tabId\"=\"".$this->strict($_GET['tabId'],'numeric')."\"";
 			}
 
 		}
@@ -506,7 +506,7 @@ class security extends configClass {
 		$nextSequence=0;
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -531,17 +531,17 @@ class security extends configClass {
 		}
 		if($table=='folder'){
 			if(isset($_GET['tabId'])){
-				$sql.=" AND `tabId`='".$_GET['tabId']."'";
+				$sql.=" AND `tabId`=\"".$_GET['tabId']."\"";
 			}
 
 
 		}
 		if($table=='leaf'){
 			if(isset($_GET['tabId'])){
-				$sql.=" AND `tabId`='".$_GET['tabId']."'";
+				$sql.=" AND `tabId`=\"".$_GET['tabId']."\"";
 			}
 			if(isset($_GET['folderId'])){
-				$sql.=" AND `folderId`='".$_GET['folderId']."'";
+				$sql.=" AND `folderId`=\"".$_GET['folderId']."\"";
 			}
 		}
 		$result = $this->q->fast($sql);

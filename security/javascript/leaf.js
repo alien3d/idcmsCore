@@ -1037,6 +1037,14 @@ Ext
 				}
 			});
 
+			var leafCode = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : leafCodeLabel,
+				hiddenName : 'leafCode',
+				name : 'leafCode',
+				anchor : '95%'
+			});
+			
 			var leafNote = new Ext.form.TextField({
 				labelAlign : 'left',
 				fieldLabel : leafNoteLabel,
@@ -1251,7 +1259,7 @@ Ext
 																leafStore
 																		.reload({
 																			params : {
-																				leafId : leafIdTemp,
+																				leafIdTemp : leafIdTemp,
 																				start : 0,
 																				limit : perPage
 																			}

@@ -108,7 +108,7 @@ class logClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -117,7 +117,7 @@ class logClass extends  configClass {
 			SELECT	*
 			FROM 	`log`";
 			if($_POST['logId']) {
-				$sql.=" AND `logId`='".$this->strict($_POST['logId'],'n')."'";
+				$sql.=" AND `logId`=\"".$this->strict($_POST['logId'],'n')."\"";
 			}
 		}
 		/**
@@ -219,7 +219,7 @@ class logClass extends  configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}

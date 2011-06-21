@@ -142,7 +142,7 @@ class documentTrailClass extends configClass {
 						\"".$this->model->getIsUpdate('','string')."\",
 						\"".$this->model->getIsDelete('','sring')."\",
 						\"".$this->model->getIsActive('','string')."\",
-						\"".$this->model->getIsApproved('','string')."'\",
+						\"".$this->model->getIsApproved('','string')."\"\",
 						\"".$this->model->getBy()."\",
 						 ".$this->model->getTime()."
 			); ";

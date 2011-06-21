@@ -421,9 +421,9 @@ class vendor {
 		$sql="
 				SELECT 	*
 				FROM 	".$this->globalOpenTag."leafAccess".$this->globalCloseTag."
-				WHERE  ".$this->globalOpenTag."leafAccess".$this->globalCloseTag.".".$this->globalOpenTag."leafId".$this->globalCloseTag."			=	'".$this->leafId."'
+				WHERE  ".$this->globalOpenTag."leafAccess".$this->globalCloseTag.".".$this->globalOpenTag."leafId".$this->globalCloseTag."			=	\"".$this->leafId."\"
 				AND   	".$this->globalOpenTag."leafAccess".$this->globalCloseTag.".".$this->globalOpenTag."".$operation."".$this->globalCloseTag."	=	'1'
-				AND   	".$this->globalOpenTag."leafAccess".$this->globalCloseTag.".".$this->globalOpenTag."staffId".$this->globalCloseTag."		=	'".$this->staffId."'";
+				AND   	".$this->globalOpenTag."leafAccess".$this->globalCloseTag.".".$this->globalOpenTag."staffId".$this->globalCloseTag."		=	\"".$this->staffId."\"";
 
 
 		if($this->vendor=='normal') {
@@ -649,7 +649,7 @@ class vendor {
 					}
 				}
 
-				$sqlPrevious =" SELECT * FROM `".$this->tableName."` WHERE `".$this->primaryKeyName."` = '".$this->primaryKeyValue."'";
+				$sqlPrevious =" SELECT * FROM `".$this->tableName."` WHERE `".$this->primaryKeyName."` = \"".$this->primaryKeyValue."\"";
 				if($this->vendor=='normal'){
 					$resultPrevious = mysql_query($sqlPrevious);
 				}else if ($this->getVendor()==self::mysql){
@@ -694,9 +694,9 @@ class vendor {
 							)
 					VALUES
 							(
-								'".$text."',
-								'".$logAdvanceType."',
-								'".$this->leafId."'
+								\"".$text."\",
+								\"".$logAdvanceType."\",
+								\"".$this->leafId."\"
 							)";
 				// here should create a backup file to restore back sql statement
 				if($this->vendor=='normal') {
@@ -825,7 +825,7 @@ class vendor {
 					$sqlPrevious ="
 					SELECT 	*
 					FROM 	`".$this->tableName."`
-					WHERE 	`".$this->primaryKeyName."` = '".$this->primaryKeyValue."'";
+					WHERE 	`".$this->primaryKeyName."` = \"".$this->primaryKeyValue."\"";
 
 					if($this->vendor=='normal'){
 						$resultPrevious = mysql_query($sqlPrevious,$this->link);
@@ -870,9 +870,9 @@ class vendor {
 					`refId`
 					)
 					VALUES 		(
-					'".$text."',
-					'".$logAdvanceType."',
-					'".$this->leafId."'
+					\"".$text."\",
+					\"".$logAdvanceType."\",
+					\"".$this->leafId."\"
 					)";
 					if($this->vendor=='normal'){
 						$resultLogAdvance 	=	 mysql_query($sqlLogAdvance,$this->link);
@@ -902,7 +902,7 @@ class vendor {
 					$sqlCurrent="
 					SELECT 	*
 					FROM 	`".$this->tableName."`
-					WHERE 	`".$this->primaryKeyName."`='".$this->primaryKeyValue."'";
+					WHERE 	`".$this->primaryKeyName."`=\"".$this->primaryKeyValue."\"";
 					if($this->vendor=='normal'){
 						$resultCurrent  = mysql_query($sqlCurrent,$this->link);
 						if($resultCurrent) {
@@ -930,8 +930,8 @@ class vendor {
 					// update back comparision the previous record
 					$sql="
 					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparison`='".addslashes($textComparison)."'
-					WHERE 	`logAdvanceId`='".$logAdvanceId."'";
+					SET 	`logAdvanceComparison`=\"".addslashes($textComparison)."\"
+					WHERE 	`logAdvanceId`=\"".$logAdvanceId."\"";
 					if($this->vendor=='normal'){
 						$result=mysql_query($sql,$this->link);
 						if(!$result) {
@@ -1221,7 +1221,7 @@ class vendor {
 			$rowId = sqlsrv_fetch_array($resultId,SQLSRV_FETCH_ASSOC);
 			$this->insert_id =$rowId['LAST_INSERT_ID'];
 		}else if ($this->getVendor()==self::oracle) {
-			$resultId = oci_parse($this->link,"SELECT '".$sequence.".CURRVAL FROM DUAL");
+			$resultId = oci_parse($this->link,"SELECT \"".$sequence.".CURRVAL FROM DUAL");
 			oci_execute($resultId);
 			/**
 			 * optional constant OCI_BOTH,OCI_ASSOC,OCI_NUM,OCI_RETURN_NULLS,OCI_RETURN_LOBS
@@ -1602,7 +1602,7 @@ class vendor {
 					case 'list' :
 						$split  = explode(",",$filter[$i]['data']['value']);
 						foreach($split as $split_a)   {
-							$str .= "'".$split_a."',";
+							$str .= "\"".$split_a."\",";
 						}
 						$str = $this->removeComa($str);
 						if(count($split) > 0  && strlen($filter[$i]['data']['value']) > 0 ) {
@@ -1644,16 +1644,16 @@ class vendor {
 					case 'date' :
 						switch ($filter[$i]['data']['comparison']) {
 							case 'ne' :
-								$qs .= " AND ".$this->globalOpenTag.$filter[$i]['table'].$this->globalCloseTag.".".$this->globalOpenTag.$filter[$i]['column'].$this->globalCloseTag." != '".date('Y-m-d',strtotime($filter[$i]['data']['value']))."'";
+								$qs .= " AND ".$this->globalOpenTag.$filter[$i]['table'].$this->globalCloseTag.".".$this->globalOpenTag.$filter[$i]['column'].$this->globalCloseTag." != \"".date('Y-m-d',strtotime($filter[$i]['data']['value']))."\"";
 								break;
 							case 'eq' :
-								$qs .= " AND ".$this->globalOpenTag.$filter[$i]['table'].$this->globalCloseTag.".".$this->globalOpenTag.$filter[$i]['column'].$this->globalCloseTag." = '".date('Y-m-d',strtotime($filter[$i]['data']['value']))."'";
+								$qs .= " AND ".$this->globalOpenTag.$filter[$i]['table'].$this->globalCloseTag.".".$this->globalOpenTag.$filter[$i]['column'].$this->globalCloseTag." = \"".date('Y-m-d',strtotime($filter[$i]['data']['value']))."\"";
 								break;
 							case 'lt' :
-								$qs .= " AND ".$this->globalOpenTag.$filter[$i]['table'].$this->globalCloseTag.".".$this->globalOpenTag.$filter[$i]['column'].$this->globalCloseTag." < '".date('Y-m-d',strtotime($filter[$i]['data']['value']))."'";
+								$qs .= " AND ".$this->globalOpenTag.$filter[$i]['table'].$this->globalCloseTag.".".$this->globalOpenTag.$filter[$i]['column'].$this->globalCloseTag." < \"".date('Y-m-d',strtotime($filter[$i]['data']['value']))."\"";
 								break;
 							case 'gt' :
-								$qs .= " AND ".$this->globalOpenTag.$filter[$i]['table'].$this->globalCloseTag.".".$this->globalOpenTag.$filter[$i]['column'].$this->globalCloseTag." > '".date('Y-m-d',strtotime($filter[$i]['data']['value']))."'";
+								$qs .= " AND ".$this->globalOpenTag.$filter[$i]['table'].$this->globalCloseTag.".".$this->globalOpenTag.$filter[$i]['column'].$this->globalCloseTag." > \"".date('Y-m-d',strtotime($filter[$i]['data']['value']))."\"";
 								break;
 						}
 						break;

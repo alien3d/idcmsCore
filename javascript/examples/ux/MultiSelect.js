@@ -1,5 +1,5 @@
 /*!
- * Ext JS Library 3.3.3
+ * Ext JS Library 3.4.0
  * Copyright(c) 2006-2011 Sencha Inc.
  * licensing@sencha.com
  * http://www.sencha.com/license
@@ -110,6 +110,8 @@ Ext.ux.form.MultiSelect = Ext.extend(Ext.form.Field,  {
      * {@link #valueField value}, while the value at index 1 is assumed to be the combo {@link #displayField text}.
      * </div></li></ul></div></li></ul></div>
      */
+    
+    cls: 'ux-form-multiselect',
 
     // private
     defaultAutoCreate : {tag: "div"},

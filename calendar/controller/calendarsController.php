@@ -102,7 +102,7 @@ class calendarsClass extends  configClass {
 				FROM 	`calendarColor`
 				JOIN    `calendar`
 				USING   (`calendarColorId`)
-				WHERE 	`staffId` = '".$this->staffId."'";
+				WHERE 	`staffId` = \"".$this->staffId."\"";
 		$this->q->read($sql);
 		$this->total	= $this->q->numberRows();
 		$items =array();
@@ -127,7 +127,7 @@ class calendarsClass extends  configClass {
 				      FROM `calendarColor`
 				      JOIN    `calendar`
 				USING   (`calendarColorId`)
-				WHERE `staffId` = '".$this->staffId."' ";
+				WHERE `staffId` = \"".$this->staffId."\" ";
 
 		// searching filtering
 		$sql.=$this->q->searching();
@@ -193,8 +193,8 @@ class calendarsClass extends  configClass {
 		$this->q->start();
 		$sql="
 					UPDATE 	`calendar`
-					SET 	`calendarTitle`	=	'".$this->strict($_POST['cal_title'],'s')."'
-					WHERE 	`calendarId`		=	'".$this->strict($_POST['cal_own_uniqueId'],'n')."'";
+					SET 	`calendarTitle`	=	\"".$this->strict($_POST['cal_title'],'s')."\"
+					WHERE 	`calendarId`		=	\"".$this->strict($_POST['cal_own_uniqueId'],'n')."\"";
 
 		$this->q->update($sql);
 		$this->q->commit();

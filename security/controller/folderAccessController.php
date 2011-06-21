@@ -114,7 +114,7 @@ class folderAccessClass  extends configClass {
 		$items =array();
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -145,10 +145,10 @@ class folderAccessClass  extends configClass {
 				AND		`folder`.`isActive`=1
 				AND		`group`.`isActive` =1";
 			if($this->groupId) {
-				$sql.=" AND `group`.`groupId`='".$this->strict($this->groupId,'numeric')."'";
+				$sql.=" AND `group`.`groupId`=\"".$this->strict($this->groupId,'numeric')."\"";
 			}
 			if($this->accordionId) {
-				$sql.=" AND `folder`.`accordionId`='".$this->strict($this->accordionId,'numeric')."'";
+				$sql.=" AND `folder`.`accordionId`=\"".$this->strict($this->accordionId,'numeric')."\"";
 			}
 
 		}  else if ( $this->getVendor()==self::mssql) {
@@ -177,10 +177,10 @@ class folderAccessClass  extends configClass {
 				AND		[group].[isActive]=1
 				AND		[accordion].[accordionId]=1";
 			if($this->groupId) {
-				$sql.=" AND [group].[groupId]='".$this->strict($this->groupId,'numeric')."'";
+				$sql.=" AND [group].[groupId]=\"".$this->strict($this->groupId,'numeric')."\"";
 			}
 			if($this->accordionId) {
-				$sql.=" AND [folder].[accordionId]='".$this->strict($this->accordionId,'numeric')."'";
+				$sql.=" AND [folder].[accordionId]=\"".$this->strict($this->accordionId,'numeric')."\"";
 			}
 		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -208,10 +208,10 @@ class folderAccessClass  extends configClass {
 				AND		\"accordion\".`isActive\"	=	1
 				AND		\"group\".`isActive\"		=	1";
 			if($this->groupId) {
-				$sql.=" AND \"group\".\"groupId\"='".$this->strict($this->groupId,'numeric')."'";
+				$sql.=" AND \"group\".\"groupId\"=\"".$this->strict($this->groupId,'numeric')."\"";
 			}
 			if($this->accordionId) {
-				$sql.=" AND \"folder\".\"accordionId\"='".$this->strict($this->accordionId,'numeric')."'";
+				$sql.=" AND \"folder\".\"accordionId\"=\"".$this->strict($this->accordionId,'numeric')."\"";
 			}
 		}
 		//echo $sql;
@@ -276,7 +276,7 @@ class folderAccessClass  extends configClass {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
 			//UTF8
-			$sql='SET NAMES "utf8"';
+			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
@@ -298,7 +298,7 @@ class folderAccessClass  extends configClass {
 		}
 		for($i=0;$i<$loop;$i++) {
 			$sql.="
-			WHEN '".$this->model->folderAccessId[$i]."' THEN '".$this->model->folderAccesValue[$i]."'";
+			WHEN \"".$this->model->folderAccessId[$i]."\" THEN \"".$this->model->folderAccesValue[$i]."\"";
 		}
 		if($this->getVendor() == self::mysql) {
 			$sql.=" END

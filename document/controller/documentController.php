@@ -146,7 +146,7 @@ class documentClass extends  configClass {
                 USING   (`doc_cat_uniqueId`)
 				WHERE 	1";
 		if($_POST['doc_uniqueId']) {
-			$sql.=" AND `doc_uniqueId`='".$this->strict($_POST['doc_uniqueId'],'n')."'";
+			$sql.=" AND `doc_uniqueId`=\"".$this->strict($_POST['doc_uniqueId'],'n')."\"";
 		}
 
 		// searching filtering
@@ -252,10 +252,10 @@ class documentClass extends  configClass {
 				  					  `createTime`)
 				   VALUES    (         '$doc_nme',
 							  		   '$doc_ext',
-									   '".$this->strict($_POST['doc_cat_uniqueId'],'n')."',
-									   '".$this->strict($_POST['doc_des'],'s')."',
-				                       '".$_SESSION['staffId']."',
-				                       '".date("Y-m-d H:i:s")."')";
+									   \"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\",
+									   \"".$this->strict($_POST['doc_des'],'s')."\",
+				                       \"".$_SESSION['staffId']."\",
+				                       \"".date("Y-m-d H:i:s")."\")";
 
 			$this->q->create($sql);
 			$source = $this->path.$doc_ext;
@@ -296,13 +296,13 @@ class documentClass extends  configClass {
 			move_uploaded_file ($_FILES['docname']['tmp_name'],$this->path.$doc_ext);
 
 			$sql = "  UPDATE 	`doc`
-					         SET 	`doc_cat_uniqueId`	        =	'".$this->strict($_POST['doc_cat_uniqueId'],'n')."',
+					         SET 	`doc_cat_uniqueId`	        =	\"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\",
 					     	`doc_nme`	        =	'$doc_nme',
 					     	`doc_ext`	        =	'$doc_ext',
-					     	`doc_des`	        =	'".$this->strict($_POST['doc_des'],'s')."',
-							`updatedBy`			=	'".$_SESSION['staffId']."',
-							`updatedTime`			=	'".date("Y-m-d H:i:s")."'
-					WHERE 	`doc_uniqueId`		=	'".$this->strict($_POST['doc_uniqueId'],'n')."'";
+					     	`doc_des`	        =	\"".$this->strict($_POST['doc_des'],'s')."\",
+							`updatedBy`			=	\"".$_SESSION['staffId']."\",
+							`updatedTime`			=	\"".date("Y-m-d H:i:s")."\"
+					WHERE 	`doc_uniqueId`		=	\"".$this->strict($_POST['doc_uniqueId'],'n')."\"";
 
 			$this->q->create($sql);
 			$source = $this->path.$doc_ext;
@@ -356,7 +356,7 @@ class documentClass extends  configClass {
 			$this->q->start();
 			$sql	=	"
 					DELETE	FROM 	`doc`
-					WHERE 			`doc_uniqueId`='".$this->strict($_POST['doc_uniqueId'],'n')."'";
+					WHERE 			`doc_uniqueId`=\"".$this->strict($_POST['doc_uniqueId'],'n')."\"";
 			$this->q->delete($sql);
 			$this->q->commit();
 

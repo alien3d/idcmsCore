@@ -160,7 +160,7 @@ class mainClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor() == self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$sql = "
@@ -287,7 +287,7 @@ class mainClass extends configClass
 		//UTF8
 		$items=array();
 		if ($this->getVendor() == self::mysql) {
-			$sql = 'SET NAMES "utf8"';
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 									$counter_folder=0;
@@ -301,15 +301,15 @@ class mainClass extends configClass
 										USING		(`folderId`)
 										JOIN		`icon`
 										USING		(`iconId`)
-										WHERE 		`accordionId`='".$accordionId."'
+										WHERE 		`accordionId`=\"".$accordionId."\"
 										AND 		`folderAccess`.`groupId`=(
 																SELECT `groupId`
 																FROM 	`staff`
-																WHERE	`staff`.`staffId`='".$_SESSION[$staffId]."'
+																WHERE	`staff`.`staffId`=\"".$_SESSION[$staffId]."\"
 																LIMIT 1
 															  )
 										AND 	`folderAccess`.`folderAccessValue`=	1
-										AND		`folderTranslate`.`languageId`='".$_SESSION['languageId']."'
+										AND		`folderTranslate`.`languageId`=\"".$_SESSION['languageId']."\"
 										ORDER BY 	`folder`.`folderSequence`	";
 									} else  if ($q->vendor=='microsoft') {
 										$sql_folder	="
@@ -321,14 +321,14 @@ class mainClass extends configClass
 										ON			[folderTranslate].[folderId]=[folder].[folderId]
 										JOIN			[icon]
 										ON			[icon].[iconId]=[folder].[iconId]
-										WHERE 		[accordionId]='".$accordionId."'
+										WHERE 		[accordionId]=\"".$accordionId."\"
 										AND 			[folderAccess].[groupId]=(
 																SELECT TOP 1 [groupId]
 																FROM 	[staff]
-																WHERE	[staff].[staffId]='".$_SESSION[$staffId]."'
+																WHERE	[staff].[staffId]=\"".$_SESSION[$staffId]."\"
 															  )
 										AND 	[folderAccess].[folderAccessValue]=	1
-										AND		[folderTranslate].[languageId]='".$_SESSION['languageId']."'
+										AND		[folderTranslate].[languageId]=\"".$_SESSION['languageId']."\"
 										ORDER BY 	[folder].[folderSequence]	";
 
 									} else if ($q->vendor=='oracle') {
@@ -342,15 +342,15 @@ class mainClass extends configClass
 										USING		(\"folderId\")
 										JOIN		\"icon\"
 										USING		(\"iconId\")
-										WHERE 		\"accordionId\"='".$accordionId."'
+										WHERE 		\"accordionId\"=\"".$accordionId."\"
 										AND 		\"folderAccess\".\"groupId\"=(
 																SELECT \"groupId\"
 																FROM 	\"staff\"
-																WHERE	\"staff\".\"staffId\"='".$_SESSION[$staffId]."'
+																WHERE	\"staff\".\"staffId\"=\"".$_SESSION[$staffId]."\"
 																AND		rownum <=1
 															  )
 										AND 		\"folderAccess\".\"folderAccessValue\"=	1
-										AND			\"folderTranslate\".\"languageId\"='".$_SESSION['languageId']."'
+										AND			\"folderTranslate\".\"languageId\"=\"".$_SESSION['languageId']."\"
 										ORDER BY 	\"folder\".\"folderSequence\"	";
 									}
 							   		//echo $sql_fol/der;
@@ -381,10 +381,10 @@ class mainClass extends configClass
 									USING		(`leafId`)
 									JOIN		`icon`
 									USING		(`iconId`)
-									WHERE 		`folderId`='".$folderId."'
-									AND			`accordionId`='".$accordionId."'
-									AND			`leafAccess`.`staffId`='".$_SESSION[$staffId]."'
-									AND			`leafTranslate`.`languageId`='".$_SESSION['languageId']."'
+									WHERE 		`folderId`=\"".$folderId."\"
+									AND			`accordionId`=\"".$accordionId."\"
+									AND			`leafAccess`.`staffId`=\"".$_SESSION[$staffId]."\"
+									AND			`leafTranslate`.`languageId`=\"".$_SESSION['languageId']."\"
 								ORDER BY	`leaf`.`leafSequence`";
 								} else if ($q->vendor=='microsoft') {
 									$sql_leaf	="
@@ -396,10 +396,10 @@ class mainClass extends configClass
 									ON			[leafTranslate].[leafId]=[leaf].[leafId]
 									JOIN			[icon]
 									ON			[icon].[iconId]=[leaf].[iconId]
-									WHERE 		[folderId]='".$folderId."'
-									AND			[accordionId]='".$accordionId."'
-									AND			[leafAccess].[staffId]='".$_SESSION[$staffId]."'
-									AND			[leafTranslate].[languageId]='".$_SESSION['languageId']."'
+									WHERE 		[folderId]=\"".$folderId."\"
+									AND			[accordionId]=\"".$accordionId."\"
+									AND			[leafAccess].[staffId]=\"".$_SESSION[$staffId]."\"
+									AND			[leafTranslate].[languageId]=\"".$_SESSION['languageId']."\"
 									ORDER BY	[leaf].[leafSequence]";
 								} else if ( $q->vendor=='oracle') {
 									$sql_leaf	="
@@ -411,10 +411,10 @@ class mainClass extends configClass
 									USING		(\"leafId\")
 									JOIN		\"icon\"
 									USING		(\"iconId\")
-									WHERE 		\"folderId\"='".$folderId."'
-									AND			\"accordionId\"='".$accordionId."'
-									AND			\"leafAccess\".\"staffId\"='".$_SESSION[$staffId]."'
-									AND			\"leafTranslate\".\"languageId\"='".$_SESSION['languageId']."'";
+									WHERE 		\"folderId\"=\"".$folderId."\"
+									AND			\"accordionId\"=\"".$accordionId."\"
+									AND			\"leafAccess\".\"staffId\"=\"".$_SESSION[$staffId]."\"
+									AND			\"leafTranslate\".\"languageId\"=\"".$_SESSION['languageId']."\"";
 								}
 								$result_leaf = $q->fast($sql_leaf);
 								$total_leaf  = $q->numberRows($result_leaf,$sql_leaf);
