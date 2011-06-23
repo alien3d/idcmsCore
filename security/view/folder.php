@@ -12,7 +12,8 @@ include('../../Connections/main.php');	?>
 <head>
 <link rel="stylesheet" type="text/css"
 	href="../../javascript/resources/css/ext-all.css">
-
+<link rel="stylesheet" type="text/css"
+	href="../../javascript/resources/css/icons.css">
 <link rel="stylesheet" type="text/css"
 	href="../../javascript/examples/ux/gridfilters/css/GridFilters.css" />
 <link rel="stylesheet" type="text/css"

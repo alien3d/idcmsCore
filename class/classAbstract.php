@@ -324,52 +324,118 @@ abstract class configClass
 			}
 		}
 	}
-	function setApplication($value){
+	/**
+	 * Return The First Record
+	 * @return integer $first
+	 */
+	public function firstRecord() {
+		$first=0;
+		$sql="
+		SELECT 	MIN(".$this->model->getPrimaryKeyName()."') AS `first`
+		FROM 	`".$this->model->getTableName()."`";
+		$result= $this->q->fast($sql);
+		$row  =  $this->q->fetchAssoc($result);
+		$first = $row['first'];
+		return $first;
+	}
+
+
+	/**
+	 * Return Next record
+	 * @param integer $primaryKeyValue
+	 * @return integer $next;
+	 */
+	public function nextRecord($primaryKeyValue) {
+		$next=0;
+		$sql="
+		SELECT (".$this->model->getPrimaryKeyName()."') AS `next`
+		FROM 	`".$this->model->getTableName()."`
+		WHERE 	`".$this->model->getPrimaryKeyName()."` > ".$primaryKeyValue."
+		LIMIT 	1";
+		$result= $this->q->fast($sql);
+		$row  =  $this->q->fetchAssoc($result);
+		$next = $row['next'];
+		return $next;
+	}
+
+	/**
+	 * Return Previous Record
+	 * @param  integer $primaryKeyValue
+	 * @return integer $previous
+	 */
+	public function previousRecord($primaryKeyValue) {
+
+		$previous=0;
+		$sql="
+		SELECT (".$this->model->getPrimaryKeyName()."') AS `next`
+		FROM 	`".$this->model->getTableName()."`
+		WHERE 	`".$this->model->getPrimaryKeyName()."` < ".$primaryKeyValue."
+		LIMIT 	1";
+		$result= $this->q->fast($sql);
+		$row  =  $this->q->fetchAssoc($result);
+		$previous = $row['previous'];
+		return $previous;
+	}
+	/**
+	 * Return Last Record
+	 * @return integer $last
+	 */
+	public function lastRecord() {
+		$last=0;
+		$sql="
+		SELECT	MAX(".$this->model->getPrimaryKeyName()."') AS `last`
+		FROM 	`".$this->model->getTableName()."`";
+		$result= $this->q->fast($sql);
+		$row  =  $this->q->fetchAssoc($result);
+		$last = $row['last'];
+		return $last;
+	}
+	public function setApplication($value){
 		$this->application = $value;
 	}
-	function getApplication(){
+	public function getApplication(){
 		return $this->application;
 	}
-	function setStaffId($value){
+	public function setStaffId($value){
 		$this->staffId = $value;
 	}
-	function getStaffId(){
+	public function getStaffId(){
 		return $this->staffId;
 	}
-	function setConnection($value){
+	public function setConnection($value){
 		$this->connection = $value;
 	}
-	function getConnection(){
+	public function getConnection(){
 		return $this->connection;
 	}
-	function setDatabase($value){
+	public function setDatabase($value){
 		$this->database = $value;
 	}
-	function getDatabase(){
+	public function getDatabase(){
 		return $this->database;
 	}
-	function setVendor($value){
+	public function setVendor($value){
 		$this->vendor = $value;
 	}
-	function getVendor(){
+	public function getVendor(){
 		return $this->vendor;
 	}
-	function setUsername($value){
+	public function setUsername($value){
 		$this->username = $value;
 	}
-	function getUsername(){
+	public function getUsername(){
 		return $this->username;
 	}
-	function setPassword($value){
+	public function setPassword($value){
 		$this->password = $value;
 	}
-	function getPassword(){
+	public function getPassword(){
 		return $this->password;
 	}
-	function setLanguageId($value) {
+	public function setLanguageId($value) {
 		$this->languageId= $value;
 	}
-	function getLanguageId(){
+	public function getLanguageId(){
 		return $this->languageId;
 	}
 

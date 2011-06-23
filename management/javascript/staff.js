@@ -982,7 +982,7 @@ Ext
 																						0)
 																				.expand();
 																		} else {
-																			alert(action.result.message)
+																			alert(action.result.message);
 																		}
 																	},
 																	failure : function(
@@ -1018,33 +1018,82 @@ Ext
 											}
 										}
 									}
-								}, {
+								},{
+									text : newButtonLabel,
+									type : 'button',
+									iconCls : 'new',
+									handler : function() {
+										formPanel.getForm().reset();
+									}
+								},{
+									text : draftButtonLabel,
+									type : 'button',
+									iconCls : 'draft',
+									handler : function() {
+										formPanel.getForm().reset();
+									}
+								},{
+									text :cancelButtonLabel,
+									type : 'button',
+									iconCls : 'cancel',
+									handler : function() {
+										formPanel.getForm().reset();
+									}
+								},{
+									text :deleteButtonLabel,
+									type : 'button',
+									iconCls : 'trash',
+									handler : function() {
+										formPanel.getForm().reset();
+									}
+								},{
 									text : resetButtonLabel,
 									type : 'reset',
-									iconCls : 'table_refresh',
+									iconCls : 'reset',
 									handler : function() {
 										formPanel.getForm().reset();
 									}
 								}, {
-									text : listButtonLabel,
+									text : gridButtonLabel,
 									type : 'button',
 									iconCls : 'table',
 									handler : function() {
-										// formPanel.getForm().reset();
-
-										var win;
-										win = new Ext.Window({
-											items : [ gridPanelList ],
-											closeAction : 'hide',
-											maximizable : true,
-											title : leafNote,
-											layout : 'fit',
-											width : 500,
-											autoScroll : true
-										});
-										win.show(this);
+										formPanel.getForm().reset();
+										viewPort.items.get(0).expand();	
 									}
-								} ]
+								}, {
+									text : firstButtonLabel,
+									type : 'button',
+									iconCls : 'resultset_first',
+									handler : function() {
+										formPanel.getForm().reset();
+										viewPort.items.get(0).expand();	
+									}
+								} , {
+									text : previousButtonLabel,
+									type : 'button',
+									iconCls : 'resultset_previous',
+									handler : function() {
+										formPanel.getForm().reset();
+										viewPort.items.get(0).expand();	
+									}
+								} , {
+									text : nextButtonLabel,
+									type : 'button',
+									iconCls : 'resultset_next',
+									handler : function() {
+										formPanel.getForm().reset();
+										viewPort.items.get(0).expand();	
+									}
+								} , {
+									text : endButtonLabel,
+									type : 'button',
+									iconCls : 'resultset_last',
+									handler : function() {
+										formPanel.getForm().reset();
+										viewPort.items.get(0).expand();	
+									}
+								}  ]
 					});
 
 			var viewPort = new Ext.Viewport({

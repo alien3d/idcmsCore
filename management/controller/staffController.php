@@ -852,6 +852,10 @@ class staffClass extends configClass
                 'success' => true,
                 'total' => $total,
                 'message' => 'data loaded',
+            	'first'=>$this->firstRecord(),
+            	'next'=>$this->nextRecord($this->getStaffId('','string')),
+            	'previous'=>$this->previousRecord($this->getStaffId('','string')),
+            	'last'=>$this->lastRecord(),
                 'data' => $items
             	));
             	exit();
@@ -1507,6 +1511,9 @@ class staffClass extends configClass
 			}
 		}
 	}
+
+
+
 	/**
 	 * Enter description here ...
 	 */
