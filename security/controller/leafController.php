@@ -123,11 +123,11 @@ class leafClass extends configClass
 						`tabId`,						`folderId`,
 						`leafNote`,							`leafSequence`,
 						`leafcode`,							`leafFilename`,
-						`iconId`,							`isNew`,
-						`isDraft`,							`isUpdate`,
-						`isDelete`,							`isActive`,
-						`isApproved`,						`By`,
-						`Time`
+						`iconId`,							`isDefault`,
+						`isNew`,							`isDraft`,
+						`isUpdate`,							`isDelete`,
+						`isActive`,							`isApproved`,
+						`By`,								`Time`
 					)
 			VALUES
 					(
@@ -147,22 +147,20 @@ class leafClass extends configClass
 						[tabId],					[folderId],
 						[leafNote],						[leafSequence],
 						[leafCode],						[leafFilename],
-						[iconId],						[isNew],
-						[isDraft],						[isUpdate],
-						[isDelete],						[isActive],
-						[isApproved],					[By],
-						[Time]
-					)
+						[iconId],						[isDefault],
+						[isNew],						[isDraft],
+						[isUpdate],						[isDelete],
+						[isActive],						[isApproved],
+						[By],							[Time]
 			VALUES
 					(
 						\"" . $this->model->getTabId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
-						\"" . $this->model->getIconId(). "\",						\"" . $this->model->getIsNew('', 'string') . "\",
-						\"" . $this->model->getIsDraft('', 'string') . "\",			\"" . $this->model->getIsUpdate('', 'string') . "\",
-						\"" . $this->model->getIsDelete('', 'string') . "\",		\"" . $this->model->getIsActive('', 'string') . "\",
-						\"" . $this->model->getIsApproved('', 'string') . "\",		\"" . $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft('','string') . "\",
+						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
+						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
+						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					)";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -171,22 +169,21 @@ class leafClass extends configClass
 						\"tabId\",					\"folderId\",
 						\"leafNote\",						\"leafSequence\",
 						\"leafCode\",						\"leafFilename\",
-						\"iconId\",							\"isNew\",
-						\"isDraft\",						\"isUpdate\",
-						\"isDelete\",						\"isActive\",
-						\"isApproved\",						\"By\",
-						\"Time\"
+						\"iconId\",							\"isDefault\",
+						\"isNew\",							\"isDraft\",
+						\"isUpdate\",						\"isDelete\",
+						\"isActive\",						\"isApproved\",
+						\"By\",								\"Time\"
 					)
 			VALUES
 					(
-							\"" . $this->model->getTabId('','string') . "\",			\"" . $this->model->getFolderId() . "\",
+						\"" . $this->model->getTabId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
-						\"" . $this->model->getIconId(). "\",						\"" . $this->model->getIsNew('', 'string') . "\",
-						\"" . $this->model->getIsDraft('', 'string') . "\",			\"" . $this->model->getIsUpdate('', 'string') . "\",
-						\"" . $this->model->getIsDelete('', 'string') . "\",		\"" . $this->model->getIsActive('', 'string') . "\",
-						\"" . $this->model->getIsApproved('', 'string') . "\",		\"" . $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft('','string') . "\",
+						\"". $this->model->getIsUpdate('','string') . "\",				\"". $this->model->getIsDelete('','string') . "\",
+						\"". $this->model->getIsActive('','string') . "\",				\"". $this->model->getIsApproved('','string') . "\",
+						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 		}
 		$this->q->create($sql);
@@ -211,7 +208,10 @@ class leafClass extends configClass
 			FROM 	[staff]
 			WHERE 	[isActive]	=	1 ";
 		} else if ($this->q->vendor == self::mysql) {
-			$sql = "SELECT * FROM \"staff\" WHERE \"isActive\"	=	1 ";
+			$sql = "
+			SELECT 	* 
+			FROM 	\"staff\" 
+			WHERE 	\"isActive\"	=	1 ";
 		}
 		$this->q->read($sql);
 		$data = $this->q->activeRecord();
@@ -545,27 +545,29 @@ class leafClass extends configClass
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE	`leaf`
-			SET		`isActive`	=	\"". $this->model->getIsActive ."\",
-					`isNew`		=	\"". $this->model->getIsNew ."\",
-					`isDraft`	=	\"". $this->model->getIsDraft ."\",
-					`isUpdate`	=	\"". $this->model->getIsUpdate ."\",
-					`isDelete`	=	\"". $this->model->getIsDelete ."\",
-					`isApproved`=	\"". $this->model->getIsApproved ."\",
-					`By`		=	\"". $this->model->getBy() ."\",
-					`Time		=	" . $this->model->getTime . "
-			WHERE 	`leafId`	=	\"". $this->leafId ."\"";
+			SET		`isDefault`				=	\"".$this->model->getIsDefault('','string')."\",
+					`isActive`				=	\"".$this->model->getIsActive('','string')."\",
+					`isNew`					=	\"".$this->model->getIsNew('','string')."\",
+					`isDraft`				=	\"".$this->model->getIsDraft('','string')."\",
+					`isUpdate`				=	\"".$this->model->getIsUpdate('','string')."\",
+					`isDelete`				=	\"".$this->model->getIsDelete('','string')."\",
+					`isApproved`			=	\"".$this->model->getIsApproved('','string')."\",
+					`By`					=	\"".$this->model->getBy()."\",
+					`Time`					=	".$this->model->getTime()."
+			WHERE 	`leafId`	=	\"". $this->getLeafId('','string') ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
-			SET		[isActive]	=	\"". $this->model->getIsActive ."\",
-					[isNew]		=	\"". $this->model->getIsNew ."\",
-					[isDraft]	=	\"". $this->model->getIsDraft ."\",
-					[isUpdate]	=	\"". $this->model->getIsUpdate ."\",
-					[isDelete]	=	\"". $this->model->getIsDelete ."\",
-					[isApproved]=	\"". $this->model->getIsApproved ."\",
-					[By]		=	\"". $this->model->getBy() ."\",
-					[Time]		=	" . $this->model->getTime . "
-			WHERE 	[leafId]	=	\"". $this->leafId ."\"";
+			SET		 [isDefault]				=	\"".$this->model->getIsDefault('','string')."\",
+					[isActive]				=	\"".$this->model->getIsActive('','string')."\",
+					[isNew]					=	\"".$this->model->getIsNew('','string')."\",
+					[isDraft]				=	\"".$this->model->getIsDraft('','string')."\",
+					[isUpdate]				=	\"".$this->model->getIsUpdate('','string')."\",
+					[isDelete]				=	\"".$this->model->getIsDelete('','string')."\",
+					[isApproved]			=	\"".$this->model->getIsApproved('','string')."\",
+					[By]					=	\"".$this->model->getBy()."\",
+					[Time]					=	".$this->model->getTime()."
+			WHERE 	[leafId]	=	\"". $this->getLeafId('','string') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE	\"leaf\"
@@ -577,7 +579,7 @@ class leafClass extends configClass
 					\"isApproved\"	=	\"". $this->model->getIsApproved ."\",
 					\"By\"			=	\"". $this->model->getBy() ."\",
 					\"Time\"		=	" . $this->model->getTime . "
-			WHERE 	\"leafId\"		=	\"". $this->leafId ."\"";
+			WHERE 	\"leafId\"		=	\"". $this->getLeafId('','string') ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -619,27 +621,29 @@ class leafClass extends configClass
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
-			SET		[isActive]	=	\"". $this->model->getIsActive ."\",
-					[isNew]		=	\"". $this->model->getIsNew ."\",
-					[isDraft]	=	\"". $this->model->getIsDraft ."\",
-					[isUpdate]	=	\"". $this->model->getIsUpdate ."\",
-					[isDelete]	=	\"". $this->model->getIsDelete ."\",
-					[isApproved]=	\"". $this->model->getIsApproved ."\",
-					[By]		=	\"". $this->model->getBy() ."\",
-					[Time]		=	" . $this->model->getTime . "
+			SET		[isDefault]				=	\"".$this->model->getIsDefault('','string')."\",
+					[isActive]				=	\"".$this->model->getIsActive('','string')."\",
+					[isNew]					=	\"".$this->model->getIsNew('','string')."\",
+					[isDraft]				=	\"".$this->model->getIsDraft('','string')."\",
+					[isUpdate]				=	\"".$this->model->getIsUpdate('','string')."\",
+					[isDelete]				=	\"".$this->model->getIsDelete('','string')."\",
+					[isApproved]			=	\"".$this->model->getIsApproved('','string')."\",
+					[By]					=	\"".$this->model->getBy()."\",
+					[Time]					=	".$this->model->getTime()."
 			WHERE 	[leafId]	=	\"". $this->getLeafId('','string') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE	\"leaf\"
-			SET		\"isActive\"	=	\"". $this->model->getIsActive ."\",
-					\"isNew\"		=	\"". $this->model->getIsNew ."\",
-					\"isDraft\"		=	\"". $this->model->getIsDraft ."\",
-					\"isUpdate\"	=	\"". $this->model->getIsUpdate ."\",
-					\"isDelete\"	=	\"". $this->model->getIsDelete ."\",
-					\"isApproved\"	=	\"". $this->model->getIsApproved ."\",
-					\"By\"			=	\"". $this->model->getBy() ."\",
-					\"Time\"		=	" . $this->model->getTime . "
-			WHERE 	\"leafId\"		=	\"". $this->model->getLeafId('','string') ."\"";
+			SET		\"isDefault\"		=	\"".$this->model->getIsDefault('','string')."\",
+					\"isActive\"		=	\"".$this->model->getIsActive('','string')."\",
+					\"isNew\"			=	\"".$this->model->getIsNew('','string')."\",
+					\"isDraft\"			=	\"".$this->model->getIsDraft('','string')."\",
+					\"isUpdate\"		=	\"".$this->model->getIsUpdate('','string')."\",
+					\"isDelete\"		=	\"".$this->model->getIsDelete('','string')."\",
+					\"isApproved\"		=	\"".$this->model->getIsApproved('','string')."\",
+					\"By\"				=	\"".$this->model->getBy()."\",
+					\"Time\"			=	".$this->model->getTime()."
+			WHERE 	\"leafId\"			=	\"". $this->model->getLeafId('','string') ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -842,10 +846,28 @@ if (isset($_GET['method'])) {
 			$leafObject->nextSequence();
 		}
 	}
+/*
+	* Update Status of The Table. Admin Level Only
+	*/
+	if($_GET['method']=='updateStatus'){
+		$leafObject->updateStatus();
+	}
+	/*
+	*  Checking Any Duplication  Key
+	*/
+	if (isset($_GET['leafCode'])) {
+		if (strlen($_GET['leafCode']) > 0) {
+			$leafObject->duplicate();
+		}
+	}
+	/*
+	 *  Excel Reporting
+	 */
 	if (isset($_GET['mode'])) {
-		if ($_GET['mode'] == 'excel') {
+		if ($_GET['mode'] == 'report') {
 			$leafObject->excel();
 		}
+
 	}
 }
 ?>

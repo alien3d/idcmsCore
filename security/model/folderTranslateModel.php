@@ -148,7 +148,7 @@ class folderModel extends validationClass{
 		}
 	}
 	/**
-	 * Return folder indentication Value
+	 * Return folder Identification Value
 	 * @return integer folderId
 	 */
 	public function getFolderId($key=NULL,$type=NULL) {
@@ -173,7 +173,7 @@ class folderModel extends validationClass{
 
 	}
 	/**
-	 * Return folder indentication Value
+	 * Return folder Identification Value
 	 * @return integer folderId
 	 */
 	public function getTabId() {
@@ -193,7 +193,7 @@ class folderModel extends validationClass{
 
 	}
 	/**
-	 * Return folder indentication Value
+	 * Return folder Identification Value
 	 * @return integer folderId
 	 */
 	public function getIconId() {

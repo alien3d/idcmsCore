@@ -11,7 +11,7 @@ Ext.onReady(function() {
     var pagePrintList;
     var perPage = 15;
     var encode = false;
-    var local = false;
+ 
     var jsonResponse;
     var duplicate = 0;
     if (leafReadAccessValue == 1) {

@@ -310,7 +310,7 @@ Ext.onReady(function() {
 		editor : groupNote
 					
     },
-    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid{
+    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid,{
         dataIndex: "By",
         header: createByLabel,
         sortable: true,

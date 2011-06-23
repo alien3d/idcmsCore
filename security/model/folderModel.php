@@ -18,6 +18,7 @@ class folderModel extends validationClass{
 	private $tabId;
 	private $iconId;
 	private $folderSequence;
+	private $folderCode;
 	private $folderPath;
 	private $folderNote;
 
@@ -45,7 +46,12 @@ class folderModel extends validationClass{
 		if(isset($_POST['folderPath'])){
 			$this->setFolderPath($this->strict($_POST['folderPath'],'memo'));
 		}
-
+		if(isset($_POST['folderSequence'])){
+			$this->setfolderSequence($this->strict($_POST['folderSequence'],'memo'));
+		}
+		if(isset($_POST['folderCode'])){
+			$this->setFolderCode($this->strict($_POST['folderCode'],'memo'));
+		}
 		if(isset($_POST['folderNote'])){
 			$this->setFolderNote($this->strict($_POST['folderNote'],'memo'));
 		}
@@ -222,7 +228,7 @@ class folderModel extends validationClass{
 		}
 	}
 	/**
-	 * Return folder indentication Value
+	 * Return folder Identification
 	 * @return integer folderId
 	 */
 	public function getFolderId($key=NULL,$type=NULL) {
@@ -236,7 +242,7 @@ class folderModel extends validationClass{
 		}
 	}
 /**
-	 * Set tab indentification  Value
+	 * Set tab Identification
 	 * @param integer $value
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
@@ -247,7 +253,7 @@ class folderModel extends validationClass{
 
 	}
 	/**
-	 * Return folder indentication Value
+	 * Return tab Identication Value
 	 * @return integer folderId
 	 */
 	public function getTabId() {
@@ -256,7 +262,7 @@ class folderModel extends validationClass{
 
 	}
 /**
-	 * Set icon indentification  Value
+	 * Set icon identification  Value
 	 * @param integer $value
 	 * @param integer $key  Array as value
 	 * @param enum   $type   1->string,2->array
@@ -267,27 +273,41 @@ class folderModel extends validationClass{
 
 	}
 	/**
-	 * Return folder indentication Value
+	 * Return folder Identification Value
 	 * @return integer folderId
 	 */
 	public function getIconId() {
 
-			return $this->IconId;
+			return $this->iconId;
 
 	}
 /**
-	 * Set Folder Sequence Value (english)
+	 * Set Folder Sequence 
 	 * @param numeric $value
 	 */
-	public function setfolderSequence($value) {
+	public function setFolderSequence($value) {
 		$this->folderSequence = $value;
 	}
 	/**
 	 * Return folder Sequence
-	 * @return numeric folder description
+	 * @return numeric $folderSequence
 	 */
-	public function getfolderSequence() {
+	public function getFolderSequence() {
 		return $this->folderSequence;
+	}
+	/**
+	* Set Folder Code
+	* @param numeric $value
+	*/
+	public function setFolderCode($value) {
+		$this->folderSequence = $value;
+	}
+	/**
+	 * Return folder Code
+	 * @return numeric $folderCode
+	 */
+	public function getFolderCode() {
+		return $this->folderCode;
 	}
 /**
 	 * Set Folder Path
@@ -298,7 +318,7 @@ class folderModel extends validationClass{
 	}
 	/**
 	 * Return folder Path
-	 * @return string folder description
+	 * @return string $folderPath
 	 */
 	public function getfolderPath() {
 		return $this->folderPath;
@@ -311,8 +331,8 @@ class folderModel extends validationClass{
 		$this->folderNote = $value;
 	}
 	/**
-	 * Return folder Description (english)
-	 * @return string folder description
+	 * Return folder Note (english)
+	 * @return string $folderNote
 	 */
 	public function getfolderNote() {
 		return $this->folderNote;

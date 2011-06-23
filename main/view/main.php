@@ -15,14 +15,14 @@ include('../../Connections/main.php'); ?>
 <title>Naaa</title>
 
 <link rel="stylesheet" type="text/css"
-	href="../../javascript/resources/css/ext-all.css"></link>
+	href="../../javascript/resources/css/ext-all.css">
     <link rel="stylesheet" type="text/css"
-	href="../../javascript/extensible/resources/css/extensible-all.css"></link>
+	href="../../javascript/extensible/resources/css/extensible-all.css">
 <?php if(isset($_SESSION[$theme])) { ?>
 <link rel="stylesheet"
 	href="<?php if(isset($_SESSION['theme'])) {
 echo $_SESSION[$theme];
-} ?>"></link>
+} ?>">
 <?php } ?>
 <style>
 .header {
@@ -52,8 +52,8 @@ echo $_SESSION[$theme];
 </head>
 <body>
 </body>
-<script language="javascript" type="text/javascript" src="../../javascript/adapter/ext/ext-base.js"></script>
-<script language="javascript" type="text/javascript" src="../../javascript/ext-all.js"></script>
+<script  type="text/javascript" src="../../javascript/adapter/ext/ext-base.js"></script>
+<script  type="text/javascript" src="../../javascript/ext-all.js"></script>
 <script type="text/javascript" src="../../javascript/examples/ux/iframe.js"></script>
   <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridSorter.js"></script>
         <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridColumnResizer.js"></script>
@@ -66,7 +66,7 @@ echo $_SESSION[$theme];
 <script type="text/javascript" src="../../javascript/examples/ux/TabScrollerMenu.js"></script>
 <script type="text/javascript" src="../../javascript/ribbon/Ext.ux.Ribbon.js"></script>
 <?php require_once("../../shared/setting.php"); ?>
-<script language="javascript" type="text/javascript">
+<script  type="text/javascript">
 
 	// used Dreamweaver for easy javascript viewing.
 

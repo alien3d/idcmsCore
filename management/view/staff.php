@@ -12,7 +12,7 @@ include('../../Connections/main.php');	?>
 <head>
 <link rel="stylesheet" type="text/css"
 	href="../../javascript/resources/css/ext-all.css">
-</link>
+
 <link rel="stylesheet" type="text/css"
 	href="../../javascript/examples/ux/gridfilters/css/GridFilters.css" />
 <link rel="stylesheet" type="text/css"
@@ -24,7 +24,7 @@ include('../../Connections/main.php');	?>
 <?php // only execute when exist
 if($_SESSION[$theme]) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
-</link>
+
 <?php } ?>
 </head>
 <style>
@@ -35,9 +35,9 @@ x-grid3-row-alt {
 <body>
 </body>
 <?php require_once("../../shared/setting.php"); ?>
-<script language="javascript" type="text/javascript"
+<script  type="text/javascript"
 	src="../../javascript/adapter/ext/ext-base.js"></script>
-<script language="javascript" type="text/javascript"
+<script  type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
 <script type="text/javascript"
 	src="../../javascript/examples/ux/gridfilters/menu/RangeMenu.js"></script>
@@ -67,6 +67,6 @@ x-grid3-row-alt {
 	src="../../javascript/examples/ux/checkColumn.js"></script>
 <script type="text/javascript"
 	src="../../javascript/examples/ux/RowEditor.js"></script>
-<script language="javascript" type="text/javascript"
+<script  type="text/javascript"
 	src="../javascript/staff.js"></script>
 </html>

@@ -18,9 +18,9 @@ if($_SESSION['theme']) { ?>
 <body>
 </body>
 <?php require_once("../../shared/setting_tmp.php"); ?>
-<script language="javascript" type="text/javascript"
+<script  type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
-<script language="javascript" type="text/javascript"
+<script  type="text/javascript"
 	src="../javascript/leafAccess.js"></script>
 
 </html>

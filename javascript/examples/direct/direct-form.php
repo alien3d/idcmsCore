@@ -11,7 +11,7 @@
  	<script type="text/javascript" src="../../adapter/ext/ext-base.js"></script>
  	<!-- ENDLIBS -->
     <script type="text/javascript" src="../../ext-all.js"></script>
-    <script language="javascript" src="direct-form.js"></script>
+    <script  src="direct-form.js"></script>
 	<script type="text/javascript" src="php/api.php"></script>
 </head>
 <body>

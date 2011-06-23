@@ -147,7 +147,8 @@ Ext.onReady(function() {
 		        success: function (response, options) {
 		            jsonResponse = Ext.decode(response.responseText);
 		            if (jsonResponse.success == true) {
-		                //Ext.MessageBox.alert(successLabel, jsonResponse.message); //uncommen for testing purpose
+		                // Ext.MessageBox.alert(successLabel,
+						// jsonResponse.message); //uncommen for testing purpose
 		            } else {
 		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
 		            }
@@ -297,8 +298,8 @@ Ext.onReady(function() {
 									bodyStyle : 'padding:5px',
 									callback : function(grid, record, action,
 											row, col) {
-										//Ext.MessageBox.alert('message',
-												//'This is for update button');
+										// Ext.MessageBox.alert('message',
+												// 'This is for update button');
 										formPanel.getForm().reset();
 										formPanel.form
 												.load( {
@@ -369,7 +370,9 @@ Ext.onReady(function() {
 																					.reload();
 																		},
 																		failure : function(response,options) {
-																			// critical bug extjs 
+																			// critical
+																			// bug
+																			// extjs
 																			var x = Ext.decode(response.responseText);
 																			var title = 'Message Failure';
 																			Ext.MessageBox
@@ -397,8 +400,8 @@ Ext.onReady(function() {
 									bodyStyle : 'padding:5px',
 									callback : function(grid, record, action,
 											row, col) {
-										//Ext.MessageBox.alert('message',
-												//'This is for update button');
+										// Ext.MessageBox.alert('message',
+												// 'This is for update button');
 										formPanel.getForm().reset();
 										formPanel.form
 												.load( {
@@ -550,7 +553,7 @@ Ext.onReady(function() {
 				hidden : false
 			}, {
 			    dataIndex : 'documentExtension',
-				header : documentExtensionLabel,,
+				header : documentExtensionLabel,
 				sortable : true,
 				hidden : false
 			}, {
@@ -560,7 +563,7 @@ Ext.onReady(function() {
 				hidden : true
 			}, {
 				dataIndex : 'createTime',
-				header :  createTimeLabel,,
+				header :  createTimeLabel,
 				sortable : true,
 				hidden : true,
 			    renderer : function(value) {
@@ -938,7 +941,7 @@ Ext.onReady(function() {
 		                params	 :	{ method:'upload', leafId:leafId }, 
 		                success  : function(formPanel,o){
 	                		    	Ext.MessageBox.alert(systemLabel);
-		                            //formPanel.getForm().reset();
+		                            // formPanel.getForm().reset();
 		                        	store.reload();
 		                        	viewPort.items.get(0).expand();
 		                    },

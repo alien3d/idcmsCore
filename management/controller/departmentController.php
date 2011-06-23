@@ -506,6 +506,7 @@ class departmentClass  extends configClass {
 				SET 	[departmentSequence]	=	\"".$this->model->getDepartmentSequence()."\",
 						[departmentCode]		=	\"".$this->model->getDepartmentCode()."\",
 						[departmentNote] 		= 	\"".$this->model->getDepartmentNote()."\",
+						[isDefault]				=	\"".$this->model->getIsDefault('','string')."\",
 						[isActive]				=	\"".$this->model->getIsActive('','string')."\",
 						[isNew]					=	\"".$this->model->getIsNew('','string')."\",
 						[isDraft]				=	\"".$this->model->getIsDraft('','string')."\",
@@ -519,17 +520,15 @@ class departmentClass  extends configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 				UPDATE 	\"department\"
-				SET 	\"departmentSequence\"	=	\"".$this->model->getDepartmentSequence()."\",
-						\"departmentCode\"		=	\"".$this->model->getDepartmentCode()."\",
-						\"departmentNote\" 		= 	\"".$this->model->getDepartmentNote()."\",
-						\"isActive\"			=	\"".$this->model->getIsActive('','string')."\",
-						\"isNew\"				=	\"".$this->model->getIsNew('','string')."\",
-						\"isDraft\"				=	\"".$this->model->getIsDraft('','string')."\",
-						\"isUpdate\"			=	\"".$this->model->getIsUpdate('','string')."\",
-						\"isDelete\"			=	\"".$this->model->getIsDelete('','string')."\",
-						\"isApproved\"			=	\"".$this->model->getIsApproved('','string')."\",
-						\"By\"					=	\"".$this->model->getBy()."\",
-						\"Time\"				=	".$this->model->getTime()."
+				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault('','string')."\",
+						\"isActive\"		=	\"".$this->model->getIsActive('','string')."\",
+						\"isNew\"			=	\"".$this->model->getIsNew('','string')."\",
+						\"isDraft\"			=	\"".$this->model->getIsDraft('','string')."\",
+						\"isUpdate\"		=	\"".$this->model->getIsUpdate('','string')."\",
+						\"isDelete\"		=	\"".$this->model->getIsDelete('','string')."\",
+						\"isApproved\"		=	\"".$this->model->getIsApproved('','string')."\",
+						\"By\"				=	\"".$this->model->getBy()."\",
+						\"Time\"			=	".$this->model->getTime()."
 				WHERE 	\"departmentId\"		=	\"".$this->model->getDepartmentId('','string')."\"";
 
 		}
@@ -571,28 +570,30 @@ class departmentClass  extends configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[department]
-				SET 	[isActive]		=	\"".$this->model->getIsActive('','string')."\",
+				SET 	[isDefault]		=	\"".$this->model->getIsDefault('','string')."\",
+						[isActive]		=	\"".$this->model->getIsActive('','string')."\",
 						[isNew]			=	\"".$this->model->getIsNew('','string')."\",
 						[isDraft]		=	\"".$this->model->getIsDraft('','string')."\",
 						[isUpdate]		=	\"".$this->model->getIsUpdate('','string')."\",
 						[isDelete]		=	\"".$this->model->getIsDelete('','string')."\",
 						[isApproved]	=	\"".$this->model->getIsApproved('','string')."\",
-						[By]			=	\"".$this->model->getBy('','string')."\",
-						[Time]			=	".$this->model->getTime('','string')."
-				WHERE 	[departmentId]		=	\"".$this->model->getDepartmentId('','string')."\"";
+						[By]			=	\"".$this->model->getBy()."\",
+						[Time]			=	".$this->model->getTime()."
+				WHERE 	[departmentId]	=	\"".$this->model->getDepartmentId('','string')."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 				UPDATE 	\"department\"
-				SET 	\"isActive\"	=	\"".$this->model->getIsActive('','string')."\",
-						\"isNew\"		=	\"".$this->model->getIsNew('','string')."\",
-						\"isDraft\"		=	\"".$this->model->getIsDraft('','string')."\",
-						\"isUpdate\"	=	\"".$this->model->getIsUpdate('','string')."\",
-						\"isDelete\"	=	\"".$this->model->getIsDelete('','string')."\",
-						\"isApproved\"	=	\"".$this->model->getIsApproved('','string')."\",
-						\"By\"			=	\"".$this->model->getBy()."\",
-						\"Time\"		=	".$this->model->getTime()."
-				WHERE 	\"departmentId\"		=	\"".$this->model->getdepartmentId('','string')."\"";
+				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault('','string')."\",
+						\"isActive\"		=	\"".$this->model->getIsActive('','string')."\",
+						\"isNew\"			=	\"".$this->model->getIsNew('','string')."\",
+						\"isDraft\"			=	\"".$this->model->getIsDraft('','string')."\",
+						\"isUpdate\"		=	\"".$this->model->getIsUpdate('','string')."\",
+						\"isDelete\"		=	\"".$this->model->getIsDelete('','string')."\",
+						\"isApproved\"		=	\"".$this->model->getIsApproved('','string')."\",
+						\"By\"				=	\"".$this->model->getBy()."\",
+						\"Time\"			=	".$this->model->getTime()."
+				WHERE 	\"departmentId\"	=	\"".$this->model->getdepartmentId('','string')."\"";
 
 		}
 		$this->q->update($sql);

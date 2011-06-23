@@ -15,7 +15,7 @@
 if(isset($_GET['message'])) {  ?> onload="message()"
 <?php }   ?>>
 </body>
-<script type="text/javascript"  language="javascript" src="javascript/adapter/ext/ext-base.js"></script>
+<script type="text/javascript"   src="javascript/adapter/ext/ext-base.js"></script>
 <script type="text/javascript" src="javascript/ext-all.js"></script>
 <script type="text/javascript"
 	src="javascript/examples/ux/logindialog/js/virtualkeyboard.js"></script>
@@ -30,7 +30,7 @@ if(isset($_GET['message'])) {  ?> onload="message()"
 <script type="text/javascript"
 	src="javascript/examples/ux/logindialog/js/LoginDialogExample.js"></script>
 
-<script language="javascript">
+<script >
 	function message() { 	alert('<?php echo $_GET['message']; ?>. Please Login to the system');	}
         </script>
 </html>

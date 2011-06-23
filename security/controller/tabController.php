@@ -658,14 +658,15 @@ class tabClass extends configClass
 			SET 	[tabSequence]		= 	\"" . $this->model->tabSequence . "\",
 					[tabNote]			=	\"" . $this->model->tabNote . "\",
 					[iconId]			=	\"" . $this->model->iconId . "\",
-					[isActive]			=	\"" . $this->model->getIsActive('','string') . "\",
-					[isNew]				=	\"" . $this->model->getIsNew('','string') . "\",
-					[isDraft]			=	\"" . $this->model->getIsDraft('','string') . "\",
-					[isUpdate]			=	\"" . $this->model->getIsUpdate('','string') . "\",
-					[isDelete]			=	\"" . $this->model->getIsDelete('','string') . "\",
-					[isApproved]		=	\"" . $this->model->getIsApproved('','string') . "\",
-					[By]				=	\"" . $this->model->getBy() . "\",
-					[Time]				=	" . $this->model->getTime() . "
+					[isDefault]			=	\"".$this->model->getIsDefault('','string')."\",
+					[isActive]			=	\"".$this->model->getIsActive('','string')."\",
+					[isNew]				=	\"".$this->model->getIsNew('','string')."\",
+					[isDraft]			=	\"".$this->model->getIsDraft('','string')."\",
+					[isUpdate]			=	\"".$this->model->getIsUpdate('','string')."\",
+					[isDelete]			=	\"".$this->model->getIsDelete('','string')."\",
+					[isApproved]		=	\"".$this->model->getIsApproved('','string')."\",
+					[By]				=	\"".$this->model->getBy()."\",
+					[Time]				=	".$this->model->getTime()."
 			WHERE 	[tabId]				=	\"" . $this->model->getTabId('','string') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -949,8 +950,19 @@ if (isset($_GET['method'])) {
 			$tabObject->nextSequence();
 		}
 	}
+	/*
+	* Update Status of The Table. Admin Level Only
+	*/
 	if($_GET['method']=='updateStatus'){
-		$religionObject->updateStatus();
+		$tabObject->updateStatus();
+	}
+	/*
+	*  Checking Any Duplication  Key
+	*/
+	if (isset($_GET['tabCode'])) {
+		if (strlen($_GET['tabCode']) > 0) {
+			$tabObject->duplicate();
+		}
 	}
 	/*
 	 *  Excel Reporting

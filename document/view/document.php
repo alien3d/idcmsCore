@@ -11,18 +11,18 @@ include('../../Connections/main.php');	?>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <head>
 <link rel="stylesheet" type="text/css"
-	href="../../javascript/resources/css/ext-all.css"></link>
+	href="../../javascript/resources/css/ext-all.css">
 <?php // only execute when exist
 if($_SESSION[$theme]) { ?>
-<link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>"></link>
+<link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
 <?php } ?>
 </head>
 <body>
 </body>
 <?php require_once("../../shared/setting.php"); ?>
-<script language="javascript" type="text/javascript"
+<script  type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
-<script language="javascript" type="text/javascript"
+<script  type="text/javascript"
 	src="../javascript/document.js"></script>
 </html>
 

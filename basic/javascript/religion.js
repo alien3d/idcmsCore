@@ -4,14 +4,14 @@ Ext.onReady(function() {
     Ext.form.Field.prototype.msgTarget = "under";
     Ext.Ajax.timeout = 90000;
     var pageCreate;
-    var pageCreateList;
+  
     var pageReload;
-    var pageReloadList;		
+    
     var pagePrint;
-    var pagePrintList;
+    
     var perPage = 15;
     var encode = false;
-    var local = false;
+   
     var jsonResponse;
     var duplicate = 0;
     if (leafReadAccessValue == 1) {

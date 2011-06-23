@@ -11,7 +11,7 @@
 
     <script type="text/javascript" src="../../ext-all.js"></script>
 
-    <script language="javascript" src="direct-tree.js"></script>
+    <script  src="direct-tree.js"></script>
 
 	<script type="text/javascript" src="php/api.php"></script>
 	
