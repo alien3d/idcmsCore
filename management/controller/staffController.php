@@ -839,6 +839,10 @@ class staffClass extends configClass
                 'success' => true,
                 'total' => $total,
                 'message' => 'Data Loaded',
+                'first'=>$this->firstRecord(),
+            	'next'=>$this->nextRecord($this->model->getStaffId('','string')),
+            	'previous'=>$this->previousRecord($this->model->getStaffId('','string')),
+            	'last'=>$this->lastRecord(),
                 'data' => $items
             	));
             	$json_encode = str_replace("[", "", $json_encode);
@@ -852,10 +856,6 @@ class staffClass extends configClass
                 'success' => true,
                 'total' => $total,
                 'message' => 'data loaded',
-            	'first'=>$this->firstRecord(),
-            	'next'=>$this->nextRecord($this->getStaffId('','string')),
-            	'previous'=>$this->previousRecord($this->getStaffId('','string')),
-            	'last'=>$this->lastRecord(),
                 'data' => $items
             	));
             	exit();
@@ -1225,6 +1225,7 @@ class staffClass extends configClass
             ));
             exit();
 	}
+
 	function updateStatus()
 	{
 		$loop = $this->model->getTotal();

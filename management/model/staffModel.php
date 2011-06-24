@@ -75,7 +75,7 @@ class staffModel extends validationClass{
 		}
 
 		$this->setTotal(count($_GET['staffId']));
-        $accessArray = array(
+		$accessArray = array(
             "isDefault",
             "isNew",
             "isDraft",
@@ -83,75 +83,75 @@ class staffModel extends validationClass{
             "isDelete",
             "isActive",
             "isApproved"
-        );
-        // auto assign as array if true
-        if(is_array($_GET['staffId'])){
-        	$this->staffId=array();
-        }
-        if (is_array($_GET['isDefault'])) {
-            $this->isDefault = array();
-        }
-        if (is_array($_GET['isNew'])) {
-            $this->isNew = array();
-        }
-        if (is_array($_GET['isDraft'])) {
-            $this->isDraft = array();
-        }
-        if (is_array($_GET['isUpdate'])) {
-            $this->isUpdate = array();
-        }
-        if (is_array($_GET['isDelete'])) {
-            $this->isDelete = array();
-        }
-        if (is_array($_GET['isActive'])) {
-            $this->isActive = array();
-        }
-        if (is_array($_GET['isApproved'])) {
-            $this->isApproved = array();
-        }
-        for ($i = 0; $i < $this->getTotal(); $i++) {
+            );
+            // auto assign as array if true
+            if(is_array($_GET['staffId'])){
+            	$this->staffId=array();
+            }
+            if (is_array($_GET['isDefault'])) {
+            	$this->isDefault = array();
+            }
+            if (is_array($_GET['isNew'])) {
+            	$this->isNew = array();
+            }
+            if (is_array($_GET['isDraft'])) {
+            	$this->isDraft = array();
+            }
+            if (is_array($_GET['isUpdate'])) {
+            	$this->isUpdate = array();
+            }
+            if (is_array($_GET['isDelete'])) {
+            	$this->isDelete = array();
+            }
+            if (is_array($_GET['isActive'])) {
+            	$this->isActive = array();
+            }
+            if (is_array($_GET['isApproved'])) {
+            	$this->isApproved = array();
+            }
+            for ($i = 0; $i < $this->getTotal(); $i++) {
 
-              $this->setStaffId($this->strict($_GET['staffId'][$i], 'numeric'), $i, 'array');
-            if ($_GET['isDefault'][$i] == 'true') {
-                $this->setIsDefault(1, $i, 'array');
-            } else if ($_GET['default'] == 'false') {
-                $this->setIsDefault(0, $i, 'array');
-            }
-            if ($_GET['isNew'][$i] == 'true') {
-                $this->setIsNew(1, $i, 'array');
-            } else {
-                $this->setIsNew(0, $i, 'array');
-            }
-            if ($_GET['isDraft'][$i] == 'true') {
-                $this->setIsDraft(1, $i, 'array');
-            } else {
-                $this->setIsDraft(0, $i, 'array');
-            }
-            if ($_GET['isUpdate'][$i] == 'true') {
-                $this->setIsUpdate(1, $i, 'array');
-            } else {
-                $this->setIsUpdate(0, $i, 'array');
-            }
-            if ($_GET['isDelete'][$i] == 'true') {
-                $this->setIsDelete(1, $i, 'array');
-            } else if ($_GET['isDelete'][$i] == 'false') {
-                $this->setIsDelete(0, $i, 'array');
-            }
-            if ($_GET['isActive'][$i] == 'true') {
-                $this->setIsActive(1, $i, 'array');
-            } else {
-                $this->setIsActive(0, $i, 'array');
-            }
-            if ($_GET['isApproved'][$i] == 'true') {
-                $this->setIsApproved(1, $i, 'array');
-            } else {
-                $this->setIsApproved(0, $i, 'array');
+            	$this->setStaffId($this->strict($_GET['staffId'][$i], 'numeric'), $i, 'array');
+            	if ($_GET['isDefault'][$i] == 'true') {
+            		$this->setIsDefault(1, $i, 'array');
+            	} else if ($_GET['default'] == 'false') {
+            		$this->setIsDefault(0, $i, 'array');
+            	}
+            	if ($_GET['isNew'][$i] == 'true') {
+            		$this->setIsNew(1, $i, 'array');
+            	} else {
+            		$this->setIsNew(0, $i, 'array');
+            	}
+            	if ($_GET['isDraft'][$i] == 'true') {
+            		$this->setIsDraft(1, $i, 'array');
+            	} else {
+            		$this->setIsDraft(0, $i, 'array');
+            	}
+            	if ($_GET['isUpdate'][$i] == 'true') {
+            		$this->setIsUpdate(1, $i, 'array');
+            	} else {
+            		$this->setIsUpdate(0, $i, 'array');
+            	}
+            	if ($_GET['isDelete'][$i] == 'true') {
+            		$this->setIsDelete(1, $i, 'array');
+            	} else if ($_GET['isDelete'][$i] == 'false') {
+            		$this->setIsDelete(0, $i, 'array');
+            	}
+            	if ($_GET['isActive'][$i] == 'true') {
+            		$this->setIsActive(1, $i, 'array');
+            	} else {
+            		$this->setIsActive(0, $i, 'array');
+            	}
+            	if ($_GET['isApproved'][$i] == 'true') {
+            		$this->setIsApproved(1, $i, 'array');
+            	} else {
+            		$this->setIsApproved(0, $i, 'array');
+            	}
+
+            	$primaryKeyAll .= $this->getStaffId($i, 'array') . ",";
             }
 
-               $primaryKeyAll .= $this->getStaffId($i, 'array') . ",";
-        }
-
-        $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
+            $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 
 	}
 	/* (non-PHPdoc)
@@ -193,6 +193,33 @@ class staffModel extends validationClass{
 		$this->setIsDelete(1,'','string');
 		$this->setIsApproved(0,'','string');
 	}
+	/* (non-PHPdoc)
+	 * @see validationClass::draft()
+	 */
+	public function draft()
+	{
+		$this->setIsDefault(0,'','string');
+		$this->setIsNew(1,'','string');
+		$this->setIsDraft(1,'','string');
+		$this->setIsUpdate(0,'','string');
+		$this->setIsActive(0,'','string');
+		$this->setIsDelete(0,'','string');
+		$this->setIsApproved(0,'','string');
+	}
+	/* (non-PHPdoc)
+	 * @see validationClass::draft()
+	 */
+	public function approved()
+	{
+		$this->setIsDefault(0,'','string');
+		$this->setIsNew(1,'','string');
+		$this->setIsDraft(0,'','string');
+		$this->setIsUpdate(0,'','string');
+		$this->setIsActive(0,'','string');
+		$this->setIsDelete(0,'','string');
+		$this->setIsApproved(1,'','string');
+	}
+	public
 	/* (non-PHPdoc)
 	 * @see configClass::excel()
 	 */
@@ -330,7 +357,7 @@ class staffModel extends validationClass{
 	public function getStaffPassword() {
 		return $this->staffPassword;
 	}
-/**
+	/**
 	 * Set  Staff Name
 	 * @param numeric $value
 	 */
@@ -373,7 +400,7 @@ class staffModel extends validationClass{
 	public function getStaffIc() {
 		return $this->staffIc;
 	}
-		public function setIsDefault($value,$key=NULL,$type=NULL) {
+	public function setIsDefault($value,$key=NULL,$type=NULL) {
 		if($type=='string'){
 
 			$this->isDefault = $value;

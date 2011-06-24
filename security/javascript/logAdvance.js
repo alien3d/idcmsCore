@@ -428,6 +428,25 @@ Ext
 				blankText : blankTextLabel,
 				anchor : '95%'
 			});
+			
+			var firstRecord = new Ext.form.Hidden({
+				name : 'firstRecord',
+				id : 'firstRecord'
+			});
+
+			var nextRecord = new Ext.form.Hidden({
+				name : 'nextRecord',
+				id : 'nextRecord'
+			});
+
+			var previousRecord = new Ext.form.Hidden({
+				name : 'previousRecord',
+				id : 'previousRecord'
+			});
+			var lastRecord = new Ext.form.Hidden({
+				name : 'lastRecord',
+				id : 'lastRecord'
+			});
 
 			var formPanel = new Ext.form.FormPanel({
 				url : '../controller/logAdvanceController.php',

@@ -550,7 +550,7 @@ Ext
 																		.get('staffId');
 													} else {
 														alert("testing for error"
-																+ i)
+																+ i);
 													}
 													if (isAdmin == 1) {
 														sub_url = sub_url
@@ -1057,12 +1057,16 @@ Ext
 									iconCls : 'new',
 									handler : function() {
 										formPanel.getForm().reset();
+										viewPort.items
+										.get(
+												1)
+										.expand();
 									}
 								},
 								{
 									text : draftButtonLabel,
 									type : 'button',
-									iconCls : 'draft',
+									iconCls : 'page_white',
 									handler : function() {
 										formPanel.getForm().reset();
 									}
@@ -1086,7 +1090,7 @@ Ext
 								{
 									text : resetButtonLabel,
 									type : 'reset',
-									iconCls : 'reset',
+									iconCls : 'arrow_refresh',
 									handler : function() {
 										formPanel.getForm().reset();
 									}
@@ -1102,7 +1106,8 @@ Ext
 								},
 								{
 									text : firstButtonLabel,
-									id : firstButton,
+									name:'firstButton',
+									id : 'firstButton',
 									type : 'button',
 									iconCls : 'resultset_first',
 									handler : function() {
@@ -1141,6 +1146,8 @@ Ext
 								},
 								{
 									text : previousButtonLabel,
+									name:'previousButton',
+									id:'previousButton',
 									type : 'button',
 									iconCls : 'resultset_previous',
 									handler : function() {
@@ -1154,7 +1161,7 @@ Ext
 														params : {
 															method : "read",
 
-															staffId : lastRecord,
+															staffId : Ext.getCmp('previousRecord').getValue(),
 															leafId : leafId,
 															isAdmin : isAdmin
 														},
@@ -1182,6 +1189,8 @@ Ext
 								},
 								{
 									text : nextButtonLabel,
+									name:'nextButton',
+									id:'nextButton',
 									type : 'button',
 									iconCls : 'resultset_next',
 									handler : function() {
@@ -1224,6 +1233,8 @@ Ext
 								},
 								{
 									text : endButtonLabel,
+									name:'endButton',
+									id:'endButton',
 									type : 'button',
 									iconCls : 'resultset_last',
 									handler : function() {
@@ -1237,7 +1248,7 @@ Ext
 													params : {
 														method : "read",
 
-														staffId : lastRecord,
+														staffId : Ext.getCmp('lastRecord').getValue(),
 														leafId : leafId,
 														isAdmin : isAdmin
 													},

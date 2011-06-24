@@ -112,5 +112,31 @@ class leafAccessModel extends validationClass{
 	function delete() {
 	}
 
+/* (non-PHPdoc)
+	 * @see validationClass::draft()
+	 */
+	public function draft()
+	{
+		$this->setIsDefault(0,'','string');
+		$this->setIsNew(1,'','string');
+		$this->setIsDraft(1,'','string');
+		$this->setIsUpdate(0,'','string');
+		$this->setIsActive(0,'','string');
+		$this->setIsDelete(0,'','string');
+		$this->setIsApproved(0,'','string');
+	}
+	/* (non-PHPdoc)
+	 * @see validationClass::draft()
+	 */
+	public function approved()
+	{
+		$this->setIsDefault(0,'','string');
+		$this->setIsNew(1,'','string');
+		$this->setIsDraft(0,'','string');
+		$this->setIsUpdate(0,'','string');
+		$this->setIsActive(0,'','string');
+		$this->setIsDelete(0,'','string');
+		$this->setIsApproved(1,'','string');
+	}
 }
 ?>

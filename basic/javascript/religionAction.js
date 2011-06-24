@@ -921,6 +921,25 @@ Ext.onReady(function() {
         name: "religionId",
         id: "religionId"
     });
+    
+    var firstRecord = new Ext.form.Hidden({
+		name : 'firstRecord',
+		id : 'firstRecord'
+	});
+
+	var nextRecord = new Ext.form.Hidden({
+		name : 'nextRecord',
+		id : 'nextRecord'
+	});
+
+	var previousRecord = new Ext.form.Hidden({
+		name : 'previousRecord',
+		id : 'previousRecord'
+	});
+	var lastRecord = new Ext.form.Hidden({
+		name : 'lastRecord',
+		id : 'lastRecord'
+	});
     var formPanel = new Ext.form.FormPanel({
         url: "../controller/religionController.php",
         id: "formPanel",
@@ -1002,57 +1021,224 @@ Ext.onReady(function() {
             }
         },
         {
-        	id  :'deleteButton',
-        	text:'Delete',
-        	type:'button',
-        	iconCls:'trash',
-        	disabled:true,
-        	handler : function() {
-        		alert('please delete me');
-        	}
-        },
-        {
-            id:'newButton',
-        	text: newButtonLabel,
-            type: "button",
-            iconCls: "add",
-            handler: function() {
-                formPanel.getForm().reset();
-            }
-        },
-        {
-            id:'resetButton',
-        	text: resetButtonLabel,
-            type: "reset",
-            iconCls: "table_refresh",
-            handler: function() {
-                formPanel.getForm().reset();
-            }
-        },
-        {
-            id:'listButton',
-        	text: listButtonLabel,
-            type: "button",
-            iconCls: "table",
-            handler: function() {
-                if (win) {
-                    win.show().center();
-                }
-            }
-        },
-        {
-            text: cancelButtonLabel,
-            type: "button",
-            iconCls: "delete",
-            handler: function() {
-                if (win) {
-                    win.hide();
-                }
-                formPanel.getForm().reset();
-                religionStore.reload();
-                viewPort.items.get(0).expand();
-            }
-        }]
+			text : newButtonLabel,
+			type : 'button',
+			iconCls : 'new',
+			handler : function() {
+				formPanel.getForm().reset();
+			}
+		},
+		{
+			text : draftButtonLabel,
+			type : 'button',
+			iconCls : 'draft',
+			handler : function() {
+				formPanel.getForm().reset();
+			}
+		},
+		{
+			text : cancelButtonLabel,
+			type : 'button',
+			iconCls : 'cancel',
+			handler : function() {
+				formPanel.getForm().reset();
+			}
+		},
+		{
+			text : deleteButtonLabel,
+			type : 'button',
+			iconCls : 'trash',
+			handler : function() {
+				formPanel.getForm().reset();
+			}
+		},
+		{
+			text : resetButtonLabel,
+			type : 'reset',
+			iconCls : 'reset',
+			handler : function() {
+				formPanel.getForm().reset();
+			}
+		},
+		{
+			text : gridButtonLabel,
+			type : 'button',
+			iconCls : 'table',
+			handler : function() {
+				formPanel.getForm().reset();
+				viewPort.items.get(0).expand();
+			}
+		},
+		{
+			text : firstButtonLabel,
+			name:'firstButton',
+			id : 'firstButton',
+			type : 'button',
+			iconCls : 'resultset_first',
+			handler : function() {
+
+				formPanel.form
+						.load({
+							url : "../controller/staffController.php",
+							method : "POST",
+							waitTitle : systemLabel,
+							waitMsg : waitMessageLabel,
+							params : {
+								method : "read",
+
+								staffId : Ext.getCmp(
+										'firstRecord')
+										.getValue(),
+								leafId : leafId,
+								isAdmin : isAdmin
+							},
+							success : function(form,
+									action) {
+
+								viewPort.items.get(1)
+										.expand();
+							},
+							failure : function(form,
+									action) {
+								Ext.MessageBox
+										.alert(
+												systemErrorLabel,
+												action.result.message);
+							}
+						});
+
+			}
+		},
+		{
+			text : previousButtonLabel,
+			name:'previousButton',
+			id:'previousButton',
+			type : 'button',
+			iconCls : 'resultset_previous',
+			handler : function() {
+				if (Ex.getCmp('firstRecord').getValue() >= 1) {
+					formPanel.form
+							.load({
+								url : "../controller/staffController.php",
+								method : "POST",
+								waitTitle : systemLabel,
+								waitMsg : waitMessageLabel,
+								params : {
+									method : "read",
+
+									staffId : Ext.getCmp('previousRecord').getValue(),
+									leafId : leafId,
+									isAdmin : isAdmin
+								},
+								success : function(
+										form, action) {
+
+									viewPort.items.get(
+											1).expand();
+								},
+								failure : function(
+										form, action) {
+									Ext.MessageBox
+											.alert(
+													systemErrorLabel,
+													action.result.message);
+								}
+							});
+				} else {
+					// empty record
+					Ext.MessageBox.alert(
+							systemErrorLabel,
+							'Record Not Found');
+				}
+			}
+		},
+		{
+			text : nextButtonLabel,
+			name:'nextButton',
+			id:'nextButton',
+			type : 'button',
+			iconCls : 'resultset_next',
+			handler : function() {
+				if (Ex.getCmp('nextRecord').getValue()  <= Ext.getCmp('lastRecord').getValue()) {
+				formPanel.form
+						.load({
+							url : "../controller/staffController.php",
+							method : "POST",
+							waitTitle : systemLabel,
+							waitMsg : waitMessageLabel,
+							params : {
+								method : "read",
+
+								staffId : Ext.getCmp('nextRecord').getValue(),
+								leafId : leafId,
+								isAdmin : isAdmin
+							},
+							success : function(form,
+									action) {
+
+								viewPort.items.get(1)
+										.expand();
+							},
+							failure : function(form,
+									action) {
+								Ext.MessageBox
+										.alert(
+												systemErrorLabel,
+												action.result.message);
+							}
+						});
+				} else {
+					// empty record
+					Ext.MessageBox.alert(
+							systemErrorLabel,
+							'Record Not Found');
+				}
+			}
+			
+		},
+		{
+			text : endButtonLabel,
+			name:'endButton',
+			id:'endButton',
+			type : 'button',
+			iconCls : 'resultset_last',
+			handler : function() {
+				if (Ex.getCmp('endRecord').getValue()  <= Ext.getCmp('lastRecord').getValue()) {
+				formPanel.form
+						.load({
+							url : "../controller/staffController.php",
+							method : "POST",
+							waitTitle : systemLabel,
+							waitMsg : waitMessageLabel,
+							params : {
+								method : "read",
+
+								staffId : Ext.getCmp('lastRecord').getValue(),
+								leafId : leafId,
+								isAdmin : isAdmin
+							},
+							success : function(form,
+									action) {
+
+								viewPort.items.get(1)
+										.expand();
+							},
+							failure : function(form,
+									action) {
+								Ext.MessageBox
+										.alert(
+												systemErrorLabel,
+												action.result.message);
+							}
+						});
+				} else {
+					// empty record
+					Ext.MessageBox.alert(
+							systemErrorLabel,
+							'Record Not Found');
+				}
+			}
+		}]
     });
     var win = new Ext.Window({
         tbar: toolbarPanelList,

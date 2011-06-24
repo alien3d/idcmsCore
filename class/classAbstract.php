@@ -330,9 +330,22 @@ abstract class configClass
 	 */
 	public function firstRecord() {
 		$first=0;
-		$sql="
-		SELECT 	MIN(".$this->model->getPrimaryKeyName()."') AS `first`
-		FROM 	`".$this->model->getTableName()."`";
+		if($this->getVendor()==self::mysql){
+			$sql="
+			SELECT 	MIN(`".$this->model->getPrimaryKeyName()."`) AS `first`
+			FROM 	`".$this->model->getTableName()."`";
+
+		} else if ($this->getVendor()==self::mssql){
+			$sql="
+			SELECT 	MIN([".$this->model->getPrimaryKeyName()."]) AS [first]
+			FROM 	[".$this->model->getTableName()."]";
+
+		} else  if ($this->getVendor()== self::oracle){
+			$sql="
+			SELECT 	MIN(\"".$this->model->getPrimaryKeyName()."\") AS \"first\"
+			FROM 	\"".$this->model->getTableName()."\"";
+
+		}
 		$result= $this->q->fast($sql);
 		$row  =  $this->q->fetchAssoc($result);
 		$first = $row['first'];
@@ -347,11 +360,25 @@ abstract class configClass
 	 */
 	public function nextRecord($primaryKeyValue) {
 		$next=0;
-		$sql="
-		SELECT (".$this->model->getPrimaryKeyName()."') AS `next`
+		if($this->getVendor()==self::mysql){
+			$sql="
+		SELECT (`".$this->model->getPrimaryKeyName()."`) AS `next`
 		FROM 	`".$this->model->getTableName()."`
 		WHERE 	`".$this->model->getPrimaryKeyName()."` > ".$primaryKeyValue."
 		LIMIT 	1";
+		} else if ($this->getVendor() ==self::mssql){
+			$sql="
+		SELECT ([".$this->model->getPrimaryKeyName()."]) AS [next]
+		FROM 	[".$this->model->getTableName()."]
+		WHERE 	[".$this->model->getPrimaryKeyName()."] > ".$primaryKeyValue."
+		LIMIT 	1";
+		} else if ($this->getVendor()==self::oracle){
+			$sql="
+		SELECT (\"".$this->model->getPrimaryKeyName()."\") AS \"next\"
+		FROM 	\"".$this->model->getTableName()."`
+		WHERE 	\"".$this->model->getPrimaryKeyName()."\" > ".$primaryKeyValue."
+		LIMIT 	1";
+		}
 		$result= $this->q->fast($sql);
 		$row  =  $this->q->fetchAssoc($result);
 		$next = $row['next'];
@@ -366,11 +393,28 @@ abstract class configClass
 	public function previousRecord($primaryKeyValue) {
 
 		$previous=0;
-		$sql="
-		SELECT (".$this->model->getPrimaryKeyName()."') AS `next`
+		if($this->getVendor()==self::mysql){
+			$sql="
+		SELECT (`".$this->model->getPrimaryKeyName()."`) AS `previous`
 		FROM 	`".$this->model->getTableName()."`
 		WHERE 	`".$this->model->getPrimaryKeyName()."` < ".$primaryKeyValue."
+		ORDER BY `staffId`	DESC
 		LIMIT 	1";
+		} else if ($this->getVendor()==self::mssql){
+			$sql="
+		SELECT ([".$this->model->getPrimaryKeyName()."]) AS [previous]
+		FROM 	[".$this->model->getTableName()."]
+		WHERE 	[".$this->model->getPrimaryKeyName()."] < ".$primaryKeyValue."
+		ORDER BY [staffId]	DESC
+		LIMIT 	1";
+		} else if ($this->getVendor()==self::oracle){
+			$sql="
+		SELECT (\"".$this->model->getPrimaryKeyName()."\") AS \"previous\"
+		FROM 	\"".$this->model->getTableName()."\"
+		WHERE 	\"".$this->model->getPrimaryKeyName()."\" < ".$primaryKeyValue."
+		ORDER BY \"staffId\" DESC
+		LIMIT 	1";
+		}
 		$result= $this->q->fast($sql);
 		$row  =  $this->q->fetchAssoc($result);
 		$previous = $row['previous'];
@@ -382,9 +426,19 @@ abstract class configClass
 	 */
 	public function lastRecord() {
 		$last=0;
-		$sql="
-		SELECT	MAX(".$this->model->getPrimaryKeyName()."') AS `last`
+		if($this->getVendor()==self::mysql){
+			$sql="
+		SELECT	MAX(`".$this->model->getPrimaryKeyName()."`) AS `last`
 		FROM 	`".$this->model->getTableName()."`";
+		} else if($this->getVendor()==self::mssql){
+			$sql="
+		SELECT	MAX([".$this->model->getPrimaryKeyName()."]) AS [last]
+		FROM 	[".$this->model->getTableName()."]";
+		} else if ($this->getVendor()==self::oracle){
+			$sql="
+		SELECT	MAX(\"".$this->model->getPrimaryKeyName()."\") AS \"last\"
+		FROM 	\"".$this->model->getTableName()."\"";
+		}
 		$result= $this->q->fast($sql);
 		$row  =  $this->q->fetchAssoc($result);
 		$last = $row['last'];

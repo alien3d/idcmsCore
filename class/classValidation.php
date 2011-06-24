@@ -55,7 +55,14 @@ abstract class validationClass {
 	 * Outside $_POST delete record
 	 */
 	abstract protected function delete();
-
+	/*
+	*
+	 */
+	abstract protected function draft();
+	 /*
+	 *
+	 */
+	abstract protected function approved();
 	/**
 	 * to filter data type.
 	 * @param value $v
