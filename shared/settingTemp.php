@@ -15,24 +15,32 @@
 	*
 	*	 all label language
 	*/
-	if($q->vendor==sharedx::mysql) {
+		if( $q->vendor==sharedx::mysql) {
 		$sql="
-		SELECT DISTINCT `tableMappingColumnName`,
-						`tableMappingNativeLabel`
+		SELECT 			`tableMapping`.`tableMappingColumnName`,
+						`tableMappingTranslate`.`tableMappingNativeLabel`
 		FROM 			`tableMapping`
-		WHERE 			`tableMapping`.`languageId`=\"".$_SESSION['languageId']."\"";
-	} else if ($q->vendor==sharedx::mssql) {
+		JOIN			`tableMappingTranslate`
+		USING			(`tableMappingId`)
+		WHERE 			`tableMappingTranslate`.`languageId`=\"".$_SESSION['languageId']."\"";
+		} else if ($q->vendor==sharedx::mssql) {
 		$sql="
-		SELECT DISTINCT [tableMappingColumnName],
-						[tableMappingNativeLabel]
+		SELECT 			[tableMapping].[tableMappingColumnName],
+						[tableMappingTranslate].[tableMappingNativeLabel]
 		FROM 			[tableMapping]
+		JOIN			[tableMappingTranslate]
+		USING			[tableMapping].[tableMappingId]=[tableMappingTranslate].[tableMappingId]
 		WHERE 			[tableMapping].[languageId]=\"".$_SESSION['languageId']."\"";
-	} else if ($q->vendor==sharedx::oracle) {
+		} else if ($q->vendor==sharedx::oracle) {
 		$sql="
-		SELECT DISTINCT \"tableMappingColumnName\",
-						\"tableMappingNativeLabel\"
+		SELECT DISTINCT \"tableMapping\".\"tableMappingColumnName\",
+						\"tableMappingTranslate\".\"tableMappingNativeLabel\"
 		FROM 			\"tableMapping\"
+		JOIN			\"tableMappingTranslate\"
+		USING			(\"tableMappingId\")
 		WHERE 			\"tableMapping\".\"languageId\"=\"".$_SESSION['languageId']."\"";
+	} else {
+
 	}
 	$result	=	$q->fast($sql);
 
