@@ -839,10 +839,10 @@ class staffClass extends configClass
                 'success' => true,
                 'total' => $total,
                 'message' => 'Data Loaded',
-                'first'=>$this->firstRecord(),
-            	'next'=>$this->nextRecord($this->model->getStaffId('','string')),
-            	'previous'=>$this->previousRecord($this->model->getStaffId('','string')),
-            	'last'=>$this->lastRecord(),
+                'firstRecord'=>$this->firstRecord(),
+            	'nextRecord'=>$this->nextRecord($this->model->getStaffId('','string')),
+            	'previousRecord'=>$this->previousRecord($this->model->getStaffId('','string')),
+            	'lastRecord'=>$this->lastRecord(),
                 'data' => $items
             	));
             	$json_encode = str_replace("[", "", $json_encode);
@@ -1521,6 +1521,7 @@ class staffClass extends configClass
 	public function group()
 	{
 		$this->security->group();
+
 	}
 	public function department()
 	{

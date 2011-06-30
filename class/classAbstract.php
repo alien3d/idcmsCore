@@ -347,9 +347,13 @@ abstract class configClass
 
 		}
 		$result= $this->q->fast($sql);
-		$row  =  $this->q->fetchAssoc($result);
-		$first = $row['first'];
-		return $first;
+		if($this->q->numberRows($result)> 0 ){
+			$row  =  $this->q->fetchAssoc($result);
+			$first = $row['first'];
+		} else {
+			$first =0;
+		}
+		return intval($first);
 	}
 
 
@@ -380,9 +384,13 @@ abstract class configClass
 		LIMIT 	1";
 		}
 		$result= $this->q->fast($sql);
-		$row  =  $this->q->fetchAssoc($result);
-		$next = $row['next'];
-		return $next;
+		if($this->q->numberRows($result) > 0 ){
+			$row  =  $this->q->fetchAssoc($result);
+			$next = $row['next'];
+		} else {
+			$next = 0;
+		}
+		return intval($next);
 	}
 
 	/**
@@ -416,9 +424,13 @@ abstract class configClass
 		LIMIT 	1";
 		}
 		$result= $this->q->fast($sql);
-		$row  =  $this->q->fetchAssoc($result);
-		$previous = $row['previous'];
-		return $previous;
+		if($this->q->numberRows($result)> 0 ){
+			$row  =  $this->q->fetchAssoc($result);
+			$previous = $row['previous'];
+		} else {
+			$previous=0;
+		}
+		return intval($previous);
 	}
 	/**
 	 * Return Last Record
@@ -440,9 +452,13 @@ abstract class configClass
 		FROM 	\"".$this->model->getTableName()."\"";
 		}
 		$result= $this->q->fast($sql);
+		if($this->q->numberRows($result)> 0 ){
 		$row  =  $this->q->fetchAssoc($result);
-		$last = $row['last'];
-		return $last;
+			$last = $row['last'];
+		} else{
+			$last =0;
+		}
+		return intval($last);
 	}
 	public function setApplication($value){
 		$this->application = $value;

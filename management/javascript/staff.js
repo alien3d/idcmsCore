@@ -467,7 +467,73 @@ Ext
 										isAdmin : isAdmin
 									},
 									success : function(form, action) {
-
+										if (action.result.firstRecord > 0) {
+											Ext
+													.getCmp(
+															'firstButton')
+													.enable();
+											Ext
+													.getCmp(
+															'firstRecord')
+													.setValue(
+															action.result.firstRecord);
+										} else {
+											Ext
+													.getCmp(
+															'firstButton')
+													.disable();
+										}
+									//	alert("testing"+action.result.nextRecord);
+										if (action.result.nextRecord > 0) {
+											Ext
+											.getCmp(
+													'nextButton')
+											.enable();
+											Ext
+												.getCmp(
+														'nextRecord')
+												.setValue(
+														action.result.nextRecord);
+										} else {
+										
+											Ext
+											.getCmp(
+													'nextButton')
+											.disable();
+											
+										}
+										if (action.result.previousRecord > 0) {
+											Ext
+											.getCmp(
+													'previousButton')
+											.enable();
+											Ext
+												.getCmp(
+														'previousRecord')
+												.setValue(
+														action.result.previousRecord);
+										} else{
+											Ext
+											.getCmp(
+													'previousButton')
+											.disable();
+										}
+										if (action.result.firstRecord > 0) {
+											Ext
+											.getCmp(
+													'endButton')
+											.enable();
+											Ext
+												.getCmp(
+														'lastRecord')
+												.setValue(
+														action.result.lastRecord);
+										} else{
+											Ext
+											.getCmp(
+													'lastRecord')
+											.disable();
+										}	
 										viewPort.items.get(1).expand();
 									},
 									failure : function(form, action) {
@@ -987,33 +1053,79 @@ Ext
 																							limit : perPage
 																						}
 																					});
-																			// 
-																			Ext
-																					.getCmp(
-																							'firstRecord')
-																					.setValue(
-																							action.result.firstRecord);
-																			Ext
+																			if (action.result.firstRecord > 0) {
+																				Ext
+																						.getCmp(
+																								'firstButton')
+																						.enable();
+																				Ext
+																						.getCmp(
+																								'firstRecord')
+																						.setValue(
+																								action.result.firstRecord);
+																			} else {
+																				Ext
+																						.getCmp(
+																								'firstButton')
+																						.disable();
+																			}
+																			
+																			if (action.result.nextRecord > 0) {
+																				Ext
+																				.getCmp(
+																						'nextButton')
+																				.enable();
+																				Ext
 																					.getCmp(
 																							'nextRecord')
 																					.setValue(
 																							action.result.nextRecord);
-																			Ext
+																			} else {
+																			
+																				Ext
+																				.getCmp(
+																						'nextButton')
+																				.disable();
+																				
+																			}
+																			if (action.result.previousRecord > 0) {
+																				Ext
+																				.getCmp(
+																						'previousButton')
+																				.enable();
+																				Ext
 																					.getCmp(
 																							'previousRecord')
 																					.setValue(
 																							action.result.previousRecord);
-																			Ext
+																			} else{
+																				Ext
+																				.getCmp(
+																						'previousButton')
+																				.disable();
+																			}
+																			if (action.result.firstRecord > 0) {
+																				Ext
+																				.getCmp(
+																						'endButton')
+																				.enable();
+																				Ext
 																					.getCmp(
 																							'lastRecord')
 																					.setValue(
 																							action.result.lastRecord);
-
+																			} else{
+																				Ext
+																				.getCmp(
+																						'endButton')
+																				.disable();
+																			}	
 																			viewPort.items
 																					.get(
 																							0)
 																					.expand();
 																		} else {
+																			
 																			alert(action.result.message);
 																		}
 																	},
@@ -1057,10 +1169,7 @@ Ext
 									iconCls : 'new',
 									handler : function() {
 										formPanel.getForm().reset();
-										viewPort.items
-										.get(
-												1)
-										.expand();
+										viewPort.items.get(1).expand();
 									}
 								},
 								{
@@ -1106,7 +1215,7 @@ Ext
 								},
 								{
 									text : firstButtonLabel,
-									name:'firstButton',
+									name : 'firstButton',
 									id : 'firstButton',
 									type : 'button',
 									iconCls : 'resultset_first',
@@ -1146,12 +1255,12 @@ Ext
 								},
 								{
 									text : previousButtonLabel,
-									name:'previousButton',
-									id:'previousButton',
+									name : 'previousButton',
+									id : 'previousButton',
 									type : 'button',
 									iconCls : 'resultset_previous',
 									handler : function() {
-										if (Ex.getCmp('firstRecord').getValue() >= 1) {
+										if (Ext.getCmp('firstRecord').getValue() >= 1) {
 											formPanel.form
 													.load({
 														url : "../controller/staffController.php",
@@ -1161,7 +1270,10 @@ Ext
 														params : {
 															method : "read",
 
-															staffId : Ext.getCmp('previousRecord').getValue(),
+															staffId : Ext
+																	.getCmp(
+																			'previousRecord')
+																	.getValue(),
 															leafId : leafId,
 															isAdmin : isAdmin
 														},
@@ -1189,39 +1301,44 @@ Ext
 								},
 								{
 									text : nextButtonLabel,
-									name:'nextButton',
-									id:'nextButton',
+									name : 'nextButton',
+									id : 'nextButton',
 									type : 'button',
 									iconCls : 'resultset_next',
 									handler : function() {
-										if (Ex.getCmp('nextRecord').getValue()  <= Ext.getCmp('lastRecord').getValue()) {
-										formPanel.form
-												.load({
-													url : "../controller/staffController.php",
-													method : "POST",
-													waitTitle : systemLabel,
-													waitMsg : waitMessageLabel,
-													params : {
-														method : "read",
+										if (Ext.getCmp('nextRecord').getValue() <= Ext
+												.getCmp('lastRecord')
+												.getValue()) {
+											formPanel.form
+													.load({
+														url : "../controller/staffController.php",
+														method : "POST",
+														waitTitle : systemLabel,
+														waitMsg : waitMessageLabel,
+														params : {
+															method : "read",
 
-														staffId : Ext.getCmp('nextRecord').getValue(),
-														leafId : leafId,
-														isAdmin : isAdmin
-													},
-													success : function(form,
-															action) {
+															staffId : Ext
+																	.getCmp(
+																			'nextRecord')
+																	.getValue(),
+															leafId : leafId,
+															isAdmin : isAdmin
+														},
+														success : function(
+																form, action) {
 
-														viewPort.items.get(1)
-																.expand();
-													},
-													failure : function(form,
-															action) {
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		action.result.message);
-													}
-												});
+															viewPort.items.get(
+																	1).expand();
+														},
+														failure : function(
+																form, action) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			action.result.message);
+														}
+													});
 										} else {
 											// empty record
 											Ext.MessageBox.alert(
@@ -1229,43 +1346,48 @@ Ext
 													'Record Not Found');
 										}
 									}
-									
+
 								},
 								{
 									text : endButtonLabel,
-									name:'endButton',
-									id:'endButton',
+									name : 'endButton',
+									id : 'endButton',
 									type : 'button',
 									iconCls : 'resultset_last',
 									handler : function() {
-										if (Ex.getCmp('endRecord').getValue()  <= Ext.getCmp('lastRecord').getValue()) {
-										formPanel.form
-												.load({
-													url : "../controller/staffController.php",
-													method : "POST",
-													waitTitle : systemLabel,
-													waitMsg : waitMessageLabel,
-													params : {
-														method : "read",
+										if (Ext.getCmp('endRecord').getValue() <= Ext
+												.getCmp('lastRecord')
+												.getValue()) {
+											formPanel.form
+													.load({
+														url : "../controller/staffController.php",
+														method : "POST",
+														waitTitle : systemLabel,
+														waitMsg : waitMessageLabel,
+														params : {
+															method : "read",
 
-														staffId : Ext.getCmp('lastRecord').getValue(),
-														leafId : leafId,
-														isAdmin : isAdmin
-													},
-													success : function(form,
-															action) {
+															staffId : Ext
+																	.getCmp(
+																			'lastRecord')
+																	.getValue(),
+															leafId : leafId,
+															isAdmin : isAdmin
+														},
+														success : function(
+																form, action) {
 
-														viewPort.items.get(1)
-																.expand();
-													},
-													failure : function(form,
-															action) {
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		action.result.message);
-													}
-												});
+															viewPort.items.get(
+																	1).expand();
+														},
+														failure : function(
+																form, action) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			action.result.message);
+														}
+													});
 										} else {
 											// empty record
 											Ext.MessageBox.alert(

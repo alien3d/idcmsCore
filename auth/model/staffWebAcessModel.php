@@ -71,7 +71,7 @@ class staffWebAcessModel extends validationClass{
 
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()

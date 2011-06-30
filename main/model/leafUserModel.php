@@ -18,7 +18,7 @@ class leafUserModel extends validationClass
     public $leafId;
     public $leafSequence;
     public $staffId;
-    
+
     private $test;
     // constant method if lazy
     const tableName = 'tableName';
@@ -108,6 +108,8 @@ class leafUserModel extends validationClass
         $this->isDelete   = 1;
         $this->isApproved = 0;
     }
-	
+
+    function draft(){}
+    function approved(){}
 }
 ?>
