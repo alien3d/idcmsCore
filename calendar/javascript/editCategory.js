@@ -14,23 +14,56 @@ Ext.onReady(function(){
         	storeId			:	'myStore',
         	root			:	'data',
         	totalProperty	:	'total',
-			baseParams			: 	{  method:'read',	mode:'view' ,leaf_uniqueId	:	leaf_uniqueId	}, 
+			baseParams			: 	{  method:'read',	mode:'view' ,leafId:leafId	}, 
         	fields: [	{	name		:	'cal_ownId'		},
         	         	{ 	name		:	'calendarTitle'	}
 					]
     	});
 
-		var staffReader	= new Ext.data.JsonReader({ root:'staff',id:'staffId' }, 
-				[ 'staffId', 'staffName']);
-	    
-		
-		var staffStore 		= 	new Ext.data.Store({
-			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'calendarsController.php?method=read&field=staffId',
-					method:'GET'
-				}),
-			reader		:	staffReader,
-			remoteSort	:	false 
+		var staffByProxy = new Ext.data.HttpProxy({
+			url : "../controller/departmentController.php?",
+			method : "GET",
+			success : function(response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
+					// jsonResponse.message);
+					// //uncommen for testing
+					// purpose
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel,
+							jsonResponse.message);
+				}
+			},
+			failure : function(response, options) {
+				Ext.MessageBox.alert(systemErrorLabel,
+						escape(response.Status) + ":"
+								+ escape(response.statusText));
+			}
+		});
+		var staffByReader = new Ext.data.JsonReader({
+			totalProperty : "total",
+			successProperty : "success",
+			messageProperty : "message",
+			idProperty : "staffId"
+		});
+		var staffByStore = new Ext.data.JsonStore({
+			proxy : staffByProxy,
+			reader : staffByReader,
+			autoLoad : true,
+			autoDestroy : true,
+			baseParams : {
+				method : 'read',
+				field : 'staffId',
+				leafId : leafId
+			},
+			root : 'staff',
+			fields : [ {
+				name : "staffId",
+				type : "int"
+			}, {
+				name : "staffName",
+				type : "string"
+			} ]
 		});
 		
 
@@ -59,22 +92,22 @@ Ext.onReady(function(){
 					var curr_store = this.grid.getStore();
 					var record = curr_store.getAt(rowIndex);
 					Ext.Ajax.request( {
-						url : 'calendarsController.php',
+						url : '../controller/calendarsController.php',
 						method : 'POST',
 						params : {
 							method 		  :	'update',
 							cal_ownId  : record.get('cal_ownId'),
-							leaf_uniqueId : leaf_uniqueId,
+							leafId:leafId,
 							calendarTitle : record.get('calendarTitle')
 						},
 						success : function(response, options) {
-							x = Ext.decode(response.responseText);
-							if (x.success == 'false') {
+							jsonResponse = Ext.decode(response.responseText);
+							if (jsonResponse == false) {
 								// error la
-								Ext.MessageBox.alert('system', x.message);
+								Ext.MessageBox.alert(systemLabel, jsonResponse.message);
 							} else {
-								// Ext.MessageBox.alert('system',"Success
-								// takde response ka"+x.message);
+								// Ext.MessageBox.alert(systemLabel,"Success
+								// takde response ka"+jsonResponse.message);
 
 							}
 						}

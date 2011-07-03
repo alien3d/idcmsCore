@@ -96,7 +96,7 @@ class tableMappingModel extends validationClass{
 		$this->setIsApproved(1,'','string');
 	}
 	public function setTableMappingId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->tableMappingId = $value;
 		} else if ($type=='array'){
 			$this->tableMappingId[$key]=$value;
@@ -107,7 +107,7 @@ class tableMappingModel extends validationClass{
 	 * @return integer languageId
 	 */
 	public function getTableMappingId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->tableMappingId;
 		} else if ($type=='array'){
 			return $this->tableMappingId[$key];

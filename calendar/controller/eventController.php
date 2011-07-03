@@ -175,33 +175,33 @@ class eventClass extends configClass
 			UPDATE	`event`
 			SET
 					`calendarId`	=	\"".$this->model->getC."\",
-					`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
-					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
-					`isActive`		= 	\"".$this->model->getIsActive('','string')."\",
-					`isApproved` 	=	\"".$this->model->getIsApproved('','string')."\"
-			WHERE 	`eventId`		=	\"". $this->model->getEventId('','string')."\"";
+					`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','single')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
+					`isActive`		= 	\"".$this->model->getIsActive('','single')."\",
+					`isApproved` 	=	\"".$this->model->getIsApproved('','single')."\"
+			WHERE 	`eventId`		=	\"". $this->model->getEventId('','single')."\"";
         } else if ($this->q->vendor == self :: mssql){
         	$sql = "
 			UPDATE	[event]
-			SET		[isDefault]		=	\"".$this->model->getIsDefault('','string')."\",
-					[isNew]			=	\"".$this->model->getIsNew('','string')."\",
-					[isDraft]		=	\"".$this->model->getIsDraft('','string')."\",
-					[isUpdate]		=	\"".$this->model->getIsUpdate('','string')."\",
-					[isActive]		= 	\"".$this->model->getIsActive('','string')."\",
-					[isApproved] 	=	\"".$this->model->getIsApproved('','string')."\"
-			WHERE 	[eventId]		=	\"". $this->model->getEventId('','string')."\"";
+			SET		[isDefault]		=	\"".$this->model->getIsDefault('','single')."\",
+					[isNew]			=	\"".$this->model->getIsNew('','single')."\",
+					[isDraft]		=	\"".$this->model->getIsDraft('','single')."\",
+					[isUpdate]		=	\"".$this->model->getIsUpdate('','single')."\",
+					[isActive]		= 	\"".$this->model->getIsActive('','single')."\",
+					[isApproved] 	=	\"".$this->model->getIsApproved('','single')."\"
+			WHERE 	[eventId]		=	\"". $this->model->getEventId('','single')."\"";
         } else if ($this->q->vendor == self:: oracle){
         	$sql = "
 			UPDATE	`event`
-			SET		`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
-					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
-					`isActive`		= 	\"".$this->model->getIsActive('','string')."\",
-					`isApproved` 	=	\"".$this->model->getIsApproved('','string')."\"
-			WHERE 	`eventId`		=	\"". $this->model->getEventId('','string')."\"";
+			SET		`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','single')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
+					`isActive`		= 	\"".$this->model->getIsActive('','single')."\",
+					`isApproved` 	=	\"".$this->model->getIsApproved('','single')."\"
+			WHERE 	`eventId`		=	\"". $this->model->getEventId('','single')."\"";
         }
         $this->q->update($sql);
         $this->q->commit();
@@ -217,33 +217,33 @@ class eventClass extends configClass
         if($this->getVendor() == self::mysql){
         $sql = "
 			UPDATE	`event`
-			SET		`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
-					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
-					`isActive`		= 	\"".$this->model->getIsActive('','string')."\",
-					`isApproved` 	=	\"".$this->model->getIsApproved('','string')."\"
-			WHERE 	`eventId`		=	\"". $this->model->getEventId('','string')."\"";
+			SET		`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','single')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
+					`isActive`		= 	\"".$this->model->getIsActive('','single')."\",
+					`isApproved` 	=	\"".$this->model->getIsApproved('','single')."\"
+			WHERE 	`eventId`		=	\"". $this->model->getEventId('','single')."\"";
         } else if ($this->q->vendor == self :: mssql){
         	$sql = "
 			UPDATE	[event]
-			SET		[isDefault]		=	\"".$this->model->getIsDefault('','string')."\",
-					[isNew]			=	\"".$this->model->getIsNew('','string')."\",
-					[isDraft]		=	\"".$this->model->getIsDraft('','string')."\",
-					[isUpdate]		=	\"".$this->model->getIsUpdate('','string')."\",
-					[isActive]		= 	\"".$this->model->getIsActive('','string')."\",
-					[isApproved] 	=	\"".$this->model->getIsApproved('','string')."\"
-			WHERE 	[eventId]		=	\"". $this->model->getEventId('','string')."\"";
+			SET		[isDefault]		=	\"".$this->model->getIsDefault('','single')."\",
+					[isNew]			=	\"".$this->model->getIsNew('','single')."\",
+					[isDraft]		=	\"".$this->model->getIsDraft('','single')."\",
+					[isUpdate]		=	\"".$this->model->getIsUpdate('','single')."\",
+					[isActive]		= 	\"".$this->model->getIsActive('','single')."\",
+					[isApproved] 	=	\"".$this->model->getIsApproved('','single')."\"
+			WHERE 	[eventId]		=	\"". $this->model->getEventId('','single')."\"";
         } else if ($this->q->vendor == self:: oracle){
         	$sql = "
 			UPDATE	`event`
-			SET		`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
-					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
-					`isActive`		= 	\"".$this->model->getIsActive('','string')."\",
-					`isApproved` 	=	\"".$this->model->getIsApproved('','string')."\"
-			WHERE 	`eventId`		=	\"". $this->model->getEventId('','string')."\"";
+			SET		`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','single')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
+					`isActive`		= 	\"".$this->model->getIsActive('','single')."\",
+					`isApproved` 	=	\"".$this->model->getIsApproved('','single')."\"
+			WHERE 	`eventId`		=	\"". $this->model->getEventId('','single')."\"";
         }
         $this->q->update($sql);
         $this->q->commit();

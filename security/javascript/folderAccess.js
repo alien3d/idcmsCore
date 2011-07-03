@@ -31,12 +31,12 @@ Ext.onReady(function () {
             leafId: leafId
         },
         success: function (response, options) {
-            var x = Ext.decode(response.responseText);
-            if (x.success == "true") {
+            var jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse == "true") {
                 title = successLabel;
             } else {
                 title = failureLabel;
-                Ext.MessageBox.alert(systemErrorLabel, x.message);
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
             
         },
@@ -302,16 +302,16 @@ Ext.onReady(function () {
                             url: url,
                             success: function (
                             response, options) {
-                                x = Ext.decode(response.responseText);
+                                jsonResponse = Ext.decode(response.responseText);
                                 title = 'Update ';
-                                if (x.success == 'true') {
+                                if (jsonResponse == true) {
                                     title = title + ' Success';
                                     Ext.MessageBox.alert(
-                                    title, x.message);
-                                } else if (x.success == 'false') {
+                                    title, jsonResponse.message);
+                                } else if (jsonResponse == false) {
                                     title = title + 'Failure';
                                     Ext.MessageBox.alert(
-                                    title, x.message);
+                                    title, jsonResponse.message);
                                 }
                                 // reload the
                                 // store

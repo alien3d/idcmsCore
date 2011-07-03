@@ -95,7 +95,7 @@ class folderAccessModel extends validationClass{
 		$this->setIsApproved(1,'','string');
 	}
 		public function setFolderAccessId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->FolderAccessId = $value;
 		} else if ($type=='array'){
 			$this->FolderAccessId[$key]=$value;
@@ -106,7 +106,7 @@ class folderAccessModel extends validationClass{
 	 * @return integer FolderId
 	 */
 	public function getFolderAccessId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->FolderAccessId;
 		} else if ($type=='array'){
 			return $this->FolderAccessId[$key];

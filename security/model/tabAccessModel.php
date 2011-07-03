@@ -92,7 +92,7 @@ class tabAccessModel extends validationClass
 		$this->setIsApproved(1,'','string');
 	}
 	public function setTabAccessId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->tabAccessId = $value;
 		} else if ($type=='array'){
 			$this->tabAccessId[$key]=$value;
@@ -103,7 +103,7 @@ class tabAccessModel extends validationClass
 	 * @return integer tabId
 	 */
 	public function getTabAccessId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->tabAccessId;
 		} else if ($type=='array'){
 			return $this->tabAccessId[$key];

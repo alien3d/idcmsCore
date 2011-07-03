@@ -190,10 +190,10 @@ class leafUserClass extends configClass
 			VALUES
 					(
 						\"". $this->model->leafUserDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->getIsNew('','string') . "\",			\"". $this->model->getIsDraft('','string') . "\",
-						\"". $this->model->getIsDraft('','string') . "\",		\"". $this->model->getIsDelete('','string') . "\",
-						\"". $this->model->getIsUpdate('','string') . "\",		\"". $this->model->getIsApproved('','string') . "\",
-						\"". $this->model->getIsActive('','string') . "\",		" . $this->model->getTime() . "
+						\"". $this->model->getIsNew('','single') . "\",			\"". $this->model->getIsDraft('','single') . "\",
+						\"". $this->model->getIsDraft('','single') . "\",		\"". $this->model->getIsDelete('','single') . "\",
+						\"". $this->model->getIsUpdate('','single') . "\",		\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getIsActive('','single') . "\",		" . $this->model->getTime() . "
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -208,10 +208,10 @@ class leafUserClass extends configClass
 			VALUES
 					(
 						\"". $this->model->leafUserDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->getIsNew('','string') . "\",			\"". $this->model->getIsDraft('','string') . "\",
-						\"". $this->model->getIsDraft('','string') . "\",		\"". $this->model->getIsDelete('','string') . "\",
-						\"". $this->model->getIsUpdate('','string') . "\",		\"". $this->model->getIsApproved('','string') . "\",
-						\"". $this->model->getIsActive('','string') . "\",		" . $this->model->getTime() . "
+						\"". $this->model->getIsNew('','single') . "\",			\"". $this->model->getIsDraft('','single') . "\",
+						\"". $this->model->getIsDraft('','single') . "\",		\"". $this->model->getIsDelete('','single') . "\",
+						\"". $this->model->getIsUpdate('','single') . "\",		\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getIsActive('','single') . "\",		" . $this->model->getTime() . "
 					)";
 		}
 		//advance logging future

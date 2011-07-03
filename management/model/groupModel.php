@@ -20,26 +20,26 @@ class groupModel extends validationClass{
 	private $groupNote;
 
 
-	function execute(){
-		/*
+function execute(){
+			/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('group');
-		$this->setPrimaryKeyName('groupId');
+		$this->setTableName('department');
+		$this->setPrimaryKeyName('departmentId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['groupId'])){
-			$this->setGroupId($this->strict($_POST['groupId'],'numeric'),'','string');
+		if(isset($_POST['departmentId'])){
+			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'),'','string');
 		}
-		if(isset($_POST['groupSequence'])){
-			$this->setGroupSequence($this->strict($_POST['groupSequence'],'numeric'));
+		if(isset($_POST['departmentSequence'])){
+			$this->setDepartmentSequence($this->strict($_POST['departmentSequence'],'memo'));
 		}
-		if(isset($_POST['groupCode'])){
-			$this->setGroupCode($this->strict($_POST['groupCode'],'memo'));
+		if(isset($_POST['departmentCode'])){
+			$this->setDepartmentCode($this->strict($_POST['departmentCode'],'memo'));
 		}
-		if(isset($_POST['groupNote'])){
-			$this->setGroupNote($this->strict($_POST['groupNote'],'memo'));
+		if(isset($_POST['departmentNote'])){
+			$this->setDepartmentNote($this->strict($_POST['departmentNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
 			$this->setBy($_SESSION['staffId']);
@@ -52,7 +52,7 @@ class groupModel extends validationClass{
 			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
 		}
 
-		$this->setTotal(count($_GET['groupId']));
+		$this->setTotal(count($_GET['departmentId']));
         $accessArray = array(
             "isDefault",
             "isNew",
@@ -63,8 +63,8 @@ class groupModel extends validationClass{
             "isApproved"
         );
         // auto assign as array if true
-        if(is_array($_GET['groupId'])){
-        	$this->groupId =array();
+        if(is_array($_GET['departmentId'])){
+        	$this->departmentId= array();
         }
         if (is_array($_GET['isDefault'])) {
             $this->isDefault = array();
@@ -88,7 +88,7 @@ class groupModel extends validationClass{
             $this->isApproved = array();
         }
         for ($i = 0; $i < $this->getTotal(); $i++) {
-            $this->setGroupId($this->strict($_GET['groupId'][$i], 'numeric'), $i, 'array');
+            $this->setDepartmentId($this->strict($_GET['departmentId'][$i], 'numeric'), $i, 'array');
             if ($_GET['isDefault'][$i] == 'true') {
                 $this->setIsDefault(1, $i, 'array');
             } else if ($_GET['default'] == 'false') {
@@ -124,14 +124,17 @@ class groupModel extends validationClass{
             } else {
                 $this->setIsApproved(0, $i, 'array');
             }
-            $primaryKeyAll .= $this->getGroupId($i, 'array') . ",";
+            $primaryKeyAll .= $this->getDefaultLabelId($i, 'array') . ",";
         }
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
+
+
 	}
+
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
 	 */
-	public function create()
+		public function create()
 	{
 		$this->setIsDefault(0,'','string');
 		$this->setIsNew(1,'','string');
@@ -167,6 +170,7 @@ class groupModel extends validationClass{
 		$this->setIsDelete(1,'','string');
 		$this->setIsApproved(0,'','string');
 	}
+
 /* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
@@ -191,7 +195,6 @@ class groupModel extends validationClass{
 		$this->setIsUpdate(0,'','string');
 		$this->setIsActive(0,'','string');
 		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
 	}
 	/* (non-PHPdoc)
 	 * @see configClass::excel()
@@ -239,7 +242,7 @@ class groupModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setGroupId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->groupId = $value;
 		} else if ($type=='array'){
 			$this->groupId[$key]=$value;
@@ -250,7 +253,7 @@ class groupModel extends validationClass{
 	 * @return integer groupId
 	 */
 	public function getGroupId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->groupId;
 		} else if ($type=='array'){
 			return $this->groupId[$key];

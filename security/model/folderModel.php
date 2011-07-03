@@ -247,7 +247,7 @@ class folderModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setFolderId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->folderId = $value;
 		} else if ($type=='array'){
 			$this->folderId[$key]=$value;
@@ -258,7 +258,7 @@ class folderModel extends validationClass{
 	 * @return integer folderId
 	 */
 	public function getFolderId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->folderId;
 		} else if ($type=='array'){
 			return $this->folderId[$key];

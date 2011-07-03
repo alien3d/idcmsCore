@@ -236,14 +236,14 @@ Ext.onReady(function(){
 								});
 								
 							accordionAccessStore.reload(); 
-							x = Ext.decode(response.responseText);
+							jsonResponse = Ext.decode(response.responseText);
 							title='Updated ';
-							if(x.success=='true') {
+							if (jsonResponse == true) {
 								title = title + ' True';
-								Ext.MessageBox.alert(title,x.message); 
-							} else if (x.success=='false') { 
+								Ext.MessageBox.alert(title,jsonResponse.message); 
+							} else if (jsonResponse == false) { 
 								title = title + 'False';
-								Ext.MessageBox.alert(systemLabel,x.message); 
+								Ext.MessageBox.alert(systemLabel,jsonResponse.message); 
 							}		
 						} ,
 						failure : function(response, options) 

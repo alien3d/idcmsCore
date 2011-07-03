@@ -424,7 +424,8 @@ Ext.onReady(function() {
                                             limit: perPage
                                         }
                                     });
-                                    Ext.MessageBox.alert(title, jsonResponse.message);
+                                    Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
                                 },
                                 failure: function(response, options) {
                                     Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
@@ -793,7 +794,7 @@ Ext.onReady(function() {
                         }
                     },
                     failure: function(response, options) {
-                        Ext.MessageBox.alert('system', escape(response.status) + ":" + escape(response.statusText));
+                        Ext.MessageBox.alert(systemLabel, escape(response.status) + ":" + escape(response.statusText));
                     }
                 });
             }

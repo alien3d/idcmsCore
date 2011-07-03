@@ -133,7 +133,7 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 
-						// Ext.MessageBox.alert(systemLabel, x.message);
+						// Ext.MessageBox.alert(systemLabel, jsonResponse.message);
 					}
 				},
 				failure : function(response, options) {
@@ -719,7 +719,7 @@ Ext
 													options) {
 												jsonResponse = Ext
 														.decode(response.responseText);
-												if (x.success == false) {
+												if (jsonResponse == false) {
 													Ext.MessageBox
 															.alert(
 																	systemErrorLabel,
@@ -934,7 +934,7 @@ Ext
 												if (jsonResponse.success == true) {
 													/*
 													 * Ext.MessageBox .alert(
-													 * systemLabel, x.message);
+													 * systemLabel, jsonResponse.message);
 													 * 
 													 * leafTranslateStore
 													 * .reload();
@@ -1332,9 +1332,7 @@ Ext
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-										var box = Ext.MessageBox.wait(
-												'Be patient',
-												'Translation In Progress');
+										
 										Ext.Ajax
 												.request({
 

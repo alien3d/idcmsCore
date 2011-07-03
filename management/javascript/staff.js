@@ -756,9 +756,8 @@ Ext
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == 'true') {
+														jsonResponse = Ext.decode(response.responseText);
+														if (jsonResponse == true) {
 
 															window
 																	.open("../pentabiran/document/excel/staff.xlsx");
@@ -766,7 +765,7 @@ Ext
 															Ext.MessageBox
 																	.alert(
 																			systemErrorLabel,
-																			x.message);
+																			jsonResponse.message);
 														}
 
 													},

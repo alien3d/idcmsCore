@@ -142,7 +142,7 @@ class documentCategoryModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setDocumentCategoryId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->documentId = $value;
 		} else if ($type=='array'){
 			$this->documentId[$key]=$value;
@@ -153,7 +153,7 @@ class documentCategoryModel extends validationClass{
 	 * @return integer documentId
 	 */
 	public function getDocumentCategoryId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->documentId;
 		} else if ($type=='array'){
 			return $this->documentId[$key];
@@ -205,7 +205,7 @@ class documentCategoryModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setIsDefault($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 
 			$this->isDefault = $value;
 		} else if ($type=='array') {
@@ -225,7 +225,7 @@ class documentCategoryModel extends validationClass{
 	 * @return boolean isDefault
 	 */
 	public function getIsDefault($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->isDefault;
 		} else if ($type=='array'){
 
@@ -243,7 +243,7 @@ class documentCategoryModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setIsNew($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->isNew = $value;
 		} else if ($type=='array'){
 			$this->isNew[$key]=$value;
@@ -259,7 +259,7 @@ class documentCategoryModel extends validationClass{
 	 * @return boolean isNew
 	 */
 	public function getIsNew($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->isNew;
 		} else if ($type=='array'){
 			return $this->isNew[$key];
@@ -276,7 +276,7 @@ class documentCategoryModel extends validationClass{
 	 * @param boolean $value
 	 */
 	public function setIsDraft($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->isDraft = $value;
 		} elseif ($type=='array'){
 			$this->isDraft[$key]=$value;
@@ -292,7 +292,7 @@ class documentCategoryModel extends validationClass{
 	 * @return boolean isDraft
 	 */
 	public function getIsDraft($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->isDraft;
 		} else if ($type=='array'){
 			return $this->isDraft[$key];
@@ -309,7 +309,7 @@ class documentCategoryModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setIsUpdate($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->isUpdate = $value;
 		} elseif ($type=='array'){
 			$this->isUpdate[$key]=$value;
@@ -323,7 +323,7 @@ class documentCategoryModel extends validationClass{
 	 * @return boolean isUpdate
 	 */
 	public function getIsUpdate($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->isUpdate;
 		} else if ($type=='array'){
 			return $this->isUpdate[$key];
@@ -339,7 +339,7 @@ class documentCategoryModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setIsDelete($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->isDelete = $value;
 		} elseif ($type=='array'){
 
@@ -357,7 +357,7 @@ class documentCategoryModel extends validationClass{
 	 * @return boolean isDelete
 	 */
 	public function getIsDelete($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 
 			return $this->isDelete;
 		} else if ($type=='array'){
@@ -375,7 +375,7 @@ class documentCategoryModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setIsActive($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->isActive = $value;
 		} elseif ($type=='array'){
 			$this->isActive[$key]=$value;
@@ -392,7 +392,7 @@ class documentCategoryModel extends validationClass{
 	 * @return boolean isActive
 	 */
 	public function getIsActive($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->isActive;
 		} else if ($type=='array'){
 			return $this->isActive[$key];
@@ -411,7 +411,7 @@ class documentCategoryModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setIsApproved($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->isApproved = $value;
 		} elseif ($type=='array'){
 			$this->isApproved[$key]=$value;
@@ -427,7 +427,7 @@ class documentCategoryModel extends validationClass{
 	 * @return boolean isApproved
 	 */
 	public function getIsApproved($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->isApproved;
 		} else if ($type=='array'){
 			return $this->isApproved[$key];

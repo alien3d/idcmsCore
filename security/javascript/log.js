@@ -72,68 +72,52 @@ Ext
 				} ]
 			});
 
-			var storeList = new Ext.data.JsonStore({
+			
+
+			var staffByProxy = new Ext.data.HttpProxy({
+				url : "../controller/departmentController.php?",
+				method : "GET",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
+						// jsonResponse.message);
+						// //uncommen for testing
+						// purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var staffByReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "staffId"
+			});
+			var staffByStore = new Ext.data.JsonStore({
+				proxy : staffByProxy,
+				reader : staffByReader,
+				autoLoad : true,
 				autoDestroy : true,
-				url : '../controller/logController.php',
-				remoteSort : true,
-				root : 'data',
-				totalProperty : 'total',
 				baseParams : {
 					method : 'read',
-					mode : 'view',
+					field : 'staffId',
 					leafId : leafId
 				},
-				fields : [ {
-					name : 'logId',
-					type : 'int'
-				}, {
-					name : 'leafId',
-					type : 'int'
-				}, {
-					name : 'operation',
-					type : 'string'
-				}, {
-					name : 'sql',
-					type : 'string'
-				}, {
-					name : 'date',
-					type : 'date',
-					dateFormat : 'Y-m-d'
-				}, {
-					name : 'staffId',
-					type : 'int'
-				}, {
-					name : 'access',
-					type : 'string'
-				}, {
-					name : 'log_error',
-					type : 'string'
-				} ]
-			});
-
-			var staff_reader = new Ext.data.JsonReader({
 				root : 'staff',
-				id : 'staffId'
-			}, [ 'staffId', 'staffName' ]);
-
-			var staff_store = new Ext.data.Store({
-				proxy : new Ext.data.HttpProxy({
-					url : 'logData.php?method=read&field=staffId&leafId='+leafId,
-					method : 'GET',
-					listeners : {
-						exception : function(DataProxy, type, action, options,
-								response, arg) {
-							var serverMessage = Ext.util.JSON
-									.decode(response.responseText);
-							if (serverMessage.success == false) {
-								Ext.MessageBox.alert(systemErrorLabel,
-										serverMessage.message);
-							}
-						}
-					}
-				}),
-				reader : staff_reader,
-				remoteSort : false
+				fields : [ {
+					name : "staffId",
+					type : "int"
+				}, {
+					name : "staffName",
+					type : "string"
+				} ]
 			});
 
 			var filters = new Ext.ux.grid.GridFilters({
@@ -548,17 +532,16 @@ Ext
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == 'true') {
+														jsonResponse = Ext.decode(response.responseText);
+														if (jsonResponse == true) {
 
 															window
 																	.open("../security/document/excel/log.xlsx");
 														} else {
 															Ext.MessageBox
 																	.alert(
-																			'SYSTEM',
-																			x.message);
+																			systemLabel,
+																			jsonResponse.message);
 														}
 
 													},
@@ -566,9 +549,7 @@ Ext
 															response, options) {
 														status_code = response.status;
 														status_message = response.statusText;
-														Ext.MessageBox
-																.alert(
-																		'system',
+														Ext.MessageBox.alert(systemLabel,
 																		escape(status_code)
 																				+ ":"
 																				+ status_message);
@@ -615,17 +596,16 @@ Ext
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == 'true') {
-															// Ext.MessageBox.alert('SYSTEM',x.message);
+														jsonResponse = Ext.decode(response.responseText);
+														if (jsonResponse == true) {
+															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 															window
 																	.open("../security/document/excel/log.xlsx");
 														} else {
 															Ext.MessageBox
 																	.alert(
-																			'SYSTEM',
-																			x.message);
+																			systemLabel,
+																			jsonResponse.message);
 														}
 
 													},
@@ -633,9 +613,7 @@ Ext
 															response, options) {
 														status_code = response.status;
 														status_message = response.statusText;
-														Ext.MessageBox
-																.alert(
-																		'system',
+														Ext.MessageBox.alert(systemLabel,
 																		escape(status_code)
 																				+ ":"
 																				+ status_message);

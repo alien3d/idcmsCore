@@ -158,7 +158,7 @@ class eventModel extends validationClass{
 	 */
 	public function setEventId($value, $key = NULL, $type = NULL)
 	{
-		if ($type == 'string') {
+		if ($type=='single') {
 			$this->eventId = $value;
 		} else if ($type == 'array') {
 			$this->eventId[$key] = $value;
@@ -170,7 +170,7 @@ class eventModel extends validationClass{
 	 */
 	public function getEventId($key = NULL, $type = NULL)
 	{
-		if ($type == 'string') {
+		if ($type=='single') {
 			return $this->eventId;
 		} else if ($type == 'array') {
 			return $this->eventId[$key];

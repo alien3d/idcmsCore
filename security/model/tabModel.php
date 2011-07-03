@@ -230,7 +230,7 @@ class tabModel extends validationClass{
 	}
 
 	public function setTabId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->tabId = $value;
 		} else if ($type=='array'){
 			$this->tabId[$key]=$value;
@@ -241,7 +241,7 @@ class tabModel extends validationClass{
 	 * @return integer tabId
 	 */
 	public function getTabId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->tabId;
 		} else if ($type=='array'){
 			return $this->tabId[$key];

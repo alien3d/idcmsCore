@@ -174,36 +174,35 @@ Ext
 				} ]
 			});
 
-			var staffProxy = new Ext.data.HttpProxy({
-				url : "../controller/folderController.php?",
+			var staffByProxy = new Ext.data.HttpProxy({
+				url : "../controller/departmentController.php?",
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message); //uncommen for testing purpose
+					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
+						// jsonResponse.message);
+						// //uncommen for testing
+						// purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
 					}
-
 				},
 				failure : function(response, options) {
 					Ext.MessageBox.alert(systemErrorLabel,
 							escape(response.Status) + ":"
 									+ escape(response.statusText));
 				}
-
 			});
-			var staffReader = new Ext.data.JsonReader({
+			var staffByReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
 				idProperty : "staffId"
 			});
-			var staffStore = new Ext.data.JsonStore({
-				proxy : staffProxy,
-				reader : staffReader,
+			var staffByStore = new Ext.data.JsonStore({
+				proxy : staffByProxy,
+				reader : staffByReader,
 				autoLoad : true,
 				autoDestroy : true,
 				baseParams : {
@@ -311,7 +310,7 @@ Ext
 					column : 'staffId',
 					table : 'folder',
 					labelField : 'staffName',
-					store : staffStore,
+					store : staffByStore,
 					phpMode : true
 				}, {
 					type : 'date',
@@ -764,15 +763,15 @@ Ext
 
 									},
 									success : function(response, options) {
-										x = Ext.decode(response.responseText);
-										if (x.success == 'false') {
-											Ext.MessageBox.alert('system',
-													x.message);
+										jsonResponse = Ext.decode(response.responseText);
+										if (jsonResponse == false) {
+											Ext.MessageBox.alert(systemLabel,
+													jsonResponse.message);
 										} else {
 											// if required messagebox to check
 											// status uncomment below
-											Ext.MessageBox.alert('system',
-													x.message);
+											Ext.MessageBox.alert(systemLabel,
+													jsonResponse.message);
 											folderTranslateStore.reload();
 										}
 
@@ -780,7 +779,7 @@ Ext
 									failure : function(response, options) {
 										statusCode = response.status;
 										statusMessage = response.statusText;
-										Ext.MessageBox.alert('system',
+										Ext.MessageBox.alert(systemLabel,
 												escape(statusCode) + ":"
 														+ statusMessage);
 									}
@@ -850,9 +849,8 @@ Ext
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == 'true') {
+														jsonResponse = Ext.decode(response.responseText);
+														if (jsonResponse == true) {
 
 															window
 																	.open("../../security/document/excel/folder.xlsx");
@@ -860,7 +858,7 @@ Ext
 															Ext.MessageBox
 																	.alert(
 																			successLabel,
-																			x.message);
+																			jsonResponse.message);
 														}
 
 													},
@@ -927,9 +925,9 @@ Ext
 								leafId : leafId
 							},
 							success : function(response, options) {
-								x = Ext.decode(response.responseText);
-								if (x.success == 'false') {
-									Ext.MessageBox.alert('system', x.message);
+								jsonResponse = Ext.decode(response.responseText);
+								if (jsonResponse == false) {
+									Ext.MessageBox.alert(systemLabel, jsonResponse.message);
 								} else {
 
 									Ext.getCmp('folderSequence').setValue(
@@ -941,7 +939,7 @@ Ext
 							failure : function(response, options) {
 								statusCode = response.status;
 								statusMessage = response.statusText;
-								Ext.MessageBox.alert('system',
+								Ext.MessageBox.alert(systemLabel,
 										escape(statusCode) + ":"
 												+ statusMessage);
 							}
@@ -1241,9 +1239,7 @@ Ext
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-										var box = Ext.MessageBox.wait(
-												'Be patient',
-												'Translation In Progress');
+										
 										Ext.Ajax
 												.request({
 
@@ -1264,7 +1260,7 @@ Ext
 															Ext.MessageBox
 																	.alert(
 																			systemLabel,
-																			x.message);
+																			jsonResponse.message);
 
 															folderTranslateStore
 																	.reload();

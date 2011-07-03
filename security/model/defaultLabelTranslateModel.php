@@ -96,7 +96,7 @@ class defaultLabelTranslateModel extends validationClass{
 		$this->setIsApproved(1,'','string');
 	}
 	public function setdefaultLabelTranslateId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->defaultLabelTranslateId = $value;
 		} else if ($type=='array'){
 			$this->defaultLabelTranslateId[$key]=$value;
@@ -107,7 +107,7 @@ class defaultLabelTranslateModel extends validationClass{
 	 * @return integer defaultLabelTranslateId
 	 */
 	public function getdefaultLabelTranslateId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->defaultLabelTranslateId;
 		} else if ($type=='array'){
 			return $this->defaultLabelTranslateId[$key];

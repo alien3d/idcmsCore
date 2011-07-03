@@ -139,7 +139,7 @@ class leafGroupAccessModel extends validationClass{
 		$this->setIsApproved(1,'','string');
 	}
 	public function setLeafGroupAccessId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->leafGroupAccessId = $value;
 		} else if ($type=='array'){
 			$this->leafGroupAccessId[$key]=$value;
@@ -150,7 +150,7 @@ class leafGroupAccessModel extends validationClass{
 	 * @return integer tabId
 	 */
 	public function getLeafGroupAccessId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->leafGroupAccessId;
 		} else if ($type=='array'){
 			return $this->leafGroupAccessId[$key];

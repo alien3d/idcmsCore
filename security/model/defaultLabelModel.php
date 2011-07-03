@@ -96,7 +96,7 @@ class defaultLabelModel extends validationClass{
 		$this->setIsApproved(1,'','string');
 	}
 	public function setdefaultLabelId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->defaultLabelId = $value;
 		} else if ($type=='array'){
 			$this->defaultLabelId[$key]=$value;
@@ -107,7 +107,7 @@ class defaultLabelModel extends validationClass{
 	 * @return integer defaultLabelId
 	 */
 	public function getdefaultLabelId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->defaultLabelId;
 		} else if ($type=='array'){
 			return $this->defaultLabelId[$key];

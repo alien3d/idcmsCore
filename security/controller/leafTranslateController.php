@@ -147,10 +147,10 @@ class leafClass extends  configClass {
 						\"".$this->model->accordionId."\",	\"".$this->model->folderId."\",
 						\"".$this->model->leafNote."\",		\"".$this->model->leafSequence."\",
 						\"".$this->model->leafCode."\",		\"".$this->model->leafFilename."\",
-						\"".$this->model->iconId."\",			\"".$this->model->getIsNew('','string')."\",
-						\"".$this->model->getIsDraft('','string')."\",		\"".$this->model->getIsUpdate('','string')."\",
-						\"".$this->model->getIsDelete('','string')."\",		\"".$this->model->getIsActive('','string')."\",
-						\"".$this->model->getIsApproved('','string')."\",		\"".$this->model->staffId."\",
+						\"".$this->model->iconId."\",			\"".$this->model->getIsNew('','single')."\",
+						\"".$this->model->getIsDraft('','single')."\",		\"".$this->model->getIsUpdate('','single')."\",
+						\"".$this->model->getIsDelete('','single')."\",		\"".$this->model->getIsActive('','single')."\",
+						\"".$this->model->getIsApproved('','single')."\",		\"".$this->model->staffId."\",
 						".$this->model->getTime()."
 					) ";
 		} else if ($this->getVendor()==self::mssql) {
@@ -171,10 +171,10 @@ class leafClass extends  configClass {
 						\"".$this->model->accordionId."\",	\"".$this->model->folderId."\",
 						\"".$this->model->leafNote."\",		\"".$this->model->leafSequence."\",
 						\"".$this->model->leafCode."\",		\"".$this->model->leafFilename."\",
-						\"".$this->model->iconId."\",			\"".$this->model->getIsNew('','string')."\",
-						\"".$this->model->getIsDraft('','string')."\",		\"".$this->model->getIsUpdate('','string')."\",
-						\"".$this->model->getIsDelete('','string')."\",		\"".$this->model->getIsActive('','string')."\",
-						\"".$this->model->getIsApproved('','string')."\",		\"".$this->model->staffId."\",
+						\"".$this->model->iconId."\",			\"".$this->model->getIsNew('','single')."\",
+						\"".$this->model->getIsDraft('','single')."\",		\"".$this->model->getIsUpdate('','single')."\",
+						\"".$this->model->getIsDelete('','single')."\",		\"".$this->model->getIsActive('','single')."\",
+						\"".$this->model->getIsApproved('','single')."\",		\"".$this->model->staffId."\",
 						".$this->model->getTime()."
 					)";
 		} else if ($this->getVendor()==self::oracle) {
@@ -195,10 +195,10 @@ class leafClass extends  configClass {
 						\"".$this->model->accordionId."\",	\"".$this->model->folderId."\",
 						\"".$this->model->leafNote."\",		\"".$this->model->leafSequence."\",
 						\"".$this->model->leafCode."\",		\"".$this->model->leafFilename."\",
-						\"".$this->model->iconId."\",			\"".$this->model->getIsNew('','string')."\",
-						\"".$this->model->getIsDraft('','string')."\",		\"".$this->model->getIsUpdate('','string')."\",
-						\"".$this->model->getIsDelete('','string')."\",		\"".$this->model->getIsActive('','string')."\",
-						\"".$this->model->getIsApproved('','string')."\",		\"".$this->model->staffId."\",
+						\"".$this->model->iconId."\",			\"".$this->model->getIsNew('','single')."\",
+						\"".$this->model->getIsDraft('','single')."\",		\"".$this->model->getIsUpdate('','single')."\",
+						\"".$this->model->getIsDelete('','single')."\",		\"".$this->model->getIsActive('','single')."\",
+						\"".$this->model->getIsApproved('','single')."\",		\"".$this->model->staffId."\",
 						".$this->model->getTime()."
 					);";
 		}

@@ -127,10 +127,10 @@ class tabClass extends configClass
 					(
 						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getTabSequence() . "\",
 						\"" . $this->model->getTabCode() . "\",					\"" . $this->model->getTabNote() . "\",
-						\"".$this->model->getIsDefault('','string')."\",		\"" . $this->model->getIsNew('','string') . "\",
-						\"" . $this->model->getIsDraft('','string') . "\",		\"" . $this->model->getIsUpdate('','string') . "\",
-						\"" . $this->model->getIsDelete('','string') . "\",		\"" . $this->model->getIsActive('','string') . "\",
-						\"" . $this->model->getIsApproved('','string') . "\",	\"" . $this->model->getBy() . "\",
+						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
+						\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
+						\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
+						\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					);";
 		} else if ($this->getVendor() ==  self::mssql) {
@@ -149,10 +149,10 @@ class tabClass extends configClass
 					(
 						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getTabSequence() . "\",
 						\"" . $this->model->getTabCode() . "\",					\"" . $this->model->getTabNote() . "\",
-						\"".$this->model->getIsDefault('','string')."\",		\"" . $this->model->getIsNew('','string') . "\",
-						\"" . $this->model->getIsDraft('','string') . "\",		\"" . $this->model->getIsUpdate('','string') . "\",
-						\"" . $this->model->getIsDelete('','string') . "\",		\"" . $this->model->getIsActive('','string') . "\",
-						\"" . $this->model->getIsApproved('','string') . "\",	\"" . $this->model->getBy() . "\",
+						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
+						\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
+						\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
+						\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					);";
 		} else if ($this->getVendor() == self::oracle) {
@@ -171,10 +171,10 @@ class tabClass extends configClass
 					(
 						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getTabSequence() . "\",
 						\"" . $this->model->getTabCode() . "\",					\"" . $this->model->getTabNote() . "\",
-						\"".$this->model->getIsDefault('','string')."\",		\"" . $this->model->getIsNew('','string') . "\",
-						\"" . $this->model->getIsDraft('','string') . "\",		\"" . $this->model->getIsUpdate('','string') . "\",
-						\"" . $this->model->getIsDelete('','string') . "\",		\"" . $this->model->getIsActive('','string') . "\",
-						\"" . $this->model->getIsApproved('','string') . "\",	\"" . $this->model->getBy() . "\",
+						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
+						\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
+						\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
+						\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					);";
 		}
@@ -375,8 +375,8 @@ class tabClass extends configClass
 					LEFT 	JOIN	`icon`
 					USING			(`iconId`)
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getTabId('','string')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->gettabId('','string') . "\"";
+			if ($this->model->getTabId('','single')) {
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->gettabId('','single') . "\"";
 
 			}
 
@@ -404,8 +404,8 @@ class tabClass extends configClass
 					LEFT 	JOIN	`icon`
 					ON		[iconId].[iconId] = [tab].[iconId]
 					WHERE 	[tab].[isActive] ='1'	";
-			if ($this->model->getTabId('','string')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->gettabId('','string') . "\"";
+			if ($this->model->getTabId('','single')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->gettabId('','single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -431,8 +431,8 @@ class tabClass extends configClass
 					LEFT 	JOIN	\"icon\"
 					USING	(\"iconId\")
 					WHERE 	\"isActive\"='1'	";
-			if ($this->model->getTabId('','string')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->gettabId('','string') . "\"";
+			if ($this->model->getTabId('','single')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->gettabId('','single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -587,7 +587,7 @@ class tabClass extends configClass
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getTabId('','string'))) {
+            if (!($this->model->getTabId('','single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -601,7 +601,7 @@ class tabClass extends configClass
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getTabId('','string')) {
+            if ($this->model->getTabId('','single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -643,46 +643,46 @@ class tabClass extends configClass
 			SET 	`tabSequence`		= 	\"" . $this->model->getTabSequence() . "\",
 					`tabNote`			=	\"" . $this->model->getTabNote() . "\",
 					`iconId`			=	\"" . $this->model->getIconId() . "\",
-					`isActive`			=	\"" . $this->model->getIsActive('','string') . "\",
-					`isNew`				=	\"" . $this->model->getIsNew('','string') . "\",
-					`isDraft`			=	\"" . $this->model->getIsDraft('','string') . "\",
-					`isUpdate`			=	\"" . $this->model->getIsUpdate('','string') . "\",
-					`isDelete`			=	\"" . $this->model->getIsDelete('','string') . "\",
-					`isApproved`		=	\"" . $this->model->getIsApproved('','string') . "\",
+					`isActive`			=	\"" . $this->model->getIsActive('','single') . "\",
+					`isNew`				=	\"" . $this->model->getIsNew('','single') . "\",
+					`isDraft`			=	\"" . $this->model->getIsDraft('','single') . "\",
+					`isUpdate`			=	\"" . $this->model->getIsUpdate('','single') . "\",
+					`isDelete`			=	\"" . $this->model->getIsDelete('','single') . "\",
+					`isApproved`		=	\"" . $this->model->getIsApproved('','single') . "\",
 					`By`				=	\"" . $this->model->getBy() . "\",
 					`Time				=	" . $this->model->getTime() . "
-			WHERE 	`tabId`				=	\"" . $this->model->getTabId('','string') . "\"";
+			WHERE 	`tabId`				=	\"" . $this->model->getTabId('','single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[tab]
 			SET 	[tabSequence]		= 	\"" . $this->model->tabSequence . "\",
 					[tabNote]			=	\"" . $this->model->tabNote . "\",
 					[iconId]			=	\"" . $this->model->iconId . "\",
-					[isDefault]			=	\"".$this->model->getIsDefault('','string')."\",
-					[isActive]			=	\"".$this->model->getIsActive('','string')."\",
-					[isNew]				=	\"".$this->model->getIsNew('','string')."\",
-					[isDraft]			=	\"".$this->model->getIsDraft('','string')."\",
-					[isUpdate]			=	\"".$this->model->getIsUpdate('','string')."\",
-					[isDelete]			=	\"".$this->model->getIsDelete('','string')."\",
-					[isApproved]		=	\"".$this->model->getIsApproved('','string')."\",
+					[isDefault]			=	\"".$this->model->getIsDefault('','single')."\",
+					[isActive]			=	\"".$this->model->getIsActive('','single')."\",
+					[isNew]				=	\"".$this->model->getIsNew('','single')."\",
+					[isDraft]			=	\"".$this->model->getIsDraft('','single')."\",
+					[isUpdate]			=	\"".$this->model->getIsUpdate('','single')."\",
+					[isDelete]			=	\"".$this->model->getIsDelete('','single')."\",
+					[isApproved]		=	\"".$this->model->getIsApproved('','single')."\",
 					[By]				=	\"".$this->model->getBy()."\",
 					[Time]				=	".$this->model->getTime()."
-			WHERE 	[tabId]				=	\"" . $this->model->getTabId('','string') . "\"";
+			WHERE 	[tabId]				=	\"" . $this->model->getTabId('','single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"tab\"
 			SET 	\"tabSequence\"		= 	\"" . $this->model->tabSequence . "\",
 					\"tabNote\"			=	\"" . $this->model->tabNote . "\",
 					\"iconId\"			=	\"" . $this->model->iconId . "\",
-					\"isActive\"		=	\"" . $this->model->getIsActive('','string') . "\",
-					\"isNew\"			=	\"" . $this->model->getIsNew('','string') . "\",
-					\"isDraft\"			=	\"" . $this->model->getIsDraft('','string') . "\",
-					\"isUpdate\"		=	\"" . $this->model->getIsUpdate('','string') . "\",
-					\"isDelete\"		=	\"" . $this->model->getIsDelete('','string') . "\",
-					\"isApproved\"		=	\"" . $this->model->getIsApproved('','string') . "\",
+					\"isActive\"		=	\"" . $this->model->getIsActive('','single') . "\",
+					\"isNew\"			=	\"" . $this->model->getIsNew('','single') . "\",
+					\"isDraft\"			=	\"" . $this->model->getIsDraft('','single') . "\",
+					\"isUpdate\"		=	\"" . $this->model->getIsUpdate('','single') . "\",
+					\"isDelete\"		=	\"" . $this->model->getIsDelete('','single') . "\",
+					\"isApproved\"		=	\"" . $this->model->getIsApproved('','single') . "\",
 					\"By\"				=	\"" . $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
-			WHERE 	\"tabId\"			=	\"" . $this->model->getTabId('','string') . "\"";
+			WHERE 	\"tabId\"			=	\"" . $this->model->getTabId('','single') . "\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -715,42 +715,42 @@ class tabClass extends configClass
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE 	`tab`
-			SET 	`isDefault`		=	\"".$this->model->getIsDefault('','string')."\",
-					`isActive`		=	\"".$this->model->getIsActive('','string')."\",
-					`isNew`			=	\"".$this->model->getIsNew('','string')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft('','string')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate('','string')."\",
-					`isDelete`		=	\"".$this->model->getIsDelete('','string')."\",
-					`isApproved`	=	\"".$this->model->getIsApproved('','string')."\",
-					`By`			=	\"".$this->model->getBy('','string')."\",
+			SET 	`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
+					`isActive`		=	\"".$this->model->getIsActive('','single')."\",
+					`isNew`			=	\"".$this->model->getIsNew('','single')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
+					`isDelete`		=	\"".$this->model->getIsDelete('','single')."\",
+					`isApproved`	=	\"".$this->model->getIsApproved('','single')."\",
+					`By`			=	\"".$this->model->getBy('','single')."\",
 					`Time			=	".$this->model->getTime()."
 			WHERE 	`tabId`		=	\"" . $this->model->tabId . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[tab]
-			SET 	[isDefault]		=	\"".$this->model->getIsDefault('','string')."\",
-					[isActive]		=	\"".$this->model->getIsActive('','string')."\",
-					[isNew]			=	\"".$this->model->getIsNew('','string')."\",
-					[isDraft]		=	\"".$this->model->getIsDraft('','string')."\",
-					[isUpdate]		=	\"".$this->model->getIsUpdate('','string')."\",
-					[isDelete]		=	\"".$this->model->getIsDelete('','string')."\",
-					[isApproved]	=	\"".$this->model->getIsApproved('','string')."\",
-					[By]			=	\"".$this->model->getBy('','string')."\",
+			SET 	[isDefault]		=	\"".$this->model->getIsDefault('','single')."\",
+					[isActive]		=	\"".$this->model->getIsActive('','single')."\",
+					[isNew]			=	\"".$this->model->getIsNew('','single')."\",
+					[isDraft]		=	\"".$this->model->getIsDraft('','single')."\",
+					[isUpdate]		=	\"".$this->model->getIsUpdate('','single')."\",
+					[isDelete]		=	\"".$this->model->getIsDelete('','single')."\",
+					[isApproved]	=	\"".$this->model->getIsApproved('','single')."\",
+					[By]			=	\"".$this->model->getBy('','single')."\",
 					[Time]			=	".$this->model->getTime()."
-			WHERE 	[tabId]			=	\"" . $this->model->getTabId('','string') . "\"";
+			WHERE 	[tabId]			=	\"" . $this->model->getTabId('','single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"tab\"
-			SET 	\"isDefault\"		=	\"".$this->model->getIsDefault('','string')."\",
-					\"isActive\"		=	\"".$this->model->getIsActive('','string')."\",
-					\"isNew\"			=	\"".$this->model->getIsNew('','string')."\",
-					\"isDraft\"			=	\"".$this->model->getIsDraft('','string')."\",
-					\"isUpdate\"		=	\"".$this->model->getIsUpdate('','string')."\",
-					\"isDelete\"		=	\"".$this->model->getIsDelete('','string')."\",
-					\"isApproved\"		=	\"".$this->model->getIsApproved('','string')."\",
-					\"By\"				=	\"".$this->model->getBy('','string')."\",
+			SET 	\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
+					\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
+					\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
+					\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",
+					\"isUpdate\"		=	\"".$this->model->getIsUpdate('','single')."\",
+					\"isDelete\"		=	\"".$this->model->getIsDelete('','single')."\",
+					\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
+					\"By\"				=	\"".$this->model->getBy('','single')."\",
 					\"Time\"			=	".$this->model->getTime()."
-			WHERE 	\"tabId\"			=	\"" . $this->model->getTabId('','string') . "\"";
+			WHERE 	\"tabId\"			=	\"" . $this->model->getTabId('','single') . "\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {

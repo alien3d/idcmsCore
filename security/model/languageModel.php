@@ -94,7 +94,7 @@ class languageModel extends validationClass{
 		$this->setIsApproved(1,'','string');
 	}
 	public function setLanguageId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->languageId = $value;
 		} else if ($type=='array'){
 			$this->languageId[$key]=$value;
@@ -105,7 +105,7 @@ class languageModel extends validationClass{
 	 * @return integer languageId
 	 */
 	public function getLanguageId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->languageId;
 		} else if ($type=='array'){
 			return $this->languageId[$key];

@@ -143,7 +143,7 @@ class documentModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setDocumentId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->documentId = $value;
 		} else if ($type=='array'){
 			$this->documentId[$key]=$value;
@@ -154,7 +154,7 @@ class documentModel extends validationClass{
 	 * @return integer documentId
 	 */
 	public function getDocumentId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->documentId;
 		} else if ($type=='array'){
 			return $this->documentId[$key];

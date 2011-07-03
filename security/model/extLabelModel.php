@@ -95,7 +95,7 @@ class extLabelModel extends validationClass{
 		$this->setIsApproved(1,'','string');
 	}
 	public function setExtLabelId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->extLabelId = $value;
 		} else if ($type=='array'){
 			$this->extLabelId[$key]=$value;
@@ -106,7 +106,7 @@ class extLabelModel extends validationClass{
 	 * @return integer textLabelId
 	 */
 	public function getExtLabelId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->extLabelId;
 		} else if ($type=='array'){
 			return $this->extLabelId[$key];

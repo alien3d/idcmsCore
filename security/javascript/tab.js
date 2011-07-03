@@ -689,7 +689,7 @@ Ext
 															response, options) {
 														jsonResponse = Ext
 																.decode(response.responseText);
-														if (x.success == 'true') {
+														if (jsonResponse == true) {
 															window
 																	.open("../security/document/excel/tab.xlsx");
 														} else {
@@ -1011,9 +1011,7 @@ Ext
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-										var box = Ext.MessageBox.wait(
-												'Be patient',
-												'Translation In Progress');
+										
 										Ext.Ajax
 												.request({
 

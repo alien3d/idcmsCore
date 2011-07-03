@@ -203,12 +203,12 @@ class documentCategoryClass extends  configClass {
 		UPDATE 	`doc_cat`
 		SET 	`doc_cat_uniqueId`	    =	\"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\",
 		     	`doc_cat_nme`	            =	\"".$this->strict($_POST['doc_cat_nme'],'s')."\",
-		     	`isActive`			=	\"".$this->model->getIsActive('','string')."\",
-				`isNew`				=	\"".$this->model->getIsNew('','string')."\",
-				`isDraft`			=	\"".$this->model->getIsDraft('','string')."\",
-				`isUpdate`			=	\"".$this->model->getIsUpdate('','string')."\",
-				`isDelete`			=	\"".$this->model->getIsDelete('','string')."\",
-				`isApproved`		=	\"".$this->model->getIsApproved('','string')."\",
+		     	`isActive`			=	\"".$this->model->getIsActive('','single')."\",
+				`isNew`				=	\"".$this->model->getIsNew('','single')."\",
+				`isDraft`			=	\"".$this->model->getIsDraft('','single')."\",
+				`isUpdate`			=	\"".$this->model->getIsUpdate('','single')."\",
+				`isDelete`			=	\"".$this->model->getIsDelete('','single')."\",
+				`isApproved`		=	\"".$this->model->getIsApproved('','single')."\",
 				`By`				=	\"".$this->model->getBy()."\",
 				`Time				=	".$this->model->getTime()."
 		WHERE 	`doc_cat_uniqueId`		=	\"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\"";
@@ -237,12 +237,12 @@ class documentCategoryClass extends  configClass {
 		$this->q->start();
 		$sql	=	"
 					DELETE	FROM 	`doc_cat`
-					`isActive`			=	\"".$this->model->getIsActive('','string')."\",
-							`isNew`				=	\"".$this->model->getIsNew('','string')."\",
-							`isDraft`			=	\"".$this->model->getIsDraft('','string')."\",
-							`isUpdate`			=	\"".$this->model->getIsUpdate('','string')."\",
-							`isDelete`			=	\"".$this->model->getIsDelete('','string')."\",
-							`isApproved`		=	\"".$this->model->getIsApproved('','string')."\",
+					`isActive`			=	\"".$this->model->getIsActive('','single')."\",
+							`isNew`				=	\"".$this->model->getIsNew('','single')."\",
+							`isDraft`			=	\"".$this->model->getIsDraft('','single')."\",
+							`isUpdate`			=	\"".$this->model->getIsUpdate('','single')."\",
+							`isDelete`			=	\"".$this->model->getIsDelete('','single')."\",
+							`isApproved`		=	\"".$this->model->getIsApproved('','single')."\",
 							`By`				=	\"".$this->model->getBy()."\",
 							`Time				=	".$this->model->getTime()."
 					WHERE 			`doc_cat_uniqueId`=\"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\"";

@@ -279,9 +279,9 @@ Ext.onReady(function() {
 																			leafId : leafId
 																		},
 																		success : function(response,options) {
-																			var x  = Ext.decode(response.responseText);
+																			var jsonResponse = Ext.decode(response.responseText);
 																			var title  = 'Message';
-																			if(x.success == 'true'){
+																			if (jsonResponse == true){
 																				title = title + ' Success';
 																			} else {
 																				title = title + ' Failure';
@@ -289,7 +289,7 @@ Ext.onReady(function() {
 																			Ext.MessageBox
 																					.alert(
 																							title,
-																							x.message);
+																							jsonResponse.message);
 																			
 																			store
 																					.reload();
@@ -300,7 +300,7 @@ Ext.onReady(function() {
 																		{
 																			status_code = response.status;
 																			status_message = response.statusText;
-																			Ext.MessageBox.alert('system',escape(status_code)
+																			Ext.MessageBox.alert(systemLabel,escape(status_code)
 																			+ ":"+ status_message);
 																		}
 																	});
@@ -378,9 +378,9 @@ Ext.onReady(function() {
 																			leafId : leafId
 																		},
 																		success : function(response,options) {
-																			var x  = Ext.decode(response.responseText);
+																			var jsonResponse = Ext.decode(response.responseText);
 																			var title  = 'Message';
-																			if(x.success == 'true'){
+																			if (jsonResponse == true){
 																				title = title + ' Success';
 																			} else {
 																				title = title + ' Failure';
@@ -392,13 +392,13 @@ Ext.onReady(function() {
 																			Ext.MessageBox
 																					.alert(
 																							title,
-																							x.message);
+																							jsonResponse.message);
 																		},
 																		failure : function(response, options) 
 																		{
 																			status_code = response.status;
 																			status_message = response.statusText;
-																			Ext.MessageBox.alert('system',escape(status_code)
+																			Ext.MessageBox.alert(systemLabel,escape(status_code)
 																			+ ":"+ status_message);
 																		}
 																	});
@@ -555,17 +555,16 @@ Ext.onReady(function() {
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == 'true') {
-															//Ext.MessageBox.alert('SYSTEM',x.message);
+														jsonResponse = Ext.decode(response.responseText);
+														if (jsonResponse == true) {
+															//Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 															window
 																	.open("../document/document/word/doc_cat.docx");
 														} else {
 															Ext.MessageBox
 																	.alert(
-																			'SYSTEM',
-																			x.message);
+																			systemLabel,
+																			jsonResponse.message);
 														}
 
 													},
@@ -573,7 +572,7 @@ Ext.onReady(function() {
 													{
 														status_code = response.status;
 														status_message = response.statusText;
-														Ext.MessageBox.alert('system',escape(status_code)
+														Ext.MessageBox.alert(systemLabel,escape(status_code)
 														+ ":"+ status_message);
 													}
 
@@ -596,17 +595,16 @@ Ext.onReady(function() {
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == 'true') {
-															// Ext.MessageBox.alert('SYSTEM',x.message);
+														jsonResponse = Ext.decode(response.responseText);
+														if (jsonResponse == true) {
+															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 															window
 																	.open("../document/document/excel/doc_cat.xlsx");
 														} else {
 															Ext.MessageBox
 																	.alert(
-																			'SYSTEM',
-																			x.message);
+																			systemLabel,
+																			jsonResponse.message);
 														}
 
 													},
@@ -614,7 +612,7 @@ Ext.onReady(function() {
 													{
 														status_code = response.status;
 														status_message = response.statusText;
-														Ext.MessageBox.alert('system',escape(status_code)
+														Ext.MessageBox.alert(systemLabel,escape(status_code)
 														+ ":"+ status_message);
 													}
 
@@ -681,17 +679,16 @@ Ext.onReady(function() {
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == true) {
-															// Ext.MessageBox.alert('SYSTEM',x.message);
+														jsonResponse = Ext.decode(response.responseText);
+														if (jsonResponse == true) {
+															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 															window
 																	.open("../ketetapan/document/word/doc_cat.docx");
 														} else {
 															Ext.MessageBox
 																	.alert(
 																			'SYSTEM FAILURE ',
-																			x.message);
+																			jsonResponse.message);
 														}
 
 													},
@@ -699,7 +696,7 @@ Ext.onReady(function() {
 													{
 														status_code = response.status;
 														status_message = response.statusText;
-														Ext.MessageBox.alert('system',escape(status_code)
+														Ext.MessageBox.alert(systemLabel,escape(status_code)
 														+ ":"+ status_message);
 													}
 
@@ -721,17 +718,16 @@ Ext.onReady(function() {
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == 'true') {
-															// Ext.MessageBox.alert('SYSTEM',x.message);
+														jsonResponse = Ext.decode(response.responseText);
+														if (jsonResponse == true) {
+															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 															window
 																	.open("../ketetapan/document/excel/doc_cat.xlsx");
 														} else {
 															Ext.MessageBox
 																	.alert(
-																			'SYSTEM',
-																			x.message);
+																			systemLabel,
+																			jsonResponse.message);
 														}
 
 													},
@@ -739,7 +735,7 @@ Ext.onReady(function() {
 													{
 														status_code = response.status;
 														status_message = response.statusText;
-														Ext.MessageBox.alert('system',escape(status_code)
+														Ext.MessageBox.alert(systemLabel,escape(status_code)
 														+ ":"+ status_message);
 													}
 

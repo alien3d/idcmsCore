@@ -174,26 +174,25 @@ App = function() {
 											leafId : leafId
 										},
 										success : function(response,options) {
-											var x = Ext.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message';
-											if (x.success == 'true') {
+											if (jsonResponse == true) {
 												title = title
 														+ ' Success';
 											} else {
 												title = title
 														+ ' Failure';
 											}
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										},
 										failure : function(response,
 												options) {
 											// critical bug extjs
-											var x = Ext
-													.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message Failure';
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										}
 									});
                                 },
@@ -232,27 +231,25 @@ App = function() {
 										},
 										success : function(response,
 												options) {
-											var x = Ext
-													.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message';
-											if (x.success == 'true') {
+											if (jsonResponse == true) {
 												title = title
 														+ ' Success';
 											} else {
 												title = title
 														+ ' Failure';
 											}
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										},
 										failure : function(response,
 												options) {
 											// critical bug extjs
-											var x = Ext
-													.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message Failure';
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										}
 									});
                                 },
@@ -271,27 +268,25 @@ App = function() {
 										success : function(response,
 												options) {
 										
-											var x = Ext
-													.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message';
-											if (x.success == 'true') {
+											if (jsonResponse == true) {
 												title = title
 														+ ' Success';
 											} else {
 												title = title
 														+ ' Failure';
 											}
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										},
 										failure : function(response,
 												options) {
 											// critical bug extjs
-											var x = Ext
-													.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message Failure';
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										}
 									});
                                 },
@@ -367,27 +362,25 @@ App = function() {
 										},
 										success : function(response,
 												options) {
-											var x = Ext
-													.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message';
-											if (x.success == 'true') {
+											if (jsonResponse == true) {
 												title = title
 														+ ' Success';
 											} else {
 												title = title
 														+ ' Failure';
 											}
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										},
 										failure : function(response,
 												options) {
 											// critical bug extjs
-											var x = Ext
-													.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message Failure';
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										}
 									});
                                 },
@@ -413,27 +406,25 @@ App = function() {
 										},
 										success : function(response,
 												options) {
-											var x = Ext
-													.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message';
-											if (x.success == 'true') {
+											if (jsonResponse == true) {
 												title = title
 														+ ' Success';
 											} else {
 												title = title
 														+ ' Failure';
 											}
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										},
 										failure : function(response,
 												options) {
 											// critical bug extjs
-											var x = Ext
-													.decode(response.responseText);
+											var jsonResponse = Ext.decode(response.responseText);
 											var title = 'Message Failure';
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										}
 									});
                                 },
@@ -494,25 +485,23 @@ App = function() {
 									success : function(response,
 											options) {
 										
-										var x = Ext
-												.decode(response.responseText);
+										var jsonResponse = Ext.decode(response.responseText);
 										var title = 'Message';
 										
-										if (x.success == 'true') {
+										if (jsonResponse == true) {
 											title = title + ' Success';
 										} else {
 											title = title + ' Failure';
 										}
-										Ext.MessageBox.alert(title,x.message);
+										Ext.MessageBox.alert(title,jsonResponse.message);
 									},
 									failure : function(response,
 											options) {
 										// critical bug extjs
-										var x = Ext
-												.decode(response.responseText);
+										var jsonResponse = Ext.decode(response.responseText);
 										var title = 'Message Failure';
-										Ext.MessageBox.alert(title,
-												x.message);
+										Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 									}
 								});
 							},
@@ -549,25 +538,23 @@ App = function() {
 									},
 									success : function(response,
 											options) {
-										var x = Ext
-												.decode(response.responseText);
+										var jsonResponse = Ext.decode(response.responseText);
 										var title = 'Message';
-										if (x.success == 'true') {
+										if (jsonResponse == true) {
 											title = title + ' Success';
 										} else {
 											title = title + ' Failure';
 										}
-										Ext.MessageBox.alert(title,
-												x.message);
+										Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 									},
 									failure : function(response,
 											options) {
 										// critical bug extjs
-										var x = Ext
-												.decode(response.responseText);
+										var jsonResponse = Ext.decode(response.responseText);
 										var title = 'Message Failure';
-										Ext.MessageBox.alert(title,
-												x.message);
+										Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 									}
 								});
 							},
@@ -588,25 +575,23 @@ App = function() {
 									success : function(response,
 											options) {
 										
-										var x = Ext
-												.decode(response.responseText);
+										var jsonResponse = Ext.decode(response.responseText);
 										var title = 'Message';
-										if (x.success == 'true') {
+										if (jsonResponse == true) {
 											title = title + ' Success';
 										} else {
 											title = title + ' Failure';
 										}
-										Ext.MessageBox.alert(title,
-												x.message);
+										Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 									},
 									failure : function(response,
 											options) {
 										// critical bug extjs
-										var x = Ext
-												.decode(response.responseText);
+										var jsonResponse = Ext.decode(response.responseText);
 										var title = 'Message Failure';
-										Ext.MessageBox.alert(title,
-												x.message);
+										Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 									}
 								});
 							},

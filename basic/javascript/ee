@@ -63,10 +63,9 @@
 																		success : function(
 																				response,
 																				options) {
-																			var x = Ext
-																					.decode(response.responseText);
+																			var jsonResponse = Ext.decode(response.responseText);
 
-																			if (x.success == "true") {
+																			if (jsonResponse == "true") {
 																				title = successLabel;
 																			} else {
 																				title = failureLabel;
@@ -92,7 +91,7 @@
 																			Ext.MessageBox
 																					.alert(
 																							title,
-																							x.message);
+																							jsonResponse.message);
 																		},
 																		failure : function(
 																				response,

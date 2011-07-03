@@ -32,13 +32,13 @@ Ext.onReady(function(){
 					leafId_temp : leafId_temp
 				},
 				success : function(response, options) {
-					var x = Ext.decode(response.responseText);
-					if (x.success == "true") {
+					var jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse == "true") {
 						title = successLabel;
 					} else {
 						title = failureLabel;
 					}
-					Ext.MessageBox.alert(systemLabel, x.message);
+					Ext.MessageBox.alert(systemLabel, jsonResponse.message);
 				},
 				failure : function(response, options) {
 
@@ -355,7 +355,7 @@ Ext.onReady(function(){
 		displayField		:	'staffName',
 		typeAhead			: 	false,
     	triggerAction		: 	'all',
-		store				: 	staffStore,
+		store : staffByStore,
 		anchor      		:	'95%',
 		selectOnFocus		:	true,
 		mode				:	'local',
@@ -469,14 +469,14 @@ Ext.onReady(function(){
 					Ext.Ajax.request ({ 
 						url:url,
 						success:function(response,options) {
-							x = Ext.decode(response.responseText);
+							jsonResponse = Ext.decode(response.responseText);
 							var title ='Message';
-							if(x.message=='true') { 
+							if(jsonResponse.message=='true') { 
 								title  = title +'Success';
-								Ext.MessageBox.alert(title,x.message);
-							} else if (x.message=='false'){
+								Ext.MessageBox.alert(title,jsonResponse.message);
+							} else if (jsonResponse.message=='false'){
 								title  = title +'Failure';
-								Ext.MessageBox.alert(title,x.message);
+								Ext.MessageBox.alert(title,jsonResponse.message);
 							}	 
 							
 							// reload the store 

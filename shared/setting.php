@@ -14,6 +14,7 @@
 	**/
 
 	if( $q->vendor==sharedx::mysql) {
+		// future
 		$sql="
 		SELECT 			`tableMapping`.`tableMappingColumnName`,
 						`tableMappingTranslate`.`tableMappingNativeLabel`
@@ -21,7 +22,13 @@
 		JOIN			`tableMappingTranslate`
 		USING			(`tableMappingId`)
 		WHERE 			`tableMappingTranslate`.`languageId`=\"".$_SESSION['languageId']."\"";
-		} else if ($q->vendor==sharedx::mssql) {
+		// temp
+		$sql="
+		SELECT 			`tableMapping`.`tableMappingColumnName`,
+						`tableMapping`.`tableMappingNativeLabel`
+		FROM 			`tableMapping`
+		WHERE 			`tableMapping`.`languageId`=\"".$_SESSION['languageId']."\"";
+	} else if ($q->vendor==sharedx::mssql) {
 		$sql="
 		SELECT 			[tableMapping].[tableMappingColumnName],
 						[tableMappingTranslate].[tableMappingNativeLabel]
@@ -91,7 +98,7 @@ var filename = '<?php echo basename($_SERVER[$phpself]); ?>';
 <?php  // get uniqueid
 
 if( $q->vendor==sharedx::mysql) {
- 	$sql	=
+ 	 $sql	=
 "	SELECT	*
 	FROM	`leaf`
 	JOIN	`leafAccess`

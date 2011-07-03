@@ -250,7 +250,7 @@ class leafModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setLeafId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->leafId = $value;
 		} else if ($type=='array'){
 			$this->leafId[$key]=$value;
@@ -261,7 +261,7 @@ class leafModel extends validationClass{
 	 * @return integer $leafId
 	 */
 	public function getLeafId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->leafId;
 		} else if ($type=='array'){
 			return $this->leafId[$key];

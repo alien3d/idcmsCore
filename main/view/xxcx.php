@@ -241,7 +241,8 @@ echo $_SESSION[$theme];
                                             limit: perPage
                                         }
                                     });
-                                    Ext.MessageBox.alert(title, jsonResponse.message);
+                                    Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
                                 },
                                 failure: function(response, options) {
                                     Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
@@ -281,7 +282,8 @@ echo $_SESSION[$theme];
                                             limit: perPage
                                         }
                                     });
-                                    Ext.MessageBox.alert(title, jsonResponse.message);
+                                    Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
                                 },
                                 failure: function(response, options) {
                                     Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
@@ -330,7 +332,8 @@ echo $_SESSION[$theme];
                                             limit: perPage
                                         }
                                     });
-                                    Ext.MessageBox.alert(title, jsonResponse.message);
+                                    Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
                                 },
                                 failure: function(response, options) {
                                     Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);

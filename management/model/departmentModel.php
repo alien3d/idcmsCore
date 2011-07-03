@@ -230,7 +230,7 @@ class departmentModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setDepartmentId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->departmentId = $value;
 		} else if ($type=='array'){
 			$this->departmentId[$key]=$value;
@@ -241,7 +241,7 @@ class departmentModel extends validationClass{
 	 * @return integer departmentId
 	 */
 	public function getDepartmentId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->departmentId;
 		} else if ($type=='array'){
 			return $this->departmentId[$key];

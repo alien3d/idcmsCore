@@ -32,13 +32,13 @@ Ext.onReady(function(){
 					leafId_temp : leafId_temp
 				},
 				success : function(response, options) {
-					var x = Ext.decode(response.responseText);
-					if (x.success == "true") {
+					var jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse == "true") {
 						title = successLabel;
 					} else {
 						title = failureLabel;
 					}
-					Ext.MessageBox.alert(systemLabel, x.message);
+					Ext.MessageBox.alert(systemLabel, jsonResponse.message);
 				},
 				failure : function(response, options) {
 
@@ -435,9 +435,9 @@ Ext.onReady(function(){
 						params:{ info: sub_url } ,
 						method:'POST',
 						success:function(response,options) {
-							x = Ext.decode(response.responseText);
-							if(x.success=='false'){
-								Ext.MessageBox.alert('System Error',x.message);
+							jsonResponse = Ext.decode(response.responseText);
+							if (jsonResponse == false){
+								Ext.MessageBox.alert('System Error',jsonResponse.message);
 							} else { 
 								Ext.MessageBox.alert('System Okay','success updated');
 							}
@@ -449,7 +449,7 @@ Ext.onReady(function(){
 							{
 								statusCode = response.status;
 								statusMessage = response.statusText;
-								Ext.MessageBox.alert('system',escape(statusCode)
+								Ext.MessageBox.alert(systemLabel,escape(statusCode)
 								+ ":"+ statusMessage);
 							}
 						/*failure:function(response,options) { 

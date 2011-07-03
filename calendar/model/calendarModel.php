@@ -132,7 +132,7 @@ class calendarModel extends validationClass{
      */
     public function setCalendarId($value, $key = NULL, $type = NULL)
     {
-        if ($type == 'string') {
+        if ($type=='single') {
             $this->calendarId = $value;
         } else if ($type == 'array') {
             $this->calendarId[$key] = $value;
@@ -144,7 +144,7 @@ class calendarModel extends validationClass{
      */
     public function getCalendarId($key = NULL, $type = NULL)
     {
-        if ($type == 'string') {
+        if ($type=='single') {
             return $this->calendarId;
         } else if ($type == 'array') {
             return $this->calendarId[$key];

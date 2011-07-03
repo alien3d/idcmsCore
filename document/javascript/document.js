@@ -1,4 +1,5 @@
-Ext.onReady(function() {
+Ext
+		.onReady(function() {
 			Ext.QuickTips.init();
 			Ext.form.Field.prototype.msgTarget = 'under';
 			var pageCreate;
@@ -7,7 +8,7 @@ Ext.onReady(function() {
 			var pageReloadList;
 			var pagePrint;
 			var pagePrintList;
-			var duplicate =0; // bypassing the extjs bugs
+			var duplicate = 0; // bypassing the extjs bugs
 			if (leafCreateAccessValue == 1) {
 				pageCreate = false;
 				pageCreateList = false;
@@ -33,17 +34,48 @@ Ext.onReady(function() {
 			var perPage = 10;
 			var encode = false;
 			var local = false;
-			var store = new Ext.data.JsonStore( {
+			
+			var documentProxy = new Ext.data.HttpProxy({
+				url : "../controller/documentController.php",
+				method : 'POST',
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			
+			var documentReader = new Ext.data.JsonReader({
+
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "documentId"
+
+			});
+
+			var documentStore = new Ext.data.JsonStore({
+				proxy : documentProxy,
+				reader : documentReader,
+				autoLoad : true,
 				autoDestroy : true,
-				url : '../controller/documentController.php',
-				remoteSort : true,
-				root : 'data',
-				totalProperty : 'total',
+				pruneModifiedRecords : true,
+				method : 'POST',
 				baseParams : {
-					method : 'read',
-					mode : 'view',
+					method : "read",
+					page : "master",
 					leafId : leafId
 				},
+				root : "data",
 				fields : [ {
 					name : 'documentId',
 					type : 'int'
@@ -54,15 +86,15 @@ Ext.onReady(function() {
 					name : 'documentTitle',
 					type : 'string'
 				}, {
-				    name : 'documentDesc',
+					name : 'documentDesc',
 					type : 'string'
 				}, {
-				    name : 'documentExtension',
+					name : 'documentExtension',
 					type : 'string'
 				}, {
-				    name : 'documentCategoryTitle',
+					name : 'documentCategoryTitle',
 					type : 'string'
-				},  {
+				}, {
 					name : 'By',
 					type : 'int'
 				}, {
@@ -70,7 +102,7 @@ Ext.onReady(function() {
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s'
 				}, {
-				    name : 'NoDoc',
+					name : 'NoDoc',
 					type : 'string'
 				} ],
 				listeners : {
@@ -78,8 +110,7 @@ Ext.onReady(function() {
 							response, arg) {
 						var serverMessage = Ext.util.JSON
 								.decode(response.responseText);
-						if (serverMessage.success == false
-								) {
+						if (serverMessage.success == false) {
 							Ext.MessageBox
 									.alert("Error", serverMessage.message);
 						}
@@ -87,87 +118,39 @@ Ext.onReady(function() {
 				}
 			});
 
-			var storeList = new Ext.data.JsonStore( {
-				autoDestroy : true,
-				url : '../controller/documentController.php',
-				remoteSort : true,
-				root : 'data',
-				totalProperty : 'total',
-				baseParams : {
-					method : 'read',
-					mode : 'view',
-					leafId : leafId
-				},
-				fields : [ {
-					name : 'documentId',
-					type : 'int'
-				}, {
-					name : 'documentCategoryId',
-					type : 'int'
-				}, {
-					name : 'documentTitle',
-					type : 'string'
-				}, {
-				    name : 'documentDesc',
-					type : 'string'
-				}, {
-				    name : 'documentExtension',
-					type : 'string'
-				}, {
-				    name : 'documentCategoryTitle',
-					type : 'string'
-				}, {
-					name : 'By',
-					type : 'int'
-				}, {
-					name : 'Time',
-					type : 'date',
-					dateFormat : 'Y-m-d H:i:s'
-				}, {
-				    name : 'NoDoc',
-					type : 'string'
-				} ],
-				listeners : {
-					exception : function(DataProxy, type, action, options,
-							response, arg) {
-						var serverMessage = Ext.util.JSON
-								.decode(response.responseText);
-						if (serverMessage.success == false
-								) {
-							Ext.MessageBox
-									.alert("Error", serverMessage.message);
-						}
-					}
-				}
-			});
+			
 
 			var staffProxy = new Ext.data.HttpProxy({
-		        url: "../controller/documentController.php?",
-		        method: "GET",
-		        success: function (response, options) {
-		            jsonResponse = Ext.decode(response.responseText);
-		            if (jsonResponse.success == true) {
-		                // Ext.MessageBox.alert(successLabel,
+				url : "../controller/documentController.php?",
+				method : "GET",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,
 						// jsonResponse.message); //uncommen for testing purpose
-		            } else {
-		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-		            }
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
 
-		        },
-		        failure: function (response, options) {
-		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
-		        }
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
 
-		    });
-		    var staffReader = new Ext.data.JsonReader({
+			});
+			
+		    var staffByReader = new Ext.data.JsonReader({
 		        totalProperty: "total",
 		        successProperty: "success",
 		        messageProperty: "message",
 		        idProperty: "staffId"
 		    });
-		    var staffStore = new Ext.data.JsonStore({
-		        proxy: staffProxy,
-		        reader: staffReader,
+		    var staffByStore = new Ext.data.JsonStore({
+		        proxy: staffByProxy,
+		        reader: staffByReader,
 		        autoLoad: true,
 		        autoDestroy: true,
 		        baseParams: {
@@ -179,36 +162,42 @@ Ext.onReady(function() {
 		        fields: [{
 		            name: "staffId",
 		            type: "int"
-		        }, {
+		        },
+		        {
 		            name: "staffName",
 		            type: "string"
 		        }]
 		    });
-			
+
 			var documentCategoryReader = new Ext.data.JsonReader({
 				root : 'documentCategory',
 				id : 'documentCategoryId'
-			}, ['documentCategoryId', 'IdDoc']);
-	        var documentCategory_store = new Ext.data.Store({
-		    proxy : new Ext.data.HttpProxy({
-			url : '../controller/documentController.php?method=read&field=documentCategoryId&leafId='
-					+ leafId,
-			method : 'GET',
-			listeners: {
-            	exception: function(DataProxy, type, action, options, response, arg){
-                	var serverMessage = Ext.util.JSON.decode(response.responseText);
-                		if (serverMessage.success == false ) {
-                    		Ext.MessageBox.alert("Error", serverMessage.message);
-                		}
-            		}
-        		}
-		    }),
-		    reader : documentCategoryReader,
-		    remoteSort : false
-	        });
-	        documentCategory_store.load();
-			
-			var filters = new Ext.ux.grid.GridFilters( {
+			}, [ 'documentCategoryId', 'IdDoc' ]);
+			var documentCategory_store = new Ext.data.Store(
+					{
+						proxy : new Ext.data.HttpProxy(
+								{
+									url : '../controller/documentController.php?method=read&field=documentCategoryId&leafId='
+											+ leafId,
+									method : 'GET',
+									listeners : {
+										exception : function(DataProxy, type,
+												action, options, response, arg) {
+											var serverMessage = Ext.util.JSON
+													.decode(response.responseText);
+											if (serverMessage.success == false) {
+												Ext.MessageBox.alert("Error",
+														serverMessage.message);
+											}
+										}
+									}
+								}),
+						reader : documentCategoryReader,
+						remoteSort : false
+					});
+			documentCategory_store.load();
+
+			var filters = new Ext.ux.grid.GridFilters({
 				encode : encode,
 				local : false,
 				filters : [ {
@@ -217,17 +206,17 @@ Ext.onReady(function() {
 					column : 'documentCategoryTitle',
 					table : 'documentCategory'
 				}, {
-				    type : 'string',
+					type : 'string',
 					dataIndex : 'documentTitle',
 					column : 'documentTitle',
 					table : 'document'
 				}, {
-				    type : 'string',
+					type : 'string',
 					dataIndex : 'documentDesc',
 					column : 'documentDesc',
 					table : 'document'
 				}, {
-				    type : 'string',
+					type : 'string',
 					dataIndex : 'documentExtension',
 					column : 'documentExtension',
 					table : 'document'
@@ -247,7 +236,7 @@ Ext.onReady(function() {
 				} ]
 			});
 
-			var filtersList = new Ext.ux.grid.GridFilters( {
+			var filtersList = new Ext.ux.grid.GridFilters({
 				encode : encode,
 				local : false,
 				filters : [ {
@@ -256,17 +245,17 @@ Ext.onReady(function() {
 					column : 'documentCategoryTitle',
 					table : 'documentCategory'
 				}, {
-				    type : 'string',
+					type : 'string',
 					dataIndex : 'documentTitle',
 					column : 'documentTitle',
 					table : 'document'
 				}, {
-				    type : 'string',
+					type : 'string',
 					dataIndex : 'documentDesc',
 					column : 'documentDesc',
 					table : 'document'
 				}, {
-				    type : 'string',
+					type : 'string',
 					dataIndex : 'documentExtension',
 					column : 'documentExtension',
 					table : 'document'
@@ -299,10 +288,10 @@ Ext.onReady(function() {
 									callback : function(grid, record, action,
 											row, col) {
 										// Ext.MessageBox.alert('message',
-												// 'This is for update button');
+										// 'This is for update button');
 										formPanel.getForm().reset();
 										formPanel.form
-												.load( {
+												.load({
 													url : '../controller/documentController.php',
 													method : 'POST',
 													waitMsg : waitMessageLabel,
@@ -317,9 +306,10 @@ Ext.onReady(function() {
 														viewPort.items.get(1)
 																.expand();
 													},
-													failure : function(form,action) {
+													failure : function(form,
+															action) {
 														var title = "Message Failure";
-															
+
 														Ext.MessageBox
 																.alert(
 																		title,
@@ -335,7 +325,7 @@ Ext.onReady(function() {
 									callback : function(grid, record, action,
 											row, col) {
 										Ext.Msg
-												.show( {
+												.show({
 													title : deleteRecordTitleMessageLabel,
 													msg : deleteRecordMessageLabel,
 													icon : Ext.Msg.QUESTION,
@@ -344,41 +334,49 @@ Ext.onReady(function() {
 													fn : function(response) {
 														if ('yes' == response) {
 															Ext.Ajax
-																	.request( {
+																	.request({
 																		url : '../controller/documentController.php',
 																		params : {
 																			method : 'delete',
 																			documentId : record.data.documentId,
 																			leafId : leafId
 																		},
-																		success : function(response,options) {
-																			var x  = Ext.decode(response.responseText);
-																			var title  = 'Message';
-																			if(x.success == 'true'){
-																				title = title + ' Success';
+																		success : function(
+																				response,
+																				options) {
+																			var jsonResponse = Ext
+																					.decode(response.responseText);
+																			var title = 'Message';
+																			if (jsonResponse == true) {
+																				title = title
+																						+ ' Success';
 																			} else {
-																				title = title + ' Failure';
+																				title = title
+																						+ ' Failure';
 																			}
 																			Ext.MessageBox
 																					.alert(
 																							title,
-																							x.message);
-																			
+																							jsonResponse.message);
+
 																			store
 																					.reload();
 																			storeList
 																					.reload();
 																		},
-																		failure : function(response,options) {
+																		failure : function(
+																				response,
+																				options) {
 																			// critical
 																			// bug
 																			// extjs
-																			var x = Ext.decode(response.responseText);
+																			var jsonResponse = Ext
+																					.decode(response.responseText);
 																			var title = 'Message Failure';
 																			Ext.MessageBox
 																					.alert(
 																							title,
-																							x.message);
+																							jsonResponse.message);
 																		}
 																	});
 														}
@@ -401,10 +399,10 @@ Ext.onReady(function() {
 									callback : function(grid, record, action,
 											row, col) {
 										// Ext.MessageBox.alert('message',
-												// 'This is for update button');
+										// 'This is for update button');
 										formPanel.getForm().reset();
 										formPanel.form
-												.load( {
+												.load({
 													url : '../controller/documentController.php',
 													method : 'POST',
 													waitMsg : waitMessageLabel,
@@ -419,16 +417,17 @@ Ext.onReady(function() {
 														viewPort.items.get(1)
 																.expand();
 													},
-													failure : function(form,action) {
-														var title='Message Failure';
-														
+													failure : function(form,
+															action) {
+														var title = 'Message Failure';
+
 														Ext.MessageBox
 																.alert(
 																		title,
 																		action.result.message);
 													}
 												});
-												win.hide();
+										win.hide();
 									}
 								},
 								{
@@ -438,7 +437,7 @@ Ext.onReady(function() {
 									callback : function(grid, record, action,
 											row, col) {
 										Ext.Msg
-												.show( {
+												.show({
 													title : deleteRecordTitleMessageLabel,
 													msg : deleteRecordMessageLabel,
 													icon : Ext.Msg.QUESTION,
@@ -447,17 +446,20 @@ Ext.onReady(function() {
 													fn : function(response) {
 														if ('yes' == response) {
 															Ext.Ajax
-																	.request( {
+																	.request({
 																		url : '../controller/documentController.php',
 																		params : {
 																			method : 'delete',
 																			documentId : record.data.documentId,
 																			leafId : leafId
 																		},
-																		success : function(response,options) {
-																			var x  = Ext.decode(response.responseText);
-																			var title  = 'Message';
-																			if(x.success == 'true'){
+																		success : function(
+																				response,
+																				options) {
+																			var jsonResponse = Ext
+																					.decode(response.responseText);
+																			var title = 'Message';
+																			if (jsonResponse == true) {
 																				title = successLabel;
 																			} else {
 																				title = failureLabel;
@@ -469,15 +471,18 @@ Ext.onReady(function() {
 																			Ext.MessageBox
 																					.alert(
 																							title,
-																							x.message);
+																							jsonResponse.message);
 																		},
-																		failure : function(response,options) {
-																			var x  = Ext.decode(response.responseText);
+																		failure : function(
+																				response,
+																				options) {
+																			var jsonResponse = Ext
+																					.decode(response.responseText);
 																			var title = "Message Failure";
 																			Ext.MessageBox
 																					.alert(
 																							title,
-																							x.message);
+																							jsonResponse.message);
 																		}
 																	});
 														}
@@ -486,14 +491,14 @@ Ext.onReady(function() {
 									}
 								} ]
 					});
-					
+
 			var columnModel = [ new Ext.grid.RowNumberer(), this.action, {
 				dataIndex : 'NoDoc',
 				header : NoDocLabel,
 				sortable : true,
 				hidden : false
 			}, {
-			    dataIndex : 'documentTitle',
+				dataIndex : 'documentTitle',
 				header : documentTitleLabel,
 				sortable : true,
 				hidden : false
@@ -503,7 +508,7 @@ Ext.onReady(function() {
 				sortable : true,
 				hidden : false
 			}, {
-			    dataIndex : 'documentExtension',
+				dataIndex : 'documentExtension',
 				header : documentExtensionLabel,
 				sortable : true,
 				hidden : false
@@ -517,9 +522,9 @@ Ext.onReady(function() {
 				header : createTimeLabel,
 				sortable : true,
 				hidden : true,
-			    renderer : function(value) {
-			                       return Ext.util.Format.date(value, 'Y-m-d H:i:s');
-		                           }
+				renderer : function(value) {
+					return Ext.util.Format.date(value, 'Y-m-d H:i:s');
+				}
 			}, {
 				dataIndex : 'updatedBy',
 				header : updatedByLabel,
@@ -530,61 +535,61 @@ Ext.onReady(function() {
 				header : updatedTimeLabel,
 				sortable : true,
 				hidden : true,
-			    renderer : function(value) {
-			                       return Ext.util.Format.date(value, 'Y-m-d H:i:s');
-		                           }		
+				renderer : function(value) {
+					return Ext.util.Format.date(value, 'Y-m-d H:i:s');
+				}
 			} ];
 
 			var columnModelList = [ new Ext.grid.RowNumberer(),
-			this.actionList, {
-				dataIndex : 'NoDoc',
-				header : NoDocLabel,
-				sortable : true,
-				hidden : false
-			}, {
-			    dataIndex : 'documentTitle',
-				header : documentTitleLabel,
-				sortable : true,
-				hidden : false
-			}, {
-				dataIndex : 'documentDesc',
-				header : documentDescLabel,
-				sortable : true,
-				hidden : false
-			}, {
-			    dataIndex : 'documentExtension',
-				header : documentExtensionLabel,
-				sortable : true,
-				hidden : false
-			}, {
-				dataIndex : 'createBy',
-				header : createByLabel,
-				sortable : true,
-				hidden : true
-			}, {
-				dataIndex : 'createTime',
-				header :  createTimeLabel,
-				sortable : true,
-				hidden : true,
-			    renderer : function(value) {
-			                       return Ext.util.Format.date(value, 'Y-m-d H:i:s');
-		                           }		
-			}, {
-				dataIndex : 'updatedBy',
-				header : updatedByLabel,
-				sortable : true,
-				hidden : true
-			}, {
-				dataIndex : 'updatedTime',
-				header : updatedTimeLabel,
-				sortable : true,
-				hidden : true,
-			    renderer : function(value) {
-			                       return Ext.util.Format.date(value, 'Y-m-d H:i:s');
-		                           }		
-			} ];
+					this.actionList, {
+						dataIndex : 'NoDoc',
+						header : NoDocLabel,
+						sortable : true,
+						hidden : false
+					}, {
+						dataIndex : 'documentTitle',
+						header : documentTitleLabel,
+						sortable : true,
+						hidden : false
+					}, {
+						dataIndex : 'documentDesc',
+						header : documentDescLabel,
+						sortable : true,
+						hidden : false
+					}, {
+						dataIndex : 'documentExtension',
+						header : documentExtensionLabel,
+						sortable : true,
+						hidden : false
+					}, {
+						dataIndex : 'createBy',
+						header : createByLabel,
+						sortable : true,
+						hidden : true
+					}, {
+						dataIndex : 'createTime',
+						header : createTimeLabel,
+						sortable : true,
+						hidden : true,
+						renderer : function(value) {
+							return Ext.util.Format.date(value, 'Y-m-d H:i:s');
+						}
+					}, {
+						dataIndex : 'updatedBy',
+						header : updatedByLabel,
+						sortable : true,
+						hidden : true
+					}, {
+						dataIndex : 'updatedTime',
+						header : updatedTimeLabel,
+						sortable : true,
+						hidden : true,
+						renderer : function(value) {
+							return Ext.util.Format.date(value, 'Y-m-d H:i:s');
+						}
+					} ];
 
-			var grid = new Ext.grid.GridPanel( {
+			var grid = new Ext.grid.GridPanel({
 				border : false,
 				store : store,
 				autoHeight : false,
@@ -592,7 +597,7 @@ Ext.onReady(function() {
 				columns : columnModel,
 				loadMask : true,
 				plugins : [ this.action, filters ],
-				sm : new Ext.grid.RowSelectionModel( {
+				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true
 				}),
 				viewConfig : {
@@ -603,7 +608,7 @@ Ext.onReady(function() {
 				listeners : {
 					render : {
 						fn : function() {
-							store.load( {
+							store.load({
 								params : {
 									start : 0,
 									limit : perPage,
@@ -615,14 +620,14 @@ Ext.onReady(function() {
 						}
 					}
 				},
-				bbar : new Ext.PagingToolbar( {
+				bbar : new Ext.PagingToolbar({
 					store : store,
 					pageSize : perPage,
 					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
 				})
 			});
 
-			var gridList = new Ext.grid.GridPanel( {
+			var gridList = new Ext.grid.GridPanel({
 				border : false,
 				store : storeList,
 				autoHeight : false,
@@ -630,7 +635,7 @@ Ext.onReady(function() {
 				columns : columnModelList,
 				loadMask : true,
 				plugins : [ this.actionList, filtersList ],
-				sm : new Ext.grid.RowSelectionModel( {
+				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true
 				}),
 				viewConfig : {
@@ -641,7 +646,7 @@ Ext.onReady(function() {
 				listeners : {
 					render : {
 						fn : function() {
-							storeList.load( {
+							storeList.load({
 								params : {
 									start : 0,
 									limit : perPage,
@@ -653,7 +658,7 @@ Ext.onReady(function() {
 						}
 					}
 				},
-				bbar : new Ext.PagingToolbar( {
+				bbar : new Ext.PagingToolbar({
 					store : storeList,
 					pageSize : perPage,
 					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
@@ -680,7 +685,7 @@ Ext.onReady(function() {
 										viewPort.items.get(1).expand();
 									}
 								},
-							
+
 								{
 									text : excelToolbarLabel,
 									iconCls : 'page_excel',
@@ -688,7 +693,7 @@ Ext.onReady(function() {
 									disabled : pagePrint,
 									handler : function() {
 										Ext.Ajax
-												.request( {
+												.request({
 													url : '../controller/documentController.php?method=report&mode=excel&limit='
 															+ perPage
 															+ '&leafId='
@@ -696,17 +701,17 @@ Ext.onReady(function() {
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
+														jsonResponse = Ext
 																.decode(response.responseText);
-														if (x.success == 'true') {
-															// Ext.MessageBox.alert('SYSTEM',x.message);
+														if (jsonResponse == true) {
+															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 															window
 																	.open("../document/document/excel/document.xlsx");
 														} else {
 															Ext.MessageBox
 																	.alert(
-																			'SYSTEM',
-																			x.message);
+																			systemLabel,
+																			jsonResponse.message);
 														}
 
 													}
@@ -751,55 +756,13 @@ Ext.onReady(function() {
 									}
 								},
 								{
-									text : printerToolbarLabel,
-									iconCls : 'printer',
-									id : 'printerList',
-									disabled : pagePrintList,
-									handler : function() {
-										Ext.ux.GridPrinter.print(grid);
-									}
-								},
-								{
-									text : wordToolbarLabel,
-									iconCls : 'page_word',
-									id : 'page_wordList',
-									disabled : pagePrintList,
-									handler : function() {
-										Ext.Ajax
-												.request( {
-													url : '../controller/documentController.php?method=report&mode=word&limit='
-															+ perPage
-															+ '&leafId='
-															+ leafId,
-													method : 'GET',
-													success : function(
-															response, options) {
-														x = Ext
-																.decode(response.responseText);
-														if (x.success == true) {
-															// Ext.MessageBox.alert('SYSTEM',x.message);
-															window
-																	.open("../ketetapan/document/word/document.docx");
-														} else {
-															Ext.MessageBox
-																	.alert(
-																			systemFailureLabel,
-																			x.message);
-														}
-
-													}
-
-												});
-									}
-								},
-								{
 									text : excelToolbarLabel,
 									iconCls : 'page_excel',
 									id : 'page_excelList',
 									disabled : pagePrintList,
 									handler : function() {
 										Ext.Ajax
-												.request( {
+												.request({
 													url : '../controller/documentController.php?method=report&mode=excel&limit='
 															+ perPage
 															+ '&leafId='
@@ -807,54 +770,41 @@ Ext.onReady(function() {
 													method : 'GET',
 													success : function(
 															response, options) {
-														x = Ext
+														jsonResponse = Ext
 																.decode(response.responseText);
-														if (x.success == 'true') {
-															// Ext.MessageBox.alert('SYSTEM',x.message);
+														if (jsonResponse == true) {
+															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 															window
-																	.open("../ketetapan/document/excel/document.xlsx");
+																	.open("../document/excel/document.xlsx");
 														} else {
 															Ext.MessageBox
 																	.alert(
-																			'SYSTEM',
-																			x.message);
+																			systemErrorLabel,
+																			jsonResponse.message);
 														}
 
 													}
 
 												});
 									}
-								},
-								{
-									text : PDFToolbarLabel,
-									iconCls : 'page_white_acrobat',
-									id : 'page_white_acrobatList',
-									disabled : pagePrint,
-									handler : function() {
-										window.location
-												.replace('../controller/documentController.php?method=report&mode=pdf&limit='
-														+ perPage
-														+ '&leafId='
-														+ leafId);
-									}
 								} ]
 					});
-			var gridPanel = new Ext.Panel( {
+			var gridPanel = new Ext.Panel({
 				title : leafNote,
 				height : 50,
 				layout : 'fit',
 				iconCls : 'application_view_detail',
-				tbar : [toolbarPanel],
-                items : [grid]
+				tbar : [ toolbarPanel ],
+				items : [ grid ]
 			});
-            
-			var docN = new Ext.ux.form.ComboBoxMatch( {
-				labelAlign  : 'left',
-				fieldLabel  : 'Dokument ID <span style="color: red;">*</span>',
-				name 		: 'documentCategoryId',
-				valueField 	: 'documentCategoryId',
-				hiddenName	: 'documentCategoryId',
-				id 			: 'documentCategory',
+
+			var docN = new Ext.ux.form.ComboBoxMatch({
+				labelAlign : 'left',
+				fieldLabel : 'Dokument ID <span style="color: red;">*</span>',
+				name : 'documentCategoryId',
+				valueField : 'documentCategoryId',
+				hiddenName : 'documentCategoryId',
+				id : 'documentCategory',
 				displayField : 'IdDoc',
 				typeAhead : false,
 				emptyText : 'Sila Pilih Dokument ID',
@@ -865,7 +815,7 @@ Ext.onReady(function() {
 				selectOnFocus : true,
 				allowBlank : false,
 				blankText : blankTextLabel,
-                createValueMatcher : function(value) {
+				createValueMatcher : function(value) {
 					value = String(value).replace(/\s*/g, '');
 					if (Ext.isEmpty(value, false)) {
 						return new RegExp('^');
@@ -875,22 +825,22 @@ Ext.onReady(function() {
 					return new RegExp('\\b(' + value + ')', 'i');
 				}
 			});
-			
-			var documentDesc		  = 	new Ext.form.TextField({
-			        labelAlign  :	'left',
-			        fieldLabel  :	'Penerangan',
-			        hiddenName  :	'documentDesc',
-			        name		:	'documentDesc',
-					allowBlank  :   false,
-				    blankText   :   blankTextLabel,
-			        anchor      :	'95%'
-		        });
-			
-			var documentId = new Ext.form.Hidden( {
-				name : 'documentId',
-				id: 'documentId'
+
+			var documentDesc = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : 'Penerangan',
+				hiddenName : 'documentDesc',
+				name : 'documentDesc',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				anchor : '95%'
 			});
-			
+
+			var documentId = new Ext.form.Hidden({
+				name : 'documentId',
+				id : 'documentId'
+			});
+
 			var firstRecord = new Ext.form.Hidden({
 				name : 'firstRecord',
 				id : 'firstRecord'
@@ -909,107 +859,127 @@ Ext.onReady(function() {
 				name : 'lastRecord',
 				id : 'lastRecord'
 			});
-			
-			var formPanel = new Ext.FormPanel({ 
-			method		:  	'post',
-			id			:	'formPanel',
-			url			: 	'../controller/documentController.php',
-			title       : 	leafNote,
-        	border      : 	false,
-            width		: 	600,       
-	        fileUpload	: 	true,
-	        frame		: 	true,    		
-			autoheight	:	true,
-	        bodyStyle	: 	'padding: 10px 10px 0 10px;',
-	        labelWidth	: 	60,
-	        buttonVAlign: 	'top',
-			buttonAlign	: 	'left',
-	        defaults	: 	{
-	            anchor		: '95%',           
-	            msgTarget	: 'side'
-	        },
-	        iconCls		:	'application_form',
-	        bbar		: 	new Ext.ux.StatusBar({
-				  id: 'form-statusbar',
 
-				defaultText	:	'Ready',
-				plugins		: 	new Ext.ux.ValidationStatus({form:'formPanel'})
-			}),
-	        items: [
-			docN, documentDesc, documentId,
-			{
-	            xtype		: 'fileuploadfield',
-	            id			: 'form-file',
-	            emptyText	: 'Sila pilih Dokumen',
-	            fieldLabel	: 'Dokumen',
-	            name		: 'docname',
-	            allowBlank	:	false,
-				blankText	:	blankTextLabel,
-	            buttonCfg	: {
-		                text	: '',
-		                iconCls	: 'bullet_disk'
-	            }
-	        }],
-	        buttons: [{
-	            text: uploadButtonLabel,
-	            iconCls	:	'bullet_disk',
-	            handler: function(){
-	                if(formPanel.getForm().isValid()){
-	                	if(formPanel.getForm().isValid()) {
-	                	formPanel.getForm().submit({
-		                waitMsg  : waitMessageLabel,
-		                params	 :	{ method:'upload', leafId:leafId }, 
-		                success  : function(formPanel,o){
-	                		    	Ext.MessageBox.alert(systemLabel);
-		                            // formPanel.getForm().reset();
-		                        	store.reload();
-		                        	viewPort.items.get(0).expand();
-		                    },
-						failure: function(formPanel,o){							 
-								  Ext.MessageBox.alert(loadFailureMessageLabel);    
-								} 
-								});
-								}}
-								}
-								},{ 	
-									text 	: 	newButtonLabel,
-									type	:	'button',
-									iconCls	:	'add',
-									handler	: 	function(){ 
-										formPanel.getForm().reset(); 
-									} 
-							   },{ 	
-									text 	: 	resetButtonLabel,
-									type	:	'reset',
-									iconCls	:	'table_refresh',
-									handler	: 	function(){ 
-										formPanel.getForm().reset(); 
-									} 
-						        },{ 	
-									text 	: 	 listButtonLabel,
-									type	:	'button',
-									iconCls	:   'table',
-									handler	: 	function(){  
-						        	if(win){
-						        		 win.show().center();
-						        	   }
-						            } 
-								},{ 	
-									text 	: 	cancelButtonLabel,
-									type	:	'button',
-									iconCls	:	'delete',
-									handler	: 	function(){ 
-									    if(win){
-									    	win.hide();
-									    }
-									    formPanel.getForm().reset();
+			var formPanel = new Ext.FormPanel(
+					{
+						method : 'post',
+						id : 'formPanel',
+						url : '../controller/documentController.php',
+						title : leafNote,
+						border : false,
+						width : 600,
+						fileUpload : true,
+						frame : true,
+						autoheight : true,
+						bodyStyle : 'padding: 10px 10px 0 10px;',
+						labelWidth : 60,
+						buttonVAlign : 'top',
+						buttonAlign : 'left',
+						defaults : {
+							anchor : '95%',
+							msgTarget : 'side'
+						},
+						iconCls : 'application_form',
+						bbar : new Ext.ux.StatusBar({
+							id : 'form-statusbar',
+
+							defaultText : 'Ready',
+							plugins : new Ext.ux.ValidationStatus({
+								form : 'formPanel'
+							})
+						}),
+						items : [ docN, documentDesc, documentId, {
+							xtype : 'fileuploadfield',
+							id : 'form-file',
+							emptyText : 'Sila pilih Dokumen',
+							fieldLabel : 'Dokumen',
+							name : 'docname',
+							allowBlank : false,
+							blankText : blankTextLabel,
+							buttonCfg : {
+								text : '',
+								iconCls : 'bullet_disk'
+							}
+						} ],
+						buttons : [
+								{
+									text : uploadButtonLabel,
+									iconCls : 'bullet_disk',
+									handler : function() {
+										if (formPanel.getForm().isValid()) {
+											if (formPanel.getForm().isValid()) {
+												formPanel
+														.getForm()
+														.submit(
+																{
+																	waitTitle:waitMessageLabel,
+																	waitMsg : waitMessageLabel,
+																	params : {
+																		method : 'upload',
+																		leafId : leafId
+																	},
+																	success : function(
+																			formPanel,
+																			o) {
+																		Ext.MessageBox
+																				.alert(systemLabel);
+																		// formPanel.getForm().reset();
+																		store
+																				.reload();
+																		viewPort.items
+																				.get(
+																						0)
+																				.expand();
+																	},
+																	failure : function(
+																			formPanel,
+																			o) {
+																		Ext.MessageBox
+																				.alert(loadFailureMessageLabel);
+																	}
+																});
+											}
+										}
+									}
+								}, {
+									text : newButtonLabel,
+									type : 'button',
+									iconCls : 'add',
+									handler : function() {
+										formPanel.getForm().reset();
+									}
+								}, {
+									text : resetButtonLabel,
+									type : 'reset',
+									iconCls : 'table_refresh',
+									handler : function() {
+										formPanel.getForm().reset();
+									}
+								}, {
+									text : listButtonLabel,
+									type : 'button',
+									iconCls : 'table',
+									handler : function() {
+										if (win) {
+											win.show().center();
+										}
+									}
+								}, {
+									text : cancelButtonLabel,
+									type : 'button',
+									iconCls : 'delete',
+									handler : function() {
+										if (win) {
+											win.hide();
+										}
+										formPanel.getForm().reset();
 										store.reload();
-											viewPort.items.get(0).expand();
-									} 
-					        }]
-	    });
-		
-			var win = new Ext.Window( {
+										viewPort.items.get(0).expand();
+									}
+								} ]
+					});
+
+			var win = new Ext.Window({
 				tbar : toolbarPanelList,
 				items : [ gridList ],
 				title : leafNote,
@@ -1019,7 +989,7 @@ Ext.onReady(function() {
 				width : 500,
 				autoScroll : true
 			});
-			var viewPort = new Ext.Viewport( {
+			var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',
 				layout : 'accordion',

@@ -278,7 +278,7 @@ class staffModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setStaffId($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			$this->staffId = $value;
 		} else if ($type=='array'){
 			$this->staffId[$key]=$value;
@@ -289,7 +289,7 @@ class staffModel extends validationClass{
 	 * @return integer groupId
 	 */
 	public function getStaffId($key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 			return $this->staffId;
 		} else if ($type=='array'){
 			return $this->staffId[$key];
@@ -401,7 +401,7 @@ class staffModel extends validationClass{
 		return $this->staffIc;
 	}
 	public function setIsDefault($value,$key=NULL,$type=NULL) {
-		if($type=='string'){
+		if($type=='single'){
 
 			$this->isDefault = $value;
 		} else if ($type=='array') {
