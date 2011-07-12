@@ -34,7 +34,7 @@ function execute(){
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['defaultLabelId'])){
-			$this->setdefaultLabelId($this->strict($_POST['defaultLabelId'],'numeric'),'','string');
+			$this->setdefaultLabelId($this->strict($_POST['defaultLabelId'],'numeric'),'','single');
 		}
 		if(isset($_POST['defaultLabelSequence'])){
 			$this->setdefaultLabelSequence($this->strict($_POST['defaultLabelSequence'],'memo'));

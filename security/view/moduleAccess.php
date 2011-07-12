@@ -25,7 +25,7 @@ if($_SESSION[$theme]) { ?>
 <script  type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
 <script  type="text/javascript"
-	src="../javascript/tabAccess.js"></script>
+	src="../javascript/moduleAccess.js"></script>
 </html>
 
 

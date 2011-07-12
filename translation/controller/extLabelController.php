@@ -17,8 +17,8 @@ require_once("../model/extLabelModel.php");
 class extLabelClass extends  configClass {
 	/*
 	 * Connection to the database
-	* @var string $excel
-	*/
+	 * @var string $excel
+	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
@@ -125,7 +125,7 @@ class extLabelClass extends  configClass {
 
 	/* (non-PHPdoc)
 	 * @see config::create()
-	*/
+	 */
 	function create() 							{
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
@@ -140,25 +140,19 @@ class extLabelClass extends  configClass {
 			$sql="
 			INSERT INTO `extLabel`
 					(
-						`tabId`,							`iconId`,
-						`extLabelSequence`,					`extLabelCode`,
-						`extLabelPath`,						`extLabelNote`,
-						`isDefault`,						`isNew`,
-						`isDraft`,							`isUpdate`,
-						`isDelete`,							`isActive`,
-						`isApproved`,						`By`,
-						`Time`
+						`extLabelNote`,						`isDefault`,
+						`isNew`,							`isDraft`,
+						`isUpdate`,							`isDelete`,
+						`isActive`,							`isApproved`,
+						`By`,								`Time`
 					)
 			VALUES
 					(
-						\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
-						\"".$this->model->getextLabelSequence()."\", 				\"".$this->model->getextLabelCode()."\",
-						\"".$this->model->getextLabelPath()."\"	,				\"".$this->model->getextLabelNote()."\",
-						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
-						\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
-						\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-						\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault('','single')."\",
+						\"" . $this->model->getIsNew('','single') . "\",		\"" . $this->model->getIsDraft('','single') . "\",
+						\"" . $this->model->getIsUpdate('','single') . "\",		\"" . $this->model->getIsDelete('','single') . "\",
+						\"" . $this->model->getIsActive('','single') . "\",		\"" . $this->model->getIsApproved('','single') . "\",
+						\"" . $this->model->getBy() . "\",						" . $this->model->getTime() . "
 
 
 					);";
@@ -166,48 +160,39 @@ class extLabelClass extends  configClass {
 			$sql="
 			INSERT INTO [extLabel]
 					(
-						[tabId],							[iconId],
-						[extLabelSequence],					[extLabelCode],
-						[extLabelPath],						[extLabelNote],
-						[isDefault],						[isNew],
-						[isDraft],							[isUpdate],
-						[isDelete],							[isActive],
-						[isApproved],						[By],
-						[Time]
+						[extLabelNote],						[isDefault],
+						[isNew],							[isDraft],
+						[isUpdate],							[isDelete],
+						[isActive],							[isApproved],
+						[By],								[Time]
 				)
 			VALUES
 				(
-						\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
-						\"".$this->model->getextLabelSequence()."\", 				\"".$this->model->getextLabelCode()."\",
-						\"".$this->model->getextLabelPath()."\"	,				\"".$this->model->getextLabelNote()."\",
-						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
-						\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
-						\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-						\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault('','single')."\",
+						\"" . $this->model->getIsNew('','single') . "\",		\"" . $this->model->getIsDraft('','single') . "\",
+						\"" . $this->model->getIsUpdate('','single') . "\",		\"" . $this->model->getIsDelete('','single') . "\",
+						\"" . $this->model->getIsActive('','single') . "\",		\"" . $this->model->getIsApproved('','single') . "\",
+						\"" . $this->model->getBy() . "\",						" . $this->model->getTime() . "
+
 
 					);";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			INSERT INTO 	\"extLabel\"
 						(
-							\"tabId\",							\"iconId\",
-							\"extLabelSequence\",					\"extLabelCode\",
-							\"extLabelPath\",						\"extLabelNote\",
-							\"isDefault\",						\"isNew\",
-							\"isDraft\",						\"isUpdate\",
-							\"isDelete\",						\"isActive\",
-							\"isApproved\",						\"By\",
-							\"Time\"
-				VALUES	(
-							\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
-							\"".$this->model->getextLabelSequence()."\", 				\"".$this->model->getextLabelCode()."\",
-							\"".$this->model->getextLabelPath()."\"	,				\"".$this->model->getextLabelNote()."\",
-							\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
-							\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
-							\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-							\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
-							" . $this->model->getTime() . "
+							\"extLabelNote\",					\"isDefault\",
+							\"isNew\",							\"isDraft\",
+							\"isUpdate\",						\"isDelete\",
+							\"isActive\",						\"isApproved\",
+							\"By\",								\"Time\"
+
+						)	VALUES	(
+								\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault('','single')."\",
+						\"" . $this->model->getIsNew('','single') . "\",		\"" . $this->model->getIsDraft('','single') . "\",
+						\"" . $this->model->getIsUpdate('','single') . "\",		\"" . $this->model->getIsDelete('','single') . "\",
+						\"" . $this->model->getIsActive('','single') . "\",		\"" . $this->model->getIsApproved('','single') . "\",
+						\"" . $this->model->getBy() . "\",						" . $this->model->getTime() . "
+
 
 					)";
 		}
@@ -223,141 +208,15 @@ class extLabelClass extends  configClass {
 		}
 
 		$lastId    = $this->q->lastInsertId();
-		//  create a record  in extLabelAccess.update no effect
-		// loop the group
-		if ($this->getVendor() == self::mysql) {
-			$sql = "
-					SELECT 	*
-					FROM 	`group`
-					WHERE 	`isActive`	=	1 ";
-		} else if ($this->q->vendor == 'microsoft') {
-			$sql = "
-					SELECT 	*
-					FROM 	[group]
-					WHERE 	[isActive]	=	1 ";
-		} else if ($this->q->vendor == 'oracle') {
-			$sql = "
-					SELECT 	*
-					FROM 	\"group\"
-					WHERE 	`\"isActive\"	=	1 ";
-		}
-		$this->q->read($sql);
-		if ($this->q->execute == 'fail') {
-			echo json_encode(array(
-		                "success" => false,
-		                "message" => $this->q->responce
-			));
-			exit();
-		}
-		$data = $this->q->activeRecord();
-
-		foreach ($data as $row) {
-			/**
-			 *	By Default  No Access
-			 **/
-			echo		$sqlLooping.="(
-									\"" . $lastId . "\",
-									 \"" . $row['groupId'] . "\",
-									 \"0\"
-								),";
 
 
-
-
-
-		}
-		if ($this->getVendor() == self::mysql) {
-			$sql = "
-						INSERT INTO	`extLabelAccess`
-								(
-									`extLabelId`,
-									`groupId`,
-									`extLabelAccessValue`
-								) VALUES";
-		} else if ($this->getVendor() ==  self::mssql) {
-			$sql = "
-						INSERT INTO	[extLabelAccess]
-								(
-									[extLabelId],
-									[groupId],
-									[extLabelAccessValue]
-							) VALUES";
-		} else if ($this->getVendor() == self::oracle) {
-			$sql = "
-						INSERT INTO	\"extLabelAccess\"
-								(
-									\"extLabelId\",
-									\"groupId\",
-									\"extLabelAccessValue\"
-							) VALUES";
-		}
-		// optimize to 1 Query
-		// remove last comma
-		$sqlLooping = substr($sqlLooping,0,-1);
-		// combine SQL Statement
-		$sql.=$sqlLooping;
-		$this->q->update($sql);
-		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-			exit();
-		}
-
-
-		/**
-		*	 insert default value to detail extLabelle .English only
-		**/
-		if ($this->getVendor() == self::mysql) {
-			$sql = "
-				 	INSERT INTO `extLabelTranslate`
-				 		(
-						 	`extLabelId`,
-						 	`languageId`,
-							`extLabelTranslate`
-						) VALUES (
-							\"" . $lastId . "\",
-							21,
-							\"" . $this->model->getextLabelNote() . "\"
-						);";
-		} else if ($this->getVendor() ==  self::mssql) {
-			$sql = "
-				 	INSERT INTO  [extLabelTranslate]
-							(
-							 	[extLabelId],
-								[languageId],
-								[extLabelTranslate]
-							) VALUES (
-								\"" . $lastId . "\",
-								21,
-								\"" .  $this->model->getextLabelNote() . "\"
-							);";
-		} else if ($this->getVendor() == self::oracle) {
-			$sql = "
-				 	INSERT INTO	\"extLabelTranslate\"
-							(
-							 	\"extLabelId\",
-								\"languageId\",
-								\"extLabelTranslate\"
-							) VALUES (
-								\"" . $lastId . "\",
-								21,
-								\"" .  $this->model->getextLabelNote() . "\"
-							);";
-		}
-		$this->q->create($sql);
-		if ($this->q->execute == 'fail') {
-			echo json_encode(array(
-		                "success" => false,
-		                "message" => $this->q->responce
-			));
-			exit();
-		}
 		$this->q->commit();
 		echo json_encode(array("success"=>true,"extLabelId"=>$lastId,"message"=>"Record Created"));
 		exit();
 	}
 	/* (non-PHPdoc)
 	 * @see config::read()
-	*/
+	 */
 	function read() 							{
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
@@ -390,12 +249,7 @@ class extLabelClass extends  configClass {
 			$sql="
 			SELECT 		*
 			FROM 		`extLabel`
-			JOIN 		`tab`
-			ON			`tab`.`tabId` = `extLabel`.`tabId`
-			LEFT JOIN	`icon`
-			ON			`extLabel`.`iconId`=`icon`.`iconId`
-			WHERE		`tab`.`isActive`	=	1
-			AND			`extLabel`.`isActive`		=	1";
+			WHERE		`extLabel`.`isActive`		=	1";
 			if($this->model->getextLabelId('','single')) {
 				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getextLabelId('','single')."\"";
 			}
@@ -403,12 +257,6 @@ class extLabelClass extends  configClass {
 			$sql	=	"
 			SELECT 		*
 			FROM 		[extLabel]
-			JOIN		[extLabelTranslate]
-			JOIN 		[tab]
-			ON			[tab].[tabId] = [extLabel].[tabId]
-			LEFT JOIN	[icon]
-			ON			[extLabel].[iconId]=[icon].[iconId]
-			WHERE		[tab].[isActive]	=	1
 			AND			[extLabel].[isActive]		=	1";
 			if($this->model->getextLabelId('','single')) {
 				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getextLabelId('','single')."\"";
@@ -417,12 +265,7 @@ class extLabelClass extends  configClass {
 			$sql	=	"
 			SELECT 		*
 			FROM 		\"extLabel\"
-			JOIN 		\"tab\"
-			ON			\"tab\".\"tabId\" = \"extLabel\".\"tabId\"
-			LEFT JOIN	\"icon\"
-			USING(\"iconId\")
-			WHERE		\"tab\".\"isActive\"=1
-			AND			\"extLabel\".\"isActive\"=1";
+			WHERE		\"extLabel\".\"isActive\"=1";
 			if($this->model->getextLabelId('','single')) {
 				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getextLabelId('','single')."\"";
 			}
@@ -432,12 +275,12 @@ class extLabelClass extends  configClass {
 		 *  E.g  $filterArray=array('`leaf`.`leafId`');
 		 *  @variables $filterArray;
 		 */
-		$filterArray =array('tabId','tabTranslateId','extLabelId','extLabelTranslateId');
+		$filterArray =array('extLabelId');
 		/**
 		 *	filter table
 		 * @variables $tableArray
 		 */
-		$tableArray = array('tab','tabTranslate','extLabel','extLabelTranslate');
+		$tableArray = array('extLabel');
 
 	 if ($this->getFieldQuery()) {
 	 	if ($this->getVendor() == self::mysql) {
@@ -507,20 +350,13 @@ class extLabelClass extends  configClass {
 								[extLabel].[Time]
 								ROW_NUMBER() OVER (ORDER BY [extLabelId]) AS 'RowNumber'
 								FROM 		[extLabel]
-
-								JOIN 		[tab]
-								ON			[tab].[tabId` = `extLabel`.`tabId`
-
-								LEFT JOIN	[icon]
-								ON			[extLabel].[iconId]=[icon].[iconId]
-								WHERE		[tab].[isActive]	=	1
-								AND			[extLabel].[isActive]		=	1  ".$tempSql.$tempSql2."
+								WHERE		[extLabel].[isActive]		=	1  ".$tempSql.$tempSql2."
 							)
 							SELECT		*
 							FROM 		[extLabelDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	".$_POST['start']."
-							AND 			".($_POST['start']+$_POST['limit']-1).";";
+							BETWEEN		".$_POST['start']."
+							AND 		".($_POST['start']+$_POST['limit']-1).";";
 
 
 				}  else if ($this->getVendor()==self::oracle) {
@@ -534,21 +370,9 @@ class extLabelClass extends  configClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT 		*,
-												\"extLabel\".\"By\",
-												\"extLabel\".\"Time\"
+									SELECT 		*
 									FROM 		\"extLabel\"
-									JOIN		\"extLabelTranslate\"
-									ON			\"extLabel\".\"extLabelId\"	=\"extLabelTranslate\".\"extLabelId\"
-									JOIN 		\"tab\"
-									ON			\"tab\".\"tabId\" = \"extLabel\".\"tabId\"
-									JOIN		\"tabTranslate\"
-									ON			\"tab\".\"tabId\"=	\"tabTranslate\".\"tabId\"
-									AND			\"tabTranslate\".\"tabId\" =\"extLabel\".\"tabId\"
-									LEFT JOIN	\"icon\"
-									ON			\"extLabel\".\"iconId\"=\"icon\".\"iconId\"
-									WHERE		\"tab\".\"isActive\"=1
-									AND			\"extLabel\".\"isActive\"=1 ".$tempSql.$tempSql2.$orderBy."
+									WHERE		\"extLabel\".\"isActive\"=1 ".$tempSql.$tempSql2.$orderBy."
 								 ) a
 						where rownum <= \"".($_POST['start']+$_POST['limit']-1)."\" )
 						where r >=  \"".$_POST['start']."\"";
@@ -561,7 +385,7 @@ class extLabelClass extends  configClass {
 
 		/*
 		 *  Only Execute One Query
-		*/
+		 */
 		if(!($this->extLabelId)) {
 
 			$this->q->read($sql);
@@ -613,7 +437,7 @@ class extLabelClass extends  configClass {
 
 	/* (non-PHPdoc)
 	 * @see config::update()
-	*/
+	 */
 	function update() 							{
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
@@ -627,18 +451,13 @@ class extLabelClass extends  configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE 	`extLabel`
-					SET 	`tabId`				=	\"".$this->model->getTabId()."\",
-							`extLabelNote`		=	\"".$this->model->getextLabelNote()."\",
-							`extLabelSequence`	=	\"".$this->model->getextLabelSequence()."\",
-							`extLabelCode`		=	\"".$this->model->getextLabelCode()."\",
-							`extLabelPath`		=	\"".$this->model->getextLabelPath()."\",
-							`iconId`			=	\"".$this->model->getIconId()."\",
+					SET 	`extLabelNote`		=	\"".$this->model->getextLabelNote()."\",
 							`isDefault`			=	\"".$this->model->getIsDefault('','single')."\",
-							`isActive`			=	\"".$this->model->getIsActive('','single')."\",
 							`isNew`				=	\"".$this->model->getIsNew('','single')."\",
 							`isDraft`			=	\"".$this->model->getIsDraft('','single')."\",
 							`isUpdate`			=	\"".$this->model->getIsUpdate('','single')."\",
 							`isDelete`			=	\"".$this->model->getIsDelete('','single')."\",
+							`isActive`			=	\"".$this->model->getIsActive('','single')."\",
 							`isApproved`		=	\"".$this->model->getIsApproved('','single')."\",
 							`By`				=	\"".$this->model->getBy()."\",
 							`Time`				=	".$this->model->getTime()."
@@ -646,16 +465,13 @@ class extLabelClass extends  configClass {
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[extLabel]
-					SET 	[tabId]		=	\"".$this->model->getTabId()."\",
-							[extLabelNote]		=	\"".$this->model->getextLabelNote()."\",
-							[extLabelSequence]	=	\"".$this->model->getextLabelSequence()."\",
-							[extLabelPath]		=	\"".$this->model->getextLabelPath()."\",
-							[iconId]			=	\"".$this->strict($_POST['iconId'],'string')."\",
-							[isActive]			=	\"".$this->model->getIsActive('','single')."\",
+					SET 	[extLabelNote]		=	\"".$this->model-> getExtLabelNote()."\",
+							[isDefault]			=	\"".$this->model->getIsDefault('','single')."\",
 							[isNew]				=	\"".$this->model->getIsNew('','single')."\",
 							[isDraft]			=	\"".$this->model->getIsDraft('','single')."\",
 							[isUpdate]			=	\"".$this->model->getIsUpdate('','single')."\",
 							[isDelete]			=	\"".$this->model->getIsDelete('','single')."\",
+							[isActive]			=	\"".$this->model->getIsActive('','single')."\",
 							[isApproved]		=	\"".$this->model->getIsApproved('','single')."\",
 							[By]				=	\"".$this->model->getBy()."\",
 							[Time]				=	".$this->model->getTime()."
@@ -663,16 +479,13 @@ class extLabelClass extends  configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	\"extLabel\"
-					SET 	\"tabId\"		=	\"".$this->model->getTabId()."\",
-							\"extLabelNote\"		=	\"".$this->model->getextLabelNote()."\",
-							\"extLabelSequence\"	=	\"".$this->model->getextLabelSequence()."\",
-							\"extLabelPath\"		=	\"".$this->model->getextLabelPath()."\",
+					SET 	\"extLabelNote\"		=	\"".$this->model->getextLabelNote()."\",
 							\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
-							\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
 							\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
 							\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",
 							\"isUpdate\"		=	\"".$this->model->getIsUpdate('','single')."\",
 							\"isDelete\"		=	\"".$this->model->getIsDelete('','single')."\",
+							\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
 							\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
 							\"By\"				=	\"".$this->model->getBy()."\",
 							\"Time\"			=	".$this->model->getTime()."
@@ -691,7 +504,7 @@ class extLabelClass extends  configClass {
 	}
 	/* (non-PHPdoc)
 	 * @see config::delete()
-	*/
+	 */
 	function delete()							{
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
@@ -755,242 +568,14 @@ class extLabelClass extends  configClass {
 
 	}
 
-	/**
-	 *  Read Record From tabTranslate Table
-	 **/
-	function translateRead() {
-		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
-			/**
-			 *	UTF 8
-			 **/
-			$sql	=	"SET NAMES \"utf8\"";
-			$this->q->fast($sql);
 
-		}
-		if( $this->q->vendor='mysql'){
-			$sql="
-			SELECT	*
-			FROM 	`extLabelTranslate`
-			JOIN 	`language`
-			USING (`languageId`)
-			WHERE	`extLabelTranslate`.`extLabelId`=\"".$this->model->getextLabelId()."\"";
-		} else if ($this->getVendor()==self::mssql){
-			$sql="
-			SELECT	*
-			FROM 	[tabTranslate]
-			JOIN 	[language]
-			ON 		[extLabelTranslate].[languageId] =[language].[languageId]
-			WHERE	[extLabelTranslate].[extLabelId]=\"".$this->model->getextLabelId()."\"";
-		} else if ($this->q->vendor=='oralce'){
-			$sql="
-			SELECT	*
-			FROM 	\"extLabelTranslate\"
-			JOIN 	\"language\"
-			USING (\"languageId\")
-			WHERE	\"extLabelTranslate\".\"extLabelId\"=\"".$this->model->getextLabelId()."\"";
-		}
-		$this->q->read($sql);
-		$total =$this->q->numberRows();
-		$items = array();
-		while ($row = $this->q->fetchAssoc()){
-			$items[]= $row;
-		}
-		echo json_encode(
-		array(
-						'success'	=>	'true',
-						'total' 	=>	$total,
-       					'data' 		=> 	$items
-		));
-		exit();
-
-	}
-
-	/**
-	 * Update tab Translation in tabTranslate Table
-	 */
-	public function translateUpdate(){
-		header('Content-Type','application/json; charset=utf-8');
-
-		$this->q->commit();
-		if($this->getVendor() == self::mysql){
-			$sql="
-		UPDATE	`extLabelTranslate`
-		SET		`extLabelTranslate` 	=	\"".$this->strict($_POST['extLabelTranslate'],'string')."\"
-		WHERE 	`extLabelTranslateId`	=	\"".$this->strict($_POST['extLabelTranslateId'],'numeric')."\"";
-		} else if ($this->getVendor()==self::mssql){
-			$sql="
-		UPDATE	[extLabelTranslate]
-		SET		[extLabelTranslate] 	=	\"".$this->strict($_POST['extLabelTranslate'],'string')."\"
-		WHERE 	[extLabelTranslateId]	=	\"".$this->strict($_POST['extLabelTranslateId'],'numeric')."\"";
-		} else if ($this->getVendor()==self::oracle){
-			$sql="
-		UPDATE	\"extLabelTranslate\"
-		SET		\"extLabelTranslate\" 		=	\"".$this->strict($_POST['extLabelTranslate'],'string')."\"
-		WHERE 	\"extLabelTranslateId\"	=	\"".$this->strict($_POST['extLabelTranslateId'],'numeric')."\"";
-		}
-		$this->q->update($sql);
-		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-			exit();
-		}
-
-		$this->q->commit();
-		echo json_encode(array("success"=>true,"message"=>"Record Update"));
-		exit();
-	}
-	/*
-	 * Create Translation extLabel Note to the extLabelTranslate Table
-	*/
-	function translateMe() {
-		header('Content-Type','application/json; charset=utf-8');
-		$this->q->start();
-
-		$sql="
-		SELECT	*
-		FROM 	`extLabel`
-		WHERE 	`extLabelId`	=	\"".$this->extLabelId."\"";
-		$resultDefault= $this->q->fast($sql);
-		if($this->q->numberRows($resultDefault) > 0 ) {
-			$rowDefault = $this->q->fetch_array($resultDefault);
-			$value 		= $rowDefault['extLabelNote'];
-		}
-		if($this->getVendor() == self::mysql) {
-			$sql="
-			SELECT	*
-			FROM 	`language`";
-		} else if ($this->getVendor()==self::mssql) {
-			$sql="
-			SELECT 	*
-			FROM 	[language] ";
-		} else if ($this->getVendor()==self::oracle) {
-			$sql="
-			SELECT 	*
-			FROM 	\"language\" ";
-		}
-		$result= $this->q->fast($sql);
-		while ($row = $this->q->fetchAssoc($result)) {
-			$languageId 	= 	$row['languageId'];
-			$languageCode	= 	$row['languageCode'];
-			$to 		  	=	$languageCode;
-			$googleTranslate = $this->security->changeLanguage($from="en",$to,$value);
-			if($this->getVendor() == self::mysql) {
-				$sql="
-				SELECT	*
-				FROM 	`extLabelTranslate`
-				WHERE 	`extLabelId`			=	\"".$this->extLabelId."\"
-				AND 	`languageId`		=	\"".$languageId."\"";
-			} else if ($this->getVendor()==self::mssql) {
-				$sql="
-				SELECT 	*
-				FROM 	[extLabelTranslate]
-				WHERE 	[extLabelId]			=	\"".$this->extLabelId."\"
-				AND 	[languageId]		=	\"".$languageId."\"";
-			}  else if ($this->getVendor()==self::oracle) {
-				$sql="
-				SELECT 	*
-				FROM 	\"extLabelTranslate\"
-				WHERE 	\"extLabelId\"		=	\"".$this->extLabelId."\"
-				AND 	\"languageId\"		=	\"".$languageId."\"";
-			}
-			$resultextLabelTranslate = $this->q->fast($sql);
-			if($this->q->numberRows($resultextLabelTranslate) >  0 ) {
-				if($this->q->vendor=='normal'  ||$this->getVendor() == self::mysql) {
-					$sql="
-					UPDATE 	`extLabelTranslate`
-					SET 	`extLabelTranslate`		=	\"".$googleTranslate."\"
-					WHERE 	`extLabelId`				=	\"".$this->extLabelId."\"
-					AND 	`languageId`			=	\"".$languageId."\"";
-				} else if ($this->getVendor()==self::mssql) {
-					$sql="
-					UPDATE 	[extLabelTranslate]
-					SET 	[extLabelTranslate]		=	\"".$googleTranslate."\"
-					WHERE 	[extLabelId]				=	\"".$this->extLabelId."\"
-					AND 	[languageId]			=	\"".$languageId."\"";
-				} else if ($this->getVendor()==self::oracle) {
-					$sql="
-					UPDATE 	\"extLabelTranslate\"
-					SET 	\"extLabelTranslate\"		=	\"".$googleTranslate."\"
-					WHERE 	\"extLabelId\"			=	\"".$this->extLabelId."\"
-					AND 	\"languageId\"			=	\"".$languageId."\"";
-				}
-				$this->q->update($sql);
-				if($this->q->redirect=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-					exit();
-
-				}
-			} else {
-				if($this->q->vendor=='normal'  ||$this->getVendor() == self::mysql) {
-					$sql="
-					INSERT INTO `extLabelTranslate`
-							(
-								`extLabelId`,
-								`languageId`,
-								`extLabelTranslate`
-							)
-					VALUES
-						(
-							\"".$extLabelId."\",
-							\"".$languageId."\",
-							\"".$googleTranslate."\"
-						)";
-				} else if ($this->getVendor()==self::mssql) {
-					$sql="
-					INSERT INTO [extLabelTranslate]
-							(
-								[extLabelId],
-								[languageId],
-								[extLabelTranslate]
-							)
-					VALUES
-							(
-								\"".$extLabelId."\",
-								\"".$languageId."\",
-								\"".$googleTranslate."\"
-						)";
-				} else if ($this->getVendor()==self::oracle) {
-					$sql="
-					INSERT INTO \"extLabelTranslate\"
-							(
-								\"extLabelId\",
-								\"languageId\",
-								\"extLabelTranslate\"
-							)
-					VALUES
-							(
-								\"".$extLabelId."\",
-								\"".$languageId."\",
-								\"".$googleTranslate."\"
-							)";
-				}
-				$this->q->create($sql);
-				if($this->q->redirect=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-					exit();
-
-				}
-			}
-		}
-		$this->q->commit();
-		echo json_encode(
-		array(
-							  	"success"	=>	"true",
-								"message"	=>	"Translation Complete"
-		));
-		exit();
-
-
-	}
 	/**
 	 * Enter description here ...
 	 */
-	function tab(){
-		return $this->security->tab();
-	}
+
 	/* (non-PHPdoc)
 	 * @see config::excel()
-	*/
+	 */
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
@@ -1076,23 +661,23 @@ if(isset($_POST['method']))	{
 
 	/*
 	 *  Initilize Value before load in the loader
-	*/
+	 */
 	/*
 	 *  Leaf / Application Identification
-	*/
+	 */
 	if(isset($_POST['leafId'])){
 		$extLabelObject->setLeafId($_POST['leafId']);
 	}
 	/*
 	 * Admin Only
-	*/
+	 */
 	if(isset($_POST['isAdmin'])){
 		$extLabelObject->setIsAdmin($_POST['isAdmin']);
 	}
 
 	/*
 	 *  Filtering
-	*/
+	 */
 
 	if(isset($_POST['query'])){
 		$extLabelObject->setFieldQuery($_POST['query']);
@@ -1102,7 +687,7 @@ if(isset($_POST['method']))	{
 	}
 	/*
 	 * Ordering
-	*/
+	 */
 	if(isset($_POST['order'])){
 		$extLabelObject->setOrder($_POST['order']);
 	}
@@ -1112,11 +697,11 @@ if(isset($_POST['method']))	{
 
 	/*
 	 *  Load the dynamic value
-	*/
+	 */
 	$extLabelObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
-	*/
+	 */
 	if($_POST['method']=='create')	{
 		$extLabelObject->create();
 	}
@@ -1140,22 +725,22 @@ if(isset($_POST['method']))	{
 if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
-	*/
+	 */
 	/*
 	 *  Leaf / Application Identification
-	*/
+	 */
 	if(isset($_GET['leafId'])){
 		$extLabelObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
-	*/
+	 */
 	if(isset($_GET['isAdmin'])){
 		$extLabelObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
-	*/
+	 */
 	$extLabelObject->execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
@@ -1168,22 +753,22 @@ if(isset($_GET['method'])) {
 
 	}
 	/*
-	* Update Status of The Table. Admin Level Only
-	*/
+	 * Update Status of The Table. Admin Level Only
+	 */
 	if($_GET['method']=='updateStatus'){
 		$extLabelObject->updateStatus();
 	}
 	/*
-	*  Checking Any Duplication  Key
-	*/
+	 *  Checking Any Duplication  Key
+	 */
 	if (isset($_GET['extLabelCode'])) {
 		if (strlen($_GET['extLabelCode']) > 0) {
 			$extLabelObject->duplicate();
 		}
 	}
 	/*
-	*  Excel Reporting
-	*/
+	 *  Excel Reporting
+	 */
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
 			$extLabelObject->excel();

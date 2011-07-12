@@ -110,6 +110,16 @@ class security extends configClass {
 	 * @var numeric $languageId
 	 */
 	private $languageId;
+	/*
+	 * Google API Translation
+         * @var string $googleId
+	 */		
+	private $googleId='AIzaSyCKRpBlJzhuO0GWEvgq4WwlYus0O2qI0Ws';
+	/*
+	 * Microsoft Bing API Translation
+         * @var string $bingId
+	 */		
+	private $bingId='17ABBA6C7400D761EE28324EC320B5D0093F3557';
 	/**
 	 *	Class Loader
 	 */
@@ -562,7 +572,7 @@ class security extends configClass {
 	function changeLanguage($from,$to,$value) {
 
 		$value = urlencode($value);
-		$handle = fopen("https://www.googleapis.com/language/translate/v2?key=AIzaSyCKRpBlJzhuO0GWEvgq4WwlYus0O2qI0Ws&q=".$value."&source=".$from."&target=".$to."&callback=handleResponse&prettyprint=true", "rb");
+		$handle = fopen("https://www.googleapis.com/language/translate/v2?key=".$this->googleId."&q=".$value."&source=".$from."&target=".$to."&callback=handleResponse&prettyprint=true", "rb");
 		$contents = stream_get_contents($handle);
 
 		$a=explode(":",$contents);

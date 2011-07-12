@@ -21,8 +21,8 @@ Ext.onReady(function(){
 		var perPage		= 	10;
 		var encode 			=	false;
 		var local 			= 	false;
-		var accordionProxy  =  new Ext.data.HttpProxy({
-	        url: "../controller/accordionAccessController.php",
+		var moduleProxy  =  new Ext.data.HttpProxy({
+	        url: "../controller/moduleAccessController.php",
 	        method: 'POST',
 	        success: function (response, options) {
 	            jsonResponse = Ext.decode(response.responseText);
@@ -36,16 +36,16 @@ Ext.onReady(function(){
 	            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
 	        }
 	    });
-		var accordionReader = new Ext.data.JsonReader({
+		var moduleReader = new Ext.data.JsonReader({
 	        totalProperty: "total",
 	        successProperty: "success",
 	        messageProperty: "message",
-	        idProperty: "accordionAccessId"
+	        idProperty: "moduleAccessId"
 	    });
 			
-		var accordionAccessStore 			= 	new Ext.data.JsonStore({
+		var moduleAccessStore 			= 	new Ext.data.JsonStore({
 			autoDestroy		:	true,
-			url				: 	'../controller/accordionAccessController.php',
+			url				: 	'../controller/moduleAccessController.php',
 			remoteSort		: 	true,
 			storeId			:	'myStore',
 			root			:	'data',
@@ -56,13 +56,13 @@ Ext.onReady(function(){
 									leafId	:	leafId
 								}, 
 			fields			: 
-					[	{	name		:	'accordionAccessId',
+					[	{	name		:	'moduleAccessId',
                             type        :   'int'					
 					   },{
-					 		name		:	'accordionId',
+					 		name		:	'moduleId',
                             type        :   'int'							
 					   },{
-							name		:	'accordionNote',
+							name		:	'moduleNote',
                             type        :   'string'							
 					   },{ 
 						 	name		:	'groupId',
@@ -71,7 +71,7 @@ Ext.onReady(function(){
 							name		:	'groupNote',
                             type        :   'string'							
 					   },{
-							name		: 	'accordionAccessValue',
+							name		: 	'moduleAccessValue',
                             type        :   'boolean'							
 					   }
 					]
@@ -79,32 +79,32 @@ Ext.onReady(function(){
 	
 	
 	
-	var accordionAccessValue = new Ext.ux.grid.CheckColumn({
-		header		:	accordionAccessValueLabel,
-		dataIndex	:	'accordionAccessValue'
+	var moduleAccessValue = new Ext.ux.grid.CheckColumn({
+		header		:	moduleAccessValueLabel,
+		dataIndex	:	'moduleAccessValue'
 	});
 	// the id for administrator to see in any problem.User cannot see this page
 	// information
 	var columnModel = new Ext.grid.ColumnModel({
 		columns:[{ 
-			header: accordionNameLabel,
-			dataIndex:'accordionNote'
+			header: moduleNameLabel,
+			dataIndex:'moduleNote'
 		},{
-			header: accordionIdLabel,
-			dataIndex:'accordionId'
+			header: moduleIdLabel,
+			dataIndex:'moduleId'
 		},{
 			header: groupNameLabel,
 			dataIndex:'groupNote'
 		},{ 
 			header: groupIdLabel,
 			dataIndex:'groupId'
-		},accordionAccessValue]
+		},moduleAccessValue]
 	});
 	
 	var groupReader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
 	var groupStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/accordionAccessController.php?method=read&field=groupId&leafId='+leafId,
+        			url	: 	'../controller/moduleAccessController.php?method=read&field=groupId&leafId='+leafId,
 					method:'GET'
 				}),
 			reader		:	groupReader,
@@ -143,8 +143,8 @@ Ext.onReady(function(){
 				} else { 
 					gridPanel.enable(); 
 				}
-				accordionAccessStore.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/accordionAccessController.php',
+				moduleAccessStore.proxy= new Ext.data.HttpProxy({
+					url			: 	'../controller/moduleAccessController.php',
 					method		: 'POST',
 					params		: {
 						leafId : leafId,
@@ -153,7 +153,7 @@ Ext.onReady(function(){
 								
 				});
 
-				accordionAccessStore.reload();
+				moduleAccessStore.reload();
 			}
 	}
 	});
@@ -167,10 +167,10 @@ Ext.onReady(function(){
 		items	:	[groupId]							  
 	});
 	
-	var access_array = ['accordionAccessValue'];
+	var access_array = ['moduleAccessValue'];
 	var gridPanel = new Ext.grid.GridPanel({ 
 		region		:	'west',
-		store		:	accordionAccessStore,
+		store		:	moduleAccessStore,
 		cm			:	columnModel,
 		frame		:	true,
 		title		:	'Accordian Access Grid',
@@ -179,7 +179,7 @@ Ext.onReady(function(){
 		autoScroll  :   true,
 		layout      :   'anchor',
 		disabled	:	true,
-		selModel	: 	accordionAccessValue,
+		selModel	: 	moduleAccessValue,
 		iconCls		:	'application_view_detail',
 		tbar 		: 	{ 
 			items:[{
@@ -187,8 +187,8 @@ Ext.onReady(function(){
 						iconCls:'row-check-sprite-check',
 						listeners : { 
 							'click':function () {
-								var count = accordionAccessStore.getCount();
-								 accordionAccessStore.each(function(rec) {
+								var count = moduleAccessStore.getCount();
+								 moduleAccessStore.each(function(rec) {
 									for (var access in access_array) { 
 										// alert(access);
 										rec.set(access_array[access], true);
@@ -201,7 +201,7 @@ Ext.onReady(function(){
 						iconCls:'row-check-sprite-uncheck',
 						listeners : { 
 							'click':function () { 
-								 accordionAccessStore.each(function(rec) {
+								 moduleAccessStore.each(function(rec) {
 									for (var access in access_array) { 
 										rec.set(access_array[access], false);
 									}
@@ -214,14 +214,14 @@ Ext.onReady(function(){
 				listeners: { 
 					'click':function(c) { 
 					var url;
-					var count = accordionAccessStore.getCount();
+					var count = moduleAccessStore.getCount();
 
-					url ='../controller/accordionAccessController.php?method=update&leafId='+leafId;
+					url ='../controller/moduleAccessController.php?method=update&leafId='+leafId;
 					var sub_url;
 					sub_url='';
 					 for (i = count - 1; i >= 0; i--) {
-						var record = accordionAccessStore.getAt(i);
-						sub_url = sub_url+'&accordionAccessId[]='+record.get('accordionAccessId')+'&accordionAccessValue[]='+record.get('accordionAccessValue');
+						var record = moduleAccessStore.getAt(i);
+						sub_url = sub_url+'&moduleAccessId[]='+record.get('moduleAccessId')+'&moduleAccessValue[]='+record.get('moduleAccessValue');
 					}
 					url = url+sub_url;
 					// reques and ajax
@@ -230,12 +230,12 @@ Ext.onReady(function(){
 						success:function(response,options) { 
 							Ext.MessageBox.alert('success updated');
 							// reload the store
-								accordionAccessStore.proxy= new Ext.data.HttpProxy({
-									url			: 	'../controller/accordionAccessController.php?method=read&groupId=' + Ext.getCmp('group_fake').value,
+								moduleAccessStore.proxy= new Ext.data.HttpProxy({
+									url			: 	'../controller/moduleAccessController.php?method=read&groupId=' + Ext.getCmp('group_fake').value,
 									method		: 'POST'
 								});
 								
-							accordionAccessStore.reload(); 
+							moduleAccessStore.reload(); 
 							jsonResponse = Ext.decode(response.responseText);
 							title='Updated ';
 							if (jsonResponse == true) {

@@ -34,7 +34,7 @@ function execute(){
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['tableMappingId'])){
-			$this->settableMappingId($this->strict($_POST['tableMappingId'],'numeric'),'','string');
+			$this->settableMappingId($this->strict($_POST['tableMappingId'],'numeric'),'','single');
 		}
 		if(isset($_POST['tableMappingSequence'])){
 			$this->settableMappingSequence($this->strict($_POST['tableMappingSequence'],'memo'));

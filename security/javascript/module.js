@@ -36,8 +36,8 @@ Ext
 				pagePrint = true;
 				pagePrintList = true;
 			}
-			var tabProxy = new Ext.data.HttpProxy({
-				url : "../controller/tabController.php",
+			var moduleProxy = new Ext.data.HttpProxy({
+				url : "../controller/moduleController.php",
 				method:'POST',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
@@ -54,15 +54,15 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			var tabReader = new Ext.data.JsonReader({
+			var moduleReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
-				idProperty : "tabId"
+				idProperty : "moduleId"
 			});
-			var tabStore = new Ext.data.JsonStore({
-				proxy : tabProxy,
-				reader : tabReader,
+			var moduleStore = new Ext.data.JsonStore({
+				proxy : moduleProxy,
+				reader : moduleReader,
 				autoLoad : true,
 				autoDestroy : true,
 				pruneModifiedRecords : true,
@@ -76,13 +76,13 @@ Ext
 				},
 				root : "data",
 				fields : [ {
-					name : 'tabId',
+					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'tabSequence',
+					name : 'moduleSequence',
 					type : 'int'
 				}, {
-					name : 'tabNote',
+					name : 'moduleNote',
 					type : 'string'
 				}, {
 					name : 'iconId',
@@ -118,8 +118,8 @@ Ext
 				} ]
 			});
 
-			var tabTranslateProxy = new Ext.data.HttpProxy({
-				url : "../controller/tabController.php",
+			var moduleTranslateProxy = new Ext.data.HttpProxy({
+				url : "../controller/moduleController.php",
 				method : 'POST',
 				baseParams : {
 					method : "read",
@@ -142,23 +142,23 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			var tabTranslateReader = new Ext.data.JsonReader({
+			var moduleTranslateReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
-				idProperty : "tabTranslateId"
+				idProperty : "moduleTranslateId"
 			});
-			var tabTranslateStore = new Ext.data.JsonStore({
-				proxy : tabTranslateProxy,
-				reader : tabTranslateReader,
+			var moduleTranslateStore = new Ext.data.JsonStore({
+				proxy : moduleTranslateProxy,
+				reader : moduleTranslateReader,
 				autoDestroy : true,
 				pruneModifiedRecords : true,
 				root : "data",
 				fields : [ {
-					name : 'tabTranslateId',
+					name : 'moduleTranslateId',
 					type : 'int'
 				}, {
-					name : 'tabId',
+					name : 'moduleId',
 					type : 'int'
 				}, {
 					name : 'languageId',
@@ -170,12 +170,12 @@ Ext
 					name : 'languageDesc',
 					type : 'string'
 				}, {
-					name : 'tabTranslate',
+					name : 'moduleTranslate',
 					type : 'string'
 				} ]
 			});
 			 var staffByProxy = new Ext.data.HttpProxy({
-			        url: "../controller/tabController.php?",
+			        url: "../controller/moduleController.php?",
 			        method: "GET",
 			        success: function(response, options) {
 			            jsonResponse = Ext.decode(response.responseText);
@@ -228,29 +228,29 @@ Ext
 				// defaults to false (remote filtering)
 				filters : [ {
 					type : 'numeric',
-					dataIndex : 'tabSequence',
-					column : 'tabSequence',
-					table : 'tab'
+					dataIndex : 'moduleSequence',
+					column : 'moduleSequence',
+					modulele : 'module'
 				},{
 					type : 'numeric',
-					dataIndex : 'tabCode',
-					column : 'tabCode',
-					table : 'tab'
+					dataIndex : 'moduleCode',
+					column : 'moduleCode',
+					modulele : 'module'
 				}, {
 					type : 'string',
-					dataIndex : 'tabNote',
-					column : 'tabNote',
-					table : 'tab'
+					dataIndex : 'moduleNote',
+					column : 'moduleNote',
+					modulele : 'module'
 				}, {
 					type : 'string',
 					dataIndex : 'iconId',
 					column : 'iconId',
-					table : 'tab'
+					modulele : 'module'
 				},  {
 					type : "list",
 					dataIndex : "By",
 					column : "By",
-					table : "tab",
+					modulele : "module",
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
@@ -259,7 +259,7 @@ Ext
 					dateFormat : 'Y-m-d H:i:s',
 					dataIndex : 'createTime',
 					column : 'createTime',
-					table : 'tab'
+					modulele : 'module'
 				} ]
 			});
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
@@ -296,27 +296,27 @@ Ext
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
-			var tabColumnModel = [
+			var moduleColumnModel = [
 					new Ext.grid.RowNumberer(),
 				
 					{
-						dataIndex : "tabSequence",
-						header : tabSequenceLabel,
-						sortable : true,
+						dataIndex : "moduleSequence",
+						header : moduleSequenceLabel,
+						sormodulele : true,
 						hidden : false,
 						width : 50
 					},
 					{
-						dataIndex : "tabNote",
-						header : tabNoteLabel,
-						sortable : true,
+						dataIndex : "moduleNote",
+						header : moduleNoteLabel,
+						sormodulele : true,
 						hidden : false,
 						width : 100
 					},
 					{
 						dataIndex : 'iconName',
 						header : iconNameLabel,
-						sortable : false,
+						sormodulele : false,
 						hidden : false,
 						width : 50,
 						renderer : function(value, metaData, record, rowIndex,
@@ -330,55 +330,55 @@ Ext
 					isDeleteGrid, isActiveGrid, isApprovedGrid, {
 						dataIndex : 'By',
 						header : createByLabel,
-						sortable : true,
+						sormodulele : true,
 						hidden : true,
 						width : 100
 					}, {
 						dataIndex : 'Time',
 						header : createTimeLabel,
 						type : 'date',
-						sortable : true,
+						sormodulele : true,
 						hidden : true,
 						width : 100
 					} ];
-			var tabTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
-				dataIndex : "tabNote",
-				header : tabSequenceLabel,
-				sortable : true,
+			var moduleTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
+				dataIndex : "moduleNote",
+				header : moduleSequenceLabel,
+				sormodulele : true,
 				hidden : true,
 				width : 50
 			}, {
 				dataIndex : "languageCode",
 				header : "languageCode",
-				sortable : true,
+				sormodulele : true,
 				hidden : false,
 				width : 100
 			}, {
 				dataIndex : "languageDesc",
 				header : "languageDesc",
-				sortable : true,
+				sormodulele : true,
 				hidden : false,
 				width : 100
 			}, {
-				dataIndex : "tabTranslate",
-				header : "tabTranslate",
-				sortable : true,
+				dataIndex : "moduleTranslate",
+				header : "moduleTranslate",
+				sormodulele : true,
 				hidden : false,
 				width : 100,
 				editor : {
 					xtype : 'textfield',
-					id : 'tabTranslate'
+					id : 'moduleTranslate'
 				}
 			} ];
 			
 			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
 			 
-			var tabGrid = new Ext.grid.GridPanel(
+			var moduleGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
-						store : tabStore,
+						store : moduleStore,
 						autoHeight : false,
-						columns : tabColumnModel,
+						columns : moduleColumnModel,
 						loadMask : true,
 						plugins : [ filters ],
 						sm : new Ext.grid.RowSelectionModel({
@@ -390,17 +390,17 @@ Ext
 						iconCls : 'application_view_detail',
 						listeners : {
 							'rowclick' : function(object, rowIndex, e) {
-								var record = tabStore.getAt(rowIndex);
+								var record = moduleStore.getAt(rowIndex);
 								formPanel.getForm().reset();
 								formPanel.form.load({
-									url : "../controller/tabController.php",
+									url : "../controller/moduleController.php",
 									method : "POST",
 									waitTitle : systemLabel,
 									waitMsg : waitMessageLabel,
 									params : {
 										method : "read",
 										mode : "update",
-										tabId : record.data.tabId,
+										moduleId : record.data.moduleId,
 										leafId : leafId
 									},
 									success : function(form, action) {
@@ -421,8 +421,8 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = tabStore.getCount();
-												tabStore
+												var count = moduleStore.getCount();
+												moduleStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
 																rec
@@ -439,7 +439,7 @@ Ext
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
-												tabStore
+												moduleStore
 														.each(function(rec) {
 															for ( var access in accessArray) {
 																rec
@@ -457,19 +457,19 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = tabStore.getCount();
-												url = '../controller/tabController.php?';
+												var count = moduleStore.getCount();
+												url = '../controller/moduleController.php?';
 												var sub_url;
 												sub_url = '';
-												var modified = tabStore
+												var modified = moduleStore
 														.getModifiedRecords();
 												for ( var i = 0; i < modified.length; i++) {
-													var record = tabStore
+													var record = moduleStore
 															.getAt(i);
 													sub_url = sub_url
-															+ '&tabId[]='
+															+ '&moduleId[]='
 															+ record
-																	.get('tabId');
+																	.get('moduleId');
 													if (isAdmin == 1) {
 														sub_url = sub_url
 																+ '&isDraft[]='
@@ -520,7 +520,7 @@ Ext
 																			.alert(
 																					systemLabel,
 																					jsonResponse.message);
-																	tabStore
+																	moduleStore
 																			.reload();
 																} else if (jsonResponse.success == false) {
 																	Ext.MessageBox
@@ -545,17 +545,17 @@ Ext
 									} ]
 						},
 						bbar : new Ext.PagingToolbar({
-							store : tabStore,
+							store : moduleStore,
 							pageSize : perPage
 						})
 					});
-			var tabTranslateEditor = new Ext.ux.grid.RowEditor(
+			var moduleTranslateEditor = new Ext.ux.grid.RowEditor(
 					{
 						saveText : 'Save',
 						listeners : {
 							cancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
-								tabStore.reload();
+								moduleStore.reload();
 							},
 							afteredit : function(rowEditor, changes, record,
 									rowIndex) {
@@ -563,16 +563,16 @@ Ext
 								var record = this.grid.getStore().getAt(
 										rowIndex);
 								Ext.Ajax.request({
-									url : '../controller/tabController.php',
+									url : '../controller/moduleController.php',
 									method : 'POST',
 									params : {
 										leafId : leafId,
 										method : 'save',
 										page : 'detail',
-										tabTranslateId : record
-												.get('tabTranslateId'),
-										tabTranslate : Ext.getCmp(
-												'tabTranslate').getValue()
+										moduleTranslateId : record
+												.get('moduleTranslateId'),
+										moduleTranslate : Ext.getCmp(
+												'moduleTranslate').getValue()
 									},
 									success : function(response, options) {
 										jsonResponse = Ext
@@ -591,19 +591,19 @@ Ext
 							}
 						}
 					});
-			var tabTranslateGridTranslate = new Ext.grid.GridPanel({
+			var moduleTranslateGridTranslate = new Ext.grid.GridPanel({
 				border : false,
-				store : tabTranslateStore,
+				store : moduleTranslateStore,
 				height : 250,
 				autoScroll : true,
-				columns : tabTranslateColumnModel,
+				columns : moduleTranslateColumnModel,
 				viewConfig : {
 					autoFill : true,
 					forceFit : true
 				},
 				layout : 'fit',
 				disabled: true,
-				plugins : [ tabTranslateEditor ]
+				plugins : [ moduleTranslateEditor ]
 			});
 			var gridPanel = new Ext.Panel(
 					{
@@ -615,11 +615,11 @@ Ext
 								' ',
 								{
 									text : reloadToolbarLabel,
-									iconCls : 'database_refresh',
+									iconCls : 'damodulease_refresh',
 									id : 'pageReload',
 									disabled : pageReload,
 									handler : function() {
-										tabStore.reload();
+										moduleStore.reload();
 									}
 								},
 								'-',
@@ -632,12 +632,12 @@ Ext
 									handler : function() {
 										Ext.Ajax
 												.request({
-													url : '../controller/tabController.php',
+													url : '../controller/moduleController.php',
 													method : 'GET',
 													params : {
 														method : 'read',
 														field : 'sequence',
-														table : 'tab',
+														modulele : 'module',
 														leafId : leafId
 													},
 													success : function(
@@ -652,7 +652,7 @@ Ext
 														} else {
 															Ext
 																	.getCmp(
-																			'tabSequence')
+																			'moduleSequence')
 																	.setValue(
 																			jsonResponse.nextSequence);
 														}
@@ -680,7 +680,7 @@ Ext
 									handler : function() {
 										Ext.Ajax
 												.request({
-													url : '../tabData.php?method=report&mode=excel&limit='
+													url : '../moduleData.php?method=report&mode=excel&limit='
 															+ perPage
 															+ '&leafId='
 															+ leafId,
@@ -691,7 +691,7 @@ Ext
 																.decode(response.responseText);
 														if (jsonResponse == true) {
 															window
-																	.open("../security/document/excel/tab.xlsx");
+																	.open("../security/document/excel/module.xlsx");
 														} else {
 															Ext.MessageBox
 																	.alert(
@@ -712,32 +712,32 @@ Ext
 												});
 									}
 								}, '->', new Ext.ux.form.SearchField({
-									store : tabStore,
+									store : moduleStore,
 									width : 320
 								}) ],
-						items : [ tabGrid ]
+						items : [ moduleGrid ]
 					}); // viewport just save information,items will do separate
 			
-			var tabCode = new Ext.form.TextField({
+			var moduleCode = new Ext.form.TextField({
 				labelAlign : 'left',
-				fieldLabel : tabCodeLabel,
-				hiddenName : 'tabCode',
-				name : 'tabCode',
+				fieldLabel : moduleCodeLabel,
+				hiddenName : 'moduleCode',
+				name : 'moduleCode',
 				anchor : '40%'
 			});
-			var tabNote = new Ext.form.TextField({
+			var moduleNote = new Ext.form.TextField({
 				labelAlign : 'left',
-				fieldLabel : tabNoteLabel,
-				hiddenName : 'tabNote',
-				name : 'tabNote',
+				fieldLabel : moduleNoteLabel,
+				hiddenName : 'moduleNote',
+				name : 'moduleNote',
 				anchor : '40%'
 			});
-			var tabSequence = new Ext.form.NumberField({
+			var moduleSequence = new Ext.form.NumberField({
 				labelAlign : 'left',
-				fieldLabel : tabSequenceLabel,
-				hiddenName : 'tabSequence',
-				name : 'tabSequence',
-				id : 'tabSequence',
+				fieldLabel : moduleSequenceLabel,
+				hiddenName : 'moduleSequence',
+				name : 'moduleSequence',
+				id : 'moduleSequence',
 				anchor : '40%'
 			});
 			var iconData = [ [ '29', 'accept' ], [ '31', 'acroread' ],
@@ -768,7 +768,7 @@ Ext
 					[ '110', 'award_star_silver_3' ], [ '111', 'basket' ],
 					[ '119', 'bell' ], [ '125', 'bin' ], [ '130', 'bomb' ],
 					[ '144', 'box' ], [ '358', 'cursor' ], [ '359', 'cut' ],
-					[ '361', 'database' ], [ '385', 'delete' ],
+					[ '361', 'damodulease' ], [ '385', 'delete' ],
 					[ '386', 'descend' ], [ '387', 'disconnect' ],
 					[ '389', 'disk_multiple' ], [ '391', 'document' ],
 					[ '392', 'door' ], [ '395', 'door_out' ],
@@ -825,7 +825,7 @@ Ext
 					[ '858', 'rpm' ], [ '902', 'shading' ],
 					[ '928', 'shield' ], [ '932', 'sitemap' ],
 					[ '933', 'sitemap_color' ], [ '934', 'sound' ],
-					[ '949', 'star' ], [ '954', 'stop' ], [ '963', 'tab' ],
+					[ '949', 'star' ], [ '954', 'stop' ], [ '963', 'module' ],
 					[ '985', 'tag' ], [ '986', 'tag_blue' ],
 					[ '987', 'tag_blue_add' ], [ '988', 'tag_blue_delete' ],
 					[ '989', 'tag_blue_edit' ], [ '990', 'tag_green' ],
@@ -862,9 +862,9 @@ Ext
 				iconClsTpl : '{iconName}'
 			});
 			
-			var tabId = new Ext.form.Hidden({
-				name : 'tabId',
-				id : 'tabId'
+			var moduleId = new Ext.form.Hidden({
+				name : 'moduleId',
+				id : 'moduleId'
 			});
 			
 			var firstRecord = new Ext.form.Hidden({
@@ -888,7 +888,7 @@ Ext
 			
 			var formPanel = new Ext.form.FormPanel(
 					{
-						url : '../controller/tabController.php',
+						url : '../controller/moduleController.php',
 						method : 'post',
 						frame : true,
 						title : 'Menu Administration',
@@ -907,16 +907,16 @@ Ext
 										bodyStyle : "padding:5px",
 										border: true,
 										frame: true,
-										items : [ tabId,
-										          tabSequence,tabCode,
-												tabNote, iconId,
-												tabId ]
+										items : [ moduleId,
+										          moduleSequence,moduleCode,
+												moduleNote, iconId,
+												moduleId ]
 									} ]
 								}, {
 									xtype : 'panel',
-									title : 'Tab Translation',
+									title : 'module Translation',
 									disable:true,
-									items : [ tabTranslateGridTranslate]
+									items : [ moduleTranslateGridTranslate]
 								} ],
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
@@ -926,7 +926,7 @@ Ext
 									iconCls : 'bullet_disk',
 									handler : function() {
 										var id = 0;
-										var id = Ext.getCmp('tabId')
+										var id = Ext.getCmp('moduleId')
 												.getValue();
 										var method;
 
@@ -958,7 +958,7 @@ Ext
 																		.getCmp(
 																				'translation')
 																		.enable();
-																tabStore
+																moduleStore
 																		.reload({
 																		params : {
 																				leafId : leafId,
@@ -968,9 +968,9 @@ Ext
 																			});
 																Ext
 																		.getCmp(
-																				'tabId')
+																				'moduleId')
 																		.setValue(
-																				action.result.tabId);
+																				action.result.moduleId);
 																			
 
 															},
@@ -1001,7 +1001,7 @@ Ext
 								{
 									text : resetButtonLabel,
 									type : 'reset',
-									iconCls : 'table_refresh',
+									iconCls : 'modulele_refresh',
 									handler : function() {
 										formPanel.getForm().reset();
 									}
@@ -1015,14 +1015,14 @@ Ext
 										Ext.Ajax
 												.request({
 
-													url : "../controller/tabController.php",
+													url : "../controller/moduleController.php",
 													method : 'GET',
 													params : {
 														leafId : leafId,
 														method : 'translate',
-														tabId : Ext
+														moduleId : Ext
 																.getCmp(
-																		'tabId')
+																		'moduleId')
 																.getValue()
 													},
 													success : function(
@@ -1035,7 +1035,7 @@ Ext
 																			systemLabel,
 																			jsonResponse.message);
 
-															tabTranslateStore
+															moduleTranslateStore
 																	.reload();
 															box.hide();
 														} else {

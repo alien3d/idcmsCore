@@ -35,7 +35,7 @@ class folderModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['folderId'])){
-			$this->setFolderId($this->strict($_POST['folderId'],'numeric'),'','string');
+			$this->setFolderId($this->strict($_POST['folderId'],'numeric'),'','single');
 		}
 		if(isset($_POST['tabId'])){
 			$this->setTabId($this->strict($_POST['tabId'],'numeric'));

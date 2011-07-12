@@ -30,7 +30,7 @@ function execute(){
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['departmentId'])){
-			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'),'','string');
+			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'),'','single');
 		}
 		if(isset($_POST['departmentSequence'])){
 			$this->setDepartmentSequence($this->strict($_POST['departmentSequence'],'memo'));

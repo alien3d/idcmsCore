@@ -4,20 +4,20 @@ require_once("../../class/classAbstract.php");
 require_once("../../document/class/classDocumentTrail.php");
 require_once("../../document/model/documentModel.php");
 require_once("../../class/classSecurity.php");
-require_once("../model/tabAccessModel.php");
+require_once("../model/moduleAccessModel.php");
 /**
- * this is tab security access
+ * this is module security access
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package tab security access
+ * @package module security access
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class tabAccessClass extends configClass
+class moduleAccessClass extends configClass
 {
 			/*
-	 * Connection to the database
+	 * Connection to the damodulease
 	 * @var string $excel
 	 */
 	public $q;
@@ -57,7 +57,7 @@ class tabAccessClass extends configClass
 	 */
 	public $auditColumn;
 	/**
-	 * Duplicate Testing either the key of table same or have been created.
+	 * Duplicate Testing either the key of modulele same or have been created.
 	 * @var boolean $duplicateTest;
 	 */
 	public $duplicateTest;
@@ -79,7 +79,7 @@ class tabAccessClass extends configClass
 		$this->q->staffId     = $this->staffId;
 		$this->q->filter      = $this->filter;
 		$this->q->quickFilter = $this->quickFilter;
-		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDamodulease(), $this->getPassword());
 		$this->excel             = new PHPExcel();
 		$this->audit             = 0;
 		$this->log               = 1;
@@ -87,7 +87,7 @@ class tabAccessClass extends configClass
 		$this->security          = new security();
 		$this->security->vendor  = $this->vendor;
 		$this->security->execute();
-		$this->model         = new tabAccessModel();
+		$this->model         = new moduleAccessModel();
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
 		$this->documentTrail = new documentTrailClass();
@@ -109,72 +109,72 @@ class tabAccessClass extends configClass
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		// by default if add new group will add access to tab and folder.
+		// by default if add new group will add access to module and folder.
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-				SELECT	`tabAccess`.`tabAccessId`,
-						`tab`.`tabId`,
-						`tab`.`tabNote`,
+				SELECT	`moduleAccess`.`moduleAccessId`,
+						`module`.`moduleId`,
+						`module`.`moduleNote`,
 						`group`.`groupId`,
 						`group`.`groupNote`,
-						(CASE `tabAccess`.`tabAccessValue`
+						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `tabAccessValue`
-				FROM 	`tabAccess`
-				JOIN	`tab`
-				USING 	(`tabId`)
+						END) AS `moduleAccessValue`
+				FROM 	`moduleAccess`
+				JOIN	`module`
+				USING 	(`moduleId`)
 				JOIN 	`group`
 				USING 	(`groupId`)
-				WHERE 	`tab`.`isActive` 	=	1
+				WHERE 	`module`.`isActive` 	=	1
 				AND		`group`.`isActive`		=	1";
 			if ($this->groupId) {
 				$sql .= " AND `group`.`groupId`=\"". $this->strict($this->groupId, 'numeric') ."\"";
 			}
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-				SELECT	`tabAccess`.`tabAccessId`,
-						`tab`.`tabId`,
-						`tab`.`tabNote`,
+				SELECT	`moduleAccess`.`moduleAccessId`,
+						`module`.`moduleId`,
+						`module`.`moduleNote`,
 						`group`.`groupId`,
 						`group`.`groupNote`,
-						(CASE `tabAccess`.`tabAccessValue`
+						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `tabAccessValue`
-				FROM 	`tabAccess`
-				JOIN	`tab`
-				USING 	(`tabId`)
+						END) AS `moduleAccessValue`
+				FROM 	`moduleAccess`
+				JOIN	`module`
+				USING 	(`moduleId`)
 				JOIN 	`group`
 				USING 	(`groupId`)
-				WHERE 	`tab`.`isActive` 	=	1
+				WHERE 	`module`.`isActive` 	=	1
 				AND		`group`.`isActive`		=	1";
 			if ($this->groupId) {
 				$sql .= " AND `group`.`groupId`=\"". $this->strict($this->groupId, 'numeric') ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-				SELECT	`tabAccess`.`tabAccessId`,
-						`tab`.`tabId`,
-						`tab`.`tabNote`,
+				SELECT	`moduleAccess`.`moduleAccessId`,
+						`module`.`moduleId`,
+						`module`.`moduleNote`,
 						`group`.`groupId`,
 						`group`.`groupNote`,
-						(CASE `tabAccess`.`tabAccessValue`
+						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `tabAccessValue`
-				FROM 	`tabAccess`
-				JOIN	`tab`
-				USING 	(`tabId`)
+						END) AS `moduleAccessValue`
+				FROM 	`moduleAccess`
+				JOIN	`module`
+				USING 	(`moduleId`)
 				JOIN 	`group`
 				USING 	(`groupId`)
-				WHERE 	`tab`.`isActive` 	=	1
+				WHERE 	`module`.`isActive` 	=	1
 				AND		`group`.`isActive`		=	1";
 			if ($this->groupId) {
 				$sql .= " AND `group`.`groupId`=\"". $this->strict($this->groupId, 'numeric') ."\"";
@@ -226,23 +226,23 @@ class tabAccessClass extends configClass
 			$this->q->fast($sql);
 		}
 		$this->model->update();
-		$loop = $this->model->totaltabAccessId;
+		$loop = $this->model->totalmoduleAccessId;
 		for ($i = 0; $i < $loop; $i++) {
 			if($this->getVendor() == self::mysql){
 				$sql = "
-			UPDATE 	`tabAccess`
-			SET 	`tabAccessValue`	= 	\"". $this->model->tabAccessValue[$i] ."\"
-			WHERE 	`tabAccessId`		=	\"". $this->model->tabAccessId[$i] ."\"";
+			UPDATE 	`moduleAccess`
+			SET 	`moduleAccessValue`	= 	\"". $this->model->moduleAccessValue[$i] ."\"
+			WHERE 	`moduleAccessId`		=	\"". $this->model->moduleAccessId[$i] ."\"";
 			} else if ($this->getVendor() ==  self::mssql){
 				$sql = "
-			UPDATE 	[tabAccess]
-			SET 	[tabAccessValue]	= 	\"". $this->model->tabAccessValue[$i] ."\"
-			WHERE 	[tabAccessId]		=	\"". $this->model->tabAccessId[$i] ."\"";
+			UPDATE 	[moduleAccess]
+			SET 	[moduleAccessValue]	= 	\"". $this->model->moduleAccessValue[$i] ."\"
+			WHERE 	[moduleAccessId]		=	\"". $this->model->moduleAccessId[$i] ."\"";
 			} else if ($this->getVendor()==self::oracle){
 				$sql = "
-			UPDATE 	\"tabAccess\"
-			SET 	\"tabAccessValue\"	= 	\"". $this->model->tabAccessValue[$i] ."\"
-			WHERE 	\"tabAccessId\"		=	\"". $this->model->tabAccessId[$i] ."\"";
+			UPDATE 	\"moduleAccess\"
+			SET 	\"moduleAccessValue\"	= 	\"". $this->model->moduleAccessValue[$i] ."\"
+			WHERE 	\"moduleAccessId\"		=	\"". $this->model->moduleAccessId[$i] ."\"";
 			}
 			//	echo $sql."<br>";
 			$this->q->update($sql);
@@ -280,7 +280,7 @@ class tabAccessClass extends configClass
 	{
 	}
 }
-$tabAccessObject = new tabAccessClass();
+$moduleAccessObject = new moduleAccessClass();
 
 // crud -create,read,update,delete.
 if (isset($_POST['method'])) {
@@ -291,23 +291,23 @@ if (isset($_POST['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_POST['leafId'])) {
-		$tabAccessObject->leafId = $_POST['leafId'];
+		$moduleAccessObject->leafId = $_POST['leafId'];
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$tabAccessObject->isAdmin = $_POST['isAdmin'];
+		$moduleAccessObject->isAdmin = $_POST['isAdmin'];
 	}
 	if (isset($_POST['groupId'])) {
-		$tabAccessObject->groupId = $_POST['groupId'];
+		$moduleAccessObject->groupId = $_POST['groupId'];
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$tabAccessObject->execute();
+	$moduleAccessObject->execute();
 	if ($_POST['method'] == 'read') {
-		$tabAccessObject->read();
+		$moduleAccessObject->read();
 	}
 }
 if (isset($_GET['method'])) {
@@ -318,21 +318,21 @@ if (isset($_GET['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_GET['leafId'])) {
-		$tabAccessObject->leafId = $_GET['leafId'];
+		$moduleAccessObject->leafId = $_GET['leafId'];
 	}
 	if(isset($_GET['isAdmin'])) {
-		$tabAccessObject->isAdmin = $_GET['isAdmin'];
+		$moduleAccessObject->isAdmin = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$tabAccessObject->execute();
+	$moduleAccessObject->execute();
 	if ($_GET['method'] == 'update') {
-		$tabAccessObject->update();
+		$moduleAccessObject->update();
 	}
 	if (isset($_GET['field'])) {
 		if ($_GET['method'] == 'read' && $_GET['field'] == 'groupId') {
-			$tabAccessObject->group();
+			$moduleAccessObject->group();
 		}
 	}
 }

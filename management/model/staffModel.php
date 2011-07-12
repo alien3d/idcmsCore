@@ -37,7 +37,7 @@ class staffModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['staffId'])){
-			$this->setStaffId($this->strict($_POST['staffId'],'numeric'),'','string');
+			$this->setStaffId($this->strict($_POST['staffId'],'numeric'),'','single');
 		}
 
 		if(isset($_POST['groupId'])){

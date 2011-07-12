@@ -4,20 +4,20 @@ require_once("../../class/classAbstract.php");
 require_once("../../document/class/classDocumentTrail.php");
 require_once("../../document/model/documentModel.php");
 require_once("../../class/classSecurity.php");
-require_once("../model/tabTranslateModel.php");
+require_once("../model/moduleTranslateModel.php");
 /**
  * this is main setting files
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package tab
+ * @package module
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class tabClass extends configClass
+class moduleClass extends configClass
 {
 	/*
-	 * Connection to the database
+	 * Connection to the damodulease
 	 * @var string $excel
 	 */
 	public $q;
@@ -57,7 +57,7 @@ class tabClass extends configClass
 	 */
 	public $auditColumn;
 	/**
-	 * Duplicate Testing either the key of table same or have been created.
+	 * Duplicate Testing either the key of modulele same or have been created.
 	 * @var boolean $duplicateTest;
 	 */
 	public $duplicateTest;
@@ -69,15 +69,15 @@ class tabClass extends configClass
 
 
 	/**
-	 * tab Translate Identification
-	 * @var  numeric $tabTranslateId
+	 * module Translate Identification
+	 * @var  numeric $moduleTranslateId
 	 */
-	private $tabTranslateId;
+	private $moduleTranslateId;
 	/**
-	 * tab Translate
-	 * @var string $tabTranslate
+	 * module Translate
+	 * @var string $moduleTranslate
 	 */
-	public $tabTranslate;
+	public $moduleTranslate;
 	/**
 	 * Class Loader
 	 */
@@ -90,7 +90,7 @@ class tabClass extends configClass
 		$this->q->staffId     = $this->staffId;
 		$this->q->filter      = $this->filter;
 		$this->q->quickFilter = $this->quickFilter;
-		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDamodulease(), $this->getPassword());
 		$this->excel             = new PHPExcel();
 		$this->audit             = 0;
 		$this->log               = 1;
@@ -100,7 +100,7 @@ class tabClass extends configClass
 		$this->security->vendor  = $this->vendor;
 		$this->security->leafId  = $this->leafId;
 		$this->security->execute();
-		$this->model         = new tabModel();
+		$this->model         = new moduleModel();
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
 		$this->documentTrail = new documentTrailClass();
@@ -120,13 +120,13 @@ class tabClass extends configClass
 		/**
 		 * Example  using Constant .This much cleaner approch  to Sql Statement
 		 */
-		$sql = " INSERT INTO `" . tabModel::tableName . "` (`" . tabModel::tabNote . "`)  VALUES (\"". $this->model->tabNote ."\")";
+		$sql = " INSERT INTO `" . moduleModel::moduleleName . "` (`" . moduleModel::moduleNote . "`)  VALUES (\"". $this->model->moduleNote ."\")";
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-			INSERT INTO `tab`
+			INSERT INTO `module`
 					(
-						`iconId`,							`tabSequence`,
-						`tabNote`,							`isDefault`
+						`iconId`,							`moduleSequence`,
+						`moduleNote`,							`isDefault`
 						`isNew`,							`isDraft`,
 						`isUpdate`,							`isDelete`,
 						`isActive`,							`isApproved`,						\
@@ -134,8 +134,8 @@ class tabClass extends configClass
 					)
 			VALUES
 					(
-						\"". $this->model->getIconId() ."\",			\"". $this->model->getTabSequence() ."\",
-						\"". $this->model->getTabNote() ."\",			\"".$this->model->getIsDefault('','single')."\",
+						\"". $this->model->getIconId() ."\",			\"". $this->model->getmoduleSequence() ."\",
+						\"". $this->model->getmoduleNote() ."\",			\"".$this->model->getIsDefault('','single')."\",
 						\"". $this->model->getIsNew('','single') ."\",				\"". $this->model->getIsDraft('','single') ."\",
 						\"". $this->model->getIsUpdate('','single') ."\"				\"". $this->model->getIsDelete('','single') ."\",
 						\"". $this->model->getIsActive('','single') ."\",			\"". $this->model->getIsApproved('','single') ."\",
@@ -143,10 +143,10 @@ class tabClass extends configClass
 					);";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-			INSERT INTO [tab]
+			INSERT INTO [module]
 					(
-						[iconId],							[tabSequence],
-						[tabNote],					[isNew],
+						[iconId],							[moduleSequence],
+						[moduleNote],					[isNew],
 						[isDraft],							[isUpdate],
 						[isDelete],							[isActive],
 						[isApproved],						[By],
@@ -154,8 +154,8 @@ class tabClass extends configClass
 					)
 			VALUES
 					(
-						\"". $this->model->getIconId() ."\",			\"". $this->model->getTabSequence() ."\",
-						\"". $this->model->getTabNote() ."\",			\"".$this->model->getIsDefault('','single')."\",
+						\"". $this->model->getIconId() ."\",			\"". $this->model->getmoduleSequence() ."\",
+						\"". $this->model->getmoduleNote() ."\",			\"".$this->model->getIsDefault('','single')."\",
 						\"". $this->model->getIsNew('','single') ."\",				\"". $this->model->getIsDraft('','single') ."\",
 						\"". $this->model->getIsUpdate('','single') ."\"				\"". $this->model->getIsDelete('','single') ."\",
 						\"". $this->model->getIsActive('','single') ."\",			\"". $this->model->getIsApproved('','single') ."\",
@@ -163,10 +163,10 @@ class tabClass extends configClass
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			INSERT INTO \"tab\"
+			INSERT INTO \"module\"
 					(
-						iconId\"							\"tabSequence\",
-						\"tabNote\",					\"isNew\"
+						iconId\"							\"moduleSequence\",
+						\"moduleNote\",					\"isNew\"
 						\"isDraft\",							\"isUpdate\"
 						\"isDelete\",							\"isActive\",
 						\"isApproved\",						\"By\",
@@ -174,8 +174,8 @@ class tabClass extends configClass
 					)
 			VALUES
 					(
-												\"". $this->model->getIconId() ."\",			\"". $this->model->getTabSequence() ."\",
-						\"". $this->model->getTabNote() ."\",			\"".$this->model->getIsDefault('','single')."\",
+												\"". $this->model->getIconId() ."\",			\"". $this->model->getmoduleSequence() ."\",
+						\"". $this->model->getmoduleNote() ."\",			\"".$this->model->getIsDefault('','single')."\",
 						\"". $this->model->getIsNew('','single') ."\",				\"". $this->model->getIsDraft('','single') ."\",
 						\"". $this->model->getIsUpdate('','single') ."\"				\"". $this->model->getIsDelete('','single') ."\",
 						\"". $this->model->getIsActive('','single') ."\",			\"". $this->model->getIsApproved('','single') ."\",
@@ -195,27 +195,27 @@ class tabClass extends configClass
 			 * 	If anything wrong use this instead  SELECT LAST_INSERT_ID();
 			 **/
 			$sql = "
-			SELECT	MAX(`tabId`)	AS `lastId`
-			FROM 	`tab`";
+			SELECT	MAX(`moduleId`)	AS `lastId`
+			FROM 	`module`";
 		} else if ($this->q->vendor == 'microsoft') {
 			/*
 			 *  If anything wrong use this insert SELECT @@IDENTITY
 			 **/
 			$sql = "
-			SELECT	MAX([tabId]) AS [lastId]
-			FROM 	[tab] ";
+			SELECT	MAX([moduleId]) AS [lastId]
+			FROM 	[module] ";
 		} else if ($this->q->vendor == 'oracle') {
 			/**
-			 *  If anthing wrong use this instead  SELECT tabIdSeq
+			 *  If anthing wrong use this instead  SELECT moduleIdSeq
 			 */
 			$sql = "
-			SELECT 	MAX(\"tabId\") AS \"lastId\"
-			FROM 	\"tab\"";
+			SELECT 	MAX(\"moduleId\") AS \"lastId\"
+			FROM 	\"module\"";
 		}
 		$resultd   = $this->q->fast($sql);
 		$rowLastId = $this->q->fetchAssoc($resultd);
 		$lastId    = $rowLastId['lastId'];
-		//  create a record  in tabAccess.update no effect
+		//  create a record  in moduleAccess.update no effect
 		// loop the group
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
@@ -244,27 +244,27 @@ class tabClass extends configClass
 		$data = $this->q->activeRecord();
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-				INSERT INTO	`tabAccess`
+				INSERT INTO	`moduleAccess`
 						(
-							`tabId`,
+							`moduleId`,
 							`groupId`,
-							`tabAccessValue`
+							`moduleAccessValue`
 						) VALUES";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-				INSERT INTO	[tabAccess]
+				INSERT INTO	[moduleAccess]
 						(
-							[tabId],
+							[moduleId],
 							[groupId],
-							[tabAccessValue]
+							[moduleAccessValue]
 					) VALUES";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-				INSERT INTO	\"tabAccess\"
+				INSERT INTO	\"moduleAccess\"
 						(
-							\"tabId\",
+							\"moduleId\",
 							\"groupId\",
-							\"tabAccessValue\"
+							\"moduleAccessValue\"
 					) VALUES";
 		}
 		foreach ($data as $row) {
@@ -293,7 +293,7 @@ class tabClass extends configClass
 			exit();
 		}
 		/**
-		 *	 insert default value to detail table .English only
+		 *	 insert default value to detail modulele .English only
 		 **/
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
@@ -305,7 +305,7 @@ class tabClass extends configClass
 				) VALUES (
 					\"". $lastId . "\",
 					21,
-					\"". $_POST['tabNote'] ."\"
+					\"". $_POST['moduleNote'] ."\"
 				);";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
@@ -317,7 +317,7 @@ class tabClass extends configClass
 					) VALUES (
 						\"". $lastId ."\",
 						21,
-						\"". $_POST['tabNote'] ."\"
+						\"". $_POST['moduleNote'] ."\"
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -329,7 +329,7 @@ class tabClass extends configClass
 					) VALUES (
 						\"". $lastId ."\",
 						21,
-						\"". $_POST['tabNote'] ."\"
+						\"". $_POST['moduleNote'] ."\"
 					);";
 		}
 		$this->q->create($sql);
@@ -344,7 +344,7 @@ class tabClass extends configClass
 		echo json_encode(array(
             "success" => true,
             "message" => "Insert Sucess",
-            "tabId" => $lastId
+            "moduleId" => $lastId
 		));
 		exit();
 	}
@@ -357,11 +357,11 @@ class tabClass extends configClass
 
 		if($this->isAdmin == 0) {
 			if($this->getVendor()==self::mysql) {
-				$this->auditFilter = "	`tab`.`isActive`		=	1	";
+				$this->auditFilter = "	`module`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	[tab].[isActive]		=	1	";
+				$this->auditFilter = "	[module].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"tab\".\"isActive\"	=	1	";
+				$this->auditFilter = "	\"module\".\"isActive\"	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
@@ -384,35 +384,35 @@ class tabClass extends configClass
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			SELECT		*
-			FROM 		`tab`
+			FROM 		`module`
 			LEFT JOIN 	`icon`
 			USING 		(`iconId`)
-			WHERE 		`tab`.`isActive`	=	1
+			WHERE 		`module`.`isActive`	=	1
 			AND			`icon`.`isActive`		=	1 ";
-			if (($this->model->gettabId('','single'))) {
-				$sql .= " AND `".$this->model->getPrimaryKeyName()."`=\"". $this->strict($this->model->gettabId('','single'), 'numeric') ."\"";
+			if (($this->model->getmoduleId('','single'))) {
+				$sql .= " AND `".$this->model->getPrimaryKeyName()."`=\"". $this->strict($this->model->getmoduleId('','single'), 'numeric') ."\"";
 			}
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			SELECT		*
-			FROM 		[tab]
+			FROM 		[module]
 			LEFT JOIN 	[icon]
-			ON 			[icon].[iconId] = [tab].[iconId]
-			WHERE 		[tab].[isActive]	=	1
+			ON 			[icon].[iconId] = [module].[iconId]
+			WHERE 		[module].[isActive]	=	1
 			AND			[icon].[iconId]			=	1";
-			if (($this->model->gettabId('','single'))) {
-				$sql .= " AND [".$this->model->getPrimaryKeyName()."]=\"". $this->strict($this->model->gettabId('','single'), 'numeric') ."\"";
+			if (($this->model->getmoduleId('','single'))) {
+				$sql .= " AND [".$this->model->getPrimaryKeyName()."]=\"". $this->strict($this->model->getmoduleId('','single'), 'numeric') ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT		*
-			FROM 		\"tab\"
+			FROM 		\"module\"
 			LEFT JOIN 	\"icon\"
 			USING 		(\"iconId\")
-			WHERE 		\"tab\".\"isActive\"	=	1
+			WHERE 		\"module\".\"isActive\"	=	1
 			AND			\"icon\".\"isActive\"		=	1";
-			if (($this->model->gettabId('','single'))) {
-				$sql .= " AND \"".$this->model->getPrimaryKeyName()."\"=\"". $this->strict($this->model->gettabId('','single'), 'numeric') ."\"";
+			if (($this->model->getmoduleId('','single'))) {
+				$sql .= " AND \"".$this->model->getPrimaryKeyName()."\"=\"". $this->strict($this->model->getmoduleId('','single'), 'numeric') ."\"";
 			}
 		}
 		if ($this->quickFilter) {
@@ -422,24 +422,24 @@ class tabClass extends configClass
 			 *  @variables $filterArray;
 			 */
 			$filterArray = array(
-                "tabId",
-                "tabTranslateId"
+                "moduleId",
+                "moduleTranslateId"
                 );
                 /**
-                 *	filter table
-                 *  @variables $tableArray
+                 *	filter modulele
+                 *  @variables $moduleleArray
                  */
-                $tableArray  = array(
-                'tab',
-                'tabTranslate'
+                $moduleleArray  = array(
+                'module',
+                'moduleTranslate'
                 );
                 if ($this->q->vendor == 'normal' || $this->q->vendor == 'mysql') {
-                	$sql .= $this->q->quickSearch($tableArray, $filterArray);
+                	$sql .= $this->q->quickSearch($moduleleArray, $filterArray);
                 } else if ($this->q->vendor == 'microsoft') {
-                	$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+                	$tempSql = $this->q->quickSearch($moduleleArray, $filterArray);
                 	$sql .= $tempSql;
                 } else if ($this->q->vendor == 'oracle') {
-                	$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+                	$tempSql = $this->q->quickSearch($moduleleArray, $filterArray);
                 	$sql .= $tempSql;
                 }
 		}
@@ -490,21 +490,21 @@ class tabClass extends configClass
 					 *	 Parameterize Query We don't support
 					 **/
 					$sql = "
-					WITH [tabDerived] AS
+					WITH [moduleDerived] AS
 					(
 						SELECT *,
-						ROW_NUMBER() OVER (ORDER BY [tabId]) AS 'RowNumber'
-						FROM [tab]
-						WHERE [tab].[isActive] =1   " . $tempSql . $tempSql2 . "
+						ROW_NUMBER() OVER (ORDER BY [moduleId]) AS 'RowNumber'
+						FROM [module]
+						WHERE [module].[isActive] =1   " . $tempSql . $tempSql2 . "
 					)
 					SELECT		*
-					FROM 		[tabDerived]
+					FROM 		[moduleDerived]
 					WHERE 		[RowNumber]
 					BETWEEN	" . $_POST['start'] . "
 					AND 			" . ($_POST['start'] + $_POST['limit'] - 1) . ";";
 				} else if ($this->getVendor() == self::oracle) {
 					/**
-					 *  Oracle using derived table also
+					 *  Oracle using derived modulele also
 					 */
 					$sql = "
 				SELECT *
@@ -512,7 +512,7 @@ class tabClass extends configClass
 										rownum r
 				FROM (
 							SELECT *
-							FROM 	\"tab\"
+							FROM 	\"module\"
 							WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
 						 ) a
 				where rownum <= \"". ($_POST['start'] + $_POST['limit'] - 1) ."\" )
@@ -532,7 +532,7 @@ class tabClass extends configClass
 		while ($row = $this->q->fetchAssoc()) {
 			$items[] = $row;
 		}
-	 if ($this->model->getTabId('','single')) {
+	 if ($this->model->getmoduleId('','single')) {
 	 	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -570,9 +570,9 @@ class tabClass extends configClass
 		$this->model->update();
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-			UPDATE 	`tab`
-			SET 	`tabSequence`	= 	\"". $this->model->getTabSequence() ."\",
-					`tabNote`		=	\"". $this->model->getTabNote() ."\",
+			UPDATE 	`module`
+			SET 	`moduleSequence`	= 	\"". $this->model->getmoduleSequence() ."\",
+					`moduleNote`		=	\"". $this->model->getmoduleNote() ."\",
 					`iconId`			=	\"". $this->model->getIconId() ."\",
 					`isActive`			=	\"". $this->model->getIsActive('','single') ."\",
 					`isNew`				=	\"". $this->model->getIsNew('','single') ."\",
@@ -582,12 +582,12 @@ class tabClass extends configClass
 					`isApproved`		=	\"". $this->model->getIsApproved('','single') ."\",
 					`By`				=	\"". $this->model->getBy() ."\",
 					`Time				=	" . $this->model->getTime() . "
-			WHERE 	`tabId`		=	\"". $this->model->tabId ."\"";
+			WHERE 	`moduleId`		=	\"". $this->model->moduleId ."\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-			UPDATE 	[tab]
-			SET 	[tabSequence]	= 	\"". $this->model->tabSequence ."\",
-					[tabNote]		=	\"". $this->model->tabNote ."\",
+			UPDATE 	[module]
+			SET 	[moduleSequence]	= 	\"". $this->model->moduleSequence ."\",
+					[moduleNote]		=	\"". $this->model->moduleNote ."\",
 					[iconId]			=	\"". $this->model->iconId ."\",
 					[isActive]			=	\"". $this->model->getIsActive('','single') ."\",
 					[isNew]				=	\"". $this->model->getIsNew('','single') ."\",
@@ -597,12 +597,12 @@ class tabClass extends configClass
 					[isApproved]		=	\"". $this->model->getIsApproved('','single') ."\",
 					[By]				=	\"". $this->model->getBy() ."\",
 					[Time]				=	" . $this->model->getTime() . "
-			WHERE 	[tabId]		=	\"". $this->model->tabId ."\"";
+			WHERE 	[moduleId]		=	\"". $this->model->moduleId ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE 	\"tab\"
-			SET 	\"tabSequence\"	= 	\"". $this->model->tabSequence ."\",
-					\"tabNote\"		=	\"". $this->model->tabNote ."\",
+			UPDATE 	\"module\"
+			SET 	\"moduleSequence\"	= 	\"". $this->model->moduleSequence ."\",
+					\"moduleNote\"		=	\"". $this->model->moduleNote ."\",
 					\"iconId\"				=	\"". $this->model->iconId ."\",
 					\"isActive\"			=	\"". $this->model->getIsActive('','single') ."\",
 					\"isNew\"				=	\"". $this->model->getIsNew('','single') ."\",
@@ -612,7 +612,7 @@ class tabClass extends configClass
 					\"isApproved\"			=	\"". $this->model->getIsApproved('','single') ."\",
 					\"By\"					=	\"". $this->model->getBy() ."\",
 					\"Time\"				=	" . $this->model->getTime() . "
-			WHERE 	\"tabId\"			=	\"". $this->model->tabId ."\"";
+			WHERE 	\"moduleId\"			=	\"". $this->model->moduleId ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -644,7 +644,7 @@ class tabClass extends configClass
 		$this->model->delete();
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-			UPDATE 	`tab`
+			UPDATE 	`module`
 			SET 	`isActive`			=	\"". $this->model->getIsActive('','single') ."\",
 					`isNew`				=	\"". $this->model->getIsNew('','single') ."\",
 					`isDraft`			=	\"". $this->model->getIsDraft('','single') ."\",
@@ -653,10 +653,10 @@ class tabClass extends configClass
 					`isApproved`		=	\"". $this->model->getIsApproved('','single') ."\",
 					`By`				=	\"". $this->model->getBy() ."\",
 					`Time				=	" . $this->model->getTime() . "
-			WHERE 	`tabId`		=	\"". $this->model->tabId ."\"";
+			WHERE 	`moduleId`		=	\"". $this->model->moduleId ."\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-			UPDATE 	[tab]
+			UPDATE 	[module]
 			SET 	[isActive]			=	\"". $this->model->getIsActive('','single') ."\",
 					[isNew]				=	\"". $this->model->getIsNew('','single') ."\",
 					[isDraft]			=	\"". $this->model->getIsDraft('','single') ."\",
@@ -665,10 +665,10 @@ class tabClass extends configClass
 					[isApproved]		=	\"". $this->model->getIsApproved('','single') ."\",
 					[By]				=	\"". $this->model->getBy() ."\",
 					[Time]				=	" . $this->model->getTime() . "
-			WHERE 	[tabId]		=	\"". $this->model->tabId ."\"";
+			WHERE 	[moduleId]		=	\"". $this->model->moduleId ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE 	\"tab\"
+			UPDATE 	\"module\"
 			SET 	\"isActive\"	=	\"". $this->model->getIsActive('','single') ."\",
 					\"isNew\"		=	\"". $this->model->getIsNew('','single') ."\",
 					\"isDraft\"		=	\"". $this->model->getIsDraft('','single') ."\",
@@ -677,7 +677,7 @@ class tabClass extends configClass
 					\"isApproved\"	=	\"". $this->model->getIsApproved('','single') ."\",
 					\"By\"			=	\"". $this->model->getBy() ."\",
 					\"Time\"		=	" . $this->model->getTime() . "
-			WHERE 	\"tabId\"			=	\"". $this->model->tabId ."\"";
+			WHERE 	\"moduleId\"			=	\"". $this->model->moduleId ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -695,7 +695,7 @@ class tabClass extends configClass
             exit();
 	}
 	/**
-	 *  Read Record From tabTranslate Table
+	 *  Read Record From moduleTranslate modulele
 	 */
 	function translateRead()
 	{
@@ -710,24 +710,24 @@ class tabClass extends configClass
 		if ($this->q->vendor = 'mysql') {
 			$sql = "
 			SELECT	*
-			FROM 	`tabTranslate`
+			FROM 	`moduleTranslate`
 			JOIN 	`language`
 			USING (`languageId`)
-			WHERE	`tabTranslate`.`tabId`=\"". $this->strict($_POST['tabId'], 'numeric') ."\"";
+			WHERE	`moduleTranslate`.`moduleId`=\"". $this->strict($_POST['moduleId'], 'numeric') ."\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			SELECT	*
-			FROM 	[tabTranslate]
+			FROM 	[moduleTranslate]
 			JOIN 	[language]
-			ON 		[tabTranslate].[languageId] =[language].[languageId]
-			WHERE	[tabTranslate].[tabId]=\"". $this->strict($_POST['tabId'], 'numeric') ."\"";
+			ON 		[moduleTranslate].[languageId] =[language].[languageId]
+			WHERE	[moduleTranslate].[moduleId]=\"". $this->strict($_POST['moduleId'], 'numeric') ."\"";
 		} else if ($this->q->vendor == 'oralce') {
 			$sql = "
 			SELECT	*
-			FROM 	\"tabTranslate\"
+			FROM 	\"moduleTranslate\"
 			JOIN 	\"language\"
 			USING (\"languageId\")
-			WHERE	\"tabTranslate\".\"tabId\"=\"". $this->strict($_POST['tabId'], 'numeric') ."\"";
+			WHERE	\"moduleTranslate\".\"moduleId\"=\"". $this->strict($_POST['moduleId'], 'numeric') ."\"";
 		}
 		$this->q->read($sql);
 		$total = $this->q->numberRows();
@@ -743,7 +743,7 @@ class tabClass extends configClass
 		exit();
 	}
 	/**
-	 * Update tab Translation in tabTranslate Table
+	 * Update module Translation in moduleTranslate modulele
 	 */
 	public function translateUpdate()
 	{
@@ -751,19 +751,19 @@ class tabClass extends configClass
 		$this->q->commit();
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-		UPDATE	`tabTranslate`
-		SET		`tabTranslate` 	=	\"". $this->strict($_POST['tabTranslate'], 'string') ."\"
-		WHERE 	`tabTranslateId`	=	\"". $this->strict($_POST['tabTranslateId'], 'numeric') ."\"";
+		UPDATE	`moduleTranslate`
+		SET		`moduleTranslate` 	=	\"". $this->strict($_POST['moduleTranslate'], 'string') ."\"
+		WHERE 	`moduleTranslateId`	=	\"". $this->strict($_POST['moduleTranslateId'], 'numeric') ."\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-		UPDATE	[tabTranslate]
-		SET		[tabTranslate] 	=	\"". $this->strict($_POST['tabTranslate'], 'string') ."\"
-		WHERE 	[tabTranslateId]	=	\"". $this->strict($_POST['tabTranslateId'], 'numeric') ."\"";
+		UPDATE	[moduleTranslate]
+		SET		[moduleTranslate] 	=	\"". $this->strict($_POST['moduleTranslate'], 'string') ."\"
+		WHERE 	[moduleTranslateId]	=	\"". $this->strict($_POST['moduleTranslateId'], 'numeric') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-		UPDATE	\"tabTranslate\"
-		SET		\"tabTranslate\" 		=	\"". $this->strict($_POST['tabTranslate'], 'string') ."\"
-		WHERE 	\"tabTranslateId\"	=	\"". $this->strict($_POST['tabTranslateId'], 'numeric') ."\"";
+		UPDATE	\"moduleTranslate\"
+		SET		\"moduleTranslate\" 		=	\"". $this->strict($_POST['moduleTranslate'], 'string') ."\"
+		WHERE 	\"moduleTranslateId\"	=	\"". $this->strict($_POST['moduleTranslateId'], 'numeric') ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -781,7 +781,7 @@ class tabClass extends configClass
             exit();
 	}
 	/**
-	 * Create Translation tab Note to the tabTranslate Table
+	 * Create Translation module Note to the moduleTranslate modulele
 	 */
 	function translateMe()
 	{
@@ -790,23 +790,23 @@ class tabClass extends configClass
 		if ($this->q->vendor == 'normal' || $this->q->vendor == 'mysql') {
 			$sql = "
 			SELECT	*
-			FROM 	`tab`
-			WHERE 	`tabId`	=	\"". $this->tabId ."\"";
+			FROM 	`module`
+			WHERE 	`moduleId`	=	\"". $this->moduleId ."\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			SELECT	*
-			FROM 	[tab]
-			WHERE 	`tabId`	=	\"". $this->tabId ."\"";
+			FROM 	[module]
+			WHERE 	`moduleId`	=	\"". $this->moduleId ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT	*
-			FROM 	\"tab\"
-			WHERE 	`tabId`	=	\"". $this->tabId ."\"";
+			FROM 	\"module\"
+			WHERE 	`moduleId`	=	\"". $this->moduleId ."\"";
 		}
 		$resultDefault = $this->q->fast($sql);
 		if ($this->q->numberRows($resultDefault) > 0) {
 			$rowDefault = $this->q->fetch_array($resultDefault);
-			$value      = $rowDefault['tabNote'];
+			$value      = $rowDefault['moduleNote'];
 		}
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
@@ -830,41 +830,41 @@ class tabClass extends configClass
 			if ($this->q->vendor == 'normal' || $this->q->vendor == 'mysql') {
 				$sql = "
 				SELECT	*
-				FROM 	`tabTranslate`
-				WHERE 	`tabId`			=	\"". $this->tabId ."\"
+				FROM 	`moduleTranslate`
+				WHERE 	`moduleId`			=	\"". $this->moduleId ."\"
 				AND 	`languageId`			=	\"". $languageId ."\"";
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
 				SELECT	*
-				FROM 	[tabTranslate]
-				WHERE 	[tabId]			=	\"". $this->tabId ."\"
+				FROM 	[moduleTranslate]
+				WHERE 	[moduleId]			=	\"". $this->moduleId ."\"
 				AND 	[languageId]			=	\"". $languageId ."\"";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				SELECT	*
-				FROM 	\"tabTranslate\"
-				WHERE 	\"tabId\"			=	\"". $this->tabId ."\"
+				FROM 	\"moduleTranslate\"
+				WHERE 	\"moduleId\"			=	\"". $this->moduleId ."\"
 				AND 	\"languageId\"			=	\"". $languageId ."\"";
 			}
-			$resulttabTranslate = $this->q->fast($sql);
-			if ($this->q->numberRows($resulttabTranslate) > 0) {
+			$resultmoduleTranslate = $this->q->fast($sql);
+			if ($this->q->numberRows($resultmoduleTranslate) > 0) {
 				if ($this->q->vendor == 'normal' || $this->q->vendor == 'mysql') {
 					$sql = "
-					UPDATE	`tabTranslate`
-					SET 	`tabTranslate`		=	\"". $googleTranslate ."\"
-					WHERE 	`tabId`				=	\"". $this->tabdId ."\"
+					UPDATE	`moduleTranslate`
+					SET 	`moduleTranslate`		=	\"". $googleTranslate ."\"
+					WHERE 	`moduleId`				=	\"". $this->moduledId ."\"
 					AND 	`languageId`				=	\"". $languageId ."\"";
 				} else if ($this->q->vendor == 'microsoft') {
 					$sql = "
-					UPDATE	[tabTranslate]
-					SET 	[tabTranslate]		=	\"". $googleTranslate ."\"
-					WHERE 	[tabId]				=	\"". $this->tabdId ."\"
+					UPDATE	[moduleTranslate]
+					SET 	[moduleTranslate]		=	\"". $googleTranslate ."\"
+					WHERE 	[moduleId]				=	\"". $this->moduledId ."\"
 					AND		[languageId]				=	\"". $languageId ."\"";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
-					UPDATE 	\"tabTranslate\"
-					SET 	\"tabTranslate\"		=	\"". $googleTranslate ."\"
-					WHERE 	`tabId`				=	\"". $this->tabdId ."\"
+					UPDATE 	\"moduleTranslate\"
+					SET 	\"moduleTranslate\"		=	\"". $googleTranslate ."\"
+					WHERE 	`moduleId`				=	\"". $this->moduledId ."\"
 					AND 	`languageId`				=	\"". $languageId ."\"";
 				}
 				$this->q->update($sql);
@@ -878,37 +878,37 @@ class tabClass extends configClass
 			} else {
 				if ($this->getVendor() == self::mysql) {
 					$sql = "
-					INSERT INTO	`tabTranslate`
+					INSERT INTO	`moduleTranslate`
 							(
-							 	`tabId`,
+							 	`moduleId`,
 								`languageId`,
-								`tabTranslate`
+								`moduleTranslate`
 							) VALUES(
-								\"". $this->tabId ."\",
+								\"". $this->moduleId ."\",
 								\"". $languageId ."\",
 								\"". $googleTranslate ."\"
 					)";
 				} else if ($this->getVendor() ==  self::mssql) {
 					$sql = "
-					INSERT INTO [tabTranslate]
+					INSERT INTO [moduleTranslate]
 							(
-							 	[tabId],
+							 	[moduleId],
 								[languageId],
-								[tabTranslate]
+								[moduleTranslate]
 							) VALUES(
-								\"". $this->tabId ."\",
+								\"". $this->moduleId ."\",
 								\"". $languageId ."\",
 								\"". $googleTranslate ."\"
 							)";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
-					INSERT INTO \"tabTranslate\"
+					INSERT INTO \"moduleTranslate\"
 							(
-							 	\"tabId\",
+							 	\"moduleId\",
 								\"languageId\",
-								\"tabTranslate\"
+								\"moduleTranslate\"
 							) VALUES(
-								\"". $this->tabId ."\",
+								\"". $this->moduleId ."\",
 								\"". $languageId ."\",
 								\"". $googleTranslate ."\"
 							)";
@@ -987,8 +987,8 @@ class tabClass extends configClass
                         while ($row = $this->q->fetchAssoc()) {
                         	//	echo print_r($row);
                         	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-                        	$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row['tabNote']);
-                        	$this->excel->getActiveSheet()->setCellValue('D' . $loopRow, $row['tabDesc']);
+                        	$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row['moduleNote']);
+                        	$this->excel->getActiveSheet()->setCellValue('D' . $loopRow, $row['moduleDesc']);
                         	$loopRow++;
                         	$lastRow = 'D' . $loopRow;
                         }
@@ -997,7 +997,7 @@ class tabClass extends configClass
                         $formula = $from . ":" . $to;
                         $this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
                         $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-                        $filename  = "tab" . rand(0, 10000000) . ".xlsx";
+                        $filename  = "module" . rand(0, 10000000) . ".xlsx";
                         $path      = $_SERVER['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
                         $objWriter->save($path);
                         $this->audit->createTrail($this->leafId, $path, $filename);
@@ -1018,7 +1018,7 @@ class tabClass extends configClass
 /**
  *	Declare object
  **/
-$tabTranslateObject = new tabClass();
+$moduleTranslateObject = new moduleClass();
 
 
 /**
@@ -1032,30 +1032,30 @@ if (isset($_POST['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_POST['leafId'])) {
-		$tabTranslateObject->setlLeafId($_POST['leafId']);
+		$moduleTranslateObject->setlLeafId($_POST['leafId']);
 	}
 	if(isset($_POST['isAdmin'])){
-		$tabTranslateObject->setIsAdmin($_POST['isAdmin']);
+		$moduleTranslateObject->setIsAdmin($_POST['isAdmin']);
 	}
 
 	/*
 	 * Filtering
 	 */
 	if (isset($_POST['query'])) {
-		$tabTranslateObject->setFieldQuery($_POST['query']);
+		$moduleTranslateObject->setFieldQuery($_POST['query']);
 	}
 	if (isset($_POST['filter'])) {
-		$tabTranslateObject->setGridQuery($_POST['filter']);
+		$moduleTranslateObject->setGridQuery($_POST['filter']);
 	}
 
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST['order'])) {
-		$tabTranslateObject->setOrder($_POST['order']);
+		$moduleTranslateObject->setOrder($_POST['order']);
 	}
 	if (isset($_POST['sortField'])) {
-		$tabTranslateObject->setSortField($_POST['sortField']);
+		$moduleTranslateObject->setSortField($_POST['sortField']);
 	}
 
 
@@ -1063,25 +1063,25 @@ if (isset($_POST['method'])) {
 	/*
 	 *  Load the dynamic value
 	 */
-	$tabTranslateObject->execute();
+	$moduleTranslateObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST['method'] == 'create') {
-		$tabTranslateObject->create();
+		$moduleTranslateObject->create();
 	}
 	if ($_POST['method'] == 'read') {
 
-		$tabTranslateObject->read();
+		$moduleTranslateObject->read();
 
 	}
 	if ($_POST['method'] == 'save') {
 
-		$tabTranslateObject->update();
+		$moduleTranslateObject->update();
 
 	}
 	if ($_POST['method'] == 'delete') {
-		$tabTranslateObject->delete();
+		$moduleTranslateObject->delete();
 	}
 }
 if (isset($_GET['method'])) {
@@ -1092,28 +1092,28 @@ if (isset($_GET['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_GET['leafId'])) {
-		$tabTranslateObject->leafId = $_GET['leafId'];
+		$moduleTranslateObject->leafId = $_GET['leafId'];
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_GET['isAdmin'])){
-		$tabTranslateObject->isAdmin = $_GET['isAdmin'];
+		$moduleTranslateObject->isAdmin = $_GET['isAdmin'];
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$tabTranslateObject->execute();
+	$moduleTranslateObject->execute();
 
 	if ($_GET['method'] == 'translate') {
-		$tabTranslateObject->translateMe();
+		$moduleTranslateObject->translateMe();
 	}
 	/*
 	 *  Excel Reporting
 	 */
 	if (isset($_GET['mode'])) {
 		if ($_GET['mode'] == 'report') {
-			$tabTranslateObject->excel();
+			$moduleTranslateObject->excel();
 		}
 
 	}

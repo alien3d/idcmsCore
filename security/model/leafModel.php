@@ -37,7 +37,7 @@ class leafModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['leafId'])){
-			$this->setLeafId($this->strict($_POST['leafId'],'numeric'),'','string');
+			$this->setLeafId($this->strict($_POST['leafId'],'numeric'),'','single');
 		}
 		if(isset($_POST['tabId'])){
 			$this->setTabId($this->strict($_POST['tabId'],'numeric'));

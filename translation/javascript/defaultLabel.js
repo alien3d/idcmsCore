@@ -993,7 +993,7 @@ Ext
 															defaultLabelTranslateStore
 																	.reload();
 															
-														} else if (jsonResponse.success == false)) {
+														} else if (jsonResponse.success == false) {
 															Ext.MessageBox
 																	.alert(
 																			systemErrorLabel,

@@ -35,7 +35,7 @@ class religionModel extends validationClass
          *                  DELETE/Destroy  -->Is To Delete/Destroy Data
          */
         if (isset($_POST['religionId'])) {
-            $this->setReligionId($this->strict($_POST['religionId'], 'numeric'), '', 'string');
+            $this->setReligionId($this->strict($_POST['religionId'], 'numeric'),'','single');
         }
         if (isset($_POST['religionDesc'])) {
             $this->setReligionDesc($this->strict($_POST['religionDesc'], 'memo'));

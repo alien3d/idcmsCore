@@ -23,8 +23,8 @@ class extLabelModel extends validationClass{
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
-function execute(){
-			/*
+	function execute(){
+		/*
 		 *  Basic Information Table
 		 */
 		$this->setTableName('extLabel');
@@ -33,7 +33,7 @@ function execute(){
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['extLabelId'])){
-			$this->setextLabelId($this->strict($_POST['extLabelId'],'numeric'),'','string');
+			$this->setextLabelId($this->strict($_POST['extLabelId'],'numeric'),'','single');
 		}
 		if(isset($_POST['extLabelSequence'])){
 			$this->setextLabelSequence($this->strict($_POST['extLabelSequence'],'memo'));
@@ -56,7 +56,7 @@ function execute(){
 		}
 
 		$this->setTotal(count($_GET['extLabelId']));
-        $accessArray = array(
+		$accessArray = array(
             "isDefault",
             "isNew",
             "isDraft",
@@ -64,72 +64,72 @@ function execute(){
             "isDelete",
             "isActive",
             "isApproved"
-        );
-        // auto assign as array if true
-        if(is_array($_GET['extLabelId'])){
-        	$this->extLabelId= array();
-        }
-        if (is_array($_GET['isDefault'])) {
-            $this->isDefault = array();
-        }
-        if (is_array($_GET['isNew'])) {
-            $this->isNew = array();
-        }
-        if (is_array($_GET['isDraft'])) {
-            $this->isDraft = array();
-        }
-        if (is_array($_GET['isUpdate'])) {
-            $this->isUpdate = array();
-        }
-        if (is_array($_GET['isDelete'])) {
-            $this->isDelete = array();
-        }
-        if (is_array($_GET['isActive'])) {
-            $this->isActive = array();
-        }
-        if (is_array($_GET['isApproved'])) {
-            $this->isApproved = array();
-        }
-        for ($i = 0; $i < $this->getTotal(); $i++) {
-            $this->setextLabelId($this->strict($_GET['extLabelId'][$i], 'numeric'), $i, 'array');
-            if ($_GET['isDefault'][$i] == 'true') {
-                $this->setIsDefault(1, $i, 'array');
-            } else if ($_GET['default'] == 'false') {
-                $this->setIsDefault(0, $i, 'array');
+            );
+            // auto assign as array if true
+            if(is_array($_GET['extLabelId'])){
+            	$this->extLabelId= array();
             }
-            if ($_GET['isNew'][$i] == 'true') {
-                $this->setIsNew(1, $i, 'array');
-            } else {
-                $this->setIsNew(0, $i, 'array');
+            if (is_array($_GET['isDefault'])) {
+            	$this->isDefault = array();
             }
-            if ($_GET['isDraft'][$i] == 'true') {
-                $this->setIsDraft(1, $i, 'array');
-            } else {
-                $this->setIsDraft(0, $i, 'array');
+            if (is_array($_GET['isNew'])) {
+            	$this->isNew = array();
             }
-            if ($_GET['isUpdate'][$i] == 'true') {
-                $this->setIsUpdate(1, $i, 'array');
-            } else {
-                $this->setIsUpdate(0, $i, 'array');
+            if (is_array($_GET['isDraft'])) {
+            	$this->isDraft = array();
             }
-            if ($_GET['isDelete'][$i] == 'true') {
-                $this->setIsDelete(1, $i, 'array');
-            } else if ($_GET['isDelete'][$i] == 'false') {
-                $this->setIsDelete(0, $i, 'array');
+            if (is_array($_GET['isUpdate'])) {
+            	$this->isUpdate = array();
             }
-            if ($_GET['isActive'][$i] == 'true') {
-                $this->setIsActive(1, $i, 'array');
-            } else {
-                $this->setIsActive(0, $i, 'array');
+            if (is_array($_GET['isDelete'])) {
+            	$this->isDelete = array();
             }
-            if ($_GET['isApproved'][$i] == 'true') {
-                $this->setIsApproved(1, $i, 'array');
-            } else {
-                $this->setIsApproved(0, $i, 'array');
+            if (is_array($_GET['isActive'])) {
+            	$this->isActive = array();
             }
-            $primaryKeyAll .= $this->getDefaultLabelId($i, 'array') . ",";
-        }
-        $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
+            if (is_array($_GET['isApproved'])) {
+            	$this->isApproved = array();
+            }
+            for ($i = 0; $i < $this->getTotal(); $i++) {
+            	$this->setextLabelId($this->strict($_GET['extLabelId'][$i], 'numeric'), $i, 'array');
+            	if ($_GET['isDefault'][$i] == 'true') {
+            		$this->setIsDefault(1, $i, 'array');
+            	} else if ($_GET['default'] == 'false') {
+            		$this->setIsDefault(0, $i, 'array');
+            	}
+            	if ($_GET['isNew'][$i] == 'true') {
+            		$this->setIsNew(1, $i, 'array');
+            	} else {
+            		$this->setIsNew(0, $i, 'array');
+            	}
+            	if ($_GET['isDraft'][$i] == 'true') {
+            		$this->setIsDraft(1, $i, 'array');
+            	} else {
+            		$this->setIsDraft(0, $i, 'array');
+            	}
+            	if ($_GET['isUpdate'][$i] == 'true') {
+            		$this->setIsUpdate(1, $i, 'array');
+            	} else {
+            		$this->setIsUpdate(0, $i, 'array');
+            	}
+            	if ($_GET['isDelete'][$i] == 'true') {
+            		$this->setIsDelete(1, $i, 'array');
+            	} else if ($_GET['isDelete'][$i] == 'false') {
+            		$this->setIsDelete(0, $i, 'array');
+            	}
+            	if ($_GET['isActive'][$i] == 'true') {
+            		$this->setIsActive(1, $i, 'array');
+            	} else {
+            		$this->setIsActive(0, $i, 'array');
+            	}
+            	if ($_GET['isApproved'][$i] == 'true') {
+            		$this->setIsApproved(1, $i, 'array');
+            	} else {
+            		$this->setIsApproved(0, $i, 'array');
+            	}
+            	$primaryKeyAll .= $this->getDefaultLabelId($i, 'array') . ",";
+            }
+            $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 
 
 	}
@@ -137,7 +137,7 @@ function execute(){
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
 	 */
-		public function create()
+	public function create()
 	{
 		$this->setIsDefault(0,'','string');
 		$this->setIsNew(1,'','string');
@@ -174,7 +174,7 @@ function execute(){
 		$this->setIsApproved(0,'','string');
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -222,17 +222,17 @@ function execute(){
 	}
 
 	/**
-	 * Set Table Mapping Translation Value
+	 * Set Extjs Label NoteValue
 	 * @param  string $value
 	 */
-	public function setExtNote($value) {
+	public function setExtLabelNote($value) {
 		$this->extLabelNote = $value;
 	}
 	/**
-	 * Return Language Value
-	 * @return string Language Code
+	 * Return Label Note Value
+	 * @return string Label Note (English)
 	 */
-	public function getExtNote() {
+	public function getExtLabelNote() {
 
 		return $this->extLabelNote;
 	}
