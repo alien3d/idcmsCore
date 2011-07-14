@@ -23,6 +23,8 @@ if($_SESSION[$theme]) { ?>
 </body>
 <?php require_once("../../shared/setting.php"); ?>
 <script  type="text/javascript"
+	src="../../javascript/adapter/ext/ext-base.js"></script>
+<script  type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
 <script  type="text/javascript"
 	src="../javascript/edit_cat.js"></script>

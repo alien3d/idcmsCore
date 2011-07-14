@@ -120,54 +120,49 @@ Ext
 
 			
 
-			var staffProxy = new Ext.data.HttpProxy({
-				url : "../controller/documentController.php?",
-				method : "GET",
-				success : function(response, options) {
-					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message); //uncommen for testing purpose
-					} else {
-						Ext.MessageBox.alert(systemErrorLabel,
-								jsonResponse.message);
-					}
-
-				},
-				failure : function(response, options) {
-					Ext.MessageBox.alert(systemErrorLabel,
-							escape(response.Status) + ":"
-									+ escape(response.statusText));
-				}
-
-			});
-			
-		    var staffByReader = new Ext.data.JsonReader({
-		        totalProperty: "total",
-		        successProperty: "success",
-		        messageProperty: "message",
-		        idProperty: "staffId"
-		    });
-		    var staffByStore = new Ext.data.JsonStore({
-		        proxy: staffByProxy,
-		        reader: staffByReader,
-		        autoLoad: true,
-		        autoDestroy: true,
-		        baseParams: {
-		            method: 'read',
-		            field: 'staffId',
-		            leafId: leafId
-		        },
-		        root: 'staff',
-		        fields: [{
-		            name: "staffId",
-		            type: "int"
-		        },
-		        {
-		            name: "staffName",
-		            type: "string"
-		        }]
-		    });
+			  var staffByProxy = new Ext.data.HttpProxy({
+			        url: "../controller/documentController.php?",
+			        method: "GET",
+			        success: function(response, options) {
+			            jsonResponse = Ext.decode(response.responseText);
+			            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
+			                // jsonResponse.message);
+			                // //uncommen for testing
+			                // purpose
+			            } else {
+			                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+			            }
+			        },
+			        failure: function(response, options) {
+			            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+			        }
+			    });
+			    var staffByReader = new Ext.data.JsonReader({
+			        totalProperty: "total",
+			        successProperty: "success",
+			        messageProperty: "message",
+			        idProperty: "staffId"
+			    });
+			    var staffByStore = new Ext.data.JsonStore({
+			        proxy: staffByProxy,
+			        reader: staffByReader,
+			        autoLoad: true,
+			        autoDestroy: true,
+			        baseParams: {
+			            method: 'read',
+			            field: 'staffId',
+			            leafId: leafId
+			        },
+			        root: 'staff',
+			        fields: [{
+			            name: "staffId",
+			            type: "int"
+			        },
+			        {
+			            name: "staffName",
+			            type: "string"
+			        }]
+			    });
 
 			var documentCategoryReader = new Ext.data.JsonReader({
 				root : 'documentCategory',

@@ -33,6 +33,8 @@ Ext.onReady(function() {
 			var perPage = 10;
 			var encode = false;
 			var local = false;
+			
+			
 			var store = new Ext.data.JsonStore( {
 				autoDestroy : true,
 				url : '../controller/documentCategoryController.php',
@@ -74,89 +76,51 @@ Ext.onReady(function() {
 				}
 			});
 
-			var storeList = new Ext.data.JsonStore( {
-				autoDestroy : true,
-				url : '../controller/documentCategoryController.php',
-				remoteSort : true,
-				root : 'data',
-				totalProperty : 'total',
-				baseParams : {
-					method : 'read',
-					mode : 'view',
-					leafId : leafId
-				},
-				fields : [ {
-					name : 'documentCategoryId',
-					type : 'int'
-				}, {
-					name : 'documentCategoryTitle',
-					type : 'string'
-				}, {
-					name : 'leafId',
-					type : 'int'
-				}, {
-					name : 'leafNote',
-					type : 'string'
-				}, {
-				    name : 'Nleaf',
-					type : 'string'
-				}],
-				listeners : {
-					exception : function(DataProxy, type, action, options,
-							response, arg) {
-						var serverMessage = Ext.util.JSON
-								.decode(response.responseText);
-						if (serverMessage.success == false
-								) {
-							Ext.MessageBox
-									.alert("Error", serverMessage.message);
-						}
-					}
-				}
-			});
+			
 
-			var staffProxy = new Ext.data.HttpProxy({
-		        url: "../controller/religionController.php?",
-		        method: "GET",
-		        success: function (response, options) {
-		            jsonResponse = Ext.decode(response.responseText);
-		            if (jsonResponse.success == true) {
-		                //Ext.MessageBox.alert(successLabel, jsonResponse.message); //uncommen for testing purpose
-		            } else {
-		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-		            }
-
-		        },
-		        failure: function (response, options) {
-		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
-		        }
-
-		    });
-		    var staffReader = new Ext.data.JsonReader({
-		        totalProperty: "total",
-		        successProperty: "success",
-		        messageProperty: "message",
-		        idProperty: "staffId"
-		    });
-		    var staffStore = new Ext.data.JsonStore({
-		        proxy: staffProxy,
-		        reader: staffReader,
-		        autoLoad: true,
-		        autoDestroy: true,
-		        baseParams: {
-		            method: 'read',
-		            field: 'staffId',
-		            leafId: leafId
-		        },
-		        root: 'staff',
-		        fields: [{
-		            name: "staffId",
-		            type: "int"
-		        }, {
-		            name: "staffName",
-		            type: "string"
-		        }]
-		    });
+			  var staffByProxy = new Ext.data.HttpProxy({
+			        url: "../controller/documentCategoryController.php?",
+			        method: "GET",
+			        success: function(response, options) {
+			            jsonResponse = Ext.decode(response.responseText);
+			            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
+			                // jsonResponse.message);
+			                // //uncommen for testing
+			                // purpose
+			            } else {
+			                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+			            }
+			        },
+			        failure: function(response, options) {
+			            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+			        }
+			    });
+			    var staffByReader = new Ext.data.JsonReader({
+			        totalProperty: "total",
+			        successProperty: "success",
+			        messageProperty: "message",
+			        idProperty: "staffId"
+			    });
+			    var staffByStore = new Ext.data.JsonStore({
+			        proxy: staffByProxy,
+			        reader: staffByReader,
+			        autoLoad: true,
+			        autoDestroy: true,
+			        baseParams: {
+			            method: 'read',
+			            field: 'staffId',
+			            leafId: leafId
+			        },
+			        root: 'staff',
+			        fields: [{
+			            name: "staffId",
+			            type: "int"
+			        },
+			        {
+			            name: "staffName",
+			            type: "string"
+			        }]
+			    });
 			
 			var leaf_reader = new Ext.data.JsonReader({
 				root : 'leaf',

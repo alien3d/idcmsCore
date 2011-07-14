@@ -7,8 +7,10 @@ if (strlen($_SESSION['staff_uniqueId'])==0) {
 include('../Connections/main.php');	?>
 <html>
 <head>
-<script type="text/javascript" src="../javascript/adapter/ext/ext-base-debug.js"></script>
-<script type="text/javascript" src="../javascript/ext-all-debug.js"></script>
+<script  type="text/javascript"
+	src="../../javascript/adapter/ext/ext-base.js"></script>
+<script  type="text/javascript"
+	src="../../javascript/ext-all.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="../javascript/resources/css/ext-all.css" />
 <link rel="stylesheet" type="text/css"
