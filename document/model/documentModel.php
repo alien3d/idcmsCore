@@ -20,6 +20,7 @@ class documentModel extends validationClass{
 	private $documentDesc;
 	private $documentPath;
 	private $documentFilename;
+	private $documentExtension;
 
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
@@ -55,6 +56,9 @@ class documentModel extends validationClass{
 
 		if(isset($_POST['documentFilename'])){
 			$this->setdocumentFilename($this->strict($_POST['docuementFilename'],'memo'));
+		}
+		if(isset($_POST['documentFilename'])){
+			$this->setdocumentExtension($this->strict($_POST['docuementExtension'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
 			$this->setBy($_SESSION['staffId']);
@@ -223,7 +227,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Set Document Path Value
-	 * @param boolean $value
+	 * @param string $value
 	 */
 	public function setDocumentPath($value) {
 		$this->documentPath = $value;
@@ -237,7 +241,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Set Document Filename Value
-	 * @param boolean $value
+	 * @param string $value
 	 */
 	public function setDocumentFilename($value) {
 		$this->documentFilename = $value;
@@ -248,6 +252,20 @@ class documentModel extends validationClass{
 	 */
 	public function getDocumentFilename() {
 		return $this->documentFilename;
+	}
+/**
+	 * Set Document Extension Value
+	 * @param string $value
+	 */
+	public function setDocumentExtension($value) {
+		$this->documentFilename = $value;
+	}
+	/**
+	 * Return Document Filename
+	 * @return string document title
+	 */
+	public function getDocumentExtension() {
+		return $this->documentExtension;
 	}
 
 }
