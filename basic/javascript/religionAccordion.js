@@ -122,8 +122,10 @@ Ext.onReady(function() {
         {
             name: "isApproved",
             type: "boolean"
-        },
-        {
+        },{
+        	name :"By",
+        	type:"int"
+        },{
             name: "Time",
             type: "date",
             dateFormat: "Y-m-d H:i:s"

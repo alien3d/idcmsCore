@@ -35,10 +35,10 @@ class documentModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['documentId'])){
-			$this->setDocumentId($this->strict($_POST['documentId'],'numeric'));
+			$this->setDocumentId($this->strict($_POST['documentId'],'numeric'),'','single');
 		}
 		if(isset($_POST['documentCategoryId'])){
-			$this->setDocumentCategory($this->strict($_POST['documentCategoryId'],'numeric'));
+			$this->setDocumentCategoryId($this->strict($_POST['documentCategoryId'],'numeric'));
 		}
 		if(isset($_POST['leafId'])){
 			$this->setLeafId($this->strict($_POST['leafId'],'numeric'));
@@ -114,7 +114,7 @@ class documentModel extends validationClass{
 		$this->setIsDelete(1);
 		$this->setIsApproved(0);
 	}
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -139,6 +139,34 @@ class documentModel extends validationClass{
 		$this->setIsActive(0,'','string');
 		$this->setIsDelete(0,'','string');
 		$this->setIsApproved(1,'','string');
+	}
+	/**
+	 * Update  Table Status
+	 */
+	public function updateStatus() {
+		if(!(is_array($_GET['isDefault']))) {
+			$this->setIsDefault(0,'','string');
+		}
+		if(!(is_array($_GET['isNew']))) {
+			$this->setIsNew(0,'','string');
+		}
+		if(!(is_array($_GET['isDraft']))) {
+			$this->setIsDraft(0,'','string');
+		}
+		if(!(is_array($_GET['isUpdate']))) {
+			$this->setIsUpdate(0,'','string');
+		}
+		if(!(is_array($_GET['isDelete']))) {
+
+			$this->setIsDelete(1,'','string');
+		}
+		if(!(is_array($_GET['isActive']))) {
+			$this->setIsActive(0,'','string');
+		}
+
+		if(!(is_array($_GET['isApproved']))) {
+			$this->setIsApproved(0,'','string');
+		}
 	}
 	/**
 	 * Set isDefault Value
@@ -253,7 +281,7 @@ class documentModel extends validationClass{
 	public function getDocumentFilename() {
 		return $this->documentFilename;
 	}
-/**
+	/**
 	 * Set Document Extension Value
 	 * @param string $value
 	 */

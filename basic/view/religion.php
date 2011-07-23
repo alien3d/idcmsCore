@@ -8,6 +8,7 @@ if (strlen($_SESSION[$staffId])==0) {
 }
 include('../../Connections/main.php');	?>
 <html>
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <head>
 <link rel="stylesheet" type="text/css"
@@ -26,7 +27,9 @@ include('../../Connections/main.php');	?>
 if($_SESSION[$theme]) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
 
-<?php } ?>
+<?php } 
+echo print_r($_SESSION);
+?>
 </head>
 <style>
 x-grid3-row-alt {

@@ -34,7 +34,7 @@ Ext
 			var perPage = 10;
 			var encode = false;
 			var local = false;
-			
+
 			var documentProxy = new Ext.data.HttpProxy({
 				url : "../controller/documentController.php",
 				method : 'POST',
@@ -53,7 +53,7 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			
+
 			var documentReader = new Ext.data.JsonReader({
 
 				totalProperty : "total",
@@ -118,59 +118,59 @@ Ext
 				}
 			});
 
-			
+			var staffByProxy = new Ext.data.HttpProxy({
+				url : "../controller/documentController.php?",
+				method : "GET",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
+						// jsonResponse.message);
+						// //uncommen for testing
+						// purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var staffByReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "staffId"
+			});
+			var staffByStore = new Ext.data.JsonStore({
+				proxy : staffByProxy,
+				reader : staffByReader,
+				autoLoad : true,
+				autoDestroy : true,
+				baseParams : {
+					method : 'read',
+					field : 'staffId',
+					leafId : leafId
+				},
+				root : 'staff',
+				fields : [ {
+					name : "staffId",
+					type : "int"
+				}, {
+					name : "staffName",
+					type : "string"
+				} ]
+			});
 
-			  var staffByProxy = new Ext.data.HttpProxy({
-			        url: "../controller/documentController.php?",
-			        method: "GET",
-			        success: function(response, options) {
-			            jsonResponse = Ext.decode(response.responseText);
-			            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-			                // jsonResponse.message);
-			                // //uncommen for testing
-			                // purpose
-			            } else {
-			                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-			            }
-			        },
-			        failure: function(response, options) {
-			            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
-			        }
-			    });
-			    var staffByReader = new Ext.data.JsonReader({
-			        totalProperty: "total",
-			        successProperty: "success",
-			        messageProperty: "message",
-			        idProperty: "staffId"
-			    });
-			    var staffByStore = new Ext.data.JsonStore({
-			        proxy: staffByProxy,
-			        reader: staffByReader,
-			        autoLoad: true,
-			        autoDestroy: true,
-			        baseParams: {
-			            method: 'read',
-			            field: 'staffId',
-			            leafId: leafId
-			        },
-			        root: 'staff',
-			        fields: [{
-			            name: "staffId",
-			            type: "int"
-			        },
-			        {
-			            name: "staffName",
-			            type: "string"
-			        }]
-			    });
-
-			var documentCategoryProxy   = new Ext.data.HttpProxy({
+			var documentCategoryProxy = new Ext.data.HttpProxy({
 				url : "../controller/documentController.php",
 				method : 'POST',
 				params : {
-					mode :'read',
+					mode : 'read',
 					field : 'documentCategoryId',
-					leafId :leafId
+					leafId : leafId
 				},
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
@@ -187,36 +187,32 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			 var documentCategoryReader = new Ext.data.JsonReader({
-			        totalProperty: "total",
-			        successProperty: "success",
-			        messageProperty: "message",
-			        idProperty: "documentCategoryId"
-			    });
-			 
-		
-			    var documentCategoryStore = new Ext.data.JsonStore({
-			        proxy: documentCategoryProxy,
-			        reader: documentCategoryReader,
-			        autoLoad: true,
-			        autoDestroy: true,
-			        baseParams: {
-			            method: 'read',
-			            field: 'documentCategoryId',
-			            leafId: leafId
-			        },
-			        root: 'documentCategory',
-			        fields: [{
-			            name: "documentCategoryId",
-			            type: "int"
-			        },
-			        {
-			            name: "documentCategoryTitle",
-			            type: "string"
-			        }]
-			    });
-			
-			
+			var documentCategoryReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "documentCategoryId"
+			});
+
+			var documentCategoryStore = new Ext.data.JsonStore({
+				proxy : documentCategoryProxy,
+				reader : documentCategoryReader,
+				autoLoad : true,
+				autoDestroy : true,
+				baseParams : {
+					method : 'read',
+					field : 'documentCategoryId',
+					leafId : leafId
+				},
+				root : 'documentCategory',
+				fields : [ {
+					name : "documentCategoryId",
+					type : "int"
+				}, {
+					name : "documentCategoryTitle",
+					type : "string"
+				} ]
+			});
 
 			var filters = new Ext.ux.grid.GridFilters({
 				encode : encode,
@@ -262,299 +258,434 @@ Ext
 				} ]
 			});
 
-			
-			
-
-			
-
-			var columnModel = [ new Ext.grid.RowNumberer(), {
-		        id: 'action',
-		        header: 'Task',
-		        xtype: 'actioncolumn',
-		        width: 50,
-		        items: [{
-		            icon: '../../javascript/resources/images/icon/application_edit.png',
-		            tooltip: updateRecordToolTipLabel,
-		            handler: function(grid, rowIndex, colIndex) {
-		                var record = deparmentStore.getAt(rowIndex);
-		                formPanel.getForm().reset();
-		                formPanel.form.load({
-		                    url: "../controller/deparmentController.php",
-		                    method: "POST",
-		                    waitTitle: systemLabel,
-		                    waitMsg: waitMessageLabel,
-		                    params: {
-		                        method: "read",
-		                        mode: "update",
-		                        deparmentId: record.data.deparmentId,
-		                        leafId: leafId
-		                    },
-		                    success: function(form, action) {
-		                        Ext.getCmp("deparmentDesc_temp").setValue(record.data.deparmentDesc);
-		                        Ext.getCmp('deleteButton').enable();
-		                        viewPort.items.get(1).expand();
-		                    },
-		                    failure: function(form, action) {
-		                        Ext.MessageBox.alert(systemErrorLabel, action.result.message);
-		                    }
-		                });
-		                win.hide();
-		            }
-		        },
-		        {
-		            icon: '../../javascript/resources/images/icon/trash.gif',
-		            tooltip: deleteRecordToolTipLabel,
-		            handler: function(grid, rowIndex, colIndex) {
-		                var record = deparmentStore.getAt(rowIndex);
-		                Ext.Msg.show({
-		                    title: deleteRecordTitleMessageLabel,
-		                    msg: deleteRecordMessageLabel,
-		                    icon: Ext.Msg.QUESTION,
-		                    buttons: Ext.Msg.YESNO,
-		                    scope: this,
-		                    fn: function(response) {
-		                        if ("yes" == response) {
-		                            Ext.Ajax.request({
-		                                url: "../controller/deparmentController.php",
-		                                params: {
-		                                    method: "delete",
-		                                    deparmentId: record.data.deparmentId,
-		                                    leafId: leafId
-		                                },
-		                                success: function(response, options) {
-		                                    jsonResponse = Ext.decode(response.responseText);
-		                                    if (jsonResponse.success == true) {
-		                                        title = successLabel;
-		                                    } else {
-		                                        title = failureLabel;
-		                                    }
-		                                    deparmentStore.reload({
-		                                        params: {
-		                                            leafId: leafId,
-		                                            start: 0,
-		                                            limit: perPage
-		                                        }
-		                                    });
-		                                    deparmentStoreList.reload({
-		                                        params: {
-		                                            leafId: leafId,
-		                                            start: 0,
-		                                            limit: perPage
-		                                        }
-		                                    });
-		                                    Ext.MessageBox.alert(systemErrorLabel,
-															jsonResponse.message);
-		                                },
-		                                failure: function(response, options) {
-		                                    Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
-		                                }
-		                            });
-		                        }
-		                    }
-		                });
-		            }
-		        }]
-		    }, {
-				dataIndex : 'documentId',
-				header : documentIdLabel,
-				sortable : true,
-				hidden : false
-			}, {
-				dataIndex : 'documentTitle',
-				header : documentTitleLabel,
-				sortable : true,
-				hidden : false
-			}, {
-				dataIndex : 'documentDesc',
-				header : documentDescLabel,
-				sortable : true,
-				hidden : false
-			}, {
-				dataIndex : 'documentPath',
-				header : documentPathLabel,
-				sortable : true,
-				hidden : false
-			},, {
-				dataIndex : 'documentFilename',
-				header : documentFilenameLabel,
-				sortable : true,
-				hidden : false
-			},{
-				dataIndex : 'documentExtension',
-				header : documentExtensionLabel,
-				sortable : true,
-				hidden : false
-			},
-			isDefaultGrid,
-			isNewGrid,
-			isDraftGrid,
-			isUpdateGrid,
-			isDeleteGrid,
-			isActiveGrid,
-			isApprovedGrid,
-			{
-				dataIndex : "By",
-				header : createByLabel,
-				sortable : true,
-				hidden : false,
-				renderer : function(value, metaData, record, rowIndex,
-						colIndex, store) {
-					return record.data.staffName;
-				}
-			},
-			{
-				dataIndex : "Time",
-				header : timeLabel,
-				sortable : true,
-				hidden : false,
-				renderer : function(value, metaData, record, rowIndex,
-						colIndex, store) {
-					return Ext.util.Format.date(value, 'd-m-Y H:i:s');
-				}
-			} ];
-
-			
-			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-								'isDelete', 'isActive', 'isApproved' ];
-			var grid = new Ext.grid.GridPanel({
-				border : false,
-				store : store,
-				autoHeight : false,
-				height : 450,
-				columns : columnModel,
-				loadMask : true,
-				plugins : [ filters ],
-				sm : new Ext.grid.RowSelectionModel({
-					singleSelect : true
-				}),
-				viewConfig : {
-					forceFit : true,
-					emptyText : 'No rows to display'
-				},
-				iconCls : 'application_view_detail',
-				tbar: {
-		            items: [{
-		                iconCls: 'add',
-		                id: 'add_record',
-		                name: 'add_record',
-		                text: 'New Record',
-		                handler: function() {
-		                    var e = new documentEntity({
-		                        documentId: '',
-		                        documentDesc: '',
-		                        By: '',
-		                        staffName: '',
-		                        isDefault: '',
-		                        isNew: '',
-		                        isDraft: '',
-		                        isUpdate: '',
-		                        isDelete: '',
-		                        isActive: '',
-		                        isApproved: '',
-		                        Time: ''
-		                    });
-		                    documentEditor.stopEditing();
-		                    documentStore.insert(0, e);
-		                    var s = documentGrid.getSelectionModel().getSelections();
-		                    documentEditor.startEditing(0);
-		                }
-		            },
-		            {
-		                text: 'Check All',
-		                iconCls: 'row-check-sprite-check',
-		                listeners: {
-		                    'click': function() {
-		                        var count = documentStore.getCount();
-		                        documentStore.each(function(rec) {
-		                            for (var access in accessArray) { // alert(access);
-		                                rec.set(accessArray[access], true);
-		                            }
-		                        });
-		                    }
-		                }
-		            },
-		            {
-		                text: 'Clear All',
-		                iconCls: 'row-check-sprite-uncheck',
-		                listeners: {
-		                    'click': function() {
-		                        documentStore.each(function(rec) {
-		                            for (var access in accessArray) {
-		                                rec.set(accessArray[access], false);
-		                            }
-		                        });
-		                    }
-		                }
-		            },
-		            {
-		                text: 'save',
-		                iconCls: 'bullet_disk',
-		                listeners: {
-		                    'click': function(c) {
-		                        var url;
-		                        var count = documentStore.getCount();
-		                        url = '../controller/documentController.php?';
-		                        var sub_url;
-		                        sub_url = '';
-		                   
-		                        var modified = documentStore.getModifiedRecords();
-		                        for(var i = 0; i < modified.length; i++) {
-		                            var record = documentStore.getAt(i);
-		                            
-		                            if(record.get('documentId')){
-		                            	sub_url = sub_url + '&documentId[]=' + record.get('documentId');
-		                            } else {
-		                            	alert("testing for error"+i)
-		                            }
-		                            if (isAdmin == 1) {
-		                            	sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
-		                                sub_url = sub_url + '&isNew[]=' + record.get('isNew');
-		                                sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
-		                                sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
-		                            }
-		                           	
-		                            sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
-		                            if (isAdmin == 1) {
-		                                sub_url = sub_url + '&isActive[]=' + record.get('isActive');
-		                                sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
-		                            }
-		                        }
-		                        url = url + sub_url; // reques and ajax
-		                    	
-		        				
-		                        Ext.Ajax.request({
-		                            url: url,
-		                            method: 'GET',
-		                            params: {
-		                                leafId: leafId,
-		                                method: 'updateStatus',
-		                                isAdmin :isAdmin
-		                            },
-		                            success: function(response, options) {
-		                                jsonResponse = Ext.decode(response.responseText);
-		                                if (jsonResponse.success == true) {
-		                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-		                                    documentStore.removeAll(); // force to remove all data
-		                                    documentStore.reload();
-		                                } else if (jsonResponse.success == false) {
-		                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-		                                }
-		                            },
-		                            failure: function(response, options) {
-		                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
-		                            }
-		                        }); // refresh the store
-		                    }
-		                }
-		            }]
-		        },
-		        bbar: new Ext.PagingToolbar({
-		            store: documentStore,
-		            pageSize: perPage
-		        })
+			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Default',
+				dataIndex : 'isDefault',
+				hidden : isDefaultHidden
+			});
+			var isNewGrid = new Ext.ux.grid.CheckColumn({
+				header : 'New',
+				dataIndex : 'isNew',
+				hidden : isNewHidden
+			});
+			var isDraftGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Draft',
+				dataIndex : 'isDraft',
+				hidden : isDraftHidden
+			});
+			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Update',
+				dataIndex : 'isUpdate',
+				hidden : isUpdateHidden
+			});
+			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Delete',
+				dataIndex : 'isDelete'
+			});
+			var isActiveGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Active',
+				dataIndex : 'isActive',
+				hidden : isActiveHidden
+			});
+			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Approved',
+				dataIndex : 'isApproved',
+				hidden : isApprovedHidden
 			});
 
-			
+			var documentColumnModel = [
+					new Ext.grid.RowNumberer(),
+					{
+						id : 'action',
+						header : 'Task',
+						xtype : 'actioncolumn',
+						width : 50,
+						items : [
+								{
+									icon : '../../javascript/resources/images/icon/application_edit.png',
+									tooltip : updateRecordToolTipLabel,
+									handler : function(grid, rowIndex, colIndex) {
+										var record = deparmentStore
+												.getAt(rowIndex);
+										formPanel.getForm().reset();
+										formPanel.form
+												.load({
+													url : "../controller/deparmentController.php",
+													method : "POST",
+													waitTitle : systemLabel,
+													waitMsg : waitMessageLabel,
+													params : {
+														method : "read",
+														mode : "update",
+														deparmentId : record.data.deparmentId,
+														leafId : leafId
+													},
+													success : function(form,
+															action) {
+														Ext
+																.getCmp(
+																		"deparmentDesc_temp")
+																.setValue(
+																		record.data.deparmentDesc);
+														Ext.getCmp(
+																'deleteButton')
+																.enable();
+														viewPort.items.get(1)
+																.expand();
+													},
+													failure : function(form,
+															action) {
+														Ext.MessageBox
+																.alert(
+																		systemErrorLabel,
+																		action.result.message);
+													}
+												});
+										win.hide();
+									}
+								},
+								{
+									icon : '../../javascript/resources/images/icon/trash.gif',
+									tooltip : deleteRecordToolTipLabel,
+									handler : function(grid, rowIndex, colIndex) {
+										var record = deparmentStore
+												.getAt(rowIndex);
+										Ext.Msg
+												.show({
+													title : deleteRecordTitleMessageLabel,
+													msg : deleteRecordMessageLabel,
+													icon : Ext.Msg.QUESTION,
+													buttons : Ext.Msg.YESNO,
+													scope : this,
+													fn : function(response) {
+														if ("yes" == response) {
+															Ext.Ajax
+																	.request({
+																		url : "../controller/deparmentController.php",
+																		params : {
+																			method : "delete",
+																			deparmentId : record.data.deparmentId,
+																			leafId : leafId
+																		},
+																		success : function(
+																				response,
+																				options) {
+																			jsonResponse = Ext
+																					.decode(response.responseText);
+																			if (jsonResponse.success == true) {
+																				title = successLabel;
+																			} else {
+																				title = failureLabel;
+																			}
+																			deparmentStore
+																					.reload({
+																						params : {
+																							leafId : leafId,
+																							start : 0,
+																							limit : perPage
+																						}
+																					});
+																			deparmentStoreList
+																					.reload({
+																						params : {
+																							leafId : leafId,
+																							start : 0,
+																							limit : perPage
+																						}
+																					});
+																			Ext.MessageBox
+																					.alert(
+																							systemErrorLabel,
+																							jsonResponse.message);
+																		},
+																		failure : function(
+																				response,
+																				options) {
+																			Ext.MessageBox
+																					.alert(
+																							systemErrorLabel,
+																							escape(response.status)
+																									+ ":"
+																									+ response.statusText);
+																		}
+																	});
+														}
+													}
+												});
+									}
+								} ]
+					},
+					{
+						dataIndex : 'documentId',
+						header : documentIdLabel,
+						sortable : true,
+						hidden : false
+					},
+					{
+						dataIndex : 'documentTitle',
+						header : documentTitleLabel,
+						sortable : true,
+						hidden : false
+					},
+					{
+						dataIndex : 'documentDesc',
+						header : documentDescLabel,
+						sortable : true,
+						hidden : false
+					},
+					{
+						dataIndex : 'documentPath',
+						header : documentPathLabel,
+						sortable : true,
+						hidden : false
+					},
+					,
+					{
+						dataIndex : 'documentFilename',
+						header : documentFilenameLabel,
+						sortable : true,
+						hidden : false
+					},
+					{
+						dataIndex : 'documentExtension',
+						header : documentExtensionLabel,
+						sortable : true,
+						hidden : false
+					},
+					isDefaultGrid,
+					isNewGrid,
+					isDraftGrid,
+					isUpdateGrid,
+					isDeleteGrid,
+					isActiveGrid,
+					isApprovedGrid,
+					{
+						dataIndex : "By",
+						header : createByLabel,
+						sortable : true,
+						hidden : false,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							return record.data.staffName;
+						}
+					},
+					{
+						dataIndex : "Time",
+						header : timeLabel,
+						sortable : true,
+						hidden : false,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+						}
+					} ];
+
+			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
+					'isDelete', 'isActive', 'isApproved' ];
+			var documentGrid = new Ext.grid.GridPanel(
+					{
+						border : false,
+						store : documentStore,
+						autoHeight : false,
+						height : 450,
+						columns : documentColumnModel,
+						loadMask : true,
+						plugins : [ filters ],
+						sm : new Ext.grid.RowSelectionModel({
+							singleSelect : true
+						}),
+						viewConfig : {
+							forceFit : true,
+							emptyText : 'No rows to display'
+						},
+						iconCls : 'application_view_detail',
+						tbar : {
+							items : [
+									{
+										iconCls : 'add',
+										id : 'add_record',
+										name : 'add_record',
+										text : 'New Record',
+										handler : function() {
+											var e = new documentEntity({
+												documentId : '',
+												documentDesc : '',
+												By : '',
+												staffName : '',
+												isDefault : '',
+												isNew : '',
+												isDraft : '',
+												isUpdate : '',
+												isDelete : '',
+												isActive : '',
+												isApproved : '',
+												Time : ''
+											});
+											documentEditor.stopEditing();
+											documentStore.insert(0, e);
+											var s = documentGrid
+													.getSelectionModel()
+													.getSelections();
+											documentEditor.startEditing(0);
+										}
+									},
+									{
+										text : 'Check All',
+										iconCls : 'row-check-sprite-check',
+										listeners : {
+											'click' : function() {
+												var count = documentStore
+														.getCount();
+												documentStore
+														.each(function(rec) {
+															for ( var access in accessArray) { // alert(access);
+																rec
+																		.set(
+																				accessArray[access],
+																				true);
+															}
+														});
+											}
+										}
+									},
+									{
+										text : 'Clear All',
+										iconCls : 'row-check-sprite-uncheck',
+										listeners : {
+											'click' : function() {
+												documentStore
+														.each(function(rec) {
+															for ( var access in accessArray) {
+																rec
+																		.set(
+																				accessArray[access],
+																				false);
+															}
+														});
+											}
+										}
+									},
+									{
+										text : 'save',
+										iconCls : 'bullet_disk',
+										listeners : {
+											'click' : function(c) {
+												var url;
+												var count = documentStore
+														.getCount();
+												url = '../controller/documentController.php?';
+												var sub_url;
+												sub_url = '';
+
+												var modified = documentStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
+													var record = documentStore
+															.getAt(i);
+
+													if (record
+															.get('documentId')) {
+														sub_url = sub_url
+																+ '&documentId[]='
+																+ record
+																		.get('documentId');
+													} else {
+														alert("testing for error"
+																+ i)
+													}
+													if (isAdmin == 1) {
+														sub_url = sub_url
+																+ '&isDefault[]='
+																+ record
+																		.get('isDefault');
+														sub_url = sub_url
+																+ '&isNew[]='
+																+ record
+																		.get('isNew');
+														sub_url = sub_url
+																+ '&isDraft[]='
+																+ record
+																		.get('isDraft');
+														sub_url = sub_url
+																+ '&isUpdate[]='
+																+ record
+																		.get('isUpdate');
+													}
+
+													sub_url = sub_url
+															+ '&isDelete[]='
+															+ record
+																	.get('isDelete');
+													if (isAdmin == 1) {
+														sub_url = sub_url
+																+ '&isActive[]='
+																+ record
+																		.get('isActive');
+														sub_url = sub_url
+																+ '&isApproved[]='
+																+ record
+																		.get('isApproved');
+													}
+												}
+												url = url + sub_url; // reques
+												// and
+												// ajax
+
+												Ext.Ajax
+														.request({
+															url : url,
+															method : 'GET',
+															params : {
+																leafId : leafId,
+																method : 'updateStatus',
+																isAdmin : isAdmin
+															},
+															success : function(
+																	response,
+																	options) {
+																jsonResponse = Ext
+																		.decode(response.responseText);
+																if (jsonResponse.success == true) {
+																	Ext.MessageBox
+																			.alert(
+																					systemLabel,
+																					jsonResponse.message);
+																	documentStore
+																			.removeAll(); // force
+																	// to
+																	// remove
+																	// all
+																	// data
+																	documentStore
+																			.reload();
+																} else if (jsonResponse.success == false) {
+																	Ext.MessageBox
+																			.alert(
+																					systemErrorLabel,
+																					jsonResponse.message);
+																}
+															},
+															failure : function(
+																	response,
+																	options) {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				escape(response.status)
+																						+ ":"
+																						+ escape(response.statusText));
+															}
+														}); // refresh the store
+											}
+										}
+									} ]
+						},
+						bbar : new Ext.PagingToolbar({
+							store : documentStore,
+							pageSize : perPage
+						})
+					});
+
 			var toolbarPanel = new Ext.Toolbar(
 					{
 						items : [
@@ -611,15 +742,6 @@ Ext
 									}
 								} ]
 					});
-			
-			var gridPanel = new Ext.Panel({
-				title : leafNote,
-				height : 50,
-				layout : 'fit',
-				iconCls : 'application_view_detail',
-				tbar : [ toolbarPanel ],
-				items : [ grid ]
-			});
 
 			var documentCategoryId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
@@ -711,19 +833,22 @@ Ext
 								form : 'formPanel'
 							})
 						}),
-						items : [ documentCategoryId, documentDesc, documentFilename,documentExtension,documentId, {
-							xtype : 'fileuploadfield',
-							id : 'form-file',
-							emptyText : 'Sila pilih Dokumen',
-							fieldLabel : 'Dokumen',
-							name : 'documentFilaname',
-							allowBlank : false,
-							blankText : blankTextLabel,
-							buttonCfg : {
-								text : '',
-								iconCls : 'bullet_disk'
-							}
-						} ],
+						items : [ documentCategoryId, documentDesc,
+								documentFilename, documentExtension,
+								documentId, {
+									xtype : 'fileuploadfield',
+									id : 'form-file',
+									emptyText : 'Sila pilih Dokumen',
+									fieldLabel : 'Dokumen',
+									name : 'documentFilename',
+									id : 'documetnFilename',
+									allowBlank : false,
+									blankText : blankTextLabel,
+									buttonCfg : {
+										text : '',
+										iconCls : 'bullet_disk'
+									}
+								} ],
 						buttons : [
 								{
 									text : uploadButtonLabel,
@@ -735,7 +860,7 @@ Ext
 														.getForm()
 														.submit(
 																{
-																	waitTitle:waitMessageLabel,
+																	waitTitle : waitMessageLabel,
 																	waitMsg : waitMessageLabel,
 																	params : {
 																		method : 'upload',
@@ -802,7 +927,6 @@ Ext
 								} ]
 					});
 
-		
 			var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',

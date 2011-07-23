@@ -9,6 +9,7 @@ if (strlen($_SESSION[$staffId])==0) {
 include('../../Connections/main.php');	?>
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
 <head>
 <link rel="stylesheet" type="text/css"
 	href="../../javascript/resources/css/ext-all.css">

@@ -118,7 +118,7 @@ class departmentClass  extends configClass {
 			VALUES
 					(
 						\"". $this->model->getDepartmentSequence() . "\",				\"". $this->model->getDepartmentCode() . "\",
-						\"". $this->model->getDepartmentNote('','single') . "\",		\"". $this->model->getIsDefault('','single') . "\",
+						\"". $this->model->getDepartmentNote() . "\",					\"". $this->model->getIsDefault('','single') . "\",
 						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
 						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
 						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
@@ -137,8 +137,8 @@ class departmentClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getDepartmentSequence() . "\",	\"". $this->model->getDepartmentSequence() . "\",
-						\"". $this->model->getDepartmentNote('','single') . "\",		\"". $this->model->getIsDefault('','single') . "\",
+						\"". $this->model->getDepartmentSequence() . "\",		\"". $this->model->getDepartmentSequence() . "\",
+						\"". $this->model->getDepartmentNote() . "\",			\"". $this->model->getIsDefault('','single') . "\",
 						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
 						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
 						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
@@ -158,7 +158,7 @@ class departmentClass  extends configClass {
 			VALUES
 					(
 						\"". $this->model->getDepartmentSequence() . "\",	\"". $this->model->getDepartmentSequence() . "\",
-						\"". $this->model->getDepartmentNote('','single') . "\",		\"". $this->model->getIsDefault('','single') . "\",
+						\"". $this->model->getDepartmentNote() . "\",		\"". $this->model->getIsDefault('','single') . "\",
 						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
 						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
 						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
@@ -520,7 +520,10 @@ class departmentClass  extends configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 				UPDATE 	\"department\"
-				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
+				SET 	\"departmentSequence\"	=	\"".$this->model->getDepartmentSequence()."\",
+						\"departmentCode\"		=	\"".$this->model->getDepartmentCode()."\",
+						\"departmentNote\" 		= 	\"".$this->model->getDepartmentNote()."\",
+						\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
 						\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
 						\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
 						\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",

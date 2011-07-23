@@ -196,7 +196,7 @@ class departmentModel extends validationClass{
 		$this->setIsApproved(1,'','string');
 	}
 	/**
-	 * Update Religion Table Status
+	 * Update  Table Status
 	 */
 	public function updateStatus() {
 		if(!(is_array($_GET['isDefault']))) {
@@ -289,13 +289,11 @@ class departmentModel extends validationClass{
 	 * Return department  Description (english)
 	 * @return  string department Description
 	 */
-	public function getdepartmentNote() {
+	public function getDepartmentNote() {
 		return $this->departmentNote;
 	}
 
-	function excel() {
-
-	}
+	
 
 
 }

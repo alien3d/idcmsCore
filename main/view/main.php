@@ -80,22 +80,25 @@ echo $_SESSION[$theme];
 		var theme_selecter = new Ext.data.SimpleStore({
 			fields	: ['display', 'value'],
 			data	: [	['Default (Blue)', ''],
-						['Black', '../../js/resources/css/xtheme-black.css'],
-
-						['Blue', '../../js/resources/css/xtheme-blue.css'],
+						['Black',   '../../javascript/resources/css/xtheme-black.css'],
+						['Vampire', '../../javascript/resources/css/xtheme-vampire.css'],
+						['Toxic', '../../javascript/resources/css/xtheme-Toxic.css'],
+						['Darkness', '../../javascript/resources/css/xtheme-darkness.css'],
+						['BlackNW', '../../javascript/resources/css/xtheme-blacknw.css'],
+						['Blue', '../../javascript/resources/css/xtheme-blue.css'],
 						['Access', '../js/resources/css/xtheme-access.css'],
-						['Dark Gray', '../../js/resources/css/xtheme-darkgray.css'],
-						['Gray', '../../js/resources/css/xtheme-gray.css'],
-						['Olive', '../../js/resources/css/xtheme-olive.css'],
-						['Pink', '../../js/resources/css/xtheme-pink.css'],
-						['Galdaka', '../../js/resources/css/xtheme-galdaka.css'],
-						['Chocolate', '../../js/resources/css/xtheme-chocolate.css'],
-						['Silver Cherry', '../../js/resources/css/xtheme-silverCherry.css'],
-						['Slickness', '../../js/resources/css/xtheme-slickness.css'],
-						['Midnight', '../../js/resources/css/xtheme-midnight.css'],
-						['Indigo', '../../js/resources/css/xtheme-indigo.css'],
-						['Pepermint','../../js/resources/css/xtheme-peppermint.css'],
-						['Ubuntu','../../js/resources/css/xtheme-human.css']]
+						['Dark Gray', '../../javascript/resources/css/xtheme-darkgray.css'],
+						['Gray', '../../javascript/resources/css/xtheme-gray.css'],
+						['Olive', '../../javascript/resources/css/xtheme-olive.css'],
+						['Pink', '../../javascript/resources/css/xtheme-pink.css'],
+						['Galdaka', '../../javascript/resources/css/xtheme-galdaka.css'],
+						['Chocolate', '../../javascript/resources/css/xtheme-chocolate.css'],
+						['Silver Cherry', '../../javascript/resources/css/xtheme-silverCherry.css'],
+						['Slickness', '../../javascript/resources/css/xtheme-slickness.css'],
+						['Midnight', '../../javascript/resources/css/xtheme-midnight.css'],
+						['Indigo', '../../javascript/resources/css/xtheme-indigo.css'],
+						['Pepermint','../../javascript/resources/css/xtheme-peppermint.css'],
+						['Ubuntu','../../javascript/resources/css/xtheme-human.css']]
 		});
 		<?php 	$str=null;
 					if($q->vendor=='normal' || $q->vendor=='mysql') {

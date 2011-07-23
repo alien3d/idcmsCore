@@ -97,280 +97,805 @@ class documentClass extends  configClass {
 	public $documentId;
 	public $model;
 	function execute() {
-		parent :: __construct();
+		parent::__construct();
 
-		$this->q 					=	new vendor();
-
-		$this->q->vendor			=	$this->vendor;
-
-		$this->q->leafId			=	$this->leafId;
-
-		$this->q->staffId			=	$this->staffId;
-
-		$this->q->filter 			= 	$this->filter;
-
-		$this->q->quickFilter		=	$this->quickFilter;
+		$this->q              	= new vendor();
+		$this->q->vendor      	= $this->getVendor();
+		$this->q->leafId      	= $this->getLeafId();
+		$this->q->staffId     	= $this->getStaffId();
+		$this->q->fieldQuery	= $this->getFieldQuery();
+		$this->q->gridQuery   = $this->getGridQuery();
 
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		$this->excel         = new PHPExcel();
+		$this->audit         = 0;
+		$this->log           = 1;
+		$this->q->log        = $this->log;
 
-		$this->excel				=	new  PHPExcel();
+		$this->model         = new documentModel();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
 
-		$this->audit 				=	0;
-
-		$this->model = new documentModel();
+		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->setStaffId($this->getStaffId());
+		$this->documentTrail->setLanguageId($this->getLanguageId());
+		$this->documentTrail->setLeafId($this->getLeafId());
+		$this->documentTrail->execute();
 	}
 
+	/* (non-PHPdoc)
+	 * @see config::create()
+	 */
+	function create(){
 
+		move_uploaded_file ($_FILES['docname']['tmp_name'],$this->path.$doc_ext);
+		if($this->getVendor()==self::mysql){
+		$sql = "
+		INSERT INTO `document` 
+				(
+				  	`documentCategoryId`,	`leafId`,
+				  	`documentTitle`,		`documentDesc`,
+					`documentPath`,			`documentFilename`,
+					`documentExtension`,	`isDefault`,
+					`isNew`,							`isDraft`,
+					`isUpdate`,							`isDelete`,
+					`isActive`,							`isApproved`,
+					`By`,								`Time`
+				)
+			VALUES
+				(
+						\"". $this->model->getDocumentCategoryTitle() . "\",			\"". $this->model->getDocumentCategoryDesc() . "\",
+						\"". $this->model->getDocumentCategorySequence() . "\",			\"". $this->model->getDocumentCategoryCode() . "\",
+						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getIsDefault('','single') . "\",
+						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
+						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
+						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+				);";
+				  
+		} else if ($this->getVendor()==self::mssql){
+			$sql = "
+		INSERT INTO `document` 
+				(
+				  	[documentCategoryId],	[leafId,
+				  	[documentTitle],		[documentDesc],
+					[documentPath],			[documentFilename],
+					[documentExtension],	[isDefault],
+					[isNew],							[isDraft],
+					[isUpdate],							[isDelete],
+					[isActive],							[isApproved],
+					[By],								[Time]
+				)
+			VALUES
+				(
+						\"". $this->model->getDocumentCategoryTitle() . "\",			\"". $this->model->getDocumentCategoryDesc() . "\",
+						\"". $this->model->getDocumentCategorySequence() . "\",			\"". $this->model->getDocumentCategoryCode() . "\",
+						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getIsDefault('','single') . "\",
+						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
+						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
+						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+				);";	
+		} else if ($this->getVendor()==self::oracle){
+			$sql = "
+		INSERT INTO `document` 
+				(
+				  	\"documentCategoryId\",	\"leafId\",
+				  	\"documentTitle\",		\"documentDesc\",
+					\"documentPath\",			\"documentFilename\",
+					\"documentExtension\",	\"isDefault\",
+					\"isNew\",							\"isDraft\",
+					\"isUpdate\",							\"isDelete\",
+					\"isActive\",							\"isApproved\",
+					\"By\",								\"Time\"
+				)
+			VALUES
+				(
+						\"". $this->model->getDocumentCategoryTitle() . "\",			\"". $this->model->getDocumentCategoryDesc() . "\",
+						\"". $this->model->getDocumentCategorySequence() . "\",			\"". $this->model->getDocumentCategoryCode() . "\",
+						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getIsDefault('','single') . "\",
+						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
+						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
+						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+				);";
+		}
+		$this->q->create($sql);
+		$source = $this->path.$doc_ext;
+		chmod($source, 0777);
+		//$this->convert($source);
+		$this->convert($source);
+	}
 	/* (non-PHPdoc)
 	 * @see config::read()
 	 */
 	public function read() 				{
 
-		header('Content-Type','application/json; charset=utf-8');
-		$sql	=	"
-				SELECT
-				        `doc`.`doc_uniqueId`,
-				        `doc`.`doc_nme`,
-				        `doc`.`doc_des`,
-				        `doc`.`doc_ext`,
-				        `doc`.`createBy`,
-				        `doc`.`createTime`,
-				        `doc`.`updatedBy`,
-				        `doc`.`updatedTime`,
-						`doc`.`doc_cat_uniqueId`,
-						`doc_cat`.`doc_cat_nme`,
-						`doc_cat`.`doc_cat_uniqueId`,
-				        CONCAT('(','ID ',`doc_cat_uniqueId`,') ',`doc_cat_nme`) AS NoDoc
-				FROM 	`doc`
-                JOIN    `doc_cat`
-                USING   (`doc_cat_uniqueId`)
-				WHERE 	1";
-		if($_POST['doc_uniqueId']) {
-			$sql.=" AND `doc_uniqueId`=\"".$this->strict($_POST['doc_uniqueId'],'n')."\"";
-		}
-
-		// searching filtering
-		$sql.=$this->q->searching();
-		//echo $sql;
-		$record_all 	= $this->q->read($sql);
-		$this->total	= $this->q->numberRows();
-		//paging
-		if ($this->getOrder() && $this->getSortField()) {
-			if ($this->getVendor() == self::mysql) {
-				$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
-			} else if ($this->getVendor() ==  self::mssql) {
-				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
-			} else if ($this->getVendor() == self::oracle) {
-				$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+	header('Content-Type', 'application/json; charset=utf-8');
+		if($this->isAdmin == 0) {
+			if($this->getVendor()==self::mysql) {
+				$this->auditFilter = "	`document`.`isActive`		=	1	";
+			} else if ($this->q->vendor == self :: mssql) {
+				$this->auditFilter = "	[document].[isActive]		=	1	";
+			} else if  ($this->q->vendor == self :: oracle) {
+				$this->auditFilter = "	\"document\".\"isActive\"	=	1	";
+			}
+		} else if($this->isAdmin ==1) {
+			if($this->getVendor()==self::mysql) {
+				$this->auditFilter = "	 1 ";
+			} else if ($this->q->vendor == self :: mssql) {
+				$this->auditFilter = "	or 1 ";
+			} else if  ($this->q->vendor == self :: oracle) {
+				$this->auditFilter = " or 1 ";
 			}
 		}
-		if(empty($_POST['filter']))      {
-			if(isset($_POST['start']) && isset($_POST['limit'])) {
-				$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
+		//UTF8
+		$items=array();
+		if ($this->getVendor() == self::mysql) {
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		if ($this->getVendor() == self::mysql) {
+			$sql = "
+					SELECT	`document`.`documentId`,
+							`document`.`documentTitle`,
+							`document`.`documentDesc`,
+							`document`.`documentSequence`,
+							`document`.`documentCode`,
+							`document`.`documentNote`,
+							`document`.`isDefault`,
+							`document`.`isNew`,
+							`document`.`isDraft`,
+							`document`.`isUpdate`,
+							`document`.`isDelete`,
+							`document`.`isActive`,
+							`document`.`isApproved`,
+							`document`.`By`,
+							`document`.`Time`,
+							`staff`.`staffName`
+ 					FROM 	`document`
+					JOIN	`staff`
+					ON		`document`.`By` = `staff`.`staffId`
+					JOIN	`document`
+					USING	(`documentId`)
+					WHERE 	".$this->auditFilter;
+			if ($this->model->getdocumentId('','single')) {
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getdocumentId('','single') . "\"";
+
 			}
-		}
 
-		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf
-		$_SESSION['start'] 	= 	$_POST['start'];
-		$_SESSION['limit'] 	= 	$_POST['limit'];
-		$this->q->read($sql);
-
-		while($row  = 	$this->q->fetchAssoc()) {
-			// add on to object create by  and updated by
-			$row['createBy']	=	$this->staff_name($row['createBy']);
-			$row['updatedBy']	=	$this->staff_name($row['updatedBy']);
-			$items[]			=	$row;
-		}
-
-
-		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->responce);
-			exit();
-		}else {
-			// bugs on extjs
-			if($_POST['method']=='read' && $_POST['mode']=='update') {
-				$json_encode = json_encode(
-				array(
-											'success'	=>	true,
-											'total' 	=> 	$this->total,
-											'data' 		=> 	$items
-				)
-				);
-				$json_encode=str_replace("[","",$json_encode);
-				$json_encode=str_replace("]","",$json_encode);
-				echo $json_encode;
-			} else {
-				if(count($items)==0) {
-					$items='';
-				}
-				echo json_encode(
-				array(
-											'success'	=>	true,
-											'total' 	=> 	$this->total,
-											'data' 		=> 	$items
-				)
-				);
-				exit();
+		} else if ($this->getVendor() ==  self::mssql) {
+			$sql = "
+					SELECT	[document].[documentId],
+							[document].[documentTitle],
+							[document].[documentDesc],
+							[document].[documentSequence],
+							[document].[documentCode],
+							[document].[documentNote],
+							[document].[isDefault],
+							[document].[isNew],
+							[document].[isDraft],
+							[document].[isUpdate],
+							[document].[isDelete],
+							[document].[isActive],
+							[document].[isApproved],
+							[document].[By],
+							[document].[Time],
+							[staff].[staffName]
+					FROM 	[document]
+					JOIN	[staff]
+					ON		[document].[By] = [staff].[staffId]
+					JOIN	`documentCategory`
+					ON		[document].[documentCategoryId]=[documentCategory].[documentCategoryId]
+					WHERE 	[document].[isActive] ='1'	";
+			if ($this->model->getdocumentId('','single')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getdocumentId('','single') . "\"";
 			}
+		} else if ($this->getVendor() == self::oracle) {
+			$sql = "
+					SELECT	\"document\".\"documentId\",
+							\"document\".\"documentTitle\",
+							\"document\".\"documentDesc\",
+							\"document\".\"documentCode\",
+							\"document\".\"documentSequence\",
+							\"document\".\"documentNote\",
+							\"document\".\"isDefault\",
+							\"document\".\"isNew\",
+							\"document\".\"isDraft\",
+							\"document\".\"isUpdate\",
+							\"document\".\"isDelete\",
+							\"document\".\"isActive\",
+							\"document\".\"isApproved\",
+							\"document\".\"By\",
+							\"document\".\"Time\",
+							\"staff\".\"staffName\"
+					FROM 	\"document\"
+					JOIN	\"staff\"
+					ON		\"document\".\"By\" = \"staff\".\"staffId\"
+					JOIN	`document`
+					USING	(`documentId`)
+					WHERE 	\"isActive\"='1'	";
+			if ($this->model->getdocumentId('','single')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getdocumentId('','single') . "\"";
+			}
+		} else {
+			echo json_encode(array(
+                "success" => false,
+                "message" => "Undefine Database Vendor"
+                ));
+                exit();
 		}
+		/**
+		 *	filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
+		 *  E.g  $filterArray=array('`leaf`.`leafId`');
+		 *  @variables $filterArray;
+		 */
+		$filterArray = null;
+		$filterArray = array(
+            'documentId'
+            );
+            /**
+             *	filter table
+             * @variables $tableArray
+             */
+            $tableArray  = null;
+            $tableArray  = array(
+            'document'
+            );
+            if ($this->getfieldQuery()) {
+            	if ($this->getVendor() == self::mysql) {
+            		$sql .= $this->q->quickSearch($tableArray, $filterArray);
+            	} else if ($this->getVendor() == self::mssql) {
+            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $tempSql;
+            	} else if ($this->getVendor() == self::oracle) {
+            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $tempSql;
+            	}
+            }
+            /**
+             *	Extjs filtering mode
+             */
+            if ($this->getGridQuery()) {
+
+            	if ($this->getVendor() == self::mysql) {
+            		$sql .= $this->q->searching();
+            	} else if ($this->getVendor() == self::mssql) {
+            		$tempSql2 = $this->q->searching();
+            		$sql .= $tempSql2;
+            	} else if ($this->getVendor() == self::oracle) {
+            		$tempSql2 = $this->q->searching();
+            		$sql .= $tempSql2;
+            	}
+            }
+            /** // optional debugger.uncomment if wanted to used
+
+            echo json_encode(array(
+            "success" => false,
+            "message" => $this->q->realEscapeString($sql)
+            ));
+            exit();
+
+            // end of optional debugger */
+            $this->q->read($sql);
+            if ($this->q->execute == 'fail') {
+            	echo json_encode(array(
+                "success" =>false,
+                "message" => $this->q->responce
+            	));
+            	exit();
+            }
+            $total = $this->q->numberRows();
+            if ($this->getOrder() && $this->getSortField()) {
+            	if ($this->getVendor() == self::mysql) {
+            		$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
+            	} else if ($this->getVendor() ==  self::mssql) {
+            		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
+            	} else if ($this->getVendor() == self::oracle) {
+            		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+            	}
+            }
+            $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
+            $_SESSION['start'] = $this->getStart();
+            $_SESSION['limit'] = $this->getLimit();
+            if (!($this->getGridQuery())) {
+            	if ($this->limit) {
+            		// only mysql have limit
+            		if ($this->getVendor() == self::mysql) {
+            			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
+            		} else if ($this->getVendor() == self::mssql) {
+            			/**
+            			 *	 Sql Server and Oracle used row_number
+            			 *	 Parameterize Query We don't support
+            			 */
+            			$sql = "
+							WITH [documentDerived] AS
+							(
+								SELECT *,
+								ROW_NUMBER() OVER (ORDER BY [documentId]) AS 'RowNumber'
+								FROM [document]
+								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
+							)
+							SELECT		[document].[documentId],
+										[document].[documentTitle],
+										[document].[documentDesc],	
+										[document].[documentSequence],
+										[document].[documentCode],
+										[document].[documentNote],
+										[document].[isDefault],
+										[document].[isNew],
+										[document].[isDraft],
+										[document].[isUpdate],
+										[document].[isDelete],
+										[document].[isApproved],
+										[document].[By],
+										[document].[Time],
+										[staff].[staffName]
+							FROM 		[documentDerived]
+							WHERE 		[RowNumber]
+							BETWEEN	" . $_POST['start'] . "
+							AND 			" . ($this->start + $this->limit - 1) . ";";
+            		} else if ($this->getVendor() == self::oracle) {
+            			/**
+            			 *  Oracle using derived table also
+            			 */
+            			$sql = "
+						SELECT *
+						FROM ( SELECT	a.*,
+												rownum r
+						FROM (
+									SELECT  \"document\".\"documentId\",
+											\"document\".\"documentTitle\",
+											\"document\".\"documentDesc\",
+											\"document\".\"documentSequence\",
+											\"document\".\"documentCode\",
+											\"document\".\"documentNote\",
+											\"document\".\"isDefault\",
+											\"document\".\"isNew\",
+											\"document\".\"isDraft\",
+											\"document\".\"isUpdate\",
+											\"document\".\"isDelete\",
+											\"document\".\"isApproved\",
+											\"document\".\"By\",
+											\"document\".\"Time\",
+											\"staff\".\"staffName\"
+									FROM 	\"document\"
+									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
+								 ) a
+						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
+						where r >=  \"". $this->start . "\"";
+            		} else {
+            			echo "undefine vendor";
+            			exit();
+            		}
+            	}
+            }
+            /*
+             *  Only Execute One Query
+             */
+            if (!($this->model->getdocumentId('','single'))) {
+            	$this->q->read($sql);
+            	if ($this->q->execute == 'fail') {
+            		echo json_encode(array(
+                    "success" => false,
+                    "message" => $this->q->responce
+            		));
+            		exit();
+            	}
+            }
+            $items = array();
+            while ($row = $this->q->fetchAssoc()) {
+            	$items[] = $row;
+            }
+            if ($this->model->getdocumentId('','single')) {
+            	$json_encode = json_encode(array(
+                'success' => true,
+                'total' => $total,
+				'message' => 'Data Loaded',
+                'data' => $items
+            	));
+            	$json_encode = str_replace("[", "", $json_encode);
+            	$json_encode = str_replace("]", "", $json_encode);
+            	echo $json_encode;
+            } else {
+            	if (count($items) == 0) {
+            		$items = '';
+            	}
+            	echo json_encode(array(
+                'success' => true,
+                'total' => $total,
+				'message'=>'data loaded',
+                'data' => $items
+            	));
+            	exit();
+            }
 
 
 
 	}
 
-	/**
-	 * Enter description here ...
-	 */
-	function upload() {
-		//$filename =  $_POST['filename'];
-		$filecontent  = $_FILES['docname']['name'];
-		$allowedExtensions = array("xlsx");
-		foreach ($_FILES as $file) {
-			if ($file['tmp_name'] > '') {
-				if (!in_array(end(explode(".",strtolower($file['name']))),$allowedExtensions)) {
-					// never die .should just return message
-					$message= $file['name'].' is an invalid file type!<br/>';
-					$this->msg(false,$message);
-				}
-			}
-		}
 
-		if ($_FILES['doc_nme']['type'] == "file/xlsx" || $_FILES['docname']['type']=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-		{
-			$doc_nme=$_FILES['docname']['name'];
-			$doc_ext=rand(0,4).".xlsx";
-			// for easy path it's better actual path to upload
-
-			move_uploaded_file ($_FILES['docname']['tmp_name'],$this->path.$doc_ext);
-
-			$sql = "INSERT INTO doc (
-				  					  `doc_nme`,
-									  `doc_ext`,
-				  					  `doc_cat_uniqueId`,
-									  `doc_des`,
-				  					  `createBy`,
-				  					  `createTime`)
-				   VALUES    (         '$doc_nme',
-							  		   '$doc_ext',
-									   \"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\",
-									   \"".$this->strict($_POST['doc_des'],'s')."\",
-				                       \"".$_SESSION['staffId']."\",
-				                       \"".date("Y-m-d H:i:s")."\")";
-
-			$this->q->create($sql);
-			$source = $this->path.$doc_ext;
-			chmod($source, 0777);
-			//$this->convert($source);
-			$this->convert($source);
-		}
-	}
-
-
-	/* (non-PHPdoc)
-	 * @see config::create()
-	 */
-	function create(){}
 
 	/* (non-PHPdoc)
 	 * @see config::update()
 	 */
 	function update() 				{
 		$filecontent  = $_FILES['docname']['name'];
-		$allowedExtensions = array("xlsx");
-		foreach ($_FILES as $file) {
-			if ($file['tmp_name'] > '') {
-				if (!in_array(end(explode(".",strtolower($file['name']))),$allowedExtensions)) {
-					// never die .should just return message
-					$message= $file['name'].' is an invalid file type!<br/>';
-					$this->msg(false,$message);
-				}
-			}
+
+		move_uploaded_file ($_FILES['docname']['tmp_name'],$this->path.$doc_ext);
+		if($this->getVendor()==self::mysql){
+			$sql = "
+		UPDATE 	`document`
+		SET 	`documentCategoryId` 		=	\"".$this->model->getDocumentCategoryId()."\",
+				`leafId`	        		=	\"".$this->model->getLeafId()."\",
+				`documentTitle`	        	=	\"".$this->model->getDocumentTitle()."\",
+				`documentDesc`	        	=	\"".$this->model->getDocumentDesc()."\",
+				`documentPath`	        	=	\"".$this->model->getDocumentPath()."\",
+				`documentFilename`	    	=	\"".$this->model->getDocumentFilename()."\",
+				`documentExtension`	    	=	\"".$this->model->getDocumentExtension()."\",
+				`isDefault`					=	\"".$this->model->getIsDefault('','single')."\",
+				`isActive`					=	\"".$this->model->getIsActive('','single')."\",
+				`isNew`						=	\"".$this->model->getIsNew('','single')."\",
+				`isDraft`					=	\"".$this->model->getIsDraft('','single')."\",
+				`isUpdate`					=	\"".$this->model->getIsUpdate('','single')."\",
+				`isDelete`					=	\"".$this->model->getIsDelete('','single')."\",
+				`isApproved`				=	\"".$this->model->getIsApproved('','single')."\",
+				`By`						=	\"".$this->model->getBy()."\",
+				`Time`						=	".$this->model->getTime()."
+		WHERE 	`documentId`				=	\"".$this->model->getDocumentId('','single')."\"";
+
+		} else if ($this->getVendor()==self::mssql){
+			$sql = "
+		UPDATE 	[document]
+		SET 	[documentCategoryId] 		=	\"".$this->model->getDocumentCategoryId()."\",
+				[leafId]	        		=	\"".$this->model->getLeafId()."\",
+				[documentTitle]	        	=	\"".$this->model->getDocumentTitle()."\",
+				[documentDesc]	        	=	\"".$this->model->getDocumentDesc()."\",
+				[documentPath]	        	=	\"".$this->model->getDocumentPath()."\",
+				[documentFilename]	    	=	\"".$this->model->getDocumentFilename()."\",
+				[documentExtension]	    	=	\"".$this->model->getDocumentExtension()."\",
+				[isDefault]					=	\"".$this->model->getIsDefault('','single')."\",
+				[isActive]					=	\"".$this->model->getIsActive('','single')."\",
+				[isNew]						=	\"".$this->model->getIsNew('','single')."\",
+				[isDraft]					=	\"".$this->model->getIsDraft('','single')."\",
+				[isUpdate]					=	\"".$this->model->getIsUpdate('','single')."\",
+				[isDelete]					=	\"".$this->model->getIsDelete('','single')."\",
+				[isApproved]				=	\"".$this->model->getIsApproved('','single')."\",
+				[By]						=	\"".$this->model->getBy()."\",
+				[Time]						=	".$this->model->getTime()."
+		WHERE 	[documentId]				=	\"".$this->model->getDocumentId('','single')."\"";
+
+		} else if ($this->getVendor()==self::oracle){
+			$sql = "
+		UPDATE 	\"document\"
+		SET 	\"documentCategoryId\" 		=	\"".$this->model->getDocumentCategoryId()."\",
+				\"leafId\"	        		=	\"".$this->model->getLeafId()."\",
+				\"documentTitle\"	        	=	\"".$this->model->getDocumentTitle()."\",
+				\"documentDesc\"	        	=	\"".$this->model->getDocumentDesc()."\",
+				\"documentPath\"	        	=	\"".$this->model->getDocumentPath()."\",
+				\"documentFilename\"	    	=	\"".$this->model->getDocumentFilename()."\",
+				\"documentExtension\"	    	=	\"".$this->model->getDocumentExtension()."\",
+				\"isDefault\"					=	\"".$this->model->getIsDefault('','single')."\",
+				\"isActive\"					=	\"".$this->model->getIsActive('','single')."\",
+				\"isNew\"						=	\"".$this->model->getIsNew('','single')."\",
+				\"isDraft\"					=	\"".$this->model->getIsDraft('','single')."\",
+				\"isUpdate\"					=	\"".$this->model->getIsUpdate('','single')."\",
+				\"isDelete\"					=	\"".$this->model->getIsDelete('','single')."\",
+				\"isApproved\"				=	\"".$this->model->getIsApproved('','single')."\",
+				\"By\"						=	\"".$this->model->getBy()."\",
+				\"Time\"						=	".$this->model->getTime()."
+		WHERE 	\"documentId\"				=	\"".$this->model->getDocumentId('','single')."\"";
+
 		}
+		$this->q->create($sql);
+		$source = $this->path.$doc_ext;
+		chmod($source, 0777);
 
-		if ($_FILES['doc_nme']['type'] == "file/xlsx" || $_FILES['docname']['type']=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-		{
-			$doc_nme=$_FILES['docname']['name'];
-			$doc_ext=rand(0,4).".xlsx";
-			// for easy path it's better actual path to upload
+		$this->convert($source);
 
-			move_uploaded_file ($_FILES['docname']['tmp_name'],$this->path.$doc_ext);
-
-			$sql = "  UPDATE 	`doc`
-					         SET 	`doc_cat_uniqueId`	        =	\"".$this->strict($_POST['doc_cat_uniqueId'],'n')."\",
-					     	`doc_nme`	        =	'$doc_nme',
-					     	`doc_ext`	        =	'$doc_ext',
-					     	`doc_des`	        =	\"".$this->strict($_POST['doc_des'],'s')."\",
-							`updatedBy`			=	\"".$_SESSION['staffId']."\",
-							`updatedTime`			=	\"".date("Y-m-d H:i:s")."\"
-					WHERE 	`doc_uniqueId`		=	\"".$this->strict($_POST['doc_uniqueId'],'n')."\"";
-
-			$this->q->create($sql);
-			$source = $this->path.$doc_ext;
-			chmod($source, 0777);
-			//$this->convert($source);
-			$this->convert($source);
-		}
 	}
-
-
-
-
-
-
-
-
-
-
-	/**
-	 * Enter description here ...
-	 */
-	function docCategoryId() {
-		header('Content-Type','application/json; charset=utf-8');
-		$sql	=	"
-				SELECT
-				       `doc_cat`.`doc_cat_uniqueId`,
-				       `doc_cat`.`doc_cat_nme`,
-					   CONCAT('(','ID ',`doc_cat_uniqueId`,') ',`doc_cat_nme`) AS IdDoc
-				FROM   `doc_cat`
-				WHERE   1 ";
-		$this->q->read($sql);
-		$this->total = $this->q->numberRows();
-		$items		 =	array();
-		while($row   = 	$this->q->fetchAssoc()) {
-			$items[] =	$row;
-		}
-		echo json_encode(
-		array(
-											'totalCount' 		=>	$this->total,
-											'doc_cat'	=> 	$items
-		)
-		);
-	}
-
-	/* (non-PHPdoc)
-	 * @see config::delete()
-	 */
 	function delete()				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->access('delete')==1) {
-			$this->q->start();
-			$sql	=	"
-					DELETE	FROM 	`doc`
-					WHERE 			`doc_uniqueId`=\"".$this->strict($_POST['doc_uniqueId'],'n')."\"";
-			$this->q->delete($sql);
-			$this->q->commit();
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
 
-			if($this->q->execute=='fail') {
-				$this->msg('false',$this->q->responce);
-				exit();
-			} else {
-				$this->msg(true,'Remove query Sucess');
-				exit();
-			}
-		} else {
-			$this->msg(false,'Don\'t have authority to delete record');
+		}
+		$this->q->commit();
+		$this->model->delete();
+		if($this->getVendor() == self::mysql) {
+			$sql="
+				UPDATE 	`document`
+				SET 	`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
+						`isActive`		=	\"".$this->model->getIsActive('','single')."\",
+						`isNew`			=	\"".$this->model->getIsNew('','single')."\",
+						`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
+						`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
+						`isDelete`		=	\"".$this->model->getIsDelete('','single')."\",
+						`isApproved`	=	\"".$this->model->getIsApproved('','single')."\",
+						`By`			=	\"".$this->model->getBy('','single')."\",
+						`Time			=	".$this->model->getTime()."
+				WHERE 	`documentId`	=	\"".$this->model->getDepartrmentId('','single')."\"";
+		} else if ($this->getVendor()==self::mssql) {
+			$sql="
+				UPDATE 	[document]
+				SET 	[isDefault]		=	\"".$this->model->getIsDefault('','single')."\",
+						[isActive]		=	\"".$this->model->getIsActive('','single')."\",
+						[isNew]			=	\"".$this->model->getIsNew('','single')."\",
+						[isDraft]		=	\"".$this->model->getIsDraft('','single')."\",
+						[isUpdate]		=	\"".$this->model->getIsUpdate('','single')."\",
+						[isDelete]		=	\"".$this->model->getIsDelete('','single')."\",
+						[isApproved]	=	\"".$this->model->getIsApproved('','single')."\",
+						[By]			=	\"".$this->model->getBy()."\",
+						[Time]			=	".$this->model->getTime()."
+				WHERE 	[documentId]	=	\"".$this->model->getdocumentId('','single')."\"";
+
+		} else if ($this->getVendor()==self::oracle) {
+			$sql="
+				UPDATE 	\"document\"
+				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
+						\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
+						\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
+						\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",
+						\"isUpdate\"		=	\"".$this->model->getIsUpdate('','single')."\",
+						\"isDelete\"		=	\"".$this->model->getIsDelete('','single')."\",
+						\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
+						\"By\"				=	\"".$this->model->getBy()."\",
+						\"Time\"			=	".$this->model->getTime()."
+				WHERE 	\"documentId\"	=	\"".$this->model->getdocumentId('','single')."\"";
+
+		}
+		$this->q->update($sql);
+		if($this->q->execute=='fail') {
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
+		$this->q->commit();
+
+		echo json_encode(array("success"=>true,"message"=>"Record Remove"));
+		exit();
+
+	}
+	/**
+	 *  To Update flag Status
+	 */
+	function updateStatus () {
+		$this->model-> updateStatus();
+		$loop  = $this->model->getTotal();
+
+		if($this->isAdmin==0){
+
+			$this->model->delete();
+			if ($this->getVendor() == self::mysql) {
+				$sql = "
+				UPDATE 	`".$this->model->getTableName()."`
+				SET 	";
+
+				$sql.="	   `isDefault`			=	case `".$this->model->getPrimaryKeyName()."` ";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$sql.="
+						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						THEN \"".$this->model->getIsDefault('','single')."\"";
+					}
+				}
+				$sql.="	END, ";
+				$sql.="	`isNew`	=	case `".$this->model->getPrimaryKeyName()."` ";
+
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$sql.="
+						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						THEN \"".$this->model->getIsNew('','single')."\"";
+					}
+				}
+				$sql.="	END,";
+				$sql.="	`isDraft`	=	case `".$this->model->getPrimaryKeyName()."` ";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$sql.="
+						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						THEN \"".$this->model->getIsDraft('','single')."\"";
+					}
+				}
+				$sql.="	END,";
+				$sql.="	`isUpdate`	=	case `".$this->model->getPrimaryKeyName()."`";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$sql.="
+						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						THEN \"".$this->model->getIsUpdate('','single')."\"";
+					}
+				}
+				$sql.="	END,";
+				$sql.="	`isDelete`	=	case `".$this->model->getPrimaryKeyName()."`";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$sql.="
+						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						THEN \"".$this->model->getIsDelete($i,'array')."\"";
+					}
+				}
+				$sql.="	END,	";
+				$sql.="	`isActive`	=		case `".$this->model->getPrimaryKeyName()."` ";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$sql.="
+						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						THEN \"".$this->model->getIsActive('','single')."\"";
+					}
+				}
+				$sql.="	END,";
+				$sql.="	`isApproved`			=	case `".$this->model->getPrimaryKeyName()."` ";
+				for($i=0;$i<$loop;$i++) {
+					if($this->model->getIsDelete($i,'array')==1){
+						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$sql.="
+						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						THEN \"".$this->model->getIsApproved('','single')."\"";
+
+					}
+				}
+				$sql.="
+				END,
+				`By`				=	\"". $this->model->getBy() . "\",
+				`Time`				=	" . $this->model->getTime() . " ";
+
+
+				$this->model->setPrimaryKeyAll(substr($primaryKeyAll,0,-1));
+				$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getPrimaryKeyAll(). ")";
+
+			} else if ($this->getVendor() ==  self::mssql) {
+				$sql = "
+			UPDATE 	[document]
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','single') . "\",
+					[isNew]				=	\"". $this->model->getIsNew('','single') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft('','single') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate('','single') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete('','single') . "\",
+					[isActive]			=	\"". $this->model->getIsActive('','single') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved('','single') . "\",
+					[By]				=	\"". $this->model->getBy() . "\",
+					[Time]				=	" . $this->model->getTime() . "
+			WHERE 	[documentId]		IN	(". $this->model->getdocumentIdAll() . ")";
+			} else if ($this->getVendor() == self::oracle) {
+				$sql = "
+				UPDATE	\"document\"
+				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault('','single') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew('','single') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft('','single') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','single') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete('','single') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive('','single') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved('','single') . "\",
+					\"By\"				=	\"". $this->model->getBy() . "\",
+					\"Time\"			=	" . $this->model->getTime() . "
+			WHERE 	\"documentId\"		IN	(". $this->model->getdocumentIdAll() . ")";
+			}
+		} else if ($this->isAdmin ==1){
+
+			if($this->getVendor() == self::mysql) {
+				$sql="
+				UPDATE `".$this->model->getTableName()."`
+				SET";
+			} else if($this->getVendor()==self::mssql) {
+				$sql="
+			UPDATE 	[".$this->model->getTableName()."]
+			SET 	";
+
+			} else if ($this->getVendor()==self::oracle) {
+				$sql="
+			UPDATE \"".$this->model->getTableName()."\"
+			SET    ";
+			}
+			//	echo "arnab[".$this->model->getdocumentId(0,'array')."]";
+			/**
+			 *	System Validation Checking
+			 *  @var $access
+			 */
+			$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved");
+			foreach($access as $systemCheck) {
+
+
+				if($this->getVendor() == self::mysql) {
+					$sqlLooping.=" `".$systemCheck."` = CASE `".$this->model->getPrimaryKeyName()."`";
+				} else if($this->getVendor()==self::mssql) {
+					$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
+
+				} else if ($this->getVendor()==self::oracle) {
+					$sqlLooping.="	\"".$systemCheck."\" = CASE \"".$this->model->getPrimaryKeyName()."\"";
+				}
+				switch ($systemCheck){
+					case 'isDefault':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							THEN \"".$this->model->getIsDefault($i,'array')."\"";
+						}
+						break;
+					case 'isNew':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							THEN \"".$this->model->getIsNew($i,'array')."\"";
+
+						} break;
+					case 'isDraft':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							THEN \"".$this->model->getIsDraft($i,'array')."\"";
+						}
+						break;
+					case 'isUpdate':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							THEN \"".$this->model->getIsUpdate($i,'array')."\"";
+						}
+						break;
+					case 'isDelete':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							THEN \"".$this->model->getIsDelete($i,'array')."\"";
+						}
+						break;
+					case 'isActive':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							THEN \"".$this->model->getIsActive($i,'array')."\"";
+						}
+						break;
+					case 'isApproved':
+						for($i=0;$i<$loop;$i++) {
+							$sqlLooping.="
+							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							THEN \"".$this->model->getIsApproved($i,'array')."\"";
+						}
+						break;
+				}
+
+
+				$sqlLooping.= " END,";
+			}
+
+			$sql.=substr($sqlLooping,0,-1);
+			if($this->getVendor() == self::mysql) {
+				$sql.="
+			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getPrimaryKeyAll().")";
+			} else if($this->getVendor()==self::mssql) {
+				$sql.="
+			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
+			} else if ($this->getVendor()==self::oracle) {
+				$sql.="
+			WHERE \"".$this->model->getPrimaryKeyName()."\" IN (".$this->model->getPrimaryKeyAll().")";
+			}
+		}
+		$this->q->update($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                "success" => false,
+                "message" => $this->q->responce
+			));
+			exit();
+		}
+		$this->q->commit();
+		echo json_encode(array(
+            "success" => true,
+            "message" => "Deleted"
+            ));
+            exit();
+
 	}
 
 
@@ -450,6 +975,25 @@ class documentClass extends  configClass {
 		}
 	}
 
+	function documentCategoryId() {
+		header('Content-Type','application/json; charset=utf-8');
+		$sql	=	"
+		SELECT	*
+		FROM   `documentCategory`
+		WHERE   1 ";
+		$this->q->read($sql);
+		$total = $this->q->numberRows();
+		$items		 =	array();
+		while($row   = 	$this->q->fetchAssoc()) {
+			$items[] =	$row;
+		}
+		echo json_encode(
+		array(
+											'totalCount' 		=>	$total,
+											'documentCategory'	=> 	$items
+		)
+		);
+	}
 }
 
 $documentObject  	= 	new documentClass();
