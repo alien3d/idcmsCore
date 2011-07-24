@@ -143,8 +143,8 @@ class leafUserClass extends configClass
 		$this->log           = 1;
 		$this->q->log        = $this->log;
 
-		$this->model         = new leafUserModel();
-		$this->model->vendor = $this->vendor;
+		$this->model         = new languageModel;
+		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
 	}
@@ -153,90 +153,7 @@ class leafUserClass extends configClass
 	 */
 	public function create()
 	{
-		header('Content-Type', 'application/json; charset=utf-8');
-		//UTF8
-		if ($this->getVendor() == self::mysql) {
-			$sql = "SET NAMES \"utf8\"";
-			$this->q->fast($sql);
-		}
-
-		$this->model->create();
-		if ($this->getVendor() == self::mysql) {
-			$sql = "
-			INSERT INTO `leafUser`
-					(
-						`leafId`,						`leafSequence`,
-						`staffId`
-			VALUES
-					(
-						\"". $this->model->leafUserDesc . "\",
-						(
-							SELECT 	(MAX(`leafSequence`) + 1)
-							FROM 	`leafUser`
-							WHERE 	`staffId`	=	\"".$this->staffId."\"
-						),
-						\"".$this->staffId."\",
-						);";
-		} else if ($this->getVendor() == self::mssql) {
-			$sql = "
-			INSERT INTO [leafUser]
-					(
-						[leafUserDesc],						[isDefault],
-						[isNew],							[isDraft],
-						[isUpdate],							[isDelete],
-						[isActive],							[isApproved],
-						[By],								[Time]
-					)
-			VALUES
-					(
-						\"". $this->model->leafUserDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->getIsNew('','single') . "\",			\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsDraft('','single') . "\",		\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",		\"". $this->model->getIsApproved('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",		" . $this->model->getTime() . "
-					);";
-		} else if ($this->getVendor() == self::oracle) {
-			$sql = "
-			INSERT INTO	\"leafUser\"
-					(
-						\"leafUserDesc\",					\"isDefault\",
-						\"isNew\",							\"isDraft\",
-						\"isUpdate\",						\"isDelete\",
-						\"isActive\",						\"isApproved\",
-						\"By\",								\"Time\"
-					)
-			VALUES
-					(
-						\"". $this->model->leafUserDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->getIsNew('','single') . "\",			\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsDraft('','single') . "\",		\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",		\"". $this->model->getIsApproved('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",		" . $this->model->getTime() . "
-					)";
-		}
-		//advance logging future
-		$this->q->tableName          = $this->model->tableName;
-		$this->q->primaryKeyName  = $this->model->primaryKeyName;
-		// $this->q->primaryKeyValue = $this->q->lastInsertId();  not use here
-
-		$this->q->audit           = $this->audit;
-		$this->q->create($sql);
-
-		if ($this->q->execute == 'fail') {
-			echo json_encode(array(
-                "success" => false,
-                "message" => $this->q->responce
-			));
-			exit();
-		}
-
-
-		$this->q->commit();
-		echo json_encode(array(
-            "success" => true,
-            "message" => "Record Created"
-            ));
-            exit();
+		
 	}
 	/* (non-PHPdoc)
 	 * @see config::read()
@@ -246,19 +163,19 @@ class leafUserClass extends configClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
 			if($this->getVendor()==self::mysql) {
-				$this->auditFilter = "	`religion`.`isActive`		=	1	";
+				$this->auditFilter = "	`language`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	[religion].[isActive]		=	1	";
+				$this->auditFilter = "	[language].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"religion\".\"isActive\"	=	1	";
+				$this->auditFilter = "	\"language\".\"isActive\"	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
-			    $this->auditFilter = "	or 1 ";
+				$this->auditFilter = "	or 1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
-                  $this->auditFilter = " or 1 ";
+				$this->auditFilter = " or 1 ";
 			}
 		}
 		//UTF8
@@ -269,59 +186,74 @@ class leafUserClass extends configClass
 		}
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-					SELECT	*
- 					FROM 	`leafUser`
-					JOIN	`leaf`
-					ON		`leafUser`.`leafId` = `leaf`.`leafId`
-					JOIN	`leafAccess`
-					ON		`leafAccess`.`leafId` = `leafUser`.`leafId`
-					AND		`leafAccess`.`leafId` = `leaf`.`leafId`
-					AND		`leafAccess`.`staffId` = `leafUser`.`staffId`
-					JOIN	`leafTranslate`
-					ON		`leafTranslate`.`leafId` = `leafUser`.`leafId`
-					AND		`leafTranslate`.`leafId` = `leaf`.`leafId`
-					WHERE 	`leaf`.`isActive` =1
-					AND		`leafUser`.`staffId` =\"".$this->staffId."\"
-					AND		`leafTranslate`.`languageId` = \"".$this->languageId."\"";
+					SELECT	`language`.`languageId`,
+							`language`.`languageCode`,
+							`language`.`languageDesc`,
+							`language`.`isDefault`,
+							`language`.`isNew`,
+							`language`.`isDraft`,
+							`language`.`isUpdate`,
+							`language`.`isDelete`,
+							`language`.`isActive`,
+							`language`.`isApproved`,
+							`language`.`By`,
+							`language`.`Time`,
+							`staff`.`staffName`
+ 					FROM 	`language`
+					JOIN	`staff`
+					ON		`language`.`By` = `staff`.`staffId`
+					WHERE 	".$this->auditFilter;
+			if ($this->model->getlanguageId('','single')) {
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getlanguageId('','single') . "\"";
+
+			}
 
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-					SELECT	[religion].[religionId],
-							[religion].[religionDesc],
-							[religion].[isDefault],
-							[religion].[isNew],
-							[religion].[isDraft],
-							[religion].[isUpdate],
-							[religion].[isDelete],
-							[religion].[isActive],
-							[religion].[isApproved],
-							[religion].[By],
-							[religion].[Time],
-							[staff].[staffName]
-					FROM 	[religion]
-					JOIN	[staff]
-					ON		[religion].[By] = [staff].[staffId]
-					WHERE 	[religion].[isActive] ='1'	";
+					SELECT	[language].[languageId],
 
+							[language].[languageCode],
+							[language].[languageDesc],
+							[language].[isDefault],
+							[language].[isNew],
+							[language].[isDraft],
+							[language].[isUpdate],
+							[language].[isDelete],
+							[language].[isActive],
+							[language].[isApproved],
+							[language].[By],
+							[language].[Time],
+							[staff].[staffName]
+					FROM 	[language]
+					JOIN	[staff]
+					ON		[language].[By] = [staff].[staffId]
+					WHERE 	[language].[isActive] ='1'	";
+			if ($this->model->getlanguageId('','single')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getlanguageId('','single') . "\"";
+			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-					SELECT	\"religion\".\"religionId\",
-							\"religion\".\"religionDesc\",
-							\"religion\".\"isDefault\",
-							\"religion\".\"isNew\",
-							\"religion\".\"isDraft\",
-							\"religion\".\"isUpdate\",
-							\"religion\".\"isDelete\",
-							\"religion\".\"isActive\",
-							\"religion\".\"isApproved\",
-							\"religion\".\"By\",
-							\"religion\".\"Time\",
-							\"staff\".\"staffName\"
-					FROM 	\"religion\"
-					JOIN	\"staff\"
-					ON		\"religion\".\"By\" = \"staff\".\"staffId\"
-					WHERE 	\"isActive\"='1'	";
+					SELECT	\"language\".\"languageId\",
+							\"language\".\"languageCode\",
 
+							\"language\".\"languageDesc\",
+							\"language\".\"isDefault\",
+							\"language\".\"isNew\",
+							\"language\".\"isDraft\",
+							\"language\".\"isUpdate\",
+							\"language\".\"isDelete\",
+							\"language\".\"isActive\",
+							\"language\".\"isApproved\",
+							\"language\".\"By\",
+							\"language\".\"Time\",
+							\"staff\".\"staffName\"
+					FROM 	\"language\"
+					JOIN	\"staff\"
+					ON		\"language\".\"By\" = \"staff\".\"staffId\"
+					WHERE 	\"isActive\"='1'	";
+			if ($this->model->getlanguageId('','single')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getlanguageId('','single') . "\"";
+			}
 		} else {
 			echo json_encode(array(
                 "success" => false,
@@ -336,7 +268,7 @@ class leafUserClass extends configClass
 		 */
 		$filterArray = null;
 		$filterArray = array(
-            'religionId'
+            'languageId'
             );
             /**
              *	filter table
@@ -344,9 +276,9 @@ class leafUserClass extends configClass
              */
             $tableArray  = null;
             $tableArray  = array(
-            'religion'
+            'language'
             );
-            if ($this->quickFilter) {
+            if ($this->getfieldQuery()) {
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
             	} else if ($this->getVendor() == self::mssql) {
@@ -360,7 +292,8 @@ class leafUserClass extends configClass
             /**
              *	Extjs filtering mode
              */
-            if ($this->filter) {
+            if ($this->getGridQuery()) {
+
             	if ($this->getVendor() == self::mysql) {
             		$sql .= $this->q->searching();
             	} else if ($this->getVendor() == self::mssql) {
@@ -371,15 +304,15 @@ class leafUserClass extends configClass
             		$sql .= $tempSql2;
             	}
             }
-            // optional debugger.uncomment if wanted to used
-	 		//if ($this->q->execute == 'fail') {
-            //	echo json_encode(array(
-             //   "success" => false,
-            //   "message" => $this->q->realEscapeString($sql)
-            //	));
-            //	exit();
-            //}
-            // end of optional debugger
+            /** // optional debugger.uncomment if wanted to used
+
+            echo json_encode(array(
+            "success" => false,
+            "message" => $this->q->realEscapeString($sql)
+            ));
+            exit();
+
+            // end of optional debugger */
             $this->q->read($sql);
             if ($this->q->execute == 'fail') {
             	echo json_encode(array(
@@ -389,19 +322,19 @@ class leafUserClass extends configClass
             	exit();
             }
             $total = $this->q->numberRows();
-            if ($this->order && $this->sortField) {
+            if ($this->getOrder() && $this->getSortField()) {
             	if ($this->getVendor() == self::mysql) {
-            		$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
+            		$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
             	} else if ($this->getVendor() ==  self::mssql) {
-            		$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
+            		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
             	} else if ($this->getVendor() == self::oracle) {
-            		$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
+            		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
-            $_SESSION['start'] = $this->start;
-            $_SESSION['limit'] = $this->limit;
-            if (empty($_POST['filter'])) {
+            $_SESSION['start'] = $this->getStart();
+            $_SESSION['limit'] = $this->getLimit();
+            if (!($this->getGridQuery())) {
             	if ($this->limit) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
@@ -412,25 +345,27 @@ class leafUserClass extends configClass
             			 *	 Parameterize Query We don't support
             			 */
             			$sql = "
-							WITH [religionDerived] AS
+							WITH [languageDerived] AS
 							(
 								SELECT *,
-								ROW_NUMBER() OVER (ORDER BY [religionId]) AS 'RowNumber'
-								FROM [religion]
+								ROW_NUMBER() OVER (ORDER BY [languageId]) AS 'RowNumber'
+								FROM [language]
 								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
 							)
-							SELECT		[religion].[religionId],
-										[religion].[religionDesc]
-										[religion].[isDefault],
-										[religion].[isNew],
-										[religion].[isDraft],
-										[religion].[isUpdate],
-										[religion].[isDelete],
-										[religion].[isApproved],
-										[religion].[By],
-										[religion].[Time],
+							SELECT		[language].[languageId],
+
+										[language].[languageCode],
+										[language].[languageDesc],
+										[language].[isDefault],
+										[language].[isNew],
+										[language].[isDraft],
+										[language].[isUpdate],
+										[language].[isDelete],
+										[language].[isApproved],
+										[language].[By],
+										[language].[Time],
 										[staff].[staffName]
-							FROM 		[religionDerived]
+							FROM 		[languageDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
 							AND 			" . ($this->start + $this->limit - 1) . ";";
@@ -443,31 +378,34 @@ class leafUserClass extends configClass
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT  \"religion\".\"religionId\",
-											\"religion\".\"religionDesc\"
-											\"religion\".\"isDefault\",
-											\"religion\".\"isNew\",
-											\"religion\".\"isDraft\",
-											\"religion\".\"isUpdate\",
-											\"religion\".\"isDelete\",
-											\"religion\".\"isApproved\",
-											\"religion\".\"By\",
-											\"religion\".\"Time\",
+									SELECT  \"language\".\"languageId\",
+
+											\"language\".\"languageCode\",
+											\"language\".\"languageDesc\",
+											\"language\".\"isDefault\",
+											\"language\".\"isNew\",
+											\"language\".\"isDraft\",
+											\"language\".\"isUpdate\",
+											\"language\".\"isDelete\",
+											\"language\".\"isApproved\",
+											\"language\".\"By\",
+											\"language\".\"Time\",
 											\"staff\".\"staffName\"
-									FROM 	\"religion\"
+									FROM 	\"language\"
 									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
 						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
 						where r >=  \"". $this->start . "\"";
             		} else {
             			echo "undefine vendor";
+            			exit();
             		}
             	}
             }
             /*
              *  Only Execute One Query
              */
-            if (!($this->religionId)) {
+            if (!($this->model->getlanguageId('','single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -481,7 +419,7 @@ class leafUserClass extends configClass
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->religionId) {
+            if ($this->model->getlanguageId('','single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -503,6 +441,7 @@ class leafUserClass extends configClass
             	));
             	exit();
             }
+		
 
 	}
 	/* (non-PHPdoc)
@@ -511,57 +450,7 @@ class leafUserClass extends configClass
 	function update()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		//UTF8
-		if ($this->getVendor() == self::mysql) {
-			$sql = "SET NAMES \"utf8\"";
-			$this->q->fast($sql);
-			if ($this->q->execute == 'fail') {
-				echo json_encode(array(
-                    "success" => false,
-                    "message" => $this->q->responce
-				));
-				exit();
-			}
-		}
-		$this->q->start();
-		$this->leafUserModel->update();
-		if ($this->getVendor() == self::mysql) {
-			$sql = "
-			UPDATE 	`leafUser`
-			SET 	`leafSequence`		=	\"". $this->leafUserModel->leafSequence . " + ".$leafSequenceIncDec." \"
-			WHERE 	`leafUserId`		=	\"". $this->leafUserModel->leafUserId . "\"";
-		} else if ($this->getVendor() ==  self::mssql) {
-			$sql = "
-			UPDATE 	[leafUser]
-			SET 	[leafSequence]		=	\"". $this->leafUserModel->leafSequence . " + ".$leafSequenceIncDec." \"
-			WHERE 	[leafUserId]		=	\"". $this->leafUserModel->leafUserId . "\"";
-		} else if ($this->getVendor() == self::oracle) {
-			$sql = "
-			UPDATE 	\"leafUser\"
-			SET 	\"leafSequence\"	=	\"". $this->leafUserModel->leafSequence . " + ".$leafSequenceIncDec." \"
-			WHERE 	\"leafUserId\"		=	\"". $this->leafUserModel->leafUserId . "\"";
-		}
-		/*
-		 *  require three variable below to track  table audit
-		 */
-		$this->q->tableName       = $this->leafUserModel->tableName;
-		$this->q->primaryKeyName  = $this->leafUserModel->primaryKeyName;
-		$this->q->primaryKeyValue = $this->leafUserModel->leafUserId;
-		$this->q->audit           = $this->audit;
-		$this->q->update($sql);
-		if ($this->q->execute == 'fail') {
-			echo json_encode(array(
-                "success" => "false",
-                "message" => $this->q->responce
-			));
-			exit();
-		}
-		$this->q->commit();
-		echo json_encode(array(
-            "success" => "true",
-            "message" => "Updated"
-            ));
-            exit();
+		
 	}
 	/* (non-PHPdoc)
 	 * @see config::delete()
@@ -570,53 +459,7 @@ class leafUserClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->getVendor() == self::mysql) {
-			$sql = "SET NAMES \"utf8\"";
-			$this->q->fast($sql);
-			if ($this->q->execute == 'fail') {
-				echo json_encode(array(
-                    "success" => false,
-                    "message" => $this->q->responce
-				));
-				exit();
-			}
-		}
-		$this->q->start();
-		$this->leafUserModel->update();
-		if ($this->getVendor() == self::mysql) {
-			$sql = "
-			DELETE 	`leafUser`
-			WHERE 	`leafUserId`		=	\"". $this->leafUserModel->leafUserId . "\"";
-		} else if ($this->getVendor() ==  self::mssql) {
-			$sql = "
-			DELETE 	[leafUser]
-			WHERE 	[leafUserId]		=	\"". $this->leafUserModel->leafUserId . "\"";
-		} else if ($this->getVendor() == self::oracle) {
-			$sql = "
-			DELETE 	\"leafUser\"
-			WHERE 	\"leafUserId\"		=	\"". $this->leafUserModel->leafUserId . "\"";
-		}
-		/*
-		 *  require three variable below to track  table audit
-		 */
-		$this->q->tableName       = $this->leafUserModel->tableName;
-		$this->q->primaryKeyName  = $this->leafUserModel->primaryKeyName;
-		$this->q->primaryKeyValue = $this->leafUserModel->leafUserId;
-		$this->q->audit           = $this->audit;
-		$this->q->update($sql);
-		if ($this->q->execute == 'fail') {
-			echo json_encode(array(
-                "success" => "false",
-                "message" => $this->q->responce
-			));
-			exit();
-		}
-		$this->q->commit();
-		echo json_encode(array(
-            "success" => "true",
-            "message" => "Record Deleted"
-            ));
-            exit();
+		
 	}
 
 	function tab() {

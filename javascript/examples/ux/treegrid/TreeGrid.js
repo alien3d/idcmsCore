@@ -14,7 +14,7 @@ Ext.ux.tree.TreeGrid = Ext.extend(Ext.tree.TreePanel, {
     rootVisible : false,
     useArrows : true,
     lines : false,
-    borderWidth : Ext.isBorderBox ? 0 : 2, // the combined left/right border for each cell
+    borderWidth : Ext.isBorderBox ? 0 : 2, // the combinetd left/right border for each cell
     cls : 'x-treegrid',
 
     columnResize : true,

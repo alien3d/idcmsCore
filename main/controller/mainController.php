@@ -2,7 +2,7 @@
 session_start();
 require_once("../../class/classAbstract.php");
 require_once("../../class/classDocumentTrail.php");
-require_once("../model/tabModel.php");
+require_once("../model/moduleModel.php");
 require_once("../model/folderModel.php");
 require_once("../model/leafModel.php");
 require_once("../model/leafUserModel.php");

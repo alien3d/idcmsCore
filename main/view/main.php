@@ -16,57 +16,130 @@ include('../../Connections/main.php'); ?>
 
 <link rel="stylesheet" type="text/css"
 	href="../../javascript/resources/css/ext-all.css">
-    <link rel="stylesheet" type="text/css"
-	href="../../javascript/extensible/resources/css/extensible-all.css">
-<?php if(isset($_SESSION[$theme])) { ?>
-<link rel="stylesheet"
-	href="<?php if(isset($_SESSION['theme'])) {
+	<link rel="stylesheet" type="text/css"
+		href="../../javascript/extensible/resources/css/extensible-all.css">
+		<?php if(isset($_SESSION[$theme])) { ?>
+		<link rel="stylesheet"
+			href="<?php if(isset($_SESSION['theme'])) {
 echo $_SESSION[$theme];
 } ?>">
 <?php } ?>
-<style>
+			<style>
 .header {
-	background: #7F99BE url(../../javascript/examples/layout-browser/images/layout-browser-hd-bg.gif) repeat-x center;
-	 font-size: 16px;
-    color: #fff;
-    font-weight:bold;
-    padding: 5px 10px;
+	background: #7F99BE
+		url(../../javascript/examples/layout-browser/images/layout-browser-hd-bg.gif)
+		repeat-x center;
+	font-size: 16px;
+	color: #fff;
+	font-weight: bold;
+	padding: 5px 10px;
 }
-  .paste-icon {background-image:url(../../javascript/ribbon/images/paste_32.png) !important;}
-            .copy-icon {background-image:url(../../javascript/ribbon/images/copy_16.png) !important;}
-            .cut-icon {background-image:url(../../javascript/ribbon/images/cut_16.png) !important;}
-            .add-icon {background-image:url(../../javascript/ribbon/images/add.png) !important;}
-            .add2-icon {background-image:url(../../javascript/ribbon/images/add2.png) !important;}
-            .book-icon {background-image:url(../../javascript/ribbon/images/book.png) !important;}
-            .pencil-icon {background-image:url(../../javascript/ribbon/images/pencil.png) !important;}
-            .branch1-icon {background-image:url(../../javascript/ribbon/images/branch1.png) !important;}
-            .branch2-icon {background-image:url(../../javascript/ribbon/images/branch2.png) !important;}
-            .t1-icon {background-image:url(../../javascript/ribbon/images/table1.png) !important;}
-            .t2-icon {background-image:url(../../javascript/ribbon/images/table2.png) !important;}
-            .t3-icon {background-image:url(../../javascript/ribbon/images/table3.png) !important;}
-            .db1-icon {background-image:url(../../javascript/ribbon/images/t1.png) !important;}
-            .db2-icon {background-image:url(../../javascript/ribbon/images/t2.png) !important;}
-            .spy-icon {background-image:url(../../javascript/ribbon/images/spy.png) !important;}
-            .jar-icon {background-image:url(../../javascript/ribbon/images/jar.png) !important;}
- </style>
+
+.paste-icon {
+	background-image: url(../../javascript/ribbon/images/paste_32.png)
+		!important;
+}
+
+.copy-icon {
+	background-image: url(../../javascript/ribbon/images/copy_16.png)
+		!important;
+}
+
+.cut-icon {
+	background-image: url(../../javascript/ribbon/images/cut_16.png)
+		!important;
+}
+
+.add-icon {
+	background-image: url(../../javascript/ribbon/images/add.png) !important;
+}
+
+.add2-icon {
+	background-image: url(../../javascript/ribbon/images/add2.png)
+		!important;
+}
+
+.book-icon {
+	background-image: url(../../javascript/ribbon/images/book.png)
+		!important;
+}
+
+.pencil-icon {
+	background-image: url(../../javascript/ribbon/images/pencil.png)
+		!important;
+}
+
+.branch1-icon {
+	background-image: url(../../javascript/ribbon/images/branch1.png)
+		!important;
+}
+
+.branch2-icon {
+	background-image: url(../../javascript/ribbon/images/branch2.png)
+		!important;
+}
+
+.t1-icon {
+	background-image: url(../../javascript/ribbon/images/table1.png)
+		!important;
+}
+
+.t2-icon {
+	background-image: url(../../javascript/ribbon/images/table2.png)
+		!important;
+}
+
+.t3-icon {
+	background-image: url(../../javascript/ribbon/images/table3.png)
+		!important;
+}
+
+.db1-icon {
+	background-image: url(../../javascript/ribbon/images/t1.png) !important;
+}
+
+.db2-icon {
+	background-image: url(../../javascript/ribbon/images/t2.png) !important;
+}
+
+.spy-icon {
+	background-image: url(../../javascript/ribbon/images/spy.png) !important;
+}
+
+.jar-icon {
+	background-image: url(../../javascript/ribbon/images/jar.png) !important;
+}
+</style>
+
 </head>
 <body>
 </body>
-<script  type="text/javascript" src="../../javascript/adapter/ext/ext-base.js"></script>
-<script  type="text/javascript" src="../../javascript/ext-all.js"></script>
-<script type="text/javascript" src="../../javascript/examples/ux/iframe.js"></script>
-  <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridSorter.js"></script>
-        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridColumnResizer.js"></script>
-        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridNodeUI.js"></script>
-        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridLoader.js"></script>
+<script type="text/javascript"
+	src="../../javascript/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="../../javascript/ext-all.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/iframe.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/treegrid/TreeGridSorter.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/treegrid/TreeGridColumnResizer.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/treegrid/TreeGridNodeUI.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/treegrid/TreeGridLoader.js"></script>
 
-        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGridColumns.js"></script>
-        <script type="text/javascript" src="../../javascript/examples/ux/treegrid/TreeGrid.js"></script>
-<script type="text/javascript" src="../../javascript/examples/ux/Ext.ux.TabCloseMenu/Ext.ux.TabCloseMenu.js"></script>
-<script type="text/javascript" src="../../javascript/examples/ux/TabScrollerMenu.js"></script>
-<script type="text/javascript" src="../../javascript/ribbon/Ext.ux.Ribbon.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/treegrid/TreeGridColumns.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/treegrid/TreeGrid.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/Ext.ux.TabCloseMenu/Ext.ux.TabCloseMenu.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/TabScrollerMenu.js"></script>
+<script type="text/javascript"
+	src="../../javascript/ribbon/Ext.ux.Ribbon.js"></script>
 <?php require_once("../../shared/setting.php"); ?>
-<script  type="text/javascript">
+<script type="text/javascript">
 
 	// used Dreamweaver for easy javascript viewing.
 
@@ -100,32 +173,102 @@ echo $_SESSION[$theme];
 						['Pepermint','../../javascript/resources/css/xtheme-peppermint.css'],
 						['Ubuntu','../../javascript/resources/css/xtheme-human.css']]
 		});
-		<?php 	$str=null;
-					if($q->vendor=='normal' || $q->vendor=='mysql') {
-						$sql="SELECT * FROM `language`";
-					} else if ($q->vendor=='microsoft') {
-						$sql="SELECT * FROM [language]";
-					} else if ($q->vendor=='oracle') {
-						$sql="SELECT * FROM \"language\" ";
-					}
+		
 
-					$result=$q->fast($sql);
-					$data = $q->activeRecord($result);
-
-					foreach($data as $row) {
-
-								$str.="[\"".$row['languageDesc']."\",\"".$row['languageId']."\"],";
-
-					}
-			$str=substr($str,0,-1);
-		?>
-		var language_selecter = new Ext.data.SimpleStore({
-			fields : ['language','languageId'],
-			data: [
-						<?php echo  $str; ?>
-					]
+		var themeProxy = new Ext.data.HttpProxy({
+			url : "../controller/themeController.php?",
+			method : "GET",
+			success : function(response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
+					// jsonResponse.message);
+					// //uncommen for testing
+					// purpose
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel,
+							jsonResponse.message);
+				}
+			},
+			failure : function(response, options) {
+				Ext.MessageBox.alert(systemErrorLabel,
+						escape(response.Status) + ":"
+								+ escape(response.statusText));
+			}
+		});
+		var themeReader = new Ext.data.JsonReader({
+			totalProperty : "total",
+			successProperty : "success",
+			messageProperty : "message",
+			idProperty : "themeId"
+		});
+		var themeStore = new Ext.data.JsonStore({
+			proxy : themeProxy,
+			reader : themeReader,
+			autoLoad : true,
+			autoDestroy : true,
+			baseParams : {
+				method : 'read',
+				field : 'staffId',
+				leafId : leafId
+			},
+			root : 'theme',
+			fields : [ {
+				name : "themeId",
+				type : "int"
+			}, {
+				name : "themeName",
+				type : "string"
+			} ,{
+				name :"themePath",
+				type:"string"
+			}]
 		});
 
+		var languageProxy = new Ext.data.HttpProxy({
+			url : "../controller/languageController.php?",
+			method : "GET",
+			success : function(response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
+					// jsonResponse.message);
+					// //uncommen for testing
+					// purpose
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel,
+							jsonResponse.message);
+				}
+			},
+			failure : function(response, options) {
+				Ext.MessageBox.alert(systemErrorLabel,
+						escape(response.Status) + ":"
+								+ escape(response.statusText));
+			}
+		});
+		var languageReader = new Ext.data.JsonReader({
+			totalProperty : "total",
+			successProperty : "success",
+			messageProperty : "message",
+			idProperty : "languageId"
+		});
+		var languageStore = new Ext.data.JsonStore({
+			proxy : languageProxy,
+			reader : languageReader,
+			autoLoad : true,
+			autoDestroy : true,
+			baseParams : {
+				method : 'read',
+				field : 'languageId',
+				leafId : leafId
+			},
+			root : 'language',
+			fields : [ {
+				name : "languageId",
+				type : "int"
+			}, {
+				name : "languageDesc",
+				type : "string"
+			} ]
+		});
 		var leafUserProxy = new Ext.data.HttpProxy({
         url: "../controller/leafUserController.php",
         method: 'POST',
@@ -224,47 +367,45 @@ echo $_SESSION[$theme];
         	return tab;
     	}
 
-    	var tree = new Ext.ux.tree.TreeGrid({
-            title: 'Core Team Projects',
-            width: 550,
+    	var tree = new Ext.tree.TreePanel({
+    	    
+    	    useArrows: true,
+    	    autoScroll: true,
+    	    animate: true,
+    	    enableDD: true,
+    	    containerScroll: true,
+    	    border: false,
+    	    // auto create TreeLoader
+    	    dataUrl: '../controller/treeController.php',
+	
+    	    root: {
+    	        nodeType: 'async',
+    	        text: 'Ext JS',
+    	        draggable: false,
+    	        id: 'module'
+    	    }
+    	});
 
 
-			listeners :{
-				click:function(node,e){
-					alert('i can get the data and click it '+node.attributes.task);
-					AddCenterTabIF('testing go','/idcmsCore/basic/view/religion.php');
-				}
-			},
-            columns:[{
-                header: 'Task',
-                dataIndex: 'task',
-                width: 230
-            },{
-                header: 'Duration',
-                width: 200,
-                dataIndex: 'duration',
-                align: 'center',
-                sortType: 'asFloat',
-                tpl: new Ext.XTemplate('{duration:this.formatHours}', {
-                    formatHours: function(v) {
-                        if(v < 1) {
-                            return Math.round(v * 60) + ' mins';
-                        } else if (Math.floor(v) !== v) {
-                            var min = v - Math.floor(v);
-                            return Math.floor(v) + 'h ' + Math.round(min * 60) + 'm';
-                        } else {
-                            return v + ' hour' + (v === 1 ? '' : 's');
-                        }
-                    }
-                })
-            },{
-                header: 'Assigned To',
-                width: 250,
-                dataIndex: 'user'
-            }],
 
-            dataUrl: 'treegrid-data.json'
-        });
+var treeJS = new Ext.tree.TreePanel( {
+animate:true,
+enableDD:false,
+singleExpand: true,
+loader: new Ext.tree.TreeLoader({
+	dataUrl:"../controller/treeController.php",
+}), // Note: no dataurl, register a TreeLoader to make use of createNode()
+lines:false,
+expanded:false,
+root: new Ext.tree.AsyncTreeNode({
+draggable:false,
+id:'source'
+}),
+rootVisible:false
+});
+//treeJs.expand();
+    	
+	    
 		var clock =new Ext.Toolbar.TextItem('');
 		new Ext.Viewport({
 			id			: 'screenPage',
@@ -278,7 +419,7 @@ echo $_SESSION[$theme];
 										xtype: 'box',
 										html:'IDCMS Core System',
 										cls: 'header',
-										height: 30,
+										height: 30
 									},{
 										xtype:'panel',
                 						height:30,
@@ -379,7 +520,7 @@ echo $_SESSION[$theme];
 
 				maxSize		: 400,
 				collapsible	: true,
-				items :[tree]
+				items :[treeJS]
 		},{
 				region		: 	'center',
 				layout		:	'border',
@@ -415,7 +556,8 @@ echo $_SESSION[$theme];
 			disabled : true
 	   },'-',clock]
 			  }], listeners: {
-            render: {
+/*
+		            render: {
                 fn: function(){
 
 
@@ -431,7 +573,7 @@ echo $_SESSION[$theme];
 				    });
                 },
                 delay: 100
-            }
+            } */
         }
     });
 });

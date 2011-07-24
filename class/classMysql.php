@@ -597,10 +597,14 @@ class vendor
 		if ($result) {
 			if(mysqli_num_rows($result)) {
 				$this->countRecord = mysqli_num_rows($result);
+			} else {
+				$this->countRecord =0;
 			}
 		} else {
 			if(mysqli_num_rows($this->result)){
 				$this->countRecord = mysqli_num_rows($this->result);
+			} else {
+				$this->countRecord=0;
 			}
 		}
 		return ($this->countRecord);

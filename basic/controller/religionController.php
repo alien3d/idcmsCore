@@ -80,9 +80,15 @@ class religionClass extends configClass
 		$this->q->log        = $this->log;
 
 		$this->model         = new religionModel();
-		$this->model->vendor = $this->vendor;
+		$$this->model->setVendor($this->getVendor());
 		$this->model->execute();
+
 		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->setStaffId($this->getStaffId());
+		$this->documentTrail->setLanguageId($this->getLanguageId());
+		$this->documentTrail->setLeafId($this->getLeafId());
+		$this->documentTrail->execute();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
