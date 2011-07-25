@@ -393,7 +393,7 @@ animate:true,
 enableDD:false,
 singleExpand: true,
 loader: new Ext.tree.TreeLoader({
-	dataUrl:"../controller/treeController.php",
+	dataUrl:"../controller/treeController.php"
 }), // Note: no dataurl, register a TreeLoader to make use of createNode()
 lines:false,
 expanded:false,
@@ -556,7 +556,7 @@ rootVisible:false
 			disabled : true
 	   },'-',clock]
 			  }], listeners: {
-/*
+
 		            render: {
                 fn: function(){
 
@@ -573,7 +573,7 @@ rootVisible:false
 				    });
                 },
                 delay: 100
-            } */
+            } 
         }
     });
 });
