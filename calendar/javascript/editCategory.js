@@ -21,7 +21,7 @@ Ext.onReady(function(){
     	});
 
 		var staffByProxy = new Ext.data.HttpProxy({
-			url : "../controller/departmentController.php?",
+			url : "../controller/editCategoryController.php?",
 			method : "GET",
 			success : function(response, options) {
 				jsonResponse = Ext.decode(response.responseText);

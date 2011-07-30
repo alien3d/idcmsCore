@@ -802,8 +802,7 @@ Ext
 										formPanel.getForm().reset();
 									}
 								}, {
-									text : listButtonLabel,
-									type : 'button',
+									text : gridButtonLabel, type : 'button',
 									iconCls : 'table',
 									handler : function() {
 										if (win) {

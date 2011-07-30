@@ -590,8 +590,7 @@ Ext
 																+ record
 																		.get('documentId');
 													} else {
-														alert("testing for error"
-																+ i)
+														alert("testing for error"+ i);
 													}
 													if (isAdmin == 1) {
 														sub_url = sub_url
@@ -904,8 +903,7 @@ Ext
 										formPanel.getForm().reset();
 									}
 								}, {
-									text : listButtonLabel,
-									type : 'button',
+									text : gridButtonLabel, type : 'button',
 									iconCls : 'table',
 									handler : function() {
 										if (win) {

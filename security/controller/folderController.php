@@ -140,7 +140,7 @@ class folderClass extends  configClass {
 			$sql="
 			INSERT INTO `folder`
 					(
-						`tabId`,							`iconId`,
+						`moduleId`,							`iconId`,
 						`folderSequence`,					`folderCode`,					
 						`folderPath`,						`folderNote`,
 						`isDefault`,						`isNew`,
@@ -151,7 +151,7 @@ class folderClass extends  configClass {
 					)
 			VALUES
 					(
-						\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
+						\"".$this->model->getModuleId()."\",						\"".$this->model->getIconId()."\",
 						\"".$this->model->getFolderSequence()."\", 				\"".$this->model->getFolderCode()."\",
 						\"".$this->model->getfolderPath()."\"	,				\"".$this->model->getfolderNote()."\",
 						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
@@ -166,7 +166,7 @@ class folderClass extends  configClass {
 			$sql="
 			INSERT INTO [folder]
 					(
-						[tabId],							[iconId],
+						[moduleId],							[iconId],
 						[folderSequence],					[folderCode],					
 						[folderPath],						[folderNote],
 						[isDefault],						[isNew],
@@ -177,7 +177,7 @@ class folderClass extends  configClass {
 				)
 			VALUES
 				(
-						\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
+						\"".$this->model->getModuleId()."\",						\"".$this->model->getIconId()."\",
 						\"".$this->model->getFolderSequence()."\", 				\"".$this->model->getFolderCode()."\",
 						\"".$this->model->getfolderPath()."\"	,				\"".$this->model->getfolderNote()."\",
 						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
@@ -191,7 +191,7 @@ class folderClass extends  configClass {
 			$sql="
 			INSERT INTO 	\"folder\"
 						(
-							\"tabId\",							\"iconId\",
+							\"moduleId\",							\"iconId\",
 							\"folderSequence\",					\"folderCode\",					
 							\"folderPath\",						\"folderNote\",
 							\"isDefault\",						\"isNew\",
@@ -200,7 +200,7 @@ class folderClass extends  configClass {
 							\"isApproved\",						\"By\",
 							\"Time\"
 				VALUES	(
-							\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
+							\"".$this->model->getModuleId()."\",						\"".$this->model->getIconId()."\",
 							\"".$this->model->getFolderSequence()."\", 				\"".$this->model->getFolderCode()."\",
 							\"".$this->model->getfolderPath()."\"	,				\"".$this->model->getfolderNote()."\",
 							\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
@@ -370,11 +370,11 @@ class folderClass extends  configClass {
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
-				$this->auditFilter = "	 1 ";
+				$this->auditFilter = "	1= 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	or 1 ";
+				$this->auditFilter = "	1= 1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = " or 1 ";
+				$this->auditFilter = " 1= 1 ";
 			}
 		}
 		//UTF8
@@ -390,11 +390,11 @@ class folderClass extends  configClass {
 			$sql="
 			SELECT 		*
 			FROM 		`folder`
-			JOIN 		`tab`
-			ON			`tab`.`tabId` = `folder`.`tabId`
+			JOIN 		`module`
+			ON			`module`.`moduleId` = `folder`.`moduleId`
 			LEFT JOIN	`icon`
 			ON			`folder`.`iconId`=`icon`.`iconId`
-			WHERE		`tab`.`isActive`	=	1
+			WHERE		`module`.`isActive`	=	1
 			AND			`folder`.`isActive`		=	1";
 			if($this->model->getFolderId('','single')) {
 				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getFolderId('','single')."\"";
@@ -404,11 +404,11 @@ class folderClass extends  configClass {
 			SELECT 		*
 			FROM 		[folder]
 			JOIN		[folderTranslate]
-			JOIN 		[tab]
-			ON			[tab].[tabId] = [folder].[tabId]
+			JOIN 		[module]
+			ON			[module].[moduleId] = [folder].[moduleId]
 			LEFT JOIN	[icon]
 			ON			[folder].[iconId]=[icon].[iconId]
-			WHERE		[tab].[isActive]	=	1
+			WHERE		[module].[isActive]	=	1
 			AND			[folder].[isActive]		=	1";
 			if($this->model->getFolderId('','single')) {
 				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getFolderId('','single')."\"";
@@ -417,11 +417,11 @@ class folderClass extends  configClass {
 			$sql	=	"
 			SELECT 		*
 			FROM 		\"folder\"
-			JOIN 		\"tab\"
-			ON			\"tab\".\"tabId\" = \"folder\".\"tabId\"
+			JOIN 		\"module\"
+			ON			\"module\".\"moduleId\" = \"folder\".\"moduleId\"
 			LEFT JOIN	\"icon\"
 			USING(\"iconId\")
-			WHERE		\"tab\".\"isActive\"=1
+			WHERE		\"module\".\"isActive\"=1
 			AND			\"folder\".\"isActive\"=1";
 			if($this->model->getFolderId('','single')) {
 				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getFolderId('','single')."\"";
@@ -432,12 +432,12 @@ class folderClass extends  configClass {
 		 *  E.g  $filterArray=array('`leaf`.`leafId`');
 		 *  @variables $filterArray;
 		 */
-		$filterArray =array('tabId','tabTranslateId','folderId','folderTranslateId');
+		$filterArray =array('moduleId','moduleTranslateId','folderId','folderTranslateId');
 		/**
 		 *	filter table
 		 * @variables $tableArray
 		 */
-		$tableArray = array('tab','tabTranslate','folder','folderTranslate');
+		$tableArray = array('module','moduleTranslate','folder','folderTranslate');
 
 	 if ($this->getFieldQuery()) {
 	 	if ($this->getVendor() == self::mysql) {
@@ -509,7 +509,7 @@ class folderClass extends  configClass {
 								FROM 		[folder]
 
 								JOIN 		[tab]
-								ON			[tab].[tabId` = `folder`.`tabId`
+								ON			[tab].[moduleId` = `folder`.`moduleId`
 
 								LEFT JOIN	[icon]
 								ON			[folder].[iconId]=[icon].[iconId]
@@ -541,10 +541,10 @@ class folderClass extends  configClass {
 									JOIN		\"folderTranslate\"
 									ON			\"folder\".\"folderId\"	=\"folderTranslate\".\"folderId\"
 									JOIN 		\"tab\"
-									ON			\"tab\".\"tabId\" = \"folder\".\"tabId\"
+									ON			\"tab\".\"moduleId\" = \"folder\".\"moduleId\"
 									JOIN		\"tabTranslate\"
-									ON			\"tab\".\"tabId\"=	\"tabTranslate\".\"tabId\"
-									AND			\"tabTranslate\".\"tabId\" =\"folder\".\"tabId\"
+									ON			\"tab\".\"moduleId\"=	\"tabTranslate\".\"moduleId\"
+									AND			\"tabTranslate\".\"moduleId\" =\"folder\".\"moduleId\"
 									LEFT JOIN	\"icon\"
 									ON			\"folder\".\"iconId\"=\"icon\".\"iconId\"
 									WHERE		\"tab\".\"isActive\"=1
@@ -627,7 +627,7 @@ class folderClass extends  configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE 	`folder`
-					SET 	`tabId`				=	\"".$this->model->getTabId()."\",
+					SET 	`moduleId`				=	\"".$this->model->getModuleId()."\",
 							`folderNote`		=	\"".$this->model->getfolderNote()."\",
 							`folderSequence`	=	\"".$this->model->getfolderSequence()."\",
 							`folderCode`		=	\"".$this->model->getfolderCode()."\",
@@ -646,7 +646,7 @@ class folderClass extends  configClass {
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[folder]
-					SET 	[tabId]		=	\"".$this->model->getTabId()."\",
+					SET 	[moduleId]		=	\"".$this->model->getModuleId()."\",
 							[folderNote]		=	\"".$this->model->getfolderNote()."\",
 							[folderSequence]	=	\"".$this->model->getfolderSequence()."\",
 							[folderPath]		=	\"".$this->model->getfolderPath()."\",
@@ -663,7 +663,7 @@ class folderClass extends  configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	\"folder\"
-					SET 	\"tabId\"		=	\"".$this->model->getTabId()."\",
+					SET 	\"moduleId\"		=	\"".$this->model->getModuleId()."\",
 							\"folderNote\"		=	\"".$this->model->getfolderNote()."\",
 							\"folderSequence\"	=	\"".$this->model->getfolderSequence()."\",
 							\"folderPath\"		=	\"".$this->model->getfolderPath()."\",
@@ -755,238 +755,11 @@ class folderClass extends  configClass {
 
 	}
 
-	/**
-	 *  Read Record From tabTranslate Table
-	 **/
-	function translateRead() {
-		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
-			/**
-			 *	UTF 8
-			 **/
-			$sql	=	"SET NAMES \"utf8\"";
-			$this->q->fast($sql);
-
-		}
-		if( $this->q->vendor='mysql'){
-			$sql="
-			SELECT	*
-			FROM 	`folderTranslate`
-			JOIN 	`language`
-			USING (`languageId`)
-			WHERE	`folderTranslate`.`folderId`=\"".$this->model->getFolderId()."\"";
-		} else if ($this->getVendor()==self::mssql){
-			$sql="
-			SELECT	*
-			FROM 	[tabTranslate]
-			JOIN 	[language]
-			ON 		[folderTranslate].[languageId] =[language].[languageId]
-			WHERE	[folderTranslate].[folderId]=\"".$this->model->getFolderId()."\"";
-		} else if ($this->q->vendor=='oralce'){
-			$sql="
-			SELECT	*
-			FROM 	\"folderTranslate\"
-			JOIN 	\"language\"
-			USING (\"languageId\")
-			WHERE	\"folderTranslate\".\"folderId\"=\"".$this->model->getFolderId()."\"";
-		}
-		$this->q->read($sql);
-		$total =$this->q->numberRows();
-		$items = array();
-		while ($row = $this->q->fetchAssoc()){
-			$items[]= $row;
-		}
-		echo json_encode(
-		array(
-						'success'	=>	'true',
-						'total' 	=>	$total,
-       					'data' 		=> 	$items
-		));
-		exit();
-
-	}
-
-	/**
-	 * Update tab Translation in tabTranslate Table
-	 */
-	public function translateUpdate(){
-		header('Content-Type','application/json; charset=utf-8');
-
-		$this->q->commit();
-		if($this->getVendor() == self::mysql){
-			$sql="
-		UPDATE	`folderTranslate`
-		SET		`folderTranslate` 	=	\"".$this->strict($_POST['folderTranslate'],'string')."\"
-		WHERE 	`folderTranslateId`	=	\"".$this->strict($_POST['folderTranslateId'],'numeric')."\"";
-		} else if ($this->getVendor()==self::mssql){
-			$sql="
-		UPDATE	[folderTranslate]
-		SET		[folderTranslate] 	=	\"".$this->strict($_POST['folderTranslate'],'string')."\"
-		WHERE 	[folderTranslateId]	=	\"".$this->strict($_POST['folderTranslateId'],'numeric')."\"";
-		} else if ($this->getVendor()==self::oracle){
-			$sql="
-		UPDATE	\"folderTranslate\"
-		SET		\"folderTranslate\" 		=	\"".$this->strict($_POST['folderTranslate'],'string')."\"
-		WHERE 	\"folderTranslateId\"	=	\"".$this->strict($_POST['folderTranslateId'],'numeric')."\"";
-		}
-		$this->q->update($sql);
-		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-			exit();
-		}
-
-		$this->q->commit();
-		echo json_encode(array("success"=>true,"message"=>"Record Update"));
-		exit();
-	}
-	/*
-	 * Create Translation Folder Note to the folderTranslate Table
-	*/
-	function translateMe() {
-		header('Content-Type','application/json; charset=utf-8');
-		$this->q->start();
-
-		$sql="
-		SELECT	*
-		FROM 	`folder`
-		WHERE 	`folderId`	=	\"".$this->folderId."\"";
-		$resultDefault= $this->q->fast($sql);
-		if($this->q->numberRows($resultDefault) > 0 ) {
-			$rowDefault = $this->q->fetch_array($resultDefault);
-			$value 		= $rowDefault['folderNote'];
-		}
-		if($this->getVendor() == self::mysql) {
-			$sql="
-			SELECT	*
-			FROM 	`language`";
-		} else if ($this->getVendor()==self::mssql) {
-			$sql="
-			SELECT 	*
-			FROM 	[language] ";
-		} else if ($this->getVendor()==self::oracle) {
-			$sql="
-			SELECT 	*
-			FROM 	\"language\" ";
-		}
-		$result= $this->q->fast($sql);
-		while ($row = $this->q->fetchAssoc($result)) {
-			$languageId 	= 	$row['languageId'];
-			$languageCode	= 	$row['languageCode'];
-			$to 		  	=	$languageCode;
-			$googleTranslate = $this->security->changeLanguage($from="en",$to,$value);
-			if($this->getVendor() == self::mysql) {
-				$sql="
-				SELECT	*
-				FROM 	`folderTranslate`
-				WHERE 	`folderId`			=	\"".$this->folderId."\"
-				AND 	`languageId`		=	\"".$languageId."\"";
-			} else if ($this->getVendor()==self::mssql) {
-				$sql="
-				SELECT 	*
-				FROM 	[folderTranslate]
-				WHERE 	[folderId]			=	\"".$this->folderId."\"
-				AND 	[languageId]		=	\"".$languageId."\"";
-			}  else if ($this->getVendor()==self::oracle) {
-				$sql="
-				SELECT 	*
-				FROM 	\"folderTranslate\"
-				WHERE 	\"folderId\"		=	\"".$this->folderId."\"
-				AND 	\"languageId\"		=	\"".$languageId."\"";
-			}
-			$resultfolderTranslate = $this->q->fast($sql);
-			if($this->q->numberRows($resultfolderTranslate) >  0 ) {
-				if($this->q->vendor=='normal'  ||$this->getVendor() == self::mysql) {
-					$sql="
-					UPDATE 	`folderTranslate`
-					SET 	`folderTranslate`		=	\"".$googleTranslate."\"
-					WHERE 	`folderId`				=	\"".$this->folderId."\"
-					AND 	`languageId`			=	\"".$languageId."\"";
-				} else if ($this->getVendor()==self::mssql) {
-					$sql="
-					UPDATE 	[folderTranslate]
-					SET 	[folderTranslate]		=	\"".$googleTranslate."\"
-					WHERE 	[folderId]				=	\"".$this->folderId."\"
-					AND 	[languageId]			=	\"".$languageId."\"";
-				} else if ($this->getVendor()==self::oracle) {
-					$sql="
-					UPDATE 	\"folderTranslate\"
-					SET 	\"folderTranslate\"		=	\"".$googleTranslate."\"
-					WHERE 	\"folderId\"			=	\"".$this->folderId."\"
-					AND 	\"languageId\"			=	\"".$languageId."\"";
-				}
-				$this->q->update($sql);
-				if($this->q->redirect=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-					exit();
-
-				}
-			} else {
-				if($this->q->vendor=='normal'  ||$this->getVendor() == self::mysql) {
-					$sql="
-					INSERT INTO `folderTranslate`
-							(
-								`folderId`,
-								`languageId`,
-								`folderTranslate`
-							)
-					VALUES
-						(
-							\"".$folderId."\",
-							\"".$languageId."\",
-							\"".$googleTranslate."\"
-						)";
-				} else if ($this->getVendor()==self::mssql) {
-					$sql="
-					INSERT INTO [folderTranslate]
-							(
-								[folderId],
-								[languageId],
-								[folderTranslate]
-							)
-					VALUES
-							(
-								\"".$folderId."\",
-								\"".$languageId."\",
-								\"".$googleTranslate."\"
-						)";
-				} else if ($this->getVendor()==self::oracle) {
-					$sql="
-					INSERT INTO \"folderTranslate\"
-							(
-								\"folderId\",
-								\"languageId\",
-								\"folderTranslate\"
-							)
-					VALUES
-							(
-								\"".$folderId."\",
-								\"".$languageId."\",
-								\"".$googleTranslate."\"
-							)";
-				}
-				$this->q->create($sql);
-				if($this->q->redirect=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-					exit();
-
-				}
-			}
-		}
-		$this->q->commit();
-		echo json_encode(
-		array(
-							  	"success"	=>	"true",
-								"message"	=>	"Translation Complete"
-		));
-		exit();
-
-
-	}
-	/**
-	 * Enter description here ...
-	 */
-	function tab(){
-		return $this->security->tab();
+	
+	
+	
+	function module(){
+		return $this->security->module();
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
@@ -1162,8 +935,8 @@ if(isset($_GET['method'])) {
 
 			$folderObject->staff();
 		}
-		if($_GET['field']=='tabId'){
-			$folderObject->tab();
+		if($_GET['field']=='moduleId'){
+			$folderObject->module();
 		}
 
 	}

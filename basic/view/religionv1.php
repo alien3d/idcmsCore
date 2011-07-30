@@ -27,9 +27,7 @@ include('../../Connections/main.php');	?>
 if($_SESSION[$theme]) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
 
-<?php } 
-echo print_r($_SESSION);
-?>
+<?php }  ?>
 </head>
 <style>
 x-grid3-row-alt {
@@ -72,5 +70,5 @@ x-grid3-row-alt {
 <script type="text/javascript"
 	src="../../javascript/examples/ux/RowEditor.js"></script>
 <script  type="text/javascript"
-	src="../javascript/religion.js"></script>
+	src="../javascript/religionv1.js"></script>
 </html>

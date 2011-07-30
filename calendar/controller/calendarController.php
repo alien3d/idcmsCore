@@ -12,7 +12,7 @@ require_once("../model/calendarModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class calendarsClass extends  configClass {
+class calendarClass extends  configClass {
 	/*
 	 * Connection to the database
 	 * @var string $excel
@@ -90,29 +90,7 @@ class calendarsClass extends  configClass {
 
 
 
-	/**
-	 * Read calendar
-	 */
-	public function read() 				{
-
-		//header('Content-type: application/json');
-		$sql	=	"
-				SELECT	`calendarColorId`,
-				        `calendartitle`
-				FROM 	`calendarColor`
-				JOIN    `calendar`
-				USING   (`calendarColorId`)
-				WHERE 	`staffId` = \"".$this->staffId."\"";
-		$this->q->read($sql);
-		$this->total	= $this->q->numberRows();
-		$items =array();
-
-		while($row  = 	$this->q->fetchAssoc()) {
-			$items[] =$row;
-		}
-		echo json_encode(array('calendars' => $items
-		));
-	}
+	
 	/* (non-PHPdoc)
 	 * @see config::create()
 	 */
@@ -225,7 +203,7 @@ class calendarsClass extends  configClass {
 	function excel(){}
 }
 
-$calendarsObject  	= 	new calendarsClass();
+$calendarObject  	= 	new calendarClass();
 
 
 if(isset($_POST['method'])){
@@ -236,24 +214,24 @@ if(isset($_POST['method'])){
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
-		$calendarsObject->setLeafId($_POST['leafId']);
+		$calendarObject->setLeafId($_POST['leafId']);
 	}
 	if(isset($_POST['isAdmin'])){
-		$calendarsObject->setIsAdmin($_POST['isAdmin']);
+		$calendarObject->setIsAdmin($_POST['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$calendarsObject -> execute();
+	$calendarObject -> execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 
 	if($_POST['method']=='update') {
-		$calendarsObject ->update();
+		$calendarObject ->update();
 	}
 	if($_POST['method']=='delete') {
-		$calendarsObject ->delete();
+		$calendarObject ->delete();
 	}
 
 
@@ -266,27 +244,27 @@ if(isset($_GET['method'])){
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_GET['leafId'])){
-		$calendarsObject->setLeafId($_GET['leafId']);
+		$calendarObject->setLeafId($_GET['leafId']);
 	}
 	if(isset($_GET['isAdmin'])) {
-		$calendarsObject->setIsAdmin($_GET['isAdmin']);
+		$calendarObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$calendarsObject -> execute();
+	$calendarObject -> execute();
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='calendar'){
-			$calendarsObject ->read_calendar();
+			$calendarObject ->read_calendar();
 		}
 		if($_GET['mode']=='event'){
-			$calendarsObject ->read_event();
+			$calendarObject ->read_event();
 		}
 
 	}
 	if(isset($_GET['field'])){
 		if($_GET['field']=='staffId'){
-			$calendarsObject->staff();
+			$calendarObject->staff();
 		}
 	}
 }

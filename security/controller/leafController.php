@@ -17,7 +17,7 @@ require_once("../model/leafModel.php");
 class leafClass extends configClass
 {
 	/**
-	 * Connection to the database
+	 * Connection to the damodulease
 	 * @var string $excel
 	 */
 	public $q;
@@ -62,7 +62,7 @@ class leafClass extends configClass
 	 */
 	public $auditColumn;
 	/**
-	 * Duplicate Testing either the key of table same or have been created.
+	 * Duplicate Testing either the key of modulele same or have been created.
 	 * @var boolean $duplicateTest;
 	 */
 	public $duplicateTest;
@@ -120,7 +120,7 @@ class leafClass extends configClass
 			$sql = "
 			INSERT INTO `leaf`
 					(
-						`tabId`,						`folderId`,
+						`moduleId`,						`folderId`,
 						`leafNote`,							`leafSequence`,
 						`leafcode`,							`leafFilename`,
 						`iconId`,							`isDefault`,
@@ -131,7 +131,7 @@ class leafClass extends configClass
 					)
 			VALUES
 					(
-						\"" . $this->model->getTabId() . "\",			\"" . $this->model->getFolderId() . "\",
+						\"" . $this->model->getmoduleId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
 						\"" . $this->model->getIconId(). "\",						\"" . $this->model->getIsNew('','single') . "\",
@@ -144,7 +144,7 @@ class leafClass extends configClass
 			$sql = "
 			INSERT INTO [leaf]
 					(
-						[tabId],					[folderId],
+						[moduleId],					[folderId],
 						[leafNote],						[leafSequence],
 						[leafCode],						[leafFilename],
 						[iconId],						[isDefault],
@@ -154,7 +154,7 @@ class leafClass extends configClass
 						[By],							[Time]
 			VALUES
 					(
-						\"" . $this->model->getTabId() . "\",			\"" . $this->model->getFolderId() . "\",
+						\"" . $this->model->getmoduleId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
 						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft('','single') . "\",
@@ -166,7 +166,7 @@ class leafClass extends configClass
 			$sql = "
 			INSERT INTO \"leaf\"
 					(
-						\"tabId\",					\"folderId\",
+						\"moduleId\",					\"folderId\",
 						\"leafNote\",						\"leafSequence\",
 						\"leafCode\",						\"leafFilename\",
 						\"iconId\",							\"isDefault\",
@@ -177,7 +177,7 @@ class leafClass extends configClass
 					)
 			VALUES
 					(
-						\"" . $this->model->getTabId() . "\",			\"" . $this->model->getFolderId() . "\",
+						\"" . $this->model->getmoduleId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
 						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft('','single') . "\",
@@ -314,18 +314,24 @@ class leafClass extends configClass
 			$sql = "
 			SELECT		*
 			FROM 		`leaf`
+			JOIN		`leafTranslate`
+			USING		(`leafId`)
 			JOIN		`folder`
-			USING		(`folderId`,`tabId`)
-			JOIN		`tab`
-			USING		(`tabId`)
+			USING		(`folderId`,`moduleId`)
+			JOIN		`module`
+			USING		(`moduleId`)
 			LEFT JOIN	`icon`
 			ON			`leaf`.`iconId`=`icon`.`iconId`
 			WHERE 		".$this->auditFilter."
 			AND			`folder`.`isActive`		=	1
-			AND			`tab`.`isActive`	= 1 ";
+			AND			`module`.`isActive`	= 1 ";
 			if ($this->model->getLeafId('','single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLeafId('','single') ."\"";
+				$sql .= " AND `".$this->model->getmoduleleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLeafId('','single') ."\"";
 			}
+			if($_POST['filterLanguage']==true){
+				$sql.=" AND `leafTranslate`.`languageId`='".$this->model->getLanguageId()."'";
+			}
+			
 
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -333,32 +339,32 @@ class leafClass extends configClass
 			FROM 		[leaf]
 			JOIN		[folder]
 			ON			[leaf].[folderId] 			=	[folder].[folderId]
-			AND			[leaf].[tabId] 		=	[folder].[tabId]
-			JOIN		[tab]
-			ON			[leaf].[tabId] 		=	[tab].[tabId]
+			AND			[leaf].[moduleId] 		=	[folder].[moduleId]
+			JOIN		[module]
+			ON			[leaf].[moduleId] 		=	[module].[moduleId]
 			LEFT JOIN	[icon]
 			ON			[leaf].[iconId]				=	[icon].[iconId]
 			WHERE 		[folder].[isActive]			=	1
-			AND			[tab].[isActive]		=	1
+			AND			[module].[isActive]		=	1
 			AND			[leaf].[isActive]			=	1 ";
 			if ($this->model->getLeafId('','single')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getLeafId('','single') ."\"";
+				$sql .= " AND [".$this->model->getmoduleleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getLeafId('','single') ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT		*
 			FROM 		\"leaf`
 			JOIN		\"folder`
-			USING		(\"folderId\",\"tabId\")
-			JOIN		\"tab\"
-			USING		(\"tabId\")
+			USING		(\"folderId\",\"moduleId\")
+			JOIN		\"module\"
+			USING		(\"moduleId\")
 			LEFT JOIN	\"icon\"
 			ON			\"leaf\".\"iconId\"=\"icon\".\"iconId\"
 			WHERE 		\"folder\".\"isActive\"		=	1
-			AND			\"tab\".`isActive\"	=	1
+			AND			\"module\".`isActive\"	=	1
 			AND			\"leaf\".`isActive\"		=	1 ";
 			if ($this->model->getLeafId('','single')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getLeafId('','single') ."\"";
+				$sql .= " AND \"".$this->model->getmoduleleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getLeafId('','single') ."\"";
 			}
 		}
 		/**
@@ -370,12 +376,12 @@ class leafClass extends configClass
             "`leaf`.`leafFilename`"
             );
             /**
-             *	filter table
-             * @variables $tableArray
+             *	filter modulele
+             * @variables $moduleleArray
              */
-            $tableArray  = array(
-            'tab',
-            'tabTranslate',
+            $moduleleArray  = array(
+            'module',
+            'moduleTranslate',
             'folder',
             'folderTranslate',
             'leaf',
@@ -383,12 +389,12 @@ class leafClass extends configClass
             );
             if ($this->getfieldQuery()) {
             	if ($this->getVendor() == self::mysql) {
-            		$sql .= $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $this->q->quickSearch($moduleleArray, $filterArray);
             	} else if ($this->getVendor() == self::mssql) {
-            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$tempSql = $this->q->quickSearch($moduleleArray, $filterArray);
             		$sql .= $tempSql;
             	} else if ($this->getVendor() == self::oracle) {
-            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$tempSql = $this->q->quickSearch($moduleleArray, $filterArray);
             		$sql .= $tempSql;
             	}
             }
@@ -457,7 +463,7 @@ class leafClass extends configClass
 							AND 			" . ($_POST['start'] + $_POST['limit'] - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
-            			 *  Oracle using derived table also
+            			 *  Oracle using derived modulele also
             			 */
             			$sql = "
 						SELECT *
@@ -515,12 +521,12 @@ class leafClass extends configClass
             }
 	}
 	/**
-	 * Return tab Identification
+	 * Return module Identification
 	 */
-	function tab()
+	function module()
 	{
 
-		return $this->security->tab();
+		return $this->security->module();
 	}
 	/**
 	 * Return Folder Identification
@@ -835,9 +841,9 @@ if (isset($_GET['method'])) {
 		if ($_GET['field'] == 'staffId') {
 			$leafObject->staff();
 		}
-		if ($_GET['field'] == 'tabId') {
+		if ($_GET['field'] == 'moduleId') {
 
-			$leafObject->tab();
+			$leafObject->module();
 		}
 		if ($_GET['field'] == 'folderId') {
 			$leafObject->folder();
@@ -847,7 +853,7 @@ if (isset($_GET['method'])) {
 		}
 	}
 /*
-	* Update Status of The Table. Admin Level Only
+	* Update Status of The modulele. Admin Level Only
 	*/
 	if($_GET['method']=='updateStatus'){
 		$leafObject->updateStatus();

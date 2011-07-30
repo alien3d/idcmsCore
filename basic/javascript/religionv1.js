@@ -272,6 +272,31 @@ Ext
 					table : "religion"
 				} ]
 			});
+			
+			var filtersList = new Ext.ux.grid.GridFilters({
+				encode : encode,
+				local : false,
+				filters : [ {
+					type : "string",
+					dataIndex : "religionDesc",
+					column : "religionDesc",
+					table : "religion"
+				}, {
+					type : "list",
+					dataIndex : "By",
+					column : "By",
+					table : "religion",
+					labelField : "staffName",
+					store : staffByStore,
+					phpMode : true
+				}, {
+					type : "date",
+					dataIndex : "Time",
+					column : "Time",
+					table : "religion"
+				} ]
+			});
+
 
 			var columnModel = [
 					new Ext.grid.RowNumberer(),
@@ -298,7 +323,8 @@ Ext
 														method : "read",
 														mode : "update",
 														religionId : record.data.religionId,
-														leafId : leafId
+														leafId : leafId,
+														isAdmin :isAdmin
 													},
 													success : function(form,
 															action) {
@@ -345,7 +371,8 @@ Ext
 																		params : {
 																			method : "delete",
 																			religionId : record.data.religionId,
-																			leafId : leafId
+																			leafId : leafId,
+																			isAdmin :isAdmin
 																		},
 																		success : function(
 																				response,
@@ -530,7 +557,8 @@ Ext
 														method : "read",
 														mode : "update",
 														religionId : record.data.religionId,
-														leafId : leafId
+														leafId : leafId,
+														isAdmin :isAdmin
 													},
 													success : function(form,
 															action) {
@@ -574,7 +602,8 @@ Ext
 																		params : {
 																			method : "delete",
 																			religionId : record.data.religionId,
-																			leafId : leafId
+																			leafId : leafId,
+																			isAdmin :isAdmin
 																		},
 																		success : function(
 																				response,

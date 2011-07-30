@@ -10,9 +10,9 @@
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class tabModel extends validationClass{
+class moduleModel extends validationClass{
 
-	private $tabId;
+	private $moduleId;
 	private $iconId;
 	private $tabSequence;
 	private $tabCode;
@@ -30,21 +30,21 @@ class tabModel extends validationClass{
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['tabId'])){
-			$this->setTabId($this->strict($_POST['tabId'],'numeric'));
+		if(isset($_POST['moduleId'])){
+			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'));
 		}
 		if(isset($_POST['iconId'])){
 			$this->setIconId ($this->strict($_POST['iconId'],'numeric'));
 		}
 
-		if(isset($_POST['tabSequence'])){
-			$this->setTabSequence($this->strict($_POST['tabSequence'],'numeric'));
+		if(isset($_POST['moduleSequence'])){
+			$this->setModuleSequence($this->strict($_POST['moduleSequence'],'numeric'));
 		}
-		if(isset($_POST['tabCode'])){
-			$this->setTabCode($this->strict($_POST['tabCode'],'numeric'));
+		if(isset($_POST['moduleCode'])){
+			$this->setModuleCode($this->strict($_POST['moduleCode'],'numeric'));
 		}
-		if(isset($_POST['tabNote'])){
-			$this->setTabNote($this->strict($_POST['tabNote'],'memo'));
+		if(isset($_POST['moduleNote'])){
+			$this->setModuleNote($this->strict($_POST['moduleNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
 			$this->setBy($_SESSION['staffId']);
@@ -229,22 +229,28 @@ class tabModel extends validationClass{
 		}
 	}
 
-	public function setTabId($value,$key=NULL,$type=NULL) {
+	/**
+	 * Enter description here ...
+	 * @param unknown_type $value
+	 * @param unknown_type $key
+	 * @param unknown_type $type
+	 */
+	public function setModuleId($value,$key=NULL,$type=NULL) {
 		if($type=='single'){
-			$this->tabId = $value;
+			$this->moduleId = $value;
 		} else if ($type=='array'){
-			$this->tabId[$key]=$value;
+			$this->moduleId[$key]=$value;
 		}
 	}
 	/**
-	 * Return istabId Value
-	 * @return integer tabId
+	 * Return module Value
+	 * @return integer moduleId
 	 */
-	public function getTabId($key=NULL,$type=NULL) {
+	public function getModuleId($key=NULL,$type=NULL) {
 		if($type=='single'){
-			return $this->tabId;
+			return $this->moduleId;
 		} else if ($type=='array'){
-			return $this->tabId[$key];
+			return $this->moduleId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();
@@ -258,54 +264,54 @@ class tabModel extends validationClass{
 		$this->iconId = $value;
 	}
 	/**
-	 * Return icon for Tab
-	 * @return numeric icon for tab
+	 * Return icon for module
+	 * @return numeric icon for module
 	 */
 	public function getIconId() {
 
 		return $this->iconId;
 	}
 	/**
-	 * Set Tab Sequence Value
+	 * Set Module Sequence Value
 	 * @param numeric $value
 	 */
-	public function setTabSequence($value) {
-		$this->tabSequence = $value;
+	public function setModuleSequence($value) {
+		$this->moduleSequence = $value;
 	}
 	/**
-	 * Return tab Sequence Value
-	 * @return string tab sequence
+	 * Return module Sequence Value
+	 * @return numeric module sequence
 	 */
-	public function getTabSequence() {
-		return $this->tabSequence;
+	public function getModuleSequence() {
+		return $this->moduleSequence;
 	}
 	/**
-	 * Set Tab Note Value
-	 * @param string $value Tab Note
+	 * Set Module Code Value
+	 * @param string $value 
 	 */
-	public function setTabNote($value) {
-		$this->tabNote = $value;
+	public function setModuleCode($value) {
+		$this->moduleCode = $value;
 	}
 	/**
-	 * Return Tab Note
-	 * @return string Tab Note
+	 * Return Module Code
+	 * @return string Module Code
 	 */
-	public function getTabNote() {
-		return $this->tabNote;
+	public function getModuleCode() {
+		return $this->moduleCode;
 	}
 /**
-	 * Set Tab Code Value
-	 * @param string $value Tab Note
+	 * Set Module Note Value
+	 * @param string $value module Note
 	 */
-	public function setTabCode($value) {
-		$this->tabCode = $value;
+	public function setModuleNote($value) {
+		$this->moduleNote = $value;
 	}
 	/**
-	 * Return Tab Note
-	 * @return string Tab Note
+	 * Return module Note
+	 * @return string module Note
 	 */
-	public function getTabCode() {
-		return $this->tabCode;
+	public function getModuleNote() {
+		return $this->moduleNote;
 	}
 
 }

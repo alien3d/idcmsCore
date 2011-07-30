@@ -29,7 +29,7 @@ Ext.onReady(function(){
 				baseParams : {
 					method : "read",
 					page : "master",
-					leafId_temp : leafId_temp
+					leafIdTemp : leafIdTemp
 				},
 				success : function(response, options) {
 					var jsonResponse = Ext.decode(response.responseText);
@@ -52,13 +52,13 @@ Ext.onReady(function(){
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
-				fields : [{	name		:	'accordionId',
+				fields : [{	name		:	'moduleId',
                             type        :   'int'					
 					    },{
 					 	    name		:	'leafGroupAccessId',
                             type        :   'int'							
 						},{
-							name		:	'accordionNote',
+							name		:	'moduleNote',
                             type        :   'string'							
 						},{ 
 						 	name		:	'groupId',
@@ -158,8 +158,8 @@ Ext.onReady(function(){
 	// the id for administrator to see  in any problem.User cannot see this page information
 	var columnModel = new Ext.grid.ColumnModel({
 		columns:[{ 
-			header		:	accordionNameLabel,
-			dataIndex	:	'accordionNote'
+			header		:	moduleNameLabel,
+			dataIndex	:	'moduleNote'
 		},{
 			header		:	groupNameLabel,
 			dataIndex	:	'groupNote'
@@ -178,7 +178,7 @@ Ext.onReady(function(){
 	var groupReader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
 	var groupStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=groupId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=groupId&leafIdTemp='+leafIdTemp,
 					method:'GET'
 				}),
 			reader		:	groupReader,
@@ -186,20 +186,20 @@ Ext.onReady(function(){
 	});
 	groupStore.load();
 	
-	var accordionReader	= new Ext.data.JsonReader({ root:'accordion' }, [ 'accordionId', 'accordionNote']);
-	var accordionStore 		= 	new Ext.data.Store({
+	var moduleReader	= new Ext.data.JsonReader({ root:'module' }, [ 'moduleId', 'moduleNote']);
+	var moduleStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=accordionId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=moduleId&leafIdTemp='+leafIdTemp,
 					method:'GET'
 				}),
-			reader		:	accordionReader,
+			reader		:	moduleReader,
 			remoteSort	:	false 
 	});
 	
 	var folderReader	= new Ext.data.JsonReader({ root:'folder' }, [ 'folderId', 'folderNote']);
 	var folderStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&leafIdTemp='+leafIdTemp,
 					method:'GET'
 				}),
 			reader		:	folderReader,
@@ -209,7 +209,7 @@ Ext.onReady(function(){
 	var staffReader	= new Ext.data.JsonReader({ root:'staff' }, [ 'staffId', 'staffName']);
 	var staffStore 		= 	new Ext.data.Store({
 			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=staffId&leafId_temp='+leafId_temp,
+        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=staffId&leafIdTemp='+leafIdTemp,
 					method:'GET'
 				}),
 			reader		:	staffReader,
@@ -242,17 +242,17 @@ Ext.onReady(function(){
     	},
     	listeners		:	{
 			'select'	:	function (combo,record,index) {
-				Ext.getCmp('accordionId').reset();
-				accordion_store.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/leafGroupAccessController.php?method=read&field=accordionId&groupId=' + Ext.getCmp('groupId').getValue()+'&leafId_temp='+leafId_temp,
+				Ext.getCmp('moduleId').reset();
+				module_store.proxy= new Ext.data.HttpProxy({
+					url			: 	'../controller/leafGroupAccessController.php?method=read&field=moduleId&groupId=' + Ext.getCmp('groupId').getValue()+'&leafIdTemp='+leafIdTemp,
 					method		:	'GET'
 				});
 
-				accordion_store.reload();
-				Ext.getCmp('accordionId').enable();
+				module_store.reload();
+				Ext.getCmp('moduleId').enable();
 				Ext.getCmp('gridPanel').enable();
 				leafGroupAccessStore.proxy= new Ext.data.HttpProxy({
-					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&leafId_temp='+leafId_temp,
+					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&leafIdTemp='+leafIdTemp,
 					method	:	'GET'					
 				});
 				leafGroupAccessStore.reload();
@@ -260,17 +260,17 @@ Ext.onReady(function(){
 		}
 	});
 	
-	var	accordionId  		=	new Ext.ux.form.ComboBoxMatch({ 
+	var	moduleId  		=	new Ext.ux.form.ComboBoxMatch({ 
 		labelAlign			:	'left',
-		fieldLabel			:   accordionIdLabel,
-		name				:  	'accordionId',
-		hiddenName			:	'accordionId',
-		valueField			:  	'accordionId',
-		id					:	'accordion_fake',
-		displayField		:	'accordionNote',
+		fieldLabel			:   moduleIdLabel,
+		name				:  	'moduleId',
+		hiddenName			:	'moduleId',
+		valueField			:  	'moduleId',
+		id					:	'module_fake',
+		displayField		:	'moduleNote',
 		typeAhead			: 	false,
     	triggerAction		: 	'all',
-		store				: 	accordionStore,
+		store				: 	moduleStore,
 		anchor      		:	'95%',
 		selectOnFocus		:	true,
 		mode				:	'local',
@@ -289,7 +289,7 @@ Ext.onReady(function(){
 			'select'	:	function (combo,record,index) {
 				Ext.getCmp('folderId').reset();
 				folder_store.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&groupId='+Ext.getCmp('groupId').getValue()+'&accordionId=' +Ext.getCmp('accordionId').getValue()+'&leafId_temp='+leafId_temp,
+					url			: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&groupId='+Ext.getCmp('groupId').getValue()+'&moduleId=' +Ext.getCmp('moduleId').getValue()+'&leafIdTemp='+leafIdTemp,
 					method		:	'GET'
 				});
 
@@ -297,7 +297,7 @@ Ext.onReady(function(){
 				Ext.getCmp('folderId').enable();
 				Ext.getCmp('gridPanel').enable();
 				leafGroupAccessStore.proxy= new Ext.data.HttpProxy({
-					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&accordionId='+Ext.getCmp('accordionId').getValue()+'&leafId_temp='+leafId_temp,
+					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&moduleId='+Ext.getCmp('moduleId').getValue()+'&leafIdTemp='+leafIdTemp,
 					method	:	'GET'					
 				});
 				leafGroupAccessStore.reload();
@@ -307,7 +307,7 @@ Ext.onReady(function(){
 	
 	var	folderId  		=	new Ext.ux.form.ComboBoxMatch({ 
 		labelAlign			:	'left',
-		fieldLabel			:   accordionIdLabel,
+		fieldLabel			:   moduleIdLabel,
 		name				:  	'folderId',
 		hiddenName			:	'folderId',
 		valueField			:  	'folderId',
@@ -338,7 +338,7 @@ Ext.onReady(function(){
 					Ext.getCmp('gridPanel').enable();
 				}
 				leafGroupAccessStore.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&accordionId='+Ext.getCmp('accordionId').getValue()+'&folderId=' + Ext.getCmp('folderId').getValue()+'&leafId_temp='+leafId_temp,
+					url			: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&moduleId='+Ext.getCmp('moduleId').getValue()+'&folderId=' + Ext.getCmp('folderId').getValue()+'&leafIdTemp='+leafIdTemp,
 					method:'GET'					
 				});
 					leafGroupAccessStore.reload();
@@ -346,7 +346,7 @@ Ext.onReady(function(){
 			}
 		}
 	});
-	// compare with the user leaf.Here Accordian and Folder just filtering mode
+	// compare with the user leaf.Here Module and Folder just filtering mode
 	var formPanel = new Ext.Panel({
 		region	:	'north',
 		layout	:	'form',
@@ -354,7 +354,7 @@ Ext.onReady(function(){
 		title	:	'leaf Form',
 		iconCls	:	'application_form',
 		autoScroll 	:true, 
-		items	:	[groupId,accordionId,folderId]							  
+		items	:	[groupId,moduleId,folderId]							  
 	});
 	var  access_array = ['leafCreateAccessValue','leafReadAccessValue','leafUpdateAccessValue','leafDeleteAccessValue','leafPrintAccessValue','leafPostAccessValue'];
 	var grid = new Ext.grid.GridPanel({ 
@@ -414,7 +414,7 @@ Ext.onReady(function(){
 					var url;
 					var count = leafGroupAccessStore.getCount();
 
-					url ='../controller/leafGroupAccessController.php?method=update&leafId_temp='+leafId_temp;
+					url ='../controller/leafGroupAccessController.php?method=update&leafIdTemp='+leafIdTemp;
 					var sub_url;
 					sub_url='';
 					 for (i = count - 1; i >= 0; i--) {

@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once("../../class/classAbstract.php");
-require_once("../../class/classDocumentTrail.php");
+
 
 /**
  * this is main setting files.This sample template file for master record
@@ -146,12 +146,7 @@ class treeClass extends configClass
 		$this->q->log = $this->log;
 
 			
-		$this->documentTrail = new documentTrailClass();
-		$this->documentTrail->setVendor($this->getVendor());
-		$this->documentTrail->setStaffId($this->getStaffId());
-		$this->documentTrail->setLanguageId($this->getLanguageId());
-		$this->documentTrail->setLeafId($this->getLeafId());
-		$this->documentTrail->execute();
+		
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -220,7 +215,7 @@ class treeClass extends configClass
       AND      \"moduleTranslate\".\"languageId\"=\"" . $_SESSION['languageId'] . "\"
       ORDER BY   \"module\".\"moduleSequence\"   ";
 		}
-		
+
 		$resultModule = $this->q->fast($sqlModule);
 		$totalModule = $this->q->numberRows($resultModule, $sqlModule);
 
@@ -287,9 +282,9 @@ class treeClass extends configClass
 				$resultFolder = $this->q->fast($sqlFolder);
 				$totalFolder = $this->q->numberRows($resultFolder, $sqlFolder);
 				$counterFolder=0;
-			
+					
 				if ($totalFolder > 0) {
-						echo "\"children\":[";
+					echo "\"children\":[";
 					while ($rowFolder = $this->q->fetchArray($resultFolder)) {
 						$folderTranslate = $rowFolder['folderTranslate'];
 						$iconName = $rowFolder['iconName'];
@@ -363,7 +358,9 @@ class treeClass extends configClass
 								echo " {
 											
 											\"text\" : \"" . $leafTranslate . "\", 
-							                \"leaf\" : true, 
+							                \"folderPath\"	:\"" . $folderPath . "\",
+							                \"leafFilename\":\"" . $leafFilename . "\",
+											\"leaf\" : true, 
 							                \"iconCls\" : \"" . $iconName . "\"
 							            } ";
 								if ($counterLeaf != $totalLeaf) {
@@ -373,12 +370,12 @@ class treeClass extends configClass
 								}
 							}
 						} else {
-							
+
 							echo "  \"children\" :  {
                 									\"text\":\"No Leaf Identify\",
                 									\"leaf\":true 
               				}";
-              				
+
 						}
 							
 						if ($counterFolder != $totalFolder) {
@@ -387,15 +384,15 @@ class treeClass extends configClass
 							echo "}]";
 						}
 					}
-						
+
 				} else {
-					
-					echo "	\"children\" : { 
+
+					echo "	\"children\" : {
 										\"leaf\":true,	
 										\"text\":\"No Folder Identify\",
 										\"expanded\":true
 									}";
-					
+
 				}
 				if($counterModule != $totalModule) {
 					echo "},";
@@ -405,7 +402,7 @@ class treeClass extends configClass
 			}
 
 		} else {
-			echo " \"children\" :{ 
+			echo " \"children\" :{
 									\"leaf\":true,
 									\"text\":\"No module Identify\",
 									\"expanded\":true 
@@ -422,91 +419,38 @@ class treeClass extends configClass
 	 (non-PHPdoc) * @see config::delete() */ function delete()
 	{
 	}
-	function
-	tab()
-	{
-	}
-	function themeId()
-	{
-	}
-	function languageId()
-	{
-	}
+
 	/*
 	 (non-PHPdoc) * @see config::excel() */ function excel()
 	{
 	}
 }
-/** *
- Declare object **/ $treeObject = new treeClass();
-if (isset($_SESSION['staffId'])) {
-	$treeObject->staffId = $_SESSION['staffId'];
-}
-if (isset($_SESSION['vendor'])) {
-	$treeObject->vendor = $_SESSION['vendor'];
-}
+
+$treeObject = new treeClass();
+
 /** * crud
- -create,read,update,delete **/ if (isset($_POST['method']))
+ -create,read,update,delete **/
+if (isset($_POST['method']))
 {
 	/* *
-	 Initilize Value before load in the loader */ if (isset($_POST['leafId']))
+	 Initilize Value before load in the loader */
+	if (isset($_POST['leafId']))
 	{
-		$treeObject->leafId = $_POST['leafId'];
+		$treeObject->setLeafId($_POST['leafId']);
 	}
-	if (isset($_POST['mainId'])) {
-		$treeObject->mainId = $_POST['mainId'];
-	}
-	if (isset($_POST['filter'])) {
-		$treeObject->filter = $_POST['filter'];
-	}
-	if (isset($_POST['query'])) {
-		$treeObject->quickFilter = $_POST['query'];
-	}
-	if (isset($_POST['start'])) {
-		$treeObject->start = $_POST['start'];
-	}
-	if (isset($_POST['perPage'])) {
-		$treeObject->limit = $_POST['perPage'];
-	}
-	if (isset($_POST['order'])) {
-		$treeObject->order = $_POST['order'];
-	}
-	if (isset($_POST['sortField'])) {
-		$treeObject->sortField = $_POST['sortField'];
-	}
+
 	if (isset($_POST['isAdmin'])) {
-		$treeObject->isAdmin = $_POST['isAdmin'];
+		$treeObject->setIsAdmin($_POST['isAdmin']);
 	}
-	if (isset($_POST['auditColumn'])) {
-		$treeObject->auditColumn = $_POST['auditColumn'];
-	}
+
 	/* * Load the dynamic value */
 	$treeObject->execute();
 	if ($_POST['method'] == 'read') {
 		$treeObject->read();
 	}
-	if ($_POST['method'] == 'save') {
-		$treeObject->update();
-	}
+
 }
-if (isset($_GET['method'])) {
-	/* * Initilize
-	 Value before load in the loader */ if (isset($_GET['leafId']))
-	{
-		$treeObject->leafId = $_GET['leafId'];
-	}
-	/* * Load the dynamic value */
-	$treeObject->execute();
-	if (isset($_GET['field'])) {
-		if ($_GET['field'] == 'staffId') {
-			$treeObject->staffId();
-		}
-		if ($_GET['field'] == 'languageId') {
-			$treeObject->languageId();
-		}
-	}
-}
-$treeObject->execute();
-$treeObject->read();
+
+
 ?>
 

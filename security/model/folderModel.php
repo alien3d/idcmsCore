@@ -15,7 +15,7 @@ class folderModel extends validationClass{
 
 	// table field
 	private $folderId;
-	private $tabId;
+	private $moduleId;
 	private $iconId;
 	private $folderSequence;
 	private $folderCode;
@@ -37,8 +37,8 @@ class folderModel extends validationClass{
 		if(isset($_POST['folderId'])){
 			$this->setFolderId($this->strict($_POST['folderId'],'numeric'),'','single');
 		}
-		if(isset($_POST['tabId'])){
-			$this->setTabId($this->strict($_POST['tabId'],'numeric'));
+		if(isset($_POST['moduleId'])){
+			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'));
 		}
 		if(isset($_POST['iconId'])){
 			$this->setIconId($this->strict($_POST['iconId'],'numeric'));
@@ -268,23 +268,21 @@ class folderModel extends validationClass{
 		}
 	}
 /**
-	 * Set tab Identification
+	 * Set Module Identification
 	 * @param integer $value
-	 * @param integer $key  Array as value
-	 * @param enum   $type   1->string,2->array
 	 */
-	public function setTabId() {
+	public function setModuleId($value) {
 
-			$this->tabId = $value;
+			$this->moduleId = $value;
 
 	}
 	/**
-	 * Return tab Identication Value
+	 * Return Module Identication Value
 	 * @return integer folderId
 	 */
-	public function getTabId() {
+	public function getModuleId() {
 
-			return $this->tabId;
+			return $this->moduleId;
 
 	}
 /**

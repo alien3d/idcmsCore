@@ -6,7 +6,7 @@ require_once("../../document/model/documentModel.php");
 require_once("../../class/classSecurity.php");
 require_once("../model/moduleModel.php");
 /**
- * this is main setting files
+ * this is module  files
  * @name IDCMS
  * @version 2
  * @author hafizan
@@ -80,7 +80,7 @@ class moduleClass extends configClass
 		$this->q->staffId     = $this->getStaffId();
 		$this->q->fieldQuery     = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
-		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDamodulease(), $this->getPassword());
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 		$this->excel             = new PHPExcel();
 		$this->audit             = 0;
 		$this->log               = 1;
@@ -375,8 +375,8 @@ class moduleClass extends configClass
 					LEFT 	JOIN	`icon`
 					USING			(`iconId`)
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getmoduleId('','single')) {
-				$sql .= " AND `".$this->model->getmoduleleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getmoduleId('','single') . "\"";
+			if ($this->model->getModuleId('','single')) {
+				$sql .= " AND `".$this->model->getmoduleleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getModuleId('','single') . "\"";
 
 			}
 
@@ -404,8 +404,8 @@ class moduleClass extends configClass
 					LEFT 	JOIN	`icon`
 					ON		[iconId].[iconId] = [module].[iconId]
 					WHERE 	[module].[isActive] ='1'	";
-			if ($this->model->getmoduleId('','single')) {
-				$sql .= " AND [".$this->model->getmoduleleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getmoduleId('','single') . "\"";
+			if ($this->model->getModuleId('','single')) {
+				$sql .= " AND [".$this->model->getmoduleleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getModuleId('','single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -431,8 +431,8 @@ class moduleClass extends configClass
 					LEFT 	JOIN	\"icon\"
 					USING	(\"iconId\")
 					WHERE 	\"isActive\"='1'	";
-			if ($this->model->getmoduleId('','single')) {
-				$sql .= " AND \"".$this->model->getmoduleleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getmoduleId('','single') . "\"";
+			if ($this->model->getModuleId('','single')) {
+				$sql .= " AND \"".$this->model->getmoduleleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getModuleId('','single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -587,7 +587,7 @@ class moduleClass extends configClass
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getmoduleId('','single'))) {
+            if (!($this->model->getModuleId('','single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -601,7 +601,7 @@ class moduleClass extends configClass
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getmoduleId('','single')) {
+            if ($this->model->getModuleId('','single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -651,7 +651,7 @@ class moduleClass extends configClass
 					`isApproved`		=	\"" . $this->model->getIsApproved('','single') . "\",
 					`By`				=	\"" . $this->model->getBy() . "\",
 					`Time				=	" . $this->model->getTime() . "
-			WHERE 	`moduleId`				=	\"" . $this->model->getmoduleId('','single') . "\"";
+			WHERE 	`moduleId`				=	\"" . $this->model->getModuleId('','single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[module]
@@ -667,7 +667,7 @@ class moduleClass extends configClass
 					[isApproved]		=	\"".$this->model->getIsApproved('','single')."\",
 					[By]				=	\"".$this->model->getBy()."\",
 					[Time]				=	".$this->model->getTime()."
-			WHERE 	[moduleId]				=	\"" . $this->model->getmoduleId('','single') . "\"";
+			WHERE 	[moduleId]				=	\"" . $this->model->getModuleId('','single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"module\"
@@ -682,7 +682,7 @@ class moduleClass extends configClass
 					\"isApproved\"		=	\"" . $this->model->getIsApproved('','single') . "\",
 					\"By\"				=	\"" . $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
-			WHERE 	\"moduleId\"			=	\"" . $this->model->getmoduleId('','single') . "\"";
+			WHERE 	\"moduleId\"			=	\"" . $this->model->getModuleId('','single') . "\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -737,7 +737,7 @@ class moduleClass extends configClass
 					[isApproved]	=	\"".$this->model->getIsApproved('','single')."\",
 					[By]			=	\"".$this->model->getBy('','single')."\",
 					[Time]			=	".$this->model->getTime()."
-			WHERE 	[moduleId]			=	\"" . $this->model->getmoduleId('','single') . "\"";
+			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId('','single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"module\"
@@ -750,7 +750,7 @@ class moduleClass extends configClass
 					\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
 					\"By\"				=	\"".$this->model->getBy('','single')."\",
 					\"Time\"			=	".$this->model->getTime()."
-			WHERE 	\"moduleId\"			=	\"" . $this->model->getmoduleId('','single') . "\"";
+			WHERE 	\"moduleId\"			=	\"" . $this->model->getModuleId('','single') . "\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -951,14 +951,14 @@ if (isset($_GET['method'])) {
 		}
 	}
 	/*
-	* Update Status of The modulele. Admin Level Only
-	*/
+	 * Update Status of The modulele. Admin Level Only
+	 */
 	if($_GET['method']=='updateStatus'){
 		$moduleObject->updateStatus();
 	}
 	/*
-	*  Checking Any Duplication  Key
-	*/
+	 *  Checking Any Duplication  Key
+	 */
 	if (isset($_GET['moduleCode'])) {
 		if (strlen($_GET['moduleCode']) > 0) {
 			$moduleObject->duplicate();

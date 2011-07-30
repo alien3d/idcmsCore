@@ -109,14 +109,14 @@ class leafAccessClass extends  configClass {
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		// by default if add new group will add access to accordion and leaf.
+		// by default if add new group will add access to module and leaf.
 		if($this->getVendor() == self::mysql) {
 			$sql="
-				SELECT	`leaf`.`accordionId`,
+				SELECT	`leaf`.`moduleId`,
 						`leaf`.`folderId`,
 						`folder`.`folderNote`,
 						`leaf`.`leafNote`,
-						`accordion`.`accordionNote`,
+						`module`.`moduleNote`,
 						`staff`.`staffName`,
 						`group`.`groupNote`,
 						`leafAccess`.`leafId`,
@@ -167,19 +167,19 @@ class leafAccessClass extends  configClass {
 				FROM 	`leafAccess`
 				JOIN	`leaf`
 				USING	(`leafId`)
-				JOIN	(`accordion`)
-				USING	(`accordionId`,`languageId`)
+				JOIN	(`module`)
+				USING	(`moduleId`,`languageId`)
 				JOIN	(`folder`)
 				USING	(`folderId`,`languageId`)
 				JOIN	`staff`
 				USING	(`staffId`,`languageId`)
 				JOIN	`group`
 				USING	(`groupId`,`languageId`)
-				WHERE 	`accordion`.`isActive` 	=	1
+				WHERE 	`module`.`isActive` 	=	1
 				AND		`folder`.`isActive` 	=	1
 				AND		`leaf`.`isActive`		=	1 ";
-			if($this->accordionId) {
-				$sql.=" AND `leaf`.`accordionId`=\"".$this->strict($this->accordionId,'numeric')."\"";
+			if($this->moduleId) {
+				$sql.=" AND `leaf`.`moduleId`=\"".$this->strict($this->moduleId,'numeric')."\"";
 			}
 			if($this->folderId) {
 				$sql.=" AND `leaf`.`folderId`=\"".$this->strict($this->folderId,'numeric')."\"";
@@ -189,11 +189,11 @@ class leafAccessClass extends  configClass {
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
-				SELECT	[leaf].[accordionId],
+				SELECT	[leaf].[moduleId],
 						[leaf].[folderId],
 						[folder].[folderNote],
 						[leaf].[leafNote],
-						[accordion].[accordionNote],
+						[module].[moduleNote],
 						[staff].[staffName],
 						[group].[groupNote],
 						[leafAccess].[leafId],
@@ -244,19 +244,19 @@ class leafAccessClass extends  configClass {
 				FROM 	[leafAccess]
 				JOIN	[leaf]
 				ON		[leafAccess].[leafId] = [leaf].[leafId]
-				JOIN	[accordion]
-				ON		[leaf].[accordionId]=[accordion].[accordionId]
+				JOIN	[module]
+				ON		[leaf].[moduleId]=[module].[moduleId]
 				JOIN	[folder]
 				ON		[folder].[folderId]=[leaf].[folderId]
 				JOIN	[staff]
 				ON		[leaf].[staffId]=[staff].[staffId]
 				JOIN	[group]
 				USING	[group].[groupId]=[leafAccess].[groupId]
-				WHERE 	[accordion].[isActive] 	=	1
+				WHERE 	[module].[isActive] 	=	1
 				AND		[folder].[isActive] 	=	1
 				AND		[leaf].[isActive]		=	1  ";
-			if($this->accordionId) {
-				$sql.=" AND [leaf].[accordionId]=\"".$this->strict($this->accordionId,'numeric')."\"";
+			if($this->moduleId) {
+				$sql.=" AND [leaf].[moduleId]=\"".$this->strict($this->moduleId,'numeric')."\"";
 			}
 			if($this->folderId) {
 				$sql.=" AND [leaf].[folderId]=\"".$this->strict($this->folderId,'numeric')."\"";
@@ -266,11 +266,11 @@ class leafAccessClass extends  configClass {
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-				SELECT	\"leaf\".\"accordionId\",
+				SELECT	\"leaf\".\"moduleId\",
 						\"leaf\".\"folderId\",
 						\"folder\".\"folderNote\",
 						\"leaf\".\"leafNote\",
-						\"accordion\".\"accordionNote\",
+						\"module\".\"moduleNote\",
 						\"staff\".\"staffName\",
 						\"group\".\"groupNote\",
 						\"leafAccess\".\"leafId\",
@@ -321,8 +321,8 @@ class leafAccessClass extends  configClass {
 				FROM 	\"leafAccess\"
 				JOIN	\"leaf\"
 				USING	(\"leafId\")
-				JOIN	(\"accordion\")
-				USING	(\"accordionId\",\"languageId\")
+				JOIN	(\"module\")
+				USING	(\"moduleId\",\"languageId\")
 				JOIN	(\"folder\")
 				USING	(\"folderId\",\"languageId\")
 				JOIN	\"staff\"
@@ -331,10 +331,10 @@ class leafAccessClass extends  configClass {
 				USING	(\"groupId\",\"languageId\")
 				WHERE 	\"leaf\".\"isActive\"=1
 				AND		\"folder\".\"isActive\"=1
-				AND		\"accordion\".\"isActive\"=1
+				AND		\"module\".\"isActive\"=1
 				AND		\"staff\".\"isActive\"=1";
-			if($this->accordionId) {
-				$sql.=" AND \"leaf\".\"accordionId\"=\"".$this->strict($this->accordionId,'numeric')."\"";
+			if($this->moduleId) {
+				$sql.=" AND \"leaf\".\"moduleId\"=\"".$this->strict($this->moduleId,'numeric')."\"";
 			}
 			if($this->folderId) {
 				$sql.=" AND \"leaf\".\"folderId\"=\"".$this->strict($this->folderId,'numeric')."\"";
@@ -369,10 +369,10 @@ class leafAccessClass extends  configClass {
 		}
 
 		while($row  = 	$this->q->fetchAssoc()) {
-			// select accordion access
+			// select module access
 
 			$items[]=$row;
-			// select accordion access
+			// select module access
 		}
 
 
@@ -395,8 +395,8 @@ class leafAccessClass extends  configClass {
 	/**
 	 * Enter description here ...
 	 */
-	function accordionId() {
-		return $this->security->accordionId();
+	function moduleId() {
+		return $this->security->moduleId();
 	}
 	/**
 	 * Enter description here ...
@@ -560,8 +560,8 @@ if(isset($_GET['method'])) {
 		if($_GET['field']=='groupId'){
 			$leafAccessObject -> group;
 		}
-		if($_GET['field']=='accordionId'){
-			$leafAccessObject -> accordion();
+		if($_GET['field']=='moduleId'){
+			$leafAccessObject -> module();
 		}
 		if($_GET['field']=='folderId'){
 			$leafAccessObject -> folder();

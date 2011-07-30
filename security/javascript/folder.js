@@ -71,10 +71,10 @@ Ext
 					name : 'folderSequence',
 					type : 'int'
 				}, {
-					name : 'tabId',
+					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'tabNote',
+					name : 'moduleNote',
 					type : 'string'
 				}, {
 					name : 'folderNote',
@@ -175,7 +175,7 @@ Ext
 			});
 
 			var staffByProxy = new Ext.data.HttpProxy({
-				url : "../controller/departmentController.php?",
+				url : "../controller/folderController.php?",
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
@@ -220,14 +220,13 @@ Ext
 				} ]
 			});
 
-			var tabProxy = new Ext.data.HttpProxy({
+			var moduleProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderController.php?",
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message); //uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message); //uncomment for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -242,31 +241,31 @@ Ext
 
 			});
 
-			var tabReader = new Ext.data.JsonReader({
+			var moduleReader = new Ext.data.JsonReader({
 
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
-				idProperty : "tabId"
+				idProperty : "moduleId"
 			});
 
-			var tabStore = new Ext.data.JsonStore({
-				proxy : tabProxy,
-				reader : tabReader,
+			var moduleStore = new Ext.data.JsonStore({
+				proxy : moduleProxy,
+				reader : moduleReader,
 				autoLoad : true,
 				autoDestroy : true,
 				baseParams : {
 					method : 'read',
-					field : 'tabId',
+					field : 'moduleId',
 					type : 1,
 					leafId : leafId
 				},
 				root : 'tab',
 				fields : [ {
-					name : "tabId",
+					name : "moduleId",
 					type : "int"
 				}, {
-					name : "tabNote",
+					name : "moduleNote",
 					type : "string"
 				} ]
 			});
@@ -279,10 +278,10 @@ Ext
 				filters : [ {
 					type : 'list',
 					dataIndex : 'tabNote',
-					column : 'tabId',
+					column : 'moduleId',
 					table : 'tab',
 					labelField : 'tabNote',
-					store : tabStore,
+					store : moduleStore,
 					phpMode : true
 				}, {
 					type : 'numeric',
@@ -886,17 +885,17 @@ Ext
 			// viewport just save information,items will do separate
 			// only load store when viewport is open
 
-			var tabId = new Ext.ux.form.ComboBoxMatch({
+			var moduleId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
-				fieldLabel : tabIdLabel,
-				name : 'tabId',
-				hiddenName : 'tabId',
-				valueField : 'tabId',
-				id : 'tab_fake',
-				displayField : 'tabNote',
+				fieldLabel : moduleIdLabel,
+				name : 'moduleId',
+				hiddenName : 'moduleId',
+				valueField : 'moduleId',
+				id : 'module_fake',
+				displayField : 'moduleNote',
 				typeAhead : false,
 				triggerAction : 'all',
-				store : tabStore,
+				store : moduleStore,
 				anchor : '95%',
 				selectOnFocus : true,
 				mode : 'local',
@@ -921,7 +920,7 @@ Ext
 								method : 'read',
 								field : 'sequence',
 								table : 'folder',
-								tabId : combo.value,
+								moduleId : combo.value,
 								leafId : leafId
 							},
 							success : function(response, options) {
@@ -1135,7 +1134,7 @@ Ext
 							title : leafNote,
 							bodyStyle : "padding:5px",
 							layout : 'form',
-							items : [ folderId, tabId, folderNote,
+							items : [ folderId, moduleId, folderNote,
 
 							folderSequence, folderPath, iconId, folderId ]
 						}, {

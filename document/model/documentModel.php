@@ -16,6 +16,9 @@ class documentModel extends validationClass{
 	private $documentId;
 	private $documentCategoryId;
 	private $leafId;
+	private $documentSequence;
+	private $documentCode;
+	private $documentNote;
 	private $documentTitle;
 	private $documentDesc;
 	private $documentPath;
@@ -43,6 +46,20 @@ class documentModel extends validationClass{
 		if(isset($_POST['leafId'])){
 			$this->setLeafId($this->strict($_POST['leafId'],'numeric'));
 		}
+
+
+		if(isset($_POST['documentSequence'])){
+			$this->setDocumentSequence($this->strict($_POST['docuementSequence'],'numeric'));
+		}
+		if(isset($_POST['documentCode'])){
+			$this->setDocumentCode($this->strict($_POST['docuementCode'],'memo'));
+		}
+
+		if(isset($_POST['documentNote'])){
+			$this->setDocumentNote($this->strict($_POST['docuementNote'],'memo'));
+		}
+
+
 		if(isset($_POST['documentTitle'])){
 			$this->setDocumentTitle($this->strict($_POST['docuementTitle'],'memo'));
 		}
@@ -222,6 +239,49 @@ class documentModel extends validationClass{
 	 */
 	public function getLeafId() {
 		return $this->leafId;
+	}
+	/**
+	 * Set Document Sequence Number Value
+	 * @param numeric $value
+	 */
+	public function setDocumentSequence($value) {
+		$this->documentSequence = $value;
+	}
+	/**
+	 * Return Document Sequence Number
+	 * @return numeric document Sequence Number
+	 */
+	public function getDocumentSequence() {
+		return $this->documentSequence;
+	}
+	/**
+	 * Set Document Code Value
+	 * @param string $value
+	 */
+	public function setDocumentCode($value) {
+		$this->documentCode = $value;
+	}
+	/**
+	 * Return Document Code
+	 * @return string Document Code
+	 */
+	public function getDocumentCode() {
+		return $this->documentCode;
+	}
+
+	/**
+	 * Set Document Note Value
+	 * @param string $value
+	 */
+	public function setDocumentNote($value) {
+		$this->documentNote = $value;
+	}
+	/**
+	 * Return Document Note
+	 * @return string document Note
+	 */
+	public function getDocumentNote() {
+		return $this->documentNote;
 	}
 	/**
 	 * Set Document Title Value

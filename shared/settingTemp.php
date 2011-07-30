@@ -16,6 +16,7 @@
 	*	 all label language
 	*/
 		if( $q->vendor==sharedx::mysql) {
+				// future
 		$sql="
 		SELECT 			`tableMapping`.`tableMappingColumnName`,
 						`tableMappingTranslate`.`tableMappingNativeLabel`
@@ -23,6 +24,12 @@
 		JOIN			`tableMappingTranslate`
 		USING			(`tableMappingId`)
 		WHERE 			`tableMappingTranslate`.`languageId`=\"".$_SESSION['languageId']."\"";
+		// temp
+		$sql="
+		SELECT 			`tableMapping`.`tableMappingColumnName`,
+						`tableMapping`.`tableMappingNativeLabel`
+		FROM 			`tableMapping`
+		WHERE 			`tableMapping`.`languageId`=\"".$_SESSION['languageId']."\"";
 		} else if ($q->vendor==sharedx::mssql) {
 		$sql="
 		SELECT 			[tableMapping].[tableMappingColumnName],
@@ -42,6 +49,7 @@
 	} else {
 
 	}
+
 	$result	=	$q->fast($sql);
 
 while ($row = $q->fetchAssoc($result)) {

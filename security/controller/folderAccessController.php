@@ -118,11 +118,11 @@ class folderAccessClass  extends configClass {
 			$this->q->fast($sql);
 
 		}
-		// by default if add new group will add access to accordion and folder.
+		// by default if add new group will add access to module and folder.
 		if($this->getVendor() == self::mysql) {
 			$sql="
-				SELECT	`accordion`.`accordionNote`,
-						`accordion`.`accordionId`,
+				SELECT	`module`.`moduleNote`,
+						`module`.`moduleId`,
 						`folder`.`folderId`,
 						`folder`.`folderNote`,
 						`group`.`groupId`,
@@ -139,22 +139,22 @@ class folderAccessClass  extends configClass {
 				USING 	(`folderId`)
 				JOIN 	`group`
 				USING 	(`groupId`)
-				JOIN 	`accordion`
-				USING	(`accordionId`)kjghghhhhhhhhhhhhhhhhhh
-				WHERE 	`accordion`.`isActive` =1
+				JOIN 	`module`
+				USING	(`moduleId`)kjghghhhhhhhhhhhhhhhhhh
+				WHERE 	`module`.`isActive` =1
 				AND		`folder`.`isActive`=1
 				AND		`group`.`isActive` =1";
 			if($this->groupId) {
 				$sql.=" AND `group`.`groupId`=\"".$this->strict($this->groupId,'numeric')."\"";
 			}
-			if($this->accordionId) {
-				$sql.=" AND `folder`.`accordionId`=\"".$this->strict($this->accordionId,'numeric')."\"";
+			if($this->moduleId) {
+				$sql.=" AND `folder`.`moduleId`=\"".$this->strict($this->moduleId,'numeric')."\"";
 			}
 
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
-				SELECT	[accordion].[accordionNote],
-						[accordion].[accordionId],
+				SELECT	[module].[moduleNote],
+						[module].[moduleId],
 						[folder].[folderId],
 						[folder].[folderNote],
 						[group].[groupId],
@@ -171,21 +171,21 @@ class folderAccessClass  extends configClass {
 				ON 		[folder].[folderId]=[folderAccess].[folderId]
 				JOIN 	[group]
 				ON 		[group].[groupId]=[folderAccess].[groupId]
-				JOIN 	[accordion]
-				ON		[folder].[accordionId]=[accordion].[accordionId]
+				JOIN 	[module]
+				ON		[folder].[moduleId]=[module].[moduleId]
 				WHERE 	[folder].[isActive]=1
 				AND		[group].[isActive]=1
-				AND		[accordion].[accordionId]=1";
+				AND		[module].[moduleId]=1";
 			if($this->groupId) {
 				$sql.=" AND [group].[groupId]=\"".$this->strict($this->groupId,'numeric')."\"";
 			}
-			if($this->accordionId) {
-				$sql.=" AND [folder].[accordionId]=\"".$this->strict($this->accordionId,'numeric')."\"";
+			if($this->moduleId) {
+				$sql.=" AND [folder].[moduleId]=\"".$this->strict($this->moduleId,'numeric')."\"";
 			}
 		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
-				SELECT	\"accordion\".\"accordionNote\",
-						\"accordion\".\"accordionId\",
+				SELECT	\"module\".\"moduleNote\",
+						\"module\".\"moduleId\",
 						\"folder\".\"folderId\",
 						\"folder\".\"folderNote\",
 						\"group\".\"groupId\",
@@ -202,16 +202,16 @@ class folderAccessClass  extends configClass {
 				USING 	(\"folderId\")
 				JOIN 	\"group\"
 				USING 	(\"groupId\")
-				JOIN 	\"accordion\"
-				USING	(\"accordionId\")
+				JOIN 	\"module\"
+				USING	(\"moduleId\")
 				WHERE 	\"folder\".\"isActive\"		=	1
-				AND		\"accordion\".`isActive\"	=	1
+				AND		\"module\".`isActive\"	=	1
 				AND		\"group\".`isActive\"		=	1";
 			if($this->groupId) {
 				$sql.=" AND \"group\".\"groupId\"=\"".$this->strict($this->groupId,'numeric')."\"";
 			}
-			if($this->accordionId) {
-				$sql.=" AND \"folder\".\"accordionId\"=\"".$this->strict($this->accordionId,'numeric')."\"";
+			if($this->moduleId) {
+				$sql.=" AND \"folder\".\"moduleId\"=\"".$this->strict($this->moduleId,'numeric')."\"";
 			}
 		}
 		//echo $sql;
@@ -252,10 +252,10 @@ class folderAccessClass  extends configClass {
 		}
 
 		while($row  = 	$this->q->fetchAssoc()) {
-			// select accordion access
+			// select module access
 
 			$items[]=$row;
-			// select accordion access
+			// select module access
 		}
 
 
@@ -337,8 +337,8 @@ class folderAccessClass  extends configClass {
 	/**
 	 * Enter description here ...
 	 */
-	function accordion() {
-		$this->security->accordion();
+	function module() {
+		$this->security->module();
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
@@ -447,8 +447,8 @@ if(isset($_GET['method'])){
 		if($_GET['field']=='groupId') {
 			$folderAccessObject->group();
 		}
-		if($_GET['field']=='accordionId'){
-			$folderAccessObject->accordion();
+		if($_GET['field']=='moduleId'){
+			$folderAccessObject->module();
 		}
 	}
 	/*

@@ -150,6 +150,7 @@ class eventModel extends validationClass{
 		$this->setIsActive(0,'','string');
 		$this->setIsDelete(0,'','string');
 		$this->setIsApproved(1,'','string');
+	}	
 	/**
 	 * Set Event Identification Value
 	 * @param integer $value

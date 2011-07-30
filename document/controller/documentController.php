@@ -131,74 +131,89 @@ class documentClass extends  configClass {
 
 		move_uploaded_file ($_FILES['docname']['tmp_name'],$this->path.$doc_ext);
 		if($this->getVendor()==self::mysql){
-		$sql = "
+			$sql = "
 		INSERT INTO `document` 
 				(
 				  	`documentCategoryId`,	`leafId`,
-				  	`documentTitle`,		`documentDesc`,
-					`documentPath`,			`documentFilename`,
-					`documentExtension`,	`isDefault`,
-					`isNew`,							`isDraft`,
-					`isUpdate`,							`isDelete`,
-					`isActive`,							`isApproved`,
-					`By`,								`Time`
+				  	`documentSequence`,		`documentCode`,
+				  	`documentNote`			`documentTitle`,		
+				  	`documentDesc`,			`documentPath`,			
+				  	`documentFilename`,		`documentExtension`,	
+				  	`isDefault`,			`isNew`,							
+				  	`isDraft`,				`isUpdate`,							
+				  	`isDelete`,				`isActive`,							
+				  	`isApproved`,			`By`,								
+				  	`Time`
 				)
 			VALUES
 				(
-						\"". $this->model->getDocumentCategoryTitle() . "\",			\"". $this->model->getDocumentCategoryDesc() . "\",
-						\"". $this->model->getDocumentCategorySequence() . "\",			\"". $this->model->getDocumentCategoryCode() . "\",
-						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
-						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+						\"". $this->model->getDocumentCategoryId() . "\",				\"". $this->model->getLeafId() . "\",
+						\"". $this->model->getDocumentSequence() . "\",					\"". $this->model->getDocumentCode() . "\",	
+						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
+						\"". $this->model->getDocumentDesc() . "\",						\"". $this->model->getDocumentPath() . "\",
+						\"". $this->model->getDocumentFilename() . "\",					\"". $this->model->getDocumentExtension() . "\",
+						\"". $this->model->getIsDefault('','single') . "\"				,\"". $this->model->getIsNew('','single') . "\",				
+						\"". $this->model->getIsDraft('','single') . "\",				\"". $this->model->getIsUpdate('','single') . "\",				
+						\"". $this->model->getIsDelete('','single') . "\",				\"". $this->model->getIsActive('','single') . "\",				
+						\"". $this->model->getIsApproved('','single') . "\",			\"". $this->model->getBy() . "\",						
+						" . $this->model->getTime() . "
 				);";
-				  
+
 		} else if ($this->getVendor()==self::mssql){
 			$sql = "
 		INSERT INTO `document` 
 				(
 				  	[documentCategoryId],	[leafId,
-				  	[documentTitle],		[documentDesc],
-					[documentPath],			[documentFilename],
-					[documentExtension],	[isDefault],
-					[isNew],							[isDraft],
-					[isUpdate],							[isDelete],
-					[isActive],							[isApproved],
-					[By],								[Time]
+				  	[documentSequence],		[documentCode],
+				  	[documentCode],			[documentTitle],		
+				  	[documentDesc],			[documentPath],			
+				  	[documentFilename],		[documentExtension],	
+				  	[isDefault],			[isNew],							
+				  	[isDraft],				[isUpdate],							
+				  	[isDelete],				[isActive],							
+				  	[isApproved],			[By],								
+				  	[Time]
 				)
 			VALUES
 				(
-						\"". $this->model->getDocumentCategoryTitle() . "\",			\"". $this->model->getDocumentCategoryDesc() . "\",
-						\"". $this->model->getDocumentCategorySequence() . "\",			\"". $this->model->getDocumentCategoryCode() . "\",
-						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
-						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+					\"". $this->model->getDocumentCategoryId() . "\",				\"". $this->model->getLeafId() . "\",
+						\"". $this->model->getDocumentSequence() . "\",					\"". $this->model->getDocumentCode() . "\",	
+						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
+						\"". $this->model->getDocumentDesc() . "\",						\"". $this->model->getDocumentPath() . "\",
+						\"". $this->model->getDocumentFilename() . "\",					\"". $this->model->getDocumentExtension() . "\",
+						\"". $this->model->getIsDefault('','single') . "\"				,\"". $this->model->getIsNew('','single') . "\",				
+						\"". $this->model->getIsDraft('','single') . "\",				\"". $this->model->getIsUpdate('','single') . "\",				
+						\"". $this->model->getIsDelete('','single') . "\",				\"". $this->model->getIsActive('','single') . "\",				
+						\"". $this->model->getIsApproved('','single') . "\",			\"". $this->model->getBy() . "\",						
+						" . $this->model->getTime() . "	
 				);";	
 		} else if ($this->getVendor()==self::oracle){
 			$sql = "
 		INSERT INTO `document` 
 				(
 				  	\"documentCategoryId\",	\"leafId\",
-				  	\"documentTitle\",		\"documentDesc\",
-					\"documentPath\",			\"documentFilename\",
-					\"documentExtension\",	\"isDefault\",
-					\"isNew\",							\"isDraft\",
-					\"isUpdate\",							\"isDelete\",
-					\"isActive\",							\"isApproved\",
-					\"By\",								\"Time\"
+				  	\"documentSequence\",	\"documentCode\",
+				  	\"documentNote\",		\"documentTitle\",		
+				  	\"documentDesc\",		\"documentPath\",			
+				  	\"documentFilename\",	\"documentExtension\",	
+				  	\"isDefault\",			\"isNew\",							
+				  	\"isDraft\",			\"isUpdate\",							
+				  	\"isDelete\",			\"isActive\",						
+				  	\"isApproved\",			\"By\",								
+				  	\"Time\"
 				)
 			VALUES
 				(
-						\"". $this->model->getDocumentCategoryTitle() . "\",			\"". $this->model->getDocumentCategoryDesc() . "\",
-						\"". $this->model->getDocumentCategorySequence() . "\",			\"". $this->model->getDocumentCategoryCode() . "\",
-						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
-						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+					\"". $this->model->getDocumentCategoryId() . "\",				\"". $this->model->getLeafId() . "\",
+						\"". $this->model->getDocumentSequence() . "\",					\"". $this->model->getDocumentCode() . "\",	
+						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
+						\"". $this->model->getDocumentDesc() . "\",						\"". $this->model->getDocumentPath() . "\",
+						\"". $this->model->getDocumentFilename() . "\",					\"". $this->model->getDocumentExtension() . "\",
+						\"". $this->model->getIsDefault('','single') . "\"				,\"". $this->model->getIsNew('','single') . "\",				
+						\"". $this->model->getIsDraft('','single') . "\",				\"". $this->model->getIsUpdate('','single') . "\",				
+						\"". $this->model->getIsDelete('','single') . "\",				\"". $this->model->getIsActive('','single') . "\",				
+						\"". $this->model->getIsApproved('','single') . "\",			\"". $this->model->getBy() . "\",						
+						" . $this->model->getTime() . "		
 				);";
 		}
 		$this->q->create($sql);
@@ -212,7 +227,7 @@ class documentClass extends  configClass {
 	 */
 	public function read() 				{
 
-	header('Content-Type', 'application/json; charset=utf-8');
+		header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
 			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	`document`.`isActive`		=	1	";
@@ -223,11 +238,11 @@ class documentClass extends  configClass {
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
-				$this->auditFilter = "	 1 ";
+				$this->auditFilter = "	1= 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	or 1 ";
+				$this->auditFilter = "	1= 1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = " or 1 ";
+				$this->auditFilter = " 1=  1 ";
 			}
 		}
 		//UTF8
@@ -257,11 +272,11 @@ class documentClass extends  configClass {
  					FROM 	`document`
 					JOIN	`staff`
 					ON		`document`.`By` = `staff`.`staffId`
-					JOIN	`document`
-					USING	(`documentId`)
+					JOIN	`documentCategory`
+					USING	(`documentCategoryId`)
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getdocumentId('','single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getdocumentId('','single') . "\"";
+			if ($this->model->getDocumentId('','single')) {
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getDocumentId('','single') . "\"";
 
 			}
 
@@ -289,8 +304,8 @@ class documentClass extends  configClass {
 					JOIN	`documentCategory`
 					ON		[document].[documentCategoryId]=[documentCategory].[documentCategoryId]
 					WHERE 	[document].[isActive] ='1'	";
-			if ($this->model->getdocumentId('','single')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getdocumentId('','single') . "\"";
+			if ($this->model->getDocumentId('','single')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getDocumentId('','single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -313,11 +328,11 @@ class documentClass extends  configClass {
 					FROM 	\"document\"
 					JOIN	\"staff\"
 					ON		\"document\".\"By\" = \"staff\".\"staffId\"
-					JOIN	`document`
-					USING	(`documentId`)
-					WHERE 	\"isActive\"='1'	";
-			if ($this->model->getdocumentId('','single')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getdocumentId('','single') . "\"";
+					JOIN	`documentCategory`
+					USING	(`documentCategoryId`)
+					WHERE 		";
+			if ($this->model->getDocumentId('','single')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getDocumentId('','single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -474,7 +489,7 @@ class documentClass extends  configClass {
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getdocumentId('','single'))) {
+            if (!($this->model->getDocumentId('','single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -488,7 +503,7 @@ class documentClass extends  configClass {
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getdocumentId('','single')) {
+            if ($this->model->getDocumentId('','single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -529,6 +544,9 @@ class documentClass extends  configClass {
 		UPDATE 	`document`
 		SET 	`documentCategoryId` 		=	\"".$this->model->getDocumentCategoryId()."\",
 				`leafId`	        		=	\"".$this->model->getLeafId()."\",
+				`documentCode`				=	\"".$this->model->getDocumentCode()."\",
+				`documentSequence`			=	\"".$this->model->getDocumentSequence()."\",
+				`documentNote`				=	\"".$this->model->getDocumentNote()."\",
 				`documentTitle`	        	=	\"".$this->model->getDocumentTitle()."\",
 				`documentDesc`	        	=	\"".$this->model->getDocumentDesc()."\",
 				`documentPath`	        	=	\"".$this->model->getDocumentPath()."\",
@@ -550,6 +568,10 @@ class documentClass extends  configClass {
 		UPDATE 	[document]
 		SET 	[documentCategoryId] 		=	\"".$this->model->getDocumentCategoryId()."\",
 				[leafId]	        		=	\"".$this->model->getLeafId()."\",
+				[documentCode]	        	=	\"".$this->model->getDocumentCode()."\",
+				[documentSequence]	        =	\"".$this->model->getDocumentSequence()."\",
+				[documentNote]	        	=	\"".$this->model->getDocumentNote()."\",
+				[documentFilename]	    	=	\"".$this->model->getDocumentFilename()."\",
 				[documentTitle]	        	=	\"".$this->model->getDocumentTitle()."\",
 				[documentDesc]	        	=	\"".$this->model->getDocumentDesc()."\",
 				[documentPath]	        	=	\"".$this->model->getDocumentPath()."\",
@@ -571,20 +593,24 @@ class documentClass extends  configClass {
 		UPDATE 	\"document\"
 		SET 	\"documentCategoryId\" 		=	\"".$this->model->getDocumentCategoryId()."\",
 				\"leafId\"	        		=	\"".$this->model->getLeafId()."\",
-				\"documentTitle\"	        	=	\"".$this->model->getDocumentTitle()."\",
-				\"documentDesc\"	        	=	\"".$this->model->getDocumentDesc()."\",
-				\"documentPath\"	        	=	\"".$this->model->getDocumentPath()."\",
-				\"documentFilename\"	    	=	\"".$this->model->getDocumentFilename()."\",
-				\"documentExtension\"	    	=	\"".$this->model->getDocumentExtension()."\",
-				\"isDefault\"					=	\"".$this->model->getIsDefault('','single')."\",
-				\"isActive\"					=	\"".$this->model->getIsActive('','single')."\",
-				\"isNew\"						=	\"".$this->model->getIsNew('','single')."\",
+				\"documentCode\"	        =	\"".$this->model->getDocumentCode()."\",
+				\"documentSequence\"	    =	\"".$this->model->getDocumentSequence()."\",
+				\"documentNote\"	        =	\"".$this->model->getDocumentNote()."\",
+				\"documentFilename\"	    =	\"".$this->model->getDocumentFilename()."\",
+				\"documentTitle\"	        =	\"".$this->model->getDocumentTitle()."\",
+				\"documentDesc\"	        =	\"".$this->model->getDocumentDesc()."\",
+				\"documentPath\"	        =	\"".$this->model->getDocumentPath()."\",
+				\"documentFilename\"	    =	\"".$this->model->getDocumentFilename()."\",
+				\"documentExtension\"	    =	\"".$this->model->getDocumentExtension()."\",
+				\"isDefault\"				=	\"".$this->model->getIsDefault('','single')."\",
+				\"isActive\"				=	\"".$this->model->getIsActive('','single')."\",
+				\"isNew\"					=	\"".$this->model->getIsNew('','single')."\",
 				\"isDraft\"					=	\"".$this->model->getIsDraft('','single')."\",
-				\"isUpdate\"					=	\"".$this->model->getIsUpdate('','single')."\",
-				\"isDelete\"					=	\"".$this->model->getIsDelete('','single')."\",
+				\"isUpdate\"				=	\"".$this->model->getIsUpdate('','single')."\",
+				\"isDelete\"				=	\"".$this->model->getIsDelete('','single')."\",
 				\"isApproved\"				=	\"".$this->model->getIsApproved('','single')."\",
 				\"By\"						=	\"".$this->model->getBy()."\",
-				\"Time\"						=	".$this->model->getTime()."
+				\"Time\"					=	".$this->model->getTime()."
 		WHERE 	\"documentId\"				=	\"".$this->model->getDocumentId('','single')."\"";
 
 		}
@@ -630,7 +656,7 @@ class documentClass extends  configClass {
 						[isApproved]	=	\"".$this->model->getIsApproved('','single')."\",
 						[By]			=	\"".$this->model->getBy()."\",
 						[Time]			=	".$this->model->getTime()."
-				WHERE 	[documentId]	=	\"".$this->model->getdocumentId('','single')."\"";
+				WHERE 	[documentId]	=	\"".$this->model->getDocumentId('','single')."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -644,7 +670,7 @@ class documentClass extends  configClass {
 						\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
-				WHERE 	\"documentId\"	=	\"".$this->model->getdocumentId('','single')."\"";
+				WHERE 	\"documentId\"	=	\"".$this->model->getDocumentId('','single')."\"";
 
 		}
 		$this->q->update($sql);
@@ -676,9 +702,9 @@ class documentClass extends  configClass {
 				$sql.="	   `isDefault`			=	case `".$this->model->getPrimaryKeyName()."` ";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDocumentId($i,'array').",";
 						$sql.="
-						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						WHEN \"".$this->model->getDocumentId($i,'array')."\"
 						THEN \"".$this->model->getIsDefault('','single')."\"";
 					}
 				}
@@ -687,9 +713,9 @@ class documentClass extends  configClass {
 
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDocumentId($i,'array').",";
 						$sql.="
-						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						WHEN \"".$this->model->getDocumentId($i,'array')."\"
 						THEN \"".$this->model->getIsNew('','single')."\"";
 					}
 				}
@@ -697,9 +723,9 @@ class documentClass extends  configClass {
 				$sql.="	`isDraft`	=	case `".$this->model->getPrimaryKeyName()."` ";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDocumentId($i,'array').",";
 						$sql.="
-						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						WHEN \"".$this->model->getDocumentId($i,'array')."\"
 						THEN \"".$this->model->getIsDraft('','single')."\"";
 					}
 				}
@@ -707,9 +733,9 @@ class documentClass extends  configClass {
 				$sql.="	`isUpdate`	=	case `".$this->model->getPrimaryKeyName()."`";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDocumentId($i,'array').",";
 						$sql.="
-						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						WHEN \"".$this->model->getDocumentId($i,'array')."\"
 						THEN \"".$this->model->getIsUpdate('','single')."\"";
 					}
 				}
@@ -717,9 +743,9 @@ class documentClass extends  configClass {
 				$sql.="	`isDelete`	=	case `".$this->model->getPrimaryKeyName()."`";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDocumentId($i,'array').",";
 						$sql.="
-						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						WHEN \"".$this->model->getDocumentId($i,'array')."\"
 						THEN \"".$this->model->getIsDelete($i,'array')."\"";
 					}
 				}
@@ -727,9 +753,9 @@ class documentClass extends  configClass {
 				$sql.="	`isActive`	=		case `".$this->model->getPrimaryKeyName()."` ";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDocumentId($i,'array').",";
 						$sql.="
-						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						WHEN \"".$this->model->getDocumentId($i,'array')."\"
 						THEN \"".$this->model->getIsActive('','single')."\"";
 					}
 				}
@@ -737,9 +763,9 @@ class documentClass extends  configClass {
 				$sql.="	`isApproved`			=	case `".$this->model->getPrimaryKeyName()."` ";
 				for($i=0;$i<$loop;$i++) {
 					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getdocumentId($i,'array').",";
+						$primaryKeyAll.=$this->model->getDocumentId($i,'array').",";
 						$sql.="
-						WHEN \"".$this->model->getdocumentId($i,'array')."\"
+						WHEN \"".$this->model->getDocumentId($i,'array')."\"
 						THEN \"".$this->model->getIsApproved('','single')."\"";
 
 					}
@@ -765,7 +791,7 @@ class documentClass extends  configClass {
 					[isApproved]		=	\"". $this->model->getIsApproved('','single') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
-			WHERE 	[documentId]		IN	(". $this->model->getdocumentIdAll() . ")";
+			WHERE 	[documentId]		IN	(". $this->model->getDocumentIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				UPDATE	\"document\"
@@ -778,7 +804,7 @@ class documentClass extends  configClass {
 					\"isApproved\"		=	\"". $this->model->getIsApproved('','single') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
-			WHERE 	\"documentId\"		IN	(". $this->model->getdocumentIdAll() . ")";
+			WHERE 	\"documentId\"		IN	(". $this->model->getDocumentIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){
 
@@ -796,7 +822,7 @@ class documentClass extends  configClass {
 			UPDATE \"".$this->model->getTableName()."\"
 			SET    ";
 			}
-			//	echo "arnab[".$this->model->getdocumentId(0,'array')."]";
+			//	echo "arnab[".$this->model->getDocumentId(0,'array')."]";
 			/**
 			 *	System Validation Checking
 			 *  @var $access
@@ -817,49 +843,49 @@ class documentClass extends  configClass {
 					case 'isDefault':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							WHEN \"".$this->model->getDocumentId($i,'array')."\"
 							THEN \"".$this->model->getIsDefault($i,'array')."\"";
 						}
 						break;
 					case 'isNew':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							WHEN \"".$this->model->getDocumentId($i,'array')."\"
 							THEN \"".$this->model->getIsNew($i,'array')."\"";
 
 						} break;
 					case 'isDraft':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							WHEN \"".$this->model->getDocumentId($i,'array')."\"
 							THEN \"".$this->model->getIsDraft($i,'array')."\"";
 						}
 						break;
 					case 'isUpdate':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							WHEN \"".$this->model->getDocumentId($i,'array')."\"
 							THEN \"".$this->model->getIsUpdate($i,'array')."\"";
 						}
 						break;
 					case 'isDelete':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							WHEN \"".$this->model->getDocumentId($i,'array')."\"
 							THEN \"".$this->model->getIsDelete($i,'array')."\"";
 						}
 						break;
 					case 'isActive':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							WHEN \"".$this->model->getDocumentId($i,'array')."\"
 							THEN \"".$this->model->getIsActive($i,'array')."\"";
 						}
 						break;
 					case 'isApproved':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getdocumentId($i,'array')."\"
+							WHEN \"".$this->model->getDocumentId($i,'array')."\"
 							THEN \"".$this->model->getIsApproved($i,'array')."\"";
 						}
 						break;

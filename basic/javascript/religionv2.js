@@ -372,7 +372,8 @@ Ext.onReady(function() {
                         method: "read",
                         mode: "update",
                         religionId: record.data.religionId,
-                        leafId: leafId
+                        leafId: leafId,
+                        isAdmin :isAdmin
                     },
                     success: function(form, action) {
                         Ext.getCmp("religionDesc_temp").setValue(record.data.religionDesc);
@@ -403,7 +404,8 @@ Ext.onReady(function() {
                                 params: {
                                     method: "delete",
                                     religionId: record.data.religionId,
-                                    leafId: leafId
+                                    leafId: leafId,
+                                    isAdmin : isAdmin
                                 },
                                 success: function(response, options) {
                                     jsonResponse = Ext.decode(response.responseText);
@@ -569,7 +571,8 @@ Ext.onReady(function() {
                         method: "read",
                         mode: "update",
                         religionId: record.data.religionId,
-                        leafId: leafId
+                        leafId: leafId,
+                        isAdmin :isAdmin
                     },
                     success: function(form, action) {
                         Ext.getCmp("religionDesc_temp").setValue(record.data.religionDesc);
@@ -1084,8 +1087,7 @@ Ext.onReady(function() {
         },
         {
             id:'listButton',
-        	text: listButtonLabel,
-            type: "button",
+        	text: gridButtonLabel, type: "button",
             iconCls: "table",
             handler: function() {
                 if (win) {

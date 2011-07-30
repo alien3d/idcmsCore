@@ -68,10 +68,10 @@ Ext
 					name : 'leafId',
 					type : 'int'
 				}, {
-					name : 'tabId',
+					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'tabNote',
+					name : 'moduleNote',
 					type : 'string'
 				}, {
 					name : 'folderId',
@@ -229,7 +229,7 @@ Ext
 				} ]
 			});
 
-			var tabProxy = new Ext.data.HttpProxy({
+			var moduleProxy = new Ext.data.HttpProxy({
 				url : "../controller/leafController.php?",
 				method : "GET",
 				success : function(response, options) {
@@ -248,30 +248,30 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			var tabReader = new Ext.data.JsonReader({
+			var moduleReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
-				idProperty : "staffId"
+				idProperty : "moduleId"
 			});
 
-			var tabStore = new Ext.data.JsonStore({
-				proxy : tabProxy,
-				reader : tabReader,
+			var moduleStore = new Ext.data.JsonStore({
+				proxy : moduleProxy,
+				reader : moduleReader,
 				autoLoad : true,
 				autoDestroy : true,
 				baseParams : {
 					method : 'read',
-					field : 'tabId',
+					field : 'moduleId',
 					type : 1,
 					leafIdTemp : leafIdTemp
 				},
-				root : 'tab',
+				root : 'module',
 				fields : [ {
-					name : "tabId",
+					name : "moduleId",
 					type : "int"
 				}, {
-					name : "tabNote",
+					name : "moduleNote",
 					type : "string"
 				} ]
 			});
@@ -329,11 +329,11 @@ Ext
 				local : local,
 				filters : [ {
 					type : 'list',
-					dataIndex : 'tabTranslate',
-					column : 'tabId',
-					table : 'tab',
-					labelField : 'tabTranslate',
-					store : tabStore,
+					dataIndex : 'moduleTranslate',
+					column : 'moduleId',
+					table : 'module',
+					labelField : 'moduleTranslate',
+					store : moduleStore,
 					phpMode : true
 				}, {
 					type : 'list',
@@ -884,18 +884,18 @@ Ext
 					});
 			// viewport just save information,items will do separate
 
-			var tabId = new Ext.ux.form.ComboBoxMatch(
+			var moduleId = new Ext.ux.form.ComboBoxMatch(
 					{
 						labelAlign : 'left',
-						fieldLabel : tabIdLabel,
-						name : 'tabId',
-						hiddenName : 'tabId',
-						valueField : 'tabId',
-						id : 'tab_fake',
-						displayField : 'tabNote',
+						fieldLabel : moduleIdLabel,
+						name : 'moduleId',
+						hiddenName : 'moduleId',
+						valueField : 'moduleId',
+						id : 'module_fake',
+						displayField : 'moduleNote',
 						typeAhead : false,
 						triggerAction : 'all',
-						store : tabStore,
+						store : moduleStore,
 						anchor : '95%',
 						selectOnFocus : true,
 						mode : 'local',
@@ -915,7 +915,7 @@ Ext
 
 								folderStore.proxy = new Ext.data.HttpProxy(
 										{
-											url : '../controller/leafController.php?method=read&field=folderId&type=1&tabId='
+											url : '../controller/leafController.php?method=read&field=folderId&type=1&moduleId='
 													+ this.value
 													+ '&leafIdTemp='
 													+ leafIdTemp,
@@ -1007,7 +1007,7 @@ Ext
 								method : 'read',
 								field : 'sequence',
 								table : 'leaf',
-								tabId : Ext.getCmp('tab_fake').getValue(),
+								moduleId : Ext.getCmp('tab_fake').getValue(),
 								folderId : combo.value,
 								leafId : leafIdTemp
 							},
@@ -1234,7 +1234,7 @@ Ext
 									bodyStyle : "padding:5px",
 									layout : 'form',
 									frame : true,
-									items : [ tabId, folderId, leafNote,
+									items : [ moduleId, folderId, leafNote,
 											leafSequence, leafFilename, iconId,
 											leafId ]
 								}, {

@@ -7,7 +7,7 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package religion
+ * @package department
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

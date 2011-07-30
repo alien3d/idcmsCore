@@ -89,7 +89,7 @@ class security extends configClass {
 	 * Current Table Log Identification Value
 	 **/
 
-	private $tabId;
+	private $moduleId;
 	/**
 	 * Folder Identification
 	 * @var numeric $folderId
@@ -284,7 +284,7 @@ class security extends configClass {
 	 * Give Output tab
 	 * @version  0.1 remove the session  language
 	 */
-	function tab() {
+	function module() {
 		// only filter tab which have access group
 		//	header('Content-Type','application/json; charset=utf-8');
 		/**
@@ -304,19 +304,19 @@ class security extends configClass {
 
 			if($type==1) {
 				$sql="
-				SELECT 	`tab`.`tabId`,
-						`tab`.`tabNote`
-				FROM   	`tab`
-				WHERE   `tab`.`isActive`=1";
+				SELECT 	`module`.`moduleId`,
+						`module`.`moduleNote`
+				FROM   	`module`
+				WHERE   `module`.`isActive`=1";
 			} else if ($type ==2) {
 				$sql="
-				SELECT 	`tabAccess`.`tabId`,
-						`tabAccess`.`groupId`,
-						`tabAccess`.`tabAccessValue`
-				FROM   	`tabAccess`
-				JOIN	`tab`
-				USING	(`tabId`)
-				WHERE   `tab`.`isActive`=1";
+				SELECT 	`moduleAccess`.`tabId`,
+						`moduleAccess`.`groupId`,
+						`moduleAccess`.`tabAccessValue`
+				FROM   	`moduleAccess`
+				JOIN	`module`
+				USING	(`moduleId`)
+				WHERE   `module`.`isActive`=1";
 				if(isset($_GET['groupId'])) {
 					$sql.=" AND `tab`.`groupId`=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 				}
@@ -324,43 +324,43 @@ class security extends configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			if($type ==1 ) {
 				$sql="
-			SELECT 	[tab].[tabId],
-					[tab].[tabNote]
-			FROM   	[tab]
-			WHERE   [tab].[isActive]=1";
+			SELECT 	[module].[moduleId],
+					[module].[moduleNote]
+			FROM   	[module]
+			WHERE   [module].[isActive]=1";
 
 
 			} else if ($type==2) {
 				$sql="
-			SELECT 	[tabAccess].[tabId],
-					[tabAccess].[groupId],
-					[tabAccess].[tabAccessValue]
-			FROM   	[tabAccess]
-			JOIN	[tab]
-			ON		[tab].[tabId]=[tabAccess].[tabId]
-			WHERE   [tab].[isActive]=1";
+			SELECT 	[moduleAccess].[tabId],
+					[moduleAccess].[groupId],
+					[moduleAccess].[moduleAccessValue]
+			FROM   	[moduleAccess]
+			JOIN	[module]
+			ON		[module].[moduleId]=[moduleAccess].[tabId]
+			WHERE   [module].[isActive]=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND [tabAccess].[groupId]=\"".$this->strict($_GET['groupId'],'numeric')."\"";
+					$sql.=" AND [moduleAccess].[groupId]=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 				}
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			if($type == 1) {
 				$sql="
-			SELECT 	\"tab\".\"tabId\",
-					\"tab\".\"tabNote\"
-			FROM   	\"tab\"
-			WHERE   \"tab\".\"isActive\"=1";
+			SELECT 	\"module\".\"moduleId\",
+					\"module\".\"moduleNote\"
+			FROM   	\"module\"
+			WHERE   \"module\".\"isActive\"=1";
 			} else if ($type==2) {
 				$sql="
-			SELECT 	\"tabAccess\".\"tabId\",
-					\"tabAccess\".\"groupId\",
-					\"tabAccess\".\"tabAccessValue\",
-			FROM   	\"tabAccess\"
-			JOIN	\"tab\"
-			USING	(\"tabId\")
-			WHERE   \"tab\".\"isActive\"=1";
+			SELECT 	\"moduleAccess\".\"tabId\",
+					\"moduleAccess\".\"groupId\",
+					\"moduleAccess\".\"moduleAccessValue\",
+			FROM   	\"moduleAccess\"
+			JOIN	\"module\"
+			USING	(\"moduleId\")
+			WHERE   \"module\".\"isActive\"=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND \"tab\".\"groupId\"=\"".$this->strict($_GET['groupId'],'numeric')."\"";
+					$sql.=" AND \"module\".\"groupId\"=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 				}
 			}
 		} else{
@@ -381,7 +381,7 @@ class security extends configClass {
 		array(
 											'success'	=>true,
 											'totalCount' => $total,
-       								    	'tab' => $items
+       								    	'module' => $items
 		));
 		exit();
 

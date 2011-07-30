@@ -60,10 +60,10 @@ Ext.onReady(function () {
         reader: folderAccessReader,
         root: "data",
         fields: [{
-            name: 'accordionId',
+            name: 'moduleId',
             type: 'int'
         }, {
-            name: 'accordionNote',
+            name: 'moduleNote',
             type: 'string'
         }, {
             name: 'groupId',
@@ -96,11 +96,11 @@ Ext.onReady(function () {
     // information
     var columnModel = new Ext.grid.ColumnModel({
         columns: [{
-            header: accordionNameLabel,
-            dataIndex: 'accordionNote'
+            header: moduleNameLabel,
+            dataIndex: 'moduleNote'
         }, {
-            header: accordionIdLabel,
-            dataIndex: 'accordionId'
+            header: moduleIdLabel,
+            dataIndex: 'moduleId'
         }, {
             header: groupNameLabel,
             dataIndex: 'groupNote'
@@ -130,18 +130,18 @@ Ext.onReady(function () {
     });
     groupStore.load();
 
-    var accordionReader = new Ext.data.JsonReader({
-        root: 'accordion'
-    }, ['accordionId', 'accordionNote']);
-    var accordionStore = new Ext.data.Store({
+    var moduleReader = new Ext.data.JsonReader({
+        root: 'module'
+    }, ['moduleId', 'moduleNote']);
+    var moduleStore = new Ext.data.Store({
         proxy: new Ext.data.HttpProxy({
-            url: '../controller/folderAccessController.php?method=read&type=1&field=accordionId&leafId=' + leafId,
+            url: '../controller/folderAccessController.php?method=read&type=1&field=moduleId&leafId=' + leafId,
             method: 'GET'
         }),
-        reader: accordionReader,
+        reader: moduleReader,
         remoteSort: false
     });
-    accordionStore.load();
+    moduleStore.load();
     var groupId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
         fieldLabel: groupIdLabel,
@@ -168,32 +168,32 @@ Ext.onReady(function () {
         },
         listeners: {
             'select': function (combo, record, index) {
-                Ext.getCmp('accordion_fake').reset(); // force
+                Ext.getCmp('module_fake').reset(); // force
                 // the
                 // combobox
                 // to
                 // clear
-                accordionStore.proxy = new Ext.data.HttpProxy({
-                    url: '../controller/folderAccessController.php?method=read&field=accordionId&value=' + this.value + '&leafId=' + leafId,
+                moduleStore.proxy = new Ext.data.HttpProxy({
+                    url: '../controller/folderAccessController.php?method=read&field=moduleId&value=' + this.value + '&leafId=' + leafId,
                     method: 'GET'
 
                 });
-                Ext.getCmp('accordion_fake').enable();
+                Ext.getCmp('module_fake').enable();
             }
         }
     });
 
-    var accordionId = new Ext.ux.form.ComboBoxMatch({
+    var moduleId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
-        fieldLabel: accordionIdLabel,
-        name: 'accordionId',
-        hiddenName: 'accordionId',
-        valueField: 'accordionId',
-        id: 'accordion_fake',
-        displayField: 'accordionNote',
+        fieldLabel: moduleIdLabel,
+        name: 'moduleId',
+        hiddenName: 'moduleId',
+        valueField: 'moduleId',
+        id: 'module_fake',
+        displayField: 'moduleNote',
         typeAhead: false,
         triggerAction: 'all',
-        store: accordionStore,
+        store: moduleStore,
         anchor: '95%',
         selectOnFocus: true,
         mode: 'local',
@@ -220,7 +220,7 @@ Ext.onReady(function () {
                     params: {
                         leafId: leafId,
                         groupId: Ext.getCmp('group_fake').getValue(),
-                        accordionId: Ext.getCmp('accordion_fake').getValue()
+                        moduleId: Ext.getCmp('module_fake').getValue()
                     }
 
                 });
@@ -234,7 +234,7 @@ Ext.onReady(function () {
         frame: true,
         title: 'Folder Form',
         iconCls: 'application_form',
-        items: [groupId, accordionId]
+        items: [groupId, moduleId]
     });
     var access_array = ['folderAccessValue'];
 
@@ -294,7 +294,7 @@ Ext.onReady(function () {
                         sub_url = '';
                         for (i = count - 1; i >= 0; i--) {
                             var record = folderAccessStore.getAt(i);
-                            sub_url = sub_url + '&groupId=' + Ext.getCmp('group_fake').getValue() + '&accordionId=' + Ext.getCmp('accordion_fake').value + '&folderAccessId[]=' + record.get('folderAccessId') + '&folderAccessValue[]=' + record.get('folderAccessValue');
+                            sub_url = sub_url + '&groupId=' + Ext.getCmp('group_fake').getValue() + '&moduleId=' + Ext.getCmp('module_fake').value + '&folderAccessId[]=' + record.get('folderAccessId') + '&folderAccessValue[]=' + record.get('folderAccessValue');
                         }
                         url = url + sub_url;
                         // reques and ajax

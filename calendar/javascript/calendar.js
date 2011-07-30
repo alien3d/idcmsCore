@@ -30,9 +30,9 @@ App = function() {
 					direction : 'ASC'
 				},
 				proxy : new Ext.data.HttpProxy({
-					url : '../controller/calendarController.php?method=read&mode=calendar&leafId='
+					url : '../controller/calendarController.php?method=read&leafId='
 							+ leafId,
-					method : 'GET'
+					method : 'POST'
 				}),
 				reader : this.calendarReader
 			});
@@ -48,9 +48,9 @@ App = function() {
 			this.eventStore = new Ext.data.Store({
 				storeId : 'eventStore',
 				proxy : new Ext.data.HttpProxy({
-					url : '../controller/calendarController.php?method=read&mode=event&leafId='
+					url : '../controller/eventController.php?method=read&leafId='
 							+ leafId,
-					method : 'GET'
+					method : 'POST'
 				}),
 				reader : this.eventReader,
 				sortInfo : {
@@ -214,9 +214,9 @@ App = function() {
                                     
                                     //alert(reminder);
                                     Ext.Ajax.request({
-										url : '../controller/calendarController.php',
+										url : '../controller/eventController.php',
 										params : {
-											method : 'update_event',
+											method : 'update',
 											eventId : rec.data.EventId,
 											calendarId : rec.data.CalendarId,
 											title : rec.data.Title,
@@ -259,9 +259,9 @@ App = function() {
                                 fn: function(cp, rec){
                                     this.showMsg('Event '+ rec.data.Title +' was deleted');
                                     Ext.Ajax.request({
-										url : '../controller/calendarController.php',
+										url : '../controller/eventController.php',
 										params : {
-											method : 'delete_event',
+											method : 'delete',
 											id : rec.data.EventId,
 											leafId : leafId
 										},
@@ -269,14 +269,8 @@ App = function() {
 												options) {
 										
 											var jsonResponse = Ext.decode(response.responseText);
-											var title = 'Message';
-											if (jsonResponse == true) {
-												title = title
-														+ ' Success';
-											} else {
-												title = title
-														+ ' Failure';
-											}
+											
+											
 											Ext.MessageBox.alert(systemErrorLabel,
 													jsonResponse.message);
 										},
@@ -284,7 +278,7 @@ App = function() {
 												options) {
 											// critical bug extjs
 											var jsonResponse = Ext.decode(response.responseText);
-											var title = 'Message Failure';
+											
 											Ext.MessageBox.alert(systemErrorLabel,
 													jsonResponse.message);
 										}
@@ -345,9 +339,9 @@ App = function() {
                                      return remind;
                                      };
                                     Ext.Ajax.request({
-										url : '../controller/calendarController.php',
+										url : '../controller/eventController.php',
 										params : {
-											method : 'update_event',
+											method : 'update',
 											eventId : rec.data.EventId,
 											calendarId : rec.data.CalendarId,
 											title : rec.data.Title,
@@ -378,7 +372,7 @@ App = function() {
 												options) {
 											// critical bug extjs
 											var jsonResponse = Ext.decode(response.responseText);
-											var title = 'Message Failure';
+											
 											Ext.MessageBox.alert(systemErrorLabel,
 													jsonResponse.message);
 										}
@@ -407,14 +401,7 @@ App = function() {
 										success : function(response,
 												options) {
 											var jsonResponse = Ext.decode(response.responseText);
-											var title = 'Message';
-											if (jsonResponse == true) {
-												title = title
-														+ ' Success';
-											} else {
-												title = title
-														+ ' Failure';
-											}
+											
 											Ext.MessageBox.alert(systemErrorLabel,
 													jsonResponse.message);
 										},
@@ -422,7 +409,7 @@ App = function() {
 												options) {
 											// critical bug extjs
 											var jsonResponse = Ext.decode(response.responseText);
-											var title = 'Message Failure';
+											
 											Ext.MessageBox.alert(systemErrorLabel,
 													jsonResponse.message);
 										}
@@ -470,7 +457,7 @@ App = function() {
                                  return remind;
                                  };
                                 Ext.Ajax.request({
-									url : '../controller/calendarController.php',
+									url : '../controller/eventController.php',
 									params : {
 										method : 'create',
 										calendarId : rec.data.CalendarId,
@@ -486,20 +473,14 @@ App = function() {
 											options) {
 										
 										var jsonResponse = Ext.decode(response.responseText);
-										var title = 'Message';
 										
-										if (jsonResponse == true) {
-											title = title + ' Success';
-										} else {
-											title = title + ' Failure';
-										}
 										Ext.MessageBox.alert(title,jsonResponse.message);
 									},
 									failure : function(response,
 											options) {
 										// critical bug extjs
 										var jsonResponse = Ext.decode(response.responseText);
-										var title = 'Message Failure';
+										
 										Ext.MessageBox.alert(systemErrorLabel,
 													jsonResponse.message);
 									}
@@ -523,7 +504,7 @@ App = function() {
                                  return remind;
                                  };
                                 Ext.Ajax.request({
-									url : '../controller/calendarController.php',
+									url : '../controller/eventController.php',
 									params : {
 										method : 'update_event',
 										eventId : rec.data.EventId,
@@ -566,9 +547,9 @@ App = function() {
 								win.hide();
                                 this.showMsg('Event '+ rec.data.Title +' was deleted');
                                 Ext.Ajax.request({
-									url : '../controller/calendarController.php',
+									url : '../controller/eventController.php',
 									params : {
-										method : 'delete_event',
+										method : 'delete',
 										eventId : rec.data.EventId,
 										leafId : leafId
 									},
@@ -576,12 +557,7 @@ App = function() {
 											options) {
 										
 										var jsonResponse = Ext.decode(response.responseText);
-										var title = 'Message';
-										if (jsonResponse == true) {
-											title = title + ' Success';
-										} else {
-											title = title + ' Failure';
-										}
+										
 										Ext.MessageBox.alert(systemErrorLabel,
 													jsonResponse.message);
 									},
@@ -589,7 +565,7 @@ App = function() {
 											options) {
 										// critical bug extjs
 										var jsonResponse = Ext.decode(response.responseText);
-										var title = 'Message Failure';
+										
 										Ext.MessageBox.alert(systemErrorLabel,
 													jsonResponse.message);
 									}
@@ -642,7 +618,7 @@ App = function() {
         clearMsg: function(){
             Ext.fly('app-msg').update('').addClass('x-hidden');
         }
-    }
+    };
 }();
 
 Ext.onReady(App.init, App);

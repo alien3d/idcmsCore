@@ -6991,3 +6991,12 @@ body.x-body-masked .x-window-plain .x-window-mc {
 .x-window-dlg .ext-mb-error {
     background-image:url(../images/default/window/icon-error.gif);
 }
+.header {
+	background: #7F99BE
+		url(../../javascript/examples/layout-browser/images/layout-browser-hd-bg.gif)
+		repeat-x center;
+	font-size: 16px;
+	color: #fff;
+	font-weight: bold;
+	padding: 5px 10px;
+}

@@ -80,7 +80,7 @@ class religionClass extends configClass
 		$this->q->log        = $this->log;
 
 		$this->model         = new religionModel();
-		$$this->model->setVendor($this->getVendor());
+		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
 		$this->documentTrail = new documentTrailClass();
@@ -195,19 +195,23 @@ class religionClass extends configClass
 		if($this->isAdmin == 0) {
 			if($this->q->vendor ==self::mysql) {
 
-				$this->auditFilter = "	`religion`.`isActive`		=	1	";
+				$this->auditFilter = "	AND `religion`.`isActive`		=	1	";
+
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	[religion].[isActive]		=	1	";
+
+				$this->auditFilter = "	AND [religion].[isActive]		=	1	";
+
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"religion\".\"isActive\"	=	1	";
+				$this->auditFilter = "	AND \"religion\".\"isActive\"	=	1	";
+
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
-				$this->auditFilter = "	 1 ";
+				$this->auditFilter = "	 1=1 ";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	or 1 ";
+				$this->auditFilter = "	1=1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = " or 1 ";
+				$this->auditFilter = " 1=1 ";
 			}
 		}
 		//UTF8
@@ -233,9 +237,9 @@ class religionClass extends configClass
  					FROM 	`religion`
 					JOIN	`staff`
 					ON		`religion`.`By` = `staff`.`staffId`
-					WHERE 	".$this->auditFilter;
+					WHERE 	 ".$this->auditFilter;
 			if ($this->model->getReligionId('','single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getReligionId('','single') . "\"";
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getReligionId('','single') . "\"";
 
 			}
 

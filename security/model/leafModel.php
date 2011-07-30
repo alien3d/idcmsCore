@@ -21,13 +21,15 @@ class leafModel extends validationClass{
 	private $leafCode;
 	private $leafFilename;
 	private $leafNote;
+	private $languageId;
+
 
 
 	/* (non-PHPdoc)
 	 * @see validationClass::execute()
 	 */
 	function execute(){
-			/*
+		/*
 		 *  Basic Information Table
 		 */
 		$this->setTableName('leaf');
@@ -69,9 +71,12 @@ class leafModel extends validationClass{
 		} else if ($this->getVendor()==self::oracle){
 			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
 		}
+		if(isset($_SESSION['languageId'])){
+			$this->setLanguageId($_SESSION['languageId']);
+		}
 
 		$this->setTotal(count($_GET['leafId']));
-        $accessArray = array(
+		$accessArray = array(
             "isDefault",
             "isNew",
             "isDraft",
@@ -79,70 +84,70 @@ class leafModel extends validationClass{
             "isDelete",
             "isActive",
             "isApproved"
-        );
-        // auto assign as array if true
-        if (is_array($_GET['isDefault'])) {
-            $this->isDefault = array();
-        }
-        if (is_array($_GET['isNew'])) {
-            $this->isNew = array();
-        }
-        if (is_array($_GET['isDraft'])) {
-            $this->isDraft = array();
-        }
-        if (is_array($_GET['isUpdate'])) {
-            $this->isUpdate = array();
-        }
-        if (is_array($_GET['isDelete'])) {
-            $this->isDelete = array();
-        }
-        if (is_array($_GET['isActive'])) {
-            $this->isActive = array();
-        }
-        if (is_array($_GET['isApproved'])) {
-            $this->isApproved = array();
-        }
-        for ($i = 0; $i < $this->getTotal(); $i++) {
-                $this->setLeafId($this->strict($_GET['leafId'][$i], 'numeric'), $i, 'array');
-            if ($_GET['isDefault'][$i] == 'true') {
-                $this->setIsDefault(1, $i, 'array');
-            } else if ($_GET['default'] == 'false') {
-                $this->setIsDefault(0, $i, 'array');
+            );
+            // auto assign as array if true
+            if (is_array($_GET['isDefault'])) {
+            	$this->isDefault = array();
             }
-            if ($_GET['isNew'][$i] == 'true') {
-                $this->setIsNew(1, $i, 'array');
-            } else {
-                $this->setIsNew(0, $i, 'array');
+            if (is_array($_GET['isNew'])) {
+            	$this->isNew = array();
             }
-            if ($_GET['isDraft'][$i] == 'true') {
-                $this->setIsDraft(1, $i, 'array');
-            } else {
-                $this->setIsDraft(0, $i, 'array');
+            if (is_array($_GET['isDraft'])) {
+            	$this->isDraft = array();
             }
-            if ($_GET['isUpdate'][$i] == 'true') {
-                $this->setIsUpdate(1, $i, 'array');
-            } else {
-                $this->setIsUpdate(0, $i, 'array');
+            if (is_array($_GET['isUpdate'])) {
+            	$this->isUpdate = array();
             }
-            if ($_GET['isDelete'][$i] == 'true') {
-                $this->setIsDelete(1, $i, 'array');
-            } else if ($_GET['isDelete'][$i] == 'false') {
-                $this->setIsDelete(0, $i, 'array');
+            if (is_array($_GET['isDelete'])) {
+            	$this->isDelete = array();
             }
-            if ($_GET['isActive'][$i] == 'true') {
-                $this->setIsActive(1, $i, 'array');
-            } else {
-                $this->setIsActive(0, $i, 'array');
+            if (is_array($_GET['isActive'])) {
+            	$this->isActive = array();
             }
-            if ($_GET['isApproved'][$i] == 'true') {
-                $this->setIsApproved(1, $i, 'array');
-            } else {
-                $this->setIsApproved(0, $i, 'array');
+            if (is_array($_GET['isApproved'])) {
+            	$this->isApproved = array();
             }
+            for ($i = 0; $i < $this->getTotal(); $i++) {
+            	$this->setLeafId($this->strict($_GET['leafId'][$i], 'numeric'), $i, 'array');
+            	if ($_GET['isDefault'][$i] == 'true') {
+            		$this->setIsDefault(1, $i, 'array');
+            	} else if ($_GET['default'] == 'false') {
+            		$this->setIsDefault(0, $i, 'array');
+            	}
+            	if ($_GET['isNew'][$i] == 'true') {
+            		$this->setIsNew(1, $i, 'array');
+            	} else {
+            		$this->setIsNew(0, $i, 'array');
+            	}
+            	if ($_GET['isDraft'][$i] == 'true') {
+            		$this->setIsDraft(1, $i, 'array');
+            	} else {
+            		$this->setIsDraft(0, $i, 'array');
+            	}
+            	if ($_GET['isUpdate'][$i] == 'true') {
+            		$this->setIsUpdate(1, $i, 'array');
+            	} else {
+            		$this->setIsUpdate(0, $i, 'array');
+            	}
+            	if ($_GET['isDelete'][$i] == 'true') {
+            		$this->setIsDelete(1, $i, 'array');
+            	} else if ($_GET['isDelete'][$i] == 'false') {
+            		$this->setIsDelete(0, $i, 'array');
+            	}
+            	if ($_GET['isActive'][$i] == 'true') {
+            		$this->setIsActive(1, $i, 'array');
+            	} else {
+            		$this->setIsActive(0, $i, 'array');
+            	}
+            	if ($_GET['isApproved'][$i] == 'true') {
+            		$this->setIsApproved(1, $i, 'array');
+            	} else {
+            		$this->setIsApproved(0, $i, 'array');
+            	}
 
-            $primaryKeyAll .= $this->getLeafId($i, 'array') . ",";
-        }
-        $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
+            	$primaryKeyAll .= $this->getLeafId($i, 'array') . ",";
+            }
+            $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 
 
 	}
@@ -186,7 +191,7 @@ class leafModel extends validationClass{
 		$this->setIsDelete(1,'','string');
 		$this->setIsApproved(0,'','string');
 	}
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -277,7 +282,7 @@ class leafModel extends validationClass{
 	 * @param enum   $type   1->string,2->array
 	 */
 	public function setTabId($value) {
-			$this->tabId = $value;
+		$this->tabId = $value;
 
 	}
 	/**
@@ -343,7 +348,7 @@ class leafModel extends validationClass{
 	public function getLeafCode() {
 		return $this->leafCode;
 	}
-/**
+	/**
 	 * Set Leaf Sequence Value
 	 * @param numeric $leafSequence
 	 */
@@ -386,5 +391,19 @@ class leafModel extends validationClass{
 		return $this->leafNote;
 	}
 
+	/**
+	 * Set Language Identification
+	 * @param numeric $value
+	 */
+	public function setLanguageId($value) {
+		$this->languageId = $value;
+	}
+	/**
+	 * Return Language Identification
+	 * @return numeric languageId
+	 */
+	public function getLanguageId() {
+		return $this->languageId;
+	}
 }
 ?>

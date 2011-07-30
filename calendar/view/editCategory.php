@@ -27,5 +27,5 @@ if($_SESSION[$theme]) { ?>
 <script  type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
 <script  type="text/javascript"
-	src="../javascript/edit_cat.js"></script>
+	src="../javascript/editCategory.js"></script>
 </html>

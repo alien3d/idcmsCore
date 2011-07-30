@@ -20,9 +20,13 @@ if($_SESSION['theme']) { ?>
 </head>
 <body>
 </body>
-<?php require_once("../../shared/setting_tmp.php"); ?>
+<?php require_once("../../shared/settingTemp.php"); ?>
+<script  type="text/javascript"
+	src="../../javascript/adapter/ext/ext-base.js"></script>
 <script  type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
+		<script type="text/javascript"
+	src="../../javascript/examples/ux/checkColumn.js"></script>
 <script  type="text/javascript"
 	src="../javascript/leafAccess.js"></script>
 
