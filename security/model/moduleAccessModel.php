@@ -10,13 +10,13 @@ require_once("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class tabAccessModel extends validationClass
+class moduleAccessModel extends validationClass
 {
 
-	private $tabAccessId;
-	private $tabId;
+	private $moduleAccessId;
+	private $moduleId;
 	private $groupId;
-	private $tabAccessValue;
+	private $moduleAccessValue;
 
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
@@ -26,23 +26,23 @@ class tabAccessModel extends validationClass
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('tabAccess');
-		$this->setPrimaryKeyName('tabAccessId');
+		$this->setTableName('moduleAccess');
+		$this->setPrimaryKeyName('moduleAccessId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_GET['tabAccessId'])) {
-			$this->setTotal(count($_GET['tabAccessId']));
+		if(isset($_GET['moduleAccessId'])) {
+			$this->setTotal(count($_GET['moduleAccessId']));
 		}
 		if(isset($_GET['groupId'])){
 			$this->setGroupId($_GET['groupId']);
 		}
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			$this->setTabAccessId($this->strict($_GET['tabAccessId'][$i], 'numeric'),$i,'array');
-			if ($_GET['tabAccessValue'][$i] == 'true') {
-				$this->setTabAccessValue(1,$i);
+			$this->setModuleAccessId($this->strict($_GET['moduleAccessId'][$i], 'numeric'),$i,'array');
+			if ($_GET['moduleAccessValue'][$i] == 'true') {
+				$this->setModuleAccessValue(1,$i);
 			} else {
-				$this->setTabAccessValue(0, $i);
+				$this->setModuleAccessValue(0, $i);
 			}
 		}
 	}
@@ -99,10 +99,10 @@ class tabAccessModel extends validationClass
 		}
 	}
 	/**
-	 * Return istabId Value
-	 * @return integer tabId
+	 * Return Module Value
+	 * @return integer moduleId
 	 */
-	public function getTabAccessId($key=NULL,$type=NULL) {
+	public function getModuleAccessId($key=NULL,$type=NULL) {
 		if($type=='single'){
 			return $this->tabAccessId;
 		} else if ($type=='array'){
@@ -113,35 +113,21 @@ class tabAccessModel extends validationClass
 		}
 	}
 	/**
-	 * Set Tab/Module/Accordion Identification Value
+	 * Set Tab/Module Identification Value
 	 * @param  numeric $value
 	 */
-	public function setTabId($value) {
-		$this->iconId = $value;
+	public function setModuleId($value) {
+		$this->moduleId = $value;
 	}
 	/**
-	 * Return Tab/Module/Accordion Identiification Value
-	 * @return numeric tab identification
+	 * Return Module Identiification Value
+	 * @return numeric module identification
 	 */
-	public function getTabId() {
+	public function getModuleId() {
 
-		return $this->tabId;
+		return $this->moduleId;
 	}
-	/**
-	 * Set Tab/Module/Accordion Identification Value
-	 * @param  numeric $value
-	 */
-	public function setTabId($value) {
-		$this->iconId = $value;
-	}
-	/**
-	 * Return Tab/Module/Accordion Identiification Value
-	 * @return numeric tab identification
-	 */
-	public function getTabId() {
 
-		return $this->tabId;
-	}
 	/**
 	 * Set Tab/Module/Accordion Identification Value
 	 * @param  numeric $value
@@ -161,16 +147,16 @@ class tabAccessModel extends validationClass
 	 * Set Tab Access  Value
 	 * @param  numeric $value
 	 */
-	public function setTabAccessValue($value,$key) {
-		$this->tabAccessValue[$key] = $value;
+	public function setModuleAccessValue($value,$key) {
+		$this->moduleAccessValue[$key] = $value;
 	}
 	/**
-	 * Return Tab Access Value
-	 * @return numeric tab identification
+	 * Return Module Access Value
+	 * @return numeric module identification
 	 */
-	public function getTabAccessValue($value,$key) {
+	public function getModuleAccessValue($value,$key) {
 
-		return $this->tabAccessValue[$key]=$value;
+		return $this->moduleAccessValue[$key]=$value;
 	}
 
 

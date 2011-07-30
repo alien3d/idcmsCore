@@ -2,7 +2,7 @@
 require_once("../../class/classAbstract.php");
 require_once("../../document/class/classDocumentTrail.php");
 require_once("../../document/model/documentModel.php");
-require_once("../model/leafGroupAccessModel.php");
+require_once("../model/leafAccessModel.php");
 /**
  * this is  leaf security access
  * @name IDCMS
@@ -178,7 +178,7 @@ class leafAccessClass extends  configClass {
 				WHERE 	`module`.`isActive` 	=	1
 				AND		`folder`.`isActive` 	=	1
 				AND		`leaf`.`isActive`		=	1 ";
-			if($this->moduleId) {
+			if($this->model->getM) {
 				$sql.=" AND `leaf`.`moduleId`=\"".$this->strict($this->moduleId,'numeric')."\"";
 			}
 			if($this->folderId) {

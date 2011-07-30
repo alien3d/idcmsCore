@@ -12,7 +12,7 @@
  */
 class leafGroupAccessModel extends validationClass{
 
-	private $leafGrooupAccessId;
+	private $leafGroupAccessId;
 	private $leafId;
 	private $groupId;
 	private $leafCreateAccessValue;
@@ -163,32 +163,18 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Tab/Module/Accordion Identification Value
 	 * @param  numeric $value
 	 */
-	public function setTabId($value) {
-		$this->iconId = $value;
+	public function setLeafId($value) {
+		$this->leafId = $value;
 	}
 	/**
 	 * Return Tab/Module/Accordion Identiification Value
 	 * @return numeric tab identification
 	 */
-	public function getTabId() {
+	public function getLeafId() {
 
-		return $this->tabId;
+		return $this->leafId;
 	}
-	/**
-	 * Set Tab/Module/Accordion Identification Value
-	 * @param  numeric $value
-	 */
-	public function setTabId($value) {
-		$this->iconId = $value;
-	}
-	/**
-	 * Return Tab/Module/Accordion Identiification Value
-	 * @return numeric tab identification
-	 */
-	public function getTabId() {
 
-		return $this->tabId;
-	}
 	/**
 	 * Set Tab/Module/Accordion Identification Value
 	 * @param  numeric $value

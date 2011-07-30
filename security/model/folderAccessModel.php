@@ -120,7 +120,7 @@ class folderAccessModel extends validationClass{
 	 * @param  numeric $value
 	 */
 	public function setFolderId($value) {
-		$this->iconId = $value;
+		$this->folderId = $value;
 	}
 	/**
 	 * Return Folder/Module/Accordion Identiification Value
@@ -128,23 +128,9 @@ class folderAccessModel extends validationClass{
 	 */
 	public function getFolderId() {
 
-		return $this->FolderId;
+		return $this->folderId;
 	}
-	/**
-	 * Set Folder/Module/Accordion Identification Value
-	 * @param  numeric $value
-	 */
-	public function setFolderId($value) {
-		$this->iconId = $value;
-	}
-	/**
-	 * Return Folder/Module/Accordion Identiification Value
-	 * @return numeric Folder identification
-	 */
-	public function getFolderId() {
-
-		return $this->FolderId;
-	}
+	
 	/**
 	 * Set Folder/Module/Accordion Identification Value
 	 * @param  numeric $value
