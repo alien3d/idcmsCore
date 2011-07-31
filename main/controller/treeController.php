@@ -360,7 +360,8 @@ class treeClass extends configClass
 											\"text\" : \"" . $leafTranslate . "\", 
 							                \"folderPath\"	:\"" . $folderPath . "\",
 							                \"leafFilename\":\"" . $leafFilename . "\",
-											\"leaf\" : true, 
+											\"emptyLeaf\":false,
+							                \"leaf\" : true, 
 							                \"iconCls\" : \"" . $iconName . "\"
 							            } ";
 								if ($counterLeaf != $totalLeaf) {
@@ -373,6 +374,7 @@ class treeClass extends configClass
 
 							echo "  \"children\" :  {
                 									\"text\":\"No Leaf Identify\",
+                									\"emptyLeaf\": true,
                 									\"leaf\":true 
               				}";
 

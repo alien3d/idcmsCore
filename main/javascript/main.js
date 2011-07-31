@@ -234,7 +234,11 @@ Ext
 				listeners :{
 					'click': function (node,element) {
 						// quack quack is this a  controller ? 
-						AddCenterTabIF(node.attributes.leafFilename,"../../"+node.attributes.folderPath+"/view/"+node.attributes.leafFilename);
+						if(node.attributes.emptyLeaf==false) {
+							AddCenterTabIF(node.attributes.leafFilename,"../../"+node.attributes.folderPath+"/view/"+node.attributes.leafFilename);
+						} else {
+							Ext.MessageBox.alert(systemLabel,"There are no program assign to leaf");
+						}
 					}
 				}
 			});

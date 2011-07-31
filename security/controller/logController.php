@@ -115,9 +115,38 @@ class logClass extends  configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql	=	"
 			SELECT	*
-			FROM 	`log`";
+			FROM 	`log`
+			JOIN	`leaf`
+			USING	(`leafId`)
+			JOIN	`staff`
+			USING	(`staffId`)
+			WHERE ";
 			if($_POST['logId']) {
-				$sql.=" AND `logId`=\"".$this->strict($_POST['logId'],'n')."\"";
+				$sql.=" AND `log`.`logId`=\"".$this->strict($_POST['logId'],'n')."\"";
+			}
+		} else if( $this->getVendor() == self::mssql){
+		$sql	=	"
+			SELECT	*
+			FROM 	[log]
+			JOIN	[leaf]
+			ON		[log].[leafId] = [leaf].[leafId]
+			JOIN	[staff]
+			ON		[log].[staffId]= [staff].[staffId]
+			WHERE ";
+			if($_POST['logId']) {
+				$sql.=" AND `log`.`logId`=\"".$this->strict($_POST['logId'],'n')."\"";
+			}
+		} else if ($this->getVendor() == self:: oracle ){
+		$sql	=	"
+			SELECT	*
+			FROM 	\"log\"
+			JOIN	\"leaf\"
+			USING	(\"leafId\")
+			JOIN	\"staff\"
+			USING	(\"staffId\")
+			WHERE ";
+			if($_POST['logId']) {
+				$sql.=" AND `log`.`logId`=\"".$this->strict($_POST['logId'],'n')."\"";
 			}
 		}
 		/**

@@ -598,7 +598,8 @@ class leafClass extends configClass
 		$this->q->commit();
 		echo json_encode(array(
             "success" => true,
-            "message" => "Record Update"
+            "message" => "Record Update",
+			"leafId"=>$this->getLeafId('','single')
             ));
             exit();
 	}
@@ -654,14 +655,14 @@ class leafClass extends configClass
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(
-                "success" => "false",
+                "success" => false,
                 "message" => $this->q->responce
 			));
 			exit();
 		}
 		$this->q->commit();
 		echo json_encode(array(
-            "success" => "true",
+            "success" => true,
             "message" => "Record Remove"
             ));
             exit();

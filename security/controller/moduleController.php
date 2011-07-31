@@ -640,8 +640,8 @@ class moduleClass extends configClass
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE 	`module`
-			SET 	`moduleSequence`		= 	\"" . $this->model->getmoduleSequence() . "\",
-					`moduleNote`			=	\"" . $this->model->getmoduleNote() . "\",
+			SET 	`moduleSequence`	= 	\"" . $this->model->getmoduleSequence() . "\",
+					`moduleNote`		=	\"" . $this->model->getmoduleNote() . "\",
 					`iconId`			=	\"" . $this->model->getIconId() . "\",
 					`isActive`			=	\"" . $this->model->getIsActive('','single') . "\",
 					`isNew`				=	\"" . $this->model->getIsNew('','single') . "\",
@@ -650,13 +650,13 @@ class moduleClass extends configClass
 					`isDelete`			=	\"" . $this->model->getIsDelete('','single') . "\",
 					`isApproved`		=	\"" . $this->model->getIsApproved('','single') . "\",
 					`By`				=	\"" . $this->model->getBy() . "\",
-					`Time				=	" . $this->model->getTime() . "
-			WHERE 	`moduleId`				=	\"" . $this->model->getModuleId('','single') . "\"";
+					`Time`				=	" . $this->model->getTime() . "
+			WHERE 	`moduleId`			=	\"" . $this->model->getModuleId('','single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[module]
-			SET 	[moduleSequence]		= 	\"" . $this->model->moduleSequence . "\",
-					[moduleNote]			=	\"" . $this->model->moduleNote . "\",
+			SET 	[moduleSequence]	= 	\"" . $this->model->moduleSequence . "\",
+					[moduleNote]		=	\"" . $this->model->moduleNote . "\",
 					[iconId]			=	\"" . $this->model->iconId . "\",
 					[isDefault]			=	\"".$this->model->getIsDefault('','single')."\",
 					[isActive]			=	\"".$this->model->getIsActive('','single')."\",
@@ -667,12 +667,12 @@ class moduleClass extends configClass
 					[isApproved]		=	\"".$this->model->getIsApproved('','single')."\",
 					[By]				=	\"".$this->model->getBy()."\",
 					[Time]				=	".$this->model->getTime()."
-			WHERE 	[moduleId]				=	\"" . $this->model->getModuleId('','single') . "\"";
+			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId('','single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"module\"
-			SET 	\"moduleSequence\"		= 	\"" . $this->model->moduleSequence . "\",
-					\"moduleNote\"			=	\"" . $this->model->moduleNote . "\",
+			SET 	\"moduleSequence\"	= 	\"" . $this->model->moduleSequence . "\",
+					\"moduleNote\"		=	\"" . $this->model->moduleNote . "\",
 					\"iconId\"			=	\"" . $this->model->iconId . "\",
 					\"isActive\"		=	\"" . $this->model->getIsActive('','single') . "\",
 					\"isNew\"			=	\"" . $this->model->getIsNew('','single') . "\",
@@ -682,7 +682,7 @@ class moduleClass extends configClass
 					\"isApproved\"		=	\"" . $this->model->getIsApproved('','single') . "\",
 					\"By\"				=	\"" . $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
-			WHERE 	\"moduleId\"			=	\"" . $this->model->getModuleId('','single') . "\"";
+			WHERE 	\"moduleId\"		=	\"" . $this->model->getModuleId('','single') . "\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -694,8 +694,9 @@ class moduleClass extends configClass
 		}
 		$this->q->commit();
 		echo json_encode(array(
-            "success" => success,
-            "message" => "update success"
+            "success" =>true,
+            "message" => "update success",
+			"moduleId"=>$this->model->getModuleId('','single')
             ));
             exit();
 	}
@@ -913,10 +914,7 @@ if (isset($_POST['method'])) {
 		$moduleObject->read();
 	}
 	if ($_POST['method'] == 'save') {
-		if ($_POST['grid'] == 'master') {
-			$moduleObject->update();
-		}
-
+		$moduleObject->update();
 	}
 	if ($_POST['method'] == 'delete') {
 		$moduleObject->delete();

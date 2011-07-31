@@ -86,11 +86,19 @@ class calendarClass extends  configClass {
 		$this->log					=   0;
 
 		$this->q->log 				= $this->log;
+
+		$this->model = new calendarModel();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
+
+		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->execute();
 	}
 
 
 
-	
+
 	/* (non-PHPdoc)
 	 * @see config::create()
 	 */
@@ -99,31 +107,37 @@ class calendarClass extends  configClass {
 	 * @see config::read()
 	 */
 	function read() 				{
-		header('Content-type: application/json');
+		//header('Content-type: application/json');
 		// everything given flexibility  on todo
-		$sql="SELECT *
-				      FROM `calendarColor`
-				      JOIN    `calendar`
-				USING   (`calendarColorId`)
-				WHERE `staffId` = \"".$this->staffId."\" ";
-
+		if($this->getVendor()==self::mysql){
+			$sql="
+		SELECT	*
+		FROM 	`calendarColor`
+		JOIN    `calendar`
+		USING   (`calendarColorId`)
+		WHERE 	`staffId` = \"".$this->model->getBy()."\" ";
+		} else if ($this->getVendor()==self::mssql){
+			$sql="
+		SELECT	*
+		FROM 	[calendarColor]
+		JOIN    [calendar]
+		USING   [calendar].[calendarColorId] = [calendarColor].[colorColorId]
+		WHERE 	`staffId` = \"".$this->model->getBy()."\" ";	
+		} else if ($this->getVendor()==self::oracle){
+			$sql="
+		SELECT	*
+		FROM 	\"calendarColor\"
+		JOIN    \"calendar\"
+		USING   (\"calendarColorId\")
+		WHERE 	\"staffId\" = \"".$this->model->getBy()."\" ";
+		}
 		// searching filtering
 		$sql.=$this->q->searching();
 
 		$this->q->read($sql);
 		$total	= $this->q->numberRows();
-		if ($this->getOrder() && $this->getSortField()) {
-			if ($this->getVendor() == self::mysql) {
-				$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
-			} else if ($this->getVendor() ==  self::mssql) {
-				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
-			} else if ($this->getVendor() == self::oracle) {
-				$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
-			}
-		}
-		if(isset($_POST['start']) && isset($_POST['limit'])) {
-			$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
-		}
+		
+		
 
 		$this->q->read($sql);
 		$items = array();
@@ -131,13 +145,17 @@ class calendarClass extends  configClass {
 			$items[]			=	$row;
 		}
 
-		if($this->q->execute=='fail') {
-			$this->msg('false','Loading Data Error');
-		}else {
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                "success" =>false,
+                "message" => $this->q->responce
+			));
+			exit();
+		} else {
 			// bugs on extjs
 			if($_POST['method']=='read' && $_POST['mode']=='update') {
 				$json_encode = json_encode(
-				array('success'=>'true',
+				array('success'=>true,
 									   'total' => $this->total,
        								   'data' => $items
 				));
@@ -149,7 +167,7 @@ class calendarClass extends  configClass {
 					$items='';
 				}
 				echo json_encode(
-				array('success'=>'true',
+				array('success'=>true,
 									   'total' => $this->total,
        								   'data' => $items
 				));
@@ -177,11 +195,17 @@ class calendarClass extends  configClass {
 		$this->q->update($sql);
 		$this->q->commit();
 
-		if($this->q->execute=='fail') {
-			$this->msg(false,$this->q->responce);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                "success" =>false,
+                "message" => $this->q->responce
+			));
 			exit();
 		} else {
-			$this->msg(true,'Update query Sucess');
+			echo json_encode(array(
+                "success" =>true,
+                "message" => "update success"
+			));
 			exit();
 		}
 
@@ -226,6 +250,13 @@ if(isset($_POST['method'])){
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
+	if($_POST['method']=='create'){
+		$calendarObject ->create();
+	}
+	if($_POST['method']=='read'){
+		
+		$calendarObject ->read();
+	}
 
 	if($_POST['method']=='update') {
 		$calendarObject ->update();
@@ -253,20 +284,14 @@ if(isset($_GET['method'])){
 	 *  Load the dynamic value
 	 */
 	$calendarObject -> execute();
-	if(isset($_GET['mode'])){
-		if($_GET['mode']=='calendar'){
-			$calendarObject ->read_calendar();
-		}
-		if($_GET['mode']=='event'){
-			$calendarObject ->read_event();
-		}
 
-	}
 	if(isset($_GET['field'])){
 		if($_GET['field']=='staffId'){
 			$calendarObject->staff();
 		}
 	}
 }
+
+
 ?>
 

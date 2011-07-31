@@ -684,7 +684,7 @@ class folderClass extends  configClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success"=>true,"message"=>"Record Update"));
+		echo json_encode(array("success"=>true,"message"=>"Record Update","folderId"=>$this->model->getFolderId('','single')));
 		exit();
 
 

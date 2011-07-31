@@ -48,11 +48,11 @@ class eventModel extends validationClass{
 		if(isset($_POST['eventTitle'])){
 			$this->eventTitle = $this->strict($_POST['eventTitle'],'string');
 		}
-		if(isset($_POST['eventStart'])){
-			$this->eventStart = $this->strict($_POST['eventStart'],'datetime');
+		if(isset($_POST['start'])){
+			$this->eventStart = $this->strict($_POST['start'],'date');
 		}
-		if(isset($_POST['eventEnd'])){
-			$this->eventEnd = $this->strict($_POST['eventEnd'],'datetime');
+		if(isset($_POST['end'])){
+			$this->eventEnd = $this->strict($_POST['end'],'date');
 		}
 		if(isset($_POST['eventAddress'])){
 			$this->eventAddress = $this->strict($_POST['eventAddress'],'numeric');

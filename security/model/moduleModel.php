@@ -14,9 +14,9 @@ class moduleModel extends validationClass{
 
 	private $moduleId;
 	private $iconId;
-	private $tabSequence;
-	private $tabCode;
-	private $tabNote;
+	private $moduleSequence;
+	private $moduleCode;
+	private $moduleNote;
 
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
@@ -25,13 +25,13 @@ class moduleModel extends validationClass{
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('tab');
-		$this->setPrimaryKeyName('tabId');
+		$this->setTableName('module');
+		$this->setPrimaryKeyName('moduleId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['moduleId'])){
-			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'));
+			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'),'','single');
 		}
 		if(isset($_POST['iconId'])){
 			$this->setIconId ($this->strict($_POST['iconId'],'numeric'));
@@ -252,7 +252,7 @@ class moduleModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->moduleId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Single Or Array Value"));
 			exit();
 		}
 	}
