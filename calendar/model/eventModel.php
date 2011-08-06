@@ -19,12 +19,12 @@ class eventModel extends validationClass{
 	private $eventTitle;
 	private $eventStart;
 	private $eventEnd;
-	private $eventAddress;
+	private $eventIsAllDays;
 	private $eventNotes;
 	private $reminder;
 	private $eventUrl;
 	private $eventLocation;
-	private $eventN;
+	private $eventNotes;
 	private $staffId;
 
 	/**
@@ -48,14 +48,14 @@ class eventModel extends validationClass{
 		if(isset($_POST['eventTitle'])){
 			$this->eventTitle = $this->strict($_POST['eventTitle'],'string');
 		}
-		if(isset($_POST['start'])){
-			$this->eventStart = $this->strict($_POST['start'],'date');
+		if(isset($_POST['eventStart'])){
+			$this->eventStart = $this->strict($_POST['eventStart'],'date');
 		}
-		if(isset($_POST['end'])){
-			$this->eventEnd = $this->strict($_POST['end'],'date');
+		if(isset($_POST['eventEnd'])){
+			$this->eventEnd = $this->strict($_POST['eventEnd'],'date');
 		}
-		if(isset($_POST['eventAddress'])){
-			$this->eventAddress = $this->strict($_POST['eventAddress'],'numeric');
+		if(isset($_POST['eventIsAllDays'])){
+			$this->eventIsAllDays = $this->strict($_POST['eventIsAllDays'],'numeric');
 		}
 		if(isset($_POST['eventNotes'])){
 			$this->eventNotes = $this->strict($_POST['eventNotes'],'memo');
@@ -66,8 +66,8 @@ class eventModel extends validationClass{
 		if(isset($_POST['eventLocation'])){
 			$this->eventLocation = $this->strict($_POST['eventLocation'],'numeric');
 		}
-		if(isset($_POST['eventN'])){
-			$this->eventN = $this->strict($_POST['eventN'],'numeric');
+		if(isset($_POST['eventIsNew'])){
+			$this->eventIsNew = $this->strict($_POST['eventIsNew'],'numeric');
 		}
 
 		if(isset($_SESSION['staffId'])){
@@ -253,17 +253,17 @@ class eventModel extends validationClass{
 	 * Set Event Address Value
 	 * @param string $value
 	 */
-	public function setEventAddress($value)
+	public function setEventIsAllDays($value)
 	{
-		$this->eventAddress = $value;
+		$this->eventIsAllDays = $value;
 	}
 	/**
 	 * Return Event Address Value
 	 * @return string Event Address
 	 */
-	public function getEventAddress()
+	public function getEventIsAllDays()
 	{
-		return $this->eventAddress;
+		return $this->eventIsAllDays;
 	}
 
 	/**
@@ -284,16 +284,16 @@ class eventModel extends validationClass{
 	}
 
 	/**
-	 * Set Event Start Value
-	 * @param datetime $value
+	 * Set Event Reminder Value
+	 * @param string $value
 	 */
 	public function setEventReminder($value)
 	{
 		$this->eventReminder = $value;
 	}
 	/**
-	 * Return Event Start Value
-	 * @return datetime Event Start
+	 * Return Event Reminder Value
+	 * @return string Event Reminder
 	 */
 	public function getEventReminder()
 	{
@@ -301,16 +301,16 @@ class eventModel extends validationClass{
 	}
 
 	/**
-	 * Set Event Start Value
-	 * @param datetime $value
+	 * Set Event Url Value
+	 * @param string $value
 	 */
 	public function setEventUrl($value)
 	{
 		$this->eventUrl = $value;
 	}
 	/**
-	 * Return Event Start Value
-	 * @return datetime Event Start
+	 * Return Event Url Value
+	 * @return string Event Url
 	 */
 	public function getEventUrl()
 	{
@@ -319,16 +319,16 @@ class eventModel extends validationClass{
 
 
 	/**
-	 * Set Event Start Value
-	 * @param datetime $value
+	 * Set Event Location Value
+	 * @param string $value
 	 */
 	public function setEventLocation($value)
 	{
 		$this->eventLocation = $value;
 	}
 	/**
-	 * Return Event Start Value
-	 * @return datetime Event Start
+	 * Return Event Location Value
+	 * @return string Event Location
 	 */
 	public function getEventLocation()
 	{
@@ -336,20 +336,20 @@ class eventModel extends validationClass{
 	}
 
 	/**
-	 * Set Event Start Value
-	 * @param datetime $value
+	 * Set Event New Value
+	 * @param boolean $value
 	 */
-	public function setEventN($value)
+	public function setEventIsNew($value)
 	{
-		$this->eventN = $value;
+		$this->eventIsNew = $value;
 	}
 	/**
-	 * Return Event Start Value
-	 * @return datetime Event Start
+	 * Return Event New Value
+	 * @return boolean Event New
 	 */
-	public function getEventN()
+	public function getEventIsNew()
 	{
-		return $this->eventN;
+		return $this->eventIsNew;
 	}
 
 

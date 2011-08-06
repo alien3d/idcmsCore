@@ -115,6 +115,7 @@ class calendarClass extends  configClass {
 		FROM 	`calendarColor`
 		JOIN    `calendar`
 		USING   (`calendarColorId`)
+		
 		WHERE 	`staffId` = \"".$this->model->getBy()."\" ";
 		} else if ($this->getVendor()==self::mssql){
 			$sql="
@@ -142,6 +143,7 @@ class calendarClass extends  configClass {
 		$this->q->read($sql);
 		$items = array();
 		while($row  = 	$this->q->fetchAssoc()) {
+			$row['ColorId']		=  $row['calendarColorId']; // testing maaping color
 			$items[]			=	$row;
 		}
 
@@ -156,7 +158,7 @@ class calendarClass extends  configClass {
 			if($_POST['method']=='read' && $_POST['mode']=='update') {
 				$json_encode = json_encode(
 				array('success'=>true,
-									   'total' => $this->total,
+									   'total' => $total,
        								   'data' => $items
 				));
 				$json_encode=str_replace("[","",$json_encode);
@@ -168,7 +170,7 @@ class calendarClass extends  configClass {
 				}
 				echo json_encode(
 				array('success'=>true,
-									   'total' => $this->total,
+									   'total' => $total,
        								   'data' => $items
 				));
 			}
@@ -231,6 +233,7 @@ $calendarObject  	= 	new calendarClass();
 
 
 if(isset($_POST['method'])){
+	
 	/*
 	 *  Initilize Value before load in the loader
 	 */
@@ -254,7 +257,7 @@ if(isset($_POST['method'])){
 		$calendarObject ->create();
 	}
 	if($_POST['method']=='read'){
-		
+	
 		$calendarObject ->read();
 	}
 
@@ -294,4 +297,6 @@ if(isset($_GET['method'])){
 
 
 ?>
+
+
 

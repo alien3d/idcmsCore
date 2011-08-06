@@ -93,42 +93,62 @@ class eventClass extends configClass
 		header('Content-type: application/json');
 		$this->model->create();
 		$this->q->start();
-		if ($this->getVendor() == self::mysql || $this->q->vendor == 'normal') {
-		} else if ($this->getVendor() ==  self::mssql)
-		$sql = "
-					INSERT INTO `event`
-							(
-								`calendarId`,
-								`calenderTitle`,
-								`calendarStart`,
-								`calendarEnd`,
-								`calendarAd`,
-								`calendarNotes`,
-								`calenderRem`,
-								`calenderUrl`,
-								`calenderLoc`,
-								`calendearN`,
-								`staffId`,
-								`isNew`
-								`isDraft`,
-								`isUpdate`,
-								`isDelete`,
-								`By`,
-								`Time`
-							)
-					VALUES	(
-								\"". $this->strict($_POST['calendar_uniqueId'], 'n') ."\",
-								\"". $this->strict($_POST['title'], 's') ."\",
-								\"". date("Y-m-d H:i:s", strtotime($_POST['start'])) ."\",
-								\"". date("Y-m-d H:i:s", strtotime($_POST['end'])) ."\",
-								\"". $this->strict($_POST['ad'], 'c') ."\",
-								\"". $this->strict($_POST['notes'], 's') ."\",
-								\"". $this->strict($_POST['rem'], 'c') ."\",
-								\"". $this->strict($_POST['url'], 'c') ."\",
-								\"". $this->strict($_POST['loc'], 's') ."\",
-								\"". $this->strict($_POST['n'], 'c') ."\",
-								\"". $_SESSION['staff_uniqueId'] ."\"
+		if ($this->getVendor() == self::mysql) {
+			$sql = "
+			INSERT INTO `event`(
+						`calendarId`,		`eventTitle`,
+						`eventStart`,		`eventEnd`,
+						`eventAd`,			`eventNotes`,
+						`eventRem`,			`eventUrl`,
+						`eventLoc`,			`eventN`,
+						`staffId`,			`Time`
+			)VALUES	(
+				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
+				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
+				\"".$this->model->getEventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
+				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
+				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
+				\"". $this->model->getBy() . "\",			" . $this->model->getTime() . "
+				
 							);";
+		} else if ($this->getVendor() ==  self::mssql){
+			$sql = "
+			INSERT INTO [event`(
+						[calendarId],		[eventTitle],
+						[eventStart],		[eventEnd],
+						[eventAd],			[eventNotes],
+						[eventRem],			[eventUrl],
+						[eventLoc],			[eventN],
+						[staffId],			[Time]
+			)VALUES	(
+				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
+				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
+				\"".$this->model->getEventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
+				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
+				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
+				\"". $this->model->getBy() . "\",			" . $this->model->getTime() . "
+				
+							);";
+		}elseif ($this->getVendor()==self::oracle){
+			$sql = "\"
+			INSERT INTO \"event\" (
+						\"calendarId\",		\"eventTitle\",
+						\"eventStart\",		\"eventEnd\",
+						\"eventAd\",			\"eventNotes\",
+						\"eventRem\",			\"eventUrl\",
+						\"eventLoc\",			\"eventN\",
+						\"staffId\",			\"Time\"
+			)VALUES	(
+				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
+				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
+				\"".$this->model->getEventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
+				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
+				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
+				\"". $this->model->getBy() . "\",			" . $this->model->getTime() . "
+				
+							);";
+		}
+		
 		$this->q->create($sql);
 		$this->q->commit();
 	}

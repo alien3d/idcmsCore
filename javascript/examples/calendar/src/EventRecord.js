@@ -12,59 +12,59 @@
 Ext.calendar.EventMappings = {
     EventId: {
         name: 'EventId',
-        mapping: 'id',
+        mapping: 'eventIdd',
         type: 'int'
     },
     CalendarId: {
         name: 'CalendarId',
-        mapping: 'cid',
+        mapping: 'calendarId',
         type: 'int'
     },
     Title: {
         name: 'Title',
-        mapping: 'title',
+        mapping: 'eventTitle',
         type: 'string'
     },
     StartDate: {
         name: 'StartDate',
-        mapping: 'start',
+        mapping: 'eventStart',
         type: 'date',
         dateFormat: 'c'
     },
     EndDate: {
         name: 'EndDate',
-        mapping: 'end',
+        mapping: 'eventEnd',
         type: 'date',
         dateFormat: 'c'
     },
     Location: {
         name: 'Location',
-        mapping: 'loc',
+        mapping: 'eventLocation',
         type: 'string'
     },
     Notes: {
         name: 'Notes',
-        mapping: 'notes',
+        mapping: 'eventNotes',
         type: 'string'
     },
     Url: {
         name: 'Url',
-        mapping: 'url',
+        mapping: 'eventUrl',
         type: 'string'
     },
     IsAllDay: {
         name: 'IsAllDay',
-        mapping: 'ad',
+        mapping: 'IsAllDay',
         type: 'boolean'
     },
     Reminder: {
         name: 'Reminder',
-        mapping: 'rem',
+        mapping: 'eventReminder',
         type: 'string'
     },
     IsNew: {
         name: 'IsNew',
-        mapping: 'n',
+        mapping: 'eventIsNew',
         type: 'boolean'
     }
 };
