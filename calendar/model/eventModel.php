@@ -24,7 +24,6 @@ class eventModel extends validationClass{
 	private $reminder;
 	private $eventUrl;
 	private $eventLocation;
-	private $eventNotes;
 	private $staffId;
 
 	/**
@@ -49,10 +48,10 @@ class eventModel extends validationClass{
 			$this->eventTitle = $this->strict($_POST['eventTitle'],'string');
 		}
 		if(isset($_POST['eventStart'])){
-			$this->eventStart = $this->strict($_POST['eventStart'],'date');
+			$this->eventStart = date("Y-m-d H:i:s", strtotime($_POST['eventStart']));
 		}
 		if(isset($_POST['eventEnd'])){
-			$this->eventEnd = $this->strict($_POST['eventEnd'],'date');
+			$this->eventEnd = date("Y-m-d H:i:s", strtotime($_POST['eventEnd']));
 		}
 		if(isset($_POST['eventIsAllDays'])){
 			$this->eventIsAllDays = $this->strict($_POST['eventIsAllDays'],'numeric');
@@ -250,7 +249,7 @@ class eventModel extends validationClass{
 		return $this->eventEnd;
 	}
 	/**
-	 * Set Event Address Value
+	 * Set Event Is All Days Value
 	 * @param string $value
 	 */
 	public function setEventIsAllDays($value)
@@ -258,10 +257,11 @@ class eventModel extends validationClass{
 		$this->eventIsAllDays = $value;
 	}
 	/**
-	 * Return Event Address Value
+	 * Return Event Is All Days Value
 	 * @return string Event Address
 	 */
 	public function getEventIsAllDays()
+					
 	{
 		return $this->eventIsAllDays;
 	}

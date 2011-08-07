@@ -12,7 +12,7 @@
 Ext.calendar.EventMappings = {
     EventId: {
         name: 'EventId',
-        mapping: 'eventIdd',
+        mapping: 'eventId',
         type: 'int'
     },
     CalendarId: {

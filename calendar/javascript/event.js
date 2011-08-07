@@ -176,12 +176,14 @@ App = function() {
 											var jsonResponse = Ext.decode(response.responseText);
 											
 											if (jsonResponse.success == true) {
-												title = systemLabel
+												title = systemLabel;
 											} else {
 												title = systemErrorLabel;
 											}
 											Ext.MessageBox.alert(title,
 													jsonResponse.message);
+											this.eventStore.reload();
+											
 										},
 										failure : function(response,
 												options) {
@@ -211,7 +213,7 @@ App = function() {
                                     Ext.Ajax.request({
 										url : '../controller/eventController.php',
 										params : {
-											method : 'update_event',
+											method : 'update',
 											eventId : rec.data.EventId,
 											calendarId : rec.data.CalendarId,
 											eventTitle : rec.data.Title,
@@ -226,27 +228,25 @@ App = function() {
 										},
 										success : function(response,
 												options) {
-											var x = Ext
+											var jsonResponse = Ext
 													.decode(response.responseText);
-											var title = 'Message';
-											if (x.success == 'true') {
-												title = title
-														+ ' Success';
+									
+											if (jsonResponse.success == true) {
+												title = systemLabel;
 											} else {
-												title = title
-														+ ' Failure';
+												title = systemErrorlabel;
 											}
 											Ext.MessageBox.alert(title,
-													x.message);
+													jsonResponse.message);
 										},
 										failure : function(response,
 												options) {
 											// critical bug extjs
-											var x = Ext
+											var jsonResponse = Ext
 													.decode(response.responseText);
-											var title = 'Message Failure';
-											Ext.MessageBox.alert(title,
-													x.message);
+											
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										}
 									});
                                 },
@@ -258,34 +258,31 @@ App = function() {
                                     Ext.Ajax.request({
 										url : '../controller/eventController.php',
 										params : {
-											method : 'delete_event',
+											method : 'delete',
 											eventId : rec.data.EventId,
 											leafId : leafId
 										},
 										success : function(response,
 												options) {
 										
-											var x = Ext
+											var jsonResponse = Ext
 													.decode(response.responseText);
-											var title = 'Message';
-											if (x.success == 'true') {
-												title = title
-														+ ' Success';
+										
+											if (jsonResponse.success == true) {
+												title = systemLabel;
 											} else {
-												title = title
-														+ ' Failure';
+												title = systemErrorLabel;
 											}
 											Ext.MessageBox.alert(title,
-													x.message);
+													jsonResponse.message);
 										},
 										failure : function(response,
 												options) {
 											// critical bug extjs
-											var x = Ext
+											var jsonResponse = Ext
 													.decode(response.responseText);
-											var title = 'Message Failure';
-											Ext.MessageBox.alert(title,
-													x.message);
+											
+											Ext.MessageBox.alert(systemErrorLabel,jsonResponse.message);
 										}
 									});
                                 },
@@ -361,27 +358,24 @@ App = function() {
 										},
 										success : function(response,
 												options) {
-											var x = Ext
+											var jsonResponse = Ext
 													.decode(response.responseText);
-											var title = 'Message';
-											if (x.success == 'true') {
-												title = title
-														+ ' Success';
+											
+											if (jsonResponse.success == 'true') {
+												title = systemLabel;
 											} else {
-												title = title
-														+ ' Failure';
+												title = systemErrorLabel;
 											}
 											Ext.MessageBox.alert(title,
-													x.message);
+													jsonResponse.message);
 										},
 										failure : function(response,
 												options) {
 											// critical bug extjs
-											var x = Ext
+											var jsonResponse = Ext
 													.decode(response.responseText);
-											var title = 'Message Failure';
-											Ext.MessageBox.alert(title,
-													x.message);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										}
 									});
                                 },
@@ -401,33 +395,31 @@ App = function() {
                                     Ext.Ajax.request({
 										url : '../controller/eventController.php',
 										params : {
-											method : 'delete_event',
+											method : 'delete',
 										    eventId : rec.data.EventId,
 											leafId : leafId
 										},
 										success : function(response,
 												options) {
-											var x = Ext
+											var jsonResponse = Ext
 													.decode(response.responseText);
-											var title = 'Message';
-											if (x.success == 'true') {
-												title = title
-														+ ' Success';
+											
+											if (jsonResponse.success == true) {
+												title = systemLabel;
 											} else {
-												title = title
-														+ ' Failure';
+												title = systemErrorLabel;
 											}
 											Ext.MessageBox.alert(title,
-													x.message);
+													jsonResponse.message);
 										},
 										failure : function(response,
 												options) {
 											// critical bug extjs
-											var x = Ext
+											var jsonResponse = Ext
 													.decode(response.responseText);
-											var title = 'Message Failure';
-											Ext.MessageBox.alert(title,
-													x.message);
+											
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
 										}
 									});
                                 },
@@ -488,25 +480,26 @@ App = function() {
 									success : function(response,
 											options) {
 										
-										var x = Ext
+										var jsonResponse = Ext
 												.decode(response.responseText);
-										var title = 'Message';
 										
-										if (x.success == 'true') {
-											title = title + ' Success';
+										
+										if (jsonResponse.success == true) {
+											title = systemLabel;
+											eventStore.reload();
 										} else {
-											title = title + ' Failure';
+											title = systemErrorLabel;
 										}
-										Ext.MessageBox.alert(title,x.message);
+										Ext.MessageBox.alert(title+"a",jsonResponse.message);
 									},
 									failure : function(response,
 											options) {
 										// critical bug extjs
-										var x = Ext
+										var jsonResponse = Ext
 												.decode(response.responseText);
-										var title = 'Message Failure';
-										Ext.MessageBox.alert(title,
-												x.message);
+										
+										Ext.MessageBox.alert(systemErrorLabel,
+												jsonResponse.message);
 									}
 								});
 							},
@@ -543,25 +536,25 @@ App = function() {
 									},
 									success : function(response,
 											options) {
-										var x = Ext
+										var jsonResponse = Ext
 												.decode(response.responseText);
 										var title = 'Message';
-										if (x.success == 'true') {
-											title = title + ' Success';
+										if (jsonResponse.success == true) {
+											title = systemLabel;
 										} else {
-											title = title + ' Failure';
+											title = systemErrorLabel;
 										}
-										Ext.MessageBox.alert(title,
-												x.message);
+										Ext.MessageBox.alert(systemErrorLabel,
+												jsonResponse.message);
 									},
 									failure : function(response,
 											options) {
 										// critical bug extjs
-										var x = Ext
+										var jsonResponse = Ext
 												.decode(response.responseText);
-										var title = 'Message Failure';
-										Ext.MessageBox.alert(title,
-												x.message);
+										
+										Ext.MessageBox.alert(systemErrorLabel,
+												jsonResponse.message);
 									}
 								});
 							},
@@ -575,32 +568,32 @@ App = function() {
                                 Ext.Ajax.request({
 									url : '../controller/eventController.php',
 									params : {
-										method : 'delete_event',
-										event_uniqueId : rec.data.EventId,
+										method : 'delete',
+										eventId : rec.data.EventId,
 										leafId : leafId
 									},
 									success : function(response,
 											options) {
 										
-										var x = Ext
+										var jsonResponse = Ext
 												.decode(response.responseText);
-										var title = 'Message';
-										if (x.success == 'true') {
-											title = title + ' Success';
+										
+										if (jsonResponse.success == true) {
+											title = systemLabel;
 										} else {
-											title = title + ' Failure';
+											title = systemErrorLabel;
 										}
 										Ext.MessageBox.alert(title,
-												x.message);
+												jsonResponse.message);
 									},
 									failure : function(response,
 											options) {
 										// critical bug extjs
-										var x = Ext
+										var jsonResponse = Ext
 												.decode(response.responseText);
-										var title = 'Message Failure';
-										Ext.MessageBox.alert(title,
-												x.message);
+										
+										Ext.MessageBox.alert(systemErrorLabel,
+												jsonResponse.message);
 									}
 								});
 							},
