@@ -98,14 +98,14 @@ class eventClass extends configClass
 			INSERT INTO `event`(
 						`calendarId`,		`eventTitle`,
 						`eventStart`,		`eventEnd`,
-						`eventIsAllDays`,	`eventNotes`,
+						`eventIsAllDay`,	`eventNotes`,
 						`eventReminder`,	`eventUrl`,
 						`eventLocation`,	`eventIsNew`,
 						`staffId`,			`Time`
 			)VALUES	(
 				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
 				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
-				\"".$this->model->getEventIsAllDays() ."\",	\"". $this->model->getEventNotes() ."\",
+				\"".$this->model->geteventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
 				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
 				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
 				\"". $this->model->getBy() . "\",			" . $this->model->getTime() . "
@@ -116,14 +116,14 @@ class eventClass extends configClass
 			INSERT INTO [event`(
 						[calendarId],		[eventTitle],
 						[eventStart],		[eventEnd],
-						[eventIsAllDays],	[eventNotes],
+						[eventIsAllDay],	[eventNotes],
 						[eventReminder],	[eventUrl],
 						[eventLocation],	[eventIsNew],
 						[staffId],			[Time]
 			)VALUES	(
 				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
 				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
-				\"".$this->model->getEventIsAllDays() ."\",	\"". $this->model->getEventNotes() ."\",
+				\"".$this->model->geteventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
 				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
 				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
 				\"". $this->model->getBy() . "\",			" . $this->model->getTime() . "
@@ -134,14 +134,14 @@ class eventClass extends configClass
 			INSERT INTO \"event\" (
 						\"calendarId\",			\"eventTitle\",
 						\"eventStart\",			\"eventEnd\",
-						\"eventIsAllDays\",		\"eventNotes\",
+						\"eventIsAllDay\",		\"eventNotes\",
 						\"eventReminder\",		\"eventUrl\",
 						\"eventLocation\",		\"eventIsNew\",
 						\"staffId\",			\"Time\"
 			)VALUES	(
 				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
 				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
-				\"".$this->model->getEventIsAllDays() ."\",	\"". $this->model->getEventNotes() ."\",
+				\"".$this->model->geteventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
 				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
 				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
 				\"". $this->model->getBy() . "\",			" . $this->model->getTime() . "
@@ -151,13 +151,14 @@ class eventClass extends configClass
 
 		$this->q->create($sql);
 		$eventId =$this->q->lastInsertId();
-		// try to return  json data  hope phantom record wi
+		// try to return  json data  hope phantom record will updated..if
+		$data=array('eventId'=>$eventId);
 		if($this->q->execute=='fail'){
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success"=>true,"message"=>"Record Created","eventId"=>$eventId));
+		echo json_encode(array("success"=>true,"message"=>"Record Created","evts"=>$data,"eventId"=>$eventId));
 		exit();
 	}
 	/* (non-PHPdoc)
@@ -234,7 +235,7 @@ class eventClass extends configClass
                 'success' => true,
                 'total' => $total,
 				'message'=>'data loaded',
-                'data' => $items
+                'evts' => $items
 			));
 		}
 			
@@ -261,7 +262,7 @@ class eventClass extends configClass
 					`eventTitle`		=	\"". $this->model->getEventTitle() ."\",
 					`eventStart`		=	\"". $this->model->getEventStart() ."\",
 					`eventEnd`			=	\"". $this->model->getEventEnd() ."\",
-					`eventIsAllDays`  	= 	\"". $this->model->getEventIsAllDays() ."\",
+					`eventIsAllDay`  	= 	\"". $this->model->geteventIsAllDay() ."\",
 					`eventNotes` 		= 	\"". $this->model->getEventNotes() ."\",
 					`eventReminder`		=	\"". $this->model->getEventReminder() ."\",
 					`eventUrl`			=	\"". $this->model->getEventUrl() ."\",
@@ -269,9 +270,34 @@ class eventClass extends configClass
 					`eventIsNew`		=	\"". $this->model->getEventIsNew() ."\"
 			WHERE 	`eventId`			=	\"". $this->model->getEventId('','single')."\"";
 		} else if ($this->q->vendor == self :: mssql){
+			$sql = "
+			UPDATE	`event`
+			SET		`calendarId`		=	\"". $this->model->getCalendarId() ."\",
+					`eventTitle`		=	\"". $this->model->getEventTitle() ."\",
+					`eventStart`		=	\"". $this->model->getEventStart() ."\",
+					`eventEnd`			=	\"". $this->model->getEventEnd() ."\",
+					`eventIsAllDay`  	= 	\"". $this->model->geteventIsAllDay() ."\",
+					`eventNotes` 		= 	\"". $this->model->getEventNotes() ."\",
+					`eventReminder`		=	\"". $this->model->getEventReminder() ."\",
+					`eventUrl`			=	\"". $this->model->getEventUrl() ."\",
+					`eventLocation`		=	\"". $this->model->getEventLocation() ."\",
+					`eventIsNew`		=	\"". $this->model->getEventIsNew() ."\"
+			WHERE 	`eventId`			=	\"". $this->model->getEventId('','single')."\"";
 			
 		} else if ($this->q->vendor == self:: oracle){
-			
+			$sql = "
+			UPDATE	`event`
+			SET		`calendarId`		=	\"". $this->model->getCalendarId() ."\",
+					`eventTitle`		=	\"". $this->model->getEventTitle() ."\",
+					`eventStart`		=	\"". $this->model->getEventStart() ."\",
+					`eventEnd`			=	\"". $this->model->getEventEnd() ."\",
+					`eventIsAllDay`  	= 	\"". $this->model->geteventIsAllDay() ."\",
+					`eventNotes` 		= 	\"". $this->model->getEventNotes() ."\",
+					`eventReminder`		=	\"". $this->model->getEventReminder() ."\",
+					`eventUrl`			=	\"". $this->model->getEventUrl() ."\",
+					`eventLocation`		=	\"". $this->model->getEventLocation() ."\",
+					`eventIsNew`		=	\"". $this->model->getEventIsNew() ."\"
+			WHERE 	`eventId`			=	\"". $this->model->getEventId('','single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {

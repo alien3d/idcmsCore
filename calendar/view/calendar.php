@@ -55,7 +55,7 @@
             <div id="logo-body">&nbsp;</div>
             <div class="logo-bottom">&nbsp;</div>
         </div>
-        <h1>Kalendar Kospek</h1>
+        <h1>Calendar</h1>
         <span id="app-msg" class="x-hidden"></span>
     </div>
     </div>

@@ -40,7 +40,7 @@ App = function() {
 			this.calendarStore.load();
 		
 			this.eventReader = new Ext.data.JsonReader({
-						root : 'data',
+						root : 'evts',
 						fields : Ext.calendar.EventRecord.prototype.fields
 								.getRange()
 					});
@@ -167,7 +167,7 @@ App = function() {
 											eventEnd : rec.data.EndDate,
 											eventIsAllDay : rec.data.IsAllDay,
 											eventLocation : rec.data.Location,
-											eventReminder :reminder(rec.data.Reminder),
+											eventReminder :rec.data.Reminder,
 											eventIsNew : rec.data.IsNew,
 											eventNotes : rec.data.Notes,
 											leafId : leafId
@@ -182,7 +182,7 @@ App = function() {
 											}
 											Ext.MessageBox.alert(title,
 													jsonResponse.message);
-											this.eventStore.reload();
+											
 											
 										},
 										failure : function(response,
@@ -221,7 +221,7 @@ App = function() {
 											eventEnd : rec.data.EndDate,
 											eventIsAllDay : rec.data.IsAllDay,
 											eventLocation : rec.data.Location,
-											eventReminder :reminder(rec.data.Reminder),
+											eventReminder :rec.data.Reminder,
 									 		eventIsNew : rec.data.IsNew,
 											eventNotes : rec.data.Notes,
 											leafId : leafId
@@ -346,12 +346,12 @@ App = function() {
 											method : 'update',
 											eventId : rec.data.EventId,
 											calendarId : rec.data.CalendarId,
-											title : rec.data.Title,
+											eventTitle : rec.data.Title,
 											eventStart : rec.data.StartDate,
 											eventEnd : rec.data.EndDate,
 											eventIsAllDay : rec.data.IsAllDay,
 											eventLocation : rec.data.Location,
-											eventReminder :reminder(rec.data.Reminder),
+											eventReminder :rec.data.Reminder,
 											eventIsNew : rec.data.IsNew,
 											eventNotes : rec.data.Notes,
 											leafId : leafId
@@ -361,7 +361,7 @@ App = function() {
 											var jsonResponse = Ext
 													.decode(response.responseText);
 											
-											if (jsonResponse.success == 'true') {
+											if (jsonResponse.success == true) {
 												title = systemLabel;
 											} else {
 												title = systemErrorLabel;
@@ -385,6 +385,44 @@ App = function() {
                                 fn: function(vw, rec){
                                     rec.commit();
                                     this.showMsg('Event '+ rec.data.Title +' was updated');
+									 Ext.Ajax.request({
+										url : '../controller/eventController.php',
+										params : {
+											method : 'update',
+											eventId : rec.data.EventId,
+											calendarId : rec.data.CalendarId,
+											eventTitle : rec.data.Title,
+											eventStart : rec.data.StartDate,
+											eventEnd : rec.data.EndDate,
+											eventIsAllDay : rec.data.IsAllDay,
+											eventLocation : rec.data.Location,
+											eventReminder :rec.data.Reminder,
+											eventIsNew : rec.data.IsNew,
+											eventNotes : rec.data.Notes,
+											leafId : leafId
+										},
+										success : function(response,
+												options) {
+											var jsonResponse = Ext
+													.decode(response.responseText);
+											
+											if (jsonResponse.success == true) {
+												title = systemLabel;
+											} else {
+												title = systemErrorLabel;
+											}
+											Ext.MessageBox.alert(title,
+													jsonResponse.message);
+										},
+										failure : function(response,
+												options) {
+											// critical bug extjs
+											var jsonResponse = Ext
+													.decode(response.responseText);
+											Ext.MessageBox.alert(systemErrorLabel,
+													jsonResponse.message);
+										}
+									});
                                 },
                                 scope: this
                             },
@@ -450,20 +488,8 @@ App = function() {
 					listeners: {
 						'eventadd': {
 							fn: function(win, rec){
-								win.hide();
-								rec.data.IsNew = false;
-								this.eventStore.add(rec);
-                                this.showMsg('Event '+ rec.data.Title +' was added');
-                                var data;
-                                reminder = function(data){
-                                	var remind;
-                                	if (!data){
-                                		remind = null;
-                                	}else{
-                                    	remind = data;
-	                                }
-                                 return remind;
-                                 };
+								alert("start function event add");
+								
                                 Ext.Ajax.request({
 									url : '../controller/eventController.php',
 									params : {
@@ -473,7 +499,7 @@ App = function() {
 										eventStart : rec.data.StartDate,
 										eventEnd : rec.data.EndDate,
 										eventIsAllDay : rec.data.IsAllDay,
-										eventReminder :reminder(rec.data.Reminder),
+										eventReminder :rec.data.Reminder,
 										eventIsNew : rec.data.IsNew,
 										leafId : leafId
 									},
@@ -486,11 +512,12 @@ App = function() {
 										
 										if (jsonResponse.success == true) {
 											title = systemLabel;
-											eventStore.reload();
+											this.eventStore.reload();
+											
 										} else {
 											title = systemErrorLabel;
 										}
-										Ext.MessageBox.alert(title+"a",jsonResponse.message);
+										Ext.MessageBox.alert(title,jsonResponse.message);
 									},
 									failure : function(response,
 											options) {
@@ -502,6 +529,22 @@ App = function() {
 												jsonResponse.message);
 									}
 								});
+                                alert("end event function");
+                                win.hide();
+								rec.data.IsNew = false;
+								rec.data.eventId='testing';  // tengok boleh tak bypass
+								this.eventStore.add(rec);
+                                this.showMsg('Event '+ rec.data.Title +' was added');
+                                var data;
+                                reminder = function(data){
+                                	var remind;
+                                	if (!data){
+                                		remind = null;
+                                	}else{
+                                    	remind = data;
+	                                }
+                                 return remind;
+                                 };	
 							},
 							scope: this
 						},
@@ -528,7 +571,7 @@ App = function() {
 										calendarId : rec.data.CalendarId,
 										eventTitle : rec.data.Title,
 										eventStart : rec.data.StartDate,
-										eventReminder :reminder(rec.data.Reminder),
+										eventReminder :rec.data.Reminder,
 										eventEnd : rec.data.EndDate,
 										eventIsAllDay : rec.data.IsAllDay,
 										eventIsNew : rec.data.IsNew,
@@ -544,7 +587,7 @@ App = function() {
 										} else {
 											title = systemErrorLabel;
 										}
-										Ext.MessageBox.alert(systemErrorLabel,
+										Ext.MessageBox.alert(title,
 												jsonResponse.message);
 									},
 									failure : function(response,
