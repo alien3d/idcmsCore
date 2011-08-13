@@ -29,7 +29,7 @@ Ext.onReady(function(){
 				baseParams : {
 					method : "read",
 					page : "master",
-					leafIdTemp : leafIdTemp
+					leafId : leafId
 				},
 				success : function(response, options) {
 					var jsonResponse = Ext.decode(response.responseText);
@@ -111,6 +111,145 @@ Ext.onReady(function(){
 			reader : leafGroupAccessReader
 		});
 	
+		   var groupProxy = new Ext.data.HttpProxy({
+		        url: "../controller/folderAccessController.php",
+		        method: 'GET',
+		        
+		        success: function (response, options) {
+		            var jsonResponse = Ext.decode(response.responseText);
+		            if (jsonResponse == "true") {
+		                title = successLabel;
+		            } else {
+		               
+		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		            }
+		            
+		        },
+		        failure: function (response, options) {
+
+		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+		        }
+		    });
+		    var groupReader = new Ext.data.JsonReader({
+		        totalProperty: "total",
+		        successProperty: "success",
+		        messageProperty: "message",
+		        idProperty: "groupId"
+		    });
+		    
+		    var groupStore = new Ext.data.JsonStore({
+		        autoLoad : true,
+		    	autoDestroy: true,
+		        proxy: groupProxy,
+		        reader: groupReader,
+		        baseParams: {
+		            method: "read",
+		            leafId: leafId,
+		            field:"groupId"
+		        },
+		        root: 'group',
+		        fields:[{
+		        	name:'groupId',
+		        	type:'int'
+		        },{
+		        	name:'groupNote',
+		        	type:'string'
+		        }]
+		        
+		    });
+		   
+		    var moduleProxy = new Ext.data.HttpProxy({
+		        url: "../controller/folderAccessController.php",
+		        method: 'GET',
+		        
+		        success: function (response, options) {
+		            var jsonResponse = Ext.decode(response.responseText);
+		            if (jsonResponse == "true") {
+		                title = successLabel;
+		            } else {
+		               
+		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		            }
+		            
+		        },
+		        failure: function (response, options) {
+
+		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+		        }
+		    });
+
+		    var moduleReader = new Ext.data.JsonReader({
+		        totalProperty: "total",
+		        successProperty: "success",
+		        messageProperty: "message",
+		        idProperty: "moduleId"
+		    });
+		    var moduleStore = new Ext.data.JsonStore({
+		     	autoDestroy: true,
+		         proxy: moduleProxy,
+		         reader: moduleReader,
+		         baseParams: {
+			            method: "read",
+			            leafId: leafId,
+			            field:"moduleId"
+			        },
+		         root: 'module',
+		    	fields:[{
+		    		name:'moduleId',
+		    		type:'int'
+		    	},{
+		    		name:'moduleNote',
+		    		type:'string'
+		    	}]
+		    	
+		    });	
+		    
+		    var folderProxy = new Ext.data.HttpProxy({
+		        url: "../controller/folderAccessController.php",
+		        method: 'GET',
+		        
+		        success: function (response, options) {
+		            var jsonResponse = Ext.decode(response.responseText);
+		            if (jsonResponse == "true") {
+		                title = successLabel;
+		            } else {
+		               
+		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		            }
+		            
+		        },
+		        failure: function (response, options) {
+
+		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
+		        }
+		    });
+
+		    var folderReader = new Ext.data.JsonReader({
+		        totalProperty: "total",
+		        successProperty: "success",
+		        messageProperty: "message",
+		        idProperty: "folderId"
+		    });
+		    var folderStore = new Ext.data.JsonStore({
+		     	autoDestroy: true,
+		         proxy: folderProxy,
+		         reader: folderReader,
+		         baseParams: {
+			            method: "read",
+			            leafId: leafId,
+			            field:"folderId"
+			        },
+		         root: 'folder',
+		    	fields:[{
+		    		name:'folderId',
+		    		type:'int'
+		    	},{
+		    		name:'folderNote',
+		    		type:'string'
+		    	}]
+		    	
+		    });		
+		
   var  leafCreateAccessValue = new Ext.grid.CheckColumn({
        header: leafCreateAccessValueLabel,
        dataIndex: 'leafCreateAccessValue',
@@ -175,46 +314,11 @@ Ext.onReady(function(){
 		},leafCreateAccessValue,leafReadAccessValue,leafUpdateAccessValue,leafDeleteAccessValue,leafPrintAccessValue,leafPostAccessValue]
 	});
 	
-	var groupReader	= new Ext.data.JsonReader({ root:'group' }, [ 'groupId', 'groupNote']);
-	var groupStore 		= 	new Ext.data.Store({
-			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=groupId&leafIdTemp='+leafIdTemp,
-					method:'GET'
-				}),
-			reader		:	groupReader,
-			remoteSort	:	false 
-	});
-	groupStore.load();
 	
-	var moduleReader	= new Ext.data.JsonReader({ root:'module' }, [ 'moduleId', 'moduleNote']);
-	var moduleStore 		= 	new Ext.data.Store({
-			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=moduleId&leafIdTemp='+leafIdTemp,
-					method:'GET'
-				}),
-			reader		:	moduleReader,
-			remoteSort	:	false 
-	});
 	
-	var folderReader	= new Ext.data.JsonReader({ root:'folder' }, [ 'folderId', 'folderNote']);
-	var folderStore 		= 	new Ext.data.Store({
-			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&leafIdTemp='+leafIdTemp,
-					method:'GET'
-				}),
-			reader		:	folderReader,
-			remoteSort	:	false 
-	});
 	
-	var staffReader	= new Ext.data.JsonReader({ root:'staff' }, [ 'staffId', 'staffName']);
-	var staffStore 		= 	new Ext.data.Store({
-			proxy		: 	new Ext.data.HttpProxy({
-        			url	: 	'../controller/leafGroupAccessController.php?method=read&field=staffId&leafIdTemp='+leafIdTemp,
-					method:'GET'
-				}),
-			reader		:	staffReader,
-			remoteSort	:	false 
-	});
+	
+	
 	
 	var groupId  		=	new Ext.ux.form.ComboBoxMatch({ 
 		labelAlign			:	'left',
@@ -244,7 +348,7 @@ Ext.onReady(function(){
 			'select'	:	function (combo,record,index) {
 				Ext.getCmp('moduleId').reset();
 				module_store.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/leafGroupAccessController.php?method=read&field=moduleId&groupId=' + Ext.getCmp('groupId').getValue()+'&leafIdTemp='+leafIdTemp,
+					url			: 	'../controller/leafGroupAccessController.php?method=read&field=moduleId&groupId=' + Ext.getCmp('groupId').getValue()+'&leafId='+leafId,
 					method		:	'GET'
 				});
 
@@ -252,7 +356,7 @@ Ext.onReady(function(){
 				Ext.getCmp('moduleId').enable();
 				Ext.getCmp('gridPanel').enable();
 				leafGroupAccessStore.proxy= new Ext.data.HttpProxy({
-					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&leafIdTemp='+leafIdTemp,
+					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&leafId='+leafId,
 					method	:	'GET'					
 				});
 				leafGroupAccessStore.reload();
@@ -289,7 +393,7 @@ Ext.onReady(function(){
 			'select'	:	function (combo,record,index) {
 				Ext.getCmp('folderId').reset();
 				folder_store.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&groupId='+Ext.getCmp('groupId').getValue()+'&moduleId=' +Ext.getCmp('moduleId').getValue()+'&leafIdTemp='+leafIdTemp,
+					url			: 	'../controller/leafGroupAccessController.php?method=read&field=folderId&groupId='+Ext.getCmp('groupId').getValue()+'&moduleId=' +Ext.getCmp('moduleId').getValue()+'&leafId='+leafId,
 					method		:	'GET'
 				});
 
@@ -297,7 +401,7 @@ Ext.onReady(function(){
 				Ext.getCmp('folderId').enable();
 				Ext.getCmp('gridPanel').enable();
 				leafGroupAccessStore.proxy= new Ext.data.HttpProxy({
-					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&moduleId='+Ext.getCmp('moduleId').getValue()+'&leafIdTemp='+leafIdTemp,
+					url		: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&moduleId='+Ext.getCmp('moduleId').getValue()+'&leafId='+leafId,
 					method	:	'GET'					
 				});
 				leafGroupAccessStore.reload();
@@ -338,7 +442,7 @@ Ext.onReady(function(){
 					Ext.getCmp('gridPanel').enable();
 				}
 				leafGroupAccessStore.proxy= new Ext.data.HttpProxy({
-					url			: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&moduleId='+Ext.getCmp('moduleId').getValue()+'&folderId=' + Ext.getCmp('folderId').getValue()+'&leafIdTemp='+leafIdTemp,
+					url			: 	'../controller/leafGroupAccessController.php?groupId='+Ext.getCmp('groupId').getValue()+'&moduleId='+Ext.getCmp('moduleId').getValue()+'&folderId=' + Ext.getCmp('folderId').getValue()+'&leafId='+leafId,
 					method:'GET'					
 				});
 					leafGroupAccessStore.reload();
@@ -414,7 +518,7 @@ Ext.onReady(function(){
 					var url;
 					var count = leafGroupAccessStore.getCount();
 
-					url ='../controller/leafGroupAccessController.php?method=update&leafIdTemp='+leafIdTemp;
+					url ='../controller/leafGroupAccessController.php?method=update&leafId='+leafId;
 					var sub_url;
 					sub_url='';
 					 for (i = count - 1; i >= 0; i--) {

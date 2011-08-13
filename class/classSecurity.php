@@ -112,13 +112,13 @@ class security extends configClass {
 	private $languageId;
 	/*
 	 * Google API Translation
-         * @var string $googleId
-	 */		
+	 * @var string $googleId
+	 */
 	private $googleId='AIzaSyCKRpBlJzhuO0GWEvgq4WwlYus0O2qI0Ws';
 	/*
 	 * Microsoft Bing API Translation
-         * @var string $bingId
-	 */		
+	 * @var string $bingId
+	 */
 	private $bingId='17ABBA6C7400D761EE28324EC320B5D0093F3557';
 	/**
 	 *	Class Loader
@@ -132,7 +132,7 @@ class security extends configClass {
 
 		$this->q->leafId			=	$this->getLeafId();
 
-		$this->q->staffId			=	$this->staffId;
+		$this->q->staffId			=	$this->getStaffId();
 
 		//	$this->q->filter 			= 	$this->filter;
 
@@ -207,18 +207,32 @@ class security extends configClass {
 		} else {
 			echo json_encode(array(
 										'success'	=>false,
-										'totalCount' => $total,
+										'total' => $total,
 										'group' => $items,
 										'message' =>'Empty Record'
 										));
 										exit();
 		}
-		echo json_encode(array(
+		if($total ==1 ){
+			$jsonEncode=json_encode(array(
 		'success'=>true,
-		'totalCount' => $total,
-		'group' => $items
+		'total' => $total,
+		'group' => $items,
+		'message'=>'Data loaded'
 		));
+		$jsonEncode=str_replace("[","",$jsonEncode);
+		$jsonEncode=str_replace("]","",$jsonEncode);
+		echo $jsonEncode;
 		exit();
+		} else {
+			echo json_encode(array(
+		'success'=>true,
+		'total' => $total,
+		'message'=>'Data loaded',
+		'group' => $items
+			));
+			exit();
+		}
 	}
 	public function department() 				{
 		header('Content-Type','application/json; charset=utf-8');
@@ -262,7 +276,7 @@ class security extends configClass {
 
 			echo json_encode(array(
 										'success'	=>false,
-										'totalCount' => 0,
+										'total' => 0,
 
 										'message' =>'Empty Record'
 										));
@@ -271,13 +285,24 @@ class security extends configClass {
 		}
 
 
-
-		echo json_encode(array(
+		if($total ==1 ){
+			$jsonEncode=json_encode(array(
 		'success'=>true,
-		'totalCount' => $total,
+		'total' => $total,
 		'department' => $items
-		));
-		exit();
+			));
+			$jsonEncode=str_replace("[","",$jsonEncode);
+			$jsonEncode=str_replace("]","",$jsonEncode);
+			echo $jsonEncode;
+			exit();
+		} else {
+			echo json_encode(array(
+		'success'=>true,
+		'total' => $total,
+		'department' => $items
+			));
+			exit();
+		}
 	}
 
 	/**
@@ -310,7 +335,7 @@ class security extends configClass {
 				WHERE   `module`.`isActive`=1";
 			} else if ($type ==2) {
 				$sql="
-				SELECT 	`moduleAccess`.`tabId`,
+				SELECT 	`moduleAccess`.`moduleId`,
 						`moduleAccess`.`groupId`,
 						`moduleAccess`.`tabAccessValue`
 				FROM   	`moduleAccess`
@@ -332,12 +357,12 @@ class security extends configClass {
 
 			} else if ($type==2) {
 				$sql="
-			SELECT 	[moduleAccess].[tabId],
+			SELECT 	[moduleAccess].[moduleId],
 					[moduleAccess].[groupId],
 					[moduleAccess].[moduleAccessValue]
 			FROM   	[moduleAccess]
 			JOIN	[module]
-			ON		[module].[moduleId]=[moduleAccess].[tabId]
+			ON		[module].[moduleId]=[moduleAccess].[moduleId]
 			WHERE   [module].[isActive]=1";
 				if(isset($_GET['groupId'])) {
 					$sql.=" AND [moduleAccess].[groupId]=\"".$this->strict($_GET['groupId'],'numeric')."\"";
@@ -352,7 +377,7 @@ class security extends configClass {
 			WHERE   \"module\".\"isActive\"=1";
 			} else if ($type==2) {
 				$sql="
-			SELECT 	\"moduleAccess\".\"tabId\",
+			SELECT 	\"moduleAccess\".\"moduleId\",
 					\"moduleAccess\".\"groupId\",
 					\"moduleAccess\".\"moduleAccessValue\",
 			FROM   	\"moduleAccess\"
@@ -377,18 +402,32 @@ class security extends configClass {
 				$items[] =$row;
 			}
 		}
-		echo json_encode(
-		array(
+		if($total==1) {
+			$jsonEncode=json_encode(array(
+		'success'=>true,
+		'total' => $total,
+		'module' => $items,
+		'message'=>"data loaded"	
+		));
+		$jsonEncode=str_replace("[","",$jsonEncode);
+		$jsonEncode=str_replace("]","",$jsonEncode);
+		echo $jsonEncode;
+		exit();
+		} else{
+			echo json_encode(
+			array(
 											'success'	=>true,
-											'totalCount' => $total,
-       								    	'module' => $items
+											'total' => $total,
+       								    	'module' => $items,
+		'message'=>"data loaded"
 		));
 		exit();
+		}
 
 	}
 	/**
 	 * Enter description here ...
-	 * @param unknown_type $tabId
+	 * @param unknown_type $moduleId
 	 * @param unknown_type $folderId
 	 * @param unknown_type $languageId
 	 */
@@ -420,7 +459,7 @@ class security extends configClass {
 			WHERE   `isActive`	=	1 ";
 			} else {
 				$sql="
-			SELECT 	`folderAccess`.`tabId`,
+			SELECT 	`folderAccess`.`moduleId`,
 					`folderAccess`.`groupId`,
 					`folderAccess`.`tabAccessValue`,
 			FROM   	`folderAccess`
@@ -432,8 +471,8 @@ class security extends configClass {
 			if(isset($_GET['groupId'])) {
 				$sql.=" AND `folder`.`groupId`=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 			}
-			if(isset($_GET['tabId'])) {
-				$sql.=" AND `folder`.`tabId`	=	\"".$this->strict($_GET['tabId'],'numeric')."\"";
+			if(isset($_GET['moduleId'])) {
+				$sql.=" AND `folder`.`moduleId`	=	\"".$this->strict($_GET['moduleId'],'numeric')."\"";
 			}
 
 		} else if ($this->getVendor()==self::mssql) {
@@ -445,7 +484,7 @@ class security extends configClass {
 			WHERE   [isActive]=1 ";
 			} else {
 				$sql="
-			SELECT 	[folderAccess].[tabId],
+			SELECT 	[folderAccess].[moduleId],
 					[folderAccess].[groupId],
 					[folderAccess].[tabAccessValue],
 			FROM   	[folderAccess]
@@ -457,8 +496,8 @@ class security extends configClass {
 			if(isset($_GET['groupId'])) {
 				$sql.=" AND [folder].[groupId]=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 			}
-			if(isset($_GET['tabId'])) {
-				$sql.=" AND [folder].[tabId]=\"".$this->strict($_GET['tabId'],'numeric')."\"";
+			if(isset($_GET['moduleId'])) {
+				$sql.=" AND [folder].[moduleId]=\"".$this->strict($_GET['moduleId'],'numeric')."\"";
 			}
 
 		} else if ($this->getVendor()==self::oracle) {
@@ -470,7 +509,7 @@ class security extends configClass {
 			WHERE   \"isActive\"=1";
 			} else {
 				$sql="
-			SELECT 	\"folderAccess\".\"tabId\",
+			SELECT 	\"folderAccess\".\"moduleId\",
 					\"folderAccess\".\"groupId\",
 					\"folderAccess\".\"tabAccessValue\",
 			FROM   	\"folderAccess\"
@@ -482,8 +521,8 @@ class security extends configClass {
 			if(isset($_GET['groupId'])) {
 				$sql.=" AND \"folder\".\"groupId\"=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 			}
-			if(isset($_GET['tabId'])) {
-				$sql.=" AND \"folder\".\"tabId\"=\"".$this->strict($_GET['tabId'],'numeric')."\"";
+			if(isset($_GET['moduleId'])) {
+				$sql.=" AND \"folder\".\"moduleId\"=\"".$this->strict($_GET['moduleId'],'numeric')."\"";
 			}
 
 		}
@@ -496,13 +535,26 @@ class security extends configClass {
 				$items[] 	=	$row;
 			}
 		}
-
-		echo json_encode(array(
+		if($total==1){
+			$jsonEncode=json_encode(array(
 		'success'=>true,
-		'totalCount' => $total,
-			'folder' => $items
+		'total' => $total,
+		'folder' => $items,
+		'message'=>"data loaded"
+		));
+		$jsonEncode=str_replace("[","",$jsonEncode);
+		$jsonEncode=str_replace("]","",$jsonEncode);
+		echo $jsonEncode;
+		exit();
+		}else{
+			echo json_encode(array(
+		'success'=>true,
+		'total' => $total,
+			'folder' => $items,
+		'message'=>"data loaded"
 		));
 		exit();
+		}
 
 	}
 	/**
@@ -540,15 +592,15 @@ class security extends configClass {
 			WHERE	\"isActive\"=1";
 		}
 		if($table=='folder'){
-			if(isset($_GET['tabId'])){
-				$sql.=" AND `tabId`=\"".$_GET['tabId']."\"";
+			if(isset($_GET['moduleId'])){
+				$sql.=" AND `moduleId`=\"".$_GET['moduleId']."\"";
 			}
 
 
 		}
 		if($table=='leaf'){
-			if(isset($_GET['tabId'])){
-				$sql.=" AND `tabId`=\"".$_GET['tabId']."\"";
+			if(isset($_GET['moduleId'])){
+				$sql.=" AND `moduleId`=\"".$_GET['moduleId']."\"";
 			}
 			if(isset($_GET['folderId'])){
 				$sql.=" AND `folderId`=\"".$_GET['folderId']."\"";
@@ -560,7 +612,7 @@ class security extends configClass {
 		if($nextSequence==0){
 			$nextSequence=1;
 		}
-		echo  json_encode(array("success"=>"true","nextSequence"=>$nextSequence));
+		echo  json_encode(array("success"=>true,"nextSequence"=>$nextSequence));
 	}
 	/**
 	 * Google Api Change Language

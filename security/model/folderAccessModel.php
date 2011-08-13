@@ -27,7 +27,7 @@ class folderAccessModel extends validationClass{
 		/*
 		 *  Basic Information Folderle
 		 */
-		$this->setFolderleName 		('folderAccess');
+		$this->setTableName		('folderAccess');
 		$this->setPrimaryKeyName 	('folderAccessId');
 		/*
 		 *  All the $_POST enviroment.

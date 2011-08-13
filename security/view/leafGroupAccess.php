@@ -20,7 +20,7 @@ if($_SESSION['theme']) { ?>
 </head>
 <body>
 </body>
-<?php require_once("../../shared/settingTemp.php"); ?>
+<?php require_once("../../shared/setting.php"); ?>
 <script  type="text/javascript"
 	src="../../javascript/adapter/ext/ext-base.js"></script>
 <script  type="text/javascript"

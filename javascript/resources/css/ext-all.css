@@ -6993,7 +6993,7 @@ body.x-body-masked .x-window-plain .x-window-mc {
 }
 .header {
 	background: #7F99BE
-		url(../../javascript/examples/layout-browser/images/layout-browser-hd-bg.gif)
+		url(../../../javascript/examples/layout-browser/images/layout-browser-hd-bg.gif)
 		repeat-x center;
 	font-size: 16px;
 	color: #fff;

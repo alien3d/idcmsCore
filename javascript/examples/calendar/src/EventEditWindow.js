@@ -35,14 +35,12 @@ Ext.calendar.EventEditWindow = function(config) {
             fieldLabel: 'When'
         }]
     };
-    this.eventStore = config.eventStore;
+ 
+   
     if (config.calendarStore) {
         this.calendarStore = config.calendarStore;
         delete config.calendarStore;
-        
-     
 
-            
         formPanelCfg.items.push({
             xtype: 'calendarpicker',
             id: 'calendar',
@@ -184,7 +182,7 @@ Ext.extend(Ext.calendar.EventEditWindow, Ext.Window, {
         f = this.formPanel.form;
 
         if (o.data) {
-        	alert("g");
+        	
             rec = o;
             this.isAdd = !!rec.data[Ext.calendar.EventMappings.IsNew.name];
             if (this.isAdd) {
@@ -198,9 +196,8 @@ Ext.extend(Ext.calendar.EventEditWindow, Ext.Window, {
             }
 
             f.loadRecord(rec);
-        }
-        else {
-        	alert("testing in eventeditwindow.js");
+        }else {
+        
             this.isAdd = true;
             this.setTitle(this.titleTextAdd);
 
@@ -218,7 +215,7 @@ Ext.extend(Ext.calendar.EventEditWindow, Ext.Window, {
 
             f.reset();
             f.loadRecord(rec);
-            alert("gfh");
+         
         }
 
         if (this.calendarStore) {
@@ -226,7 +223,7 @@ Ext.extend(Ext.calendar.EventEditWindow, Ext.Window, {
         }
         Ext.getCmp('date-range').setValue(rec.data);
         this.activeRecord = rec;
-        alert("end in event.js");
+     
         return this;
     },
 
@@ -259,7 +256,7 @@ Ext.extend(Ext.calendar.EventEditWindow, Ext.Window, {
 
     // private
     updateRecord: function() {
-    	alert("update record1");
+    	
         var f = this.formPanel.form,
         dates = Ext.getCmp('date-range').getValue(),
         M = Ext.calendar.EventMappings;
@@ -269,7 +266,8 @@ Ext.extend(Ext.calendar.EventEditWindow, Ext.Window, {
         this.activeRecord.set(M.EndDate.name, dates[1]);
         this.activeRecord.set(M.IsAllDay.name, dates[2]);
         this.activeRecord.set(M.CalendarId.name, this.formPanel.form.findField('calendar').getValue());
-        alert("update record2");
+        
+     
     },
 
     // private
@@ -283,7 +281,8 @@ Ext.extend(Ext.calendar.EventEditWindow, Ext.Window, {
             this.onCancel();
             return;
         }
-        alert("onsave function");
+    
+       
         this.fireEvent(this.isAdd ? 'eventadd': 'eventupdate', this, this.activeRecord);
     },
 

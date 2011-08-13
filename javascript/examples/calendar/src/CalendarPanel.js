@@ -327,6 +327,7 @@ Ext.calendar.CalendarPanel = Ext.extend(Ext.Panel, {
             xtype: 'eventeditform',
             id: this.id + '-edit',
             calendarStore: this.calendarStore,
+            eventStore: this.eventStore,
             listeners: {
                 'eventadd': {
                     scope: this,

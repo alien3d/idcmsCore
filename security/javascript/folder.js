@@ -26,7 +26,7 @@ Ext
 			var local = false;
 			var folderProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderController.php",
-				method : 'POST',
+				method:"POST",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -57,7 +57,7 @@ Ext
 				autoLoad : true,
 				autoDestroy : true,
 				pruneModifiedRecords : true,
-				method : 'POST',
+			
 				baseParams : {
 					method : "read",
 					page : "master",
@@ -260,7 +260,7 @@ Ext
 					type : 1,
 					leafId : leafId
 				},
-				root : 'tab',
+				root : 'module',
 				fields : [ {
 					name : "moduleId",
 					type : "int"
@@ -277,10 +277,10 @@ Ext
 				local : false, // defaults to false (remote filtering)
 				filters : [ {
 					type : 'list',
-					dataIndex : 'tabNote',
+					dataIndex : 'moduleNote',
 					column : 'moduleId',
-					table : 'tab',
-					labelField : 'tabNote',
+					table : 'module',
+					labelField : 'moduleNote',
 					store : moduleStore,
 					phpMode : true
 				}, {
@@ -478,12 +478,12 @@ Ext
 						header : folderSequenceLabel
 					},
 					{
-						dataIndex : 'tabNote',
-						header : tabTranslateLabel
+						dataIndex : 'moduleNote',
+						header : moduleNoteLabel
 					},
 					{
 						dataIndex : 'folderNote',
-						header : folderTranslateLabel
+						header : folderNoteLabel
 					},
 					{
 						dataIndex : 'folderPath',

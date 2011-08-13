@@ -73,24 +73,33 @@ class moduleAccessClass extends configClass
 	function execute()
 	{
 		parent::__construct();
+		
 		$this->q              = new vendor();
-		$this->q->vendor      = $this->vendor;
-		$this->q->leafId      = $this->leafId;
-		$this->q->staffId     = $this->staffId;
-		$this->q->filter      = $this->filter;
-		$this->q->quickFilter = $this->quickFilter;
-		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDamodulease(), $this->getPassword());
+		$this->q->vendor      = $this->getVendor();
+		$this->q->leafId      = $this->getLeafId();
+		$this->q->staffId     = $this->getStaffId();
+		$this->q->fieldQuery     = $this->getFieldQuery();
+		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		
 		$this->excel             = new PHPExcel();
+		
 		$this->audit             = 0;
 		$this->log               = 1;
 		$this->q->log            = $this->log;
+		
 		$this->security          = new security();
-		$this->security->vendor  = $this->vendor;
+		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
+		
 		$this->model         = new moduleAccessModel();
-		$this->model->vendor = $this->vendor;
+		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
+		
+		
 		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->execute();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -291,17 +300,15 @@ if (isset($_POST['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_POST['leafId'])) {
-		$moduleAccessObject->leafId = $_POST['leafId'];
+		$moduleAccessObject->setLeafId($_POST['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$moduleAccessObject->isAdmin = $_POST['isAdmin'];
+		$moduleAccessObject->setIsAdmin($_POST['isAdmin']);
 	}
-	if (isset($_POST['groupId'])) {
-		$moduleAccessObject->groupId = $_POST['groupId'];
-	}
+	
 	/*
 	 *  Load the dynamic value
 	 */
@@ -318,10 +325,10 @@ if (isset($_GET['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_GET['leafId'])) {
-		$moduleAccessObject->leafId = $_GET['leafId'];
+		$moduleAccessObject->setLeafId($_GET['leafId']);
 	}
 	if(isset($_GET['isAdmin'])) {
-		$moduleAccessObject->isAdmin = $_GET['isAdmin'];
+		$moduleAccessObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value

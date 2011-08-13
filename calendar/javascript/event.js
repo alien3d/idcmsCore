@@ -485,10 +485,11 @@ App = function() {
 	        if(!this.editWin){
 	            this.editWin = new Ext.calendar.EventEditWindow({
                     calendarStore: this.calendarStore,
+                    eventStore : this.eventStore,
 					listeners: {
 						'eventadd': {
 							fn: function(win, rec){
-								alert("start function event add");
+								
 								
                                 Ext.Ajax.request({
 									url : '../controller/eventController.php',
@@ -512,7 +513,8 @@ App = function() {
 										
 										if (jsonResponse.success == true) {
 											title = systemLabel;
-											this.eventStore.reload();
+										
+										
 											
 										} else {
 											title = systemErrorLabel;
@@ -529,10 +531,11 @@ App = function() {
 												jsonResponse.message);
 									}
 								});
-                                alert("end event function");
+                            	this.eventStore.reload();
+                               
                                 win.hide();
 								rec.data.IsNew = false;
-								rec.data.eventId='testing';  // tengok boleh tak bypass
+							
 								this.eventStore.add(rec);
                                 this.showMsg('Event '+ rec.data.Title +' was added');
                                 var data;

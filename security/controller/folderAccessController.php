@@ -64,49 +64,34 @@ class folderAccessClass  extends configClass {
 	 * @var  string $security
 	 */
 	private $security;
-	/**
-	 * Folder Access Model
-	 * @var string $model
-	 */
-	public $model;
+
 	/**
 	 * Class Loader
 	 */
 	function execute() {
-		parent :: __construct();
-
-		$this->q 					=	new vendor();
-
-		$this->q->vendor			=	$this->getVendor();
-
-		$this->q->leafId			=	$this->getLeafId();
-
-		$this->q->staffId			=	$this->getStaffId();
-
-		$this->q->filter 			= 	$this->getFieldQuery();
-
-		$this->q->gridQuery		=	$this->getGridQuery();
-
+			parent::__construct();
+		
+		$this->q              = new vendor();
+		$this->q->vendor      = $this->getVendor();
+		$this->q->leafId      = $this->getLeafId();
+		$this->q->staffId     = $this->getStaffId();
+		$this->q->fieldQuery     = $this->getFieldQuery();
+		$this->q->gridQuery = $this->getGridQuery();
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-
-		$this->excel				=	new  PHPExcel();
-
-		$this->audit 				=	0;
-
-		$this->log					=   0;
-
-		$this->q->log 				= $this->log;
-
-		$this->security				= new security();
-
-		$this->security->vendor = $this->vendor;
-		$this->security->leafId = $this->leafId;
-		$this->security->staffId = $this->staffId;
+		
+		$this->excel             = new PHPExcel();
+		
+		$this->audit             = 0;
+		$this->log               = 1;
+		$this->q->log            = $this->log;
+		
+		$this->security          = new security();
+		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
+		
 		$this->model         = new folderAccessModel();
-		$this->model->vendor = $this->vendor;
+		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		$this->documentTrail = new documentTrailClass();
 	}
 	function create() {}
 	function read() 				{
