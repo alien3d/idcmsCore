@@ -228,7 +228,6 @@ class security extends configClass {
 			echo json_encode(array(
 		'success'=>true,
 		'total' => $total,
-		'message'=>'Data loaded',
 		'group' => $items
 			));
 			exit();
@@ -336,15 +335,17 @@ class security extends configClass {
 			} else if ($type ==2) {
 				$sql="
 				SELECT 	`moduleAccess`.`moduleId`,
+						`module`.`moduleNote`,
 						`moduleAccess`.`groupId`,
-						`moduleAccess`.`tabAccessValue`
+						`moduleAccess`.`moduleAccessValue`
 				FROM   	`moduleAccess`
 				JOIN	`module`
 				USING	(`moduleId`)
 				WHERE   `module`.`isActive`=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND `tab`.`groupId`=\"".$this->strict($_GET['groupId'],'numeric')."\"";
+					$sql.=" AND `moduleAccess`.`groupId`=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 				}
+				
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			if($type ==1 ) {
@@ -358,6 +359,7 @@ class security extends configClass {
 			} else if ($type==2) {
 				$sql="
 			SELECT 	[moduleAccess].[moduleId],
+					[module].[moduleNote],
 					[moduleAccess].[groupId],
 					[moduleAccess].[moduleAccessValue]
 			FROM   	[moduleAccess]
@@ -378,14 +380,15 @@ class security extends configClass {
 			} else if ($type==2) {
 				$sql="
 			SELECT 	\"moduleAccess\".\"moduleId\",
+					\"moduleAccess\".\"moduleNote\",
 					\"moduleAccess\".\"groupId\",
-					\"moduleAccess\".\"moduleAccessValue\",
+					\"moduleAccess\".\"moduleAccessValue\"
 			FROM   	\"moduleAccess\"
 			JOIN	\"module\"
 			USING	(\"moduleId\")
 			WHERE   \"module\".\"isActive\"=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND \"module\".\"groupId\"=\"".$this->strict($_GET['groupId'],'numeric')."\"";
+					$sql.=" AND \"moduleAccess\".\"groupId\"=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 				}
 			}
 		} else{
@@ -461,7 +464,7 @@ class security extends configClass {
 				$sql="
 			SELECT 	`folderAccess`.`moduleId`,
 					`folderAccess`.`groupId`,
-					`folderAccess`.`tabAccessValue`,
+					`folderAccess`.`moduleAccessValue`,
 			FROM   	`folderAccess`
 			JOIN	`folder`
 			USING	(`folderId`)
@@ -486,7 +489,7 @@ class security extends configClass {
 				$sql="
 			SELECT 	[folderAccess].[moduleId],
 					[folderAccess].[groupId],
-					[folderAccess].[tabAccessValue],
+					[folderAccess].[moduleAccessValue],
 			FROM   	[folderAccess]
 			JOIN	[folder]
 			ON		[folder].[folderId] = [folderAccess].[folderId]
@@ -511,7 +514,7 @@ class security extends configClass {
 				$sql="
 			SELECT 	\"folderAccess\".\"moduleId\",
 					\"folderAccess\".\"groupId\",
-					\"folderAccess\".\"tabAccessValue\",
+					\"folderAccess\".\"moduleAccessValue\",
 			FROM   	\"folderAccess\"
 			JOIN	\"folder\"
 			USING	(\"folderId\")

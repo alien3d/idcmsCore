@@ -26,24 +26,17 @@ Ext
 			var folderAccessProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderAccessController.php",
 				method : 'POST',
-				baseParams : {
-					method : "read",
-					grid : "master",
-					leafId : leafId
-				},
+				
 				success : function(response, options) {
-					var jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse == "true") {
-						title = successLabel;
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 					} else {
-
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
 					}
-
 				},
 				failure : function(response, options) {
-
 					Ext.MessageBox.alert(systemErrorLabel,
 							escape(response.Status) + ":"
 									+ escape(response.statusText));
@@ -65,6 +58,11 @@ Ext
 				autoDestroy : true,
 				proxy : folderAccessProxy,
 				reader : folderAccessReader,
+				baseParams : {
+					method : "read",
+					grid : "master",
+					leafId : leafId
+				},
 				root : "data",
 				fields : [ {
 					name : 'moduleId',
@@ -245,20 +243,17 @@ Ext
 						},
 						listeners : {
 							'select' : function(combo, record, index) {
-								Ext.getCmp('module_fake').reset(); // force
-								// the
-								// combobox
-								// to
-								// clear
-								moduleStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : '../controller/folderAccessController.php?method=read&field=moduleId&value='
-													+ this.value
-													+ '&leafId='
-													+ leafId,
-											method : 'GET'
-
-										});
+								Ext.getCmp('module_fake').reset(); // force the combobox to clear
+								
+								moduleStore.load({
+									params:{
+										method:'read',
+										field:'moduleId',
+										leafId:leafId,
+										groupId:this.value,
+										type:2
+									}
+								});
 								Ext.getCmp('module_fake').enable();
 							}
 						}
@@ -300,6 +295,7 @@ Ext
 
 						folderAccessStore.load({
 							params : {
+								method:'read',
 								leafId : leafId,
 								groupId : Ext.getCmp('group_fake').getValue(),
 								moduleId : Ext.getCmp('module_fake').getValue()

@@ -15,7 +15,7 @@ require_once("../model/folderAccessModel.php");
  */
 
 class folderAccessClass  extends configClass {
-			/*
+	/*
 	 * Connection to the database
 	 * @var string $excel
 	 */
@@ -69,8 +69,8 @@ class folderAccessClass  extends configClass {
 	 * Class Loader
 	 */
 	function execute() {
-			parent::__construct();
-		
+		parent::__construct();
+
 		$this->q              = new vendor();
 		$this->q->vendor      = $this->getVendor();
 		$this->q->leafId      = $this->getLeafId();
@@ -78,17 +78,17 @@ class folderAccessClass  extends configClass {
 		$this->q->fieldQuery     = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		
+
 		$this->excel             = new PHPExcel();
-		
+
 		$this->audit             = 0;
 		$this->log               = 1;
 		$this->q->log            = $this->log;
-		
+
 		$this->security          = new security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
-		
+
 		$this->model         = new folderAccessModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
@@ -125,15 +125,15 @@ class folderAccessClass  extends configClass {
 				JOIN 	`group`
 				USING 	(`groupId`)
 				JOIN 	`module`
-				USING	(`moduleId`)kjghghhhhhhhhhhhhhhhhhh
+				USING	(`moduleId`)
 				WHERE 	`module`.`isActive` =1
 				AND		`folder`.`isActive`=1
 				AND		`group`.`isActive` =1";
-			if($this->groupId) {
-				$sql.=" AND `group`.`groupId`=\"".$this->strict($this->groupId,'numeric')."\"";
+			if($this->model->getGroupId()) {
+				$sql.=" AND `group`.`groupId`=\"".$this->model->getGroupId()."\"";
 			}
-			if($this->moduleId) {
-				$sql.=" AND `folder`.`moduleId`=\"".$this->strict($this->moduleId,'numeric')."\"";
+			if($this->model->getModuleId()) {
+				$sql.=" AND `folder`.`moduleId`=\"".$this->model->getModuleId()."\"";
 			}
 
 		}  else if ( $this->getVendor()==self::mssql) {
@@ -161,11 +161,11 @@ class folderAccessClass  extends configClass {
 				WHERE 	[folder].[isActive]=1
 				AND		[group].[isActive]=1
 				AND		[module].[moduleId]=1";
-			if($this->groupId) {
-				$sql.=" AND [group].[groupId]=\"".$this->strict($this->groupId,'numeric')."\"";
+			if($this->model->getGroupId()) {
+				$sql.=" AND [group].[groupId]=\"".$this->model->getGroupId()."\"";
 			}
-			if($this->moduleId) {
-				$sql.=" AND [folder].[moduleId]=\"".$this->strict($this->moduleId,'numeric')."\"";
+			if($this->model->getModuleId()) {
+				$sql.=" AND [folder].[moduleId]=\"".$this->model->getModuleId()."\"";
 			}
 		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -192,11 +192,11 @@ class folderAccessClass  extends configClass {
 				WHERE 	\"folder\".\"isActive\"		=	1
 				AND		\"module\".`isActive\"	=	1
 				AND		\"group\".`isActive\"		=	1";
-			if($this->groupId) {
-				$sql.=" AND \"group\".\"groupId\"=\"".$this->strict($this->groupId,'numeric')."\"";
+			if($this->model->getGroupId()) {
+				$sql.=" AND \"group\".\"groupId\"=\"".$this->model->getGroupId()."\"";
 			}
-			if($this->moduleId) {
-				$sql.=" AND \"folder\".\"moduleId\"=\"".$this->strict($this->moduleId,'numeric')."\"";
+			if($this->model->getModuleId()) {
+				$sql.=" AND \"folder\".\"moduleId\"=\"".$this->model->getModuleId()."\"";
 			}
 		}
 		//echo $sql;
@@ -218,9 +218,15 @@ class folderAccessClass  extends configClass {
 		$total	= $this->q->numberRows();
 		//paging
 
-		if(isset($_POST['start']) && isset($_POST['limit'])) {
-			$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
-		}
+	 if ($this->getOrder() && $this->getSortField()) {
+	 	if ($this->getVendor() == self::mysql) {
+	 		$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
+	 	} else if ($this->getVendor() ==  self::mssql) {
+	 		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
+	 	} else if ($this->getVendor() == self::oracle) {
+	 		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+	 	}
+	 }
 
 
 
@@ -266,7 +272,7 @@ class folderAccessClass  extends configClass {
 
 		}
 		$this->model->update();
-		$loop=$this->model->totalfolderAccessId;
+		$loop=$this->model->getTotal();
 		if($this->getVendor() == self::mysql) {
 			$sql="
 			UPDATE `folderAccess`
@@ -283,7 +289,7 @@ class folderAccessClass  extends configClass {
 		}
 		for($i=0;$i<$loop;$i++) {
 			$sql.="
-			WHEN \"".$this->model->folderAccessId[$i]."\" THEN \"".$this->model->folderAccesValue[$i]."\"";
+			WHEN \"".$this->model->getFolderAccessId($i,'array')."\" THEN \"".$this->model->getFolderAccessValue($i,'array')."\"";
 		}
 		if($this->getVendor() == self::mysql) {
 			$sql.=" END
@@ -295,9 +301,10 @@ class folderAccessClass  extends configClass {
 			$sql.=" END
 			WHERE \"folderAccessId\" IN (".$this->model->getfolderAccessIdAll.")";
 		}
+		echo $sql;
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 		echo json_encode(array("success"=>true,"message"=>"Update Success"));
@@ -352,13 +359,13 @@ if(isset($_POST['method'])){
 	 *  Leaf / Application Identification
 	 */
 	if(isset($_POST['leafId'])){
-		$folderAccessObject-> leafId = $_POST['leafId'];
+		$folderAccessObject->setLeafId($_POST['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if(isset($_POST['isAdmin'])){
-		$folderAccessObject->isAdmin = $_POST['isAdmin'];
+		$folderAccessObject->setIsAdmin($_POST['isAdmin']);
 	}
 
 

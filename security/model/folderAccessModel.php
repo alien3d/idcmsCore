@@ -1,5 +1,6 @@
 <?php require_once("../../class/classValidation.php");
 
+
 /**
  * this is folder security model file.This is to ensure strict setting enable for all variable enter to daFolderase
  *
@@ -16,6 +17,7 @@ class folderAccessModel extends validationClass{
 	private $folderAccessId;
 	private $folderId;
 	private $groupId;
+	private $moduleId;
 	private $folderAccessValue;
 
 
@@ -36,15 +38,34 @@ class folderAccessModel extends validationClass{
 		$this->folderAccessValue 	= array();
 		$this->setTotal(count($_GET['folderAccessId']));
 
+		if(isset($_POST['groupId'])){
+			$this->setGroupId($this->strict($_POST['groupId'],'numeric'));
+		}
+		if(isset($_POST['moduleId'])){
+			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'));
+		}
+		if(isset($_SESSION['staffId'])){
+			$this->setBy($_SESSION['staffId']);
+		}
+		if($this->getVendor()==self::mysql){
+			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+		} else if ($this->getVendor()==self::mssql){
+			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+		} else if ($this->getVendor()==self::oracle){
+			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
+		}
 
-		for($i=0;$i<$this->getTotalfolderAccessId;$i++) {
+		for($i=0;$i<$this->getTotal();$i++) {
 			$this->setFolderAccessId($this->strict($_GET['folderAccessId'][$i],'numeric'),$i);
 			if($_GET[$folderAccessValue][$i]=='true') {
 				$this->setFolderAccessValue(1,$i);
 			} else {
 				$this->setFolderAccessValue(0,$i);
 			}
+			$primaryKeyAll .= $this->getFolderAccessId($i, 'array') . ",";
+
 		}
+		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 
 
 	}
@@ -68,7 +89,7 @@ class folderAccessModel extends validationClass{
 	function delete() {
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -94,22 +115,31 @@ class folderAccessModel extends validationClass{
 		$this->setIsDelete(0,'','string');
 		$this->setIsApproved(1,'','string');
 	}
-		public function setFolderAccessId($value,$key=NULL,$type=NULL) {
+	/**
+	 * Enter description here ...
+	 * @param unknown_type $value
+	 * @param unknown_type $key
+	 * @param unknown_type $type
+	 */
+	public function setFolderAccessId($value,$key=NULL,$type=NULL) {
 		if($type=='single'){
-			$this->FolderAccessId = $value;
+			$this->folderAccessId = $value;
 		} else if ($type=='array'){
-			$this->FolderAccessId[$key]=$value;
+			$this->folderAccessId[$key]=$value;
 		}
 	}
+
 	/**
-	 * Return isFolderId Value
-	 * @return integer FolderId
+	 * Enter description here ...
+	 * @param unknown_type $key
+	 * @param unknown_type $type
+	 * @return Ambigous <multitype:, unknown_type>
 	 */
 	public function getFolderAccessId($key=NULL,$type=NULL) {
 		if($type=='single'){
-			return $this->FolderAccessId;
+			return $this->folderAccessId;
 		} else if ($type=='array'){
-			return $this->FolderAccessId[$key];
+			return $this->folderAccessId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();
@@ -130,23 +160,38 @@ class folderAccessModel extends validationClass{
 
 		return $this->folderId;
 	}
-	
+
 	/**
-	 * Set Folder/Module/Accordion Identification Value
+	 * Set Group Identification Value
 	 * @param  numeric $value
 	 */
 	public function setGroupId($value) {
 		$this->groupId = $value;
 	}
 	/**
-	 * Return Folder/Module/Accordion Identiification Value
+	 * Return Group Identiification Value
 	 * @return numeric Folder identification
 	 */
 	public function getGroupId() {
 
 		return $this->groupId;
 	}
-/**
+	/**
+	 * Set Folder/Module/Accordion Identification Value
+	 * @param  numeric $value
+	 */
+	public function setModuleId($value) {
+		$this->moduleId = $value;
+	}
+	/**
+	 * Return Folder/Module/Accordion Identiification Value
+	 * @return numeric Folder identification
+	 */
+	public function getModuleId() {
+
+		return $this->moduleId;
+	}
+	/**
 	 * Set Folder Access  Value
 	 * @param  numeric $value
 	 */
