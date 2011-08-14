@@ -42,8 +42,8 @@ class moduleAccessClass extends configClass
 	 */
 	private $log;
 	/**
-	 * department Model
-	 * @var string $departmentModel
+	 * Model Access Model
+	 * @var string $model
 	 */
 	public $model;
 	/**
@@ -213,6 +213,7 @@ class moduleAccessClass extends configClass
 			));
 			exit();
 		}
+		$items = array();
 		while ($row = $this->q->fetchAssoc()) {
 			$items[] = $row;
 		}
@@ -225,8 +226,11 @@ class moduleAccessClass extends configClass
 			$json_encode =str_replace("[","",$json_encode);
 			$json_encode =str_replace("]","",$json_encode);
 			echo json_encode;
-			exit();	
+			exit();
 		} else  {
+			if (count($items) == 0) {
+				$items = '';
+			}
 			echo json_encode(array(
             'success' => true,
             'total' => $total,
@@ -248,32 +252,33 @@ class moduleAccessClass extends configClass
 		}
 		$this->model->update();
 		$loop = $this->model->getTotal();
-		for ($i = 0; $i < $loop; $i++) {
-			if($this->getVendor() == self::mysql){
-				$sql = "
-			UPDATE 	`moduleAccess`
-			SET 	`moduleAccessValue`	= 	\"". $this->model->getModuleAccessValue($i, 'array') ."\"
-			WHERE 	`moduleAccessId`		=	\"". $this->model->getModuleAccessId($i) ."\"";
-			} else if ($this->getVendor() ==  self::mssql){
-				$sql = "
-			UPDATE 	[moduleAccess]
-			SET 	[moduleAccessValue]	= 	\"". $this->model->moduleAccessValue[$i] ."\"
-			WHERE 	[moduleAccessId]		=	\"". $this->model->moduleAccessId[$i] ."\"";
-			} else if ($this->getVendor()==self::oracle){
-				$sql = "
-			UPDATE 	\"moduleAccess\"
-			SET 	\"moduleAccessValue\"	= 	\"". $this->model->moduleAccessValue[$i] ."\"
-			WHERE 	\"moduleAccessId\"		=	\"". $this->model->moduleAccessId[$i] ."\"";
+
+		if ($this->getVendor() == self::mysql) {
+			$sql = "
+			UPDATE 	`".$this->model->getTableName()."`
+			SET 	";
+
+			$sql.="	   `moduleAccessValue`			=	case `".$this->model->getPrimaryKeyName()."` ";
+			for($i=0;$i<$loop;$i++) {
+				$sql.="
+				WHEN \"".$this->model->getModuleAccessId($i, 'array')."\"
+				THEN \"".$this->model->getModuleAccessValue($i,'array')."\"";
+
 			}
-				echo $sql."<br>";
-			$this->q->update($sql);
-			if ($this->q->execute == 'fail') {
-				echo json_encode(array(
+			$sql.="	END ";
+			$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getPrimaryKeyAll(). ")";
+
+		}
+
+
+		//	echo $sql."<br>";
+		$this->q->update($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
                     "success" => false,
                     "message" => $this->q->responce
-				));
-				exit();
-			}
+			));
+			exit();
 		}
 		echo json_encode(array(
             "success" => true,

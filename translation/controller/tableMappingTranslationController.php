@@ -232,24 +232,24 @@ class tableMappingTranslationTranslationClass extends  configClass {
 			SELECT 		*
 			FROM 		`tableMappingTranslationTranslation`
 			WHERE 1 ";
-			if($this->model->gettableMappingTranslationTranslationId('','single')) {
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->gettableMappingTranslationTranslationId('','single')."\"";
+			if($this->model->gettableMappingTranslationTranslationId(0,'single')) {
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		[tableMappingTranslationTranslation]
 			WHERE 1 ";
-			if($this->model->gettableMappingTranslationTranslationId('','single')) {
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->gettableMappingTranslationTranslationId('','single')."\"";
+			if($this->model->gettableMappingTranslationTranslationId(0,'single')) {
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		\"tableMappingTranslationTranslation\"
 			WHERE 1";
-			if($this->model->gettableMappingTranslationTranslationId('','single')) {
-				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->gettableMappingTranslationTranslationId('','single')."\"";
+			if($this->model->gettableMappingTranslationTranslationId(0,'single')) {
+				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
 			}
 		}
 		/**
@@ -369,7 +369,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if(!($this->gettableMappingTranslationTranslationId('','single'))) {
+		if(!($this->gettableMappingTranslationTranslationId(0,'single'))) {
 
 			$this->q->read($sql);
 			if($this->q->execute=='fail') {
@@ -388,7 +388,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 
 
 
-		if($this->gettableMappingTranslationTranslationId('','single')) {
+		if($this->gettableMappingTranslationTranslationId(0,'single')) {
 			$json_encode = json_encode(
 			array(
 						'success'	=>	true,
@@ -445,7 +445,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
 							`By`			=	\"".$this->model->getBy()."\",
 							`Time`			=	".$this->model->getTime()."
-					WHERE 	`tableMappingTranslationTranslationId`			=	\"".$this->model->gettableMappingTranslationTranslationId('','single')."\"";
+					WHERE 	`tableMappingTranslationTranslationId`			=	\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[tableMappingTranslationTranslation]
@@ -460,7 +460,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 							[By]			=	\"".$this->model->getBy()."\",
 							[Time]			=	".$this->model->getTime()."
-					WHERE 	[tableMappingTranslationTranslationId]			=	\"".$this->model->gettableMappingTranslationTranslationId('','single')."\"";
+					WHERE 	[tableMappingTranslationTranslationId]			=	\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	\"tableMappingTranslationTranslation\"
@@ -475,7 +475,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'string')."\",
 							\"By\"			=	\"".$this->model->getBy()."\",
 							\"Time\"		=	".$this->model->getTime()."
-					WHERE 	\"tableMappingTranslationTranslationId\"		=	\"".$this->model->gettableMappingTranslationTranslationId('','single')."\"";
+					WHERE 	\"tableMappingTranslationTranslationId\"		=	\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {

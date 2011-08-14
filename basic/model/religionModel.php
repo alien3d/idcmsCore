@@ -35,7 +35,7 @@ class religionModel extends validationClass
          *                  DELETE/Destroy  -->Is To Delete/Destroy Data
          */
         if (isset($_POST['religionId'])) {
-            $this->setReligionId($this->strict($_POST['religionId'], 'numeric'),'','single');
+            $this->setReligionId($this->strict($_POST['religionId'], 'numeric'),0,'single');
         }
         if (isset($_POST['religionDesc'])) {
             $this->setReligionDesc($this->strict($_POST['religionDesc'], 'memo'));
@@ -236,10 +236,10 @@ class religionModel extends validationClass
         }
     }
     /**
-     * Return isReligionId Value
-     * @return integer religionId
+     * Return Religion Identification Value
+     * @return int
      */
-    public function getReligionId($key = NULL, $type = NULL)
+    public function getReligionId($key, $type)
     {
         if ($type=='single') {
             return $this->religionId;
@@ -254,7 +254,7 @@ class religionModel extends validationClass
         }
     }
     /**
-     * Set isDefault Value
+     * Set Religion Description Value
      * @param string $value
      */
     public function setReligionDesc($value)
@@ -263,7 +263,7 @@ class religionModel extends validationClass
     }
     /**
      * Return Religion Description
-     * @return string religion description
+     * @return string
      */
     public function getReligionDesc()
     {

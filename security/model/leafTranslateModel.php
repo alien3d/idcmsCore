@@ -1,19 +1,19 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is leaf model file.This is to ensure strict setting enable for all variable enter to database
+ * this is Leaf Translation model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @category IDCMS
  * @package security
- * @subpackage leaf
+ * @subpackage Leaf Translation
  * @copyright IDCMS
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class leafModel extends validationClass{
+class leafTranslationModel extends validationClass{
 
 	private $leafId;
-	private $tabId;
+	private $moduleId;
 	private $folderId;
 	private $iconId;
 	private $leafSequence;
@@ -134,11 +134,11 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Set Leaf Identification  Value
-	 * @param int $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafId($value,$key=NULL,$type=NULL) {
+	public function setLeafId($value,$key,$type) {
 		if($type=='single'){
 			$this->leafId = $value;
 		} else if ($type=='array'){
@@ -147,9 +147,11 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Identication Value
-	 * @return integer $leafId
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getLeafId($key=NULL,$type=NULL) {
+	public function getLeafId($key,$type) {
 		if($type=='single'){
 			return $this->leafId;
 		} else if ($type=='array'){
@@ -160,30 +162,26 @@ class leafModel extends validationClass{
 		}
 	}
 	/**
-	 * Set Tab/Accordion Identification  Value
+	 * Set Module Identification  Value
 	 * @param int $value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setTabId() {
 
-		$this->tabId = $value;
+		$this->moduleId = $value;
 
 	}
 	/**
-	 * Return Tab/Accordion Identication Value
-	 * @return integer $tabId
+	 * Return Module Identication Value
+	 * @return int
 	 */
 	public function getTabId() {
 
-		return $this->tabId;
+		return $this->moduleId;
 
 	}
 	/**
 	 * Set Folder Identification  Value
 	 * @param int $value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setFolderId() {
 
@@ -192,7 +190,7 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Folder Identication Value
-	 * @return integer folderId
+	 * @return int
 	 */
 	public function getFolderId() {
 
@@ -202,8 +200,6 @@ class leafModel extends validationClass{
 	/**
 	 * Set Icon Identification  Value
 	 * @param int $value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIconId() {
 
@@ -212,7 +208,7 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Icon Identification Value
-	 * @return integer $iconId
+	 * @return int
 	 */
 	public function getIconId() {
 

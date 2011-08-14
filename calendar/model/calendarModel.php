@@ -6,7 +6,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package religion
+ * @package calendar
+ * @subpackage calendar
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -125,12 +126,12 @@ class calendarModel extends validationClass{
 		$this->setIsApproved(1,0,'string');
 	}
  /**
-     * Set isDefault Value
-     * @param int $value
+     * Set Calendar Value
+     * @param bool}array $value
      * @param array[int]int $key List Of Primary Key.
      * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
      */
-    public function setCalendarId($value, $key = NULL, $type = NULL)
+    public function setCalendarId($value, $key, $type)
     {
         if ($type=='single') {
             $this->calendarId = $value;
@@ -139,10 +140,12 @@ class calendarModel extends validationClass{
         }
     }
     /**
-     * Return isReligionId Value
-     * @return integer religionId
+      * Return Calendar Identification Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
      */
-    public function getCalendarId($key = NULL, $type = NULL)
+    public function getCalendarId($key , $type )
     {
         if ($type=='single') {
             return $this->calendarId;
@@ -165,8 +168,8 @@ class calendarModel extends validationClass{
         $this->calendarColorId = $value;
     }
     /**
-     * Return Calendar Colro Value
-     * @return string calendar color
+     * Return Calendar Color Value
+     * @return int
      */
     public function getCalendarColorId()
     {
@@ -183,7 +186,7 @@ class calendarModel extends validationClass{
     }
     /**
      * Return Calendar Title Value
-     * @return string calendar title
+     * @return string 
      */
     public function getCalendarTitle()
     {
@@ -200,7 +203,7 @@ class calendarModel extends validationClass{
     }
     /**
      * Return  Staff Identification value
-     * @return int $staffId
+     * @return int 
      */
     public function staffId()
     {

@@ -229,8 +229,8 @@ class departmentClass  extends configClass {
 					JOIN	`staff`
 					ON		`department`.`By` = `staff`.`staffId`
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getDepartmentId('','single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getDepartmentId('','single') . "\"";
+			if ($this->model->getDepartmentId(0,'single')) {
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getDepartmentId(0,'single') . "\"";
 
 			}
 
@@ -254,8 +254,8 @@ class departmentClass  extends configClass {
 					JOIN	[staff]
 					ON		[department].[By] = [staff].[staffId]
 					WHERE 	[department].[isActive] ='1'	";
-			if ($this->model->getDepartmentId('','single')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getDepartmentId('','single') . "\"";
+			if ($this->model->getDepartmentId(0,'single')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getDepartmentId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -277,8 +277,8 @@ class departmentClass  extends configClass {
 					JOIN	\"staff\"
 					ON		\"department\".\"By\" = \"staff\".\"staffId\"
 					WHERE 	\"isActive\"='1'	";
-			if ($this->model->getDepartmentId('','single')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getDepartmentId('','single') . "\"";
+			if ($this->model->getDepartmentId(0,'single')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getDepartmentId(0,'single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -431,7 +431,7 @@ class departmentClass  extends configClass {
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getDepartmentId('','single'))) {
+            if (!($this->model->getDepartmentId(0,'single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -445,7 +445,7 @@ class departmentClass  extends configClass {
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getDepartmentId('','single')) {
+            if ($this->model->getDepartmentId(0,'single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -499,7 +499,7 @@ class departmentClass  extends configClass {
 						`isApproved`			=	\"".$this->model->getIsApproved(0,'string')."\",
 						`By`					=	\"".$this->model->getBy()."\",
 						`Time`					=	".$this->model->getTime()."
-				WHERE 	`departmentId`			=	\"".$this->model->getDepartmentId('','single')."\"";
+				WHERE 	`departmentId`			=	\"".$this->model->getDepartmentId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[department]
@@ -515,7 +515,7 @@ class departmentClass  extends configClass {
 						[isApproved]			=	\"".$this->model->getIsApproved(0,'string')."\",
 						[By]					=	\"".$this->model->getBy()."\",
 						[Time]					=	".$this->model->getTime()."
-				WHERE 	[departmentId]			=	\"".$this->model->getDepartmentId('','single')."\"";
+				WHERE 	[departmentId]			=	\"".$this->model->getDepartmentId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -532,7 +532,7 @@ class departmentClass  extends configClass {
 						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
-				WHERE 	\"departmentId\"		=	\"".$this->model->getDepartmentId('','single')."\"";
+				WHERE 	\"departmentId\"		=	\"".$this->model->getDepartmentId(0,'single')."\"";
 
 		}
 		$this->q->update($sql);
@@ -567,9 +567,9 @@ class departmentClass  extends configClass {
 						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
 						`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
 						`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
-						`By`			=	\"".$this->model->getBy('','single')."\",
+						`By`			=	\"".$this->model->getBy(0,'single')."\",
 						`Time			=	".$this->model->getTime()."
-				WHERE 	`departmentId`	=	\"".$this->model->getDepartrmentId('','single')."\"";
+				WHERE 	`departmentId`	=	\"".$this->model->getDepartrmentId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[department]
@@ -582,7 +582,7 @@ class departmentClass  extends configClass {
 						[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 						[By]			=	\"".$this->model->getBy()."\",
 						[Time]			=	".$this->model->getTime()."
-				WHERE 	[departmentId]	=	\"".$this->model->getDepartmentId('','single')."\"";
+				WHERE 	[departmentId]	=	\"".$this->model->getDepartmentId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -596,7 +596,7 @@ class departmentClass  extends configClass {
 						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
-				WHERE 	\"departmentId\"	=	\"".$this->model->getdepartmentId('','single')."\"";
+				WHERE 	\"departmentId\"	=	\"".$this->model->getdepartmentId(0,'single')."\"";
 
 		}
 		$this->q->update($sql);
@@ -614,12 +614,16 @@ class departmentClass  extends configClass {
 	 *  To Update flag Status
 	 */
 	function updateStatus () {
-		$this->model-> updateStatus();
+		header('Content-Type', 'application/json; charset=utf-8');
+		//UTF8
+		if($this->q->vendor==self::mysql){
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
 		$loop  = $this->model->getTotal();
 
 		if($this->isAdmin==0){
 
-			$this->model->delete();
 			if ($this->getVendor() == self::mysql) {
 				$sql = "
 				UPDATE 	`".$this->model->getTableName()."`
@@ -984,29 +988,29 @@ class departmentClass  extends configClass {
                         $this->excel->getActiveSheet()->mergeCells($start.'2:'.$end.'3');
                         // header of the row
                         if($this->isAdmin==1){
-	                        // future should take from table mapping table
+                        	// future should take from table mapping table
                         	$this->excel->getActiveSheet()->setCellValue('B3', 'No');
-	                        $this->excel->getActiveSheet()->setCellValue('C3', 'Department Id');
+                        	$this->excel->getActiveSheet()->setCellValue('C3', 'Department Id');
                         	$this->excel->getActiveSheet()->setCellValue('D3', 'Sequence');
-	                        $this->excel->getActiveSheet()->setCellValue('E3', 'Code');
-	                        $this->excel->getActiveSheet()->setCellValue('F3', 'Note');
+                        	$this->excel->getActiveSheet()->setCellValue('E3', 'Code');
+                        	$this->excel->getActiveSheet()->setCellValue('F3', 'Note');
 
-	                        $this->excel->getActiveSheet()->setCellValue('G3', 'isDefault');
-	                        $this->excel->getActiveSheet()->setCellValue('H3', 'isNew');
-	                        $this->excel->getActiveSheet()->setCellValue('I3', 'isDraft');
-	                        $this->excel->getActiveSheet()->setCellValue('J3', 'isUpdate');
-	                        $this->excel->getActiveSheet()->setCellValue('K3', 'isDelete');
-	                        $this->excel->getActiveSheet()->setCellValue('L3', 'isActive');
-	                        $this->excel->getActiveSheet()->setCellValue('M3', 'isApproved');
-	                        $this->excel->getActiveSheet()->setCellValue('N3', 'By');
-	                        $this->excel->getActiveSheet()->setCellValue('O3', 'Time');
+                        	$this->excel->getActiveSheet()->setCellValue('G3', 'isDefault');
+                        	$this->excel->getActiveSheet()->setCellValue('H3', 'isNew');
+                        	$this->excel->getActiveSheet()->setCellValue('I3', 'isDraft');
+                        	$this->excel->getActiveSheet()->setCellValue('J3', 'isUpdate');
+                        	$this->excel->getActiveSheet()->setCellValue('K3', 'isDelete');
+                        	$this->excel->getActiveSheet()->setCellValue('L3', 'isActive');
+                        	$this->excel->getActiveSheet()->setCellValue('M3', 'isApproved');
+                        	$this->excel->getActiveSheet()->setCellValue('N3', 'By');
+                        	$this->excel->getActiveSheet()->setCellValue('O3', 'Time');
 
 
                         } else {
                         	$this->excel->getActiveSheet()->setCellValue('B3', 'No');
-	                        $this->excel->getActiveSheet()->setCellValue('C3', 'Sequence');
-	                        $this->excel->getActiveSheet()->setCellValue('D3', 'Code');
-	                        $this->excel->getActiveSheet()->setCellValue('E3', 'Note');
+                        	$this->excel->getActiveSheet()->setCellValue('C3', 'Sequence');
+                        	$this->excel->getActiveSheet()->setCellValue('D3', 'Code');
+                        	$this->excel->getActiveSheet()->setCellValue('E3', 'Note');
                         }
                         // fill color
                         $this->excel->getActiveSheet()->getStyle($start.'2:'.$end.'2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);

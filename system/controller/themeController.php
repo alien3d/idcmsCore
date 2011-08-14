@@ -229,8 +229,8 @@ class themeClass  extends configClass {
 					JOIN	`staff`
 					ON		`theme`.`By` = `staff`.`staffId`
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getthemeId('','single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getthemeId('','single') . "\"";
+			if ($this->model->getthemeId(0,'single')) {
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getthemeId(0,'single') . "\"";
 
 			}
 
@@ -254,8 +254,8 @@ class themeClass  extends configClass {
 					JOIN	[staff]
 					ON		[theme].[By] = [staff].[staffId]
 					WHERE 	[theme].[isActive] ='1'	";
-			if ($this->model->getthemeId('','single')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getthemeId('','single') . "\"";
+			if ($this->model->getthemeId(0,'single')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getthemeId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -277,8 +277,8 @@ class themeClass  extends configClass {
 					JOIN	\"staff\"
 					ON		\"theme\".\"By\" = \"staff\".\"staffId\"
 					WHERE 	\"isActive\"='1'	";
-			if ($this->model->getthemeId('','single')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getthemeId('','single') . "\"";
+			if ($this->model->getthemeId(0,'single')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getthemeId(0,'single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -431,7 +431,7 @@ class themeClass  extends configClass {
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getthemeId('','single'))) {
+            if (!($this->model->getthemeId(0,'single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -445,7 +445,7 @@ class themeClass  extends configClass {
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getthemeId('','single')) {
+            if ($this->model->getthemeId(0,'single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -499,7 +499,7 @@ class themeClass  extends configClass {
 						`isApproved`			=	\"".$this->model->getIsApproved(0,'string')."\",
 						`By`					=	\"".$this->model->getBy()."\",
 						`Time`					=	".$this->model->getTime()."
-				WHERE 	`themeId`			=	\"".$this->model->getthemeId('','single')."\"";
+				WHERE 	`themeId`			=	\"".$this->model->getthemeId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[theme]
@@ -515,7 +515,7 @@ class themeClass  extends configClass {
 						[isApproved]			=	\"".$this->model->getIsApproved(0,'string')."\",
 						[By]					=	\"".$this->model->getBy()."\",
 						[Time]					=	".$this->model->getTime()."
-				WHERE 	[themeId]			=	\"".$this->model->getthemeId('','single')."\"";
+				WHERE 	[themeId]			=	\"".$this->model->getthemeId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -532,7 +532,7 @@ class themeClass  extends configClass {
 						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
-				WHERE 	\"themeId\"		=	\"".$this->model->getthemeId('','single')."\"";
+				WHERE 	\"themeId\"		=	\"".$this->model->getthemeId(0,'single')."\"";
 
 		}
 		$this->q->update($sql);
@@ -567,9 +567,9 @@ class themeClass  extends configClass {
 						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
 						`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
 						`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
-						`By`			=	\"".$this->model->getBy('','single')."\",
+						`By`			=	\"".$this->model->getBy(0,'single')."\",
 						`Time			=	".$this->model->getTime()."
-				WHERE 	`themeId`	=	\"".$this->model->getDepartrmentId('','single')."\"";
+				WHERE 	`themeId`	=	\"".$this->model->getDepartrmentId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[theme]
@@ -582,7 +582,7 @@ class themeClass  extends configClass {
 						[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 						[By]			=	\"".$this->model->getBy()."\",
 						[Time]			=	".$this->model->getTime()."
-				WHERE 	[themeId]	=	\"".$this->model->getthemeId('','single')."\"";
+				WHERE 	[themeId]	=	\"".$this->model->getthemeId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -596,7 +596,7 @@ class themeClass  extends configClass {
 						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
-				WHERE 	\"themeId\"	=	\"".$this->model->getthemeId('','single')."\"";
+				WHERE 	\"themeId\"	=	\"".$this->model->getthemeId(0,'single')."\"";
 
 		}
 		$this->q->update($sql);

@@ -6,7 +6,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package leaf
+ * @package security
+ * @subpackage leaf
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -81,24 +82,24 @@ class leafAccessModel extends validationClass{
 
 			if($_GET['leafCreateAccessValue'][$i]=='true') {
 				$this->setLeafCreateAccessValue($i, 1);
-				
+
 			} else {
 				$this->setLeafCreateAccessValue($i, 0);
 			}
 
 			if($_GET['leafReadAccessValue'][$i]=='true') {
-				
+
 				$this->setLeafReadAccessValue($i, 1);
 			} else {
-				
+
 				$this->setLeafReadAccessValue($i, 0);
 			}
 
 			if($_GET['leafUpdateAccessValue'][$i]=='true') {
-			
+					
 				$this->setLeafUpdateAccessValue($i, 1);
 			} else {
-			
+					
 				$this->setLeafUpdateAccessValue($i, 0);
 			}
 
@@ -132,7 +133,7 @@ class leafAccessModel extends validationClass{
 		}
 
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
-		
+
 
 	}
 
@@ -181,13 +182,13 @@ class leafAccessModel extends validationClass{
 		$this->setIsDelete(0,0,'string');
 		$this->setIsApproved(1,0,'string');
 	}
-/**
-	 * Enter description here ...
-	 * @param  int $value
-	 * @param array $key
-	 * @param enum $type
+	/**
+	 * Set Leaf Access Identification  Value
+	 * @param int $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafAccessId($value,$key=NULL,$type=NULL) {
+	public function setLeafAccessId($value,$key,$type) {
 		if($type=='single'){
 			$this->leafAccessId = $value;
 		} else if ($type=='array'){
@@ -196,12 +197,12 @@ class leafAccessModel extends validationClass{
 	}
 
 	/**
-	 * Enter description here ...
-	 * @param numeric $key
-	 * @param enum $type
-	 * @return Ambigous <multitype:, unknown_type>
+	 * Return Leaf Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getLeafAccessId($key=NULL,$type=NULL) {
+	public function getLeafAccessId($key,$type) {
 		if($type=='single'){
 			return $this->leafAccessId;
 		} else if ($type=='array'){
@@ -220,13 +221,13 @@ class leafAccessModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Identiification Value
-	 * @return int Folder identification
+	 * @return int 
 	 */
 	public function getLeafId() {
 
 		return $this->leafId;
 	}
-/**
+	/**
 	 * Set Group Identification Value
 	 * @param  int $value
 	 */
@@ -235,29 +236,28 @@ class leafAccessModel extends validationClass{
 	}
 	/**
 	 * Return Group Identiification Value
-	 * @return int Group
-	 *  identification
+	 * @return int 
 	 */
 	public function getGroupId() {
 
 		return $this->groupId;
 	}
 	/**
-	 * Set Folder/Module/Accordion Identification Value
+	 * Set Module Identification Value
 	 * @param  int $value
 	 */
 	public function setModuleId($value) {
 		$this->moduleId = $value;
 	}
 	/**
-	 * Return Folder/Module/Accordion Identiification Value
-	 * @return int Module identification
+	 * Return Module Identiification Value
+	 * @return int 
 	 */
 	public function getModuleId() {
 
 		return $this->moduleId;
 	}
-/**
+	/**
 	 * Set Folder Identification Value
 	 * @param  int $value
 	 */
@@ -266,9 +266,9 @@ class leafAccessModel extends validationClass{
 	}
 	/**
 	 * Return Folder Identiification Value
-	 * @return int Folder identification
+	 * @return int 
 	 */
-	public function getGroupId() {
+	public function getFolderId() {
 
 		return $this->folderId;
 	}
@@ -280,8 +280,8 @@ class leafAccessModel extends validationClass{
 		$this->staffId = $value;
 	}
 	/**
-	 * Return Staff Identiification Value
-	 * @return int Staff Identification
+	 * Return Staff Identification Value
+	 * @return int 
 	 */
 	public function getStaffId() {
 

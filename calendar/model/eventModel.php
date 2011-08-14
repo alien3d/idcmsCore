@@ -1,12 +1,13 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is religion model file.This is to ensure strict setting enable for all variable enter to database
+ * this is event model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package religion
+ * @package calendar
+ * @subpackage event
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -124,7 +125,7 @@ class eventModel extends validationClass{
 	}
 
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -149,14 +150,14 @@ class eventModel extends validationClass{
 		$this->setIsActive(0,0,'string');
 		$this->setIsDelete(0,0,'string');
 		$this->setIsApproved(1,0,'string');
-	}	
+	}
 	/**
 	 * Set Event Identification Value
-	 * @param int $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setEventId($value, $key = NULL, $type = NULL)
+	public function setEventId($value, $key, $type)
 	{
 		if ($type=='single') {
 			$this->eventId = $value;
@@ -166,9 +167,11 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Identification Value
-	 * @return integer eventId
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getEventId($key = NULL, $type = NULL)
+	public function getEventId($key , $type)
 	{
 		if ($type=='single') {
 			return $this->eventId;
@@ -192,7 +195,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Calendar Identification Value
-	 * @return string calendar identification
+	 * @return int
 	 */
 	public function getCalendarId()
 	{
@@ -208,7 +211,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Title Value
-	 * @return string Event Title
+	 * @return string
 	 */
 	public function getEventTitle()
 	{
@@ -217,7 +220,7 @@ class eventModel extends validationClass{
 
 	/**
 	 * Set Event Start Value
-	 * @param datetime $value
+	 * @param date $value
 	 */
 	public function setEventStart($value)
 	{
@@ -225,7 +228,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Start Value
-	 * @return datetime Event Start
+	 * @return date
 	 */
 	public function getEventStart()
 	{
@@ -234,7 +237,7 @@ class eventModel extends validationClass{
 
 	/**
 	 * Set Event End Value
-	 * @param datetime $value
+	 * @param date $value
 	 */
 	public function setEventEnd($value)
 	{
@@ -242,7 +245,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event End Value
-	 * @return datetime Event Start
+	 * @return date
 	 */
 	public function getEventEnd()
 	{
@@ -250,7 +253,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Set Event Is All Days Value
-	 * @param string $value
+	 * @param bool
 	 */
 	public function setEventIsAllDay($value)
 	{
@@ -258,10 +261,10 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Is All Days Value
-	 * @return string Event Address
+	 * @return bool
 	 */
 	public function getEventIsAllDay()
-					
+		
 	{
 		return $this->eventIsAllDay;
 	}
@@ -276,7 +279,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Notes Value
-	 * @return string Event Notes
+	 * @return string 
 	 */
 	public function getEventNotes()
 	{
@@ -293,7 +296,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Reminder Value
-	 * @return string Event Reminder
+	 * @return string 
 	 */
 	public function getEventReminder()
 	{
@@ -310,7 +313,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Url Value
-	 * @return string Event Url
+	 * @return string 
 	 */
 	public function getEventUrl()
 	{
@@ -328,7 +331,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Location Value
-	 * @return string Event Location
+	 * @return string 
 	 */
 	public function getEventLocation()
 	{
@@ -337,7 +340,7 @@ class eventModel extends validationClass{
 
 	/**
 	 * Set Event New Value
-	 * @param boolean $value
+	 * @param bool $value
 	 */
 	public function setEventIsNew($value)
 	{
@@ -345,7 +348,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event New Value
-	 * @return boolean Event New
+	 * @return bool
 	 */
 	public function getEventIsNew()
 	{
@@ -363,7 +366,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return  Staff Identification value
-	 * @return int $staffId
+	 * @return int
 	 */
 	public function staffId()
 	{

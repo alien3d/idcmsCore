@@ -34,7 +34,7 @@ function execute(){
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['tableMappingId'])){
-			$this->settableMappingId($this->strict($_POST['tableMappingId'],'numeric'),'','single');
+			$this->settableMappingId($this->strict($_POST['tableMappingId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['tableMappingSequence'])){
 			$this->settableMappingSequence($this->strict($_POST['tableMappingSequence'],'memo'));
@@ -200,7 +200,13 @@ function execute(){
 		$this->setIsActive(0,0,'string');
 		$this->setIsDelete(0,0,'string');
 	}
-	public function settableMappingTranslateId($value,$key=NULL,$type=NULL) {
+	/**
+	 * Set Table Mapping Translation Identification   Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setTableMappingTranslateId($value,$key,$type) {
 		if($type=='single'){
 			$this->tableMappingTranslateId = $value;
 		} else if ($type=='array'){
@@ -208,10 +214,12 @@ function execute(){
 		}
 	}
 	/**
-	 * Return tableMappingTranslateId Value
-	 * @return integer tableMappingTranslateId
+	 * Return Table Mapping Translation Identification Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function gettableMappingTranslateId($key=NULL,$type=NULL) {
+	public function getTableMappingTranslateId($key,$type) {
 		if($type=='single'){
 			return $this->tableMappingTranslateId;
 		} else if ($type=='array'){
@@ -245,7 +253,7 @@ function execute(){
 	}
 	/**
 	 * Return defaultLabelText
-	 * @return string defaultLabelText
+	 * @return string 
 	 */
 	public function getDefaultLabelText () {
 
@@ -255,14 +263,14 @@ function execute(){
 
 	/**
 	 * Set Language Identification
-	 * @param  string $value
+	 * @param  int $value
 	 */
 	public function setLanguageLabel($value) {
 		$this->languageId = $value;
 	}
 	/**
 	 * Return Language Identification
-	 * @return string Language Identification
+	 * @return int
 	 */
 	public function getLanguageId() {
 

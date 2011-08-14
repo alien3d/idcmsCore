@@ -389,8 +389,8 @@ class moduleClass extends configClass
 			USING 		(`iconId`)
 			WHERE 		`module`.`isActive`	=	1
 			AND			`icon`.`isActive`		=	1 ";
-			if (($this->model->getmoduleId('','single'))) {
-				$sql .= " AND `".$this->model->getPrimaryKeyName()."`=\"". $this->strict($this->model->getmoduleId('','single'), 'numeric') ."\"";
+			if (($this->model->getmoduleId(0,'single'))) {
+				$sql .= " AND `".$this->model->getPrimaryKeyName()."`=\"". $this->strict($this->model->getmoduleId(0,'single'), 'numeric') ."\"";
 			}
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
@@ -400,8 +400,8 @@ class moduleClass extends configClass
 			ON 			[icon].[iconId] = [module].[iconId]
 			WHERE 		[module].[isActive]	=	1
 			AND			[icon].[iconId]			=	1";
-			if (($this->model->getmoduleId('','single'))) {
-				$sql .= " AND [".$this->model->getPrimaryKeyName()."]=\"". $this->strict($this->model->getmoduleId('','single'), 'numeric') ."\"";
+			if (($this->model->getmoduleId(0,'single'))) {
+				$sql .= " AND [".$this->model->getPrimaryKeyName()."]=\"". $this->strict($this->model->getmoduleId(0,'single'), 'numeric') ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -411,8 +411,8 @@ class moduleClass extends configClass
 			USING 		(\"iconId\")
 			WHERE 		\"module\".\"isActive\"	=	1
 			AND			\"icon\".\"isActive\"		=	1";
-			if (($this->model->getmoduleId('','single'))) {
-				$sql .= " AND \"".$this->model->getPrimaryKeyName()."\"=\"". $this->strict($this->model->getmoduleId('','single'), 'numeric') ."\"";
+			if (($this->model->getmoduleId(0,'single'))) {
+				$sql .= " AND \"".$this->model->getPrimaryKeyName()."\"=\"". $this->strict($this->model->getmoduleId(0,'single'), 'numeric') ."\"";
 			}
 		}
 		if ($this->quickFilter) {
@@ -532,7 +532,7 @@ class moduleClass extends configClass
 		while ($row = $this->q->fetchAssoc()) {
 			$items[] = $row;
 		}
-	 if ($this->model->getmoduleId('','single')) {
+	 if ($this->model->getmoduleId(0,'single')) {
 	 	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,

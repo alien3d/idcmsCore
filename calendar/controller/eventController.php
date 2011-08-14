@@ -217,7 +217,7 @@ class eventClass extends configClass
 
 			$items[] = $row;
 		}
-		if ($this->model->getEventId('','single')) {
+		if ($this->model->getEventId(0,'single')) {
 			$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -268,7 +268,7 @@ class eventClass extends configClass
 					`eventUrl`			=	\"". $this->model->getEventUrl() ."\",
 					`eventLocation`		=	\"". $this->model->getEventLocation() ."\",
 					`eventIsNew`		=	\"". $this->model->getEventIsNew() ."\"
-			WHERE 	`eventId`			=	\"". $this->model->getEventId('','single')."\"";
+			WHERE 	`eventId`			=	\"". $this->model->getEventId(0,'single')."\"";
 		} else if ($this->q->vendor == self :: mssql){
 			$sql = "
 			UPDATE	`event`
@@ -282,7 +282,7 @@ class eventClass extends configClass
 					`eventUrl`			=	\"". $this->model->getEventUrl() ."\",
 					`eventLocation`		=	\"". $this->model->getEventLocation() ."\",
 					`eventIsNew`		=	\"". $this->model->getEventIsNew() ."\"
-			WHERE 	`eventId`			=	\"". $this->model->getEventId('','single')."\"";
+			WHERE 	`eventId`			=	\"". $this->model->getEventId(0,'single')."\"";
 			
 		} else if ($this->q->vendor == self:: oracle){
 			$sql = "
@@ -297,7 +297,7 @@ class eventClass extends configClass
 					`eventUrl`			=	\"". $this->model->getEventUrl() ."\",
 					`eventLocation`		=	\"". $this->model->getEventLocation() ."\",
 					`eventIsNew`		=	\"". $this->model->getEventIsNew() ."\"
-			WHERE 	`eventId`			=	\"". $this->model->getEventId('','single')."\"";
+			WHERE 	`eventId`			=	\"". $this->model->getEventId(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
@@ -320,7 +320,7 @@ class eventClass extends configClass
 		if($this->getVendor() == self::mysql){
 			$sql = "
 			DELETE 	FROM	`event`
-			WHERE 			`eventId`		=	\"". $this->model->getEventId('','single')."\"";
+			WHERE 			`eventId`		=	\"". $this->model->getEventId(0,'single')."\"";
 		} else if ($this->q->vendor == self :: mssql){
 			$sql = "
 			UPDATE	[event]
@@ -330,7 +330,7 @@ class eventClass extends configClass
 					[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
 					[isActive]		= 	\"".$this->model->getIsActive(0,'string')."\",
 					[isApproved] 	=	\"".$this->model->getIsApproved(0,'string')."\"
-			WHERE 	[eventId]		=	\"". $this->model->getEventId('','single')."\"";
+			WHERE 	[eventId]		=	\"". $this->model->getEventId(0,'single')."\"";
 		} else if ($this->q->vendor == self:: oracle){
 			$sql = "
 			UPDATE	`event`
@@ -340,7 +340,7 @@ class eventClass extends configClass
 					`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
 					`isActive`		= 	\"".$this->model->getIsActive(0,'string')."\",
 					`isApproved` 	=	\"".$this->model->getIsApproved(0,'string')."\"
-			WHERE 	`eventId`		=	\"". $this->model->getEventId('','single')."\"";
+			WHERE 	`eventId`		=	\"". $this->model->getEventId(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {

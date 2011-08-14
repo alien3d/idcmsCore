@@ -6,7 +6,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package accordion
+ * @package security
+ * @subpackage log
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

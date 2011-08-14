@@ -238,8 +238,8 @@ class religionClass extends configClass
 					JOIN	`staff`
 					ON		`religion`.`By` = `staff`.`staffId`
 					WHERE 	 ".$this->auditFilter;
-			if ($this->model->getReligionId('','single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getReligionId('','single') . "\"";
+			if ($this->model->getReligionId(0,'single')) {
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getReligionId(0,'single') . "\"";
 
 			}
 
@@ -261,8 +261,8 @@ class religionClass extends configClass
 					JOIN	[staff]
 					ON		[religion].[By] = [staff].[staffId]
 					WHERE 	[religion].[isActive] ='1'	";
-			if ($this->model->getReligionId('','single')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getReligionId('','single') . "\"";
+			if ($this->model->getReligionId(0,'single')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getReligionId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -282,8 +282,8 @@ class religionClass extends configClass
 					JOIN	\"staff\"
 					ON		\"religion\".\"By\" = \"staff\".\"staffId\"
 					WHERE 	\"isActive\"='1'	";
-			if ($this->model->getReligionId('','single')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getReligionId('','single') . "\"";
+			if ($this->model->getReligionId(0,'single')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getReligionId(0,'single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -430,7 +430,7 @@ class religionClass extends configClass
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getReligionId('','single'))) {
+            if (!($this->model->getReligionId(0,'single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -444,7 +444,7 @@ class religionClass extends configClass
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getReligionId('','single')) {
+            if ($this->model->getReligionId(0,'single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -500,7 +500,7 @@ class religionClass extends configClass
 					`isApproved`		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					`By`				=	\"". $this->model->getBy() . "\",
 					`Time`				=	" . $this->model->getTime() . "
-			WHERE 	`religionId`		=	\"". $this->model->getReligionId('','single') . "\"";
+			WHERE 	`religionId`		=	\"". $this->model->getReligionId(0,'single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[religion]
@@ -514,7 +514,7 @@ class religionClass extends configClass
 					[isApproved]		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
-			WHERE 	[religionId]		=	\"". $this->model->getReligionId('','single') . "\"";
+			WHERE 	[religionId]		=	\"". $this->model->getReligionId(0,'single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"religion\"
@@ -528,7 +528,7 @@ class religionClass extends configClass
 					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
-			WHERE 	\"religionId\"		=	\"". $this->model->getReligionId('','single') . "\"";
+			WHERE 	\"religionId\"		=	\"". $this->model->getReligionId(0,'single') . "\"";
 		}
 		/*
 		 *  require three variable below to track  table audit
@@ -577,7 +577,7 @@ class religionClass extends configClass
 					`isApproved`		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					`By`				=	\"". $this->model->getBy() . "\",
 					`Time`				=	" . $this->model->getTime() . "
-			WHERE 	`religionId`		=	\"". $this->model->getReligionId('','single') . "\"";
+			WHERE 	`religionId`		=	\"". $this->model->getReligionId(0,'single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[religion]
@@ -590,11 +590,11 @@ class religionClass extends configClass
 					[isApproved]		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
-			WHERE 	[religionId]		=	\"". $this->model->getReligionId('','single') . "\"";
+			WHERE 	[religionId]		=	\"". $this->model->getReligionId(0,'single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"religion\"
-			SET 	\"religionDesc\"	=	\"". $this->model->getReligionDesc('','single') . "\",
+			SET 	\"religionDesc\"	=	\"". $this->model->getReligionDesc(0,'single') . "\",
 					\"isDefault\"		=	\"". $this->model->getIsDefault(0,'string') . "\",
 					\"isNew\"			=	\"". $this->model->getIsNew(0,'string') . "\",
 					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'string') . "\",
@@ -604,7 +604,7 @@ class religionClass extends configClass
 					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
-			WHERE 	\"religionId\"		=	\"". $this->model->getReligionId('','single') . "\"";
+			WHERE 	\"religionId\"		=	\"". $this->model->getReligionId(0,'single') . "\"";
 		}
 		// advance logging future
 		$this->q->tableName       = $this->model->getTableName();

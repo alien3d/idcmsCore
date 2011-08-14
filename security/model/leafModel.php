@@ -14,7 +14,7 @@ class leafModel extends validationClass{
 
 	private $leafId;
 	private $leafCategoryId;
-	private $tabId;
+	private $moduleId;
 	private $folderId;
 	private $iconId;
 	private $leafSequence;
@@ -39,7 +39,7 @@ class leafModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['leafId'])){
-			$this->setLeafId($this->strict($_POST['leafId'],'numeric'),'','single');
+			$this->setLeafId($this->strict($_POST['leafId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['tabId'])){
 			$this->setTabId($this->strict($_POST['tabId'],'numeric'));
@@ -250,11 +250,11 @@ class leafModel extends validationClass{
 
 	/**
 	 * Set Leaf Identification  Value
-	 * @param int $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafId($value,$key=NULL,$type=NULL) {
+	public function setLeafId($value,$key,$type) {
 		if($type=='single'){
 			$this->leafId = $value;
 		} else if ($type=='array'){
@@ -263,9 +263,11 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Identication Value
-	 * @return integer $leafId
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getLeafId($key=NULL,$type=NULL) {
+	public function getLeafId($key,$type) {
 		if($type=='single'){
 			return $this->leafId;
 		} else if ($type=='array'){
@@ -276,29 +278,25 @@ class leafModel extends validationClass{
 		}
 	}
 	/**
-	 * Set Tab/Accordion Identification  Value
+	 * Set Module Identification  Value
 	 * @param int $value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setTabId($value) {
 		$this->tabId = $value;
 
 	}
 	/**
-	 * Return Tab/Accordion Identication Value
-	 * @return integer $tabId
+	 * Return Module Identification Value
+	 * @return int
 	 */
-	public function getTabId() {
+	public function getModuleId() {
 
-		return $this->tabId;
+		return $this->moduleId;
 
 	}
 	/**
 	 * Set Folder Identification  Value
 	 * @param int $value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setFolderId($value) {
 
@@ -307,7 +305,7 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Folder Identication Value
-	 * @return integer folderId
+	 * @return int
 	 */
 	public function getFolderId() {
 
@@ -317,8 +315,6 @@ class leafModel extends validationClass{
 	/**
 	 * Set Icon Identification  Value
 	 * @param int $value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIconId($value) {
 
@@ -327,7 +323,7 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Icon Identification Value
-	 * @return integer $iconId
+	 * @return int
 	 */
 	public function getIconId() {
 
@@ -343,35 +339,35 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Code
-	 * @return int $folderCode
+	 * @return string
 	 */
 	public function getLeafCode() {
 		return $this->leafCode;
 	}
 	/**
 	 * Set Leaf Sequence Value
-	 * @param numeric $leafSequence
+	 * @param int $value
 	 */
 	public function setLeafSequence($value) {
 		$this->leafSequence = $value;
 	}
 	/**
 	 * Return Leaf Sequence
-	 * @return int $leafSequence
+	 * @return int 
 	 */
 	public function getLeafSequence() {
 		return $this->leafSequence;
 	}
 	/**
-	 * Set Leaf Application
+	 * Set Leaf Application Filename
 	 * @param string $value
 	 */
 	public function setLeafFilename($value) {
 		$this->leafFilename = $value;
 	}
 	/**
-	 * Return Leaf /Application
-	 * @return string leaf /Application
+	 * Return Leaf /Application Filename
+	 * @return string 
 	 */
 	public function getLeafFilename() {
 		return $this->leafFilename;
@@ -385,25 +381,12 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Leaf/Application Note (English Translation Default)
-	 * @return string folder Note
+	 * @return string 
 	 */
 	public function getLeafNote() {
 		return $this->leafNote;
 	}
 
-	/**
-	 * Set Language Identification
-	 * @param  int $value
-	 */
-	public function setLanguageId($value) {
-		$this->languageId = $value;
-	}
-	/**
-	 * Return Language Identification
-	 * @return int languageId
-	 */
-	public function getLanguageId() {
-		return $this->languageId;
-	}
+	
 }
 ?>

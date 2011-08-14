@@ -325,8 +325,8 @@ class leafClass extends configClass
 			WHERE 		".$this->auditFilter."
 			AND			`folder`.`isActive`		=	1
 			AND			`module`.`isActive`	= 1 ";
-			if ($this->model->getLeafId('','single')) {
-				$sql .= " AND `".$this->model->getmoduleleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLeafId('','single') ."\"";
+			if ($this->model->getLeafId(0,'single')) {
+				$sql .= " AND `".$this->model->getmoduleleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLeafId(0,'single') ."\"";
 			}
 			if($_POST['filterLanguage']==true){
 				$sql.=" AND `leafTranslate`.`languageId`='".$this->model->getLanguageId()."'";
@@ -347,8 +347,8 @@ class leafClass extends configClass
 			WHERE 		[folder].[isActive]			=	1
 			AND			[module].[isActive]		=	1
 			AND			[leaf].[isActive]			=	1 ";
-			if ($this->model->getLeafId('','single')) {
-				$sql .= " AND [".$this->model->getmoduleleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getLeafId('','single') ."\"";
+			if ($this->model->getLeafId(0,'single')) {
+				$sql .= " AND [".$this->model->getmoduleleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getLeafId(0,'single') ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -363,8 +363,8 @@ class leafClass extends configClass
 			WHERE 		\"folder\".\"isActive\"		=	1
 			AND			\"module\".`isActive\"	=	1
 			AND			\"leaf\".`isActive\"		=	1 ";
-			if ($this->model->getLeafId('','single')) {
-				$sql .= " AND \"".$this->model->getmoduleleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getLeafId('','single') ."\"";
+			if ($this->model->getLeafId(0,'single')) {
+				$sql .= " AND \"".$this->model->getmoduleleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getLeafId(0,'single') ."\"";
 			}
 		}
 		/**
@@ -484,7 +484,7 @@ class leafClass extends configClass
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getLeafId('','single'))) {
+            if (!($this->model->getLeafId(0,'single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -499,7 +499,7 @@ class leafClass extends configClass
             	$items[] = $row;
             }
             //echo $strData;
-            if ($this->model->getLeafId('','single')) {
+            if ($this->model->getLeafId(0,'single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -560,7 +560,7 @@ class leafClass extends configClass
 					`isApproved`			=	\"".$this->model->getIsApproved(0,'string')."\",
 					`By`					=	\"".$this->model->getBy()."\",
 					`Time`					=	".$this->model->getTime()."
-			WHERE 	`leafId`	=	\"". $this->getLeafId('','single') ."\"";
+			WHERE 	`leafId`	=	\"". $this->getLeafId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
@@ -573,7 +573,7 @@ class leafClass extends configClass
 					[isApproved]			=	\"".$this->model->getIsApproved(0,'string')."\",
 					[By]					=	\"".$this->model->getBy()."\",
 					[Time]					=	".$this->model->getTime()."
-			WHERE 	[leafId]	=	\"". $this->getLeafId('','single') ."\"";
+			WHERE 	[leafId]	=	\"". $this->getLeafId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE	\"leaf\"
@@ -585,7 +585,7 @@ class leafClass extends configClass
 					\"isApproved\"	=	\"". $this->model->getIsApproved ."\",
 					\"By\"			=	\"". $this->model->getBy() ."\",
 					\"Time\"		=	" . $this->model->getTime . "
-			WHERE 	\"leafId\"		=	\"". $this->getLeafId('','single') ."\"";
+			WHERE 	\"leafId\"		=	\"". $this->getLeafId(0,'single') ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -599,7 +599,7 @@ class leafClass extends configClass
 		echo json_encode(array(
             "success" => true,
             "message" => "Record Update",
-			"leafId"=>$this->getLeafId('','single')
+			"leafId"=>$this->getLeafId(0,'single')
             ));
             exit();
 	}
@@ -624,7 +624,7 @@ class leafClass extends configClass
 					`isApproved`=	\"". $this->model->getIsApproved ."\",
 					`By`		=	\"". $this->model->getBy() ."\",
 					`Time		=	" . $this->model->getTime . "
-			WHERE 	`leafId`	=	\"". $this->model->getLeafId('','single') ."\"";
+			WHERE 	`leafId`	=	\"". $this->model->getLeafId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
@@ -637,7 +637,7 @@ class leafClass extends configClass
 					[isApproved]			=	\"".$this->model->getIsApproved(0,'string')."\",
 					[By]					=	\"".$this->model->getBy()."\",
 					[Time]					=	".$this->model->getTime()."
-			WHERE 	[leafId]	=	\"". $this->getLeafId('','single') ."\"";
+			WHERE 	[leafId]	=	\"". $this->getLeafId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE	\"leaf\"
@@ -650,7 +650,7 @@ class leafClass extends configClass
 					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 					\"By\"				=	\"".$this->model->getBy()."\",
 					\"Time\"			=	".$this->model->getTime()."
-			WHERE 	\"leafId\"			=	\"". $this->model->getLeafId('','single') ."\"";
+			WHERE 	\"leafId\"			=	\"". $this->model->getLeafId(0,'single') ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {

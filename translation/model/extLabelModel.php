@@ -33,7 +33,7 @@ class extLabelModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['extLabelId'])){
-			$this->setextLabelId($this->strict($_POST['extLabelId'],'numeric'),'','single');
+			$this->setextLabelId($this->strict($_POST['extLabelId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['extLabelSequence'])){
 			$this->setextLabelSequence($this->strict($_POST['extLabelSequence'],'memo'));
@@ -199,7 +199,13 @@ class extLabelModel extends validationClass{
 		$this->setIsActive(0,0,'string');
 		$this->setIsDelete(0,0,'string');
 	}
-	public function setExtLabelId($value,$key=NULL,$type=NULL) {
+	/**
+	 * Set Default Label Translation   Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setExtLabelId($value,$key,$type) {
 		if($type=='single'){
 			$this->extLabelId = $value;
 		} else if ($type=='array'){
@@ -207,10 +213,13 @@ class extLabelModel extends validationClass{
 		}
 	}
 	/**
-	 * Return textLabelId Value
-	 * @return integer textLabelId
+	 * Return Ext Label Identification Value
+	 * Return Module Access Identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getExtLabelId($key=NULL,$type=NULL) {
+	public function getExtLabelId($key,$type) {
 		if($type=='single'){
 			return $this->extLabelId;
 		} else if ($type=='array'){
@@ -230,7 +239,7 @@ class extLabelModel extends validationClass{
 	}
 	/**
 	 * Return Label Note Value
-	 * @return string Label Note (English)
+	 * @return string
 	 */
 	public function getExtLabelNote() {
 

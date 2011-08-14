@@ -34,7 +34,7 @@ class defaultLabelModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['defaultLabelId'])){
-			$this->setdefaultLabelId($this->strict($_POST['defaultLabelId'],'numeric'),'','single');
+			$this->setdefaultLabelId($this->strict($_POST['defaultLabelId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['defaultLabelSequence'])){
 			$this->setdefaultLabelSequence($this->strict($_POST['defaultLabelSequence'],'memo'));
@@ -200,7 +200,13 @@ class defaultLabelModel extends validationClass{
 		$this->setIsActive(0,0,'string');
 		$this->setIsDelete(0,0,'string');
 	}
-	public function setDefaultLabelId($value,$key=NULL,$type=NULL) {
+		/**
+	* Set Default Label   Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setDefaultLabelId($value,$key,$type) {
 		if($type=='single'){
 			$this->defaultLabelId = $value;
 		} else if ($type=='array'){
@@ -208,10 +214,13 @@ class defaultLabelModel extends validationClass{
 		}
 	}
 	/**
-	 * Return defaultLabelId Value
-	 * @return integer defaultLabelId
+	 * Return defaultLabel Identification Value
+	 * Return Module Access Identification
+	 * @param array[int][int] $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getDefaultLabelId($key=NULL,$type=NULL) {
+	public function getDefaultLabelId($key,$type) {
 		if($type=='single'){
 			return $this->defaultLabelId;
 		} else if ($type=='array'){
@@ -230,7 +239,7 @@ class defaultLabelModel extends validationClass{
 	}
 	/**
 	 * Return Default Label Value
-	 * @return string Default Label
+	 * @return string 
 	 */
 	public function getDefaultLabel() {
 
@@ -245,7 +254,7 @@ class defaultLabelModel extends validationClass{
 	}
 	/**
 	 * Return Default Label Value
-	 * @return string Language Code
+	 * @return string 
 	 */
 	public function getDefaultLabelEnglish() {
 

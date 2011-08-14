@@ -264,51 +264,47 @@ class folderAccessClass  extends configClass {
 	 * @see config::update()
 	 */
 	function update() 				{
-		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
-			//UTF8
-			$sql="SET NAMES \"utf8\"";
+		header('Content-Type', 'application/json; charset=utf-8');
+		//UTF8
+		if($this->q->vendor==self::mysql){
+			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
-
 		}
 		$this->model->update();
-		$loop=$this->model->getTotal();
-		if($this->getVendor() == self::mysql) {
-			$sql="
-			UPDATE `folderAccess`
-			SET    `folderAccessValue` = CASE `folderAccessId`";
-		} else if($this->getVendor()==self::mssql) {
-			$sql="
-			UPDATE 	[folderAccess]
-			SET 	[folderAccessValue] = CASE [folderAccessId]";
+		$loop = $this->model->getTotal();
 
-		} else if ($this->getVendor()==self::oracle) {
-			$sql="
-			UPDATE \"folderAccess\"
-			SET    \"folderAccessValue\" = CASE \"folderAccessId\"";
+		if ($this->getVendor() == self::mysql) {
+			$sql = "
+			UPDATE 	`".$this->model->getTableName()."`
+			SET 	";
+
+			$sql.="	   `folderAccessValue`			=	case `".$this->model->getPrimaryKeyName()."` ";
+			for($i=0;$i<$loop;$i++) {
+				$sql.="
+				WHEN \"".$this->model->getFolderAccessId($i, 'array')."\"
+				THEN \"".$this->model->getFolderAccessValue($i,'array')."\"";
+
+			}
+			$sql.="	END ";
+			$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getPrimaryKeyAll(). ")";
+
 		}
-		for($i=0;$i<$loop;$i++) {
-			$sql.="
-			WHEN \"".$this->model->getFolderAccessId($i,'array')."\" THEN \"".$this->model->getFolderAccessValue($i,'array')."\"";
-		}
-		if($this->getVendor() == self::mysql) {
-			$sql.=" END
-			WHERE `folderAccessId` IN (".$this->model->getfolderAccessIdAll.")";
-		} else if($this->getVendor()==self::mssql) {
-			$sql.=" END
-			WHERE `=[folderAccessId] IN (".$this->model->getfolderAccessIdAll.")";
-		} else if ($this->getVendor()==self::oracle) {
-			$sql.=" END
-			WHERE \"folderAccessId\" IN (".$this->model->getfolderAccessIdAll.")";
-		}
-		echo $sql;
+
+
+		//	echo $sql."<br>";
 		$this->q->update($sql);
-		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                    "success" => false,
+                    "message" => $this->q->responce
+			));
 			exit();
 		}
-		echo json_encode(array("success"=>true,"message"=>"Update Success"));
-		exit();
+		echo json_encode(array(
+            "success" => true,
+            "message" => "Update Success"
+            ));
+            exit();
 
 
 	}

@@ -250,24 +250,24 @@ class extLabelClass extends  configClass {
 			SELECT 		*
 			FROM 		`extLabel`
 			WHERE		`extLabel`.`isActive`		=	1";
-			if($this->model->getextLabelId('','single')) {
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getextLabelId('','single')."\"";
+			if($this->model->getextLabelId(0,'single')) {
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getextLabelId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		[extLabel]
 			AND			[extLabel].[isActive]		=	1";
-			if($this->model->getextLabelId('','single')) {
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getextLabelId('','single')."\"";
+			if($this->model->getextLabelId(0,'single')) {
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getextLabelId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		\"extLabel\"
 			WHERE		\"extLabel\".\"isActive\"=1";
-			if($this->model->getextLabelId('','single')) {
-				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getextLabelId('','single')."\"";
+			if($this->model->getextLabelId(0,'single')) {
+				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getextLabelId(0,'single')."\"";
 			}
 		}
 		/**
@@ -461,7 +461,7 @@ class extLabelClass extends  configClass {
 							`isApproved`		=	\"".$this->model->getIsApproved(0,'string')."\",
 							`By`				=	\"".$this->model->getBy()."\",
 							`Time`				=	".$this->model->getTime()."
-					WHERE 	`extLabelId`			=	\"".$this->model->getextLabelId('','single')."\"";
+					WHERE 	`extLabelId`			=	\"".$this->model->getextLabelId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[extLabel]
@@ -475,7 +475,7 @@ class extLabelClass extends  configClass {
 							[isApproved]		=	\"".$this->model->getIsApproved(0,'string')."\",
 							[By]				=	\"".$this->model->getBy()."\",
 							[Time]				=	".$this->model->getTime()."
-					WHERE 	[extLabelId]			=	\"".$this->model->getextLabelId('','single')."\"";
+					WHERE 	[extLabelId]			=	\"".$this->model->getextLabelId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	\"extLabel\"
@@ -489,7 +489,7 @@ class extLabelClass extends  configClass {
 							\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 							\"By\"				=	\"".$this->model->getBy()."\",
 							\"Time\"			=	".$this->model->getTime()."
-					WHERE 	\"extLabelId\"		=	\"".$this->model->getextLabelId('','single')."\"";
+					WHERE 	\"extLabelId\"		=	\"".$this->model->getextLabelId(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {

@@ -7,7 +7,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package folder
+ * @package security
+ * @subpackage folderAccess
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -31,13 +32,16 @@ class folderAccessModel extends validationClass{
 		 */
 		$this->setTableName		('folderAccess');
 		$this->setPrimaryKeyName 	('folderAccessId');
+
+		$this->folderAccessId 		= array();
+		$this->folderAccessValue 	= array();
+		/*
+		 *  All the $_GET enviroment.
+		 */
+		$this->setTotal(count($_GET['folderAccessId']));
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		$this->folderAccessId 		= array();
-		$this->folderAccessValue 	= array();
-		$this->setTotal(count($_GET['folderAccessId']));
-
 		if(isset($_POST['groupId'])){
 			$this->setGroupId($this->strict($_POST['groupId'],'numeric'));
 		}
@@ -116,12 +120,12 @@ class folderAccessModel extends validationClass{
 		$this->setIsApproved(1,0,'string');
 	}
 	/**
-	 * Enter description here ...
-	 * @param unknown_type $value
-	 * @param unknown_type $key
-	 * @param unknown_type $type
+	 * Set Folder Access  Value
+	 * @param int $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setFolderAccessId($value,$key=NULL,$type=NULL) {
+	public function setFolderAccessId($value,$key,$type) {
 		if($type=='single'){
 			$this->folderAccessId = $value;
 		} else if ($type=='array'){
@@ -130,12 +134,12 @@ class folderAccessModel extends validationClass{
 	}
 
 	/**
-	 * Enter description here ...
-	 * @param unknown_type $key
-	 * @param unknown_type $type
-	 * @return Ambigous <multitype:, unknown_type>
+	 * Return Folder Access Identification
+	 * @param array[int][int] $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return int|array
 	 */
-	public function getFolderAccessId($key=NULL,$type=NULL) {
+	public function getFolderAccessId($key,$type) {
 		if($type=='single'){
 			return $this->folderAccessId;
 		} else if ($type=='array'){
@@ -146,15 +150,15 @@ class folderAccessModel extends validationClass{
 		}
 	}
 	/**
-	 * Set Folder/Module/Accordion Identification Value
+	 * Set Folder Identification Value
 	 * @param  int $value
 	 */
 	public function setFolderId($value) {
 		$this->folderId = $value;
 	}
 	/**
-	 * Return Folder/Module/Accordion Identiification Value
-	 * @return int Folder identification
+	 * Return Folder Identification Value
+	 * @return int
 	 */
 	public function getFolderId() {
 
@@ -169,42 +173,53 @@ class folderAccessModel extends validationClass{
 		$this->groupId = $value;
 	}
 	/**
-	 * Return Group Identiification Value
-	 * @return int Folder identification
+	 * Return Group Identification Value
+	 * @return int
 	 */
 	public function getGroupId() {
 
 		return $this->groupId;
 	}
 	/**
-	 * Set Folder/Module/Accordion Identification Value
+	 * Set Module Identification Value
 	 * @param  int $value
 	 */
 	public function setModuleId($value) {
 		$this->moduleId = $value;
 	}
 	/**
-	 * Return Folder/Module/Accordion Identiification Value
-	 * @return int Folder identification
+	 * Return Module Identiification Value
+	 * @return int
 	 */
 	public function getModuleId() {
 
 		return $this->moduleId;
 	}
 	/**
-	 * Set Folder Access  Value
-	 * @param  int $value
+	 * Set Folder Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @param bool|array $value
 	 */
-	public function setFolderAccessValue($value,$key) {
-		$this->folderAccessValue[$key] = $value;
+	public function setFolderAccessValue($value,$key,$type) {
+		if($type=='string'){
+
+		} else if ($type=='array'){
+			$this->folderAccessValue[$key] = $value;
+		}
 	}
 	/**
 	 * Return Folder Access Value
-	 * @return int Folder identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getFolderAccessValue($value,$key) {
+	public function getFolderAccessValue($key,$type) {
+		if($type=='string'){
 
-		return $this->folderAccessValue[$key]=$value;
+		} else if ($type=='array'){
+			return $this->folderAccessValue[$key];
+		}
 	}
 
 

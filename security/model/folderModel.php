@@ -6,7 +6,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package folder
+ * @package security
+ * @subpackage folder
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -35,7 +36,7 @@ class folderModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['folderId'])){
-			$this->setFolderId($this->strict($_POST['folderId'],'numeric'),'','single');
+			$this->setFolderId($this->strict($_POST['folderId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['moduleId'])){
 			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'));
@@ -246,7 +247,7 @@ class folderModel extends validationClass{
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setFolderId($value,$key=NULL,$type=NULL) {
+	public function setFolderId($value,$key,$type) {
 		if($type=='single'){
 			$this->folderId = $value;
 		} else if ($type=='array'){
@@ -255,9 +256,9 @@ class folderModel extends validationClass{
 	}
 	/**
 	 * Return folder Identification
-	 * @return integer folderId
+	 * @return int
 	 */
-	public function getFolderId($key=NULL,$type=NULL) {
+	public function getFolderId($key,$type) {
 		if($type=='single'){
 			return $this->folderId;
 		} else if ($type=='array'){
@@ -278,7 +279,7 @@ class folderModel extends validationClass{
 	}
 	/**
 	 * Return Module Identication Value
-	 * @return integer folderId
+	 * @return int
 	 */
 	public function getModuleId() {
 
@@ -297,8 +298,8 @@ class folderModel extends validationClass{
 
 	}
 	/**
-	 * Return folder Identification Value
-	 * @return integer folderId
+	 * Return Icon Identification Value
+	 * @return int
 	 */
 	public function getIconId() {
 

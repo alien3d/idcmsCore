@@ -396,8 +396,8 @@ class tableMappingClass extends  configClass {
 			ON			`tableMapping`.`iconId`=`icon`.`iconId`
 			WHERE		`tab`.`isActive`	=	1
 			AND			`tableMapping`.`isActive`		=	1";
-			if($this->model->gettableMappingId('','single')) {
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->gettableMappingId('','single')."\"";
+			if($this->model->gettableMappingId(0,'single')) {
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->gettableMappingId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
@@ -410,8 +410,8 @@ class tableMappingClass extends  configClass {
 			ON			[tableMapping].[iconId]=[icon].[iconId]
 			WHERE		[tab].[isActive]	=	1
 			AND			[tableMapping].[isActive]		=	1";
-			if($this->model->gettableMappingId('','single')) {
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->gettableMappingId('','single')."\"";
+			if($this->model->gettableMappingId(0,'single')) {
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->gettableMappingId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
@@ -423,8 +423,8 @@ class tableMappingClass extends  configClass {
 			USING(\"iconId\")
 			WHERE		\"tab\".\"isActive\"=1
 			AND			\"tableMapping\".\"isActive\"=1";
-			if($this->model->gettableMappingId('','single')) {
-				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->gettableMappingId('','single')."\"";
+			if($this->model->gettableMappingId(0,'single')) {
+				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->gettableMappingId(0,'single')."\"";
 			}
 		}
 		/**
@@ -642,7 +642,7 @@ class tableMappingClass extends  configClass {
 							`isApproved`		=	\"".$this->model->getIsApproved(0,'string')."\",
 							`By`				=	\"".$this->model->getBy()."\",
 							`Time`				=	".$this->model->getTime()."
-					WHERE 	`tableMappingId`			=	\"".$this->model->gettableMappingId('','single')."\"";
+					WHERE 	`tableMappingId`			=	\"".$this->model->gettableMappingId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[tableMapping]
@@ -659,7 +659,7 @@ class tableMappingClass extends  configClass {
 							[isApproved]		=	\"".$this->model->getIsApproved(0,'string')."\",
 							[By]				=	\"".$this->model->getBy()."\",
 							[Time]				=	".$this->model->getTime()."
-					WHERE 	[tableMappingId]			=	\"".$this->model->gettableMappingId('','single')."\"";
+					WHERE 	[tableMappingId]			=	\"".$this->model->gettableMappingId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	\"tableMapping\"
@@ -676,7 +676,7 @@ class tableMappingClass extends  configClass {
 							\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 							\"By\"				=	\"".$this->model->getBy()."\",
 							\"Time\"			=	".$this->model->getTime()."
-					WHERE 	\"tableMappingId\"		=	\"".$this->model->gettableMappingId('','single')."\"";
+					WHERE 	\"tableMappingId\"		=	\"".$this->model->gettableMappingId(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {

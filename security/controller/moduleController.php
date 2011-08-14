@@ -378,8 +378,8 @@ class moduleClass extends configClass
 					LEFT 	JOIN	`icon`
 					USING			(`iconId`)
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getModuleId('','single')) {
-				$sql .= " AND `".$this->model->getmoduleleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getModuleId('','single') . "\"";
+			if ($this->model->getModuleId(0,'single')) {
+				$sql .= " AND `".$this->model->getmoduleleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getModuleId(0,'single') . "\"";
 
 			}
 
@@ -407,8 +407,8 @@ class moduleClass extends configClass
 					LEFT 	JOIN	`icon`
 					ON		[iconId].[iconId] = [module].[iconId]
 					WHERE 	[module].[isActive] ='1'	";
-			if ($this->model->getModuleId('','single')) {
-				$sql .= " AND [".$this->model->getmoduleleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getModuleId('','single') . "\"";
+			if ($this->model->getModuleId(0,'single')) {
+				$sql .= " AND [".$this->model->getmoduleleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getModuleId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -434,8 +434,8 @@ class moduleClass extends configClass
 					LEFT 	JOIN	\"icon\"
 					USING	(\"iconId\")
 					WHERE 	\"isActive\"='1'	";
-			if ($this->model->getModuleId('','single')) {
-				$sql .= " AND \"".$this->model->getmoduleleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getModuleId('','single') . "\"";
+			if ($this->model->getModuleId(0,'single')) {
+				$sql .= " AND \"".$this->model->getmoduleleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getModuleId(0,'single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -590,7 +590,7 @@ class moduleClass extends configClass
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getModuleId('','single'))) {
+            if (!($this->model->getModuleId(0,'single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -604,7 +604,7 @@ class moduleClass extends configClass
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getModuleId('','single')) {
+            if ($this->model->getModuleId(0,'single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -654,7 +654,7 @@ class moduleClass extends configClass
 					`isApproved`		=	\"" . $this->model->getIsApproved(0,'string') . "\",
 					`By`				=	\"" . $this->model->getBy() . "\",
 					`Time`				=	" . $this->model->getTime() . "
-			WHERE 	`moduleId`			=	\"" . $this->model->getModuleId('','single') . "\"";
+			WHERE 	`moduleId`			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[module]
@@ -670,7 +670,7 @@ class moduleClass extends configClass
 					[isApproved]		=	\"".$this->model->getIsApproved(0,'string')."\",
 					[By]				=	\"".$this->model->getBy()."\",
 					[Time]				=	".$this->model->getTime()."
-			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId('','single') . "\"";
+			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"module\"
@@ -685,7 +685,7 @@ class moduleClass extends configClass
 					\"isApproved\"		=	\"" . $this->model->getIsApproved(0,'string') . "\",
 					\"By\"				=	\"" . $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
-			WHERE 	\"moduleId\"		=	\"" . $this->model->getModuleId('','single') . "\"";
+			WHERE 	\"moduleId\"		=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -699,7 +699,7 @@ class moduleClass extends configClass
 		echo json_encode(array(
             "success" =>true,
             "message" => "update success",
-			"moduleId"=>$this->model->getModuleId('','single')
+			"moduleId"=>$this->model->getModuleId(0,'single')
             ));
             exit();
 	}
@@ -726,7 +726,7 @@ class moduleClass extends configClass
 					`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
 					`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
 					`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
-					`By`			=	\"".$this->model->getBy('','single')."\",
+					`By`			=	\"".$this->model->getBy(0,'single')."\",
 					`Time			=	".$this->model->getTime()."
 			WHERE 	`moduleId`		=	\"" . $this->model->moduleId . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
@@ -739,9 +739,9 @@ class moduleClass extends configClass
 					[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
 					[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
 					[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
-					[By]			=	\"".$this->model->getBy('','single')."\",
+					[By]			=	\"".$this->model->getBy(0,'single')."\",
 					[Time]			=	".$this->model->getTime()."
-			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId('','single') . "\"";
+			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"module\"
@@ -752,9 +752,9 @@ class moduleClass extends configClass
 					\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
 					\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
 					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
-					\"By\"				=	\"".$this->model->getBy('','single')."\",
+					\"By\"				=	\"".$this->model->getBy(0,'single')."\",
 					\"Time\"			=	".$this->model->getTime()."
-			WHERE 	\"moduleId\"			=	\"" . $this->model->getModuleId('','single') . "\"";
+			WHERE 	\"moduleId\"			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {

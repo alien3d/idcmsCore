@@ -36,7 +36,7 @@ class documentCategoryModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['documentCategoryId'])){
-			$this->setDocumentCategoryId($this->strict($_POST['documentCategoryId'],'numeric'),'','single');
+			$this->setDocumentCategoryId($this->strict($_POST['documentCategoryId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['documentCategoryTitle'])){
 			$this->setDocumentCategoryTitle($this->strict($_POST['documentCategoryTitle'],'memo'));
@@ -169,7 +169,7 @@ class documentCategoryModel extends validationClass{
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setDocumentCategoryId($value,$key=NULL,$type=NULL) {
+	public function setDocumentCategoryId($value,$key,$type) {
 		if($type=='single'){
 			$this->documentCategoryId = $value;
 		} else if ($type=='array'){
@@ -178,9 +178,9 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Identification Value
-	 * @return integer documentCategoryId
+	 * @return int
 	 */
-	public function getDocumentCategoryId($key=NULL,$type=NULL) {
+	public function getDocumentCategoryId($key,$type) {
 		if($type=='single'){
 			return $this->documentCategoryId;
 		} else if ($type=='array'){
@@ -201,7 +201,7 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Desc Value
-	 * @return string $documentCategoryTitle
+	 * @return string 
 	 */
 	public function getDocumentCategoryTitle() {
 
@@ -219,7 +219,7 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Description Value
-	 * @return string $documentCategoryDesc
+	 * @return string 
 	 */
 	public function getDocumentCategoryDesc() {
 
@@ -238,7 +238,7 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Sequence Value
-	 * @return string $documentCategorySequence
+	 * @return string 
 	 */
 	public function getDocumentCategorySequence() {
 
@@ -257,7 +257,7 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Code Value
-	 * @return string $documentCategoryCode
+	 * @return string 
 	 */
 	public function getDocumentCategoryCode() {
 
@@ -276,7 +276,7 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Note Value
-	 * @return string $documentCategoryNote
+	 * @return string
 	 */
 	public function getDocumentCategoryNote() {
 

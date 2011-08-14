@@ -6,7 +6,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package religion
+ * @package management
+ * @subpackage group
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -30,7 +31,7 @@ function execute(){
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['departmentId'])){
-			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'),'','single');
+			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['departmentSequence'])){
 			$this->setDepartmentSequence($this->strict($_POST['departmentSequence'],'memo'));
@@ -241,7 +242,7 @@ function execute(){
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setGroupId($value,$key=NULL,$type=NULL) {
+	public function setGroupId($value,$key,$type) {
 		if($type=='single'){
 			$this->groupId = $value;
 		} else if ($type=='array'){
@@ -250,9 +251,9 @@ function execute(){
 	}
 	/**
 	 * Return Group Identification Value
-	 * @return integer groupId
+	 * @return int
 	 */
-	public function getGroupId($key=NULL,$type=NULL) {
+	public function getGroupId($key,$type) {
 		if($type=='single'){
 			return $this->groupId;
 		} else if ($type=='array'){
@@ -264,14 +265,14 @@ function execute(){
 	}
 /**
 	 * Set  Group Sequence (english)
-	 * @param boolean $value
+	 * @param int $value
 	 */
 	public function setGroupSequence($value) {
 		$this->groupSequence = $value;
 	}
 	/**
-	 * Return Group  Description (english)
-	 * @return  string Group Sequence
+	 * Return Group  Sequence
+	 * @return  int
 	 */
 	public function getGroupSequence() {
 		return $this->groupSequence;
@@ -286,7 +287,7 @@ function execute(){
 	}
 	/**
 	 * Return Group  Code
-	 * @return  string Group Description
+	 * @return  string 
 	 */
 	public function getGroupCode() {
 
@@ -302,7 +303,7 @@ function execute(){
 	}
 	/**
 	 * Return Group  Description (english)
-	 * @return  string Group Description
+	 * @return  string 
 	 */
 	public function getGroupNote() {
 

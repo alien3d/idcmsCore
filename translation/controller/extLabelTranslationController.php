@@ -232,24 +232,24 @@ class extLabelTranslationClass extends  configClass {
 			SELECT 		*
 			FROM 		`extLabelTranslation`
 			WHERE 1 ";
-			if($this->model->getextLabelTranslationId('','single')) {
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getextLabelTranslationId('','single')."\"";
+			if($this->model->getextLabelTranslationId(0,'single')) {
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getextLabelTranslationId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		[extLabelTranslation]
 			WHERE 1 ";
-			if($this->model->getextLabelTranslationId('','single')) {
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getextLabelTranslationId('','single')."\"";
+			if($this->model->getextLabelTranslationId(0,'single')) {
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getextLabelTranslationId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		\"extLabelTranslation\"
 			WHERE 1";
-			if($this->model->getextLabelTranslationId('','single')) {
-				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getextLabelTranslationId('','single')."\"";
+			if($this->model->getextLabelTranslationId(0,'single')) {
+				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getextLabelTranslationId(0,'single')."\"";
 			}
 		}
 		/**
@@ -369,7 +369,7 @@ class extLabelTranslationClass extends  configClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if(!($this->getextLabelTranslationId('','single'))) {
+		if(!($this->getextLabelTranslationId(0,'single'))) {
 
 			$this->q->read($sql);
 			if($this->q->execute=='fail') {
@@ -388,7 +388,7 @@ class extLabelTranslationClass extends  configClass {
 
 
 
-		if($this->getextLabelTranslationId('','single')) {
+		if($this->getextLabelTranslationId(0,'single')) {
 			$json_encode = json_encode(
 			array(
 						'success'	=>	true,
@@ -445,7 +445,7 @@ class extLabelTranslationClass extends  configClass {
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
 							`By`			=	\"".$this->model->getBy()."\",
 							`Time`			=	".$this->model->getTime()."
-					WHERE 	`extLabelTranslationId`			=	\"".$this->model->getextLabelTranslationId('','single')."\"";
+					WHERE 	`extLabelTranslationId`			=	\"".$this->model->getextLabelTranslationId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[extLabelTranslation]
@@ -460,7 +460,7 @@ class extLabelTranslationClass extends  configClass {
 							[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 							[By]			=	\"".$this->model->getBy()."\",
 							[Time]			=	".$this->model->getTime()."
-					WHERE 	[extLabelTranslationId]			=	\"".$this->model->getextLabelTranslationId('','single')."\"";
+					WHERE 	[extLabelTranslationId]			=	\"".$this->model->getextLabelTranslationId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	\"extLabelTranslation\"
@@ -475,7 +475,7 @@ class extLabelTranslationClass extends  configClass {
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'string')."\",
 							\"By\"			=	\"".$this->model->getBy()."\",
 							\"Time\"		=	".$this->model->getTime()."
-					WHERE 	\"extLabelTranslationId\"		=	\"".$this->model->getextLabelTranslationId('','single')."\"";
+					WHERE 	\"extLabelTranslationId\"		=	\"".$this->model->getextLabelTranslationId(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {

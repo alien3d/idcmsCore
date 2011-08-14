@@ -605,8 +605,8 @@ class staffClass extends configClass
 					AND		`group`.`isActive`=1
 					AND		`department`.`isActive`=1
 					";
-			if ($this->model->getStaffId('','single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`=\"" . $this->model->getstaffId('','single') . "\"";
+			if ($this->model->getStaffId(0,'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`=\"" . $this->model->getstaffId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -636,8 +636,8 @@ class staffClass extends configClass
 					WHERE 	[staff].[isActive]='1'
 					AND		[group].[isActive] ='1'
 					AND		[deparment].[isActive]='1'";
-			if ($this->model->getStaffId('','single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]=\"" . $this->model->getstaffId('','single') . "\"";
+			if ($this->model->getStaffId(0,'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]=\"" . $this->model->getstaffId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -667,8 +667,8 @@ class staffClass extends configClass
 					WHERE 	\"staff\".\"isActive\"='1'
 					AND		\"group\".\"isActive\" ='1'
 					AND		\"deparment\".\"isActive\"='1' ";
-			if ($this->model->getStaffId('','single')) {
-				$sql .= " AND \"" . $this->model->getTableName() . "\".\"" . $this->model->getPrimaryKeyName() . "\"=\"" . $this->model->getstaffId('','single') . "\"";
+			if ($this->model->getStaffId(0,'single')) {
+				$sql .= " AND \"" . $this->model->getTableName() . "\".\"" . $this->model->getPrimaryKeyName() . "\"=\"" . $this->model->getstaffId(0,'single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -820,7 +820,7 @@ class staffClass extends configClass
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getStaffId('','single'))) {
+            if (!($this->model->getStaffId(0,'single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -834,14 +834,14 @@ class staffClass extends configClass
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getStaffId('','single')) {
+            if ($this->model->getStaffId(0,'single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
                 'message' => 'Data Loaded',
                 'firstRecord'=>$this->firstRecord(),
-            	'nextRecord'=>$this->nextRecord($this->model->getStaffId('','single')),
-            	'previousRecord'=>$this->previousRecord($this->model->getStaffId('','single')),
+            	'nextRecord'=>$this->nextRecord($this->model->getStaffId(0,'single')),
+            	'previousRecord'=>$this->previousRecord($this->model->getStaffId(0,'single')),
             	'lastRecord'=>$this->lastRecord(),
                 'data' => $items
             	));
@@ -880,19 +880,19 @@ class staffClass extends configClass
 			SELECT	`groupId`,
 					`staffPassword`
 			FROM 	`staff`
-			WHERE 	`staffId`	=	\"". $this->model->getStaffId('','single') ."\"";
+			WHERE 	`staffId`	=	\"". $this->model->getStaffId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			SELECT 	[groupId],
 					[staffPassword]
 			FROM 	[staff]
-			WHERE 	[staffId]	=	\"". $this->model->getStaffId('','single') ."\"";
+			WHERE 	[staffId]	=	\"". $this->model->getStaffId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT 	\"groupId\",
 					\"staffPassword\"
 			FROM 	\"staff\"
-			WHERE 	\"staffId\"	=	\"". $this->model->getStaffId('','single') ."\"";
+			WHERE 	\"staffId\"	=	\"". $this->model->getStaffId(0,'single') ."\"";
 		}
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
@@ -924,7 +924,7 @@ class staffClass extends configClass
 						`isApproved`	=	\"". $this->model->getIsApproved(0,'string') ."\",
 						`By`			=	\"". $this->model->getBy() ."\",
 						`Time			=	" . $this->model->getTime() . "
-				WHERE 	`staffId`		=	\"". $this->model->getStaffId('','single') ."\"";
+				WHERE 	`staffId`		=	\"". $this->model->getStaffId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 				UPDATE 	[staff]
@@ -944,7 +944,7 @@ class staffClass extends configClass
 						[isApproved]	=	\"". $this->model->getIsApproved(0,'string') ."\",
 						[By]			=	\"". $this->model->getBy() ."\",
 						[Time]			=	" . $this->model->getTime() . "
-				WHERE 	[staffId]		=	\"". $this->model->getStaffId('','single') ."\"";
+				WHERE 	[staffId]		=	\"". $this->model->getStaffId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 				UPDATE 	\"staff\"
@@ -1010,19 +1010,19 @@ class staffClass extends configClass
 					$sql = "
 					SELECT	*
 					FROM 	`leafAccess`
-					WHERE 	`staffId`			=	\"". $this->model->getStaffId('','single') ."\"
+					WHERE 	`staffId`			=	\"". $this->model->getStaffId(0,'single') ."\"
 					AND		`leafId`			=	\"". $rowLeafGroupAccess['leafId'] ."\" ";
 				} else if ($this->getVendor() == self::mssql) {
 					$sql = "
 					SELECT	*
 					FROM 	[leafAccess]
-					WHERE 	[staffId]			=	\"". $this->model->getStaffId('','single') ."\"
+					WHERE 	[staffId]			=	\"". $this->model->getStaffId(0,'single') ."\"
 					AND		[leafId]			=	\"". $rowLeafGroupAccess['leafId'] ."\" ";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
 					SELECT	*
 					FROM 	\"leafAccess\"
-					WHERE 	\"staffId\"			=	\"". $this->model->getStaffId('','single') ."\"
+					WHERE 	\"staffId\"			=	\"". $this->model->getStaffId(0,'single') ."\"
 					AND		\"leafId\"			=	\"". $rowLeafGroupAccess['leafId'] ."\" ";
 				}
 				$this->q->read($sql);
@@ -1036,7 +1036,7 @@ class staffClass extends configClass
 								`leafPrintAccessValue`			=	\"". $rowLeafGroupAccess['leafDeleteAccessValue'] ."\",
 								`leafReadAccessValue`			=	\"". $rowLeafGroupAccess['leafPrintAccessValue'] ."\",
 								`leafUpdateAccessValue`			=	\"". $rowLeafGroupAccess['leafPostAccessValue'] ."\"
-						WHERE 	`staffId`						=	\"". $this->model->getStaffId('','single') ."\"
+						WHERE 	`staffId`						=	\"". $this->model->getStaffId(0,'single') ."\"
 						AND		`leafId`						=	\"". $rowLeafGroupAccess['leafId'] ."\"";
 					} else if ($this->getVendor() == self::mssql) {
 						$sql = "
@@ -1047,7 +1047,7 @@ class staffClass extends configClass
 								[leafPrintAccessValue]			=	\"". $rowLeafGroupAccess['leafDeleteAccessValue'] ."\",
 								[leafReadAccessValue]			=	\"". $rowLeafGroupAccess['leafPrintAccessValue'] ."\",
 								[leafUpdateAccessValue]			=	\"". $rowLeafGroupAccess['leafPostAccessValue'] ."\"
-						WHERE 	[staffId]						=	\"". $this->model->getStaffId('','single') ."\"
+						WHERE 	[staffId]						=	\"". $this->model->getStaffId(0,'single') ."\"
 						AND		[leafId]						=	\"". $rowLeafGroupAccess['leafId'] ."\"";
 					} else if ($this->getVendor() == self::oracle) {
 						$sql = "
@@ -1058,7 +1058,7 @@ class staffClass extends configClass
 								\"leafPrintAccessValue\"		=	\"". $rowLeafGroupAccess['leafDeleteAccessValue'] ."\",
 								\"leafReadAccessValue\"			=	\"". $rowLeafGroupAccess['leafPrintAccessValue'] ."\",
 								\"leafUpdateAccessValue\"		=	\"". $rowLeafGroupAccess['leafPostAccessValue'] ."\"
-						WHERE 	\"staffId\"						=	\"". $this->model->getStaffId('','single') ."\"
+						WHERE 	\"staffId\"						=	\"". $this->model->getStaffId(0,'single') ."\"
 						AND		\"leafId\"						=	\"". $rowLeafGroupAccess['leafId'] ."\"";
 					}
 					$this->q->update($sql);
@@ -1085,7 +1085,7 @@ class staffClass extends configClass
 							VALUES
 								(
 										\"". $rowLeafGroupAccess['leafId'] ."\",
-										\"". $this->model->getStaffId('','single') ."\",
+										\"". $this->model->getStaffId(0,'single') ."\",
 										\"". $rowLeafGroupAccess['leafReadAccessValue'] ."\",
 										\"". $rowLeafGroupAccess['leafUpdateAccessValue'] ."\",
 										\"". $rowLeafGroupAccess['leafDeleteAccessValue'] ."\",
@@ -1107,7 +1107,7 @@ class staffClass extends configClass
 							VALUES
 								(
 										\"". $rowLeafGroupAccess['leafId'] ."\",
-										\"". $this->model->getStaffId('','single') ."\",
+										\"". $this->model->getStaffId(0,'single') ."\",
 										\"". $rowLeafGroupAccess['leafReadAccessValue'] ."\",
 										\"". $rowLeafGroupAccess['leafUpdateAccessValue'] ."\",
 										\"". $rowLeafGroupAccess['leafDeleteAccessValue'] ."\",
@@ -1129,7 +1129,7 @@ class staffClass extends configClass
 							VALUES
 								(
 										\"". $rowLeafGroupAccess['leafId'] ."\",
-										\"". $this->model->getStaffId('','single') ."\",
+										\"". $this->model->getStaffId(0,'single') ."\",
 										\"". $rowLeafGroupAccess['leafReadAccessValue'] ."\",
 										\"". $rowLeafGroupAccess['leafUpdateAccessValue'] ."\",
 										\"". $rowLeafGroupAccess['leafDeleteAccessValue'] ."\",
@@ -1195,7 +1195,7 @@ class staffClass extends configClass
 						[isApproved]=	\"". $this->model->getIsApproved(0,'string') ."\",
 						[By]		=	\"". $this->model->getBy() ."\",
 						[Time]		=	" . $this->model->getTime() . "
-				WHERE 	[staffId]	=	\"". $this->model->getStaffId('','single') ."\"";
+				WHERE 	[staffId]	=	\"". $this->model->getStaffId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 				UPDATE	\"staff\"
@@ -1208,7 +1208,7 @@ class staffClass extends configClass
 						\"isApproved\"	=   \"". $this->model->getIsApproved(0,'string') ."\",
 						\"By\"			=	\"". $this->model->getBy() ."\",
 						\"Time\"		=	" . $this->model->getTime() . "
-				WHERE 	\"staffId\"		=	\"". $this->model->getStaffId('','single') ."\"";
+				WHERE 	\"staffId\"		=	\"". $this->model->getStaffId(0,'single') ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {

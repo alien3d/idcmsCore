@@ -6,7 +6,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package folder
+ * @package Translation
+ * @subpackage Language
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -32,7 +33,7 @@ class languageModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['languageId'])){
-			$this->setLanguageId($this->strict($_POST['languageId'],'numeric'),'','single');
+			$this->setLanguageId($this->strict($_POST['languageId'],'numeric'),0,'single');
 		}
 
 		if(isset($_POST['languageCode'])){
@@ -196,7 +197,13 @@ class languageModel extends validationClass{
 		$this->setIsActive(0,0,'string');
 		$this->setIsDelete(0,0,'string');
 	}
-	public function setLanguageId($value,$key=NULL,$type=NULL) {
+	/**
+	 * Set Language   Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLanguageId($value,$key,$type) {
 		if($type=='single'){
 			$this->languageId = $value;
 		} else if ($type=='array'){
@@ -204,10 +211,13 @@ class languageModel extends validationClass{
 		}
 	}
 	/**
-	 * Return Language Id Value
-	 * @return integer languageId
+	 * Return Language Identification Value
+	 * Return Module Access Identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getLanguageId($key=NULL,$type=NULL) {
+	public function getLanguageId($key,$type) {
 		if($type=='single'){
 			return $this->languageId;
 		} else if ($type=='array'){
@@ -226,7 +236,7 @@ class languageModel extends validationClass{
 	}
 	/**
 	 * Return Language Description Value
-	 * @return string Language Description
+	 * @return string 
 	 */
 	public function getLanguageDesc() {
 
@@ -241,7 +251,7 @@ class languageModel extends validationClass{
 	}
 	/**
 	 * Return Language Value
-	 * @return string Language Code
+	 * @return string 
 	 */
 	public function getLanguageCode() {
 

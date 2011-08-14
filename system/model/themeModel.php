@@ -30,7 +30,7 @@ class themeModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['themeId'])){
-			$this->setthemeId($this->strict($_POST['themeId'],'numeric'),'','single');
+			$this->setthemeId($this->strict($_POST['themeId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['themeSequence'])){
 			$this->setthemeSequence($this->strict($_POST['themeSequence'],'memo'));
@@ -229,7 +229,7 @@ class themeModel extends validationClass{
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setthemeId($value,$key=NULL,$type=NULL) {
+	public function setthemeId($value,$key,$type) {
 		if($type=='single'){
 			$this->themeId = $value;
 		} else if ($type=='array'){
@@ -240,7 +240,7 @@ class themeModel extends validationClass{
 	 * Return theme Identification Value
 	 * @return integer themeId
 	 */
-	public function getthemeId($key=NULL,$type=NULL) {
+	public function getthemeId($key,$type) {
 		if($type=='single'){
 			return $this->themeId;
 		} else if ($type=='array'){

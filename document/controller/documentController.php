@@ -275,8 +275,8 @@ class documentClass extends  configClass {
 					JOIN	`documentCategory`
 					USING	(`documentCategoryId`)
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getDocumentId('','single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getDocumentId('','single') . "\"";
+			if ($this->model->getDocumentId(0,'single')) {
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getDocumentId(0,'single') . "\"";
 
 			}
 
@@ -304,8 +304,8 @@ class documentClass extends  configClass {
 					JOIN	`documentCategory`
 					ON		[document].[documentCategoryId]=[documentCategory].[documentCategoryId]
 					WHERE 	[document].[isActive] ='1'	";
-			if ($this->model->getDocumentId('','single')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getDocumentId('','single') . "\"";
+			if ($this->model->getDocumentId(0,'single')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getDocumentId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -331,8 +331,8 @@ class documentClass extends  configClass {
 					JOIN	`documentCategory`
 					USING	(`documentCategoryId`)
 					WHERE 		";
-			if ($this->model->getDocumentId('','single')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getDocumentId('','single') . "\"";
+			if ($this->model->getDocumentId(0,'single')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getDocumentId(0,'single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -489,7 +489,7 @@ class documentClass extends  configClass {
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getDocumentId('','single'))) {
+            if (!($this->model->getDocumentId(0,'single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -503,7 +503,7 @@ class documentClass extends  configClass {
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getDocumentId('','single')) {
+            if ($this->model->getDocumentId(0,'single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -561,7 +561,7 @@ class documentClass extends  configClass {
 				`isApproved`				=	\"".$this->model->getIsApproved(0,'string')."\",
 				`By`						=	\"".$this->model->getBy()."\",
 				`Time`						=	".$this->model->getTime()."
-		WHERE 	`documentId`				=	\"".$this->model->getDocumentId('','single')."\"";
+		WHERE 	`documentId`				=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::mssql){
 			$sql = "
@@ -586,7 +586,7 @@ class documentClass extends  configClass {
 				[isApproved]				=	\"".$this->model->getIsApproved(0,'string')."\",
 				[By]						=	\"".$this->model->getBy()."\",
 				[Time]						=	".$this->model->getTime()."
-		WHERE 	[documentId]				=	\"".$this->model->getDocumentId('','single')."\"";
+		WHERE 	[documentId]				=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::oracle){
 			$sql = "
@@ -611,7 +611,7 @@ class documentClass extends  configClass {
 				\"isApproved\"				=	\"".$this->model->getIsApproved(0,'string')."\",
 				\"By\"						=	\"".$this->model->getBy()."\",
 				\"Time\"					=	".$this->model->getTime()."
-		WHERE 	\"documentId\"				=	\"".$this->model->getDocumentId('','single')."\"";
+		WHERE 	\"documentId\"				=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		}
 		$this->q->create($sql);
@@ -641,9 +641,9 @@ class documentClass extends  configClass {
 						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
 						`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
 						`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
-						`By`			=	\"".$this->model->getBy('','single')."\",
+						`By`			=	\"".$this->model->getBy(0,'single')."\",
 						`Time			=	".$this->model->getTime()."
-				WHERE 	`documentId`	=	\"".$this->model->getDepartrmentId('','single')."\"";
+				WHERE 	`documentId`	=	\"".$this->model->getDepartrmentId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[document]
@@ -656,7 +656,7 @@ class documentClass extends  configClass {
 						[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 						[By]			=	\"".$this->model->getBy()."\",
 						[Time]			=	".$this->model->getTime()."
-				WHERE 	[documentId]	=	\"".$this->model->getDocumentId('','single')."\"";
+				WHERE 	[documentId]	=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -670,7 +670,7 @@ class documentClass extends  configClass {
 						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
-				WHERE 	\"documentId\"	=	\"".$this->model->getDocumentId('','single')."\"";
+				WHERE 	\"documentId\"	=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		}
 		$this->q->update($sql);

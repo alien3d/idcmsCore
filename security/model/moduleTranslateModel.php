@@ -6,13 +6,14 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package tab
+ * @package Security
+ * @subpackage Module Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class tabModel extends validationClass{
+class moduleTranslationModel extends validationClass{
 
-	private $tabId;
+	private $moduleId;
 	private $tabSequence;
 	private $iconId;
 	private $tabNote;
@@ -150,7 +151,7 @@ class tabModel extends validationClass{
 		}
 	}
 
-	public function setTabId($value,$key=NULL,$type=NULL) {
+	public function setTabId($value,$key,$type) {
 		if($type=='single'){
 			$this->tabId = $value;
 		} else if ($type=='array'){
@@ -161,7 +162,7 @@ class tabModel extends validationClass{
 	 * Return istabId Value
 	 * @return integer tabId
 	 */
-	public function getTabId($key=NULL,$type=NULL) {
+	public function getTabId($key,$type) {
 		if($type=='single'){
 			return $this->tabId;
 		} else if ($type=='array'){

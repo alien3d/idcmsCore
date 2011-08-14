@@ -38,7 +38,7 @@ class documentModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['documentId'])){
-			$this->setDocumentId($this->strict($_POST['documentId'],'numeric'),'','single');
+			$this->setDocumentId($this->strict($_POST['documentId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['documentCategoryId'])){
 			$this->setDocumentCategoryId($this->strict($_POST['documentCategoryId'],'numeric'));
@@ -191,7 +191,7 @@ class documentModel extends validationClass{
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setDocumentId($value,$key=NULL,$type=NULL) {
+	public function setDocumentId($value,$key,$type) {
 		if($type=='single'){
 			$this->documentId = $value;
 		} else if ($type=='array'){
@@ -199,10 +199,10 @@ class documentModel extends validationClass{
 		}
 	}
 	/**
-	 * Return isDocumentId Value
-	 * @return integer documentId
+	 * Return Document Identification Value
+	 * @return int
 	 */
-	public function getDocumentId($key=NULL,$type=NULL) {
+	public function getDocumentId($key,$type) {
 		if($type=='single'){
 			return $this->documentId;
 		} else if ($type=='array'){
@@ -221,7 +221,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Identification Value
-	 * @return int Document Cateogory Identification Value
+	 * @return int 
 	 */
 	public function getDocumentCategoryId() {
 		return $this->documentCategoryId;
@@ -235,7 +235,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Identification Value
-	 * @return int Document Cateogory Identification Value
+	 * @return int 
 	 */
 	public function getLeafId() {
 		return $this->leafId;
@@ -249,7 +249,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Sequence Number
-	 * @return int document Sequence Number
+	 * @return int 
 	 */
 	public function getDocumentSequence() {
 		return $this->documentSequence;
@@ -263,7 +263,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Code
-	 * @return string Document Code
+	 * @return string 
 	 */
 	public function getDocumentCode() {
 		return $this->documentCode;
@@ -278,7 +278,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Note
-	 * @return string document Note
+	 * @return string 
 	 */
 	public function getDocumentNote() {
 		return $this->documentNote;
@@ -292,7 +292,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document title
-	 * @return string document title
+	 * @return string 
 	 */
 	public function getDocumentTitle() {
 		return $this->documentTitle;
@@ -308,7 +308,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Description
-	 * @return string document description
+	 * @return string 
 	 */
 	public function getDocumentDesc() {
 		return $this->documentDesc;
@@ -322,7 +322,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document title
-	 * @return string document title
+	 * @return string 
 	 */
 	public function getDocumentPath() {
 		return $this->documentPath;
@@ -336,7 +336,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Filename
-	 * @return string document title
+	 * @return string 
 	 */
 	public function getDocumentFilename() {
 		return $this->documentFilename;
@@ -349,8 +349,8 @@ class documentModel extends validationClass{
 		$this->documentFilename = $value;
 	}
 	/**
-	 * Return Document Filename
-	 * @return string document title
+	 * Return Document Extension
+	 * @return string
 	 */
 	public function getDocumentExtension() {
 		return $this->documentExtension;

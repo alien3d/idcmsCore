@@ -30,7 +30,7 @@ class departmentModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['departmentId'])){
-			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'),'','single');
+			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['departmentSequence'])){
 			$this->setDepartmentSequence($this->strict($_POST['departmentSequence'],'memo'));
@@ -243,7 +243,7 @@ class departmentModel extends validationClass{
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getDepartmentId($key=NULL,$type=NULL) {
+	public function getDepartmentId($key,$type) {
 		if($type=='single'){
 			return $this->departmentId;
 		} else if ($type=='array'){
@@ -262,7 +262,7 @@ class departmentModel extends validationClass{
 	}
 	/**
 	 * Return department  Description (english)
-	 * @return  string department Sequence
+	 * @return  string 
 	 */
 	public function getDepartmentSequence() {
 		return $this->departmentSequence;
@@ -276,7 +276,7 @@ class departmentModel extends validationClass{
 	}
 	/**
 	 * Return department  Code
-	 * @return  string department Description
+	 * @return  string 
 	 */
 	public function getDepartmentCode() {
 		return $this->departmentCode;
@@ -290,7 +290,7 @@ class departmentModel extends validationClass{
 	}
 	/**
 	 * Return department  Description (english)
-	 * @return  string department Description
+	 * @return  string 
 	 */
 	public function getDepartmentNote() {
 		return $this->departmentNote;

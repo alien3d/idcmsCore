@@ -232,24 +232,24 @@ class defaultLabelClass extends  configClass {
 			SELECT 		*
 			FROM 		`defaultLabel`
 			WHERE 1 ";
-			if($this->model->getDefaultLabelId('','single')) {
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getdefaultLabelId('','single')."\"";
+			if($this->model->getDefaultLabelId(0,'single')) {
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getdefaultLabelId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		[defaultLabel]
 			WHERE 1 ";
-			if($this->model->getDefaultLabelId('','single')) {
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getdefaultLabelId('','single')."\"";
+			if($this->model->getDefaultLabelId(0,'single')) {
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getdefaultLabelId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		\"defaultLabel\"
 			WHERE 1";
-			if($this->model->getDefaultLabelId('','single')) {
-				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getdefaultLabelId('','single')."\"";
+			if($this->model->getDefaultLabelId(0,'single')) {
+				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getdefaultLabelId(0,'single')."\"";
 			}
 		}
 		/**
@@ -369,7 +369,7 @@ class defaultLabelClass extends  configClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if(!($this->model->getDefaultLabelId('','single'))) {
+		if(!($this->model->getDefaultLabelId(0,'single'))) {
 
 			$this->q->read($sql);
 			if($this->q->execute=='fail') {
@@ -388,7 +388,7 @@ class defaultLabelClass extends  configClass {
 
 
 
-		if($this->model->getDefaultlabelId('','single')) {
+		if($this->model->getDefaultlabelId(0,'single')) {
 			$json_encode = json_encode(
 			array(
 						'success'	=>	true,
@@ -445,7 +445,7 @@ class defaultLabelClass extends  configClass {
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
 							`By`			=	\"".$this->model->getBy()."\",
 							`Time`			=	".$this->model->getTime()."
-					WHERE 	`defaultLabelId`			=	\"".$this->model->getDefaultLabelId('','single')."\"";
+					WHERE 	`defaultLabelId`			=	\"".$this->model->getDefaultLabelId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[defaultLabel]
@@ -460,7 +460,7 @@ class defaultLabelClass extends  configClass {
 							[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 							[By]			=	\"".$this->model->getBy()."\",
 							[Time]			=	".$this->model->getTime()."
-					WHERE 	[defaultLabelId]			=	\"".$this->model->getDefaultLabelId('','single')."\"";
+					WHERE 	[defaultLabelId]			=	\"".$this->model->getDefaultLabelId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	\"defaultLabel\"
@@ -475,7 +475,7 @@ class defaultLabelClass extends  configClass {
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'string')."\",
 							\"By\"			=	\"".$this->model->getBy()."\",
 							\"Time\"		=	".$this->model->getTime()."
-					WHERE 	\"defaultLabelId\"		=	\"".$this->model->getDefaultLabelId('','single')."\"";
+					WHERE 	\"defaultLabelId\"		=	\"".$this->model->getDefaultLabelId(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {

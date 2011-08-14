@@ -433,8 +433,8 @@ class groupClass  extends configClass {
 					JOIN	`staff`
 					ON		`group`.`By` = `staff`.`staffId`
 					WHERE 	".$this->auditFilter;
-			if ($this->model->getGroupId('','single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getGroupId('','single') . "\"";
+			if ($this->model->getGroupId(0,'single')) {
+				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getGroupId(0,'single') . "\"";
 
 			}
 
@@ -458,8 +458,8 @@ class groupClass  extends configClass {
 					JOIN	[staff]
 					ON		[group].[By] = [staff].[staffId]
 					WHERE 	[group].[isActive] ='1'	";
-			if ($this->model->getGroupId('','single')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getGroupId('','single') . "\"";
+			if ($this->model->getGroupId(0,'single')) {
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getGroupId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -481,8 +481,8 @@ class groupClass  extends configClass {
 					JOIN	\"staff\"
 					ON		\"group\".\"By\" = \"staff\".\"staffId\"
 					WHERE 	\"isActive\"='1'	";
-			if ($this->model->getgroupId('','single')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getGroupId('','single') . "\"";
+			if ($this->model->getgroupId(0,'single')) {
+				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getGroupId(0,'single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
@@ -635,7 +635,7 @@ class groupClass  extends configClass {
             /*
              *  Only Execute One Query
              */
-            if (!($this->model->getgroupId('','single'))) {
+            if (!($this->model->getgroupId(0,'single'))) {
             	$this->q->read($sql);
             	if ($this->q->execute == 'fail') {
             		echo json_encode(array(
@@ -649,7 +649,7 @@ class groupClass  extends configClass {
             while ($row = $this->q->fetchAssoc()) {
             	$items[] = $row;
             }
-            if ($this->model->getGroupId('','single')) {
+            if ($this->model->getGroupId(0,'single')) {
             	$json_encode = json_encode(array(
                 'success' => true,
                 'total' => $total,
@@ -703,7 +703,7 @@ class groupClass  extends configClass {
 					`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
 					`By`			=	\"".$this->model->getBy()."\",
 					`Time`			=	".$this->model->getTime()."
-			WHERE 	`groupId`		=	\"".$this->model->getGroupId('','single')."\"";
+			WHERE 	`groupId`		=	\"".$this->model->getGroupId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 			UPDATE 	[group]
@@ -719,7 +719,7 @@ class groupClass  extends configClass {
 					[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 					[By]			=	\"".$this->model->getBy()."\",
 					[Time]			=	".$this->model->getTime()."
-			WHERE 	[groupId]		=	\"".$this->model->getGroupId('','single')."\"";
+			WHERE 	[groupId]		=	\"".$this->model->getGroupId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			UPDATE 	\"group\"
@@ -734,7 +734,7 @@ class groupClass  extends configClass {
 					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 					\"By\"				=	\"".$this->model->getBy()."\",
 					\"Time\"			=	".$this->model->getTime()."
-			WHERE 	\"groupId\"			=	\"".$this->model->getGroupCode('','single')."\"";
+			WHERE 	\"groupId\"			=	\"".$this->model->getGroupCode(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
@@ -771,7 +771,7 @@ class groupClass  extends configClass {
 					`isApproved`		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					`By`				=	\"". $this->model->getBy() . "\",
 					`Time`				=	" . $this->model->getTime() . "
-			WHERE 	`groupId`		=	\"". $this->model->getGroupId('','single') . "\"";
+			WHERE 	`groupId`		=	\"". $this->model->getGroupId(0,'single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[group]
@@ -788,7 +788,7 @@ class groupClass  extends configClass {
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"group\"
-			SET 	\"GroupDesc\"	=	\"". $this->model->getGroupDesc('','single') . "\",
+			SET 	\"GroupDesc\"	=	\"". $this->model->getGroupDesc(0,'single') . "\",
 					\"isDefault\"		=	\"". $this->model->getIsDefault(0,'string') . "\",
 					\"isNew\"			=	\"". $this->model->getIsNew(0,'string') . "\",
 					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'string') . "\",

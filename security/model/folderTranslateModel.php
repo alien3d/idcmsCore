@@ -6,7 +6,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package folder
+ * @package security
+ * @subpackage folder
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -166,7 +167,7 @@ class folderModel extends validationClass{
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setFolderId($value,$key=NULL,$type=NULL) {
+	public function setFolderId($value,$key,$type) {
 		if($type=='single'){
 			$this->folderId = $value;
 		} else if ($type=='array'){
@@ -175,9 +176,9 @@ class folderModel extends validationClass{
 	}
 	/**
 	 * Return folder Identification Value
-	 * @return integer folderId
+	 * @return int
 	 */
-	public function getFolderId($key=NULL,$type=NULL) {
+	public function getFolderId($key,$type) {
 		if($type=='single'){
 			return $this->folderId;
 		} else if ($type=='array'){
@@ -200,7 +201,7 @@ class folderModel extends validationClass{
 	}
 	/**
 	 * Return folder Identification Value
-	 * @return integer folderId
+	 * @return int
 	 */
 	public function getTabId() {
 
@@ -219,8 +220,8 @@ class folderModel extends validationClass{
 
 	}
 	/**
-	 * Return folder Identification Value
-	 * @return integer folderId
+	 * Return Icon Identification Value
+	 * @return int
 	 */
 	public function getIconId() {
 
@@ -236,7 +237,7 @@ class folderModel extends validationClass{
 	}
 	/**
 	 * Return folder Sequence
-	 * @return int folder description
+	 * @return int 
 	 */
 	public function getfolderSequence() {
 		return $this->folderSequence;
@@ -250,7 +251,7 @@ class folderModel extends validationClass{
 	}
 	/**
 	 * Return folder Path
-	 * @return string folder description
+	 * @return string 
 	 */
 	public function getfolderPath() {
 		return $this->folderPath;
@@ -264,7 +265,7 @@ class folderModel extends validationClass{
 	}
 	/**
 	 * Return folder Description (english)
-	 * @return string folder description
+	 * @return string 
 	 */
 	public function getfolderNote() {
 		return $this->folderNote;

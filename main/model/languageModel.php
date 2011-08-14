@@ -109,7 +109,7 @@ class languageModel extends validationClass
         $this->isApproved = 0;
     }
 
-    public function setIsDefault($value,$key=NULL,$type=NULL) {
+    public function setIsDefault($value,$key,$type) {
 		if($type=='single'){
 
 			$this->isDefault = $value;
@@ -127,7 +127,7 @@ class languageModel extends validationClass
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isDefault
 	 */
-	public function getIsDefault($key=NULL,$type=NULL) {
+	public function getIsDefault($key,$type) {
 		if($type=='single'){
 			return $this->isDefault;
 		} else if ($type=='array'){
@@ -145,7 +145,7 @@ class languageModel extends validationClass
 	 * @param numeric $key  Array as value
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIsNew($value,$key=NULL,$type=NULL) {
+	public function setIsNew($value,$key,$type) {
 		if($type=='single'){
 			$this->isNew = $value;
 		} else if ($type=='array'){
@@ -161,7 +161,7 @@ class languageModel extends validationClass
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isNew
 	 */
-	public function getIsNew($key=NULL,$type=NULL) {
+	public function getIsNew($key,$type) {
 		if($type=='single'){
 			return $this->isNew;
 		} else if ($type=='array'){
@@ -178,7 +178,7 @@ class languageModel extends validationClass
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 * @param boolean $value
 	 */
-	public function setIsDraft($value,$key=NULL,$type=NULL) {
+	public function setIsDraft($value,$key,$type) {
 		if($type=='single'){
 			$this->isDraft = $value;
 		} elseif ($type=='array'){
@@ -194,7 +194,7 @@ class languageModel extends validationClass
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isDraft
 	 */
-	public function getIsDraft($key=NULL,$type=NULL) {
+	public function getIsDraft($key,$type) {
 		if($type=='single'){
 			return $this->isDraft;
 		} else if ($type=='array'){
@@ -211,7 +211,7 @@ class languageModel extends validationClass
 	 * @param numeric $key  Array as value
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIsUpdate($value,$key=NULL,$type=NULL) {
+	public function setIsUpdate($value,$key,$type) {
 		if($type=='single'){
 			$this->isUpdate = $value;
 		} elseif ($type=='array'){
@@ -225,7 +225,7 @@ class languageModel extends validationClass
 	 * Return isUpdate Value
 	 * @return boolean isUpdate
 	 */
-	public function getIsUpdate($key=NULL,$type=NULL) {
+	public function getIsUpdate($key,$type) {
 		if($type=='single'){
 			return $this->isUpdate;
 		} else if ($type=='array'){
@@ -241,7 +241,7 @@ class languageModel extends validationClass
 	 * @param numeric $key  Array as value
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIsDelete($value,$key=NULL,$type=NULL) {
+	public function setIsDelete($value,$key,$type) {
 		if($type=='single'){
 			$this->isDelete = $value;
 		} elseif ($type=='array'){
@@ -259,7 +259,7 @@ class languageModel extends validationClass
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isDelete
 	 */
-	public function getIsDelete($key=NULL,$type=NULL) {
+	public function getIsDelete($key,$type) {
 		if($type=='single'){
 
 			return $this->isDelete;
@@ -277,7 +277,7 @@ class languageModel extends validationClass
 	 * @param numeric $key  Array as value
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIsActive($value,$key=NULL,$type=NULL) {
+	public function setIsActive($value,$key,$type) {
 		if($type=='single'){
 			$this->isActive = $value;
 		} elseif ($type=='array'){
@@ -294,7 +294,7 @@ class languageModel extends validationClass
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isActive
 	 */
-	public function getIsActive($key=NULL,$type=NULL) {
+	public function getIsActive($key,$type) {
 		if($type=='single'){
 			return $this->isActive;
 		} else if ($type=='array'){
@@ -313,7 +313,7 @@ class languageModel extends validationClass
 	 * @param numeric $key  Array as value
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIsApproved($value,$key=NULL,$type=NULL) {
+	public function setIsApproved($value,$key,$type) {
 		if($type=='single'){
 			$this->isApproved = $value;
 		} elseif ($type=='array'){
@@ -329,7 +329,7 @@ class languageModel extends validationClass
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isApproved
 	 */
-	public function getIsApproved($key=NULL,$type=NULL) {
+	public function getIsApproved($key,$type) {
 		if($type=='single'){
 			return $this->isApproved;
 		} else if ($type=='array'){

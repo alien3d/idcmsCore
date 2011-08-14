@@ -1,12 +1,13 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is tab model file.This is to ensure strict setting enable for all variable enter to database
+ * this is module model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package tab
+ * @package Security
+ * @subpackage module
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -31,7 +32,7 @@ class moduleModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['moduleId'])){
-			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'),'','single');
+			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['iconId'])){
 			$this->setIconId ($this->strict($_POST['iconId'],'numeric'));
@@ -94,7 +95,7 @@ class moduleModel extends validationClass{
         }
         for ($i = 0; $i < $this->getTotal(); $i++) {
 
-              $this->setTabId($this->strict($_GET['tabId'][$i], 'numeric'), $i, 'array');
+              $this->setModuleId($this->strict($_GET['moduleId'][$i], 'numeric'), $i, 'array');
             if ($_GET['isDefault'][$i] == 'true') {
                 $this->setIsDefault(1, $i, 'array');
             } else if ($_GET['default'] == 'false') {
@@ -230,12 +231,12 @@ class moduleModel extends validationClass{
 	}
 
 	/**
-	 * Enter description here ...
-	 * @param unknown_type $value
-	 * @param unknown_type $key
-	 * @param unknown_type $type
+	* Set Module   Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setModuleId($value,$key=NULL,$type=NULL) {
+	public function setModuleId($value,$key,$type) {
 		if($type=='single'){
 			$this->moduleId = $value;
 		} else if ($type=='array'){
@@ -243,10 +244,12 @@ class moduleModel extends validationClass{
 		}
 	}
 	/**
-	 * Return module Value
-	 * @return integer moduleId
+	 * Return Module  Identification
+	 * @param array[int][int] $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getModuleId($key=NULL,$type=NULL) {
+	public function getModuleId($key,$type) {
 		if($type=='single'){
 			return $this->moduleId;
 		} else if ($type=='array'){
@@ -257,15 +260,15 @@ class moduleModel extends validationClass{
 		}
 	}
 	/**
-	 * Set icon for Tab
+	 * Set Icon Identification
 	 * @param  int $value
 	 */
 	public function setIconId($value) {
 		$this->iconId = $value;
 	}
 	/**
-	 * Return icon for module
-	 * @return int icon for module
+	 * Return Icon Identification
+	 * @return int 
 	 */
 	public function getIconId() {
 
@@ -280,7 +283,7 @@ class moduleModel extends validationClass{
 	}
 	/**
 	 * Return module Sequence Value
-	 * @return int module sequence
+	 * @return int 
 	 */
 	public function getModuleSequence() {
 		return $this->moduleSequence;
@@ -294,21 +297,21 @@ class moduleModel extends validationClass{
 	}
 	/**
 	 * Return Module Code
-	 * @return string Module Code
+	 * @return string 
 	 */
 	public function getModuleCode() {
 		return $this->moduleCode;
 	}
 /**
 	 * Set Module Note Value
-	 * @param string $value module Note
+	 * @param string $value 
 	 */
 	public function setModuleNote($value) {
 		$this->moduleNote = $value;
 	}
 	/**
 	 * Return module Note
-	 * @return string module Note
+	 * @return string 
 	 */
 	public function getModuleNote() {
 		return $this->moduleNote;

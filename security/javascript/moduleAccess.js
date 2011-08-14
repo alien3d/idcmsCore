@@ -188,17 +188,15 @@ Ext
 						} else {
 							gridPanel.enable();
 						}
-						moduleAccessStore.proxy = new Ext.data.HttpProxy({
-							url : '../controller/moduleAccessController.php',
-							method : 'POST',
-							params : {
+						
+						moduleAccessStore.load({
+							params:{
 								leafId : leafId,
-								groupId : Ext.getCmp('group_fake').getValue()
+								groupId : this.value
 							}
-
 						});
 
-						moduleAccessStore.reload();
+					
 					}
 				}
 			});
@@ -227,6 +225,10 @@ Ext
 						disabled : true,
 						selModel : moduleAccessValue,
 						iconCls : 'application_view_detail',
+						viewConfig : {
+							forceFit : true,
+							emptyText : emptyTextLabel
+						},
 						tbar : {
 							items : [
 									{

@@ -6,7 +6,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package leaf
+ * @package security
+ * @subpackage leaf
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -72,24 +73,24 @@ class leafGroupAccessModel extends validationClass{
 
 			if($_GET['leafCreateAccessValue'][$i]=='true') {
 				$this->setLeafCreateAccessValue($i, 1);
-				
+
 			} else {
 				$this->setLeafCreateAccessValue($i, 0);
 			}
 
 			if($_GET['leafReadAccessValue'][$i]=='true') {
-				
+
 				$this->setLeafReadAccessValue($i, 1);
 			} else {
-				
+
 				$this->setLeafReadAccessValue($i, 0);
 			}
 
 			if($_GET['leafUpdateAccessValue'][$i]=='true') {
-			
+					
 				$this->setLeafUpdateAccessValue($i, 1);
 			} else {
-			
+					
 				$this->setLeafUpdateAccessValue($i, 0);
 			}
 
@@ -172,12 +173,12 @@ class leafGroupAccessModel extends validationClass{
 		$this->setIsApproved(1,0,'string');
 	}
 	/**
-	 * Set Leaf Group Access Value
-	 * @param unknown_type $value
-	 * @param unknown_type $key
-	 * @param unknown_type $type
+	 * Set Leaf Group Access Identification  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafGroupAccessId($value,$key=NULL,$type=NULL) {
+	public function setLeafGroupAccessId($value,$key,$type) {
 		if($type=='single'){
 			$this->leafGroupAccessId = $value;
 		} else if ($type=='array'){
@@ -186,9 +187,11 @@ class leafGroupAccessModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Group Access Value
-	 * @return integer leafGroupAccessId
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getLeafGroupAccessId($key=NULL,$type=NULL) {
+	public function getLeafGroupAccessId($key,$type) {
 		if($type=='single'){
 			return $this->leafGroupAccessId;
 		} else if ($type=='array'){
@@ -207,7 +210,7 @@ class leafGroupAccessModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Identification Value
-	 * @return int tab identification
+	 * @return int
 	 */
 	public function getLeafId() {
 
@@ -223,7 +226,7 @@ class leafGroupAccessModel extends validationClass{
 	}
 	/**
 	 * Return Group Identification Value
-	 * @return int Group Identification
+	 * @return int
 	 */
 	public function getGroupId() {
 
@@ -231,109 +234,137 @@ class leafGroupAccessModel extends validationClass{
 	}
 	/**
 	 * Set Leaf Create Access  Value
-	 * @param  int $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'e
 	 */
-	public function setLeafCreateAccessValue($value,$key) {
+	public function setLeafCreateAccessValue($value,$key,$type) {
 		$this->leafCreateAccessValue[$key] = $value;
 	}
 	/**
 	 * Return Leaf Create Access Value
-	 * @return int tab identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getleafCreateAccessValue($value,$key) {
+	public function getleafCreateAccessValue($key,$type) {
 
-		return $this->leafCreateAccessValue[$key]=$value;
+		return $this->leafCreateAccessValue[$key];
 	}
 
 	/**
 	 * Set Leaf Read Access  Value
-	 * @param  int $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafReadAccessValue($value,$key) {
+	public function setLeafReadAccessValue($value,$key,$type) {
 		$this->leafReadAccessValue[$key] = $value;
 	}
 	/**
 	 * Return Leaf Read Access Value
-	 * @return int tab identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getLeafReadAccessValue($value,$key) {
+	public function getLeafReadAccessValue($key,$type) {
 
-		return $this->leafReadAccessValue[$key]=$value;
+		return $this->leafReadAccessValue[$key];
 	}
 	/**
 	 * Set Leaf Update Access  Value
-	 * @param  int $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafUpdateAccessValue($value,$key) {
+	public function setLeafUpdateAccessValue($value,$key,$type) {
 		$this->leafUpdateAccessValue[$key] = $value;
 	}
 	/**
 	 * Return Leaf Update Access Value
-	 * @return int tab identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getLeafUpdateAccessValue($value,$key) {
+	public function getLeafUpdateAccessValue($key,$type) {
 
-		return $this->leafUpdateAccessValue[$key]=$value;
+		return $this->leafUpdateAccessValue[$key];
 	}
 	/**
 	 * Set Leaf Update Access  Value
-	 * @param  int $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafUpdateAccessValue($value,$key) {
+	public function setLeafUpdateAccessValue($value,$key,$type) {
 		$this->leafUpdateAccessValue[$key] = $value;
 	}
 	/**
 	 * Return Leaf Delete Access Value
-	 * @return int tab identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getLeafDeleteAccessValue($value,$key) {
+	public function getLeafDeleteAccessValue($key,$type) {
 
-		return $this->leafDeleteAccessValue[$key]=$value;
+		return $this->leafDeleteAccessValue[$key];
 	}
 	/**
 	 * Set Leaf Print Access  Value
-	 * @param  int $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafPrintAccessValue($value,$key) {
+	public function setLeafPrintAccessValue($value,$key,$type) {
 		$this->leafPrintAccessValue[$key] = $value;
 	}
 	/**
 	 * Return Leaf Print Access Value
-	 * @return int tab identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getleafPrintAccessValue($value,$key) {
+	public function getleafPrintAccessValue($key,$type) {
 
-		return $this->leafPrintAccessValue[$key]=$value;
+		return $this->leafPrintAccessValue[$key];
 	}
 	/**
 	 * Set Leaf Post Access  Value
-	 * @param  int $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafPostAccessValue($value,$key) {
+	public function setLeafPostAccessValue($value,$key,$type) {
 		$this->leafPostAccessValue[$key] = $value;
 	}
 	/**
 	 * Return Leaf Post  Access Value
-	 * @return int tab identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getleafPostAccessValue($value,$key) {
+	public function getleafPostAccessValue($key,$type) {
 
-		return $this->leafPostAccessValue[$key]=$value;
+		return $this->leafPostAccessValue[$key];
 	}
 	/**
 	 * Set Leaf Draft Access  Value
-	 * @param  int $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafDraftAccessValue($value,$key) {
-		$this->tabAccessValue[$key] = $value;
+	public function setLeafDraftAccessValue($value,$key,$type) {
+		$this->leafDraftAccessValue[$key] = $value;
 	}
 	/**
 	 * Return Leaf Draft Access Value
-	 * @return int Leaf Draft Access Identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getLeafDraftAccessValue($value,$key) {
+	public function getLeafDraftAccessValue($key,$type) {
 
-		return $this->leafDraftAccessValue[$key]=$value;
+		return $this->leafDraftAccessValue[$key];
 	}
 	/**
 	 * Set Group Identification Value
@@ -344,8 +375,7 @@ class leafGroupAccessModel extends validationClass{
 	}
 	/**
 	 * Return Group Identification Value
-	 * @return int Group
-	 *  identification
+	 * @return int
 	 */
 	public function getGroupId() {
 
@@ -360,7 +390,7 @@ class leafGroupAccessModel extends validationClass{
 	}
 	/**
 	 * Return Module Identification Value
-	 * @return int Module identification
+	 * @return int
 	 */
 	public function getModuleId() {
 
@@ -375,7 +405,7 @@ class leafGroupAccessModel extends validationClass{
 	}
 	/**
 	 * Return Folder Identification Value
-	 * @return int Folder Identification
+	 * @return int
 	 */
 	public function getFolderId() {
 
@@ -390,7 +420,7 @@ class leafGroupAccessModel extends validationClass{
 	}
 	/**
 	 * Return Staff Identification Value
-	 * @return int Staff Identification
+	 * @return int
 	 */
 	public function getStaffId() {
 

@@ -1,12 +1,13 @@
 <?php
 require_once("../../class/classValidation.php");
 /**
- * this is tab security model file.This is to ensure strict setting enable for all variable enter to database
+ * this is module security model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package module
+ * @package Security
+ * @package Model Access
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -29,22 +30,31 @@ class moduleAccessModel extends validationClass
 		$this->setTableName('moduleAccess');
 		$this->setPrimaryKeyName('moduleAccessId');
 		/*
-		 *  All the $_POST enviroment.
+		 *  All the $_GET enviroment.
 		 */
 		if(isset($_GET['moduleAccessId'])) {
 			$this->setTotal(count($_GET['moduleAccessId']));
 		}
-		if(isset($_GET['groupId'])){
-			$this->setGroupId($_GET['groupId']);
+		/*
+		 *  All the $_POST enviroment.
+		 */
+		if(isset($_POST['groupId'])){
+			$this->setGroupId($_POST['groupId']);
+		}
+		// auto assign as array if true
+		if(is_array($_GET['moduleAccessId'])){
+			$this->moduleAccessId= array();
 		}
 		for ($i = 0; $i < $this->getTotal(); $i++) {
 			$this->setModuleAccessId($this->strict($_GET['moduleAccessId'][$i], 'numeric'),$i,'array');
 			if ($_GET['moduleAccessValue'][$i] == 'true') {
-				$this->setModuleAccessValue(1,$i);
+				$this->setModuleAccessValue(1,$i,'array');
 			} else {
-				$this->setModuleAccessValue(0, $i);
+				$this->setModuleAccessValue(0, $i,'array');
 			}
+			$primaryKeyAll .= $this->getModuleAccessId($i, 'array') . ",";
 		}
+		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 	}
 	/* (non-PHPdoc)
 	 * @see tab::create()
@@ -93,11 +103,11 @@ class moduleAccessModel extends validationClass
 	}
 	/**
 	 * Set Module Access  Value
-	 * @param int $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setModuleAccessId($value,$key=NULL,$type=NULL) {
+	public function setModuleAccessId($value,$key,$type) {
 		if($type=='single'){
 			$this->moduleAccessId = $value;
 		} else if ($type=='array'){
@@ -109,7 +119,7 @@ class moduleAccessModel extends validationClass
 	 * Return Module Access Identification
 	 * @param array[int][int] $key List Of Primary Key.
 	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
-	 * @return int|array
+	 * @return bool|array
 	 */
 	public function getModuleAccessId($key,$type) {
 		if($type=='single'){
@@ -130,7 +140,7 @@ class moduleAccessModel extends validationClass
 	}
 	/**
 	 * Return Module Identiification Value
-	 * @return int 
+	 * @return int
 	 */
 	public function getModuleId() {
 
@@ -146,7 +156,7 @@ class moduleAccessModel extends validationClass
 	}
 	/**
 	 * Return Group Identification Value
-	 * @return int 
+	 * @return int
 	 */
 	public function getGroupId() {
 
@@ -156,22 +166,31 @@ class moduleAccessModel extends validationClass
 
 	/**
 	 * Set Module Access Value
+	  * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param bool $value
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'	
 	 */
-	public function setModuleAccessValue($key,$value) {
-		$this->moduleAccessValue[$key] = $value;
+	public function setModuleAccessValue($value,$key,$type) {
+		if($type=='string'){
+
+		} else if ($type=='array'){
+			$this->moduleAccessValue[$key] = $value;
+		}
 	}
 
 
 	/**
 	 * Return Module Access Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @return bool
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getModuleAccessValue($key) {
+	public function getModuleAccessValue($key,$type) {
+		if($type=='string'){
 
-		return $this->moduleAccessValue[$key];
+		} else if ($type=='array'){
+			return $this->moduleAccessValue[$key];
+		}
 	}
 
 
