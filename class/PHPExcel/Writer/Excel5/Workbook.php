@@ -942,7 +942,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Writes Excel BIFF BOUNDSHEET record.
 	 *
 	 * @param PHPExcel_Worksheet  $sheet Worksheet name
-	 * @param integer $offset    Location of worksheet BOF
+	 * @param int $offset    Location of worksheet BOF
 	 * @access private
 	 */
 	function _storeBoundsheet($sheet, $offset)
@@ -1034,7 +1034,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Writes Excel FORMAT record for non "built-in" numerical formats.
 	 *
 	 * @param string  $format Custom format string
-	 * @param integer $ifmt   Format index code
+	 * @param int $ifmt   Format index code
 	 * @access private
 	 */
 	function _storeNumFormat($format, $ifmt)
@@ -1089,7 +1089,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *
 	 * A similar method is used in Worksheet.php for a slightly different purpose.
 	 *
-	 * @param integer $cxals Number of external references
+	 * @param int $cxals Number of external references
 	 * @access private
 	 */
 	function _storeExterncount($cxals)
@@ -1131,12 +1131,12 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Store the NAME record in the short format that is used for storing the print
 	 * area, repeat rows only and repeat columns only.
 	 *
-	 * @param integer $index  Sheet index
-	 * @param integer $type   Built-in name type
-	 * @param integer $rowmin Start row
-	 * @param integer $rowmax End row
-	 * @param integer $colmin Start colum
-	 * @param integer $colmax End column
+	 * @param int $index  Sheet index
+	 * @param int $type   Built-in name type
+	 * @param int $rowmin Start row
+	 * @param int $rowmax End row
+	 * @param int $colmin Start colum
+	 * @param int $colmax End column
 	 * @access private
 	 */
 	function _storeNameShort($index, $type, $rowmin, $rowmax, $colmin, $colmax)
@@ -1197,12 +1197,12 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * _storeNameShort() but we use a separate method to keep the code clean.
 	 * Code abstraction for reuse can be carried too far, and I should know. ;-)
 	 *
-	 * @param integer $index Sheet index
-	 * @param integer $type  Built-in name type
-	 * @param integer $rowmin Start row
-	 * @param integer $rowmax End row
-	 * @param integer $colmin Start colum
-	 * @param integer $colmax End column
+	 * @param int $index Sheet index
+	 * @param int $type  Built-in name type
+	 * @param int $rowmin Start row
+	 * @param int $rowmax End row
+	 * @param int $colmin Start colum
+	 * @param int $colmax End column
 	 * @access private
 	 */
 	function _storeNameLong($index, $type, $rowmin, $rowmax, $colmin, $colmax)

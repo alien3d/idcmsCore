@@ -94,26 +94,26 @@ class folderAccessModel extends validationClass{
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(1,0,'string');
 	}
 	/**
 	 * Enter description here ...
@@ -147,14 +147,14 @@ class folderAccessModel extends validationClass{
 	}
 	/**
 	 * Set Folder/Module/Accordion Identification Value
-	 * @param  numeric $value
+	 * @param  int $value
 	 */
 	public function setFolderId($value) {
 		$this->folderId = $value;
 	}
 	/**
 	 * Return Folder/Module/Accordion Identiification Value
-	 * @return numeric Folder identification
+	 * @return int Folder identification
 	 */
 	public function getFolderId() {
 
@@ -163,14 +163,14 @@ class folderAccessModel extends validationClass{
 
 	/**
 	 * Set Group Identification Value
-	 * @param  numeric $value
+	 * @param  int $value
 	 */
 	public function setGroupId($value) {
 		$this->groupId = $value;
 	}
 	/**
 	 * Return Group Identiification Value
-	 * @return numeric Folder identification
+	 * @return int Folder identification
 	 */
 	public function getGroupId() {
 
@@ -178,14 +178,14 @@ class folderAccessModel extends validationClass{
 	}
 	/**
 	 * Set Folder/Module/Accordion Identification Value
-	 * @param  numeric $value
+	 * @param  int $value
 	 */
 	public function setModuleId($value) {
 		$this->moduleId = $value;
 	}
 	/**
 	 * Return Folder/Module/Accordion Identiification Value
-	 * @return numeric Folder identification
+	 * @return int Folder identification
 	 */
 	public function getModuleId() {
 
@@ -193,14 +193,14 @@ class folderAccessModel extends validationClass{
 	}
 	/**
 	 * Set Folder Access  Value
-	 * @param  numeric $value
+	 * @param  int $value
 	 */
 	public function setFolderAccessValue($value,$key) {
 		$this->folderAccessValue[$key] = $value;
 	}
 	/**
 	 * Return Folder Access Value
-	 * @return numeric Folder identification
+	 * @return int Folder identification
 	 */
 	public function getFolderAccessValue($value,$key) {
 

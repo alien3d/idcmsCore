@@ -121,10 +121,10 @@ class documentCategoryClass  extends configClass {
 					(
 						\"". $this->model->getDocumentCategoryTitle() . "\",			\"". $this->model->getDocumentCategoryDesc() . "\",
 						\"". $this->model->getDocumentCategorySequence() . "\",			\"". $this->model->getDocumentCategoryCode() . "\",
-						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getIsDefault(0,'string') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",					\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 		}  else if ( $this->getVendor()==self::mssql) {
@@ -143,10 +143,10 @@ class documentCategoryClass  extends configClass {
 					(
 						\"". $this->model->getDocumentCategoryTitle() . "\",			\"". $this->model->getDocumentCategoryDesc() . "\",
 						\"". $this->model->getDocumentCategorySequence() . "\",		\"". $this->model->getDocumentCategorySequence() . "\",
-						\"". $this->model->getDocumentCategoryNote() . "\",			\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getDocumentCategoryNote() . "\",			\"". $this->model->getIsDefault(0,'string') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",					\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 		}  else if ($this->getVendor()==self::oracle) {
@@ -165,10 +165,10 @@ class documentCategoryClass  extends configClass {
 					(
 						\"". $this->model->getDocumentCategoryTitle() . "\",			\"". $this->model->getDocumentCategoryDesc() . "\",
 						\"". $this->model->getDocumentCategorySequence() . "\",	\"". $this->model->getDocumentCategorySequence() . "\",
-						\"". $this->model->getDocumentCategoryNote() . "\",		\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getDocumentCategoryNote() . "\",		\"". $this->model->getIsDefault(0,'string') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",					\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 
@@ -509,13 +509,13 @@ class documentCategoryClass  extends configClass {
 						`documentCategorySequence`	=	\"".$this->model->getDocumentCategorySequence()."\",
 						`documentCategoryCode`		=	\"".$this->model->getDocumentCategoryCode()."\",
 						`documentCategoryNote` 		= 	\"".$this->model->getDocumentCategoryNote()."\",
-						`isDefault`					=	\"".$this->model->getIsDefault('','single')."\",
-						`isActive`					=	\"".$this->model->getIsActive('','single')."\",
-						`isNew`						=	\"".$this->model->getIsNew('','single')."\",
-						`isDraft`					=	\"".$this->model->getIsDraft('','single')."\",
-						`isUpdate`					=	\"".$this->model->getIsUpdate('','single')."\",
-						`isDelete`					=	\"".$this->model->getIsDelete('','single')."\",
-						`isApproved`				=	\"".$this->model->getIsApproved('','single')."\",
+						`isDefault`					=	\"".$this->model->getIsDefault(0,'string')."\",
+						`isActive`					=	\"".$this->model->getIsActive(0,'string')."\",
+						`isNew`						=	\"".$this->model->getIsNew(0,'string')."\",
+						`isDraft`					=	\"".$this->model->getIsDraft(0,'string')."\",
+						`isUpdate`					=	\"".$this->model->getIsUpdate(0,'string')."\",
+						`isDelete`					=	\"".$this->model->getIsDelete(0,'string')."\",
+						`isApproved`				=	\"".$this->model->getIsApproved(0,'string')."\",
 						`By`						=	\"".$this->model->getBy()."\",
 						`Time`						=	".$this->model->getTime()."
 				WHERE 	`documentCategoryId`		=	\"".$this->model->getDocumentCategoryId('','single')."\"";
@@ -527,13 +527,13 @@ class documentCategoryClass  extends configClass {
 						[documentCategorySequence]	=	\"".$this->model->getDocumentCategorySequence()."\",
 						[documentCategoryCode]		=	\"".$this->model->getDocumentCategoryCode()."\",
 						[documentCategoryNote] 		= 	\"".$this->model->getDocumentCategoryNote()."\",
-						[isDefault]					=	\"".$this->model->getIsDefault('','single')."\",
-						[isActive]					=	\"".$this->model->getIsActive('','single')."\",
-						[isNew]						=	\"".$this->model->getIsNew('','single')."\",
-						[isDraft]					=	\"".$this->model->getIsDraft('','single')."\",
-						[isUpdate]					=	\"".$this->model->getIsUpdate('','single')."\",
-						[isDelete]					=	\"".$this->model->getIsDelete('','single')."\",
-						[isApproved]				=	\"".$this->model->getIsApproved('','single')."\",
+						[isDefault]					=	\"".$this->model->getIsDefault(0,'string')."\",
+						[isActive]					=	\"".$this->model->getIsActive(0,'string')."\",
+						[isNew]						=	\"".$this->model->getIsNew(0,'string')."\",
+						[isDraft]					=	\"".$this->model->getIsDraft(0,'string')."\",
+						[isUpdate]					=	\"".$this->model->getIsUpdate(0,'string')."\",
+						[isDelete]					=	\"".$this->model->getIsDelete(0,'string')."\",
+						[isApproved]				=	\"".$this->model->getIsApproved(0,'string')."\",
 						[By]						=	\"".$this->model->getBy()."\",
 						[Time]						=	".$this->model->getTime()."
 				WHERE 	[documentCategoryId]		=	\"".$this->model->getDocumentCategoryId('','single')."\"";
@@ -546,13 +546,13 @@ class documentCategoryClass  extends configClass {
 						\"documentCategorySequence\"	=	\"".$this->model->getDocumentCategorySequence()."\",
 						\"documentCategoryCode\"		=	\"".$this->model->getDocumentCategoryCode()."\",
 						\"documentCategoryNote\" 		= 	\"".$this->model->getDocumentCategoryNote()."\",
-						\"isDefault\"					=	\"".$this->model->getIsDefault('','single')."\",
-						\"isActive\"					=	\"".$this->model->getIsActive('','single')."\",
-						\"isNew\"						=	\"".$this->model->getIsNew('','single')."\",
-						\"isDraft\"						=	\"".$this->model->getIsDraft('','single')."\",
-						\"isUpdate\"					=	\"".$this->model->getIsUpdate('','single')."\",
-						\"isDelete\"					=	\"".$this->model->getIsDelete('','single')."\",
-						\"isApproved\"					=	\"".$this->model->getIsApproved('','single')."\",
+						\"isDefault\"					=	\"".$this->model->getIsDefault(0,'string')."\",
+						\"isActive\"					=	\"".$this->model->getIsActive(0,'string')."\",
+						\"isNew\"						=	\"".$this->model->getIsNew(0,'string')."\",
+						\"isDraft\"						=	\"".$this->model->getIsDraft(0,'string')."\",
+						\"isUpdate\"					=	\"".$this->model->getIsUpdate(0,'string')."\",
+						\"isDelete\"					=	\"".$this->model->getIsDelete(0,'string')."\",
+						\"isApproved\"					=	\"".$this->model->getIsApproved(0,'string')."\",
 						\"By\"							=	\"".$this->model->getBy()."\",
 						\"Time\"						=	".$this->model->getTime()."
 				WHERE 	\"documentCategoryId\"			=	\"".$this->model->getDocumentCategoryId('','single')."\"";
@@ -583,26 +583,26 @@ class documentCategoryClass  extends configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 				UPDATE 	`documentCategory`
-				SET 	`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
-						`isActive`		=	\"".$this->model->getIsActive('','single')."\",
-						`isNew`			=	\"".$this->model->getIsNew('','single')."\",
-						`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
-						`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
-						`isDelete`		=	\"".$this->model->getIsDelete('','single')."\",
-						`isApproved`	=	\"".$this->model->getIsApproved('','single')."\",
+				SET 	`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
+						`isActive`		=	\"".$this->model->getIsActive(0,'string')."\",
+						`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
+						`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
+						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
+						`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
+						`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
 						`By`			=	\"".$this->model->getBy('','single')."\",
 						`Time			=	".$this->model->getTime()."
 				WHERE 	`documentCategoryId`	=	\"".$this->model->getDepartrmentId('','single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[documentCategory]
-				SET 	[isDefault]		=	\"".$this->model->getIsDefault('','single')."\",
-						[isActive]		=	\"".$this->model->getIsActive('','single')."\",
-						[isNew]			=	\"".$this->model->getIsNew('','single')."\",
-						[isDraft]		=	\"".$this->model->getIsDraft('','single')."\",
-						[isUpdate]		=	\"".$this->model->getIsUpdate('','single')."\",
-						[isDelete]		=	\"".$this->model->getIsDelete('','single')."\",
-						[isApproved]	=	\"".$this->model->getIsApproved('','single')."\",
+				SET 	[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
+						[isActive]		=	\"".$this->model->getIsActive(0,'string')."\",
+						[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
+						[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
+						[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
+						[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
+						[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 						[By]			=	\"".$this->model->getBy()."\",
 						[Time]			=	".$this->model->getTime()."
 				WHERE 	[documentCategoryId]	=	\"".$this->model->getDocumentCategoryId('','single')."\"";
@@ -610,13 +610,13 @@ class documentCategoryClass  extends configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 				UPDATE 	\"documentCategory\"
-				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
-						\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
-						\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
-						\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",
-						\"isUpdate\"		=	\"".$this->model->getIsUpdate('','single')."\",
-						\"isDelete\"		=	\"".$this->model->getIsDelete('','single')."\",
-						\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
+				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault(0,'string')."\",
+						\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
+						\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
+						\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
+						\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
+						\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
+						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
 				WHERE 	\"documentCategoryId\"	=	\"".$this->model->getDocumentCategoryId('','single')."\"";
@@ -654,7 +654,7 @@ class documentCategoryClass  extends configClass {
 						$primaryKeyAll.=$this->model->getDocumentCategoryId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getDocumentCategoryId($i,'array')."\"
-						THEN \"".$this->model->getIsDefault('','single')."\"";
+						THEN \"".$this->model->getIsDefault(0,'string')."\"";
 					}
 				}
 				$sql.="	END, ";
@@ -665,7 +665,7 @@ class documentCategoryClass  extends configClass {
 						$primaryKeyAll.=$this->model->getDocumentCategoryId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getDocumentCategoryId($i,'array')."\"
-						THEN \"".$this->model->getIsNew('','single')."\"";
+						THEN \"".$this->model->getIsNew(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -675,7 +675,7 @@ class documentCategoryClass  extends configClass {
 						$primaryKeyAll.=$this->model->getDocumentCategoryId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getDocumentCategoryId($i,'array')."\"
-						THEN \"".$this->model->getIsDraft('','single')."\"";
+						THEN \"".$this->model->getIsDraft(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -685,7 +685,7 @@ class documentCategoryClass  extends configClass {
 						$primaryKeyAll.=$this->model->getDocumentCategoryId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getDocumentCategoryId($i,'array')."\"
-						THEN \"".$this->model->getIsUpdate('','single')."\"";
+						THEN \"".$this->model->getIsUpdate(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -705,7 +705,7 @@ class documentCategoryClass  extends configClass {
 						$primaryKeyAll.=$this->model->getDocumentCategoryId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getDocumentCategoryId($i,'array')."\"
-						THEN \"".$this->model->getIsActive('','single')."\"";
+						THEN \"".$this->model->getIsActive(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -715,7 +715,7 @@ class documentCategoryClass  extends configClass {
 						$primaryKeyAll.=$this->model->getDocumentCategoryId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getDocumentCategoryId($i,'array')."\"
-						THEN \"".$this->model->getIsApproved('','single')."\"";
+						THEN \"".$this->model->getIsApproved(0,'string')."\"";
 
 					}
 				}
@@ -731,26 +731,26 @@ class documentCategoryClass  extends configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
 			UPDATE 	[documentCategory]
-			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','single') . "\",
-					[isNew]				=	\"". $this->model->getIsNew('','single') . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft('','single') . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate('','single') . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete('','single') . "\",
-					[isActive]			=	\"". $this->model->getIsActive('','single') . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved('','single') . "\",
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'string') . "\",
+					[isNew]				=	\"". $this->model->getIsNew(0,'string') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft(0,'string') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'string') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete(0,'string') . "\",
+					[isActive]			=	\"". $this->model->getIsActive(0,'string') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[documentCategoryId]		IN	(". $this->model->getDocumentCategoryIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				UPDATE	\"documentCategory\"
-				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault('','single') . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew('','single') . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft('','single') . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','single') . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete('','single') . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive('','single') . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved('','single') . "\",
+				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault(0,'string') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew(0,'string') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'string') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'string') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'string') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive(0,'string') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"documentCategoryId\"		IN	(". $this->model->getDocumentCategoryIdAll() . ")";

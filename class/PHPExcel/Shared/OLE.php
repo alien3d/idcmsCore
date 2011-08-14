@@ -273,7 +273,7 @@ class PHPExcel_Shared_OLE
 	 * creates an OLE_PPS object for each one.
 	 *
 	 * @access public
-	 * @param  integer  the block id of the first block
+	 * @param int  the block id of the first block
 	 * @return mixed true on success, PEAR_Error on failure
 	 */
 	public function _readPpsWks($blockId)
@@ -350,7 +350,7 @@ class PHPExcel_Shared_OLE
 	 * starting with the given PPS (not necessarily root)
 	 *
 	 * @access public
-	 * @param integer $index The index of the PPS from which we are checking
+	 * @param int $index The index of the PPS from which we are checking
 	 * @return boolean Whether the PPS tree for the given PPS is complete
 	 */
 	public function _ppsTreeComplete($index)
@@ -370,7 +370,7 @@ class PHPExcel_Shared_OLE
 	 * If there is no PPS for the index given, it will return false.
 	 *
 	 * @access public
-	 * @param integer $index The index for the PPS
+	 * @param int $index The index for the PPS
 	 * @return bool true if it's a File PPS, false otherwise
 	 */
 	public function isFile($index)
@@ -386,7 +386,7 @@ class PHPExcel_Shared_OLE
 	 * If there is no PPS for the index given, it will return false.
 	 *
 	 * @access public
-	 * @param integer $index The index for the PPS.
+	 * @param int $index The index for the PPS.
 	 * @return bool true if it's a Root PPS, false otherwise
 	 */
 	public function isRoot($index)
@@ -413,10 +413,10 @@ class PHPExcel_Shared_OLE
 	 * If there is no PPS for the index given, it will return an empty string.
 	 *
 	 * @access public
-	 * @param integer $index    The index for the PPS
-	 * @param integer $position The position from which to start reading
+	 * @param int $index    The index for the PPS
+	 * @param int $position The position from which to start reading
 	 *                          (relative to the PPS)
-	 * @param integer $length   The amount of bytes to read (at most)
+	 * @param int $length   The amount of bytes to read (at most)
 	 * @return string The binary string containing the data requested
 	 * @see OLE_PPS_File::getStream()
 	 */
@@ -437,7 +437,7 @@ class PHPExcel_Shared_OLE
 	 * If there is no PPS for the index given, it will return 0.
 	 *
 	 * @access public
-	 * @param integer $index    The index for the PPS
+	 * @param int $index    The index for the PPS
 	 * @return integer The amount of bytes in data the PPS has
 	 */
 	public function getDataLength($index)
@@ -471,7 +471,7 @@ class PHPExcel_Shared_OLE
 	 *
 	 * @access public
 	 * @static
-	 * @param integer $date A timestamp
+	 * @param int $date A timestamp
 	 * @return string The string for the OLE container
 	 */
 	public static function LocalDate2OLE($date = null)
@@ -516,7 +516,7 @@ class PHPExcel_Shared_OLE
 	 *
 	 * @access public
 	 * @static
-	 * @param integer $string A binary string with the encoded date
+	 * @param int $string A binary string with the encoded date
 	 * @return string The timestamp corresponding to the string
 	 */
 	public static function OLE2LocalDate($string)

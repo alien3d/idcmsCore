@@ -63,39 +63,39 @@ class calendarModel extends validationClass{
 	 */
 	public function create()
 	{
-		$this->setIsDefault(0);
-		$this->setIsNew(1);
-		$this->setIsDraft(0);
-		$this->setIsUpdate(0);
-		$this->setIsActive(1);
-		$this->setIsDelete(0);
-		$this->setIsApproved(0);
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(1,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::update()
 	 */
 	public function update()
 	{
-		$this->setIsDefault(0);
-		$this->setIsNew(0);
-		$this->setIsDraft(0);
-		$this->setIsUpdate(1);
-		$this->setIsActive(1);
-		$this->setIsDelete(0);
-		$this->setIsApproved(0);
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(0,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(1,0,'string');
+		$this->setIsActive(1,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::delete()
 	 */
 	public function delete()
 	{
-		$this->setIsDefault(0);
-		$this->setIsNew(0);
-		$this->setIsDraft(0);
-		$this->setIsUpdate(0);
-		$this->setIsActive(0);
-		$this->setIsDelete(1);
-		$this->setIsApproved(0);
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(0,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(1,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 
 /* (non-PHPdoc)
@@ -103,32 +103,32 @@ class calendarModel extends validationClass{
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(1,0,'string');
 	}
  /**
      * Set isDefault Value
-     * @param integer $value
-     * @param integer $key  Array as value
-     * @param enum   $type   1->string,2->array
+     * @param int $value
+     * @param array[int]int $key List Of Primary Key.
+     * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
      */
     public function setCalendarId($value, $key = NULL, $type = NULL)
     {
@@ -158,7 +158,7 @@ class calendarModel extends validationClass{
     }
     /**
      * Set Calendar Color Value
-     * @param numeric $value
+     * @param  int $value
      */
     public function setCalendarColorId($value)
     {
@@ -175,7 +175,7 @@ class calendarModel extends validationClass{
 
  /**
      * Set Calendar Title Value
-     * @param numeric $value
+     * @param  int $value
      */
     public function setCalendarTitle($value)
     {
@@ -192,7 +192,7 @@ class calendarModel extends validationClass{
 
  /**
      * Set Staff Identification Value
-     * @param numeric $value
+     * @param  int $value
      */
     public function setStaffId($value)
     {
@@ -200,7 +200,7 @@ class calendarModel extends validationClass{
     }
     /**
      * Return  Staff Identification value
-     * @return numeric $staffId
+     * @return int $staffId
      */
     public function staffId()
     {

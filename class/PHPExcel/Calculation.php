@@ -1953,7 +1953,7 @@ class PHPExcel_Calculation {
 									  *
 									  *	@param	mixed		&$operand1	First matrix operand
 									  *	@param	mixed		&$operand2	Second matrix operand
-									  *	@param	integer		$resize		Flag indicating whether the matrices should be resized to match
+									  *	@param int		$resize		Flag indicating whether the matrices should be resized to match
 									  *										and (if so), whether the smaller dimension should grow or the
 									  *										larger should shrink.
 									  *											0 = no resize

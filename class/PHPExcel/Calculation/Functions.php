@@ -5226,7 +5226,7 @@ class PHPExcel_Calculation_Functions {
 										  *	@param	string	$text		Value
 										  *	@param	string	$fromText	From Value
 										  *	@param	string	$toText		To Value
-										  *	@param	integer	$instance	Instance Number
+										  *	@param int	$instance	Instance Number
 										  *	@return	string
 										  */
 										 public static function SUBSTITUTE($text = '', $fromText = '', $toText = '', $instance = 0) {
@@ -6022,7 +6022,7 @@ class PHPExcel_Calculation_Functions {
 										  *
 										  *	@param	mixed	$startDate		Excel date serial value (float), PHP date timestamp (integer) or date object, or a standard date string
 										  *	@param	mixed	$endDate		Excel date serial value (float), PHP date timestamp (integer) or date object, or a standard date string
-										  *	@param	integer	$method			Method used for the calculation
+										  *	@param int	$method			Method used for the calculation
 										  *										0 or omitted	US (NASD) 30/360
 										  *										1				Actual/actual
 										  *										2				Actual/360

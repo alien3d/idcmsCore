@@ -140,39 +140,39 @@ class defaultLabelModel extends validationClass{
 	 */
 		public function create()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(1,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(1,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::update()
 	 */
 	public function update()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(0,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(1,'','string');
-		$this->setIsActive(1,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(0,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(1,0,'string');
+		$this->setIsActive(1,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::delete()
 	 */
 	public function delete()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(0,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(1,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(0,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(1,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 
 /* (non-PHPdoc)
@@ -180,25 +180,25 @@ class defaultLabelModel extends validationClass{
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
 	}
 	public function setDefaultLabelId($value,$key=NULL,$type=NULL) {
 		if($type=='single'){

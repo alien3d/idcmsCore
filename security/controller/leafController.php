@@ -134,10 +134,10 @@ class leafClass extends configClass
 						\"" . $this->model->getmoduleId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
-						\"" . $this->model->getIconId(). "\",						\"" . $this->model->getIsNew('','single') . "\",
-						\"" . $this->model->getIsDraft('','single') . "\",			\"" . $this->model->getIsUpdate('','single') . "\",
-						\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-						\"" . $this->model->getIsApproved('','single') . "\",		\"" . $this->model->getBy() . "\",
+						\"" . $this->model->getIconId(). "\",						\"" . $this->model->getIsNew(0,'string') . "\",
+						\"" . $this->model->getIsDraft(0,'string') . "\",			\"" . $this->model->getIsUpdate(0,'string') . "\",
+						\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
+						\"" . $this->model->getIsApproved(0,'string') . "\",		\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					) ";
 		} else if ($this->getVendor() == self::mssql) {
@@ -157,9 +157,9 @@ class leafClass extends configClass
 						\"" . $this->model->getmoduleId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
-						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					)";
 		} else if ($this->getVendor() == self::oracle) {
@@ -180,9 +180,9 @@ class leafClass extends configClass
 						\"" . $this->model->getmoduleId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
-						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 		}
@@ -551,26 +551,26 @@ class leafClass extends configClass
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE	`leaf`
-			SET		`isDefault`				=	\"".$this->model->getIsDefault('','single')."\",
-					`isActive`				=	\"".$this->model->getIsActive('','single')."\",
-					`isNew`					=	\"".$this->model->getIsNew('','single')."\",
-					`isDraft`				=	\"".$this->model->getIsDraft('','single')."\",
-					`isUpdate`				=	\"".$this->model->getIsUpdate('','single')."\",
-					`isDelete`				=	\"".$this->model->getIsDelete('','single')."\",
-					`isApproved`			=	\"".$this->model->getIsApproved('','single')."\",
+			SET		`isDefault`				=	\"".$this->model->getIsDefault(0,'string')."\",
+					`isActive`				=	\"".$this->model->getIsActive(0,'string')."\",
+					`isNew`					=	\"".$this->model->getIsNew(0,'string')."\",
+					`isDraft`				=	\"".$this->model->getIsDraft(0,'string')."\",
+					`isUpdate`				=	\"".$this->model->getIsUpdate(0,'string')."\",
+					`isDelete`				=	\"".$this->model->getIsDelete(0,'string')."\",
+					`isApproved`			=	\"".$this->model->getIsApproved(0,'string')."\",
 					`By`					=	\"".$this->model->getBy()."\",
 					`Time`					=	".$this->model->getTime()."
 			WHERE 	`leafId`	=	\"". $this->getLeafId('','single') ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
-			SET		 [isDefault]				=	\"".$this->model->getIsDefault('','single')."\",
-					[isActive]				=	\"".$this->model->getIsActive('','single')."\",
-					[isNew]					=	\"".$this->model->getIsNew('','single')."\",
-					[isDraft]				=	\"".$this->model->getIsDraft('','single')."\",
-					[isUpdate]				=	\"".$this->model->getIsUpdate('','single')."\",
-					[isDelete]				=	\"".$this->model->getIsDelete('','single')."\",
-					[isApproved]			=	\"".$this->model->getIsApproved('','single')."\",
+			SET		 [isDefault]				=	\"".$this->model->getIsDefault(0,'string')."\",
+					[isActive]				=	\"".$this->model->getIsActive(0,'string')."\",
+					[isNew]					=	\"".$this->model->getIsNew(0,'string')."\",
+					[isDraft]				=	\"".$this->model->getIsDraft(0,'string')."\",
+					[isUpdate]				=	\"".$this->model->getIsUpdate(0,'string')."\",
+					[isDelete]				=	\"".$this->model->getIsDelete(0,'string')."\",
+					[isApproved]			=	\"".$this->model->getIsApproved(0,'string')."\",
 					[By]					=	\"".$this->model->getBy()."\",
 					[Time]					=	".$this->model->getTime()."
 			WHERE 	[leafId]	=	\"". $this->getLeafId('','single') ."\"";
@@ -628,26 +628,26 @@ class leafClass extends configClass
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
-			SET		[isDefault]				=	\"".$this->model->getIsDefault('','single')."\",
-					[isActive]				=	\"".$this->model->getIsActive('','single')."\",
-					[isNew]					=	\"".$this->model->getIsNew('','single')."\",
-					[isDraft]				=	\"".$this->model->getIsDraft('','single')."\",
-					[isUpdate]				=	\"".$this->model->getIsUpdate('','single')."\",
-					[isDelete]				=	\"".$this->model->getIsDelete('','single')."\",
-					[isApproved]			=	\"".$this->model->getIsApproved('','single')."\",
+			SET		[isDefault]				=	\"".$this->model->getIsDefault(0,'string')."\",
+					[isActive]				=	\"".$this->model->getIsActive(0,'string')."\",
+					[isNew]					=	\"".$this->model->getIsNew(0,'string')."\",
+					[isDraft]				=	\"".$this->model->getIsDraft(0,'string')."\",
+					[isUpdate]				=	\"".$this->model->getIsUpdate(0,'string')."\",
+					[isDelete]				=	\"".$this->model->getIsDelete(0,'string')."\",
+					[isApproved]			=	\"".$this->model->getIsApproved(0,'string')."\",
 					[By]					=	\"".$this->model->getBy()."\",
 					[Time]					=	".$this->model->getTime()."
 			WHERE 	[leafId]	=	\"". $this->getLeafId('','single') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE	\"leaf\"
-			SET		\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
-					\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
-					\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
-					\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",
-					\"isUpdate\"		=	\"".$this->model->getIsUpdate('','single')."\",
-					\"isDelete\"		=	\"".$this->model->getIsDelete('','single')."\",
-					\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
+			SET		\"isDefault\"		=	\"".$this->model->getIsDefault(0,'string')."\",
+					\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
+					\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
+					\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
+					\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
+					\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
+					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 					\"By\"				=	\"".$this->model->getBy()."\",
 					\"Time\"			=	".$this->model->getTime()."
 			WHERE 	\"leafId\"			=	\"". $this->model->getLeafId('','single') ."\"";

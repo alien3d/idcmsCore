@@ -74,26 +74,26 @@ class tableMappingTranslateModel extends validationClass{
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(1,0,'string');
 	}
 	public function setTableMappingTranslateId($value,$key=NULL,$type=NULL) {
 		if($type=='single'){

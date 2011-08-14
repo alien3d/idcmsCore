@@ -8708,7 +8708,7 @@ if (!class_exists('TCPDF', false)) {
 		 * </ul>
 		 * @param array $line_style Line style of ellipse. Array like for {@link SetLineStyle SetLineStyle}. Default value: default line style (empty array).
 		 * @param array $fill_color Fill color. Format: array(GREY) or array(R,G,B) or array(C,M,Y,K). Default value: default color (empty array).
-		 * @param integer $nc Number of curves used in ellipse. Default value: 8.
+		 * @param int $nc Number of curves used in ellipse. Default value: 8.
 		 * @access public
 		 * @since 2.1.000 (2008-01-08)
 		 */
@@ -8812,7 +8812,7 @@ if (!class_exists('TCPDF', false)) {
 		 * </ul>
 		 * @param array $line_style Line style of circle. Array like for {@link SetLineStyle SetLineStyle}. Default value: default line style (empty array).
 		 * @param array $fill_color Fill color. Format: array(red, green, blue). Default value: default color (empty array).
-		 * @param integer $nc Number of curves used in circle. Default value: 8.
+		 * @param int $nc Number of curves used in circle. Default value: 8.
 		 * @access public
 		 * @since 2.1.000 (2008-01-08)
 		 */
@@ -8962,7 +8962,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @param float $x0 Abscissa of center point.
 		 * @param float $y0 Ordinate of center point.
 		 * @param float $r: Radius of inscribed circle.
-		 * @param integer $ns Number of sides.
+		 * @param int $ns Number of sides.
 		 * @param float $angle Angle oriented (anti-clockwise). Default value: 0.
 		 * @param boolean $draw_circle Draw inscribed circle or not. Default value: false.
 		 * @param string $style Style of rendering. Possible values are:
@@ -9015,8 +9015,8 @@ if (!class_exists('TCPDF', false)) {
 		 * @param float $x0 Abscissa of center point.
 		 * @param float $y0 Ordinate of center point.
 		 * @param float $r Radius of inscribed circle.
-		 * @param integer $nv Number of vertices.
-		 * @param integer $ng Number of gap (if ($ng % $nv = 1) then is a regular polygon).
+		 * @param int $nv Number of vertices.
+		 * @param int $ng Number of gap (if ($ng % $nv = 1) then is a regular polygon).
 		 * @param float $angle: Angle oriented (anti-clockwise). Default value: 0.
 		 * @param boolean $draw_circle: Draw inscribed circle or not. Default value is false.
 		 * @param string $style Style of rendering. Possible values are:

@@ -76,51 +76,51 @@ class staffWebAcessModel extends validationClass{
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(1,0,'string');
 	}
 	/**
 	 * Set Staff Web Access Identification Value
-	 * @param numeric $value
+	 * @param  int $value
 	 */
 	public function setStaffWebAccessId($value) {
 		$this->staffWebAccessId = $value;
 	}
 	/**
 	 * Return Staff Web Access Identification Value
-	 * @return numeric Staff Web Access Value
+	 * @return int Staff Web Access Value
 	 */
 	public function getStaffWebAccessId() {
 		return $this->staffWebAccessId;
 	}
 	/*
 	 * Set Staff Identification Value
-	 * @param numeric $value
+	 * @param  int $value
 	 */
 	public function setStaffId($value) {
 		$this->staffId = $value;
 	}
 	/**
 	 * Return Staff Identification Value
-	 * @return numeric Staff Web Access Value
+	 * @return int Staff Web Access Value
 	 */
 	public function getStaffId() {
 		return $this->staffId;
@@ -135,7 +135,7 @@ class staffWebAcessModel extends validationClass{
 	}
 	/**
 	 * Return Staff Web Access Login Value
-	 * @return numeric Document Cateogory Identification Value
+	 * @return int Document Cateogory Identification Value
 	 */
 	public function getStaffWebAccessLogIn() {
 		return $this->staffWebAccessLogIn;

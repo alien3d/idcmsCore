@@ -172,7 +172,7 @@ class PHPExcel_Writer_Excel5_BIFFwriter
 	 * Writes Excel BOF record to indicate the beginning of a stream or
 	 * sub-stream in the BIFF file.
 	 *
-	 * @param  integer $type Type of BIFF file to write: 0x0005 Workbook,
+	 * @param int $type Type of BIFF file to write: 0x0005 Workbook,
 	 *                       0x0010 Worksheet.
 	 * @access private
 	 */

@@ -114,10 +114,10 @@ class groupClass  extends configClass {
 			VALUES
 					(
 						\"". $this->model->getGroupSequence() . "\",					\"". $this->model->getGroupCode(). "\",
-						\"". $this->model->getGroupNote() . "\",						\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getGroupNote() . "\",						\"". $this->model->getIsDefault(0,'string') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",					\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 		}  else if ( $this->getVendor()==self::mssql) {
@@ -134,10 +134,10 @@ class groupClass  extends configClass {
 			VALUES
 					(
 						\"". $this->model->getGroupSequence() . "\",	\"". $this->model->getGroupCode(). "\",
-						\"". $this->model->getGroupNote() . "\",		\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getGroupNote() . "\",		\"". $this->model->getIsDefault(0,'string') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",					\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 		}  else if ($this->getVendor()==self::oracle) {
@@ -154,10 +154,10 @@ class groupClass  extends configClass {
 			VALUES
 					(
 						\"". $this->model->getGroupSequence() . "\",	\"". $this->model->getGroupCode() . "\",
-						\"". $this->model->getGroupNote() . "\",		\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getGroupNote() . "\",		\"". $this->model->getIsDefault(0,'string') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",					\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 
@@ -694,13 +694,13 @@ class groupClass  extends configClass {
 			SET 	`groupSequence` =   \"".$this->model->getGroupSequence()."\",
 					`groupCode`		=	\"".$this->model->getGroupCode()."\",
 					`groupNote`		=	\"".$this->model->getGroupNote()."\",
-					`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
-					`isNew`			=	\"".$this->model->getIsNew('','single')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
-					`isDelete`		=	\"".$this->model->getIsDelete('','single')."\",
-					`isActive`		=	\"".$this->model->getIsActive('','single')."\",
-					`isApproved`	=	\"".$this->model->getIsApproved('','single')."\",
+					`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
+					`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
+					`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
+					`isActive`		=	\"".$this->model->getIsActive(0,'string')."\",
+					`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
 					`By`			=	\"".$this->model->getBy()."\",
 					`Time`			=	".$this->model->getTime()."
 			WHERE 	`groupId`		=	\"".$this->model->getGroupId('','single')."\"";
@@ -710,13 +710,13 @@ class groupClass  extends configClass {
 			SET 	[groupSequence] =   \"".$this->model->getGroupSequence()."\",
 					[groupCode]		=	\"".$this->model->getGroupCode()."\",
 					[groupNote]		=	\"".$this->model->getGroupNote()."\",
-					[isDefault]		=	\"".$this->model->getIsDefault('','single')."\",
-					[isNew]			=	\"".$this->model->getIsNew('','single')."\",
-					[isDraft]		=	\"".$this->model->getIsDraft('','single')."\",
-					[isUpdate]		=	\"".$this->model->getIsUpdate('','single')."\",
-					[isDelete]		=	\"".$this->model->getIsDelete('','single')."\",
-					[isActive]		=	\"".$this->model->getIsActive('','single')."\",
-					[isApproved]	=	\"".$this->model->getIsApproved('','single')."\",
+					[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
+					[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
+					[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
+					[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
+					[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
+					[isActive]		=	\"".$this->model->getIsActive(0,'string')."\",
+					[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 					[By]			=	\"".$this->model->getBy()."\",
 					[Time]			=	".$this->model->getTime()."
 			WHERE 	[groupId]		=	\"".$this->model->getGroupId('','single')."\"";
@@ -726,12 +726,12 @@ class groupClass  extends configClass {
 			SET 	\"groupSequence\"	=   \"".$this->model->getGroupSequence()."\",
 					\"groupCode\"		=	\"".$this->model->getGroupCode()."\",
 					\"groupNote\"		=	\"".$this->model->getGroupNote()."\",
-					\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
-					\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
-					\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",
-					\"isUpdate\"		=	\"".$this->model->getIsUpdate('','single')."\",
-					\"isDelete\"		=	\"".$this->model->getIsDelete('','single')."\",
-					\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
+					\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
+					\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
+					\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
+					\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
+					\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
+					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 					\"By\"				=	\"".$this->model->getBy()."\",
 					\"Time\"			=	".$this->model->getTime()."
 			WHERE 	\"groupId\"			=	\"".$this->model->getGroupCode('','single')."\"";
@@ -762,26 +762,26 @@ class groupClass  extends configClass {
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE 	`group`
-			SET 	`isDefault`			=	\"". $this->model->getIsDefault('','single') . "\",
-					`isNew`				=	\"". $this->model->getIsNew('','single') . "\",
-					`isDraft`			=	\"". $this->model->getIsDraft('','single') . "\",
-					`isUpdate`			=	\"". $this->model->getIsUpdate('','single') . "\",
-					`isDelete`			=	\"". $this->model->getIsDelete('','single') . "\",
-					`isActive`			=	\"". $this->model->getIsActive('','single') . "\",
-					`isApproved`		=	\"". $this->model->getIsApproved('','single') . "\",
+			SET 	`isDefault`			=	\"". $this->model->getIsDefault(0,'string') . "\",
+					`isNew`				=	\"". $this->model->getIsNew(0,'string') . "\",
+					`isDraft`			=	\"". $this->model->getIsDraft(0,'string') . "\",
+					`isUpdate`			=	\"". $this->model->getIsUpdate(0,'string') . "\",
+					`isDelete`			=	\"". $this->model->getIsDelete(0,'string') . "\",
+					`isActive`			=	\"". $this->model->getIsActive(0,'string') . "\",
+					`isApproved`		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					`By`				=	\"". $this->model->getBy() . "\",
 					`Time`				=	" . $this->model->getTime() . "
 			WHERE 	`groupId`		=	\"". $this->model->getGroupId('','single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[group]
-			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','single') . "\",
-					[isNew]				=	\"". $this->model->getIsNew('','single') . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft('','single') . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate('','single') . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete('','single') . "\",
-					[isActive]			=	\"". $this->model->getIsActive('','single') . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved('','single') . "\",
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'string') . "\",
+					[isNew]				=	\"". $this->model->getIsNew(0,'string') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft(0,'string') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'string') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete(0,'string') . "\",
+					[isActive]			=	\"". $this->model->getIsActive(0,'string') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[groupId]		=	\"". $this->model->getGroupId . "\"";
@@ -789,13 +789,13 @@ class groupClass  extends configClass {
 			$sql = "
 			UPDATE 	\"group\"
 			SET 	\"GroupDesc\"	=	\"". $this->model->getGroupDesc('','single') . "\",
-					\"isDefault\"		=	\"". $this->model->getIsDefault('','single') . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew('','single') . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft('','single') . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','single') . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete('','single') . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive('','single') . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved('','single') . "\",
+					\"isDefault\"		=	\"". $this->model->getIsDefault(0,'string') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew(0,'string') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'string') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'string') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'string') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive(0,'string') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"groupId\"		=	\"". $this->model->getGroupId() . "\"";
@@ -841,7 +841,7 @@ class groupClass  extends configClass {
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getGroupId($i,'array')."\"
-						THEN \"".$this->model->getIsDefault('','single')."\"";
+						THEN \"".$this->model->getIsDefault(0,'string')."\"";
 					}
 				}
 				$sql.="	END, ";
@@ -852,7 +852,7 @@ class groupClass  extends configClass {
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getGroupId($i,'array')."\"
-						THEN \"".$this->model->getIsNew('','single')."\"";
+						THEN \"".$this->model->getIsNew(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -862,7 +862,7 @@ class groupClass  extends configClass {
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getGroupId($i,'array')."\"
-						THEN \"".$this->model->getIsDraft('','single')."\"";
+						THEN \"".$this->model->getIsDraft(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -872,7 +872,7 @@ class groupClass  extends configClass {
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getGroupId($i,'array')."\"
-						THEN \"".$this->model->getIsUpdate('','single')."\"";
+						THEN \"".$this->model->getIsUpdate(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -892,7 +892,7 @@ class groupClass  extends configClass {
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getGroupId($i,'array')."\"
-						THEN \"".$this->model->getIsActive('','single')."\"";
+						THEN \"".$this->model->getIsActive(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -902,7 +902,7 @@ class groupClass  extends configClass {
 						$primaryKeyAll.=$this->model->getGroupId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getGroupId($i,'array')."\"
-						THEN \"".$this->model->getIsApproved('','single')."\"";
+						THEN \"".$this->model->getIsApproved(0,'string')."\"";
 
 					}
 				}
@@ -918,26 +918,26 @@ class groupClass  extends configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
 			UPDATE 	[group]
-			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','single') . "\",
-					[isNew]				=	\"". $this->model->getIsNew('','single') . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft('','single') . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate('','single') . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete('','single') . "\",
-					[isActive]			=	\"". $this->model->getIsActive('','single') . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved('','single') . "\",
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'string') . "\",
+					[isNew]				=	\"". $this->model->getIsNew(0,'string') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft(0,'string') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'string') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete(0,'string') . "\",
+					[isActive]			=	\"". $this->model->getIsActive(0,'string') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[GroupId]		IN	(". $this->model->getGroupIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				UPDATE	\"group\"
-				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault('','single') . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew('','single') . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft('','single') . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','single') . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete('','single') . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive('','single') . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved('','single') . "\",
+				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault(0,'string') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew(0,'string') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'string') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'string') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'string') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive(0,'string') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"GroupId\"		IN	(". $this->model->getGroupIdAll() . ")";

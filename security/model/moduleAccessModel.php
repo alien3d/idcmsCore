@@ -6,7 +6,7 @@ require_once("../../class/classValidation.php");
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package tab
+ * @package module
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -65,63 +65,72 @@ class moduleAccessModel extends validationClass
 	{
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
-	}
-	public function setTabAccessId($value,$key=NULL,$type=NULL) {
-		if($type=='single'){
-			$this->tabAccessId = $value;
-		} else if ($type=='array'){
-			$this->tabAccessId[$key]=$value;
-		}
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(1,0,'string');
 	}
 	/**
-	 * Return Module Value
-	 * @return integer moduleId
+	 * Set Module Access  Value
+	 * @param int $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function getModuleAccessId($key=NULL,$type=NULL) {
+	public function setModuleAccessId($value,$key=NULL,$type=NULL) {
 		if($type=='single'){
-			return $this->tabAccessId;
+			$this->moduleAccessId = $value;
 		} else if ($type=='array'){
-			return $this->tabAccessId[$key];
+			$this->moduleAccessId[$key]=$value;
+		}
+	}
+
+	/**
+	 * Return Module Access Identification
+	 * @param array[int][int] $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return int|array
+	 */
+	public function getModuleAccessId($key,$type) {
+		if($type=='single'){
+			return $this->moduleAccessId;
+		} else if ($type=='array'){
+			return $this->moduleAccessId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();
 		}
 	}
 	/**
-	 * Set Tab/Module Identification Value
-	 * @param  numeric $value
+	 * Set Module Identification Value
+	 * @param  int $value
 	 */
 	public function setModuleId($value) {
 		$this->moduleId = $value;
 	}
 	/**
 	 * Return Module Identiification Value
-	 * @return numeric module identification
+	 * @return int 
 	 */
 	public function getModuleId() {
 
@@ -129,34 +138,40 @@ class moduleAccessModel extends validationClass
 	}
 
 	/**
-	 * Set Tab/Module/Accordion Identification Value
-	 * @param  numeric $value
+	 * Set Group Identification Value
+	 * @param  int $value
 	 */
 	public function setGroupId($value) {
 		$this->groupId = $value;
 	}
 	/**
-	 * Return Tab/Module/Accordion Identiification Value
-	 * @return numeric tab identification
+	 * Return Group Identification Value
+	 * @return int 
 	 */
 	public function getGroupId() {
 
 		return $this->groupId;
 	}
-/**
-	 * Set Tab Access  Value
-	 * @param  numeric $value
+
+
+	/**
+	 * Set Module Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param bool $value
 	 */
-	public function setModuleAccessValue($value,$key) {
+	public function setModuleAccessValue($key,$value) {
 		$this->moduleAccessValue[$key] = $value;
 	}
+
+
 	/**
 	 * Return Module Access Value
-	 * @return numeric module identification
+	 * @param array[int]int $key List Of Primary Key.
+	 * @return bool
 	 */
-	public function getModuleAccessValue($value,$key) {
+	public function getModuleAccessValue($key) {
 
-		return $this->moduleAccessValue[$key]=$value;
+		return $this->moduleAccessValue[$key];
 	}
 
 

@@ -80,13 +80,13 @@ class documentTrailClass extends configClass {
 						\"".$this->model->getDocumentDesc()."\",
 						\"".$this->model->getDocumentPath()."\",
 						\"".$this->model->getDocumentFilename()."\",
-						\"".$this->model->getIsDefault('','single')."\",
+						\"".$this->model->getIsDefault(0,'string')."\",
 						\"".$this->model->getIsNew('','sring')."\",
-						\"".$this->model->getIsdraft('','single')."\",
-						\"".$this->model->getIsUpdate('','single')."\",
+						\"".$this->model->getIsDraft(0,'string')."\",
+						\"".$this->model->getIsUpdate(0,'string')."\",
 						\"".$this->model->getIsDelete('','sring')."\",
-						\"".$this->model->getIsActive('','single')."\",
-						\"".$this->model->getIsApproved('','single')."\",
+						\"".$this->model->getIsActive(0,'string')."\",
+						\"".$this->model->getIsApproved(0,'string')."\",
 						\"".$this->model->getBy()."\",
 						 ".$this->model->getTime()."
 			); ";
@@ -108,13 +108,13 @@ class documentTrailClass extends configClass {
 						\"".$this->model->getDocumentDesc()."\",
 						\"".$this->model->getPath()."\",
 						\"".$this->model->getFilename()."\",
-						\"".$this->model->getIsDefault('','single')."\",
+						\"".$this->model->getIsDefault(0,'string')."\",
 						\"".$this->model->getIsNew('','sring')."\",
-						\"".$this->model->getIsdraft('','single')."\",
-						\"".$this->model->getIsUpdate('','single')."\",
+						\"".$this->model->getIsDraft(0,'string')."\",
+						\"".$this->model->getIsUpdate(0,'string')."\",
 						\"".$this->model->getIsDelete('','sring')."\",
-						\"".$this->model->getIsActive('','single')."\",
-						\"".$this->model->getIsApproved('','single')."\",
+						\"".$this->model->getIsActive(0,'string')."\",
+						\"".$this->model->getIsApproved(0,'string')."\",
 						\"".$this->model->getBy()."\",
 						 ".$this->model->getTime()."
 			); ";
@@ -136,13 +136,13 @@ class documentTrailClass extends configClass {
 						\"".$this->model->getDocumentDesc()."\",
 						\"".$this->model->getPath()."\",
 						\"".$this->model->getFilename()."\",
-						\"".$this->model->getIsDefault('','single')."\",
+						\"".$this->model->getIsDefault(0,'string')."\",
 						\"".$this->model->getIsNew('','sring')."\",
-						\"".$this->model->getIsdraft('','single')."\",
-						\"".$this->model->getIsUpdate('','single')."\",
+						\"".$this->model->getIsDraft(0,'string')."\",
+						\"".$this->model->getIsUpdate(0,'string')."\",
 						\"".$this->model->getIsDelete('','sring')."\",
-						\"".$this->model->getIsActive('','single')."\",
-						\"".$this->model->getIsApproved('','single')."\"\",
+						\"".$this->model->getIsActive(0,'string')."\",
+						\"".$this->model->getIsApproved(0,'string')."\"\",
 						\"".$this->model->getBy()."\",
 						 ".$this->model->getTime()."
 			); ";
@@ -204,14 +204,14 @@ class documentTrailClass extends configClass {
 	}
 	/**
 	 * Set Leaf Identification Value
-	 * @param numeric $value
+	 * @param  int $value
 	 */
 	public function setLeafId($value) {
 		$this->leafId = $value;
 	}
 	/**
 	 * Return Leaf Identification Value
-	 * @return numeric Document Cateogory Identification Value
+	 * @return int Document Cateogory Identification Value
 	 */
 	public function getLeafId() {
 		return $this->leafId;

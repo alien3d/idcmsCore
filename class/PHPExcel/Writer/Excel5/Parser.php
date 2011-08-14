@@ -125,7 +125,7 @@ class PHPExcel_Writer_Excel5_Parser
 	/**
 	 * The class constructor
 	 *
-	 * @param integer $byte_order The byte order (Little endian or Big endian) of the architecture
+	 * @param int $byte_order The byte order (Little endian or Big endian) of the architecture
 	 *                           (optional). 1 => big endian, 0 (default) little endian.
 	 */
 	public function __construct($biff_version)
@@ -622,7 +622,7 @@ class PHPExcel_Writer_Excel5_Parser
 	 *
 	 * @access private
 	 * @param string  $token    The name of the function for convertion to ptg value.
-	 * @param integer $num_args The number of arguments the function receives.
+	 * @param int $num_args The number of arguments the function receives.
 	 * @return string The packed ptg for the function
 	 */
 	function _convertFunction($token, $num_args)
@@ -927,7 +927,7 @@ class PHPExcel_Writer_Excel5_Parser
 	 * @access public
 	 * @see PHPExcel_Writer_Excel5_Workbook::addWorksheet()
 	 * @param string  $name  The name of the worksheet being added
-	 * @param integer $index The index of the worksheet being added
+	 * @param int $index The index of the worksheet being added
 	 */
 	function setExtSheet($name, $index)
 	{

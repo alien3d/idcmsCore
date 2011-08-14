@@ -120,10 +120,10 @@ class staffClass extends configClass
 					\"" . $this->model->getStaffName() . "\",					\"" . $this->model->getStaffNo() . "\",
 					\"" . md5($this->model->getStaffPassword()) . "\",			\"" . $this->model->getStaffIc() . "\",
 					\"" . $this->model->getGroupId() . "\",						\"" . $this->model->getDepartmentId() . "\",
-					\"" . $this->model->getIsDefault('','single') . "\",		\"" . $this->model->getIsNew('','single') . "\",
-					\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
-					\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-					\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
+					\"" . $this->model->getIsDefault(0,'string') . "\",		\"" . $this->model->getIsNew(0,'string') . "\",
+					\"" . $this->model->getIsDraft(0,'string') . "\",		\"" . $this->model->getIsUpdate(0,'string') . "\",
+					\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
+					\"" . $this->model->getIsApproved(0,'string') . "\",	\"" . $this->model->getBy() . "\",
 					" . $this->model->getTime() . "
 				);";
 		} else if ($this->getVendor() == self::mssql) {
@@ -137,10 +137,10 @@ class staffClass extends configClass
 					\"" . $this->model->getStaffName() . "\",					\"" . $this->model->getStaffNo() . "\",
 					\"" . md5($this->model->getStaffPassword()) . "\",			\"" . $this->model->getStaffIc() . "\",
 					\"" . $this->model->getGroupId() . "\",						\"" . $this->model->getDepartmentId() . "\",
-					\"" . $this->model->getIsDefault('','single') . "\",		\"" . $this->model->getIsNew('','single') . "\",
-					\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
-					\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-					\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
+					\"" . $this->model->getIsDefault(0,'string') . "\",		\"" . $this->model->getIsNew(0,'string') . "\",
+					\"" . $this->model->getIsDraft(0,'string') . "\",		\"" . $this->model->getIsUpdate(0,'string') . "\",
+					\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
+					\"" . $this->model->getIsApproved(0,'string') . "\",	\"" . $this->model->getBy() . "\",
 					" . $this->model->getTime() . "
 				);";
 		} else if ($this->q->vendor = 'oracle') {
@@ -154,10 +154,10 @@ class staffClass extends configClass
 					\"" . $this->model->getStaffName() . "\",					\"" . $this->model->getStaffNo() . "\",
 					\"" . md5($this->model->getStaffPassword()) . "\",			\"" . $this->model->getStaffIc() . "\",
 					\"" . $this->model->getGroupId() . "\",						\"" . $this->model->getDepartmentId() . "\",
-					\"" . $this->model->getIsDefault('','single') . "\",		\"" . $this->model->getIsNew('','single') . "\",
-					\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
-					\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-					\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
+					\"" . $this->model->getIsDefault(0,'string') . "\",		\"" . $this->model->getIsNew(0,'string') . "\",
+					\"" . $this->model->getIsDraft(0,'string') . "\",		\"" . $this->model->getIsUpdate(0,'string') . "\",
+					\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
+					\"" . $this->model->getIsApproved(0,'string') . "\",	\"" . $this->model->getBy() . "\",
 					" . $this->model->getTime() . "
 				);";
 		}
@@ -915,13 +915,13 @@ class staffClass extends configClass
 						`staffPassword`	=	\"". md5($this->model->getStaffPassword()) ."\",
 						`groupId`		=	\"". $this->model->getGroupId() ."\",
 						`departmentId`	=	\"". $this->model->getDepartmentId() ."\",
-						`isDefault`		=	\"". $this->model->getIsDefault('','single') ."\",
-						`isNew`			=	\"". $this->model->getIsNew('','single') ."\",
-						`isDraft`		=	\"". $this->model->getIsDraft('','single') ."\",
-						`isUpdate`		=	\"". $this->model->getIsUpdate('','single') ."\",
-						`isDelete`		=	\"". $this->model->getIsDelete('','single') ."\",
-						`isActive`		=	\"". $this->model->getIsActive('','single') ."\",
-						`isApproved`	=	\"". $this->model->getIsApproved('','single') ."\",
+						`isDefault`		=	\"". $this->model->getIsDefault(0,'string') ."\",
+						`isNew`			=	\"". $this->model->getIsNew(0,'string') ."\",
+						`isDraft`		=	\"". $this->model->getIsDraft(0,'string') ."\",
+						`isUpdate`		=	\"". $this->model->getIsUpdate(0,'string') ."\",
+						`isDelete`		=	\"". $this->model->getIsDelete(0,'string') ."\",
+						`isActive`		=	\"". $this->model->getIsActive(0,'string') ."\",
+						`isApproved`	=	\"". $this->model->getIsApproved(0,'string') ."\",
 						`By`			=	\"". $this->model->getBy() ."\",
 						`Time			=	" . $this->model->getTime() . "
 				WHERE 	`staffId`		=	\"". $this->model->getStaffId('','single') ."\"";
@@ -935,13 +935,13 @@ class staffClass extends configClass
 						[staffName]		=	\"". $this->model->getStaffName() ."\",
 						[groupId]		=	\"". $this->model->getGroupId() ."\",
 						[departmentId]	=	\"". $this->model->getDepartmentId() ."\",
-						[isDraft]		=	\"". $this->model->getIsDraft('','single') ."\",
-						[isNew]			=	\"". $this->model->getIsNew('','single') ."\",
-						[isDraft]		=	\"". $this->model->getIsDraft('','single') ."\",
-						[isUpdate]		=	\"". $this->model->getIsUpdate('','single') ."\",
-						[isDelete]		=	\"". $this->model->getIsDelete('','single') ."\",
-						[isActive]		=	\"". $this->model->getIsActive('','single') ."\",
-						[isApproved]	=	\"". $this->model->getIsApproved('','single') ."\",
+						[isDraft]		=	\"". $this->model->getIsDraft(0,'string') ."\",
+						[isNew]			=	\"". $this->model->getIsNew(0,'string') ."\",
+						[isDraft]		=	\"". $this->model->getIsDraft(0,'string') ."\",
+						[isUpdate]		=	\"". $this->model->getIsUpdate(0,'string') ."\",
+						[isDelete]		=	\"". $this->model->getIsDelete(0,'string') ."\",
+						[isActive]		=	\"". $this->model->getIsActive(0,'string') ."\",
+						[isApproved]	=	\"". $this->model->getIsApproved(0,'string') ."\",
 						[By]			=	\"". $this->model->getBy() ."\",
 						[Time]			=	" . $this->model->getTime() . "
 				WHERE 	[staffId]		=	\"". $this->model->getStaffId('','single') ."\"";
@@ -955,13 +955,13 @@ class staffClass extends configClass
 						\"staffName\"		=	\"". $this->model->getStaffName() ."\",
 						\"groupId\"			=	\"". $this->model->getGroupId() ."\",
 						\"departmentId\"	=	\"". $this->model->getDepartmentId() ."\",
-						\"isDefault\"		=	\"". $this->model->getIsDefault('','single') ."\",
-						\"isNew\"			=	\"". $this->model->getIsNew('','single') ."\",
-						\"isDraft\"			=	\"". $this->model->getIsDraft('','single') ."\",
-						\"isUpdate\"		=	\"". $this->model->getIsUpdate('','single') ."\",
-						\"isDelete\"		=	\"". $this->model->getIsDelete('','single') ."\",
-						\"isActive\"		=	\"". $this->model->getIsActive('','single') ."\",
-						\"isApproved\"		=	\"". $this->model->getIsApproved('','single') ."\",
+						\"isDefault\"		=	\"". $this->model->getIsDefault(0,'string') ."\",
+						\"isNew\"			=	\"". $this->model->getIsNew(0,'string') ."\",
+						\"isDraft\"			=	\"". $this->model->getIsDraft(0,'string') ."\",
+						\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'string') ."\",
+						\"isDelete\"		=	\"". $this->model->getIsDelete(0,'string') ."\",
+						\"isActive\"		=	\"". $this->model->getIsActive(0,'string') ."\",
+						\"isApproved\"		=	\"". $this->model->getIsApproved(0,'string') ."\",
 						\"By\"				=	\"". $this->model->getBy() ."\",
 						\"Time\"			=	" . $this->model->getTime() . "
 				WHERE 	\"staffId\"			=	\"". $this->model->staffId ."\"";
@@ -1173,39 +1173,39 @@ class staffClass extends configClass
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 				UPDATE	`staff`
-				SET		`isDefault`			=	\"". $this->model->getIsActive('','single') ."\",
-						`isNew`				=	\"". $this->model->getIsNew('','single') ."\",
-						`isDraft`			=	\"". $this->model->getIsDraft('','single') ."\",
-						`isUpdate`			=	\"". $this->model->getIsUpdate('','single') ."\",
-						`isDelete`			=	\"". $this->model->getIsDelete('','single') ."\",
-						`isActive`			=	\"". $this->model->getIsActive('','single') ."\",
-						`isApproved`		=	\"". $this->model->getIsApproved('','single') ."\",
+				SET		`isDefault`			=	\"". $this->model->getIsActive(0,'string') ."\",
+						`isNew`				=	\"". $this->model->getIsNew(0,'string') ."\",
+						`isDraft`			=	\"". $this->model->getIsDraft(0,'string') ."\",
+						`isUpdate`			=	\"". $this->model->getIsUpdate(0,'string') ."\",
+						`isDelete`			=	\"". $this->model->getIsDelete(0,'string') ."\",
+						`isActive`			=	\"". $this->model->getIsActive(0,'string') ."\",
+						`isApproved`		=	\"". $this->model->getIsApproved(0,'string') ."\",
 						`By`				=	\"". $this->model->getBy() ."\",
 						`Time				=	" . $this->model->getTime() . "
 				WHERE 	`staffId`			=	\"". $this->model->staffId ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 				UPDATE	[staff]
-				SET		[isDefault]	= \"". $this->model->getIsDefault('','single') ."\",
-						[isNew]		=	\"". $this->model->getIsNew('','single') ."\",
-						[isDraft]	=	\"". $this->model->getIsDraft('','single') ."\",
-						[isUpdate]	=	\"". $this->model->getIsUpdate('','single') ."\",
-						[isDelete]	=	\"". $this->model->getIsDelete('','single') ."\",
-						[isActive]	=	\"". $this->model->getIsActive('','single') ."\",
-						[isApproved]=	\"". $this->model->getIsApproved('','single') ."\",
+				SET		[isDefault]	= \"". $this->model->getIsDefault(0,'string') ."\",
+						[isNew]		=	\"". $this->model->getIsNew(0,'string') ."\",
+						[isDraft]	=	\"". $this->model->getIsDraft(0,'string') ."\",
+						[isUpdate]	=	\"". $this->model->getIsUpdate(0,'string') ."\",
+						[isDelete]	=	\"". $this->model->getIsDelete(0,'string') ."\",
+						[isActive]	=	\"". $this->model->getIsActive(0,'string') ."\",
+						[isApproved]=	\"". $this->model->getIsApproved(0,'string') ."\",
 						[By]		=	\"". $this->model->getBy() ."\",
 						[Time]		=	" . $this->model->getTime() . "
 				WHERE 	[staffId]	=	\"". $this->model->getStaffId('','single') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 				UPDATE	\"staff\"
-				SET		\"isDefault\" 	=   \"". $this->model->getIsDefault('','single') ."\",
-						\"isNew\"		=	\"". $this->model->getIsNew('','single') ."\",
-						\"isDraft\"		=	\"". $this->model->getIsDraft('','single') ."\"
-						\"isUpdate\"	=	\"". $this->model->getIsUpdate('','single') ."\",
-						\"isDelete\"	=	\"". $this->model->getIsDelete('','single') ."\",
-						\"isActive\"	=	\"". $this->model->getIsActive('','single') ."\",
-						\"isApproved\"	=   \"". $this->model->getIsApproved('','single') ."\",
+				SET		\"isDefault\" 	=   \"". $this->model->getIsDefault(0,'string') ."\",
+						\"isNew\"		=	\"". $this->model->getIsNew(0,'string') ."\",
+						\"isDraft\"		=	\"". $this->model->getIsDraft(0,'string') ."\"
+						\"isUpdate\"	=	\"". $this->model->getIsUpdate(0,'string') ."\",
+						\"isDelete\"	=	\"". $this->model->getIsDelete(0,'string') ."\",
+						\"isActive\"	=	\"". $this->model->getIsActive(0,'string') ."\",
+						\"isApproved\"	=   \"". $this->model->getIsApproved(0,'string') ."\",
 						\"By\"			=	\"". $this->model->getBy() ."\",
 						\"Time\"		=	" . $this->model->getTime() . "
 				WHERE 	\"staffId\"		=	\"". $this->model->getStaffId('','single') ."\"";
@@ -1243,7 +1243,7 @@ class staffClass extends configClass
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
 						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-						THEN \"". $this->model->getIsDefault('','single') ."\"";
+						THEN \"". $this->model->getIsDefault(0,'string') ."\"";
 					} else {
 						//echo "salah";
 					}
@@ -1255,7 +1255,7 @@ class staffClass extends configClass
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
 						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-						THEN \"". $this->model->getIsNew('','single') ."\"";
+						THEN \"". $this->model->getIsNew(0,'string') ."\"";
 					}
 				}
 				$sql .= "	END,";
@@ -1265,7 +1265,7 @@ class staffClass extends configClass
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
 						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-						THEN \"". $this->model->getIsDraft('','single') ."\"";
+						THEN \"". $this->model->getIsDraft(0,'string') ."\"";
 					}
 				}
 				$sql .= "	END,";
@@ -1275,7 +1275,7 @@ class staffClass extends configClass
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
 						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-						THEN \"". $this->model->getIsUpdate('','single') ."\"";
+						THEN \"". $this->model->getIsUpdate(0,'string') ."\"";
 					}
 				}
 				$sql .= "	END,";
@@ -1295,7 +1295,7 @@ class staffClass extends configClass
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
 						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-						THEN \"". $this->model->getIsActive('','single') ."\"";
+						THEN \"". $this->model->getIsActive(0,'string') ."\"";
 					}
 				}
 				$sql .= "	END,";
@@ -1305,7 +1305,7 @@ class staffClass extends configClass
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
 						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-						THEN \"". $this->model->getIsApproved('','single') ."\"";
+						THEN \"". $this->model->getIsApproved(0,'string') ."\"";
 					}
 				}
 				$sql .= "
@@ -1317,26 +1317,26 @@ class staffClass extends configClass
 			} else if ($this->getVendor() == self::mssql) {
 				$sql = "
 			UPDATE 	[Department]
-			SET 	[isDefault]			=	\"" . $this->model->getIsDefault('','single') . "\",
-					[isNew]				=	\"" . $this->model->getIsNew('','single') . "\",
-					[isDraft]			=	\"" . $this->model->getIsDraft('','single') . "\",
-					[isUpdate]			=	\"" . $this->model->getIsUpdate('','single') . "\",
-					[isDelete]			=	\"" . $this->model->getIsDelete('','single') . "\",
-					[isActive]			=	\"" . $this->model->getIsActive('','single') . "\",
-					[isApproved]		=	\"" . $this->model->getIsApproved('','single') . "\",
+			SET 	[isDefault]			=	\"" . $this->model->getIsDefault(0,'string') . "\",
+					[isNew]				=	\"" . $this->model->getIsNew(0,'string') . "\",
+					[isDraft]			=	\"" . $this->model->getIsDraft(0,'string') . "\",
+					[isUpdate]			=	\"" . $this->model->getIsUpdate(0,'string') . "\",
+					[isDelete]			=	\"" . $this->model->getIsDelete(0,'string') . "\",
+					[isActive]			=	\"" . $this->model->getIsActive(0,'string') . "\",
+					[isApproved]		=	\"" . $this->model->getIsApproved(0,'string') . "\",
 					[By]				=	\"" . $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[DepartmentId]		IN	(" . $this->model->getStaffIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				UPDATE	\"Department\"
-				SET 	\"isDefault\"		=	\"" . $this->model->getIsDefault('','single') . "\",
-					\"isNew\"			=	\"" . $this->model->getIsNew('','single') . "\",
-					\"isDraft\"			=	\"" . $this->model->getIsDraft('','single') . "\",
-					\"isUpdate\"		=	\"" . $this->model->getIsUpdate('','single') . "\",
-					\"isDelete\"		=	\"" . $this->model->getIsDelete('','single') . "\",
-					\"isActive\"		=	\"" . $this->model->getIsActive('','single') . "\",
-					\"isApproved\"		=	\"" . $this->model->getIsApproved('','single') . "\",
+				SET 	\"isDefault\"		=	\"" . $this->model->getIsDefault(0,'string') . "\",
+					\"isNew\"			=	\"" . $this->model->getIsNew(0,'string') . "\",
+					\"isDraft\"			=	\"" . $this->model->getIsDraft(0,'string') . "\",
+					\"isUpdate\"		=	\"" . $this->model->getIsUpdate(0,'string') . "\",
+					\"isDelete\"		=	\"" . $this->model->getIsDelete(0,'string') . "\",
+					\"isActive\"		=	\"" . $this->model->getIsActive(0,'string') . "\",
+					\"isApproved\"		=	\"" . $this->model->getIsApproved(0,'string') . "\",
 					\"By\"				=	\"" . $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"DepartmentId\"		IN	(" . $this->model->getStaffIdAll() . ")";

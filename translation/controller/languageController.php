@@ -118,10 +118,10 @@ class languageClass  extends configClass {
 			VALUES
 					(
 									\"". $this->model->getlanguageCode() . "\",
-						\"". $this->model->getLanguageDesc() . "\",		\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getLanguageDesc() . "\",		\"". $this->model->getIsDefault(0,'string') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",					\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 		}  else if ( $this->getVendor()==self::mssql) {
@@ -138,10 +138,10 @@ class languageClass  extends configClass {
 			VALUES
 					(
 							\"". $this->model->getlanguageSequence() . "\",
-						\"". $this->model->getlanguageDesc('','single') . "\",		\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getlanguageDesc('','single') . "\",		\"". $this->model->getIsDefault(0,'string') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",					\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 		}  else if ($this->getVendor()==self::oracle) {
@@ -158,10 +158,10 @@ class languageClass  extends configClass {
 			VALUES
 					(
 						\"". $this->model->getlanguageSequence() . "\",	\"". $this->model->getlanguageSequence() . "\",
-						\"". $this->model->getlanguageDesc('','single') . "\",		\"". $this->model->getIsDefault('','single') . "\",
-						\"". $this->model->getIsNew('','single') . "\",					\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",				\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",				\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getlanguageDesc('','single') . "\",		\"". $this->model->getIsDefault(0,'string') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",					\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",				\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",				\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
 					);";
 
@@ -488,13 +488,13 @@ class languageClass  extends configClass {
 				UPDATE 	`language`
 				SET		`languageCode`		=	\"".$this->model->getLanguageCode()."\",
 						`languageDesc` 		= 	\"".$this->model->getLanguageDesc()."\",
-						`isDefault`				=	\"".$this->model->getIsDefault('','single')."\",
-						`isActive`				=	\"".$this->model->getIsActive('','single')."\",
-						`isNew`					=	\"".$this->model->getIsNew('','single')."\",
-						`isDraft`				=	\"".$this->model->getIsDraft('','single')."\",
-						`isUpdate`				=	\"".$this->model->getIsUpdate('','single')."\",
-						`isDelete`				=	\"".$this->model->getIsDelete('','single')."\",
-						`isApproved`			=	\"".$this->model->getIsApproved('','single')."\",
+						`isDefault`				=	\"".$this->model->getIsDefault(0,'string')."\",
+						`isActive`				=	\"".$this->model->getIsActive(0,'string')."\",
+						`isNew`					=	\"".$this->model->getIsNew(0,'string')."\",
+						`isDraft`				=	\"".$this->model->getIsDraft(0,'string')."\",
+						`isUpdate`				=	\"".$this->model->getIsUpdate(0,'string')."\",
+						`isDelete`				=	\"".$this->model->getIsDelete(0,'string')."\",
+						`isApproved`			=	\"".$this->model->getIsApproved(0,'string')."\",
 						`By`					=	\"".$this->model->getBy()."\",
 						`Time`					=	".$this->model->getTime()."
 				WHERE 	`languageId`			=	\"".$this->model->getLanguageId('','single')."\"";
@@ -503,13 +503,13 @@ class languageClass  extends configClass {
 				UPDATE 	[language]
 				SET 	[languageCode]		=	\"".$this->model->getLanguageCode()."\",
 						[languageDesc] 		= 	\"".$this->model->getLanguageDesc()."\",
-						[isDefault]				=	\"".$this->model->getIsDefault('','single')."\",
-						[isActive]				=	\"".$this->model->getIsActive('','single')."\",
-						[isNew]					=	\"".$this->model->getIsNew('','single')."\",
-						[isDraft]				=	\"".$this->model->getIsDraft('','single')."\",
-						[isUpdate]				=	\"".$this->model->getIsUpdate('','single')."\",
-						[isDelete]				=	\"".$this->model->getIsDelete('','single')."\",
-						[isApproved]			=	\"".$this->model->getIsApproved('','single')."\",
+						[isDefault]				=	\"".$this->model->getIsDefault(0,'string')."\",
+						[isActive]				=	\"".$this->model->getIsActive(0,'string')."\",
+						[isNew]					=	\"".$this->model->getIsNew(0,'string')."\",
+						[isDraft]				=	\"".$this->model->getIsDraft(0,'string')."\",
+						[isUpdate]				=	\"".$this->model->getIsUpdate(0,'string')."\",
+						[isDelete]				=	\"".$this->model->getIsDelete(0,'string')."\",
+						[isApproved]			=	\"".$this->model->getIsApproved(0,'string')."\",
 						[By]					=	\"".$this->model->getBy()."\",
 						[Time]					=	".$this->model->getTime()."
 				WHERE 	[languageId]			=	\"".$this->model->getLanguageId('','single')."\"";
@@ -519,13 +519,13 @@ class languageClass  extends configClass {
 				UPDATE 	\"language\"
 				SET 	\"languageCode\"	=	\"".$this->model->getLanguageCode()."\",
 						\"languageDesc\" 	= 	\"".$this->model->getLanguageDesc()."\",
-						\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
-						\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
-						\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
-						\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",
-						\"isUpdate\"		=	\"".$this->model->getIsUpdate('','single')."\",
-						\"isDelete\"		=	\"".$this->model->getIsDelete('','single')."\",
-						\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
+						\"isDefault\"		=	\"".$this->model->getIsDefault(0,'string')."\",
+						\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
+						\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
+						\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
+						\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
+						\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
+						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
 				WHERE 	\"languageId\"		=	\"".$this->model->getLanguageId('','single')."\"";
@@ -556,26 +556,26 @@ class languageClass  extends configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 				UPDATE 	`language`
-				SET 	`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
-						`isActive`		=	\"".$this->model->getIsActive('','single')."\",
-						`isNew`			=	\"".$this->model->getIsNew('','single')."\",
-						`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
-						`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
-						`isDelete`		=	\"".$this->model->getIsDelete('','single')."\",
-						`isApproved`	=	\"".$this->model->getIsApproved('','single')."\",
+				SET 	`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
+						`isActive`		=	\"".$this->model->getIsActive(0,'string')."\",
+						`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
+						`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
+						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
+						`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
+						`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
 						`By`			=	\"".$this->model->getBy('','single')."\",
 						`Time			=	".$this->model->getTime()."
 				WHERE 	`languageId`	=	\"".$this->model->getDepartrmentId('','single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[language]
-				SET 	[isDefault]		=	\"".$this->model->getIsDefault('','single')."\",
-						[isActive]		=	\"".$this->model->getIsActive('','single')."\",
-						[isNew]			=	\"".$this->model->getIsNew('','single')."\",
-						[isDraft]		=	\"".$this->model->getIsDraft('','single')."\",
-						[isUpdate]		=	\"".$this->model->getIsUpdate('','single')."\",
-						[isDelete]		=	\"".$this->model->getIsDelete('','single')."\",
-						[isApproved]	=	\"".$this->model->getIsApproved('','single')."\",
+				SET 	[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
+						[isActive]		=	\"".$this->model->getIsActive(0,'string')."\",
+						[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
+						[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
+						[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
+						[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
+						[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 						[By]			=	\"".$this->model->getBy()."\",
 						[Time]			=	".$this->model->getTime()."
 				WHERE 	[languageId]	=	\"".$this->model->getlanguageId('','single')."\"";
@@ -583,13 +583,13 @@ class languageClass  extends configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 				UPDATE 	\"language\"
-				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
-						\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
-						\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
-						\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",
-						\"isUpdate\"		=	\"".$this->model->getIsUpdate('','single')."\",
-						\"isDelete\"		=	\"".$this->model->getIsDelete('','single')."\",
-						\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
+				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault(0,'string')."\",
+						\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
+						\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
+						\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
+						\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
+						\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
+						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
 				WHERE 	\"languageId\"	=	\"".$this->model->getlanguageId('','single')."\"";
@@ -627,7 +627,7 @@ class languageClass  extends configClass {
 						$primaryKeyAll.=$this->model->getlanguageId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getlanguageId($i,'array')."\"
-						THEN \"".$this->model->getIsDefault('','single')."\"";
+						THEN \"".$this->model->getIsDefault(0,'string')."\"";
 					}
 				}
 				$sql.="	END, ";
@@ -638,7 +638,7 @@ class languageClass  extends configClass {
 						$primaryKeyAll.=$this->model->getlanguageId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getlanguageId($i,'array')."\"
-						THEN \"".$this->model->getIsNew('','single')."\"";
+						THEN \"".$this->model->getIsNew(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -648,7 +648,7 @@ class languageClass  extends configClass {
 						$primaryKeyAll.=$this->model->getlanguageId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getlanguageId($i,'array')."\"
-						THEN \"".$this->model->getIsDraft('','single')."\"";
+						THEN \"".$this->model->getIsDraft(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -658,7 +658,7 @@ class languageClass  extends configClass {
 						$primaryKeyAll.=$this->model->getlanguageId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getlanguageId($i,'array')."\"
-						THEN \"".$this->model->getIsUpdate('','single')."\"";
+						THEN \"".$this->model->getIsUpdate(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -678,7 +678,7 @@ class languageClass  extends configClass {
 						$primaryKeyAll.=$this->model->getlanguageId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getlanguageId($i,'array')."\"
-						THEN \"".$this->model->getIsActive('','single')."\"";
+						THEN \"".$this->model->getIsActive(0,'string')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -688,7 +688,7 @@ class languageClass  extends configClass {
 						$primaryKeyAll.=$this->model->getlanguageId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getlanguageId($i,'array')."\"
-						THEN \"".$this->model->getIsApproved('','single')."\"";
+						THEN \"".$this->model->getIsApproved(0,'string')."\"";
 
 					}
 				}
@@ -704,26 +704,26 @@ class languageClass  extends configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
 			UPDATE 	[language]
-			SET 	[isDefault]			=	\"". $this->model->getIsDefault('','single') . "\",
-					[isNew]				=	\"". $this->model->getIsNew('','single') . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft('','single') . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate('','single') . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete('','single') . "\",
-					[isActive]			=	\"". $this->model->getIsActive('','single') . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved('','single') . "\",
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'string') . "\",
+					[isNew]				=	\"". $this->model->getIsNew(0,'string') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft(0,'string') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'string') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete(0,'string') . "\",
+					[isActive]			=	\"". $this->model->getIsActive(0,'string') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[languageId]		IN	(". $this->model->getlanguageIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				UPDATE	\"language\"
-				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault('','single') . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew('','single') . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft('','single') . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate('','single') . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete('','single') . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive('','single') . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved('','single') . "\",
+				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault(0,'string') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew(0,'string') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'string') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'string') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'string') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive(0,'string') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'string') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"languageId\"		IN	(". $this->model->getlanguageIdAll() . ")";

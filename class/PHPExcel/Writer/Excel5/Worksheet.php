@@ -671,12 +671,12 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	/**
 	 * Set the width of a single column or a range of columns.
 	 *
-	 * @param integer $firstcol first column on the range
-	 * @param integer $lastcol  last column on the range
-	 * @param integer $width	width to set
-	 * @param integer $xfIndex  The optional cell style Xf index to apply to the columns
-	 * @param integer $hidden   The optional hidden atribute
-	 * @param integer $level	The optional outline level
+	 * @param int $firstcol first column on the range
+	 * @param int $lastcol  last column on the range
+	 * @param int $width	width to set
+	 * @param int $xfIndex  The optional cell style Xf index to apply to the columns
+	 * @param int $hidden   The optional hidden atribute
+	 * @param int $level	The optional outline level
 	 */
 	private function _setColumn($firstcol, $lastcol, $width, $xfIndex = 15, $hidden = 0, $level = 0)
 	{
@@ -690,7 +690,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Set the option to print the row and column headers on the printed page.
 	 *
 	 * @access public
-	 * @param integer $print Whether to print the headers or not. Defaults to 1 (print).
+	 * @param int $print Whether to print the headers or not. Defaults to 1 (print).
 	 */
 	function printRowColHeaders($print = 1)
 	{
@@ -748,8 +748,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Returns  0 : normal termination
 	 *		 -2 : row or column out of range
 	 *
-	 * @param integer $row	Zero indexed row
-	 * @param integer $col	Zero indexed column
+	 * @param int $row	Zero indexed row
+	 * @param int $col	Zero indexed column
 	 * @param float   $num	The number to write
 	 * @param mixed   $format The optional XF format
 	 * @return integer
@@ -795,8 +795,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *		 -3 : long string truncated to 255 chars
 	 *
 	 * @access public
-	 * @param integer $row	Zero indexed row
-	 * @param integer $col	Zero indexed column
+	 * @param int $row	Zero indexed row
+	 * @param int $col	Zero indexed column
 	 * @param string  $str	The string to write
 	 * @param mixed   $format The XF format for the cell
 	 * @return integer
@@ -831,8 +831,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *		 -3 : long string truncated to 255 chars
 	 *
 	 * @access public
-	 * @param integer $row	Zero indexed row
-	 * @param integer $col	Zero indexed column
+	 * @param int $row	Zero indexed row
+	 * @param int $col	Zero indexed column
 	 * @param string  $str	The string to write
 	 * @param mixed   $format The XF format for the cell
 	 * @return integer
@@ -859,8 +859,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Writes a note associated with the cell given by the row and column.
 	 * NOTE records don't have a length limit.
 	 *
-	 * @param integer $row	Zero indexed row
-	 * @param integer $col	Zero indexed column
+	 * @param int $row	Zero indexed row
+	 * @param int $col	Zero indexed column
 	 * @param string  $note   The note to write
 	 */
 	private function _writeNote($row, $col, $note)
@@ -898,8 +898,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *		 -1 : insufficient number of arguments
 	 *		 -2 : row or column out of range
 	 *
-	 * @param integer $row	Zero indexed row
-	 * @param integer $col	Zero indexed column
+	 * @param int $row	Zero indexed row
+	 * @param int $col	Zero indexed column
 	 * @param mixed   $format The XF format
 	 */
 	function _writeBlank($row, $col, $xfIndex)
@@ -942,8 +942,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *		 -1 : formula errors (bad formula)
 	 *		 -2 : row or column out of range
 	 *
-	 * @param integer $row	 Zero indexed row
-	 * @param integer $col	 Zero indexed column
+	 * @param int $row	 Zero indexed row
+	 * @param int $col	 Zero indexed column
 	 * @param string  $formula The formula text string
 	 * @param mixed   $format  The optional XF format
 	 * @param mixed   $calculatedValue  Calculated value
@@ -1069,8 +1069,8 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *		 -2 : row or column out of range
 	 *		 -3 : long string truncated to 255 chars
 	 *
-	 * @param integer $row	Row
-	 * @param integer $col	Column
+	 * @param int $row	Row
+	 * @param int $col	Column
 	 * @param string  $url	URL string
 	 * @return integer
 	 */
@@ -1088,10 +1088,10 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *
 	 * @access private
 	 * @see _writeUrl()
-	 * @param integer $row1   Start row
-	 * @param integer $col1   Start column
-	 * @param integer $row2   End row
-	 * @param integer $col2   End column
+	 * @param int $row1   Start row
+	 * @param int $col1   Start column
+	 * @param int $row2   End row
+	 * @param int $col2   End column
 	 * @param string  $url	URL string
 	 * @return integer
 	 */
@@ -1117,10 +1117,10 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *
 	 * @access private
 	 * @see _writeUrl()
-	 * @param integer $row1   Start row
-	 * @param integer $col1   Start column
-	 * @param integer $row2   End row
-	 * @param integer $col2   End column
+	 * @param int $row1   Start row
+	 * @param int $col1   Start column
+	 * @param int $row2   End row
+	 * @param int $col2   End column
 	 * @param string  $url	URL string
 	 * @return integer
 	 */
@@ -1162,10 +1162,10 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *
 	 * @access private
 	 * @see _writeUrl()
-	 * @param integer $row1   Start row
-	 * @param integer $col1   Start column
-	 * @param integer $row2   End row
-	 * @param integer $col2   End column
+	 * @param int $row1   Start row
+	 * @param int $col1   Start column
+	 * @param int $row2   End row
+	 * @param int $col2   End column
 	 * @param string  $url	URL string
 	 * @return integer
 	 */
@@ -1215,10 +1215,10 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *
 	 * @access private
 	 * @see _writeUrl()
-	 * @param integer $row1   Start row
-	 * @param integer $col1   Start column
-	 * @param integer $row2   End row
-	 * @param integer $col2   End column
+	 * @param int $row1   Start row
+	 * @param int $col1   Start column
+	 * @param int $row2   End row
+	 * @param int $col2   End column
 	 * @param string  $url	URL string
 	 * @return integer
 	 */
@@ -1310,12 +1310,12 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	/**
 	 * This method is used to set the height and format for a row.
 	 *
-	 * @param integer $row	The row to set
-	 * @param integer $height Height we are giving to the row.
+	 * @param int $row	The row to set
+	 * @param int $height Height we are giving to the row.
 	 *						Use null to set XF without setting height
-	 * @param integer $xfIndex  The optional cell style Xf index to apply to the columns
+	 * @param int $xfIndex  The optional cell style Xf index to apply to the columns
 	 * @param bool	$hidden The optional hidden attribute
-	 * @param integer $level  The optional outline level for row, in range [0,7]
+	 * @param int $level  The optional outline level for row, in range [0,7]
 	 */
 	private function _setRow($row, $height, $xfIndex, $hidden = false, $level = 0)
 	{
@@ -1819,7 +1819,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * parser the worksheet objects.
 	 *
 	 * @access private
-	 * @param integer $count The number of external sheet references in this worksheet
+	 * @param int $count The number of external sheet references in this worksheet
 	 */
 	function _storeExterncount($count)
 	{
@@ -2543,11 +2543,11 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Insert a 24bit bitmap image in a worksheet.
 	 *
 	 * @access public
-	 * @param integer $row	 The row we are going to insert the bitmap into
-	 * @param integer $col	 The column we are going to insert the bitmap into
+	 * @param int $row	 The row we are going to insert the bitmap into
+	 * @param int $col	 The column we are going to insert the bitmap into
 	 * @param mixed   $bitmap  The bitmap filename or GD-image resource
-	 * @param integer $x	   The horizontal position (offset) of the image inside the cell.
-	 * @param integer $y	   The vertical position (offset) of the image inside the cell.
+	 * @param int $x	   The horizontal position (offset) of the image inside the cell.
+	 * @param int $y	   The vertical position (offset) of the image inside the cell.
 	 * @param float   $scale_x The horizontal scale
 	 * @param float   $scale_y The vertical scale
 	 */
@@ -2618,12 +2618,12 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *		percentage of 1024.
 	 *
 	 * @access private
-	 * @param integer $col_start Col containing upper left corner of object
-	 * @param integer $row_start Row containing top left corner of object
-	 * @param integer $x1		Distance to left side of object
-	 * @param integer $y1		Distance to top of object
-	 * @param integer $width	 Width of image frame
-	 * @param integer $height	Height of image frame
+	 * @param int $col_start Col containing upper left corner of object
+	 * @param int $row_start Row containing top left corner of object
+	 * @param int $x1		Distance to left side of object
+	 * @param int $y1		Distance to top of object
+	 * @param int $width	 Width of image frame
+	 * @param int $height	Height of image frame
 	 */
 	function _positionImage($col_start, $row_start, $x1, $y1, $width, $height)
 	{
@@ -2687,14 +2687,14 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * to support other Excel objects.
 	 *
 	 * @access private
-	 * @param integer $colL Column containing upper left corner of object
-	 * @param integer $dxL  Distance from left side of cell
-	 * @param integer $rwT  Row containing top left corner of object
-	 * @param integer $dyT  Distance from top of cell
-	 * @param integer $colR Column containing lower right corner of object
-	 * @param integer $dxR  Distance from right of cell
-	 * @param integer $rwB  Row containing bottom right corner of object
-	 * @param integer $dyB  Distance from bottom of cell
+	 * @param int $colL Column containing upper left corner of object
+	 * @param int $dxL  Distance from left side of cell
+	 * @param int $rwT  Row containing top left corner of object
+	 * @param int $dyT  Distance from top of cell
+	 * @param int $colR Column containing lower right corner of object
+	 * @param int $dxR  Distance from right of cell
+	 * @param int $rwB  Row containing bottom right corner of object
+	 * @param int $dyB  Distance from bottom of cell
 	 */
 	function _storeObjPicture($colL,$dxL,$rwT,$dyT,$colR,$dxR,$rwB,$dyB)
 	{

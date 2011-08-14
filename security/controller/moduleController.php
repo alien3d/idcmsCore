@@ -86,13 +86,16 @@ class moduleClass extends configClass
 		$this->log               = 1;
 		$this->q->log            = $this->log;
 		$this->defaultLanguageId = 21;
+		
 		$this->security          = new security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
+		
 		$this->model         = new moduleModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
+		
 		$this->documentTrail = new documentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
@@ -127,10 +130,10 @@ class moduleClass extends configClass
 					(
 						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getmoduleSequence() . "\",
 						\"" . $this->model->getmoduleCode() . "\",					\"" . $this->model->getmoduleNote() . "\",
-						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
-						\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
-						\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-						\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
+						\"".$this->model->getIsDefault(0,'string')."\",		\"" . $this->model->getIsNew(0,'string') . "\",
+						\"" . $this->model->getIsDraft(0,'string') . "\",		\"" . $this->model->getIsUpdate(0,'string') . "\",
+						\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
+						\"" . $this->model->getIsApproved(0,'string') . "\",	\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					);";
 		} else if ($this->getVendor() ==  self::mssql) {
@@ -149,10 +152,10 @@ class moduleClass extends configClass
 					(
 						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getmoduleSequence() . "\",
 						\"" . $this->model->getmoduleCode() . "\",					\"" . $this->model->getmoduleNote() . "\",
-						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
-						\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
-						\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-						\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
+						\"".$this->model->getIsDefault(0,'string')."\",		\"" . $this->model->getIsNew(0,'string') . "\",
+						\"" . $this->model->getIsDraft(0,'string') . "\",		\"" . $this->model->getIsUpdate(0,'string') . "\",
+						\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
+						\"" . $this->model->getIsApproved(0,'string') . "\",	\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					);";
 		} else if ($this->getVendor() == self::oracle) {
@@ -171,10 +174,10 @@ class moduleClass extends configClass
 					(
 						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getmoduleSequence() . "\",
 						\"" . $this->model->getmoduleCode() . "\",					\"" . $this->model->getmoduleNote() . "\",
-						\"".$this->model->getIsDefault('','single')."\",		\"" . $this->model->getIsNew('','single') . "\",
-						\"" . $this->model->getIsDraft('','single') . "\",		\"" . $this->model->getIsUpdate('','single') . "\",
-						\"" . $this->model->getIsDelete('','single') . "\",		\"" . $this->model->getIsActive('','single') . "\",
-						\"" . $this->model->getIsApproved('','single') . "\",	\"" . $this->model->getBy() . "\",
+						\"".$this->model->getIsDefault(0,'string')."\",		\"" . $this->model->getIsNew(0,'string') . "\",
+						\"" . $this->model->getIsDraft(0,'string') . "\",		\"" . $this->model->getIsUpdate(0,'string') . "\",
+						\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
+						\"" . $this->model->getIsApproved(0,'string') . "\",	\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					);";
 		}
@@ -643,12 +646,12 @@ class moduleClass extends configClass
 			SET 	`moduleSequence`	= 	\"" . $this->model->getmoduleSequence() . "\",
 					`moduleNote`		=	\"" . $this->model->getmoduleNote() . "\",
 					`iconId`			=	\"" . $this->model->getIconId() . "\",
-					`isActive`			=	\"" . $this->model->getIsActive('','single') . "\",
-					`isNew`				=	\"" . $this->model->getIsNew('','single') . "\",
-					`isDraft`			=	\"" . $this->model->getIsDraft('','single') . "\",
-					`isUpdate`			=	\"" . $this->model->getIsUpdate('','single') . "\",
-					`isDelete`			=	\"" . $this->model->getIsDelete('','single') . "\",
-					`isApproved`		=	\"" . $this->model->getIsApproved('','single') . "\",
+					`isActive`			=	\"" . $this->model->getIsActive(0,'string') . "\",
+					`isNew`				=	\"" . $this->model->getIsNew(0,'string') . "\",
+					`isDraft`			=	\"" . $this->model->getIsDraft(0,'string') . "\",
+					`isUpdate`			=	\"" . $this->model->getIsUpdate(0,'string') . "\",
+					`isDelete`			=	\"" . $this->model->getIsDelete(0,'string') . "\",
+					`isApproved`		=	\"" . $this->model->getIsApproved(0,'string') . "\",
 					`By`				=	\"" . $this->model->getBy() . "\",
 					`Time`				=	" . $this->model->getTime() . "
 			WHERE 	`moduleId`			=	\"" . $this->model->getModuleId('','single') . "\"";
@@ -658,13 +661,13 @@ class moduleClass extends configClass
 			SET 	[moduleSequence]	= 	\"" . $this->model->moduleSequence . "\",
 					[moduleNote]		=	\"" . $this->model->moduleNote . "\",
 					[iconId]			=	\"" . $this->model->iconId . "\",
-					[isDefault]			=	\"".$this->model->getIsDefault('','single')."\",
-					[isActive]			=	\"".$this->model->getIsActive('','single')."\",
-					[isNew]				=	\"".$this->model->getIsNew('','single')."\",
-					[isDraft]			=	\"".$this->model->getIsDraft('','single')."\",
-					[isUpdate]			=	\"".$this->model->getIsUpdate('','single')."\",
-					[isDelete]			=	\"".$this->model->getIsDelete('','single')."\",
-					[isApproved]		=	\"".$this->model->getIsApproved('','single')."\",
+					[isDefault]			=	\"".$this->model->getIsDefault(0,'string')."\",
+					[isActive]			=	\"".$this->model->getIsActive(0,'string')."\",
+					[isNew]				=	\"".$this->model->getIsNew(0,'string')."\",
+					[isDraft]			=	\"".$this->model->getIsDraft(0,'string')."\",
+					[isUpdate]			=	\"".$this->model->getIsUpdate(0,'string')."\",
+					[isDelete]			=	\"".$this->model->getIsDelete(0,'string')."\",
+					[isApproved]		=	\"".$this->model->getIsApproved(0,'string')."\",
 					[By]				=	\"".$this->model->getBy()."\",
 					[Time]				=	".$this->model->getTime()."
 			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId('','single') . "\"";
@@ -674,12 +677,12 @@ class moduleClass extends configClass
 			SET 	\"moduleSequence\"	= 	\"" . $this->model->moduleSequence . "\",
 					\"moduleNote\"		=	\"" . $this->model->moduleNote . "\",
 					\"iconId\"			=	\"" . $this->model->iconId . "\",
-					\"isActive\"		=	\"" . $this->model->getIsActive('','single') . "\",
-					\"isNew\"			=	\"" . $this->model->getIsNew('','single') . "\",
-					\"isDraft\"			=	\"" . $this->model->getIsDraft('','single') . "\",
-					\"isUpdate\"		=	\"" . $this->model->getIsUpdate('','single') . "\",
-					\"isDelete\"		=	\"" . $this->model->getIsDelete('','single') . "\",
-					\"isApproved\"		=	\"" . $this->model->getIsApproved('','single') . "\",
+					\"isActive\"		=	\"" . $this->model->getIsActive(0,'string') . "\",
+					\"isNew\"			=	\"" . $this->model->getIsNew(0,'string') . "\",
+					\"isDraft\"			=	\"" . $this->model->getIsDraft(0,'string') . "\",
+					\"isUpdate\"		=	\"" . $this->model->getIsUpdate(0,'string') . "\",
+					\"isDelete\"		=	\"" . $this->model->getIsDelete(0,'string') . "\",
+					\"isApproved\"		=	\"" . $this->model->getIsApproved(0,'string') . "\",
 					\"By\"				=	\"" . $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"moduleId\"		=	\"" . $this->model->getModuleId('','single') . "\"";
@@ -716,39 +719,39 @@ class moduleClass extends configClass
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			UPDATE 	`module`
-			SET 	`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
-					`isActive`		=	\"".$this->model->getIsActive('','single')."\",
-					`isNew`			=	\"".$this->model->getIsNew('','single')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
-					`isDelete`		=	\"".$this->model->getIsDelete('','single')."\",
-					`isApproved`	=	\"".$this->model->getIsApproved('','single')."\",
+			SET 	`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
+					`isActive`		=	\"".$this->model->getIsActive(0,'string')."\",
+					`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
+					`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
+					`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
 					`By`			=	\"".$this->model->getBy('','single')."\",
 					`Time			=	".$this->model->getTime()."
 			WHERE 	`moduleId`		=	\"" . $this->model->moduleId . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[module]
-			SET 	[isDefault]		=	\"".$this->model->getIsDefault('','single')."\",
-					[isActive]		=	\"".$this->model->getIsActive('','single')."\",
-					[isNew]			=	\"".$this->model->getIsNew('','single')."\",
-					[isDraft]		=	\"".$this->model->getIsDraft('','single')."\",
-					[isUpdate]		=	\"".$this->model->getIsUpdate('','single')."\",
-					[isDelete]		=	\"".$this->model->getIsDelete('','single')."\",
-					[isApproved]	=	\"".$this->model->getIsApproved('','single')."\",
+			SET 	[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
+					[isActive]		=	\"".$this->model->getIsActive(0,'string')."\",
+					[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
+					[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
+					[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
+					[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
+					[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
 					[By]			=	\"".$this->model->getBy('','single')."\",
 					[Time]			=	".$this->model->getTime()."
 			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId('','single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			UPDATE 	\"module\"
-			SET 	\"isDefault\"		=	\"".$this->model->getIsDefault('','single')."\",
-					\"isActive\"		=	\"".$this->model->getIsActive('','single')."\",
-					\"isNew\"			=	\"".$this->model->getIsNew('','single')."\",
-					\"isDraft\"			=	\"".$this->model->getIsDraft('','single')."\",
-					\"isUpdate\"		=	\"".$this->model->getIsUpdate('','single')."\",
-					\"isDelete\"		=	\"".$this->model->getIsDelete('','single')."\",
-					\"isApproved\"		=	\"".$this->model->getIsApproved('','single')."\",
+			SET 	\"isDefault\"		=	\"".$this->model->getIsDefault(0,'string')."\",
+					\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
+					\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
+					\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
+					\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
+					\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
+					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
 					\"By\"				=	\"".$this->model->getBy('','single')."\",
 					\"Time\"			=	".$this->model->getTime()."
 			WHERE 	\"moduleId\"			=	\"" . $this->model->getModuleId('','single') . "\"";

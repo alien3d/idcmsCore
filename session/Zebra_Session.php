@@ -45,7 +45,7 @@ class Zebra_Session
      *  $session = new Zebra_Session();
      *  </code>
      *
-     *  @param  integer     $session_lifetime   (Optional) The number of seconds after which a session will be considered
+     *  @param int     $session_lifetime   (Optional) The number of seconds after which a session will be considered
      *                                          as <i>expired</i>.
      *
      *                                          Expired sessions are cleaned up from the database whenever the <i>garbage
@@ -69,7 +69,7 @@ class Zebra_Session
      *                                          To see the actual value of <i>session.gc_maxlifetime</i> for your
      *                                          environment, use the {@link get_settings()} method.
      *
-     *  @param  integer     $gc_probability     (Optional) Used in conjunction with <i>$gc_divisor</i>. It defines the
+     *  @param int     $gc_probability     (Optional) Used in conjunction with <i>$gc_divisor</i>. It defines the
      *                                          probability that the <i>garbage collection routine</i> is started.
      *
      *                                          The probability is expressed by the formula:
@@ -89,7 +89,7 @@ class Zebra_Session
      *                                          environment, and the computed <i>probability</i>, use the
      *                                          {@link get_settings()} method.
      *
-     *  @param  integer     $gc_divisor         (Optional) Used in conjunction with <i>$gc_probability</i>. It defines the
+     *  @param int     $gc_divisor         (Optional) Used in conjunction with <i>$gc_probability</i>. It defines the
      *                                          probability that the <i>garbage collection routine</i> is started.
      *
      *                                          The probability is expressed by the formula:

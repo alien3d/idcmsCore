@@ -359,7 +359,7 @@ abstract class configClass
 
 	/**
 	 * Return Next record
-	 * @param integer $primaryKeyValue
+	 * @param int $primaryKeyValue
 	 * @return integer $next;
 	 */
 	public function nextRecord($primaryKeyValue) {
@@ -395,7 +395,7 @@ abstract class configClass
 
 	/**
 	 * Return Previous Record
-	 * @param  integer $primaryKeyValue
+	 * @param int $primaryKeyValue
 	 * @return integer $previous
 	 */
 	public function previousRecord($primaryKeyValue) {

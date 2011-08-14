@@ -17,6 +17,9 @@ class leafAccessModel extends validationClass{
 
 	//table field
 	private $leafAccessId;
+	private $groupId;
+	private $moduleId;
+	private $folderId;
 	private $leafId;
 	private $staffId;
 	private $leafCreateAccessValue;
@@ -43,53 +46,93 @@ class leafAccessModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		$this->leafAccessId 		= array();
-		$this->leafAccessValue 	= array();
-		$this->totalleafAccessId	=	count($_GET['leafAccessId']);
+		$this->leafAccessValue 		= array();
+		$this->setTotal(count($_GET['leafAccessId']));
+
+		if(isset($_POST['groupId'])){
+			$this->setGroupId($this->strict($_POST['groupId'],'numeric'));
+		}
+		if(isset($_POST['moduleId'])){
+			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'));
+		}
+		if(isset($_POST['folderId'])){
+			$this->setFolderId($this->strict($_POST['folderId'],'numeric'));
+		}
+		if(isset($_POST['staffId'])){
+			$this->setStaffId($this->strict($_POST['staffId'],'numeric'));
+		}
+		if(isset($_SESSION['staffId'])){
+			$this->setBy($_SESSION['staffId']);
+		}
+		if($this->getVendor()==self::mysql){
+			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+		} else if ($this->getVendor()==self::mssql){
+			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+		} else if ($this->getVendor()==self::oracle){
+			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
+		}
 
 
-		for($i=0;$i<$this->totalleafAccessId;$i++) {
-			$this->leafAccessId[$i]  = $this->strict($_GET['leafAccessId'][$i],'numeric');
+		for($i=0;$i<$this->getTotal();$i++) {
 
+
+			$this->setLeafGroupAccessId($this->strict($_GET['leafGroupAccessId'][$i],'numeric'),$i);
 
 
 			if($_GET['leafCreateAccessValue'][$i]=='true') {
-				$this->leafCreateAccessValue[$i] =1;
+				$this->setLeafCreateAccessValue($i, 1);
+				
 			} else {
-				$this->leafCreateAccessValue[$i]=0;
+				$this->setLeafCreateAccessValue($i, 0);
 			}
 
 			if($_GET['leafReadAccessValue'][$i]=='true') {
-				$this->leafReadAccessValue[$i] =1;
+				
+				$this->setLeafReadAccessValue($i, 1);
 			} else {
-				$this->leafReadccessValue[$i]=0;
+				
+				$this->setLeafReadAccessValue($i, 0);
 			}
 
 			if($_GET['leafUpdateAccessValue'][$i]=='true') {
-				$this->leafUpdateAccessValue[$i] =1;
+			
+				$this->setLeafUpdateAccessValue($i, 1);
 			} else {
-				$this->leafUpdateAccessValue[$i]=0;
+			
+				$this->setLeafUpdateAccessValue($i, 0);
 			}
 
 			if($_GET['leafDeleteAccessValue'][$i]=='true') {
-				$this->leafDeleteAccessValue[$i] =1;
+				$this->setLeafDeleteAccessValue($i, 1);
 			} else {
-				$this->leafDeleteAccessValue[$i]=0;
+				$this->setLeafDeleteAccessValue($i, 1);
 			}
 
 			if($_GET['leafPrintAccessValue'][$i]=='true') {
-				$this->leafPrintAccessValue[$i] =1;
+				$this->setLeafPrintAccessValue($i, 1);
 			} else {
-				$this->leafPrintAccessValue[$i]=0;
+				$this->setLeafPrintAccessValue($i, 0);
 			}
 
 			if($_GET['leafPostAccessValue'][$i]=='true') {
-				$this->leafPostAccessValue[$i] =1;
+				$this->setLeafPostAccessValue($i, 1);
 			} else {
-				$this->leafPostAccessValue[$i]=0;
+				$this->setLeafPostAccessValue($i, 0);
 			}
+			if($_GET['leafDraftAccessValue'][$i]=='true') {
+				$this->leafDraftAccessValue[$i] =1;
+				$this->setLeafDraftAccessValue($i, 1);
+			} else {
+				$this->leafDraftAccessValue[$i]=0;
+				$this->setLeafDraftAccessValue($i, 0);
+			}
+			$primaryKeyAll .= $this->getLeafGroupAccessId($i, 'array') . ",";
+
 
 		}
 
+		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
+		
 
 	}
 
@@ -112,31 +155,137 @@ class leafAccessModel extends validationClass{
 	function delete() {
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(1,0,'string');
+	}
+/**
+	 * Enter description here ...
+	 * @param  int $value
+	 * @param array $key
+	 * @param enum $type
+	 */
+	public function setLeafAccessId($value,$key=NULL,$type=NULL) {
+		if($type=='single'){
+			$this->leafAccessId = $value;
+		} else if ($type=='array'){
+			$this->leafAccessId[$key]=$value;
+		}
+	}
+
+	/**
+	 * Enter description here ...
+	 * @param numeric $key
+	 * @param enum $type
+	 * @return Ambigous <multitype:, unknown_type>
+	 */
+	public function getLeafAccessId($key=NULL,$type=NULL) {
+		if($type=='single'){
+			return $this->leafAccessId;
+		} else if ($type=='array'){
+			return $this->leafAccessId[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+	}
+	/**
+	 * Set Leaf Identification Value
+	 * @param  int $value
+	 */
+	public function setLeafId($value) {
+		$this->leafId = $value;
+	}
+	/**
+	 * Return Leaf Identiification Value
+	 * @return int Folder identification
+	 */
+	public function getLeafId() {
+
+		return $this->leafId;
+	}
+/**
+	 * Set Group Identification Value
+	 * @param  int $value
+	 */
+	public function setGroupId($value) {
+		$this->groupId = $value;
+	}
+	/**
+	 * Return Group Identiification Value
+	 * @return int Group
+	 *  identification
+	 */
+	public function getGroupId() {
+
+		return $this->groupId;
+	}
+	/**
+	 * Set Folder/Module/Accordion Identification Value
+	 * @param  int $value
+	 */
+	public function setModuleId($value) {
+		$this->moduleId = $value;
+	}
+	/**
+	 * Return Folder/Module/Accordion Identiification Value
+	 * @return int Module identification
+	 */
+	public function getModuleId() {
+
+		return $this->moduleId;
+	}
+/**
+	 * Set Folder Identification Value
+	 * @param  int $value
+	 */
+	public function setFolderId($value) {
+		$this->folderId = $value;
+	}
+	/**
+	 * Return Folder Identiification Value
+	 * @return int Folder identification
+	 */
+	public function getGroupId() {
+
+		return $this->folderId;
+	}
+	/**
+	 * Set Staff Identification Value
+	 * @param  int $value
+	 */
+	public function setStaffId($value) {
+		$this->staffId = $value;
+	}
+	/**
+	 * Return Staff Identiification Value
+	 * @return int Staff Identification
+	 */
+	public function getStaffId() {
+
+		return $this->staffId;
 	}
 }
 ?>

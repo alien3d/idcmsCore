@@ -148,10 +148,10 @@ class folderClass extends  configClass {
 					(
 						\"".$this->model->tabId."\",	\"".$this->model->folderNote."\",
 						\"".$this->model->folderSequence."\", \"".$this->model->folderPath."\",
-						\"".$this->model->iconId."\",			\"".$this->model->getIsNew('','single')."\",
-						\"".$this->model->getIsDraft('','single')."\",		\"".$this->model->getIsUpdate('','single')."\",
-						\"".$this->model->getIsDelete('','single')."\",		\"".$this->model->getIsActive('','single')."\",
-						\"".$this->model->getIsApproved('','single')."\",		\"".$this->model->getIsApproved('','single')."\",
+						\"".$this->model->iconId."\",			\"".$this->model->getIsNew(0,'string')."\",
+						\"".$this->model->getIsDraft(0,'string')."\",		\"".$this->model->getIsUpdate(0,'string')."\",
+						\"".$this->model->getIsDelete(0,'string')."\",		\"".$this->model->getIsActive(0,'string')."\",
+						\"".$this->model->getIsApproved(0,'string')."\",		\"".$this->model->getIsApproved(0,'string')."\",
 						".$this->model->getTime()."
 					);";
 		}else if ($this->getVendor()==self::mssql) {
@@ -170,10 +170,10 @@ class folderClass extends  configClass {
 				(
 						\"".$this->model->tabId."\",	\"".$this->model->folderNote."\",
 						\"".$this->model->folderSequence."\", \"".$this->model->folderPath."\",
-						\"".$this->model->iconId."\",			\"".$this->model->getIsNew('','single')."\",
-						\"".$this->model->getIsDraft('','single')."\",		\"".$this->model->getIsUpdate('','single')."\",
-						\"".$this->model->getIsDelete('','single')."\",		\"".$this->model->getIsActive('','single')."\",
-						\"".$this->model->getIsApproved('','single')."\",		\"".$this->model->getIsApproved('','single')."\",
+						\"".$this->model->iconId."\",			\"".$this->model->getIsNew(0,'string')."\",
+						\"".$this->model->getIsDraft(0,'string')."\",		\"".$this->model->getIsUpdate(0,'string')."\",
+						\"".$this->model->getIsDelete(0,'string')."\",		\"".$this->model->getIsActive(0,'string')."\",
+						\"".$this->model->getIsApproved(0,'string')."\",		\"".$this->model->getIsApproved(0,'string')."\",
 						".$this->model->getTime()."
 				);";
 		} else if ($this->getVendor()==self::oracle) {
@@ -190,10 +190,10 @@ class folderClass extends  configClass {
 				VALUES	(
 							\"".$this->model->tabId."\",	\"".$this->model->folderNote."\",
 							\"".$this->model->folderSequence."\", \"".$this->model->folderPath."\",
-							\"".$this->model->iconId."\",			\"".$this->model->getIsNew('','single')."\",
-							\"".$this->model->getIsDraft('','single')."\",		\"".$this->model->getIsUpdate('','single')."\",
-							\"".$this->model->getIsDelete('','single')."\",		\"".$this->model->getIsActive('','single')."\",
-							\"".$this->model->getIsApproved('','single')."\",		\"".$this->model->getIsApproved('','single')."\",
+							\"".$this->model->iconId."\",			\"".$this->model->getIsNew(0,'string')."\",
+							\"".$this->model->getIsDraft(0,'string')."\",		\"".$this->model->getIsUpdate(0,'string')."\",
+							\"".$this->model->getIsDelete(0,'string')."\",		\"".$this->model->getIsActive(0,'string')."\",
+							\"".$this->model->getIsApproved(0,'string')."\",		\"".$this->model->getIsApproved(0,'string')."\",
 							".$this->model->getTime()."
 						);";
 		}
@@ -566,12 +566,12 @@ class folderClass extends  configClass {
 							`folderSequence`	=	\"".$this->model->getfolderSequence()."\",
 							`folderPath`		=	\"".$this->model->getfolderPath()."\",
 							`iconId`			=	\"".$this->model->getIconId()."\",
-							`isActive`			=	\"".$this->model->getIsActive('','single')."\",
-							`isNew`				=	\"".$this->model->getIsNew('','single')."\",
-							`isDraft`			=	\"".$this->model->getIsDraft('','single')."\",
-							`isUpdate`			=	\"".$this->model->getIsUpdate('','single')."\",
-							`isDelete`			=	\"".$this->model->getIsDelete('','single')."\",
-							`isApproved`		=	\"".$this->model->getIsApproved('','single')."\",
+							`isActive`			=	\"".$this->model->getIsActive(0,'string')."\",
+							`isNew`				=	\"".$this->model->getIsNew(0,'string')."\",
+							`isDraft`			=	\"".$this->model->getIsDraft(0,'string')."\",
+							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'string')."\",
+							`isDelete`			=	\"".$this->model->getIsDelete(0,'string')."\",
+							`isApproved`		=	\"".$this->model->getIsApproved(0,'string')."\",
 							`By`				=	\"".$this->model->getBy()."\",
 							`Time				=	".$this->model->getTime()."
 					WHERE 	`folderId`			=	\"".$this->model->getFolderId()."\"";
@@ -583,12 +583,12 @@ class folderClass extends  configClass {
 							[folderSequence]	=	\"".$this->model->getfolderSequence()."\",
 							[folderPath]		=	\"".$this->model->getfolderPath()."\",
 							[iconId]			=	\"".$this->strict($_POST['iconId'],'string')."\",
-							[isActive]			=	\"".$this->model->getIsActive('','single')."\",
-							[isNew]				=	\"".$this->model->getIsNew('','single')."\",
-							[isDraft]			=	\"".$this->model->getIsDraft('','single')."\",
-							[isUpdate]			=	\"".$this->model->getIsUpdate('','single')."\",
-							[isDelete]			=	\"".$this->model->getIsDelete('','single')."\",
-							[isApproved]		=	\"".$this->model->getIsApproved('','single')."\",
+							[isActive]			=	\"".$this->model->getIsActive(0,'string')."\",
+							[isNew]				=	\"".$this->model->getIsNew(0,'string')."\",
+							[isDraft]			=	\"".$this->model->getIsDraft(0,'string')."\",
+							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'string')."\",
+							[isDelete]			=	\"".$this->model->getIsDelete(0,'string')."\",
+							[isApproved]		=	\"".$this->model->getIsApproved(0,'string')."\",
 							[By]				=	\"".$this->model->getBy()."\",
 							[Time]				=	".$this->model->getTime()."
 					WHERE 	[folderId]			=	\"".$this->model->getFolderId()."\"";
@@ -599,12 +599,12 @@ class folderClass extends  configClass {
 							\"folderNote\"		=	\"".$this->model->getfolderNote()."\",
 							\"folderSequence\"	=	\"".$this->model->getfolderSequence()."\",
 							\"folderPath\"		=	\"".$this->model->getfolderPath()."\",
-							\"isActive\"	=	\"".$this->model->getIsActive('','single')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew('','single')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft('','single')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate('','single')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete('','single')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved('','single')."\",
+							\"isActive\"	=	\"".$this->model->getIsActive(0,'string')."\",
+							\"isNew\"		=	\"".$this->model->getIsNew(0,'string')."\",
+							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'string')."\",
+							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'string')."\",
+							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'string')."\",
+							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'string')."\",
 							\"By\"			=	\"".$this->model->getBy()."\",
 							\"Time\"		=	".$this->model->getTime()."
 					WHERE 	\"folderId\"		=	\"".$this->model->getFolderId()."\"";
@@ -636,12 +636,12 @@ class folderClass extends  configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE	`folder`
-					SET		`isActive`			=	\"".$this->model->getIsActive('','single')."\",
-							`isNew`				=	\"".$this->model->getIsNew('','single')."\",
-							`isDraft`			=	\"".$this->model->getIsDraft('','single')."\",
-							`isUpdate`			=	\"".$this->model->getIsUpdate('','single')."\",
-							`isDelete`			=	\"".$this->model->getIsDelete('','single')."\",
-							`isApproved`		=	\"".$this->model->getIsApproved('','single')."\",
+					SET		`isActive`			=	\"".$this->model->getIsActive(0,'string')."\",
+							`isNew`				=	\"".$this->model->getIsNew(0,'string')."\",
+							`isDraft`			=	\"".$this->model->getIsDraft(0,'string')."\",
+							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'string')."\",
+							`isDelete`			=	\"".$this->model->getIsDelete(0,'string')."\",
+							`isApproved`		=	\"".$this->model->getIsApproved(0,'string')."\",
 							`By`				=	\"".$this->model->getBy()."\",
 							`Time				=	".$this->model->getTime()."
 					WHERE 	`folderId`	=	\"".$this->model->getFolderId()."\"";
@@ -649,24 +649,24 @@ class folderClass extends  configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[folder]
-					SET		[isActive]			=	\"".$this->model->getIsActive('','single')."\",
-							[isNew]				=	\"".$this->model->getIsNew('','single')."\",
-							[isDraft]			=	\"".$this->model->getIsDraft('','single')."\",
-							[isUpdate]			=	\"".$this->model->getIsUpdate('','single')."\",
-							[isDelete]			=	\"".$this->model->getIsDelete('','single')."\",
-							[isApproved]		=	\"".$this->model->getIsApproved('','single')."\",
+					SET		[isActive]			=	\"".$this->model->getIsActive(0,'string')."\",
+							[isNew]				=	\"".$this->model->getIsNew(0,'string')."\",
+							[isDraft]			=	\"".$this->model->getIsDraft(0,'string')."\",
+							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'string')."\",
+							[isDelete]			=	\"".$this->model->getIsDelete(0,'string')."\",
+							[isApproved]		=	\"".$this->model->getIsApproved(0,'string')."\",
 							[By]				=	\"".$this->model->getBy()."\",
 							[Time]				=	".$this->model->getTime()."
 					WHERE 	[folderId]	=	\"".$this->model->getFolderId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE	\"folder\"
-					SET		\"isActive\"	=	\"".$this->model->getIsActive('','single')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew('','single')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft('','single')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate('','single')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete('','single')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved('','single')."\",
+					SET		\"isActive\"	=	\"".$this->model->getIsActive(0,'string')."\",
+							\"isNew\"		=	\"".$this->model->getIsNew(0,'string')."\",
+							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'string')."\",
+							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'string')."\",
+							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'string')."\",
+							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'string')."\",
 							\"By\"			=	\"".$this->model->getBy()."\",
 							\"Time\"		=	".$this->model->getTime()."
 					WHERE 	\"folderId\"	=	\"".$this->model->getFolderId()."\"";

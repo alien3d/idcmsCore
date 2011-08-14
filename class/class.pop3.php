@@ -137,8 +137,8 @@ class POP3 {
 	 * Combination of public events - connect, login, disconnect
 	 * @access public
 	 * @param string $host
-	 * @param integer $port
-	 * @param integer $tval
+	 * @param int $port
+	 * @param int $tval
 	 * @param string $username
 	 * @param string $password
 	 */
@@ -190,8 +190,8 @@ class POP3 {
 	 * Connect to the POP3 server
 	 * @access public
 	 * @param string $host
-	 * @param integer $port
-	 * @param integer $tval
+	 * @param int $port
+	 * @param int $tval
 	 * @return boolean
 	 */
 	public function Connect ($host, $port = false, $tval = 30) {
@@ -326,7 +326,7 @@ class POP3 {
 	 * Get the socket response back.
 	 * $size is the maximum number of bytes to retrieve
 	 * @access private
-	 * @param integer $size
+	 * @param int $size
 	 * @return string
 	 */
 	private function getResponse ($size = 128) {
@@ -389,10 +389,10 @@ class POP3 {
 	/**
 	 * Takes over from PHP for the socket warning handler
 	 * @access private
-	 * @param integer $errno
+	 * @param int $errno
 	 * @param string $errstr
 	 * @param string $errfile
-	 * @param integer $errline
+	 * @param int $errline
 	 */
 	private function catchWarning ($errno, $errstr, $errfile, $errline) {
 		$this->error[] = array(

@@ -57,7 +57,7 @@ class PHPExcel_Shared_Excel5
 	 * This holds for Arial 10
 	 *
 	 * @param PHPExcel_Worksheet $sheet The sheet
-	 * @param integer $col The column
+	 * @param int $col The column
 	 * @return integer The width in pixels
 	 */
 	public static function sizeCol($sheet, $col = 'A')
@@ -104,7 +104,7 @@ class PHPExcel_Shared_Excel5
 	 * use the default value. If the row is hidden we use a value of zero.
 	 *
 	 * @param PHPExcel_Worksheet $sheet The sheet
-	 * @param integer $row The row index (1-based)
+	 * @param int $row The row index (1-based)
 	 * @return integer The width in pixels
 	 */
 	public static function sizeRow($sheet, $row = 1)
@@ -153,9 +153,9 @@ class PHPExcel_Shared_Excel5
 	 *
 	 * @param PHPExcel_Worksheet $sheet
 	 * @param string $startColumn
-	 * @param integer $startOffset Offset within start cell measured in 1/1024 of the cell width
+	 * @param int $startOffset Offset within start cell measured in 1/1024 of the cell width
 	 * @param string $endColumn
-	 * @param integer $endOffset Offset within end cell measured in 1/1024 of the cell width
+	 * @param int $endOffset Offset within end cell measured in 1/1024 of the cell width
 	 * @return integer Horizontal measured in pixels
 	 */
 	public static function getDistanceX(PHPExcel_Worksheet $sheet, $startColumn = 'A', $startOffsetX = 0, $endColumn = 'A', $endOffsetX = 0)
@@ -184,9 +184,9 @@ class PHPExcel_Shared_Excel5
 	 *
 	 * @param PHPExcel_Worksheet $sheet
 	 * @param string $startRow (1-based)
-	 * @param integer $startOffset Offset within start cell measured in 1/256 of the cell height
+	 * @param int $startOffset Offset within start cell measured in 1/256 of the cell height
 	 * @param string $endRow (1-based)
-	 * @param integer $endOffset Offset within end cell measured in 1/256 of the cell height
+	 * @param int $endOffset Offset within end cell measured in 1/256 of the cell height
 	 * @return integer Vertical distance measured in pixels
 	 */
 	public static function getDistanceY(PHPExcel_Worksheet $sheet, $startRow = 1, $startOffsetY = 0, $endRow = 1, $endOffsetY = 0)
@@ -253,10 +253,10 @@ class PHPExcel_Shared_Excel5
 	 *
 	 * @param PHPExcel_Worksheet $sheet
 	 * @param string $coordinates E.g. 'A1'
-	 * @param integer $offsetX Horizontal offset in pixels
-	 * @param integer $offsetY Vertical offset in pixels
-	 * @param integer $width Width in pixels
-	 * @param integer $height Height in pixels
+	 * @param int $offsetX Horizontal offset in pixels
+	 * @param int $offsetY Vertical offset in pixels
+	 * @param int $width Width in pixels
+	 * @param int $height Height in pixels
 	 * @return array
 	 */
 	public static function oneAnchor2twoAnchor($sheet, $coordinates, $offsetX, $offsetY, $width, $height)

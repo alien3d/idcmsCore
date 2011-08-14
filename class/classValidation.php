@@ -55,12 +55,13 @@ abstract class validationClass {
 	 * Outside $_POST delete record
 	 */
 	abstract protected function delete();
-	/*
-	*
+	/**
+	 * Outside $_POST delete record
 	 */
 	abstract protected function draft();
-	 /*
-	 *
+
+	/**
+	 * Outside $_POST delete record
 	 */
 	abstract protected function approved();
 	/**
@@ -190,45 +191,70 @@ abstract class validationClass {
 		}
 
 	}
+	/**
+	 * Return Database Vendor
+	 * @param string $value
+	 */
 	public function setVendor($value) {
 		$this->vendor = $value;
 
 	}
+
+	/**
+	 * Return Database Vendor
+	 * @return string
+	 */
 	public function getVendor() {
 		return $this->vendor;
 	}
+	/**
+	 * Set Primary Name
+	 * @param string $value
+	 */
 	public function setTableName($value) {
 		$this->tableName = $value;
 
 	}
+	/**
+	 * Return Primary Name
+	 * @return string
+	 */
 	public function getTableName() {
 		return $this->tableName;
 	}
+	/**
+	 * Set Primary Name
+	 * @param string $value
+	 */
 	public function setPrimaryKeyName($value) {
 		$this->primaryKeyName = $value;
 
 	}
+	/**
+	 * Return Primary Name
+	 * @return string
+	 */
 	public function getPrimaryKeyName() {
 		return $this->primaryKeyName;
 	}
 
 	/**
-	 * Set All Religion Identification Array To Sql Statement
+	 * Set Primary Key All
 	 * @param string $value
 	 */
 	public function setPrimaryKeyAll($value){
 		$this->primaryKeyAll= $value;
 	}
 	/**
-	 * Return Religion Identification Array
-	 * @return string $religionIdAll
+	 * Return Primary Key All
+	 * @return string
 	 */
 	public function getPrimaryKeyAll() {
 		return $this->primaryKeyAll;
 	}
 	/**
 	 * Set Total Record of Table
-	 * @param numeric $value
+	 * @param  int $value
 	 */
 	public function setTotal($value){
 		$this->total = $value;
@@ -236,7 +262,7 @@ abstract class validationClass {
 
 	/**
 	 * Return Total Record of table
-	 * @return numeric
+	 * @return int
 	 */
 	public function getTotal(){
 		return $this->total;
@@ -244,119 +270,238 @@ abstract class validationClass {
 
 	/**
 	 * Set isDefault Value
-	 * @param boolean $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	
 	 */
-	public function setIsDefault($value) {
-		$this->isDefault = $value;
+	public function setIsDefault($value,$key,$type) {
+		if($type=='single'){
+			$this->isDefault = $value;
+		} else if ($type=='array'){
+			$this->isDefault[$key]=$value;
+		}
 	}
 	/**
 	 * Return isDefault Value
-	 * @return boolean isDefault
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getIsDefault() {
-		return $this->isDefault;
+	public function getIsDefault($key,$type) {
+		if($type=='single'){
+			return $this->isDefault;
+		} else if ($type=='array'){
+			return $this->isDefault[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+		
 	}
 
 	/**
 	 * Set isNew value
-	 * @param boolean $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIsNew($value) {
-		$this->isNew = $value;
+	public function setIsNew($value,$key,$type) {
+		if($type=='single'){
+			$this->isNew = $value;
+		} else if ($type=='array'){
+			$this->isNew[$key]=$value;
+		}
+
 	}
 	/**
 	 * Return isNew value
-	 * @return boolean isNew
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getIsNew() {
-		return $this->isNew;
+	public function getIsNew($key,$type) {
+		if($type=='single'){
+			return $this->isNew;
+		} else if ($type=='array'){
+			return $this->isNew[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+
 	}
 
 	/**
 	 * Set IsDraft Value
-	 * @param boolean $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIsDraft($value) {
-		$this->isDraft = $value;
+	public function setIsDraft($value,$key,$type) {
+		if($type=='single'){
+			$this->isDraft = $value;
+		} else if ($type=='array'){
+			$this->isDraft[$key]=$value;
+		}
+
 	}
 	/**
 	 * Return isDraftValue
-	 * @return boolean isDraft
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getIsDraft() {
-		return $this->isDraft;
+	public function getIsDraft($key,$type) {
+		if($type=='single'){
+			return $this->isDraft;
+		} else if ($type=='array'){
+			return $this->isDraft[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+
 	}
 
 	/**
 	 * Set isUpdate Value
-	 * @param boolean $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'	
 	 */
-	public function setIsUpdate($value) {
-		$this->isUpdate = $value;
+	public function setIsUpdate($value,$key,$type) {
+		if($type=='single'){
+			$this->isUpdate = $value;
+		} else if ($type=='array'){
+			$this->isUpdate[$key]=$value;
+		}
+
 	}
 	/**
 	 * Return isUpdate Value
-	 * @return boolean isUpdate
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getIsUpdate() {
-		return $this->isUpdate;
+	public function getIsUpdate($key,$type) {
+		if($type=='single'){
+			return $this->isUpdate;
+		} else if ($type=='array'){
+			return $this->isUpdate[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+
 	}
 
 	/**
 	 * Set isActive Value
-	 * @param boolean $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIsActive($value) {
-		$this->isActive = $value;
+	public function setIsActive($value,$key,$type) {
+		if($type=='single'){
+			$this->isActive = $value;
+		} else if ($type=='array'){
+			$this->isActive[$key]=$value;
+		}
+
 	}
 	/**
 	 * Return isActive value
-	 * @return boolean isActive
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getIsActive() {
-		return $this->isActive;
+	public function getIsActive($key,$type) {
+		if($type=='single'){
+			return $this->isActive;
+		} else if ($type=='array'){
+			return $this->isActive[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+
 	}
 
 	/**
 	 * Set isDelete Value
-	 * @param boolean $value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'	 
 	 */
-	public function setIsDelete($value) {
-		$this->isDelete = $value;
+	public function setIsDelete($value,$key,$type) {
+		if($type=='single'){
+			$this->isDelete = $value;
+		} else if ($type=='array'){
+			$this->isDelete[$key]=$value;
+		}
+
 	}
 	/**
 	 * Return isDelete Value
-	 * @return boolean isDelete
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getIsDelete() {
-		return $this->isDelete;
+	public function getIsDelete($key,$type) {
+		if($type=='single'){
+			return $this->isDelete;
+		} else if ($type=='array'){
+			return $this->isDelete[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+
 	}
 
 	/**
 	 * Set isApproved Value
-	 * @param boolean $value
+	 * @param bool $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIsApproved($value) {
-		$this->isApproved = $value;
+	public function setIsApproved($value,$key,$type) {
+		if($type=='single'){
+			$this->isApproved = $value;
+		} else if ($type=='array'){
+			$this->isApproved[$key]=$value;
+		}
+
 	}
 	/**
 	 * Return isApproved Value
-	 * @return boolean isApproved
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getIsApproved() {
-		return $this->isApproved;
+	public function getIsApproved($key,$type) {
+		if($type=='single'){
+			return $this->isApproved;
+		} else if ($type=='array'){
+			return $this->isApproved[$key];
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			exit();
+		}
+
 	}
 
 	/**
 	 * Set Activity User
-	 * @param integet $value
+	 * @param int $value
 	 */
 	public function setBy($value) {
 		$this->By = $value;
 	}
 	/**
 	 * Get Activity User
-	 * @return integer User
+	 * @return int
 	 */
 	public function getBy() {
 
@@ -372,7 +517,7 @@ abstract class validationClass {
 	}
 	/**
 	 *  Return Time Activity User
-	 *  @return date Time Activity User
+	 *  @return date
 	 */
 	public function getTime() {
 

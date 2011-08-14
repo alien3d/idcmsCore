@@ -73,101 +73,101 @@ class documentCategoryModel extends validationClass{
 	 */
 	public function create()
 	{
-		$this->setIsDefault(0);
-		$this->setIsNew(1);
-		$this->setIsDraft(0);
-		$this->setIsUpdate(0);
-		$this->setIsActive(1);
-		$this->setIsDelete(0);
-		$this->setIsApproved(0);
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(1,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::update()
 	 */
 	public function update()
 	{
-		$this->setIsDefault(0);
-		$this->setIsNew(0);
-		$this->setIsDraft(0);
-		$this->setIsUpdate(1);
-		$this->setIsActive(1);
-		$this->setIsDelete(0);
-		$this->setIsApproved(0);
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(0,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(1,0,'string');
+		$this->setIsActive(1,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::delete()
 	 */
 	public function delete()
 	{
-		$this->setIsDefault(0);
-		$this->setIsNew(0);
-		$this->setIsDraft(0);
-		$this->setIsUpdate(0);
-		$this->setIsActive(0);
-		$this->setIsDelete(1);
-		$this->setIsApproved(0);
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(0,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(1,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(1,0,'string');
 	}
 	/**
 	 * Update  Table Status
 	 */
 	public function updateStatus() {
 		if(!(is_array($_GET['isDefault']))) {
-			$this->setIsDefault(0,'','string');
+			$this->setIsDefault(0,0,'string');
 		}
 		if(!(is_array($_GET['isNew']))) {
-			$this->setIsNew(0,'','string');
+			$this->setIsNew(0,0,'string');
 		}
 		if(!(is_array($_GET['isDraft']))) {
-			$this->setIsDraft(0,'','string');
+			$this->setIsDraft(0,0,'string');
 		}
 		if(!(is_array($_GET['isUpdate']))) {
-			$this->setIsUpdate(0,'','string');
+			$this->setIsUpdate(0,0,'string');
 		}
 		if(!(is_array($_GET['isDelete']))) {
 
-			$this->setIsDelete(1,'','string');
+			$this->setIsDelete(1,0,'string');
 		}
 		if(!(is_array($_GET['isActive']))) {
-			$this->setIsActive(0,'','string');
+			$this->setIsActive(0,0,'string');
 		}
 
 		if(!(is_array($_GET['isApproved']))) {
-			$this->setIsApproved(0,'','string');
+			$this->setIsApproved(0,0,'string');
 		}
 	}
 
 	// generate basic information from outside
 	/**
 	 * Set  Document Category Identification Value
-	 * @param integer $value
-	 * @param integer $key  Array as value
-	 * @param enum   $type   1->string,2->array
+	 * @param int $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setDocumentCategoryId($value,$key=NULL,$type=NULL) {
 		if($type=='single'){

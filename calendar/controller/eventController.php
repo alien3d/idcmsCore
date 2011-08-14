@@ -324,22 +324,22 @@ class eventClass extends configClass
 		} else if ($this->q->vendor == self :: mssql){
 			$sql = "
 			UPDATE	[event]
-			SET		[isDefault]		=	\"".$this->model->getIsDefault('','single')."\",
-					[isNew]			=	\"".$this->model->getIsNew('','single')."\",
-					[isDraft]		=	\"".$this->model->getIsDraft('','single')."\",
-					[isUpdate]		=	\"".$this->model->getIsUpdate('','single')."\",
-					[isActive]		= 	\"".$this->model->getIsActive('','single')."\",
-					[isApproved] 	=	\"".$this->model->getIsApproved('','single')."\"
+			SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
+					[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
+					[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
+					[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
+					[isActive]		= 	\"".$this->model->getIsActive(0,'string')."\",
+					[isApproved] 	=	\"".$this->model->getIsApproved(0,'string')."\"
 			WHERE 	[eventId]		=	\"". $this->model->getEventId('','single')."\"";
 		} else if ($this->q->vendor == self:: oracle){
 			$sql = "
 			UPDATE	`event`
-			SET		`isDefault`		=	\"".$this->model->getIsDefault('','single')."\",
-					`isNew`			=	\"".$this->model->getIsNew('','single')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft('','single')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate('','single')."\",
-					`isActive`		= 	\"".$this->model->getIsActive('','single')."\",
-					`isApproved` 	=	\"".$this->model->getIsApproved('','single')."\"
+			SET		`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
+					`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
+					`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
+					`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
+					`isActive`		= 	\"".$this->model->getIsActive(0,'string')."\",
+					`isApproved` 	=	\"".$this->model->getIsApproved(0,'string')."\"
 			WHERE 	`eventId`		=	\"". $this->model->getEventId('','single')."\"";
 		}
 		$this->q->update($sql);

@@ -924,7 +924,7 @@ class PHPMailer {
 	 * automatically perform wrapping and for quoted-printable.
 	 * Original written by philippe.
 	 * @param string $message The message to wrap
-	 * @param integer $length The line length to wrap to
+	 * @param int $length The line length to wrap to
 	 * @param boolean $qp_mode Whether to run in Quoted-Printable mode
 	 * @access public
 	 * @return string
@@ -1633,7 +1633,7 @@ class PHPMailer {
 	 * Only uses standard PHP, slow, but will always work
 	 * @access public
 	 * @param string $string the text to encode
-	 * @param integer $line_max Number of chars allowed on a line before wrapping
+	 * @param int $line_max Number of chars allowed on a line before wrapping
 	 * @return string
 	 */
 	public function EncodeQPphp( $input = '', $line_max = 76, $space_conv = false) {
@@ -1684,7 +1684,7 @@ class PHPMailer {
 	 * @see EncodeQPphp()
 	 * @access public
 	 * @param string $string the text to encode
-	 * @param integer $line_max Number of chars allowed on a line before wrapping
+	 * @param int $line_max Number of chars allowed on a line before wrapping
 	 * @param boolean $space_conv Dummy param for compatibility with existing EncodeQP function
 	 * @return string
 	 * @author Marcus Bointon

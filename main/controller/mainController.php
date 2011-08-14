@@ -175,9 +175,9 @@ class mainClass extends configClass
 			VALUES	
 					(
 						\"". $this->model->mainDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->getIsNew('','single') . "\",			\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",		\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",		\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",			\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",		\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",		\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",				" . $this->model->getTime() . "
 					);";
 		$this->q->start();
@@ -195,9 +195,9 @@ class mainClass extends configClass
 			VALUES	
 					(
 						\"". $this->model->mainDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->getIsNew('','single') . "\",			\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",		\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",		\"". $this->model->getIsApproved('','single') . "\",
+						\"". $this->model->getIsNew(0,'string') . "\",			\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",		\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",		\"". $this->model->getIsApproved(0,'string') . "\",
 						\"". $this->model->getBy() . "\",				" . $this->model->getTime() . "
 					);";
 		} else if ($this->getVendor() == self::mssql) {
@@ -213,10 +213,10 @@ class mainClass extends configClass
 			VALUES	
 					(
 						\"". $this->model->mainDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->getIsNew('','single') . "\",			\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsDraft('','single') . "\",		\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",		\"". $this->model->getIsApproved('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",		" . $this->model->getTime() . "
+						\"". $this->model->getIsNew(0,'string') . "\",			\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsDraft(0,'string') . "\",		\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",		\"". $this->model->getIsApproved(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",		" . $this->model->getTime() . "
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -231,10 +231,10 @@ class mainClass extends configClass
 			VALUES	
 					(
 						\"". $this->model->mainDesc . "\",	\"". $this->model->isDefaut . "\",
-						\"". $this->model->getIsNew('','single') . "\",			\"". $this->model->getIsDraft('','single') . "\",
-						\"". $this->model->getIsDraft('','single') . "\",		\"". $this->model->getIsDelete('','single') . "\",
-						\"". $this->model->getIsUpdate('','single') . "\",		\"". $this->model->getIsApproved('','single') . "\",
-						\"". $this->model->getIsActive('','single') . "\",		" . $this->model->getTime() . "
+						\"". $this->model->getIsNew(0,'string') . "\",			\"". $this->model->getIsDraft(0,'string') . "\",
+						\"". $this->model->getIsDraft(0,'string') . "\",		\"". $this->model->getIsDelete(0,'string') . "\",
+						\"". $this->model->getIsUpdate(0,'string') . "\",		\"". $this->model->getIsApproved(0,'string') . "\",
+						\"". $this->model->getIsActive(0,'string') . "\",		" . $this->model->getTime() . "
 					)";
 		}
 		//advance logging future

@@ -121,14 +121,14 @@ class PHPExcel_Shared_OLE_PPS
 	 * The constructor
 	 *
 	 * @access public
-	 * @param integer $No   The PPS index
+	 * @param int $No   The PPS index
 	 * @param string  $name The PPS name
-	 * @param integer $type The PPS type. Dir, Root or File
-	 * @param integer $prev The index of the previous PPS
-	 * @param integer $next The index of the next PPS
-	 * @param integer $dir  The index of it's first child if this is a Dir or Root PPS
-	 * @param integer $time_1st A timestamp
-	 * @param integer $time_2nd A timestamp
+	 * @param int $type The PPS type. Dir, Root or File
+	 * @param int $prev The index of the previous PPS
+	 * @param int $next The index of the next PPS
+	 * @param int $dir  The index of it's first child if this is a Dir or Root PPS
+	 * @param int $time_1st A timestamp
+	 * @param int $time_2nd A timestamp
 	 * @param string  $data  The (usually binary) source data of the PPS
 	 * @param array   $children Array containing children PPS for this PPS
 	 */

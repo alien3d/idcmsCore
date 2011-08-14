@@ -140,92 +140,92 @@ class moduleModel extends validationClass{
 	 */
 	public function create()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(1,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(1,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::update()
 	 */
 	public function update()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(0,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(1,'','string');
-		$this->setIsActive(1,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(0,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(1,0,'string');
+		$this->setIsActive(1,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::delete()
 	 */
 	public function delete()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(0,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(1,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(0,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(1,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 /* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(1,0,'string');
 	}
 	/**
 	 * Update tab Table Status
 	 */
 	public function updateStatus() {
 		if(!(is_array($_GET['isDefault']))) {
-			$this->setIsDefault(0,'','string');
+			$this->setIsDefault(0,0,'string');
 		}
 		if(!(is_array($_GET['isNew']))) {
-			$this->setIsNew(0,'','string');
+			$this->setIsNew(0,0,'string');
 		}
 		if(!(is_array($_GET['isDraft']))) {
-			$this->setIsDraft(0,'','string');
+			$this->setIsDraft(0,0,'string');
 		}
 		if(!(is_array($_GET['isUpdate']))) {
-			$this->setIsUpdate(0,'','string');
+			$this->setIsUpdate(0,0,'string');
 		}
 		if(!(is_array($_GET['isDelete']))) {
 
-			$this->setIsDelete(1,'','string');
+			$this->setIsDelete(1,0,'string');
 		}
 		if(!(is_array($_GET['isActive']))) {
-			$this->setIsActive(0,'','string');
+			$this->setIsActive(0,0,'string');
 		}
 
 		if(!(is_array($_GET['isApproved']))) {
-			$this->setIsApproved(0,'','string');
+			$this->setIsApproved(0,0,'string');
 		}
 	}
 
@@ -258,14 +258,14 @@ class moduleModel extends validationClass{
 	}
 	/**
 	 * Set icon for Tab
-	 * @param  numeric $value
+	 * @param  int $value
 	 */
 	public function setIconId($value) {
 		$this->iconId = $value;
 	}
 	/**
 	 * Return icon for module
-	 * @return numeric icon for module
+	 * @return int icon for module
 	 */
 	public function getIconId() {
 
@@ -273,14 +273,14 @@ class moduleModel extends validationClass{
 	}
 	/**
 	 * Set Module Sequence Value
-	 * @param numeric $value
+	 * @param  int $value
 	 */
 	public function setModuleSequence($value) {
 		$this->moduleSequence = $value;
 	}
 	/**
 	 * Return module Sequence Value
-	 * @return numeric module sequence
+	 * @return int module sequence
 	 */
 	public function getModuleSequence() {
 		return $this->moduleSequence;

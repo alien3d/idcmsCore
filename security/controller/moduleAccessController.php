@@ -16,7 +16,7 @@ require_once("../model/moduleAccessModel.php");
  */
 class moduleAccessClass extends configClass
 {
-			/*
+	/*
 	 * Connection to the damodulease
 	 * @var string $excel
 	 */
@@ -73,7 +73,7 @@ class moduleAccessClass extends configClass
 	function execute()
 	{
 		parent::__construct();
-		
+
 		$this->q              = new vendor();
 		$this->q->vendor      = $this->getVendor();
 		$this->q->leafId      = $this->getLeafId();
@@ -81,22 +81,22 @@ class moduleAccessClass extends configClass
 		$this->q->fieldQuery     = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		
+
 		$this->excel             = new PHPExcel();
-		
+
 		$this->audit             = 0;
 		$this->log               = 1;
 		$this->q->log            = $this->log;
-		
+
 		$this->security          = new security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
-		
+
 		$this->model         = new moduleAccessModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
-		
+
+
 		$this->documentTrail = new documentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
@@ -139,8 +139,8 @@ class moduleAccessClass extends configClass
 				USING 	(`groupId`)
 				WHERE 	`module`.`isActive` 	=	1
 				AND		`group`.`isActive`		=	1";
-			if ($this->groupId) {
-				$sql .= " AND `group`.`groupId`=\"". $this->strict($this->groupId, 'numeric') ."\"";
+			if ($this->model->getGroupId()) {
+				$sql .= " AND `group`.`groupId`=\"". $this->model->getGroupId() ."\"";
 			}
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
@@ -162,8 +162,8 @@ class moduleAccessClass extends configClass
 				USING 	(`groupId`)
 				WHERE 	`module`.`isActive` 	=	1
 				AND		`group`.`isActive`		=	1";
-			if ($this->groupId) {
-				$sql .= " AND `group`.`groupId`=\"". $this->strict($this->groupId, 'numeric') ."\"";
+			if ($this->model->getGroupId()) {
+				$sql .= " AND `group`.`groupId`=\"". $this->model->getGroupId() ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -185,8 +185,8 @@ class moduleAccessClass extends configClass
 				USING 	(`groupId`)
 				WHERE 	`module`.`isActive` 	=	1
 				AND		`group`.`isActive`		=	1";
-			if ($this->groupId) {
-				$sql .= " AND `group`.`groupId`=\"". $this->strict($this->groupId, 'numeric') ."\"";
+			if ($this->model->getGroupId()) {
+				$sql .= " AND `group`.`groupId`=\"". $this->model->getGroupId() ."\"";
 			}
 		}
 		//echo $sql;
@@ -216,12 +216,24 @@ class moduleAccessClass extends configClass
 		while ($row = $this->q->fetchAssoc()) {
 			$items[] = $row;
 		}
-		echo json_encode(array(
-            'success' => 'true',
-            'total' => $this->total,
+		if($total==1){
+			$json_encode=json_encode(array(
+            'success' => true,
+            'total' => $total,
             'data' => $items
-		));
-		exit();
+			));
+			$json_encode =str_replace("[","",$json_encode);
+			$json_encode =str_replace("]","",$json_encode);
+			echo json_encode;
+			exit();	
+		} else  {
+			echo json_encode(array(
+            'success' => true,
+            'total' => $total,
+            'data' => $items
+			));
+			exit();
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see config::update()
@@ -235,13 +247,13 @@ class moduleAccessClass extends configClass
 			$this->q->fast($sql);
 		}
 		$this->model->update();
-		$loop = $this->model->totalmoduleAccessId;
+		$loop = $this->model->getTotal();
 		for ($i = 0; $i < $loop; $i++) {
 			if($this->getVendor() == self::mysql){
 				$sql = "
 			UPDATE 	`moduleAccess`
-			SET 	`moduleAccessValue`	= 	\"". $this->model->moduleAccessValue[$i] ."\"
-			WHERE 	`moduleAccessId`		=	\"". $this->model->moduleAccessId[$i] ."\"";
+			SET 	`moduleAccessValue`	= 	\"". $this->model->getModuleAccessValue($i, 'array') ."\"
+			WHERE 	`moduleAccessId`		=	\"". $this->model->getModuleAccessId($i) ."\"";
 			} else if ($this->getVendor() ==  self::mssql){
 				$sql = "
 			UPDATE 	[moduleAccess]
@@ -253,7 +265,7 @@ class moduleAccessClass extends configClass
 			SET 	\"moduleAccessValue\"	= 	\"". $this->model->moduleAccessValue[$i] ."\"
 			WHERE 	\"moduleAccessId\"		=	\"". $this->model->moduleAccessId[$i] ."\"";
 			}
-			//	echo $sql."<br>";
+				echo $sql."<br>";
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array(
@@ -308,7 +320,7 @@ if (isset($_POST['method'])) {
 	if(isset($_POST['isAdmin'])){
 		$moduleAccessObject->setIsAdmin($_POST['isAdmin']);
 	}
-	
+
 	/*
 	 *  Load the dynamic value
 	 */

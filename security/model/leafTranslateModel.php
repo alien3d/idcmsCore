@@ -111,32 +111,32 @@ class leafModel extends validationClass{
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(1,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(0,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(1,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(0,0,'string');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,'','string');
-		$this->setIsNew(1,'','string');
-		$this->setIsDraft(0,'','string');
-		$this->setIsUpdate(0,'','string');
-		$this->setIsActive(0,'','string');
-		$this->setIsDelete(0,'','string');
-		$this->setIsApproved(1,'','string');
+		$this->setIsDefault(0,0,'string');
+		$this->setIsNew(1,0,'string');
+		$this->setIsDraft(0,0,'string');
+		$this->setIsUpdate(0,0,'string');
+		$this->setIsActive(0,0,'string');
+		$this->setIsDelete(0,0,'string');
+		$this->setIsApproved(1,0,'string');
 	}
 	/**
 	 * Set Leaf Identification  Value
-	 * @param integer $value
-	 * @param integer $key  Array as value
-	 * @param enum   $type   1->string,2->array
+	 * @param int $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafId($value,$key=NULL,$type=NULL) {
 		if($type=='single'){
@@ -161,9 +161,9 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Set Tab/Accordion Identification  Value
-	 * @param integer $value
-	 * @param integer $key  Array as value
-	 * @param enum   $type   1->string,2->array
+	 * @param int $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setTabId() {
 
@@ -181,9 +181,9 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Set Folder Identification  Value
-	 * @param integer $value
-	 * @param integer $key  Array as value
-	 * @param enum   $type   1->string,2->array
+	 * @param int $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setFolderId() {
 
@@ -201,9 +201,9 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Set Icon Identification  Value
-	 * @param integer $value
-	 * @param integer $key  Array as value
-	 * @param enum   $type   1->string,2->array
+	 * @param int $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIconId() {
 
@@ -228,7 +228,7 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Sequence
-	 * @return numeric $folderSequence
+	 * @return int $folderSequence
 	 */
 	public function getLeafSequence() {
 		return $this->leafSequence;
