@@ -9,16 +9,17 @@ require_once("../model/staffModel.php");
  * this is main setting files
  * @name IDCMS
  * @version 2
- * @author hafizan,yusof
- * @package staff
+ * @author hafizan
+ * @package Management
+ * @subpackage Staff Controller
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class staffClass extends configClass
 {
-	/*
+	/**
 	 * Connection to the database
-	 * @var string $excel
+	 * @var string $q
 	 */
 	public $q;
 	/**

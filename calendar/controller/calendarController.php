@@ -9,11 +9,12 @@ require_once("../model/calendarModel.php");
  * @version 2
  * @author hafizan
  * @package calendars
+ * @subpackage calendar
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class calendarClass extends  configClass {
-	/*
+	/**
 	 * Connection to the database
 	 * @var string $excel
 	 */
@@ -107,8 +108,8 @@ class calendarClass extends  configClass {
 	 * @see config::read()
 	 */
 	function read() 				{
-		//header('Content-type: application/json');
-		// everything given flexibility  on todo
+		header('Content-type: application/json');
+		
 		if($this->getVendor()==self::mysql){
 			$sql="
 		SELECT	*

@@ -10,15 +10,16 @@ require_once("../model/leafModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package leaf
+ * @package Security
+ * @package Leaf Controller
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class leafClass extends configClass
 {
 	/**
-	 * Connection to the damodulease
-	 * @var string $excel
+	 * Connection to the database
+	 * @var string $q
 	 */
 	public $q;
 	/**

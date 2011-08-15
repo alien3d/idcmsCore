@@ -7,15 +7,16 @@ require_once("../model/leafGroupAccessModel.php");
  * this is  leaf security access
  * @name IDCMS
  * @version 2
- * @author hafizan,yusuf
- * @package leaf_group_security_access
+ * @author hafizan
+ * @package Security
+ * @package Leaf Group Access Controller
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class leafGroupAccessClass  extends  configClass {
-			/*
+	/**
 	 * Connection to the database
-	 * @var string $excel
+	 * @var string $q
 	 */
 	public $q;
 	/**

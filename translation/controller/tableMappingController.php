@@ -10,14 +10,15 @@ require_once("../model/tableMappingModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package tableMapping
+ * @package Translation
+ * @subpackage tableMapping
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class tableMappingClass extends  configClass {
-	/*
+	/**
 	 * Connection to the database
-	* @var string $excel
+	* @var string $q
 	*/
 	public $q;
 	/**

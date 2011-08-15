@@ -8,14 +8,15 @@ require_once("../model/logModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package log
+ * @package Security
+ * @subpackage log
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class logClass extends  configClass {
-			/*
+	/**
 	 * Connection to the database
-	 * @var string $excel
+	 * @var string $q
 	 */
 	public $q;
 	/**

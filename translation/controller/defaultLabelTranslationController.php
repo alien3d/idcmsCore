@@ -10,14 +10,15 @@ require_once("../model/defaultLabelTranslationModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package defaultLabelTranslation
+ * @package Translation
+ * @subpackage defaultLabel Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class defaultLabelTranslationClass extends  configClass {
-	/*
+	/**
 	 * Connection to the database
-	 * @var string $excel
+	 * @var string $q
 	 */
 	public $q;
 	/**

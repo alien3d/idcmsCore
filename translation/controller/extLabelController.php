@@ -10,14 +10,15 @@ require_once("../model/extLabelModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package extLabel
+ * @package Translation
+ * @subpackage extLabel
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class extLabelClass extends  configClass {
-	/*
+	/**
 	 * Connection to the database
-	 * @var string $excel
+	 * @var string $q
 	 */
 	public $q;
 	/**

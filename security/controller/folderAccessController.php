@@ -9,7 +9,8 @@ require_once("../model/folderAccessModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package folder_security_access
+ * @package Security
+ * @subpackage Folder Security Access Controller
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

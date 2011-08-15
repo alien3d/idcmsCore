@@ -8,14 +8,15 @@ require_once("../model/leafAccessModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package leaf_security_access
+ * @package Security
+ * @package Leaf Security Access Controller
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class leafAccessClass extends  configClass {
-			/*
+	/**
 	 * Connection to the database
-	 * @var string $excel
+	 * @var string $q
 	 */
 	public $q;
 	/**

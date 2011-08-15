@@ -10,15 +10,16 @@ require_once("../model/moduleAccessModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package module security access
+ * @package Security
+ * @package Module Security Access
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class moduleAccessClass extends configClass
 {
-	/*
-	 * Connection to the damodulease
-	 * @var string $excel
+	/**
+	 * Connection to the database
+	 * @var string $q
 	 */
 	public $q;
 	/**

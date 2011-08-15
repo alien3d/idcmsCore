@@ -9,12 +9,13 @@ require_once("../model/documentCategoryModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package documentCategory
+ * @package Document
+ * @package Document Category
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class documentCategoryClass  extends configClass {
-	/*
+	/**
 	 * Connection to the database
 	 * @var string $excel
 	 */

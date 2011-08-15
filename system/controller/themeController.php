@@ -9,14 +9,15 @@ require_once("../model/themeModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package theme
+ * @package System
+ * @subpackage theme
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class themeClass  extends configClass {
-	/*
+	/**
 	 * Connection to the database
-	 * @var string $excel
+	 * @var string $q
 	 */
 	public $q;
 	/**

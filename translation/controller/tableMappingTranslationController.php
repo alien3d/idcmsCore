@@ -10,7 +10,8 @@ require_once("../model/tableMappingTranslationTranslationModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package tableMappingTranslationTranslation
+ * @package Translation
+ * @package tableMappingTranslation Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

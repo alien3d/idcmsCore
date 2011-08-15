@@ -10,15 +10,16 @@ require_once("../model/moduleTranslateModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package module
+ * @package Security
+ * @subpackage Module Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class moduleClass extends configClass
 {
-	/*
+	/**
 	 * Connection to the damodulease
-	 * @var string $excel
+	 * @var string $q
 	 */
 	public $q;
 	/**

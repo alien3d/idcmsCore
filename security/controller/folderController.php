@@ -8,9 +8,10 @@ require_once("../model/folderModel.php");
 /**
  * this folder menu creation
  * @name IDCMS
- * @version 2
+ * @version
  * @author hafizan
- * @package folder
+ * @package Security
+ * @subpackage Folder Controller 
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

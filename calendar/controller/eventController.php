@@ -10,12 +10,13 @@ require_once("../model/eventModel.php");
  * @version 2
  * @author hafizan
  * @package calendars
+ * @subpackage event
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class eventClass extends configClass
 {
-	/*
+	/**
 	 * Connection to the database
 	 * @var string $excel
 	 */
@@ -77,6 +78,7 @@ class eventClass extends configClass
 		$this->audit  = 0;
 		$this->log    = 1;
 		$this->q->log = $this->log;
+
 		$this->model  = new eventModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
@@ -166,7 +168,7 @@ class eventClass extends configClass
 	 */
 	public function read()
 	{
-		//	header('Content-type: application/json');
+		header('Content-type: application/json');
 		if($this->getVendor()==self::mysql){
 			$sql = "
 			SELECT	*
@@ -176,7 +178,7 @@ class eventClass extends configClass
 			JOIN	`calendarColor`
 			USING   (`calendarColorId`)
 			WHERE 	`calendar`.`staffId` = \"". $this->model->getBy()."\"";
-				
+
 			if($this->model->getEventStart() && $this->model->getEventEnd()){
 				$sql.="
 				AND	`event`.`eventStart` >= '".$this->model->getEventStart()."'
@@ -192,7 +194,12 @@ class eventClass extends configClass
 			AND		[event].[staffId] = [calendar].[staffId]
 			JOIN	[calendarColor]
 			ON		[calendarColor].[calendarColorId]= [calendar].[calendarColorId]
-			WHERE 	[calendar].[staffId] = \"". $this->staffId ."\"";
+			WHERE 	[calendar].[staffId] = \"". $this->model->getBy() ."\"";
+			if($this->model->getEventStart() && $this->model->getEventEnd()){
+				$sql.="
+				AND	[event].[eventStart] >= '".$this->model->getEventStart()."'
+				AND	[event].[eventEnd] 	<= '".$this->model->getEventEnd()."'";
+			}
 		}  else if ($this->getVendor() == self :: oracle){
 			$sql = "
 			SELECT	*
@@ -201,7 +208,12 @@ class eventClass extends configClass
 			USING	(\"calendarId\",\"staffId\")
 			JOIN    \"calendarColor\"
 			USING   (\"calendarColorId\")
-			WHERE 	\"calendar\".\"staffId\" = \"". $this->staffId ."\"";
+			WHERE 	\"calendar\".\"staffId\" = \"". $this->model->getBy() ."\"";
+			if($this->model->getEventStart() && $this->model->getEventEnd()){
+				$sql.="
+				AND	[event].[eventStart] >= '".$this->model->getEventStart()."'
+				AND	[event].[eventEnd] 	<= '".$this->model->getEventEnd()."'";
+			}
 		}
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
@@ -254,7 +266,7 @@ class eventClass extends configClass
 		}
 		$this->q->commit();
 		$this->model->update();
-	
+
 		if($this->getVendor() == self::mysql){
 			$sql = "
 			UPDATE	`event`
@@ -283,7 +295,7 @@ class eventClass extends configClass
 					`eventLocation`		=	\"". $this->model->getEventLocation() ."\",
 					`eventIsNew`		=	\"". $this->model->getEventIsNew() ."\"
 			WHERE 	`eventId`			=	\"". $this->model->getEventId(0,'single')."\"";
-			
+
 		} else if ($this->q->vendor == self:: oracle){
 			$sql = "
 			UPDATE	`event`
@@ -323,24 +335,12 @@ class eventClass extends configClass
 			WHERE 			`eventId`		=	\"". $this->model->getEventId(0,'single')."\"";
 		} else if ($this->q->vendor == self :: mssql){
 			$sql = "
-			UPDATE	[event]
-			SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
-					[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
-					[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
-					[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
-					[isActive]		= 	\"".$this->model->getIsActive(0,'string')."\",
-					[isApproved] 	=	\"".$this->model->getIsApproved(0,'string')."\"
-			WHERE 	[eventId]		=	\"". $this->model->getEventId(0,'single')."\"";
+			DELETE 	FROM	[event]
+			WHERE 			[eventId]		=	\"". $this->model->getEventId(0,'single')."\"";
 		} else if ($this->q->vendor == self:: oracle){
 			$sql = "
-			UPDATE	`event`
-			SET		`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
-					`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
-					`isActive`		= 	\"".$this->model->getIsActive(0,'string')."\",
-					`isApproved` 	=	\"".$this->model->getIsApproved(0,'string')."\"
-			WHERE 	`eventId`		=	\"". $this->model->getEventId(0,'single')."\"";
+			DELETE 	FROM	\"event\"
+			WHERE 			\"eventId\"		=	\"". $this->model->getEventId(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
