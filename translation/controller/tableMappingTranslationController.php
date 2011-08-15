@@ -16,9 +16,9 @@ require_once("../model/tableMappingTranslationTranslationModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class tableMappingTranslationTranslationClass extends  configClass {
-	/*
+	/**
 	 * Connection to the database
-	 * @var string $excel
+	 * @var string $q
 	 */
 	public $q;
 	/**
