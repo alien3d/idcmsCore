@@ -155,7 +155,7 @@ class eventModel extends validationClass{
 	 * Set Event Identification Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setEventId($value, $key, $type)
 	{
@@ -168,7 +168,7 @@ class eventModel extends validationClass{
 	/**
 	 * Return Event Identification Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getEventId($key , $type)
@@ -189,7 +189,7 @@ class eventModel extends validationClass{
 	 * Set Calendar Identification Value
 	 * @param  int $value
 	 */
-	public function setCalendarColorId($value)
+	public function setCalendarId($value)
 	{
 		$this->calendarId = $value;
 	}
@@ -264,7 +264,7 @@ class eventModel extends validationClass{
 	 * @return bool
 	 */
 	public function getEventIsAllDay()
-		
+
 	{
 		return $this->eventIsAllDay;
 	}
@@ -279,7 +279,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Notes Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getEventNotes()
 	{
@@ -296,7 +296,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Reminder Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getEventReminder()
 	{
@@ -313,7 +313,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Url Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getEventUrl()
 	{
@@ -331,7 +331,7 @@ class eventModel extends validationClass{
 	}
 	/**
 	 * Return Event Location Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getEventLocation()
 	{
@@ -368,7 +368,7 @@ class eventModel extends validationClass{
 	 * Return  Staff Identification value
 	 * @return int
 	 */
-	public function staffId()
+	public function getStaffId()
 	{
 		return $this->staffId;
 	}

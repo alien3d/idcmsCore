@@ -203,7 +203,7 @@ class extLabelModel extends validationClass{
 	 * Set Default Label Translation   Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setExtLabelId($value,$key,$type) {
 		if($type=='single'){
@@ -216,7 +216,7 @@ class extLabelModel extends validationClass{
 	 * Return Ext Label Identification Value
 	 * Return Module Access Identification
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getExtLabelId($key,$type) {

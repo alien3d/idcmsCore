@@ -1,52 +1,54 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is tab model file.This is to ensure strict setting enable for all variable enter to database
- *
+ * this is Module Translation Model file.This is to ensure strict setting enable for all variable enter to database
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package Security
+ * @package security
  * @subpackage Module Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class moduleTranslationModel extends validationClass{
 
-	private $moduleId;
-	private $tabSequence;
-	private $iconId;
-	private $tabNote;
 
-	/**
-	 *   Class Loader to load outside variable and test it suppose variable type
+	// table field
+	private $moduleTranslateId;
+	private $moduleId;
+	private $languageId;
+	private $moduleTranslate;
+
+	/* (non-PHPdoc)
+	 * @see validationClass::execute()
 	 */
 	function execute(){
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('tab');
-		$this->setPrimaryKeyName('tabId');
+		$this->setTableName('module');
+		$this->setPrimaryKeyName('moduleId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['tabId'])){
-			$this->setTabId($this->strict($_POST['tabId'],'numeric'));
+		if(isset($_POST['moduleTranslateId'])){
+			$this->setModuleTranslateId = $this->strict($_POST['moduleTranslateId'],'numeric');
 		}
-		if(isset($_POST['iconId'])){
-			$this->setIconId ($this->strict($_POST['iconId'],'numeric'));
+		if(isset($_POST['moduleId'])){
+			$this->setModuleId = $this->strict($_POST['moduleId'],'numeric');
+		}
+		if(isset($_POST['languageId'])){
+			$this->setLanguageId = $this->strict($_POST['languageId'],'numeric');
+		}
+		if(isset($_POST['moduleTranslate'])){
+			$this->setModuleTranslate = $this->strict($_POST['moduleTranslate'],'memo');
 		}
 
-		if(isset($_POST['tabSequence'])){
-			$this->setTabSequence($this->strict($_POST['tabSequence'],'numeric'));
-		}
-		if(isset($_POST['tabNote'])){
-			$this->setTabNote($this->strict($_POST['tabNote'],'memo'));
-		}
+
 		if(isset($_SESSION['staffId'])){
-			$this->setBy($_SESSION['staffId']);
+			$this->setBy ($_SESSION['staffId']);
 		}
-		if($this->vendor=='normal' || $this->getVendor()==self::mysql){
+		if($this->getVendor()==self::mysql){
 			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
 			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
@@ -56,6 +58,7 @@ class moduleTranslationModel extends validationClass{
 
 
 	}
+
 
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
@@ -96,7 +99,7 @@ class moduleTranslationModel extends validationClass{
 		$this->setIsDelete(1,0,'string');
 		$this->setIsApproved(0,0,'string');
 	}
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -123,7 +126,7 @@ class moduleTranslationModel extends validationClass{
 		$this->setIsApproved(1,0,'string');
 	}
 	/**
-	 * Update tab Table Status
+	 * Update module Table Status
 	 */
 	public function updateStatus() {
 		if(!(is_array($_GET['isDefault']))) {
@@ -151,70 +154,90 @@ class moduleTranslationModel extends validationClass{
 		}
 	}
 
-	public function setTabId($value,$key,$type) {
+
+
+	/**
+	 * Set Module indentification  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setModuleTranslateId($value,$key,$type) {
 		if($type=='single'){
-			$this->tabId = $value;
+			$this->moduleTranslateId = $value;
 		} else if ($type=='array'){
-			$this->tabId[$key]=$value;
+			$this->moduleTranslateId[$key]=$value;
 		}
 	}
 	/**
-	 * Return istabId Value
-	 * @return integer tabId
+	 * Return Module Translate Identification Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getTabId($key,$type) {
+	public function getModuleTranslateId($key,$type) {
 		if($type=='single'){
-			return $this->tabId;
+			return $this->moduleTranslateId;
 		} else if ($type=='array'){
-			return $this->tabId[$key];
+			return $this->moduleTranslateId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();
 		}
 	}
 	/**
-	 * Set icon for Tab
-	 * @param  int $value
+	 * Set Module Identification  Value
+	 * @param int $value
 	 */
-	public function setIconId($value) {
-		$this->iconId = $value;
-	}
-	/**
-	 * Return icon for Tab
-	 * @return int icon for tab
-	 */
-	public function getIconId() {
+	public function setModuleId($value) {
 
-		return $this->iconId;
+		$this->tabId = $value;
+
 	}
 	/**
-	 * Set Tab Sequence Value
-	 * @param  int $value
+	 * Return module Identification Value
+	 * @return int
 	 */
-	public function setTabSequence($value) {
-		$this->tabSequence = $value;
+	public function getModuleId() {
+
+		return $this->moduleId;
+
 	}
 	/**
-	 * Return tab Sequence Value
-	 * @return string tab sequence
+	 * Set Language Identification  Value
+	 * @param int $value
 	 */
-	public function getTabSequence() {
-		return $this->tabSequence;
+	public function setLanguageId() {
+
+		$this->languageId = $value;
+
 	}
 	/**
-	 * Set Tab Note Value
-	 * @param string $value Tab Note
+	 * Return Language Identification Value
+	 * @return int
 	 */
-	public function setTabNote($value) {
-		$this->tabNote = $value;
+	public function getLanguageId() {
+
+		return $this->languageId;
+
+	}
+	
+	/**
+	 * Set Module Translate
+	 * @param string $value
+	 */
+	public function setModuleTranslate($value) {
+		$this->moduleTranslate = $value;
 	}
 	/**
-	 * Return Tab Note
-	 * @return string Tab Note
+	 * Return Module Translate
+	 * @return string
 	 */
-	public function getTabNote() {
-		return $this->tabNote;
+	public function getTranslate() {
+		return $this->moduleTranslate;
 	}
+	
+
 
 }
 ?>

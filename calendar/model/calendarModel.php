@@ -13,7 +13,7 @@
  */
 class calendarModel extends validationClass{
 
-    // table field
+	// table field
 	private $calendarId;
 	private $calendarColorId;
 	private $calendarTitle;
@@ -99,7 +99,7 @@ class calendarModel extends validationClass{
 		$this->setIsApproved(0,0,'string');
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -125,89 +125,89 @@ class calendarModel extends validationClass{
 		$this->setIsDelete(0,0,'string');
 		$this->setIsApproved(1,0,'string');
 	}
- /**
-     * Set Calendar Value
-     * @param bool}array $value
-     * @param array[int]int $key List Of Primary Key.
-     * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
-     */
-    public function setCalendarId($value, $key, $type)
-    {
-        if ($type=='single') {
-            $this->calendarId = $value;
-        } else if ($type == 'array') {
-            $this->calendarId[$key] = $value;
-        }
-    }
-    /**
-      * Return Calendar Identification Value
+	/**
+	 * Set Calendar Value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setCalendarId($value, $key, $type)
+	{
+		if ($type=='single') {
+			$this->calendarId = $value;
+		} else if ($type == 'array') {
+			$this->calendarId[$key] = $value;
+		}
+	}
+	/**
+	 * Return Calendar Identification Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
-     */
-    public function getCalendarId($key , $type )
-    {
-        if ($type=='single') {
-            return $this->calendarId;
-        } else if ($type == 'array') {
-            return $this->calendarId[$key];
-        } else {
-            echo json_encode(array(
+	 */
+	public function getCalendarId($key , $type )
+	{
+		if ($type=='single') {
+			return $this->calendarId;
+		} else if ($type == 'array') {
+			return $this->calendarId[$key];
+		} else {
+			echo json_encode(array(
                 "success" => false,
                 "message" => "Cannot Identifiy Type"
-            ));
-            exit();
-        }
-    }
-    /**
-     * Set Calendar Color Value
-     * @param  int $value
-     */
-    public function setCalendarColorId($value)
-    {
-        $this->calendarColorId = $value;
-    }
-    /**
-     * Return Calendar Color Value
-     * @return int
-     */
-    public function getCalendarColorId()
-    {
-        return $this->calendarColorId;
-    }
+                ));
+                exit();
+		}
+	}
+	/**
+	 * Set Calendar Color Value
+	 * @param  int $value
+	 */
+	public function setCalendarColorId($value)
+	{
+		$this->calendarColorId = $value;
+	}
+	/**
+	 * Return Calendar Color Value
+	 * @return int
+	 */
+	public function getCalendarColorId()
+	{
+		return $this->calendarColorId;
+	}
 
- /**
-     * Set Calendar Title Value
-     * @param  int $value
-     */
-    public function setCalendarTitle($value)
-    {
-        $this->calendarTitle = $value;
-    }
-    /**
-     * Return Calendar Title Value
-     * @return string 
-     */
-    public function getCalendarTitle()
-    {
-        return $this->calendarTitle;
-    }
+	/**
+	 * Set Calendar Title Value
+	 * @param  int $value
+	 */
+	public function setCalendarTitle($value)
+	{
+		$this->calendarTitle = $value;
+	}
+	/**
+	 * Return Calendar Title Value
+	 * @return string
+	 */
+	public function getCalendarTitle()
+	{
+		return $this->calendarTitle;
+	}
 
- /**
-     * Set Staff Identification Value
-     * @param  int $value
-     */
-    public function setStaffId($value)
-    {
-        $this->staffId = $value;
-    }
-    /**
-     * Return  Staff Identification value
-     * @return int 
-     */
-    public function staffId()
-    {
-        return $this->staffId;
-    }
+	/**
+	 * Set Staff Identification Value
+	 * @param  int $value
+	 */
+	public function setStaffId($value)
+	{
+		$this->staffId = $value;
+	}
+	/**
+	 * Return  Staff Identification value
+	 * @return int
+	 */
+	public function getStaffId()
+	{
+		return $this->staffId;
+	}
 }
 ?>

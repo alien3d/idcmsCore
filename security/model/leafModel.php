@@ -252,7 +252,7 @@ class leafModel extends validationClass{
 	 * Set Leaf Identification  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafId($value,$key,$type) {
 		if($type=='single'){
@@ -264,7 +264,7 @@ class leafModel extends validationClass{
 	/**
 	 * Return Leaf Identication Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getLeafId($key,$type) {

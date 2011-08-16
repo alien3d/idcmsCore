@@ -167,7 +167,7 @@ class documentCategoryModel extends validationClass{
 	 * Set  Document Category Identification Value
 	 * @param int $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setDocumentCategoryId($value,$key,$type) {
 		if($type=='single'){

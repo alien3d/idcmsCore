@@ -124,7 +124,7 @@ class languageModel extends validationClass
 	/**
 	 * Return isDefault Value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isDefault
 	 */
 	public function getIsDefault($key,$type) {
@@ -143,7 +143,7 @@ class languageModel extends validationClass
 	 * Set isNew value
 	 * @param boolean $value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsNew($value,$key,$type) {
 		if($type=='single'){
@@ -158,7 +158,7 @@ class languageModel extends validationClass
 	/**
 	 * Return isNew value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isNew
 	 */
 	public function getIsNew($key,$type) {
@@ -175,7 +175,7 @@ class languageModel extends validationClass
 	/**
 	 * Set IsDraft Value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @param boolean $value
 	 */
 	public function setIsDraft($value,$key,$type) {
@@ -191,7 +191,7 @@ class languageModel extends validationClass
 	/**
 	 * Return isDraftValue
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isDraft
 	 */
 	public function getIsDraft($key,$type) {
@@ -209,7 +209,7 @@ class languageModel extends validationClass
 	 * Set isUpdate Value
 	 * @param boolean $value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsUpdate($value,$key,$type) {
 		if($type=='single'){
@@ -239,7 +239,7 @@ class languageModel extends validationClass
 	 * Set isDelete Value
 	 * @param boolean $value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsDelete($value,$key,$type) {
 		if($type=='single'){
@@ -256,7 +256,7 @@ class languageModel extends validationClass
 	/**
 	 * Return isDelete Value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isDelete
 	 */
 	public function getIsDelete($key,$type) {
@@ -275,7 +275,7 @@ class languageModel extends validationClass
 	 * Set isActive Value
 	 * @param boolean $value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsActive($value,$key,$type) {
 		if($type=='single'){
@@ -291,7 +291,7 @@ class languageModel extends validationClass
 	/**
 	 * Return isActive value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isActive
 	 */
 	public function getIsActive($key,$type) {
@@ -311,7 +311,7 @@ class languageModel extends validationClass
 	 * Set isApproved Value
 	 * @param boolean $value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsApproved($value,$key,$type) {
 		if($type=='single'){
@@ -326,7 +326,7 @@ class languageModel extends validationClass
 	/**
 	 * Return isApproved Value
 	 * @param numeric $key  Array as value
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return boolean isApproved
 	 */
 	public function getIsApproved($key,$type) {

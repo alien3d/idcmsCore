@@ -176,7 +176,7 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Leaf Group Access Identification  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafGroupAccessId($value,$key,$type) {
 		if($type=='single'){
@@ -188,7 +188,7 @@ class leafGroupAccessModel extends validationClass{
 	/**
 	 * Return Leaf Group Access Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getLeafGroupAccessId($key,$type) {
@@ -236,7 +236,7 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Leaf Create Access  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'e
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'e
 	 */
 	public function setLeafCreateAccessValue($value,$key,$type) {
 		$this->leafCreateAccessValue[$key] = $value;
@@ -244,7 +244,7 @@ class leafGroupAccessModel extends validationClass{
 	/**
 	 * Return Leaf Create Access Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getleafCreateAccessValue($key,$type) {
@@ -256,7 +256,7 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Leaf Read Access  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafReadAccessValue($value,$key,$type) {
 		$this->leafReadAccessValue[$key] = $value;
@@ -264,7 +264,7 @@ class leafGroupAccessModel extends validationClass{
 	/**
 	 * Return Leaf Read Access Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getLeafReadAccessValue($key,$type) {
@@ -275,7 +275,7 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Leaf Update Access  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafUpdateAccessValue($value,$key,$type) {
 		$this->leafUpdateAccessValue[$key] = $value;
@@ -283,7 +283,7 @@ class leafGroupAccessModel extends validationClass{
 	/**
 	 * Return Leaf Update Access Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getLeafUpdateAccessValue($key,$type) {
@@ -294,7 +294,7 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Leaf Update Access  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafUpdateAccessValue($value,$key,$type) {
 		$this->leafUpdateAccessValue[$key] = $value;
@@ -302,7 +302,7 @@ class leafGroupAccessModel extends validationClass{
 	/**
 	 * Return Leaf Delete Access Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getLeafDeleteAccessValue($key,$type) {
@@ -313,7 +313,7 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Leaf Print Access  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafPrintAccessValue($value,$key,$type) {
 		$this->leafPrintAccessValue[$key] = $value;
@@ -321,7 +321,7 @@ class leafGroupAccessModel extends validationClass{
 	/**
 	 * Return Leaf Print Access Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getleafPrintAccessValue($key,$type) {
@@ -332,7 +332,7 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Leaf Post Access  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafPostAccessValue($value,$key,$type) {
 		$this->leafPostAccessValue[$key] = $value;
@@ -340,7 +340,7 @@ class leafGroupAccessModel extends validationClass{
 	/**
 	 * Return Leaf Post  Access Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getleafPostAccessValue($key,$type) {
@@ -351,7 +351,7 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Leaf Draft Access  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafDraftAccessValue($value,$key,$type) {
 		$this->leafDraftAccessValue[$key] = $value;
@@ -359,7 +359,7 @@ class leafGroupAccessModel extends validationClass{
 	/**
 	 * Return Leaf Draft Access Value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getLeafDraftAccessValue($key,$type) {

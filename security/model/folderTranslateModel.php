@@ -1,26 +1,23 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is folder model file.This is to ensure strict setting enable for all variable enter to database
- *
+ * this is Folder Translation Model file.This is to ensure strict setting enable for all variable enter to database
  * @name IDCMS.
  * @version 2
  * @author hafizan
  * @package security
- * @subpackage folder
+ * @subpackage Folder Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class folderModel extends validationClass{
+class folderTranslationModel extends validationClass{
 
 
 	// table field
+	private $folderTranslateId;
 	private $folderId;
-	private $tabId;
-	private $iconId;
-	private $folderSequence;
-	private $folderPath;
-	private $folderNote;
+	private $languageId;
+	private $folderTranslate;
 
 	/* (non-PHPdoc)
 	 * @see validationClass::execute()
@@ -34,22 +31,20 @@ class folderModel extends validationClass{
 		/*
 		 *  All the $_POST enviroment.
 		 */
+		if(isset($_POST['folderTranslateId'])){
+			$this->setFolderTranslateId = $this->strict($_POST['folderTranslateId'],'numeric');
+		}
 		if(isset($_POST['folderId'])){
 			$this->setFolderId = $this->strict($_POST['folderId'],'numeric');
 		}
-		if(isset($_POST['accordionId'])){
-			$this->setTabId = $this->strict($_POST['accordionId'],'numeric');
+		if(isset($_POST['languageId'])){
+			$this->setLanguageId = $this->strict($_POST['languageId'],'numeric');
 		}
-		if(isset($_POST['iconId'])){
-			$this->setIconId = $this->strict($_POST['iconId'],'numeric');
-		}
-		if(isset($_POST['folderPath'])){
-			$this->setFolderPath = $this->strict($_POST['folderPath'],'memo');
+		if(isset($_POST['folderTranslate'])){
+			$this->setFolderTranslate = $this->strict($_POST['folderTranslate'],'memo');
 		}
 
-		if(isset($_POST['folderNote'])){
-			$this->setFolderNote = $this->strict($_POST['folderNote'],'memo');
-		}
+
 		if(isset($_SESSION['staffId'])){
 			$this->setBy ($_SESSION['staffId']);
 		}
@@ -104,7 +99,7 @@ class folderModel extends validationClass{
 		$this->setIsDelete(1,0,'string');
 		$this->setIsApproved(0,0,'string');
 	}
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -162,114 +157,86 @@ class folderModel extends validationClass{
 
 
 	/**
-	 * Set folder indentification  Value
-	 * @param int $value
+	 * Set Folder indentification  Value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setFolderId($value,$key,$type) {
+	public function setFolderTranslateId($value,$key,$type) {
 		if($type=='single'){
-			$this->folderId = $value;
+			$this->folderTranslateId = $value;
 		} else if ($type=='array'){
-			$this->folderId[$key]=$value;
+			$this->folderTranslateId[$key]=$value;
 		}
 	}
 	/**
-	 * Return folder Identification Value
-	 * @return int
+	 * Return Folder Translate Identification Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getFolderId($key,$type) {
+	public function getFolderTranslateId($key,$type) {
 		if($type=='single'){
-			return $this->folderId;
+			return $this->folderTranslateId;
 		} else if ($type=='array'){
-			return $this->folderId[$key];
+			return $this->folderTranslateId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();
 		}
 	}
-/**
-	 * Set tab indentification  Value
+	/**
+	 * Set Folder Identification  Value
 	 * @param int $value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setTabId() {
+	public function setFolderId($value) {
 
-			$this->tabId = $value;
+		$this->tabId = $value;
 
 	}
 	/**
 	 * Return folder Identification Value
 	 * @return int
 	 */
-	public function getTabId() {
+	public function getFolderId() {
 
-			return $this->tabId;
-
-	}
-/**
-	 * Set icon indentification  Value
-	 * @param int $value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
-	 */
-	public function setIconId() {
-
-			$this->iconId = $value;
+		return $this->folderId;
 
 	}
 	/**
-	 * Return Icon Identification Value
+	 * Set Language Identification  Value
+	 * @param int $value
+	 */
+	public function setLanguageId($value) {
+
+		$this->languageId = $value;
+
+	}
+	/**
+	 * Return Language Identification Value
 	 * @return int
 	 */
-	public function getIconId() {
+	public function getLanguageId() {
 
-			return $this->IconId;
+		return $this->languageId;
 
 	}
-/**
-	 * Set Folder Sequence Value (english)
-	 * @param  int $value
-	 */
-	public function setfolderSequence($value) {
-		$this->folderSequence = $value;
-	}
+	
 	/**
-	 * Return folder Sequence
-	 * @return int 
-	 */
-	public function getfolderSequence() {
-		return $this->folderSequence;
-	}
-/**
-	 * Set Folder Path
+	 * Set Folder Translate
 	 * @param string $value
 	 */
-	public function setFolderPath($value) {
-		$this->folderPath = $value;
+	public function setFolderTranslate($value) {
+		$this->folderTranslate = $value;
 	}
 	/**
-	 * Return folder Path
-	 * @return string 
+	 * Return Folder Translate
+	 * @return string
 	 */
-	public function getfolderPath() {
-		return $this->folderPath;
+	public function getTranslate() {
+		return $this->folderTranslate;
 	}
-	/**
-	 * Set Folder Note Value (english)
-	 * @param string $value
-	 */
-	public function setfolderNote($value) {
-		$this->folderNote = $value;
-	}
-	/**
-	 * Return folder Description (english)
-	 * @return string 
-	 */
-	public function getfolderNote() {
-		return $this->folderNote;
-	}
+	
 
 
 }
