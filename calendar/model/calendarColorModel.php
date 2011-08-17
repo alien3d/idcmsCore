@@ -1,52 +1,53 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is Leaf Translation Model file.This is to ensure strict setting enable for all variable enter to database
+ * this is Calendar Color model file.This is to ensure strict setting enable for all variable enter to database
+ *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package security
- * @subpackage Leaf Translation
+ * @package calendar
+ * @subpackage Calendar Color
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class leafTranslationModel extends validationClass{
-
+class calendarModel extends validationClass{
 
 	// table field
-	private $leafTranslateId;
-	private $leafId;
-	private $languageId;
-	private $leafTranslate;
+	private $calendarId;
+	private $calendarColorId;
+	private $calendarTitle;
+	private $staffId;
 
-	/* (non-PHPdoc)
-	 * @see validationClass::execute()
+
+
+	/**
+	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute(){
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('leaf');
-		$this->setPrimaryKeyName('leafId');
+		$this->setTableName('calendar');
+		$this->setPrimaryKeyName('calendarId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['leafTranslateId'])){
-			$this->setLeafTranslateId($this->strict($_POST['leafTranslateId'],'numeric'));
+		if(isset($_POST['calendarId'])){
+			$this->setCalendarId($this->strict($_POST['calendarId'],'numeric'));
 		}
-		if(isset($_POST['leafId'])){
-			$this->setLeafId($this->strict($_POST['leafId'],'numeric'));
+		if(isset($_POST['calendarColorId'])){
+			$this->setCalendarColorId($this->strict($_POST['calendarTitle'],'numeric'));
 		}
-		if(isset($_POST['languageId'])){
-			$this->setLanguageId($this->strict($_POST['languageId'],'numeric'));
+		if(isset($_POST['calendarTitle'])){
+			$this->setCalendarTitle($this->strict($_POST['calendarTitle'],'memo'));
 		}
-		if(isset($_POST['leafTranslate'])){
-			$this->setLeafTranslate($this->strict($_POST['leafTranslate'],'memo'));
+		if(isset($_POST['staffId'])){
+			$this->setStaffId($this->strict($_POST['calendarId'],'memo'));
 		}
-
 
 		if(isset($_SESSION['staffId'])){
-			$this->setBy ($_SESSION['staffId']);
+			$this->setBy($_SESSION['staffId']);
 		}
 		if($this->getVendor()==self::mysql){
 			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
@@ -58,8 +59,6 @@ class leafTranslationModel extends validationClass{
 
 
 	}
-
-
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
 	 */
@@ -99,6 +98,7 @@ class leafTranslationModel extends validationClass{
 		$this->setIsDelete(1,0,'string');
 		$this->setIsApproved(0,0,'string');
 	}
+
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
@@ -126,118 +126,88 @@ class leafTranslationModel extends validationClass{
 		$this->setIsApproved(1,0,'string');
 	}
 	/**
-	 * Update leaf Table Status
-	 */
-	public function updateStatus() {
-		if(!(is_array($_GET['isDefault']))) {
-			$this->setIsDefault(0,0,'string');
-		}
-		if(!(is_array($_GET['isNew']))) {
-			$this->setIsNew(0,0,'string');
-		}
-		if(!(is_array($_GET['isDraft']))) {
-			$this->setIsDraft(0,0,'string');
-		}
-		if(!(is_array($_GET['isUpdate']))) {
-			$this->setIsUpdate(0,0,'string');
-		}
-		if(!(is_array($_GET['isDelete']))) {
-
-			$this->setIsDelete(1,0,'string');
-		}
-		if(!(is_array($_GET['isActive']))) {
-			$this->setIsActive(0,0,'string');
-		}
-
-		if(!(is_array($_GET['isApproved']))) {
-			$this->setIsApproved(0,0,'string');
-		}
-	}
-
-
-
-	/**
-	 * Set Leaf indentification  Value
+	 * Set Calendar Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafTranslateId($value,$key,$type) {
-		if($type=='single'){
-			$this->leafTranslateId = $value;
-		} else if ($type=='array'){
-			$this->leafTranslateId[$key]=$value;
+	public function setCalendarId($value, $key, $type)
+	{
+		if ($type=='single') {
+			$this->calendarId = $value;
+		} else if ($type == 'array') {
+			$this->calendarId[$key] = $value;
 		}
 	}
 	/**
-	 * Return Leaf Translate Identification Value
+	 * Return Calendar Identification Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getLeafTranslateId($key,$type) {
-		if($type=='single'){
-			return $this->leafTranslateId;
-		} else if ($type=='array'){
-			return $this->leafTranslateId[$key];
+	public function getCalendarId($key , $type )
+	{
+		if ($type=='single') {
+			return $this->calendarId;
+		} else if ($type == 'array') {
+			return $this->calendarId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
-			exit();
+			echo json_encode(array(
+                "success" => false,
+                "message" => "Cannot Identifiy Type"
+                ));
+                exit();
 		}
 	}
 	/**
-	 * Set Leaf Identification  Value
-	 * @param int $value
+	 * Set Calendar Color Value
+	 * @param  int $value
 	 */
-	public function setLeafId($value) {
-
-		$this->tabId = $value;
-
+	public function setCalendarColorId($value)
+	{
+		$this->calendarColorId = $value;
 	}
 	/**
-	 * Return leaf Identification Value
+	 * Return Calendar Color Value
 	 * @return int
 	 */
-	public function getLeafId() {
-
-		return $this->leafId;
-
+	public function getCalendarColorId()
+	{
+		return $this->calendarColorId;
 	}
+
 	/**
-	 * Set Language Identification  Value
-	 * @param int $value
+	 * Set Calendar Title Value
+	 * @param  int $value
 	 */
-	public function setLanguageId($value) {
-
-		$this->languageId = $value;
-
+	public function setCalendarTitle($value)
+	{
+		$this->calendarTitle = $value;
 	}
 	/**
-	 * Return Language Identification Value
-	 * @return int
-	 */
-	public function getLanguageId() {
-
-		return $this->languageId;
-
-	}
-	
-	/**
-	 * Set Leaf Translate
-	 * @param string $value
-	 */
-	public function setLeafTranslate($value) {
-		$this->leafTranslate = $value;
-	}
-	/**
-	 * Return Leaf Translate
+	 * Return Calendar Title Value
 	 * @return string
 	 */
-	public function getTranslate() {
-		return $this->leafTranslate;
+	public function getCalendarTitle()
+	{
+		return $this->calendarTitle;
 	}
-	
 
-
+	/**
+	 * Set Staff Identification Value
+	 * @param  int $value
+	 */
+	public function setStaffId($value)
+	{
+		$this->staffId = $value;
+	}
+	/**
+	 * Return  Staff Identification value
+	 * @return int
+	 */
+	public function getStaffId()
+	{
+		return $this->staffId;
+	}
 }
 ?>

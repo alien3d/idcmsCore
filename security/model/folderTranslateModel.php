@@ -32,16 +32,16 @@ class folderTranslationModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['folderTranslateId'])){
-			$this->setFolderTranslateId = $this->strict($_POST['folderTranslateId'],'numeric');
+			$this->setFolderTranslateId($this->strict($_POST['folderTranslateId'],'numeric'));
 		}
 		if(isset($_POST['folderId'])){
-			$this->setFolderId = $this->strict($_POST['folderId'],'numeric');
+			$this->setFolderId($this->strict($_POST['folderId'],'numeric'));
 		}
 		if(isset($_POST['languageId'])){
-			$this->setLanguageId = $this->strict($_POST['languageId'],'numeric');
+			$this->setLanguageId($this->strict($_POST['languageId'],'numeric'));
 		}
 		if(isset($_POST['folderTranslate'])){
-			$this->setFolderTranslate = $this->strict($_POST['folderTranslate'],'memo');
+			$this->setFolderTranslate($this->strict($_POST['folderTranslate'],'memo'));
 		}
 
 
