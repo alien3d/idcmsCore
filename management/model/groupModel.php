@@ -1,7 +1,7 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is religion model file.This is to ensure strict setting enable for all variable enter to database
+ * this is Group model file.
  *
  * @name IDCMS.
  * @version 2
@@ -13,34 +13,48 @@
  */
 class groupModel extends validationClass{
 
-
-	// table field
+	/**
+	 * Group Identification
+	 * @var int
+	 */
 	private $groupId;
+	/**
+	 * Group Sequence
+	 * @var int
+	 */
 	private $groupSequence;
+	/**
+	 * Group Code
+	 * @var string
+	 */
 	private $groupCode;
+	/**
+	 * Group Note
+	 * @var string
+	 */
 	private $groupNote;
 
 
-function execute(){
-			/*
+	function execute(){
+		/**
 		 *  Basic Information Table
 		 */
-		$this->setTableName('department');
-		$this->setPrimaryKeyName('departmentId');
-		/*
+		$this->setTableName('group');
+		$this->setPrimaryKeyName('groupId');
+		/**
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['departmentId'])){
-			$this->setDepartmentId($this->strict($_POST['departmentId'],'numeric'),0,'single');
+		if(isset($_POST['Id'])){
+			$this->setGroupId($this->strict($_POST['groupId'],'numeric'),0,'single');
 		}
-		if(isset($_POST['departmentSequence'])){
-			$this->setDepartmentSequence($this->strict($_POST['departmentSequence'],'memo'));
+		if(isset($_POST['groupSequence'])){
+			$this->setGroupSequence($this->strict($_POST['groupSequence'],'memo'));
 		}
-		if(isset($_POST['departmentCode'])){
-			$this->setDepartmentCode($this->strict($_POST['departmentCode'],'memo'));
+		if(isset($_POST['groupCode'])){
+			$this->setGroupCode($this->strict($_POST['groupCode'],'memo'));
 		}
-		if(isset($_POST['departmentNote'])){
-			$this->setDepartmentNote($this->strict($_POST['departmentNote'],'memo'));
+		if(isset($_POST['groupNote'])){
+			$this->setGroupNote($this->strict($_POST['groupNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
 			$this->setBy($_SESSION['staffId']);
@@ -53,8 +67,8 @@ function execute(){
 			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
 		}
 
-		$this->setTotal(count($_GET['departmentId']));
-        $accessArray = array(
+		$this->setTotal(count($_GET['groupId']));
+		$accessArray = array(
             "isDefault",
             "isNew",
             "isDraft",
@@ -62,72 +76,72 @@ function execute(){
             "isDelete",
             "isActive",
             "isApproved"
-        );
-        // auto assign as array if true
-        if(is_array($_GET['departmentId'])){
-        	$this->departmentId= array();
-        }
-        if (is_array($_GET['isDefault'])) {
-            $this->isDefault = array();
-        }
-        if (is_array($_GET['isNew'])) {
-            $this->isNew = array();
-        }
-        if (is_array($_GET['isDraft'])) {
-            $this->isDraft = array();
-        }
-        if (is_array($_GET['isUpdate'])) {
-            $this->isUpdate = array();
-        }
-        if (is_array($_GET['isDelete'])) {
-            $this->isDelete = array();
-        }
-        if (is_array($_GET['isActive'])) {
-            $this->isActive = array();
-        }
-        if (is_array($_GET['isApproved'])) {
-            $this->isApproved = array();
-        }
-        for ($i = 0; $i < $this->getTotal(); $i++) {
-            $this->setDepartmentId($this->strict($_GET['departmentId'][$i], 'numeric'), $i, 'array');
-            if ($_GET['isDefault'][$i] == 'true') {
-                $this->setIsDefault(1, $i, 'array');
-            } else if ($_GET['default'] == 'false') {
-                $this->setIsDefault(0, $i, 'array');
+            );
+            // auto assign as array if true
+            if(is_array($_GET['groupId'])){
+            	$this->groupId= array();
             }
-            if ($_GET['isNew'][$i] == 'true') {
-                $this->setIsNew(1, $i, 'array');
-            } else {
-                $this->setIsNew(0, $i, 'array');
+            if (is_array($_GET['isDefault'])) {
+            	$this->isDefault = array();
             }
-            if ($_GET['isDraft'][$i] == 'true') {
-                $this->setIsDraft(1, $i, 'array');
-            } else {
-                $this->setIsDraft(0, $i, 'array');
+            if (is_array($_GET['isNew'])) {
+            	$this->isNew = array();
             }
-            if ($_GET['isUpdate'][$i] == 'true') {
-                $this->setIsUpdate(1, $i, 'array');
-            } else {
-                $this->setIsUpdate(0, $i, 'array');
+            if (is_array($_GET['isDraft'])) {
+            	$this->isDraft = array();
             }
-            if ($_GET['isDelete'][$i] == 'true') {
-                $this->setIsDelete(1, $i, 'array');
-            } else if ($_GET['isDelete'][$i] == 'false') {
-                $this->setIsDelete(0, $i, 'array');
+            if (is_array($_GET['isUpdate'])) {
+            	$this->isUpdate = array();
             }
-            if ($_GET['isActive'][$i] == 'true') {
-                $this->setIsActive(1, $i, 'array');
-            } else {
-                $this->setIsActive(0, $i, 'array');
+            if (is_array($_GET['isDelete'])) {
+            	$this->isDelete = array();
             }
-            if ($_GET['isApproved'][$i] == 'true') {
-                $this->setIsApproved(1, $i, 'array');
-            } else {
-                $this->setIsApproved(0, $i, 'array');
+            if (is_array($_GET['isActive'])) {
+            	$this->isActive = array();
             }
-            $primaryKeyAll .= $this->getDefaultLabelId($i, 'array') . ",";
-        }
-        $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
+            if (is_array($_GET['isApproved'])) {
+            	$this->isApproved = array();
+            }
+            for ($i = 0; $i < $this->getTotal(); $i++) {
+            	$this->setGroupId($this->strict($_GET['groupId'][$i], 'numeric'), $i, 'array');
+            	if ($_GET['isDefault'][$i] == 'true') {
+            		$this->setIsDefault(1, $i, 'array');
+            	} else if ($_GET['default'] == 'false') {
+            		$this->setIsDefault(0, $i, 'array');
+            	}
+            	if ($_GET['isNew'][$i] == 'true') {
+            		$this->setIsNew(1, $i, 'array');
+            	} else {
+            		$this->setIsNew(0, $i, 'array');
+            	}
+            	if ($_GET['isDraft'][$i] == 'true') {
+            		$this->setIsDraft(1, $i, 'array');
+            	} else {
+            		$this->setIsDraft(0, $i, 'array');
+            	}
+            	if ($_GET['isUpdate'][$i] == 'true') {
+            		$this->setIsUpdate(1, $i, 'array');
+            	} else {
+            		$this->setIsUpdate(0, $i, 'array');
+            	}
+            	if ($_GET['isDelete'][$i] == 'true') {
+            		$this->setIsDelete(1, $i, 'array');
+            	} else if ($_GET['isDelete'][$i] == 'false') {
+            		$this->setIsDelete(0, $i, 'array');
+            	}
+            	if ($_GET['isActive'][$i] == 'true') {
+            		$this->setIsActive(1, $i, 'array');
+            	} else {
+            		$this->setIsActive(0, $i, 'array');
+            	}
+            	if ($_GET['isApproved'][$i] == 'true') {
+            		$this->setIsApproved(1, $i, 'array');
+            	} else {
+            		$this->setIsApproved(0, $i, 'array');
+            	}
+            	$primaryKeyAll .= $this->getDefaultLabelId($i, 'array') . ",";
+            }
+            $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 
 
 	}
@@ -135,7 +149,7 @@ function execute(){
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
 	 */
-		public function create()
+	public function create()
 	{
 		$this->setIsDefault(0,0,'string');
 		$this->setIsNew(1,0,'string');
@@ -172,7 +186,7 @@ function execute(){
 		$this->setIsApproved(0,0,'string');
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -240,7 +254,7 @@ function execute(){
 	 * Set Group Identification  Value
 	 * @param int $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setGroupId($value,$key,$type) {
 		if($type=='single'){
@@ -250,8 +264,10 @@ function execute(){
 		}
 	}
 	/**
-	 * Return Group Identification Value
-	 * @return int
+	 * Return Group Identification  Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
 	public function getGroupId($key,$type) {
 		if($type=='single'){
@@ -263,7 +279,7 @@ function execute(){
 			exit();
 		}
 	}
-/**
+	/**
 	 * Set  Group Sequence (english)
 	 * @param int $value
 	 */
@@ -277,7 +293,7 @@ function execute(){
 	public function getGroupSequence() {
 		return $this->groupSequence;
 	}
-/**
+	/**
 	 * Set  Group  Code (english)
 	 * @param string $value
 	 */
@@ -287,7 +303,7 @@ function execute(){
 	}
 	/**
 	 * Return Group  Code
-	 * @return  string 
+	 * @return  string
 	 */
 	public function getGroupCode() {
 
@@ -303,7 +319,7 @@ function execute(){
 	}
 	/**
 	 * Return Group  Description (english)
-	 * @return  string 
+	 * @return  string
 	 */
 	public function getGroupNote() {
 

@@ -208,7 +208,7 @@ abstract class validationClass {
 		return $this->vendor;
 	}
 	/**
-	 * Set Primary Name
+	 * Set Table Name
 	 * @param string $value
 	 */
 	public function setTableName($value) {
@@ -216,7 +216,7 @@ abstract class validationClass {
 
 	}
 	/**
-	 * Return Primary Name
+	 * Return Table Name
 	 * @return string
 	 */
 	public function getTableName() {
@@ -272,8 +272,8 @@ abstract class validationClass {
 	 * Set isDefault Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+
 	 */
 	public function setIsDefault($value,$key,$type) {
 		if($type=='single'){
@@ -285,7 +285,7 @@ abstract class validationClass {
 	/**
 	 * Return isDefault Value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getIsDefault($key,$type) {
@@ -297,14 +297,14 @@ abstract class validationClass {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();
 		}
-		
+
 	}
 
 	/**
 	 * Set isNew value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsNew($value,$key,$type) {
 		if($type=='single'){
@@ -317,7 +317,7 @@ abstract class validationClass {
 	/**
 	 * Return isNew value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getIsNew($key,$type) {
@@ -336,7 +336,7 @@ abstract class validationClass {
 	 * Set IsDraft Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsDraft($value,$key,$type) {
 		if($type=='single'){
@@ -349,7 +349,7 @@ abstract class validationClass {
 	/**
 	 * Return isDraftValue
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getIsDraft($key,$type) {
@@ -368,7 +368,7 @@ abstract class validationClass {
 	 * Set isUpdate Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'	
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsUpdate($value,$key,$type) {
 		if($type=='single'){
@@ -381,7 +381,7 @@ abstract class validationClass {
 	/**
 	 * Return isUpdate Value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getIsUpdate($key,$type) {
@@ -400,7 +400,7 @@ abstract class validationClass {
 	 * Set isActive Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsActive($value,$key,$type) {
 		if($type=='single'){
@@ -413,7 +413,7 @@ abstract class validationClass {
 	/**
 	 * Return isActive value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getIsActive($key,$type) {
@@ -432,7 +432,7 @@ abstract class validationClass {
 	 * Set isDelete Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'	 
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsDelete($value,$key,$type) {
 		if($type=='single'){
@@ -445,7 +445,7 @@ abstract class validationClass {
 	/**
 	 * Return isDelete Value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getIsDelete($key,$type) {
@@ -464,7 +464,7 @@ abstract class validationClass {
 	 * Set isApproved Value
 	 * @param bool $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setIsApproved($value,$key,$type) {
 		if($type=='single'){
@@ -477,7 +477,7 @@ abstract class validationClass {
 	/**
 	 * Return isApproved Value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getIsApproved($key,$type) {

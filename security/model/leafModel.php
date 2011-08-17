@@ -1,8 +1,7 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is leaf model file.This is to ensure strict setting enable for all variable enter to database
- *
+ * this is Leaf model file.This is application  program
  * @category IDCMS
  * @package security
  * @subpackage leaf
@@ -12,16 +11,52 @@
  */
 class leafModel extends validationClass{
 
-	private $leafId;
+	/**
+	 * This is  real leaf Id. A bit change conflic with the leafId for application
+	 * @var int
+	 */
+	private $leafTempId;
+	/**
+	 * Leaf Category Identification
+	 * @var int
+	 */
 	private $leafCategoryId;
+	/**
+	 * Module Identification
+	 * @var int
+	 */
 	private $moduleId;
+	/**
+	 * Folder Identification. 
+	 * @var int
+	 */
 	private $folderId;
+	/**
+	 * Leaf Icon. Image appear on the  tree side.
+	 * @var int
+	 */
 	private $iconId;
+	/**
+	 * Leaf Sequence . Ordering Number
+	 * @var int
+	 */
 	private $leafSequence;
+	/**
+	 * Leaf Code. A String of Code .E.g  LEAF. Must contain 4 characters only
+	 * @var string
+	 */
 	private $leafCode;
+	/**
+	 * Leaf  Filename .E.g  leaf.php
+	 * @var string
+	 */
 	private $leafFilename;
+	/**
+	 * Leaf Translation Note
+	 * @var string
+	 */
 	private $leafNote;
-	private $languageId;
+	
 
 
 
@@ -38,11 +73,12 @@ class leafModel extends validationClass{
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if(isset($_POST['leafId'])){
-			$this->setLeafId($this->strict($_POST['leafId'],'numeric'),0,'single');
+	
+		if(isset($_POST['leafIdTemp'])){
+			$this->setLeafTempId($this->strict($_POST['leafIdTemp'],'numeric'),0,'single');
 		}
-		if(isset($_POST['tabId'])){
-			$this->setTabId($this->strict($_POST['tabId'],'numeric'));
+		if(isset($_POST['moduleId'])){
+			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'));
 		}
 		if(isset($_POST['folderId'])){
 			$this->setFolderId($this->strict($_POST['folderId'],'numeric'));
@@ -71,9 +107,7 @@ class leafModel extends validationClass{
 		} else if ($this->getVendor()==self::oracle){
 			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
 		}
-		if(isset($_SESSION['languageId'])){
-			$this->setLanguageId($_SESSION['languageId']);
-		}
+		
 
 		$this->setTotal(count($_GET['leafId']));
 		$accessArray = array(
@@ -252,26 +286,26 @@ class leafModel extends validationClass{
 	 * Set Leaf Identification  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafId($value,$key,$type) {
+	public function setLeafTempId($value,$key,$type) {
 		if($type=='single'){
-			$this->leafId = $value;
+			$this->leafTempId = $value;
 		} else if ($type=='array'){
-			$this->leafId[$key]=$value;
+			$this->leafTempId[$key]=$value;
 		}
 	}
 	/**
-	 * Return Leaf Identication Value
+	 * Return Leaf Identification Value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getLeafId($key,$type) {
+	public function getLeafTempId($key,$type) {
 		if($type=='single'){
-			return $this->leafId;
+			return $this->leafTempId;
 		} else if ($type=='array'){
-			return $this->leafId[$key];
+			return $this->leafTempId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();
@@ -281,8 +315,8 @@ class leafModel extends validationClass{
 	 * Set Module Identification  Value
 	 * @param int $value
 	 */
-	public function setTabId($value) {
-		$this->tabId = $value;
+	public function setModuleId($value) {
+		$this->moduleId = $value;
 
 	}
 	/**
@@ -353,7 +387,7 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Sequence
-	 * @return int 
+	 * @return int
 	 */
 	public function getLeafSequence() {
 		return $this->leafSequence;
@@ -367,7 +401,7 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Leaf /Application Filename
-	 * @return string 
+	 * @return string
 	 */
 	public function getLeafFilename() {
 		return $this->leafFilename;
@@ -381,12 +415,12 @@ class leafModel extends validationClass{
 	}
 	/**
 	 * Return Leaf/Application Note (English Translation Default)
-	 * @return string 
+	 * @return string
 	 */
 	public function getLeafNote() {
 		return $this->leafNote;
 	}
 
-	
+
 }
 ?>

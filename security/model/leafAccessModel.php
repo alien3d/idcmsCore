@@ -1,35 +1,80 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is leaf security model file.This is to ensure strict setting enable for all variable enter to database
+ * this is leaf Access Security model file.
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
  * @package security
- * @subpackage leaf
+ * @subpackage Leaf Access
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class leafAccessModel extends validationClass{
-	//table property
-	public $tableName;
-	public $primaryKeyName;
 
-	//table field
+
+	/**
+	 * Leaf Access  Identification
+	 * @var int
+	 */
 	private $leafAccessId;
+	/**
+	 * Group Identification (** For Filtering Only)
+	 * @var int
+	 */
 	private $groupId;
+	/**
+	 * Module   Identification (** For Filtering  Only)
+	 * @var bool
+	 */
 	private $moduleId;
+	/**
+	 * Folder   Identification (** For Filtering Only)
+	 * @var int
+	 */
 	private $folderId;
-	private $leafId;
+	/**
+	 * Leaf  Identification(** For Filtering only)
+	 * @var int
+	 */
+	private $leafTempId;
+	/**
+	 * Staff Identification
+	 * @var int
+	 */
 	private $staffId;
+	/**
+	 * Leaf Create Access Value
+	 * @var bool
+	 */
 	private $leafCreateAccessValue;
+	/**
+	 * Leaf Read Access Value
+	 * @var bool
+	 */
 	private $leafReadAccessValue;
+	/**
+	 * Leaf Update Access Value
+	 * @var bool
+	 */
 	private $leafUpdateAccessValue;
+	/**
+	 * Leaf Delete Access Value
+	 * @var bool
+	 */
 	private $leafDeleteAccessValue;
+	/**
+	 * Leaf Print Access Value
+	 * @var bool
+	 */
 	private $leafPrintAccessValue;
+	/**
+	 * Leaf Posting Access Value
+	 * @var bool
+	 */
 	private $leafPostAccessValue;
-	private $totalleafAccessId;
+
 
 
 
@@ -49,7 +94,13 @@ class leafAccessModel extends validationClass{
 		$this->leafAccessId 		= array();
 		$this->leafAccessValue 		= array();
 		$this->setTotal(count($_GET['leafAccessId']));
-
+		/*
+		 *  All the $_GET enviroment.
+		 */
+		
+		/*
+		 *  All the $_POST enviroment.
+		 */
 		if(isset($_POST['groupId'])){
 			$this->setGroupId($this->strict($_POST['groupId'],'numeric'));
 		}
@@ -58,6 +109,9 @@ class leafAccessModel extends validationClass{
 		}
 		if(isset($_POST['folderId'])){
 			$this->setFolderId($this->strict($_POST['folderId'],'numeric'));
+		}
+		if(isset($_POST['leafTempId'])){
+			$this->setleafTempId($this->strict($_POST['leafTempId'],'numeric'));
 		}
 		if(isset($_POST['staffId'])){
 			$this->setStaffId($this->strict($_POST['staffId'],'numeric'));
@@ -77,7 +131,7 @@ class leafAccessModel extends validationClass{
 		for($i=0;$i<$this->getTotal();$i++) {
 
 
-			$this->setLeafGroupAccessId($this->strict($_GET['leafGroupAccessId'][$i],'numeric'),$i);
+			$this->setLeafAccessId($this->strict($_GET['leafAccessId'][$i],'numeric'),$i);
 
 
 			if($_GET['leafCreateAccessValue'][$i]=='true') {
@@ -127,7 +181,7 @@ class leafAccessModel extends validationClass{
 				$this->leafDraftAccessValue[$i]=0;
 				$this->setLeafDraftAccessValue($i, 0);
 			}
-			$primaryKeyAll .= $this->getLeafGroupAccessId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getLeafAccessId($i, 'array') . ",";
 
 
 		}
@@ -186,7 +240,7 @@ class leafAccessModel extends validationClass{
 	 * Set Leaf Access Identification  Value
 	 * @param int $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLeafAccessId($value,$key,$type) {
 		if($type=='single'){
@@ -199,7 +253,7 @@ class leafAccessModel extends validationClass{
 	/**
 	 * Return Leaf Access Value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getLeafAccessId($key,$type) {
@@ -216,16 +270,16 @@ class leafAccessModel extends validationClass{
 	 * Set Leaf Identification Value
 	 * @param  int $value
 	 */
-	public function setLeafId($value) {
-		$this->leafId = $value;
+	public function setLeafTempId($value) {
+		$this->leafTempId = $value;
 	}
 	/**
-	 * Return Leaf Identiification Value
-	 * @return int 
+	 * Return Leaf Identification Value
+	 * @return int
 	 */
-	public function getLeafId() {
+	public function getLeafTempId() {
 
-		return $this->leafId;
+		return $this->leafTempId;
 	}
 	/**
 	 * Set Group Identification Value
@@ -236,7 +290,7 @@ class leafAccessModel extends validationClass{
 	}
 	/**
 	 * Return Group Identiification Value
-	 * @return int 
+	 * @return int
 	 */
 	public function getGroupId() {
 
@@ -250,8 +304,8 @@ class leafAccessModel extends validationClass{
 		$this->moduleId = $value;
 	}
 	/**
-	 * Return Module Identiification Value
-	 * @return int 
+	 * Return Module Identification Value
+	 * @return int
 	 */
 	public function getModuleId() {
 
@@ -266,7 +320,7 @@ class leafAccessModel extends validationClass{
 	}
 	/**
 	 * Return Folder Identiification Value
-	 * @return int 
+	 * @return int
 	 */
 	public function getFolderId() {
 
@@ -281,7 +335,7 @@ class leafAccessModel extends validationClass{
 	}
 	/**
 	 * Return Staff Identification Value
-	 * @return int 
+	 * @return int
 	 */
 	public function getStaffId() {
 

@@ -2,7 +2,7 @@
 
 
 /**
- * this is department model file.This is to ensure strict setting enable for all variable enter to database
+ * this is Department model file.
  *
  * @name IDCMS.
  * @version 2
@@ -13,10 +13,25 @@
  */
 class departmentModel extends validationClass{
 
-	// table field
+	/**
+	 * Department Identification
+	 * @var int
+	 */
 	private $departmentId;
+	/**
+	 * Department Sequence
+	 * @var int
+	 */
 	private $departmentSequence;
+	/**
+	 * Document Code
+	 * @var string
+	 */
 	private $departmentCode;
+	/**
+	 * Department Note
+	 * @var string
+	 */
 	private $departmentNote;
 
 
@@ -227,7 +242,7 @@ class departmentModel extends validationClass{
 	 * Set department Identification  Value
 	 * @param int $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setDepartmentId($value,$key,$type) {
 		if($type=='single'){
@@ -240,7 +255,7 @@ class departmentModel extends validationClass{
 	/**
 	 * Return department Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getDepartmentId($key,$type) {
@@ -254,43 +269,43 @@ class departmentModel extends validationClass{
 		}
 	}
 	/**
-	 * Set  department Sequence (english)
-	 * @param boolean $value
+	 * Set  department Sequence
+	 * @param int $value
 	 */
 	public function setDepartmentSequence($value) {
 		$this->departmentSequence = $value;
 	}
 	/**
-	 * Return department  Description (english)
-	 * @return  string 
+	 * Return Department  Sequence
+	 * @return  int
 	 */
 	public function getDepartmentSequence() {
 		return $this->departmentSequence;
 	}
 	/**
-	 * Set  department  Code (english)
+	 * Set  Department  Code (english)
 	 * @param string $value
 	 */
 	public function setDepartmentCode($value) {
 		$this->departmentCode = $value;
 	}
 	/**
-	 * Return department  Code
-	 * @return  string 
+	 * Return Department  Code
+	 * @return  string
 	 */
 	public function getDepartmentCode() {
 		return $this->departmentCode;
 	}
 	/**
-	 * Set  department Translation (english)
+	 * Set  Department Description (english)
 	 * @param string $value
 	 */
 	public function setDepartmentNote($value) {
 		$this->departmentNote = $value;
 	}
 	/**
-	 * Return department  Description (english)
-	 * @return  string 
+	 * Return Department  Description (english)
+	 * @return  string
 	 */
 	public function getDepartmentNote() {
 		return $this->departmentNote;

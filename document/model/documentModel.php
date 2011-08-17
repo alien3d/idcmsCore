@@ -1,28 +1,72 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is document model file.This is to ensure strict setting enable for all variable enter to database
+ * this is Document model file.
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
  * @package Document
+ * @subpackage Document
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class documentModel extends validationClass{
 
-
+	/**
+	 * Document Identification
+	 * @var int
+	 */
 	private $documentId;
+	/**
+	 * Document Category Identification
+	 * @var int
+	 */
 	private $documentCategoryId;
+	/**
+	 * Leaf Identification or using default.Leaf identification also will be based on which program installation
+	 * @var int
+	 */
 	private $leafId;
+	/**
+	 * Document Sequence
+	 * @var int
+	 */
 	private $documentSequence;
+	/**
+	 * Document Code
+	 * @var string
+	 */
 	private $documentCode;
+	/**
+	 * Document Note
+	 * @var string
+	 */
 	private $documentNote;
+	/**
+	 * Document Title.
+	 * @var string
+	 */
 	private $documentTitle;
+	/**
+	 * Document Description
+	 * @var string
+	 */
 	private $documentDesc;
+	/**
+	 * Document Path ... Customizeable based on user
+	 * @var string
+	 */
 	private $documentPath;
+	/**
+	 * Document filename . E.g   financial.xlsx
+	 * @var string
+	 */
 	private $documentFilename;
+	/**
+	 * Document Extension E.g  .pdf  .xlsx
+	 * @var string
+	 */
 	private $documentExtension;
 
 	/**
@@ -189,7 +233,7 @@ class documentModel extends validationClass{
 	 * Set isDefault Value
 	 * @param int $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setDocumentId($value,$key,$type) {
 		if($type=='single'){
@@ -200,7 +244,9 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Identification Value
-	 * @return int
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
 	public function getDocumentId($key,$type) {
 		if($type=='single'){
@@ -221,7 +267,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Identification Value
-	 * @return int 
+	 * @return int
 	 */
 	public function getDocumentCategoryId() {
 		return $this->documentCategoryId;
@@ -235,7 +281,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Leaf Identification Value
-	 * @return int 
+	 * @return int
 	 */
 	public function getLeafId() {
 		return $this->leafId;
@@ -249,7 +295,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Sequence Number
-	 * @return int 
+	 * @return int
 	 */
 	public function getDocumentSequence() {
 		return $this->documentSequence;
@@ -263,7 +309,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Code
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentCode() {
 		return $this->documentCode;
@@ -278,7 +324,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Note
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentNote() {
 		return $this->documentNote;
@@ -292,7 +338,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document title
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentTitle() {
 		return $this->documentTitle;
@@ -308,7 +354,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Description
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentDesc() {
 		return $this->documentDesc;
@@ -322,7 +368,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document title
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentPath() {
 		return $this->documentPath;
@@ -336,7 +382,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Return Document Filename
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentFilename() {
 		return $this->documentFilename;

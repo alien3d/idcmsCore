@@ -13,10 +13,26 @@
  */
 class calendarModel extends validationClass{
 
-	// table field
+	/**
+	 * Calendar Color Identification
+	 * @var int
+	 */
 	private $calendarId;
+
+	/**
+	 * Calendar Color Id . This is link back with the color in CSS File
+	 * @var int
+	 */
 	private $calendarColorId;
+	/**
+	 * Calendar Title.This is calendar color description
+	 * @var string
+	 */
 	private $calendarTitle;
+	/**
+	 * Enter description here ...
+	 * @var int
+	 */
 	private $staffId;
 
 

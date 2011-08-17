@@ -2,7 +2,7 @@
 
 
 /**
- * this is folder security model file.This is to ensure strict setting enable for all variable enter to daFolderase
+ * this is folder security model file.
  *
  * @name IDCMS.
  * @version 2
@@ -14,11 +14,25 @@
  */
 class folderAccessModel extends validationClass{
 
-	// Folderle field
+	/**
+	 * Folder Access Identification
+	 * @var int
+	 */
 	private $folderAccessId;
+	/**
+	 * Folder Identification
+	 * @var int
+	 */
 	private $folderId;
+	/**
+	 * Group Identification
+	 * @var int
+	 */
 	private $groupId;
-	private $moduleId;
+	/**
+	 * Folder Access Value
+	 * @var bool
+	 */
 	private $folderAccessValue;
 
 
@@ -27,7 +41,7 @@ class folderAccessModel extends validationClass{
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute(){
-		/*
+		/**
 		 *  Basic Information Folderle
 		 */
 		$this->setTableName		('folderAccess');
@@ -35,11 +49,11 @@ class folderAccessModel extends validationClass{
 
 		$this->folderAccessId 		= array();
 		$this->folderAccessValue 	= array();
-		/*
+		/**
 		 *  All the $_GET enviroment.
 		 */
 		$this->setTotal(count($_GET['folderAccessId']));
-		/*
+		/**
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['groupId'])){
@@ -180,26 +194,12 @@ class folderAccessModel extends validationClass{
 
 		return $this->groupId;
 	}
-	/**
-	 * Set Module Identification Value
-	 * @param  int $value
-	 */
-	public function setModuleId($value) {
-		$this->moduleId = $value;
-	}
-	/**
-	 * Return Module Identiification Value
-	 * @return int
-	 */
-	public function getModuleId() {
-
-		return $this->moduleId;
-	}
+	
 	/**
 	 * Set Folder Access Value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'	
 	 */
 	public function setFolderAccessValue($value,$key,$type) {
 		if($type=='string'){

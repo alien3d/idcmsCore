@@ -95,10 +95,12 @@ class leafClass extends configClass
 		$this->audit            = 0;
 		$this->log              = 1;
 		$this->q->log           = $this->log;
+		
 		$this->security         = new security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
+		
 		$this->model         = new leafModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->setLeafId($this->getLeafId());
@@ -132,7 +134,7 @@ class leafClass extends configClass
 					)
 			VALUES
 					(
-						\"" . $this->model->getmoduleId() . "\",			\"" . $this->model->getFolderId() . "\",
+						\"" . $this->model->getModuleId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
 						\"" . $this->model->getIconId(). "\",						\"" . $this->model->getIsNew(0,'string') . "\",
@@ -155,7 +157,7 @@ class leafClass extends configClass
 						[By],							[Time]
 			VALUES
 					(
-						\"" . $this->model->getmoduleId() . "\",			\"" . $this->model->getFolderId() . "\",
+						\"" . $this->model->getModuleId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
 						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft(0,'string') . "\",
@@ -178,7 +180,7 @@ class leafClass extends configClass
 					)
 			VALUES
 					(
-						\"" . $this->model->getmoduleId() . "\",			\"" . $this->model->getFolderId() . "\",
+						\"" . $this->model->getModuleId() . "\",			\"" . $this->model->getFolderId() . "\",
 						\"" . $this->model->getLeafNote() . "\",					\"" . $this->model->getLeafSequence() . "\",
 						\"" . $this->model->getLeafCode() . "\",					\"" . $this->model->getLeafFilename(). "\",
 						\"" . $this->model->getIconId(). "\",						\"". $this->model->getIsDraft(0,'string') . "\",

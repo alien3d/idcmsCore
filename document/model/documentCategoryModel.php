@@ -1,36 +1,56 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is document category model file.This is to ensure strict setting enable for all variable enter to database
+ * this is document category model file.
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package Document Category
+ * @package Document
+ * @subpackage Document Category
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class documentCategoryModel extends validationClass{
-	// table property
-	private $tableName;
-	private $primaryKeyName;
-
-	//table field
+	/**
+	 * Document Category Identification
+	 * @var int
+	 */
 	private $documentCategoryId;
+	/**
+	 * Document Category Title
+	 * @var string
+	 */
 	private $documentCategoryTitle;
+	/**
+	 * Document Category Description
+	 * @var string
+	 */
 	private $documentCategoryDesc;
+	/**
+	 * Document Category Sequence
+	 * @var int
+	 */
 	private $documentCategorySequence;
+	/**
+	 * Document Category Code
+	 * @var string
+	 */
 	private $documentCategoryCode;
+	/**
+	 * Document Category Note
+	 * @var string
+	 */
 	private $documentCategoryNote;
 
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute(){
-		/*
+		/**
 		 *  Basic Information Table
 		 */
-		$this->settableName('documentCategory');
+		$this->setTableName('documentCategory');
 		$this->setPrimaryKeyName('documentCategoryId');
 		/*
 		 *  All the $_POST enviroment.
@@ -162,12 +182,11 @@ class documentCategoryModel extends validationClass{
 		}
 	}
 
-	// generate basic information from outside
 	/**
 	 * Set  Document Category Identification Value
 	 * @param int $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setDocumentCategoryId($value,$key,$type) {
 		if($type=='single'){
@@ -178,7 +197,9 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Identification Value
-	 * @return int
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
 	public function getDocumentCategoryId($key,$type) {
 		if($type=='single'){
@@ -201,7 +222,7 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Desc Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentCategoryTitle() {
 
@@ -219,7 +240,7 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Description Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentCategoryDesc() {
 
@@ -238,7 +259,7 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Sequence Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentCategorySequence() {
 
@@ -257,7 +278,7 @@ class documentCategoryModel extends validationClass{
 	}
 	/**
 	 * Return Document Category Code Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getDocumentCategoryCode() {
 

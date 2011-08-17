@@ -12,19 +12,67 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class eventModel extends validationClass{
-
-
-
+	/**
+	 * Event Identification
+	 * @var int
+	 */
 	private $eventId;
+	/**
+	 * Calendar Identification. This is color identification will link up with the css file
+	 * @var int
+	 */
 	private $calendarId;
+	/**
+	 * Event Title
+	 * @var string
+	 */
 	private $eventTitle;
+	/**
+	 * Event Date
+	 * @var date
+	 */
 	private $eventStart;
+	/**
+	 * Event End.
+	 * @var date
+	 */
 	private $eventEnd;
+	/**
+	 * Event Is All Days.
+	 * @var bool
+	 */
 	private $eventIsAllDay;
+	/**
+	 * Event Notes
+	 * @var string
+	 */
 	private $eventNotes;
+	/**
+	 * Event Reminder
+	 * @var bool
+	 */
 	private $reminder;
+	/**
+	 * Event Url.E.g  www.idcmsCore.org
+	 * @var url
+	 */
 	private $eventUrl;
+	/**
+	 * Event Location. E.g  At the office ,Kuala Lumpur,
+	 * @var string
+	 */
+
 	private $eventLocation;
+	/**
+	 * Event Is New. ** Only available on Extensible
+	 * @var string
+	 */
+
+	private $eventIsNew;
+	/**
+	 * Staff Identification
+	 * @var int
+	 */
 	private $staffId;
 
 	/**
@@ -40,34 +88,34 @@ class eventModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['eventId'])){
-			$this->eventId = $this->strict($_POST['eventId'],'numeric');
+			$this->setEventId($this->strict($_POST['eventId'],'numeric'));
 		}
 		if(isset($_POST['calendarId'])){
-			$this->calendarId = $this->strict($_POST['calendarId'],'numeric');
+			$this->setCalendarId($this->strict($_POST['calendarId'],'numeric'));
 		}
 		if(isset($_POST['eventTitle'])){
-			$this->eventTitle = $this->strict($_POST['eventTitle'],'string');
+			$this->setEventTitle($this->strict($_POST['eventTitle'],'string'));
 		}
 		if(isset($_POST['eventStart'])){
-			$this->eventStart = date("Y-m-d H:i:s", strtotime($_POST['eventStart']));
+			$this->setEventStart(date("Y-m-d H:i:s", strtotime($_POST['eventStart'])));
 		}
 		if(isset($_POST['eventEnd'])){
-			$this->eventEnd = date("Y-m-d H:i:s", strtotime($_POST['eventEnd']));
+			$this->setEventEnd(date("Y-m-d H:i:s", strtotime($_POST['eventEnd'])));
 		}
 		if(isset($_POST['eventIsAllDay'])){
-			$this->eventIsAllDay = $this->strict($_POST['eventIsAllDay'],'numeric');
+			$this->setEventIsAllDay($this->strict($_POST['eventIsAllDay'],'numeric'));
 		}
 		if(isset($_POST['eventNotes'])){
-			$this->eventNotes = $this->strict($_POST['eventNotes'],'memo');
+			$this->setEventNotes($this->strict($_POST['eventNotes'],'memo'));
 		}
 		if(isset($_POST['eventUrl'])){
-			$this->eventUrl = $this->strict($_POST['eventUrl'],'string');
+			$this->setEventUrl($this->strict($_POST['eventUrl'],'string'));
 		}
 		if(isset($_POST['eventLocation'])){
-			$this->eventLocation = $this->strict($_POST['eventLocation'],'numeric');
+			$this->setEventLocation($this->strict($_POST['eventLocation'],'numeric'));
 		}
 		if(isset($_POST['eventIsNew'])){
-			$this->eventIsNew = $this->strict($_POST['eventIsNew'],'numeric');
+			$this->setEventIsNew($this->strict($_POST['eventIsNew'],'numeric'));
 		}
 
 		if(isset($_SESSION['staffId'])){

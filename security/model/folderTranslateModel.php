@@ -13,22 +13,37 @@
 class folderTranslationModel extends validationClass{
 
 
-	// table field
+	/**
+	 * Folder  Translate Identification
+	 * @var int
+	 */
 	private $folderTranslateId;
+	/**
+	 * Folder  Identification
+	 * @var int
+	 */
 	private $folderId;
+	/**
+	 * Language  Identification
+	 * @var int
+	 */
 	private $languageId;
+	/**
+	 * Folder  Translate
+	 * @var string
+	 */
 	private $folderTranslate;
 
 	/* (non-PHPdoc)
 	 * @see validationClass::execute()
 	 */
 	function execute(){
-		/*
+		/**
 		 *  Basic Information Table
 		 */
 		$this->setTableName('folder');
 		$this->setPrimaryKeyName('folderId');
-		/*
+		/**
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['folderTranslateId'])){
@@ -191,7 +206,7 @@ class folderTranslationModel extends validationClass{
 	 */
 	public function setFolderId($value) {
 
-		$this->tabId = $value;
+		$this->folderId = $value;
 
 	}
 	/**

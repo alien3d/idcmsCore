@@ -13,14 +13,40 @@
  */
 class folderModel extends validationClass{
 
-
-	// table field
+	/**
+	 * Folder  Identification
+	 * @var int
+	 */
 	private $folderId;
+	/**
+	 * Module Identification
+	 * @var int
+	 */
 	private $moduleId;
+	/**
+	 * Icon Identification
+	 * @var int
+	 */
 	private $iconId;
+	/**
+	 * Folder Sequence
+	 * @var int
+	 */
 	private $folderSequence;
+	/**
+	 * Folder Code
+	 * @var string
+	 */
 	private $folderCode;
+	/**
+	 * Folder Path
+	 * @var string
+	 */
 	private $folderPath;
+	/**
+	 * Folder Note
+	 * @var string
+	 */
 	private $folderNote;
 
 	/* (non-PHPdoc)
