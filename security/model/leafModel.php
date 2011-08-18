@@ -15,7 +15,7 @@ class leafModel extends validationClass{
 	 * This is  real leaf Id. A bit change conflic with the leafId for application
 	 * @var int
 	 */
-	private $leafTempId;
+	private $leafId;
 	/**
 	 * Leaf Category Identification
 	 * @var int
@@ -74,8 +74,8 @@ class leafModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 	
-		if(isset($_POST['leafIdTemp'])){
-			$this->setLeafTempId($this->strict($_POST['leafIdTemp'],'numeric'),0,'single');
+		if(isset($_POST['leafId'])){
+			$this->setLeafId($this->strict($_POST['leafId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['moduleId'])){
 			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'));
@@ -288,11 +288,11 @@ class leafModel extends validationClass{
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafTempId($value,$key,$type) {
+	public function setLeafId($value,$key,$type) {
 		if($type=='single'){
-			$this->leafTempId = $value;
+			$this->leafId = $value;
 		} else if ($type=='array'){
-			$this->leafTempId[$key]=$value;
+			$this->leafId[$key]=$value;
 		}
 	}
 	/**
@@ -301,11 +301,11 @@ class leafModel extends validationClass{
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getLeafTempId($key,$type) {
+	public function getLeafId($key,$type) {
 		if($type=='single'){
-			return $this->leafTempId;
+			return $this->leafId;
 		} else if ($type=='array'){
-			return $this->leafTempId[$key];
+			return $this->leafId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
 			exit();

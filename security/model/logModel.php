@@ -1,7 +1,7 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is Log model file.This is to ensure strict setting enable for all variable enter to database
+ * this is Log model file.
  *
  * @name IDCMS.
  * @version 2
@@ -12,13 +12,45 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class logModel extends validationClass{
+	/**
+	 * Log Identification
+	 * @var int
+	 */
 	private $logId;
+	/**
+	 * Leaf Identification
+	 * @var int
+	 */
 	private $leafId;
+	/**
+	 * Operation -  Showing which user have use access create,read ,update ,delete.
+	 * @var string
+	 */
 	private $operation;
+	/**
+	 *  Sql Statement
+	 * @var string
+	 */
 	private $sql;
+	/**
+	 * Date -  Date and Time Sql Statment Execute.
+	 * @var date
+	 */
 	private $date;
+	/**
+	 * Starff Identification
+	 * @var int
+	 */
 	private $staffId;
+	/**
+	 * Access . Granted Or Denied
+	 * @var string
+	 */
 	private $access;
+	/**
+	 * Log error contain  sql statement and error message
+	 * @var string
+	 */
 	private $logError;
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
@@ -87,7 +119,7 @@ class logModel extends validationClass{
 		$this->isApproved=0;
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()

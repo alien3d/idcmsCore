@@ -8,7 +8,7 @@
 class documentTrailClass extends configClass {
 	/*
 	 * Connection to the database
-	 * @var string $excel
+* @var string
 	 */
 	public $q;
 

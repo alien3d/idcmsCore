@@ -22,73 +22,68 @@ class leafGroupAccessModel extends validationClass{
 	 * Leaf Access  Identification
 	 * @var int
 	 */
-	private $leafId;
-	/**
-	 * Leaf Access  Identification
-	 * @var int
-	 */
 	private $groupId;
 	/**
-	 * Leaf Access  Identification
-	 * @var int
+	 * Module   Identification (** For Filtering  Only)
+	 * @var bool
 	 */
 	private $moduleId;
 	/**
-	 * Leaf Access  Identification
+	 * Folder   Identification (** For Filtering Only)
 	 * @var int
 	 */
 	private $folderId;
 	/**
-	 * Leaf Access  Identification
+	 * Leaf  Identification(** For Filtering only)
+	 * @var int
+	 */
+	private $leafTempId;
+	/**
+	 * Staff Identification
 	 * @var int
 	 */
 	private $staffId;
 	/**
-	 * Leaf Access  Identification
-	 * @var int
+	 * Leaf Create Access Value
+	 * @var bool
 	 */
 	private $leafCreateAccessValue;
 	/**
-	 * Leaf Access  Identification
-	 * @var int
+	 * Leaf Read Access Value
+	 * @var bool
 	 */
 	private $leafReadAccessValue;
 	/**
-	 * Leaf Access  Identification
-	 * @var int
+	 * Leaf Update Access Value
+	 * @var bool
 	 */
 	private $leafUpdateAccessValue;
 	/**
-	 * Leaf Access  Identification
-	 * @var int
+	 * Leaf Delete Access Value
+	 * @var bool
 	 */
 	private $leafDeleteAccessValue;
 	/**
-	 * Leaf Access  Identification
-	 * @var int
+	 * Leaf Print Access Value
+	 * @var bool
 	 */
 	private $leafPrintAccessValue;
 	/**
-	 * Leaf Access  Identification
-	 * @var int
+	 * Leaf Posting Access Value
+	 * @var bool
 	 */
 	private $leafPostAccessValue;
-	/**
-	 * Leaf Access  Identification
-	 * @var int
-	 */
-	private $leafDraftAccessValue;
 
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute(){
-		/*
+		/**
 		 *  Basic Information Table
 		 */
 		$this->setTableName('leafGroupAccess');
 		$this->setPrimaryKeyName('leafGroupAccessId');
-		/*
+		/**
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_GET['leafGroupAccessId'])){
@@ -257,16 +252,16 @@ class leafGroupAccessModel extends validationClass{
 	 * Set Leaf Identification Value
 	 * @param  int $value
 	 */
-	public function setLeafId($value) {
-		$this->leafId = $value;
+	public function setLeafTempId($value) {
+		$this->leafTempId = $value;
 	}
 	/**
 	 * Return Leaf Identification Value
 	 * @return int
 	 */
-	public function getLeafId() {
+	public function getLeafTempId() {
 
-		return $this->leafId;
+		return $this->leafTempId;
 	}
 
 	/**

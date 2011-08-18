@@ -18,12 +18,12 @@ require_once("../model/folderAccessModel.php");
 class folderAccessClass  extends configClass {
 	/*
 	 * Connection to the database
-	 * @var string $excel
+* @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-	 * @var string $excel
+* @var string
 	 */
 	private $excel;
 	/**

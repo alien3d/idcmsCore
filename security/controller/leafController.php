@@ -19,17 +19,17 @@ class leafClass extends configClass
 {
 	/**
 	 * Connection to the database
-	 * @var string $q
+* @var string
 	 */
 	public $q;
 	/**
 	 * Program Identification
-	 * @var numeric $leafId
+	 * @var int
 	 */
-	public $leafIdTemp;
+	public $leafTempId;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-	 * @var string $excel
+* @var string
 	 */
 	private $excel;
 	/**
@@ -103,7 +103,6 @@ class leafClass extends configClass
 		
 		$this->model         = new leafModel();
 		$this->model->setVendor($this->getVendor());
-		$this->model->setLeafId($this->getLeafId());
 		$this->model->execute();
 	}
 	/* (non-PHPdoc)
@@ -317,8 +316,6 @@ class leafClass extends configClass
 			$sql = "
 			SELECT		*
 			FROM 		`leaf`
-			JOIN		`leafTranslate`
-			USING		(`leafId`)
 			JOIN		`folder`
 			USING		(`folderId`,`moduleId`)
 			JOIN		`module`
@@ -329,11 +326,9 @@ class leafClass extends configClass
 			AND			`folder`.`isActive`		=	1
 			AND			`module`.`isActive`	= 1 ";
 			if ($this->model->getLeafId(0,'single')) {
-				$sql .= " AND `".$this->model->getmoduleleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLeafId(0,'single') ."\"";
+				$sql .= " AND `".$this->model->getModuleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLeafId(0,'single') ."\"";
 			}
-			if($_POST['filterLanguage']==true){
-				$sql.=" AND `leafTranslate`.`languageId`='".$this->model->getLanguageId()."'";
-			}
+			
 			
 
 		} else if ($this->getVendor() == self::mssql) {
@@ -351,7 +346,7 @@ class leafClass extends configClass
 			AND			[module].[isActive]		=	1
 			AND			[leaf].[isActive]			=	1 ";
 			if ($this->model->getLeafId(0,'single')) {
-				$sql .= " AND [".$this->model->getmoduleleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getLeafId(0,'single') ."\"";
+				$sql .= " AND [".$this->model->getModuleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getLeafId(0,'single') ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -367,7 +362,7 @@ class leafClass extends configClass
 			AND			\"module\".`isActive\"	=	1
 			AND			\"leaf\".`isActive\"		=	1 ";
 			if ($this->model->getLeafId(0,'single')) {
-				$sql .= " AND \"".$this->model->getmoduleleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getLeafId(0,'single') ."\"";
+				$sql .= " AND \"".$this->model->getModuleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getLeafId(0,'single') ."\"";
 			}
 		}
 		/**

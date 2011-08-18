@@ -13,10 +13,25 @@
  */
 class defaultLabelModel extends validationClass{
 
-
+	/**
+	 * Default Label Identification
+	 * @var int
+	 */
 	private $defaultLabelId;
+	/**
+	 * Default Label
+	 * @var string
+	 */
 	private $defaultLabel;
+	/**
+	 * Default Label English
+	 * @var string
+	 */
 	private $defaultLabelEnglish;
+	/**
+	 * Language Identification
+	 * @var int
+	 */
 	private $languageId;
 
 
@@ -25,7 +40,7 @@ class defaultLabelModel extends validationClass{
 	 *   Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute(){
-			/*
+		/*
 		 *  Basic Information Table
 		 */
 		$this->setTableName('defaultLabel');
@@ -35,6 +50,12 @@ class defaultLabelModel extends validationClass{
 		 */
 		if(isset($_POST['defaultLabelId'])){
 			$this->setdefaultLabelId($this->strict($_POST['defaultLabelId'],'numeric'),0,'single');
+		}
+		if(isset($_POST['defaultLabel'])){
+			$this->setdefaultLabel($this->strict($_POST['defaultLabel'],'memo'));
+		}
+		if(isset($_POST['defaultLabelEnglish'])){
+			$this->setdefaultLabelEnglish($this->strict($_POST['defaultLabelEnglish'],'memo'));
 		}
 		if(isset($_POST['defaultLabelSequence'])){
 			$this->setdefaultLabelSequence($this->strict($_POST['defaultLabelSequence'],'memo'));
@@ -57,7 +78,7 @@ class defaultLabelModel extends validationClass{
 		}
 
 		$this->setTotal(count($_GET['defaultLabelId']));
-        $accessArray = array(
+		$accessArray = array(
             "isDefault",
             "isNew",
             "isDraft",
@@ -65,72 +86,72 @@ class defaultLabelModel extends validationClass{
             "isDelete",
             "isActive",
             "isApproved"
-        );
-        // auto assign as array if true
-        if(is_array($_GET['defaultLabelId'])){
-        	$this->defaultLabelId= array();
-        }
-        if (is_array($_GET['isDefault'])) {
-            $this->isDefault = array();
-        }
-        if (is_array($_GET['isNew'])) {
-            $this->isNew = array();
-        }
-        if (is_array($_GET['isDraft'])) {
-            $this->isDraft = array();
-        }
-        if (is_array($_GET['isUpdate'])) {
-            $this->isUpdate = array();
-        }
-        if (is_array($_GET['isDelete'])) {
-            $this->isDelete = array();
-        }
-        if (is_array($_GET['isActive'])) {
-            $this->isActive = array();
-        }
-        if (is_array($_GET['isApproved'])) {
-            $this->isApproved = array();
-        }
-        for ($i = 0; $i < $this->getTotal(); $i++) {
-            $this->setdefaultLabelId($this->strict($_GET['defaultLabelId'][$i], 'numeric'), $i, 'array');
-            if ($_GET['isDefault'][$i] == 'true') {
-                $this->setIsDefault(1, $i, 'array');
-            } else if ($_GET['default'] == 'false') {
-                $this->setIsDefault(0, $i, 'array');
+            );
+            // auto assign as array if true
+            if(is_array($_GET['defaultLabelId'])){
+            	$this->defaultLabelId= array();
             }
-            if ($_GET['isNew'][$i] == 'true') {
-                $this->setIsNew(1, $i, 'array');
-            } else {
-                $this->setIsNew(0, $i, 'array');
+            if (is_array($_GET['isDefault'])) {
+            	$this->isDefault = array();
             }
-            if ($_GET['isDraft'][$i] == 'true') {
-                $this->setIsDraft(1, $i, 'array');
-            } else {
-                $this->setIsDraft(0, $i, 'array');
+            if (is_array($_GET['isNew'])) {
+            	$this->isNew = array();
             }
-            if ($_GET['isUpdate'][$i] == 'true') {
-                $this->setIsUpdate(1, $i, 'array');
-            } else {
-                $this->setIsUpdate(0, $i, 'array');
+            if (is_array($_GET['isDraft'])) {
+            	$this->isDraft = array();
             }
-            if ($_GET['isDelete'][$i] == 'true') {
-                $this->setIsDelete(1, $i, 'array');
-            } else if ($_GET['isDelete'][$i] == 'false') {
-                $this->setIsDelete(0, $i, 'array');
+            if (is_array($_GET['isUpdate'])) {
+            	$this->isUpdate = array();
             }
-            if ($_GET['isActive'][$i] == 'true') {
-                $this->setIsActive(1, $i, 'array');
-            } else {
-                $this->setIsActive(0, $i, 'array');
+            if (is_array($_GET['isDelete'])) {
+            	$this->isDelete = array();
             }
-            if ($_GET['isApproved'][$i] == 'true') {
-                $this->setIsApproved(1, $i, 'array');
-            } else {
-                $this->setIsApproved(0, $i, 'array');
+            if (is_array($_GET['isActive'])) {
+            	$this->isActive = array();
             }
-            $primaryKeyAll .= $this->getDefaultLabelId($i, 'array') . ",";
-        }
-        $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
+            if (is_array($_GET['isApproved'])) {
+            	$this->isApproved = array();
+            }
+            for ($i = 0; $i < $this->getTotal(); $i++) {
+            	$this->setdefaultLabelId($this->strict($_GET['defaultLabelId'][$i], 'numeric'), $i, 'array');
+            	if ($_GET['isDefault'][$i] == 'true') {
+            		$this->setIsDefault(1, $i, 'array');
+            	} else if ($_GET['default'] == 'false') {
+            		$this->setIsDefault(0, $i, 'array');
+            	}
+            	if ($_GET['isNew'][$i] == 'true') {
+            		$this->setIsNew(1, $i, 'array');
+            	} else {
+            		$this->setIsNew(0, $i, 'array');
+            	}
+            	if ($_GET['isDraft'][$i] == 'true') {
+            		$this->setIsDraft(1, $i, 'array');
+            	} else {
+            		$this->setIsDraft(0, $i, 'array');
+            	}
+            	if ($_GET['isUpdate'][$i] == 'true') {
+            		$this->setIsUpdate(1, $i, 'array');
+            	} else {
+            		$this->setIsUpdate(0, $i, 'array');
+            	}
+            	if ($_GET['isDelete'][$i] == 'true') {
+            		$this->setIsDelete(1, $i, 'array');
+            	} else if ($_GET['isDelete'][$i] == 'false') {
+            		$this->setIsDelete(0, $i, 'array');
+            	}
+            	if ($_GET['isActive'][$i] == 'true') {
+            		$this->setIsActive(1, $i, 'array');
+            	} else {
+            		$this->setIsActive(0, $i, 'array');
+            	}
+            	if ($_GET['isApproved'][$i] == 'true') {
+            		$this->setIsApproved(1, $i, 'array');
+            	} else {
+            		$this->setIsApproved(0, $i, 'array');
+            	}
+            	$primaryKeyAll .= $this->getDefaultLabelId($i, 'array') . ",";
+            }
+            $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 
 
 	}
@@ -138,7 +159,7 @@ class defaultLabelModel extends validationClass{
 	/* (non-PHPdoc)
 	 * @see validationClass::create()
 	 */
-		public function create()
+	public function create()
 	{
 		$this->setIsDefault(0,0,'string');
 		$this->setIsNew(1,0,'string');
@@ -175,7 +196,7 @@ class defaultLabelModel extends validationClass{
 		$this->setIsApproved(0,0,'string');
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -200,11 +221,11 @@ class defaultLabelModel extends validationClass{
 		$this->setIsActive(0,0,'string');
 		$this->setIsDelete(0,0,'string');
 	}
-		/**
-	* Set Default Label   Value
+	/**
+	 * Set Default Label   Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setDefaultLabelId($value,$key,$type) {
 		if($type=='single'){
@@ -217,7 +238,7 @@ class defaultLabelModel extends validationClass{
 	 * Return defaultLabel Identification Value
 	 * Return Module Access Identification
 	 * @param array[int][int] $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getDefaultLabelId($key,$type) {
@@ -234,12 +255,12 @@ class defaultLabelModel extends validationClass{
 	 * Set Default Label Value
 	 * @param  string $value
 	 */
-	public function setDefaultLabelDesc($value) {
+	public function setDefaultLabel($value) {
 		$this->defaultLabel = $value;
 	}
 	/**
 	 * Return Default Label Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getDefaultLabel() {
 
@@ -254,7 +275,7 @@ class defaultLabelModel extends validationClass{
 	}
 	/**
 	 * Return Default Label Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getDefaultLabelEnglish() {
 

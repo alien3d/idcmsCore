@@ -19,7 +19,7 @@ class mainClass extends configClass
 {
 	/**
 	 * Connection to the database
-	 * @var string $excel
+* @var string
 	 */
 	public $q;
 	/**
@@ -49,17 +49,17 @@ class mainClass extends configClass
 	public $filter;
 	/**
 	 * Extjs Grid  single query information
-	 * @var string $query
+* @var stringuery
 	 */
 	public $query;
 	/**
 	 * Fast Search Variable
-	 * @var string $quickFilter
+* @var stringuickFilter
 	 */
 	public $quickFilter;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-	 * @var string $excel
+* @var string
 	 */
 	private $excel;
 	/**

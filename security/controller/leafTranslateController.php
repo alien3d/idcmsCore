@@ -17,7 +17,7 @@ require_once("../model/leafModel.php");
 class leafClass extends  configClass {
 	/**
 	 * Connection to the database
-	 * @var string $q
+* @var string
 	 */
 	public $q;
 
@@ -29,7 +29,7 @@ class leafClass extends  configClass {
 
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-	 * @var string $excel
+* @var string
 	 */
 	private $excel;
 	/**

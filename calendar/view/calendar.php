@@ -1,4 +1,6 @@
 <?php	session_start();
+$staffId='staffId';
+$theme ='theme';
 		if (strlen($_SESSION['staffId'])==0) {
 			// check if the any session equal to zero redirect to index.php
 			$page="../index.php?message=Masa tamat";
@@ -13,7 +15,10 @@
 <link rel="stylesheet" type="text/css" href="../../javascript/resources/css/ext-all.css"/>
 
 <?php // only execute when exist
-		if($_SESSION['theme']) { ?><link rel="stylesheet" href="<?php echo $_SESSION['../theme']; ?>"><?php } ?>
+if($_SESSION[$theme]) { ?>
+<link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
+
+<?php } ?>
 <link rel="stylesheet" type="text/css" href="../../javascript/examples/calendar/resources/css/calendar.css" />
 <script type="text/javascript" src="../../javascript/examples/calendar/src/Ext.calendar.js"></script>
 <script type="text/javascript" src="../../javascript/examples/calendar/src/templates/DayHeaderTemplate.js"></script>

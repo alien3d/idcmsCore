@@ -1,22 +1,38 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is Table Mapping Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
+ * this is  Extjs Sencha Label Translation model file.
+ * 
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package Table
- * @subpackage Table Translation
+ * @package Translation
+ * @subpackage xtjs / Sencha Label Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class tableMappingTranslateModel extends validationClass{
 
-
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $tableMappingTranslateId;
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $tableMappingId;
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $tableMappingTranslationNativeLabel;
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $languageId;
 
 

@@ -13,10 +13,25 @@
  */
 class defaultLabelTranslateModel extends validationClass{
 
-
+	/**
+	 * Default Label Identification
+	 * @var int
+	 */
 	private $defaultLabelTranslateId;
+	/**
+	 * Default Label Text Identification
+	 * @var string
+	 */
 	private $defaultLabelText;
+	/**
+	 * Default Label Identification
+	 * @var int
+	 */
 	private $defaultLabeld;
+	/**
+	 * Language Identification
+	 * @var int
+	 */
 	private $languageId;
 
 

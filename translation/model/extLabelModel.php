@@ -1,20 +1,27 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is Table Mapping Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
+ * this is Extjs Label  Translation model file.
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package Table
- * @subpackage Table Translation
+ * @package Translation
+ * @subpackage  Extjs / Sencha Label Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class extLabelModel extends validationClass{
 
-
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $extLabelId;
+	/**
+	 * Ext JS /Sencha  English  Note
+	 * @var string
+	 */
 	private $extLabelNote;
 
 
@@ -203,7 +210,7 @@ class extLabelModel extends validationClass{
 	 * Set Default Label Translation   Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setExtLabelId($value,$key,$type) {
 		if($type=='single'){
@@ -216,7 +223,7 @@ class extLabelModel extends validationClass{
 	 * Return Ext Label Identification Value
 	 * Return Module Access Identification
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getExtLabelId($key,$type) {

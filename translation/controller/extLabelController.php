@@ -18,12 +18,12 @@ require_once("../model/extLabelModel.php");
 class extLabelClass extends  configClass {
 	/**
 	 * Connection to the database
-	 * @var string $q
+* @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-	 * @var string $excel
+* @var string
 	 */
 	private $excel;
 	/**

@@ -1,7 +1,7 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is module model file.This is to ensure strict setting enable for all variable enter to database
+ * this is module model file.
  *
  * @name IDCMS.
  * @version 2
@@ -12,11 +12,30 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class moduleModel extends validationClass{
-
+	/**
+	 * Module Identification
+	 * @var int
+	 */
 	private $moduleId;
+	/**
+	 * Icon Identification
+	 * @var int
+	 */
 	private $iconId;
+	/**
+	 *  Module Sequence
+	 * @var int
+	 */
 	private $moduleSequence;
+	/**
+	 * Module Code
+	 * @var string
+	 */
 	private $moduleCode;
+	/**
+	 * Module Note .English Only
+	 * @var string
+	 */
 	private $moduleNote;
 
 	/**
@@ -59,7 +78,7 @@ class moduleModel extends validationClass{
 		}
 
 		$this->setTotal(count($_GET['tabId']));
-        $accessArray = array(
+		$accessArray = array(
             "isDefault",
             "isNew",
             "isDraft",
@@ -67,73 +86,73 @@ class moduleModel extends validationClass{
             "isDelete",
             "isActive",
             "isApproved"
-        );
-        // auto assign as array if true
-        if(is_array($_GET['tabId'])){
-        	$this->tabId=array();
-        }
-        if (is_array($_GET['isDefault'])) {
-            $this->isDefault = array();
-        }
-        if (is_array($_GET['isNew'])) {
-            $this->isNew = array();
-        }
-        if (is_array($_GET['isDraft'])) {
-            $this->isDraft = array();
-        }
-        if (is_array($_GET['isUpdate'])) {
-            $this->isUpdate = array();
-        }
-        if (is_array($_GET['isDelete'])) {
-            $this->isDelete = array();
-        }
-        if (is_array($_GET['isActive'])) {
-            $this->isActive = array();
-        }
-        if (is_array($_GET['isApproved'])) {
-            $this->isApproved = array();
-        }
-        for ($i = 0; $i < $this->getTotal(); $i++) {
+            );
+            // auto assign as array if true
+            if(is_array($_GET['tabId'])){
+            	$this->tabId=array();
+            }
+            if (is_array($_GET['isDefault'])) {
+            	$this->isDefault = array();
+            }
+            if (is_array($_GET['isNew'])) {
+            	$this->isNew = array();
+            }
+            if (is_array($_GET['isDraft'])) {
+            	$this->isDraft = array();
+            }
+            if (is_array($_GET['isUpdate'])) {
+            	$this->isUpdate = array();
+            }
+            if (is_array($_GET['isDelete'])) {
+            	$this->isDelete = array();
+            }
+            if (is_array($_GET['isActive'])) {
+            	$this->isActive = array();
+            }
+            if (is_array($_GET['isApproved'])) {
+            	$this->isApproved = array();
+            }
+            for ($i = 0; $i < $this->getTotal(); $i++) {
 
-              $this->setModuleId($this->strict($_GET['moduleId'][$i], 'numeric'), $i, 'array');
-            if ($_GET['isDefault'][$i] == 'true') {
-                $this->setIsDefault(1, $i, 'array');
-            } else if ($_GET['default'] == 'false') {
-                $this->setIsDefault(0, $i, 'array');
+            	$this->setModuleId($this->strict($_GET['moduleId'][$i], 'numeric'), $i, 'array');
+            	if ($_GET['isDefault'][$i] == 'true') {
+            		$this->setIsDefault(1, $i, 'array');
+            	} else if ($_GET['default'] == 'false') {
+            		$this->setIsDefault(0, $i, 'array');
+            	}
+            	if ($_GET['isNew'][$i] == 'true') {
+            		$this->setIsNew(1, $i, 'array');
+            	} else {
+            		$this->setIsNew(0, $i, 'array');
+            	}
+            	if ($_GET['isDraft'][$i] == 'true') {
+            		$this->setIsDraft(1, $i, 'array');
+            	} else {
+            		$this->setIsDraft(0, $i, 'array');
+            	}
+            	if ($_GET['isUpdate'][$i] == 'true') {
+            		$this->setIsUpdate(1, $i, 'array');
+            	} else {
+            		$this->setIsUpdate(0, $i, 'array');
+            	}
+            	if ($_GET['isDelete'][$i] == 'true') {
+            		$this->setIsDelete(1, $i, 'array');
+            	} else if ($_GET['isDelete'][$i] == 'false') {
+            		$this->setIsDelete(0, $i, 'array');
+            	}
+            	if ($_GET['isActive'][$i] == 'true') {
+            		$this->setIsActive(1, $i, 'array');
+            	} else {
+            		$this->setIsActive(0, $i, 'array');
+            	}
+            	if ($_GET['isApproved'][$i] == 'true') {
+            		$this->setIsApproved(1, $i, 'array');
+            	} else {
+            		$this->setIsApproved(0, $i, 'array');
+            	}
+            	$primaryKeyAll .= $this->getTabId($i, 'array') . ",";
             }
-            if ($_GET['isNew'][$i] == 'true') {
-                $this->setIsNew(1, $i, 'array');
-            } else {
-                $this->setIsNew(0, $i, 'array');
-            }
-            if ($_GET['isDraft'][$i] == 'true') {
-                $this->setIsDraft(1, $i, 'array');
-            } else {
-                $this->setIsDraft(0, $i, 'array');
-            }
-            if ($_GET['isUpdate'][$i] == 'true') {
-                $this->setIsUpdate(1, $i, 'array');
-            } else {
-                $this->setIsUpdate(0, $i, 'array');
-            }
-            if ($_GET['isDelete'][$i] == 'true') {
-                $this->setIsDelete(1, $i, 'array');
-            } else if ($_GET['isDelete'][$i] == 'false') {
-                $this->setIsDelete(0, $i, 'array');
-            }
-            if ($_GET['isActive'][$i] == 'true') {
-                $this->setIsActive(1, $i, 'array');
-            } else {
-                $this->setIsActive(0, $i, 'array');
-            }
-            if ($_GET['isApproved'][$i] == 'true') {
-                $this->setIsApproved(1, $i, 'array');
-            } else {
-                $this->setIsApproved(0, $i, 'array');
-            }
-           $primaryKeyAll .= $this->getTabId($i, 'array') . ",";
-        }
-        $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
+            $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 	}
 
 	/* (non-PHPdoc)
@@ -175,7 +194,7 @@ class moduleModel extends validationClass{
 		$this->setIsDelete(1,0,'string');
 		$this->setIsApproved(0,0,'string');
 	}
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -231,10 +250,10 @@ class moduleModel extends validationClass{
 	}
 
 	/**
-	* Set Module   Value
+	 * Set Module   Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setModuleId($value,$key,$type) {
 		if($type=='single'){
@@ -246,7 +265,7 @@ class moduleModel extends validationClass{
 	/**
 	 * Return Module  Identification
 	 * @param array[int][int] $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getModuleId($key,$type) {
@@ -268,7 +287,7 @@ class moduleModel extends validationClass{
 	}
 	/**
 	 * Return Icon Identification
-	 * @return int 
+	 * @return int
 	 */
 	public function getIconId() {
 
@@ -283,35 +302,35 @@ class moduleModel extends validationClass{
 	}
 	/**
 	 * Return module Sequence Value
-	 * @return int 
+	 * @return int
 	 */
 	public function getModuleSequence() {
 		return $this->moduleSequence;
 	}
 	/**
 	 * Set Module Code Value
-	 * @param string $value 
+	 * @param string $value
 	 */
 	public function setModuleCode($value) {
 		$this->moduleCode = $value;
 	}
 	/**
 	 * Return Module Code
-	 * @return string 
+	 * @return string
 	 */
 	public function getModuleCode() {
 		return $this->moduleCode;
 	}
-/**
+	/**
 	 * Set Module Note Value
-	 * @param string $value 
+	 * @param string $value
 	 */
 	public function setModuleNote($value) {
 		$this->moduleNote = $value;
 	}
 	/**
 	 * Return module Note
-	 * @return string 
+	 * @return string
 	 */
 	public function getModuleNote() {
 		return $this->moduleNote;

@@ -13,29 +13,44 @@
 class leafTranslationModel extends validationClass{
 
 
-	// table field
+	/**
+	 * Leaf Translation Identification
+	 * @var int
+	 */
 	private $leafTranslateId;
-	private $leafId;
+	/**
+	 * Leaf Identification
+	 * @var int
+	 */
+	private $leafTempId;
+	/**
+	 * Language Identification
+	 * @var int
+	 */
 	private $languageId;
+	/**
+	 * Leaf Translation
+	 * @var string
+	 */
 	private $leafTranslate;
 
 	/* (non-PHPdoc)
 	 * @see validationClass::execute()
 	 */
 	function execute(){
-		/*
+		/**
 		 *  Basic Information Table
 		 */
 		$this->setTableName('leaf');
 		$this->setPrimaryKeyName('leafId');
-		/*
+		/**
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['leafTranslateId'])){
 			$this->setLeafTranslateId($this->strict($_POST['leafTranslateId'],'numeric'));
 		}
-		if(isset($_POST['leafId'])){
-			$this->setLeafId($this->strict($_POST['leafId'],'numeric'));
+		if(isset($_POST['leafTempId'])){
+			$this->setLeafTempId($this->strict($_POST['leafTempId'],'numeric'));
 		}
 		if(isset($_POST['languageId'])){
 			$this->setLanguageId($this->strict($_POST['languageId'],'numeric'));
@@ -189,9 +204,9 @@ class leafTranslationModel extends validationClass{
 	 * Set Leaf Identification  Value
 	 * @param int $value
 	 */
-	public function setLeafId($value) {
+	public function setLeafTempId($value) {
 
-		$this->tabId = $value;
+		$this->leafTempId = $value;
 
 	}
 	/**
@@ -200,7 +215,7 @@ class leafTranslationModel extends validationClass{
 	 */
 	public function getLeafId() {
 
-		return $this->leafId;
+		return $this->leafTempId;
 
 	}
 	/**

@@ -13,9 +13,20 @@
  */
 class languageModel extends validationClass{
 
-
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $languageId;
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $languageDesc;
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $languageCode;
 
 

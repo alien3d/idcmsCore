@@ -21,76 +21,80 @@ abstract class configClass
 
 	/**
 	 * Program Identification
-	 * @var numeric $leafId
+	 * @var int
 	 */
 	private $leafId;
 	/**
 	 * User Identification
-	 * @var numeric $staffId
+	 * @var int
 	 */
 	private $staffId;
 	/**
-	 * Enter description here ...
-	 * @var unknown_type
+	 * Database Connection
+	 * @var string
 	 */
-	public $connection;
+	private $connection;
 
 	/**
-	 * Enter description here ...
-	 * @var unknown_type
+	 * Database Name
+	 * @var string
 	 */
 	private $database;
+	/**
+	 * Database Name
+	 * @var string
+	 */
 	private $username;
 	/**
-	 * Enter description here ...
-	 * @var unknown_type
+	 * Staff Password.
+	 * @var string
 	 */
 	private $password;
 	/**
 	 * Database Vendor
-	 * @var string $vendor
+	 * @var string
 	 */
 	private $vendor;
 	/**
 	 * Extjs Field Query UX
-	 * @var string $fieldQuery
+	 * @var string
 	 */
 	private $fieldQuery;
 	/**
 	 * Extjs Grid  Filter Plugin
-	 * @var string $gridQuery
+	 * @var string
 	 */
 	private $gridQuery;
 	/**
 	 * Start
-	 * @var string $start;`
+	 * @var string
 	 */
 	private $start;
 	/**
 	 *  Limit
-	 * @var string $limit
+	 * @var string
 	 */
 	private $limit;
 
 	/**
 	 /**
 	 *  Ascending ,Descending ASC,DESC
-	 * @var string $order;`
+	 * @var string
 	 */
 	private $order;
 	/**
 	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sortField
+	 * @var string
 	 */
 	private $sortField;
 	/**
 	 * Default Language  : English
-	 * @var numeric $defaultLanguageId
+	 * @var int
 	 */
 	private $defaultLanguageId;
 	/**
 	 * Open To See Audit  Column --> approved,new,delete and e.g
-	 * @var numeric $isAdmin
+	 * @var int
 	 */
 	public $isAdmin;
 	/**
@@ -108,7 +112,7 @@ abstract class configClass
 
 	/**
 	 * Path Of the application
-	 * @var string $application
+	 * @var string
 	 */
 	private $application;
 	/**
@@ -326,7 +330,7 @@ abstract class configClass
 	}
 	/**
 	 * Return The First Record
-	 * @return integer $first
+	 * @return int 
 	 */
 	public function firstRecord() {
 		$first=0;
@@ -360,7 +364,7 @@ abstract class configClass
 	/**
 	 * Return Next record
 	 * @param int $primaryKeyValue
-	 * @return integer $next;
+	 * @return int
 	 */
 	public function nextRecord($primaryKeyValue) {
 		$next=0;
@@ -396,7 +400,7 @@ abstract class configClass
 	/**
 	 * Return Previous Record
 	 * @param int $primaryKeyValue
-	 * @return integer $previous
+	 * @return int
 	 */
 	public function previousRecord($primaryKeyValue) {
 
@@ -434,7 +438,7 @@ abstract class configClass
 	}
 	/**
 	 * Return Last Record
-	 * @return integer $last
+	 * @return int
 	 */
 	public function lastRecord() {
 		$last=0;
@@ -453,112 +457,240 @@ abstract class configClass
 		}
 		$result= $this->q->fast($sql);
 		if($this->q->numberRows($result)> 0 ){
-		$row  =  $this->q->fetchAssoc($result);
+			$row  =  $this->q->fetchAssoc($result);
 			$last = $row['last'];
 		} else{
 			$last =0;
 		}
 		return intval($last);
 	}
+	/**
+	 * Set Application Path
+	 * @param string $value
+	 */
 	public function setApplication($value){
 		$this->application = $value;
 	}
+	/**
+	 * Return Application Path
+	 * @return string
+	 */
 	public function getApplication(){
 		return $this->application;
 	}
+	/**
+	 * Set Staff Identification
+	 * @param int $value
+	 */
 	public function setStaffId($value){
 		$this->staffId = $value;
 	}
+	/**
+	 * Return Staff Identification
+	 * @return int
+	 */
 	public function getStaffId(){
 		return $this->staffId;
 	}
+	/**
+	 * Set Connection
+	 * @param string $value
+	 */
 	public function setConnection($value){
 		$this->connection = $value;
 	}
+	/**
+	 * Set Connection
+	 * @return string
+	 */
 	public function getConnection(){
 		return $this->connection;
 	}
+	/**
+	 * Set Database
+	 * @param string $value
+	 */
 	public function setDatabase($value){
 		$this->database = $value;
 	}
+	/**
+	 * Return Database 
+	 * @return string
+	 */
 	public function getDatabase(){
 		return $this->database;
 	}
+	/**
+	 * Set Vendor Value
+	 * @param string $value
+	 */
 	public function setVendor($value){
 		$this->vendor = $value;
 	}
+	/**
+	 * Return Vendor
+	 * @return string
+	 */
 	public function getVendor(){
 		return $this->vendor;
 	}
+	/**
+	 * Set Username
+	 * @param string $value
+	 */
 	public function setUsername($value){
 		$this->username = $value;
 	}
+	/**
+	 * Return Username
+	 * @return string
+	 */
 	public function getUsername(){
 		return $this->username;
 	}
+	/**
+	 * Set Password
+	 * @param string $value
+	 */
 	public function setPassword($value){
 		$this->password = $value;
 	}
+	/**
+	 * Return Password
+	 * @return string
+	 */
 	public function getPassword(){
 		return $this->password;
 	}
+	/**
+	 * Set Language Identification
+	 * @param int $value
+	 */
 	public function setLanguageId($value) {
 		$this->languageId= $value;
 	}
+	/**
+	 * Return Language Identification
+	 * @return int
+	 */
 	public function getLanguageId(){
 		return $this->languageId;
 	}
 
+	/**
+	 * Set leaf / Application Identification
+	 * @param int $value
+	 */
 	public function setLeafId($value){
 		$this->leafId = $value;
 	}
+	/**
+	 * Return Leaf /Application Identification
+	 * @return number
+	 */
 	public function getLeafId() {
 		return $this->leafId;
 	}
+	/**
+	 * Set Is Admin Value
+	 * @param bool $value
+	 */
 	public function setIsAdmin($value){
 		$this->isAdmin = $value;
 	}
+	/**
+	 * Return Is Admin
+	 * @return bool
+	 */
 	public function getIsAdmin() {
 		return $this->isAdmin;
 	}
+	/**
+	 * Set Filter Query
+	 * @param string $value
+	 */
 	public function setFieldQuery($value){
 		$this->fieldQuery = $value;
 	}
+	/**
+	 * Return Field Query
+	 * @return string
+	 */
 	public function getFieldQuery() {
 		return $this->fieldQuery;
 	}
+	/**
+	 * Set Grid Query Filtering
+	 * @param string $value
+	 */
 	public function setGridQuery($value){
 		$this->gridQuery = $value;
 	}
+	/**
+	 * Return Grid Query Filtering
+	 * @return string
+	 */
 	public function getGridQuery() {
 
 		return $this->gridQuery;
 	}
 
+	/**
+	 * Set Start Number Per Page
+	 * @param int $value
+	 */
 	public function setStart($value){
 		$this->start = $value;
 	}
+	/**
+	 * Return Start Number Per Page
+	 * @return int
+	 */
 	public function getStart() {
 		return $this->start;
 	}
 
+	/**
+	 * Set limit Per Page
+	 * @param int $value
+	 */
 	public function setLimit($value){
 		$this->limit = $value;
 	}
+	/**
+	 * Return limit Per Page
+	 * @return int
+	 */
 	public function getLimit() {
 		return $this->limit;
 	}
 
+	/**
+	 * Set Sql Statement Ordering
+	 * @param string $value
+	 */
 	public function setOrder($value){
 		$this->order = $value;
 	}
+	/**
+	 * Return Sql Statement Ordering
+	 * @return string
+	 */
 	public function getOrder() {
 		return $this->order;
 	}
 
+	/**
+	 * Set Sql Statement Sorting
+	 * @param string $value
+	 */
 	public function setSortField($value){
 		$this->sortField = $value;
 	}
+	/**
+	 * Return Sql Statement Sorting
+	 * @return string
+	 */
 	public function getSortField() {
 		return $this->sortField;
 	}

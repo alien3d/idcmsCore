@@ -15,7 +15,7 @@ require_once("../model/documentModel.php");
 class documentClass extends  configClass {
 	/**
 	 * Connection to the database
-	 * @var string $excel
+* @var string
 	 */
 	public $q;
 
@@ -52,13 +52,13 @@ class documentClass extends  configClass {
 	public $gridQuery;
 	/**
 	 * Fast Search Variable
-	 * @var string $quickFilter
+* @var stringuickFilter
 	 */
 	public $quickFilter;
 
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-	 * @var string $excel
+* @var string
 	 */
 	private  $excel;
 

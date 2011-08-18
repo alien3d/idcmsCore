@@ -13,10 +13,25 @@
  */
 class tableMappingModel extends validationClass{
 
-
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $tableMappingId;
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $tableMapping;
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $tableMappingEnglish;
+	/**
+	 * ExtJS / Sencha Label Identification
+	 * @var int
+	 */
 	private $languageId;
 
 

@@ -1,7 +1,7 @@
 <?php require_once("../../class/classValidation.php");
 
 /**
- * this is logAdvance model file.This is to ensure strict setting enable for all variable enter to database
+ * this is logAdvance model file.
  *
  * @name IDCMS.
  * @version 2
@@ -12,11 +12,35 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class logAdvanceModel extends validationClass{
+	/**
+	 * Log Advance Identification
+	 * @var int
+	 */
 	private  $logAdvanceId;
+	/**
+	 * Log Advance Text.Containing json   on create,update,delete
+	 * @var int
+	 */
 	private $logAdvanceText;
+	/**
+	 * Log Advance Type - create ,update,delete
+	 * @var int
+	 */
 	private $logAdvanceType;
+	/**
+	 * Log Advance Comparision. Containing Before and After  Sql Statement on each column
+	 * @var int
+	 */
 	private $logAdvanceComparison;
+	/**
+	 * Reference Table Name
+	 * @var int
+	 */
 	private $refTableName;
+	/**
+	 * Reference Identification equivilant to Reference Table Name Primary Key
+	 * @var int
+	 */
 	private $refId;
 
 

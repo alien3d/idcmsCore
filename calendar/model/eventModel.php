@@ -88,7 +88,7 @@ class eventModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['eventId'])){
-			$this->setEventId($this->strict($_POST['eventId'],'numeric'));
+			$this->setEventId($this->strict($_POST['eventId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['calendarId'])){
 			$this->setCalendarId($this->strict($_POST['calendarId'],'numeric'));

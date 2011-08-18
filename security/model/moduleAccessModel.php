@@ -14,9 +14,25 @@ require_once("../../class/classValidation.php");
 class moduleAccessModel extends validationClass
 {
 
+	/**
+	 * Module Access  Identification
+	 * @var int
+	 */
 	private $moduleAccessId;
+	/**
+	 * Module Identification
+	 * @var int
+	 */
 	private $moduleId;
+	/**
+	 * Group Identification
+	 * @var int
+	 */
 	private $groupId;
+	/**
+	 * Module Access Value
+	 * @var bool
+	 */
 	private $moduleAccessValue;
 
 	/**
@@ -105,7 +121,7 @@ class moduleAccessModel extends validationClass
 	 * Set Module Access  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setModuleAccessId($value,$key,$type) {
 		if($type=='single'){
@@ -118,7 +134,7 @@ class moduleAccessModel extends validationClass
 	/**
 	 * Return Module Access Identification
 	 * @param array[int][int] $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getModuleAccessId($key,$type) {
@@ -166,9 +182,9 @@ class moduleAccessModel extends validationClass
 
 	/**
 	 * Set Module Access Value
-	  * @param bool|array $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'	
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setModuleAccessValue($value,$key,$type) {
 		if($type=='string'){
@@ -182,7 +198,7 @@ class moduleAccessModel extends validationClass
 	/**
 	 * Return Module Access Value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
 	public function getModuleAccessValue($key,$type) {

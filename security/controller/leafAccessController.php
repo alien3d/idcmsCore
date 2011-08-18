@@ -16,12 +16,12 @@ require_once("../model/leafAccessModel.php");
 class leafAccessClass extends  configClass {
 	/**
 	 * Connection to the database
-	 * @var string $q
+* @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-	 * @var string $excel
+* @var string
 	 */
 	private $excel;
 	/**

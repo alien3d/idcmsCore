@@ -13,11 +13,31 @@
  */
 class themeModel extends validationClass{
 
-	// table field
+	/**
+	 * Theme Idenfitication
+	 * @var string
+	 */
 	private $themeId;
+	/**
+	 * Theme Sequence - Ordering number
+	 * @var int
+	 */
 	private $themeSequence;
+	/**
+	 * Theme Code
+	 * @var string
+	 */
 	private $themeCode;
+	/**
+	 * Theme Note -Name of theme
+	 * @var string
+	 */
 	private $themeNote;
+	/**
+	 * Theme Path - Path Of The CSS file
+	 * @var string
+	 */
+	private $themePath;
 
 
 	function execute(){
@@ -39,7 +59,7 @@ class themeModel extends validationClass{
 			$this->setthemeCode($this->strict($_POST['themeCode'],'memo'));
 		}
 		if(isset($_POST['themeNote'])){
-			$this->setthemeNote($this->strict($_POST['themeNote'],'memo'));
+			$this->setThemeNote($this->strict($_POST['themeNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
 			$this->setBy($_SESSION['staffId']);
@@ -53,7 +73,7 @@ class themeModel extends validationClass{
 		}
 
 		$this->setTotal(count($_GET['themeId']));
-        $accessArray = array(
+		$accessArray = array(
             "isDefault",
             "isNew",
             "isDraft",
@@ -61,72 +81,72 @@ class themeModel extends validationClass{
             "isDelete",
             "isActive",
             "isApproved"
-        );
-        // auto assign as array if true
-        if(is_array($_GET['themeId'])){
-        	$this->themeId= array();
-        }
-        if (is_array($_GET['isDefault'])) {
-            $this->isDefault = array();
-        }
-        if (is_array($_GET['isNew'])) {
-            $this->isNew = array();
-        }
-        if (is_array($_GET['isDraft'])) {
-            $this->isDraft = array();
-        }
-        if (is_array($_GET['isUpdate'])) {
-            $this->isUpdate = array();
-        }
-        if (is_array($_GET['isDelete'])) {
-            $this->isDelete = array();
-        }
-        if (is_array($_GET['isActive'])) {
-            $this->isActive = array();
-        }
-        if (is_array($_GET['isApproved'])) {
-            $this->isApproved = array();
-        }
-        for ($i = 0; $i < $this->getTotal(); $i++) {
-            $this->setthemeId($this->strict($_GET['themeId'][$i], 'numeric'), $i, 'array');
-            if ($_GET['isDefault'][$i] == 'true') {
-                $this->setIsDefault(1, $i, 'array');
-            } else if ($_GET['default'] == 'false') {
-                $this->setIsDefault(0, $i, 'array');
+            );
+            // auto assign as array if true
+            if(is_array($_GET['themeId'])){
+            	$this->themeId= array();
             }
-            if ($_GET['isNew'][$i] == 'true') {
-                $this->setIsNew(1, $i, 'array');
-            } else {
-                $this->setIsNew(0, $i, 'array');
+            if (is_array($_GET['isDefault'])) {
+            	$this->isDefault = array();
             }
-            if ($_GET['isDraft'][$i] == 'true') {
-                $this->setIsDraft(1, $i, 'array');
-            } else {
-                $this->setIsDraft(0, $i, 'array');
+            if (is_array($_GET['isNew'])) {
+            	$this->isNew = array();
             }
-            if ($_GET['isUpdate'][$i] == 'true') {
-                $this->setIsUpdate(1, $i, 'array');
-            } else {
-                $this->setIsUpdate(0, $i, 'array');
+            if (is_array($_GET['isDraft'])) {
+            	$this->isDraft = array();
             }
-            if ($_GET['isDelete'][$i] == 'true') {
-                $this->setIsDelete(1, $i, 'array');
-            } else if ($_GET['isDelete'][$i] == 'false') {
-                $this->setIsDelete(0, $i, 'array');
+            if (is_array($_GET['isUpdate'])) {
+            	$this->isUpdate = array();
             }
-            if ($_GET['isActive'][$i] == 'true') {
-                $this->setIsActive(1, $i, 'array');
-            } else {
-                $this->setIsActive(0, $i, 'array');
+            if (is_array($_GET['isDelete'])) {
+            	$this->isDelete = array();
             }
-            if ($_GET['isApproved'][$i] == 'true') {
-                $this->setIsApproved(1, $i, 'array');
-            } else {
-                $this->setIsApproved(0, $i, 'array');
+            if (is_array($_GET['isActive'])) {
+            	$this->isActive = array();
             }
-            $primaryKeyAll .= $this->getthemeId($i, 'array') . ",";
-        }
-        $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
+            if (is_array($_GET['isApproved'])) {
+            	$this->isApproved = array();
+            }
+            for ($i = 0; $i < $this->getTotal(); $i++) {
+            	$this->setthemeId($this->strict($_GET['themeId'][$i], 'numeric'), $i, 'array');
+            	if ($_GET['isDefault'][$i] == 'true') {
+            		$this->setIsDefault(1, $i, 'array');
+            	} else if ($_GET['default'] == 'false') {
+            		$this->setIsDefault(0, $i, 'array');
+            	}
+            	if ($_GET['isNew'][$i] == 'true') {
+            		$this->setIsNew(1, $i, 'array');
+            	} else {
+            		$this->setIsNew(0, $i, 'array');
+            	}
+            	if ($_GET['isDraft'][$i] == 'true') {
+            		$this->setIsDraft(1, $i, 'array');
+            	} else {
+            		$this->setIsDraft(0, $i, 'array');
+            	}
+            	if ($_GET['isUpdate'][$i] == 'true') {
+            		$this->setIsUpdate(1, $i, 'array');
+            	} else {
+            		$this->setIsUpdate(0, $i, 'array');
+            	}
+            	if ($_GET['isDelete'][$i] == 'true') {
+            		$this->setIsDelete(1, $i, 'array');
+            	} else if ($_GET['isDelete'][$i] == 'false') {
+            		$this->setIsDelete(0, $i, 'array');
+            	}
+            	if ($_GET['isActive'][$i] == 'true') {
+            		$this->setIsActive(1, $i, 'array');
+            	} else {
+            		$this->setIsActive(0, $i, 'array');
+            	}
+            	if ($_GET['isApproved'][$i] == 'true') {
+            		$this->setIsApproved(1, $i, 'array');
+            	} else {
+            		$this->setIsApproved(0, $i, 'array');
+            	}
+            	$primaryKeyAll .= $this->getThemeId($i, 'array') . ",";
+            }
+            $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 
 	}
 	/* (non-PHPdoc)
@@ -169,7 +189,7 @@ class themeModel extends validationClass{
 		$this->setIsApproved(0,0,'string');
 	}
 
-/* (non-PHPdoc)
+	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
@@ -227,9 +247,9 @@ class themeModel extends validationClass{
 	 * Set theme Identification  Value
 	 * @param int $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setthemeId($value,$key,$type) {
+	public function setThemeId($value,$key,$type) {
 		if($type=='single'){
 			$this->themeId = $value;
 		} else if ($type=='array'){
@@ -238,9 +258,11 @@ class themeModel extends validationClass{
 	}
 	/**
 	 * Return theme Identification Value
-	 * @return integer themeId
+		* @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
 	 */
-	public function getthemeId($key,$type) {
+	public function getThemeId($key,$type) {
 		if($type=='single'){
 			return $this->themeId;
 		} else if ($type=='array'){
@@ -252,48 +274,61 @@ class themeModel extends validationClass{
 	}
 	/**
 	 * Set  theme Sequence (english)
-	 * @param boolean $value
+	 * @param int $value
 	 */
-	public function setthemeSequence($value) {
+	public function setThemeSequence($value) {
 		$this->themeSequence = $value;
 	}
 	/**
-	 * Return theme  Description (english)
-	 * @return  string theme Sequence
+	 * Return theme  sequence
+	 * @return  int
 	 */
-	public function getthemeSequence() {
+	public function getThemeSequence() {
 		return $this->themeSequence;
 	}
 	/**
-	 * Set  theme  Code (english)
+	 * Set  theme  Code
 	 * @param string $value
 	 */
-	public function setthemeCode($value) {
+	public function setThemeCode($value) {
 		$this->themeCode = $value;
 	}
 	/**
 	 * Return theme  Code
-	 * @return  string theme Description
+	 * @return  string
 	 */
-	public function getthemeCode() {
+	public function getThemeCode() {
 		return $this->themeCode;
 	}
 	/**
 	 * Set  theme Translation (english)
 	 * @param string $value
 	 */
-	public function setthemeNote($value) {
+	public function setThemeNote($value) {
 		$this->themeNote = $value;
 	}
 	/**
 	 * Return theme  Description (english)
-	 * @return  string theme Description
+	 * @return  string 
 	 */
-	public function getthemeNote() {
+	public function getThemeNote() {
+		return $this->themeNote;
+	}
+/**
+	 * Set  theme Path
+	 * @param string $value
+	 */
+	public function setThemePath($value) {
+		$this->themeNote = $value;
+	}
+	/**
+	 * Return theme  Path
+	 * @return  string 
+	 */
+	public function getThemePath() {
 		return $this->themeNote;
 	}
 
-	
 
 
 }

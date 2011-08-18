@@ -17,10 +17,7 @@ Ext
 				
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
-						// //uncommen for testing
-						// purpose
+					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message); uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -68,10 +65,7 @@ Ext
 
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
-						// //uncommen for testing
-						// purpose
+					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message); uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -104,7 +98,7 @@ Ext
 					name : "themeId",
 					type : "int"
 				}, {
-					name : "themeName",
+					name : "themeNote",
 					type : "string"
 				}, {
 					name : "themePath",
@@ -118,10 +112,7 @@ Ext
 			
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
-						// //uncommen for testing
-						// purpose
+					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message); uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -149,7 +140,7 @@ Ext
 					field : 'languageId',
 					leafId : leafId
 				},
-				root : 'language',
+				root : 'data',
 				fields : [ {
 					name : "languageId",
 					type : "int"
@@ -303,7 +294,6 @@ Ext
 															valueField : 'languageId',
 															emptyText : 'Language',
 															store : languageStore,
-															disabled : true,
 															listeners : {
 																select : function() {
 																	window.location

@@ -13,10 +13,25 @@
 class moduleTranslationModel extends validationClass{
 
 
-	// table field
+	/**
+	 * Module Translation Identification
+	 * @var int
+	 */
 	private $moduleTranslateId;
+	/**
+	 * Module Identification
+	 * @var int
+	 */
 	private $moduleId;
+	/**
+	 * Language Identification
+	 * @var int
+	 */
 	private $languageId;
+	/**
+	 * Module Translation 
+	 * @var string
+	 */
 	private $moduleTranslate;
 
 	/* (non-PHPdoc)
@@ -32,16 +47,16 @@ class moduleTranslationModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['moduleTranslateId'])){
-			$this->setModuleTranslateId = $this->strict($_POST['moduleTranslateId'],'numeric');
+			$this->setModuleTranslateId($this->strict($_POST['moduleTranslateId'],'numeric'));
 		}
 		if(isset($_POST['moduleId'])){
-			$this->setModuleId = $this->strict($_POST['moduleId'],'numeric');
+			$this->setModuleId($this->strict($_POST['moduleId'],'numeric'));
 		}
 		if(isset($_POST['languageId'])){
-			$this->setLanguageId = $this->strict($_POST['languageId'],'numeric');
+			$this->setLanguageId($this->strict($_POST['languageId'],'numeric'));
 		}
 		if(isset($_POST['moduleTranslate'])){
-			$this->setModuleTranslate = $this->strict($_POST['moduleTranslate'],'memo');
+			$this->setModuleTranslate($this->strict($_POST['moduleTranslate'],'memo'));
 		}
 
 
@@ -191,7 +206,7 @@ class moduleTranslationModel extends validationClass{
 	 */
 	public function setModuleId($value) {
 
-		$this->tabId = $value;
+		$this->moduleId = $value;
 
 	}
 	/**
