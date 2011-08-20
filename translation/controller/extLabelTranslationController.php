@@ -18,65 +18,56 @@ require_once("../model/extLabelTranslationModel.php");
 class extLabelTranslationClass extends  configClass {
 	/**
 	 * Connection to the database
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $documentTrail;
+	 * @var string 
 	 */
 	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
 	 * Log Sql Statement True or False
-	 * @var unknown_type
+	 * @var string
 	 */
 	private $log;
 	/**
-	 * department Model
-	 * @var string $departmentModel
+	 * Model
+	 * @var string
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string $auditFilter
+	 * @var string 
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string $auditColumn
+	 * @var string
 	 */
 	public $auditColumn;
 	/**
 	 * Duplicate Testing either the key of table same or have been created.
-	 * @var boolean $duplicateTest;
+	 * @var bool
 	 */
 	public $duplicateTest;
 
 	/**
 	 * Common class function for security menu
-	 * @var  string $security
+	 * @var  string 
 	 */
 	private $security;
-	/**
-	 * extLabelTranslation Translation Identification
-	 * @var  numeric $extLabelTranslationTranslateId
-	 */
-	public $extLabelTranslationTranslateId;
-	/**
-	 * Translation update
-	 * @var string $extLabelTranslationTranslate
-	 */
-	public $extLabelTranslationTranslate;
+
 	/**
 	 * Class Loader
 	 */

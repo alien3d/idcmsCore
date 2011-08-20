@@ -11,72 +11,63 @@ require_once("../model/folderModel.php");
  * @version
  * @author hafizan
  * @package Security
- * @subpackage Folder Controller 
+ * @subpackage Folder Controller
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class folderClass extends  configClass {
-	/*
+	/**
 	 * Connection to the database
-* @var string
-	*/
+	 * @var string
+	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $documentTrail;
+	 * @var string 
 	 */
 	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
 	 * Log Sql Statement True or False
-	 * @var unknown_type
+	 * @var string
 	 */
 	private $log;
 	/**
-	 * department Model
-	 * @var string $departmentModel
+	 * Model
+	 * @var string 
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string $auditFilter
+	 * @var string 
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string $auditColumn
+	 * @var string 
 	 */
 	public $auditColumn;
 	/**
 	 * Duplicate Testing either the key of table same or have been created.
-	 * @var boolean $duplicateTest;
+	 * @var bool
 	 */
 	public $duplicateTest;
 
 	/**
 	 * Common class function for security menu
-	 * @var  string $security
+	 * @var  string 
 	 */
 	private $security;
-	/**
-	 * Folder Translation Identification
-	 * @var  numeric $folderTranslateId
-	 */
-	public $folderTranslateId;
-	/**
-	 * Translation update
-	 * @var string $folderTranslate
-	 */
-	public $folderTranslate;
+	
 	/**
 	 * Class Loader
 	 */
@@ -126,7 +117,7 @@ class folderClass extends  configClass {
 
 	/* (non-PHPdoc)
 	 * @see config::create()
-	*/
+	 */
 	function create() 							{
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
@@ -303,10 +294,10 @@ class folderClass extends  configClass {
 			exit();
 		}
 
-		
+
 		/**
-		*	 insert default value to detail folderle .English only
-		**/
+		 *	 insert default value to detail folderle .English only
+		 **/
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 				 	INSERT INTO `folderTranslate`
@@ -358,7 +349,7 @@ class folderClass extends  configClass {
 	}
 	/* (non-PHPdoc)
 	 * @see config::read()
-	*/
+	 */
 	function read() 							{
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
@@ -562,7 +553,7 @@ class folderClass extends  configClass {
 
 		/*
 		 *  Only Execute One Query
-		*/
+		 */
 		if(!($this->folderId)) {
 
 			$this->q->read($sql);
@@ -614,7 +605,7 @@ class folderClass extends  configClass {
 
 	/* (non-PHPdoc)
 	 * @see config::update()
-	*/
+	 */
 	function update() 							{
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
@@ -692,7 +683,7 @@ class folderClass extends  configClass {
 	}
 	/* (non-PHPdoc)
 	 * @see config::delete()
-	*/
+	 */
 	function delete()							{
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
@@ -756,15 +747,15 @@ class folderClass extends  configClass {
 
 	}
 
-	
-	
-	
+
+
+
 	function module(){
 		return $this->security->module();
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
-	*/
+	 */
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
@@ -850,23 +841,23 @@ if(isset($_POST['method']))	{
 
 	/*
 	 *  Initilize Value before load in the loader
-	*/
+	 */
 	/*
 	 *  Leaf / Application Identification
-	*/
+	 */
 	if(isset($_POST['leafId'])){
 		$folderObject->setLeafId($_POST['leafId']);
 	}
 	/*
 	 * Admin Only
-	*/
+	 */
 	if(isset($_POST['isAdmin'])){
 		$folderObject->setIsAdmin($_POST['isAdmin']);
 	}
 
 	/*
 	 *  Filtering
-	*/
+	 */
 
 	if(isset($_POST['query'])){
 		$folderObject->setFieldQuery($_POST['query']);
@@ -876,7 +867,7 @@ if(isset($_POST['method']))	{
 	}
 	/*
 	 * Ordering
-	*/
+	 */
 	if(isset($_POST['order'])){
 		$folderObject->setOrder($_POST['order']);
 	}
@@ -886,11 +877,11 @@ if(isset($_POST['method']))	{
 
 	/*
 	 *  Load the dynamic value
-	*/
+	 */
 	$folderObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
-	*/
+	 */
 	if($_POST['method']=='create')	{
 		$folderObject->create();
 	}
@@ -914,22 +905,22 @@ if(isset($_POST['method']))	{
 if(isset($_GET['method'])) {
 	/*
 	 *  Initilize Value before load in the loader
-	*/
+	 */
 	/*
 	 *  Leaf / Application Identification
-	*/
+	 */
 	if(isset($_GET['leafId'])){
 		$folderObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
-	*/
+	 */
 	if(isset($_GET['isAdmin'])){
 		$folderObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
-	*/
+	 */
 	$folderObject->execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
@@ -942,22 +933,22 @@ if(isset($_GET['method'])) {
 
 	}
 	/*
-	* Update Status of The Table. Admin Level Only
-	*/
+	 * Update Status of The Table. Admin Level Only
+	 */
 	if($_GET['method']=='updateStatus'){
 		$folderObject->updateStatus();
 	}
 	/*
-	*  Checking Any Duplication  Key
-	*/
+	 *  Checking Any Duplication  Key
+	 */
 	if (isset($_GET['folderCode'])) {
 		if (strlen($_GET['folderCode']) > 0) {
 			$folderObject->duplicate();
 		}
 	}
 	/*
-	*  Excel Reporting
-	*/
+	 *  Excel Reporting
+	 */
 	if(isset($_GET['mode'])){
 		if($_GET['mode']=='excel') {
 			$folderObject->excel();

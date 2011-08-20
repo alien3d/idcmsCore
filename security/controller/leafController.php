@@ -19,7 +19,7 @@ class leafClass extends configClass
 {
 	/**
 	 * Connection to the database
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
@@ -29,54 +29,45 @@ class leafClass extends configClass
 	public $leafTempId;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $documentTrail;
+	 * @var string 
 	 */
 	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
 	 * Log Sql Statement True or False
-	 * @var unknown_type
+	 * @var string
 	 */
 	private $log;
 	/**
-	 * department Model
-	 * @var string $departmentModel
+	 * Model
+	 * @var string 
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string $auditFilter
+	 * @var string 
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string $auditColumn
+	 * @var string 
 	 */
 	public $auditColumn;
 	/**
 	 * Duplicate Testing either the key of modulele same or have been created.
-	 * @var boolean $duplicateTest;
+	 * @var bool
 	 */
 	public $duplicateTest;
-	/**
-	 * Leaf Translation Identification
-	 * @var  numeric $leafTranslateId
-	 */
-	public $leafTranslateId;
-	/**
-	 * Translation update
-	 * @var string $leafTranslate
-	 */
-	public $leafTranslate;
+	
 	/**
 	 *  Class Loader
 	 */
@@ -95,12 +86,12 @@ class leafClass extends configClass
 		$this->audit            = 0;
 		$this->log              = 1;
 		$this->q->log           = $this->log;
-		
+
 		$this->security         = new security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
-		
+
 		$this->model         = new leafModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
@@ -230,7 +221,7 @@ class leafClass extends configClass
 				),";
 		}
 		// optimize to 1 Query
-	if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "
 			INSERT INTO	`leafAccess`
 					(
@@ -328,8 +319,8 @@ class leafClass extends configClass
 			if ($this->model->getLeafId(0,'single')) {
 				$sql .= " AND `".$this->model->getModuleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLeafId(0,'single') ."\"";
 			}
-			
-			
+				
+				
 
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -598,8 +589,8 @@ class leafClass extends configClass
             "success" => true,
             "message" => "Record Update",
 			"leafId"=>$this->getLeafId(0,'single')
-            ));
-            exit();
+		));
+		exit();
 	}
 	function delete()
 	{
@@ -851,15 +842,15 @@ if (isset($_GET['method'])) {
 			$leafObject->nextSequence();
 		}
 	}
-/*
-	* Update Status of The modulele. Admin Level Only
-	*/
+	/*
+	 * Update Status of The modulele. Admin Level Only
+	 */
 	if($_GET['method']=='updateStatus'){
 		$leafObject->updateStatus();
 	}
 	/*
-	*  Checking Any Duplication  Key
-	*/
+	 *  Checking Any Duplication  Key
+	 */
 	if (isset($_GET['leafCode'])) {
 		if (strlen($_GET['leafCode']) > 0) {
 			$leafObject->duplicate();

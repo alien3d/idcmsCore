@@ -8,94 +8,60 @@ require_once("../model/documentModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package doc
+ * @package Document
+ * @subpackage Document
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class documentClass extends  configClass {
 	/**
 	 * Connection to the database
-* @var string
+	 * @var string
 	 */
 	public $q;
-
-	/**
-	 * Program Identification
-	 * @var numeric $leafId
-	 */
-	public $leafId;
-	/**
-	 * User Identification
-	 * @var numeric $staffId
-	 */
-	public $staffId;
-	/**
-	 *	 Database Selected
-	 *   string $database;
-	 */
-	public $database;
-	/**
-	 * Database Vendor
-	 * @var string $vendor
-	 */
-
-	public $vendor;
-	/**
-	 * Extjs Field Query UX
-	 * @var string $fieldQuery
-	 */
-	public $fieldQuery;
-	/**
-	 * Extjs Grid  Filter Plugin
-	 * @var string $gridQuery
-	 */
-	public $gridQuery;
-	/**
-	 * Fast Search Variable
-* @var stringuickFilter
-	 */
-	public $quickFilter;
-
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
-	private  $excel;
-
-
+	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $documentTrail;
+	 * @var string
 	 */
-	private  $documentTrail;
-
-	/**
-	 *  Ascending ,Descending ASC,DESC
-	 * @var string $order;`
-	 */
-	public $order;
-
-	/**
-	 * Sort the default field.Mostly consider as primary key default.
-	 * @var string $sortField
-	 */
-	public $sortField;
-	/**
-	 * Default Language  : English
-	 * @var numeric $defaultLanguageId
-	 */
-	private $defaultLanguageId;
+	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
-	 * Current Table Document  Identification Value
-	 * @var numeric $docId
+	 * Log Sql Statement True or False
+	 * @var string
 	 */
-	public $documentId;
+	private $log;
+	/**
+	 * documentCategory Model
+	 * @var string
+	 */
 	public $model;
+	/**
+	 * Audit Filter
+	 * @var string
+	 */
+	public $auditFilter;
+	/**
+	 * Audit Column
+	 * @var string
+	 */
+	public $auditColumn;
+	/**
+	 * Duplicate Testing either the key of table same or have been created.
+	 * @var bool
+	 */
+	public $duplicateTest;
+	/**
+	 * Class Loader
+	 */
 	function execute() {
 		parent::__construct();
 

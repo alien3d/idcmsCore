@@ -5,16 +5,16 @@ require_once("../../document/model/documentModel.php");
 require_once("../../class/classSecurity.php");
 require_once("../model/leafModel.php");
 /**
- * this is leaf creation
+ * Leaf Translation
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package Security
- * @package Leaf Translation
+ * @subpackage Leaf Translation Controller
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class leafClass extends  configClass {
+class leafTranslateClass extends  configClass {
 	/**
 	 * Connection to the database
 * @var string

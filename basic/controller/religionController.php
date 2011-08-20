@@ -15,49 +15,49 @@ require_once("../model/religionModel.php");
  */
 class religionClass extends configClass
 {
-	/*
+	/**
 	 * Connection to the database
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $documentTrail;
+	 * @var string 
 	 */
 	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
 	 * Log Sql Statement True or False
-	 * @var unknown_type
+	 * @var string
 	 */
 	private $log;
 	/**
-	 * department Model
-	 * @var string $departmentModel
+	 * Model
+	 * @var string 
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string $auditFilter
+	 * @var string 
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string $auditColumn
+	 * @var string
 	 */
 	public $auditColumn;
 	/**
 	 * Duplicate Testing either the key of table same or have been created.
-	 * @var boolean $duplicateTest;
+	 * @var bool
 	 */
 	public $duplicateTest;
 	/**
@@ -74,7 +74,9 @@ class religionClass extends configClass
 		$this->q->fieldQuery  = $this->getFieldQuery();
 		$this->q->gridQuery   = $this->getGridQuery();
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		
 		$this->excel         = new PHPExcel();
+		
 		$this->audit         = 0;
 		$this->log           = 1;
 		$this->q->log        = $this->log;

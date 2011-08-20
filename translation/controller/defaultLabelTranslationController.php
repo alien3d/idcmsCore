@@ -18,47 +18,47 @@ require_once("../model/defaultLabelTranslationModel.php");
 class defaultLabelTranslationClass extends  configClass {
 	/**
 	 * Connection to the database
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $documentTrail;
+	 * @var string 
 	 */
 	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
 	 * Log Sql Statement True or False
-	 * @var unknown_type
+	 * @var string
 	 */
 	private $log;
 	/**
-	 * department Model
-	 * @var string $departmentModel
+	 * Model
+	 * @var string 
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string $auditFilter
+	 * @var string 
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string $auditColumn
+	 * @var string 
 	 */
 	public $auditColumn;
 	/**
 	 * Duplicate Testing either the key of table same or have been created.
-	 * @var boolean $duplicateTest;
+	 * @var bool
 	 */
 	public $duplicateTest;
 
@@ -67,16 +67,7 @@ class defaultLabelTranslationClass extends  configClass {
 	 * @var  string $security
 	 */
 	private $security;
-	/**
-	 * defaultLabelTranslation Translation Identification
-	 * @var  numeric $defaultLabelTranslationTranslateId
-	 */
-	public $defaultLabelTranslationTranslateId;
-	/**
-	 * Translation update
-	 * @var string $defaultLabelTranslationTranslate
-	 */
-	public $defaultLabelTranslationTranslate;
+	
 	/**
 	 * Class Loader
 	 */

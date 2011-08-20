@@ -6,16 +6,17 @@ require_once("../../class/classSecurity.php");
 require_once("../model/folderModel.php");
 
 /**
- * this folder menu creation
+ * Folder Translation
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package folder
+ * @subpackage Folder Translation Controller
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class folderClass extends  configClass {
-	/*
+class folderTranslateClass extends  configClass {
+	/**
 	 * Connection to the database
 * @var string
 	 */

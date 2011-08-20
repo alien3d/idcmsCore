@@ -18,7 +18,7 @@ require_once("../model/staffModel.php");
 class staffClass extends configClass
 {
 	/**
-	 * Connection to the database
+	 * Connection to the damodulease
 * @var string
 	 */
 	public $q;
@@ -34,32 +34,32 @@ class staffClass extends configClass
 	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
 	 * Log Sql Statement True or False
-	 * @var unknown_type
+	 * @var string
 	 */
 	private $log;
 	/**
-	 * department Model
-	 * @var string $departmentModel
+	 * model
+	 * @var string 
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string $auditFilter
+	 * @var string 
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string $auditColumn
+	 * @var string 
 	 */
 	public $auditColumn;
 	/**
-	 * Duplicate Testing either the key of table same or have been created.
-	 * @var boolean $duplicateTest;
+	 * Duplicate Testing either the key of modulele same or have been created.
+	 * @var bool
 	 */
 	public $duplicateTest;
 	/**
@@ -75,17 +75,22 @@ class staffClass extends configClass
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery  = $this->getGridQuery();
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		
 		$this->excel  = new PHPExcel();
+		
 		$this->audit  = 0;
 		$this->log    = 0;
 		$this->q->log = $this->log;
+		
 		$this->model  = new staffModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
+		
 		$this->documentTrail = new documentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());
 		$this->documentTrail->setLanguageId($this->getLanguageId());
+		
 		$this->security = new security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->setStaffId($this->getStaffId());
@@ -171,21 +176,21 @@ class staffClass extends configClass
 			exit();
 		}
 		$lastInsertId = $this->q->lastInsertId();
-		// insert tab access
+		// insert module access
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
 				SELECT	*
-				FROM 	`tab`
+				FROM 	`module`
 				WHERE 	`isActive`	=	1	";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 				SELECT	*
-				FROM 	[tab]
+				FROM 	[module]
 				WHERE 	[isActive]	=	1	";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 				SELECT	*
-				FROM 	\"tab\"
+				FROM 	\"module\"
 				WHERE 	\"isActive\"	=	1	";
 		}
 		$this->q->read($sql);
@@ -199,25 +204,25 @@ class staffClass extends configClass
 		if ($this->q->numberRows() > 0) {
 			$data = $this->q->activeRecord();
 			foreach ($data as $rowTab) {
-				// check if group access define in  tabAccess else insert
+				// check if group access define in  moduleAccess else insert
 				if ($this->getVendor() == self::mysql) {
 					$sql = "
 						SELECT *
-						FROM 	`tabAccess`
+						FROM 	`moduleAccess`
 						WHERE 	`groupId`			=	\"" . $this->model->getGroupId() . "\"
-						AND		`tabId`		=	\"" . $rowTab['tabId'] . "\"";
+						AND		`moduleId`		=	\"" . $rowTab['moduleId'] . "\"";
 				} else if ($this->getVendor() == self::mssql) {
 					$sql = "
 						SELECT *
-						FROM 	[tabAccess]
+						FROM 	[moduleAccess]
 						WHERE 	[groupId]			=	\"" . $this->model->getGroupId() . "\"
-					AND		`tabId`			=	\"" . $rowTab['tabId'] . "\"";
+					AND		`moduleId`			=	\"" . $rowTab['moduleId'] . "\"";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
 						SELECT *
-						FROM 	\"tabAccess\"
+						FROM 	\"moduleAccess\"
 						WHERE 	\"groupId\"			=	\"" . $this->model->getGroupId() . "\"
-						AND		\"tabId\"		=	\"" . $rowTab['tabId'] . "\"";
+						AND		\"moduleId\"		=	\"" . $rowTab['moduleId'] . "\"";
 				}
 				$this->q->read($sql);
 				if ($this->q->execute == 'fail') {
@@ -231,30 +236,30 @@ class staffClass extends configClass
 					// record don't exist create new
 					if ($this->q->vendor == self::mysql || $this->q->vendor = 'mysql') {
 						$sql = "
-						INSERT INTO `tabAccess`	(
-									`tabId`,				`groupId`,
-									`tabAccessValue`
+						INSERT INTO `moduleAccess`	(
+									`moduleId`,				`groupId`,
+									`moduleAccessValue`
 						)	VALUES(
-							\"" . $rowTab['tabId'] . "\",
+							\"" . $rowTab['moduleId'] . "\",
 							\"" . $this->model->getGroupId() . "\",
 							\"0\"
 						)	";
 					} else if ($this->q->vendor == 'microsft') {
 						$sql = "
-						INSERT INTO [tabAccess]	(
-									[tabId],				[groupId],
-									[tabAccessValue]
+						INSERT INTO [moduleAccess]	(
+									[moduleId],				[groupId],
+									[moduleAccessValue]
 						)	VALUES(
-							\"" . $rowTab['tabId'] . "\",
+							\"" . $rowTab['moduleId'] . "\",
 							\"" . $this->model->getGroupId() . "\",
 							\"0\"					)	";
 					} else if ($this->getVendor() == self::oracle) {
 						$sql = "
-						INSERT INTO \"tabAccess\"	(
-									\"tabId\",				\"groupId\",
-									\"tabAccessValue\"
+						INSERT INTO \"moduleAccess\"	(
+									\"moduleId\",				\"groupId\",
+									\"moduleAccessValue\"
 						)	VALUES(
-							\"" . $rowTab['tabId'] . "\",
+							\"" . $rowTab['moduleId'] . "\",
 							\"" . $this->model->getGroupId() . "\",
 							\"0\"
 						)	";
@@ -298,7 +303,7 @@ class staffClass extends configClass
 		if ($this->q->numberRows() > 0) {
 			$data = $this->q->activeRecord();
 			foreach ($data as $rowFolder) {
-				// check if group access define in  tabAccess else insert
+				// check if group access define in  moduleAccess else insert
 				if ($this->getVendor() == self::mysql) {
 					$sql = "
 					SELECT *
@@ -607,7 +612,7 @@ class staffClass extends configClass
 					AND		`department`.`isActive`=1
 					";
 			if ($this->model->getStaffId(0,'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`=\"" . $this->model->getstaffId(0,'single') . "\"";
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`=\"" . $this->model->getStaffId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -638,7 +643,7 @@ class staffClass extends configClass
 					AND		[group].[isActive] ='1'
 					AND		[deparment].[isActive]='1'";
 			if ($this->model->getStaffId(0,'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]=\"" . $this->model->getstaffId(0,'single') . "\"";
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]=\"" . $this->model->getStaffId(0,'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -669,12 +674,12 @@ class staffClass extends configClass
 					AND		\"group\".\"isActive\" ='1'
 					AND		\"deparment\".\"isActive\"='1' ";
 			if ($this->model->getStaffId(0,'single')) {
-				$sql .= " AND \"" . $this->model->getTableName() . "\".\"" . $this->model->getPrimaryKeyName() . "\"=\"" . $this->model->getstaffId(0,'single') . "\"";
+				$sql .= " AND \"" . $this->model->getTableName() . "\".\"" . $this->model->getPrimaryKeyName() . "\"=\"" . $this->model->getStaffId(0,'single') . "\"";
 			}
 		} else {
 			echo json_encode(array(
                 "success" => false,
-                "message" => "Undefine Database Vendor"
+                "message" => "Undefine Damodulease Vendor"
                 ));
                 exit();
 		}
@@ -688,21 +693,21 @@ class staffClass extends configClass
             'staffId'
             );
             /**
-             *	filter table
-             * @variables $tableArray
+             *	filter modulele
+             * @variables $moduleleArray
              */
-            $tableArray  = null;
-            $tableArray  = array(
+            $moduleleArray  = null;
+            $moduleleArray  = array(
             'staff'
             );
             if ($this->getFieldQuery()) {
             	if ($this->getVendor() == self::mysql) {
-            		$sql .= $this->q->quickSearch($tableArray, $filterArray);
+            		$sql .= $this->q->quickSearch($moduleleArray, $filterArray);
             	} else if ($this->getVendor() == self::mssql) {
-            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$tempSql = $this->q->quickSearch($moduleleArray, $filterArray);
             		$sql .= $tempSql;
             	} else if ($this->getVendor() == self::oracle) {
-            		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+            		$tempSql = $this->q->quickSearch($moduleleArray, $filterArray);
             		$sql .= $tempSql;
             	}
             }
@@ -727,8 +732,9 @@ class staffClass extends configClass
             "message" => $sql
             ));
             exit();
-
+		
             // end of optional debugger */
+			//echo $sql;
             $this->q->read($sql);
             if ($this->q->execute == 'fail') {
             	echo json_encode(array(

@@ -17,47 +17,47 @@ require_once("../model/languageModel.php");
 class languageClass  extends configClass {
 	/**
 	 * Connection to the database
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $documentTrail;
+	 * @var string 
 	 */
 	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
 	 * Log Sql Statement True or False
-	 * @var unknown_type
+	 * @var string
 	 */
 	private $log;
 	/**
-	 * language Model
-	 * @var string $languageModel
+	 * Model
+	 * @var string 
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string $auditFilter
+	 * @var string 
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string $auditColumn
+	 * @var string 
 	 */
 	public $auditColumn;
 	/**
 	 * Duplicate Testing either the key of table same or have been created.
-	 * @var boolean $duplicateTest;
+	 * @var bool
 	 */
 	public $duplicateTest;
 	/**
@@ -485,7 +485,7 @@ class languageClass  extends configClass {
 		$this->q->commit();
 		$this->model->update();
 		if($this->getVendor() == self::mysql) {
-				$sql="
+			$sql="
 				UPDATE 	`language`
 				SET		`languageCode`		=	\"".$this->model->getLanguageCode()."\",
 						`languageDesc` 		= 	\"".$this->model->getLanguageDesc()."\",
@@ -981,29 +981,29 @@ class languageClass  extends configClass {
                         $this->excel->getActiveSheet()->mergeCells($start.'2:'.$end.'3');
                         // header of the row
                         if($this->isAdmin==1){
-	                        // future should take from table mapping table
+                        	// future should take from table mapping table
                         	$this->excel->getActiveSheet()->setCellValue('B3', 'No');
-	                        $this->excel->getActiveSheet()->setCellValue('C3', 'language Id');
+                        	$this->excel->getActiveSheet()->setCellValue('C3', 'language Id');
                         	$this->excel->getActiveSheet()->setCellValue('D3', 'Sequence');
-	                        $this->excel->getActiveSheet()->setCellValue('E3', 'Code');
-	                        $this->excel->getActiveSheet()->setCellValue('F3', 'Note');
+                        	$this->excel->getActiveSheet()->setCellValue('E3', 'Code');
+                        	$this->excel->getActiveSheet()->setCellValue('F3', 'Note');
 
-	                        $this->excel->getActiveSheet()->setCellValue('G3', 'isDefault');
-	                        $this->excel->getActiveSheet()->setCellValue('H3', 'isNew');
-	                        $this->excel->getActiveSheet()->setCellValue('I3', 'isDraft');
-	                        $this->excel->getActiveSheet()->setCellValue('J3', 'isUpdate');
-	                        $this->excel->getActiveSheet()->setCellValue('K3', 'isDelete');
-	                        $this->excel->getActiveSheet()->setCellValue('L3', 'isActive');
-	                        $this->excel->getActiveSheet()->setCellValue('M3', 'isApproved');
-	                        $this->excel->getActiveSheet()->setCellValue('N3', 'By');
-	                        $this->excel->getActiveSheet()->setCellValue('O3', 'Time');
+                        	$this->excel->getActiveSheet()->setCellValue('G3', 'isDefault');
+                        	$this->excel->getActiveSheet()->setCellValue('H3', 'isNew');
+                        	$this->excel->getActiveSheet()->setCellValue('I3', 'isDraft');
+                        	$this->excel->getActiveSheet()->setCellValue('J3', 'isUpdate');
+                        	$this->excel->getActiveSheet()->setCellValue('K3', 'isDelete');
+                        	$this->excel->getActiveSheet()->setCellValue('L3', 'isActive');
+                        	$this->excel->getActiveSheet()->setCellValue('M3', 'isApproved');
+                        	$this->excel->getActiveSheet()->setCellValue('N3', 'By');
+                        	$this->excel->getActiveSheet()->setCellValue('O3', 'Time');
 
 
                         } else {
                         	$this->excel->getActiveSheet()->setCellValue('B3', 'No');
-	                        $this->excel->getActiveSheet()->setCellValue('C3', 'Sequence');
-	                        $this->excel->getActiveSheet()->setCellValue('D3', 'Code');
-	                        $this->excel->getActiveSheet()->setCellValue('E3', 'Note');
+                        	$this->excel->getActiveSheet()->setCellValue('C3', 'Sequence');
+                        	$this->excel->getActiveSheet()->setCellValue('D3', 'Code');
+                        	$this->excel->getActiveSheet()->setCellValue('E3', 'Note');
                         }
                         // fill color
                         $this->excel->getActiveSheet()->getStyle($start.'2:'.$end.'2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);

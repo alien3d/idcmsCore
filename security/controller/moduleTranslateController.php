@@ -6,25 +6,25 @@ require_once("../../document/model/documentModel.php");
 require_once("../../class/classSecurity.php");
 require_once("../model/moduleTranslateModel.php");
 /**
- * this is main setting files
+ * Module Translation
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package Security
- * @subpackage Module Translation
+ * @subpackage Module Translation Controller
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class moduleClass extends configClass
+class moduleTranslateClass extends configClass
 {
 	/**
 	 * Connection to the damodulease
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**

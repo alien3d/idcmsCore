@@ -19,52 +19,52 @@ class moduleClass extends configClass
 {
 	/**
 	 * Connection to the damodulease
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $documentTrail;
+	 * @var string 
 	 */
 	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
 	 * Log Sql Statement True or False
-	 * @var unknown_type
+	 * @var string
 	 */
 	private $log;
 	/**
-	 * department Model
-	 * @var string $departmentModel
+	 * Model
+	 * @var string 
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string $auditFilter
+	 * @var string 
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string $auditColumn
+	 * @var string
 	 */
 	public $auditColumn;
 	/**
 	 * Duplicate Testing either the key of modulele same or have been created.
-	 * @var boolean $duplicateTest;
+	 * @var bool
 	 */
 	public $duplicateTest;
 	/**
 	 * Common class function for security menu
-	 * @var  string $security
+	 * @var  string 
 	 */
 	private $security;
 
@@ -87,16 +87,16 @@ class moduleClass extends configClass
 		$this->log               = 1;
 		$this->q->log            = $this->log;
 		$this->defaultLanguageId = 21;
-		
+
 		$this->security          = new security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
-		
+
 		$this->model         = new moduleModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->documentTrail = new documentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
@@ -701,8 +701,8 @@ class moduleClass extends configClass
             "success" =>true,
             "message" => "update success",
 			"moduleId"=>$this->model->getModuleId(0,'single')
-            ));
-            exit();
+		));
+		exit();
 	}
 	/* (non-PHPdoc)
 	 * @see configClass::delete()

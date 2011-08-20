@@ -18,12 +18,12 @@ class eventClass extends configClass
 {
 	/**
 	 * Connection to the database
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
@@ -43,17 +43,17 @@ class eventClass extends configClass
 	private $log;
 	/**
 	 * department Model
-	 * @var string 
+	 * @var string
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string 
+	 * @var string
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string 
+	 * @var string
 	 */
 	public $auditColumn;
 	/**
@@ -74,7 +74,9 @@ class eventClass extends configClass
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery  = $this->getGridQuery();
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		
 		$this->excel  = new PHPExcel();
+		
 		$this->audit  = 0;
 		$this->log    = 1;
 		$this->q->log = $this->log;

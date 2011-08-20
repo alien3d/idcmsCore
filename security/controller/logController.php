@@ -16,47 +16,47 @@ require_once("../model/logModel.php");
 class logClass extends  configClass {
 	/**
 	 * Connection to the database
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string $documentTrail;
+	 * @var string 
 	 */
 	private $documentTrail;
 	/**
 	 * Audit Row True or False
-	 * @var boolean $audit
+	 * @var bool
 	 */
 	private $audit;
 	/**
 	 * Log Sql Statement True or False
-	 * @var unknown_type
+	 * @var string
 	 */
 	private $log;
 	/**
-	 * department Model
-	 * @var string $departmentModel
+	 * Model
+	 * @var string 
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string $auditFilter
+	 * @var string 
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string $auditColumn
+	 * @var string 
 	 */
 	public $auditColumn;
 	/**
 	 * Duplicate Testing either the key of table same or have been created.
-	 * @var boolean $duplicateTest;
+	 * @var bool
 	 */
 	public $duplicateTest;
 	/**
@@ -88,9 +88,9 @@ class logClass extends  configClass {
 		$this->q->log 				= $this->log;
 
 		$this->model         = new logModel();
-        $this->model->vendor = $this->vendor;
-        $this->model->execute();
-        $this->documentTrail = new documentTrailClass();
+		$this->model->vendor = $this->vendor;
+		$this->model->execute();
+		$this->documentTrail = new documentTrailClass();
 	}
 
 
@@ -126,7 +126,7 @@ class logClass extends  configClass {
 				$sql.=" AND `log`.`logId`=\"".$this->strict($_POST['logId'],'n')."\"";
 			}
 		} else if( $this->getVendor() == self::mssql){
-		$sql	=	"
+			$sql	=	"
 			SELECT	*
 			FROM 	[log]
 			JOIN	[leaf]
@@ -138,7 +138,7 @@ class logClass extends  configClass {
 				$sql.=" AND `log`.`logId`=\"".$this->strict($_POST['logId'],'n')."\"";
 			}
 		} else if ($this->getVendor() == self:: oracle ){
-		$sql	=	"
+			$sql	=	"
 			SELECT	*
 			FROM 	\"log\"
 			JOIN	\"leaf\"
