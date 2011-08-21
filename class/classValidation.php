@@ -284,6 +284,7 @@ abstract class validationClass {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setIsDefault ?"));
 			exit();
 		}
+		
 	}
 	/**
 	 * Return isDefault Value
