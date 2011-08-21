@@ -280,6 +280,9 @@ abstract class validationClass {
 			$this->isDefault = $value;
 		} else if ($type=='array'){
 			$this->isDefault[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setIsDefault ?"));
+			exit();
 		}
 	}
 	/**
@@ -294,7 +297,7 @@ abstract class validationClass {
 		} else if ($type=='array'){
 			return $this->isDefault[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getIsDefault ?"));
 			exit();
 		}
 
@@ -311,6 +314,9 @@ abstract class validationClass {
 			$this->isNew = $value;
 		} else if ($type=='array'){
 			$this->isNew[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setIsNew ?"));
+			exit();
 		}
 
 	}
@@ -325,8 +331,8 @@ abstract class validationClass {
 			return $this->isNew;
 		} else if ($type=='array'){
 			return $this->isNew[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getIsNew ?"));
 			exit();
 		}
 
@@ -343,6 +349,9 @@ abstract class validationClass {
 			$this->isDraft = $value;
 		} else if ($type=='array'){
 			$this->isDraft[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setIsDraft ?"));
+			exit();
 		}
 
 	}
@@ -358,7 +367,7 @@ abstract class validationClass {
 		} else if ($type=='array'){
 			return $this->isDraft[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getIsDraft ?"));
 			exit();
 		}
 
@@ -375,6 +384,9 @@ abstract class validationClass {
 			$this->isUpdate = $value;
 		} else if ($type=='array'){
 			$this->isUpdate[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setIsUpdate ?"));
+			exit();
 		}
 
 	}
@@ -390,7 +402,7 @@ abstract class validationClass {
 		} else if ($type=='array'){
 			return $this->isUpdate[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getIsUpdate ?"));
 			exit();
 		}
 
@@ -407,6 +419,9 @@ abstract class validationClass {
 			$this->isActive = $value;
 		} else if ($type=='array'){
 			$this->isActive[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setIsActive ?"));
+			exit();
 		}
 
 	}
@@ -422,7 +437,7 @@ abstract class validationClass {
 		} else if ($type=='array'){
 			return $this->isActive[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getIsActive ?"));
 			exit();
 		}
 
@@ -439,6 +454,9 @@ abstract class validationClass {
 			$this->isDelete = $value;
 		} else if ($type=='array'){
 			$this->isDelete[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setIsDelete ?"));
+			exit();
 		}
 
 	}
@@ -454,7 +472,7 @@ abstract class validationClass {
 		} else if ($type=='array'){
 			return $this->isDelete[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getIsDelete ?"));
 			exit();
 		}
 
@@ -471,6 +489,9 @@ abstract class validationClass {
 			$this->isApproved = $value;
 		} else if ($type=='array'){
 			$this->isApproved[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setIsApproved ?"));
+			exit();
 		}
 
 	}
@@ -486,7 +507,7 @@ abstract class validationClass {
 		} else if ($type=='array'){
 			return $this->isApproved[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getIsApproved ?"));
 			exit();
 		}
 

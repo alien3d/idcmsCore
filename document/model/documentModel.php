@@ -116,11 +116,9 @@ class documentModel extends validationClass{
 		}
 
 		if(isset($_POST['documentFilename'])){
-			$this->setdocumentFilename($this->strict($_POST['docuementFilename'],'memo'));
+			$this->setDocumentFilename($this->strict($_POST['documentFilename'],'memo'));
 		}
-		if(isset($_POST['documentFilename'])){
-			$this->setdocumentExtension($this->strict($_POST['docuementExtension'],'memo'));
-		}
+
 		if(isset($_SESSION['staffId'])){
 			$this->setBy($_SESSION['staffId']);
 		}
@@ -240,6 +238,9 @@ class documentModel extends validationClass{
 			$this->documentId = $value;
 		} else if ($type=='array'){
 			$this->documentId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array ?"));
+			exit();
 		}
 	}
 	/**
@@ -254,7 +255,7 @@ class documentModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->documentId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array ?"));
 			exit();
 		}
 	}

@@ -133,10 +133,9 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
-						// //uncommen for testing
-						// purpose
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -618,7 +617,7 @@ Ext
 																		.get('documentCategoryId');
 													} else {
 														alert("testing for error"
-																+ i)
+																+ i);
 													}
 													if (isAdmin == 1) {
 														sub_url = sub_url

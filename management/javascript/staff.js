@@ -1135,13 +1135,7 @@ Ext
 																		if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																			alert(loadFailureMessageLabel);
 																		} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																			// here
-																			// will
-																			// be
-																			// error
-																			// if
-																			// duplicate
-																			// code
+																			// here will be error if duplicate code
 																			alert(clientInvalidMessageLabel);
 																		} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																			Ext.Msg

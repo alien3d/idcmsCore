@@ -40,7 +40,7 @@ class documentClass extends  configClass {
 	 */
 	private $log;
 	/**
-	 * documentCategory Model
+	 * Model
 	 * @var string
 	 */
 	public $model;
@@ -59,6 +59,22 @@ class documentClass extends  configClass {
 	 * @var bool
 	 */
 	public $duplicateTest;
+	/**
+	 * Path document will be uploaded
+	 * @var string
+	 */
+	public $path;
+	/**
+	 * Maximum File Size Upload
+	 * @var float
+	 */
+	public $maximumFileSize;
+
+	/**
+	 * Valid file extensions (images, word, excel, powerpoint)
+	 * @var string
+	 */
+	public $validFileType;
 	/**
 	 * Class Loader
 	 */
@@ -79,6 +95,7 @@ class documentClass extends  configClass {
 		$this->q->log        = $this->log;
 
 		$this->model         = new documentModel();
+
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -88,14 +105,72 @@ class documentClass extends  configClass {
 		$this->documentTrail->setLanguageId($this->getLanguageId());
 		$this->documentTrail->setLeafId($this->getLeafId());
 		$this->documentTrail->execute();
+		/*
+		 * Upload Setting
+		 */
+		$this->maximumFileSize =100 * 1024 * 1024; // eq to 100 mb
+		$this->validFileType= "/^\.(jpg|jpeg|gif|png|doc|docx|txt|rtf|pdf|xls|xlsx|ppt|pptx){1}$/i";
+		$this->path = $_SERVER["DOCUMENT_ROOT"]."idcmsCore/document/document/user/".$_SESSION['staffId']."/";
+
 	}
 
 	/* (non-PHPdoc)
 	 * @see config::create()
 	 */
 	function create(){
+		header('Content-Type','application/json; charset=utf-8');
+		//	    echo '{success:true, message:'.json_encode($_FILES['documentFilename']['name']).'}';
+		//	exit();
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
 
-		move_uploaded_file ($_FILES['docname']['tmp_name'],$this->path.$doc_ext);
+		}
+		$this->q->start();
+		$this->model->create();
+
+
+
+		$isFile = is_uploaded_file($_FILES['documentFilename']['tmp_name']);
+
+		if ($isFile)    {
+			$safeFilename = preg_replace(array("/\s+/", "/[^-\.\w]+/"),array("_", ""),trim($_FILES['documentFilename']['name']));
+			$fileSize=$_FILES['documentFilename']['size'];
+			$maxSize= $this->maximumFileSize;
+
+			if ($_FILES['documentFilename']['size'] >= $this->maximumFileSize) {
+					
+				echo json_encode(array("success"=>false,"message"=>" File To Big .File Size : ".$fileSize." Maximum File Size ".$maxSize));
+				exit();
+			}
+
+			if(!(preg_match($this->validFileType, strrchr($safeFilename, '.')))) {
+
+				echo json_encode(array("success"=>false,"message"=>"not valid type"));
+				exit();
+			}
+			//	echo '{success:true,message:\' 3document size :'.$fileSize.' maxSize: '.$maxSize.' \'}';
+			//	exit();
+			if(!is_dir($this->path)){
+				echo json_encode(array("success"=>false,"message"=>"Path no correct.Please change the path.Current Wrong Path : ".$this->path));
+				exit();
+			}
+			$oldFilename=$_FILES['documentFilename']['name'];
+			$newFilename=date("Y-m-d")."-".rand(0,32768).".xlsx";
+				
+			$isMove=move_uploaded_file ($_FILES['documentFilename']['tmp_name'],$this->path.$newFilename);
+			if(!$isMove){
+				echo json_encode(array("success"=>false,"message"=>"Error Moving file"));
+				exit();
+			}
+
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"File Is not uploaded"));
+			exit();
+		}
+
+
 		if($this->getVendor()==self::mysql){
 			$sql = "
 		INSERT INTO `document` 
@@ -113,9 +188,10 @@ class documentClass extends  configClass {
 				)
 			VALUES
 				(
+							
 						\"". $this->model->getDocumentCategoryId() . "\",				\"". $this->model->getLeafId() . "\",
 						\"". $this->model->getDocumentSequence() . "\",					\"". $this->model->getDocumentCode() . "\",	
-						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
+						\"". $this->model->getDocumentNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
 						\"". $this->model->getDocumentDesc() . "\",						\"". $this->model->getDocumentPath() . "\",
 						\"". $this->model->getDocumentFilename() . "\",					\"". $this->model->getDocumentExtension() . "\",
 						\"". $this->model->getIsDefault(0,'string') . "\"				,\"". $this->model->getIsNew(0,'string') . "\",				
@@ -131,7 +207,7 @@ class documentClass extends  configClass {
 				(
 				  	[documentCategoryId],	[leafId,
 				  	[documentSequence],		[documentCode],
-				  	[documentCode],			[documentTitle],		
+				  	[documentNote],			[documentTitle],		
 				  	[documentDesc],			[documentPath],			
 				  	[documentFilename],		[documentExtension],	
 				  	[isDefault],			[isNew],							
@@ -144,7 +220,7 @@ class documentClass extends  configClass {
 				(
 					\"". $this->model->getDocumentCategoryId() . "\",				\"". $this->model->getLeafId() . "\",
 						\"". $this->model->getDocumentSequence() . "\",					\"". $this->model->getDocumentCode() . "\",	
-						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
+						\"". $this->model->getDocumentNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
 						\"". $this->model->getDocumentDesc() . "\",						\"". $this->model->getDocumentPath() . "\",
 						\"". $this->model->getDocumentFilename() . "\",					\"". $this->model->getDocumentExtension() . "\",
 						\"". $this->model->getIsDefault(0,'string') . "\"				,\"". $this->model->getIsNew(0,'string') . "\",				
@@ -172,7 +248,7 @@ class documentClass extends  configClass {
 				(
 					\"". $this->model->getDocumentCategoryId() . "\",				\"". $this->model->getLeafId() . "\",
 						\"". $this->model->getDocumentSequence() . "\",					\"". $this->model->getDocumentCode() . "\",	
-						\"". $this->model->getDocumentCategoryNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
+						\"". $this->model->getDocumentNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
 						\"". $this->model->getDocumentDesc() . "\",						\"". $this->model->getDocumentPath() . "\",
 						\"". $this->model->getDocumentFilename() . "\",					\"". $this->model->getDocumentExtension() . "\",
 						\"". $this->model->getIsDefault(0,'string') . "\"				,\"". $this->model->getIsNew(0,'string') . "\",				
@@ -183,10 +259,22 @@ class documentClass extends  configClass {
 				);";
 		}
 		$this->q->create($sql);
-		$source = $this->path.$doc_ext;
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                "success" =>false,
+                "message" => $this->q->responce
+			));
+			exit();
+		}
+		$source = $this->path.$newFilename;
 		chmod($source, 0777);
-		//$this->convert($source);
-		$this->convert($source);
+		$this->q->commit();
+		echo json_encode(array(
+            "success" => true,
+            "message" => "Record Created",
+			"documentId"=>$documentId
+		));
+		exit();
 	}
 	/* (non-PHPdoc)
 	 * @see config::read()
@@ -502,9 +590,17 @@ class documentClass extends  configClass {
 	 * @see config::update()
 	 */
 	function update() 				{
-		$filecontent  = $_FILES['docname']['name'];
+		header('Content-Type','application/json; charset=utf-8');
 
-		move_uploaded_file ($_FILES['docname']['tmp_name'],$this->path.$doc_ext);
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
+		$filecontent  = $_FILES['documentFilename']['name'];
+
+		move_uploaded_file ($_FILES['documentFilename']['tmp_name'],$this->path.$doc_ext);
 		if($this->getVendor()==self::mysql){
 			$sql = "
 		UPDATE 	`document`
@@ -654,6 +750,14 @@ class documentClass extends  configClass {
 	 *  To Update flag Status
 	 */
 	function updateStatus () {
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
 		$this->model-> updateStatus();
 		$loop  = $this->model->getTotal();
 
@@ -897,6 +1001,13 @@ class documentClass extends  configClass {
 	 */
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
 		if($_SESSION['start']==0) {
 			$sql=str_replace("LIMIT","",$_SESSION['sql']);
 			$sql=str_replace($_SESSION['start'].",".$_SESSION['limit'],"",$sql);
@@ -954,9 +1065,9 @@ class documentClass extends  configClass {
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
 		$filename="doc.xlsx";
-		$objWriter->save("/var/www/html/kospek/document/document/excel/".$filename);
+		$objWriter->save("/kospek/document/document/excel/".$filename);
 
-		$file = fopen("/var/www/html/kospek/document/document/excel/".$filename,'r');
+		$file = fopen("/kospek/document/document/excel/".$filename,'r');
 		if($file){
 			echo json_encode(array("success"=>'true',"message"=>"File generated"));
 			exit();
@@ -969,27 +1080,53 @@ class documentClass extends  configClass {
 
 	function documentCategoryId() {
 		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
 		$sql	=	"
 		SELECT	*
 		FROM   `documentCategory`
 		WHERE   1 ";
 		$this->q->read($sql);
+		if($this->q->execute=='fail') {
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			exit();
+		}
 		$total = $this->q->numberRows();
 		$items		 =	array();
 		while($row   = 	$this->q->fetchAssoc()) {
 			$items[] =	$row;
 		}
-		echo json_encode(
-		array(
-											'totalCount' 		=>	$total,
+		if($total == 1) {
+			$json_encode=json_encode(
+			array(
+											'success'		=> true,
+											'total' 		=>	$total,
 											'documentCategory'	=> 	$items
-		)
-		);
+			)
+			);
+			$json_encode = str_replace("[","",$json_encode);
+			$json_encode = str_replace("]","",$json_encode);
+			echo json_encode;
+		} else {
+			echo json_encode(
+			array(
+											'success'		=> true,
+											'total' 		=>	$total,
+											'documentCategory'	=> 	$items
+			)
+			);
+		}
 	}
 }
 
 $documentObject  	= 	new documentClass();
-
+//$documentObject->execute();
+//$documentObject->create();
 
 /**
  *	crud -create,read,update,delete
@@ -1030,11 +1167,12 @@ if(isset($_POST['method']))	{
 	/*
 	 *  Load the dynamic value
 	 */
-	$documentObject -> execute();
+	$documentObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if($_POST['method']=='create')	{
+
 		$documentObject->create();
 	}
 	if($_POST['method']=='read') 	{
@@ -1063,10 +1201,13 @@ if(isset($_GET['method'])) {
 	/*
 	 *  Load the dynamic value
 	 */
-	$documentObject -> execute();
+	$documentObject->execute();
 	if(isset($_GET['field'])) {
 		if($_GET['field']=='staffId') {
 			$documentObject->staff();
+		}
+		if($_GET['field']=='documentCategoryId'){
+			$documentObject->documentCategoryId();
 		}
 	}
 	/*
@@ -1077,5 +1218,9 @@ if(isset($_GET['method'])) {
 			$documentObject->excel();
 		}
 	}
+
 }
+
+
+
 ?>

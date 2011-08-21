@@ -1,6 +1,7 @@
 Ext
 		.onReady(function() {
 			Ext.QuickTips.init();
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
 			Ext.form.Field.prototype.msgTarget = 'under';
 			var pageCreate;
 			var pageCreateList;
@@ -30,7 +31,7 @@ Ext
 				pagePrint = true;
 				pagePrintList = true;
 			}
-			Ext.BLANK_IMAGE_URL = '../javascript/resources/images/s.gif';
+
 			var perPage = 10;
 			var encode = false;
 			var local = false;
@@ -43,7 +44,7 @@ Ext
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 					} else {
-						Ext.MessageBox.alert(systemErrorLabel,
+						Ext.MessageBox.alert(systemErrorLabel + "kk",
 								jsonResponse.message);
 					}
 				},
@@ -72,7 +73,6 @@ Ext
 				method : 'POST',
 				baseParams : {
 					method : "read",
-					page : "master",
 					leafId : leafId
 				},
 				root : "data",
@@ -104,18 +104,7 @@ Ext
 					name : 'Time',
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s'
-				} ],
-				listeners : {
-					exception : function(DataProxy, type, action, options,
-							response, arg) {
-						var serverMessage = Ext.util.JSON
-								.decode(response.responseText);
-						if (serverMessage.success == false) {
-							Ext.MessageBox
-									.alert("Error", serverMessage.message);
-						}
-					}
-				}
+				} ]
 			});
 
 			var staffByProxy = new Ext.data.HttpProxy({
@@ -123,10 +112,9 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
-						// //uncommen for testing
-						// purpose
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -166,7 +154,7 @@ Ext
 
 			var documentCategoryProxy = new Ext.data.HttpProxy({
 				url : "../controller/documentController.php",
-				method : 'POST',
+				method : 'GET',
 				params : {
 					mode : 'read',
 					field : 'documentCategoryId',
@@ -219,7 +207,7 @@ Ext
 				local : false,
 				filters : [ {
 					type : 'string',
-					dataIndex : 'NoDoc',
+					dataIndex : 'documentCategoryTitle',
 					column : 'documentCategoryTitle',
 					table : 'documentCategory'
 				}, {
@@ -305,28 +293,28 @@ Ext
 									icon : '../../javascript/resources/images/icon/application_edit.png',
 									tooltip : updateRecordToolTipLabel,
 									handler : function(grid, rowIndex, colIndex) {
-										var record = deparmentStore
+										var record = documentStore
 												.getAt(rowIndex);
 										formPanel.getForm().reset();
 										formPanel.form
 												.load({
-													url : "../controller/deparmentController.php",
+													url : "../controller/documentController.php",
 													method : "POST",
 													waitTitle : systemLabel,
 													waitMsg : waitMessageLabel,
 													params : {
 														method : "read",
 														mode : "update",
-														deparmentId : record.data.deparmentId,
+														documentId : record.data.documentId,
 														leafId : leafId
 													},
 													success : function(form,
 															action) {
 														Ext
 																.getCmp(
-																		"deparmentDesc_temp")
+																		"documentDesc_temp")
 																.setValue(
-																		record.data.deparmentDesc);
+																		record.data.documentDesc);
 														Ext.getCmp(
 																'deleteButton')
 																.enable();
@@ -348,7 +336,7 @@ Ext
 									icon : '../../javascript/resources/images/icon/trash.gif',
 									tooltip : deleteRecordToolTipLabel,
 									handler : function(grid, rowIndex, colIndex) {
-										var record = deparmentStore
+										var record = documentStore
 												.getAt(rowIndex);
 										Ext.Msg
 												.show({
@@ -361,10 +349,10 @@ Ext
 														if ("yes" == response) {
 															Ext.Ajax
 																	.request({
-																		url : "../controller/deparmentController.php",
+																		url : "../controller/documentController.php",
 																		params : {
 																			method : "delete",
-																			deparmentId : record.data.deparmentId,
+																			documentId : record.data.documentId,
 																			leafId : leafId
 																		},
 																		success : function(
@@ -377,7 +365,7 @@ Ext
 																			} else {
 																				title = failureLabel;
 																			}
-																			deparmentStore
+																			documentStore
 																					.reload({
 																						params : {
 																							leafId : leafId,
@@ -385,14 +373,7 @@ Ext
 																							limit : perPage
 																						}
 																					});
-																			deparmentStoreList
-																					.reload({
-																						params : {
-																							leafId : leafId,
-																							start : 0,
-																							limit : perPage
-																						}
-																					});
+
 																			Ext.MessageBox
 																					.alert(
 																							systemErrorLabel,
@@ -439,7 +420,7 @@ Ext
 						sortable : true,
 						hidden : false
 					},
-					,
+
 					{
 						dataIndex : 'documentFilename',
 						header : documentFilenameLabel,
@@ -507,26 +488,7 @@ Ext
 										name : 'add_record',
 										text : 'New Record',
 										handler : function() {
-											var e = new documentEntity({
-												documentId : '',
-												documentDesc : '',
-												By : '',
-												staffName : '',
-												isDefault : '',
-												isNew : '',
-												isDraft : '',
-												isUpdate : '',
-												isDelete : '',
-												isActive : '',
-												isApproved : '',
-												Time : ''
-											});
-											documentEditor.stopEditing();
-											documentStore.insert(0, e);
-											var s = documentGrid
-													.getSelectionModel()
-													.getSelections();
-											documentEditor.startEditing(0);
+
 										}
 									},
 									{
@@ -590,7 +552,8 @@ Ext
 																+ record
 																		.get('documentId');
 													} else {
-														alert("testing for error"+ i);
+														alert("testing for error"
+																+ i);
 													}
 													if (isAdmin == 1) {
 														sub_url = sub_url
@@ -626,9 +589,7 @@ Ext
 																		.get('isApproved');
 													}
 												}
-												url = url + sub_url; // reques
-												// and
-												// ajax
+												url = url + sub_url;
 
 												Ext.Ajax
 														.request({
@@ -650,11 +611,7 @@ Ext
 																					systemLabel,
 																					jsonResponse.message);
 																	documentStore
-																			.removeAll(); // force
-																	// to
-																	// remove
-																	// all
-																	// data
+																			.removeAll();
 																	documentStore
 																			.reload();
 																} else if (jsonResponse.success == false) {
@@ -744,17 +701,19 @@ Ext
 
 			var documentCategoryId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
-				fieldLabel : 'Dokument ID <span style="color: red;">*</span>',
+				fieldLabel : documentCategoryIdLabel
+						+ '<span style="color: red;">*</span>',
 				name : 'documentCategoryId',
 				valueField : 'documentCategoryId',
 				hiddenName : 'documentCategoryId',
-				id : 'documentCategory',
-				displayField : 'IdDoc',
+				id : 'documentCategoryId',
+				hiddenId  :'documentCategoryFake',
+				displayField : 'documentCategoryTitle',
 				typeAhead : false,
-				emptyText : 'Sila Pilih Dokument ID',
+				emptyText : emptyTextLabel,
 				triggerAction : 'all',
 				mode : 'local',
-				store : documentCategory_store,
+				store : documentCategoryStore,
 				anchor : '95%',
 				selectOnFocus : true,
 				allowBlank : false,
@@ -770,11 +729,61 @@ Ext
 				}
 			});
 
-			var documentDesc = new Ext.form.TextField({
+			var documentCode = new Ext.form.TextField({
 				labelAlign : 'left',
-				fieldLabel : 'Penerangan',
+				fieldLabel : documentCodeLabel,
+				hiddenName : 'documentCode',
+				name : 'documentCode',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				anchor : '95%'
+			});
+
+			var documentSequence = new Ext.form.NumberField({
+				labelAlign : 'left',
+				fieldLabel : documentSequenceLabel,
+				hiddenName : 'documentSequence',
+				name : 'documentSequence',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				anchor : '95%'
+			});
+
+			var documentNote = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : documentNoteLabel,
 				hiddenName : 'documentDesc',
 				name : 'documentDesc',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				anchor : '95%'
+			});
+
+			var documentTitle = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : documentTitleLabel,
+				hiddenName : 'documentDesc',
+				name : 'documentDesc',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				anchor : '95%'
+			});
+
+			var documentDesc = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : documentDescLabel,
+				hiddenName : 'documentDesc',
+				name : 'documentDesc',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				anchor : '95%'
+			});
+
+			var documentPath = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : documentPathLabel,
+				hiddenName : 'documentPath',
+				name : 'documentPath',
 				allowBlank : false,
 				blankText : blankTextLabel,
 				anchor : '95%'
@@ -806,7 +815,7 @@ Ext
 
 			var formPanel = new Ext.FormPanel(
 					{
-						method : 'post',
+						method : 'POST',
 						id : 'formPanel',
 						url : '../controller/documentController.php',
 						title : leafNote,
@@ -832,15 +841,13 @@ Ext
 								form : 'formPanel'
 							})
 						}),
-						items : [ documentCategoryId, documentDesc,
-								documentFilename, documentExtension,
-								documentId, {
+						items : [ documentCategoryId, documentDesc, documentId,
+								{
 									xtype : 'fileuploadfield',
 									id : 'form-file',
-									emptyText : 'Sila pilih Dokumen',
-									fieldLabel : 'Dokumen',
+									fieldLabel : documentFilenameLabel,
 									name : 'documentFilename',
-									id : 'documetnFilename',
+									id : 'documentFilename',
 									allowBlank : false,
 									blankText : blankTextLabel,
 									buttonCfg : {
@@ -853,41 +860,150 @@ Ext
 									text : uploadButtonLabel,
 									iconCls : 'bullet_disk',
 									handler : function() {
+
 										if (formPanel.getForm().isValid()) {
-											if (formPanel.getForm().isValid()) {
-												formPanel
-														.getForm()
-														.submit(
-																{
-																	waitTitle : waitMessageLabel,
-																	waitMsg : waitMessageLabel,
-																	params : {
-																		method : 'upload',
-																		leafId : leafId
-																	},
-																	success : function(
-																			formPanel,
-																			o) {
+											var id = 0;
+											id = Ext.getCmp('documentId')
+													.getValue();
+											var method;
+											if (id.length > 0) {
+												method = 'save';
+											} else {
+												method = 'create';
+											}
+											formPanel
+													.getForm()
+													.submit(
+															{
+																waitTitle : waitMessageLabel,
+																waitMsg : waitMessageLabel,
+																params : {
+																	method : method,
+																	leafId : leafId
+																},
+																success : function(
+																		form,
+																		action) {
+
+																	if (action.result.success == true) {
 																		Ext.MessageBox
-																				.alert(systemLabel);
-																		// formPanel.getForm().reset();
+																				.alert(
+																						systemLabel,
+																						action.result.message);
+
+																		formPanel
+																				.getForm()
+																				.reset();
 																		store
-																				.reload();
+																				.reload({
+																					params : {
+																						leafId : leafId,
+																						start : 0,
+																						limit : perPage
+																					}
+																				});
+																		if (action.result.firstRecord > 0) {
+																			Ext
+																					.getCmp(
+																							'firstButton')
+																					.enable();
+																			Ext
+																					.getCmp(
+																							'firstRecord')
+																					.setValue(
+																							action.result.firstRecord);
+																		} else {
+																			Ext
+																					.getCmp(
+																							'firstButton')
+																					.disable();
+																		}
+																		
+																		if (action.result.nextRecord > 0) {
+																			Ext
+																			.getCmp(
+																					'nextButton')
+																			.enable();
+																			Ext
+																				.getCmp(
+																						'nextRecord')
+																				.setValue(
+																						action.result.nextRecord);
+																		} else {
+																		
+																			Ext
+																			.getCmp(
+																					'nextButton')
+																			.disable();
+																			
+																		}
+																		if (action.result.previousRecord > 0) {
+																			Ext
+																			.getCmp(
+																					'previousButton')
+																			.enable();
+																			Ext
+																				.getCmp(
+																						'previousRecord')
+																				.setValue(
+																						action.result.previousRecord);
+																		} else{
+																			Ext
+																			.getCmp(
+																					'previousButton')
+																			.disable();
+																		}
+																		if (action.result.firstRecord > 0) {
+																			Ext
+																			.getCmp(
+																					'endButton')
+																			.enable();
+																			Ext
+																				.getCmp(
+																						'lastRecord')
+																				.setValue(
+																						action.result.lastRecord);
+																		} else{
+																			Ext
+																			.getCmp(
+																					'endButton')
+																			.disable();
+																		}	
 																		viewPort.items
 																				.get(
 																						0)
 																				.expand();
-																	},
-																	failure : function(
-																			formPanel,
-																			o) {
-																		Ext.MessageBox
-																				.alert(loadFailureMessageLabel);
+																	} else {
+																		
+																		alert("a"+action.result.message);
 																	}
-																});
-											}
+																},
+																failure : function(
+																		form,
+																		action) {
+
+																	if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
+																		alert("failure a"+loadFailureMessageLabel);
+																	} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
+																		// here will be error if duplicate code
+																		alert(clientInvalidMessageLabel);
+																	} else if ("failure b "+action.failureType === Ext.form.Action.CONNECT_FAILURE) {
+																		Ext.Msg
+																				.alert(connectFailureLabel
+																						+ form.response.status
+																						+ ' '
+																						+ form.response.statusText);
+																	} else if (action.failureType === Ext.form.Action.SERVER_INVALID) {
+																		Ext.Msg
+																				.alert(
+																						"failure c"+systemErrorLabel,
+																						action.result.message);
+																	}
+																}
+															});
 										}
 									}
+
 								}, {
 									text : newButtonLabel,
 									type : 'button',
@@ -903,7 +1019,8 @@ Ext
 										formPanel.getForm().reset();
 									}
 								}, {
-									text : gridButtonLabel, type : 'button',
+									text : gridButtonLabel,
+									type : 'button',
 									iconCls : 'table',
 									handler : function() {
 										if (win) {
@@ -934,6 +1051,6 @@ Ext
 					animate : false,
 					activeOnTop : true
 				},
-				items : [ gridPanel, formPanel ]
+				items : [ documentGrid, formPanel ]
 			});
 		});

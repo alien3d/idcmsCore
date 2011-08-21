@@ -74,9 +74,9 @@ class eventClass extends configClass
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery  = $this->getGridQuery();
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		
+
 		$this->excel  = new PHPExcel();
-		
+
 		$this->audit  = 0;
 		$this->log    = 1;
 		$this->q->log = $this->log;
@@ -94,7 +94,15 @@ class eventClass extends configClass
 	 */
 	public function create()
 	{
-		header('Content-type: application/json');
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
+
 		$this->model->create();
 		$this->q->start();
 		if ($this->getVendor() == self::mysql) {
@@ -170,7 +178,14 @@ class eventClass extends configClass
 	 */
 	public function read()
 	{
-		header('Content-type: application/json');
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
 		if($this->getVendor()==self::mysql){
 			$sql = "
 			SELECT	*
@@ -328,7 +343,14 @@ class eventClass extends configClass
 	 */
 	function delete()
 	{
-		header('Content-type: application/json');
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
 		$this->model->delete();
 		$this->q->start();
 		if($this->getVendor() == self::mysql){
@@ -359,6 +381,14 @@ class eventClass extends configClass
 	 */
 	function excel()
 	{
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
 	}
 }
 $eventObject = new eventClass();

@@ -22,6 +22,10 @@ include('../../Connections/main.php');	?>
 	href="../../javascript/examples/ux/statusbar/css/statusbar.css">
     <link rel="stylesheet" type="text/css"
 	href="../../javascript/examples/ux/css/RowEditor.css">
+	   <link rel="stylesheet" type="text/css"
+		href="../../javascript/examples/ux/statusbar/css/statusbar.css">
+    <link rel="stylesheet" type="text/css"
+	href="../../javascript/examples/ux/fileuploadfield/css/FileUploadField.css">
 <?php // only execute when exist
 if($_SESSION[$theme]) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
@@ -68,6 +72,8 @@ x-grid3-row-alt {
 	src="../../javascript/examples/ux/checkColumn.js"></script>
 <script type="text/javascript"
 	src="../../javascript/examples/ux/RowEditor.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/fileuploadfield/FileUploadField.js"></script>
 <script  type="text/javascript"
 	src="../javascript/document.js"></script>
 </html>

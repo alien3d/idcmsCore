@@ -16,17 +16,17 @@ require_once("../model/calendarModel.php");
 class calendarClass extends  configClass {
 	/**
 	 * Connection to the database
-* @var string
+	 * @var string
 	 */
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-* @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string 
+	 * @var string
 	 */
 	private $documentTrail;
 	/**
@@ -41,17 +41,17 @@ class calendarClass extends  configClass {
 	private $log;
 	/**
 	 *  Model
-	 * @var string 
+	 * @var string
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string 
+	 * @var string
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string 
+	 * @var string
 	 */
 	public $auditColumn;
 	/**
@@ -103,13 +103,29 @@ class calendarClass extends  configClass {
 	/* (non-PHPdoc)
 	 * @see config::create()
 	 */
-	function create(){}
+	function create(){
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
+	}
 	/* (non-PHPdoc)
 	 * @see config::read()
 	 */
 	function read() 				{
-		header('Content-type: application/json');
-		
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
+
 		if($this->getVendor()==self::mysql){
 			$sql="
 		SELECT	*
@@ -138,8 +154,8 @@ class calendarClass extends  configClass {
 
 		$this->q->read($sql);
 		$total	= $this->q->numberRows();
-		
-		
+
+
 
 		$this->q->read($sql);
 		$items = array();
@@ -187,7 +203,14 @@ class calendarClass extends  configClass {
 	 */
 	function update(){
 
-		header('Content-type: application/json');
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
 
 		$this->q->start();
 		$sql="
@@ -208,8 +231,8 @@ class calendarClass extends  configClass {
 			echo json_encode(array(
                 "success" =>true,
                 "message" => "update success"
-			));
-			exit();
+                ));
+                exit();
 		}
 
 	}
@@ -219,7 +242,16 @@ class calendarClass extends  configClass {
 	/* (non-PHPdoc)
 	 * @see config::delete()
 	 */
-	function delete(){}
+	function delete(){
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
+	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
 	 */
@@ -234,7 +266,7 @@ $calendarObject  	= 	new calendarClass();
 
 
 if(isset($_POST['method'])){
-	
+
 	/*
 	 *  Initilize Value before load in the loader
 	 */
@@ -258,7 +290,7 @@ if(isset($_POST['method'])){
 		$calendarObject ->create();
 	}
 	if($_POST['method']=='read'){
-	
+
 		$calendarObject ->read();
 	}
 
