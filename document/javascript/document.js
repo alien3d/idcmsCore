@@ -92,10 +92,16 @@ Ext
 					name : 'documentPath',
 					type : 'string'
 				}, {
-					name : 'documentFilename',
+					name : 'documentOriginalFilename',
+					type : 'string'
+				}, {
+					name : 'documentDownloadFilename',
 					type : 'string'
 				}, {
 					name : 'documentExtension',
+					type : 'string'
+				}, {
+					name : 'documentVersion',
 					type : 'string'
 				}, {
 					name : 'By',
@@ -222,13 +228,22 @@ Ext
 					table : 'document'
 				}, {
 					type : 'string',
-					dataIndex : 'documentFilename',
-					column : 'documentFilename',
+					dataIndex : 'documentOriginalFilename',
+					column : 'documentOriginalFilename',
 					table : 'document'
+				}, {
+					type : 'string',
+					dataIndex : 'documentDownloadFilename',
+					column : 'documentDownloadFilename'
 				}, {
 					type : 'string',
 					dataIndex : 'documentExtension',
 					column : 'documentExtension',
+					table : 'document'
+				}, {
+					type : 'string',
+					dataIndex : 'documentVersion',
+					column : 'documentVersion',
 					table : 'document'
 				}, {
 					type : 'list',
@@ -422,14 +437,26 @@ Ext
 					},
 
 					{
-						dataIndex : 'documentFilename',
-						header : documentFilenameLabel,
+						dataIndex : 'documentOriginalFilename',
+						header : documentOriginalFilenameLabel,
+						sortable : true,
+						hidden : false
+					},
+					{
+						dataIndex : 'documentDownloadFilename',
+						header : documentDownloadFilenameLabel,
 						sortable : true,
 						hidden : false
 					},
 					{
 						dataIndex : 'documentExtension',
 						header : documentExtensionLabel,
+						sortable : true,
+						hidden : false
+					},
+					{
+						dataIndex : 'documentVersion',
+						header : documentVersionLabel,
 						sortable : true,
 						hidden : false
 					},
@@ -975,7 +1002,7 @@ Ext
 																				.expand();
 																	} else {
 																		
-																		alert("a"+action.result.message);
+																		alert(action.result.message);
 																	}
 																},
 																failure : function(
@@ -983,11 +1010,11 @@ Ext
 																		action) {
 
 																	if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
-																		alert("failure a"+loadFailureMessageLabel);
+																		alert(loadFailureMessageLabel);
 																	} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
 																		// here will be error if duplicate code
 																		alert(clientInvalidMessageLabel);
-																	} else if ("failure b "+action.failureType === Ext.form.Action.CONNECT_FAILURE) {
+																	} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																		Ext.Msg
 																				.alert(connectFailureLabel
 																						+ form.response.status

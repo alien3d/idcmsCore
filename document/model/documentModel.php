@@ -62,12 +62,22 @@ class documentModel extends validationClass{
 	 * Document filename . E.g   financial.xlsx
 	 * @var string
 	 */
-	private $documentFilename;
+	private $documentOriginalFilename;
+	/**
+	 * Document filename . E.g   financial.xlsx
+	 * @var string
+	 */
+	private $documentDownloadFilename;
 	/**
 	 * Document Extension E.g  .pdf  .xlsx
 	 * @var string
 	 */
 	private $documentExtension;
+	/**
+	 * Document Version
+	 * @var string
+	 */
+	private $documentVersion;
 
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
@@ -115,9 +125,7 @@ class documentModel extends validationClass{
 			$this->setDocumentPath($this->strict($_POST['docuementPath'],'memo'));
 		}
 
-		if(isset($_POST['documentFilename'])){
-			$this->setDocumentFilename($this->strict($_POST['documentFilename'],'memo'));
-		}
+
 
 		if(isset($_SESSION['staffId'])){
 			$this->setBy($_SESSION['staffId']);
@@ -139,7 +147,7 @@ class documentModel extends validationClass{
 	 */
 	public function create()
 	{
-	
+
 		$this->setIsDefault(0,0,'single');
 		$this->setIsNew(1,0,'single');
 		$this->setIsDraft(0,0,'single');
@@ -376,25 +384,53 @@ class documentModel extends validationClass{
 		return $this->documentPath;
 	}
 	/**
-	 * Set Document Filename Value
+	 * Set Document Original Filename Value
 	 * @param string $value
 	 */
-	public function setDocumentFilename($value) {
-		$this->documentFilename = $value;
+	public function setDocumentOriginalFilename($value) {
+		$this->documentOriginalFilename = $value;
 	}
 	/**
-	 * Return Document Filename
+	 * Return Document Original Filename
+	 * @return stringa
+	 */
+	public function getDocumentOriginalFilename() {
+		return $this->documentOriginalFilename;
+	}
+	/**
+	 * Set Document Download Filename Value
+	 * @param string $value
+	 */
+	public function setDocumentDownloadFilename($value) {
+		$this->documentDownloadFilename = $value;
+	}
+	/**
+	 * Return Document Download Filename
 	 * @return string
 	 */
-	public function getDocumentFilename() {
-		return $this->documentFilename;
+	public function getDocumentDownloadFilename() {
+		return $this->documentDownloadFilename;
+	}
+	/**
+	 * Set Document Version Value
+	 * @param string $value
+	 */
+	public function setDocumentVersion($value) {
+		$this->documentVersion = $value;
+	}
+	/**
+	 * Return Document Version
+	 * @return string
+	 */
+	public function getDocumentVersion() {
+		return $this->documentVersion;
 	}
 	/**
 	 * Set Document Extension Value
 	 * @param string $value
 	 */
 	public function setDocumentExtension($value) {
-		$this->documentFilename = $value;
+		$this->documentExtension = $value;
 	}
 	/**
 	 * Return Document Extension
@@ -403,6 +439,21 @@ class documentModel extends validationClass{
 	public function getDocumentExtension() {
 		return $this->documentExtension;
 	}
+	/**
+	 * Set Document Extension Value
+	 * @param string $value
+	 */
+	public function setDocumentExtension($value) {
+		$this->documentExtension = $value;
+	}
+	/**
+	 * Return Document Extension
+	 * @return string
+	 */
+	public function getDocumentExtension() {
+		return $this->documentExtension;
+	}
+	
 
 }
 ?>

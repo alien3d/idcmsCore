@@ -156,13 +156,18 @@ class documentClass extends  configClass {
 				echo json_encode(array("success"=>false,"message"=>"Path no correct.Please change the path.Current Wrong Path : ".$this->path));
 				exit();
 			}
-			$oldFilename=$_FILES['documentFilename']['name'];
-			$newFilename=date("Y-m-d")."-".rand(0,32768).".xlsx";
-				
-			$isMove=move_uploaded_file ($_FILES['documentFilename']['tmp_name'],$this->path.$newFilename);
+			$originalFilename=$_FILES['documentFilename']['name'];
+			$downloadFilename=date("Y-m-d")."-".rand(0,32768).".xlsx";
+
+			$this->model->setDocumentOriginalFilename($originalFilename);
+			$this->model->setDocumentDownloadFilename($downloadFilename);
+
+			$isMove=move_uploaded_file ($_FILES['documentFilename']['tmp_name'],$this->path.$downloadFilename);
 			if(!$isMove){
 				echo json_encode(array("success"=>false,"message"=>"Error Moving file"));
 				exit();
+			}else {
+
 			}
 
 		} else {
@@ -170,14 +175,37 @@ class documentClass extends  configClass {
 			exit();
 		}
 
-
+		// create versioning
+		if($this->getVendor()==self::mysql){
+			$sql="
+			SELECT 	count(*) 
+			FROM 	`document` 
+			WHERE 	`originalFilename`	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		`staffId`			=   '".$this->model->getby()."'";
+				
+		} else if($this->getVendor()==self::mssql){
+			$sql="
+			SELECT 	count(*) 
+			FROM 	[document] 
+			WHERE 	[originalFilename]	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		[staffId]			=   '".$this->model->getBy()."'";
+		} else if($this->getVendor()==self::oracle){
+			$sql="
+			SELECT 	count(*) 
+			FROM 	\"document\" 
+			WHERE 	\"originalFilename\"	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		\"staffId\"			=   '".$this->model->getBy()."'";
+		}
+		$this->q->read($sql);
+		$total= $this->q->numberRows();
+		$this->model->setDocumentVersion($total);
 		if($this->getVendor()==self::mysql){
 			$sql = "
 		INSERT INTO `document` 
 				(
 				  	`documentCategoryId`,	`leafId`,
 				  	`documentSequence`,		`documentCode`,
-				  	`documentNote`			`documentTitle`,		
+				  	`documentNote`,			`documentTitle`,		
 				  	`documentDesc`,			`documentPath`,			
 				  	`documentFilename`,		`documentExtension`,	
 				  	`isDefault`,			`isNew`,							
@@ -598,9 +626,71 @@ class documentClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
-		$filecontent  = $_FILES['documentFilename']['name'];
+		$isFile = is_uploaded_file($_FILES['documentFilename']['tmp_name']);
 
-		move_uploaded_file ($_FILES['documentFilename']['tmp_name'],$this->path.$doc_ext);
+		if ($isFile)    {
+			$safeFilename = preg_replace(array("/\s+/", "/[^-\.\w]+/"),array("_", ""),trim($_FILES['documentFilename']['name']));
+			$fileSize=$_FILES['documentFilename']['size'];
+			$maxSize= $this->maximumFileSize;
+
+			if ($_FILES['documentFilename']['size'] >= $this->maximumFileSize) {
+					
+				echo json_encode(array("success"=>false,"message"=>" File To Big .File Size : ".$fileSize." Maximum File Size ".$maxSize));
+				exit();
+			}
+
+			if(!(preg_match($this->validFileType, strrchr($safeFilename, '.')))) {
+
+				echo json_encode(array("success"=>false,"message"=>"not valid type"));
+				exit();
+			}
+		
+			if(!is_dir($this->path)){
+				echo json_encode(array("success"=>false,"message"=>"Path no correct.Please change the path.Current Wrong Path : ".$this->path));
+				exit();
+			}
+			$originalFilename=$_FILES['documentFilename']['name'];
+			$downloadFilename=date("Y-m-d")."-".rand(0,32768).".xlsx";
+
+			$this->model->setDocumentOriginalFilename($originalFilename);
+			$this->model->setDocumentDownloadFilename($downloadFilename);
+
+			$isMove=move_uploaded_file ($_FILES['documentFilename']['tmp_name'],$this->path.$downloadFilename);
+			if(!$isMove){
+				echo json_encode(array("success"=>false,"message"=>"Error Moving file"));
+				exit();
+			}else {
+
+			}
+
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"File Is not uploaded"));
+			exit();
+		}
+		// create versioning
+		if($this->getVendor()==self::mysql){
+			$sql="
+			SELECT 	count(*) 
+			FROM 	`document` 
+			WHERE 	`originalFilename`	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		`staffId`			=   '".$this->model->getBy()."'";
+				
+		} else if($this->getVendor()==self::mssql){
+			$sql="
+			SELECT 	count(*) 
+			FROM 	[document] 
+			WHERE 	[originalFilename]	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		[staffId]			=   '".$this->model->getBy()."'";
+		} else if($this->getVendor()==self::oracle){
+			$sql="
+			SELECT 	count(*) 
+			FROM 	\"document\" 
+			WHERE 	\"originalFilename\"	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		\"staffId\"			=   '".$this->model->getBy()."'";
+		}
+		$this->q->read($sql);
+		$total= $this->q->numberRows();
+		$this->model->setDocumentVersion($total);
 		if($this->getVendor()==self::mysql){
 			$sql = "
 		UPDATE 	`document`
@@ -614,6 +704,7 @@ class documentClass extends  configClass {
 				`documentPath`	        	=	\"".$this->model->getDocumentPath()."\",
 				`documentFilename`	    	=	\"".$this->model->getDocumentFilename()."\",
 				`documentExtension`	    	=	\"".$this->model->getDocumentExtension()."\",
+				`documentVersion`	    	=	\"".$this->model->getDocumentVersion()."\",				
 				`isDefault`					=	\"".$this->model->getIsDefault(0,'single')."\",
 				`isActive`					=	\"".$this->model->getIsActive(0,'single')."\",
 				`isNew`						=	\"".$this->model->getIsNew(0,'single')."\",
