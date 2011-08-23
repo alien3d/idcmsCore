@@ -75,7 +75,7 @@ class documentModel extends validationClass{
 	private $documentExtension;
 	/**
 	 * Document Version
-	 * @var string
+	 * @var int
 	 */
 	private $documentVersion;
 
@@ -411,47 +411,34 @@ class documentModel extends validationClass{
 	public function getDocumentDownloadFilename() {
 		return $this->documentDownloadFilename;
 	}
+	
+	/**
+	 * Set Document Extension Value
+	 * @param string $value
+	 */
+	public function setDocumentExtension($value) {
+		$this->documentExtension = $value;
+	}
+	/**
+	 * Return Document Extension
+	 * @return string
+	 */
+	public function getDocumentExtension() {
+		return $this->documentExtension;
+	}
 	/**
 	 * Set Document Version Value
-	 * @param string $value
+	 * @param int $value
 	 */
 	public function setDocumentVersion($value) {
 		$this->documentVersion = $value;
 	}
 	/**
 	 * Return Document Version
-	 * @return string
+	 * @return int
 	 */
 	public function getDocumentVersion() {
 		return $this->documentVersion;
-	}
-	/**
-	 * Set Document Extension Value
-	 * @param string $value
-	 */
-	public function setDocumentExtension($value) {
-		$this->documentExtension = $value;
-	}
-	/**
-	 * Return Document Extension
-	 * @return string
-	 */
-	public function getDocumentExtension() {
-		return $this->documentExtension;
-	}
-	/**
-	 * Set Document Extension Value
-	 * @param string $value
-	 */
-	public function setDocumentExtension($value) {
-		$this->documentExtension = $value;
-	}
-	/**
-	 * Return Document Extension
-	 * @return string
-	 */
-	public function getDocumentExtension() {
-		return $this->documentExtension;
 	}
 	
 

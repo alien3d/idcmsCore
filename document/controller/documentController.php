@@ -155,12 +155,26 @@ class documentClass extends  configClass {
 			if(!is_dir($this->path)){
 				echo json_encode(array("success"=>false,"message"=>"Path no correct.Please change the path.Current Wrong Path : ".$this->path));
 				exit();
+			} else {
+				$this->model->setDocumentPath($this->path);
+			
 			}
-			$originalFilename=$_FILES['documentFilename']['name'];
-			$downloadFilename=date("Y-m-d")."-".rand(0,32768).".xlsx";
+				
+			$originalFilename			=	$_FILES['documentFilename']['name'];
 
+			$findExtensionArray 		=	explode('.',$originalFilename);	
+			echo '{success:true,message:\' 3document size :'.print_r($findExtensionArray).' \'}';
+			exit();
+			$filenameWithoutExtension 	= 	$findExtensionArray(0);
+			$filenameExtension 			= 	$findExtensionArray(1);
+			echo '{success:true,message:\' 3document size :'.$fileSize.' maxSize: '.$maxSize.' \'}';
+				exit();
+			$downloadFilename			=  	$filenameWithoutExtension."-".rand(0,32768).$filenameExtension;
+			echo '{success:true,message:\' 3document name :'.$downloadFilename.' \'}';
+			exit();
 			$this->model->setDocumentOriginalFilename($originalFilename);
 			$this->model->setDocumentDownloadFilename($downloadFilename);
+			$this->model->setDocumentExtension($filenameExtension);
 
 			$isMove=move_uploaded_file ($_FILES['documentFilename']['tmp_name'],$this->path.$downloadFilename);
 			if(!$isMove){
@@ -180,38 +194,49 @@ class documentClass extends  configClass {
 			$sql="
 			SELECT 	count(*) 
 			FROM 	`document` 
-			WHERE 	`originalFilename`	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		`staffId`			=   '".$this->model->getby()."'";
-				
+			WHERE 	`documentOriginalFilename`	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		`By`			=   '".$this->model->getby()."'";
+
 		} else if($this->getVendor()==self::mssql){
 			$sql="
 			SELECT 	count(*) 
 			FROM 	[document] 
-			WHERE 	[originalFilename]	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		[staffId]			=   '".$this->model->getBy()."'";
+			WHERE 	[documentOriginalFilename]	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		[By]			=   '".$this->model->getBy()."'";
 		} else if($this->getVendor()==self::oracle){
 			$sql="
 			SELECT 	count(*) 
 			FROM 	\"document\" 
-			WHERE 	\"originalFilename\"	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		\"staffId\"			=   '".$this->model->getBy()."'";
+			WHERE 	\"documentOriginalFilename\"	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		\"By\"			=   '".$this->model->getBy()."'";
 		}
 		$this->q->read($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array(
+                "success" =>false,
+                "message" => $this->q->responce
+			));
+			exit();
+		}
 		$total= $this->q->numberRows();
+
 		$this->model->setDocumentVersion($total);
+
 		if($this->getVendor()==self::mysql){
+
 			$sql = "
 		INSERT INTO `document` 
 				(
-				  	`documentCategoryId`,	`leafId`,
-				  	`documentSequence`,		`documentCode`,
-				  	`documentNote`,			`documentTitle`,		
-				  	`documentDesc`,			`documentPath`,			
-				  	`documentFilename`,		`documentExtension`,	
-				  	`isDefault`,			`isNew`,							
-				  	`isDraft`,				`isUpdate`,							
-				  	`isDelete`,				`isActive`,							
-				  	`isApproved`,			`By`,								
+				  	`documentCategoryId`,			`leafId`,
+				  	`documentSequence`,				`documentCode`,
+				  	`documentNote`,					`documentTitle`,		
+				  	`documentDesc`,					`documentPath`,			
+				  	`documentOriginalFilename`,		`documentDownloadFilename`,
+				  	`documentExtension`,			`documentVersion`,
+				  	`isDefault`,					`isNew`,							
+				  	`isDraft`,						`isUpdate`,							
+				  	`isDelete`,						`isActive`,							
+				  	`isApproved`,					`By`,								
 				  	`Time`
 				)
 			VALUES
@@ -219,29 +244,32 @@ class documentClass extends  configClass {
 							
 						\"". $this->model->getDocumentCategoryId() . "\",				\"". $this->model->getLeafId() . "\",
 						\"". $this->model->getDocumentSequence() . "\",					\"". $this->model->getDocumentCode() . "\",	
-						\"". $this->model->getDocumentNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
+						\"". $this->model->getDocumentNote() . "\",						\"". $this->model->getDocumentTitle() . "\",
 						\"". $this->model->getDocumentDesc() . "\",						\"". $this->model->getDocumentPath() . "\",
-						\"". $this->model->getDocumentFilename() . "\",					\"". $this->model->getDocumentExtension() . "\",
+						\"". $this->model->getDocumentOriginalFilename() . "\",			\"". $this->model->getDocumentDownloadFilename() . "\",			
+						\"". $this->model->getDocumentExtension() . "\",				\"". $this->model->getDocumentVersion() . "\",
 						\"". $this->model->getIsDefault(0,'single') . "\"				,\"". $this->model->getIsNew(0,'single') . "\",				
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",				
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",				
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",						
+						\"". $this->model->getIsApproved(0,'single') . "\",				\"". $this->model->getBy() . "\",						
 						" . $this->model->getTime() . "
 				);";
+
 
 		} else if ($this->getVendor()==self::mssql){
 			$sql = "
 		INSERT INTO `document` 
 				(
-				  	[documentCategoryId],	[leafId,
-				  	[documentSequence],		[documentCode],
-				  	[documentNote],			[documentTitle],		
-				  	[documentDesc],			[documentPath],			
-				  	[documentFilename],		[documentExtension],	
-				  	[isDefault],			[isNew],							
-				  	[isDraft],				[isUpdate],							
-				  	[isDelete],				[isActive],							
-				  	[isApproved],			[By],								
+				  	[documentCategoryId],			[leafId],
+				  	[documentSequence],				[documentCode],
+				  	[documentNote],					[documentTitle],		
+				  	[documentDesc],					[documentPath],			
+				  	[documentOriginlFilename],		[documentOriginlFilename],	
+				  	[documentExtension],			[documentVersion],
+				  	[isDefault],					[isNew],							
+				  	[isDraft],						[isUpdate],							
+				  	[isDelete],						[isActive],							
+				  	[isApproved],					[By],								
 				  	[Time]
 				)
 			VALUES
@@ -250,7 +278,8 @@ class documentClass extends  configClass {
 						\"". $this->model->getDocumentSequence() . "\",					\"". $this->model->getDocumentCode() . "\",	
 						\"". $this->model->getDocumentNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
 						\"". $this->model->getDocumentDesc() . "\",						\"". $this->model->getDocumentPath() . "\",
-						\"". $this->model->getDocumentFilename() . "\",					\"". $this->model->getDocumentExtension() . "\",
+						\"". $this->model->getDocumentOriginalFilename() . "\",			\"". $this->model->getDocumentDownloadFilename() . "\",		
+						\"". $this->model->getDocumentExtension() . "\",				\"". $this->model->getDocumentVersion() . "\",
 						\"". $this->model->getIsDefault(0,'single') . "\"				,\"". $this->model->getIsNew(0,'single') . "\",				
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",				
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",				
@@ -261,32 +290,35 @@ class documentClass extends  configClass {
 			$sql = "
 		INSERT INTO `document` 
 				(
-				  	\"documentCategoryId\",	\"leafId\",
-				  	\"documentSequence\",	\"documentCode\",
-				  	\"documentNote\",		\"documentTitle\",		
-				  	\"documentDesc\",		\"documentPath\",			
-				  	\"documentFilename\",	\"documentExtension\",	
-				  	\"isDefault\",			\"isNew\",							
-				  	\"isDraft\",			\"isUpdate\",							
-				  	\"isDelete\",			\"isActive\",						
-				  	\"isApproved\",			\"By\",								
+				  	\"documentCategoryId\",			\"leafId\",
+				  	\"documentSequence\",			\"documentCode\",
+				  	\"documentNote\",				\"documentTitle\",		
+				  	\"documentDesc\",				\"documentPath\",			
+				  	\"documentOriginalFilename\",	\"documentDownloadFilename\",
+				  	\"documentExtension\",			\"documentVersion\",
+				  	\"isDefault\",					\"isNew\",							
+				  	\"isDraft\",					\"isUpdate\",							
+				  	\"isDelete\",					\"isActive\",						
+				  	\"isApproved\",					\"By\",								
 				  	\"Time\"
 				)
 			VALUES
 				(
-					\"". $this->model->getDocumentCategoryId() . "\",				\"". $this->model->getLeafId() . "\",
+					\"". $this->model->getDocumentCategoryId() . "\",					\"". $this->model->getLeafId() . "\",
 						\"". $this->model->getDocumentSequence() . "\",					\"". $this->model->getDocumentCode() . "\",	
-						\"". $this->model->getDocumentNote() . "\",				\"". $this->model->getDocumentTitle() . "\",
+						\"". $this->model->getDocumentNote() . "\",						\"". $this->model->getDocumentTitle() . "\",
 						\"". $this->model->getDocumentDesc() . "\",						\"". $this->model->getDocumentPath() . "\",
-						\"". $this->model->getDocumentFilename() . "\",					\"". $this->model->getDocumentExtension() . "\",
+						\"". $this->model->getDocumentOriginalFilename() . "\",			\"". $this->model->getDocumentDownloadFilename() . "\",
+						\"". $this->model->getDocumentExtension() . "\",				\"". $this->model->getDocumentVersion() . "\",
 						\"". $this->model->getIsDefault(0,'single') . "\"				,\"". $this->model->getIsNew(0,'single') . "\",				
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",				
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",				
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",						
+						\"". $this->model->getIsApproved(0,'single') . "\",				\"". $this->model->getBy() . "\",						
 						" . $this->model->getTime() . "		
 				);";
 		}
 		$this->q->create($sql);
+
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(
                 "success" =>false,
@@ -294,6 +326,7 @@ class documentClass extends  configClass {
 			));
 			exit();
 		}
+
 		$source = $this->path.$newFilename;
 		chmod($source, 0777);
 		$this->q->commit();
@@ -644,16 +677,22 @@ class documentClass extends  configClass {
 				echo json_encode(array("success"=>false,"message"=>"not valid type"));
 				exit();
 			}
-		
+
 			if(!is_dir($this->path)){
 				echo json_encode(array("success"=>false,"message"=>"Path no correct.Please change the path.Current Wrong Path : ".$this->path));
 				exit();
+			} else {
+				$this->model->setDocumentPath($this->path);
 			}
 			$originalFilename=$_FILES['documentFilename']['name'];
-			$downloadFilename=date("Y-m-d")."-".rand(0,32768).".xlsx";
+			$findExtensionArray 		=	explode(".",$originalFilename);
+			$filenameWithoutExtension 	= 	$findExtensionArray(0);
+			$filenameExtension 			= 	$findExtensionArray(1);
+			$downloadFilename			=	$filenameWithoutExtension."-".rand(0,32768).$filenameExtension;
 
 			$this->model->setDocumentOriginalFilename($originalFilename);
 			$this->model->setDocumentDownloadFilename($downloadFilename);
+			$this->model->setDocumentExtension($filenameExtension);
 
 			$isMove=move_uploaded_file ($_FILES['documentFilename']['tmp_name'],$this->path.$downloadFilename);
 			if(!$isMove){
@@ -672,23 +711,27 @@ class documentClass extends  configClass {
 			$sql="
 			SELECT 	count(*) 
 			FROM 	`document` 
-			WHERE 	`originalFilename`	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		`staffId`			=   '".$this->model->getBy()."'";
-				
+			WHERE 	`documentOriginalFilename`	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		`By`			=   '".$this->model->getBy()."'";
+
 		} else if($this->getVendor()==self::mssql){
 			$sql="
 			SELECT 	count(*) 
 			FROM 	[document] 
-			WHERE 	[originalFilename]	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		[staffId]			=   '".$this->model->getBy()."'";
+			WHERE 	[documentOriginalFilename]	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		[By]			=   '".$this->model->getBy()."'";
 		} else if($this->getVendor()==self::oracle){
 			$sql="
 			SELECT 	count(*) 
 			FROM 	\"document\" 
-			WHERE 	\"originalFilename\"	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		\"staffId\"			=   '".$this->model->getBy()."'";
+			WHERE 	\"documentOriginalFilename\"	=	'".$this->model->getDocumentOriginalFilename()."'
+			AND		\"By\"			=   '".$this->model->getBy()."'";
 		}
 		$this->q->read($sql);
+		if($this->q->execute=='fail') {
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			exit();
+		}
 		$total= $this->q->numberRows();
 		$this->model->setDocumentVersion($total);
 		if($this->getVendor()==self::mysql){

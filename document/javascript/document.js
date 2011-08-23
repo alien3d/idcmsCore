@@ -921,7 +921,7 @@ Ext
 																		formPanel
 																				.getForm()
 																				.reset();
-																		store
+																		documentStore
 																				.reload({
 																					params : {
 																						leafId : leafId,
@@ -1023,7 +1023,7 @@ Ext
 																	} else if (action.failureType === Ext.form.Action.SERVER_INVALID) {
 																		Ext.Msg
 																				.alert(
-																						"failure c"+systemErrorLabel,
+																						systemErrorLabel,
 																						action.result.message);
 																	}
 																}
