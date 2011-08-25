@@ -134,65 +134,65 @@ class religionModel extends validationClass
      */
     public function create()
     {
-        $this->setIsDefault(0,0,'string');
-        $this->setIsNew(1,0,'string');
-        $this->setIsDraft(0,0,'string');
-        $this->setIsUpdate(0,0,'string');
-        $this->setIsActive(1,0,'string');
-        $this->setIsDelete(0,0,'string');
-        $this->setIsApproved(0,0,'string');
+        $this->setIsDefault(0,0,'single');
+        $this->setIsNew(1,0,'single');
+        $this->setIsDraft(0,0,'single');
+        $this->setIsUpdate(0,0,'single');
+        $this->setIsActive(1,0,'single');
+        $this->setIsDelete(0,0,'single');
+        $this->setIsApproved(0,0,'single');
     }
     /* (non-PHPdoc)
      * @see validationClass::update()
      */
     public function update()
     {
-        $this->setIsDefault(0,0,'string');
-        $this->setIsNew(0,0,'string');
-        $this->setIsDraft(0,0,'string');
+        $this->setIsDefault(0,0,'single');
+        $this->setIsNew(0,0,'single');
+        $this->setIsDraft(0,0,'single');
         $this->setIsUpdate(1, '', 'string');
-        $this->setIsActive(1,0,'string');
-        $this->setIsDelete(0,0,'string');
-        $this->setIsApproved(0,0,'string');
+        $this->setIsActive(1,0,'single');
+        $this->setIsDelete(0,0,'single');
+        $this->setIsApproved(0,0,'single');
     }
     /* (non-PHPdoc)
      * @see validationClass::delete()
      */
     public function delete()
     {
-        $this->setIsDefault(0,0,'string');
-        $this->setIsNew(0,0,'string');
-        $this->setIsDraft(0,0,'string');
-        $this->setIsUpdate(0,0,'string');
+        $this->setIsDefault(0,0,'single');
+        $this->setIsNew(0,0,'single');
+        $this->setIsDraft(0,0,'single');
+        $this->setIsUpdate(0,0,'single');
         $this->setIsActive(0, '', 'string');
         $this->setIsDelete(1, '', 'string');
-        $this->setIsApproved(0,0,'string');
+        $this->setIsApproved(0,0,'single');
     }
 /* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(1,0,'string');
-		$this->setIsDraft(1,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(0,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(0,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(1,0,'single');
+		$this->setIsDraft(1,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(0,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(1,0,'string');
-		$this->setIsDraft(0,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(0,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(1,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(1,0,'single');
+		$this->setIsDraft(0,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(0,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(1,0,'single');
 	}
     /**
      * Update Religion Table Status
@@ -200,16 +200,16 @@ class religionModel extends validationClass
     public function updateStatus()
     {
         if (!(is_array($_GET['isDefault']))) {
-            $this->setIsDefault(0,0,'string');
+            $this->setIsDefault(0,0,'single');
         }
         if (!(is_array($_GET['isNew']))) {
-            $this->setIsNew(0,0,'string');
+            $this->setIsNew(0,0,'single');
         }
         if (!(is_array($_GET['isDraft']))) {
-            $this->setIsDraft(0,0,'string');
+            $this->setIsDraft(0,0,'single');
         }
         if (!(is_array($_GET['isUpdate']))) {
-            $this->setIsUpdate(0,0,'string');
+            $this->setIsUpdate(0,0,'single');
         }
         if (!(is_array($_GET['isDelete']))) {
             $this->setIsDelete(1, '', 'string');
@@ -218,7 +218,7 @@ class religionModel extends validationClass
             $this->setIsActive(0, '', 'string');
         }
         if (!(is_array($_GET['isApproved']))) {
-            $this->setIsApproved(0,0,'string');
+            $this->setIsApproved(0,0,'single');
         }
     }
     /**
@@ -229,7 +229,7 @@ class religionModel extends validationClass
      */
     public function setReligionId($value, $key = NULL, $type = NULL)
     {
-        if ($type=='single') {
+        if ($type=='string') {
             $this->religionId = $value;
         } else if ($type == 'array') {
             $this->religionId[$key] = $value;
@@ -241,7 +241,7 @@ class religionModel extends validationClass
      */
     public function getReligionId($key, $type)
     {
-        if ($type=='single') {
+        if ($type=='string') {
             return $this->religionId;
         } else if ($type == 'array') {
             return $this->religionId[$key];

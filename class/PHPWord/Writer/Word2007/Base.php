@@ -542,7 +542,7 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 				if($bTop) {
 					if(is_null($brdCol[0])) { $brdCol[0] = $_defaultColor; }
 					$objWriter->startElement('w:top');
-					$objWriter->writeAttribute('w:val', 'single');
+					$objWriter->writeAttribute('w:val', 'string');
 					$objWriter->writeAttribute('w:sz', $brdSz[0]);
 					$objWriter->writeAttribute('w:color', $brdCol[0]);
 					$objWriter->endElement();
@@ -551,7 +551,7 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 				if($bLeft) {
 					if(is_null($brdCol[1])) { $brdCol[1] = $_defaultColor; }
 					$objWriter->startElement('w:left');
-					$objWriter->writeAttribute('w:val', 'single');
+					$objWriter->writeAttribute('w:val', 'string');
 					$objWriter->writeAttribute('w:sz', $brdSz[1]);
 					$objWriter->writeAttribute('w:color', $brdCol[1]);
 					$objWriter->endElement();
@@ -560,7 +560,7 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 				if($bRight) {
 					if(is_null($brdCol[2])) { $brdCol[2] = $_defaultColor; }
 					$objWriter->startElement('w:right');
-					$objWriter->writeAttribute('w:val', 'single');
+					$objWriter->writeAttribute('w:val', 'string');
 					$objWriter->writeAttribute('w:sz', $brdSz[2]);
 					$objWriter->writeAttribute('w:color', $brdCol[2]);
 					$objWriter->endElement();
@@ -569,7 +569,7 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 				if($bBottom) {
 					if(is_null($brdCol[3])) { $brdCol[3] = $_defaultColor; }
 					$objWriter->startElement('w:bottom');
-					$objWriter->writeAttribute('w:val', 'single');
+					$objWriter->writeAttribute('w:val', 'string');
 					$objWriter->writeAttribute('w:sz', $brdSz[3]);
 					$objWriter->writeAttribute('w:color', $brdCol[3]);
 					$objWriter->endElement();

@@ -121,10 +121,10 @@ class themeClass  extends configClass {
 					(
 						\"". $this->model->getThemeSequence() . "\",				\"". $this->model->getThemeCode() . "\",
 						\"". $this->model->getThemeNote() . "\",					\"". $this->model->getThemeNote() . "\",
-						\"". $this->model->getIsDefault(0,'string') . "\",			\"". $this->model->getIsNew(0,'string') . "\",					
-						\"". $this->model->getIsDraft(0,'string') . "\",			\"". $this->model->getIsUpdate(0,'string') . "\",				
-						\"". $this->model->getIsDelete(0,'string') . "\",			\"". $this->model->getIsActive(0,'string') . "\",				
-						\"". $this->model->getIsApproved(0,'string') . "\",			\"". $this->model->getBy() . "\",								
+						\"". $this->model->getIsDefault(0,'single') . "\",			\"". $this->model->getIsNew(0,'single') . "\",					
+						\"". $this->model->getIsDraft(0,'single') . "\",			\"". $this->model->getIsUpdate(0,'single') . "\",				
+						\"". $this->model->getIsDelete(0,'single') . "\",			\"". $this->model->getIsActive(0,'single') . "\",				
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",								
 						" . $this->model->getTime() . "
 					);";
 		}  else if ( $this->getVendor()==self::mssql) {
@@ -143,10 +143,10 @@ class themeClass  extends configClass {
 					(
 						\"". $this->model->getThemeSequence() . "\",				\"". $this->model->getThemeCode() . "\",
 						\"". $this->model->getThemeNote() . "\",					\"". $this->model->getThemeNote() . "\",
-						\"". $this->model->getIsDefault(0,'string') . "\",			\"". $this->model->getIsNew(0,'string') . "\",					
-						\"". $this->model->getIsDraft(0,'string') . "\",			\"". $this->model->getIsUpdate(0,'string') . "\",				
-						\"". $this->model->getIsDelete(0,'string') . "\",			\"". $this->model->getIsActive(0,'string') . "\",				
-						\"". $this->model->getIsApproved(0,'string') . "\",			\"". $this->model->getBy() . "\",								
+						\"". $this->model->getIsDefault(0,'single') . "\",			\"". $this->model->getIsNew(0,'single') . "\",					
+						\"". $this->model->getIsDraft(0,'single') . "\",			\"". $this->model->getIsUpdate(0,'single') . "\",				
+						\"". $this->model->getIsDelete(0,'single') . "\",			\"". $this->model->getIsActive(0,'single') . "\",				
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",								
 						" . $this->model->getTime() . "
 					);";
 		}  else if ($this->getVendor()==self::oracle) {
@@ -165,10 +165,10 @@ class themeClass  extends configClass {
 					(
 						\"". $this->model->getThemeSequence() . "\",				\"". $this->model->getThemeCode() . "\",
 						\"". $this->model->getThemeNote() . "\",					\"". $this->model->getThemeNote() . "\",
-						\"". $this->model->getIsDefault(0,'string') . "\",			\"". $this->model->getIsNew(0,'string') . "\",					
-						\"". $this->model->getIsDraft(0,'string') . "\",			\"". $this->model->getIsUpdate(0,'string') . "\",				
-						\"". $this->model->getIsDelete(0,'string') . "\",			\"". $this->model->getIsActive(0,'string') . "\",				
-						\"". $this->model->getIsApproved(0,'string') . "\",			\"". $this->model->getBy() . "\",								
+						\"". $this->model->getIsDefault(0,'single') . "\",			\"". $this->model->getIsNew(0,'single') . "\",					
+						\"". $this->model->getIsDraft(0,'single') . "\",			\"". $this->model->getIsUpdate(0,'single') . "\",				
+						\"". $this->model->getIsDelete(0,'single') . "\",			\"". $this->model->getIsActive(0,'single') . "\",				
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",								
 						" . $this->model->getTime() . "
 					);";
 
@@ -500,13 +500,13 @@ class themeClass  extends configClass {
 				SET		`themeSequence`	=	\"".$this->model->getThemeSequence()."\",
 						`themeCode`		=	\"".$this->model->getThemeCode()."\",
 						`themeNote` 		= 	\"".$this->model->getThemeNote()."\",
-						`isDefault`				=	\"".$this->model->getIsDefault(0,'string')."\",
-						`isActive`				=	\"".$this->model->getIsActive(0,'string')."\",
-						`isNew`					=	\"".$this->model->getIsNew(0,'string')."\",
-						`isDraft`				=	\"".$this->model->getIsDraft(0,'string')."\",
-						`isUpdate`				=	\"".$this->model->getIsUpdate(0,'string')."\",
-						`isDelete`				=	\"".$this->model->getIsDelete(0,'string')."\",
-						`isApproved`			=	\"".$this->model->getIsApproved(0,'string')."\",
+						`isDefault`				=	\"".$this->model->getIsDefault(0,'single')."\",
+						`isActive`				=	\"".$this->model->getIsActive(0,'single')."\",
+						`isNew`					=	\"".$this->model->getIsNew(0,'single')."\",
+						`isDraft`				=	\"".$this->model->getIsDraft(0,'single')."\",
+						`isUpdate`				=	\"".$this->model->getIsUpdate(0,'single')."\",
+						`isDelete`				=	\"".$this->model->getIsDelete(0,'single')."\",
+						`isApproved`			=	\"".$this->model->getIsApproved(0,'single')."\",
 						`By`					=	\"".$this->model->getBy()."\",
 						`Time`					=	".$this->model->getTime()."
 				WHERE 	`themeId`			=	\"".$this->model->getThemeId(0,'single')."\"";
@@ -516,13 +516,13 @@ class themeClass  extends configClass {
 				SET 	[themeSequence]	=	\"".$this->model->getThemeSequence()."\",
 						[themeCode]		=	\"".$this->model->getThemeCode()."\",
 						[themeNote] 		= 	\"".$this->model->getThemeNote()."\",
-						[isDefault]				=	\"".$this->model->getIsDefault(0,'string')."\",
-						[isActive]				=	\"".$this->model->getIsActive(0,'string')."\",
-						[isNew]					=	\"".$this->model->getIsNew(0,'string')."\",
-						[isDraft]				=	\"".$this->model->getIsDraft(0,'string')."\",
-						[isUpdate]				=	\"".$this->model->getIsUpdate(0,'string')."\",
-						[isDelete]				=	\"".$this->model->getIsDelete(0,'string')."\",
-						[isApproved]			=	\"".$this->model->getIsApproved(0,'string')."\",
+						[isDefault]				=	\"".$this->model->getIsDefault(0,'single')."\",
+						[isActive]				=	\"".$this->model->getIsActive(0,'single')."\",
+						[isNew]					=	\"".$this->model->getIsNew(0,'single')."\",
+						[isDraft]				=	\"".$this->model->getIsDraft(0,'single')."\",
+						[isUpdate]				=	\"".$this->model->getIsUpdate(0,'single')."\",
+						[isDelete]				=	\"".$this->model->getIsDelete(0,'single')."\",
+						[isApproved]			=	\"".$this->model->getIsApproved(0,'single')."\",
 						[By]					=	\"".$this->model->getBy()."\",
 						[Time]					=	".$this->model->getTime()."
 				WHERE 	[themeId]			=	\"".$this->model->getThemeId(0,'single')."\"";
@@ -533,13 +533,13 @@ class themeClass  extends configClass {
 				SET 	\"themeSequence\"	=	\"".$this->model->getThemeSequence()."\",
 						\"themeCode\"		=	\"".$this->model->getThemeCode()."\",
 						\"themeNote\" 		= 	\"".$this->model->getThemeNote()."\",
-						\"isDefault\"		=	\"".$this->model->getIsDefault(0,'string')."\",
-						\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
-						\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
-						\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
-						\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
-						\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
-						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
+						\"isDefault\"		=	\"".$this->model->getIsDefault(0,'single')."\",
+						\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
+						\"isNew\"			=	\"".$this->model->getIsNew(0,'single')."\",
+						\"isDraft\"			=	\"".$this->model->getIsDraft(0,'single')."\",
+						\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
+						\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
+						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
 				WHERE 	\"themeId\"		=	\"".$this->model->getThemeId(0,'single')."\"";
@@ -570,26 +570,26 @@ class themeClass  extends configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 				UPDATE 	`theme`
-				SET 	`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
-						`isActive`		=	\"".$this->model->getIsActive(0,'string')."\",
-						`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
-						`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
-						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
-						`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
-						`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
+				SET 	`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
+						`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
+						`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
+						`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
+						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
+						`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
+						`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
 						`By`			=	\"".$this->model->getBy(0,'single')."\",
 						`Time			=	".$this->model->getTime()."
 				WHERE 	`themeId`	=	\"".$this->model->getDepartrmentId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 				UPDATE 	[theme]
-				SET 	[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
-						[isActive]		=	\"".$this->model->getIsActive(0,'string')."\",
-						[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
-						[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
-						[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
-						[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
-						[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
+				SET 	[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
+						[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
+						[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
+						[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
+						[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
+						[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
+						[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
 						[By]			=	\"".$this->model->getBy()."\",
 						[Time]			=	".$this->model->getTime()."
 				WHERE 	[themeId]	=	\"".$this->model->getThemeId(0,'single')."\"";
@@ -597,13 +597,13 @@ class themeClass  extends configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 				UPDATE 	\"theme\"
-				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault(0,'string')."\",
-						\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
-						\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
-						\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
-						\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
-						\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
-						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
+				SET 	\"isDefault\"		=	\"".$this->model->getIsDefault(0,'single')."\",
+						\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
+						\"isNew\"			=	\"".$this->model->getIsNew(0,'single')."\",
+						\"isDraft\"			=	\"".$this->model->getIsDraft(0,'single')."\",
+						\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
+						\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
+						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
 						\"By\"				=	\"".$this->model->getBy()."\",
 						\"Time\"			=	".$this->model->getTime()."
 				WHERE 	\"themeId\"	=	\"".$this->model->getThemeId(0,'single')."\"";
@@ -641,7 +641,7 @@ class themeClass  extends configClass {
 						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsDefault(0,'string')."\"";
+						THEN \"".$this->model->getIsDefault(0,'single')."\"";
 					}
 				}
 				$sql.="	END, ";
@@ -652,7 +652,7 @@ class themeClass  extends configClass {
 						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsNew(0,'string')."\"";
+						THEN \"".$this->model->getIsNew(0,'single')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -662,7 +662,7 @@ class themeClass  extends configClass {
 						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsDraft(0,'string')."\"";
+						THEN \"".$this->model->getIsDraft(0,'single')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -672,7 +672,7 @@ class themeClass  extends configClass {
 						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsUpdate(0,'string')."\"";
+						THEN \"".$this->model->getIsUpdate(0,'single')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -692,7 +692,7 @@ class themeClass  extends configClass {
 						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsActive(0,'string')."\"";
+						THEN \"".$this->model->getIsActive(0,'single')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -702,7 +702,7 @@ class themeClass  extends configClass {
 						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsApproved(0,'string')."\"";
+						THEN \"".$this->model->getIsApproved(0,'single')."\"";
 
 					}
 				}
@@ -718,26 +718,26 @@ class themeClass  extends configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
 			UPDATE 	[theme]
-			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'string') . "\",
-					[isNew]				=	\"". $this->model->getIsNew(0,'string') . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft(0,'string') . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'string') . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete(0,'string') . "\",
-					[isActive]			=	\"". $this->model->getIsActive(0,'string') . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved(0,'string') . "\",
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'single') . "\",
+					[isNew]				=	\"". $this->model->getIsNew(0,'single') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft(0,'single') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'single') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
+					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[themeId]		IN	(". $this->model->getThemeIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				UPDATE	\"theme\"
-				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault(0,'string') . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew(0,'string') . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'string') . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'string') . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'string') . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive(0,'string') . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'string') . "\",
+				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault(0,'single') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew(0,'single') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'single') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'single') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"themeId\"		IN	(". $this->model->getThemeIdAll() . ")";

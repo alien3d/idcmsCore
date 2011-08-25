@@ -192,42 +192,42 @@ class PHPWord_Writer_Word2007_Styles extends PHPWord_Writer_Word2007_Base {
 			$objWriter->startElement('w:tblBorders');
 			if($bTop) {
 				$objWriter->startElement('w:top');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $brdSz[0]);
 				$objWriter->writeAttribute('w:color', $brdCol[0]);
 				$objWriter->endElement();
 			}
 			if($bLeft) {
 				$objWriter->startElement('w:left');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $brdSz[1]);
 				$objWriter->writeAttribute('w:color', $brdCol[1]);
 				$objWriter->endElement();
 			}
 			if($bRight) {
 				$objWriter->startElement('w:right');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $brdSz[2]);
 				$objWriter->writeAttribute('w:color', $brdCol[2]);
 				$objWriter->endElement();
 			}
 			if($bBottom) {
 				$objWriter->startElement('w:bottom');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $brdSz[3]);
 				$objWriter->writeAttribute('w:color', $brdCol[3]);
 				$objWriter->endElement();
 			}
 			if($bInsH) {
 				$objWriter->startElement('w:insideH');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $brdSz[4]);
 				$objWriter->writeAttribute('w:color', $brdCol[4]);
 				$objWriter->endElement();
 			}
 			if($bInsV) {
 				$objWriter->startElement('w:insideV');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $brdSz[5]);
 				$objWriter->writeAttribute('w:color', $brdCol[5]);
 				$objWriter->endElement();
@@ -281,28 +281,28 @@ class PHPWord_Writer_Word2007_Styles extends PHPWord_Writer_Word2007_Base {
 		$objWriter->startElement('w:tcBorders');
 		if($bTop) {
 			$objWriter->startElement('w:top');
-			$objWriter->writeAttribute('w:val', 'single');
+			$objWriter->writeAttribute('w:val', 'string');
 			$objWriter->writeAttribute('w:sz', $brdSz[0]);
 			$objWriter->writeAttribute('w:color', $brdCol[0]);
 			$objWriter->endElement();
 		}
 		if($bLeft) {
 			$objWriter->startElement('w:left');
-			$objWriter->writeAttribute('w:val', 'single');
+			$objWriter->writeAttribute('w:val', 'string');
 			$objWriter->writeAttribute('w:sz', $brdSz[1]);
 			$objWriter->writeAttribute('w:color', $brdCol[1]);
 			$objWriter->endElement();
 		}
 		if($bRight) {
 			$objWriter->startElement('w:right');
-			$objWriter->writeAttribute('w:val', 'single');
+			$objWriter->writeAttribute('w:val', 'string');
 			$objWriter->writeAttribute('w:sz', $brdSz[2]);
 			$objWriter->writeAttribute('w:color', $brdCol[2]);
 			$objWriter->endElement();
 		}
 		if($bBottom) {
 			$objWriter->startElement('w:bottom');
-			$objWriter->writeAttribute('w:val', 'single');
+			$objWriter->writeAttribute('w:val', 'string');
 			$objWriter->writeAttribute('w:sz', $brdSz[3]);
 			$objWriter->writeAttribute('w:color', $brdCol[3]);
 			$objWriter->endElement();

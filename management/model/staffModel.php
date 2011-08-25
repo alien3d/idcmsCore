@@ -69,7 +69,7 @@ class staffModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['staffId'])){
-			$this->setStaffId($this->strict($_POST['staffId'],'numeric'),'','single');
+			$this->setStaffId($this->strict($_POST['staffId'],'numeric'),'','string');
 		}
 
 		if(isset($_POST['groupId'])){
@@ -191,65 +191,65 @@ class staffModel extends validationClass{
 	 */
 	public function create()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(1,0,'string');
-		$this->setIsDraft(0,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(1,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(0,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(1,0,'single');
+		$this->setIsDraft(0,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(1,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::update()
 	 */
 	public function update()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(0,0,'string');
-		$this->setIsDraft(0,0,'string');
-		$this->setIsUpdate(1,0,'string');
-		$this->setIsActive(1,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(0,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(0,0,'single');
+		$this->setIsDraft(0,0,'single');
+		$this->setIsUpdate(1,0,'single');
+		$this->setIsActive(1,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::delete()
 	 */
 	public function delete()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(0,0,'string');
-		$this->setIsDraft(0,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(0,0,'string');
-		$this->setIsDelete(1,0,'string');
-		$this->setIsApproved(0,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(0,0,'single');
+		$this->setIsDraft(0,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(0,0,'single');
+		$this->setIsDelete(1,0,'single');
+		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(1,0,'string');
-		$this->setIsDraft(1,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(0,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(0,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(1,0,'single');
+		$this->setIsDraft(1,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(0,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(1,0,'string');
-		$this->setIsDraft(0,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(0,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(1,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(1,0,'single');
+		$this->setIsDraft(0,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(0,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(1,0,'single');
 	}
 	public
 	/* (non-PHPdoc)
@@ -265,27 +265,27 @@ class staffModel extends validationClass{
 	 */
 	public function updateStatus() {
 		if(!(is_array($_GET['isDefault']))) {
-			$this->setIsDefault(0,0,'string');
+			$this->setIsDefault(0,0,'single');
 		}
 		if(!(is_array($_GET['isNew']))) {
-			$this->setIsNew(0,0,'string');
+			$this->setIsNew(0,0,'single');
 		}
 		if(!(is_array($_GET['isDraft']))) {
-			$this->setIsDraft(0,0,'string');
+			$this->setIsDraft(0,0,'single');
 		}
 		if(!(is_array($_GET['isUpdate']))) {
-			$this->setIsUpdate(0,0,'string');
+			$this->setIsUpdate(0,0,'single');
 		}
 		if(!(is_array($_GET['isDelete']))) {
 
-			$this->setIsDelete(1,0,'string');
+			$this->setIsDelete(1,0,'single');
 		}
 		if(!(is_array($_GET['isActive']))) {
-			$this->setIsActive(0,0,'string');
+			$this->setIsActive(0,0,'single');
 		}
 
 		if(!(is_array($_GET['isApproved']))) {
-			$this->setIsApproved(0,0,'string');
+			$this->setIsApproved(0,0,'single');
 		}
 	}
 
@@ -294,7 +294,7 @@ class staffModel extends validationClass{
 	 * Set Staff Identification  Value
 	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $a  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $a  List Of Type.0 As 'string' 1 As 'array'
 	 */
 	public function setStaffId($value,$key,$type) {
 		if($type=='single'){

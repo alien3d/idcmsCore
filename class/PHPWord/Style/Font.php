@@ -48,7 +48,7 @@ class PHPWord_Style_Font {
 	const UNDERLINE_DOTTED		    = 'dotted';
 	const UNDERLINE_DOTTEDHEAVY		= 'dottedHeavy';
 	const UNDERLINE_HEAVY		    = 'heavy';
-	const UNDERLINE_SINGLE		    = 'single';
+	const UNDERLINE_SINGLE		    = 'string';
 	const UNDERLINE_WAVY		    = 'wavy';
 	const UNDERLINE_WAVYDOUBLE		= 'wavyDbl';
 	const UNDERLINE_WAVYHEAVY		= 'wavyHeavy';

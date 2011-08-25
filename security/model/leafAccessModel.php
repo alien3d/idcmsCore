@@ -215,26 +215,26 @@ class leafAccessModel extends validationClass{
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(1,0,'string');
-		$this->setIsDraft(1,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(0,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(0,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(1,0,'single');
+		$this->setIsDraft(1,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(0,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(1,0,'string');
-		$this->setIsDraft(0,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(0,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(1,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(1,0,'single');
+		$this->setIsDraft(0,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(0,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(1,0,'single');
 	}
 	/**
 	 * Set Leaf Access Identification  Value

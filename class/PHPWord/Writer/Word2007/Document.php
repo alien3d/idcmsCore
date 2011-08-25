@@ -177,7 +177,7 @@ class PHPWord_Writer_Word2007_Document extends PHPWord_Writer_Word2007_Base {
 				
 			if(!is_null($borders[0])) {
 				$objWriter->startElement('w:top');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $borders[0]);
 				$objWriter->writeAttribute('w:space', '24');
 				$objWriter->writeAttribute('w:color', $borderColor[0]);
@@ -186,7 +186,7 @@ class PHPWord_Writer_Word2007_Document extends PHPWord_Writer_Word2007_Base {
 				
 			if(!is_null($borders[1])) {
 				$objWriter->startElement('w:left');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $borders[1]);
 				$objWriter->writeAttribute('w:space', '24');
 				$objWriter->writeAttribute('w:color', $borderColor[1]);
@@ -195,7 +195,7 @@ class PHPWord_Writer_Word2007_Document extends PHPWord_Writer_Word2007_Base {
 				
 			if(!is_null($borders[2])) {
 				$objWriter->startElement('w:right');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $borders[2]);
 				$objWriter->writeAttribute('w:space', '24');
 				$objWriter->writeAttribute('w:color', $borderColor[2]);
@@ -204,7 +204,7 @@ class PHPWord_Writer_Word2007_Document extends PHPWord_Writer_Word2007_Base {
 				
 			if(!is_null($borders[3])) {
 				$objWriter->startElement('w:bottom');
-				$objWriter->writeAttribute('w:val', 'single');
+				$objWriter->writeAttribute('w:val', 'string');
 				$objWriter->writeAttribute('w:sz', $borders[3]);
 				$objWriter->writeAttribute('w:space', '24');
 				$objWriter->writeAttribute('w:color', $borderColor[3]);

@@ -2068,7 +2068,7 @@ if (!class_exists('TCPDF', false)) {
 			}
 			switch ($layout) {
 				case 'default':
-				case 'single':
+				case 'string':
 				case 'SinglePage': {
 					$this->LayoutMode = 'SinglePage';
 					break;

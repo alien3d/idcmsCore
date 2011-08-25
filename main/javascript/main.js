@@ -243,7 +243,7 @@ Ext
 						items : [
 								{
 									xtype : 'panel',
-									height : 105,
+									height : 60,
 									region : 'north',
 
 									items : [
@@ -338,26 +338,6 @@ Ext
 															}
 
 														} ]
-											}, {
-												xtype : 'panel',
-												padding : '8px',
-
-												tbar : [ {
-													xtype : 'button',
-													scale : 'large',
-													text : 'setting',
-													iconCls : 'cog'
-												}, '-', {
-													xtype : 'button',
-													scale : 'large',
-													text : 'Management',
-													iconCls : 'user'
-												}, '-', {
-													xtype : 'button',
-													scale : 'large',
-													text : 'security',
-													iconCls : 'key'
-												} ]
 											} ]
 
 								}, {

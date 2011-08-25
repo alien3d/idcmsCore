@@ -146,10 +146,10 @@ class tableMappingClass extends  configClass {
 						\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
 						\"".$this->model->gettableMappingSequence()."\", 				\"".$this->model->gettableMappingCode()."\",
 						\"".$this->model->gettableMappingPath()."\"	,				\"".$this->model->gettableMappingNote()."\",
-						\"".$this->model->getIsDefault(0,'string')."\",		\"" . $this->model->getIsNew(0,'string') . "\",
-						\"" . $this->model->getIsDraft(0,'string') . "\",		\"" . $this->model->getIsUpdate(0,'string') . "\",
-						\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
-						\"" . $this->model->getIsApproved(0,'string') . "\",	\"" . $this->model->getBy() . "\",
+						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
+						\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
+						\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
+						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 
 
@@ -172,10 +172,10 @@ class tableMappingClass extends  configClass {
 						\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
 						\"".$this->model->gettableMappingSequence()."\", 				\"".$this->model->gettableMappingCode()."\",
 						\"".$this->model->gettableMappingPath()."\"	,				\"".$this->model->gettableMappingNote()."\",
-						\"".$this->model->getIsDefault(0,'string')."\",		\"" . $this->model->getIsNew(0,'string') . "\",
-						\"" . $this->model->getIsDraft(0,'string') . "\",		\"" . $this->model->getIsUpdate(0,'string') . "\",
-						\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
-						\"" . $this->model->getIsApproved(0,'string') . "\",	\"" . $this->model->getBy() . "\",
+						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
+						\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
+						\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
+						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 
 					);";
@@ -195,10 +195,10 @@ class tableMappingClass extends  configClass {
 							\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
 							\"".$this->model->gettableMappingSequence()."\", 				\"".$this->model->gettableMappingCode()."\",
 							\"".$this->model->gettableMappingPath()."\"	,				\"".$this->model->gettableMappingNote()."\",
-							\"".$this->model->getIsDefault(0,'string')."\",		\"" . $this->model->getIsNew(0,'string') . "\",
-							\"" . $this->model->getIsDraft(0,'string') . "\",		\"" . $this->model->getIsUpdate(0,'string') . "\",
-							\"" . $this->model->getIsDelete(0,'string') . "\",		\"" . $this->model->getIsActive(0,'string') . "\",
-							\"" . $this->model->getIsApproved(0,'string') . "\",	\"" . $this->model->getBy() . "\",
+							\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
+							\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
+							\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
+							\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getBy() . "\",
 							" . $this->model->getTime() . "
 
 					)";
@@ -625,13 +625,13 @@ class tableMappingClass extends  configClass {
 							`tableMappingCode`		=	\"".$this->model->gettableMappingCode()."\",
 							`tableMappingPath`		=	\"".$this->model->gettableMappingPath()."\",
 							`iconId`			=	\"".$this->model->getIconId()."\",
-							`isDefault`			=	\"".$this->model->getIsDefault(0,'string')."\",
-							`isActive`			=	\"".$this->model->getIsActive(0,'string')."\",
-							`isNew`				=	\"".$this->model->getIsNew(0,'string')."\",
-							`isDraft`			=	\"".$this->model->getIsDraft(0,'string')."\",
-							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'string')."\",
-							`isDelete`			=	\"".$this->model->getIsDelete(0,'string')."\",
-							`isApproved`		=	\"".$this->model->getIsApproved(0,'string')."\",
+							`isDefault`			=	\"".$this->model->getIsDefault(0,'single')."\",
+							`isActive`			=	\"".$this->model->getIsActive(0,'single')."\",
+							`isNew`				=	\"".$this->model->getIsNew(0,'single')."\",
+							`isDraft`			=	\"".$this->model->getIsDraft(0,'single')."\",
+							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'single')."\",
+							`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
+							`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
 							`By`				=	\"".$this->model->getBy()."\",
 							`Time`				=	".$this->model->getTime()."
 					WHERE 	`tableMappingId`			=	\"".$this->model->gettableMappingId(0,'single')."\"";
@@ -643,12 +643,12 @@ class tableMappingClass extends  configClass {
 							[tableMappingSequence]	=	\"".$this->model->gettableMappingSequence()."\",
 							[tableMappingPath]		=	\"".$this->model->gettableMappingPath()."\",
 							[iconId]			=	\"".$this->strict($_POST['iconId'],'string')."\",
-							[isActive]			=	\"".$this->model->getIsActive(0,'string')."\",
-							[isNew]				=	\"".$this->model->getIsNew(0,'string')."\",
-							[isDraft]			=	\"".$this->model->getIsDraft(0,'string')."\",
-							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'string')."\",
-							[isDelete]			=	\"".$this->model->getIsDelete(0,'string')."\",
-							[isApproved]		=	\"".$this->model->getIsApproved(0,'string')."\",
+							[isActive]			=	\"".$this->model->getIsActive(0,'single')."\",
+							[isNew]				=	\"".$this->model->getIsNew(0,'single')."\",
+							[isDraft]			=	\"".$this->model->getIsDraft(0,'single')."\",
+							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'single')."\",
+							[isDelete]			=	\"".$this->model->getIsDelete(0,'single')."\",
+							[isApproved]		=	\"".$this->model->getIsApproved(0,'single')."\",
 							[By]				=	\"".$this->model->getBy()."\",
 							[Time]				=	".$this->model->getTime()."
 					WHERE 	[tableMappingId]			=	\"".$this->model->gettableMappingId(0,'single')."\"";
@@ -659,13 +659,13 @@ class tableMappingClass extends  configClass {
 							\"tableMappingNote\"		=	\"".$this->model->gettableMappingNote()."\",
 							\"tableMappingSequence\"	=	\"".$this->model->gettableMappingSequence()."\",
 							\"tableMappingPath\"		=	\"".$this->model->gettableMappingPath()."\",
-							\"isDefault\"		=	\"".$this->model->getIsDefault(0,'string')."\",
-							\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
-							\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
-							\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
-							\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
-							\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
+							\"isDefault\"		=	\"".$this->model->getIsDefault(0,'single')."\",
+							\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
+							\"isNew\"			=	\"".$this->model->getIsNew(0,'single')."\",
+							\"isDraft\"			=	\"".$this->model->getIsDraft(0,'single')."\",
+							\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
+							\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
 							\"By\"				=	\"".$this->model->getBy()."\",
 							\"Time\"			=	".$this->model->getTime()."
 					WHERE 	\"tableMappingId\"		=	\"".$this->model->gettableMappingId(0,'single')."\"";
@@ -697,13 +697,13 @@ class tableMappingClass extends  configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE	`tableMapping`
-					SET		`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
-							`isActive`		=	\"".$this->model->getIsActive(0,'string')."\",
-							`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
-							`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
-							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
-							`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
+					SET		`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
+							`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
+							`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
+							`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
+							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
+							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
 							`By`			=	\"".$this->model->getBy()."\",
 							`Time`			=	".$this->model->getTime()."
 					WHERE 	`tableMappingId`		=	\"".$this->model->gettableMappingId()."\"";
@@ -711,26 +711,26 @@ class tableMappingClass extends  configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[tableMapping]
-					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'string')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
+					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
+							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
+							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
+							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
+							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
+							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
 							[By]			=	\"".$this->model->getBy()."\",
 							[Time]			=	".$this->model->getTime()."
 					WHERE 	[tableMappingId]		=	\"".$this->model->gettableMappingId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE	\"tableMapping\"
-					SET		\"isDefault\"	=	\"".$this->model->getIsDefault(0,'string')."\",
-							\"isActive\"	=	\"".$this->model->getIsActive(0,'string')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'string')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'string')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'string')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'string')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'string')."\",
+					SET		\"isDefault\"	=	\"".$this->model->getIsDefault(0,'single')."\",
+							\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
+							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
+							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
+							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
+							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
+							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
 							\"By\"			=	\"".$this->model->getBy()."\",
 							\"Time\"		=	".$this->model->getTime()."
 					WHERE 	\"tableMappingId\"	=	\"".$this->model->gettableMappingId()."\"";

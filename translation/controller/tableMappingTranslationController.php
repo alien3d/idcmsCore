@@ -151,10 +151,10 @@ class tableMappingTranslationTranslationClass extends  configClass {
 			VALUES
 					(
 						\"".$this->model->gettableMappingTranslationTranslation()."\",						\"".$this->model->gettableMappingTranslationTranslationEnglish()."\"
-						\"". $this->model->getIsDefault(0,'string') . "\",				\"". $this->model->getIsNew(0,'string') . "\",
-						\"". $this->model->getIsDraft(0,'string') . "\",				\"". $this->model->getIsUpdate(0,'string') . "\",
-						\"". $this->model->getIsDelete(0,'string') . "\",				\"". $this->model->getIsActive(0,'string') . "\",
-						\"". $this->model->getIsApproved(0,'string') . "\",			\"". $this->model->getBy() . "\",
+						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
+						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
+						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 					);";
 		}else if ($this->getVendor()==self::mssql) {
@@ -171,10 +171,10 @@ class tableMappingTranslationTranslationClass extends  configClass {
 			VALUES
 				(
 						\"".$this->model->gettableMappingTranslationTranslation()."\",						\"".$this->model->gettableMappingTranslationTranslationEnglish()."\"
-						\"". $this->model->getIsDefault(0,'string') . "\",				\"". $this->model->getIsNew(0,'string') . "\",
-						\"". $this->model->getIsDraft(0,'string') . "\",				\"". $this->model->getIsUpdate(0,'string') . "\",
-						\"". $this->model->getIsDelete(0,'string') . "\",				\"". $this->model->getIsActive(0,'string') . "\",
-						\"". $this->model->getIsApproved(0,'string') . "\",			\"". $this->model->getBy() . "\",
+						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
+						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
+						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",
 						" . $this->model->getTime() . "
 			);";
 		} else if ($this->getVendor()==self::oracle) {
@@ -189,10 +189,10 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							\"Time\"
 				VALUES	(
 							\"".$this->model->gettableMappingTranslationTranslation()."\",						\"".$this->model->gettableMappingTranslationTranslationEnglish()."\"
-							\"". $this->model->getIsDefault(0,'string') . "\",				\"". $this->model->getIsNew(0,'string') . "\",
-							\"". $this->model->getIsDraft(0,'string') . "\",				\"". $this->model->getIsUpdate(0,'string') . "\",
-							\"". $this->model->getIsDelete(0,'string') . "\",				\"". $this->model->getIsActive(0,'string') . "\",
-							\"". $this->model->getIsApproved(0,'string') . "\",			\"". $this->model->getBy() . "\",
+							\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
+							\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
+							\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
+							\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",
 							" . $this->model->getTime() . "
 			)";
 		}
@@ -437,13 +437,13 @@ class tableMappingTranslationTranslationClass extends  configClass {
 					UPDATE 	`tableMappingTranslationTranslation`
 					SET 	`tableMappingTranslationTranslationNote`		=	\"".$this->model->gettableMappingTranslationTranslationNote()."\",
 							`tableMappingTranslationTranslationEnglish`	=	\"".$this->model->gettableMappingTranslationTranslationEnglish()."\",
-							`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
-							`isActive`		=	\"".$this->model->getIsActive(0,'string')."\",
-							`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
-							`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
-							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
-							`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
+							`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
+							`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
+							`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
+							`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
+							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
+							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
 							`By`			=	\"".$this->model->getBy()."\",
 							`Time`			=	".$this->model->getTime()."
 					WHERE 	`tableMappingTranslationTranslationId`			=	\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
@@ -452,13 +452,13 @@ class tableMappingTranslationTranslationClass extends  configClass {
 					UPDATE 	[tableMappingTranslationTranslation]
 					SET 	[tableMappingTranslationTranslationNote]		=	\"".$this->model->gettableMappingTranslationTranslationNote()."\",
 							[tableMappingTranslationTranslationEnglish]	=	\"".$this->model->gettableMappingTranslationTranslationEnglish()."\",
-							[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'string')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
+							[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
+							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
+							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
+							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
+							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
+							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
 							[By]			=	\"".$this->model->getBy()."\",
 							[Time]			=	".$this->model->getTime()."
 					WHERE 	[tableMappingTranslationTranslationId]			=	\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
@@ -467,13 +467,13 @@ class tableMappingTranslationTranslationClass extends  configClass {
 					UPDATE 	\"tableMappingTranslationTranslation\"
 					SET 	\"tableMappingTranslationTranslationNote\"		=	\"".$this->model->gettableMappingTranslationTranslationNote()."\",
 							\"tableMappingTranslationTranslationEnglish\"	=	\"".$this->model->gettableMappingTranslationTranslationEnglish()."\",
-							\"isDefault\"	=	\"".$this->model->getIsDefault(0,'string')."\",
-							\"isActive\"	=	\"".$this->model->getIsActive(0,'string')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'string')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'string')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'string')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'string')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'string')."\",
+							\"isDefault\"	=	\"".$this->model->getIsDefault(0,'single')."\",
+							\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
+							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
+							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
+							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
+							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
+							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
 							\"By\"			=	\"".$this->model->getBy()."\",
 							\"Time\"		=	".$this->model->getTime()."
 					WHERE 	\"tableMappingTranslationTranslationId\"		=	\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
@@ -505,13 +505,13 @@ class tableMappingTranslationTranslationClass extends  configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE	`tableMappingTranslationTranslation`
-					SET		`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
-							`isActive`		=	\"".$this->model->getIsActive(0,'string')."\",
-							`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
-							`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
-							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
-							`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
+					SET		`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
+							`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
+							`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
+							`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
+							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
+							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
 							`By`			=	\"".$this->model->getBy()."\",
 							`Time`			=	".$this->model->getTime()."
 					WHERE 	`tableMappingTranslationTranslationId`		=	\"".$this->model->gettableMappingTranslationTranslationId()."\"";
@@ -519,26 +519,26 @@ class tableMappingTranslationTranslationClass extends  configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[tableMappingTranslationTranslation]
-					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'string')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
+					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
+							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
+							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
+							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
+							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
+							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
 							[By]			=	\"".$this->model->getBy()."\",
 							[Time]			=	".$this->model->getTime()."
 					WHERE 	[tableMappingTranslationTranslationId]		=	\"".$this->model->gettableMappingTranslationTranslationId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE	\"tableMappingTranslationTranslation\"
-					SET		\"isDefault\"	=	\"".$this->model->getIsDefault(0,'string')."\",
-							\"isActive\"	=	\"".$this->model->getIsActive(0,'string')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'string')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'string')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'string')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'string')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'string')."\",
+					SET		\"isDefault\"	=	\"".$this->model->getIsDefault(0,'single')."\",
+							\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
+							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
+							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
+							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
+							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
+							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
 							\"By\"			=	\"".$this->model->getBy()."\",
 							\"Time\"		=	".$this->model->getTime()."
 					WHERE 	\"tableMappingTranslationTranslationId\"	=	\"".$this->model->gettableMappingTranslationTranslationId()."\"";
@@ -576,7 +576,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						$primaryKeyAll.=$this->model->gettableMappingTranslationId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->gettableMappingTranslationId($i,'array')."\"
-						THEN \"".$this->model->getIsDefault(0,'string')."\"";
+						THEN \"".$this->model->getIsDefault(0,'single')."\"";
 					}
 				}
 				$sql.="	END, ";
@@ -587,7 +587,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						$primaryKeyAll.=$this->model->gettableMappingTranslationId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->gettableMappingTranslationId($i,'array')."\"
-						THEN \"".$this->model->getIsNew(0,'string')."\"";
+						THEN \"".$this->model->getIsNew(0,'single')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -597,7 +597,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						$primaryKeyAll.=$this->model->gettableMappingTranslationId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->gettableMappingTranslationId($i,'array')."\"
-						THEN \"".$this->model->getIsDraft(0,'string')."\"";
+						THEN \"".$this->model->getIsDraft(0,'single')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -607,7 +607,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						$primaryKeyAll.=$this->model->gettableMappingTranslationId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->gettableMappingTranslationId($i,'array')."\"
-						THEN \"".$this->model->getIsUpdate(0,'string')."\"";
+						THEN \"".$this->model->getIsUpdate(0,'single')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -627,7 +627,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						$primaryKeyAll.=$this->model->gettableMappingTranslationId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->gettableMappingTranslationId($i,'array')."\"
-						THEN \"".$this->model->getIsActive(0,'string')."\"";
+						THEN \"".$this->model->getIsActive(0,'single')."\"";
 					}
 				}
 				$sql.="	END,";
@@ -637,7 +637,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						$primaryKeyAll.=$this->model->gettableMappingTranslationId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->gettableMappingTranslationId($i,'array')."\"
-						THEN \"".$this->model->getIsApproved(0,'string')."\"";
+						THEN \"".$this->model->getIsApproved(0,'single')."\"";
 
 					}
 				}
@@ -653,26 +653,26 @@ class tableMappingTranslationTranslationClass extends  configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql = "
 			UPDATE 	[tableMappingTranslation]
-			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'string') . "\",
-					[isNew]				=	\"". $this->model->getIsNew(0,'string') . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft(0,'string') . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'string') . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete(0,'string') . "\",
-					[isActive]			=	\"". $this->model->getIsActive(0,'string') . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved(0,'string') . "\",
+			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'single') . "\",
+					[isNew]				=	\"". $this->model->getIsNew(0,'single') . "\",
+					[isDraft]			=	\"". $this->model->getIsDraft(0,'single') . "\",
+					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'single') . "\",
+					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
+					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
+					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
 					[By]				=	\"". $this->model->getBy() . "\",
 					[Time]				=	" . $this->model->getTime() . "
 			WHERE 	[tableMappingTranslationId]		IN	(". $this->model->gettableMappingTranslationIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				UPDATE	\"tableMappingTranslation\"
-				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault(0,'string') . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew(0,'string') . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'string') . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'string') . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'string') . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive(0,'string') . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'string') . "\",
+				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault(0,'single') . "\",
+					\"isNew\"			=	\"". $this->model->getIsNew(0,'single') . "\",
+					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'single') . "\",
+					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'single') . "\",
+					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
+					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
+					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
 					\"By\"				=	\"". $this->model->getBy() . "\",
 					\"Time\"			=	" . $this->model->getTime() . "
 			WHERE 	\"tableMappingTranslationId\"		IN	(". $this->model->gettableMappingTranslationIdAll() . ")";

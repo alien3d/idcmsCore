@@ -163,15 +163,10 @@ class documentClass extends  configClass {
 			$originalFilename			=	$_FILES['documentFilename']['name'];
 
 			$findExtensionArray 		=	explode('.',$originalFilename);	
-			echo '{success:true,message:\' 3document size :'.print_r($findExtensionArray).' \'}';
-			exit();
-			$filenameWithoutExtension 	= 	$findExtensionArray(0);
-			$filenameExtension 			= 	$findExtensionArray(1);
-			echo '{success:true,message:\' 3document size :'.$fileSize.' maxSize: '.$maxSize.' \'}';
-				exit();
-			$downloadFilename			=  	$filenameWithoutExtension."-".rand(0,32768).$filenameExtension;
-			echo '{success:true,message:\' 3document name :'.$downloadFilename.' \'}';
-			exit();
+			$filenameWithoutExtension 	= 	$findExtensionArray[0];
+			$filenameExtension 			= 	$findExtensionArray[1];
+			$downloadFilename			=  	$filenameWithoutExtension."-".rand(0,32768).".".$filenameExtension;
+			
 			$this->model->setDocumentOriginalFilename($originalFilename);
 			$this->model->setDocumentDownloadFilename($downloadFilename);
 			$this->model->setDocumentExtension($filenameExtension);
@@ -686,9 +681,9 @@ class documentClass extends  configClass {
 			}
 			$originalFilename=$_FILES['documentFilename']['name'];
 			$findExtensionArray 		=	explode(".",$originalFilename);
-			$filenameWithoutExtension 	= 	$findExtensionArray(0);
-			$filenameExtension 			= 	$findExtensionArray(1);
-			$downloadFilename			=	$filenameWithoutExtension."-".rand(0,32768).$filenameExtension;
+			$filenameWithoutExtension 	= 	$findExtensionArray[0];
+			$filenameExtension 			= 	$findExtensionArray[1];
+			$downloadFilename			=	$filenameWithoutExtension."-".rand(0,32768)."'".$filenameExtension;
 
 			$this->model->setDocumentOriginalFilename($originalFilename);
 			$this->model->setDocumentDownloadFilename($downloadFilename);

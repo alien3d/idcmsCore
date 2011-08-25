@@ -54,7 +54,7 @@ class PHPExcel_Style_Font implements PHPExcel_IComparable
 	const UNDERLINE_NONE					= 'none';
 	const UNDERLINE_DOUBLE					= 'double';
 	const UNDERLINE_DOUBLEACCOUNTING		= 'doubleAccounting';
-	const UNDERLINE_SINGLE					= 'single';
+	const UNDERLINE_SINGLE					= 'string';
 	const UNDERLINE_SINGLEACCOUNTING		= 'singleAccounting';
 
 	/**

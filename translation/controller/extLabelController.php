@@ -140,10 +140,10 @@ class extLabelClass extends  configClass {
 					)
 			VALUES
 					(
-						\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault(0,'string')."\",
-						\"" . $this->model->getIsNew(0,'string') . "\",		\"" . $this->model->getIsDraft(0,'string') . "\",
-						\"" . $this->model->getIsUpdate(0,'string') . "\",		\"" . $this->model->getIsDelete(0,'string') . "\",
-						\"" . $this->model->getIsActive(0,'string') . "\",		\"" . $this->model->getIsApproved(0,'string') . "\",
+						\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault(0,'single')."\",
+						\"" . $this->model->getIsNew(0,'single') . "\",		\"" . $this->model->getIsDraft(0,'single') . "\",
+						\"" . $this->model->getIsUpdate(0,'single') . "\",		\"" . $this->model->getIsDelete(0,'single') . "\",
+						\"" . $this->model->getIsActive(0,'single') . "\",		\"" . $this->model->getIsApproved(0,'single') . "\",
 						\"" . $this->model->getBy() . "\",						" . $this->model->getTime() . "
 
 
@@ -160,10 +160,10 @@ class extLabelClass extends  configClass {
 				)
 			VALUES
 				(
-						\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault(0,'string')."\",
-						\"" . $this->model->getIsNew(0,'string') . "\",		\"" . $this->model->getIsDraft(0,'string') . "\",
-						\"" . $this->model->getIsUpdate(0,'string') . "\",		\"" . $this->model->getIsDelete(0,'string') . "\",
-						\"" . $this->model->getIsActive(0,'string') . "\",		\"" . $this->model->getIsApproved(0,'string') . "\",
+						\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault(0,'single')."\",
+						\"" . $this->model->getIsNew(0,'single') . "\",		\"" . $this->model->getIsDraft(0,'single') . "\",
+						\"" . $this->model->getIsUpdate(0,'single') . "\",		\"" . $this->model->getIsDelete(0,'single') . "\",
+						\"" . $this->model->getIsActive(0,'single') . "\",		\"" . $this->model->getIsApproved(0,'single') . "\",
 						\"" . $this->model->getBy() . "\",						" . $this->model->getTime() . "
 
 
@@ -179,10 +179,10 @@ class extLabelClass extends  configClass {
 							\"By\",								\"Time\"
 
 						)	VALUES	(
-								\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault(0,'string')."\",
-						\"" . $this->model->getIsNew(0,'string') . "\",		\"" . $this->model->getIsDraft(0,'string') . "\",
-						\"" . $this->model->getIsUpdate(0,'string') . "\",		\"" . $this->model->getIsDelete(0,'string') . "\",
-						\"" . $this->model->getIsActive(0,'string') . "\",		\"" . $this->model->getIsApproved(0,'string') . "\",
+								\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault(0,'single')."\",
+						\"" . $this->model->getIsNew(0,'single') . "\",		\"" . $this->model->getIsDraft(0,'single') . "\",
+						\"" . $this->model->getIsUpdate(0,'single') . "\",		\"" . $this->model->getIsDelete(0,'single') . "\",
+						\"" . $this->model->getIsActive(0,'single') . "\",		\"" . $this->model->getIsApproved(0,'single') . "\",
 						\"" . $this->model->getBy() . "\",						" . $this->model->getTime() . "
 
 
@@ -444,13 +444,13 @@ class extLabelClass extends  configClass {
 			$sql="
 					UPDATE 	`extLabel`
 					SET 	`extLabelNote`		=	\"".$this->model->getextLabelNote()."\",
-							`isDefault`			=	\"".$this->model->getIsDefault(0,'string')."\",
-							`isNew`				=	\"".$this->model->getIsNew(0,'string')."\",
-							`isDraft`			=	\"".$this->model->getIsDraft(0,'string')."\",
-							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'string')."\",
-							`isDelete`			=	\"".$this->model->getIsDelete(0,'string')."\",
-							`isActive`			=	\"".$this->model->getIsActive(0,'string')."\",
-							`isApproved`		=	\"".$this->model->getIsApproved(0,'string')."\",
+							`isDefault`			=	\"".$this->model->getIsDefault(0,'single')."\",
+							`isNew`				=	\"".$this->model->getIsNew(0,'single')."\",
+							`isDraft`			=	\"".$this->model->getIsDraft(0,'single')."\",
+							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'single')."\",
+							`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
+							`isActive`			=	\"".$this->model->getIsActive(0,'single')."\",
+							`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
 							`By`				=	\"".$this->model->getBy()."\",
 							`Time`				=	".$this->model->getTime()."
 					WHERE 	`extLabelId`			=	\"".$this->model->getextLabelId(0,'single')."\"";
@@ -458,13 +458,13 @@ class extLabelClass extends  configClass {
 			$sql="
 					UPDATE 	[extLabel]
 					SET 	[extLabelNote]		=	\"".$this->model-> getExtLabelNote()."\",
-							[isDefault]			=	\"".$this->model->getIsDefault(0,'string')."\",
-							[isNew]				=	\"".$this->model->getIsNew(0,'string')."\",
-							[isDraft]			=	\"".$this->model->getIsDraft(0,'string')."\",
-							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'string')."\",
-							[isDelete]			=	\"".$this->model->getIsDelete(0,'string')."\",
-							[isActive]			=	\"".$this->model->getIsActive(0,'string')."\",
-							[isApproved]		=	\"".$this->model->getIsApproved(0,'string')."\",
+							[isDefault]			=	\"".$this->model->getIsDefault(0,'single')."\",
+							[isNew]				=	\"".$this->model->getIsNew(0,'single')."\",
+							[isDraft]			=	\"".$this->model->getIsDraft(0,'single')."\",
+							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'single')."\",
+							[isDelete]			=	\"".$this->model->getIsDelete(0,'single')."\",
+							[isActive]			=	\"".$this->model->getIsActive(0,'single')."\",
+							[isApproved]		=	\"".$this->model->getIsApproved(0,'single')."\",
 							[By]				=	\"".$this->model->getBy()."\",
 							[Time]				=	".$this->model->getTime()."
 					WHERE 	[extLabelId]			=	\"".$this->model->getextLabelId(0,'single')."\"";
@@ -472,13 +472,13 @@ class extLabelClass extends  configClass {
 			$sql="
 					UPDATE 	\"extLabel\"
 					SET 	\"extLabelNote\"		=	\"".$this->model->getextLabelNote()."\",
-							\"isDefault\"		=	\"".$this->model->getIsDefault(0,'string')."\",
-							\"isNew\"			=	\"".$this->model->getIsNew(0,'string')."\",
-							\"isDraft\"			=	\"".$this->model->getIsDraft(0,'string')."\",
-							\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							\"isDelete\"		=	\"".$this->model->getIsDelete(0,'string')."\",
-							\"isActive\"		=	\"".$this->model->getIsActive(0,'string')."\",
-							\"isApproved\"		=	\"".$this->model->getIsApproved(0,'string')."\",
+							\"isDefault\"		=	\"".$this->model->getIsDefault(0,'single')."\",
+							\"isNew\"			=	\"".$this->model->getIsNew(0,'single')."\",
+							\"isDraft\"			=	\"".$this->model->getIsDraft(0,'single')."\",
+							\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
+							\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
+							\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
 							\"By\"				=	\"".$this->model->getBy()."\",
 							\"Time\"			=	".$this->model->getTime()."
 					WHERE 	\"extLabelId\"		=	\"".$this->model->getextLabelId(0,'single')."\"";
@@ -510,13 +510,13 @@ class extLabelClass extends  configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE	`extLabel`
-					SET		`isDefault`		=	\"".$this->model->getIsDefault(0,'string')."\",
-							`isActive`		=	\"".$this->model->getIsActive(0,'string')."\",
-							`isNew`			=	\"".$this->model->getIsNew(0,'string')."\",
-							`isDraft`		=	\"".$this->model->getIsDraft(0,'string')."\",
-							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							`isDelete`		=	\"".$this->model->getIsDelete(0,'string')."\",
-							`isApproved`	=	\"".$this->model->getIsApproved(0,'string')."\",
+					SET		`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
+							`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
+							`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
+							`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
+							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
+							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
 							`By`			=	\"".$this->model->getBy()."\",
 							`Time`			=	".$this->model->getTime()."
 					WHERE 	`extLabelId`		=	\"".$this->model->getextLabelId()."\"";
@@ -524,26 +524,26 @@ class extLabelClass extends  configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[extLabel]
-					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'string')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'string')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'string')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'string')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'string')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'string')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'string')."\",
+					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
+							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
+							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
+							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
+							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
+							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
 							[By]			=	\"".$this->model->getBy()."\",
 							[Time]			=	".$this->model->getTime()."
 					WHERE 	[extLabelId]		=	\"".$this->model->getextLabelId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE	\"extLabel\"
-					SET		\"isDefault\"	=	\"".$this->model->getIsDefault(0,'string')."\",
-							\"isActive\"	=	\"".$this->model->getIsActive(0,'string')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'string')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'string')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'string')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'string')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'string')."\",
+					SET		\"isDefault\"	=	\"".$this->model->getIsDefault(0,'single')."\",
+							\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
+							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
+							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
+							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
+							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
+							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
 							\"By\"			=	\"".$this->model->getBy()."\",
 							\"Time\"		=	".$this->model->getTime()."
 					WHERE 	\"extLabelId\"	=	\"".$this->model->getextLabelId()."\"";

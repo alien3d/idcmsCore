@@ -96,26 +96,26 @@ class moduleAccessModel extends validationClass
 	 */
 	public function draft()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(1,0,'string');
-		$this->setIsDraft(1,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(0,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(0,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(1,0,'single');
+		$this->setIsDraft(1,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(0,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
 	 * @see validationClass::draft()
 	 */
 	public function approved()
 	{
-		$this->setIsDefault(0,0,'string');
-		$this->setIsNew(1,0,'string');
-		$this->setIsDraft(0,0,'string');
-		$this->setIsUpdate(0,0,'string');
-		$this->setIsActive(0,0,'string');
-		$this->setIsDelete(0,0,'string');
-		$this->setIsApproved(1,0,'string');
+		$this->setIsDefault(0,0,'single');
+		$this->setIsNew(1,0,'single');
+		$this->setIsDraft(0,0,'single');
+		$this->setIsUpdate(0,0,'single');
+		$this->setIsActive(0,0,'single');
+		$this->setIsDelete(0,0,'single');
+		$this->setIsApproved(1,0,'single');
 	}
 	/**
 	 * Set Module Access  Value
@@ -187,7 +187,7 @@ class moduleAccessModel extends validationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setModuleAccessValue($value,$key,$type) {
-		if($type=='string'){
+		if($type=='single'){
 
 		} else if ($type=='array'){
 			$this->moduleAccessValue[$key] = $value;
@@ -202,7 +202,7 @@ class moduleAccessModel extends validationClass
 	 * @return bool|array
 	 */
 	public function getModuleAccessValue($key,$type) {
-		if($type=='string'){
+		if($type=='single'){
 
 		} else if ($type=='array'){
 			return $this->moduleAccessValue[$key];
