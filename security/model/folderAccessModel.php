@@ -144,6 +144,9 @@ class folderAccessModel extends validationClass{
 			$this->folderAccessId = $value;
 		} else if ($type=='array'){
 			$this->folderAccessId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setFolderAccessId ?"));
+			exit();
 		}
 	}
 
@@ -158,8 +161,8 @@ class folderAccessModel extends validationClass{
 			return $this->folderAccessId;
 		} else if ($type=='array'){
 			return $this->folderAccessId[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setFolderAccessId ?"));
 			exit();
 		}
 	}

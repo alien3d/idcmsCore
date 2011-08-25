@@ -278,6 +278,9 @@ class folderModel extends validationClass{
 			$this->folderId = $value;
 		} else if ($type=='array'){
 			$this->folderId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setFolderId ?"));
+			exit();
 		}
 	}
 	/**
@@ -292,9 +295,9 @@ class folderModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->folderId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getFolderId ?"));
 			exit();
-		}
+		} 
 	}
 /**
 	 * Set Module Identification

@@ -2,7 +2,7 @@
 
 /**
  * this is  Extjs Sencha Label Translation model file.
- * 
+ *
  *
  * @name IDCMS.
  * @version 2
@@ -217,24 +217,26 @@ class tableMappingTranslateModel extends validationClass{
 		$this->setIsDelete(0,0,'single');
 	}
 	/**
-	 * Set Default Label Translation   Value
-	 * @param bool|array $value
+	 * Set Extjs/Sencha Label Translation   Value
+	 * @param int |array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setTableMappingTranslateId($value,$key,$type) {
 		if($type=='single'){
 			$this->tableMappingTranslateId = $value;
 		} else if ($type=='array'){
 			$this->tableMappingTranslateId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array:setThemeId ?"));
+			exit();
 		}
 	}
 	/**
-	 * Return Ext Label Identification Value
-	 * Return Module Access Identification
+	 * Return Extjs/Sencha Label Identification Value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return int|array
 	 */
 	public function gettableMappingTranslateId($key,$type) {
 		if($type=='single'){
@@ -242,7 +244,7 @@ class tableMappingTranslateModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->tableMappingTranslateId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array:setThemeId ?"));
 			exit();
 		}
 	}
@@ -255,7 +257,7 @@ class tableMappingTranslateModel extends validationClass{
 	}
 	/**
 	 * Return Table Mapping Identication Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getLanguageDesc() {
 
@@ -270,7 +272,7 @@ class tableMappingTranslateModel extends validationClass{
 	}
 	/**
 	 * Return Language Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getTableMappingTranslationNativeLabel() {
 
@@ -286,7 +288,7 @@ class tableMappingTranslateModel extends validationClass{
 	}
 	/**
 	 * Return Language Identification
-	 * @return string 
+	 * @return string
 	 */
 	public function getLanguageId() {
 

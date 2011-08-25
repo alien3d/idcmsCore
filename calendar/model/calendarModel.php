@@ -153,6 +153,9 @@ class calendarModel extends validationClass{
 			$this->calendarId = $value;
 		} else if ($type == 'array') {
 			$this->calendarId[$key] = $value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setCalendarId ?"));
+			exit();
 		}
 	}
 	/**
@@ -168,11 +171,8 @@ class calendarModel extends validationClass{
 		} else if ($type == 'array') {
 			return $this->calendarId[$key];
 		} else {
-			echo json_encode(array(
-                "success" => false,
-                "message" => "Cannot Identifiy Type"
-                ));
-                exit();
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getCalendarId ?"));
+			exit();
 		}
 	}
 	/**

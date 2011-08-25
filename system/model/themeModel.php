@@ -7,7 +7,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package religion
+ * @package system
+ * @subpackage theme
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -245,7 +246,7 @@ class themeModel extends validationClass{
 	}
 	/**
 	 * Set theme Identification  Value
-	 * @param int $value
+	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -254,13 +255,16 @@ class themeModel extends validationClass{
 			$this->themeId = $value;
 		} else if ($type=='array'){
 			$this->themeId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array:setThemeId ?"));
+			exit();
 		}
 	}
 	/**
 	 * Return theme Identification Value
-		* @param array[int]int $key List Of Primary Key.
+	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
+	 * @return int|array
 	 */
 	public function getThemeId($key,$type) {
 		if($type=='single'){
@@ -268,7 +272,7 @@ class themeModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->themeId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array:getThemeId ?"));
 			exit();
 		}
 	}
@@ -309,12 +313,12 @@ class themeModel extends validationClass{
 	}
 	/**
 	 * Return theme  Description (english)
-	 * @return  string 
+	 * @return  string
 	 */
 	public function getThemeNote() {
 		return $this->themeNote;
 	}
-/**
+	/**
 	 * Set  theme Path
 	 * @param string $value
 	 */
@@ -323,7 +327,7 @@ class themeModel extends validationClass{
 	}
 	/**
 	 * Return theme  Path
-	 * @return  string 
+	 * @return  string
 	 */
 	public function getThemePath() {
 		return $this->themeNote;

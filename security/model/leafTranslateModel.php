@@ -182,6 +182,9 @@ class leafTranslationModel extends validationClass{
 			$this->leafTranslateId = $value;
 		} else if ($type=='array'){
 			$this->leafTranslateId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setLeafTranslateId ?"));
+			exit();
 		}
 	}
 	/**
@@ -196,7 +199,7 @@ class leafTranslationModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->leafTranslateId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getLeafTranslateId ?"));
 			exit();
 		}
 	}

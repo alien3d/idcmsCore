@@ -182,6 +182,9 @@ class folderTranslationModel extends validationClass{
 			$this->folderTranslateId = $value;
 		} else if ($type=='array'){
 			$this->folderTranslateId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setFolderTranslateId ?"));
+			exit();
 		}
 	}
 	/**
@@ -195,8 +198,8 @@ class folderTranslationModel extends validationClass{
 			return $this->folderTranslateId;
 		} else if ($type=='array'){
 			return $this->folderTranslateId[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getFolderTranslateId ?"));
 			exit();
 		}
 	}

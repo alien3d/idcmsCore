@@ -301,6 +301,9 @@ class staffModel extends validationClass{
 			$this->staffId = $value;
 		} else if ($type=='array'){
 			$this->staffId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setStaffId ?"));
+			exit();
 		}
 	}
 	/**
@@ -315,7 +318,7 @@ class staffModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->staffId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getStaffId ?"));
 			exit();
 		}
 	}

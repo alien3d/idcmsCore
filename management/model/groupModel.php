@@ -252,7 +252,7 @@ class groupModel extends validationClass{
 
 	/**
 	 * Set Group Identification  Value
-	 * @param int $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -261,6 +261,9 @@ class groupModel extends validationClass{
 			$this->groupId = $value;
 		} else if ($type=='array'){
 			$this->groupId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setGroupId ?"));
+			exit();
 		}
 	}
 	/**
@@ -275,7 +278,7 @@ class groupModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->groupId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getGroupId ?"));
 			exit();
 		}
 	}

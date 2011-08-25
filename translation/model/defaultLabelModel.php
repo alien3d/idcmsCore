@@ -223,7 +223,7 @@ class defaultLabelModel extends validationClass{
 	}
 	/**
 	 * Set Default Label   Value
-	 * @param bool|array $value
+	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -232,14 +232,17 @@ class defaultLabelModel extends validationClass{
 			$this->defaultLabelId = $value;
 		} else if ($type=='array'){
 			$this->defaultLabelId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array:setDefaultLabelId ?"));
+			exit();
 		}
 	}
 	/**
 	 * Return defaultLabel Identification Value
-	 * Return Module Access Identification
+	 * Return Default Label Identification
 	 * @param array[int][int] $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
+	 * @return int|array
 	 */
 	public function getDefaultLabelId($key,$type) {
 		if($type=='single'){
@@ -247,7 +250,7 @@ class defaultLabelModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->defaultLabelId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array:getDefaultLabelId ?"));
 			exit();
 		}
 	}

@@ -10,6 +10,7 @@ require_once("../model/religionModel.php");
  * @version 2
  * @author hafizan
  * @package religion
+ * @subpackage religionv1,v2,v3
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

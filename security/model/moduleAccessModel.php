@@ -128,6 +128,9 @@ class moduleAccessModel extends validationClass
 			$this->moduleAccessId = $value;
 		} else if ($type=='array'){
 			$this->moduleAccessId[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setModuleAccessId ?"));
+			exit();
 		}
 	}
 
@@ -143,7 +146,7 @@ class moduleAccessModel extends validationClass
 		} else if ($type=='array'){
 			return $this->moduleAccessId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getModuleAccessId ?"));
 			exit();
 		}
 	}

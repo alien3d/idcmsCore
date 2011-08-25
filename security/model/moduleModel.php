@@ -260,6 +260,9 @@ class moduleModel extends validationClass{
 			$this->moduleId = $value;
 		} else if ($type=='array'){
 			$this->moduleId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setModuleId ?"));
+			exit();
 		}
 	}
 	/**
@@ -274,7 +277,7 @@ class moduleModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->moduleId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Single Or Array Value"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getModuleId ?"));
 			exit();
 		}
 	}

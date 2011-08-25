@@ -230,6 +230,9 @@ class leafGroupAccessModel extends validationClass{
 			$this->leafGroupAccessId = $value;
 		} else if ($type=='array'){
 			$this->leafGroupAccessId[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setLeafGroupAccessId ?"));
+			exit();
 		}
 	}
 	/**
@@ -244,7 +247,7 @@ class leafGroupAccessModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->leafGroupAccessId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getLeaGroupAccessId ?"));
 			exit();
 		}
 	}

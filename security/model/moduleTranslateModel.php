@@ -182,6 +182,9 @@ class moduleTranslationModel extends validationClass{
 			$this->moduleTranslateId = $value;
 		} else if ($type=='array'){
 			$this->moduleTranslateId[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setModuleTranslateId ?"));
+			exit();
 		}
 	}
 	/**
@@ -196,7 +199,7 @@ class moduleTranslationModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->moduleTranslateId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getModuleTranslateId ?"));
 			exit();
 		}
 	}

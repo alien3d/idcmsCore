@@ -238,7 +238,7 @@ class documentModel extends validationClass{
 	}
 	/**
 	 * Set isDefault Value
-	 * @param int $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -248,7 +248,7 @@ class documentModel extends validationClass{
 		} else if ($type=='array'){
 			$this->documentId[$key]=$value;
 		}else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array ?"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setDocumentId ?"));
 			exit();
 		}
 	}
@@ -264,7 +264,7 @@ class documentModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->documentId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array ?"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getDocumentId ?"));
 			exit();
 		}
 	}

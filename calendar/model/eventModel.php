@@ -211,6 +211,9 @@ class eventModel extends validationClass{
 			$this->eventId = $value;
 		} else if ($type == 'array') {
 			$this->eventId[$key] = $value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setEventId ?"));
+			exit();
 		}
 	}
 	/**
@@ -226,11 +229,8 @@ class eventModel extends validationClass{
 		} else if ($type == 'array') {
 			return $this->eventId[$key];
 		} else {
-			echo json_encode(array(
-                "success" => false,
-                "message" => "Cannot Identifiy Type"
-                ));
-                exit();
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getEventId ?"));
+			exit();
 		}
 	}
 	/**

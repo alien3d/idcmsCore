@@ -7,7 +7,8 @@
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package department
+ * @package Management
+ * @subpackage Department
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -36,7 +37,7 @@ class departmentModel extends validationClass{
 
 
 	function execute(){
-		/*
+		/**
 		 *  Basic Information Table
 		 */
 		$this->setTableName('department');
@@ -240,7 +241,7 @@ class departmentModel extends validationClass{
 	}
 	/**
 	 * Set department Identification  Value
-	 * @param int $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -256,7 +257,7 @@ class departmentModel extends validationClass{
 	}
 
 	/**
-	 * Return department Identification  Value
+	 * Return Department Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array

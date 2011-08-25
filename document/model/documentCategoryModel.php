@@ -184,7 +184,7 @@ class documentCategoryModel extends validationClass{
 
 	/**
 	 * Set  Document Category Identification Value
-	 * @param int $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -193,6 +193,9 @@ class documentCategoryModel extends validationClass{
 			$this->documentCategoryId = $value;
 		} else if ($type=='array'){
 			$this->documentCategoryId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setDocumentCategoryId ?"));
+			exit();
 		}
 	}
 	/**
@@ -207,7 +210,7 @@ class documentCategoryModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->documentCategoryId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getDocumentCategoryId ?"));
 			exit();
 		}
 	}

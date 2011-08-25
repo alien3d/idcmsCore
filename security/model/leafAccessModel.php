@@ -238,7 +238,7 @@ class leafAccessModel extends validationClass{
 	}
 	/**
 	 * Set Leaf Access Identification  Value
-	 * @param int $value
+	 * @param bool|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -247,6 +247,9 @@ class leafAccessModel extends validationClass{
 			$this->leafAccessId = $value;
 		} else if ($type=='array'){
 			$this->leafAccessId[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setLeafAccessId ?"));
+			exit();
 		}
 	}
 
@@ -262,7 +265,7 @@ class leafAccessModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->leafAccessId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getLeafAccessId ?"));
 			exit();
 		}
 	}

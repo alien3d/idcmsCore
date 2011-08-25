@@ -293,6 +293,9 @@ class leafModel extends validationClass{
 			$this->leafId = $value;
 		} else if ($type=='array'){
 			$this->leafId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setLeafId ?"));
+			exit();
 		}
 	}
 	/**
@@ -306,8 +309,8 @@ class leafModel extends validationClass{
 			return $this->leafId;
 		} else if ($type=='array'){
 			return $this->leafId[$key];
-		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getLeafId ?"));
 			exit();
 		}
 	}

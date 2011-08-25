@@ -208,7 +208,7 @@ class extLabelModel extends validationClass{
 	}
 	/**
 	 * Set Default Label Translation   Value
-	 * @param bool|array $value
+	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -217,14 +217,16 @@ class extLabelModel extends validationClass{
 			$this->extLabelId = $value;
 		} else if ($type=='array'){
 			$this->extLabelId[$key]=$value;
+		}else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array:setExtLabelId ?"));
+			exit();
 		}
 	}
 	/**
 	 * Return Ext Label Identification Value
-	 * Return Module Access Identification
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
+	 * @return int|array
 	 */
 	public function getExtLabelId($key,$type) {
 		if($type=='single'){
@@ -232,7 +234,7 @@ class extLabelModel extends validationClass{
 		} else if ($type=='array'){
 			return $this->extLabelId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array: getExtLabelId ?"));
 			exit();
 		}
 	}

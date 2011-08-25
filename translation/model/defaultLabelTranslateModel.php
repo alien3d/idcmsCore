@@ -217,31 +217,33 @@ class defaultLabelTranslateModel extends validationClass{
 	}
 	/**
 	 * Set Default Label Translation   Value
-	 * @param bool|array $value
+	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setdefaultLabelTranslateId($value,$key,$type) {
+	public function setDefaultLabelTranslateId($value,$key,$type) {
 		if($type=='single'){
 			$this->defaultLabelTranslateId = $value;
 		} else if ($type=='array'){
 			$this->defaultLabelTranslateId[$key]=$value;
+		} else {
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array:setDefaultLabelTranslateId ?"));
+			exit();
 		}
 	}
 	/**
-	 * Return defaultLabel Identification Value
-	 * Return Module Access Identification
+	 * Return Default Label Translation Identification
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return int|array
 	 */
-	public function getdefaultLabelTranslateId($key,$type) {
+	public function getDefaultLabelTranslateId($key,$type) {
 		if($type=='single'){
 			return $this->defaultLabelTranslateId;
 		} else if ($type=='array'){
 			return $this->defaultLabelTranslateId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type Single Or Array:setDefaultLabelTranslateId ?"));
 			exit();
 		}
 	}
@@ -254,7 +256,7 @@ class defaultLabelTranslateModel extends validationClass{
 	}
 	/**
 	 * Return Default Label Identication Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getDefaultLabelId() {
 
@@ -269,7 +271,7 @@ class defaultLabelTranslateModel extends validationClass{
 	}
 	/**
 	 * Return defaultLabelText
-	 * @return string 
+	 * @return string
 	 */
 	public function getDefaultLabelText () {
 
