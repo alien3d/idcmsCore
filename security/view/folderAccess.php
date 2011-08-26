@@ -30,7 +30,7 @@ if($_SESSION[$theme]) { ?>
 		<script type="text/javascript"
 	src="../../javascript/examples/ux/checkColumn.js"></script>
 <script  type="text/javascript"
-	src="../javascript/folderAccess.js"></script>
+	src="../javascript/folderAccess.js?<?php echo time(); ?>"></script>
 </html>
 
 

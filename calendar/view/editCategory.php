@@ -29,5 +29,5 @@ if($_SESSION[$theme]) { ?>
 <script  type="text/javascript"
 	src="../../javascript/ext-all.js"></script>
 <script  type="text/javascript"
-	src="../javascript/editCategory.js"></script>
+	src="../javascript/editCategory.js?<?php echo time(); ?>"></script>
 </html>

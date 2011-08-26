@@ -70,5 +70,5 @@ x-grid3-row-alt {
 <script type="text/javascript"
 	src="../../javascript/examples/ux/RowEditor.js"></script>
 <script  type="text/javascript"
-	src="../javascript/language.js"></script>
+	src="../javascript/language.js?<?php echo time(); ?>"></script>
 </html>

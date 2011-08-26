@@ -75,5 +75,5 @@ x-grid3-row-alt {
 <script type="text/javascript"
 	src="../../javascript/examples/ux/fileuploadfield/FileUploadField.js"></script>
 <script  type="text/javascript"
-	src="../javascript/document.js"></script>
+	src="../javascript/document.js?<?php echo time(); ?>"></script>
 </html>

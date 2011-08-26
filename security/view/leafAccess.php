@@ -28,6 +28,6 @@ if($_SESSION['theme']) { ?>
 		<script type="text/javascript"
 	src="../../javascript/examples/ux/checkColumn.js"></script>
 <script  type="text/javascript"
-	src="../javascript/leafAccess.js"></script>
+	src="../javascript/leafAccess.js?<?php echo time(); ?>"></script>
 
 </html>
