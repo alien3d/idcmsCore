@@ -1,4 +1,4 @@
-<script  type="text/javascript">
+<script type="text/javascript">
 <?php
 
 		if($q->vendor=='mysql') {
@@ -9,14 +9,13 @@
 			$sql="SET NAMES \"utf8\"";
 			$q->fast($sql);
 		}
-?>
-<?php
+
 	/**
-	*
 	*	 all label language
-	*/
-		if( $q->vendor==sharedx::mysql) {
-				// future
+	**/
+
+	if( $q->vendor==sharedx::mysql) {
+		// future
 		$sql="
 		SELECT 			`tableMapping`.`tableMappingColumnName`,
 						`tableMappingTranslate`.`tableMappingNativeLabel`
@@ -30,14 +29,20 @@
 						`tableMapping`.`tableMappingNativeLabel`
 		FROM 			`tableMapping`
 		WHERE 			`tableMapping`.`languageId`=\"".$_SESSION['languageId']."\"";
-		} else if ($q->vendor==sharedx::mssql) {
+	} else if ($q->vendor==sharedx::mssql) {
 		$sql="
 		SELECT 			[tableMapping].[tableMappingColumnName],
 						[tableMappingTranslate].[tableMappingNativeLabel]
 		FROM 			[tableMapping]
 		JOIN			[tableMappingTranslate]
 		USING			[tableMapping].[tableMappingId]=[tableMappingTranslate].[tableMappingId]
-		WHERE 			[tableMapping].[languageId]=\"".$_SESSION['languageId']."\"";
+		WHERE 			[tableMapping].[languageId]='".$_SESSION['languageId']."'";
+		// temp
+		$sql="
+		SELECT 			[tableMapping].[tableMappingColumnName],
+						[tableMapping].[tableMappingNativeLabel]
+		FROM 			[tableMapping]
+		WHERE 			[tableMapping].[languageId]='".$_SESSION['languageId']."'";
 		} else if ($q->vendor==sharedx::oracle) {
 		$sql="
 		SELECT DISTINCT \"tableMapping\".\"tableMappingColumnName\",
@@ -45,6 +50,12 @@
 		FROM 			\"tableMapping\"
 		JOIN			\"tableMappingTranslate\"
 		USING			(\"tableMappingId\")
+		WHERE 			\"tableMapping\".\"languageId\"=\"".$_SESSION['languageId']."\"";
+		// temp
+		$sql="
+		SELECT 			\"tableMapping\".\"tableMappingColumnName\",
+						\"tableMapping\".\"tableMappingNativeLabel\"
+		FROM 			\"tableMapping\"
 		WHERE 			\"tableMapping\".\"languageId\"=\"".$_SESSION['languageId']."\"";
 	} else {
 
@@ -74,7 +85,7 @@ while ($row = $q->fetchAssoc($result)) {
 			FROM 	[defaultLabel]
 			JOIN 	[defaultLabelTranslate]
 			ON		[defaultLabel] .[defaultLabelId]=  [defaultLabelTranslate] .[defaultLabelId]
-			WHERE 	[defaultLabelTranslate].[languageId]=\"".$_SESSION['languageId']."\"";
+			WHERE 	[defaultLabelTranslate].[languageId]='".$_SESSION['languageId']."'";
 	} else if ($q->vendor==sharedx::oracle) {
 	$sql="
 			SELECT	*
@@ -121,9 +132,9 @@ if($q->vendor==sharedx::mysql) {
 	JOIN 	[leafTranslate]
 	ON		[leafAccess].[leafId]	=[leafTranslate].[leafId]
 	AND 	[leafTranslate].[leafId]= [leaf].[leafId]
-	WHERE  	[leaf].[leafFilename]			=	\"".basename($_SERVER[$phpself])."\"
-	AND  	[leafAccess].[staffId]			=	\"".$_SESSION[$staffId]."\"
-	AND		[leafTranslate].[languageId]	=	\"".$_SESSION['languageId']."\"";
+	WHERE  	[leaf].[leafFilename]			=	'".basename($_SERVER[$phpself])."'
+	AND  	[leafAccess].[staffId]			=	'".$_SESSION[$staffId]."'
+	AND		[leafTranslate].[languageId]	=	'".$_SESSION['languageId']."'";
 	} else if ($q->vendor==sharedx::oracle) {
 
 	$sql	=
@@ -165,8 +176,8 @@ var leafPrintAccessValue	= '<?php echo $row_leafAccess['leafPrintAccessValue']; 
 			FROM 	[staff]
 			JOIN	[group]
 			ON		[staff].[groupId]  	= 	[group].[groupId]
-			WHERE 	[staff].[staffId]	=	\"".$_SESSION['staffId']."\"
-			AND		[group].[groupId]	=	\"".$_SESSION['groupId']."\"";
+			WHERE 	[staff].[staffId]	=	'".$_SESSION['staffId']."'
+			AND		[group].[groupId]	=	'".$_SESSION['groupId']."'";
 		} else if ($q->vendor==sharedx::oracle) {
 			$sql	=	"
 			SELECT	\"group\".\"isAdmin\"

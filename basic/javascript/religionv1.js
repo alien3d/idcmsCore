@@ -41,20 +41,13 @@ Ext
 				method : 'POST',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,
-														// jsonResponse.message);
-														// //uncomment it for
-														// debugging purpose
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+						// uncomment it for debugging purpose
 					} else {
-						// Ext.MessageBox.alert(systemErrorLabel,
-						// jsonResponse.message);
-						Ext.MessageBox.show({
-							title : systemErrorLabel,
-							msg : jsonResponse.message,
-							buttons : Ext.Msg.WARNING,
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
 
-							warning : 'emoticon_unhappy'
-						});
 					}
 				},
 				failure : function(response, options) {
@@ -131,9 +124,9 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-														// jsonResponse.message);
-														// //uncomment for
-														// testing
+						// jsonResponse.message);
+						// //uncomment for
+						// testing
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -209,10 +202,9 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-														// jsonResponse.message);
-														// //uncommen for
-														// testing purpose
+					if (jsonResponse.success == true) { 
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// uncomment for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -272,7 +264,7 @@ Ext
 					table : "religion"
 				} ]
 			});
-			
+
 			var filtersList = new Ext.ux.grid.GridFilters({
 				encode : encode,
 				local : false,
@@ -296,7 +288,6 @@ Ext
 					table : "religion"
 				} ]
 			});
-
 
 			var columnModel = [
 					new Ext.grid.RowNumberer(),
@@ -324,7 +315,7 @@ Ext
 														mode : "update",
 														religionId : record.data.religionId,
 														leafId : leafId,
-														isAdmin :isAdmin
+														isAdmin : isAdmin
 													},
 													success : function(form,
 															action) {
@@ -372,7 +363,7 @@ Ext
 																			method : "delete",
 																			religionId : record.data.religionId,
 																			leafId : leafId,
-																			isAdmin :isAdmin
+																			isAdmin : isAdmin
 																		},
 																		success : function(
 																				response,
@@ -558,7 +549,7 @@ Ext
 														mode : "update",
 														religionId : record.data.religionId,
 														leafId : leafId,
-														isAdmin :isAdmin
+														isAdmin : isAdmin
 													},
 													success : function(form,
 															action) {
@@ -603,7 +594,7 @@ Ext
 																			method : "delete",
 																			religionId : record.data.religionId,
 																			leafId : leafId,
-																			isAdmin :isAdmin
+																			isAdmin : isAdmin
 																		},
 																		success : function(
 																				response,
@@ -1185,12 +1176,12 @@ Ext
 																	formPanel
 																			.getForm()
 																			.reset(); // comment
-																						// it
-																						// if
-																						// wanted
-																						// to
-																						// continue
-																						// mode
+																	// it
+																	// if
+																	// wanted
+																	// to
+																	// continue
+																	// mode
 																	religionStore
 																			.reload();
 																	religionStoreList

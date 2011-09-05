@@ -638,10 +638,10 @@ class staffClass extends configClass
 					JOIN	[department]
 					ON		[department].[departmentId]=[staff].[staffId]
 					JOIN	[group]
-					ON		[group].[groupId]=[staff].[staffId]
+					ON		[group].[groupId]=[staff].[groupId]
 					WHERE 	[staff].[isActive]='1'
 					AND		[group].[isActive] ='1'
-					AND		[deparment].[isActive]='1'";
+					AND		[department].[isActive]='1'";
 			if ($this->model->getStaffId(0,'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]=\"" . $this->model->getStaffId(0,'single') . "\"";
 			}
@@ -672,7 +672,7 @@ class staffClass extends configClass
  					USING	(`departmentId`)
 					WHERE 	\"staff\".\"isActive\"='1'
 					AND		\"group\".\"isActive\" ='1'
-					AND		\"deparment\".\"isActive\"='1' ";
+					AND		\"department\".\"isActive\"='1' ";
 			if ($this->model->getStaffId(0,'single')) {
 				$sql .= " AND \"" . $this->model->getTableName() . "\".\"" . $this->model->getPrimaryKeyName() . "\"=\"" . $this->model->getStaffId(0,'single') . "\"";
 			}

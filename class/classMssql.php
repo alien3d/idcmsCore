@@ -243,14 +243,15 @@ class vendor
 		$result_row      = NULL;
 		$this->operation = NULL;
 		$sql             = "
-				SELECT 	*
-				FROM 	[leafAccess]
-				WHERE  [leafAccess].[leafId]			=	\"". $this->leafId . "\"
-				AND   	[leafAccess].[" . $operation . "]	=	'1'
-				AND   	[leafAccess].[staffId]		=	\"". $this->staffId . "\"";
+		SELECT 	*
+		FROM 	[leafAccess]
+		WHERE  [leafAccess].[leafId]				=	'". $this->leafId . "'
+		AND   	[leafAccess].[" . $operation . "]	=	'1'
+		AND   	[leafAccess].[staffId]				=	'". $this->staffId . "'";
 		$result          = sqlsrv_query($this->link, $sql, array(), array(
             "Scrollable" => SQLSRV_CURSOR_KEYSET
 		));
+		
 		if (!$result) {
 			$this->execute = 'false';
 			$errorArray    = array();
@@ -259,20 +260,21 @@ class vendor
 			$error .= " Code : " . $errorArray[0]['code'];
 			$error .= " Message : " . $errorArray[0]['message'];
 			$this->responce = $error;
-			$result_row        = 0;
+			$resultRow        = 0;
 		} else {
-			$row_count = sqlsrv_num_rows($result);
-			if ($row_count === false) {
+			$rowCount = sqlsrv_num_rows($result);
+			if ($rowCount === false) {
 				$this->responce = $sql . sqlsrv_errors();
-			} else if ($row_count >= 0) {
-				$result_row = $row_count;
+			} else if ($rowCount >= 0) {
+				$resultRow = $rowCount;
 			}
 		}
-		if ($result_row == 1) {
+		if ($resultRow == 1) {
 			$access = 'Granted';
-		} elseif ($result_row == 0) {
+		} elseif ($resultRow == 0) {
 			$access = 'Denied';
 		}
+		//echo "access".$access;
 		/*
 		 *  Only disable and Error Sql Statement will be log
 		 */
@@ -305,7 +307,7 @@ class vendor
 			$error .= " Code : " . $errorArray[0]['code'];
 			$error .= " Message : " . $errorArray[0]['message'];
 			$this->responce = $error;
-			return ($result_row);
+			return ($resultRow);
 		}
 	}
 	/**

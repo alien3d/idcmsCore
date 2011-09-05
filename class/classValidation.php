@@ -518,14 +518,14 @@ abstract class validationClass {
 	 * Set Activity User
 	 * @param int $value
 	 */
-	public function setBy($value) {
+	public function setExecuteBy($value) {
 		$this->executeBy = $value;
 	}
 	/**
 	 * Get Activity User
 	 * @return int
 	 */
-	public function getBy() {
+	public function getExecuteBy() {
 
 		return $this->executeBy;
 	}

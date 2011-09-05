@@ -229,7 +229,7 @@ class religionModel extends validationClass
 	 */
 	public function setReligionId($value, $key, $type)
 	{
-		if ($type=='string') {
+		if ($type=='single') {
 			$this->religionId = $value;
 		} else if ($type == 'array') {
 			$this->religionId[$key] = $value;
@@ -246,7 +246,7 @@ class religionModel extends validationClass
 	 */
 	public function getReligionId($key, $type)
 	{
-		if ($type=='string') {
+		if ($type=='single') {
 			return $this->religionId;
 		} else if ($type == 'array') {
 			return $this->religionId[$key];

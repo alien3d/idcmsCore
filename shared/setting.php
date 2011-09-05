@@ -36,6 +36,12 @@
 		JOIN			[tableMappingTranslate]
 		USING			[tableMapping].[tableMappingId]=[tableMappingTranslate].[tableMappingId]
 		WHERE 			[tableMapping].[languageId]='".$_SESSION['languageId']."'";
+		// temp
+		$sql="
+		SELECT 			[tableMapping].[tableMappingColumnName],
+						[tableMapping].[tableMappingNativeLabel]
+		FROM 			[tableMapping]
+		WHERE 			[tableMapping].[languageId]='".$_SESSION['languageId']."'";
 		} else if ($q->vendor==sharedx::oracle) {
 		$sql="
 		SELECT DISTINCT \"tableMapping\".\"tableMappingColumnName\",
@@ -43,6 +49,12 @@
 		FROM 			\"tableMapping\"
 		JOIN			\"tableMappingTranslate\"
 		USING			(\"tableMappingId\")
+		WHERE 			\"tableMapping\".\"languageId\"=\"".$_SESSION['languageId']."\"";
+		// temp
+		$sql="
+		SELECT 			\"tableMapping\".\"tableMappingColumnName\",
+						\"tableMapping\".\"tableMappingNativeLabel\"
+		FROM 			\"tableMapping\"
 		WHERE 			\"tableMapping\".\"languageId\"=\"".$_SESSION['languageId']."\"";
 	} else {
 
