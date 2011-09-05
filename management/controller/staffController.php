@@ -119,8 +119,8 @@ class staffClass extends configClass
 						`isDefault`,			`isNew`,
 						`isDraft`,				`isUpdate`,
 						`isDelete`,				`isActive`,
-						`isApproved`,			`By`,
-						`Time`
+						`isApproved`,			`executeBy`,
+						`executeTime`
 
 				)  VALUES	(
 					\"" . $this->model->getStaffName() . "\",					\"" . $this->model->getStaffNo() . "\",
@@ -129,16 +129,16 @@ class staffClass extends configClass
 					\"" . $this->model->getIsDefault(0,'single') . "\",		\"" . $this->model->getIsNew(0,'single') . "\",
 					\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
 					\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-					\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getBy() . "\",
-					" . $this->model->getTime() . "
+					\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+					" . $this->model->getExecuteTime() . "
 				);";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 				INSERT INTO [staff] 	(
 							[staffName],		[staffNo],
 							[staffPassword],	[staffIc],
-							[groupId],			[By],
-							[Time]
+							[groupId],			[executeBy],
+							[executeTime]
 				)  VALUES	(
 					\"" . $this->model->getStaffName() . "\",					\"" . $this->model->getStaffNo() . "\",
 					\"" . md5($this->model->getStaffPassword()) . "\",			\"" . $this->model->getStaffIc() . "\",
@@ -146,16 +146,16 @@ class staffClass extends configClass
 					\"" . $this->model->getIsDefault(0,'single') . "\",		\"" . $this->model->getIsNew(0,'single') . "\",
 					\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
 					\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-					\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getBy() . "\",
-					" . $this->model->getTime() . "
+					\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+					" . $this->model->getExecuteTime() . "
 				);";
 		} else if ($this->q->vendor = 'oracle') {
 			$sql = "
 				INSERT INTO \"staff\" 	(
 							\"staffName\",		\"staffNo\",
 							\"staffPassword\",	\"staffIc\",
-							\"groupId\",		\"By\",
-							\"Time\"
+							\"groupId\",		\"executeBy\",
+							\"executeTime\"
 				)  VALUES	(
 					\"" . $this->model->getStaffName() . "\",					\"" . $this->model->getStaffNo() . "\",
 					\"" . md5($this->model->getStaffPassword()) . "\",			\"" . $this->model->getStaffIc() . "\",
@@ -163,8 +163,8 @@ class staffClass extends configClass
 					\"" . $this->model->getIsDefault(0,'single') . "\",		\"" . $this->model->getIsNew(0,'single') . "\",
 					\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
 					\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-					\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getBy() . "\",
-					" . $this->model->getTime() . "
+					\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+					" . $this->model->getExecuteTime() . "
 				);";
 		}
 		$this->q->create($sql);
@@ -600,8 +600,8 @@ class staffClass extends configClass
 							`staff`.`isDelete`,
 							`staff`.`isActive`,
 							`staff`.`isApproved`,
-							`staff`.`By`,
-							`staff`.`Time`
+							`staff`.`executeBy`,
+							`staff`.`executeTime`
  					FROM 	`staff`
  					JOIN	`group`
  					USING	(`groupId`)
@@ -631,8 +631,8 @@ class staffClass extends configClass
 							[staff].[isDelete],
 							[staff].[isActive],
 							[staff].[isApproved],
-							[staff].[By],
-							[staff].[Time],
+							[staff].[executeBy],
+							[staff].[executeTime],
 							[staff].[staffName]
 					FROM 	[staff]
 					JOIN	[department]
@@ -662,8 +662,8 @@ class staffClass extends configClass
 							\"staff\".\"isDelete\",
 							\"staff\".\"isActive\",
 							\"staff\".\"isApproved\",
-							\"staff\".\"By\",
-							\"staff\".\"Time\",
+							\"staff\".\"executeBy\",
+							\"staff\".\"executeTime\",
 							\"staff\".\"staffName\"
 					FROM 	\"staff\"
 					JOIN	`group`
@@ -784,8 +784,8 @@ class staffClass extends configClass
 										[staff].[isUpdate],
 										[staff].[isDelete],
 										[staff].[isApproved],
-										[staff].[By],
-										[staff].[Time],
+										[staff].[executeBy],
+										[staff].[executeTime],
 										[staff].[staffName]
 							FROM 		[staffDerived]
 							WHERE 		[RowNumber]
@@ -810,8 +810,8 @@ class staffClass extends configClass
 											\"staff\".\"isUpdate\",
 											\"staff\".\"isDelete\",
 											\"staff\".\"isApproved\",
-											\"staff\".\"By\",
-											\"staff\".\"Time\",
+											\"staff\".\"executeBy\",
+											\"staff\".\"executeTime\",
 											\"staff\".\"staffName\"
 									FROM 	\"staff\"
 									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
@@ -929,8 +929,8 @@ class staffClass extends configClass
 						`isDelete`		=	\"". $this->model->getIsDelete(0,'single') ."\",
 						`isActive`		=	\"". $this->model->getIsActive(0,'single') ."\",
 						`isApproved`	=	\"". $this->model->getIsApproved(0,'single') ."\",
-						`By`			=	\"". $this->model->getBy() ."\",
-						`Time			=	" . $this->model->getTime() . "
+						`executeBy`			=	\"". $this->model->getExecuteBy() ."\",
+						`Time			=	" . $this->model->getExecuteTime() . "
 				WHERE 	`staffId`		=	\"". $this->model->getStaffId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -949,8 +949,8 @@ class staffClass extends configClass
 						[isDelete]		=	\"". $this->model->getIsDelete(0,'single') ."\",
 						[isActive]		=	\"". $this->model->getIsActive(0,'single') ."\",
 						[isApproved]	=	\"". $this->model->getIsApproved(0,'single') ."\",
-						[By]			=	\"". $this->model->getBy() ."\",
-						[Time]			=	" . $this->model->getTime() . "
+						[executeBy]			=	\"". $this->model->getExecuteBy() ."\",
+						[executeTime]			=	" . $this->model->getExecuteTime() . "
 				WHERE 	[staffId]		=	\"". $this->model->getStaffId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -969,8 +969,8 @@ class staffClass extends configClass
 						\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') ."\",
 						\"isActive\"		=	\"". $this->model->getIsActive(0,'single') ."\",
 						\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') ."\",
-						\"By\"				=	\"". $this->model->getBy() ."\",
-						\"Time\"			=	" . $this->model->getTime() . "
+						\"executeBy\"				=	\"". $this->model->getExecuteBy() ."\",
+						\"executeTime\"			=	" . $this->model->getExecuteTime() . "
 				WHERE 	\"staffId\"			=	\"". $this->model->staffId ."\"";
 		}
 		$this->q->update($sql);
@@ -1187,8 +1187,8 @@ class staffClass extends configClass
 						`isDelete`			=	\"". $this->model->getIsDelete(0,'single') ."\",
 						`isActive`			=	\"". $this->model->getIsActive(0,'single') ."\",
 						`isApproved`		=	\"". $this->model->getIsApproved(0,'single') ."\",
-						`By`				=	\"". $this->model->getBy() ."\",
-						`Time				=	" . $this->model->getTime() . "
+						`executeBy`				=	\"". $this->model->getExecuteBy() ."\",
+						`Time				=	" . $this->model->getExecuteTime() . "
 				WHERE 	`staffId`			=	\"". $this->model->staffId ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -1200,8 +1200,8 @@ class staffClass extends configClass
 						[isDelete]	=	\"". $this->model->getIsDelete(0,'single') ."\",
 						[isActive]	=	\"". $this->model->getIsActive(0,'single') ."\",
 						[isApproved]=	\"". $this->model->getIsApproved(0,'single') ."\",
-						[By]		=	\"". $this->model->getBy() ."\",
-						[Time]		=	" . $this->model->getTime() . "
+						[executeBy]		=	\"". $this->model->getExecuteBy() ."\",
+						[executeTime]		=	" . $this->model->getExecuteTime() . "
 				WHERE 	[staffId]	=	\"". $this->model->getStaffId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -1213,8 +1213,8 @@ class staffClass extends configClass
 						\"isDelete\"	=	\"". $this->model->getIsDelete(0,'single') ."\",
 						\"isActive\"	=	\"". $this->model->getIsActive(0,'single') ."\",
 						\"isApproved\"	=   \"". $this->model->getIsApproved(0,'single') ."\",
-						\"By\"			=	\"". $this->model->getBy() ."\",
-						\"Time\"		=	" . $this->model->getTime() . "
+						\"executeBy\"			=	\"". $this->model->getExecuteBy() ."\",
+						\"executeTime\"		=	" . $this->model->getExecuteTime() . "
 				WHERE 	\"staffId\"		=	\"". $this->model->getStaffId(0,'single') ."\"";
 		}
 		$this->q->update($sql);
@@ -1317,8 +1317,8 @@ class staffClass extends configClass
 				}
 				$sql .= "
 				END,
-				`By`				=	\"" . $this->model->getBy() . "\",
-				`Time`				=	" . $this->model->getTime() . " ";
+				`executeBy`				=	\"" . $this->model->getExecuteBy() . "\",
+				`executeTime`				=	" . $this->model->getExecuteTime() . " ";
 				$this->model->setPrimaryKeyAll(substr($primaryKeyAll, 0, -1));
 				$sql .= " WHERE 	`" . $this->model->getPrimaryKeyName() . "`		IN	(" . $this->model->getPrimaryKeyAll() . ")";
 			} else if ($this->getVendor() == self::mssql) {
@@ -1331,8 +1331,8 @@ class staffClass extends configClass
 					[isDelete]			=	\"" . $this->model->getIsDelete(0,'single') . "\",
 					[isActive]			=	\"" . $this->model->getIsActive(0,'single') . "\",
 					[isApproved]		=	\"" . $this->model->getIsApproved(0,'single') . "\",
-					[By]				=	\"" . $this->model->getBy() . "\",
-					[Time]				=	" . $this->model->getTime() . "
+					[executeBy]				=	\"" . $this->model->getExecuteBy() . "\",
+					[executeTime]				=	" . $this->model->getExecuteTime() . "
 			WHERE 	[DepartmentId]		IN	(" . $this->model->getStaffIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
@@ -1344,8 +1344,8 @@ class staffClass extends configClass
 					\"isDelete\"		=	\"" . $this->model->getIsDelete(0,'single') . "\",
 					\"isActive\"		=	\"" . $this->model->getIsActive(0,'single') . "\",
 					\"isApproved\"		=	\"" . $this->model->getIsApproved(0,'single') . "\",
-					\"By\"				=	\"" . $this->model->getBy() . "\",
-					\"Time\"			=	" . $this->model->getTime() . "
+					\"executeBy\"				=	\"" . $this->model->getExecuteBy() . "\",
+					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
 			WHERE 	\"DepartmentId\"		IN	(" . $this->model->getStaffIdAll() . ")";
 			}
 		} else if ($this->isAdmin == 1) {

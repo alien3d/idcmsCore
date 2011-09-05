@@ -140,8 +140,8 @@ class leafTranslateClass extends  configClass {
 						`iconId`,							`isNew`,
 						`isDraft`,							`isUpdate`,
 						`isDelete`,							`isActive`,
-						`isApproved`,						`By`,
-						`Time`
+						`isApproved`,						`executeBy`,
+						`executeTime`
 					)
 			VALUES
 					(
@@ -152,7 +152,7 @@ class leafTranslateClass extends  configClass {
 						\"".$this->model->getIsDraft(0,'single')."\",		\"".$this->model->getIsUpdate(0,'single')."\",
 						\"".$this->model->getIsDelete(0,'single')."\",		\"".$this->model->getIsActive(0,'single')."\",
 						\"".$this->model->getIsApproved(0,'single')."\",		\"".$this->model->staffId."\",
-						".$this->model->getTime()."
+						".$this->model->getExecuteTime()."
 					) ";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
@@ -164,8 +164,8 @@ class leafTranslateClass extends  configClass {
 						[iconId],						[isNew],
 						[isDraft],						[isUpdate],
 						[isDelete],						[isActive],
-						[isApproved],					[By],
-						[Time]
+						[isApproved],					[executeBy],
+						[executeTime]
 					)
 			VALUES
 					(
@@ -176,7 +176,7 @@ class leafTranslateClass extends  configClass {
 						\"".$this->model->getIsDraft(0,'single')."\",		\"".$this->model->getIsUpdate(0,'single')."\",
 						\"".$this->model->getIsDelete(0,'single')."\",		\"".$this->model->getIsActive(0,'single')."\",
 						\"".$this->model->getIsApproved(0,'single')."\",		\"".$this->model->staffId."\",
-						".$this->model->getTime()."
+						".$this->model->getExecuteTime()."
 					)";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
@@ -188,8 +188,8 @@ class leafTranslateClass extends  configClass {
 						\"iconId\",							\"isNew\",
 						\"isDraft\",						\"isUpdate\",
 						\"isDelete\",						\"isActive\",
-						\"isApproved\",						\"By\",
-						\"Time\"
+						\"isApproved\",						\"executeBy\",
+						\"executeTime\"
 					)
 			VALUES
 					(
@@ -200,7 +200,7 @@ class leafTranslateClass extends  configClass {
 						\"".$this->model->getIsDraft(0,'single')."\",		\"".$this->model->getIsUpdate(0,'single')."\",
 						\"".$this->model->getIsDelete(0,'single')."\",		\"".$this->model->getIsActive(0,'single')."\",
 						\"".$this->model->getIsApproved(0,'single')."\",		\"".$this->model->staffId."\",
-						".$this->model->getTime()."
+						".$this->model->getExecuteTime()."
 					);";
 		}
 		$this->q->create($sql);
@@ -577,7 +577,7 @@ class leafTranslateClass extends  configClass {
 					`isUpdate`	=	\"".$this->model->getIsUpdate."\",
 					`isDelete`	=	\"".$this->model->getIsDelete."\",
 					`isApproved`=	\"".$this->model->getIsApproved."\",
-					`By`		=	\"".$this->model->getBy()."\",
+					`executeBy`		=	\"".$this->model->getExecuteBy()."\",
 					`Time		=	".$this->model->getTime."
 			WHERE 	`leafId`	=	\"".$this->leafId."\"";
 		} else if ($this->getVendor()==self::mssql) {
@@ -589,8 +589,8 @@ class leafTranslateClass extends  configClass {
 					[isUpdate]	=	\"".$this->model->getIsUpdate."\",
 					[isDelete]	=	\"".$this->model->getIsDelete."\",
 					[isApproved]=	\"".$this->model->getIsApproved."\",
-					[By]		=	\"".$this->model->getBy()."\",
-					[Time]		=	".$this->model->getTime."
+					[executeBy]		=	\"".$this->model->getExecuteBy()."\",
+					[executeTime]		=	".$this->model->getTime."
 			WHERE 	[leafId]	=	\"".$this->leafId."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
@@ -602,8 +602,8 @@ class leafTranslateClass extends  configClass {
 					\"isUpdate\"	=	\"".$this->model->getIsUpdate."\",
 					\"isDelete\"	=	\"".$this->model->getIsDelete."\",
 					\"isApproved\"	=	\"".$this->model->getIsApproved."\",
-					\"By\"			=	\"".$this->model->getBy()."\",
-					\"Time\"		=	".$this->model->getTime."
+					\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
+					\"executeTime\"		=	".$this->model->getTime."
 			WHERE 	\"leafId\"		=	\"".$this->leafId."\"";
 
 		}
@@ -638,7 +638,7 @@ class leafTranslateClass extends  configClass {
 					`isUpdate`	=	\"".$this->model->getIsUpdate."\",
 					`isDelete`	=	\"".$this->model->getIsDelete."\",
 					`isApproved`=	\"".$this->model->getIsApproved."\",
-					`By`		=	\"".$this->model->getBy()."\",
+					`executeBy`		=	\"".$this->model->getExecuteBy()."\",
 					`Time		=	".$this->model->getTime."
 			WHERE 	`leafId`	=	\"".$this->leafId."\"";
 		} else if ($this->getVendor()==self::mssql) {
@@ -650,8 +650,8 @@ class leafTranslateClass extends  configClass {
 					[isUpdate]	=	\"".$this->model->getIsUpdate."\",
 					[isDelete]	=	\"".$this->model->getIsDelete."\",
 					[isApproved]=	\"".$this->model->getIsApproved."\",
-					[By]		=	\"".$this->model->getBy()."\",
-					[Time]		=	".$this->model->getTime."
+					[executeBy]		=	\"".$this->model->getExecuteBy()."\",
+					[executeTime]		=	".$this->model->getTime."
 			WHERE 	[leafId]	=	\"".$this->leafId."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
@@ -663,8 +663,8 @@ class leafTranslateClass extends  configClass {
 					\"isUpdate\"	=	\"".$this->model->getIsUpdate."\",
 					\"isDelete\"	=	\"".$this->model->getIsDelete."\",
 					\"isApproved\"	=	\"".$this->model->getIsApproved."\",
-					\"By\"			=	\"".$this->model->getBy()."\",
-					\"Time\"		=	".$this->model->getTime."
+					\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
+					\"executeTime\"		=	".$this->model->getTime."
 			WHERE 	\"leafId\"		=	\"".$this->leafId."\"";
 
 		}

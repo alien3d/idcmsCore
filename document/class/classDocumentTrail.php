@@ -71,8 +71,8 @@ class documentTrailClass extends configClass {
 						`isDefault`,					`isNew`,
 						`isDraft`,						`isUpdate`,
 						`isDelete`,						`isActive`,
-						`isApproved`,					`By`,
-						`Time`
+						`isApproved`,					`executeBy`,
+						`executeTime`
 			)	VALUES	(
 						\"".$this->model->getDocumentCategoryId()."\",
 						\"".$this->model->getLeafId()."\",
@@ -87,8 +87,8 @@ class documentTrailClass extends configClass {
 						\"".$this->model->getIsDelete('','sring')."\",
 						\"".$this->model->getIsActive(0,'single')."\",
 						\"".$this->model->getIsApproved(0,'single')."\",
-						\"".$this->model->getBy()."\",
-						 ".$this->model->getTime()."
+						\"".$this->model->getExecuteBy()."\",
+						 ".$this->model->getExecuteTime()."
 			); ";
 		} else if ($this->getVendor()==self::mssql){
 			$sql = "
@@ -99,8 +99,8 @@ class documentTrailClass extends configClass {
 						[isDefault],					[isNew],
 						[isDraft],						[isUpdate],
 						[isDelete],						[isActive],
-						[isApproved],					[By],
-						[Time]
+						[isApproved],					[executeBy],
+						[executeTime]
 			)	VALUES	(
 						\"".$this->model->getDocumentCategoryId()."\",
 						\"".$this->model->getLeafId()."\",
@@ -115,8 +115,8 @@ class documentTrailClass extends configClass {
 						\"".$this->model->getIsDelete('','sring')."\",
 						\"".$this->model->getIsActive(0,'single')."\",
 						\"".$this->model->getIsApproved(0,'single')."\",
-						\"".$this->model->getBy()."\",
-						 ".$this->model->getTime()."
+						\"".$this->model->getExecuteBy()."\",
+						 ".$this->model->getExecuteTime()."
 			); ";
 		} else if ($this->getVendor()==self::oracle){
 			$sql = "
@@ -127,8 +127,8 @@ class documentTrailClass extends configClass {
 						\"isDefault\",					\"isNew\",
 						\"isDraft\",					\"isUpdate\",
 						\"isDelete\",					\"isActive\",
-						\"isApproved\",					\"By\",
-						\"Time\"
+						\"isApproved\",					\"executeBy\",
+						\"executeTime\"
 			)	VALUES	(
 						\"".$this->model->getDocumentCategoryId()."\",
 						\"".$this->model->getLeafId()."\",
@@ -143,8 +143,8 @@ class documentTrailClass extends configClass {
 						\"".$this->model->getIsDelete('','sring')."\",
 						\"".$this->model->getIsActive(0,'single')."\",
 						\"".$this->model->getIsApproved(0,'single')."\"\",
-						\"".$this->model->getBy()."\",
-						 ".$this->model->getTime()."
+						\"".$this->model->getExecuteBy()."\",
+						 ".$this->model->getExecuteTime()."
 			); ";
 		}
 		$this->q->create($sql);

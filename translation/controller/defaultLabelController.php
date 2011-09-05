@@ -137,8 +137,8 @@ class defaultLabelClass extends  configClass {
 						`isDefault`,							`isNew`,
 						`isDraft`,								`isUpdate`,
 						`isDelete`,								`isActive`,
-						`isApproved`,							`By`,
-						`Time`
+						`isApproved`,							`executeBy`,
+						`executeTime`
 					)
 			VALUES
 					(
@@ -146,8 +146,8 @@ class defaultLabelClass extends  configClass {
 						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+						" . $this->model->getExecuteTime() . "
 					);";
 		}else if ($this->getVendor()==self::mssql) {
 			$sql="
@@ -158,7 +158,7 @@ class defaultLabelClass extends  configClass {
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
 						[isActive],							[isApproved],
-						[By],								[Time]
+						[executeBy],								[executeTime]
 				)
 			VALUES
 				(
@@ -166,8 +166,8 @@ class defaultLabelClass extends  configClass {
 						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+						" . $this->model->getExecuteTime() . "
 			);";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -177,15 +177,15 @@ class defaultLabelClass extends  configClass {
 							\"isDefault\",								\"isNew\",
 							\"isDraft\",								\"isUpdate\",
 							\"isDelete\",								\"isActive\",
-							\"isApproved\",								\"By\",
-							\"Time\"
+							\"isApproved\",								\"executeBy\",
+							\"executeTime\"
 				VALUES	(
 							\"".$this->model->getDefaultLabel()."\",						\"".$this->model->getDefaultLabelEnglish()."\"
 							\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
 							\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
 							\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-							\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",
-							" . $this->model->getTime() . "
+							\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+							" . $this->model->getExecuteTime() . "
 			)";
 		}
 		$this->q->create($sql);
@@ -321,8 +321,8 @@ class defaultLabelClass extends  configClass {
 							WITH [defaultLabelDerived] AS
 							(
 								SELECT	*,
-								[defaultLabel].[By],
-								[defaultLabel].[Time]
+								[defaultLabel].[executeBy],
+								[defaultLabel].[executeTime]
 								ROW_NUMBER() OVER (ORDER BY [defaultLabelId]) AS 'RowNumber'
 								FROM 		[defaultLabel]
 								WHERE	1  ".$tempSql.$tempSql2."
@@ -436,8 +436,8 @@ class defaultLabelClass extends  configClass {
 							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-							`By`			=	\"".$this->model->getBy()."\",
-							`Time`			=	".$this->model->getTime()."
+							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
+							`executeTime`			=	".$this->model->getExecuteTime()."
 					WHERE 	`defaultLabelId`			=	\"".$this->model->getDefaultLabelId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
@@ -451,8 +451,8 @@ class defaultLabelClass extends  configClass {
 							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
 							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[By]			=	\"".$this->model->getBy()."\",
-							[Time]			=	".$this->model->getTime()."
+							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+							[executeTime]			=	".$this->model->getExecuteTime()."
 					WHERE 	[defaultLabelId]			=	\"".$this->model->getDefaultLabelId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -466,8 +466,8 @@ class defaultLabelClass extends  configClass {
 							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
 							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"By\"			=	\"".$this->model->getBy()."\",
-							\"Time\"		=	".$this->model->getTime()."
+							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
+							\"executeTime\"		=	".$this->model->getExecuteTime()."
 					WHERE 	\"defaultLabelId\"		=	\"".$this->model->getDefaultLabelId(0,'single')."\"";
 		}
 		$this->q->update($sql);
@@ -504,8 +504,8 @@ class defaultLabelClass extends  configClass {
 							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-							`By`			=	\"".$this->model->getBy()."\",
-							`Time`			=	".$this->model->getTime()."
+							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
+							`executeTime`			=	".$this->model->getExecuteTime()."
 					WHERE 	`defaultLabelId`		=	\"".$this->model->getdefaultLabelId()."\"";
 
 		} else if ($this->getVendor()==self::mssql) {
@@ -518,8 +518,8 @@ class defaultLabelClass extends  configClass {
 							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
 							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[By]			=	\"".$this->model->getBy()."\",
-							[Time]			=	".$this->model->getTime()."
+							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+							[executeTime]			=	".$this->model->getExecuteTime()."
 					WHERE 	[defaultLabelId]		=	\"".$this->model->getdefaultLabelId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -531,8 +531,8 @@ class defaultLabelClass extends  configClass {
 							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
 							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"By\"			=	\"".$this->model->getBy()."\",
-							\"Time\"		=	".$this->model->getTime()."
+							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
+							\"executeTime\"		=	".$this->model->getExecuteTime()."
 					WHERE 	\"defaultLabelId\"	=	\"".$this->model->getdefaultLabelId()."\"";
 		}
 		$this->q->update($sql);
@@ -635,8 +635,8 @@ class defaultLabelClass extends  configClass {
 				}
 				$sql.="
 				END,
-				`By`				=	\"". $this->model->getBy() . "\",
-				`Time`				=	" . $this->model->getTime() . " ";
+				`executeBy`				=	\"". $this->model->getExecuteBy() . "\",
+				`executeTime`				=	" . $this->model->getExecuteTime() . " ";
 
 
 				$this->model->setPrimaryKeyAll(substr($primaryKeyAll,0,-1));
@@ -652,8 +652,8 @@ class defaultLabelClass extends  configClass {
 					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
 					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
 					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					[By]				=	\"". $this->model->getBy() . "\",
-					[Time]				=	" . $this->model->getTime() . "
+					[executeBy]				=	\"". $this->model->getExecuteBy() . "\",
+					[executeTime]				=	" . $this->model->getExecuteTime() . "
 			WHERE 	[DepartmentId]		IN	(". $this->model->getDepartmentIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
@@ -665,8 +665,8 @@ class defaultLabelClass extends  configClass {
 					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
 					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
 					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					\"By\"				=	\"". $this->model->getBy() . "\",
-					\"Time\"			=	" . $this->model->getTime() . "
+					\"executeBy\"				=	\"". $this->model->getExecuteBy() . "\",
+					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
 			WHERE 	\"DepartmentId\"		IN	(". $this->model->getDepartmentIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){

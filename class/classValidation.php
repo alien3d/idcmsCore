@@ -20,8 +20,8 @@ abstract class validationClass {
 	private $isActive;
 	private $isDelete;
 	private $isApproved;
-	private $By;
-	private $Time;
+	private $executeBy;
+	private $executeTime;
 	/*
 	 * Mysql Database
 	 * @var const string
@@ -519,7 +519,7 @@ abstract class validationClass {
 	 * @param int $value
 	 */
 	public function setBy($value) {
-		$this->By = $value;
+		$this->executeBy = $value;
 	}
 	/**
 	 * Get Activity User
@@ -527,23 +527,23 @@ abstract class validationClass {
 	 */
 	public function getBy() {
 
-		return $this->By;
+		return $this->executeBy;
 	}
 
 	/**
 	 * Set Time Activity User
 	 * @param date $value
 	 */
-	public function setTime($value) {
-		$this->Time = $value;
+	public function setExecuteTime($value) {
+		$this->executeTime = $value;
 	}
 	/**
 	 *  Return Time Activity User
 	 *  @return date
 	 */
-	public function getTime() {
+	public function getExecuteTime() {
 
-		return $this->Time;
+		return $this->executeTime;
 	}
 
 }

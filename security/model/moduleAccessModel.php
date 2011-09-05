@@ -119,7 +119,7 @@ class moduleAccessModel extends validationClass
 	}
 	/**
 	 * Set Module Access  Value
-	 * @param bool|array $value
+	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -138,7 +138,7 @@ class moduleAccessModel extends validationClass
 	 * Return Module Access Identification
 	 * @param array[int][int] $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
+	 * @return int|array
 	 */
 	public function getModuleAccessId($key,$type) {
 		if($type=='single'){

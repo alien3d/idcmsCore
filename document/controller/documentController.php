@@ -190,20 +190,20 @@ class documentClass extends  configClass {
 			SELECT 	count(*) 
 			FROM 	`document` 
 			WHERE 	`documentOriginalFilename`	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		`By`			=   '".$this->model->getby()."'";
+			AND		`executeBy`			=   '".$this->model->getExecuteBy()."'";
 
 		} else if($this->getVendor()==self::mssql){
 			$sql="
 			SELECT 	count(*) 
 			FROM 	[document] 
 			WHERE 	[documentOriginalFilename]	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		[By]			=   '".$this->model->getBy()."'";
+			AND		[executeBy]			=   '".$this->model->getExecuteBy()."'";
 		} else if($this->getVendor()==self::oracle){
 			$sql="
 			SELECT 	count(*) 
 			FROM 	\"document\" 
 			WHERE 	\"documentOriginalFilename\"	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		\"By\"			=   '".$this->model->getBy()."'";
+			AND		\"executeBy\"			=   '".$this->model->getExecuteBy()."'";
 		}
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
@@ -231,8 +231,8 @@ class documentClass extends  configClass {
 				  	`isDefault`,					`isNew`,							
 				  	`isDraft`,						`isUpdate`,							
 				  	`isDelete`,						`isActive`,							
-				  	`isApproved`,					`By`,								
-				  	`Time`
+				  	`isApproved`,					`executeBy`,								
+				  	`executeTime`
 				)
 			VALUES
 				(
@@ -246,8 +246,8 @@ class documentClass extends  configClass {
 						\"". $this->model->getIsDefault(0,'single') . "\"				,\"". $this->model->getIsNew(0,'single') . "\",				
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",				
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",				
-						\"". $this->model->getIsApproved(0,'single') . "\",				\"". $this->model->getBy() . "\",						
-						" . $this->model->getTime() . "
+						\"". $this->model->getIsApproved(0,'single') . "\",				\"". $this->model->getExecuteBy() . "\",						
+						" . $this->model->getExecuteTime() . "
 				);";
 
 
@@ -264,8 +264,8 @@ class documentClass extends  configClass {
 				  	[isDefault],					[isNew],							
 				  	[isDraft],						[isUpdate],							
 				  	[isDelete],						[isActive],							
-				  	[isApproved],					[By],								
-				  	[Time]
+				  	[isApproved],					[executeBy],								
+				  	[executeTime]
 				)
 			VALUES
 				(
@@ -278,8 +278,8 @@ class documentClass extends  configClass {
 						\"". $this->model->getIsDefault(0,'single') . "\"				,\"". $this->model->getIsNew(0,'single') . "\",				
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",				
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",				
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",						
-						" . $this->model->getTime() . "	
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",						
+						" . $this->model->getExecuteTime() . "	
 				);";	
 		} else if ($this->getVendor()==self::oracle){
 			$sql = "
@@ -294,8 +294,8 @@ class documentClass extends  configClass {
 				  	\"isDefault\",					\"isNew\",							
 				  	\"isDraft\",					\"isUpdate\",							
 				  	\"isDelete\",					\"isActive\",						
-				  	\"isApproved\",					\"By\",								
-				  	\"Time\"
+				  	\"isApproved\",					\"executeBy\",								
+				  	\"executeTime\"
 				)
 			VALUES
 				(
@@ -308,8 +308,8 @@ class documentClass extends  configClass {
 						\"". $this->model->getIsDefault(0,'single') . "\"				,\"". $this->model->getIsNew(0,'single') . "\",				
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",				
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",				
-						\"". $this->model->getIsApproved(0,'single') . "\",				\"". $this->model->getBy() . "\",						
-						" . $this->model->getTime() . "		
+						\"". $this->model->getIsApproved(0,'single') . "\",				\"". $this->model->getExecuteBy() . "\",						
+						" . $this->model->getExecuteTime() . "		
 				);";
 		}
 		$this->q->create($sql);
@@ -376,12 +376,12 @@ class documentClass extends  configClass {
 							`document`.`isDelete`,
 							`document`.`isActive`,
 							`document`.`isApproved`,
-							`document`.`By`,
-							`document`.`Time`,
+							`document`.`executeBy`,
+							`document`.`executeTime`,
 							`staff`.`staffName`
  					FROM 	`document`
 					JOIN	`staff`
-					ON		`document`.`By` = `staff`.`staffId`
+					ON		`document`.`executeBy` = `staff`.`staffId`
 					JOIN	`documentCategory`
 					USING	(`documentCategoryId`)
 					WHERE 	".$this->auditFilter;
@@ -405,12 +405,12 @@ class documentClass extends  configClass {
 							[document].[isDelete],
 							[document].[isActive],
 							[document].[isApproved],
-							[document].[By],
-							[document].[Time],
+							[document].[executeBy],
+							[document].[executeTime],
 							[staff].[staffName]
 					FROM 	[document]
 					JOIN	[staff]
-					ON		[document].[By] = [staff].[staffId]
+					ON		[document].[executeBy] = [staff].[staffId]
 					JOIN	`documentCategory`
 					ON		[document].[documentCategoryId]=[documentCategory].[documentCategoryId]
 					WHERE 	[document].[isActive] ='1'	";
@@ -432,12 +432,12 @@ class documentClass extends  configClass {
 							\"document\".\"isDelete\",
 							\"document\".\"isActive\",
 							\"document\".\"isApproved\",
-							\"document\".\"By\",
-							\"document\".\"Time\",
+							\"document\".\"executeBy\",
+							\"document\".\"executeTime\",
 							\"staff\".\"staffName\"
 					FROM 	\"document\"
 					JOIN	\"staff\"
-					ON		\"document\".\"By\" = \"staff\".\"staffId\"
+					ON		\"document\".\"executeBy\" = \"staff\".\"staffId\"
 					JOIN	`documentCategory`
 					USING	(`documentCategoryId`)
 					WHERE 		";
@@ -554,8 +554,8 @@ class documentClass extends  configClass {
 										[document].[isUpdate],
 										[document].[isDelete],
 										[document].[isApproved],
-										[document].[By],
-										[document].[Time],
+										[document].[executeBy],
+										[document].[executeTime],
 										[staff].[staffName]
 							FROM 		[documentDerived]
 							WHERE 		[RowNumber]
@@ -582,8 +582,8 @@ class documentClass extends  configClass {
 											\"document\".\"isUpdate\",
 											\"document\".\"isDelete\",
 											\"document\".\"isApproved\",
-											\"document\".\"By\",
-											\"document\".\"Time\",
+											\"document\".\"executeBy\",
+											\"document\".\"executeTime\",
 											\"staff\".\"staffName\"
 									FROM 	\"document\"
 									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
@@ -707,20 +707,20 @@ class documentClass extends  configClass {
 			SELECT 	count(*) 
 			FROM 	`document` 
 			WHERE 	`documentOriginalFilename`	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		`By`			=   '".$this->model->getBy()."'";
+			AND		`executeBy`			=   '".$this->model->getExecuteBy()."'";
 
 		} else if($this->getVendor()==self::mssql){
 			$sql="
 			SELECT 	count(*) 
 			FROM 	[document] 
 			WHERE 	[documentOriginalFilename]	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		[By]			=   '".$this->model->getBy()."'";
+			AND		[executeBy]			=   '".$this->model->getExecuteBy()."'";
 		} else if($this->getVendor()==self::oracle){
 			$sql="
 			SELECT 	count(*) 
 			FROM 	\"document\" 
 			WHERE 	\"documentOriginalFilename\"	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		\"By\"			=   '".$this->model->getBy()."'";
+			AND		\"executeBy\"			=   '".$this->model->getExecuteBy()."'";
 		}
 		$this->q->read($sql);
 		if($this->q->execute=='fail') {
@@ -750,8 +750,8 @@ class documentClass extends  configClass {
 				`isUpdate`					=	\"".$this->model->getIsUpdate(0,'single')."\",
 				`isDelete`					=	\"".$this->model->getIsDelete(0,'single')."\",
 				`isApproved`				=	\"".$this->model->getIsApproved(0,'single')."\",
-				`By`						=	\"".$this->model->getBy()."\",
-				`Time`						=	".$this->model->getTime()."
+				`executeBy`						=	\"".$this->model->getExecuteBy()."\",
+				`executeTime`						=	".$this->model->getExecuteTime()."
 		WHERE 	`documentId`				=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::mssql){
@@ -775,8 +775,8 @@ class documentClass extends  configClass {
 				[isUpdate]					=	\"".$this->model->getIsUpdate(0,'single')."\",
 				[isDelete]					=	\"".$this->model->getIsDelete(0,'single')."\",
 				[isApproved]				=	\"".$this->model->getIsApproved(0,'single')."\",
-				[By]						=	\"".$this->model->getBy()."\",
-				[Time]						=	".$this->model->getTime()."
+				[executeBy]						=	\"".$this->model->getExecuteBy()."\",
+				[executeTime]						=	".$this->model->getExecuteTime()."
 		WHERE 	[documentId]				=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::oracle){
@@ -800,8 +800,8 @@ class documentClass extends  configClass {
 				\"isUpdate\"				=	\"".$this->model->getIsUpdate(0,'single')."\",
 				\"isDelete\"				=	\"".$this->model->getIsDelete(0,'single')."\",
 				\"isApproved\"				=	\"".$this->model->getIsApproved(0,'single')."\",
-				\"By\"						=	\"".$this->model->getBy()."\",
-				\"Time\"					=	".$this->model->getTime()."
+				\"executeBy\"						=	\"".$this->model->getExecuteBy()."\",
+				\"executeTime\"					=	".$this->model->getExecuteTime()."
 		WHERE 	\"documentId\"				=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		}
@@ -832,8 +832,8 @@ class documentClass extends  configClass {
 						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
 						`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 						`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-						`By`			=	\"".$this->model->getBy(0,'single')."\",
-						`Time			=	".$this->model->getTime()."
+						`executeBy`			=	\"".$this->model->getBy(0,'single')."\",
+						`Time			=	".$this->model->getExecuteTime()."
 				WHERE 	`documentId`	=	\"".$this->model->getDepartrmentId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
@@ -845,8 +845,8 @@ class documentClass extends  configClass {
 						[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
 						[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
 						[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-						[By]			=	\"".$this->model->getBy()."\",
-						[Time]			=	".$this->model->getTime()."
+						[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+						[executeTime]			=	".$this->model->getExecuteTime()."
 				WHERE 	[documentId]	=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::oracle) {
@@ -859,8 +859,8 @@ class documentClass extends  configClass {
 						\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
 						\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
 						\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
-						\"By\"				=	\"".$this->model->getBy()."\",
-						\"Time\"			=	".$this->model->getTime()."
+						\"executeBy\"				=	\"".$this->model->getExecuteBy()."\",
+						\"executeTime\"			=	".$this->model->getExecuteTime()."
 				WHERE 	\"documentId\"	=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		}
@@ -971,8 +971,8 @@ class documentClass extends  configClass {
 				}
 				$sql.="
 				END,
-				`By`				=	\"". $this->model->getBy() . "\",
-				`Time`				=	" . $this->model->getTime() . " ";
+				`executeBy`				=	\"". $this->model->getExecuteBy() . "\",
+				`executeTime`				=	" . $this->model->getExecuteTime() . " ";
 
 
 				$this->model->setPrimaryKeyAll(substr($primaryKeyAll,0,-1));
@@ -988,8 +988,8 @@ class documentClass extends  configClass {
 					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
 					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
 					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					[By]				=	\"". $this->model->getBy() . "\",
-					[Time]				=	" . $this->model->getTime() . "
+					[executeBy]				=	\"". $this->model->getExecuteBy() . "\",
+					[executeTime]				=	" . $this->model->getExecuteTime() . "
 			WHERE 	[documentId]		IN	(". $this->model->getDocumentIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
@@ -1001,8 +1001,8 @@ class documentClass extends  configClass {
 					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
 					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
 					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					\"By\"				=	\"". $this->model->getBy() . "\",
-					\"Time\"			=	" . $this->model->getTime() . "
+					\"executeBy\"				=	\"". $this->model->getExecuteBy() . "\",
+					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
 			WHERE 	\"documentId\"		IN	(". $this->model->getDocumentIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){

@@ -145,8 +145,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						`isDefault`,							`isNew`,
 						`isDraft`,								`isUpdate`,
 						`isDelete`,								`isActive`,
-						`isApproved`,							`By`,
-						`Time`
+						`isApproved`,							`executeBy`,
+						`executeTime`
 					)
 			VALUES
 					(
@@ -154,8 +154,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+						" . $this->model->getExecuteTime() . "
 					);";
 		}else if ($this->getVendor()==self::mssql) {
 			$sql="
@@ -166,7 +166,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
 						[isActive],							[isApproved],
-						[By],								[Time]
+						[executeBy],								[executeTime]
 				)
 			VALUES
 				(
@@ -174,8 +174,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+						" . $this->model->getExecuteTime() . "
 			);";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -185,15 +185,15 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							\"isDefault\",								\"isNew\",
 							\"isDraft\",								\"isUpdate\",
 							\"isDelete\",								\"isActive\",
-							\"isApproved\",								\"By\",
-							\"Time\"
+							\"isApproved\",								\"executeBy\",
+							\"executeTime\"
 				VALUES	(
 							\"".$this->model->gettableMappingTranslationTranslation()."\",						\"".$this->model->gettableMappingTranslationTranslationEnglish()."\"
 							\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
 							\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
 							\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-							\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getBy() . "\",
-							" . $this->model->getTime() . "
+							\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+							" . $this->model->getExecuteTime() . "
 			)";
 		}
 		$this->q->create($sql);
@@ -329,8 +329,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							WITH [tableMappingTranslationTranslationDerived] AS
 							(
 								SELECT	*,
-								[tableMappingTranslationTranslation].[By],
-								[tableMappingTranslationTranslation].[Time]
+								[tableMappingTranslationTranslation].[executeBy],
+								[tableMappingTranslationTranslation].[executeTime]
 								ROW_NUMBER() OVER (ORDER BY [tableMappingTranslationTranslationId]) AS 'RowNumber'
 								FROM 		[tableMappingTranslationTranslation]
 								WHERE	1  ".$tempSql.$tempSql2."
@@ -444,8 +444,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-							`By`			=	\"".$this->model->getBy()."\",
-							`Time`			=	".$this->model->getTime()."
+							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
+							`executeTime`			=	".$this->model->getExecuteTime()."
 					WHERE 	`tableMappingTranslationTranslationId`			=	\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
@@ -459,8 +459,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
 							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[By]			=	\"".$this->model->getBy()."\",
-							[Time]			=	".$this->model->getTime()."
+							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+							[executeTime]			=	".$this->model->getExecuteTime()."
 					WHERE 	[tableMappingTranslationTranslationId]			=	\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -474,8 +474,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
 							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"By\"			=	\"".$this->model->getBy()."\",
-							\"Time\"		=	".$this->model->getTime()."
+							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
+							\"executeTime\"		=	".$this->model->getExecuteTime()."
 					WHERE 	\"tableMappingTranslationTranslationId\"		=	\"".$this->model->gettableMappingTranslationTranslationId(0,'single')."\"";
 		}
 		$this->q->update($sql);
@@ -512,8 +512,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-							`By`			=	\"".$this->model->getBy()."\",
-							`Time`			=	".$this->model->getTime()."
+							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
+							`executeTime`			=	".$this->model->getExecuteTime()."
 					WHERE 	`tableMappingTranslationTranslationId`		=	\"".$this->model->gettableMappingTranslationTranslationId()."\"";
 
 		} else if ($this->getVendor()==self::mssql) {
@@ -526,8 +526,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
 							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[By]			=	\"".$this->model->getBy()."\",
-							[Time]			=	".$this->model->getTime()."
+							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+							[executeTime]			=	".$this->model->getExecuteTime()."
 					WHERE 	[tableMappingTranslationTranslationId]		=	\"".$this->model->gettableMappingTranslationTranslationId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -539,8 +539,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
 							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"By\"			=	\"".$this->model->getBy()."\",
-							\"Time\"		=	".$this->model->getTime()."
+							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
+							\"executeTime\"		=	".$this->model->getExecuteTime()."
 					WHERE 	\"tableMappingTranslationTranslationId\"	=	\"".$this->model->gettableMappingTranslationTranslationId()."\"";
 		}
 		$this->q->update($sql);
@@ -643,8 +643,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 				}
 				$sql.="
 				END,
-				`By`				=	\"". $this->model->getBy() . "\",
-				`Time`				=	" . $this->model->getTime() . " ";
+				`executeBy`				=	\"". $this->model->getExecuteBy() . "\",
+				`executeTime`				=	" . $this->model->getExecuteTime() . " ";
 
 
 				$this->model->setPrimaryKeyAll(substr($primaryKeyAll,0,-1));
@@ -660,8 +660,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
 					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
 					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					[By]				=	\"". $this->model->getBy() . "\",
-					[Time]				=	" . $this->model->getTime() . "
+					[executeBy]				=	\"". $this->model->getExecuteBy() . "\",
+					[executeTime]				=	" . $this->model->getExecuteTime() . "
 			WHERE 	[tableMappingTranslationId]		IN	(". $this->model->gettableMappingTranslationIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
@@ -673,8 +673,8 @@ class tableMappingTranslationTranslationClass extends  configClass {
 					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
 					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
 					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					\"By\"				=	\"". $this->model->getBy() . "\",
-					\"Time\"			=	" . $this->model->getTime() . "
+					\"executeBy\"				=	\"". $this->model->getExecuteBy() . "\",
+					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
 			WHERE 	\"tableMappingTranslationId\"		IN	(". $this->model->gettableMappingTranslationIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){

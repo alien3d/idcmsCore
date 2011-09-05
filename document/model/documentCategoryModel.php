@@ -74,14 +74,14 @@ class documentCategoryModel extends validationClass{
 			$this->setDocumentCategoryNote($this->strict($_POST['documentCategoryNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->setBy($_SESSION['staffId']);
+			$this->setExecuteBy($_SESSION['staffId']);
 		}
 		if($this->getVendor()==self::mysql){
-			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
-			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::oracle){
-			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
+			$this->setExecuteTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
 		} else{
 			echo "udentified vendor ?";
 		}
@@ -184,7 +184,7 @@ class documentCategoryModel extends validationClass{
 
 	/**
 	 * Set  Document Category Identification Value
-	 * @param bool|array $value
+	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
@@ -202,7 +202,7 @@ class documentCategoryModel extends validationClass{
 	 * Return Document Category Identification Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
+	 * @return int|array
 	 */
 	public function getDocumentCategoryId($key,$type) {
 		if($type=='single'){

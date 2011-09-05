@@ -363,8 +363,8 @@ class vendor
 								`logAdvanceType`,
 								`refTableName`,
 								`refId`,
-								`By`,
-								`Time`
+								`executeBy`,
+								`executeTime`
 							)
 					VALUES
 							(
@@ -493,8 +493,8 @@ class vendor
 					$sql             = "
 					UPDATE	`logAdvance`
 					SET 	`logAdvanceComparison`	=	\"" . $this->realEscapeString($textComparison) . "\",
-							`By`					=   \"".$this->staffId."\",
-							`Time`					=	\"".date("Y-m-d H:i:s")."\"
+							`executeBy`					=   \"".$this->staffId."\",
+							`executeTime`					=	\"".date("Y-m-d H:i:s")."\"
 					WHERE 	`logAdvanceId`			=	\"" . $logAdvanceId . "\"";
 
 					$result          = mysqli_query($this->link, $sql);

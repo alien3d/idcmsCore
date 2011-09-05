@@ -54,14 +54,14 @@ class languageModel extends validationClass{
 			$this->setLanguageDesc($this->strict($_POST['languageDesc'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->setBy($_SESSION['staffId']);
+			$this->setExecuteBy($_SESSION['staffId']);
 		}
 		if($this->getVendor()==self::mysql){
-			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
-			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::oracle){
-			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
+			$this->setExecuteTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
 		}
 
 		$this->setTotal(count($_GET['languageId']));
@@ -210,9 +210,9 @@ class languageModel extends validationClass{
 	}
 	/**
 	 * Set Language   Value
-	 * @param bool|array $value
+	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setLanguageId($value,$key,$type) {
 		if($type=='single'){
@@ -225,8 +225,8 @@ class languageModel extends validationClass{
 	 * Return Language Identification Value
 	 * Return Module Access Identification
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return int|array
 	 */
 	public function getLanguageId($key,$type) {
 		if($type=='single'){
@@ -247,7 +247,7 @@ class languageModel extends validationClass{
 	}
 	/**
 	 * Return Language Description Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getLanguageDesc() {
 
@@ -262,7 +262,7 @@ class languageModel extends validationClass{
 	}
 	/**
 	 * Return Language Value
-	 * @return string 
+	 * @return string
 	 */
 	public function getLanguageCode() {
 

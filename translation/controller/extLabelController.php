@@ -136,7 +136,7 @@ class extLabelClass extends  configClass {
 						`isNew`,							`isDraft`,
 						`isUpdate`,							`isDelete`,
 						`isActive`,							`isApproved`,
-						`By`,								`Time`
+						`executeBy`,								`executeTime`
 					)
 			VALUES
 					(
@@ -144,7 +144,7 @@ class extLabelClass extends  configClass {
 						\"" . $this->model->getIsNew(0,'single') . "\",		\"" . $this->model->getIsDraft(0,'single') . "\",
 						\"" . $this->model->getIsUpdate(0,'single') . "\",		\"" . $this->model->getIsDelete(0,'single') . "\",
 						\"" . $this->model->getIsActive(0,'single') . "\",		\"" . $this->model->getIsApproved(0,'single') . "\",
-						\"" . $this->model->getBy() . "\",						" . $this->model->getTime() . "
+						\"" . $this->model->getExecuteBy() . "\",						" . $this->model->getExecuteTime() . "
 
 
 					);";
@@ -156,7 +156,7 @@ class extLabelClass extends  configClass {
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
 						[isActive],							[isApproved],
-						[By],								[Time]
+						[executeBy],								[executeTime]
 				)
 			VALUES
 				(
@@ -164,7 +164,7 @@ class extLabelClass extends  configClass {
 						\"" . $this->model->getIsNew(0,'single') . "\",		\"" . $this->model->getIsDraft(0,'single') . "\",
 						\"" . $this->model->getIsUpdate(0,'single') . "\",		\"" . $this->model->getIsDelete(0,'single') . "\",
 						\"" . $this->model->getIsActive(0,'single') . "\",		\"" . $this->model->getIsApproved(0,'single') . "\",
-						\"" . $this->model->getBy() . "\",						" . $this->model->getTime() . "
+						\"" . $this->model->getExecuteBy() . "\",						" . $this->model->getExecuteTime() . "
 
 
 					);";
@@ -176,14 +176,14 @@ class extLabelClass extends  configClass {
 							\"isNew\",							\"isDraft\",
 							\"isUpdate\",						\"isDelete\",
 							\"isActive\",						\"isApproved\",
-							\"By\",								\"Time\"
+							\"executeBy\",								\"executeTime\"
 
 						)	VALUES	(
 								\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault(0,'single')."\",
 						\"" . $this->model->getIsNew(0,'single') . "\",		\"" . $this->model->getIsDraft(0,'single') . "\",
 						\"" . $this->model->getIsUpdate(0,'single') . "\",		\"" . $this->model->getIsDelete(0,'single') . "\",
 						\"" . $this->model->getIsActive(0,'single') . "\",		\"" . $this->model->getIsApproved(0,'single') . "\",
-						\"" . $this->model->getBy() . "\",						" . $this->model->getTime() . "
+						\"" . $this->model->getExecuteBy() . "\",						" . $this->model->getExecuteTime() . "
 
 
 					)";
@@ -338,8 +338,8 @@ class extLabelClass extends  configClass {
 							WITH [extLabelDerived] AS
 							(
 								SELECT	*,
-								[extLabel].[By],
-								[extLabel].[Time]
+								[extLabel].[executeBy],
+								[extLabel].[executeTime]
 								ROW_NUMBER() OVER (ORDER BY [extLabelId]) AS 'RowNumber'
 								FROM 		[extLabel]
 								WHERE		[extLabel].[isActive]		=	1  ".$tempSql.$tempSql2."
@@ -451,8 +451,8 @@ class extLabelClass extends  configClass {
 							`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isActive`			=	\"".$this->model->getIsActive(0,'single')."\",
 							`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
-							`By`				=	\"".$this->model->getBy()."\",
-							`Time`				=	".$this->model->getTime()."
+							`executeBy`				=	\"".$this->model->getExecuteBy()."\",
+							`executeTime`				=	".$this->model->getExecuteTime()."
 					WHERE 	`extLabelId`			=	\"".$this->model->getextLabelId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
@@ -465,8 +465,8 @@ class extLabelClass extends  configClass {
 							[isDelete]			=	\"".$this->model->getIsDelete(0,'single')."\",
 							[isActive]			=	\"".$this->model->getIsActive(0,'single')."\",
 							[isApproved]		=	\"".$this->model->getIsApproved(0,'single')."\",
-							[By]				=	\"".$this->model->getBy()."\",
-							[Time]				=	".$this->model->getTime()."
+							[executeBy]				=	\"".$this->model->getExecuteBy()."\",
+							[executeTime]				=	".$this->model->getExecuteTime()."
 					WHERE 	[extLabelId]			=	\"".$this->model->getextLabelId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -479,8 +479,8 @@ class extLabelClass extends  configClass {
 							\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
 							\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
 							\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"By\"				=	\"".$this->model->getBy()."\",
-							\"Time\"			=	".$this->model->getTime()."
+							\"executeBy\"				=	\"".$this->model->getExecuteBy()."\",
+							\"executeTime\"			=	".$this->model->getExecuteTime()."
 					WHERE 	\"extLabelId\"		=	\"".$this->model->getextLabelId(0,'single')."\"";
 		}
 		$this->q->update($sql);
@@ -517,8 +517,8 @@ class extLabelClass extends  configClass {
 							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-							`By`			=	\"".$this->model->getBy()."\",
-							`Time`			=	".$this->model->getTime()."
+							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
+							`executeTime`			=	".$this->model->getExecuteTime()."
 					WHERE 	`extLabelId`		=	\"".$this->model->getextLabelId()."\"";
 
 		} else if ($this->getVendor()==self::mssql) {
@@ -531,8 +531,8 @@ class extLabelClass extends  configClass {
 							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
 							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[By]			=	\"".$this->model->getBy()."\",
-							[Time]			=	".$this->model->getTime()."
+							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+							[executeTime]			=	".$this->model->getExecuteTime()."
 					WHERE 	[extLabelId]		=	\"".$this->model->getextLabelId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -544,8 +544,8 @@ class extLabelClass extends  configClass {
 							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
 							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"By\"			=	\"".$this->model->getBy()."\",
-							\"Time\"		=	".$this->model->getTime()."
+							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
+							\"executeTime\"		=	".$this->model->getExecuteTime()."
 					WHERE 	\"extLabelId\"	=	\"".$this->model->getextLabelId()."\"";
 		}
 		$this->q->update($sql);

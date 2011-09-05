@@ -124,8 +124,8 @@ class moduleClass extends configClass
 						`isDefault`,							`isNew`,
 						`isDraft`,							`isUpdate`,
 						`isDelete`,							`isActive`,
-						`isApproved`,						`By`,
-						`Time`
+						`isApproved`,						`executeBy`,
+						`executeTime`
 					)
 			VALUES
 					(
@@ -134,8 +134,8 @@ class moduleClass extends configClass
 						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
 						\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
 						\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
@@ -146,8 +146,8 @@ class moduleClass extends configClass
 						[isDefault],						[isNew],
 						[isDraft],							[isUpdate],
 						[isDelete],							[isActive],
-						[isApproved],						[By],
-						[Time]
+						[isApproved],						[executeBy],
+						[executeTime]
 					)
 			VALUES
 					(
@@ -156,8 +156,8 @@ class moduleClass extends configClass
 						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
 						\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
 						\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -168,8 +168,8 @@ class moduleClass extends configClass
 						\"isDefault\",						\"isNew\",
 						\"isDraft\",						\"isUpdate\",
 						\"isDelete\",						\"isActive\",
-						\"isApproved\",						\"By\",
-						\"Time\"
+						\"isApproved\",						\"executeBy\",
+						\"executeTime\"
 					)
 			VALUES
 					(
@@ -178,8 +178,8 @@ class moduleClass extends configClass
 						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
 						\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
 						\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getBy() . "\",
-						" . $this->model->getTime() . "
+						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+						" . $this->model->getExecuteTime() . "
 					);";
 		}
 		$this->q->create($sql);
@@ -369,13 +369,13 @@ class moduleClass extends configClass
 							`module`.`isDelete`,
 							`module`.`isActive`,
 							`module`.`isApproved`,
-							`module`.`By`,
-							`module`.`Time`,
+							`module`.`executeBy`,
+							`module`.`executeTime`,
 							`staff`.`staffName`,
 							`icon`.`iconName`
  					FROM 	`module`
 					JOIN	`staff`
-					ON		`module`.`By` = `staff`.`staffId`
+					ON		`module`.`executeBy` = `staff`.`staffId`
 					LEFT 	JOIN	`icon`
 					USING			(`iconId`)
 					WHERE 	".$this->auditFilter;
@@ -398,13 +398,13 @@ class moduleClass extends configClass
 							[module].[isDelete],
 							[module].[isActive],
 							[module].[isApproved],
-							[module].[By],
-							[module].[Time],
+							[module].[executeBy],
+							[module].[executeTime],
 							[staff].[staffName],
 							[icon].[iconName]
 					FROM 	[module]
 					JOIN	[staff]
-					ON		[module].[By] = [staff].[staffId]
+					ON		[module].[executeBy] = [staff].[staffId]
 					LEFT 	JOIN	`icon`
 					ON		[iconId].[iconId] = [module].[iconId]
 					WHERE 	[module].[isActive] ='1'	";
@@ -425,13 +425,13 @@ class moduleClass extends configClass
 							\"module\".\"isDelete\",
 							\"module\".\"isActive\",
 							\"module\".\"isApproved\",
-							\"module\".\"By\",
-							\"module\".\"Time\",
+							\"module\".\"executeBy\",
+							\"module\".\"executeTime\",
 							\"staff\".\"staffName\",
 							\"icon\".\"iconName\"
 					FROM 	\"module\"
 					JOIN	\"staff\"
-					ON		\"module\".\"By\" = \"staff\".\"staffId\"
+					ON		\"module\".\"executeBy\" = \"staff\".\"staffId\"
 					LEFT 	JOIN	\"icon\"
 					USING	(\"iconId\")
 					WHERE 	\"isActive\"='1'	";
@@ -547,8 +547,8 @@ class moduleClass extends configClass
 										[module].[isUpdate],
 										[module].[isDelete],
 										[module].[isApproved],
-										[module].[By],
-										[module].[Time],
+										[module].[executeBy],
+										[module].[executeTime],
 										[staff].[staffName]
 							FROM 		[moduleDerived]
 							WHERE 		[RowNumber]
@@ -574,8 +574,8 @@ class moduleClass extends configClass
 											\"module\".\"isUpdate\",
 											\"module\".\"isDelete\",
 											\"module\".\"isApproved\",
-											\"module\".\"By\",
-											\"module\".\"Time\",
+											\"module\".\"executeBy\",
+											\"module\".\"executeTime\",
 											\"staff\".\"staffName\"
 									FROM 	\"module\"
 									WHERE 	\"module\".\"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
@@ -653,8 +653,8 @@ class moduleClass extends configClass
 					`isUpdate`			=	\"" . $this->model->getIsUpdate(0,'single') . "\",
 					`isDelete`			=	\"" . $this->model->getIsDelete(0,'single') . "\",
 					`isApproved`		=	\"" . $this->model->getIsApproved(0,'single') . "\",
-					`By`				=	\"" . $this->model->getBy() . "\",
-					`Time`				=	" . $this->model->getTime() . "
+					`executeBy`				=	\"" . $this->model->getExecuteBy() . "\",
+					`executeTime`				=	" . $this->model->getExecuteTime() . "
 			WHERE 	`moduleId`			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
@@ -669,8 +669,8 @@ class moduleClass extends configClass
 					[isUpdate]			=	\"".$this->model->getIsUpdate(0,'single')."\",
 					[isDelete]			=	\"".$this->model->getIsDelete(0,'single')."\",
 					[isApproved]		=	\"".$this->model->getIsApproved(0,'single')."\",
-					[By]				=	\"".$this->model->getBy()."\",
-					[Time]				=	".$this->model->getTime()."
+					[executeBy]				=	\"".$this->model->getExecuteBy()."\",
+					[executeTime]				=	".$this->model->getExecuteTime()."
 			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -684,8 +684,8 @@ class moduleClass extends configClass
 					\"isUpdate\"		=	\"" . $this->model->getIsUpdate(0,'single') . "\",
 					\"isDelete\"		=	\"" . $this->model->getIsDelete(0,'single') . "\",
 					\"isApproved\"		=	\"" . $this->model->getIsApproved(0,'single') . "\",
-					\"By\"				=	\"" . $this->model->getBy() . "\",
-					\"Time\"			=	" . $this->model->getTime() . "
+					\"executeBy\"				=	\"" . $this->model->getExecuteBy() . "\",
+					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
 			WHERE 	\"moduleId\"		=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		}
 		$this->q->update($sql);
@@ -727,8 +727,8 @@ class moduleClass extends configClass
 					`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
 					`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 					`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-					`By`			=	\"".$this->model->getBy(0,'single')."\",
-					`Time			=	".$this->model->getTime()."
+					`executeBy`			=	\"".$this->model->getBy(0,'single')."\",
+					`Time			=	".$this->model->getExecuteTime()."
 			WHERE 	`moduleId`		=	\"" . $this->model->moduleId . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
@@ -740,8 +740,8 @@ class moduleClass extends configClass
 					[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
 					[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
 					[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-					[By]			=	\"".$this->model->getBy(0,'single')."\",
-					[Time]			=	".$this->model->getTime()."
+					[executeBy]			=	\"".$this->model->getBy(0,'single')."\",
+					[executeTime]			=	".$this->model->getExecuteTime()."
 			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -753,8 +753,8 @@ class moduleClass extends configClass
 					\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
 					\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
 					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
-					\"By\"				=	\"".$this->model->getBy(0,'single')."\",
-					\"Time\"			=	".$this->model->getTime()."
+					\"executeBy\"				=	\"".$this->model->getBy(0,'single')."\",
+					\"executeTime\"			=	".$this->model->getExecuteTime()."
 			WHERE 	\"moduleId\"			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		}
 		$this->q->update($sql);

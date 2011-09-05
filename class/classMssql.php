@@ -102,7 +102,7 @@ class vendor
 	public $filter; //  bugs must filter the  special character with sql escape
 	public $staffId;
 	public $insertId;
-	
+
 	public function __construct()
 	{
 	}
@@ -198,7 +198,7 @@ class vendor
 			$error             = 1;
 		}
 		if ($error == 1) {
-			
+
 			$sqlLog    = "
 					INSERT	INTO	[log]
 								(
@@ -615,22 +615,27 @@ class vendor
 	 */
 	public function numberRows($result = null, $sql = null)
 	{
+		$this->countRecord=0;
 		if ($result) {
-			$row_count = sqlsrv_num_rows($result);
-			if ($row_count === false) {
+			$rowCount = sqlsrv_num_rows($result);
+			if ($rowCount === false) {
 				echo print_r(sqlsrv_errors());
-			} else if ($row_count >= 0) {
-				$this->countRecord = $row_count;
+			} else if ($rowCount >= 0) {
+				$this->countRecord = $rowCount;
 			}
 		} else {
 			$result    = sqlsrv_query($this->link, $this->sql, array(), array(
                 "Scrollable" => SQLSRV_CURSOR_KEYSET
 			));
-			$row_count = sqlsrv_num_rows($result);
-			if ($row_count === false) {
-				echo print_r(sqlsrv_errors());
-			} else if ($row_count >= 0) {
-				$this->countRecord = $row_count;
+			if($result){
+				$rowCount = sqlsrv_num_rows($result);
+				if ($rowCount === false) {
+					echo print_r(sqlsrv_errors());
+				} else if ($rowCount >= 0) {
+					$this->countRecord = $rowCount;
+				}
+			} else {
+
 			}
 		}
 		return ($this->countRecord);
@@ -819,11 +824,38 @@ class vendor
 		}
 		return $textComparison;
 	}
+	/**
+	 * Escape string
+	 * @param string $data
+	 * @return string
+	 */
 	public function realEscapeString($data)
 	{
-		$singQuotePattern = "'";
-		$singQuoteReplace = "''";
-		return (stripslashes(eregi_replace($singQuotePattern, $singQuoteReplace, $data)));
+		/*
+		 /*
+		 * @depreciate
+		 	
+		 $singQuotePattern = "'";
+		 $singQuoteReplace = "''";
+		 return (stripslashes(eregi_replace($singQuotePattern, $singQuoteReplace, $data)));
+		 **/
+		if ( !isset($data) or empty($data) ) return ' ';
+		if ( is_numeric($data) ) return $data;
+
+		$non_displayables = array(
+            '/%0[0-8bcef]/',            // url encoded 00-08, 11, 12, 14, 15
+            '/%1[0-9a-f]/',             // url encoded 16-31
+            '/[\x00-\x08]/',            // 00-08
+            '/\x0b/',                   // 11
+            '/\x0c/',                   // 12
+            '/[\x0e-\x1f]/'             // 14-31
+		);
+		foreach ( $non_displayables as $regex )
+		$data = preg_replace( $regex, '', $data );
+		$data = str_replace("'", "''", $data );
+		return $data;
+
+
 	}
 	/**
 	 * to send filter result.Quick Search mode

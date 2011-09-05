@@ -61,14 +61,14 @@ class tableMappingModel extends validationClass{
 			$this->settableMappingNote($this->strict($_POST['tableMappingNote'],'memo'));
 		}
 		if(isset($_SESSION['staffId'])){
-			$this->setBy($_SESSION['staffId']);
+			$this->setExecuteBy($_SESSION['staffId']);
 		}
 		if($this->getVendor()==self::mysql){
-			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
-			$this->setTime("\"".date("Y-m-d H:i:s")."\"");
+			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::oracle){
-			$this->setTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
+			$this->setExecuteTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
 		}
 
 		$this->setTotal(count($_GET['tableMappingId']));
@@ -217,9 +217,9 @@ class tableMappingModel extends validationClass{
 	}
 	/**
 	 * Set Table Mapping Identification   Value
-	 * @param bool|array $value
+	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function settableMappingId($value,$key,$type) {
 		if($type=='single'){
@@ -232,8 +232,8 @@ class tableMappingModel extends validationClass{
 	 * Return Table Mapping Identification Value
 	 * Return Module Access Identification
 	 * @param array[int]int $key List Of Primary Key.
-* @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return int|array
 	 */
 	public function gettableMappingId($key,$type) {
 		if($type=='single'){

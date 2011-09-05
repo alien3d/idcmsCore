@@ -78,9 +78,9 @@ class loginClass extends configClass {
 			JOIN	[group]
 			ON		[staff].[groupId]  = [group].[groupId]
 			JOIN	[department]
-			USING	[department].[departmentId] = [staff].[departmentId]
-			WHERE 	[staff].[staffName]		=	\"".$this->model->getStaffName()."\"
-			AND		[staff].[staffPassword]	=	\"".md5($this->model->getStaffPassword())."\"";
+			ON		[department].[departmentId] = [staff].[departmentId]
+			WHERE 	[staff].[staffName]		=	'".$this->model->getStaffName()."'
+			AND		[staff].[staffPassword]	=	'".md5($this->model->getStaffPassword())."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT	*

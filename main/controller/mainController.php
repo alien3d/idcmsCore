@@ -178,7 +178,7 @@ class mainClass extends configClass
 						\"". $this->model->getIsNew(0,'single') . "\",			\"". $this->model->getIsDraft(0,'single') . "\",
 						\"". $this->model->getIsUpdate(0,'single') . "\",		\"". $this->model->getIsDelete(0,'single') . "\",
 						\"". $this->model->getIsActive(0,'single') . "\",		\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getBy() . "\",				" . $this->model->getTime() . "
+						\"". $this->model->getExecuteBy() . "\",				" . $this->model->getExecuteTime() . "
 					);";
 		$this->q->start();
 		$this->model->create();
@@ -190,7 +190,7 @@ class mainClass extends configClass
 						`isNew`,							`isDraft`,
 						`isUpdate`,							`isDelete`,
 						`isActive`,							`isApproved`,
-						`By`,								`Time`
+						`executeBy`,								`executeTime`
 					)
 			VALUES	
 					(
@@ -198,7 +198,7 @@ class mainClass extends configClass
 						\"". $this->model->getIsNew(0,'single') . "\",			\"". $this->model->getIsDraft(0,'single') . "\",
 						\"". $this->model->getIsUpdate(0,'single') . "\",		\"". $this->model->getIsDelete(0,'single') . "\",
 						\"". $this->model->getIsActive(0,'single') . "\",		\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getBy() . "\",				" . $this->model->getTime() . "
+						\"". $this->model->getExecuteBy() . "\",				" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -208,7 +208,7 @@ class mainClass extends configClass
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
 						[isActive],							[isApproved],
-						[By],								[Time]
+						[executeBy],								[executeTime]
 					)
 			VALUES	
 					(
@@ -216,7 +216,7 @@ class mainClass extends configClass
 						\"". $this->model->getIsNew(0,'single') . "\",			\"". $this->model->getIsDraft(0,'single') . "\",
 						\"". $this->model->getIsDraft(0,'single') . "\",		\"". $this->model->getIsDelete(0,'single') . "\",
 						\"". $this->model->getIsUpdate(0,'single') . "\",		\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getIsActive(0,'single') . "\",		" . $this->model->getTime() . "
+						\"". $this->model->getIsActive(0,'single') . "\",		" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -226,7 +226,7 @@ class mainClass extends configClass
 						\"isNew\",							\"isDraft\",
 						\"isUpdate\",						\"isDelete\",
 						\"isActive\",						\"isApproved\",
-						\"By\",								\"Time\"
+						\"executeBy\",								\"executeTime\"
 					)	
 			VALUES	
 					(
@@ -234,7 +234,7 @@ class mainClass extends configClass
 						\"". $this->model->getIsNew(0,'single') . "\",			\"". $this->model->getIsDraft(0,'single') . "\",
 						\"". $this->model->getIsDraft(0,'single') . "\",		\"". $this->model->getIsDelete(0,'single') . "\",
 						\"". $this->model->getIsUpdate(0,'single') . "\",		\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getIsActive(0,'single') . "\",		" . $this->model->getTime() . "
+						\"". $this->model->getIsActive(0,'single') . "\",		" . $this->model->getExecuteTime() . "
 					)";
 		}
 		//advance logging future
@@ -302,14 +302,9 @@ class mainClass extends configClass
 										JOIN		`icon`
 										USING		(`iconId`)
 										WHERE 		`accordionId`=\"".$accordionId."\"
-										AND 		`folderAccess`.`groupId`=(
-																SELECT `groupId`
-																FROM 	`staff`
-																WHERE	`staff`.`staffId`=\"".$_SESSION[$staffId]."\"
-																LIMIT 1
-															  )
-										AND 	`folderAccess`.`folderAccessValue`=	1
-										AND		`folderTranslate`.`languageId`=\"".$_SESSION['languageId']."\"
+										AND 		`folderAccess`.`groupId`=\"".$_SESSION['groupId']."\"
+										AND 		`folderAccess`.`folderAccessValue`=	1
+										AND			`folderTranslate`.`languageId`=\"".$_SESSION['languageId']."\"
 										ORDER BY 	`folder`.`folderSequence`	";
 									} else  if ($q->vendor=='microsoft') {
 										$sql_folder	="
@@ -321,14 +316,14 @@ class mainClass extends configClass
 										ON			[folderTranslate].[folderId]=[folder].[folderId]
 										JOIN			[icon]
 										ON			[icon].[iconId]=[folder].[iconId]
-										WHERE 		[accordionId]=\"".$accordionId."\"
+										WHERE 		[accordionId]='".$accordionId."'
 										AND 			[folderAccess].[groupId]=(
 																SELECT TOP 1 [groupId]
 																FROM 	[staff]
-																WHERE	[staff].[staffId]=\"".$_SESSION[$staffId]."\"
+																WHERE	[staff].[staffId]='".$_SESSION[$staffId]."'
 															  )
 										AND 	[folderAccess].[folderAccessValue]=	1
-										AND		[folderTranslate].[languageId]=\"".$_SESSION['languageId']."\"
+										AND		[folderTranslate].[languageId]='".$_SESSION['languageId']."'
 										ORDER BY 	[folder].[folderSequence]	";
 
 									} else if ($q->vendor=='oracle') {
@@ -547,8 +542,8 @@ class mainClass extends configClass
 										[main].[isUpdate],
 										[main].[isDelete],
 										[main].[isApproved],
-										[main].[By],
-										[main].[Time],
+										[main].[executeBy],
+										[main].[executeTime],
 										[staff].[staffName]	
 							FROM 		[mainDerived]
 							WHERE 		[RowNumber]
@@ -571,8 +566,8 @@ class mainClass extends configClass
 											\"main\".\"isUpdate\",
 											\"main\".\"isDelete\",
 											\"main\".\"isApproved\",
-											\"main\".\"By\",
-											\"main\".\"Time\",
+											\"main\".\"executeBy\",
+											\"main\".\"executeTime\",
 											\"staff\".\"staffName\"	
 									FROM 	\"main\"
 									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "

@@ -110,7 +110,7 @@ class groupClass  extends configClass {
 						`isNew`,							`isDraft`,
 						`isUpdate`,							`isDelete`,
 						`isActive`,							`isApproved`,
-						`By`,								`Time`
+						`executeBy`,								`executeTime`
 					)
 			VALUES
 					(
@@ -119,7 +119,7 @@ class groupClass  extends configClass {
 						\"". $this->model->getIsNew(0,'single') . "\",					\"". $this->model->getIsDraft(0,'single') . "\",
 						\"". $this->model->getIsUpdate(0,'single') . "\",				\"". $this->model->getIsDelete(0,'single') . "\",
 						\"". $this->model->getIsActive(0,'single') . "\",				\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+						\"". $this->model->getExecuteBy() . "\",								" . $this->model->getExecuteTime() . "
 					);";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
@@ -130,7 +130,7 @@ class groupClass  extends configClass {
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
 						[isActive],							[isApproved],
-						[By],								[Time]
+						[executeBy],								[executeTime]
 					)
 			VALUES
 					(
@@ -139,7 +139,7 @@ class groupClass  extends configClass {
 						\"". $this->model->getIsNew(0,'single') . "\",					\"". $this->model->getIsDraft(0,'single') . "\",
 						\"". $this->model->getIsUpdate(0,'single') . "\",				\"". $this->model->getIsDelete(0,'single') . "\",
 						\"". $this->model->getIsActive(0,'single') . "\",				\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+						\"". $this->model->getExecuteBy() . "\",								" . $this->model->getExecuteTime() . "
 					);";
 		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -150,7 +150,7 @@ class groupClass  extends configClass {
 						\"isNew\",							\"isDraft\",
 						\"isUpdate\",						\"isDelete\",
 						\"isActive\",						\"isApproved\",
-						\"By\",								\"Time\"
+						\"executeBy\",								\"executeTime\"
 					)
 			VALUES
 					(
@@ -159,7 +159,7 @@ class groupClass  extends configClass {
 						\"". $this->model->getIsNew(0,'single') . "\",					\"". $this->model->getIsDraft(0,'single') . "\",
 						\"". $this->model->getIsUpdate(0,'single') . "\",				\"". $this->model->getIsDelete(0,'single') . "\",
 						\"". $this->model->getIsActive(0,'single') . "\",				\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getBy() . "\",								" . $this->model->getTime() . "
+						\"". $this->model->getExecuteBy() . "\",								" . $this->model->getExecuteTime() . "
 					);";
 
 		}
@@ -427,12 +427,12 @@ class groupClass  extends configClass {
 							`group`.`isDelete`,
 							`group`.`isActive`,
 							`group`.`isApproved`,
-							`group`.`By`,
-							`group`.`Time`,
+							`group`.`executeBy`,
+							`group`.`executeTime`,
 							`staff`.`staffName`
  					FROM 	`group`
 					JOIN	`staff`
-					ON		`group`.`By` = `staff`.`staffId`
+					ON		`group`.`executeBy` = `staff`.`staffId`
 					WHERE 	".$this->auditFilter;
 			if ($this->model->getGroupId(0,'single')) {
 				$sql .= " AND `".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."`=\"". $this->model->getGroupId(0,'single') . "\"";
@@ -452,12 +452,12 @@ class groupClass  extends configClass {
 							[group].[isDelete],
 							[group].[isActive],
 							[group].[isApproved],
-							[group].[By],
-							[group].[Time],
+							[group].[executeBy],
+							[group].[executeTime],
 							[staff].[staffName]
 					FROM 	[group]
 					JOIN	[staff]
-					ON		[group].[By] = [staff].[staffId]
+					ON		[group].[executeBy] = [staff].[staffId]
 					WHERE 	[group].[isActive] ='1'	";
 			if ($this->model->getGroupId(0,'single')) {
 				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getGroupId(0,'single') . "\"";
@@ -475,12 +475,12 @@ class groupClass  extends configClass {
 							\"group\".\"isDelete\",
 							\"group\".\"isActive\",
 							\"group\".\"isApproved\",
-							\"group\".\"By\",
-							\"group\".\"Time\",
+							\"group\".\"executeBy\",
+							\"group\".\"executeTime\",
 							\"staff\".\"staffName\"
 					FROM 	\"group\"
 					JOIN	\"staff\"
-					ON		\"group\".\"By\" = \"staff\".\"staffId\"
+					ON		\"group\".\"executeBy\" = \"staff\".\"staffId\"
 					WHERE 	\"isActive\"='1'	";
 			if ($this->model->getgroupId(0,'single')) {
 				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getGroupId(0,'single') . "\"";
@@ -593,8 +593,8 @@ class groupClass  extends configClass {
 										[group].[isUpdate],
 										[group].[isDelete],
 										[group].[isApproved],
-										[group].[By],
-										[group].[Time],
+										[group].[executeBy],
+										[group].[executeTime],
 										[staff].[staffName]
 							FROM 		[groupDerived]
 							WHERE 		[RowNumber]
@@ -619,8 +619,8 @@ class groupClass  extends configClass {
 											\"group\".\"isUpdate\",
 											\"group\".\"isDelete\",
 											\"group\".\"isApproved\",
-											\"group\".\"By\",
-											\"group\".\"Time\",
+											\"group\".\"executeBy\",
+											\"group\".\"executeTime\",
 											\"staff\".\"staffName\"
 									FROM 	\"group\"
 									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
@@ -702,8 +702,8 @@ class groupClass  extends configClass {
 					`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 					`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
 					`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-					`By`			=	\"".$this->model->getBy()."\",
-					`Time`			=	".$this->model->getTime()."
+					`executeBy`			=	\"".$this->model->getExecuteBy()."\",
+					`executeTime`			=	".$this->model->getExecuteTime()."
 			WHERE 	`groupId`		=	\"".$this->model->getGroupId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
@@ -718,8 +718,8 @@ class groupClass  extends configClass {
 					[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
 					[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
 					[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-					[By]			=	\"".$this->model->getBy()."\",
-					[Time]			=	".$this->model->getTime()."
+					[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+					[executeTime]			=	".$this->model->getExecuteTime()."
 			WHERE 	[groupId]		=	\"".$this->model->getGroupId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -733,8 +733,8 @@ class groupClass  extends configClass {
 					\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
 					\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
 					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
-					\"By\"				=	\"".$this->model->getBy()."\",
-					\"Time\"			=	".$this->model->getTime()."
+					\"executeBy\"				=	\"".$this->model->getExecuteBy()."\",
+					\"executeTime\"			=	".$this->model->getExecuteTime()."
 			WHERE 	\"groupId\"			=	\"".$this->model->getGroupCode(0,'single')."\"";
 		}
 		$this->q->update($sql);
@@ -770,8 +770,8 @@ class groupClass  extends configClass {
 					`isDelete`			=	\"". $this->model->getIsDelete(0,'single') . "\",
 					`isActive`			=	\"". $this->model->getIsActive(0,'single') . "\",
 					`isApproved`		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					`By`				=	\"". $this->model->getBy() . "\",
-					`Time`				=	" . $this->model->getTime() . "
+					`executeBy`				=	\"". $this->model->getExecuteBy() . "\",
+					`executeTime`				=	" . $this->model->getExecuteTime() . "
 			WHERE 	`groupId`		=	\"". $this->model->getGroupId(0,'single') . "\"";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
@@ -783,8 +783,8 @@ class groupClass  extends configClass {
 					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
 					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
 					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					[By]				=	\"". $this->model->getBy() . "\",
-					[Time]				=	" . $this->model->getTime() . "
+					[executeBy]				=	\"". $this->model->getExecuteBy() . "\",
+					[executeTime]				=	" . $this->model->getExecuteTime() . "
 			WHERE 	[groupId]		=	\"". $this->model->getGroupId . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -797,8 +797,8 @@ class groupClass  extends configClass {
 					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
 					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
 					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					\"By\"				=	\"". $this->model->getBy() . "\",
-					\"Time\"			=	" . $this->model->getTime() . "
+					\"executeBy\"				=	\"". $this->model->getExecuteBy() . "\",
+					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
 			WHERE 	\"groupId\"		=	\"". $this->model->getGroupId() . "\"";
 		}
 		// advance logging future
@@ -909,8 +909,8 @@ class groupClass  extends configClass {
 				}
 				$sql.="
 				END,
-				`By`				=	\"". $this->model->getBy() . "\",
-				`Time`				=	" . $this->model->getTime() . " ";
+				`executeBy`				=	\"". $this->model->getExecuteBy() . "\",
+				`executeTime`				=	" . $this->model->getExecuteTime() . " ";
 
 
 				$this->model->setPrimaryKeyAll(substr($primaryKeyAll,0,-1));
@@ -926,8 +926,8 @@ class groupClass  extends configClass {
 					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
 					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
 					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					[By]				=	\"". $this->model->getBy() . "\",
-					[Time]				=	" . $this->model->getTime() . "
+					[executeBy]				=	\"". $this->model->getExecuteBy() . "\",
+					[executeTime]				=	" . $this->model->getExecuteTime() . "
 			WHERE 	[GroupId]		IN	(". $this->model->getGroupIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
@@ -939,8 +939,8 @@ class groupClass  extends configClass {
 					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
 					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
 					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					\"By\"				=	\"". $this->model->getBy() . "\",
-					\"Time\"			=	" . $this->model->getTime() . "
+					\"executeBy\"				=	\"". $this->model->getExecuteBy() . "\",
+					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
 			WHERE 	\"GroupId\"		IN	(". $this->model->getGroupIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){

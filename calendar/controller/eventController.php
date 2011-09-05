@@ -113,14 +113,14 @@ class eventClass extends configClass
 						`eventIsAllDay`,	`eventNotes`,
 						`eventReminder`,	`eventUrl`,
 						`eventLocation`,	`eventIsNew`,
-						`staffId`,			`Time`
+						`staffId`,			`executeTime`
 			)VALUES	(
 				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
 				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
 				\"".$this->model->geteventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
 				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
 				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
-				\"". $this->model->getBy() . "\",			" . $this->model->getTime() . "
+				\"". $this->model->getExecuteBy() . "\",			" . $this->model->getExecuteTime() . "
 				
 							);";
 		} else if ($this->getVendor() ==  self::mssql){
@@ -131,14 +131,14 @@ class eventClass extends configClass
 						[eventIsAllDay],	[eventNotes],
 						[eventReminder],	[eventUrl],
 						[eventLocation],	[eventIsNew],
-						[staffId],			[Time]
+						[staffId],			[executeTime]
 			)VALUES	(
 				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
 				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
 				\"".$this->model->geteventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
 				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
 				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
-				\"". $this->model->getBy() . "\",			" . $this->model->getTime() . "
+				\"". $this->model->getExecuteBy() . "\",			" . $this->model->getExecuteTime() . "
 				
 							);";
 		}elseif ($this->getVendor()==self::oracle){
@@ -149,14 +149,14 @@ class eventClass extends configClass
 						\"eventIsAllDay\",		\"eventNotes\",
 						\"eventReminder\",		\"eventUrl\",
 						\"eventLocation\",		\"eventIsNew\",
-						\"staffId\",			\"Time\"
+						\"staffId\",			\"executeTime\"
 			)VALUES	(
 				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
 				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
 				\"".$this->model->geteventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
 				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
 				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
-				\"". $this->model->getBy() . "\",			" . $this->model->getTime() . "
+				\"". $this->model->getExecuteBy() . "\",			" . $this->model->getExecuteTime() . "
 				
 							);";
 		}
@@ -194,7 +194,7 @@ class eventClass extends configClass
 			USING	(`calendarId`,`staffId`)
 			JOIN	`calendarColor`
 			USING   (`calendarColorId`)
-			WHERE 	`calendar`.`staffId` = \"". $this->model->getBy()."\"";
+			WHERE 	`calendar`.`staffId` = \"". $this->model->getExecuteBy()."\"";
 
 			if($this->model->getEventStart() && $this->model->getEventEnd()){
 				$sql.="
@@ -211,7 +211,7 @@ class eventClass extends configClass
 			AND		[event].[staffId] = [calendar].[staffId]
 			JOIN	[calendarColor]
 			ON		[calendarColor].[calendarColorId]= [calendar].[calendarColorId]
-			WHERE 	[calendar].[staffId] = \"". $this->model->getBy() ."\"";
+			WHERE 	[calendar].[staffId] = \"". $this->model->getExecuteBy() ."\"";
 			if($this->model->getEventStart() && $this->model->getEventEnd()){
 				$sql.="
 				AND	[event].[eventStart] >= '".$this->model->getEventStart()."'
@@ -225,7 +225,7 @@ class eventClass extends configClass
 			USING	(\"calendarId\",\"staffId\")
 			JOIN    \"calendarColor\"
 			USING   (\"calendarColorId\")
-			WHERE 	\"calendar\".\"staffId\" = \"". $this->model->getBy() ."\"";
+			WHERE 	\"calendar\".\"staffId\" = \"". $this->model->getExecuteBy() ."\"";
 			if($this->model->getEventStart() && $this->model->getEventEnd()){
 				$sql.="
 				AND	[event].[eventStart] >= '".$this->model->getEventStart()."'

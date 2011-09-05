@@ -133,21 +133,21 @@ class calendarClass extends  configClass {
 		JOIN    `calendar`
 		USING   (`calendarColorId`)
 		
-		WHERE 	`staffId` = \"".$this->model->getBy()."\" ";
+		WHERE 	`staffId` = \"".$this->model->getExecuteBy()."\" ";
 		} else if ($this->getVendor()==self::mssql){
 			$sql="
 		SELECT	*
 		FROM 	[calendarColor]
 		JOIN    [calendar]
 		USING   [calendar].[calendarColorId] = [calendarColor].[colorColorId]
-		WHERE 	`staffId` = \"".$this->model->getBy()."\" ";	
+		WHERE 	`staffId` = \"".$this->model->getExecuteBy()."\" ";	
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
 		SELECT	*
 		FROM 	\"calendarColor\"
 		JOIN    \"calendar\"
 		USING   (\"calendarColorId\")
-		WHERE 	\"staffId\" = \"".$this->model->getBy()."\" ";
+		WHERE 	\"staffId\" = \"".$this->model->getExecuteBy()."\" ";
 		}
 		// searching filtering
 		$sql.=$this->q->searching();

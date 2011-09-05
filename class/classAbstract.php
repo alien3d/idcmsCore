@@ -8,7 +8,6 @@
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 date_default_timezone_set("Asia/Kuala_Lumpur");
-require_once('classMysql.php');
 require_once 'PHPExcel.php';
 require_once 'PHPExcel/IOFactory.php';
 /**
@@ -138,8 +137,7 @@ abstract class configClass
 	function __construct()
 	{
 		//optional
-		$this->setConnection('localhost');
-		//	$this->connection   =  'UK0EG6KHE48\LOCALHOST'; // this is for Microsoft Sql Server Testing.
+
 		if (isset($_SESSION['database'])) {
 			$this->setDatabase($_SESSION['database']);
 		}
@@ -152,13 +150,28 @@ abstract class configClass
 		if (isset($_SESSION['staffId'])) {
 			$this->setStaffId($_SESSION['staffId']);
 		}
+		if($this->getVendor()==self::mysql){
+			require_once('classMysql.php');
+			$this->setConnection('localhost');
+			$this->setUsername('root');
+			$this->setPassword('123456');
+			$this->setApplication('idcmsCore');
+		}  elseif($this->getVendor()==self::mssql){
+			require_once('classMssql.php');
+			$this->setConnection('ADMIN-PC\X2');
+			$this->setUsername('root');
+			$this->setpassword("pa\$\$word4SPH");
+			$this->setApplication('idcmsCore');
+		}  elseif ($this->getVendor()==self::oracle){
+			require_once('classOracle.php');
+			$this->setConnection('localhost');
+			$this->username('idcmsCore');
+			$this->setPassword('123456');	
+			$this->setApplication('idcmsCore');
+		} else {
+			// undefined database vendor and application
+		}
 
-		$this->setUsername('root');
-		//$this->username ='JOKERS'; // testing for oracle
-		$this->setPassword('123456');
-		//	$this->password="pa\$\$word4sph";
-		$this->setApplication('idcmsCore');
-		// define method
 	}
 	/**
 	 * New Record From Database
@@ -330,7 +343,7 @@ abstract class configClass
 	}
 	/**
 	 * Return The First Record
-	 * @return int 
+	 * @return int
 	 */
 	public function firstRecord() {
 		$first=0;
@@ -514,7 +527,7 @@ abstract class configClass
 		$this->database = $value;
 	}
 	/**
-	 * Return Database 
+	 * Return Database
 	 * @return string
 	 */
 	public function getDatabase(){

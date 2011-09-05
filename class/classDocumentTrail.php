@@ -100,8 +100,8 @@ class documentTrailClass extends configClass {
 									`documentFilename`,
 									`isNew`,
 									`isActive`,
-									`By`,
-									`Time`
+									`executeBy`,
+									`executeTime`
 								)
 						VALUES	(
 									\"".$documentCategoryId."\",

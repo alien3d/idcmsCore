@@ -142,8 +142,8 @@ class folderTranslateClass extends  configClass {
 						`iconId`,							`isNew`,
 						`isDraft`,							`isUpdate`,
 						`isDelete`,							`isActive`,
-						`isApproved`,						`By`,
-						`Time`
+						`isApproved`,						`executeBy`,
+						`executeTime`
 					)
 			VALUES
 					(
@@ -153,7 +153,7 @@ class folderTranslateClass extends  configClass {
 						\"".$this->model->getIsDraft(0,'single')."\",		\"".$this->model->getIsUpdate(0,'single')."\",
 						\"".$this->model->getIsDelete(0,'single')."\",		\"".$this->model->getIsActive(0,'single')."\",
 						\"".$this->model->getIsApproved(0,'single')."\",		\"".$this->model->getIsApproved(0,'single')."\",
-						".$this->model->getTime()."
+						".$this->model->getExecuteTime()."
 					);";
 		}else if ($this->getVendor()==self::mssql) {
 			$sql="
@@ -164,8 +164,8 @@ class folderTranslateClass extends  configClass {
 						[iconId],							[isNew],
 						[isDraft],							[isUpdate],
 						[isDelete],							[isActive],
-						[isApproved],						[By],
-						[Time]
+						[isApproved],						[executeBy],
+						[executeTime]
 				)
 			VALUES
 				(
@@ -175,7 +175,7 @@ class folderTranslateClass extends  configClass {
 						\"".$this->model->getIsDraft(0,'single')."\",		\"".$this->model->getIsUpdate(0,'single')."\",
 						\"".$this->model->getIsDelete(0,'single')."\",		\"".$this->model->getIsActive(0,'single')."\",
 						\"".$this->model->getIsApproved(0,'single')."\",		\"".$this->model->getIsApproved(0,'single')."\",
-						".$this->model->getTime()."
+						".$this->model->getExecuteTime()."
 				);";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -186,8 +186,8 @@ class folderTranslateClass extends  configClass {
 							 \"iconId\",				 		\"isNew\",
 							\"isDraft\",						\"isUpdate\",
 							\"isDelete\",						\"isActive\",
-							\"isApproved\",						\"By\",
-							\"Time\")
+							\"isApproved\",						\"executeBy\",
+							\"executeTime\")
 				VALUES	(
 							\"".$this->model->tabId."\",	\"".$this->model->folderNote."\",
 							\"".$this->model->folderSequence."\", \"".$this->model->folderPath."\",
@@ -195,7 +195,7 @@ class folderTranslateClass extends  configClass {
 							\"".$this->model->getIsDraft(0,'single')."\",		\"".$this->model->getIsUpdate(0,'single')."\",
 							\"".$this->model->getIsDelete(0,'single')."\",		\"".$this->model->getIsActive(0,'single')."\",
 							\"".$this->model->getIsApproved(0,'single')."\",		\"".$this->model->getIsApproved(0,'single')."\",
-							".$this->model->getTime()."
+							".$this->model->getExecuteTime()."
 						);";
 		}
 		$this->q->create($sql);
@@ -438,8 +438,8 @@ class folderTranslateClass extends  configClass {
 							WITH [folderDerived] AS
 							(
 								SELECT	*,
-								[folder].[By],
-								[folder].[Time]
+								[folder].[executeBy],
+								[folder].[executeTime]
 								ROW_NUMBER() OVER (ORDER BY [folderId]) AS 'RowNumber'
 								FROM 		[folder]
 
@@ -470,8 +470,8 @@ class folderTranslateClass extends  configClass {
 												rownum r
 						FROM (
 									SELECT 		*,
-												\"folder\".\"By\",
-												\"folder\".\"Time\"
+												\"folder\".\"executeBy\",
+												\"folder\".\"executeTime\"
 									FROM 		\"folder\"
 									JOIN		\"folderTranslate\"
 									ON			\"folder\".\"folderId\"	=\"folderTranslate\".\"folderId\"
@@ -573,8 +573,8 @@ class folderTranslateClass extends  configClass {
 							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'single')."\",
 							`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
-							`By`				=	\"".$this->model->getBy()."\",
-							`Time				=	".$this->model->getTime()."
+							`executeBy`				=	\"".$this->model->getExecuteBy()."\",
+							`Time				=	".$this->model->getExecuteTime()."
 					WHERE 	`folderId`			=	\"".$this->model->getFolderId()."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
@@ -590,8 +590,8 @@ class folderTranslateClass extends  configClass {
 							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'single')."\",
 							[isDelete]			=	\"".$this->model->getIsDelete(0,'single')."\",
 							[isApproved]		=	\"".$this->model->getIsApproved(0,'single')."\",
-							[By]				=	\"".$this->model->getBy()."\",
-							[Time]				=	".$this->model->getTime()."
+							[executeBy]				=	\"".$this->model->getExecuteBy()."\",
+							[executeTime]				=	".$this->model->getExecuteTime()."
 					WHERE 	[folderId]			=	\"".$this->model->getFolderId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -606,8 +606,8 @@ class folderTranslateClass extends  configClass {
 							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
 							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"By\"			=	\"".$this->model->getBy()."\",
-							\"Time\"		=	".$this->model->getTime()."
+							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
+							\"executeTime\"		=	".$this->model->getExecuteTime()."
 					WHERE 	\"folderId\"		=	\"".$this->model->getFolderId()."\"";
 		}
 		$this->q->update($sql);
@@ -643,8 +643,8 @@ class folderTranslateClass extends  configClass {
 							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'single')."\",
 							`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
-							`By`				=	\"".$this->model->getBy()."\",
-							`Time				=	".$this->model->getTime()."
+							`executeBy`				=	\"".$this->model->getExecuteBy()."\",
+							`Time				=	".$this->model->getExecuteTime()."
 					WHERE 	`folderId`	=	\"".$this->model->getFolderId()."\"";
 
 		} else if ($this->getVendor()==self::mssql) {
@@ -656,8 +656,8 @@ class folderTranslateClass extends  configClass {
 							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'single')."\",
 							[isDelete]			=	\"".$this->model->getIsDelete(0,'single')."\",
 							[isApproved]		=	\"".$this->model->getIsApproved(0,'single')."\",
-							[By]				=	\"".$this->model->getBy()."\",
-							[Time]				=	".$this->model->getTime()."
+							[executeBy]				=	\"".$this->model->getExecuteBy()."\",
+							[executeTime]				=	".$this->model->getExecuteTime()."
 					WHERE 	[folderId]	=	\"".$this->model->getFolderId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
@@ -668,8 +668,8 @@ class folderTranslateClass extends  configClass {
 							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
 							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
 							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"By\"			=	\"".$this->model->getBy()."\",
-							\"Time\"		=	".$this->model->getTime()."
+							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
+							\"executeTime\"		=	".$this->model->getExecuteTime()."
 					WHERE 	\"folderId\"	=	\"".$this->model->getFolderId()."\"";
 		}
 		$this->q->update($sql);
