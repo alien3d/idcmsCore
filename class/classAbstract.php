@@ -165,8 +165,8 @@ abstract class configClass
 		}  elseif ($this->getVendor()==self::oracle){
 			require_once('classOracle.php');
 			$this->setConnection('localhost');
-			$this->username('idcmsCore');
-			$this->setPassword('123456');	
+			$this->setUsername('idcmsCore');
+			$this->setPassword('pa$$word4SPH');	
 			$this->setApplication('idcmsCore');
 		} else {
 			// undefined database vendor and application
@@ -215,11 +215,11 @@ abstract class configClass
 			WHERE  	[isActive]=1";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			SELECT 	\"staffId\",
-					\"staffNo\",
-					\"staffName\"
-			FROM   	\"staff\"
-			WHERE  	\"isActive\"=1";
+			SELECT 	STAFFID 	AS 	\"staffId\",
+					STAFFNO 	AS 	\"staffNo\",
+					STAFFNAME 	AS 	\"staffName\"
+			FROM   	STAFF 		AS	\"staff\"
+			WHERE	ISACTIVE=1";
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result);
@@ -359,8 +359,8 @@ abstract class configClass
 
 		} else  if ($this->getVendor()== self::oracle){
 			$sql="
-			SELECT 	MIN(\"".$this->model->getPrimaryKeyName()."\") AS \"first\"
-			FROM 	\"".$this->model->getTableName()."\"";
+			SELECT 	MIN(\"".strtoupper($this->model->getPrimaryKeyName())."\") AS \"first\"
+			FROM 	\"".strtoupper($this->model->getTableName())."\"";
 
 		}
 		$result= $this->q->fast($sql);
@@ -395,9 +395,9 @@ abstract class configClass
 		LIMIT 	1";
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
-		SELECT (\"".$this->model->getPrimaryKeyName()."\") AS \"next\"
-		FROM 	\"".$this->model->getTableName()."`
-		WHERE 	\"".$this->model->getPrimaryKeyName()."\" > ".$primaryKeyValue."
+		SELECT (\"".strtoupper($this->model->getPrimaryKeyName())."\") AS \"next\"
+		FROM 	\"".strtoupper($this->model->getTableName())."`
+		WHERE 	\"".strtoupper($this->model->getPrimaryKeyName())."\" > ".$primaryKeyValue."
 		LIMIT 	1";
 		}
 		$result= $this->q->fast($sql);
@@ -434,9 +434,9 @@ abstract class configClass
 		LIMIT 	1";
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
-		SELECT (\"".$this->model->getPrimaryKeyName()."\") AS \"previous\"
-		FROM 	\"".$this->model->getTableName()."\"
-		WHERE 	\"".$this->model->getPrimaryKeyName()."\" < ".$primaryKeyValue."
+		SELECT (\"".strtoupper($this->model->getPrimaryKeyName())."\") AS \"previous\"
+		FROM 	\"".strtoupper($this->model->getTableName())."\"
+		WHERE 	\"".strtoupper($this->model->getPrimaryKeyName())."\" < ".$primaryKeyValue."
 		ORDER BY \"staffId\" DESC
 		LIMIT 	1";
 		}
@@ -466,7 +466,7 @@ abstract class configClass
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
 		SELECT	MAX(\"".$this->model->getPrimaryKeyName()."\") AS \"last\"
-		FROM 	\"".$this->model->getTableName()."\"";
+		FROM 	\"".strtoupper($this->model->getTableName())."\"";
 		}
 		$result= $this->q->fast($sql);
 		if($this->q->numberRows($result)> 0 ){

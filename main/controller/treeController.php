@@ -180,9 +180,11 @@ class treeClass extends configClass
 		      USING    	(`moduleId`)
 		      JOIN    	`icon`
 		      USING    	(`iconId`)
+		      JOIN		`group`
 		      WHERE   	`moduleAccess`.`groupId`			=	'" . $_SESSION['groupId'] . "'
 		      AND   	`moduleAccess`.`moduleAccessValue`	=  	1
 		      AND    	`moduleTranslate`.`languageId`		=	\"" . $_SESSION['languageId'] . "\"
+		      AND		`group`.`isActive`					=	1
 		      ORDER BY  `module`.`moduleSequence`   ";
 			//	print"<br><br>";
 		} elseif ($this->getVendor() == 'microsoft') {
@@ -195,25 +197,37 @@ class treeClass extends configClass
 		      ON      	[moduleTranslate].[moduleId]=[module].[moduleId]
 		      JOIN      [icon]
 		      ON      	[icon].[iconId]=[module].[iconId]
+		      JOIN		[group]
+		      ON		[group].[groupId] = [moduleAcess].[groupId]
 		      WHERE     [moduleAccess].[groupId]			=	'" . $_SESSION['groupId'] . "'
 		      AND   	[moduleAccess].[moduleAccessValue]	=  	1
 		      AND    	[moduleTranslate].[languageId]		=	'" . $_SESSION['languageId'] . "'
+		      AND		[group].[isActive]=1
 		      ORDER BY  [module].[moduleSequence]  ";
 
 		} elseif ($this->getVendor() == 'oracle') {
-				$sqlModule = "
-		      SELECT    *
-		      FROM    	\"moduleAccess\"
-		      JOIN    	\"module\"
-		      USING    (\"moduleId\")
-		      JOIN    	\"moduleTranslate\"
-		      USING    	(\"moduleId\")
-		      JOIN    	\"icon\"
-		      USING    	(\"iconId\")
-		      WHERE    	\"moduleAccess\".\"groupId\"			=	'" . $_SESSION['groupId'] . "'
-		      AND     	\"moduleAccess\".\"moduleAccessValue\"	=  	1
-		      AND      	\"moduleTranslate\".\"languageId\"		=	\"" . $_SESSION['languageId'] . "\"
-		      ORDER BY  \"module\".\"moduleSequence\"   ";
+			  $sqlModule = "
+		      SELECT    MODULEACCESS.MODULEACCESSID,
+		      			MODULEACCESS.MODULEID,
+		      			MODULEACCESS.GROUPID,
+		      			MODULEACCESS.MODULEACCESSVALUE,
+		      			MODULE.MODULEID AS `moduleId`,
+		      			MODULETRANSLATE.MODULETRANSLATE AS \"moduleTranslate\",
+		      			ICON.ICONNAME AS `iconName`
+		      FROM    	MODULEACCESS
+		      JOIN    	MODULE
+		      USING     (MODULEID)
+		      JOIN    	MODULETRANSLATE
+		      USING    	(MODULEID)
+		      JOIN    	ICON
+		      USING     (ICONID)
+		      JOIN		GROUP_
+		      USING		(GROUPID)
+		      WHERE    	MODULEACECSS.GROUPID			=	'" . $_SESSION['groupId'] . "'
+		      AND     	MODULEACCESS.MODULEACCESSVALUE	=  	1
+		      AND      	MODULETRANSLATE.LANGUAGEID		=	\"" . $_SESSION['languageId'] . "\"
+		      AND		GROUP_.ISACTIVE 					=	1
+		      ORDER BY  MODULE.MODULESEQUENCE  ";
 		}
 
 		$resultModule = $this->q->fast($sqlModule);
@@ -241,10 +255,13 @@ class treeClass extends configClass
 					      USING    	(`folderId`)
 					      JOIN    	`icon`
 					      USING    	(`iconId`)
+					      JOIN		`group`
+					      USING		(`groupId`)
 					      WHERE     `moduleId`							=	\"" . $moduleId . "\"
 					      AND     	`folderAccess`.`groupId`			=	\"" . $_SESSION['groupId'] . "\"
 					      AND   	`folderAccess`.`folderAccessValue`	=  	1
 					      AND    	`folderTranslate`.`languageId`		=	\"" . $_SESSION['languageId'] . "\"
+					      AND		`group`.`isActive`					=	1	
 					      ORDER BY   `folder`.`folderSequence`  ";
 					
 				} elseif ($this->getVendor() == 'microsoft') {
@@ -257,25 +274,37 @@ class treeClass extends configClass
 				      ON      	[folderTranslate].[folderId]=[folder].[folderId]
 				      JOIN      [icon]
 				      ON      	[icon].[iconId]=[folder].[iconId]
-				      WHERE     [moduleId]						=	'" . $moduleId . "'
-				      AND       [folderAccess].[groupId]		=	'" . $_SESSION['groupId'] . "'
-				      AND   	[folderAccess].[folderAccessValue]	=  1
+				      JOIN		[group]
+				      ON		[group].[groupId] = [folderAccess].[groupId]
+				      WHERE     [moduleId]							=	'" . $moduleId . "'
+				      AND       [folderAccess].[groupId]			=	'" . $_SESSION['groupId'] . "'
+				      AND   	[folderAccess].[folderAccessValue]	=   1
 				      AND    	[folderTranslate].[languageId]		=	'" . $_SESSION['languageId'] . "'
+				      AND		[group].[isActive]					=	1
 				      ORDER BY	[folder].[folderSequence]  	";
 				} elseif ($this->getVendor() == 'oracle') {
 					  $sqlFolder = "
-				      SELECT    *
-				      FROM     	\"folderAccess\"
-				      JOIN    	\"folder\"
-				      USING    	(\"folderId\")
-				      JOIN    	\"folderTranslate\"
-				      USING    	(\"folderId\")
-				      JOIN    	\"icon\"
-				      USING    	(\"iconId\")
-				      WHERE     \"moduleId\"							=	\"" . $moduleId . "\"
-				      AND     	\"folderAccess\".\"groupId\"			=	\"" . $_SESSION['groupId'] . "\"
-				      AND     	\"folderAccess\".\"folderAccessValue\"	=  1
-				      AND      	\"folderTranslate\".\"languageId\"		=	\"" . $_SESSION['languageId'] . "\"
+				      SELECT    FOLDERACCESS.MODULEACCESSID,
+				      			FOLDERACCESS.MODULEID,
+				      			FOLDERACCESS.GROUPID,
+				      			FOLDERACCESS.FOLDERACCESSVALUE,
+				      			FOLDER.FOLDERID AS `folderId`,
+				      			FOLDERTRANSLATE.FOLDERTRANSLATE AS \"folderTranslate\",
+				      			ICON.ICONNAME AS `iconName`
+				      FROM     	FOLDERACCESS
+				      JOIN    	FOLDER
+				      USING    	(\"FOLDERID\")
+				      JOIN    	\"FOLDERTRANSLATE\"
+				      USING    	(\"FOLDERID\")
+				      JOIN    	\"ICON\"
+				      USING    	(\"ICONID\")
+				      JOIN      GROUP_
+				      USING		(GROUPID)
+				      WHERE     FOLDER.MODULEID					=	\"" . $moduleId . "\"
+				      AND       FOLDERACCESS.GROUPID			=	\"" . $_SESSION['groupId'] . "\"
+				      AND     	FOLDERACESS.FOLDERACESSVALUE	=  1
+				      AND      	FOLDERTRANSLATE.LANGUAGEID		=	\"" . $_SESSION['languageId'] . "\"
+				      AND		GROUP_.ISACTIVE 					=	1
 				      ORDER BY  \"folder\".\"folderSequence\"  ";
 				}
 
@@ -331,18 +360,26 @@ class treeClass extends configClass
 					          ORDER BY  [leaf].[leafSequence]";
 						} elseif ($this->getVendor()==self::oracle) {
 							 $sqlLeaf = "
-					          SELECT    *
-					          FROM    \"leafAccess\"
-					          JOIN    \"leaf\"
-					          USING    (\"leafId\")
-					          JOIN    \"leafTranslate\"
-					          USING    (\"leafId\")
-					          JOIN    \"icon\"
-					          USING    (\"iconId\")
-					          WHERE     \"folderId\"					=	\"" . $folderId . "\"
-					          AND      \"moduleId\"						=	\"" . $moduleId . "\"
-					          AND      \"leafAccess\".\"staffId\"		=	\"" . $_SESSION['staffId'] . "\"
-					          AND      \"leafTranslate\".\"languageId\"	=	\"" . $_SESSION['languageId'] . "\"";
+					          SELECT  	LEAFACCESS.MODULEACCESSID,
+						      			LEAFACCESS.MODULEID,
+						      			LEAFACCESS.GROUPID,
+						      			LEAFACCESS.LEAFACCESSVALUE,
+						      			LEAF.LEAFID 	AS `leafId`,
+						      			LEAFTRANSLATE.LEAFTRANSLATE AS \"leafTranslate\",
+						      			ICON.ICONNAME AS `iconName`  
+					          FROM   	LEAFACCESS
+					          JOIN    	LEAF
+					          USING    	(LEAFID)
+					          JOIN      LEAFTRANSLATE
+					          USING    	(LEAFID)
+					          JOIN    	ICON
+					          USING    	(ICONID)
+					          JOIN		STAFF
+					          USING		(STAFFID)
+					          WHERE     LEAF.FOLDERID				=	\"" . $folderId . "\"
+					          AND		LEAF.MODULEID				=	\"" . $moduleId . "\"
+					          AND      	LEAFACCESS.STAFFID			=	\"" . $_SESSION['staffId'] . "\"
+					          AND      	LEAFTRANSLATE.LANGUAGEID	=	\"" . $_SESSION['languageId'] . "\"";
 						}
 						$resultLeaf = $this->q->fast($sqlLeaf);
 						$totalLeaf = $this->q->numberRows($resultLeaf, $sqlLeaf);

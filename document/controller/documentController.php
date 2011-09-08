@@ -411,7 +411,7 @@ class documentClass extends  configClass {
 					FROM 	[document]
 					JOIN	[staff]
 					ON		[document].[executeBy] = [staff].[staffId]
-					JOIN	`documentCategory`
+					JOIN	[documentCategory]
 					ON		[document].[documentCategoryId]=[documentCategory].[documentCategoryId]
 					WHERE 	[document].[isActive] ='1'	";
 			if ($this->model->getDocumentId(0,'single')) {

@@ -126,27 +126,19 @@ class vendor
 		$this->username     = $username;
 		$this->databaseName = $database;
 		$this->password     = $password;
-		$this->link         = mysqli_connect($this->connection, $this->username, $this->password, $this->databaseName, $this->port, $this->socket);
-		if (!$this->link) {
-			$this->execute = 'fail';
-			if (mysqli_connect_errno()) {
-				$this->responce = mysqli_connect_errno();
-				echo json_encode(array(
-                    "success" => false,
-                    "message" => 'Fail To Connect Database : ' . $this->responce
-				));
-				exit();
-			}
+		$this->link =  oci_connect($this->username, $this->password, $this->connection);
+		if(!$this->link){
+			$errorArray	=	array();
+			$errorArray	=	oci_error();
+			$error.=	"Code: " . $errorArray["code"] . "<br>";
+			$error.=	"Message: " . $errorArray["message"] . "<br>";
+			$error.=	"Position: " . $errorArray["offset"] . "<br>";
+			$error.=	"Statement: " . $errorArray["sqltext"] . "<br>".$this->password;
+			$this->responce	=	$error;
+			echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->responce));
+			exit();
 		} else {
-			$resources = mysqli_select_db($this->link, $this->databaseName);
-			if (!$resources) {
-				$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($this->link);
-				echo json_encode(array(
-                    "success" => false,
-                    "message" => $this->responce
-				));
-				exit();
-			}
+
 		}
 	}
 	/**
@@ -156,7 +148,7 @@ class vendor
 	 */
 	public function start()
 	{
-		mysqli_autocommit($this->link, FALSE);
+		$this->oracleCommit=1;
 	}
 	/**
 	 * query database
@@ -201,8 +193,8 @@ class vendor
 			exit();
 		}
 		if ($error == 1) {
-		
-		
+
+
 			$sql_log    = "
 					INSERT	INTO	\"log\"
 								(
@@ -522,7 +514,36 @@ class vendor
 		 *  check if the programmer put query on sql or not
 		 */
 		if (strlen($sql) > 0) {
-			$result = mysqli_query($this->link, $this->sql);
+			$result = oci_parse($this->link,$this->sql);
+			if($result != false) {
+				$test =oci_execute($result); //suspress warning message.Only handle by exception
+				if($test){
+					//oracle don't have return resources.depend on oci_parse
+				} else {
+					$errorArray	=	array();
+					$errorArray	=	oci_error($result);
+
+					$error.="Code: " . $errorArray["code"] . "<br>";
+					$error.="Message: " . $errorArray["message"] . "<br>";
+					$error.="Position: " . $errorArray["offset"] . "<br>";
+					$error.="Statement: " . $errorArray["sqltext"] . "<br>";
+					$this->responce=$error;
+					echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
+					exit();
+				}
+			} else {
+				$errorArray	=	array();
+				$errorArray	=	oci_error($result);
+				$error.="Code: " . $errorArray["code"] . "<br>";
+				$error.="Message: " . $errorArray["message"] . "<br>";
+				$error.="Position: " . $errorArray["offset"] . "<br>";
+				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
+				$this->responce=$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+				exit();
+			}
+
+
 			return $result;
 		} else {
 			$this->execute     = 'fail';
@@ -542,9 +563,36 @@ class vendor
 		 *  check if the programmer put query on sql or not
 		 */
 		if (strlen($sql) > 0) {
-			$result = sqlsrv_query($this->link, $this->sql, array(), array(
-                "Scrollable" => SQLSRV_CURSOR_KEYSET
-			));
+			$result = oci_parse($this->link,$this->sql);
+			if($result != false) {
+				$test =oci_execute($result); //suspress warning message.Only handle by exception
+				if($test){
+					//oracle don't have return resources.depend on oci_parse
+				} else {
+					$errorArray	=	array();
+					$errorArray	=	oci_error($result);
+
+					$error.="Code: " . $errorArray["code"] . "<br>";
+					$error.="Message: " . $errorArray["message"] . "<br>";
+					$error.="Position: " . $errorArray["offset"] . "<br>";
+					$error.="Statement: " . $errorArray["sqltext"] . "<br>";
+					$this->responce=$error;
+					echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
+					exit();
+				}
+			} else {
+				$errorArray	=	array();
+				$errorArray	=	oci_error($result);
+				$error.="Code: " . $errorArray["code"] . "<br>";
+				$error.="Message: " . $errorArray["message"] . "<br>";
+				$error.="Position: " . $errorArray["offset"] . "<br>";
+				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
+				$this->responce=$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+				exit();
+			}
+
+
 			return $result;
 		} else {
 			$this->execute     = 'fail';
@@ -560,10 +608,36 @@ class vendor
 	 */
 	public function numberRows($result = null, $sql = null)
 	{
-		if ($result) {
-			$this->countRecord = mysqli_num_rows($result);
+		$oracleNumRows = oci_parse($this->link,$this->sql);
+		if($oracleNumRows != false) {
+			$test =oci_execute($oracleNumRows); //suspress warning message.Only handle by exception
+			if($test){
+				//oracle don't have return resources.depend on oci_parse
+				oci_fetch_all($oracleNumRows,$array);
+				$this->countRecord= oci_num_rows($oracleNumRows);
+				//	echo "Total record [".$this->countRecord."]";
+			} else {
+				$errorArray	=	array();
+				$errorArray	=	oci_error($oracleNumRows);
+
+				$error.="Code: " . $errorArray["code"] . "<br>";
+				$error.="Message: " . $errorArray["message"] . "<br>";
+				$error.="Position: " . $errorArray["offset"] . "<br>";
+				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
+				$this->responce=$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
+				exit();
+			}
 		} else {
-			$this->countRecord = mysqli_num_rows($this->result);
+			$errorArray	=	array();
+			$errorArray	=	oci_error($oracleNumRows);
+			$error.="Code: " . $errorArray["code"] . "<br>";
+			$error.="Message: " . $errorArray["message"] . "<br>";
+			$error.="Position: " . $errorArray["offset"] . "<br>";
+			$error.="Statement: " . $errorArray["sqltext"] . "<br>";
+			$this->responce=$error;
+			echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+			exit();
 		}
 		return ($this->countRecord);
 	}
@@ -573,8 +647,13 @@ class vendor
 	 */
 	public function lastInsertId()
 	{
-		// must include this before q->commit; after commit will no output
-		$this->insert_id = mysqli_insert_id($this->link);
+		$resultId = oci_parse($this->link,"SELECT \"".$sequence.".CURRVAL FROM DUAL");
+		oci_execute($resultId);
+		/**
+		 * optional constant OCI_BOTH,OCI_ASSOC,OCI_NUM,OCI_RETURN_NULLS,OCI_RETURN_LOBS
+		 */
+		$row=oci_fetch_assoc($resultId,'OCI_BOTH');
+		$this->insert_id= $row['CURRVAL'];
 	}
 	/**
 	 * Get the number of affected rows by the last INSERT, UPDATE, REPLACE or DELETE query associated with link_identifier.
@@ -582,7 +661,8 @@ class vendor
 	 */
 	public function affectedRows()
 	{
-		return mysqli_affected_rows($this->link);
+		//return mysqli_affected_rows($this->link);
+
 		// no information from sql server
 	}
 	/**
@@ -590,15 +670,16 @@ class vendor
 	 */
 	public function commit()
 	{
-		mysqli_commit($this->link);
+		oci_commit($this->link);
 	}
 	/**
 	 * Rollbacks the current transaction for the database.
 	 */
 	private function rollback()
 	{
-		mysqli_rollback($this->link);
-		$this->execute = 'fail';
+
+		oci_rollback($this->link);
+		$this->execute='fail';
 	}
 	/**
 	 * Returns an associative array that corresponds to the fetched row and moves the internal data pointer ahead. mysql_fetch_assoc() is equivalent to calling mysql_fetch_array() with MYSQL_ASSOC for the optional second parameter. It only returns an associative array
@@ -607,12 +688,8 @@ class vendor
 	 */
 	public function fetchArray($result = null)
 	{
-		if ($this->result) {
-			return @mysqli_fetch_array($this->result);
-		}
-		if ($result) {
-			return @mysqli_fetch_array($result);
-		}
+		if($this->result)	{  return oci_fetch_array($this->result,OCI_BOTH); }
+		if($result) 			{	return oci_fetch_array($result,OCI_BOTH); }
 	}
 	/**
 	 *
@@ -624,13 +701,13 @@ class vendor
 	public function activeRecord($result = null)
 	{
 		$d = array();
-		if ($result) {
-			while ($row = mysqli_fetch_assoc($result)) {
-				$d[] = $row;
+		if($result) {
+			while($row=oci_fetch_array($result,OCI_ASSOC)){
+				$d[]=$row;
 			}
 		} else {
-			while ($row = mysqli_fetch_assoc($this->result)) {
-				$d[] = $row;
+			while($row=oci_fetch_array($this->result,OCI_ASSOC)){
+				$d[]=$row;
 			}
 		}
 		return $d;
@@ -644,10 +721,11 @@ class vendor
 	{
 		// tried consept push to array and sending array back
 		if ($this->result && is_null($result)) {
-			return mysqli_fetch_assoc($this->result);
+			return oci_fetch_assoc($this->result);
 		}
 		if ($result) {
-			return mysqli_fetch_assoc($result);
+
+			return oci_fetch_assoc($result);
 		}
 	}
 	/**
@@ -657,10 +735,10 @@ class vendor
 	public function freeResult($result = null)
 	{
 		if ($this->result) {
-			mysqli_free_result($this->result);
+			oci_free_statement($this->result);
 		}
 		if ($result) {
-			mysqli_free_result($result);
+			oci_free_statement($this->result);
 		}
 	}
 	/**
