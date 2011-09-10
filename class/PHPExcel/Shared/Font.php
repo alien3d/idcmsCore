@@ -483,7 +483,7 @@ class PHPExcel_Shared_Font
 				break;
 
 			case 'Microsoft Sans Serif':
-				$fontFile = self::MICROSOFT_SANS_SERIF;
+				$fontFile = self::mssql_SANS_SERIF;
 				break;
 
 			case 'Palatino Linotype':

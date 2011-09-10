@@ -70,7 +70,10 @@ class loginClass extends configClass {
 			JOIN	`department`
 			USING	(`departmentId`)
 			WHERE 	`staff`.`staffName`		=	\"".$this->model->getStaffName()."\"
-			AND		`staff`.`staffPassword`	=	\"".md5($this->model->getStaffPassword())."\"";
+			AND		`staff`.`staffPassword`	=	\"".md5($this->model->getStaffPassword())."\"
+			AND		`staff`.`isActive`			=	1
+			AND		`group`.`isActive`			=	1
+			AND		`department`.`isActive`		=	1";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
 			SELECT	*
@@ -79,18 +82,30 @@ class loginClass extends configClass {
 			ON		[staff].[groupId]  = [group].[groupId]
 			JOIN	[department]
 			ON		[department].[departmentId] = [staff].[departmentId]
-			WHERE 	[staff].[staffName]		=	'".$this->model->getStaffName()."'
-			AND		[staff].[staffPassword]	=	'".md5($this->model->getStaffPassword())."'";
+			WHERE 	[staff].[staffName]			=	'".$this->model->getStaffName()."'
+			AND		[staff].[staffPassword]		=	'".md5($this->model->getStaffPassword())."'
+			AND		[staff].[isActive]			=	1
+			AND		[group].[isActive]			=	1
+			AND		[department].[isActive]		=	1";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
-			SELECT	*
-			FROM 	\"staff\"
-			JOIN	\"group\"
-			USING   (\"groupId\")
-			JOIN	`department`
-			USING	(\"departmentId\")
-			WHERE 	\"staff\".\"staffName\"		=	\"".$this->model->getStaffName()."\"
-			AND		\"staff\".\"staffPassword\"	=	\"".md5($this->model->getStaffPassword())."\"";
+			SELECT	STAFF.STAFFID 	AS \"staffId\",
+					STAFF.STAFFNO 	AS \"staffNo\",
+					STAFF.STAFFNAME AS \"staffName\",
+					STAFF.LANGUAGEID AS \"languageId\",
+					GROUP_.GROUPID AS \"groupId\",
+					DEPARTMENT.DEPARTMENTID AS \"departmentId\"
+						
+			FROM 	STAFF
+			JOIN	GROUP_
+			ON		GROUP_.GROUPID		= 	STAFF.GROUPID
+			JOIN	DEPARTMENT
+			ON		DEPARTMENT.DEPARTMENTID		= 	STAFF.DEPARTMENTID
+			WHERE 	STAFF.STAFFNAME		=	'".$this->model->getStaffName()."'
+			AND		STAFF.STAFFPASSWORD	=	'".md5($this->model->getStaffPassword())."'
+			AND		STAFF.ISACTIVE		=  1
+			AND		GROUP_.ISACTIVE 	=  1
+			AND		DEPARTMENT.ISACTIVE =  1";
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$this->getVendor()."]"));
 			exit();
@@ -118,16 +133,40 @@ class loginClass extends configClass {
 			$this->staffWebAceess->setStaffId($_SESSION['staffId']);
 
 			// audit Log Time In
-			$sql="
-			INSERT INTO `staffWebAccessId`
-					(
-						`staffId`,
-						`staffWebAccessLogIn`
-					)
-			VALUES (
-						\"".$this->staffWebAceess->getStaffId()."\",
-						\"".$this->staffWebAceess->getStaffWebAccessLogIn()."\"
-					)";
+			if($this->getVendor()==self::mysql){
+				$sql="
+				INSERT INTO `staffWebAccess`
+						(
+							`staffId`,
+							`staffWebAccessLogIn`
+						)
+				VALUES (
+							\"".$this->staffWebAceess->getStaffId()."\",
+							\"".$this->staffWebAceess->getStaffWebAccessLogIn()."\"
+						)";
+			} else if ($this->getVendor()==self::mssql){
+				$sql="
+				INSERT INTO [staffWebAccess]
+						(
+							[staffId],
+							[staffWebAccessLogIn]
+						)
+				VALUES (
+							'".$this->staffWebAceess->getStaffId()."',
+							'".$this->staffWebAceess->getStaffWebAccessLogIn()."'
+						)";
+			} else if ($this->getVendor()==self::oracle){
+				$sql="
+				INSERT INTO STAFFWEBACCESS
+						(
+							STAFFID,
+							STAFFWEBACCESSLOGIN
+						)
+				VALUES (
+							'".$this->staffWebAceess->getStaffId()."',
+							".$this->staffWebAceess->getStaffWebAccessLogIn()."
+						)";
+			}
 			$this->q->update($sql);
 
 			echo json_encode(array("success"=>"true","message"=>"success login"));

@@ -17,6 +17,7 @@ class staffWebAcessModel extends validationClass{
 	private $staffId;
 	private $staffWebAccessLogIn;
 	private $staffWebAccessLogOut;
+	private $phpSession;
 
 	/**
 	 *   Class Loader to load outside variable and test it suppose variable type
@@ -27,13 +28,16 @@ class staffWebAcessModel extends validationClass{
 		 */
 		$this->setTableName 		('staffWebAcess');
 		$this->setPrimaryKeyName 	('staffWebAcessId');
+		$this->setPhpSession(session_id());
+		
+
 
 		if($this->getVendor()==self::mysql){
 			$this->setStaffWebAccessLogIn("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
 			$this->setStaffWebAccessLogIn("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::oracle){
-			$this->setStaffWebAccessLogIn("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
+			$this->setStaffWebAccessLogIn("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		} else{
 			echo "udentified vendor ?";
 		}
@@ -42,7 +46,7 @@ class staffWebAcessModel extends validationClass{
 		} else if ($this->getVendor()==self::mssql){
 			$this->setStaffWebAccessLogOut("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::oracle){
-			$this->setStaffWebAccessLogOut("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
+			$this->setStaffWebAccessLogOut("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		} else{
 			echo "udentified vendor ?";
 		}
@@ -106,7 +110,7 @@ class staffWebAcessModel extends validationClass{
 	}
 	/**
 	 * Return Staff Web Access Identification Value
-	 * @return int Staff Web Access Value
+	 * @return int 
 	 */
 	public function getStaffWebAccessId() {
 		return $this->staffWebAccessId;
@@ -120,7 +124,7 @@ class staffWebAcessModel extends validationClass{
 	}
 	/**
 	 * Return Staff Identification Value
-	 * @return int Staff Web Access Value
+	 * @return int 
 	 */
 	public function getStaffId() {
 		return $this->staffId;
@@ -135,7 +139,7 @@ class staffWebAcessModel extends validationClass{
 	}
 	/**
 	 * Return Staff Web Access Login Value
-	 * @return int Document Cateogory Identification Value
+	 * @return int 
 	 */
 	public function getStaffWebAccessLogIn() {
 		return $this->staffWebAccessLogIn;
@@ -149,10 +153,24 @@ class staffWebAcessModel extends validationClass{
 	}
 	/**
 	 * Return Staff Web Access LogOut Value
-	 * @return datetime Staff Web Access LogOut
+	 * @return datetime 
 	 */
 	public function getStaffWebAccessLogOut() {
 		return $this->staffWebAccessLogOut;
+	}
+	/**
+	 * Set Staff Php Session
+	 * @param string $value
+	 */
+	public function setPhpSession($value) {
+		$this->staffPhpSession = $value;
+	}
+	/**
+	 * Return Staff Php Session Value
+	 * @return string
+	 */
+	public function getPhpSession() {
+		return $this->phpSession;
 	}
 
 }

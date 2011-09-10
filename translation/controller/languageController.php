@@ -259,24 +259,23 @@ class languageClass  extends configClass {
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-					SELECT	\"language\".\"languageId\",
-							\"language\".\"languageCode\",
-
-							\"language\".\"languageDesc\",
-							\"language\".\"isDefault\",
-							\"language\".\"isNew\",
-							\"language\".\"isDraft\",
-							\"language\".\"isUpdate\",
-							\"language\".\"isDelete\",
-							\"language\".\"isActive\",
-							\"language\".\"isApproved\",
-							\"language\".\"executeBy\",
-							\"language\".\"executeTime\",
-							\"staff\".\"staffName\"
-					FROM 	\"language\"
-					JOIN	\"staff\"
-					ON		\"language\".\"executeBy\" = \"staff\".\"staffId\"
-					WHERE 	\"isActive\"='1'	";
+					SELECT	LANGUAGE.LANGUAGEID 	AS	\"languageId\",
+							LANGUAGE.LANGUAGECODE 		AS 	\"languageCode\",
+							LANGUAGE.LANGUAGEDESC 		AS 	\"languageDesc\",
+							LANGUAGE.ISDEFAULT 		AS 	\"isDefault\",
+							LANGUAGE.ISNEW 			AS 	\"isNew\",
+							LANGUAGE.ISDRAFT  		AS 	\"isDraft\",
+							LANGUAGE.ISUPDATE 		AS 	\"isUpdate\",
+							LANGUAGE.ISDELETE 		AS 	\"isDelete\",
+							LANGUAGE.ISACTIVE 		AS 	\"isActive\",
+							LANGUAGE.ISAPPROVED 	AS 	\"isApproved\",
+							LANGUAGE.EXECUTEBY 		AS 	\"executeBy\",
+							LANGUAGE.EXECUTETIME 	AS  \"executeTime\",
+							STAFF.STAFFNAME 		AS 	\"staffName\"		
+					FROM 	LANGUAGE
+					JOIN	STAFF
+					ON		LANGUAGE.EXECUTEBY = STAFF.STAFFID
+					WHERE 	LANGUAGE.ISACTIVE='1'	";
 			if ($this->model->getlanguageId(0,'single')) {
 				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getlanguageId(0,'single') . "\"";
 			}
@@ -361,7 +360,7 @@ class languageClass  extends configClass {
             $_SESSION['start'] = $this->getStart();
             $_SESSION['limit'] = $this->getLimit();
             if (!($this->getGridQuery())) {
-            	if ($this->limit) {
+            	if ($this->getLimit()) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";

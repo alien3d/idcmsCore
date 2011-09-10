@@ -165,14 +165,14 @@ class vendor
 		$this->countRecord = NULL;
 		$this->sql         = $sql;
 		$error             = 0;
-		$result_row = oci_parse($this->link,$this->sql);
-		if($result_row != false) {
-			$test =@oci_execute($result_row); //suspress warning message.Only handle by exception
+		$this->result = oci_parse($this->link,$this->sql);
+		if($this->result != false) {
+			$test =@oci_execute($this->result); //suspress warning message.Only handle by exception
 			if($test){
 				//oracle don't have return resources.depend on oci_parse
 			} else {
 				$errorArray	=	array();
-				$errorArray	=	oci_error($result_row);
+				$errorArray	=	oci_error($this->result);
 				$error.=		"Code: " . $errorArray["code"] . "<br>";
 				$error.=		"Message: " . $errorArray["message"] . "<br>";
 				$error.=		"Position: " . $errorArray["offset"] . "<br>";
@@ -183,7 +183,7 @@ class vendor
 			}
 		} else {
 			$errorArray	=	array();
-			$errorArray	=	oci_error($result_row);
+			$errorArray	=	oci_error($this->result);
 			$error.=	"Code: " . $errorArray["code"] . "<br>";
 			$error.=	"Message: " . $errorArray["message"] . "<br>";
 			$error.=	"Position: " . $errorArray["offset"] . "<br>";
@@ -195,33 +195,33 @@ class vendor
 		if ($error == 1) {
 
 
-			$sql_log    = "
-					INSERT	INTO	\"log\"
+			$sqlLog    = "
+					INSERT	INTO	LOG
 								(
-									\"leafId\",
-									\"operation\",
-									\"sql\",
-									\"date\",
-									\"staffId\",
-									\"logError\"
+									LEAFID,
+									OPERATION,
+									SQL,
+									DATE_,
+									STAFFID,
+									LOGERROR
 								)
 						values
 								(
-									\"" . $this->leafId . "\",
-									\"" . trim(addslashes($this->operation)) . "\",
-									\"" . trim(addslashes($this->sql)) . "\",
-									\"" . date("Y-m-d H:i:s") . "\",
-									\"" . $this->staffId . "\",
-									\"" . $this->realEscapeString($sql). "\"
+									'" . $this->leafId . "',
+									'" . trim(addslashes($this->operation)) . "',
+									'" . trim(addslashes($this->sql)) . "',
+									'" . date("Y-m-d H:i:s") . "',
+									'" . $this->staffId . "',
+									'" . $this->realEscapeString($sql). "'
 								)";
-			$result_row = oci_parse($this->link,$sql_log);
-			if($result_row != false) {
-				$test =@oci_execute($result_row); //suspress warning message.Only handle by exception
+			$resultSqlLog = oci_parse($this->link,$sqlLog);
+			if($resultSqlLog != false) {
+				$test =@oci_execute($resultSqlLog); //suspress warning message.Only handle by exception
 				if($test){
 					//oracle don't have return resources.depend on oci_parse
 				} else {
 					$errorArray	=	array();
-					$errorArray	=	oci_error($result_row);
+					$errorArray	=	oci_error($resultSqlLog);
 					$error.=		"Code: " . $errorArray["code"] . "<br>";
 					$error.=		"Message: " . $errorArray["message"] . "<br>";
 					$error.=		"Position: " . $errorArray["offset"] . "<br>";
@@ -232,7 +232,7 @@ class vendor
 				}
 			} else {
 				$errorArray	=	array();
-				$errorArray	=	oci_error($result_row);
+				$errorArray	=	oci_error($resultSqlLog);
 				$error.=	"Code: " . $errorArray["code"] . "<br>";
 				$error.=	"Message: " . $errorArray["message"] . "<br>";
 				$error.=	"Position: " . $errorArray["offset"] . "<br>";
@@ -258,56 +258,102 @@ class vendor
 		$result_row      = NULL;
 		$this->operation = NULL;
 		$sql             = "
-				SELECT 	*
-				FROM 	\"leafAccess\"
-				WHERE  \"leafAccess\".\"leafId\"			=	\"". $this->leafId . "\"
-				AND   	\"leafAccess\".\"" . $operation . "\"	=	'1'
-				AND   	\"leafAccess\".\"staffId\"		=	\"". $this->staffId . "\"";
-		$result          = mysqli_query($this->link, $sql);
-		if (!$result) {
-			$this->execute     = 'false';
-			$this->responce = $sql . mysqli_error($this->link);
-			$result_row        = 0;
+		SELECT 	*
+		FROM 	LEAFACCESS
+		WHERE   LEAFACCESS.LEAFID								=	'". $this->leafId . "'
+		AND   	LEAFACCESS." . strtoupper($operation) . "		=	'1'
+		AND   	LEAFACCESS.STAFFID								=	'". $this->staffId . "'";
+		$oracleNumRows = oci_parse($this->link,$sql);
+		if($oracleNumRows != false) {
+			$test =oci_execute($oracleNumRows); //suspress warning message.Only handle by exception
+			if($test){
+				//oracle don't have return resources.depend on oci_parse
+				oci_fetch_all($oracleNumRows,$array);
+				$resultRow= oci_num_rows($oracleNumRows);
+				//echo "Total record [".$resultRow."]";
+			} else {
+				$errorArray	=	array();
+				$errorArray	=	oci_error($oracleNumRows);
+
+				$error.="Code: " . $errorArray["code"] . "<br>";
+				$error.="Message: " . $errorArray["message"] . "<br>";
+				$error.="Position: " . $errorArray["offset"] . "<br>";
+				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
+				$this->responce=$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
+				exit();
+			}
 		} else {
-			$result_row = mysqli_num_rows($result);
+			$errorArray	=	array();
+			$errorArray	=	oci_error($oracleNumRows);
+			$error.="Code: " . $errorArray["code"] . "<br>";
+			$error.="Message: " . $errorArray["message"] . "<br>";
+			$error.="Position: " . $errorArray["offset"] . "<br>";
+			$error.="Statement: " . $errorArray["sqltext"] . "<br>";
+			$this->responce=$error;
+			echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+			exit();
 		}
-		if ($result_row == 1) {
+		if ($resultRow == 1) {
 			$access = 'Granted';
-		} elseif ($result_row == 0) {
+		} elseif ($resultRow == 0) {
 			$access = 'Denied';
 		}
+	//	echo $access;
 		/*
 		 *  Only disable and Error Sql Statement will be log
 		 */
-		if ($result_row == 0  || $this->log == 1) {
+		if ($resultRow == 0  || $this->log == 1) {
 			// only trim out the last operation query.per limit query doesn't require because it's the same sql statement to track
 			//	$operation = str_replace("leaf","",$operation);
 			//	$operation = str_replace("Access","",$operation);
 			//	$operation = str_replace("Value","",$operation);
-			$sql_log = "
-								INSERT INTO \"log\" (
-											\"leafId\",
-											\"operation\",
-											\"sql\",
-											\"date\",
-											\"staffId\",
-											\"access\",
-											\"log_error\"
+			$sqlLog = "
+								INSERT INTO LOG (
+											LEAFID,
+											OPERATION,
+											SQL,
+											DATE_,
+											STAFFID,
+											ACCESS,
+											LOGERROR
 								) values (
-											\"" . $this->leafId . "\",
-											\"" . $operation . "\",
-											\"" . $this->realEscapeString($this->sql) . "\",
-											\"" . date("Y-m-d H:i:s") . "\",
-											\"" . $_SESSION['staffId'] . "\",
-											\"" . $access . "\",
-											\"" . $this->realEscapeString($sql) . "\")";
-			$test1   = mysqli_query($this->link, $sql_log);
-			if (!$test1) {
-				$this->execute     = 'fail';
-				$this->responce = $sql_log . "[" . mysqli_error($this->link) . "]";
+											'" . $this->leafId . "',
+											'" . $operation . "',
+											'" . $this->realEscapeString($this->sql) . "',
+											'" . date("Y-m-d H:i:s") . "',
+											'" . $_SESSION['staffId'] . "',
+											'" . $access . "',
+											'" . $this->realEscapeString($sql) . "')";
+			$resultSqlLog = oci_parse($this->link,$this->sql);
+			if($resultSqlLog != false) {
+				$test =@oci_execute($resultSqlLog); //suspress warning message.Only handle by exception
+				if($test){
+					//oracle don't have return resources.depend on oci_parse
+				} else {
+					$errorArray	=	array();
+					$errorArray	=	oci_error($resultSqlLog);
+					$error.=		"Code: " . $errorArray["code"] . "<br>";
+					$error.=		"Message: " . $errorArray["message"] . "<br>";
+					$error.=		"Position: " . $errorArray["offset"] . "<br>";
+					$error.=		"Statement: " . addslashes($errorArray["sqltext"]) . "<br>";
+					$this->responce	=	$error;
+					echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
+					exit();
+				}
+			} else {
+				$errorArray	=	array();
+				$errorArray	=	oci_error($resultSqlLog);
+				$error.=	"Code: " . $errorArray["code"] . "<br>";
+				$error.=	"Message: " . $errorArray["message"] . "<br>";
+				$error.=	"Position: " . $errorArray["offset"] . "<br>";
+				$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
+				$this->responce=$error;
+				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+				exit();
 			}
 		}
-		return ($result_row);
+		return ($resultRow);
 	}
 	/**
 	 * this is for certain page which don't required to check access page
@@ -371,7 +417,7 @@ class vendor
 			if ($this->module('leafUpdateAccessValue') == 1) {
 				if ($this->audit == 1) {
 					$logAdvanceType = 'U'; // aka update
-					$sqlColumn       = "SHOW COLUMNS FROM `" . $this->tableName . "`";
+					$sqlColumn       = "SHOW COLUMNS FROM `" . strtoupper($this->tableName) . "`";
 					$resultColumn    = mysqli_query($this->link, $sqlColumn);
 					if (!$resultColumn) {
 						$this->execute     = 'fail';
@@ -390,8 +436,8 @@ class vendor
 					}
 					$sqlPrevious    = "
 					SELECT 	*
-					FROM 	`" . $this->tableName . "`
-					WHERE 	`" . $this->primaryKeyName . "` = \"". $this->primaryKeyValue . "\"";
+					FROM 	" . strtoupper($this->tableName) . "
+					WHERE 	" . strtoupper($this->primaryKeyName) . " = ". $this->primaryKeyValue . "'";
 					$resultPrevious = mysqli_query($this->link, $sqlPrevious);
 					if (!$resultPrevious) {
 						$this->execute     = 'fail';
@@ -408,17 +454,18 @@ class vendor
 					}
 					$text               = $this->removeComa($text);
 					$text               = "{" . $text . "}"; // using json data format ?
+
 					$sqlLogAdvance    = "
-					INSERT INTO 	`logAdvance`
+					INSERT INTO 	LOGADVANCE
 					(
-					`logAdvanceText`,
-					`logAdvanceType`,
-					`refId`
+						LOGADVANCETEXT,
+						LOGADVANCETYPE,
+						REDIF
 					)
 					VALUES 		(
-					\"". $text . "\",
-					\"". $logAdvanceType . "\",
-					\"". $this->leafId . "\"
+						'". $text . "',
+						'". $logAdvanceType . "',
+						'". $this->leafId . "'
 					)";
 					$resultLogAdvance = mysqli_query($this->link, $sqlLogAdvance);
 					if ($resultLogAdvance) {
@@ -435,8 +482,8 @@ class vendor
 					// select the current update file
 					$sqlCurrent    = "
 					SELECT 	*
-					FROM 	`" . $this->tableName . "`
-					WHERE 	`" . $this->primaryKeyName . "`=\"". $this->primaryKeyValue . "\"";
+					FROM 	" . strtoupper($this->tableName) . " 
+					WHERE 	" . strtoupper($this->primaryKeyName) . " ='". $this->primaryKeyValue . "'";
 					$resultCurrent = mysqli_query($this->link, $sqlCurrent);
 					if ($resultCurrent) {
 						while ($rowCurrent = mysqli_fetch_array($resultCurrent)) {
@@ -447,12 +494,12 @@ class vendor
 						$this->responce = "Error Query on advance select" . $sqlCurrent;
 					}
 					$textComparison = substr($textComparison, 0, -1); // remove last coma
-					$textComparison = "{ \"tablename\":\"" . $this->tableName . "\",\"ref_uniqueId\":\"" . $this->primaryKeyValue . "\"," . $textComparison . "}"; // json format
+					$textComparison = "{ \"tablename\":\"" . strtoupper($this->tableName) . "\",\"ref_uniqueId\":\"" . $this->primaryKeyValue . "\"," . $textComparison . "}"; // json format
 					// update back comparision the previous record
 					$sql             = "
-					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparison`=\"". addslashes($textComparison) . "\"
-					WHERE 	`logAdvanceId`=\"". $logAdvanceId . "\"";
+					UPDATE	LOGADVANCE
+					SET 	LOGADVANCECOMPARISION`	=	'". addslashes($textComparison) . "'
+					WHERE 	LOGADVANCEID			=	'". $logAdvanceId . "'";
 					$result          = mysqli_query($this->link, $sql);
 					if (!$result) {
 						$this->execute     = 'fail';

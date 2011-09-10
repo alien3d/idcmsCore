@@ -284,15 +284,15 @@ class leafClass extends configClass
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[leaf].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"leaf\".\"isActive\"	=	1	";
+				$this->auditFilter = "	LEAF.ISACTIVE	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
 				$this->auditFilter = "	 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	or 1 ";
+				$this->auditFilter = "	1 = 1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = " or 1 ";
+				$this->auditFilter = " 1 = 1 ";
 			}
 		}
 		//UTF8
@@ -333,25 +333,47 @@ class leafClass extends configClass
 			ON			[leaf].[moduleId] 		=	[module].[moduleId]
 			LEFT JOIN	[icon]
 			ON			[leaf].[iconId]				=	[icon].[iconId]
-			WHERE 		[folder].[isActive]			=	1
-			AND			[module].[isActive]		=	1
-			AND			[leaf].[isActive]			=	1 ";
+			WHERE 		".$this->auditFilter."
+			AND			[folder].[isActive]			=	1
+			AND			[module].[isActive]			=	1 ";
 			if ($this->model->getLeafId(0,'single')) {
 				$sql .= " AND [".$this->model->getModuleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getLeafId(0,'single') ."\"";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			SELECT		*
-			FROM 		\"leaf`
-			JOIN		\"folder`
-			USING		(\"folderId\",\"moduleId\")
-			JOIN		\"module\"
-			USING		(\"moduleId\")
-			LEFT JOIN	\"icon\"
-			ON			\"leaf\".\"iconId\"=\"icon\".\"iconId\"
-			WHERE 		\"folder\".\"isActive\"		=	1
-			AND			\"module\".`isActive\"	=	1
-			AND			\"leaf\".`isActive\"		=	1 ";
+			SELECT		LEAF.LEAFID 		AS	\"leafId\",
+						LEAF.LEAFCODE 		AS 	\"leafCode\",
+						LEAF.LEAFSEQUENCE 	AS 	\"leafSequence\",
+						LEAF.LEAFNOTE 		AS 	\"leafNote\",
+						LEAF.LEAFFILENAME 	AS 	\"leafFilename\",
+						LEAF.ISDEFAULT 		AS 	\"isDefault\",
+						LEAF.ISNEW 			AS 	\"isNew\",
+						LEAF.ISDRAFT  		AS 	\"isDraft\",
+						LEAF.ISUPDATE 		AS 	\"isUpdate\",
+						LEAF.ISDELETE 		AS 	\"isDelete\",
+						LEAF.ISACTIVE 		AS 	\"isActive\",
+						LEAF.ISAPPROVED 	AS 	\"isApproved\",
+						LEAF.EXECUTEBY 		AS 	\"executeBy\",
+						LEAF.EXECUTETIME 	AS  \"executeTime\",
+						FOLDER.FOLDERID		AS	\"folderId\",
+						FOLDER.FOLDERNOTE	AS	\"folderNote\",
+						MODULE.MODULEID		AS 	\"moduleId\",
+						MODULE.MODULENOTE	AS  \"moduleNote\",
+						LEAF.LEAFCATEGORYID AS  \"leafCategoryId\",
+						STAFF.STAFFNAME 	AS 	\"staffName\"
+			FROM 		LEAF
+			JOIN		FOLDER
+			ON			LEAF.MODULEID 	= FOLDER.MODULEID
+			AND			LEAF.FOLDERID	= FOLDER.FOLDERID
+			JOIN		MODULE
+			ON			LEAF.MODULEID 	= MODULE.MODULEID
+			LEFT JOIN	ICON
+			ON			LEAF.ICONID		= ICON.ICONID
+			JOIN		STAFF
+			ON			LEAF.EXECUTEBY = STAFF.STAFFID
+			WHERE 		".$this->auditFilter."
+			AND			FOLDER.ISACTIVE = 1
+			AND			MODULE.ISACTIVE = 1 ";
 			if ($this->model->getLeafId(0,'single')) {
 				$sql .= " AND \"".$this->model->getModuleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getLeafId(0,'single') ."\"";
 			}

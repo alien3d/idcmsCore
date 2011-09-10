@@ -90,7 +90,7 @@ class folderModel extends validationClass{
 		} else if ($this->getVendor()==self::mssql){
 			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::oracle){
-			$this->setExecuteTime("to_date(\"".date("Y-m-d H:i:s")."\",'YYYY-MM-DD HH24:MI:SS')");
+			$this->setExecuteTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 
 		$this->setTotal(count($_GET['folderId']));

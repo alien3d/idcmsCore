@@ -73,6 +73,7 @@ Ext
 					leafId : leafId,
 					isAdmin : isAdmin,
 					start : 0,
+					limit : perPage,
 					perPage : perPage
 				},
 				root : "data",

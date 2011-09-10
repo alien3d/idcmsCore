@@ -517,7 +517,7 @@ class mainClass extends configClass
             $_SESSION['start'] = $this->start;
             $_SESSION['limit'] = $this->limit;
             if (empty($_POST['filter'])) {
-            	if ($this->limit) {
+            	if ($this->getLimit()) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";

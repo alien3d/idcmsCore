@@ -54,6 +54,7 @@ class religionModel extends validationClass
 		} else if ($this->getVendor()==self::oracle) {
 			$this->setExecuteTime("to_date(\"" . date("Y-m-d H:i:s") . "\",'YYYY-MM-DD HH24:MI:SS')");
 		}
+                
 		// updateStatus
 		//	echo "Jumlah record ".count($_GET['religionId']);
 		$this->setTotal(count($_GET['religionId']));

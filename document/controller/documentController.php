@@ -525,7 +525,7 @@ class documentClass extends  configClass {
             $_SESSION['start'] = $this->getStart();
             $_SESSION['limit'] = $this->getLimit();
             if (!($this->getGridQuery())) {
-            	if ($this->limit) {
+            	if ($this->getLimit()) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";

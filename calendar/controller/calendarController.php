@@ -144,8 +144,8 @@ class calendarClass extends  configClass {
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
 		SELECT	*
-		FROM 	\"calendarColor\"
-		JOIN    \"calendar\"
+		FROM 	CALENDARCOLOR
+		JOIN    
 		USING   (\"calendarColorId\")
 		WHERE 	\"staffId\" = \"".$this->model->getExecuteBy()."\" ";
 		}
@@ -213,11 +213,22 @@ class calendarClass extends  configClass {
 		}
 
 		$this->q->start();
-		$sql="
+		if($this->getVendor()==self::mysql){
+			$sql="
 					UPDATE 	`calendar`
 					SET 	`calendarTitle`	=	\"".$this->strict($_POST['cal_title'],'s')."\"
 					WHERE 	`calendarId`		=	\"".$this->strict($_POST['cal_own_uniqueId'],'n')."\"";
-
+		} else if ($this->getVendor()==self::mssql){
+			$sql="
+					UPDATE 	[calendar]
+					SET 	[calendarTitle]	=	\"".$this->strict($_POST['cal_title'],'s')."\"
+					WHERE 	[calendarId]		=	\"".$this->strict($_POST['calendarId'],'n')."\"";
+		} else if ($this->getVendor()==self::oracle){
+			$sql="
+					UPDATE 	CALENDAR
+					SET 	CALENDARTITLE	=	'".$this->strict($_POST['cal_title'],'s')."'
+					WHERE 	CALENDARID	=	'".$this->strict($_POST['calendarId'],'n')."'";
+		}
 		$this->q->update($sql);
 		$this->q->commit();
 

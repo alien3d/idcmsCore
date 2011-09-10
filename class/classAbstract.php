@@ -218,8 +218,8 @@ abstract class configClass
 			SELECT 	STAFFID 	AS 	\"staffId\",
 					STAFFNO 	AS 	\"staffNo\",
 					STAFFNAME 	AS 	\"staffName\"
-			FROM   	STAFF 		AS	\"staff\"
-			WHERE	ISACTIVE=1";
+			FROM   	STAFF 		
+			WHERE	STAFF.ISACTIVE=1";
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result);

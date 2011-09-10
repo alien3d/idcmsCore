@@ -268,25 +268,25 @@ class themeClass  extends configClass {
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-					SELECT	\"theme\".\"themeId\",
-							\"theme\".\"themeCode\",
-							\"theme\".\"themeSequence\",
-							\"theme\".\"themeNote\",
-							\"theme\".\"themePath\",
-							\"theme\".\"isDefault\",
-							\"theme\".\"isNew\",
-							\"theme\".\"isDraft\",
-							\"theme\".\"isUpdate\",
-							\"theme\".\"isDelete\",
-							\"theme\".\"isActive\",
-							\"theme\".\"isApproved\",
-							\"theme\".\"executeBy\",
-							\"theme\".\"executeTime\",
-							\"staff\".\"staffName\"
-					FROM 	\"theme\"
-					JOIN	\"staff\"
-					ON		\"theme\".\executeBy\" 	= 	\"staff\".\"staffId\"
-					WHERE 	\"isActive\"			=	'1'	";
+			SELECT	THEME.THEMEID 		AS	\"themeId\",
+					THEME.THEMECODE 	AS 	\"themeCode\",
+					THEME.THEMESEQUENCE AS 	\"themeSequence\",
+					THEME.THEMENOTE 	AS 	\"themeNote\",
+					THEME.THEMEPATH 	AS 	\"themePath\",
+					THEME.ISDEFAULT 	AS 	\"isDefault\",
+					THEME.ISNEW 		AS 	\"isNew\",
+					THEME.ISDRAFT  		AS 	\"isDraft\",
+					THEME.ISUPDATE 		AS 	\"isUpdate\",
+					THEME.ISDELETE 		AS 	\"isDelete\",
+					THEME.ISACTIVE 		AS 	\"isActive\",
+					THEME.ISAPPROVED 	AS 	\"isApproved\",
+					THEME.EXECUTEBY 	AS 	\"executeBy\",
+					THEME.EXECUTETIME 	AS  \"executeTime\",
+					STAFF.STAFFNAME 	AS 	\"staffName\"
+			FROM 	THEME
+			JOIN	STAFF
+			ON		THEME.EXECUTEBY 	= 	STAFF.STAFFID
+			WHERE 	THEME.ISACTIVE	=	1 ";
 			if ($this->model->getThemeId(0,'single')) {
 				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getThemeId(0,'single') . "\"";
 			}
@@ -371,7 +371,7 @@ class themeClass  extends configClass {
             $_SESSION['start'] = $this->getStart();
             $_SESSION['limit'] = $this->getLimit();
             if (!($this->getGridQuery())) {
-            	if ($this->limit) {
+            	if ($this->getLimit()) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
