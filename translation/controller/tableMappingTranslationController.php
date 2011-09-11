@@ -358,8 +358,8 @@ class tableMappingTranslationClass extends  configClass {
 									WHERE		1
 									AND 		".$tempSql.$tempSql2.$orderBy."
 								 ) a
-						where rownum <= \"".($_POST['start']+$_POST['limit']-1)."\" )
-						where r >=  \"".$_POST['start']."\"";
+						WHERE rownum <= '".($this->getStart()+$this->getLimit()-1)."' )
+						where r >=  '".$this->getStart()."'";
 
 				} else {
 					echo "undefine vendor";

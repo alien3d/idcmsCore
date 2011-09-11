@@ -649,7 +649,7 @@ class staffClass extends configClass
 			$sql = "
 					SELECT	STAFF.STAFFID 		AS 	\"staffId\",
 							STAFF.GROUPID 		AS 	\"groupId\",
-							STAFF.DEPARTMENTID 	AS 	\"departmentId\",
+							STAFF.DEPARTMENTID 	AS 	DEPARTMENTID,
 							STAFF.LANGUAGEID 	AS 	\"languageId\",
 							STAFF.STAFFPASSWORD AS 	\"staffPassword\",
 							STAFF.STAFFNAME 	AS 	\"staffName\",
@@ -803,7 +803,7 @@ class staffClass extends configClass
 									SELECT  STAFF.STAFFID,
 									SELECT	STAFF.STAFFID 		AS 	\"staffId\",
 							STAFF.GROUPID 		AS 	\"groupId\",
-							STAFF.DEPARTMENTID 	AS 	\"departmentId\",
+							STAFF.DEPARTMENTID 	AS 	DEPARTMENTID,
 							STAFF.LANGUAGEID 	AS 	\"languageId\",
 							STAFF.STAFFPASSWORD AS 	\"staffPassword\",
 							STAFF.STAFFNAME 	AS 	\"staffName\",
@@ -908,9 +908,8 @@ class staffClass extends configClass
 			WHERE 	[staffId]	=	'". $this->model->getStaffId(0,'single') ."'";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			SELECT 	GROUPID AS 	\"groupId\",
-	
-					STAFFPASSWORD AS \"staffPassword\"
+			SELECT 	GROUPID 		AS 	\"groupId\",
+					STAFFPASSWORD	AS	\"staffPassword\"
 			FROM 	STAFF
 			WHERE 	STAFFID	=	'". $this->model->getStaffId(0,'single') ."'";
 		}
@@ -1001,19 +1000,19 @@ class staffClass extends configClass
 			 * */
 			if ($this->getVendor() == self::mysql) {
 				$sql = "
-					SELECT	*
+					SELECT	`leafId`
 					FROM 	`leafGroupAccess`
-					WHERE 	`groupId`=\"". $this->model->getGroupId() ."\" ";
+					WHERE 	`groupId`			=	\"". $this->model->getGroupId() ."\" ";
 			} else if ($this->getVendor() == self::mssql) {
 				$sql = "
-					SELECT	*
+					SELECT	[leafId]
 					FROM 	[leafGroupAccess]
-					WHERE 	[groupId]='". $this->model->getGroupId() ."'";
+					WHERE 	[groupId]			=	'". $this->model->getGroupId() ."'";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
-					SELECT	*
+					SELECT	LEAFID		AS 	\"leafId\"
 					FROM 	LEAFGROUPACCESS
-					WHERE 	GROUPID=	'". $this->model->getGroupId() ."' ";
+					WHERE 	GROUPID				=	'". $this->model->getGroupId() ."' ";
 			}
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
@@ -1040,7 +1039,12 @@ class staffClass extends configClass
 					AND		[leafId]			=	'". $rowLeafGroupAccess['leafId'] ."' ";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
-					SELECT	*
+					SELECT	LEAFCREATEACCESSVALUE	AS	\"leafCreateAccessValue\",
+							LEAFDELETEACCESSVALUE	AS  \"leafDeleteAccessValue\",
+							LEAFPOSTACCESSVALUE 	AS	\"leafPostAccessValue\",
+							LEAFPRINTACCESSVALUE 	AS	\"leafPrintAccessValue\",
+							LEAFREADACCESSVALUE 	AS	\"leafReadAccessValue\",
+							LEAFUPDATEACCESSVALUE 	AS	\"leafUpdateAccessValue\"
 					FROM 	LEAFACCESS
 					WHERE 	STAFFID			=	'". $this->model->getStaffId(0,'single') ."'
 					AND		LEAFID			=	'". $rowLeafGroupAccess['leafId'] ."' ";
@@ -1206,16 +1210,16 @@ class staffClass extends configClass
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 				UPDATE	[staff]
-				SET		[isDefault]		= \"". $this->model->getIsDefault(0,'single') ."',
-						[isNew]			=	\"". $this->model->getIsNew(0,'single') ."',
-						[isDraft]		=	\"". $this->model->getIsDraft(0,'single') ."',
-						[isUpdate]		=	\"". $this->model->getIsUpdate(0,'single') ."',
-						[isDelete]		=	\"". $this->model->getIsDelete(0,'single') ."',
-						[isActive]		=	\"". $this->model->getIsActive(0,'single') ."',
-						[isApproved]	=	\"". $this->model->getIsApproved(0,'single') ."',
-						[executeBy]		=	\"". $this->model->getExecuteBy() ."',
+				SET		[isDefault]		= 	'". $this->model->getIsDefault(0,'single') ."',
+						[isNew]			=	'". $this->model->getIsNew(0,'single') ."',
+						[isDraft]		=	'". $this->model->getIsDraft(0,'single') ."',
+						[isUpdate]		=	'". $this->model->getIsUpdate(0,'single') ."',
+						[isDelete]		=	'". $this->model->getIsDelete(0,'single') ."',
+						[isActive]		=	'". $this->model->getIsActive(0,'single') ."',
+						[isApproved]	=	'". $this->model->getIsApproved(0,'single') ."',
+						[executeBy]		=	'". $this->model->getExecuteBy() ."',
 						[executeTime]	=	" . $this->model->getExecuteTime() . "
-				WHERE 	[staffId]		=	\"". $this->model->getStaffId(0,'single') ."'";
+				WHERE 	[staffId]		=	'". $this->model->getStaffId(0,'single') ."'";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 				UPDATE	STAFF
@@ -1359,7 +1363,7 @@ class staffClass extends configClass
 					ISAPPROVED		=	\"" . $this->model->getIsApproved(0,'single') . "\",
 					EXECUTEBY				=	\"" . $this->model->getExecuteBy() . "\",
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	\"DepartmentId\"		IN	(" . $this->model->getStaffIdAll() . ")";
+			WHERE 	DEPARTMENTID		IN	(" . $this->model->getStaffIdAll() . ")";
 			}
 		} else if ($this->isAdmin == 1) {
 			if ($this->getVendor() == self::mysql) {
@@ -1396,7 +1400,7 @@ class staffClass extends configClass
                 	} else if ($this->getVendor() == self::mssql) {
                 		$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
                 	} else if ($this->getVendor() == self::oracle) {
-                		$sqlLooping .= "	\"" . $systemCheck . "\" = CASE \"" . $this->model->getPrimaryKeyName() . "\"";
+                		$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                 	}
                 	switch ($systemCheck) {
                 		case 'isDefault':
@@ -1460,7 +1464,7 @@ class staffClass extends configClass
 			WHERE `=[" . $this->model->getPrimaryKeyName() . "] IN (" . $this->model->getStaffIdAll() . ")";
                 } else if ($this->getVendor() == self::oracle) {
                 	$sql .= "
-			WHERE \"" . $this->model->getPrimaryKeyName() . "\" IN (" . $this->model->getStaffIdAll() . ")";
+			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "\" IN (" . $this->model->getStaffIdAll() . ")";
                 }
 		}
 		$this->q->update($sql);

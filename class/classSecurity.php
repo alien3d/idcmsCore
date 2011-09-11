@@ -256,7 +256,7 @@ class security extends configClass {
 			WHERE   [department].[isActive]=1";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			SELECT 	DEPARTMENT.\"departmentId\",
+			SELECT 	DEPARTMENT.DEPARTMENTID,
 					DEPARTMENT.DEPARTMENTNOTE
 			FROM   	DEPARTMENT
 			WHERE   ISACTIVE=1";

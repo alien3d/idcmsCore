@@ -94,7 +94,7 @@ class loginClass extends configClass {
 					STAFF.STAFFNAME 		AS 	\"staffName\",
 					STAFF.LANGUAGEID 		AS 	\"languageId\",
 					GROUP_.GROUPID 			AS  \"groupId\",
-					DEPARTMENT.DEPARTMENTID AS 	\"departmentId\"
+					DEPARTMENT.DEPARTMENTID AS 	DEPARTMENTID
 						
 			FROM 	STAFF
 			JOIN	GROUP_

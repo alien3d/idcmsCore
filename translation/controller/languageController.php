@@ -419,8 +419,8 @@ class languageClass  extends configClass {
 									FROM 	LANGUAGE
 									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= \"". ($this->getStart() + $this->getLimit() - 1) . "\" )
-						where r >=  \"". $this->getStart() . "\"";
+						where rownum <= '". ($this->getStart() + $this->getLimit() - 1) . "' )
+						where r >=  '". $this->getStart() . "'";
             		} else {
             			echo "undefine vendor";
             			exit();

@@ -15,7 +15,7 @@ if ($q->vendor == sharedx::mysql) {
     // future
     $sql = "
                 SELECT 			`tableMapping`.`tableMappingColumnName`,
-                                                `tableMappingTranslate`.`tableMappingNativeLabel`
+                                 `tableMappingTranslate`.`tableMappingNativeLabel`
                 FROM 			`tableMapping`
                 JOIN			`tableMappingTranslate`
                 USING			(`tableMappingId`)
@@ -23,7 +23,7 @@ if ($q->vendor == sharedx::mysql) {
     // temp
     $sql = "
                 SELECT 			`tableMapping`.`tableMappingColumnName`,
-                                                `tableMapping`.`tableMappingNativeLabel`
+                                `tableMapping`.`tableMappingNativeLabel`
                 FROM 			`tableMapping`
                 WHERE 			`tableMapping`.`languageId`=\"" . $_SESSION['languageId'] . "\"";
 } else if ($q->vendor == sharedx::mssql) {
@@ -43,7 +43,7 @@ if ($q->vendor == sharedx::mysql) {
 } else if ($q->vendor == sharedx::oracle) {
     $sql = "
                 SELECT DISTINCT TABLEMAPPING.\"tableMappingColumnName\",
-                                                TABLEMAPPINGTRANSLATE.\"tableMappingNativeLabel\"
+                                TABLEMAPPINGTRANSLATE.\"tableMappingNativeLabel\"
                 FROM 			TABLEMAPPING
                 JOIN			TABLEMAPPINGTRANSLATE
                 USING			(TABLEMAPPINGID)
@@ -84,7 +84,7 @@ if ($q->vendor == sharedx::mysql
 } else if ($q->vendor == sharedx::oracle) {
      $sql = "
                 SELECT	DEFAULTLABEL.DEFAULTLABEL 				AS \"defaultLabel\",
-                                DEFAULTLABELTRANSLATE.DEFAULTLABELTEXT 	AS \"defaultLabelText\"
+                        DEFAULTLABELTRANSLATE.DEFAULTLABELTEXT 	AS \"defaultLabelText\"
                 FROM 	DEFAULTLABEL
                 JOIN 	DEFAULTLABELTRANSLATE
                 ON		DEFAULTLABEL.DEFAULTLABELID 			= 	DEFAULTLABELTRANSLATE.DEFAULTLABELID

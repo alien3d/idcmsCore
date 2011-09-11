@@ -485,8 +485,8 @@ class folderTranslateClass extends  configClass {
 									WHERE		\"tab\".ISACTIVE=1
 									AND			FOLDER.ISACTIVE=1 ".$tempSql.$tempSql2.$orderBy."
 								 ) a
-						where rownum <= \"".($_POST['start']+$_POST['limit']-1)."\" )
-						where r >=  \"".$_POST['start']."\"";
+						WHERE rownum <= '".($this->getStart()+$this->getLimit()-1)."' )
+						where r >=  '".$this->getStart()."'";
 
 				} else {
 					echo "undefine vendor";

@@ -349,8 +349,8 @@ class extLabelTranslationClass extends  configClass {
 									WHERE		1
 									AND 		".$tempSql.$tempSql2.$orderBy."
 								 ) a
-						where rownum <= \"".($_POST['start']+$_POST['limit']-1)."\" )
-						where r >=  \"".$_POST['start']."\"";
+						WHERE rownum <= '".($this->getStart()+$this->getLimit()-1)."' )
+						where r >=  '".$this->getStart()."'";
 
 				} else {
 					echo "undefine vendor";
@@ -666,7 +666,7 @@ class extLabelTranslationClass extends  configClass {
 					ISAPPROVED		=	\"". $this->model->getIsApproved(0,'single') . "\",
 					EXECUTEBY				=	\"". $this->model->getExecuteBy() . "\",
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	\"DepartmentId\"		IN	(". $this->model->getDepartmentIdAll() . ")";
+			WHERE 	DEPARTMENTID		IN	(". $this->model->getDepartmentIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){
 
