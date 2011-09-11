@@ -140,11 +140,11 @@ class logClass extends  configClass {
 		} else if ($this->getVendor() == self:: oracle ){
 			$sql	=	"
 			SELECT	*
-			FROM 	\"log\"
-			JOIN	\"leaf\"
-			USING	(\"leafId\")
-			JOIN	\"staff\"
-			USING	(\"staffId\")
+			FROM 	LOG
+			JOIN	LEAF
+			ON		LOG.LEAFID	=LEAF.LEAFID
+			JOIN	STAFF
+			ON		STAFF.STAFFID= LOG.STAFFID
 			WHERE ";
 			if($_POST['logId']) {
 				$sql.=" AND `log`.`logId`=\"".$this->strict($_POST['logId'],'n')."\"";

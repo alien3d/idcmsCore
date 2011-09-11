@@ -190,10 +190,10 @@ class security extends configClass {
 			WHERE   [group].[isActive]=1";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			SELECT 	\"group\".\"groupId\",
-					\"group\".\"groupNote\"
-			FROM   	\"group\"
-			WHERE   \"isActive\"=1";
+			SELECT 	GROUP_.GROUPID,
+					GROUP_.GROUPNOTE
+			FROM   	GROUP_
+			WHERE   ISACTIVE=1";
 		}
 
 		$result =$this->q->fast($sql);
@@ -256,10 +256,10 @@ class security extends configClass {
 			WHERE   [department].[isActive]=1";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			SELECT 	\"department\".\"departmentId\",
-					\"department\".\"departmentNote\"
-			FROM   	\"department\"
-			WHERE   \"isActive\"=1";
+			SELECT 	DEPARTMENT.\"departmentId\",
+					DEPARTMENT.DEPARTMENTNOTE
+			FROM   	DEPARTMENT
+			WHERE   ISACTIVE=1";
 		}
 
 		$result =$this->q->fast($sql);
@@ -373,22 +373,22 @@ class security extends configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			if($type == 1) {
 				$sql="
-			SELECT 	\"module\".\"moduleId\",
-					\"module\".\"moduleNote\"
-			FROM   	\"module\"
-			WHERE   \"module\".\"isActive\"=1";
+			SELECT 	MODULE.MODULEID,
+					MODULE.MODULENOTE
+			FROM   	MODULE
+			WHERE   MODULE.ISACTIVE=1";
 			} else if ($type==2) {
 				$sql="
-			SELECT 	\"moduleAccess\".\"moduleId\",
-					\"moduleAccess\".\"moduleNote\",
-					\"moduleAccess\".\"groupId\",
-					\"moduleAccess\".\"moduleAccessValue\"
-			FROM   	\"moduleAccess\"
-			JOIN	\"module\"
-			USING	(\"moduleId\")
-			WHERE   \"module\".\"isActive\"=1";
+			SELECT 	MODULEACCESS.MODULEID,
+					MODULEACCESS.MODULENOTE,
+					MODULEACCESS.GROUPID,
+					MODULEACCESS.MODULEACCESSVALUE
+			FROM   	MODULEACCESS
+			JOIN	MODULE
+			USING	(MODULEID)
+			WHERE   MODULE.ISACTIVE=1";
 				if(isset($_GET['groupId'])) {
-					$sql.=" AND \"moduleAccess\".\"groupId\"=\"".$this->strict($_GET['groupId'],'numeric')."\"";
+					$sql.=" AND MODULEACCESS.GROUPID=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 				}
 			}
 		} else{
@@ -506,26 +506,26 @@ class security extends configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			if($type==1){
 				$sql	=	"
-			SELECT 	\"folder\".\"folderId\",
-					\"folder\".\"folderNote\"
-			FROM   	\"folder\"
-			WHERE   \"isActive\"=1";
+			SELECT 	FOLDER.FOLDERID,
+					FOLDER.FOLDERNOTE
+			FROM   	FOLDER
+			WHERE   ISACTIVE=1";
 			} else {
 				$sql="
-			SELECT 	\"folderAccess\".\"moduleId\",
-					\"folderAccess\".\"groupId\",
-					\"folderAccess\".\"moduleAccessValue\",
-			FROM   	\"folderAccess\"
-			JOIN	\"folder\"
-			USING	(\"folderId\")
-			WHERE   \"folder\".\"isActive\"=1";
+			SELECT 	FOLDERACCESS.MODULEID,
+					FOLDERACCESS.GROUPID,
+					FOLDERACCESS.MODULEACCESSVALUE,
+			FROM   	FOLDERACCESS
+			JOIN	FOLDER
+			USING	(FOLDERID)
+			WHERE   FOLDER.ISACTIVE=1";
 
 			}
 			if(isset($_GET['groupId'])) {
-				$sql.=" AND \"folder\".\"groupId\"=\"".$this->strict($_GET['groupId'],'numeric')."\"";
+				$sql.=" AND FOLDER.GROUPID=\"".$this->strict($_GET['groupId'],'numeric')."\"";
 			}
 			if(isset($_GET['moduleId'])) {
-				$sql.=" AND \"folder\".\"moduleId\"=\"".$this->strict($_GET['moduleId'],'numeric')."\"";
+				$sql.=" AND FOLDER.MODULEID=\"".$this->strict($_GET['moduleId'],'numeric')."\"";
 			}
 
 		}
@@ -592,7 +592,7 @@ class security extends configClass {
 			$sql="
 			SELECT 	(MAX(\"".$table."Sequence\")+1) AS \"nextSequence\"
 			FROM 	\"".$table."\"
-			WHERE	\"isActive\"=1";
+			WHERE	ISACTIVE=1";
 		}
 		if($table=='folder'){
 			if(isset($_GET['moduleId'])){

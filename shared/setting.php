@@ -29,7 +29,7 @@ if ($q->vendor == sharedx::mysql) {
 } else if ($q->vendor == sharedx::mssql) {
     $sql = "
                 SELECT 			[tableMapping].[tableMappingColumnName],
-                                                [tableMappingTranslate].[tableMappingNativeLabel]
+                                [tableMappingTranslate].[tableMappingNativeLabel]
                 FROM 			[tableMapping]
                 JOIN			[tableMappingTranslate]
                 USING			[tableMapping].[tableMappingId]=[tableMappingTranslate].[tableMappingId]
@@ -47,11 +47,11 @@ if ($q->vendor == sharedx::mysql) {
                 FROM 			\"tableMapping\"
                 JOIN			\"tableMappingTranslate\"
                 USING			(\"tableMappingId\")
-                WHERE 			\"tableMapping\".\"languageId\"=\"" . $_SESSION['languageId'] . "\"";
+                WHERE 			\"tableMapping\".LANGUAGEID=\"" . $_SESSION['languageId'] . "\"";
     // temp
     $sql = "
                 SELECT 			TABLEMAPPING.TABLEMAPPINGCOLUMNNAME AS  \"tableMappingColumnName\",
-                                                TABLEMAPPING.TABLEMAPPINGNATIVELABEL AS \"tableMappingNativeLabel\"
+                                TABLEMAPPING.TABLEMAPPINGNATIVELABEL AS \"tableMappingNativeLabel\"
                 FROM 			TABLEMAPPING
                 WHERE 			TABLEMAPPING.LANGUAGEID='" . $_SESSION['languageId'] . "'";
 } else {
@@ -66,7 +66,8 @@ while ($row = $q->fetchAssoc($result)) {
 /**
  * 	language pack javascript default
  * */
-if ($q->vendor == sharedx::mysql) {
+if ($q->vendor == sharedx::mysql
+) {
     $sql = "
                 SELECT	*
                 FROM 	`defaultLabel`
@@ -81,7 +82,7 @@ if ($q->vendor == sharedx::mysql) {
                 ON		[defaultLabel] .[defaultLabelId]=  [defaultLabelTranslate] .[defaultLabelId]
                 WHERE 	[defaultLabelTranslate].[languageId]	=	'" . $_SESSION['languageId'] . "'";
 } else if ($q->vendor == sharedx::oracle) {
-    $sql = "
+     $sql = "
                 SELECT	DEFAULTLABEL.DEFAULTLABEL 				AS \"defaultLabel\",
                                 DEFAULTLABELTRANSLATE.DEFAULTLABELTEXT 	AS \"defaultLabelText\"
                 FROM 	DEFAULTLABEL
@@ -128,7 +129,7 @@ if ($q->vendor == sharedx::mysql) {
         AND		[leafTranslate].[languageId]	=	'" . $_SESSION['languageId'] . "'";
 } else if ($q->vendor == sharedx::oracle) {
 
-    $sql =
+   $sql =
             "	SELECT	LEAF.LEAFID 						AS  \"leafId\",
                         LEAFTRANSLATE.LEAFTRANSLATE 		AS	\"leafNote\",
                         LEAFACCESS.LEAFCREATEACCESSVALUE 	AS 	\"leafCreateAccessValue\",
@@ -177,7 +178,7 @@ if ($q->vendor == sharedx::mysql) {
                         AND		[staff].[isActive]	=	1
                         AND		[group].[isActive]	=	1";
 } else if ($q->vendor == sharedx::oracle) {
-    $sql = "
+   $sql = "
                         SELECT	GROUP_.ISADMIN AS \"isAdmin\"
                         FROM 	STAFF
                         JOIN	GROUP_

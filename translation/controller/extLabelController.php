@@ -172,11 +172,11 @@ class extLabelClass extends  configClass {
 			$sql="
 			INSERT INTO 	\"extLabel\"
 						(
-							\"extLabelNote\",					\"isDefault\",
-							\"isNew\",							\"isDraft\",
-							\"isUpdate\",						\"isDelete\",
-							\"isActive\",						\"isApproved\",
-							\"executeBy\",								\"executeTime\"
+							\"extLabelNote\",					ISDEFAULT,
+							ISNEW,							ISDRAFT,
+							ISUPDATE,						ISDELETE,
+							ISACTIVE,						ISAPPROVED,
+							EXECUTEBY,								EXECUTETIME
 
 						)	VALUES	(
 								\"".$this->model->getextLabelNote()."\",				\"".$this->model->getIsDefault(0,'single')."\",
@@ -217,7 +217,7 @@ class extLabelClass extends  configClass {
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[extLabel].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"extLabel\".\"isActive\"	=	1	";
+				$this->auditFilter = "	\"extLabel\".ISACTIVE	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
@@ -257,7 +257,7 @@ class extLabelClass extends  configClass {
 			$sql	=	"
 			SELECT 		*
 			FROM 		\"extLabel\"
-			WHERE		\"extLabel\".\"isActive\"=1";
+			WHERE		\"extLabel\".ISACTIVE=1";
 			if($this->model->getextLabelId(0,'single')) {
 				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getextLabelId(0,'single')."\"";
 			}
@@ -364,7 +364,7 @@ class extLabelClass extends  configClass {
 						FROM (
 									SELECT 		*
 									FROM 		\"extLabel\"
-									WHERE		\"extLabel\".\"isActive\"=1 ".$tempSql.$tempSql2.$orderBy."
+									WHERE		\"extLabel\".ISACTIVE=1 ".$tempSql.$tempSql2.$orderBy."
 								 ) a
 						where rownum <= \"".($_POST['start']+$_POST['limit']-1)."\" )
 						where r >=  \"".$_POST['start']."\"";
@@ -472,15 +472,15 @@ class extLabelClass extends  configClass {
 			$sql="
 					UPDATE 	\"extLabel\"
 					SET 	\"extLabelNote\"		=	\"".$this->model->getextLabelNote()."\",
-							\"isDefault\"		=	\"".$this->model->getIsDefault(0,'single')."\",
-							\"isNew\"			=	\"".$this->model->getIsNew(0,'single')."\",
-							\"isDraft\"			=	\"".$this->model->getIsDraft(0,'single')."\",
-							\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
-							\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
-							\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"executeBy\"				=	\"".$this->model->getExecuteBy()."\",
-							\"executeTime\"			=	".$this->model->getExecuteTime()."
+							ISDEFAULT		=	\"".$this->model->getIsDefault(0,'single')."\",
+							ISNEW			=	\"".$this->model->getIsNew(0,'single')."\",
+							ISDRAFT			=	\"".$this->model->getIsDraft(0,'single')."\",
+							ISUPDATE		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							ISDELETE		=	\"".$this->model->getIsDelete(0,'single')."\",
+							ISACTIVE		=	\"".$this->model->getIsActive(0,'single')."\",
+							ISAPPROVED		=	\"".$this->model->getIsApproved(0,'single')."\",
+							EXECUTEBY				=	\"".$this->model->getExecuteBy()."\",
+							EXECUTETIME			=	".$this->model->getExecuteTime()."
 					WHERE 	\"extLabelId\"		=	\"".$this->model->getextLabelId(0,'single')."\"";
 		}
 		$this->q->update($sql);
@@ -537,15 +537,15 @@ class extLabelClass extends  configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE	\"extLabel\"
-					SET		\"isDefault\"	=	\"".$this->model->getIsDefault(0,'single')."\",
-							\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
-							\"executeTime\"		=	".$this->model->getExecuteTime()."
+					SET		ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
+							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
+							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
+							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
+							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
+							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
+							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
+							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+							EXECUTETIME		=	".$this->model->getExecuteTime()."
 					WHERE 	\"extLabelId\"	=	\"".$this->model->getextLabelId()."\"";
 		}
 		$this->q->update($sql);

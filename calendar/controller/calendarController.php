@@ -140,14 +140,14 @@ class calendarClass extends  configClass {
 		FROM 	[calendarColor]
 		JOIN    [calendar]
 		USING   [calendar].[calendarColorId] = [calendarColor].[colorColorId]
-		WHERE 	`staffId` = \"".$this->model->getExecuteBy()."\" ";	
+		WHERE 	`staffId` = '".$this->model->getExecuteBy()."' ";	
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
 		SELECT	*
 		FROM 	CALENDARCOLOR
-		JOIN    
-		USING   (\"calendarColorId\")
-		WHERE 	\"staffId\" = \"".$this->model->getExecuteBy()."\" ";
+		JOIN    CALENDAR
+		
+		WHERE 	STAFFID = '".$this->model->getExecuteBy()."'";
 		}
 		// searching filtering
 		$sql.=$this->q->searching();

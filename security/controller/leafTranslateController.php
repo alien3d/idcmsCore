@@ -180,16 +180,16 @@ class leafTranslateClass extends  configClass {
 					)";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
-			INSERT INTO \"leaf\"
+			INSERT INTO LEAF
 					(
-						\"accordionId\",					\"folderId\",
-						\"leafNote\",						\"leafSequence\",
-						\"leafCode\",						\"leafFilename\",
-						\"iconId\",							\"isNew\",
-						\"isDraft\",						\"isUpdate\",
-						\"isDelete\",						\"isActive\",
-						\"isApproved\",						\"executeBy\",
-						\"executeTime\"
+						\"accordionId\",					FOLDERID,
+						LEAFNOTE,						LEAFSEQUENCE,
+						LEAFCODE,						LEAFFILENAME,
+						ICONID,							ISNEW,
+						ISDRAFT,						ISUPDATE,
+						ISDELETE,						ISACTIVE,
+						ISAPPROVED,						EXECUTEBY,
+						EXECUTETIME
 					)
 			VALUES
 					(
@@ -226,8 +226,8 @@ class leafTranslateClass extends  configClass {
 			 *  If anthing wrong use this instead  SELECT accordionIdSeq
 			 */
 			$sql="
-			SELECT MAX(\"leafId\") AS \"lastId\"
-			FROM 	\"leaf\"";
+			SELECT MAX(LEAFID) AS \"lastId\"
+			FROM 	LEAF";
 		}
 
 		$resultd =$this->q->fast($sql);
@@ -251,7 +251,7 @@ class leafTranslateClass extends  configClass {
 			FROM 	[staff]
 			WHERE 	[isActive]	=	1 ";
 		} else if ($this->q->vendor==self::mysql) {
-			$sql="SELECT * FROM \"staff\" WHERE \"isActive\"	=	1 ";
+			$sql="SELECT * FROM STAFF WHERE ISACTIVE	=	1 ";
 		}
 		$this->q->read($sql);
 		$data= $this->q->activeRecord();
@@ -279,13 +279,13 @@ class leafTranslateClass extends  configClass {
 			VALUES";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql="
-			INSERT INTO 	\"leafAccess\"
+			INSERT INTO 	LEAFACCESS
 						(
-							\"leafId\",					\"staffId\",
-							\"leafReadAccessValue\",	\"leafCreateAccessValue\",
-							\"leafUpdateAccessValue\",	\"leafDeleteAccessValue\",
-							\"leafPrintAccessValue\",	\"leafPostAccessValue\",
-							\"leafDraftAccessValue\"
+							LEAFID,					STAFFID,
+							LEAFREADACCESSVALUE,	LEAFCREATEACCESSVALUE,
+							LEAFUPDATEACCESSVALUE,	LEAFDELETEACCESSVALUE,
+							LEAFPRINTACCESSVALUE,	LEAFPOSTACCESSVALUE,
+							LEAFDRAFTACCESSVALUE
 						)
 			VALUES";
 		}
@@ -366,14 +366,14 @@ class leafTranslateClass extends  configClass {
 			SELECT		*
 			FROM 		\"leaf`
 			JOIN		\"folder`
-			USING		(\"folderId\",\"accordionId\")
+			USING		(FOLDERID,\"accordionId\")
 			JOIN		\"accordion\"
 			USING		(\"accordionId\")
-			LEFT JOIN	\"icon\"
-			ON			\"leaf\".\"iconId\"=\"icon\".\"iconId\"
-			WHERE 		\"folder\".\"isActive\"		=	1
+			LEFT JOIN	ICON
+			ON			LEAF.ICONID=ICON.ICONID
+			WHERE 		FOLDER.ISACTIVE		=	1
 			AND			\"accordion\".`isActive\"	=	1
-			AND			\"leaf\".`isActive\"		=	1 ";
+			AND			LEAF.`isActive\"		=	1 ";
 			if($this->leafId) {
 
 				$sql.=" AND `leafId`=\"".$this->leafId."\"";
@@ -486,8 +486,8 @@ class leafTranslateClass extends  configClass {
 												rownum r
 						FROM (
 									SELECT *
-									FROM 	\"religion\"
-									WHERE \"isActive\"=1  ".$tempSql.$tempSql2.$orderBy."
+									FROM 	RELIGION
+									WHERE ISACTIVE=1  ".$tempSql.$tempSql2.$orderBy."
 								 ) a
 						where rownum <= \"".($_POST['start']+$_POST['limit']-1)."\" )
 						where r >=  \"".$_POST['start']."\"";
@@ -595,16 +595,16 @@ class leafTranslateClass extends  configClass {
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			UPDATE	\"leaf\"
-			SET		\"isActive\"	=	\"".$this->model->getIsActive."\",
-					\"isNew\"		=	\"".$this->model->getIsNew."\",
-					\"isDraft\"		=	\"".$this->model->getIsDraft."\",
-					\"isUpdate\"	=	\"".$this->model->getIsUpdate."\",
-					\"isDelete\"	=	\"".$this->model->getIsDelete."\",
-					\"isApproved\"	=	\"".$this->model->getIsApproved."\",
-					\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
-					\"executeTime\"		=	".$this->model->getTime."
-			WHERE 	\"leafId\"		=	\"".$this->leafId."\"";
+			UPDATE	LEAF
+			SET		ISACTIVE	=	\"".$this->model->getIsActive."\",
+					ISNEW		=	\"".$this->model->getIsNew."\",
+					ISDRAFT		=	\"".$this->model->getIsDraft."\",
+					ISUPDATE	=	\"".$this->model->getIsUpdate."\",
+					ISDELETE	=	\"".$this->model->getIsDelete."\",
+					ISAPPROVED	=	\"".$this->model->getIsApproved."\",
+					EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+					EXECUTETIME		=	".$this->model->getTime."
+			WHERE 	LEAFID		=	\"".$this->leafId."\"";
 
 		}
 		$this->q->update($sql);
@@ -656,16 +656,16 @@ class leafTranslateClass extends  configClass {
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			UPDATE	\"leaf\"
-			SET		\"isActive\"	=	\"".$this->model->getIsActive."\",
-					\"isNew\"		=	\"".$this->model->getIsNew."\",
-					\"isDraft\"		=	\"".$this->model->getIsDraft."\",
-					\"isUpdate\"	=	\"".$this->model->getIsUpdate."\",
-					\"isDelete\"	=	\"".$this->model->getIsDelete."\",
-					\"isApproved\"	=	\"".$this->model->getIsApproved."\",
-					\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
-					\"executeTime\"		=	".$this->model->getTime."
-			WHERE 	\"leafId\"		=	\"".$this->leafId."\"";
+			UPDATE	LEAF
+			SET		ISACTIVE	=	\"".$this->model->getIsActive."\",
+					ISNEW		=	\"".$this->model->getIsNew."\",
+					ISDRAFT		=	\"".$this->model->getIsDraft."\",
+					ISUPDATE	=	\"".$this->model->getIsUpdate."\",
+					ISDELETE	=	\"".$this->model->getIsDelete."\",
+					ISAPPROVED	=	\"".$this->model->getIsApproved."\",
+					EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+					EXECUTETIME		=	".$this->model->getTime."
+			WHERE 	LEAFID		=	\"".$this->leafId."\"";
 
 		}
 		$this->q->update($sql);
@@ -715,9 +715,9 @@ class leafTranslateClass extends  configClass {
 			$sql="
 			SELECT	*
 			FROM 	\"leafTranslate\"
-			JOIN 	\"language\"
-			USING (\"languageId\")
-			WHERE	\"leafTranslate\".\"leafId\"=\"".$this->strict($_POST['leafId'],'numeric')."\"";
+			JOIN 	LANGUAGE
+			USING (LANGUAGEID)
+			WHERE	\"leafTranslate\".LEAFID=\"".$this->strict($_POST['leafId'],'numeric')."\"";
 		}
 		$this->q->read($sql);
 		$total =$this->q->numberRows();
@@ -779,7 +779,7 @@ class leafTranslateClass extends  configClass {
 		} else if($this->getVendor()==self::mssql){
 			$sql="SELECT * FROM [leaf] WHERE [leafId]=\"".$this->leafId."\"";
 		} else if($this->getVendor()==self::oracle){
-			$sql="SELECT * FROM \"leaf\" WHERE \"leafId\"=\"".$this->leafId."\"";
+			$sql="SELECT * FROM LEAF WHERE LEAFID=\"".$this->leafId."\"";
 		}
 
 		$resultDefault= $this->q->fast($sql);
@@ -792,7 +792,7 @@ class leafTranslateClass extends  configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="SELECT * FROM [language] ";
 		} else if ($this->getVendor()==self::oracle) {
-			$sql="SELECT * FROM \"language\" ";
+			$sql="SELECT * FROM LANGUAGE ";
 		}
 		$result= $this->q->fast($sql);
 		while ($row = $this->q->fetchAssoc($result)) {
@@ -816,8 +816,8 @@ class leafTranslateClass extends  configClass {
 				$sql="
 				SELECT 	*
 				FROM 	\"leafTranslate\"
-				WHERE 	\"leafId\"		=	\"".$this->leafId."\"
-				AND 	\"languageId\"=\"".$languageId."\"";
+				WHERE 	LEAFID		=	\"".$this->leafId."\"
+				AND 	LANGUAGEID=\"".$languageId."\"";
 			}
 			$resultleafTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultleafTranslate) >  0 ) {
@@ -838,8 +838,8 @@ class leafTranslateClass extends  configClass {
 					$sql="
 					UPDATE 	\"leafTranslate\"
 					SET 	\"leafTranslate\"	=	\"".$googleTranslate."\"
-					WHERE 	\"leafId\"			=	\"".$this->leafId."\"
-					AND 	\"languageId\"		=	\"".$languageId."\"";
+					WHERE 	LEAFID			=	\"".$this->leafId."\"
+					AND 	LANGUAGEID		=	\"".$languageId."\"";
 				}
 				$this->q->update($sql);
 				if($this->q->execute=='fail') {
@@ -880,8 +880,8 @@ class leafTranslateClass extends  configClass {
 					$sql="
 					INSERT INTO \"leafTranslate\"
 							(
-								\"leafId\",
-								\"languageId\",
+								LEAFID,
+								LANGUAGEID,
 								\"leafTranslate\"
 							) VALUES(
 								\"".$leafId."\",

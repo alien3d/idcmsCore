@@ -169,25 +169,25 @@ class folderTranslateClass extends  configClass {
 				)
 			VALUES
 				(
-						\"".$this->model->tabId."\",	\"".$this->model->folderNote."\",
-						\"".$this->model->folderSequence."\", \"".$this->model->folderPath."\",
-						\"".$this->model->iconId."\",			\"".$this->model->getIsNew(0,'single')."\",
-						\"".$this->model->getIsDraft(0,'single')."\",		\"".$this->model->getIsUpdate(0,'single')."\",
-						\"".$this->model->getIsDelete(0,'single')."\",		\"".$this->model->getIsActive(0,'single')."\",
-						\"".$this->model->getIsApproved(0,'single')."\",		\"".$this->model->getIsApproved(0,'single')."\",
+						'".$this->model->tabId."\",	\"".$this->model->folderNote."\",
+						'".$this->model->folderSequence."\", \"".$this->model->folderPath."\",
+						'".$this->model->iconId."',			\"".$this->model->getIsNew(0,'single')."\",
+						'".$this->model->getIsDraft(0,'single')."',		\"".$this->model->getIsUpdate(0,'single')."\",
+						'".$this->model->getIsDelete(0,'single')."',		\"".$this->model->getIsActive(0,'single')."\",
+						'".$this->model->getIsApproved(0,'single')."',		\"".$this->model->getIsApproved(0,'single')."\",
 						".$this->model->getExecuteTime()."
 				);";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			INSERT INTO 	\"folder\"
+			INSERT INTO 	FOLDER
 						(
-							\"tabId\",					\"folderNote\",
-							\"folderSequence\",					\"folderPath\",
-							 \"iconId\",				 		\"isNew\",
-							\"isDraft\",						\"isUpdate\",
-							\"isDelete\",						\"isActive\",
-							\"isApproved\",						\"executeBy\",
-							\"executeTime\")
+							\"tabId\",					FOLDERNOTE,
+							FOLDERSEQUENCE,					FOLDERPATH,
+							 ICONID,				 		ISNEW,
+							ISDRAFT,						ISUPDATE,
+							ISDELETE,						ISACTIVE,
+							ISAPPROVED,						EXECUTEBY,
+							EXECUTETIME)
 				VALUES	(
 							\"".$this->model->tabId."\",	\"".$this->model->folderNote."\",
 							\"".$this->model->folderSequence."\", \"".$this->model->folderPath."\",
@@ -226,8 +226,8 @@ class folderTranslateClass extends  configClass {
 			 *  If anthing wrong use this instead  SELECT tabIdSeq
 			 */
 			$sql="
-			SELECT MAX(\"folderId\") AS \"lastId\"
-			FROM 	\"folder\"";
+			SELECT MAX(FOLDERID) AS \"lastId\"
+			FROM 	FOLDER";
 		}
 
 		$resultd =$this->q->fast($sql);
@@ -246,7 +246,7 @@ class folderTranslateClass extends  configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="SELECT * FROM [group] WHERE [isActive]=1 ";
 		} else if ($this->getVendor()==self::oracle) {
-			$sql="SELECT * FROM \"group\" WHERE \"isActive\"=1 ";
+			$sql="SELECT * FROM GROUP_ WHERE ISACTIVE=1 ";
 		}
 		$this->q->read($sql);
 		$data = $this->q->activeRecord();
@@ -282,11 +282,11 @@ class folderTranslateClass extends  configClass {
 							 )	";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql="
-				INSERT INTO 	\"folderAccess\"
+				INSERT INTO 	FOLDERACCESS
 							(
-								\"folderId\",
-								\"groupId\",
-								\"folderAccessValue\"
+								FOLDERID,
+								GROUPID,
+								FOLDERACCESSVALUE
 							)
 					VALUES
 							(
@@ -348,15 +348,15 @@ class folderTranslateClass extends  configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
-			FROM 		\"folder\"
+			FROM 		FOLDER
 			JOIN 		\"tab\"
-			ON			\"tab\".\"tabId\" = \"folder\".\"tabId\"
-			LEFT JOIN	\"icon\"
-			USING(\"iconId\")
-			WHERE		\"tab\".\"isActive\"=1
-			AND			\"folder\".\"isActive\"=1";
+			ON			\"tab\".\"tabId\" = FOLDER.\"tabId\"
+			LEFT JOIN	ICON
+			USING(ICONID)
+			WHERE		\"tab\".ISACTIVE=1
+			AND			FOLDER.ISACTIVE=1";
 			if($this->folderId) {
-				$sql.=" AND \"folderId\"=\"".$this->folderId."\"";
+				$sql.=" AND FOLDERID=\"".$this->folderId."\"";
 			}
 		}
 		/**
@@ -470,20 +470,20 @@ class folderTranslateClass extends  configClass {
 												rownum r
 						FROM (
 									SELECT 		*,
-												\"folder\".\"executeBy\",
-												\"folder\".\"executeTime\"
-									FROM 		\"folder\"
+												FOLDER.EXECUTEBY,
+												FOLDER.EXECUTETIME
+									FROM 		FOLDER
 									JOIN		\"folderTranslate\"
-									ON			\"folder\".\"folderId\"	=\"folderTranslate\".\"folderId\"
+									ON			FOLDER.FOLDERID	=\"folderTranslate\".FOLDERID
 									JOIN 		\"tab\"
-									ON			\"tab\".\"tabId\" = \"folder\".\"tabId\"
+									ON			\"tab\".\"tabId\" = FOLDER.\"tabId\"
 									JOIN		\"tabTranslate\"
 									ON			\"tab\".\"tabId\"=	\"tabTranslate\".\"tabId\"
-									AND			\"tabTranslate\".\"tabId\" =\"folder\".\"tabId\"
-									LEFT JOIN	\"icon\"
-									ON			\"folder\".\"iconId\"=\"icon\".\"iconId\"
-									WHERE		\"tab\".\"isActive\"=1
-									AND			\"folder\".\"isActive\"=1 ".$tempSql.$tempSql2.$orderBy."
+									AND			\"tabTranslate\".\"tabId\" =FOLDER.\"tabId\"
+									LEFT JOIN	ICON
+									ON			FOLDER.ICONID=ICON.ICONID
+									WHERE		\"tab\".ISACTIVE=1
+									AND			FOLDER.ISACTIVE=1 ".$tempSql.$tempSql2.$orderBy."
 								 ) a
 						where rownum <= \"".($_POST['start']+$_POST['limit']-1)."\" )
 						where r >=  \"".$_POST['start']."\"";
@@ -595,20 +595,20 @@ class folderTranslateClass extends  configClass {
 					WHERE 	[folderId]			=	\"".$this->model->getFolderId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE 	\"folder\"
+					UPDATE 	FOLDER
 					SET 	\"tabId\"		=	\"".$this->model->getTabId()."\",
-							\"folderNote\"		=	\"".$this->model->getfolderNote()."\",
-							\"folderSequence\"	=	\"".$this->model->getfolderSequence()."\",
-							\"folderPath\"		=	\"".$this->model->getfolderPath()."\",
-							\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
-							\"executeTime\"		=	".$this->model->getExecuteTime()."
-					WHERE 	\"folderId\"		=	\"".$this->model->getFolderId()."\"";
+							FOLDERNOTE		=	\"".$this->model->getfolderNote()."\",
+							FOLDERSEQUENCE	=	\"".$this->model->getfolderSequence()."\",
+							FOLDERPATH		=	\"".$this->model->getfolderPath()."\",
+							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
+							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
+							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
+							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
+							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
+							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
+							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+							EXECUTETIME		=	".$this->model->getExecuteTime()."
+					WHERE 	FOLDERID		=	\"".$this->model->getFolderId()."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
@@ -661,16 +661,16 @@ class folderTranslateClass extends  configClass {
 					WHERE 	[folderId]	=	\"".$this->model->getFolderId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE	\"folder\"
-					SET		\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
-							\"executeTime\"		=	".$this->model->getExecuteTime()."
-					WHERE 	\"folderId\"	=	\"".$this->model->getFolderId()."\"";
+					UPDATE	FOLDER
+					SET		ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
+							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
+							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
+							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
+							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
+							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
+							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+							EXECUTETIME		=	".$this->model->getExecuteTime()."
+					WHERE 	FOLDERID	=	\"".$this->model->getFolderId()."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
@@ -715,9 +715,9 @@ class folderTranslateClass extends  configClass {
 			$sql="
 			SELECT	*
 			FROM 	\"folderTranslate\"
-			JOIN 	\"language\"
-			USING (\"languageId\")
-			WHERE	\"folderTranslate\".\"folderId\"=\"".$this->model->getFolderId()."\"";
+			JOIN 	LANGUAGE
+			USING (LANGUAGEID)
+			WHERE	\"folderTranslate\".FOLDERID=\"".$this->model->getFolderId()."\"";
 		}
 		$this->q->read($sql);
 		$total =$this->q->numberRows();
@@ -795,7 +795,7 @@ class folderTranslateClass extends  configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 			SELECT 	*
-			FROM 	\"language\" ";
+			FROM 	LANGUAGE ";
 		}
 		$result= $this->q->fast($sql);
 		while ($row = $this->q->fetchAssoc($result)) {
@@ -819,8 +819,8 @@ class folderTranslateClass extends  configClass {
 				$sql="
 				SELECT 	*
 				FROM 	\"folderTranslate\"
-				WHERE 	\"folderId\"		=	\"".$this->folderId."\"
-				AND 	\"languageId\"		=	\"".$languageId."\"";
+				WHERE 	FOLDERID		=	\"".$this->folderId."\"
+				AND 	LANGUAGEID		=	\"".$languageId."\"";
 			}
 			$resultfolderTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultfolderTranslate) >  0 ) {
@@ -840,8 +840,8 @@ class folderTranslateClass extends  configClass {
 					$sql="
 					UPDATE 	\"folderTranslate\"
 					SET 	\"folderTranslate\"		=	\"".$googleTranslate."\"
-					WHERE 	\"folderId\"			=	\"".$this->folderId."\"
-					AND 	\"languageId\"			=	\"".$languageId."\"";
+					WHERE 	FOLDERID			=	\"".$this->folderId."\"
+					AND 	LANGUAGEID			=	\"".$languageId."\"";
 				}
 				$this->q->update($sql);
 				if($this->q->redirect=='fail') {
@@ -882,8 +882,8 @@ class folderTranslateClass extends  configClass {
 					$sql="
 					INSERT INTO \"folderTranslate\"
 							(
-								\"folderId\",
-								\"languageId\",
+								FOLDERID,
+								LANGUAGEID,
 								\"folderTranslate\"
 							)
 					VALUES

@@ -222,11 +222,11 @@ class mainClass extends configClass
 			$sql = "
 			INSERT INTO	\"main\"
 					(
-						\"mainDesc\",					\"isDefault\",
-						\"isNew\",							\"isDraft\",
-						\"isUpdate\",						\"isDelete\",
-						\"isActive\",						\"isApproved\",
-						\"executeBy\",								\"executeTime\"
+						\"mainDesc\",					ISDEFAULT,
+						ISNEW,							ISDRAFT,
+						ISUPDATE,						ISDELETE,
+						ISACTIVE,						ISAPPROVED,
+						EXECUTEBY,								EXECUTETIME
 					)	
 			VALUES	
 					(
@@ -273,7 +273,7 @@ class mainClass extends configClass
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[main].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"main\".\"isActive\"	=	1	";
+				$this->auditFilter = "	\"main\".ISACTIVE	=	1	";
 			}
 		} else if($this->auditColumn) {
 			if($this->getVendor()==self::mysql) { 
@@ -330,23 +330,23 @@ class mainClass extends configClass
 
 									$sql_folder	="
 										SELECT		*
-										FROM 		\"folderAccess\"
-										JOIN		\"folder\"
-										USING		(\"folderId\")
+										FROM 		FOLDERACCESS
+										JOIN		FOLDER
+										USING		(FOLDERID)
 										JOIN		\"folderTranslate\"
-										USING		(\"folderId\")
-										JOIN		\"icon\"
-										USING		(\"iconId\")
+										USING		(FOLDERID)
+										JOIN		ICON
+										USING		(ICONID)
 										WHERE 		\"accordionId\"=\"".$accordionId."\"
-										AND 		\"folderAccess\".\"groupId\"=(
-																SELECT \"groupId\"
-																FROM 	\"staff\"
-																WHERE	\"staff\".\"staffId\"=\"".$_SESSION[$staffId]."\"
+										AND 		FOLDERACCESS.GROUPID=(
+																SELECT GROUPID
+																FROM 	STAFF
+																WHERE	STAFF.STAFFID=\"".$_SESSION[$staffId]."\"
 																AND		rownum <=1
 															  )
-										AND 		\"folderAccess\".\"folderAccessValue\"=	1
-										AND			\"folderTranslate\".\"languageId\"=\"".$_SESSION['languageId']."\"
-										ORDER BY 	\"folder\".\"folderSequence\"	";
+										AND 		FOLDERACCESS.FOLDERACCESSVALUE=	1
+										AND			\"folderTranslate\".LANGUAGEID=\"".$_SESSION['languageId']."\"
+										ORDER BY 	FOLDER.FOLDERSEQUENCE	";
 									}
 							   		//echo $sql_fol/der;
 									$result_folder = $q->fast($sql_folder);
@@ -399,17 +399,17 @@ class mainClass extends configClass
 								} else if ( $q->vendor=='oracle') {
 									$sql_leaf	="
 									SELECT		*
-									FROM		\"leafAccess\"
-									JOIN		\"leaf\"
-									USING		(\"leafId\")
+									FROM		LEAFACCESS
+									JOIN		LEAF
+									USING		(LEAFID)
 									JOIN		\"leafTranslate\"
-									USING		(\"leafId\")
-									JOIN		\"icon\"
-									USING		(\"iconId\")
-									WHERE 		\"folderId\"=\"".$folderId."\"
+									USING		(LEAFID)
+									JOIN		ICON
+									USING		(ICONID)
+									WHERE 		FOLDERID=\"".$folderId."\"
 									AND			\"accordionId\"=\"".$accordionId."\"
-									AND			\"leafAccess\".\"staffId\"=\"".$_SESSION[$staffId]."\"
-									AND			\"leafTranslate\".\"languageId\"=\"".$_SESSION['languageId']."\"";
+									AND			LEAFACCESS.STAFFID=\"".$_SESSION[$staffId]."\"
+									AND			\"leafTranslate\".LANGUAGEID=\"".$_SESSION['languageId']."\"";
 								}
 								$result_leaf = $q->fast($sql_leaf);
 								$total_leaf  = $q->numberRows($result_leaf,$sql_leaf);
@@ -560,17 +560,17 @@ class mainClass extends configClass
 						FROM (
 									SELECT  \"main\".\"mainId\",
 											\"main\".\"mainDesc\"
-											\"main\".\"isDefault\",
-											\"main\".\"isNew\",
-											\"main\".\"isDraft\",
-											\"main\".\"isUpdate\",
-											\"main\".\"isDelete\",
-											\"main\".\"isApproved\",
-											\"main\".\"executeBy\",
-											\"main\".\"executeTime\",
-											\"staff\".\"staffName\"	
+											\"main\".ISDEFAULT,
+											\"main\".ISNEW,
+											\"main\".ISDRAFT,
+											\"main\".ISUPDATE,
+											\"main\".ISDELETE,
+											\"main\".ISAPPROVED,
+											\"main\".EXECUTEBY,
+											\"main\".EXECUTETIME,
+											STAFF.STAFFNAME	
 									FROM 	\"main\"
-									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
+									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
 						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
 						where r >=  \"". $this->start . "\"";

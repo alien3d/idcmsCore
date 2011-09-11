@@ -271,79 +271,79 @@ class leafGroupAccessClass  extends  configClass {
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-				SELECT	\"leaf\".\"moduleId\",
-						\"leaf\".\"folderId\",
-						\"folder\".\"folderNote\",
-						\"leaf\".\"leafNote\",
-						\"module\".\"moduleNote\",
-						\"group\".\"groupNote\",
-						\"leafGroupAccess\".\"leafId\",
-						\"leafGroupAccess\".\"groupId\",
-						\"leafGroupAccess\".\"leafGroupAccessId\",
-						(CASE \"leafGroupAccess\".\"leafCreateAccessValue\"
+				SELECT	LEAF.MODULEID,
+						LEAF.FOLDERID,
+						FOLDER.FOLDERNOTE,
+						LEAF.LEAFNOTE,
+						MODULE.MODULENOTE,
+						GROUP_.GROUPNOTE,
+						LEAFGROUPACCESS.LEAFID,
+						LEAFGROUPACCESS.GROUPID,
+						LEAFGROUPACCESS.LEAFGROUPACCESSID,
+						(CASE LEAFGROUPACCESS.LEAFCREATEACCESSVALUE
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS \"leafCreateAccessValue\",
+						END) AS LEAFCREATEACCESSVALUE,
 
 
-						(CASE \"leafGroupAccess\".\"leafReadAccessValue\"
+						(CASE LEAFGROUPACCESS.LEAFREADACCESSVALUE
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS \"leafReadAccessValue\",
+						END) AS LEAFREADACCESSVALUE,
 
-						(CASE \"leafGroupAccess\".\"leafUpdateAccessValue\"
+						(CASE LEAFGROUPACCESS.LEAFUPDATEACCESSVALUE
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS \"leafUpdateAccessValue\",
+						END) AS LEAFUPDATEACCESSVALUE,
 
-						(CASE \"leafGroupAccess\".\"leafDeleteAccessValue\"
+						(CASE LEAFGROUPACCESS.LEAFDELETEACCESSVALUE
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS \"leafDeleteAccessValue\" ,
+						END) AS LEAFDELETEACCESSVALUE ,
 
-						(CASE \"leafGroupAccess\".\"leafPrintAccessValue\"
+						(CASE LEAFGROUPACCESS.LEAFPRINTACCESSVALUE
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS \"leafPrintAccessValue\",
+						END) AS LEAFPRINTACCESSVALUE,
 
-						(CASE \"leafGroupAccess\".\"leafPostAccessValue\"
+						(CASE LEAFGROUPACCESS.LEAFPOSTACCESSVALUE
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS \"leafPostAccessValue\"
-				FROM 	\"leafGroupAccess\"
-				JOIN	\"leaf\"
-				USING	(\"leafId\")
-				JOIN	(\"module\")
-				USING	(\"moduleId\")
-				JOIN	(\"folder\")
-				USING	(\"folderId\")
-				JOIN	\"group\"
-				USING	(\"groupId\")
-				WHERE 	\"leaf\".\"isActive\"		=	1
-				AND		\"folder\".\"isActive\"		=	1
-				AND		\"module\".\"isActive\"	=	1
-				AND		\"group\".\"isActive\"		=	1";
+						END) AS LEAFPOSTACCESSVALUE
+				FROM 	LEAFGROUPACCESS
+				JOIN	LEAF
+				USING	(LEAFID)
+				JOIN	(MODULE)
+				USING	(MODULEID)
+				JOIN	(FOLDER)
+				USING	(FOLDERID)
+				JOIN	GROUP_
+				USING	(GROUPID)
+				WHERE 	LEAF.ISACTIVE		=	1
+				AND		FOLDER.ISACTIVE		=	1
+				AND		MODULE.ISACTIVE	=	1
+				AND		GROUP_.ISACTIVE		=	1";
 			if($this->groupId) {
-				$sql.=" AND \"leafGroupAccess\".\"groupId\"=\"".$this->strict($this->groupId,'numeric')."\"";
+				$sql.=" AND LEAFGROUPACCESS.GROUPID=\"".$this->strict($this->groupId,'numeric')."\"";
 
 			}
 			if($this->moduleId) {
-				$sql.=" AND \"leaf\".\"moduleId\"=\"".$this->strict($this->moduleId,'numeric')."\"";
+				$sql.=" AND LEAF.MODULEID=\"".$this->strict($this->moduleId,'numeric')."\"";
 			}
 			if($this->folderId) {
-				$sql.=" AND \"leaf\".\"folderId\"=\"".$this->strict($this->folderId,'numeric')."\"";
+				$sql.=" AND LEAF.FOLDERID=\"".$this->strict($this->folderId,'numeric')."\"";
 			}
 		}
 		//echo $sql;
@@ -424,14 +424,14 @@ class leafGroupAccessClass  extends  configClass {
 					WHERE 	[leafGroupAccessId]	=	\"".$this->strict($data_array[0],'numeric')."\"";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql="
-					UPDATE 	\"leafGroupAccess\"
-					SET 	\"leafCreateAccessValue\"	=	\"".$this->strict($data_array[2],'boolean')."\",
-							\"leafReadAccessValue\"		=	\"".$this->strict($data_array[2],'boolean')."\",
-							\"leafUpdateAccessValue\"	=	\"".$this->strict($data_array[3],'boolean')."\",
-							\"leafDeleteAccessValue\"	=	\"".$this->strict($data_array[4],'boolean')."\",
-							\"leafPrintAccessValue\"	=	\"".$this->strict($data_array[5],'boolean')."\",
-							\"leafPostAccessValue\"		=	\"".$this->strict($data_array[6],'boolean')."\"
-					WHERE 	\"leafGroupAccessId\"		=	\"".$this->strict($data_array[0],'numeric')."\"";
+					UPDATE 	LEAFGROUPACCESS
+					SET 	LEAFCREATEACCESSVALUE	=	\"".$this->strict($data_array[2],'boolean')."\",
+							LEAFREADACCESSVALUE		=	\"".$this->strict($data_array[2],'boolean')."\",
+							LEAFUPDATEACCESSVALUE	=	\"".$this->strict($data_array[3],'boolean')."\",
+							LEAFDELETEACCESSVALUE	=	\"".$this->strict($data_array[4],'boolean')."\",
+							LEAFPRINTACCESSVALUE	=	\"".$this->strict($data_array[5],'boolean')."\",
+							LEAFPOSTACCESSVALUE		=	\"".$this->strict($data_array[6],'boolean')."\"
+					WHERE 	LEAFGROUPACCESSID		=	\"".$this->strict($data_array[0],'numeric')."\"";
 			}
 			$this->q->update($sql);
 			if($this->q->execute=='fail'){

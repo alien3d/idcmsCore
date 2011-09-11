@@ -11,8 +11,8 @@ if($q->vendor=='normal' || $q->vendor=='mysql') {
 	SET 	[languageId]=\"".$_SESSION['languageId']."\"";
 } else if ($q->vendor=='oracle'){
 	$sql="
-	UPDATE	\"staff\"
-	SET 	\"languageId\"=\"".$_SESSION['languageId']."\"";
+	UPDATE	STAFF
+	SET 	LANGUAGEID=\"".$_SESSION['languageId']."\"";
 }
 $q->fast($sql);
 header('location:main.php');

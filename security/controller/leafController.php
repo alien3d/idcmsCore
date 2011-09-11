@@ -157,16 +157,16 @@ class leafClass extends configClass
 					)";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			INSERT INTO \"leaf\"
+			INSERT INTO LEAF
 					(
-						\"moduleId\",					\"folderId\",
-						\"leafNote\",						\"leafSequence\",
-						\"leafCode\",						\"leafFilename\",
-						\"iconId\",							\"isDefault\",
-						\"isNew\",							\"isDraft\",
-						\"isUpdate\",						\"isDelete\",
-						\"isActive\",						\"isApproved\",
-						\"executeBy\",								\"executeTime\"
+						MODULEID,					FOLDERID,
+						LEAFNOTE,						LEAFSEQUENCE,
+						LEAFCODE,						LEAFFILENAME,
+						ICONID,							ISDEFAULT,
+						ISNEW,							ISDRAFT,
+						ISUPDATE,						ISDELETE,
+						ISACTIVE,						ISAPPROVED,
+						EXECUTEBY,								EXECUTETIME
 					)
 			VALUES
 					(
@@ -203,8 +203,8 @@ class leafClass extends configClass
 		} else if ($this->q->vendor == self::mysql) {
 			$sql = "
 			SELECT 	* 
-			FROM 	\"staff\" 
-			WHERE 	\"isActive\"	=	1 ";
+			FROM 	STAFF 
+			WHERE 	ISACTIVE	=	1 ";
 		}
 		$this->q->read($sql);
 		$data = $this->q->activeRecord();
@@ -245,13 +245,13 @@ class leafClass extends configClass
 			VALUES";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			INSERT INTO 	\"leafAccess\"
+			INSERT INTO 	LEAFACCESS
 						(
-							\"leafId\",					\"staffId\",
-							\"leafReadAccessValue\",	\"leafCreateAccessValue\",
-							\"leafUpdateAccessValue\",	\"leafDeleteAccessValue\",
-							\"leafPrintAccessValue\",	\"leafPostAccessValue\",
-							\"leafDraftAccessValue\"
+							LEAFID,					STAFFID,
+							LEAFREADACCESSVALUE,	LEAFCREATEACCESSVALUE,
+							LEAFUPDATEACCESSVALUE,	LEAFDELETEACCESSVALUE,
+							LEAFPRINTACCESSVALUE,	LEAFPOSTACCESSVALUE,
+							LEAFDRAFTACCESSVALUE
 						)
 			VALUES";
 		}
@@ -337,7 +337,7 @@ class leafClass extends configClass
 			AND			[folder].[isActive]			=	1
 			AND			[module].[isActive]			=	1 ";
 			if ($this->model->getLeafId(0,'single')) {
-				$sql .= " AND [".$this->model->getModuleName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getLeafId(0,'single') ."\"";
+				$sql .= " AND [".$this->model->getModuleName()."].[".$this->model->getPrimaryKeyName()."]='". $this->model->getLeafId(0,'single') ."'";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -347,7 +347,7 @@ class leafClass extends configClass
 						LEAF.LEAFNOTE 		AS 	\"leafNote\",
 						LEAF.LEAFFILENAME 	AS 	\"leafFilename\",
 						LEAF.ISDEFAULT 		AS 	\"isDefault\",
-						LEAF.ISNEW 			AS 	\"isNew\",
+						LEAF.ISNEW 			AS	\"isNew\",
 						LEAF.ISDRAFT  		AS 	\"isDraft\",
 						LEAF.ISUPDATE 		AS 	\"isUpdate\",
 						LEAF.ISDELETE 		AS 	\"isDelete\",
@@ -357,7 +357,7 @@ class leafClass extends configClass
 						LEAF.EXECUTETIME 	AS  \"executeTime\",
 						FOLDER.FOLDERID		AS	\"folderId\",
 						FOLDER.FOLDERNOTE	AS	\"folderNote\",
-						MODULE.MODULEID		AS 	\"moduleId\",
+						MODULE.MODULEID		AS 	\"moduleId\",		
 						MODULE.MODULENOTE	AS  \"moduleNote\",
 						LEAF.LEAFCATEGORYID AS  \"leafCategoryId\",
 						STAFF.STAFFNAME 	AS 	\"staffName\"
@@ -375,7 +375,7 @@ class leafClass extends configClass
 			AND			FOLDER.ISACTIVE = 1
 			AND			MODULE.ISACTIVE = 1 ";
 			if ($this->model->getLeafId(0,'single')) {
-				$sql .= " AND \"".$this->model->getModuleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getLeafId(0,'single') ."\"";
+				$sql .= " AND ".strtoupper($this->model->getModuleName()).".".strtoupper($this->model->getPrimaryKeyName())."='".$this->model->getLeafId(0,'single') ."'";
 			}
 		}
 		/**
@@ -482,8 +482,8 @@ class leafClass extends configClass
 												rownum r
 						FROM (
 									SELECT *
-									FROM 	\"religion\"
-									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
+									FROM 	RELIGION
+									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
 						where rownum <= \"". ($_POST['start'] + $_POST['limit'] - 1) ."\" )
 						where r >=  \"". $_POST['start'] ."\"";
@@ -569,34 +569,34 @@ class leafClass extends configClass
 					`isUpdate`				=	\"".$this->model->getIsUpdate(0,'single')."\",
 					`isDelete`				=	\"".$this->model->getIsDelete(0,'single')."\",
 					`isApproved`			=	\"".$this->model->getIsApproved(0,'single')."\",
-					`executeBy`					=	\"".$this->model->getExecuteBy()."\",
-					`executeTime`					=	".$this->model->getExecuteTime()."
-			WHERE 	`leafId`	=	\"". $this->getLeafId(0,'single') ."\"";
+					`executeBy`				=	\"".$this->model->getExecuteBy()."\",
+					`executeTime`			=	".$this->model->getExecuteTime()."
+			WHERE 	`leafId`				=	\"". $this->getLeafId(0,'single') ."\"";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
-			SET		 [isDefault]				=	\"".$this->model->getIsDefault(0,'single')."\",
-					[isActive]				=	\"".$this->model->getIsActive(0,'single')."\",
-					[isNew]					=	\"".$this->model->getIsNew(0,'single')."\",
-					[isDraft]				=	\"".$this->model->getIsDraft(0,'single')."\",
-					[isUpdate]				=	\"".$this->model->getIsUpdate(0,'single')."\",
-					[isDelete]				=	\"".$this->model->getIsDelete(0,'single')."\",
-					[isApproved]			=	\"".$this->model->getIsApproved(0,'single')."\",
-					[executeBy]					=	\"".$this->model->getExecuteBy()."\",
-					[executeTime]					=	".$this->model->getExecuteTime()."
-			WHERE 	[leafId]	=	\"". $this->getLeafId(0,'single') ."\"";
+			SET		 [isDefault]			=	'".$this->model->getIsDefault(0,'single')."',
+					[isActive]				=	'".$this->model->getIsActive(0,'single')."',
+					[isNew]					=	'".$this->model->getIsNew(0,'single')."',
+					[isDraft]				=	'".$this->model->getIsDraft(0,'single')."',
+					[isUpdate]				=	'".$this->model->getIsUpdate(0,'single')."',
+					[isDelete]				=	'".$this->model->getIsDelete(0,'single')."',
+					[isApproved]			=	'".$this->model->getIsApproved(0,'single')."',
+					[executeBy]				=	'".$this->model->getExecuteBy()."',
+					[executeTime]			=	".$this->model->getExecuteTime()."
+			WHERE 	[leafId]				=	'". $this->getLeafId(0,'single') ."'";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE	\"leaf\"
-			SET		\"isActive\"	=	\"". $this->model->getIsActive ."\",
-					\"isNew\"		=	\"". $this->model->getIsNew ."\",
-					\"isDraft\"		=	\"". $this->model->getIsDraft ."\",
-					\"isUpdate\"	=	\"". $this->model->getIsUpdate ."\",
-					\"isDelete\"	=	\"". $this->model->getIsDelete ."\",
-					\"isApproved\"	=	\"". $this->model->getIsApproved ."\",
-					\"executeBy\"			=	\"". $this->model->getExecuteBy() ."\",
-					\"executeTime\"		=	" . $this->model->getTime . "
-			WHERE 	\"leafId\"		=	\"". $this->getLeafId(0,'single') ."\"";
+			UPDATE	LEAF
+			SET		ISACTIVE		=	'". $this->model->getIsActive ."',
+					ISNEW			=	'". $this->model->getIsNew ."',
+					ISDRAFT			=	'". $this->model->getIsDraft ."',
+					ISUPDATE		=	'". $this->model->getIsUpdate ."',
+					ISDELETE		=	'". $this->model->getIsDelete ."',
+					ISAPPROVED		=	'". $this->model->getIsApproved ."',
+					EXECUTEBY		=	'". $this->model->getExecuteBy() ."',
+					EXECUTETIME		=	" . $this->model->getTime . "
+			WHERE 	LEAFID			=	'". $this->getLeafId(0,'single') ."'";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -639,29 +639,29 @@ class leafClass extends configClass
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
 			UPDATE	[leaf]
-			SET		[isDefault]				=	\"".$this->model->getIsDefault(0,'single')."\",
-					[isActive]				=	\"".$this->model->getIsActive(0,'single')."\",
-					[isNew]					=	\"".$this->model->getIsNew(0,'single')."\",
-					[isDraft]				=	\"".$this->model->getIsDraft(0,'single')."\",
-					[isUpdate]				=	\"".$this->model->getIsUpdate(0,'single')."\",
-					[isDelete]				=	\"".$this->model->getIsDelete(0,'single')."\",
-					[isApproved]			=	\"".$this->model->getIsApproved(0,'single')."\",
-					[executeBy]					=	\"".$this->model->getExecuteBy()."\",
-					[executeTime]					=	".$this->model->getExecuteTime()."
-			WHERE 	[leafId]	=	\"". $this->getLeafId(0,'single') ."\"";
+			SET		[isDefault]				=	'".$this->model->getIsDefault(0,'single')."',
+					[isActive]				=	'".$this->model->getIsActive(0,'single')."',
+					[isNew]					=	'".$this->model->getIsNew(0,'single')."',
+					[isDraft]				=	'".$this->model->getIsDraft(0,'single')."',
+					[isUpdate]				=	'".$this->model->getIsUpdate(0,'single')."',
+					[isDelete]				=	'".$this->model->getIsDelete(0,'single')."',
+					[isApproved]			=	'".$this->model->getIsApproved(0,'single')."',
+					[executeBy]				=	'".$this->model->getExecuteBy()."',
+					[executeTime]			=	".$this->model->getExecuteTime()."
+			WHERE 	[leafId]				=	'". $this->getLeafId(0,'single') ."'";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE	\"leaf\"
-			SET		\"isDefault\"		=	\"".$this->model->getIsDefault(0,'single')."\",
-					\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
-					\"isNew\"			=	\"".$this->model->getIsNew(0,'single')."\",
-					\"isDraft\"			=	\"".$this->model->getIsDraft(0,'single')."\",
-					\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
-					\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
-					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
-					\"executeBy\"				=	\"".$this->model->getExecuteBy()."\",
-					\"executeTime\"			=	".$this->model->getExecuteTime()."
-			WHERE 	\"leafId\"			=	\"". $this->model->getLeafId(0,'single') ."\"";
+			UPDATE	LEAF
+			SET		ISDEFAULT		=	'".$this->model->getIsDefault(0,'single')."',
+					ISACTIVE		=	'".$this->model->getIsActive(0,'single')."',
+					ISNEW			=	'".$this->model->getIsNew(0,'single')."',
+					ISDRAFT			=	'".$this->model->getIsDraft(0,'single')."',
+					ISUPDATE		=	'".$this->model->getIsUpdate(0,'single')."',
+					ISDELETE		=	'".$this->model->getIsDelete(0,'single')."',
+					ISAPPROVED		=	'".$this->model->getIsApproved(0,'single')."',
+					EXECUTEBY		=	'".$this->model->getExecuteBy()."',
+					EXECUTETIME		=	".$this->model->getExecuteTime()."
+			WHERE 	LEAFID			=	'". $this->model->getLeafId(0,'single') ."'";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {

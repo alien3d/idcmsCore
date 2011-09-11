@@ -134,32 +134,32 @@ class groupClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getGroupSequence() . "\",	\"". $this->model->getGroupCode(). "\",
-						\"". $this->model->getGroupNote() . "\",		\"". $this->model->getIsDefault(0,'single') . "\",
-						\"". $this->model->getIsNew(0,'single') . "\",					\"". $this->model->getIsDraft(0,'single') . "\",
-						\"". $this->model->getIsUpdate(0,'single') . "\",				\"". $this->model->getIsDelete(0,'single') . "\",
-						\"". $this->model->getIsActive(0,'single') . "\",				\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getExecuteBy() . "\",								" . $this->model->getExecuteTime() . "
+						'". $this->model->getGroupSequence() . "',			'". $this->model->getGroupCode(). "',
+						'". $this->model->getGroupNote() . "',				'". $this->model->getIsDefault(0,'single') . "',
+						'". $this->model->getIsNew(0,'single') . "',		'". $this->model->getIsDraft(0,'single') . "',
+						'". $this->model->getIsUpdate(0,'single') . "',		'". $this->model->getIsDelete(0,'single') . "',
+						'". $this->model->getIsActive(0,'single') . "',		'". $this->model->getIsApproved(0,'single') . "',
+						'". $this->model->getExecuteBy() . "',				" . $this->model->getExecuteTime() . "
 					);";
 		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
-			INSERT INTO \"group`
+			INSERT INTO GROUP_
 					(
-						\"groupSequence\",				\"groupCode\",
-						\"groupNote\",					\"isDefault\",
-						\"isNew\",							\"isDraft\",
-						\"isUpdate\",						\"isDelete\",
-						\"isActive\",						\"isApproved\",
-						\"executeBy\",								\"executeTime\"
+						GROUPSEQUENCE,				GROUPCODE,
+						GROUPNOTE,					ISDEFAULT,
+						ISNEW,							ISDRAFT,
+						ISUPDATE,						ISDELETE,
+						ISACTIVE,						ISAPPROVED,
+						EXECUTEBY,								EXECUTETIME
 					)
 			VALUES
 					(
-						\"". $this->model->getGroupSequence() . "\",	\"". $this->model->getGroupCode() . "\",
-						\"". $this->model->getGroupNote() . "\",		\"". $this->model->getIsDefault(0,'single') . "\",
-						\"". $this->model->getIsNew(0,'single') . "\",					\"". $this->model->getIsDraft(0,'single') . "\",
-						\"". $this->model->getIsUpdate(0,'single') . "\",				\"". $this->model->getIsDelete(0,'single') . "\",
-						\"". $this->model->getIsActive(0,'single') . "\",				\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getExecuteBy() . "\",								" . $this->model->getExecuteTime() . "
+						'". $this->model->getGroupSequence() . "',			'". $this->model->getGroupCode(). "',
+						'". $this->model->getGroupNote() . "',				'". $this->model->getIsDefault(0,'single') . "',
+						'". $this->model->getIsNew(0,'single') . "',		'". $this->model->getIsDraft(0,'single') . "',
+						'". $this->model->getIsUpdate(0,'single') . "',		'". $this->model->getIsDelete(0,'single') . "',
+						'". $this->model->getIsActive(0,'single') . "',		'". $this->model->getIsApproved(0,'single') . "',
+						'". $this->model->getExecuteBy() . "',				" . $this->model->getExecuteTime() . "
 					);";
 
 		}
@@ -169,10 +169,22 @@ class groupClass  extends configClass {
 
 		// loop the tab and create new record
 		//** no need to log in db
-		$sql=	"
+		if($this->getVendor()==self::mysql) {
+			$sql=	"
 		SELECT 	*
-		FROM 	`tab`
+		FROM 	`module`
 		WHERE 	`isActive`=1";
+		} else if ($this->getVendor()==self::mssql){
+			$sql=	"
+		SELECT 	*
+		FROM 	[module]
+		WHERE 	[isActive]=1";
+		} else if($this->getVendor()==self::oracle){
+			$sql=	"
+		SELECT 	*
+		FROM 	MODULE
+		WHERE 	ISACTIVE=1";
+		}
 		$this->q->read($sql);
 		if($this->q->execute=='fail'){
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
@@ -182,40 +194,49 @@ class groupClass  extends configClass {
 		$sqlLooping=null;
 		if($this->q->numberRows()> 0 ){
 			foreach($data as $row){
-				$sqlLooping.="
+				if($this->getVendor()==self::mysql){
+					$sqlLooping.="
 					(
 									\"".$row['tabId']."\",
-									'0',
+									0,
 									\"".$lastInsertId."\"
 					),";
+				} else if ($this->getVendor()==self::mssql || $this->getVendor()==self::oracle){
+					$sqlLooping.="
+					(
+									'".$row['tabId']."',
+									0,
+									'".$lastInsertId."'
+					),";		
+				}
 
 			}
 		}
 
 		if($this->getVendor()==self::mysql){
-			$sql="	INSERT INTO	`tabAccess`
+			$sql="	INSERT INTO	`moduleAccess`
 				(
-									`tabId`,
-									`tabAccessValue`,
+									`moduleId`,
+									`moduleAccessValue`,
 									`groupId`
 				)
 				VALUES ";
 
 		} else if ($this->getVendor()==self::mssql){
-			$sql="	INSERT INTO	`tabAccess`
+			$sql="	INSERT INTO	[moduleAccess]
 				(
-									[tabId],
-									[tabAccessValue],
+									[moduleId],
+									[moduleAccessValue],
 									[groupId]
 				)
 				VALUES ";
 
 		} else if ($this->getVendor()==self::oracle){
-			$sql="	INSERT INTO	`tabAccess`
+			$sql="	INSERT INTO	TABACCESS
 				(
-									\"tabId\",
-									\"tabAccessValue\",
-									\"groupId\"
+									MODULEID,
+									MODULEACCESSVALUE,
+									GROUPID
 				)
 				VALUES ";
 
@@ -242,8 +263,8 @@ class groupClass  extends configClass {
 		} else if ( $this->getVendor()==self::oracle) {
 			$sql		=	"
 		SELECT 	*
-		FROM 	\"folder\"
-		WHERE 	\"isActive\"=1";
+		FROM 	FOLDER
+		WHERE 	ISACTIVE=1";
 		}
 		$this->q->read($sql);
 		if($this->q->execute=='fail'){
@@ -254,12 +275,21 @@ class groupClass  extends configClass {
 		if($this->q->numberRows()> 0 ){
 			$data = $this->q->activeRecord();
 			foreach($data as $row){
-				$sqlLooping.="
+				if($this->getVendor()==self::mysql){
+					$sqlLooping.="
 					(
 						\"".$row['folderId']."\",
-						'0',
+						0,
 						\"".$lastInsertId."\"
 					),";
+				} else if ($this->getVendor()==self::mssql  || $this->getVendor()==self::oracle){
+					$sqlLooping.="
+					(
+						'".$row['folderId']."',
+						0,
+						'".$lastInsertId."'
+					),";	
+				}
 
 			}
 		}
@@ -283,11 +313,11 @@ class groupClass  extends configClass {
 					";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql =	"
-					INSERT INTO 	`folderAccess`
+					INSERT INTO 	FOLDERACCESS
 								(
-									\"folderId\",
-									\"folderAccessValue\",
-									\"groupId\"
+									FOLDERID,
+									FOLDERACCESSVALUE,
+									GROUPID
 								)
 					VALUES ";
 		}
@@ -304,7 +334,7 @@ class groupClass  extends configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql			=	"SELECT * FROM [leaf] WHERE [isActive]=1  ";
 		} else if ($this->getVendor()==self::oracle) {
-			$sql			=	"SELECT * FROM \"leaf\" WHERE \"isActive\"=1  ";
+			$sql			=	"SELECT * FROM LEAF WHERE ISACTIVE=1  ";
 		}
 		$this->q->read($sql);
 		$sqlLooping=null;
@@ -316,17 +346,31 @@ class groupClass  extends configClass {
 		if($total > 0 ){
 			$data = $this->q->activeRecord();
 			foreach($data as $row){
-				$sqlLooping.="
+				if($this->getVendor()==self::mysql){
+					$sqlLooping.="
 					(
 						\"".$row['leafId']."\",
-						'0',
-						'0',
-						'0',
-						'0',
-						'0',
-						'0',
+						0,
+						0,
+						0,
+						0,
+						0,
+						0,
 						\"".$lastInsertId."\"
 					),";
+				} else if ($this->getVendor()==self::mssql || $this->getVendor()=self::oracle){
+					$sqlLooping.="
+					(
+						'".$row['leafId']."',
+						0,
+						0,
+						0,
+						0,
+						0,
+						0,
+						'".$lastInsertId."'
+					),";
+				}
 
 			}
 		}
@@ -360,16 +404,16 @@ class groupClass  extends configClass {
 					VALUES";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql =	"
-					INSERT INTO 	\"leafGroupAccess\"
+					INSERT INTO 	LEAFGROUPACCESS
 								(
-									\"leafId\",
-									\"leafReadAccessValue\",
-									\"leafCreateAccessValue\",
-									\"leafUpdateAccessValue\",
-									\"leafDeleteAccessValue\",
-									\"leafPrintAccessValue\",
-									\"leafPostAccessValue\",
-									\"groupId\"
+									LEAFID,
+									LEAFREADACCESSVALUE,
+									LEAFCREATEACCESSVALUE,
+									LEAFUPDATEACCESSVALUE,
+									LEAFDELETEACCESSVALUE,
+									LEAFPRINTACCESSVALUE,
+									LEAFPOSTACCESSVALUE,
+									GROUPID
 								)
 					VALUES ";
 		}
@@ -397,15 +441,15 @@ class groupClass  extends configClass {
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[group].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"group\".\"isActive\"	=	1	";
+				$this->auditFilter = "	GROUP_.ISACTIVE	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
-				$this->auditFilter = "	 1 ";
+				$this->auditFilter = "	 1 = 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	or 1 ";
+				$this->auditFilter = "	1 = 1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = " or 1 ";
+				$this->auditFilter = " 1 = 1 ";
 			}
 		}
 		//UTF8
@@ -460,30 +504,30 @@ class groupClass  extends configClass {
 					ON		[group].[executeBy] = [staff].[staffId]
 					WHERE 	[group].[isActive] ='1'	";
 			if ($this->model->getGroupId(0,'single')) {
-				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"". $this->model->getGroupId(0,'single') . "\"";
+				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='". $this->model->getGroupId(0,'single') . "'";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-					SELECT	\"group\".\"groupId\",
-							\"group\".\"groupCode\",
-							\"group\".\"groupSequence\",
-							\"group\".\"groupNote\",
-							\"group\".\"isDefault\",
-							\"group\".\"isNew\",
-							\"group\".\"isDraft\",
-							\"group\".\"isUpdate\",
-							\"group\".\"isDelete\",
-							\"group\".\"isActive\",
-							\"group\".\"isApproved\",
-							\"group\".\"executeBy\",
-							\"group\".\"executeTime\",
-							\"staff\".\"staffName\"
-					FROM 	\"group\"
-					JOIN	\"staff\"
-					ON		\"group\".\"executeBy\" = \"staff\".\"staffId\"
-					WHERE 	\"isActive\"='1'	";
+					SELECT	GROUP_.GROUPID  		AS	\"groupId\",
+							GROUP_.GROUPCODE 		AS 	\"groupCode\",
+							GROUP_.GROUPSEQUENCE	AS 	\"groupSequence\",
+							GROUP_.GROUPNOTE 		AS 	\"groupNote\",
+							GROUP_.ISDEFAULT 		AS 	\"isDefault\",
+							GROUP_.ISNEW 			AS 	\"isNew\",
+							GROUP_.ISDRAFT 			AS 	\"isDraft\",
+							GROUP_.ISUPDATE 		AS 	\"isUpdate\",
+							GROUP_.ISDELETE 		AS 	\"isDelete\",
+							GROUP_.ISACTIVE 		AS 	\"isActive\",
+							GROUP_.ISAPPROVED 		AS 	\"isApproved\",
+							GROUP_.EXECUTEBY 		AS 	\"executeBy\",
+							GROUP_.EXECUTETIME 		AS 	\"executeTime\",
+							STAFF.STAFFNAME 		AS 	\"staffName\"
+					FROM 	GROUP_
+					JOIN	STAFF
+					ON		GROUP_.EXECUTEBY = STAFF.STAFFID
+					WHERE 	ISACTIVE='1'	";
 			if ($this->model->getgroupId(0,'single')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getGroupId(0,'single') . "\"";
+				$sql .= " AND '".strtoupper($this->model->getTableName())."'.'".strtoupper($this->model->getPrimaryKeyName())."'='". $this->model->getGroupId(0,'single') . "'";
 			}
 		} else {
 			echo json_encode(array(
@@ -609,21 +653,22 @@ class groupClass  extends configClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT  \"group\".\"groupId\",
-											\"group\".\"groupSequence\",
-											\"group\".\"groupCode\",
-											\"group\".\"groupNote\",
-											\"group\".\"isDefault\",
-											\"group\".\"isNew\",
-											\"group\".\"isDraft\",
-											\"group\".\"isUpdate\",
-											\"group\".\"isDelete\",
-											\"group\".\"isApproved\",
-											\"group\".\"executeBy\",
-											\"group\".\"executeTime\",
-											\"staff\".\"staffName\"
-									FROM 	\"group\"
-									WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
+									SELECT GROUP_.GROUPID  		AS	\"groupId\",
+							GROUP_.GROUPCODE 		AS 	\"groupCode\",
+							GROUP_.GROUPSEQUENCE	AS 	\"groupSequence\",
+							GROUP_.GROUPNOTE 		AS 	\"groupNote\",
+							GROUP_.ISDEFAULT 		AS 	\"isDefault\",
+							GROUP_.ISNEW 			AS 	\"isNew\",
+							GROUP_.ISDRAFT 			AS 	\"isDraft\",
+							GROUP_.ISUPDATE 		AS 	\"isUpdate\",
+							GROUP_.ISDELETE 		AS 	\"isDelete\",
+							GROUP_.ISACTIVE 		AS 	\"isActive\",
+							GROUP_.ISAPPROVED 		AS 	\"isApproved\",
+							GROUP_.EXECUTEBY 		AS 	\"executeBy\",
+							GROUP_.EXECUTETIME 		AS 	\"executeTime\",
+							STAFF.STAFFNAME 		AS 	\"staffName\"
+									FROM 	GROUP_
+									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
 						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
 						where r >=  \"". $this->start . "\"";
@@ -692,50 +737,50 @@ class groupClass  extends configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 			UPDATE 	`group`
-			SET 	`groupSequence` =   \"".$this->model->getGroupSequence()."\",
-					`groupCode`		=	\"".$this->model->getGroupCode()."\",
-					`groupNote`		=	\"".$this->model->getGroupNote()."\",
-					`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
-					`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
-					`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
-					`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
-					`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
-					`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
-					`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-					`executeBy`			=	\"".$this->model->getExecuteBy()."\",
-					`executeTime`			=	".$this->model->getExecuteTime()."
-			WHERE 	`groupId`		=	\"".$this->model->getGroupId(0,'single')."\"";
+			SET 	`groupSequence` =   '".$this->model->getGroupSequence()."',
+					`groupCode`		=	'".$this->model->getGroupCode()."',
+					`groupNote`		=	'".$this->model->getGroupNote()."',
+					`isDefault`		=	'".$this->model->getIsDefault(0,'single')."',
+					`isNew`			=	'".$this->model->getIsNew(0,'single')."',
+					`isDraft`		=	'".$this->model->getIsDraft(0,'single')."',
+					`isUpdate`		=	'".$this->model->getIsUpdate(0,'single')."',
+					`isDelete`		=	'".$this->model->getIsDelete(0,'single')."',
+					`isActive`		=	'".$this->model->getIsActive(0,'single')."',
+					`isApproved`	=	'".$this->model->getIsApproved(0,'single')."',
+					`executeBy`		=	'".$this->model->getExecuteBy()."',
+					`executeTime`	=	".$this->model->getExecuteTime()."
+			WHERE 	`groupId`		=	'".$this->model->getGroupId(0,'single')."'";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 			UPDATE 	[group]
-			SET 	[groupSequence] =   \"".$this->model->getGroupSequence()."\",
-					[groupCode]		=	\"".$this->model->getGroupCode()."\",
-					[groupNote]		=	\"".$this->model->getGroupNote()."\",
-					[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
-					[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
-					[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
-					[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
-					[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
-					[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
-					[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-					[executeBy]			=	\"".$this->model->getExecuteBy()."\",
-					[executeTime]			=	".$this->model->getExecuteTime()."
-			WHERE 	[groupId]		=	\"".$this->model->getGroupId(0,'single')."\"";
+			SET 	[groupSequence] =   '".$this->model->getGroupSequence()."',
+					[groupCode]		=	'".$this->model->getGroupCode()."',
+					[groupNote]		=	'".$this->model->getGroupNote()."',
+					[isDefault]		=	'".$this->model->getIsDefault(0,'single')."',
+					[isNew]			=	'".$this->model->getIsNew(0,'single')."',
+					[isDraft]		=	'".$this->model->getIsDraft(0,'single')."',
+					[isUpdate]		=	'".$this->model->getIsUpdate(0,'single')."',
+					[isDelete]		=	'".$this->model->getIsDelete(0,'single')."',
+					[isActive]		=	'".$this->model->getIsActive(0,'single')."',
+					[isApproved]	=	'".$this->model->getIsApproved(0,'single')."',
+					[executeBy]		=	'".$this->model->getExecuteBy()."',
+					[executeTime]	=	".$this->model->getExecuteTime()."
+			WHERE 	[groupId]		=	'".$this->model->getGroupId(0,'single')."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			UPDATE 	\"group\"
-			SET 	\"groupSequence\"	=   \"".$this->model->getGroupSequence()."\",
-					\"groupCode\"		=	\"".$this->model->getGroupCode()."\",
-					\"groupNote\"		=	\"".$this->model->getGroupNote()."\",
-					\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
-					\"isNew\"			=	\"".$this->model->getIsNew(0,'single')."\",
-					\"isDraft\"			=	\"".$this->model->getIsDraft(0,'single')."\",
-					\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
-					\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
-					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
-					\"executeBy\"				=	\"".$this->model->getExecuteBy()."\",
-					\"executeTime\"			=	".$this->model->getExecuteTime()."
-			WHERE 	\"groupId\"			=	\"".$this->model->getGroupCode(0,'single')."\"";
+			UPDATE 	GROUP_
+			SET 	GROUPSEQUENCE	=   '".$this->model->getGroupSequence()."',
+					GROUPCODE		=	'".$this->model->getGroupCode()."',
+					GROUPNOTE		=	'".$this->model->getGroupNote()."',
+					ISACTIVE		=	'".$this->model->getIsActive(0,'single')."',
+					ISNEW			=	'".$this->model->getIsNew(0,'single')."',
+					ISDRAFT			=	'".$this->model->getIsDraft(0,'single')."',
+					ISUPDATE		=	'".$this->model->getIsUpdate(0,'single')."',
+					ISDELETE		=	'".$this->model->getIsDelete(0,'single')."',
+					ISAPPROVED		=	'".$this->model->getIsApproved(0,'single')."',
+					EXECUTEBY		=	'".$this->model->getExecuteBy()."',
+					EXECUTETIME		=	".$this->model->getExecuteTime()."
+			WHERE 	GROUPID			=	'".$this->model->getGroupCode(0,'single')."'";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
@@ -776,30 +821,30 @@ class groupClass  extends configClass {
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
 			UPDATE 	[group]
-			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'single') . "\",
-					[isNew]				=	\"". $this->model->getIsNew(0,'single') . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft(0,'single') . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'single') . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
-					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					[executeBy]				=	\"". $this->model->getExecuteBy() . "\",
-					[executeTime]				=	" . $this->model->getExecuteTime() . "
-			WHERE 	[groupId]		=	\"". $this->model->getGroupId . "\"";
+			SET 	[isDefault]			=	'". $this->model->getIsDefault(0,'single') . "',
+					[isNew]				=	'". $this->model->getIsNew(0,'single') . "',
+					[isDraft]			=	'". $this->model->getIsDraft(0,'single') . "',
+					[isUpdate]			=	'". $this->model->getIsUpdate(0,'single') . "',
+					[isDelete]			=	'". $this->model->getIsDelete(0,'single') . "',
+					[isActive]			=	'". $this->model->getIsActive(0,'single') . "',
+					[isApproved]		=	'". $this->model->getIsApproved(0,'single') . "',
+					[executeBy]			=	'". $this->model->getExecuteBy() . "',
+					[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 	[groupId]			=	'". $this->model->getGroupId . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE 	\"group\"
-			SET 	\"GroupDesc\"	=	\"". $this->model->getGroupDesc(0,'single') . "\",
-					\"isDefault\"		=	\"". $this->model->getIsDefault(0,'single') . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew(0,'single') . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'single') . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'single') . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					\"executeBy\"				=	\"". $this->model->getExecuteBy() . "\",
-					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
-			WHERE 	\"groupId\"		=	\"". $this->model->getGroupId() . "\"";
+			UPDATE 	GROUP_
+			SET 	GROUPDESC		=	'". $this->model->getGroupDesc(0,'single') . "',
+					ISDEFAULT		=	'". $this->model->getIsDefault(0,'single') . "',
+					ISNEW			=	'". $this->model->getIsNew(0,'single') . "',
+					ISDRAFT			=	'". $this->model->getIsDraft(0,'single') . "',
+					ISUPDATE		=	'". $this->model->getIsUpdate(0,'single') . "',
+					ISDELETE		=	'". $this->model->getIsDelete(0,'single') . "',
+					ISACTIVE		=	'". $this->model->getIsActive(0,'single') . "',
+					ISAPPROVED		=	'". $this->model->getIsApproved(0,'single') . "',
+					EXECUTEBY		=	'". $this->model->getExecuteBy() . "',
+					EXECUTETIME		=	" . $this->model->getExecuteTime() . "
+			WHERE 	GROUPID			=	'". $this->model->getGroupId() . "\"";
 		}
 		// advance logging future
 		$this->q->tableName       = $this->model->getTableName();
@@ -926,22 +971,22 @@ class groupClass  extends configClass {
 					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
 					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
 					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					[executeBy]				=	\"". $this->model->getExecuteBy() . "\",
-					[executeTime]				=	" . $this->model->getExecuteTime() . "
+					[executeBy]			=	\"". $this->model->getExecuteBy() . "\",
+					[executeTime]		=	" . $this->model->getExecuteTime() . "
 			WHERE 	[GroupId]		IN	(". $this->model->getGroupIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
-				UPDATE	\"group\"
-				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault(0,'single') . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew(0,'single') . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'single') . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'single') . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					\"executeBy\"				=	\"". $this->model->getExecuteBy() . "\",
-					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
-			WHERE 	\"GroupId\"		IN	(". $this->model->getGroupIdAll() . ")";
+				UPDATE	GROUP_
+				SET 	ISDEFAULT		=	'". $this->model->getIsDefault(0,'single') . "',
+						ISNEW			=	'". $this->model->getIsNew(0,'single') . "',
+						ISDRAFT			=	'". $this->model->getIsDraft(0,'single') . "',
+						ISUPDATE		=	'". $this->model->getIsUpdate(0,'single') . "',
+						ISDELETE		=	'". $this->model->getIsDelete(0,'single') . "',
+						ISACTIVE		=	'". $this->model->getIsActive(0,'single') . "',
+						ISAPPROVED		=	'". $this->model->getIsApproved(0,'single') . "',
+						EXECUTEBY		=	'". $this->model->getExecuteBy() . "',
+						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
+				WHERE 	GROUPID		IN	(". $this->model->getGroupIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){
 
@@ -1081,14 +1126,14 @@ class groupClass  extends configClass {
 			$sql = "
 			SELECT	*
 			FROM 	[group]
-			WHERE 	[groupCode] 	= 	\"". $this->model->getGroupCode() . "\"
+			WHERE 	[groupCode] 	= 	'". $this->model->getGroupCode() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT	*
-			FROM 	\"group\"
-			WHERE 	\"groupCode\" 	= 	\"". $this->model->getGroupCode() . "\"
-			AND		\"isActive\"		=	1";
+			FROM 	GROUP_
+			WHERE 	GROUPCODE 		= 	'". $this->model->getGroupCode() . "'
+			AND		ISACTIVE		=	1";
 		}
 		$this->q->read($sql);
 		$total = 0;

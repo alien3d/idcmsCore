@@ -173,11 +173,11 @@ class extLabelTranslationClass extends  configClass {
 			INSERT INTO 	\"extLabelTranslation\"
 						(
 							\"extLabelTranslation\",							\"extLabelTranslationEnglish\",
-							\"isDefault\",								\"isNew\",
-							\"isDraft\",								\"isUpdate\",
-							\"isDelete\",								\"isActive\",
-							\"isApproved\",								\"executeBy\",
-							\"executeTime\"
+							ISDEFAULT,								ISNEW,
+							ISDRAFT,								ISUPDATE,
+							ISDELETE,								ISACTIVE,
+							ISAPPROVED,								EXECUTEBY,
+							EXECUTETIME
 				VALUES	(
 							\"".$this->model->getextLabelTranslation()."\",						\"".$this->model->getextLabelTranslationEnglish()."\"
 							\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
@@ -458,15 +458,15 @@ class extLabelTranslationClass extends  configClass {
 					UPDATE 	\"extLabelTranslation\"
 					SET 	\"extLabelTranslationNote\"		=	\"".$this->model->getextLabelTranslationNote()."\",
 							\"extLabelTranslationEnglish\"	=	\"".$this->model->getextLabelTranslationEnglish()."\",
-							\"isDefault\"	=	\"".$this->model->getIsDefault(0,'single')."\",
-							\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
-							\"executeTime\"		=	".$this->model->getExecuteTime()."
+							ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
+							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
+							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
+							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
+							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
+							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
+							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
+							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+							EXECUTETIME		=	".$this->model->getExecuteTime()."
 					WHERE 	\"extLabelTranslationId\"		=	\"".$this->model->getextLabelTranslationId(0,'single')."\"";
 		}
 		$this->q->update($sql);
@@ -523,15 +523,15 @@ class extLabelTranslationClass extends  configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE	\"extLabelTranslation\"
-					SET		\"isDefault\"	=	\"".$this->model->getIsDefault(0,'single')."\",
-							\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
-							\"executeTime\"		=	".$this->model->getExecuteTime()."
+					SET		ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
+							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
+							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
+							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
+							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
+							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
+							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
+							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+							EXECUTETIME		=	".$this->model->getExecuteTime()."
 					WHERE 	\"extLabelTranslationId\"	=	\"".$this->model->getextLabelTranslationId()."\"";
 		}
 		$this->q->update($sql);
@@ -656,16 +656,16 @@ class extLabelTranslationClass extends  configClass {
 			WHERE 	[DepartmentId]		IN	(". $this->model->getDepartmentIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
-				UPDATE	\"Department\"
-				SET 	\"isDefault\"		=	\"". $this->model->getIsDefault(0,'single') . "\",
-					\"isNew\"			=	\"". $this->model->getIsNew(0,'single') . "\",
-					\"isDraft\"			=	\"". $this->model->getIsDraft(0,'single') . "\",
-					\"isUpdate\"		=	\"". $this->model->getIsUpdate(0,'single') . "\",
-					\"isDelete\"		=	\"". $this->model->getIsDelete(0,'single') . "\",
-					\"isActive\"		=	\"". $this->model->getIsActive(0,'single') . "\",
-					\"isApproved\"		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					\"executeBy\"				=	\"". $this->model->getExecuteBy() . "\",
-					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
+				UPDATE	DEPARTMENT
+				SET 	ISDEFAULT		=	\"". $this->model->getIsDefault(0,'single') . "\",
+					ISNEW			=	\"". $this->model->getIsNew(0,'single') . "\",
+					ISDRAFT			=	\"". $this->model->getIsDraft(0,'single') . "\",
+					ISUPDATE		=	\"". $this->model->getIsUpdate(0,'single') . "\",
+					ISDELETE		=	\"". $this->model->getIsDelete(0,'single') . "\",
+					ISACTIVE		=	\"". $this->model->getIsActive(0,'single') . "\",
+					ISAPPROVED		=	\"". $this->model->getIsApproved(0,'single') . "\",
+					EXECUTEBY				=	\"". $this->model->getExecuteBy() . "\",
+					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 			WHERE 	\"DepartmentId\"		IN	(". $this->model->getDepartmentIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){

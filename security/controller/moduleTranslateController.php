@@ -164,14 +164,14 @@ class moduleTranslateClass extends configClass
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			INSERT INTO \"module\"
+			INSERT INTO MODULE
 					(
-						iconId\"							\"moduleSequence\",
-						\"moduleNote\",					\"isNew\"
-						\"isDraft\",							\"isUpdate\"
-						\"isDelete\",							\"isActive\",
-						\"isApproved\",						\"executeBy\",
-						\"executeTime\"
+						iconId\"							MODULESEQUENCE,
+						MODULENOTE,					ISNEW
+						ISDRAFT,							ISUPDATE
+						ISDELETE,							ISACTIVE,
+						ISAPPROVED,						EXECUTEBY,
+						EXECUTETIME
 					)
 			VALUES
 					(
@@ -210,8 +210,8 @@ class moduleTranslateClass extends configClass
 			 *  If anthing wrong use this instead  SELECT moduleIdSeq
 			 */
 			$sql = "
-			SELECT 	MAX(\"moduleId\") AS \"lastId\"
-			FROM 	\"module\"";
+			SELECT 	MAX(MODULEID) AS \"lastId\"
+			FROM 	MODULE";
 		}
 		$resultd   = $this->q->fast($sql);
 		$rowLastId = $this->q->fetchAssoc($resultd);
@@ -231,8 +231,8 @@ class moduleTranslateClass extends configClass
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
 			SELECT 	*
-			FROM 	\"group\"
-			WHERE 	`\"isActive\"	=	1 ";
+			FROM 	GROUP_
+			WHERE 	`ISACTIVE	=	1 ";
 		}
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
@@ -261,11 +261,11 @@ class moduleTranslateClass extends configClass
 					) VALUES";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-				INSERT INTO	\"moduleAccess\"
+				INSERT INTO	MODULEACCESS
 						(
-							\"moduleId\",
-							\"groupId\",
-							\"moduleAccessValue\"
+							MODULEID,
+							GROUPID,
+							MODULEACCESSVALUE
 					) VALUES";
 		}
 		foreach ($data as $row) {
@@ -324,8 +324,8 @@ class moduleTranslateClass extends configClass
 			$sql = "
 		 	INSERT INTO	\"leafTranslate\"
 					(
-					 	\"leafId\",
-						\"languageId\",
+					 	LEAFID,
+						LANGUAGEID,
 						\"leafTranslate\"
 					) VALUES (
 						\"". $lastId ."\",
@@ -362,7 +362,7 @@ class moduleTranslateClass extends configClass
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[module].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"module\".\"isActive\"	=	1	";
+				$this->auditFilter = "	MODULE.ISACTIVE	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
@@ -407,11 +407,11 @@ class moduleTranslateClass extends configClass
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT		*
-			FROM 		\"module\"
-			LEFT JOIN 	\"icon\"
-			USING 		(\"iconId\")
-			WHERE 		\"module\".\"isActive\"	=	1
-			AND			\"icon\".\"isActive\"		=	1";
+			FROM 		MODULE
+			LEFT JOIN 	ICON
+			USING 		(ICONID)
+			WHERE 		MODULE.ISACTIVE	=	1
+			AND			ICON.ISACTIVE		=	1";
 			if (($this->model->getmoduleId(0,'single'))) {
 				$sql .= " AND \"".$this->model->getPrimaryKeyName()."\"=\"". $this->strict($this->model->getmoduleId(0,'single'), 'numeric') ."\"";
 			}
@@ -513,8 +513,8 @@ class moduleTranslateClass extends configClass
 										rownum r
 				FROM (
 							SELECT *
-							FROM 	\"module\"
-							WHERE \"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
+							FROM 	MODULE
+							WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
 						 ) a
 				where rownum <= \"". ($_POST['start'] + $_POST['limit'] - 1) ."\" )
 				where r >=  \"". $_POST['start'] ."\"";
@@ -601,19 +601,19 @@ class moduleTranslateClass extends configClass
 			WHERE 	[moduleId]		=	\"". $this->model->moduleId ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE 	\"module\"
-			SET 	\"moduleSequence\"	= 	\"". $this->model->moduleSequence ."\",
-					\"moduleNote\"		=	\"". $this->model->moduleNote ."\",
-					\"iconId\"				=	\"". $this->model->iconId ."\",
-					\"isActive\"			=	\"". $this->model->getIsActive(0,'single') ."\",
-					\"isNew\"				=	\"". $this->model->getIsNew(0,'single') ."\",
-					\"isDraft\"				=	\"". $this->model->getIsDraft(0,'single') ."\",
-					\"isUpdate\"			=	\"". $this->model->getIsUpdate(0,'single') ."\",
-					\"isDelete\"			=	\"". $this->model->getIsDelete(0,'single') ."\",
-					\"isApproved\"			=	\"". $this->model->getIsApproved(0,'single') ."\",
-					\"executeBy\"					=	\"". $this->model->getExecuteBy() ."\",
-					\"executeTime\"				=	" . $this->model->getExecuteTime() . "
-			WHERE 	\"moduleId\"			=	\"". $this->model->moduleId ."\"";
+			UPDATE 	MODULE
+			SET 	MODULESEQUENCE	= 	\"". $this->model->moduleSequence ."\",
+					MODULENOTE		=	\"". $this->model->moduleNote ."\",
+					ICONID				=	\"". $this->model->iconId ."\",
+					ISACTIVE			=	\"". $this->model->getIsActive(0,'single') ."\",
+					ISNEW				=	\"". $this->model->getIsNew(0,'single') ."\",
+					ISDRAFT				=	\"". $this->model->getIsDraft(0,'single') ."\",
+					ISUPDATE			=	\"". $this->model->getIsUpdate(0,'single') ."\",
+					ISDELETE			=	\"". $this->model->getIsDelete(0,'single') ."\",
+					ISAPPROVED			=	\"". $this->model->getIsApproved(0,'single') ."\",
+					EXECUTEBY					=	\"". $this->model->getExecuteBy() ."\",
+					EXECUTETIME				=	" . $this->model->getExecuteTime() . "
+			WHERE 	MODULEID			=	\"". $this->model->moduleId ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -669,16 +669,16 @@ class moduleTranslateClass extends configClass
 			WHERE 	[moduleId]		=	\"". $this->model->moduleId ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE 	\"module\"
-			SET 	\"isActive\"	=	\"". $this->model->getIsActive(0,'single') ."\",
-					\"isNew\"		=	\"". $this->model->getIsNew(0,'single') ."\",
-					\"isDraft\"		=	\"". $this->model->getIsDraft(0,'single') ."\",
-					\"isUpdate\"	=	\"". $this->model->getIsUpdate(0,'single') ."\",
-					\"isDelete\"	=	\"". $this->model->getIsDelete(0,'single') ."\",
-					\"isApproved\"	=	\"". $this->model->getIsApproved(0,'single') ."\",
-					\"executeBy\"			=	\"". $this->model->getExecuteBy() ."\",
-					\"executeTime\"		=	" . $this->model->getExecuteTime() . "
-			WHERE 	\"moduleId\"			=	\"". $this->model->moduleId ."\"";
+			UPDATE 	MODULE
+			SET 	ISACTIVE	=	\"". $this->model->getIsActive(0,'single') ."\",
+					ISNEW		=	\"". $this->model->getIsNew(0,'single') ."\",
+					ISDRAFT		=	\"". $this->model->getIsDraft(0,'single') ."\",
+					ISUPDATE	=	\"". $this->model->getIsUpdate(0,'single') ."\",
+					ISDELETE	=	\"". $this->model->getIsDelete(0,'single') ."\",
+					ISAPPROVED	=	\"". $this->model->getIsApproved(0,'single') ."\",
+					EXECUTEBY			=	\"". $this->model->getExecuteBy() ."\",
+					EXECUTETIME		=	" . $this->model->getExecuteTime() . "
+			WHERE 	MODULEID			=	\"". $this->model->moduleId ."\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -725,10 +725,10 @@ class moduleTranslateClass extends configClass
 		} else if ($this->q->vendor == 'oralce') {
 			$sql = "
 			SELECT	*
-			FROM 	\"moduleTranslate\"
-			JOIN 	\"language\"
-			USING (\"languageId\")
-			WHERE	\"moduleTranslate\".\"moduleId\"=\"". $this->strict($_POST['moduleId'], 'numeric') ."\"";
+			FROM 	MODULETRANSLATE
+			JOIN 	LANGUAGE
+			USING (LANGUAGEID)
+			WHERE	MODULETRANSLATE.MODULEID=\"". $this->strict($_POST['moduleId'], 'numeric') ."\"";
 		}
 		$this->q->read($sql);
 		$total = $this->q->numberRows();
@@ -762,8 +762,8 @@ class moduleTranslateClass extends configClass
 		WHERE 	[moduleTranslateId]	=	\"". $this->strict($_POST['moduleTranslateId'], 'numeric') ."\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-		UPDATE	\"moduleTranslate\"
-		SET		\"moduleTranslate\" 		=	\"". $this->strict($_POST['moduleTranslate'], 'string') ."\"
+		UPDATE	MODULETRANSLATE
+		SET		MODULETRANSLATE 		=	\"". $this->strict($_POST['moduleTranslate'], 'string') ."\"
 		WHERE 	\"moduleTranslateId\"	=	\"". $this->strict($_POST['moduleTranslateId'], 'numeric') ."\"";
 		}
 		$this->q->update($sql);
@@ -801,7 +801,7 @@ class moduleTranslateClass extends configClass
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT	*
-			FROM 	\"module\"
+			FROM 	MODULE
 			WHERE 	`moduleId`	=	\"". $this->moduleId ."\"";
 		}
 		$resultDefault = $this->q->fast($sql);
@@ -820,7 +820,7 @@ class moduleTranslateClass extends configClass
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT 	*
-			FROM 	\"language\" ";
+			FROM 	LANGUAGE ";
 		}
 		$result = $this->q->fast($sql);
 		while ($row = $this->q->fetchAssoc($result)) {
@@ -843,9 +843,9 @@ class moduleTranslateClass extends configClass
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
 				SELECT	*
-				FROM 	\"moduleTranslate\"
-				WHERE 	\"moduleId\"			=	\"". $this->moduleId ."\"
-				AND 	\"languageId\"			=	\"". $languageId ."\"";
+				FROM 	MODULETRANSLATE
+				WHERE 	MODULEID			=	\"". $this->moduleId ."\"
+				AND 	LANGUAGEID			=	\"". $languageId ."\"";
 			}
 			$resultmoduleTranslate = $this->q->fast($sql);
 			if ($this->q->numberRows($resultmoduleTranslate) > 0) {
@@ -863,8 +863,8 @@ class moduleTranslateClass extends configClass
 					AND		[languageId]				=	\"". $languageId ."\"";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
-					UPDATE 	\"moduleTranslate\"
-					SET 	\"moduleTranslate\"		=	\"". $googleTranslate ."\"
+					UPDATE 	MODULETRANSLATE
+					SET 	MODULETRANSLATE		=	\"". $googleTranslate ."\"
 					WHERE 	`moduleId`				=	\"". $this->moduledId ."\"
 					AND 	`languageId`				=	\"". $languageId ."\"";
 				}
@@ -903,11 +903,11 @@ class moduleTranslateClass extends configClass
 							)";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
-					INSERT INTO \"moduleTranslate\"
+					INSERT INTO MODULETRANSLATE
 							(
-							 	\"moduleId\",
-								\"languageId\",
-								\"moduleTranslate\"
+							 	MODULEID,
+								LANGUAGEID,
+								MODULETRANSLATE
 							) VALUES(
 								\"". $this->moduleId ."\",
 								\"". $languageId ."\",

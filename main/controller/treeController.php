@@ -211,9 +211,9 @@ class treeClass extends configClass
 		      			MODULEACCESS.MODULEID,
 		      			MODULEACCESS.GROUPID,
 		      			MODULEACCESS.MODULEACCESSVALUE,
-		      			MODULE.MODULEID AS \"moduleId\",
-		      			MODULETRANSLATE.MODULETRANSLATE AS \"moduleTranslate\",
-		      			ICON.ICONNAME AS \"iconName\"
+		      			MODULE.MODULEID AS MODULEID,
+		      			MODULETRANSLATE.MODULETRANSLATE AS MODULETRANSLATE,
+		      			ICON.ICONNAME AS ICONNAME
 		      FROM    	MODULEACCESS
 		      JOIN    	MODULE
 		      ON		MODULEACCESS.MODULEID 			= MODULE.MODULEID	
@@ -241,7 +241,7 @@ class treeClass extends configClass
 				$moduleId = $rowModule['moduleId'];
 				$counterModule++;
 				echo "{
-						\"leaf\":false,
+						LEAF:false,
 						\"text\":\"".$moduleTranslate."\",
 					    \"iconCls\":\"".$iconName."\",
 					    \"expanded\": true,";
@@ -287,10 +287,10 @@ class treeClass extends configClass
 				      SELECT    FOLDERACCESS.FOLDERACCESSID,
 				      			FOLDERACCESS.GROUPID,
 				      			FOLDERACCESS.FOLDERACCESSVALUE,
-				      			FOLDER.FOLDERID 				AS \"folderId\",
-				      			FOLDER.FOLDERPATH				AS	\"folderPath\",
+				      			FOLDER.FOLDERID 				AS FOLDERID,
+				      			FOLDER.FOLDERPATH				AS	FOLDERPATH,
 				      			FOLDERTRANSLATE.FOLDERTRANSLATE AS \"folderTranslate\",
-				      			ICON.ICONNAME 					AS \"iconName\"
+				      			ICON.ICONNAME 					AS ICONNAME
 				      FROM     	FOLDERACCESS
 				      JOIN    	FOLDER
 				      ON		FOLDERACCESS.FOLDERID			= FOLDER.FOLDERID
@@ -322,7 +322,7 @@ class treeClass extends configClass
 
 						$counterFolder++;
 						echo " {
-              						\"leaf\":false,
+              						LEAF:false,
 									\"expanded\"  : true, 
               						\"text\" 	  : \"" . $folderTranslate . "\", 
               						\"iconCls\"   : \"" . $iconName . "\",";
@@ -363,10 +363,10 @@ class treeClass extends configClass
 					          SELECT  	LEAFACCESS.LEAFACCESSID,
 						      			LEAFACCESS.STAFFID,
 						      			LEAFACCESS.LEAFREADACCESSVALUE,
-						      			LEAF.LEAFID 					AS 	\"leafId\",
-						      			LEAF.LEAFFILENAME				AS	\"leafFilename\",
+						      			LEAF.LEAFID 					AS 	LEAFID,
+						      			LEAF.LEAFFILENAME				AS	LEAFFILENAME,
 						      			LEAFTRANSLATE.LEAFTRANSLATE 	AS 	\"leafTranslate\",
-						      			ICON.ICONNAME 					AS	\"iconName\" 
+						      			ICON.ICONNAME 					AS	ICONNAME 
 					          FROM   	LEAFACCESS
 					          JOIN    	LEAF
 					          ON		LEAF.LEAFID						= LEAFACCESS.LEAFID
@@ -397,10 +397,10 @@ class treeClass extends configClass
 								echo " {
 											
 											\"text\" : \"" . $leafTranslate . "\", 
-							                \"folderPath\"	:\"" . $folderPath . "\",
-							                \"leafFilename\":\"" . $leafFilename . "\",
+							                FOLDERPATH	:\"" . $folderPath . "\",
+							                LEAFFILENAME:\"" . $leafFilename . "\",
 											\"emptyLeaf\":false,
-							                \"leaf\" : true, 
+							                LEAF : true, 
 							                \"iconCls\" : \"" . $iconName . "\"
 							            } ";
 								if ($counterLeaf != $totalLeaf) {
@@ -414,7 +414,7 @@ class treeClass extends configClass
 							echo "  \"children\" :  {
                 									\"text\":\"No Leaf Identify\",
                 									\"emptyLeaf\": true,
-                									\"leaf\":true 
+                									LEAF:true 
               				}";
 
 						}
@@ -429,7 +429,7 @@ class treeClass extends configClass
 				} else {
 
 					echo "	\"children\" : {
-										\"leaf\":true,	
+										LEAF:true,	
 										\"text\":\"No Folder Identify\",
 										\"expanded\":true
 									}";
@@ -444,7 +444,7 @@ class treeClass extends configClass
 
 		} else {
 			echo " \"children\" :{
-									\"leaf\":true,
+									LEAF:true,
 									\"text\":\"No module Identify\",
 									\"expanded\":true 
 								}]";

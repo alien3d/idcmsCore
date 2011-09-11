@@ -121,14 +121,14 @@ class documentTrailClass extends configClass {
 		} else if ($this->getVendor()==self::oracle){
 			$sql = "
 			INSERT INTO \"document`	(
-						\"documentCategoryId\",			\"leafId\",
-						\"documentTitle\",				\"documentDesc\",
-						\"documentPath\",				\"documentFilename\",
-						\"isDefault\",					\"isNew\",
-						\"isDraft\",					\"isUpdate\",
-						\"isDelete\",					\"isActive\",
-						\"isApproved\",					\"executeBy\",
-						\"executeTime\"
+						DOCUMENTCATEGORYID,			LEAFID,
+						DOCUMENTTITLE,				DOCUMENTDESC,
+						DOCUMENTPATH,				\"documentFilename\",
+						ISDEFAULT,					ISNEW,
+						ISDRAFT,					ISUPDATE,
+						ISDELETE,					ISACTIVE,
+						ISAPPROVED,					EXECUTEBY,
+						EXECUTETIME
 			)	VALUES	(
 						\"".$this->model->getDocumentCategoryId()."\",
 						\"".$this->model->getLeafId()."\",

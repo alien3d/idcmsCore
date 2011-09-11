@@ -215,9 +215,9 @@ abstract class configClass
 			WHERE  	[isActive]=1";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			SELECT 	STAFFID 	AS 	\"staffId\",
-					STAFFNO 	AS 	\"staffNo\",
-					STAFFNAME 	AS 	\"staffName\"
+			SELECT 	STAFFID 	AS 	STAFFID,
+					STAFFNO 	AS 	STAFFNO,
+					STAFFNAME 	AS 	STAFFNAME
 			FROM   	STAFF 		
 			WHERE	STAFF.ISACTIVE=1";
 		}
@@ -437,7 +437,7 @@ abstract class configClass
 		SELECT (\"".strtoupper($this->model->getPrimaryKeyName())."\") AS \"previous\"
 		FROM 	\"".strtoupper($this->model->getTableName())."\"
 		WHERE 	\"".strtoupper($this->model->getPrimaryKeyName())."\" < ".$primaryKeyValue."
-		ORDER BY \"staffId\" DESC
+		ORDER BY STAFFID DESC
 		LIMIT 	1";
 		}
 		$result= $this->q->fast($sql);

@@ -151,34 +151,34 @@ class moduleClass extends configClass
 					)
 			VALUES
 					(
-						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getmoduleSequence() . "\",
-						\"" . $this->model->getmoduleCode() . "\",					\"" . $this->model->getmoduleNote() . "\",
-						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
-						\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
-						\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+						'" . $this->model->getIconId() . "',					'" . $this->model->getmoduleSequence() . "',
+						'" . $this->model->getmoduleCode() . "',				'" . $this->model->getmoduleNote() . "',
+						'".$this->model->getIsDefault(0,'single')."',			'" . $this->model->getIsNew(0,'single') . "',
+						'" . $this->model->getIsDraft(0,'single') . "',			'" . $this->model->getIsUpdate(0,'single') . "',
+						'" . $this->model->getIsDelete(0,'single') . "',		'" . $this->model->getIsActive(0,'single') . "',
+						'" . $this->model->getIsApproved(0,'single') . "',		'" . $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			INSERT INTO \"module\"
+			INSERT INTO MODULE
 					(
-						\"iconId\",							\"moduleSequence\",
-						\"moduleCode\",						\"moduleNote\",
-						\"isDefault\",						\"isNew\",
-						\"isDraft\",						\"isUpdate\",
-						\"isDelete\",						\"isActive\",
-						\"isApproved\",						\"executeBy\",
-						\"executeTime\"
+						ICONID,							MODULESEQUENCE,
+						MODULECODE,						MODULENOTE,
+						ISDEFAULT,						ISNEW,
+						ISDRAFT,						ISUPDATE,
+						ISDELETE,						ISACTIVE,
+						ISAPPROVED,						EXECUTEBY,
+						EXECUTETIME
 					)
 			VALUES
 					(
-						\"" . $this->model->getIconId() . "\",					\"" . $this->model->getmoduleSequence() . "\",
-						\"" . $this->model->getmoduleCode() . "\",					\"" . $this->model->getmoduleNote() . "\",
-						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
-						\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
-						\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+						'" . $this->model->getIconId() . "',					'" . $this->model->getmoduleSequence() . "',
+						'" . $this->model->getmoduleCode() . "',				'" . $this->model->getmoduleNote() . "',
+						'".$this->model->getIsDefault(0,'single')."',			'" . $this->model->getIsNew(0,'single') . "',
+						'" . $this->model->getIsDraft(0,'single') . "',			'" . $this->model->getIsUpdate(0,'single') . "',
+						'" . $this->model->getIsDelete(0,'single') . "',		'" . $this->model->getIsActive(0,'single') . "',
+						'" . $this->model->getIsApproved(0,'single') . "',		'" . $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 					);";
 		}
@@ -207,8 +207,8 @@ class moduleClass extends configClass
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
 			SELECT 	*
-			FROM 	\"group\"
-			WHERE 	`\"isActive\"	=	1 ";
+			FROM 	GROUP_
+			WHERE 	`ISACTIVE	=	1 ";
 		}
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
@@ -253,11 +253,11 @@ class moduleClass extends configClass
 					) VALUES";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-				INSERT INTO	\"moduleAccess\"
+				INSERT INTO	MODULEACCESS
 						(
-							\"moduleId\",
-							\"groupId\",
-							\"moduleAccessValue\"
+							MODULEID,
+							GROUPID,
+							MODULEACCESSVALUE
 					) VALUES";
 		}
 		// optimize to 1 Query
@@ -299,11 +299,11 @@ class moduleClass extends configClass
 					);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-		 	INSERT INTO	\"moduleTranslate\"
+		 	INSERT INTO	MODULETRANSLATE
 					(
-					 	\"moduleId\",
-						\"languageId\",
-						\"moduleTranslate\"
+					 	MODULEID,
+						LANGUAGEID,
+						MODULETRANSLATE
 					) VALUES (
 						\"" . $lastId . "\",
 						21,
@@ -338,7 +338,7 @@ class moduleClass extends configClass
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[module].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"module\".\"isActive\"	=	1	";
+				$this->auditFilter = "	MODULE.ISACTIVE	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
@@ -413,28 +413,28 @@ class moduleClass extends configClass
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-					SELECT	\"module\".\"moduleId\",
-							\"module\".\"iconId\",
-							\"module\".\"moduleCode\",
-							\"module\".\"moduleSequence\",
-							\"module\".\"moduleNote\",
-							\"module\".\"isDefault\",
-							\"module\".\"isNew\",
-							\"module\".\"isDraft\",
-							\"module\".\"isUpdate\",
-							\"module\".\"isDelete\",
-							\"module\".\"isActive\",
-							\"module\".\"isApproved\",
-							\"module\".\"executeBy\",
-							\"module\".\"executeTime\",
-							\"staff\".\"staffName\",
-							\"icon\".\"iconName\"
-					FROM 	\"module\"
-					JOIN	\"staff\"
-					ON		\"module\".\"executeBy\" = \"staff\".\"staffId\"
-					LEFT 	JOIN	\"icon\"
-					USING	(\"iconId\")
-					WHERE 	\"isActive\"='1'	";
+					SELECT	MODULE.MODULEID,
+							MODULE.ICONID,
+							MODULE.MODULECODE,
+							MODULE.MODULESEQUENCE,
+							MODULE.MODULENOTE,
+							MODULE.ISDEFAULT,
+							MODULE.ISNEW,
+							MODULE.ISDRAFT,
+							MODULE.ISUPDATE,
+							MODULE.ISDELETE,
+							MODULE.ISACTIVE,
+							MODULE.ISAPPROVED,
+							MODULE.EXECUTEBY,
+							MODULE.EXECUTETIME,
+							STAFF.STAFFNAME,
+							ICON.ICONNAME
+					FROM 	MODULE
+					JOIN	STAFF
+					ON		MODULE.EXECUTEBY = STAFF.STAFFID
+					LEFT 	JOIN	ICON
+					USING	(ICONID)
+					WHERE 	ISACTIVE='1'	";
 			if ($this->model->getModuleId(0,'single')) {
 				$sql .= " AND \"".$this->model->getmoduleleName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getModuleId(0,'single') . "\"";
 			}
@@ -563,22 +563,22 @@ class moduleClass extends configClass
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT  \"module\".\"moduleId\",
-											\"module\".\"iconId\",
-											\"module\".\"moduleSequence\",
-											\"module\".\"moduleCode\",
-											\"module\".\"moduleNote\",
-											\"module\".\"isDefault\",
-											\"module\".\"isNew\",
-											\"module\".\"isDraft\",
-											\"module\".\"isUpdate\",
-											\"module\".\"isDelete\",
-											\"module\".\"isApproved\",
-											\"module\".\"executeBy\",
-											\"module\".\"executeTime\",
-											\"staff\".\"staffName\"
-									FROM 	\"module\"
-									WHERE 	\"module\".\"isActive\"=1  " . $tempSql . $tempSql2 . $orderBy . "
+									SELECT  MODULE.MODULEID,
+											MODULE.ICONID,
+											MODULE.MODULESEQUENCE,
+											MODULE.MODULECODE,
+											MODULE.MODULENOTE,
+											MODULE.ISDEFAULT,
+											MODULE.ISNEW,
+											MODULE.ISDRAFT,
+											MODULE.ISUPDATE,
+											MODULE.ISDELETE,
+											MODULE.ISAPPROVED,
+											MODULE.EXECUTEBY,
+											MODULE.EXECUTETIME,
+											STAFF.STAFFNAME
+									FROM 	MODULE
+									WHERE 	MODULE.ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
 						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
 						where r >=  \"". $this->start . "\"";
@@ -674,19 +674,19 @@ class moduleClass extends configClass
 			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE 	\"module\"
-			SET 	\"moduleSequence\"	= 	\"" . $this->model->moduleSequence . "\",
-					\"moduleNote\"		=	\"" . $this->model->moduleNote . "\",
-					\"iconId\"			=	\"" . $this->model->iconId . "\",
-					\"isActive\"		=	\"" . $this->model->getIsActive(0,'single') . "\",
-					\"isNew\"			=	\"" . $this->model->getIsNew(0,'single') . "\",
-					\"isDraft\"			=	\"" . $this->model->getIsDraft(0,'single') . "\",
-					\"isUpdate\"		=	\"" . $this->model->getIsUpdate(0,'single') . "\",
-					\"isDelete\"		=	\"" . $this->model->getIsDelete(0,'single') . "\",
-					\"isApproved\"		=	\"" . $this->model->getIsApproved(0,'single') . "\",
-					\"executeBy\"				=	\"" . $this->model->getExecuteBy() . "\",
-					\"executeTime\"			=	" . $this->model->getExecuteTime() . "
-			WHERE 	\"moduleId\"		=	\"" . $this->model->getModuleId(0,'single') . "\"";
+			UPDATE 	MODULE
+			SET 	MODULESEQUENCE	= 	\"" . $this->model->moduleSequence . "\",
+					MODULENOTE		=	\"" . $this->model->moduleNote . "\",
+					ICONID			=	\"" . $this->model->iconId . "\",
+					ISACTIVE		=	\"" . $this->model->getIsActive(0,'single') . "\",
+					ISNEW			=	\"" . $this->model->getIsNew(0,'single') . "\",
+					ISDRAFT			=	\"" . $this->model->getIsDraft(0,'single') . "\",
+					ISUPDATE		=	\"" . $this->model->getIsUpdate(0,'single') . "\",
+					ISDELETE		=	\"" . $this->model->getIsDelete(0,'single') . "\",
+					ISAPPROVED		=	\"" . $this->model->getIsApproved(0,'single') . "\",
+					EXECUTEBY				=	\"" . $this->model->getExecuteBy() . "\",
+					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+			WHERE 	MODULEID		=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -745,17 +745,17 @@ class moduleClass extends configClass
 			WHERE 	[moduleId]			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE 	\"module\"
-			SET 	\"isDefault\"		=	\"".$this->model->getIsDefault(0,'single')."\",
-					\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
-					\"isNew\"			=	\"".$this->model->getIsNew(0,'single')."\",
-					\"isDraft\"			=	\"".$this->model->getIsDraft(0,'single')."\",
-					\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
-					\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
-					\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
-					\"executeBy\"				=	\"".$this->model->getBy(0,'single')."\",
-					\"executeTime\"			=	".$this->model->getExecuteTime()."
-			WHERE 	\"moduleId\"			=	\"" . $this->model->getModuleId(0,'single') . "\"";
+			UPDATE 	MODULE
+			SET 	ISDEFAULT		=	\"".$this->model->getIsDefault(0,'single')."\",
+					ISACTIVE		=	\"".$this->model->getIsActive(0,'single')."\",
+					ISNEW			=	\"".$this->model->getIsNew(0,'single')."\",
+					ISDRAFT			=	\"".$this->model->getIsDraft(0,'single')."\",
+					ISUPDATE		=	\"".$this->model->getIsUpdate(0,'single')."\",
+					ISDELETE		=	\"".$this->model->getIsDelete(0,'single')."\",
+					ISAPPROVED		=	\"".$this->model->getIsApproved(0,'single')."\",
+					EXECUTEBY				=	\"".$this->model->getBy(0,'single')."\",
+					EXECUTETIME			=	".$this->model->getExecuteTime()."
+			WHERE 	MODULEID			=	\"" . $this->model->getModuleId(0,'single') . "\"";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {

@@ -170,34 +170,34 @@ class folderAccessClass  extends configClass {
 			}
 		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
-				SELECT	\"module\".\"moduleNote\",
-						\"module\".\"moduleId\",
-						\"folder\".\"folderId\",
-						\"folder\".\"folderNote\",
-						\"group\".\"groupId\",
-						\"group\".\"groupNote\",
-						\"folderAccess\".\"folderAccessId\",
-						(CASE	\"folderAccess\".\"folderAccessValue\"
+				SELECT	MODULE.MODULENOTE 	AS	\"moduleNote\",
+						MODULE.MODULEID 	AS 	\"moduleId\",
+						FOLDER.FOLDERID 	AS 	\"folderId\",
+						FOLDER.FOLDERNOTE 	AS 	\"folderNote\",
+						GROUP_.GROUPID 		AS 	\"groupId\",
+						GROUP_.GROUPNOTE 	AS 	\"groupNote\",
+						FOLDERACCESS.FOLDERACCESSID AS \"folderAccessId\",
+						(CASE	FOLDERACCESS.FOLDERACCESSVALUE
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
 						END) AS \"folderAccessValue\"
-				FROM 	\"folderAccess\"
-				JOIN	\"folder\"
-				USING 	(\"folderId\")
-				JOIN 	\"group\"
-				USING 	(\"groupId\")
-				JOIN 	\"module\"
-				USING	(\"moduleId\")
-				WHERE 	\"folder\".\"isActive\"		=	1
-				AND		\"module\".`isActive\"	=	1
-				AND		\"group\".`isActive\"		=	1";
+				FROM 	FOLDERACCESS
+				JOIN	FOLDER
+				ON		FOLDER.FOLDERID		=	FOLDERACCESS.FOLDERID
+				JOIN 	GROUP_
+				ON		GROUP_.GROUPID		=	FOLDERACCESS.GROUPID
+				JOIN 	MODULE
+				ON		MODULE.MODULEID		=	FOLDER.MODULEID
+				WHERE 	FOLDER.ISACTIVE		=	1
+				AND		MODULE.ISACTIVE		=	1
+				AND		GROUP_.ISACTIVE		=	1";
 			if($this->model->getGroupId()) {
-				$sql.=" AND \"group\".\"groupId\"=\"".$this->model->getGroupId()."\"";
+				$sql.=" AND GROUP_.GROUPID=\"".$this->model->getGroupId()."\"";
 			}
 			if($this->model->getModuleId()) {
-				$sql.=" AND \"folder\".\"moduleId\"=\"".$this->model->getModuleId()."\"";
+				$sql.=" AND FOLDER.MODULEID=\"".$this->model->getModuleId()."\"";
 			}
 		}
 		//echo $sql;

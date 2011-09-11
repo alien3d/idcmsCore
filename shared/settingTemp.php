@@ -50,13 +50,13 @@
 		FROM 			\"tableMapping\"
 		JOIN			\"tableMappingTranslate\"
 		USING			(\"tableMappingId\")
-		WHERE 			\"tableMapping\".\"languageId\"=\"".$_SESSION['languageId']."\"";
+		WHERE 			\"tableMapping\".LANGUAGEID=\"".$_SESSION['languageId']."\"";
 		// temp
 		$sql="
 		SELECT 			\"tableMapping\".\"tableMappingColumnName\",
 						\"tableMapping\".\"tableMappingNativeLabel\"
 		FROM 			\"tableMapping\"
-		WHERE 			\"tableMapping\".\"languageId\"=\"".$_SESSION['languageId']."\"";
+		WHERE 			\"tableMapping\".LANGUAGEID=\"".$_SESSION['languageId']."\"";
 	} else {
 
 	}
@@ -89,10 +89,10 @@ while ($row = $q->fetchAssoc($result)) {
 	} else if ($q->vendor==sharedx::oracle) {
 	$sql="
 			SELECT	*
-			FROM 	\"defaultLabel\"
+			FROM 	DEFAULTLABEL
 			JOIN 	\"defaultLabelTranslate\"
-			ON		\"defaultLabel\" .\"defaultLabelId\"=  \"defaultLabelTranslate\" .\"defaultLabelId\"
-			WHERE 	\"defaultLabelTranslate\".\"languageId\"=\"".$_SESSION['languageId']."\"";
+			ON		DEFAULTLABEL .\"defaultLabelId\"=  \"defaultLabelTranslate\" .\"defaultLabelId\"
+			WHERE 	\"defaultLabelTranslate\".LANGUAGEID=\"".$_SESSION['languageId']."\"";
 	}
 	$result	=	$q->fast($sql);
 	while ($row = $q->fetchAssoc($result)) {
@@ -139,15 +139,15 @@ if($q->vendor==sharedx::mysql) {
 
 	$sql	=
 "	SELECT	*
-	FROM	\"leaf\"
-	JOIN	\"leafAccess\"
-	ON 		\"leaf\".\"leafId\"= 	\"leafAccess\".\"leafId\"
+	FROM	LEAF
+	JOIN	LEAFACCESS
+	ON 		LEAF.LEAFID= 	LEAFACCESS.LEAFID
 	JOIN 	\"leafTranslate\"
-	ON		\"leafAccess\".\"leafId\"	=\"leafTranslate\".\"leafId\"
-	AND 	\"leafTranslate\".\"leafId\"= \"leaf\".\"leafId\"
-	WHERE  	\"leaf\".\"leafFilename\"			=	\"".basename($_SERVER[$phpself])."\"
-	AND  	\"leafAccess\".\"staffId\"			=	\"".$_SESSION[$staffId]."\"
-	AND		\"leafTranslate\".\"languageId\"	=	\"".$_SESSION['languageId']."\"";
+	ON		LEAFACCESS.LEAFID	=\"leafTranslate\".LEAFID
+	AND 	\"leafTranslate\".LEAFID= LEAF.LEAFID
+	WHERE  	LEAF.LEAFFILENAME			=	\"".basename($_SERVER[$phpself])."\"
+	AND  	LEAFACCESS.STAFFID			=	\"".$_SESSION[$staffId]."\"
+	AND		\"leafTranslate\".LANGUAGEID	=	\"".$_SESSION['languageId']."\"";
 	}
 
 $result	=	$q->fast($sql);
@@ -180,12 +180,12 @@ var leafPrintAccessValue	= '<?php echo $row_leafAccess['leafPrintAccessValue']; 
 			AND		[group].[groupId]	=	'".$_SESSION['groupId']."'";
 		} else if ($q->vendor==sharedx::oracle) {
 			$sql	=	"
-			SELECT	\"group\".\"isAdmin\"
-			FROM 	\"staff\"
-			JOIN	\"group\"
-			USING   (\"groupId\")
-			WHERE 	\"staff\".\"staffId\"	=	\"".$_SESSION['staffId']."\"
-			AND		\"group\".\"groupId\"	=	\"".$_SESSION['groupId']."\"";
+			SELECT	GROUP_.\"isAdmin\"
+			FROM 	STAFF
+			JOIN	GROUP_
+			USING   (GROUPID)
+			WHERE 	STAFF.STAFFID	=	\"".$_SESSION['staffId']."\"
+			AND		GROUP_.GROUPID	=	\"".$_SESSION['groupId']."\"";
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$q->vendor."]"));
 			exit();

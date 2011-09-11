@@ -115,12 +115,12 @@ class eventClass extends configClass
 						`eventLocation`,	`eventIsNew`,
 						`staffId`,			`executeTime`
 			)VALUES	(
-				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
-				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
-				\"".$this->model->geteventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
-				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
-				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
-				\"". $this->model->getExecuteBy() . "\",			" . $this->model->getExecuteTime() . "
+				'". $this->model->getCalendarId() ."',		'". $this->model->getEventTitle() ."',
+				'". $this->model->getEventStart() ."',		'".$this->model->getEventEnd() ."',
+				'".$this->model->geteventIsAllDay() ."',	'". $this->model->getEventNotes() ."',
+				'". $this->model->getEventReminder() ."',	'". $this->model->getEventUrl() ."',
+				'". $this->model->getEventLocation() ."',	'". $this->model->getEventIsNew() ."',
+				'". $this->model->getExecuteBy() . "',		" . $this->model->getExecuteTime() . "
 				
 							);";
 		} else if ($this->getVendor() ==  self::mssql){
@@ -133,30 +133,29 @@ class eventClass extends configClass
 						[eventLocation],	[eventIsNew],
 						[staffId],			[executeTime]
 			)VALUES	(
-				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
-				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
-				\"".$this->model->geteventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
-				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
-				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
-				\"". $this->model->getExecuteBy() . "\",			" . $this->model->getExecuteTime() . "
+				'". $this->model->getCalendarId() ."',		'". $this->model->getEventTitle() ."',
+				'". $this->model->getEventStart() ."',		'".$this->model->getEventEnd() ."',
+				'".$this->model->geteventIsAllDay() ."',	'". $this->model->getEventNotes() ."',
+				'". $this->model->getEventReminder() ."',	'". $this->model->getEventUrl() ."',
+				'". $this->model->getExecuteBy() . "',		" . $this->model->getExecuteTime() . "
 				
 							);";
 		}elseif ($this->getVendor()==self::oracle){
-			$sql = "\"
-			INSERT INTO \"event\" (
-						\"calendarId\",			\"eventTitle\",
-						\"eventStart\",			\"eventEnd\",
-						\"eventIsAllDay\",		\"eventNotes\",
-						\"eventReminder\",		\"eventUrl\",
-						\"eventLocation\",		\"eventIsNew\",
-						\"staffId\",			\"executeTime\"
+			$sql = "
+			INSERT INTO EVENT (
+						CALENDARID,			EVENTTITLE,
+						EVENTSTART,			EVENTEND,
+						EVENTISALLDAY,		EVENTNOTES,
+						EVENTREMINDER,		EVENTURL,
+						EVENTLOCATION,		EVENTISNEW,
+						STAFFID,			EXECUTETIME
 			)VALUES	(
-				\"". $this->model->getCalendarId() ."\",	\"". $this->model->getEventTitle() ."\",
-				\"". $this->model->getEventStart() ."\",	\"".$this->model->getEventEnd() ."\",
-				\"".$this->model->geteventIsAllDay() ."\",	\"". $this->model->getEventNotes() ."\",
-				\"". $this->model->getEventReminder() ."\",	\"". $this->model->getEventUrl() ."\",
-				\"". $this->model->getEventLocation() ."\",	\"". $this->model->getEventIsNew() ."\",
-				\"". $this->model->getExecuteBy() . "\",			" . $this->model->getExecuteTime() . "
+				'". $this->model->getCalendarId() ."',		'". $this->model->getEventTitle() ."',
+				'". $this->model->getEventStart() ."',		'".$this->model->getEventEnd() ."',
+				'".$this->model->geteventIsAllDay() ."',	'". $this->model->getEventNotes() ."',
+				'". $this->model->getEventReminder() ."',	'". $this->model->getEventUrl() ."',
+				'". $this->model->getEventLocation() ."',	'". $this->model->getEventIsNew() ."',
+				'". $this->model->getExecuteBy() . "',		" . $this->model->getExecuteTime() . "
 				
 							);";
 		}
@@ -198,8 +197,8 @@ class eventClass extends configClass
 
 			if($this->model->getEventStart() && $this->model->getEventEnd()){
 				$sql.="
-				AND	`event`.`eventStart` >= '".$this->model->getEventStart()."'
-				AND	`event`.`eventEnd` 	<= '".$this->model->getEventEnd()."'";
+				AND	`event`.`eventStart`	>= 	'".$this->model->getEventStart()."'
+				AND	`event`.`eventEnd` 		<=	'".$this->model->getEventEnd()."'";
 			}
 
 		} else if ($this->getVendor()  ==self::mssql){
@@ -207,29 +206,30 @@ class eventClass extends configClass
 			SELECT	*
 			FROM 	[event]
 			JOIN    [calendar]
-			ON		[event].[calendarId]= [calendar].[calendarId]
-			AND		[event].[staffId] = [calendar].[staffId]
+			ON		[event].[calendarId]				= 	[calendar].[calendarId]
+			AND		[event].[staffId] 					=	[calendar].[staffId]
 			JOIN	[calendarColor]
-			ON		[calendarColor].[calendarColorId]= [calendar].[calendarColorId]
-			WHERE 	[calendar].[staffId] = \"". $this->model->getExecuteBy() ."\"";
+			ON		[calendarColor].[calendarColorId]	=	[calendar].[calendarColorId]
+			WHERE 	[calendar].[staffId] 				= 	'". $this->model->getExecuteBy() ."'";
 			if($this->model->getEventStart() && $this->model->getEventEnd()){
 				$sql.="
-				AND	[event].[eventStart] >= '".$this->model->getEventStart()."'
-				AND	[event].[eventEnd] 	<= '".$this->model->getEventEnd()."'";
+				AND	[event].[eventStart]	>= 	'".$this->model->getEventStart()."'
+				AND	[event].[eventEnd] 		<=	'".$this->model->getEventEnd()."'";
 			}
 		}  else if ($this->getVendor() == self :: oracle){
 			$sql = "
 			SELECT	*
-			FROM 	\"event\"
-			JOIN	\"calendar\"
-			USING	(\"calendarId\",\"staffId\")
-			JOIN    \"calendarColor\"
-			USING   (\"calendarColorId\")
-			WHERE 	\"calendar\".\"staffId\" = \"". $this->model->getExecuteBy() ."\"";
+			FROM 	EVENT
+			JOIN	CALENDAR
+			ON		CALENDAR.CALENDARID 			= 	EVENT.CALENDARID
+			AND		CALENDAR.STAFFID				= 	EVENT.STAFFID
+			JOIN    CALENDARCOLOR
+			ON		CALENDARCOLOR.CALENDARCOLORID	=	CALENDAR.CALENDARCOLORID
+			WHERE 	CALENDAR.STAFFID 				= 	'". $this->model->getExecuteBy() ."'";
 			if($this->model->getEventStart() && $this->model->getEventEnd()){
 				$sql.="
-				AND	[event].[eventStart] >= '".$this->model->getEventStart()."'
-				AND	[event].[eventEnd] 	<= '".$this->model->getEventEnd()."'";
+				AND	EVENT.EVENTSTART 	>=	'".$this->model->getEventStart()."'
+				AND	EVENT.EVENTEND 		<= 	'".$this->model->getEventEnd()."'";
 			}
 		}
 		$this->q->read($sql);
@@ -300,33 +300,33 @@ class eventClass extends configClass
 			WHERE 	`eventId`			=	\"". $this->model->getEventId(0,'single')."\"";
 		} else if ($this->q->vendor == self :: mssql){
 			$sql = "
-			UPDATE	`event`
-			SET		`calendarId`		=	\"". $this->model->getCalendarId() ."\",
-					`eventTitle`		=	\"". $this->model->getEventTitle() ."\",
-					`eventStart`		=	\"". $this->model->getEventStart() ."\",
-					`eventEnd`			=	\"". $this->model->getEventEnd() ."\",
-					`eventIsAllDay`  	= 	\"". $this->model->geteventIsAllDay() ."\",
-					`eventNotes` 		= 	\"". $this->model->getEventNotes() ."\",
-					`eventReminder`		=	\"". $this->model->getEventReminder() ."\",
-					`eventUrl`			=	\"". $this->model->getEventUrl() ."\",
-					`eventLocation`		=	\"". $this->model->getEventLocation() ."\",
-					`eventIsNew`		=	\"". $this->model->getEventIsNew() ."\"
-			WHERE 	`eventId`			=	\"". $this->model->getEventId(0,'single')."\"";
+			UPDATE	[event]
+			SET		[calendarId]		=	'". $this->model->getCalendarId() ."',
+					[eventTitle]		=	'". $this->model->getEventTitle() ."',
+					[eventStart]		=	'". $this->model->getEventStart() ."',
+					[eventEnd]			=	'". $this->model->getEventEnd() ."',
+					[eventIsAllDay]  	= 	'". $this->model->geteventIsAllDay() ."',
+					[eventNotes] 		= 	'". $this->model->getEventNotes() ."',
+					[eventReminder]		=	'". $this->model->getEventReminder() ."',
+					[eventUrl]			=	'". $this->model->getEventUrl() ."',
+					[eventLocation]		=	'". $this->model->getEventLocation() ."',
+					[eventIsNew]		=	'". $this->model->getEventIsNew() ."'
+			WHERE 	[eventId]			=	'". $this->model->getEventId(0,'single')."'";
 
 		} else if ($this->q->vendor == self:: oracle){
 			$sql = "
-			UPDATE	`event`
-			SET		`calendarId`		=	\"". $this->model->getCalendarId() ."\",
-					`eventTitle`		=	\"". $this->model->getEventTitle() ."\",
-					`eventStart`		=	\"". $this->model->getEventStart() ."\",
-					`eventEnd`			=	\"". $this->model->getEventEnd() ."\",
-					`eventIsAllDay`  	= 	\"". $this->model->geteventIsAllDay() ."\",
-					`eventNotes` 		= 	\"". $this->model->getEventNotes() ."\",
-					`eventReminder`		=	\"". $this->model->getEventReminder() ."\",
-					`eventUrl`			=	\"". $this->model->getEventUrl() ."\",
-					`eventLocation`		=	\"". $this->model->getEventLocation() ."\",
-					`eventIsNew`		=	\"". $this->model->getEventIsNew() ."\"
-			WHERE 	`eventId`			=	\"". $this->model->getEventId(0,'single')."\"";
+			UPDATE	EVENT
+			SET		CALENDARID		=	'". $this->model->getCalendarId() ."',
+					EVENTTITLE		=	'". $this->model->getEventTitle() ."',
+					EVENTSTART		=	'". $this->model->getEventStart() ."',
+					EVENTEND		=	'". $this->model->getEventEnd() ."',
+					EVENTISALLDAY  	= 	'". $this->model->geteventIsAllDay() ."',
+					EVENTNOTES 		= 	'". $this->model->getEventNotes() ."',
+					EVENTREMINDER	=	'". $this->model->getEventReminder() ."',
+					EVENTURL		=	'". $this->model->getEventUrl() ."',
+					EVENTLOCATION	=	'". $this->model->getEventLocation() ."',
+					EVENTISNEW		=	'". $this->model->getEventIsNew() ."'
+			WHERE 	EVENTID			=	'". $this->model->getEventId(0,'single')."'";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
@@ -360,11 +360,11 @@ class eventClass extends configClass
 		} else if ($this->q->vendor == self :: mssql){
 			$sql = "
 			DELETE 	FROM	[event]
-			WHERE 			[eventId]		=	\"". $this->model->getEventId(0,'single')."\"";
+			WHERE 			[eventId]		=	'". $this->model->getEventId(0,'single')."'";
 		} else if ($this->q->vendor == self:: oracle){
 			$sql = "
-			DELETE 	FROM	\"event\"
-			WHERE 			\"eventId\"		=	\"". $this->model->getEventId(0,'single')."\"";
+			DELETE 	FROM	EVENT
+			WHERE 			EVENT		=	'". $this->model->getEventId(0,'single')."'";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {

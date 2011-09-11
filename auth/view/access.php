@@ -89,12 +89,12 @@ class loginClass extends configClass {
 			AND		[department].[isActive]		=	1";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
-			SELECT	STAFF.STAFFID 	AS \"staffId\",
-					STAFF.STAFFNO 	AS \"staffNo\",
-					STAFF.STAFFNAME AS \"staffName\",
-					STAFF.LANGUAGEID AS \"languageId\",
-					GROUP_.GROUPID AS \"groupId\",
-					DEPARTMENT.DEPARTMENTID AS \"departmentId\"
+			SELECT	STAFF.STAFFID 			AS	\"staffId\",
+					STAFF.STAFFNO 			AS 	\"staffNo\",
+					STAFF.STAFFNAME 		AS 	\"staffName\",
+					STAFF.LANGUAGEID 		AS 	\"languageId\",
+					GROUP_.GROUPID 			AS  \"groupId\",
+					DEPARTMENT.DEPARTMENTID AS 	\"departmentId\"
 						
 			FROM 	STAFF
 			JOIN	GROUP_

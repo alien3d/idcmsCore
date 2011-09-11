@@ -181,26 +181,25 @@ class folderClass extends  configClass {
 					);";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			INSERT INTO 	\"folder\"
+			INSERT INTO 	FOLDER
 						(
-							\"moduleId\",							\"iconId\",
-							\"folderSequence\",					\"folderCode\",					
-							\"folderPath\",						\"folderNote\",
-							\"isDefault\",						\"isNew\",
-							\"isDraft\",						\"isUpdate\",
-							\"isDelete\",						\"isActive\",
-							\"isApproved\",						\"executeBy\",
-							\"executeTime\"
+							MODULEID,							ICONID,
+							FOLDERSEQUENCE,					FOLDERCODE,					
+							FOLDERPATH,						FOLDERNOTE,
+							ISDEFAULT,						ISNEW,
+							ISDRAFT,						ISUPDATE,
+							ISDELETE,						ISACTIVE,
+							ISAPPROVED,						EXECUTEBY,
+							EXECUTETIME
 				VALUES	(
-							\"".$this->model->getModuleId()."\",						\"".$this->model->getIconId()."\",
-							\"".$this->model->getFolderSequence()."\", 				\"".$this->model->getFolderCode()."\",
-							\"".$this->model->getfolderPath()."\"	,				\"".$this->model->getfolderNote()."\",
-							\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
-							\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
-							\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-							\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+							'".$this->model->getModuleId()."',					'".$this->model->getIconId()."',
+							'".$this->model->getFolderSequence()."', 			'".$this->model->getFolderCode()."',
+							'".$this->model->getfolderPath()."'	,				'".$this->model->getfolderNote()."',
+							'".$this->model->getIsDefault(0,'single')."',		'" . $this->model->getIsNew(0,'single') . "',
+							'" . $this->model->getIsDraft(0,'single') . "',		'" . $this->model->getIsUpdate(0,'single') . "',
+							'" . $this->model->getIsDelete(0,'single') . "',	'" . $this->model->getIsActive(0,'single') . "',
+							'" . $this->model->getIsApproved(0,'single') . "',	'" . $this->model->getExecuteBy() . "',
 							" . $this->model->getExecuteTime() . "
-					
 					)";
 		}
 		$this->q->create($sql);
@@ -219,19 +218,19 @@ class folderClass extends  configClass {
 		// loop the group
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-					SELECT 	*
+					SELECT 	`groupId`
 					FROM 	`group`
 					WHERE 	`isActive`	=	1 ";
 		} else if ($this->q->vendor == 'microsoft') {
 			$sql = "
-					SELECT 	*
+					SELECT 	[groupId]
 					FROM 	[group]
 					WHERE 	[isActive]	=	1 ";
 		} else if ($this->q->vendor == 'oracle') {
 			$sql = "
-					SELECT 	*
-					FROM 	\"group\"
-					WHERE 	`\"isActive\"	=	1 ";
+					SELECT 	GROUPID
+					FROM 	GROUP_
+					WHERE 	ISACTIVE	=	1 ";
 		}
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
@@ -247,11 +246,19 @@ class folderClass extends  configClass {
 			/**
 			 *	By Default  No Access
 			 **/
-			echo		$sqlLooping.="(
+			if($this->getVendor()==self::mysql){
+						$sqlLooping.="(
 									\"" . $lastId . "\",
 									 \"" . $row['groupId'] . "\",
 									 \"0\"
 								),";
+			} else if ($this->getVendor()==self::mssql || $this->getVendor()==self::oracle){
+						$sqlLooping.="(
+									'" . $lastId . "',
+									 '" . $row['groupId'] . "',
+									 0
+								),";	
+			}
 
 
 
@@ -276,11 +283,11 @@ class folderClass extends  configClass {
 							) VALUES";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-						INSERT INTO	\"folderAccess\"
+						INSERT INTO	FOLDERACCESS
 								(
-									\"folderId\",
-									\"groupId\",
-									\"folderAccessValue\"
+									FOLDERID,
+									GROUPID,
+									FOLDERACCESSVALUE
 							) VALUES";
 		}
 		// optimize to 1 Query
@@ -318,21 +325,21 @@ class folderClass extends  configClass {
 								[languageId],
 								[folderTranslate]
 							) VALUES (
-								\"" . $lastId . "\",
+								'" . $lastId . "',
 								21,
-								\"" .  $this->model->getFolderNote() . "\"
+								'" .  $this->model->getFolderNote() . "'
 							);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-				 	INSERT INTO	\"folderTranslate\"
+				 	INSERT INTO	FOLDERTRANSLATE
 							(
-							 	\"folderId\",
-								\"languageId\",
-								\"folderTranslate\"
+							 	FOLDERID,
+								LANGUAGEID,
+								FOLDERTRANSLATE
 							) VALUES (
-								\"" . $lastId . "\",
+								'" . $lastId . "',
 								21,
-								\"" .  $this->model->getFolderNote() . "\"
+								'" .  $this->model->getFolderNote() . "'
 							);";
 		}
 		$this->q->create($sql);
@@ -358,7 +365,7 @@ class folderClass extends  configClass {
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[folder].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"folder\".\"isActive\"	=	1	";
+				$this->auditFilter = "	FOLDER.ISACTIVE	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
@@ -403,20 +410,20 @@ class folderClass extends  configClass {
 			WHERE		[module].[isActive]	=	1
 			AND			[folder].[isActive]		=	1";
 			if($this->model->getFolderId(0,'single')) {
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getFolderId(0,'single')."\"";
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='".$this->model->getFolderId(0,'single')."'";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
-			FROM 		\"folder\"
-			JOIN 		\"module\"
-			ON			\"module\".\"moduleId\" = \"folder\".\"moduleId\"
-			LEFT JOIN	\"icon\"
-			USING(\"iconId\")
-			WHERE		\"module\".\"isActive\"=1
-			AND			\"folder\".\"isActive\"=1";
+			FROM 		FOLDER
+			JOIN 		MODULE
+			ON			MODULE.MODULEID = FOLDER.MODULEID
+			LEFT JOIN	ICON
+			ON			ICON.ICONID		= FOLDER.ICONID
+			WHERE		MODULE.ISACTIVE=1
+			AND			FOLDER.ISACTIVE=1";
 			if($this->model->getFolderId(0,'single')) {
-				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getFolderId(0,'single')."\"";
+				$sql.=" AND 	".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getPrimaryKeyName())."=".$this->model->getFolderId(0,'single')."'";
 			}
 		}
 		/**
@@ -527,20 +534,20 @@ class folderClass extends  configClass {
 												rownum r
 						FROM (
 									SELECT 		*,
-												\"folder\".\"executeBy\",
-												\"folder\".\"executeTime\"
-									FROM 		\"folder\"
+												FOLDER.EXECUTEBY,
+												FOLDER.EXECUTETIME
+									FROM 		FOLDER
 									JOIN		\"folderTranslate\"
-									ON			\"folder\".\"folderId\"	=\"folderTranslate\".\"folderId\"
+									ON			FOLDER.FOLDERID	=\"folderTranslate\".FOLDERID
 									JOIN 		\"tab\"
-									ON			\"tab\".\"moduleId\" = \"folder\".\"moduleId\"
+									ON			\"tab\".MODULEID = FOLDER.MODULEID
 									JOIN		\"tabTranslate\"
-									ON			\"tab\".\"moduleId\"=	\"tabTranslate\".\"moduleId\"
-									AND			\"tabTranslate\".\"moduleId\" =\"folder\".\"moduleId\"
-									LEFT JOIN	\"icon\"
-									ON			\"folder\".\"iconId\"=\"icon\".\"iconId\"
-									WHERE		\"tab\".\"isActive\"=1
-									AND			\"folder\".\"isActive\"=1 ".$tempSql.$tempSql2.$orderBy."
+									ON			\"tab\".MODULEID=	\"tabTranslate\".MODULEID
+									AND			\"tabTranslate\".MODULEID =FOLDER.MODULEID
+									LEFT JOIN	ICON
+									ON			FOLDER.ICONID=ICON.ICONID
+									WHERE		\"tab\".ISACTIVE=1
+									AND			FOLDER.ISACTIVE=1 ".$tempSql.$tempSql2.$orderBy."
 								 ) a
 						where rownum <= \"".($_POST['start']+$_POST['limit']-1)."\" )
 						where r >=  \"".$_POST['start']."\"";
@@ -632,43 +639,43 @@ class folderClass extends  configClass {
 							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'single')."\",
 							`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
-							`executeBy`				=	\"".$this->model->getExecuteBy()."\",
-							`executeTime`				=	".$this->model->getExecuteTime()."
+							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
+							`executeTime`		=	".$this->model->getExecuteTime()."
 					WHERE 	`folderId`			=	\"".$this->model->getFolderId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[folder]
-					SET 	[moduleId]		=	\"".$this->model->getModuleId()."\",
-							[folderNote]		=	\"".$this->model->getfolderNote()."\",
-							[folderSequence]	=	\"".$this->model->getfolderSequence()."\",
-							[folderPath]		=	\"".$this->model->getfolderPath()."\",
-							[iconId]			=	\"".$this->strict($_POST['iconId'],'string')."\",
-							[isActive]			=	\"".$this->model->getIsActive(0,'single')."\",
-							[isNew]				=	\"".$this->model->getIsNew(0,'single')."\",
-							[isDraft]			=	\"".$this->model->getIsDraft(0,'single')."\",
-							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'single')."\",
-							[isDelete]			=	\"".$this->model->getIsDelete(0,'single')."\",
-							[isApproved]		=	\"".$this->model->getIsApproved(0,'single')."\",
-							[executeBy]				=	\"".$this->model->getExecuteBy()."\",
-							[executeTime]				=	".$this->model->getExecuteTime()."
-					WHERE 	[folderId]			=	\"".$this->model->getFolderId(0,'single')."\"";
+					SET 	[moduleId]			=	'".$this->model->getModuleId()."',
+							[folderNote]		=	'".$this->model->getfolderNote()."',
+							[folderSequence]	=	'".$this->model->getfolderSequence()."',
+							[folderPath]		=	'".$this->model->getfolderPath()."',
+							[iconId]			=	'".$this->strict($_POST['iconId'],'string')."',
+							[isActive]			=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]				=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]			=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]			=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]			=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]		=	'".$this->model->getIsApproved(0,'single')."',
+							[executeBy]			=	'".$this->model->getExecuteBy()."',
+							[executeTime]		=	".$this->model->getExecuteTime()."
+					WHERE 	[folderId]			=	'".$this->model->getFolderId(0,'single')."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE 	\"folder\"
-					SET 	\"moduleId\"		=	\"".$this->model->getModuleId()."\",
-							\"folderNote\"		=	\"".$this->model->getfolderNote()."\",
-							\"folderSequence\"	=	\"".$this->model->getfolderSequence()."\",
-							\"folderPath\"		=	\"".$this->model->getfolderPath()."\",
-							\"isDefault\"		=	\"".$this->model->getIsDefault(0,'single')."\",
-							\"isActive\"		=	\"".$this->model->getIsActive(0,'single')."\",
-							\"isNew\"			=	\"".$this->model->getIsNew(0,'single')."\",
-							\"isDraft\"			=	\"".$this->model->getIsDraft(0,'single')."\",
-							\"isUpdate\"		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							\"isDelete\"		=	\"".$this->model->getIsDelete(0,'single')."\",
-							\"isApproved\"		=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"executeBy\"				=	\"".$this->model->getExecuteBy()."\",
-							\"executeTime\"			=	".$this->model->getExecuteTime()."
-					WHERE 	\"folderId\"		=	\"".$this->model->getFolderId(0,'single')."\"";
+					UPDATE 	FOLDER
+					SET 	MODULEID		=	\"".$this->model->getModuleId()."\",
+							FOLDERNOTE		=	\"".$this->model->getfolderNote()."\",
+							FOLDERSEQUENCE	=	\"".$this->model->getfolderSequence()."\",
+							FOLDERPATH		=	\"".$this->model->getfolderPath()."\",
+							ISDEFAULT		=	\"".$this->model->getIsDefault(0,'single')."\",
+							ISACTIVE		=	\"".$this->model->getIsActive(0,'single')."\",
+							ISNEW			=	\"".$this->model->getIsNew(0,'single')."\",
+							ISDRAFT			=	\"".$this->model->getIsDraft(0,'single')."\",
+							ISUPDATE		=	\"".$this->model->getIsUpdate(0,'single')."\",
+							ISDELETE		=	\"".$this->model->getIsDelete(0,'single')."\",
+							ISAPPROVED		=	\"".$this->model->getIsApproved(0,'single')."\",
+							EXECUTEBY		=	\"".$this->model->getExecuteBy()."\",
+							EXECUTETIME		=	".$this->model->getExecuteTime()."
+					WHERE 	FOLDERID		=	\"".$this->model->getFolderId(0,'single')."\"";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
@@ -704,36 +711,36 @@ class folderClass extends  configClass {
 							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
 							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
-							`executeTime`			=	".$this->model->getExecuteTime()."
+							`executeBy`		=	\"".$this->model->getExecuteBy()."\",
+							`executeTime`	=	".$this->model->getExecuteTime()."
 					WHERE 	`folderId`		=	\"".$this->model->getFolderId()."\"";
 
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[folder]
-					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
-							[executeTime]			=	".$this->model->getExecuteTime()."
-					WHERE 	[folderId]		=	\"".$this->model->getFolderId()."\"";
+					SET		[isDefault]		=	'".$this->model->getIsDefault(0,'single')."',
+							[isActive]		=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]			=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]		=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]		=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]		=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]	=	'".$this->model->getIsApproved(0,'single')."',
+							[executeBy]		=	'".$this->model->getExecuteBy()."',
+							[executeTime]	=	".$this->model->getExecuteTime()."
+					WHERE 	[folderId]		=	'".$this->model->getFolderId()."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE	\"folder\"
-					SET		\"isDefault\"	=	\"".$this->model->getIsDefault(0,'single')."\",
-							\"isActive\"	=	\"".$this->model->getIsActive(0,'single')."\",
-							\"isNew\"		=	\"".$this->model->getIsNew(0,'single')."\",
-							\"isDraft\"		=	\"".$this->model->getIsDraft(0,'single')."\",
-							\"isUpdate\"	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							\"isDelete\"	=	\"".$this->model->getIsDelete(0,'single')."\",
-							\"isApproved\"	=	\"".$this->model->getIsApproved(0,'single')."\",
-							\"executeBy\"			=	\"".$this->model->getExecuteBy()."\",
-							\"executeTime\"		=	".$this->model->getExecuteTime()."
-					WHERE 	\"folderId\"	=	\"".$this->model->getFolderId()."\"";
+					UPDATE	FOLDER
+					SET		ISDEFAULT	=	'".$this->model->getIsDefault(0,'single')."',
+							ISACTIVE	=	'".$this->model->getIsActive(0,'single')."',
+							ISNEW		=	'".$this->model->getIsNew(0,'single')."',
+							ISDRAFT		=	'".$this->model->getIsDraft(0,'single')."',
+							ISUPDATE	=	'".$this->model->getIsUpdate(0,'single')."',
+							ISDELETE	=	'".$this->model->getIsDelete(0,'single')."',
+							ISAPPROVED	=	'".$this->model->getIsApproved(0,'single')."',
+							EXECUTEBY	=	'".$this->model->getExecuteBy()."',
+							EXECUTETIME	=	".$this->model->getExecuteTime()."
+					WHERE 	FOLDERID	=	'".$this->model->getFolderId()."'";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
