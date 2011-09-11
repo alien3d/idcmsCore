@@ -653,14 +653,14 @@ abstract class configClass
 	 * @param int $value
 	 */
 	public function setStart($value){
-		$this->start = $value;
+		$this->getStart() = $value;
 	}
 	/**
 	 * Return Start Number Per Page
 	 * @return int
 	 */
 	public function getStart() {
-		return $this->start;
+		return $this->getStart();
 	}
 
 	/**
@@ -668,14 +668,14 @@ abstract class configClass
 	 * @param int $value
 	 */
 	public function setLimit($value){
-		$this->limit = $value;
+		$this->getLimit() = $value;
 	}
 	/**
 	 * Return limit Per Page
 	 * @return int
 	 */
 	public function getLimit() {
-		return $this->limit;
+		return $this->getLimit();
 	}
 
 	/**

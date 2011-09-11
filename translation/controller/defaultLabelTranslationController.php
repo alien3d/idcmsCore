@@ -145,7 +145,8 @@ class defaultLabelTranslationClass extends  configClass {
 						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+						\"". 
+			$this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
 						" . $this->model->getExecuteTime() . "
 					);";
 		}else if ($this->getVendor()==self::mssql) {
@@ -161,29 +162,29 @@ class defaultLabelTranslationClass extends  configClass {
 				)
 			VALUES
 				(
-						\"".$this->model->getdefaultLabelTranslation()."\",						\"".$this->model->getdefaultLabelTranslationEnglish()."\"
-						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
-						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
-						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+						'".$this->model->getdefaultLabelTranslation()."',		    '".$this->model->getdefaultLabelTranslationEnglish()."\"
+						'". $this->model->getIsDefault(0,'single') . "',			'". $this->model->getIsNew(0,'single') . "',
+						'". $this->model->getIsDraft(0,'single') . "',				'". $this->model->getIsUpdate(0,'single') . "',
+						'". $this->model->getIsDelete(0,'single') . "',			'". $this->model->getIsActive(0,'single') . "',
+						'". $this->model->getIsApproved(0,'single') . "',			'". $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 			);";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			INSERT INTO 	\"defaultLabelTranslation\"
+			INSERT INTO 	DEFAULTLABELTRANSLATION
 						(
-							\"defaultLabelTranslation\",							\"defaultLabelTranslationEnglish\",
+							DEFAULTLABELTRANSLATION,				DEFAULTLABELTRANSLATIONENGLISH,
 							ISDEFAULT,								ISNEW,
 							ISDRAFT,								ISUPDATE,
 							ISDELETE,								ISACTIVE,
 							ISAPPROVED,								EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							\"".$this->model->getdefaultLabelTranslation()."\",						\"".$this->model->getdefaultLabelTranslationEnglish()."\"
-							\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
-							\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
-							\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-							\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+							'".$this->model->getdefaultLabelTranslation()."',		'".$this->model->getdefaultLabelTranslationEnglish()."'
+							'". $this->model->getIsDefault(0,'single') . "',		'". $this->model->getIsNew(0,'single') . "',
+							'". $this->model->getIsDraft(0,'single') . "',			'". $this->model->getIsUpdate(0,'single') . "',
+							'". $this->model->getIsDelete(0,'single') . "',			'". $this->model->getIsActive(0,'single') . "',
+							'". $this->model->getIsApproved(0,'single') . "',		'". $this->model->getExecuteBy() . "',
 							" . $this->model->getExecuteTime() . "
 			)";
 		}
@@ -233,15 +234,15 @@ class defaultLabelTranslationClass extends  configClass {
 			FROM 		[defaultLabelTranslation]
 			WHERE 1 ";
 			if($this->model->getdefaultLabelTranslationId(0,'single')) {
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getdefaultLabelTranslationId(0,'single')."\"";
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='".$this->model->getdefaultLabelTranslationId(0,'single')."'";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
-			FROM 		\"defaultLabelTranslation\"
+			FROM 		DEFAULTLABELTRANSLATION
 			WHERE 1";
 			if($this->model->getdefaultLabelTranslationId(0,'single')) {
-				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getdefaultLabelTranslationId(0,'single')."\"";
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getPrimaryKeyName())."=".$this->model->getdefaultLabelTranslationId(0,'single')."'";
 			}
 		}
 		/**
@@ -296,7 +297,7 @@ class defaultLabelTranslationClass extends  configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
 			} else if ($this->getVendor() == self::oracle) {
-				$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
 			}
 		}
 		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf
@@ -345,7 +346,7 @@ class defaultLabelTranslationClass extends  configClass {
 												rownum r
 						FROM (
 									SELECT 		*
-									FROM 		\"defaultLabelTranslation\"
+									FROM 		DEFAULTLABELTRANSLATION
 									WHERE		1
 									AND 		".$tempSql.$tempSql2.$orderBy."
 								 ) a
@@ -441,33 +442,33 @@ class defaultLabelTranslationClass extends  configClass {
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[defaultLabelTranslation]
-					SET 	[defaultLabelTranslationNote]		=	\"".$this->model->getdefaultLabelTranslationNote()."\",
-							[defaultLabelTranslationEnglish]	=	\"".$this->model->getdefaultLabelTranslationEnglish()."\",
-							[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+					SET 	[defaultLabelTranslationNote]		=	'".$this->model->getdefaultLabelTranslationNote()."',
+							[defaultLabelTranslationEnglish]	=	'".$this->model->getdefaultLabelTranslationEnglish()."',
+							[isDefault]		=	'".$this->model->getIsDefault(0,'single')."',
+							[isActive]		=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]			=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]		=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]		=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]		=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]	=	'".$this->model->getIsApproved(0,'single')."',
+							[executeBy]			=	'".$this->model->getExecuteBy()."',
 							[executeTime]			=	".$this->model->getExecuteTime()."
-					WHERE 	[defaultLabelTranslationId]			=	\"".$this->model->getdefaultLabelTranslationId(0,'single')."\"";
+					WHERE 	[defaultLabelTranslationId]			=	'".$this->model->getdefaultLabelTranslationId(0,'single')."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE 	\"defaultLabelTranslation\"
-					SET 	\"defaultLabelTranslationNote\"		=	\"".$this->model->getdefaultLabelTranslationNote()."\",
-							\"defaultLabelTranslationEnglish\"	=	\"".$this->model->getdefaultLabelTranslationEnglish()."\",
-							ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
-							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
-							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
-							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
-							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
-							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
-							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
-							EXECUTETIME		=	".$this->model->getExecuteTime()."
-					WHERE 	\"defaultLabelTranslationId\"		=	\"".$this->model->getdefaultLabelTranslationId(0,'single')."\"";
+					UPDATE 	DEFAULTLABELTRANSLATION
+					SET 	DEFAULTLABELTRANSLATIONNOTE		=	'".$this->model->getdefaultLabelTranslationNote()."',
+							DEFAULTLABELTRANSLATIONENGLISH	=	'".$this->model->getdefaultLabelTranslationEnglish()."',
+							ISDEFAULT						=	'".$this->model->getIsDefault(0,'single')."',
+							ISACTIVE						=	'".$this->model->getIsActive(0,'single')."',
+							ISNEW							=	'".$this->model->getIsNew(0,'single')."',
+							ISDRAFT							=	'".$this->model->getIsDraft(0,'single')."',
+							ISUPDATE						=	'".$this->model->getIsUpdate(0,'single')."',
+							ISDELETE						=	'".$this->model->getIsDelete(0,'single')."',
+							ISAPPROVED						=	'".$this->model->getIsApproved(0,'single')."',
+							EXECUTEBY						=	'".$this->model->getExecuteBy()."',
+							EXECUTETIME						=	".$this->model->getExecuteTime()."
+					WHERE 	DEFAULTLABELTRANSLATIONID		=	'".$this->model->getdefaultLabelTranslationId(0,'single')."'";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
@@ -510,29 +511,29 @@ class defaultLabelTranslationClass extends  configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[defaultLabelTranslation]
-					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
-							[executeTime]			=	".$this->model->getExecuteTime()."
-					WHERE 	[defaultLabelTranslationId]		=	\"".$this->model->getdefaultLabelTranslationId()."\"";
+					SET		[isDefault]						=	'".$this->model->getIsDefault(0,'single')."',
+							[isActive]						=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]							=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]						=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]						=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]						=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]					=	'".$this->model->getIsApproved(0,'single')."',
+							[executeBy]						=	'".$this->model->getExecuteBy()."',
+							[executeTime]					=	".$this->model->getExecuteTime()."
+					WHERE 	[defaultLabelTranslationId]		=	'".$this->model->getdefaultLabelTranslationId()."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE	\"defaultLabelTranslation\"
-					SET		ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
-							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
-							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
-							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
-							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
-							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
-							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
-							EXECUTETIME		=	".$this->model->getExecuteTime()."
-					WHERE 	\"defaultLabelTranslationId\"	=	\"".$this->model->getdefaultLabelTranslationId()."\"";
+					UPDATE	DEFAULTLABELTRANSLATION
+					SET		ISDEFAULT						=	'".$this->model->getIsDefault(0,'single')."',
+							ISACTIVE						=	'".$this->model->getIsActive(0,'single')."',
+							ISNEW							=	'".$this->model->getIsNew(0,'single')."',
+							ISDRAFT							=	'".$this->model->getIsDraft(0,'single')."',
+							ISUPDATE						=	'".$this->model->getIsUpdate(0,'single')."',
+							ISDELETE						=	'".$this->model->getIsDelete(0,'single')."',
+							ISAPPROVED						=	'".$this->model->getIsApproved(0,'single')."',
+							EXECUTEBY						=	'".$this->model->getExecuteBy()."',
+							EXECUTETIME						=	".$this->model->getExecuteTime()."
+					WHERE 	DEFAULTLABELTRANSLATIONID		=	'".$this->model->getdefaultLabelTranslationId()."'";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {

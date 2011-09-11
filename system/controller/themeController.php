@@ -273,16 +273,16 @@ class themeClass  extends configClass {
 					THEME.THEMESEQUENCE AS 	\"themeSequence\",
 					THEME.THEMENOTE 	AS 	\"themeNote\",
 					THEME.THEMEPATH 	AS 	\"themePath\",
-					THEME.ISDEFAULT 	AS 	ISDEFAULT,
+					THEME.ISDEFAULT 	AS 	\"isDefault\",
 					THEME.ISNEW 		AS	\"isNew\",
-					THEME.ISDRAFT  		AS 	ISDRAFT,
-					THEME.ISUPDATE 		AS 	ISUPDATE,
-					THEME.ISDELETE 		AS 	ISDELETE,
-					THEME.ISACTIVE 		AS 	ISACTIVE,
-					THEME.ISAPPROVED 	AS 	ISAPPROVED,
-					THEME.EXECUTEBY 	AS 	EXECUTEBY,
-					THEME.EXECUTETIME 	AS  EXECUTETIME,
-					STAFF.STAFFNAME 	AS 	STAFFNAME
+					THEME.ISDRAFT  		AS 	\"isDraft\",
+					THEME.ISUPDATE 		AS 	\"isUpdate\",					
+					THEME.ISDELETE 		AS 	\"isDelete\",
+					THEME.ISACTIVE 		AS 	\"isActive\",
+					THEME.ISAPPROVED 	AS 	\"isApproved\",
+					THEME.EXECUTEBY 	AS 	\"executeBy\",
+					THEME.EXECUTETIME 	AS  \"executeTime\",
+					STAFF.STAFFNAME 	AS 	\"staffName\"
 			FROM 	THEME
 			JOIN	STAFF
 			ON		THEME.EXECUTEBY 	= 	STAFF.STAFFID
@@ -364,7 +364,7 @@ class themeClass  extends configClass {
             	} else if ($this->getVendor() ==  self::mssql) {
             		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
             	} else if ($this->getVendor() == self::oracle) {
-            		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+            		$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
@@ -374,7 +374,7 @@ class themeClass  extends configClass {
             	if ($this->getLimit()) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
-            			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
+            			$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
             		} else if ($this->getVendor() == self::mssql) {
             			/**
             			 *	 Sql Server and Oracle used row_number
@@ -404,7 +404,7 @@ class themeClass  extends configClass {
 							FROM 		[themeDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
-							AND 			" . ($this->start + $this->limit - 1) . ";";
+							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived table also
@@ -414,24 +414,28 @@ class themeClass  extends configClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT  \"theme\".\"themeId\",
-											\"theme\".\"themeSequence\",
-											\"theme\".\"themeCode\",
-											\"theme\".\"themeNote\",
-											\"theme\".ISDEFAULT,
-											\"theme\".ISNEW,
-											\"theme\".ISDRAFT,
-											\"theme\".ISUPDATE,
-											\"theme\".ISDELETE,
-											\"theme\".ISAPPROVED,
-											\"theme\".EXECUTEBY,
-											\"theme\".EXECUTETIME,
-											STAFF.STAFFNAME
-									FROM 	\"theme\"
-									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
+									SELECT	THEME.THEMEID 		AS	\"themeId\",
+					THEME.THEMECODE 	AS 	\"themeCode\",
+					THEME.THEMESEQUENCE AS 	\"themeSequence\",
+					THEME.THEMENOTE 	AS 	\"themeNote\",
+					THEME.THEMEPATH 	AS 	\"themePath\",
+					THEME.ISDEFAULT 	AS 	\"isDefault\",
+					THEME.ISNEW 		AS	\"isNew\",
+					THEME.ISDRAFT  		AS 	\"isDraft\",
+					THEME.ISUPDATE 		AS 	\"isUpdate\",					
+					THEME.ISDELETE 		AS 	\"isDelete\",
+					THEME.ISACTIVE 		AS 	\"isActive\",
+					THEME.ISAPPROVED 	AS 	\"isApproved\",
+					THEME.EXECUTEBY 	AS 	\"executeBy\",
+					THEME.EXECUTETIME 	AS  \"executeTime\",
+					STAFF.STAFFNAME 	AS 	\"staffName\"
+			FROM 	THEME
+			JOIN	STAFF
+			ON		THEME.EXECUTEBY 	= 	STAFF.STAFFID
+			WHERE 	THEME.ISACTIVE	=	1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
-						where r >=  \"". $this->start . "\"";
+						where rownum <= \"". ($this->getStart() + $this->getLimit() - 1) . "\" )
+						where r >=  \"". $this->getStart() . "\"";
             		} else {
             			echo "undefine vendor";
             			exit();

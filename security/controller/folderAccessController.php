@@ -225,7 +225,7 @@ class folderAccessClass  extends configClass {
 	 	} else if ($this->getVendor() ==  self::mssql) {
 	 		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
 	 	} else if ($this->getVendor() == self::oracle) {
-	 		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+	 		$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
 	 	}
 	 }
 

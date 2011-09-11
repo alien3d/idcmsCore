@@ -162,11 +162,11 @@ class defaultLabelClass extends  configClass {
 				)
 			VALUES
 				(
-						\"".$this->model->getDefaultLabel()."\",						\"".$this->model->getDefaultLabelEnglish()."\"
-						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
-						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
-						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+						'".$this->model->getDefaultLabel()."',						'".$this->model->getDefaultLabelEnglish()."'
+						'". $this->model->getIsDefault(0,'single') . "',			'". $this->model->getIsNew(0,'single') . "',
+						'". $this->model->getIsDraft(0,'single') . "',				'". $this->model->getIsUpdate(0,'single') . "',
+						'". $this->model->getIsDelete(0,'single') . "',				'". $this->model->getIsActive(0,'single') . "',
+						'". $this->model->getIsApproved(0,'single') . "',			'". $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 			);";
 		} else if ($this->getVendor()==self::oracle) {
@@ -180,11 +180,11 @@ class defaultLabelClass extends  configClass {
 							ISAPPROVED,								EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							\"".$this->model->getDefaultLabel()."\",						\"".$this->model->getDefaultLabelEnglish()."\"
-							\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
-							\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
-							\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-							\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+							'".$this->model->getDefaultLabel()."',						'".$this->model->getDefaultLabelEnglish()."'
+							'". $this->model->getIsDefault(0,'single') . "',			'". $this->model->getIsNew(0,'single') . "',
+							'". $this->model->getIsDraft(0,'single') . "',				'". $this->model->getIsUpdate(0,'single') . "',
+							'". $this->model->getIsDelete(0,'single') . "',				'". $this->model->getIsActive(0,'single') . "',
+							'". $this->model->getIsApproved(0,'single') . "',			'". $this->model->getExecuteBy() . "',
 							" . $this->model->getExecuteTime() . "
 			)";
 		}
@@ -297,7 +297,7 @@ class defaultLabelClass extends  configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
 			} else if ($this->getVendor() == self::oracle) {
-				$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
 			}
 		}
 		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf

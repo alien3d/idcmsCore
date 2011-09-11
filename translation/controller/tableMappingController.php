@@ -132,7 +132,7 @@ class tableMappingClass extends  configClass {
 			$sql="
 			INSERT INTO `tableMapping`
 					(
-						`tabId`,							`iconId`,
+						`moduleId`,							`iconId`,
 						`tableMappingSequence`,					`tableMappingCode`,
 						`tableMappingPath`,						`tableMappingNote`,
 						`isDefault`,						`isNew`,
@@ -143,7 +143,7 @@ class tableMappingClass extends  configClass {
 					)
 			VALUES
 					(
-						\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
+						\"".$this->model->getModuleId()."\",						\"".$this->model->getIconId()."\",
 						\"".$this->model->gettableMappingSequence()."\", 				\"".$this->model->gettableMappingCode()."\",
 						\"".$this->model->gettableMappingPath()."\"	,				\"".$this->model->gettableMappingNote()."\",
 						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
@@ -158,7 +158,7 @@ class tableMappingClass extends  configClass {
 			$sql="
 			INSERT INTO [tableMapping]
 					(
-						[tabId],							[iconId],
+						[moduleId],							[iconId],
 						[tableMappingSequence],					[tableMappingCode],
 						[tableMappingPath],						[tableMappingNote],
 						[isDefault],						[isNew],
@@ -169,36 +169,36 @@ class tableMappingClass extends  configClass {
 				)
 			VALUES
 				(
-						\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
-						\"".$this->model->gettableMappingSequence()."\", 				\"".$this->model->gettableMappingCode()."\",
-						\"".$this->model->gettableMappingPath()."\"	,				\"".$this->model->gettableMappingNote()."\",
-						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
-						\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
-						\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+						'".$this->model->getModuleId()."',						'".$this->model->getIconId()."',
+						'".$this->model->gettableMappingSequence()."', 				'".$this->model->gettableMappingCode()."',
+						'".$this->model->gettableMappingPath()."'	,				'".$this->model->gettableMappingNote()."',
+						'".$this->model->getIsDefault(0,'single')."',		'" . $this->model->getIsNew(0,'single') . "',
+						'" . $this->model->getIsDraft(0,'single') . "',		'" . $this->model->getIsUpdate(0,'single') . "',
+						'" . $this->model->getIsDelete(0,'single') . "',		'" . $this->model->getIsActive(0,'single') . "',
+						'" . $this->model->getIsApproved(0,'single') . "',	'" . $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 
 					);";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			INSERT INTO 	\"tableMapping\"
+			INSERT INTO 	TABLEMAPPING
 						(
-							\"tabId\",							ICONID,
-							\"tableMappingSequence\",					\"tableMappingCode\",
-							\"tableMappingPath\",						\"tableMappingNote\",
+							MODULEID,							ICONID,
+							TABLEMAPPINGSEQUENCE,			TABLEMAPPINNGCODE,
+							TABLEMAPPINGPATH,				TABLEMAPPINGNOTE,
 							ISDEFAULT,						ISNEW,
 							ISDRAFT,						ISUPDATE,
 							ISDELETE,						ISACTIVE,
 							ISAPPROVED,						EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							\"".$this->model->getTabId()."\",						\"".$this->model->getIconId()."\",
-							\"".$this->model->gettableMappingSequence()."\", 				\"".$this->model->gettableMappingCode()."\",
-							\"".$this->model->gettableMappingPath()."\"	,				\"".$this->model->gettableMappingNote()."\",
-							\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
-							\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
-							\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-							\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+							'".$this->model->getModuleId()."',						'".$this->model->getIconId()."',
+							'".$this->model->gettableMappingSequence()."', 			'".$this->model->gettableMappingCode()."',
+							'".$this->model->gettableMappingPath()."'	,			'".$this->model->gettableMappingNote()."',
+							'".$this->model->getIsDefault(0,'single')."',			'" . $this->model->getIsNew(0,'single') . "',
+							'" . $this->model->getIsDraft(0,'single') . "',			'" . $this->model->getIsUpdate(0,'single') . "',
+							'" . $this->model->getIsDelete(0,'single') . "',		'" . $this->model->getIsActive(0,'single') . "',
+							'" . $this->model->getIsApproved(0,'single') . "',		'" . $this->model->getExecuteBy() . "',
 							" . $this->model->getExecuteTime() . "
 
 					)";
@@ -215,84 +215,7 @@ class tableMappingClass extends  configClass {
 		}
 
 		$lastId    = $this->q->lastInsertId();
-		//  create a record  in tableMappingAccess.update no effect
-		// loop the group
-		if ($this->getVendor() == self::mysql) {
-			$sql = "
-					SELECT 	*
-					FROM 	`group`
-					WHERE 	`isActive`	=	1 ";
-		} else if ($this->q->vendor == 'microsoft') {
-			$sql = "
-					SELECT 	*
-					FROM 	[group]
-					WHERE 	[isActive]	=	1 ";
-		} else if ($this->q->vendor == 'oracle') {
-			$sql = "
-					SELECT 	*
-					FROM 	GROUP_
-					WHERE 	`ISACTIVE	=	1 ";
-		}
-		$this->q->read($sql);
-		if ($this->q->execute == 'fail') {
-			echo json_encode(array(
-		                "success" => false,
-		                "message" => $this->q->responce
-			));
-			exit();
-		}
-		$data = $this->q->activeRecord();
-
-		foreach ($data as $row) {
-			/**
-			 *	By Default  No Access
-			 **/
-			echo		$sqlLooping.="(
-									\"" . $lastId . "\",
-									 \"" . $row['groupId'] . "\",
-									 \"0\"
-								),";
-
-
-
-
-
-		}
-		if ($this->getVendor() == self::mysql) {
-			$sql = "
-						INSERT INTO	`tableMappingAccess`
-								(
-									`tableMappingId`,
-									`groupId`,
-									`tableMappingAccessValue`
-								) VALUES";
-		} else if ($this->getVendor() ==  self::mssql) {
-			$sql = "
-						INSERT INTO	[tableMappingAccess]
-								(
-									[tableMappingId],
-									[groupId],
-									[tableMappingAccessValue]
-							) VALUES";
-		} else if ($this->getVendor() == self::oracle) {
-			$sql = "
-						INSERT INTO	\"tableMappingAccess\"
-								(
-									\"tableMappingId\",
-									GROUPID,
-									\"tableMappingAccessValue\"
-							) VALUES";
-		}
-		// optimize to 1 Query
-		// remove last comma
-		$sqlLooping = substr($sqlLooping,0,-1);
-		// combine SQL Statement
-		$sql.=$sqlLooping;
-		$this->q->update($sql);
-		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
-			exit();
-		}
+		
 
 
 		/**
@@ -300,7 +223,7 @@ class tableMappingClass extends  configClass {
 		 **/
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-				 	INSERT INTO `tableMappingTranslate`
+				 	INSERT INTO `tableMapping`
 				 		(
 						 	`tableMappingId`,
 						 	`languageId`,
@@ -312,27 +235,27 @@ class tableMappingClass extends  configClass {
 						);";
 		} else if ($this->getVendor() ==  self::mssql) {
 			$sql = "
-				 	INSERT INTO  [tableMappingTranslate]
+				 	INSERT INTO  [tableMapping]
 							(
 							 	[tableMappingId],
 								[languageId],
 								[tableMappingTranslate]
 							) VALUES (
-								\"" . $lastId . "\",
+								'" . $lastId . "',
 								21,
-								\"" .  $this->model->gettableMappingNote() . "\"
+								'" .  $this->model->gettableMappingNote() . "'
 							);";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-				 	INSERT INTO	\"tableMappingTranslate\"
+				 	INSERT INTO	TABLEMAPPING
 							(
-							 	\"tableMappingId\",
+							 	TABLEMAPPINGID,
 								LANGUAGEID,
-								\"tableMappingTranslate\"
+								TABLEMAPPINGTRANSLATE
 							) VALUES (
-								\"" . $lastId . "\",
+								'" . $lastId . "',
 								21,
-								\"" .  $this->model->gettableMappingNote() . "\"
+								'" .  $this->model->gettableMappingNote() . "'
 							);";
 		}
 		$this->q->create($sql);
@@ -358,15 +281,15 @@ class tableMappingClass extends  configClass {
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[tableMapping].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"tableMapping\".ISACTIVE	=	1	";
+				$this->auditFilter = "	TABLEMAPPING.ISACTIVE	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
-				$this->auditFilter = "	 1 ";
+				$this->auditFilter = "	 1 = 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	or 1 ";
+				$this->auditFilter = "	1 = 1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = " or 1 ";
+				$this->auditFilter = " 1 = 1 ";
 			}
 		}
 		//UTF8
@@ -382,12 +305,7 @@ class tableMappingClass extends  configClass {
 			$sql="
 			SELECT 		*
 			FROM 		`tableMapping`
-			JOIN 		`tab`
-			ON			`tab`.`tabId` = `tableMapping`.`tabId`
-			LEFT JOIN	`icon`
-			ON			`tableMapping`.`iconId`=`icon`.`iconId`
-			WHERE		`tab`.`isActive`	=	1
-			AND			`tableMapping`.`isActive`		=	1";
+			WHERE		`tableMapping`.`isActive`		=	1";
 			if($this->model->gettableMappingId(0,'single')) {
 				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->gettableMappingId(0,'single')."\"";
 			}
@@ -395,28 +313,17 @@ class tableMappingClass extends  configClass {
 			$sql	=	"
 			SELECT 		*
 			FROM 		[tableMapping]
-			JOIN		[tableMappingTranslate]
-			JOIN 		[tab]
-			ON			[tab].[tabId] = [tableMapping].[tabId]
-			LEFT JOIN	[icon]
-			ON			[tableMapping].[iconId]=[icon].[iconId]
-			WHERE		[tab].[isActive]	=	1
-			AND			[tableMapping].[isActive]		=	1";
+			WHERE		[tableMapping].[isActive]		=	1";
 			if($this->model->gettableMappingId(0,'single')) {
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->gettableMappingId(0,'single')."\"";
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='".$this->model->gettableMappingId(0,'single')."'";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
-			FROM 		\"tableMapping\"
-			JOIN 		\"tab\"
-			ON			\"tab\".\"tabId\" = \"tableMapping\".\"tabId\"
-			LEFT JOIN	ICON
-			USING(ICONID)
-			WHERE		\"tab\".ISACTIVE=1
-			AND			\"tableMapping\".ISACTIVE=1";
+			FROM 		TABLEMAPPING
+			WHERE		TABLEMAPPING.ISACTIVE=1";
 			if($this->model->gettableMappingId(0,'single')) {
-				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->gettableMappingId(0,'single')."\"";
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getPrimaryKeyName())."='".$this->model->gettableMappingId(0,'single')."'";
 			}
 		}
 		/**
@@ -424,7 +331,7 @@ class tableMappingClass extends  configClass {
 		 *  E.g  $filterArray=array('`leaf`.`leafId`');
 		 *  @variables $filterArray;
 		 */
-		$filterArray =array('tabId','tabTranslateId','tableMappingId','tableMappingTranslateId');
+		$filterArray =array('moduleId','tabTranslateId','tableMappingId','tableMappingTranslateId');
 		/**
 		 *	filter table
 		 * @variables $tableArray
@@ -471,7 +378,7 @@ class tableMappingClass extends  configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
 			} else if ($this->getVendor() == self::oracle) {
-				$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
 			}
 		}
 		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf
@@ -501,7 +408,7 @@ class tableMappingClass extends  configClass {
 								FROM 		[tableMapping]
 
 								JOIN 		[tab]
-								ON			[tab].[tabId` = `tableMapping`.`tabId`
+								ON			[tab].[moduleId` = `tableMapping`.`moduleId`
 
 								LEFT JOIN	[icon]
 								ON			[tableMapping].[iconId]=[icon].[iconId]
@@ -527,20 +434,20 @@ class tableMappingClass extends  configClass {
 												rownum r
 						FROM (
 									SELECT 		*,
-												\"tableMapping\".EXECUTEBY,
-												\"tableMapping\".EXECUTETIME
-									FROM 		\"tableMapping\"
-									JOIN		\"tableMappingTranslate\"
-									ON			\"tableMapping\".\"tableMappingId\"	=\"tableMappingTranslate\".\"tableMappingId\"
+												TABLEMAPPING.EXECUTEBY,
+												TABLEMAPPING.EXECUTETIME
+									FROM 		TABLEMAPPING
+									JOIN		TABLEMAPPINGTRANSLATE
+									ON			TABLEMAPPING.TABLEMAPPINGID	=TABLEMAPPINGTRANSLATE.TABLEMAPPINGID
 									JOIN 		\"tab\"
-									ON			\"tab\".\"tabId\" = \"tableMapping\".\"tabId\"
+									ON			\"tab\".\"moduleId\" = TABLEMAPPING.\"moduleId\"
 									JOIN		\"tabTranslate\"
-									ON			\"tab\".\"tabId\"=	\"tabTranslate\".\"tabId\"
-									AND			\"tabTranslate\".\"tabId\" =\"tableMapping\".\"tabId\"
+									ON			\"tab\".\"moduleId\"=	\"tabTranslate\".\"moduleId\"
+									AND			\"tabTranslate\".\"moduleId\" =TABLEMAPPING.\"moduleId\"
 									LEFT JOIN	ICON
-									ON			\"tableMapping\".ICONID=ICON.ICONID
+									ON			TABLEMAPPING.ICONID=ICON.ICONID
 									WHERE		\"tab\".ISACTIVE=1
-									AND			\"tableMapping\".ISACTIVE=1 ".$tempSql.$tempSql2.$orderBy."
+									AND			TABLEMAPPING.ISACTIVE=1 ".$tempSql.$tempSql2.$orderBy."
 								 ) a
 						where rownum <= \"".($_POST['start']+$_POST['limit']-1)."\" )
 						where r >=  \"".$_POST['start']."\"";
@@ -619,7 +526,7 @@ class tableMappingClass extends  configClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE 	`tableMapping`
-					SET 	`tabId`				=	\"".$this->model->getTabId()."\",
+					SET 	`moduleId`				=	\"".$this->model->getmoduleId()."\",
 							`tableMappingNote`		=	\"".$this->model->gettableMappingNote()."\",
 							`tableMappingSequence`	=	\"".$this->model->gettableMappingSequence()."\",
 							`tableMappingCode`		=	\"".$this->model->gettableMappingCode()."\",
@@ -638,37 +545,37 @@ class tableMappingClass extends  configClass {
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[tableMapping]
-					SET 	[tabId]		=	\"".$this->model->getTabId()."\",
-							[tableMappingNote]		=	\"".$this->model->gettableMappingNote()."\",
-							[tableMappingSequence]	=	\"".$this->model->gettableMappingSequence()."\",
-							[tableMappingPath]		=	\"".$this->model->gettableMappingPath()."\",
-							[iconId]			=	\"".$this->strict($_POST['iconId'],'string')."\",
-							[isActive]			=	\"".$this->model->getIsActive(0,'single')."\",
-							[isNew]				=	\"".$this->model->getIsNew(0,'single')."\",
-							[isDraft]			=	\"".$this->model->getIsDraft(0,'single')."\",
-							[isUpdate]			=	\"".$this->model->getIsUpdate(0,'single')."\",
-							[isDelete]			=	\"".$this->model->getIsDelete(0,'single')."\",
-							[isApproved]		=	\"".$this->model->getIsApproved(0,'single')."\",
-							[executeBy]				=	\"".$this->model->getExecuteBy()."\",
+					SET 	[moduleId]		=	'".$this->model->getmoduleId()."',
+							[tableMappingNote]		=	'".$this->model->gettableMappingNote()."',
+							[tableMappingSequence]	=	'".$this->model->gettableMappingSequence()."',
+							[tableMappingPath]		=	'".$this->model->gettableMappingPath()."',
+							[iconId]			=	'".$this->strict($_POST['iconId'],'string')."',
+							[isActive]			=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]				=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]			=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]			=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]			=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]		=	'".$this->model->getIsApproved(0,'single')."',
+							[executeBy]				=	'".$this->model->getExecuteBy()."',
 							[executeTime]				=	".$this->model->getExecuteTime()."
-					WHERE 	[tableMappingId]			=	\"".$this->model->gettableMappingId(0,'single')."\"";
+					WHERE 	[tableMappingId]			=	'".$this->model->gettableMappingId(0,'single')."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE 	\"tableMapping\"
-					SET 	\"tabId\"		=	\"".$this->model->getTabId()."\",
-							\"tableMappingNote\"		=	\"".$this->model->gettableMappingNote()."\",
-							\"tableMappingSequence\"	=	\"".$this->model->gettableMappingSequence()."\",
-							\"tableMappingPath\"		=	\"".$this->model->gettableMappingPath()."\",
-							ISDEFAULT		=	\"".$this->model->getIsDefault(0,'single')."\",
-							ISACTIVE		=	\"".$this->model->getIsActive(0,'single')."\",
-							ISNEW			=	\"".$this->model->getIsNew(0,'single')."\",
-							ISDRAFT			=	\"".$this->model->getIsDraft(0,'single')."\",
-							ISUPDATE		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							ISDELETE		=	\"".$this->model->getIsDelete(0,'single')."\",
-							ISAPPROVED		=	\"".$this->model->getIsApproved(0,'single')."\",
-							EXECUTEBY				=	\"".$this->model->getExecuteBy()."\",
+					UPDATE 	TABLEMAPPING
+					SET 	\"moduleId\"		=	'".$this->model->getmoduleId()."',
+							\"tableMappingNote\"		=	'".$this->model->gettableMappingNote()."',
+							\"tableMappingSequence\"	=	'".$this->model->gettableMappingSequence()."',
+							\"tableMappingPath\"		=	'".$this->model->gettableMappingPath()."',
+							ISDEFAULT		=	'".$this->model->getIsDefault(0,'single')."',
+							ISACTIVE		=	'".$this->model->getIsActive(0,'single')."',
+							ISNEW			=	'".$this->model->getIsNew(0,'single')."',
+							ISDRAFT			=	'".$this->model->getIsDraft(0,'single')."',
+							ISUPDATE		=	'".$this->model->getIsUpdate(0,'single')."',
+							ISDELETE		=	'".$this->model->getIsDelete(0,'single')."',
+							ISAPPROVED		=	'".$this->model->getIsApproved(0,'single')."',
+							EXECUTEBY				=	'".$this->model->getExecuteBy()."',
 							EXECUTETIME			=	".$this->model->getExecuteTime()."
-					WHERE 	\"tableMappingId\"		=	\"".$this->model->gettableMappingId(0,'single')."\"";
+					WHERE 	TABLEMAPPINGID		=	'".$this->model->gettableMappingId(0,'single')."'";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
@@ -711,29 +618,29 @@ class tableMappingClass extends  configClass {
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[tableMapping]
-					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+					SET		[isDefault]		=	'".$this->model->getIsDefault(0,'single')."',
+							[isActive]		=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]			=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]		=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]		=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]		=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]	=	'".$this->model->getIsApproved(0,'single')."',
+							[executeBy]			=	'".$this->model->getExecuteBy()."',
 							[executeTime]			=	".$this->model->getExecuteTime()."
-					WHERE 	[tableMappingId]		=	\"".$this->model->gettableMappingId()."\"";
+					WHERE 	[tableMappingId]		=	'".$this->model->gettableMappingId()."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE	\"tableMapping\"
-					SET		ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
-							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
-							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
-							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
-							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
-							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
-							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+					UPDATE	TABLEMAPPING
+					SET		ISDEFAULT	=	'".$this->model->getIsDefault(0,'single')."',
+							ISACTIVE	=	'".$this->model->getIsActive(0,'single')."',
+							ISNEW		=	'".$this->model->getIsNew(0,'single')."',
+							ISDRAFT		=	'".$this->model->getIsDraft(0,'single')."',
+							ISUPDATE	=	'".$this->model->getIsUpdate(0,'single')."',
+							ISDELETE	=	'".$this->model->getIsDelete(0,'single')."',
+							ISAPPROVED	=	'".$this->model->getIsApproved(0,'single')."',
+							EXECUTEBY			=	'".$this->model->getExecuteBy()."',
 							EXECUTETIME		=	".$this->model->getExecuteTime()."
-					WHERE 	\"tableMappingId\"	=	\"".$this->model->gettableMappingId()."\"";
+					WHERE 	TABLEMAPPINGID	=	'".$this->model->gettableMappingId()."'";
 		}
 		$this->q->update($sql);
 		if($this->q->redirect=='fail') {
@@ -747,242 +654,8 @@ class tableMappingClass extends  configClass {
 
 	}
 
-	/**
-	 *  Read Record From tabTranslate Table
-	 **/
-	function translateRead() {
-		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
-			/**
-			 *	UTF 8
-			 **/
-			$sql	=	"SET NAMES \"utf8\"";
-			$this->q->fast($sql);
-
-		}
-		if( $this->q->vendor='mysql'){
-			$sql="
-			SELECT	*
-			FROM 	`tableMappingTranslate`
-			JOIN 	`language`
-			USING (`languageId`)
-			WHERE	`tableMappingTranslate`.`tableMappingId`=\"".$this->model->gettableMappingId()."\"";
-		} else if ($this->getVendor()==self::mssql){
-			$sql="
-			SELECT	*
-			FROM 	[tabTranslate]
-			JOIN 	[language]
-			ON 		[tableMappingTranslate].[languageId] =[language].[languageId]
-			WHERE	[tableMappingTranslate].[tableMappingId]=\"".$this->model->gettableMappingId()."\"";
-		} else if ($this->q->vendor=='oralce'){
-			$sql="
-			SELECT	*
-			FROM 	\"tableMappingTranslate\"
-			JOIN 	LANGUAGE
-			USING (LANGUAGEID)
-			WHERE	\"tableMappingTranslate\".\"tableMappingId\"=\"".$this->model->gettableMappingId()."\"";
-		}
-		$this->q->read($sql);
-		$total =$this->q->numberRows();
-		$items = array();
-		while ($row = $this->q->fetchAssoc()){
-			$items[]= $row;
-		}
-		echo json_encode(
-		array(
-						'success'	=>	'true',
-						'total' 	=>	$total,
-       					'data' 		=> 	$items
-		));
-		exit();
-
-	}
-
-	/**
-	 * Update tab Translation in tabTranslate Table
-	 */
-	public function translateUpdate(){
-		header('Content-Type','application/json; charset=utf-8');
-
-		$this->q->commit();
-		if($this->getVendor() == self::mysql){
-			$sql="
-		UPDATE	`tableMappingTranslate`
-		SET		`tableMappingTranslate` 	=	\"".$this->strict($_POST['tableMappingTranslate'],'string')."\"
-		WHERE 	`tableMappingTranslateId`	=	\"".$this->strict($_POST['tableMappingTranslateId'],'numeric')."\"";
-		} else if ($this->getVendor()==self::mssql){
-			$sql="
-		UPDATE	[tableMappingTranslate]
-		SET		[tableMappingTranslate] 	=	\"".$this->strict($_POST['tableMappingTranslate'],'string')."\"
-		WHERE 	[tableMappingTranslateId]	=	\"".$this->strict($_POST['tableMappingTranslateId'],'numeric')."\"";
-		} else if ($this->getVendor()==self::oracle){
-			$sql="
-		UPDATE	\"tableMappingTranslate\"
-		SET		\"tableMappingTranslate\" 		=	\"".$this->strict($_POST['tableMappingTranslate'],'string')."\"
-		WHERE 	\"tableMappingTranslateId\"	=	\"".$this->strict($_POST['tableMappingTranslateId'],'numeric')."\"";
-		}
-		$this->q->update($sql);
-		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-			exit();
-		}
-
-		$this->q->commit();
-		echo json_encode(array("success"=>true,"message"=>"Record Update"));
-		exit();
-	}
-	/*
-	 * Create Translation tableMapping Note to the tableMappingTranslate Table
-	 */
-	function translateMe() {
-		header('Content-Type','application/json; charset=utf-8');
-		$this->q->start();
-
-		$sql="
-		SELECT	*
-		FROM 	`tableMapping`
-		WHERE 	`tableMappingId`	=	\"".$this->tableMappingId."\"";
-		$resultDefault= $this->q->fast($sql);
-		if($this->q->numberRows($resultDefault) > 0 ) {
-			$rowDefault = $this->q->fetch_array($resultDefault);
-			$value 		= $rowDefault['tableMappingNote'];
-		}
-		if($this->getVendor() == self::mysql) {
-			$sql="
-			SELECT	*
-			FROM 	`language`";
-		} else if ($this->getVendor()==self::mssql) {
-			$sql="
-			SELECT 	*
-			FROM 	[language] ";
-		} else if ($this->getVendor()==self::oracle) {
-			$sql="
-			SELECT 	*
-			FROM 	LANGUAGE ";
-		}
-		$result= $this->q->fast($sql);
-		while ($row = $this->q->fetchAssoc($result)) {
-			$languageId 	= 	$row['languageId'];
-			$languageCode	= 	$row['languageCode'];
-			$to 		  	=	$languageCode;
-			$googleTranslate = $this->security->changeLanguage($from="en",$to,$value);
-			if($this->getVendor() == self::mysql) {
-				$sql="
-				SELECT	*
-				FROM 	`tableMappingTranslate`
-				WHERE 	`tableMappingId`			=	\"".$this->tableMappingId."\"
-				AND 	`languageId`		=	\"".$languageId."\"";
-			} else if ($this->getVendor()==self::mssql) {
-				$sql="
-				SELECT 	*
-				FROM 	[tableMappingTranslate]
-				WHERE 	[tableMappingId]			=	\"".$this->tableMappingId."\"
-				AND 	[languageId]		=	\"".$languageId."\"";
-			}  else if ($this->getVendor()==self::oracle) {
-				$sql="
-				SELECT 	*
-				FROM 	\"tableMappingTranslate\"
-				WHERE 	\"tableMappingId\"		=	\"".$this->tableMappingId."\"
-				AND 	LANGUAGEID		=	\"".$languageId."\"";
-			}
-			$resulttableMappingTranslate = $this->q->fast($sql);
-			if($this->q->numberRows($resulttableMappingTranslate) >  0 ) {
-				if($this->q->vendor=='normal'  ||$this->getVendor() == self::mysql) {
-					$sql="
-					UPDATE 	`tableMappingTranslate`
-					SET 	`tableMappingTranslate`		=	\"".$googleTranslate."\"
-					WHERE 	`tableMappingId`				=	\"".$this->tableMappingId."\"
-					AND 	`languageId`			=	\"".$languageId."\"";
-				} else if ($this->getVendor()==self::mssql) {
-					$sql="
-					UPDATE 	[tableMappingTranslate]
-					SET 	[tableMappingTranslate]		=	\"".$googleTranslate."\"
-					WHERE 	[tableMappingId]				=	\"".$this->tableMappingId."\"
-					AND 	[languageId]			=	\"".$languageId."\"";
-				} else if ($this->getVendor()==self::oracle) {
-					$sql="
-					UPDATE 	\"tableMappingTranslate\"
-					SET 	\"tableMappingTranslate\"		=	\"".$googleTranslate."\"
-					WHERE 	\"tableMappingId\"			=	\"".$this->tableMappingId."\"
-					AND 	LANGUAGEID			=	\"".$languageId."\"";
-				}
-				$this->q->update($sql);
-				if($this->q->redirect=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-					exit();
-
-				}
-			} else {
-				if($this->q->vendor=='normal'  ||$this->getVendor() == self::mysql) {
-					$sql="
-					INSERT INTO `tableMappingTranslate`
-							(
-								`tableMappingId`,
-								`languageId`,
-								`tableMappingTranslate`
-							)
-					VALUES
-						(
-							\"".$tableMappingId."\",
-							\"".$languageId."\",
-							\"".$googleTranslate."\"
-						)";
-				} else if ($this->getVendor()==self::mssql) {
-					$sql="
-					INSERT INTO [tableMappingTranslate]
-							(
-								[tableMappingId],
-								[languageId],
-								[tableMappingTranslate]
-							)
-					VALUES
-							(
-								\"".$tableMappingId."\",
-								\"".$languageId."\",
-								\"".$googleTranslate."\"
-						)";
-				} else if ($this->getVendor()==self::oracle) {
-					$sql="
-					INSERT INTO \"tableMappingTranslate\"
-							(
-								\"tableMappingId\",
-								LANGUAGEID,
-								\"tableMappingTranslate\"
-							)
-					VALUES
-							(
-								\"".$tableMappingId."\",
-								\"".$languageId."\",
-								\"".$googleTranslate."\"
-							)";
-				}
-				$this->q->create($sql);
-				if($this->q->redirect=='fail') {
-					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
-					exit();
-
-				}
-			}
-		}
-		$this->q->commit();
-		echo json_encode(
-		array(
-							  	"success"	=>	"true",
-								"message"	=>	"Translation Complete"
-								));
-								exit();
-
-
-	}
-	/**
-	 * Enter description here ...
-	 */
-	function tab(){
-		return $this->security->tab();
-	}
-	/* (non-PHPdoc)
-	 * @see config::excel()
-	 */
+	
+ 
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->getVendor() == self::mysql) {
@@ -1154,8 +827,8 @@ if(isset($_GET['method'])) {
 
 			$tableMappingObject->staff();
 		}
-		if($_GET['field']=='tabId'){
-			$tableMappingObject->tab();
+		if($_GET['field']=='moduleId'){
+			$tableMappingObject->module();
 		}
 
 	}

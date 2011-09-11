@@ -138,7 +138,7 @@ class documentCategoryClass  extends configClass {
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
 						[isActive],							[isApproved],
-						[executeBy],								[executeTime]
+						[executeBy],						[executeTime]
 					)
 			VALUES
 					(
@@ -271,23 +271,23 @@ class documentCategoryClass  extends configClass {
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-					SELECT	DOCUMENTCATEGORY.DOCUMENTCATEGORYID,
-							DOCUMENTCATEGORY.DOCUMENTCATEGORYTITLE,
-							DOCUMENTCATEGORY.DOCUMENTCATEGORYDESC,
-							DOCUMENTCATEGORY.DOCUMENTCATEGORYCODE,
-							DOCUMENTCATEGORY.DOCUMENTCATEGORYSEQUENCE,
-							DOCUMENTCATEGORY.DOCUMENTCATEGORYNOTE,
-							DOCUMENTCATEGORY.ISDEFAULT,
-							DOCUMENTCATEGORY.ISNEW,
-							DOCUMENTCATEGORY.ISDRAFT,
-							DOCUMENTCATEGORY.ISUPDATE,
-							DOCUMENTCATEGORY.ISDELETE,
-							DOCUMENTCATEGORY.ISACTIVE,
-							DOCUMENTCATEGORY.ISAPPROVED,
-							DOCUMENTCATEGORY.EXECUTEBY,
-							DOCUMENTCATEGORY.EXECUTETIME,
-							STAFF.STAFFNAME
-					FROM 	DOCUMENTCATEGORY
+					SELECT	DOCUMENTCATEGORY.DOCUMENTCATEGORYID			AS		\"documentCategoryId\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYTITLE      AS		\"documentCategoryTitle\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYDESC		AS		\"documentCategoryDesc\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYCODE		AS		\"documentCategoryCode\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYSEQUENCE	AS		\"documentCategorySequence\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYNOTE		AS		\"documentCategoryNote\",
+							DOCUMENTCATEGORY.ISDEFAULT					AS		\"isDefault\",
+							DOCUMENTCATEGORY.ISNEW						AS		\"isNew\",
+							DOCUMENTCATEGORY.ISDRAFT					AS		\"isDraft\",
+							DOCUMENTCATEGORY.ISUPDATE					AS		\"isUpdate\",
+							DOCUMENTCATEGORY.ISDELETE					AS		\"isDelete\",
+							DOCUMENTCATEGORY.ISACTIVE					AS		\"isActive\",
+							DOCUMENTCATEGORY.ISAPPROVED					AS		\"isApproved\",
+							DOCUMENTCATEGORY.EXECUTEBY					AS		\"executeBy\",
+							DOCUMENTCATEGORY.EXECUTETIME				AS		\"executeTime\",
+							STAFF.STAFFNAME								AS		\"staffName\"
+					FROM 	DOCUMENTCATEGORY			
 					JOIN	STAFF
 					ON		DOCUMENTCATEGORY.EXECUTEBY = STAFF.STAFFID
 					WHERE 	ISACTIVE='1'	";
@@ -368,7 +368,7 @@ class documentCategoryClass  extends configClass {
             	} else if ($this->getVendor() ==  self::mssql) {
             		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
             	} else if ($this->getVendor() == self::oracle) {
-            		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+            		$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
@@ -378,7 +378,7 @@ class documentCategoryClass  extends configClass {
             	if ($this->getLimit()) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
-            			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
+            			$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
             		} else if ($this->getVendor() == self::mssql) {
             			/**
             			 *	 Sql Server and Oracle used row_number
@@ -410,7 +410,7 @@ class documentCategoryClass  extends configClass {
 							FROM 		[documentCategoryDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
-							AND 			" . ($this->start + $this->limit - 1) . ";";
+							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived table also
@@ -420,26 +420,29 @@ class documentCategoryClass  extends configClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT  DOCUMENTCATEGORY.DOCUMENTCATEGORYID,
-											DOCUMENTCATEGORY.DOCUMENTCATEGORYTITLE,
-											DOCUMENTCATEGORY.DOCUMENTCATEGORYDESC,
-											DOCUMENTCATEGORY.DOCUMENTCATEGORYSEQUENCE,
-											DOCUMENTCATEGORY.DOCUMENTCATEGORYCODE,
-											DOCUMENTCATEGORY.DOCUMENTCATEGORYNOTE,
-											DOCUMENTCATEGORY.ISDEFAULT,
-											DOCUMENTCATEGORY.ISNEW,
-											DOCUMENTCATEGORY.ISDRAFT,
-											DOCUMENTCATEGORY.ISUPDATE,
-											DOCUMENTCATEGORY.ISDELETE,
-											DOCUMENTCATEGORY.ISAPPROVED,
-											DOCUMENTCATEGORY.EXECUTEBY,
-											DOCUMENTCATEGORY.EXECUTETIME,
-											STAFF.STAFFNAME
-									FROM 	DOCUMENTCATEGORY
-									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
+									SELECT	DOCUMENTCATEGORY.DOCUMENTCATEGORYID			AS		\"documentCategoryId\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYTITLE      AS		\"documentCategoryTitle\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYDESC		AS		\"documentCategoryDesc\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYCODE		AS		\"documentCategoryCode\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYSEQUENCE	AS		\"documentCategorySequence\",
+							DOCUMENTCATEGORY.DOCUMENTCATEGORYNOTE		AS		\"documentCategoryNote\",
+							DOCUMENTCATEGORY.ISDEFAULT					AS		\"isDefault\",
+							DOCUMENTCATEGORY.ISNEW						AS		\"isNew\",
+							DOCUMENTCATEGORY.ISDRAFT					AS		\"isDraft\",
+							DOCUMENTCATEGORY.ISUPDATE					AS		\"isUpdate\",
+							DOCUMENTCATEGORY.ISDELETE					AS		\"isDelete\",
+							DOCUMENTCATEGORY.ISACTIVE					AS		\"isActive\",
+							DOCUMENTCATEGORY.ISAPPROVED					AS		\"isApproved\",
+							DOCUMENTCATEGORY.EXECUTEBY					AS		\"executeBy\",
+							DOCUMENTCATEGORY.EXECUTETIME				AS		\"executeTime\",
+							STAFF.STAFFNAME								AS		\"staffName\"
+					FROM 	DOCUMENTCATEGORY			
+					JOIN	STAFF
+					ON		DOCUMENTCATEGORY.EXECUTEBY = STAFF.STAFFID
+					WHERE 	ISACTIVE='1'  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
-						where r >=  \"". $this->start . "\"";
+						where rownum <= \"". ($this->getStart() + $this->getLimit() - 1) . "\" )
+						where r >=  \"". $this->getStart() . "\"";
             		} else {
             			echo "undefine vendor";
             			exit();

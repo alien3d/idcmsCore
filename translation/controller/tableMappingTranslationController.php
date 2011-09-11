@@ -3,10 +3,10 @@ require_once("../../class/classAbstract.php");
 require_once("../../document/class/classDocumentTrail.php");
 require_once("../../document/model/documentModel.php");
 require_once("../../class/classSecurity.php");
-require_once("../model/tableMappingTranslationTranslationModel.php");
+require_once("../model/tableMappingTranslationModel.php");
 
 /**
- * this tableMappingTranslationTranslation menu creation
+ * this tableMappingTranslation menu creation
  * @name IDCMS
  * @version 2
  * @author hafizan
@@ -15,7 +15,7 @@ require_once("../model/tableMappingTranslationTranslationModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class tableMappingTranslationTranslationClass extends  configClass {
+class tableMappingTranslationClass extends  configClass {
 	/**
 	 * Connection to the database
 * @var string
@@ -305,7 +305,7 @@ class tableMappingTranslationTranslationClass extends  configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
 			} else if ($this->getVendor() == self::oracle) {
-				$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
 			}
 		}
 		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf

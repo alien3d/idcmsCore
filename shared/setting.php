@@ -42,12 +42,12 @@ if ($q->vendor == sharedx::mysql) {
                 WHERE 			[tableMapping].[languageId]='" . $_SESSION['languageId'] . "'";
 } else if ($q->vendor == sharedx::oracle) {
     $sql = "
-                SELECT DISTINCT \"tableMapping\".\"tableMappingColumnName\",
-                                                \"tableMappingTranslate\".\"tableMappingNativeLabel\"
-                FROM 			\"tableMapping\"
-                JOIN			\"tableMappingTranslate\"
-                USING			(\"tableMappingId\")
-                WHERE 			\"tableMapping\".LANGUAGEID=\"" . $_SESSION['languageId'] . "\"";
+                SELECT DISTINCT TABLEMAPPING.\"tableMappingColumnName\",
+                                                TABLEMAPPINGTRANSLATE.\"tableMappingNativeLabel\"
+                FROM 			TABLEMAPPING
+                JOIN			TABLEMAPPINGTRANSLATE
+                USING			(TABLEMAPPINGID)
+                WHERE 			TABLEMAPPING.LANGUAGEID=\"" . $_SESSION['languageId'] . "\"";
     // temp
     $sql = "
                 SELECT 			TABLEMAPPING.TABLEMAPPINGCOLUMNNAME AS  \"tableMappingColumnName\",

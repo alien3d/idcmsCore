@@ -161,30 +161,30 @@ class extLabelTranslationClass extends  configClass {
 				)
 			VALUES
 				(
-						\"".$this->model->getextLabelTranslation()."\",						\"".$this->model->getextLabelTranslationEnglish()."\"
-						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
-						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
-						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
+						'".$this->model->getextLabelTranslation()."',				'".$this->model->getextLabelTranslationEnglish()."'
+						'". $this->model->getIsDefault(0,'single') . "',			'". $this->model->getIsNew(0,'single') . "',
+						'". $this->model->getIsDraft(0,'single') . "',				'". $this->model->getIsUpdate(0,'single') . "',
+						'". $this->model->getIsDelete(0,'single') . "',				'". $this->model->getIsActive(0,'single') . "',
+						'". $this->model->getIsApproved(0,'single') . "',			'". $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 			);";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			INSERT INTO 	\"extLabelTranslation\"
+			INSERT INTO 	EXTLABELTRANSLATION
 						(
-							\"extLabelTranslation\",							\"extLabelTranslationEnglish\",
+							EXTLABELTRANSLATION,							\"extLabelTranslationEnglish\",
 							ISDEFAULT,								ISNEW,
 							ISDRAFT,								ISUPDATE,
 							ISDELETE,								ISACTIVE,
 							ISAPPROVED,								EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							\"".$this->model->getextLabelTranslation()."\",						\"".$this->model->getextLabelTranslationEnglish()."\"
-							\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
-							\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
-							\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
-							\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",
-							" . $this->model->getExecuteTime() . "
+							'".$this->model->getextLabelTranslation()."',				'".$this->model->getextLabelTranslationEnglish()."'
+						'". $this->model->getIsDefault(0,'single') . "',			'". $this->model->getIsNew(0,'single') . "',
+						'". $this->model->getIsDraft(0,'single') . "',				'". $this->model->getIsUpdate(0,'single') . "',
+						'". $this->model->getIsDelete(0,'single') . "',				'". $this->model->getIsActive(0,'single') . "',
+						'". $this->model->getIsApproved(0,'single') . "',			'". $this->model->getExecuteBy() . "',
+						" . $this->model->getExecuteTime() . "
 			)";
 		}
 		$this->q->create($sql);
@@ -238,7 +238,7 @@ class extLabelTranslationClass extends  configClass {
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
-			FROM 		\"extLabelTranslation\"
+			FROM 		EXTLABELTRANSLATION
 			WHERE 1";
 			if($this->model->getextLabelTranslationId(0,'single')) {
 				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getextLabelTranslationId(0,'single')."\"";
@@ -296,7 +296,7 @@ class extLabelTranslationClass extends  configClass {
 			} else if ($this->getVendor() ==  self::mssql) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
 			} else if ($this->getVendor() == self::oracle) {
-				$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
 			}
 		}
 		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf
@@ -345,7 +345,7 @@ class extLabelTranslationClass extends  configClass {
 												rownum r
 						FROM (
 									SELECT 		*
-									FROM 		\"extLabelTranslation\"
+									FROM 		EXTLABELTRANSLATION
 									WHERE		1
 									AND 		".$tempSql.$tempSql2.$orderBy."
 								 ) a
@@ -455,7 +455,7 @@ class extLabelTranslationClass extends  configClass {
 					WHERE 	[extLabelTranslationId]			=	\"".$this->model->getextLabelTranslationId(0,'single')."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE 	\"extLabelTranslation\"
+					UPDATE 	EXTLABELTRANSLATION
 					SET 	\"extLabelTranslationNote\"		=	\"".$this->model->getextLabelTranslationNote()."\",
 							\"extLabelTranslationEnglish\"	=	\"".$this->model->getextLabelTranslationEnglish()."\",
 							ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
@@ -522,7 +522,7 @@ class extLabelTranslationClass extends  configClass {
 					WHERE 	[extLabelTranslationId]		=	\"".$this->model->getextLabelTranslationId()."\"";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-					UPDATE	\"extLabelTranslation\"
+					UPDATE	EXTLABELTRANSLATION
 					SET		ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
 							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
 							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",

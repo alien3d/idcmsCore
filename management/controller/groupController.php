@@ -603,17 +603,17 @@ class groupClass  extends configClass {
             	} else if ($this->getVendor() ==  self::mssql) {
             		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
             	} else if ($this->getVendor() == self::oracle) {
-            		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+            		$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
-            $_SESSION['start'] = $this->start;
-            $_SESSION['limit'] = $this->limit;
+            $_SESSION['start'] = $this->getStart();
+            $_SESSION['limit'] = $this->getLimit();
             if (empty($this->filter)) {
             	if ($this->getLimit()) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
-            			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
+            			$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
             		} else if ($this->getVendor() == self::mssql) {
             			/**
             			 *	 Sql Server and Oracle used row_number
@@ -643,7 +643,7 @@ class groupClass  extends configClass {
 							FROM 		[groupDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
-							AND 			" . ($this->start + $this->limit - 1) . ";";
+							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived table also
@@ -670,8 +670,8 @@ class groupClass  extends configClass {
 									FROM 	GROUP_
 									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
-						where r >=  \"". $this->start . "\"";
+						where rownum <= \"". ($this->getStart() + $this->getLimit() - 1) . "\" )
+						where r >=  \"". $this->getStart() . "\"";
             		} else {
             			echo "undefine vendor";
             			exit();

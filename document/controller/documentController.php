@@ -420,7 +420,7 @@ class documentClass extends  configClass {
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-					SELECT	DOCUMENT.DOCUMENTID 		AS 	\"documentId\",
+					SELECT	DOCUMENT.DOCUMENTID 		AS 	DOCUMENTID,
 							DOCUMENT.DOCUMENTTITLE		AS	\"documentTitle\",
 							DOCUMENT.DOCUMENTDESC   	AS  \"documentDesc\",
 							DOCUMENT.DOCUMENTCODE   	AS  \"documentCode\",
@@ -443,7 +443,7 @@ class documentClass extends  configClass {
 					ON		DOCUMENTCATEGORY.DOCUMENTCATEGORYID = DOCUMENT.DOCUMENTCATEGORYID
 					WHERE 		";
 			if ($this->model->getDocumentId(0,'single')) {
-				$sql .= " AND ".strtoupper($this->model->getTableName())."'.'".strtoupper($this->model->getPrimaryKeyName())."'='". $this->model->getDocumentId(0,'single') . "'";
+				$sql .= " AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getPrimaryKeyName())."s='". $this->model->getDocumentId(0,'single') . "'";
 			}
 		} else {
 			echo json_encode(array(
@@ -520,7 +520,7 @@ class documentClass extends  configClass {
             	} else if ($this->getVendor() ==  self::mssql) {
             		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
             	} else if ($this->getVendor() == self::oracle) {
-            		$sql .= "	ORDER BY \"" . $this->getSortField() . "\"  " . $this->getOrder() . " ";
+            		$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
@@ -530,7 +530,7 @@ class documentClass extends  configClass {
             	if ($this->getLimit()) {
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
-            			$sql .= " LIMIT  " . $this->start . "," . $this->limit . " ";
+            			$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
             		} else if ($this->getVendor() == self::mssql) {
             			/**
             			 *	 Sql Server and Oracle used row_number
@@ -562,7 +562,7 @@ class documentClass extends  configClass {
 							FROM 		[documentDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $_POST['start'] . "
-							AND 			" . ($this->start + $this->limit - 1) . ";";
+							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived table also
@@ -572,7 +572,7 @@ class documentClass extends  configClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT	DOCUMENT.DOCUMENTID 		AS 	\"documentId\",
+									SELECT	DOCUMENT.DOCUMENTID 		AS 	DOCUMENTID,
 							DOCUMENT.DOCUMENTTITLE		AS	\"documentTitle\",
 							DOCUMENT.DOCUMENTDESC   	AS  \"documentDesc\",
 							DOCUMENT.DOCUMENTCODE   	AS  \"documentCode\",
@@ -595,8 +595,8 @@ class documentClass extends  configClass {
 					ON		DOCUMENTCATEGORY.DOCUMENTCATEGORYID = DOCUMENT.DOCUMENTCATEGORYID
 					WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= \"". ($this->start + $this->limit - 1) . "\" )
-						where r >=  \"". $this->start . "\"";
+						where rownum <= \"". ($this->getStart() + $this->getLimit() - 1) . "\" )
+						where r >=  \"". $this->getStart() . "\"";
             		} else {
             			echo "undefine vendor";
             			exit();
@@ -714,20 +714,20 @@ class documentClass extends  configClass {
 			SELECT 	count(*) 
 			FROM 	`document` 
 			WHERE 	`documentOriginalFilename`	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		`executeBy`			=   '".$this->model->getExecuteBy()."'";
+			AND		`executeBy`					=   '".$this->model->getExecuteBy()."'";
 
 		} else if($this->getVendor()==self::mssql){
 			$sql="
 			SELECT 	count(*) 
 			FROM 	[document] 
 			WHERE 	[documentOriginalFilename]	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		[executeBy]			=   '".$this->model->getExecuteBy()."'";
+			AND		[executeBy]					=   '".$this->model->getExecuteBy()."'";
 		} else if($this->getVendor()==self::oracle){
 			$sql="
 			SELECT 	COUNT(*) 
 			FROM 	DOCUMENT 
 			WHERE 	DOCUMENTORIGINALFILENAME	=	'".$this->model->getDocumentOriginalFilename()."'
-			AND		EXECUTEBY			=   '".$this->model->getExecuteBy()."'";
+			AND		EXECUTEBY					=   '".$this->model->getExecuteBy()."'";
 		}
 		$this->q->read($sql);
 		if($this->q->execute=='fail') {
@@ -757,8 +757,8 @@ class documentClass extends  configClass {
 				`isUpdate`					=	\"".$this->model->getIsUpdate(0,'single')."\",
 				`isDelete`					=	\"".$this->model->getIsDelete(0,'single')."\",
 				`isApproved`				=	\"".$this->model->getIsApproved(0,'single')."\",
-				`executeBy`						=	\"".$this->model->getExecuteBy()."\",
-				`executeTime`						=	".$this->model->getExecuteTime()."
+				`executeBy`					=	\"".$this->model->getExecuteBy()."\",
+				`executeTime`				=	".$this->model->getExecuteTime()."
 		WHERE 	`documentId`				=	\"".$this->model->getDocumentId(0,'single')."\"";
 
 		} else if ($this->getVendor()==self::mssql){
@@ -769,7 +769,6 @@ class documentClass extends  configClass {
 				[documentCode]	        	=	'".$this->model->getDocumentCode()."',
 				[documentSequence]	        =	'".$this->model->getDocumentSequence()."',
 				[documentNote]	        	=	'".$this->model->getDocumentNote()."',
-				[documentFilename]	    	=	'".$this->model->getDocumentFilename()."',
 				[documentTitle]	        	=	'".$this->model->getDocumentTitle()."',
 				[documentDesc]	        	=	'".$this->model->getDocumentDesc()."',
 				[documentPath]	        	=	'".$this->model->getDocumentPath()."',
@@ -789,27 +788,26 @@ class documentClass extends  configClass {
 		} else if ($this->getVendor()==self::oracle){
 			$sql = "
 		UPDATE 	DOCUMENT
-		SET 	DOCUMENTCATEGORYID 		=	\"".$this->model->getDocumentCategoryId()."\",
-				LEAFID	        		=	\"".$this->model->getLeafId()."\",
-				DOCUMENTCODE	        =	\"".$this->model->getDocumentCode()."\",
-				DOCUMENTSEQUENCE	    =	\"".$this->model->getDocumentSequence()."\",
-				DOCUMENTNOTE	        =	\"".$this->model->getDocumentNote()."\",
-				\"documentFilename\"	    =	\"".$this->model->getDocumentFilename()."\",
-				DOCUMENTTITLE	        =	\"".$this->model->getDocumentTitle()."\",
-				DOCUMENTDESC	        =	\"".$this->model->getDocumentDesc()."\",
-				DOCUMENTPATH	        =	\"".$this->model->getDocumentPath()."\",
-				\"documentFilename\"	    =	\"".$this->model->getDocumentFilename()."\",
-				DOCUMENTEXTENSION	    =	\"".$this->model->getDocumentExtension()."\",
-				ISDEFAULT				=	\"".$this->model->getIsDefault(0,'single')."\",
-				ISACTIVE				=	\"".$this->model->getIsActive(0,'single')."\",
-				ISNEW					=	\"".$this->model->getIsNew(0,'single')."\",
-				ISDRAFT					=	\"".$this->model->getIsDraft(0,'single')."\",
-				ISUPDATE				=	\"".$this->model->getIsUpdate(0,'single')."\",
-				ISDELETE				=	\"".$this->model->getIsDelete(0,'single')."\",
-				ISAPPROVED				=	\"".$this->model->getIsApproved(0,'single')."\",
-				EXECUTEBY						=	\"".$this->model->getExecuteBy()."\",
-				EXECUTETIME					=	".$this->model->getExecuteTime()."
-		WHERE 	\"documentId\"				=	\"".$this->model->getDocumentId(0,'single')."\"";
+		SET 	DOCUMENTCATEGORYID 		=	'".$this->model->getDocumentCategoryId()."',
+				LEAFID	        		=	'".$this->model->getLeafId()."',
+				DOCUMENTCODE	        =	'".$this->model->getDocumentCode()."',
+				DOCUMENTSEQUENCE	    =	'".$this->model->getDocumentSequence()."',
+				DOCUMENTNOTE	        =	'".$this->model->getDocumentNote()."',
+				DOCUMENTTITLE	        =	'".$this->model->getDocumentTitle()."',
+				DOCUMENTDESC	        =	'".$this->model->getDocumentDesc()."',
+				DOCUMENTPATH	        =	'".$this->model->getDocumentPath()."',
+				DOCUMENTFILENAME		=	'".$this->model->getDocumentFilename()."',
+				DOCUMENTEXTENSION	    =	'".$this->model->getDocumentExtension()."',
+				ISDEFAULT				=	'".$this->model->getIsDefault(0,'single')."',
+				ISACTIVE				=	'".$this->model->getIsActive(0,'single')."',
+				ISNEW					=	'".$this->model->getIsNew(0,'single')."',
+				ISDRAFT					=	'".$this->model->getIsDraft(0,'single')."',
+				ISUPDATE				=	'".$this->model->getIsUpdate(0,'single')."',
+				ISDELETE				=	'".$this->model->getIsDelete(0,'single')."',
+				ISAPPROVED				=	'".$this->model->getIsApproved(0,'single')."',
+				EXECUTEBY				=	'".$this->model->getExecuteBy()."',
+				EXECUTETIME				=	".$this->model->getExecuteTime()."
+		WHERE 	DOCUMENTID				=	'".$this->model->getDocumentId(0,'single')."'";
 
 		}
 		$this->q->create($sql);
@@ -1010,7 +1008,7 @@ class documentClass extends  configClass {
 					ISAPPROVED		=	\"". $this->model->getIsApproved(0,'single') . "\",
 					EXECUTEBY				=	\"". $this->model->getExecuteBy() . "\",
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	\"documentId\"		IN	(". $this->model->getDocumentIdAll() . ")";
+			WHERE 	DOCUMENTID		IN	(". $this->model->getDocumentIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){
 
@@ -1025,7 +1023,7 @@ class documentClass extends  configClass {
 
 			} else if ($this->getVendor()==self::oracle) {
 				$sql="
-			UPDATE \"".$this->model->getTableName()."\"
+			UPDATE  ".strtoupper($this->model->getTableName())."
 			SET    ";
 			}
 			//	echo "arnab[".$this->model->getDocumentId(0,'array')."]";
@@ -1043,7 +1041,7 @@ class documentClass extends  configClass {
 					$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
 
 				} else if ($this->getVendor()==self::oracle) {
-					$sqlLooping.="	\"".$systemCheck."\" = CASE \"".$this->model->getPrimaryKeyName()."\"";
+					$sqlLooping.="	".strtoupper($systemCheck)." = CASE ".strtoupper($this->model->getPrimaryKeyName())." ";
 				}
 				switch ($systemCheck){
 					case 'isDefault':
@@ -1110,7 +1108,7 @@ class documentClass extends  configClass {
 			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql.="
-			WHERE 	".strtoupper($this->model->getPrimaryKeyName())."\" IN (".$this->model->getPrimaryKeyAll().")";
+			WHERE 	".strtoupper($this->model->getPrimaryKeyName())." IN (".$this->model->getPrimaryKeyAll().")";
 			}
 		}
 		$this->q->update($sql);
