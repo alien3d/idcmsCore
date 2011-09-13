@@ -16,7 +16,7 @@ require_once("../model/religionModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class religionClass extends configClass {
+class ReligionClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -1031,7 +1031,7 @@ class religionClass extends configClass {
 
 }
 
-$religionObject = new religionClass();
+$religionObject = new ReligionClass();
 if (isset($_SESSION['staffId'])) {
 	$religionObject->setStaffId($_SESSION['staffId']);
 }
@@ -1060,7 +1060,7 @@ if (isset($_POST['method'])) {
 	/*
 	 *  Paging
 	 */
-	if (isset($_POST['start'])) {
+	if (isset($this->getStart())) {
 		$religionObject->setStart($_POST['start']);
 	}
 	if (isset($_POST['limit'])) {

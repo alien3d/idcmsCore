@@ -104,7 +104,7 @@ class staffClass extends configClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->q->vendor == self::mysql || $this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::mysql) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -215,14 +215,14 @@ class staffClass extends configClass
 					$sql = "
 						SELECT *
 						FROM 	[moduleAccess]
-						WHERE 	[groupId]			=	\"" . $this->model->getGroupId() . "\"
-					AND		`moduleId`			=	\"" . $rowTab['moduleId'] . "\"";
+						WHERE 	[groupId]			=	'" . $this->model->getGroupId() . "'
+					AND		`moduleId`			=	'" . $rowTab['moduleId'] . "'";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
 						SELECT *
 						FROM 	MODULEACCESS
-						WHERE 	GROUPID			=	\"" . $this->model->getGroupId() . "\"
-						AND		MODULEID		=	\"" . $rowTab['moduleId'] . "\"";
+						WHERE 	GROUPID			=	'" . $this->model->getGroupId() . "'
+						AND		MODULEID		=	'" . $rowTab['moduleId'] . "'";
 				}
 				$this->q->read($sql);
 				if ($this->q->execute == 'fail') {
@@ -649,7 +649,7 @@ class staffClass extends configClass
 			$sql = "
 					SELECT	STAFF.STAFFID 		AS 	\"staffId\",
 							STAFF.GROUPID 		AS 	\"groupId\",
-							STAFF.DEPARTMENTID 	AS 	DEPARTMENTID,
+							STAFF.DEPARTMENTID 	AS 	\"departmentId\",
 							STAFF.LANGUAGEID 	AS 	\"languageId\",
 							STAFF.STAFFPASSWORD AS 	\"staffPassword\",
 							STAFF.STAFFNAME 	AS 	\"staffName\",
@@ -789,7 +789,7 @@ class staffClass extends configClass
 										[staff].[staffName]
 							FROM 		[staffDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	" . $_POST['start'] . "
+							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
@@ -803,7 +803,7 @@ class staffClass extends configClass
 									SELECT  STAFF.STAFFID,
 									SELECT	STAFF.STAFFID 		AS 	\"staffId\",
 							STAFF.GROUPID 		AS 	\"groupId\",
-							STAFF.DEPARTMENTID 	AS 	DEPARTMENTID,
+							STAFF.DEPARTMENTID 	AS 	\"departmentId\",
 							STAFF.LANGUAGEID 	AS 	\"languageId\",
 							STAFF.STAFFPASSWORD AS 	\"staffPassword\",
 							STAFF.STAFFNAME 	AS 	\"staffName\",
@@ -828,8 +828,8 @@ class staffClass extends configClass
 					AND		GROUP_.ISACTIVE 			=	'1'
 					AND		DEPARTMENT.ISACTIVE			=	'1'  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= \"" . ($this->getStart() + $this->getLimit() - 1) . "\" )
-						where r >=  \"" . $this->getStart() . "\"";
+						where rownum <= '" . ($this->getStart() + $this->getLimit() - 1) . "' )
+						where r >=  '" . $this->getStart() . "'";
             		} else {
             			echo "undefine vendor";
             			exit();
@@ -983,7 +983,7 @@ class staffClass extends configClass
 						ISAPPROVED		=	'". $this->model->getIsApproved(0,'single') ."',
 						EXECUTEBY		=	'". $this->model->getExecuteBy() ."',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	STAFFID			=	'". $this->model->staffId ."'";
+				WHERE 	STAFFID			=	'". $this->model->getStaffId(0,'single') ."'";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -1266,7 +1266,7 @@ class staffClass extends configClass
 
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
-						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
+						WHEN '". $this->model->getStaffId($i, 'array') ."'
 						THEN \"". $this->model->getIsDefault(0,'single') ."\"";
 					} else {
 						//echo "salah";
@@ -1278,7 +1278,7 @@ class staffClass extends configClass
 					if ($this->model->getIsDelete($i, 'array') == 1) {
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
-						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
+						WHEN '". $this->model->getStaffId($i, 'array') ."'
 						THEN \"". $this->model->getIsNew(0,'single') ."\"";
 					}
 				}
@@ -1288,7 +1288,7 @@ class staffClass extends configClass
 					if ($this->model->getIsDelete($i, 'array') == 1) {
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
-						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
+						WHEN '". $this->model->getStaffId($i, 'array') ."'
 						THEN \"". $this->model->getIsDraft(0,'single') ."\"";
 					}
 				}
@@ -1298,7 +1298,7 @@ class staffClass extends configClass
 					if ($this->model->getIsDelete($i, 'array') == 1) {
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
-						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
+						WHEN '". $this->model->getStaffId($i, 'array') ."'
 						THEN \"". $this->model->getIsUpdate(0,'single') ."\"";
 					}
 				}
@@ -1308,8 +1308,8 @@ class staffClass extends configClass
 					if ($this->model->getIsDelete($i, 'array') == 1) {
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
-						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-						THEN \"". $this->model->getIsDelete($i, 'array') ."\"";
+						WHEN '". $this->model->getStaffId($i, 'array') ."'
+						THEN '". $this->model->getIsDelete($i, 'array') ."'";
 					}
 				}
 				$sql .= "	END,	";
@@ -1318,7 +1318,7 @@ class staffClass extends configClass
 					if ($this->model->getIsDelete($i, 'array') == 1) {
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
-						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
+						WHEN '". $this->model->getStaffId($i, 'array') ."'
 						THEN \"". $this->model->getIsActive(0,'single') ."\"";
 					}
 				}
@@ -1328,7 +1328,7 @@ class staffClass extends configClass
 					if ($this->model->getIsDelete($i, 'array') == 1) {
 						$primaryKeyAll .= $this->model->getStaffId($i, 'array') . ",";
 						$sql .= "
-						WHEN \"". $this->model->getStaffId($i, 'array') ."\"
+						WHEN '". $this->model->getStaffId($i, 'array') ."'
 						THEN \"". $this->model->getIsApproved(0,'single') ."\"";
 					}
 				}
@@ -1376,7 +1376,7 @@ class staffClass extends configClass
 			SET 	";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
-			UPDATE \"" . $this->model->getTableName() . "\"
+			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 			}
 			//	echo "arnab[".$this->model->getDepartmentId(0,'array')."]";
@@ -1406,50 +1406,50 @@ class staffClass extends configClass
                 		case 'isDefault':
                 			for ($i = 0; $i < $loop; $i++) {
                 				$sqlLooping .= "
-							WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-							THEN \"". $this->model->getIsDefault($i, 'array') ."\"";
+							WHEN '". $this->model->getStaffId($i, 'array') ."'
+							THEN '". $this->model->getIsDefault($i, 'array') ."'";
                 			}
                 			break;
                 		case 'isNew':
                 			for ($i = 0; $i < $loop; $i++) {
                 				$sqlLooping .= "
-							WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-							THEN \"". $this->model->getIsNew($i, 'array') ."\"";
+							WHEN '". $this->model->getStaffId($i, 'array') ."'
+							THEN '". $this->model->getIsNew($i, 'array') ."'";
                 			}
                 			break;
                 		case 'isDraft':
                 			for ($i = 0; $i < $loop; $i++) {
                 				$sqlLooping .= "
-							WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-							THEN \"". $this->model->getIsDraft($i, 'array') ."\"";
+							WHEN '". $this->model->getStaffId($i, 'array') ."'
+							THEN '". $this->model->getIsDraft($i, 'array') ."'";
                 			}
                 			break;
                 		case 'isUpdate':
                 			for ($i = 0; $i < $loop; $i++) {
                 				$sqlLooping .= "
-							WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-							THEN \"". $this->model->getIsUpdate($i, 'array') ."\"";
+							WHEN '". $this->model->getStaffId($i, 'array') ."'
+							THEN '". $this->model->getIsUpdate($i, 'array') ."'";
                 			}
                 			break;
                 		case 'isDelete':
                 			for ($i = 0; $i < $loop; $i++) {
                 				$sqlLooping .= "
-							WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-							THEN \"". $this->model->getIsDelete($i, 'array') ."\"";
+							WHEN '". $this->model->getStaffId($i, 'array') ."'
+							THEN '". $this->model->getIsDelete($i, 'array') ."'";
                 			}
                 			break;
                 		case 'isActive':
                 			for ($i = 0; $i < $loop; $i++) {
                 				$sqlLooping .= "
-							WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-							THEN \"". $this->model->getIsActive($i, 'array') ."\"";
+							WHEN '". $this->model->getStaffId($i, 'array') ."'
+							THEN '". $this->model->getIsActive($i, 'array') ."'";
                 			}
                 			break;
                 		case 'isApproved':
                 			for ($i = 0; $i < $loop; $i++) {
                 				$sqlLooping .= "
-							WHEN \"". $this->model->getStaffId($i, 'array') ."\"
-							THEN \"". $this->model->getIsApproved($i, 'array') ."\"";
+							WHEN '". $this->model->getStaffId($i, 'array') ."'
+							THEN '". $this->model->getIsApproved($i, 'array') ."'";
                 			}
                 			break;
                 	}

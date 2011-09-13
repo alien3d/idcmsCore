@@ -207,13 +207,13 @@ class treeClass extends configClass
 
 		} elseif ($this->getVendor() == 'oracle') {
 			  $sqlModule = "
-		      SELECT    MODULEACCESS.MODULEACCESSID,
-		      			MODULEACCESS.MODULEID,
-		      			MODULEACCESS.GROUPID,
-		      			MODULEACCESS.MODULEACCESSVALUE,
-		      			MODULE.MODULEID AS MODULEID,
-		      			MODULETRANSLATE.MODULETRANSLATE AS MODULETRANSLATE,
-		      			ICON.ICONNAME AS ICONNAME
+		      SELECT    MODULEACCESS.MODULEACCESSID AS \"moduleAccessId\",
+		      			MODULEACCESS.MODULEID AS \"moduleId\",
+		      			MODULEACCESS.GROUPID AS \"groupId\",
+		      			MODULEACCESS.MODULEACCESSVALUE AS \"moduleAccessValue\",
+		      			MODULE.MODULEID AS MODULEID AS \"moduleId\",
+		      			MODULETRANSLATE.MODULETRANSLATE AS \"moduleTranslate\",
+		      			ICON.ICONNAME AS \"iconName\"
 		      FROM    	MODULEACCESS
 		      JOIN    	MODULE
 		      ON		MODULEACCESS.MODULEID 			= MODULE.MODULEID	
@@ -284,13 +284,13 @@ class treeClass extends configClass
 				      ORDER BY	[folder].[folderSequence]  	";
 				} elseif ($this->getVendor() == 'oracle') {
 					  $sqlFolder = "
-				      SELECT    FOLDERACCESS.FOLDERACCESSID,
-				      			FOLDERACCESS.GROUPID,
-				      			FOLDERACCESS.FOLDERACCESSVALUE,
-				      			FOLDER.FOLDERID 				AS FOLDERID,
-				      			FOLDER.FOLDERPATH				AS	FOLDERPATH,
+				      SELECT    FOLDERACCESS.FOLDERACCESSID as \"folderAccessId\",
+				      			FOLDERACCESS.GROUPID AS \"groupId\",
+				      			FOLDERACCESS.FOLDERACCESSVALUE AS \"folderAccessValue\",
+				      			FOLDER.FOLDERID 				AS \"folderId\",
+				      			FOLDER.FOLDERPATH				AS	\"folderPath\",
 				      			FOLDERTRANSLATE.FOLDERTRANSLATE AS \"folderTranslate\",
-				      			ICON.ICONNAME 					AS ICONNAME
+				      			ICON.ICONNAME 					AS \"iconName\"
 				      FROM     	FOLDERACCESS
 				      JOIN    	FOLDER
 				      ON		FOLDERACCESS.FOLDERID			= FOLDER.FOLDERID
@@ -360,13 +360,13 @@ class treeClass extends configClass
 					          ORDER BY  [leaf].[leafSequence]";
 						} elseif ($this->getVendor()==self::oracle) {
 							 $sqlLeaf = "
-					          SELECT  	LEAFACCESS.LEAFACCESSID,
-						      			LEAFACCESS.STAFFID,
-						      			LEAFACCESS.LEAFREADACCESSVALUE,
-						      			LEAF.LEAFID 					AS 	LEAFID,
-						      			LEAF.LEAFFILENAME				AS	LEAFFILENAME,
+					          SELECT  	LEAFACCESS.LEAFACCESSID AS \"leafAccessId\",
+						      			LEAFACCESS.STAFFID AS \"staffId\",
+						      			LEAFACCESS.LEAFREADACCESSVALUE AS \"leafReadAccessValue\",
+						      			LEAF.LEAFID 					AS 	\"leafId\",
+						      			LEAF.LEAFFILENAME				AS	\"leafFilename\",
 						      			LEAFTRANSLATE.LEAFTRANSLATE 	AS 	\"leafTranslate\",
-						      			ICON.ICONNAME 					AS	ICONNAME 
+						      			ICON.ICONNAME 					AS	\"iconName\"
 					          FROM   	LEAFACCESS
 					          JOIN    	LEAF
 					          ON		LEAF.LEAFID						= LEAFACCESS.LEAFID
@@ -397,10 +397,10 @@ class treeClass extends configClass
 								echo " {
 											
 											\"text\" : \"" . $leafTranslate . "\", 
-							                FOLDERPATH	:\"" . $folderPath . "\",
-							                LEAFFILENAME:\"" . $leafFilename . "\",
+							                \"folderPath\"	:\"" . $folderPath . "\",
+							                \"leafFilename\":\"" . $leafFilename . "\",
 											\"emptyLeaf\":false,
-							                LEAF : true, 
+							                \"leaf\" : true, 
 							                \"iconCls\" : \"" . $iconName . "\"
 							            } ";
 								if ($counterLeaf != $totalLeaf) {
@@ -414,7 +414,7 @@ class treeClass extends configClass
 							echo "  \"children\" :  {
                 									\"text\":\"No Leaf Identify\",
                 									\"emptyLeaf\": true,
-                									LEAF:true 
+                									\"leaf\":true 
               				}";
 
 						}
@@ -429,7 +429,7 @@ class treeClass extends configClass
 				} else {
 
 					echo "	\"children\" : {
-										LEAF:true,	
+									    \"leaf\":true,	
 										\"text\":\"No Folder Identify\",
 										\"expanded\":true
 									}";
@@ -444,7 +444,7 @@ class treeClass extends configClass
 
 		} else {
 			echo " \"children\" :{
-									LEAF:true,
+									\"leaf\":true,
 									\"text\":\"No module Identify\",
 									\"expanded\":true 
 								}]";

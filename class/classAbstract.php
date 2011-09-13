@@ -15,7 +15,7 @@ require_once 'PHPExcel/IOFactory.php';
  * @author hafizan
  *
  */
-abstract class configClass
+abstract class ConfigClass
 {
 
 	/**
@@ -359,8 +359,8 @@ abstract class configClass
 
 		} else  if ($this->getVendor()== self::oracle){
 			$sql="
-			SELECT 	MIN(\"".strtoupper($this->model->getPrimaryKeyName())."\") AS \"first\"
-			FROM 	\"".strtoupper($this->model->getTableName())."\"";
+			SELECT 	MIN(".strtoupper($this->model->getPrimaryKeyName()).") AS \"first\"
+			FROM 	".strtoupper($this->model->getTableName())." ";
 
 		}
 		$result= $this->q->fast($sql);
@@ -395,9 +395,9 @@ abstract class configClass
 		LIMIT 	1";
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
-		SELECT (\"".strtoupper($this->model->getPrimaryKeyName())."\") AS \"next\"
-		FROM 	\"".strtoupper($this->model->getTableName())."`
-		WHERE 	\"".strtoupper($this->model->getPrimaryKeyName())."\" > ".$primaryKeyValue."
+		SELECT (".strtoupper($this->model->getPrimaryKeyName()).") AS \"next\"
+		FROM 	".strtoupper($this->model->getTableName())."
+		WHERE 	".strtoupper($this->model->getPrimaryKeyName())." > ".$primaryKeyValue."
 		LIMIT 	1";
 		}
 		$result= $this->q->fast($sql);
@@ -434,9 +434,9 @@ abstract class configClass
 		LIMIT 	1";
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
-		SELECT (\"".strtoupper($this->model->getPrimaryKeyName())."\") AS \"previous\"
-		FROM 	\"".strtoupper($this->model->getTableName())."\"
-		WHERE 	\"".strtoupper($this->model->getPrimaryKeyName())."\" < ".$primaryKeyValue."
+		SELECT (".strtoupper($this->model->getPrimaryKeyName()).") AS \"previous\"
+		FROM 	".strtoupper($this->model->getTableName())."
+		WHERE 	".strtoupper($this->model->getPrimaryKeyName())." < ".$primaryKeyValue."
 		ORDER BY STAFFID DESC
 		LIMIT 	1";
 		}
@@ -465,8 +465,8 @@ abstract class configClass
 		FROM 	[".$this->model->getTableName()."]";
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
-		SELECT	MAX(\"".$this->model->getPrimaryKeyName()."\") AS \"last\"
-		FROM 	\"".strtoupper($this->model->getTableName())."\"";
+		SELECT	MAX(".$this->model->getPrimaryKeyName().") AS \"last\"
+		FROM 	".strtoupper($this->model->getTableName())." ";
 		}
 		$result= $this->q->fast($sql);
 		if($this->q->numberRows($result)> 0 ){
@@ -653,14 +653,14 @@ abstract class configClass
 	 * @param int $value
 	 */
 	public function setStart($value){
-		$this->getStart() = $value;
+		$this->start = $value;
 	}
 	/**
 	 * Return Start Number Per Page
 	 * @return int
 	 */
 	public function getStart() {
-		return $this->getStart();
+		return $this->start;
 	}
 
 	/**
@@ -668,14 +668,14 @@ abstract class configClass
 	 * @param int $value
 	 */
 	public function setLimit($value){
-		$this->getLimit() = $value;
+		$this->limit = $value;
 	}
 	/**
 	 * Return limit Per Page
 	 * @return int
 	 */
 	public function getLimit() {
-		return $this->getLimit();
+		return $this->limit;
 	}
 
 	/**

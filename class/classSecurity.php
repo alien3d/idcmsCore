@@ -8,7 +8,7 @@
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class security extends configClass {
+class Security extends ConfigClass {
 	/**
 	 * Connection to the database
 * @var string

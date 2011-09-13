@@ -141,20 +141,20 @@ class themeClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getThemeSequence() . "\",				\"". $this->model->getThemeCode() . "\",
-						\"". $this->model->getThemeNote() . "\",					\"". $this->model->getThemeNote() . "\",
-						\"". $this->model->getIsDefault(0,'single') . "\",			\"". $this->model->getIsNew(0,'single') . "\",					
-						\"". $this->model->getIsDraft(0,'single') . "\",			\"". $this->model->getIsUpdate(0,'single') . "\",				
-						\"". $this->model->getIsDelete(0,'single') . "\",			\"". $this->model->getIsActive(0,'single') . "\",				
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",								
+						'". $this->model->getThemeSequence() . "',				'". $this->model->getThemeCode() . "',
+						'". $this->model->getThemeNote() . "',					'". $this->model->getThemeNote() . "',
+						'". $this->model->getIsDefault(0,'single') . "',		'". $this->model->getIsNew(0,'single') . "',					
+						'". $this->model->getIsDraft(0,'single') . "',			'". $this->model->getIsUpdate(0,'single') . "',				
+						'". $this->model->getIsDelete(0,'single') . "',			'". $this->model->getIsActive(0,'single') . "',				
+						'". $this->model->getIsApproved(0,'single') . "',		'". $this->model->getExecuteBy() . "',								
 						" . $this->model->getExecuteTime() . "
 					);";
 		}  else if ($this->getVendor()==self::oracle) {
 			$sql="
-			INSERT INTO \"theme`
+			INSERT INTO THEME
 					(
-						\"themeSequence\",				\"themeCode\",
-						\"themeNote\",					\"themePath\",	
+						THEMESEQUENCE,				THEMECODE,
+						THEMENOTE,					THEMEPATH,	
 						ISDEFAULT,					ISNEW,							
 						ISDRAFT,					ISUPDATE,						
 						ISDELETE,					ISACTIVE,						
@@ -163,13 +163,13 @@ class themeClass  extends configClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getThemeSequence() . "\",				\"". $this->model->getThemeCode() . "\",
-						\"". $this->model->getThemeNote() . "\",					\"". $this->model->getThemeNote() . "\",
-						\"". $this->model->getIsDefault(0,'single') . "\",			\"". $this->model->getIsNew(0,'single') . "\",					
-						\"". $this->model->getIsDraft(0,'single') . "\",			\"". $this->model->getIsUpdate(0,'single') . "\",				
-						\"". $this->model->getIsDelete(0,'single') . "\",			\"". $this->model->getIsActive(0,'single') . "\",				
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",								
-						" . $this->model->getExecuteTime() . "
+						'". $this->model->getThemeSequence() . "',				'". $this->model->getThemeCode() . "',
+						'". $this->model->getThemeNote() . "',					'". $this->model->getThemeNote() . "',
+						'". $this->model->getIsDefault(0,'single') . "',		'". $this->model->getIsNew(0,'single') . "',					
+						'". $this->model->getIsDraft(0,'single') . "',			'". $this->model->getIsUpdate(0,'single') . "',				
+						'". $this->model->getIsDelete(0,'single') . "',			'". $this->model->getIsActive(0,'single') . "',				
+						'". $this->model->getIsApproved(0,'single') . "',		'". $this->model->getExecuteBy() . "',								
+						" . $this->model->getExecuteTime() . "	
 					);";
 
 		}
@@ -203,11 +203,11 @@ class themeClass  extends configClass {
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
-				$this->auditFilter = "	 1 ";
+				$this->auditFilter = "	 1 = 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
-				$this->auditFilter = "	or 1 ";
+				$this->auditFilter = "	1 =  1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = " or 1 ";
+				$this->auditFilter = " 1 =  1 ";
 			}
 		}
 		//UTF8
@@ -288,7 +288,7 @@ class themeClass  extends configClass {
 			ON		THEME.EXECUTEBY 	= 	STAFF.STAFFID
 			WHERE 	THEME.ISACTIVE	=	1 ";
 			if ($this->model->getThemeId(0,'single')) {
-				$sql .= " AND \"".$this->model->getTableName()."\".\"".$this->model->getPrimaryKeyName()."\"=\"". $this->model->getThemeId(0,'single') . "\"";
+				$sql .= " AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getPrimaryKeyName())."='". strtoupper($this->model->getThemeId(0,'single')) . "'";
 			}
 		} else {
 			echo json_encode(array(
@@ -403,7 +403,7 @@ class themeClass  extends configClass {
 										[staff].[staffName]
 							FROM 		[themeDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	" . $_POST['start'] . "
+							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
@@ -414,7 +414,7 @@ class themeClass  extends configClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT	THEME.THEMEID 		AS	\"themeId\",
+									SELECT	THEME.THEMEID 		AS	THEMEID,
 					THEME.THEMECODE 	AS 	\"themeCode\",
 					THEME.THEMESEQUENCE AS 	\"themeSequence\",
 					THEME.THEMENOTE 	AS 	\"themeNote\",
@@ -434,8 +434,8 @@ class themeClass  extends configClass {
 			ON		THEME.EXECUTEBY 	= 	STAFF.STAFFID
 			WHERE 	THEME.ISACTIVE	=	1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= \"". ($this->getStart() + $this->getLimit() - 1) . "\" )
-						where r >=  \"". $this->getStart() . "\"";
+						where rownum <= '". ($this->getStart() + $this->getLimit() - 1) . "' )
+						where r >=  '". $this->getStart() . "'";
             		} else {
             			echo "undefine vendor";
             			exit();
@@ -533,20 +533,20 @@ class themeClass  extends configClass {
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-				UPDATE 	\"theme\"
-				SET 	\"themeSequence\"	=	\"".$this->model->getThemeSequence()."\",
-						\"themeCode\"		=	\"".$this->model->getThemeCode()."\",
-						\"themeNote\" 		= 	\"".$this->model->getThemeNote()."\",
-						ISDEFAULT		=	\"".$this->model->getIsDefault(0,'single')."\",
-						ISACTIVE		=	\"".$this->model->getIsActive(0,'single')."\",
-						ISNEW			=	\"".$this->model->getIsNew(0,'single')."\",
-						ISDRAFT			=	\"".$this->model->getIsDraft(0,'single')."\",
-						ISUPDATE		=	\"".$this->model->getIsUpdate(0,'single')."\",
-						ISDELETE		=	\"".$this->model->getIsDelete(0,'single')."\",
-						ISAPPROVED		=	\"".$this->model->getIsApproved(0,'single')."\",
-						EXECUTEBY				=	\"".$this->model->getExecuteBy()."\",
-						EXECUTETIME			=	".$this->model->getExecuteTime()."
-				WHERE 	\"themeId\"			=	\"".$this->model->getThemeId(0,'single')."\"";
+				UPDATE  THEME
+				SET 	THEMESEQUENCE	=	'".$this->model->getThemeSequence()."',
+						THEMECODE		=	'".$this->model->getThemeCode()."',
+						THEMENOTE 		= 	'".$this->model->getThemeNote()."',
+						ISDEFAULT		=	'".$this->model->getIsDefault(0,'single')."',
+						ISACTIVE		=	'".$this->model->getIsActive(0,'single')."',
+						ISNEW			=	'".$this->model->getIsNew(0,'single')."',
+						ISDRAFT			=	'".$this->model->getIsDraft(0,'single')."',
+						ISUPDATE		=	'".$this->model->getIsUpdate(0,'single')."',
+						ISDELETE		=	'".$this->model->getIsDelete(0,'single')."',
+						ISAPPROVED		=	'".$this->model->getIsApproved(0,'single')."',
+						EXECUTEBY		=	'".$this->model->getExecuteBy()."',
+						EXECUTETIME		=	".$this->model->getExecuteTime()."
+				WHERE 	THEMEID			=	'".$this->model->getThemeId(0,'single')."'";
 
 		}
 		$this->q->update($sql);
@@ -581,8 +581,8 @@ class themeClass  extends configClass {
 						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
 						`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
 						`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-						`executeBy`			=	\"".$this->model->getBy(0,'single')."\",
-						`executeTime			=	".$this->model->getExecuteTime()."
+						`executeBy`		=	\"".$this->model->getBy(0,'single')."\",
+						`executeTime	=	".$this->model->getExecuteTime()."
 				WHERE 	`themeId`		=	\"".$this->model->getDepartrmentId(0,'single')."\"";
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
@@ -596,21 +596,21 @@ class themeClass  extends configClass {
 						[isApproved]	=	'".$this->model->getIsApproved(0,'single')."',
 						[executeBy]		=	'".$this->model->getExecuteBy()."',
 						[executeTime]	=	".$this->model->getExecuteTime()."
-				WHERE 	[themeId]		=	\"".$this->model->getThemeId(0,'single')."\"";
+				WHERE 	[themeId]		=	'".$this->model->getThemeId(0,'single')."'";
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-				UPDATE 	\"theme\"
-				SET 	ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
-						ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
-						ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
-						ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
-						ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
-						ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
-						ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
-						EXECUTEBY	=	\"".$this->model->getExecuteBy()."\",
+				UPDATE 	THEME
+				SET 	ISDEFAULT	=	'".$this->model->getIsDefault(0,'single')."',
+						ISACTIVE	=	'".$this->model->getIsActive(0,'single')."',
+						ISNEW		=	'".$this->model->getIsNew(0,'single')."',
+						ISDRAFT		=	'".$this->model->getIsDraft(0,'single')."',
+						ISUPDATE	=	'".$this->model->getIsUpdate(0,'single')."',
+						ISDELETE	=	'".$this->model->getIsDelete(0,'single')."',
+						ISAPPROVED	=	'".$this->model->getIsApproved(0,'single')."',
+						EXECUTEBY	=	'".$this->model->getExecuteBy()."',
 						EXECUTETIME	=	".$this->model->getExecuteTime()."
-				WHERE 	\"themeId\"		=	\"".$this->model->getThemeId(0,'single')."\"";
+				WHERE 	THEMEID		=	'".$this->model->getThemeId(0,'single')."'";
 
 		}
 		$this->q->update($sql);
@@ -729,8 +729,8 @@ class themeClass  extends configClass {
 					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
 					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
 					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					[executeBy]				=	\"". $this->model->getExecuteBy() . "\",
-					[executeTime]				=	" . $this->model->getExecuteTime() . "
+					[executeBy]			=	\"". $this->model->getExecuteBy() . "\",
+					[executeTime]		=	" . $this->model->getExecuteTime() . "
 			WHERE 	[themeId]		IN	(". $this->model->getThemeIdAll() . ")";
 			} else if ($this->getVendor() == self::oracle) {
 				$sql = "
@@ -742,9 +742,9 @@ class themeClass  extends configClass {
 					ISDELETE		=	\"". $this->model->getIsDelete(0,'single') . "\",
 					ISACTIVE		=	\"". $this->model->getIsActive(0,'single') . "\",
 					ISAPPROVED		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					EXECUTEBY				=	\"". $this->model->getExecuteBy() . "\",
-					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	\"themeId\"		IN	(". $this->model->getThemeIdAll() . ")";
+					EXECUTEBY		=	\"". $this->model->getExecuteBy() . "\",
+					EXECUTETIME		=	" . $this->model->getExecuteTime() . "
+			WHERE 	THEMEID		IN	(". $this->model->getThemeIdAll() . ")";
 			}
 		} else if ($this->isAdmin ==1){
 
@@ -759,7 +759,7 @@ class themeClass  extends configClass {
 
 			} else if ($this->getVendor()==self::oracle) {
 				$sql="
-			UPDATE \"".$this->model->getTableName()."\"
+			UPDATE '".$this->model->getTableName()."'
 			SET    ";
 			}
 			//	echo "arnab[".$this->model->getThemeId(0,'array')."]";
@@ -844,7 +844,7 @@ class themeClass  extends configClass {
 			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql.="
-			WHERE \"".$this->model->getPrimaryKeyName()."\" IN (".$this->model->getPrimaryKeyAll().")";
+			WHERE '".$this->model->getPrimaryKeyName()."' IN (".$this->model->getPrimaryKeyAll().")";
 			}
 		}
 		$this->q->update($sql);
@@ -889,8 +889,8 @@ class themeClass  extends configClass {
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
 			SELECT	*
-			FROM 	\"theme\"
-			WHERE 	\"themeCode\" 	= 	\"". $this->model->getThemeCode() . "\"
+			FROM 	THEME
+			WHERE 	THEMECODE 	= 	'". $this->model->getThemeCode() . "'
 			AND		ISACTIVE		=	1";
 		}
 		$this->q->read($sql);
@@ -1118,7 +1118,7 @@ if(isset($_POST['method']))	{
 	if(isset($_POST['isAdmin'])){
 		$themeObject->setIsAdmin($_POST['isAdmin']);
 	}
-	/*
+	/**
 	 *  Paging
 	 */
 	if(isset($_POST['start'])){

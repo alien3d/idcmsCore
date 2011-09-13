@@ -2357,7 +2357,7 @@ if (!class_exists('TCPDF', false)) {
 			// terminate previous page
 			$this->endPage();
 			// start new page
-			$this->getStart()Page($orientation, $format);
+			$this->startPage($orientation, $format);
 		}
 
 		/**
@@ -8714,7 +8714,7 @@ if (!class_exists('TCPDF', false)) {
 		 */
 		public function Ellipse($x0, $y0, $rx, $ry=0, $angle=0, $astart=0, $afinish=360, $style='', $line_style=array(), $fill_color=array(), $nc=8) {
 			if ($angle) {
-				$this->getStart()Transform();
+				$this->StartTransform();
 				$this->Rotate($angle, $x0, $y0);
 				$this->Ellipse($x0, $y0, $rx, $ry, 0, $astart, $afinish, $style, $line_style, $fill_color, $nc);
 				$this->StopTransform();
@@ -13075,7 +13075,7 @@ if (!class_exists('TCPDF', false)) {
 						$dom[$key]['attribute']['nobr'] = false;
 					} else {
 						// store current object
-						$this->getStart()Transaction();
+						$this->startTransaction();
 						// save this method vars
 						$this_method_vars['html'] = $html;
 						$this_method_vars['ln'] = $ln;
@@ -13827,7 +13827,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 				++$key;
 				if (isset($dom[$key]['tag']) AND $dom[$key]['tag'] AND (!isset($dom[$key]['opening']) OR !$dom[$key]['opening']) AND isset($dom[($dom[$key]['parent'])]['attribute']['nobr']) AND ($dom[($dom[$key]['parent'])]['attribute']['nobr'] == 'true')) {
-					if ((!$undo) AND ($this->getStart()_transaction_page == ($this->numpages - 1))) {
+					if ((!$undo) AND ($this->start_transaction_page == ($this->numpages - 1))) {
 						// restore previous object
 						$this->rollbackTransaction(true);
 						// restore previous values
@@ -15981,7 +15981,7 @@ if (!class_exists('TCPDF', false)) {
 				$this->commitTransaction();
 			}
 			// record current page number
-			$this->getStart()_transaction_page = $this->page;
+			$this->start_transaction_page = $this->page;
 			// clone current object
 			$this->objcopy = $this->objclone($this);
 		}

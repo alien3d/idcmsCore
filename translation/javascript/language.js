@@ -484,9 +484,7 @@ Ext.onReady(function() {
                             
                             if(record.get('languageId')){
                             	sub_url = sub_url + '&languageId[]=' + record.get('languageId');
-                            } else {
-                            	alert("testing for error"+i)
-                            }
+                            } 
                             if (isAdmin == 1) {
                             	sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
                                 sub_url = sub_url + '&isNew[]=' + record.get('isNew');

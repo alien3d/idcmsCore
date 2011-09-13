@@ -4,7 +4,7 @@
  * @author hafizan
  *
  */
-abstract class validationClass {
+abstract class ValidationClass {
 	// database property
 	private $vendor;
 	private $tableName;

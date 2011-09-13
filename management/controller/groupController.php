@@ -642,7 +642,7 @@ class groupClass  extends configClass {
 										[staff].[staffName]
 							FROM 		[groupDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	" . $_POST['start'] . "
+							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**

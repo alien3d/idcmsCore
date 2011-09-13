@@ -177,13 +177,13 @@ class logClass extends  configClass {
 
 		$sql.="	ORDER BY `".$sortField."` ".$dir." ";
 		if(empty($_POST['filter']))      {
-			if(isset($_POST['start']) && isset($_POST['limit'])) {
-				$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
+			if(isset($this->getStart()) && isset($_POST['limit'])) {
+				$sql.=" LIMIT  ".$this->getStart().",".$_POST['limit']." ";
 			}
 		}
 
 		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf
-		$_SESSION['start'] 	= 	$_POST['start'];
+		$_SESSION['start'] 	= 	$this->getStart();
 		$_SESSION['limit'] 	= 	$_POST['limit'];
 		$this->q->read($sql);
 

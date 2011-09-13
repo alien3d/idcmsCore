@@ -357,8 +357,8 @@ class leafAccessClass extends  configClass {
 		$total	= $this->q->numberRows();
 		//paging
 
-		if(isset($_POST['start']) && isset($_POST['limit'])) {
-			$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
+		if(isset($this->getStart()) && isset($_POST['limit'])) {
+			$sql.=" LIMIT  ".$this->getStart().",".$_POST['limit']." ";
 		}
 
 

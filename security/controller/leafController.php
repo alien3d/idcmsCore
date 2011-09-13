@@ -34,7 +34,7 @@ class leafClass extends configClass
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string 
+	 * @var string
 	 */
 	private $documentTrail;
 	/**
@@ -49,17 +49,17 @@ class leafClass extends configClass
 	private $log;
 	/**
 	 * Model
-	 * @var string 
+	 * @var string
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string 
+	 * @var string
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string 
+	 * @var string
 	 */
 	public $auditColumn;
 	/**
@@ -67,7 +67,7 @@ class leafClass extends configClass
 	 * @var bool
 	 */
 	public $duplicateTest;
-	
+
 	/**
 	 *  Class Loader
 	 */
@@ -319,8 +319,8 @@ class leafClass extends configClass
 			if ($this->model->getLeafId(0,'single')) {
 				$sql .= " AND `".$this->model->getModuleName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLeafId(0,'single') ."\"";
 			}
-				
-				
+
+
 
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -447,13 +447,13 @@ class leafClass extends configClass
             	}
             }
             $_SESSION['sql']   = $sql; // push to session so can make report via excel and pdf
-            $_SESSION['start'] = $_POST['start'];
-            $_SESSION['limit'] = $_POST['limit'];
-            if (empty($_POST['filter'])) {
-            	if (isset($_POST['start']) && isset($_POST['limit'])) {
-            		// only mysql have limit
+            $_SESSION['start'] = $this->getStart();
+            $_SESSION['limit'] = $this->getLimit();
+            if (!($this->getGridQuery())) {
+            	if ($this->getLimit()) {
+            	            		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
-            			$sql .= " LIMIT  " . $_POST['start'] . "," . $_POST['limit'] . " ";
+            			$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
             		} else if ($this->getVendor() == self::mssql) {
             			/**
             			 *	 Sql Server and Oracle used row_number
@@ -463,15 +463,25 @@ class leafClass extends configClass
 							WITH [religionDerived] AS
 							(
 								SELECT *,
-								ROW_NUMBER() OVER (ORDER BY [religionId]) AS 'RowNumber'
-								FROM [religion]
-								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
+								ROW_NUMBER() OVER (ORDER BY [leafId]) AS 'RowNumber'
+							
+			FROM 		[leaf]
+			JOIN		[folder]
+			ON			[leaf].[folderId] 			=	[folder].[folderId]
+			AND			[leaf].[moduleId] 		=	[folder].[moduleId]
+			JOIN		[module]
+			ON			[leaf].[moduleId] 		=	[module].[moduleId]
+			LEFT JOIN	[icon]
+			ON			[leaf].[iconId]				=	[icon].[iconId]
+			WHERE 		".$this->auditFilter."
+			AND			[folder].[isActive]			=	1
+			AND			[module].[isActive]			=	1   " . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
 							FROM 		[religionDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	" . $_POST['start'] . "
-							AND 			" . ($_POST['start'] + $_POST['limit'] - 1) . ";";
+							BETWEEN	" . $this->getStart() . "
+							AND 			" . ($this->getStart() + $_POST['limit'] - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived modulele also
@@ -481,12 +491,42 @@ class leafClass extends configClass
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT *
-									FROM 	RELIGION
-									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
+									SELECT		LEAF.LEAFID 		AS	\"leafId\",
+						LEAF.LEAFCODE 		AS 	\"leafCode\",
+						LEAF.LEAFSEQUENCE 	AS 	\"leafSequence\",
+						LEAF.LEAFNOTE 		AS 	\"leafNote\",
+						LEAF.LEAFFILENAME 	AS 	\"leafFilename\",
+						LEAF.ISDEFAULT 		AS 	\"isDefault\",
+						LEAF.ISNEW 			AS	\"isNew\",
+						LEAF.ISDRAFT  		AS 	\"isDraft\",
+						LEAF.ISUPDATE 		AS 	\"isUpdate\",
+						LEAF.ISDELETE 		AS 	\"isDelete\",
+						LEAF.ISACTIVE 		AS 	\"isActive\",
+						LEAF.ISAPPROVED 	AS 	\"isApproved\",
+						LEAF.EXECUTEBY 		AS 	\"executeBy\",
+						LEAF.EXECUTETIME 	AS  \"executeTime\",
+						FOLDER.FOLDERID		AS	\"folderId\",
+						FOLDER.FOLDERNOTE	AS	\"folderNote\",
+						MODULE.MODULEID		AS 	\"moduleId\",		
+						MODULE.MODULENOTE	AS  \"moduleNote\",
+						LEAF.LEAFCATEGORYID AS  \"leafCategoryId\",
+						STAFF.STAFFNAME 	AS 	\"staffName\"
+			FROM 		LEAF
+			JOIN		FOLDER
+			ON			LEAF.MODULEID 	= FOLDER.MODULEID
+			AND			LEAF.FOLDERID	= FOLDER.FOLDERID
+			JOIN		MODULE
+			ON			LEAF.MODULEID 	= MODULE.MODULEID
+			LEFT JOIN	ICON
+			ON			LEAF.ICONID		= ICON.ICONID
+			JOIN		STAFF
+			ON			LEAF.EXECUTEBY = STAFF.STAFFID
+			WHERE 		".$this->auditFilter."
+			AND			FOLDER.ISACTIVE = 1
+			AND			MODULE.ISACTIVE = 1  " . $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= \"". ($_POST['start'] + $_POST['limit'] - 1) ."\" )
-						where r >=  \"". $_POST['start'] ."\"";
+						where rownum <= '". ($this->getStart() + $_POST['limit'] - 1) ."' )
+						where r >=  '". $this->getStart() ."'";
             		} else {
             			echo "undefine vendor";
             		}
@@ -784,6 +824,15 @@ if (isset($_POST['method'])) {
 	 */
 	if (isset($_POST['isAdmin'])) {
 		$leafObject->setIsAdmin($_POST['isAdmin']);
+	}
+	/**
+	 *  Paging
+	 */
+	if(isset($_POST['start'])){
+		$themeObject->setStart($_POST['start']);
+	}
+	if(isset($_POST['limit'])){
+		$themeObject->setLimit($_POST['perPage']);
 	}
 	/*
 	 *  Filtering

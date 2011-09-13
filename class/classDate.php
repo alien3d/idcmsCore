@@ -1,4 +1,4 @@
-<?php	class dateClass {
+<?php	class DateClass {
 	var $day;
 	var $month;
 	var $year;

@@ -547,7 +547,7 @@ class mainClass extends configClass
 										[staff].[staffName]	
 							FROM 		[mainDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	" . $_POST['start'] . "
+							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
@@ -659,8 +659,8 @@ if (isset($_POST['method'])) {
 	if (isset($_POST['query'])) {
 		$mainObject->quickFilter = $_POST['query'];
 	}
-	if (isset($_POST['start'])) {
-		$mainObject->start = $_POST['start'];
+	if (isset($this->getStart())) {
+		$mainObject->start = $this->getStart();
 	} 
 	if (isset($_POST['perPage'])) {
 		$mainObject->limit = $_POST['perPage'];

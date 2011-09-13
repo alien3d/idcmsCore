@@ -394,7 +394,7 @@ class departmentClass  extends configClass {
 										[staff].[staffName]
 							FROM 		[departmentDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	" . $_POST['start'] . "
+							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
@@ -1115,7 +1115,7 @@ if(isset($_POST['method']))	{
 	/*
 	 *  Paging
 	 */
-	if(isset($_POST['start'])){
+	if(isset($this->getStart())){
 		$departmentObject->setStart($_POST['start']);
 	}
 	if(isset($_POST['limit'])){

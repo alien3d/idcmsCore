@@ -8,7 +8,7 @@
  * @version 1.2 new support for Oracle 02/15/2011
  * @version 1.3 change for provider to vendor instead of mysqldb
  */
-class vendor
+class Vendor
 {
 	// private property
 	private $connection;

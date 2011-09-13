@@ -382,16 +382,16 @@ class tableMappingClass extends  configClass {
 			}
 		}
 		$_SESSION['sql']	=	$sql; // push to session so can make report via excel and pdf
-		$_SESSION['start'] 	= 	$_POST['start'];
+		$_SESSION['start'] 	= 	$this->getStart();
 		$_SESSION['limit'] 	= 	$_POST['limit'];
 
 		if(empty($_POST['filter']))      {
 
-			if(isset($_POST['start']) && isset($_POST['limit'])) {
+			if(isset($this->getStart()) && isset($_POST['limit'])) {
 				// only mysql have limit
 
 				if($this->getVendor() == self::mysql) {
-					$sql.=" LIMIT  ".$_POST['start'].",".$_POST['limit']." ";
+					$sql.=" LIMIT  ".$this->getStart().",".$_POST['limit']." ";
 					$sqlLimit = $sql;
 				} else if ($this->getVendor()==self::mssql) {
 					/**
@@ -418,8 +418,8 @@ class tableMappingClass extends  configClass {
 							SELECT		*
 							FROM 		[tableMappingDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	".$_POST['start']."
-							AND 			".($_POST['start']+$_POST['limit']-1).";";
+							BETWEEN	".$this->getStart()."
+							AND 			".($this->getStart()+$_POST['limit']-1).";";
 
 
 				}  else if ($this->getVendor()==self::oracle) {

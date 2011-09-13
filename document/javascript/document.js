@@ -578,10 +578,7 @@ Ext
 																+ '&documentId[]='
 																+ record
 																		.get('documentId');
-													} else {
-														alert("testing for error"
-																+ i);
-													}
+													} 
 													if (isAdmin == 1) {
 														sub_url = sub_url
 																+ '&isDefault[]='

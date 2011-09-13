@@ -10,7 +10,7 @@ require_once("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class religionModel extends validationClass
+class ReligionModel extends ValidationClass
 {
 
 	// table field
