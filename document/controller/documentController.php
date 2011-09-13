@@ -892,7 +892,7 @@ class documentClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
-		$this->model-> updateStatus();
+		
 		$loop  = $this->model->getTotal();
 
 		if($this->isAdmin==0){
@@ -950,7 +950,7 @@ class documentClass extends  configClass {
 						$primaryKeyAll.=$this->model->getDocumentId($i,'array').",";
 						$sql.="
 						WHEN \"".$this->model->getDocumentId($i,'array')."\"
-						THEN \"".$this->model->getIsDelete($i,'array')."\"";
+						THEN '".$this->model->getIsDelete($i,'array')."'";
 					}
 				}
 				$sql.="	END,	";
@@ -1048,49 +1048,49 @@ class documentClass extends  configClass {
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
 							WHEN \"".$this->model->getDocumentId($i,'array')."\"
-							THEN \"".$this->model->getIsDefault($i,'array')."\"";
+							THEN '".$this->model->getIsDefault($i,'array')."'";
 						}
 						break;
 					case 'isNew':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
 							WHEN \"".$this->model->getDocumentId($i,'array')."\"
-							THEN \"".$this->model->getIsNew($i,'array')."\"";
+							THEN '".$this->model->getIsNew($i,'array')."'";
 
 						} break;
 					case 'isDraft':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
 							WHEN \"".$this->model->getDocumentId($i,'array')."\"
-							THEN \"".$this->model->getIsDraft($i,'array')."\"";
+							THEN '".$this->model->getIsDraft($i,'array')."'";
 						}
 						break;
 					case 'isUpdate':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
 							WHEN \"".$this->model->getDocumentId($i,'array')."\"
-							THEN \"".$this->model->getIsUpdate($i,'array')."\"";
+							THEN '".$this->model->getIsUpdate($i,'array')."'";
 						}
 						break;
 					case 'isDelete':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
 							WHEN \"".$this->model->getDocumentId($i,'array')."\"
-							THEN \"".$this->model->getIsDelete($i,'array')."\"";
+							THEN '".$this->model->getIsDelete($i,'array')."'";
 						}
 						break;
 					case 'isActive':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
 							WHEN \"".$this->model->getDocumentId($i,'array')."\"
-							THEN \"".$this->model->getIsActive($i,'array')."\"";
+							THEN '".$this->model->getIsActive($i,'array')."'";
 						}
 						break;
 					case 'isApproved':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
 							WHEN \"".$this->model->getDocumentId($i,'array')."\"
-							THEN \"".$this->model->getIsApproved($i,'array')."\"";
+							THEN '".$this->model->getIsApproved($i,'array')."'";
 						}
 						break;
 				}

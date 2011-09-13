@@ -22,12 +22,12 @@ class themeClass  extends configClass {
 	public $q;
 	/**
 	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-     * @var string
+	 * @var string
 	 */
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string 
+	 * @var string
 	 */
 	private $documentTrail;
 	/**
@@ -42,17 +42,17 @@ class themeClass  extends configClass {
 	private $log;
 	/**
 	 * Model
-	 * @var string 
+	 * @var string
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string 
+	 * @var string
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string 
+	 * @var string
 	 */
 	public $auditColumn;
 	/**
@@ -628,225 +628,118 @@ class themeClass  extends configClass {
 	 *  To Update flag Status
 	 */
 	function updateStatus () {
-		$this->model-> updateStatus();
+		header('Content-Type','application/json; charset=utf-8');
+
+		if($this->getVendor() == self::mysql) {
+			//UTF8
+			$sql="SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+
+		}
+
 		$loop  = $this->model->getTotal();
 
-		if($this->isAdmin==0){
-
-			$this->model->delete();
-			if ($this->getVendor() == self::mysql) {
-				$sql = "
-				UPDATE 	`".$this->model->getTableName()."`
-				SET 	";
-
-				$sql.="	   `isDefault`			=	case `".$this->model->getPrimaryKeyName()."` ";
-				for($i=0;$i<$loop;$i++) {
-					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
-						$sql.="
-						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsDefault(0,'single')."\"";
-					}
-				}
-				$sql.="	END, ";
-				$sql.="	`isNew`	=	case `".$this->model->getPrimaryKeyName()."` ";
-
-				for($i=0;$i<$loop;$i++) {
-					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
-						$sql.="
-						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsNew(0,'single')."\"";
-					}
-				}
-				$sql.="	END,";
-				$sql.="	`isDraft`	=	case `".$this->model->getPrimaryKeyName()."` ";
-				for($i=0;$i<$loop;$i++) {
-					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
-						$sql.="
-						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsDraft(0,'single')."\"";
-					}
-				}
-				$sql.="	END,";
-				$sql.="	`isUpdate`	=	case `".$this->model->getPrimaryKeyName()."`";
-				for($i=0;$i<$loop;$i++) {
-					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
-						$sql.="
-						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsUpdate(0,'single')."\"";
-					}
-				}
-				$sql.="	END,";
-				$sql.="	`isDelete`	=	case `".$this->model->getPrimaryKeyName()."`";
-				for($i=0;$i<$loop;$i++) {
-					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
-						$sql.="
-						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsDelete($i,'array')."\"";
-					}
-				}
-				$sql.="	END,	";
-				$sql.="	`isActive`	=		case `".$this->model->getPrimaryKeyName()."` ";
-				for($i=0;$i<$loop;$i++) {
-					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
-						$sql.="
-						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsActive(0,'single')."\"";
-					}
-				}
-				$sql.="	END,";
-				$sql.="	`isApproved`			=	case `".$this->model->getPrimaryKeyName()."` ";
-				for($i=0;$i<$loop;$i++) {
-					if($this->model->getIsDelete($i,'array')==1){
-						$primaryKeyAll.=$this->model->getThemeId($i,'array').",";
-						$sql.="
-						WHEN \"".$this->model->getThemeId($i,'array')."\"
-						THEN \"".$this->model->getIsApproved(0,'single')."\"";
-
-					}
-				}
-				$sql.="
-				END,
-				`executeBy`				=	\"". $this->model->getExecuteBy() . "\",
-				`executeTime`				=	" . $this->model->getExecuteTime() . " ";
 
 
-				$this->model->setPrimaryKeyAll(substr($primaryKeyAll,0,-1));
-				$sql.=" WHERE 	`".$this->model->getPrimaryKeyName()."`		IN	(". $this->model->getPrimaryKeyAll(). ")";
-
-			} else if ($this->getVendor() ==  self::mssql) {
-				$sql = "
-			UPDATE 	[theme]
-			SET 	[isDefault]			=	\"". $this->model->getIsDefault(0,'single') . "\",
-					[isNew]				=	\"". $this->model->getIsNew(0,'single') . "\",
-					[isDraft]			=	\"". $this->model->getIsDraft(0,'single') . "\",
-					[isUpdate]			=	\"". $this->model->getIsUpdate(0,'single') . "\",
-					[isDelete]			=	\"". $this->model->getIsDelete(0,'single') . "\",
-					[isActive]			=	\"". $this->model->getIsActive(0,'single') . "\",
-					[isApproved]		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					[executeBy]			=	\"". $this->model->getExecuteBy() . "\",
-					[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 	[themeId]		IN	(". $this->model->getThemeIdAll() . ")";
-			} else if ($this->getVendor() == self::oracle) {
-				$sql = "
-				UPDATE	\"theme\"
-				SET 	ISDEFAULT		=	\"". $this->model->getIsDefault(0,'single') . "\",
-					ISNEW			=	\"". $this->model->getIsNew(0,'single') . "\",
-					ISDRAFT			=	\"". $this->model->getIsDraft(0,'single') . "\",
-					ISUPDATE		=	\"". $this->model->getIsUpdate(0,'single') . "\",
-					ISDELETE		=	\"". $this->model->getIsDelete(0,'single') . "\",
-					ISACTIVE		=	\"". $this->model->getIsActive(0,'single') . "\",
-					ISAPPROVED		=	\"". $this->model->getIsApproved(0,'single') . "\",
-					EXECUTEBY		=	\"". $this->model->getExecuteBy() . "\",
-					EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-			WHERE 	THEMEID		IN	(". $this->model->getThemeIdAll() . ")";
-			}
-		} else if ($this->isAdmin ==1){
-
-			if($this->getVendor() == self::mysql) {
-				$sql="
+		if($this->getVendor() == self::mysql) {
+			$sql="
 				UPDATE `".$this->model->getTableName()."`
 				SET";
-			} else if($this->getVendor()==self::mssql) {
-				$sql="
+		} else if($this->getVendor()==self::mssql) {
+			$sql="
 			UPDATE 	[".$this->model->getTableName()."]
 			SET 	";
 
-			} else if ($this->getVendor()==self::oracle) {
-				$sql="
+		} else if ($this->getVendor()==self::oracle) {
+			$sql="
 			UPDATE '".$this->model->getTableName()."'
 			SET    ";
-			}
-			//	echo "arnab[".$this->model->getThemeId(0,'array')."]";
-			/**
-			 *	System Validation Checking
-			 *  @var $access
-			 */
-			$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved");
-			foreach($access as $systemCheck) {
-
-
-				if($this->getVendor() == self::mysql) {
-					$sqlLooping.=" `".$systemCheck."` = CASE `".$this->model->getPrimaryKeyName()."`";
-				} else if($this->getVendor()==self::mssql) {
-					$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
-
-				} else if ($this->getVendor()==self::oracle) {
-					$sqlLooping.="	\"".$systemCheck."\" = CASE \"".$this->model->getPrimaryKeyName()."\"";
-				}
-				switch ($systemCheck){
-					case 'isDefault':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
-							THEN \"".$this->model->getIsDefault($i,'array')."\"";
-						}
-						break;
-					case 'isNew':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
-							THEN \"".$this->model->getIsNew($i,'array')."\"";
-
-						} break;
-					case 'isDraft':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
-							THEN \"".$this->model->getIsDraft($i,'array')."\"";
-						}
-						break;
-					case 'isUpdate':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
-							THEN \"".$this->model->getIsUpdate($i,'array')."\"";
-						}
-						break;
-					case 'isDelete':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
-							THEN \"".$this->model->getIsDelete($i,'array')."\"";
-						}
-						break;
-					case 'isActive':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
-							THEN \"".$this->model->getIsActive($i,'array')."\"";
-						}
-						break;
-					case 'isApproved':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
-							THEN \"".$this->model->getIsApproved($i,'array')."\"";
-						}
-						break;
-				}
-
-
-				$sqlLooping.= " END,";
-			}
-
-			$sql.=substr($sqlLooping,0,-1);
-			if($this->getVendor() == self::mysql) {
-				$sql.="
-			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getPrimaryKeyAll().")";
-			} else if($this->getVendor()==self::mssql) {
-				$sql.="
-			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
-			} else if ($this->getVendor()==self::oracle) {
-				$sql.="
-			WHERE '".$this->model->getPrimaryKeyName()."' IN (".$this->model->getPrimaryKeyAll().")";
-			}
 		}
+		//	echo "arnab[".$this->model->getThemeId(0,'array')."]";
+		/**
+		 *	System Validation Checking
+		 *  @var $access
+		 */
+		$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved");
+		foreach($access as $systemCheck) {
+
+
+			if($this->getVendor() == self::mysql) {
+				$sqlLooping.=" `".$systemCheck."` = CASE `".$this->model->getPrimaryKeyName()."`";
+			} else if($this->getVendor()==self::mssql) {
+				$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
+
+			} else if ($this->getVendor()==self::oracle) {
+				$sqlLooping.="	\"".$systemCheck."\" = CASE \"".$this->model->getPrimaryKeyName()."\"";
+			}
+			switch ($systemCheck){
+				case 'isDefault':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							THEN '".$this->model->getIsDefault($i,'array')."'";
+					}
+					break;
+				case 'isNew':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							THEN '".$this->model->getIsNew($i,'array')."'";
+
+					} break;
+				case 'isDraft':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							THEN '".$this->model->getIsDraft($i,'array')."'";
+					}
+					break;
+				case 'isUpdate':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							THEN '".$this->model->getIsUpdate($i,'array')."'";
+					}
+					break;
+				case 'isDelete':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							THEN '".$this->model->getIsDelete($i,'array')."'";
+					}
+					break;
+				case 'isActive':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							THEN '".$this->model->getIsActive($i,'array')."'";
+					}
+					break;
+				case 'isApproved':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							THEN '".$this->model->getIsApproved($i,'array')."'";
+					}
+					break;
+			}
+
+
+			$sqlLooping.= " END,";
+		}
+
+		$sql.=substr($sqlLooping,0,-1);
+		if($this->getVendor() == self::mysql) {
+			$sql.="
+			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getPrimaryKeyAll().")";
+		} else if($this->getVendor()==self::mssql) {
+			$sql.="
+			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
+		} else if ($this->getVendor()==self::oracle) {
+			$sql.="
+			WHERE '".$this->model->getPrimaryKeyName()."' IN (".$this->model->getPrimaryKeyAll().")";
+		}
+
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(

@@ -207,22 +207,22 @@ class treeClass extends configClass
 
 		} elseif ($this->getVendor() == 'oracle') {
 			  $sqlModule = "
-		      SELECT    MODULEACCESS.MODULEACCESSID AS \"moduleAccessId\",
-		      			MODULEACCESS.MODULEID AS \"moduleId\",
-		      			MODULEACCESS.GROUPID AS \"groupId\",
-		      			MODULEACCESS.MODULEACCESSVALUE AS \"moduleAccessValue\",
-		      			MODULE.MODULEID AS MODULEID AS \"moduleId\",
+		      SELECT    MODULEACCESS.MODULEACCESSID 	AS \"moduleAccessId\",
+		      			MODULEACCESS.MODULEID 			AS \"moduleId\",
+		      			MODULEACCESS.GROUPID 			AS \"groupId\",
+		      			MODULEACCESS.MODULEACCESSVALUE 	AS \"moduleAccessValue\",
+		      			MODULE.MODULEID 			 	AS \"moduleId\",
 		      			MODULETRANSLATE.MODULETRANSLATE AS \"moduleTranslate\",
-		      			ICON.ICONNAME AS \"iconName\"
+		      			ICON.ICONNAME 					AS \"iconName\"
 		      FROM    	MODULEACCESS
 		      JOIN    	MODULE
-		      ON		MODULEACCESS.MODULEID 			= MODULE.MODULEID	
+		      ON		MODULEACCESS.MODULEID 			= 	MODULE.MODULEID	
 		      JOIN    	MODULETRANSLATE
-		      ON		MODULETRANSLATE.MODULEID		= MODULE.MODULEID
+		      ON		MODULETRANSLATE.MODULEID		= 	MODULE.MODULEID
 		      LEFT	JOIN    	ICON
-		      ON		ICON.ICONID						= MODULE.ICONID	 
+		      ON		ICON.ICONID						= 	MODULE.ICONID	 
 		      JOIN		GROUP_
-		      ON		GROUP_.GROUPID					= MODULEACCESS.GROUPID
+		      ON		GROUP_.GROUPID					= 	MODULEACCESS.GROUPID
 		      WHERE    	MODULEACCESS.GROUPID			=	'" . $_SESSION['groupId'] . "'
 		      AND     	MODULEACCESS.MODULEACCESSVALUE	=  	1
 		      AND      	MODULETRANSLATE.LANGUAGEID		=	'" . $_SESSION['languageId'] . "'
@@ -241,10 +241,10 @@ class treeClass extends configClass
 				$moduleId = $rowModule['moduleId'];
 				$counterModule++;
 				echo "{
-						LEAF:false,
-						\"text\":\"".$moduleTranslate."\",
-					    \"iconCls\":\"".$iconName."\",
-					    \"expanded\": true,";
+						\"leaf\"	:	false,
+						\"text\"	:	\"".$moduleTranslate."\",
+					    \"iconCls\"	:	\"".$iconName."\",
+					    \"expanded\":	true,";
 				if ($this->getVendor() == self::mysql) {
 					  	  $sqlFolder = "
 					      SELECT    *
@@ -284,25 +284,25 @@ class treeClass extends configClass
 				      ORDER BY	[folder].[folderSequence]  	";
 				} elseif ($this->getVendor() == 'oracle') {
 					  $sqlFolder = "
-				      SELECT    FOLDERACCESS.FOLDERACCESSID as \"folderAccessId\",
-				      			FOLDERACCESS.GROUPID AS \"groupId\",
-				      			FOLDERACCESS.FOLDERACCESSVALUE AS \"folderAccessValue\",
-				      			FOLDER.FOLDERID 				AS \"folderId\",
+				      SELECT    FOLDERACCESS.FOLDERACCESSID 	AS	\"folderAccessId\",
+				      			FOLDERACCESS.GROUPID 			AS 	\"groupId\",
+				      			FOLDERACCESS.FOLDERACCESSVALUE 	AS 	\"folderAccessValue\",
+				      			FOLDER.FOLDERID 				AS 	\"folderId\",
 				      			FOLDER.FOLDERPATH				AS	\"folderPath\",
-				      			FOLDERTRANSLATE.FOLDERTRANSLATE AS \"folderTranslate\",
-				      			ICON.ICONNAME 					AS \"iconName\"
+				      			FOLDERTRANSLATE.FOLDERTRANSLATE AS 	\"folderTranslate\",
+				      			ICON.ICONNAME 					AS 	\"iconName\"
 				      FROM     	FOLDERACCESS
 				      JOIN    	FOLDER
-				      ON		FOLDERACCESS.FOLDERID			= FOLDER.FOLDERID
+				      ON		FOLDERACCESS.FOLDERID			= 	FOLDER.FOLDERID
 				      JOIN    	FOLDERTRANSLATE
-				      ON		FOLDERTRANSLATE.FOLDERID		= FOLDER.FOLDERID
+				      ON		FOLDERTRANSLATE.FOLDERID		= 	FOLDER.FOLDERID
 				      LEFT JOIN	ICON
-				      ON		ICON.ICONID						= FOLDER.ICONID
+				      ON		ICON.ICONID						= 	FOLDER.ICONID
 				      JOIN      GROUP_
-				      ON		GROUP_.GROUPID					= FOLDERACCESS.GROUPID
+				      ON		GROUP_.GROUPID					= 	FOLDERACCESS.GROUPID
 				      WHERE     FOLDER.MODULEID					=	'" . $moduleId . "'
 				      AND       FOLDERACCESS.GROUPID			=	'" . $_SESSION['groupId'] . "'
-				      AND     	FOLDERACCESS.FOLDERACCESSVALUE	=  1
+				      AND     	FOLDERACCESS.FOLDERACCESSVALUE	=  	1
 				      AND      	FOLDERTRANSLATE.LANGUAGEID		=	'" . $_SESSION['languageId'] . "'
 				      AND		GROUP_.ISACTIVE 				=	1
 				      ORDER BY  FOLDER.FOLDERSEQUENCE  ";
@@ -322,10 +322,10 @@ class treeClass extends configClass
 
 						$counterFolder++;
 						echo " {
-              						LEAF:false,
-									\"expanded\"  : true, 
-              						\"text\" 	  : \"" . $folderTranslate . "\", 
-              						\"iconCls\"   : \"" . $iconName . "\",";
+              						\"leaf\"		:	false,
+									\"expanded\"  	: 	true, 
+              						\"text\" 	  	:	\"" . $folderTranslate . "\", 
+              						\"iconCls\"		:	\"" . $iconName . "\",";
 						$counter_leaf = 0;
 						if ($this->getVendor() == self::mysql) {
 								$sqlLeaf = "
@@ -360,22 +360,22 @@ class treeClass extends configClass
 					          ORDER BY  [leaf].[leafSequence]";
 						} elseif ($this->getVendor()==self::oracle) {
 							 $sqlLeaf = "
-					          SELECT  	LEAFACCESS.LEAFACCESSID AS \"leafAccessId\",
-						      			LEAFACCESS.STAFFID AS \"staffId\",
-						      			LEAFACCESS.LEAFREADACCESSVALUE AS \"leafReadAccessValue\",
+					          SELECT  	LEAFACCESS.LEAFACCESSID 		AS 	\"leafAccessId\",
+						      			LEAFACCESS.STAFFID 				AS 	\"staffId\",
+						      			LEAFACCESS.LEAFREADACCESSVALUE 	AS	\"leafReadAccessValue\",
 						      			LEAF.LEAFID 					AS 	\"leafId\",
 						      			LEAF.LEAFFILENAME				AS	\"leafFilename\",
 						      			LEAFTRANSLATE.LEAFTRANSLATE 	AS 	\"leafTranslate\",
 						      			ICON.ICONNAME 					AS	\"iconName\"
 					          FROM   	LEAFACCESS
 					          JOIN    	LEAF
-					          ON		LEAF.LEAFID						= LEAFACCESS.LEAFID
+					          ON		LEAF.LEAFID						= 	LEAFACCESS.LEAFID
 					          JOIN      LEAFTRANSLATE
-					          ON		LEAFTRANSLATE.LEAFID			= LEAF.LEAFID
+					          ON		LEAFTRANSLATE.LEAFID			= 	LEAF.LEAFID
 					          LEFT JOIN ICON
-					          ON		ICON.ICONID						= LEAF.ICONID
+					          ON		ICON.ICONID						= 	LEAF.ICONID
 					          JOIN		STAFF	
-					          ON		STAFF.STAFFID					=  LEAFACCESS.STAFFID
+					          ON		STAFF.STAFFID					=  	LEAFACCESS.STAFFID
 					          WHERE     LEAF.FOLDERID					=	'" . $folderId . "'
 					          AND		LEAF.MODULEID					=	'" . $moduleId . "'
 					          AND      	LEAFACCESS.STAFFID				=	'" . $_SESSION['staffId'] . "'
@@ -396,12 +396,12 @@ class treeClass extends configClass
 								$counterLeaf++;
 								echo " {
 											
-											\"text\" : \"" . $leafTranslate . "\", 
-							                \"folderPath\"	:\"" . $folderPath . "\",
-							                \"leafFilename\":\"" . $leafFilename . "\",
-											\"emptyLeaf\":false,
-							                \"leaf\" : true, 
-							                \"iconCls\" : \"" . $iconName . "\"
+											\"text\" 			: 	\"" . $leafTranslate . "\", 
+							                \"folderPath\"		:	\"" . $folderPath . "\",
+							                \"leafFilename\"	:	\"" . $leafFilename . "\",
+											\"emptyLeaf\"		:	false,
+							                \"leaf\" 			:	true, 
+							                \"iconCls\" 		: 	\"" . $iconName . "\"
 							            } ";
 								if ($counterLeaf != $totalLeaf) {
 									echo ",";
@@ -412,9 +412,9 @@ class treeClass extends configClass
 						} else {
 
 							echo "  \"children\" :  {
-                									\"text\":\"No Leaf Identify\",
-                									\"emptyLeaf\": true,
-                									\"leaf\":true 
+                									\"text\"		:	\"No Leaf Identify\",
+                									\"emptyLeaf\"	:	true,
+                									\"leaf\"		:	true 
               				}";
 
 						}
@@ -429,9 +429,9 @@ class treeClass extends configClass
 				} else {
 
 					echo "	\"children\" : {
-									    \"leaf\":true,	
-										\"text\":\"No Folder Identify\",
-										\"expanded\":true
+									    \"leaf\"		:	true,	
+										\"text\"		:	\"No Folder Identify\",
+										\"expanded\"	:	true
 									}";
 
 				}
@@ -444,9 +444,9 @@ class treeClass extends configClass
 
 		} else {
 			echo " \"children\" :{
-									\"leaf\":true,
-									\"text\":\"No module Identify\",
-									\"expanded\":true 
+									\"leaf\"		:	true,
+									\"text\"		:	\"No module Identify\",
+									\"expanded\"	:	true 
 								}]";
 		}
 			
