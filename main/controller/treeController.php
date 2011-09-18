@@ -168,8 +168,8 @@ class treeClass extends configClass
 			$this->q->fast($sql);
 
 		}
-		$counterModule = 0;
-		echo " [";
+		$counterModule 	= 	0;
+		$treeJsonString	=	" [";
 		if ($this->getVendor() == self::mysql) {
 			  $sqlModule = "
 		      SELECT    *
@@ -178,16 +178,18 @@ class treeClass extends configClass
 		      USING    	(`moduleId`)
 		      JOIN    	`moduleTranslate`
 		      USING    	(`moduleId`)
-		      JOIN    	`icon`
+		      LEFT JOIN `icon`
 		      USING    	(`iconId`)
 		      JOIN		`group`
+		      USING  	(`groupId`)
 		      WHERE   	`moduleAccess`.`groupId`			=	'" . $_SESSION['groupId'] . "'
 		      AND   	`moduleAccess`.`moduleAccessValue`	=  	1
 		      AND    	`moduleTranslate`.`languageId`		=	\"" . $_SESSION['languageId'] . "\"
 		      AND		`group`.`isActive`					=	1
 		      ORDER BY  `module`.`moduleSequence`   ";
-			//	print"<br><br>";
-		} elseif ($this->getVendor() == 'microsoft') {
+		
+		//	print"<br><br>";
+		} elseif ($this->getVendor() == self::mssql) {
 			  $sqlModule = "
 		      SELECT    *
 		      FROM     	[moduleAccess]
@@ -195,17 +197,17 @@ class treeClass extends configClass
 		      ON      	[moduleAccess].[moduleId]=[module].[moduleId]
 		      JOIN      [moduleTranslate]
 		      ON      	[moduleTranslate].[moduleId]=[module].[moduleId]
-		      JOIN      [icon]
+		      LEFT JOIN [icon]
 		      ON      	[icon].[iconId]=[module].[iconId]
 		      JOIN		[group]
-		      ON		[group].[groupId] = [moduleAcess].[groupId]
+		      ON		[group].[groupId] = [moduleAccess].[groupId]
 		      WHERE     [moduleAccess].[groupId]			=	'" . $_SESSION['groupId'] . "'
 		      AND   	[moduleAccess].[moduleAccessValue]	=  	1
 		      AND    	[moduleTranslate].[languageId]		=	'" . $_SESSION['languageId'] . "'
 		      AND		[group].[isActive]=1
 		      ORDER BY  [module].[moduleSequence]  ";
 
-		} elseif ($this->getVendor() == 'oracle') {
+		} elseif ($this->getVendor() == self::oracle) {
 			  $sqlModule = "
 		      SELECT    MODULEACCESS.MODULEACCESSID 	AS \"moduleAccessId\",
 		      			MODULEACCESS.MODULEID 			AS \"moduleId\",
@@ -230,17 +232,17 @@ class treeClass extends configClass
 		      ORDER BY  MODULE.MODULESEQUENCE  ";
 		}
 
-		$resultModule = $this->q->fast($sqlModule);
-		$totalModule = $this->q->numberRows($resultModule, $sqlModule);
+		$resultModule	=	$this->q->fast($sqlModule);
+		$totalModule 	= 	$this->q->numberRows($resultModule, $sqlModule);
 
 		if ($totalModule > 0) {
 			$counterModule=0;
 			while ($rowModule = $this->q->fetchArray($resultModule)) {
-				$moduleTranslate = $rowModule['moduleTranslate'];
-				$iconName = $rowModule['iconName'];
-				$moduleId = $rowModule['moduleId'];
+				$moduleTranslate 	=	$rowModule['moduleTranslate'];
+				$iconName 			=	$rowModule['iconName'];
+				$moduleId 			=	$rowModule['moduleId'];
 				$counterModule++;
-				echo "{
+				$treeJsonString.= "{
 						\"leaf\"	:	false,
 						\"text\"	:	\"".$moduleTranslate."\",
 					    \"iconCls\"	:	\"".$iconName."\",
@@ -264,7 +266,7 @@ class treeClass extends configClass
 					      AND		`group`.`isActive`					=	1	
 					      ORDER BY   `folder`.`folderSequence`  ";
 					
-				} elseif ($this->getVendor() == 'microsoft') {
+				} elseif ($this->getVendor() == self::mssql) {
 					  $sqlFolder = "
 				      SELECT    	*
 				      FROM     	[folderAccess]
@@ -282,7 +284,7 @@ class treeClass extends configClass
 				      AND    	[folderTranslate].[languageId]		=	'" . $_SESSION['languageId'] . "'
 				      AND		[group].[isActive]					=	1
 				      ORDER BY	[folder].[folderSequence]  	";
-				} elseif ($this->getVendor() == 'oracle') {
+				} elseif ($this->getVendor() == self::oracle) {
 					  $sqlFolder = "
 				      SELECT    FOLDERACCESS.FOLDERACCESSID 	AS	\"folderAccessId\",
 				      			FOLDERACCESS.GROUPID 			AS 	\"groupId\",
@@ -308,20 +310,20 @@ class treeClass extends configClass
 				      ORDER BY  FOLDER.FOLDERSEQUENCE  ";
 				}
 
-				$resultFolder = $this->q->fast($sqlFolder);
-				$totalFolder = $this->q->numberRows($resultFolder, $sqlFolder);
-				$counterFolder=0;
+				$resultFolder 	= 	$this->q->fast($sqlFolder);
+				$totalFolder	= 	$this->q->numberRows($resultFolder, $sqlFolder);
+				$counterFolder	=	0;
 					
 				if ($totalFolder > 0) {
-					echo "\"children\":[";
+					$treeJsonString.= "\"children\":[";
 					while ($rowFolder = $this->q->fetchArray($resultFolder)) {
 						$folderTranslate = $rowFolder['folderTranslate'];
-						$iconName = $rowFolder['iconName'];
-						$folderId = $rowFolder['folderId'];
-						$folderPath = $rowFolder['folderPath'];
+						$iconName 	= 	$rowFolder['iconName'];
+						$folderId 	= 	$rowFolder['folderId'];
+						$folderPath	=	$rowFolder['folderPath'];
 
 						$counterFolder++;
-						echo " {
+						$treeJsonString.= " {
               						\"leaf\"		:	false,
 									\"expanded\"  	: 	true, 
               						\"text\" 	  	:	\"" . $folderTranslate . "\", 
@@ -387,14 +389,14 @@ class treeClass extends configClass
 						$totalLeaf = $this->q->numberRows($resultLeaf, $sqlLeaf);
 						$counterLeaf=0;
 						if ($totalLeaf > 0) {
-							echo "\"children\":[";
+							$treeJsonString.= "\"children\":[";
 							while ($rowLeaf = $this->q->fetchArray($resultLeaf)) {
 								$leafTranslate 	= $rowLeaf['leafTranslate'];
 								$iconName 		= $rowLeaf['iconName'];
 								$leafFilename 	= $rowLeaf['leafFilename'];
 
 								$counterLeaf++;
-								echo " {
+								$treeJsonString.= " {
 											
 											\"text\" 			: 	\"" . $leafTranslate . "\", 
 							                \"folderPath\"		:	\"" . $folderPath . "\",
@@ -404,51 +406,55 @@ class treeClass extends configClass
 							                \"iconCls\" 		: 	\"" . $iconName . "\"
 							            } ";
 								if ($counterLeaf != $totalLeaf) {
-									echo ",";
+									$treeJsonString.= ",";
 								} else {
-									echo "]";
+									$treeJsonString.= "]";
 								}
 							}
 						} else {
 
-							echo "  \"children\" :  {
-                									\"text\"		:	\"No Leaf Identify\",
-                									\"emptyLeaf\"	:	true,
-                									\"leaf\"		:	true 
-              				}";
+							$treeJsonString.= "  \"children\" :  {
+                										\"text\"		:	\"No Leaf Identify\",
+                										\"emptyLeaf\"	:	true,
+                										\"leaf\"		:	true 
+              										}";
 
 						}
 							
 						if ($counterFolder != $totalFolder) {
-							echo "},";
+							$treeJsonString.= "},";
 						} else {
-							echo "}]";
+							$treeJsonString.= "}]";
 						}
 					}
 
 				} else {
 
-					echo "	\"children\" : {
-									    \"leaf\"		:	true,	
-										\"text\"		:	\"No Folder Identify\",
-										\"expanded\"	:	true
-									}";
+					$treeJsonString.= "	\"children\" : {
+									    		\"leaf\"		:	true,	
+												\"text\"		:	\"No Folder Identify\",
+												\"expanded\"	:	true
+											}";
 
 				}
 				if($counterModule != $totalModule) {
-					echo "},";
+					$treeJsonString.= "},";
 				}else {
-					echo "}]";
+					$treeJsonString.= "}]";
 				}
 			}
 
 		} else {
-			echo " \"children\" :{
+			$treeJsonString.= " \"children\" :{
 									\"leaf\"		:	true,
 									\"text\"		:	\"No module Identify\",
 									\"expanded\"	:	true 
 								}]";
 		}
+		$treeJsonString=preg_replace('/\s+/','',$treeJsonString);
+		$x=json_decode($treeJsonString);
+		echo json_encode($x);
+		exit();
 			
 	}
 

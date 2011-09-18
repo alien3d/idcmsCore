@@ -179,17 +179,17 @@ class staffClass extends configClass
 		// insert module access
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-				SELECT	*
+				SELECT	`moduleId`
 				FROM 	`module`
 				WHERE 	`isActive`	=	1	";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
-				SELECT	*
+				SELECT	[moduleId]
 				FROM 	[module]
 				WHERE 	[isActive]	=	1	";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-				SELECT	*
+				SELECT	MODULEID  AS \"moduleId\"
 				FROM 	MODULE
 				WHERE 	ISACTIVE	=	1	";
 		}
@@ -203,26 +203,26 @@ class staffClass extends configClass
 		}
 		if ($this->q->numberRows() > 0) {
 			$data = $this->q->activeRecord();
-			foreach ($data as $rowTab) {
+			foreach ($data as $rowModule) {
 				// check if group access define in  moduleAccess else insert
 				if ($this->getVendor() == self::mysql) {
 					$sql = "
 						SELECT *
 						FROM 	`moduleAccess`
 						WHERE 	`groupId`			=	\"" . $this->model->getGroupId() . "\"
-						AND		`moduleId`		=	\"" . $rowTab['moduleId'] . "\"";
+						AND		`moduleId`		=	\"" . $rowModule['moduleId'] . "\"";
 				} else if ($this->getVendor() == self::mssql) {
 					$sql = "
 						SELECT *
 						FROM 	[moduleAccess]
 						WHERE 	[groupId]			=	'" . $this->model->getGroupId() . "'
-					AND		`moduleId`			=	'" . $rowTab['moduleId'] . "'";
+					AND		`moduleId`			=	'" . $rowModule['moduleId'] . "'";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
 						SELECT *
 						FROM 	MODULEACCESS
 						WHERE 	GROUPID			=	'" . $this->model->getGroupId() . "'
-						AND		MODULEID		=	'" . $rowTab['moduleId'] . "'";
+						AND		MODULEID		=	'" . $rowModule['moduleId'] . "'";
 				}
 				$this->q->read($sql);
 				if ($this->q->execute == 'fail') {
@@ -240,7 +240,7 @@ class staffClass extends configClass
 									`moduleId`,				`groupId`,
 									`moduleAccessValue`
 						)	VALUES(
-							\"" . $rowTab['moduleId'] . "\",
+							\"" . $rowModule['moduleId'] . "\",
 							\"" . $this->model->getGroupId() . "\",
 							0
 						)	";
@@ -250,7 +250,7 @@ class staffClass extends configClass
 									[moduleId],				[groupId],
 									[moduleAccessValue]
 						)	VALUES(
-							'" . $rowTab['moduleId'] . "',
+							'" . $rowModule['moduleId'] . "',
 							'" . $this->model->getGroupId() . "',
 							0					)	";
 					} else if ($this->getVendor() == self::oracle) {
@@ -259,7 +259,7 @@ class staffClass extends configClass
 									MODULEID,				GROUPID,
 									MODULEACCESSVALUE
 						)	VALUES(
-							'" . $rowTab['moduleId'] . "',
+							'" . $rowModule['moduleId'] . "',
 							'" . $this->model->getGroupId() . "',
 							0
 						)	";

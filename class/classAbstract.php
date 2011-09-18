@@ -343,35 +343,46 @@ abstract class ConfigClass
 	}
 	/**
 	 * Return The First Record
+	 * params @value . This return data type. When call by normal read.Value=='value'.When requested by ajax request button Value=='json'
 	 * @return int
 	 */
-	public function firstRecord() {
+	public function firstRecord($value) {
 		$first=0;
 		if($this->getVendor()==self::mysql){
 			$sql="
-			SELECT 	MIN(`".$this->model->getPrimaryKeyName()."`) AS `first`
+			SELECT 	MIN(`".$this->model->getPrimaryKeyName()."`) AS `firstRecord`
 			FROM 	`".$this->model->getTableName()."`";
 
 		} else if ($this->getVendor()==self::mssql){
 			$sql="
-			SELECT 	MIN([".$this->model->getPrimaryKeyName()."]) AS [first]
+			SELECT 	MIN([".$this->model->getPrimaryKeyName()."]) AS [firstRecord]
 			FROM 	[".$this->model->getTableName()."]";
 
 		} else  if ($this->getVendor()== self::oracle){
 			$sql="
-			SELECT 	MIN(".strtoupper($this->model->getPrimaryKeyName()).") AS \"first\"
+			SELECT 	MIN(".strtoupper($this->model->getPrimaryKeyName()).") AS \"firstRecord\"
 			FROM 	".strtoupper($this->model->getTableName())." ";
 
 		}
 		$result= $this->q->fast($sql);
 		if($this->q->numberRows($result)> 0 ){
 			$row  =  $this->q->fetchAssoc($result);
-			$first = $row['first'];
+			$firstRecord = $row['firstRecord'];
 		} else {
-			$first =0;
+			$firstRecord =0;
 		}
-		return intval($first);
+		if($value =='value') { 
+			return intval($firstRecord);
+		} else {
+			$json_encode = json_encode(array(
+                'success' => true,
+                'total' => $total,
+                'firstRecord' => $firstRecord,
+            	));
+			exit();	
+		}
 	}
+	
 
 
 	/**
@@ -379,35 +390,43 @@ abstract class ConfigClass
 	 * @param int $primaryKeyValue
 	 * @return int
 	 */
-	public function nextRecord($primaryKeyValue) {
+	public function nextRecord($value,$primaryKeyValue) {
 		$next=0;
 		if($this->getVendor()==self::mysql){
 			$sql="
-		SELECT (`".$this->model->getPrimaryKeyName()."`) AS `next`
+		SELECT (`".$this->model->getPrimaryKeyName()."`) AS `nextRecord`
 		FROM 	`".$this->model->getTableName()."`
 		WHERE 	`".$this->model->getPrimaryKeyName()."` > ".$primaryKeyValue."
 		LIMIT 	1";
 		} else if ($this->getVendor() ==self::mssql){
 			$sql="
-		SELECT ([".$this->model->getPrimaryKeyName()."]) AS [next]
+		SELECT  TOP 1 ([".$this->model->getPrimaryKeyName()."]) AS [nextRecord]
 		FROM 	[".$this->model->getTableName()."]
-		WHERE 	[".$this->model->getPrimaryKeyName()."] > ".$primaryKeyValue."
-		LIMIT 	1";
+		WHERE 	[".$this->model->getPrimaryKeyName()."] > ".$primaryKeyValue." ";
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
-		SELECT (".strtoupper($this->model->getPrimaryKeyName()).") AS \"next\"
+		SELECT (".strtoupper($this->model->getPrimaryKeyName()).") AS \"nextRecord\"
 		FROM 	".strtoupper($this->model->getTableName())."
 		WHERE 	".strtoupper($this->model->getPrimaryKeyName())." > ".$primaryKeyValue."
-		LIMIT 	1";
+		AND		ROWNUM = 1";
 		}
 		$result= $this->q->fast($sql);
 		if($this->q->numberRows($result) > 0 ){
-			$row  =  $this->q->fetchAssoc($result);
-			$next = $row['next'];
+			$row  		=  $this->q->fetchAssoc($result);
+			$nextRecord = $row['nextRecord'];
 		} else {
-			$next = 0;
+			$nextRecord = 0;
 		}
-		return intval($next);
+		if($value =='value') { 
+			return intval($nextRecord);
+		} else {
+			$json_encode = json_encode(array(
+                'success' => true,
+                'total' => $total,
+                'nextRecord' => $nextRecord,
+            	));
+			exit();	
+		}
 	}
 
 	/**
@@ -415,67 +434,85 @@ abstract class ConfigClass
 	 * @param int $primaryKeyValue
 	 * @return int
 	 */
-	public function previousRecord($primaryKeyValue) {
+	public function previousRecord($value,$primaryKeyValue) {
 
 		$previous=0;
 		if($this->getVendor()==self::mysql){
 			$sql="
-		SELECT (`".$this->model->getPrimaryKeyName()."`) AS `previous`
+		SELECT (`".$this->model->getPrimaryKeyName()."`) AS `previousRecord`
 		FROM 	`".$this->model->getTableName()."`
 		WHERE 	`".$this->model->getPrimaryKeyName()."` < ".$primaryKeyValue."
 		ORDER BY `staffId`	DESC
 		LIMIT 	1";
 		} else if ($this->getVendor()==self::mssql){
 			$sql="
-		SELECT ([".$this->model->getPrimaryKeyName()."]) AS [previous]
+		SELECT TOP 1 ([".$this->model->getPrimaryKeyName()."]) AS [previousRecord]
 		FROM 	[".$this->model->getTableName()."]
-		WHERE 	[".$this->model->getPrimaryKeyName()."] < ".$primaryKeyValue."
-		ORDER BY [staffId]	DESC
-		LIMIT 	1";
+		WHERE 	[".$this->model->getPrimaryKeyName()."] < ".$primaryKeyValue." ";
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
 		SELECT (".strtoupper($this->model->getPrimaryKeyName()).") AS \"previous\"
 		FROM 	".strtoupper($this->model->getTableName())."
 		WHERE 	".strtoupper($this->model->getPrimaryKeyName())." < ".$primaryKeyValue."
-		ORDER BY STAFFID DESC
-		LIMIT 	1";
+		AND 	ROWNUM  = 1 
+		";
 		}
 		$result= $this->q->fast($sql);
 		if($this->q->numberRows($result)> 0 ){
-			$row  =  $this->q->fetchAssoc($result);
-			$previous = $row['previous'];
+			$row  			=	$this->q->fetchAssoc($result);
+			$previousRecord = 	$row['previousRecord'];
 		} else {
-			$previous=0;
+			$previous		=	0;
 		}
-		return intval($previous);
+		
+		if($value =='value') { 
+			return intval($previousRecord);
+		} else {
+			$json_encode = json_encode(array(
+                'success' => true,
+                'total' => $total,
+                'previousRecord' => $previousRecord,
+            	));
+			exit();	
+		}
 	}
 	/**
 	 * Return Last Record
 	 * @return int
 	 */
-	public function lastRecord() {
-		$last=0;
+	public function lastRecord($value) {
+		$lastRecord=0;
 		if($this->getVendor()==self::mysql){
 			$sql="
-		SELECT	MAX(`".$this->model->getPrimaryKeyName()."`) AS `last`
+		SELECT	MAX(`".$this->model->getPrimaryKeyName()."`) AS `lastRecord`
 		FROM 	`".$this->model->getTableName()."`";
 		} else if($this->getVendor()==self::mssql){
 			$sql="
-		SELECT	MAX([".$this->model->getPrimaryKeyName()."]) AS [last]
+		SELECT	MAX([".$this->model->getPrimaryKeyName()."]) AS [lastRecord]
 		FROM 	[".$this->model->getTableName()."]";
 		} else if ($this->getVendor()==self::oracle){
 			$sql="
-		SELECT	MAX(".$this->model->getPrimaryKeyName().") AS \"last\"
+		SELECT	MAX(".$this->model->getPrimaryKeyName().") AS \"lastRecord\"
 		FROM 	".strtoupper($this->model->getTableName())." ";
 		}
 		$result= $this->q->fast($sql);
 		if($this->q->numberRows($result)> 0 ){
-			$row  =  $this->q->fetchAssoc($result);
-			$last = $row['last'];
+			$row  		=  $this->q->fetchAssoc($result);
+			$lastRecord = $row['lastRecord'];
 		} else{
-			$last =0;
+			$lastRecord	=	0;
 		}
-		return intval($last);
+		if($value =='value') { 
+			return intval($lastRecord);
+		} else {
+			$json_encode = json_encode(array(
+                'success' => true,
+                'total' => $total,
+                'lastRecord' => $lastRecord,
+            	));
+			exit();	
+		}
+		
 	}
 	/**
 	 * Set Application Path

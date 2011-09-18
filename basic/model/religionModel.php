@@ -40,6 +40,10 @@ class ReligionModel extends ValidationClass
 		if (isset($_POST['religionDesc'])) {
 			$this->setReligionDesc($this->strict($_POST['religionDesc'], 'memo'));
 		}
+		
+		if (isset($_GET['religionDesc'])) {
+			$this->setReligionDesc($this->strict($_GET['religionDesc'], 'memo'));
+		}
 		/**
 		 *      Don't change below code
 		 **/

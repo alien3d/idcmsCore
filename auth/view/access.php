@@ -69,8 +69,8 @@ class loginClass extends configClass {
 			USING	(`groupId`)
 			JOIN	`department`
 			USING	(`departmentId`)
-			WHERE 	`staff`.`staffName`		=	\"".$this->model->getStaffName()."\"
-			AND		`staff`.`staffPassword`	=	\"".md5($this->model->getStaffPassword())."\"
+			WHERE 	`staff`.`staffName`			=	\"".$this->model->getStaffName()."\"
+			AND		`staff`.`staffPassword`		=	\"".md5($this->model->getStaffPassword())."\"
 			AND		`staff`.`isActive`			=	1
 			AND		`group`.`isActive`			=	1
 			AND		`department`.`isActive`		=	1";
@@ -78,8 +78,8 @@ class loginClass extends configClass {
 			$sql	=	"
 			SELECT	*
 			FROM 	[staff]
-			JOIN	[group]
-			ON		[staff].[groupId]  = [group].[groupId]
+			JOIN	[group]	
+			ON		[staff].[groupId]  			= [group].[groupId]
 			JOIN	[department]
 			ON		[department].[departmentId] = [staff].[departmentId]
 			WHERE 	[staff].[staffName]			=	'".$this->model->getStaffName()."'
@@ -94,18 +94,18 @@ class loginClass extends configClass {
 					STAFF.STAFFNAME 		AS 	\"staffName\",
 					STAFF.LANGUAGEID 		AS 	\"languageId\",
 					GROUP_.GROUPID 			AS  \"groupId\",
-					DEPARTMENT.DEPARTMENTID AS 	DEPARTMENTID
+					DEPARTMENT.DEPARTMENTID AS 	\"departmentId\"
 						
 			FROM 	STAFF
 			JOIN	GROUP_
-			ON		GROUP_.GROUPID		= 	STAFF.GROUPID
+			ON		GROUP_.GROUPID			= 	STAFF.GROUPID
 			JOIN	DEPARTMENT
-			ON		DEPARTMENT.DEPARTMENTID		= 	STAFF.DEPARTMENTID
-			WHERE 	STAFF.STAFFNAME		=	'".$this->model->getStaffName()."'
-			AND		STAFF.STAFFPASSWORD	=	'".md5($this->model->getStaffPassword())."'
-			AND		STAFF.ISACTIVE		=  1
-			AND		GROUP_.ISACTIVE 	=  1
-			AND		DEPARTMENT.ISACTIVE =  1";
+			ON		DEPARTMENT.DEPARTMENTID	= 	STAFF.DEPARTMENTID
+			WHERE 	STAFF.STAFFNAME			=	'".$this->model->getStaffName()."'
+			AND		STAFF.STAFFPASSWORD		=	'".md5($this->model->getStaffPassword())."'
+			AND		STAFF.ISACTIVE			=  1
+			AND		GROUP_.ISACTIVE 		=  1
+			AND		DEPARTMENT.ISACTIVE	 	=  1";
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$this->getVendor()."]"));
 			exit();

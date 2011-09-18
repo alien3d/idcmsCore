@@ -254,7 +254,7 @@ class ReligionClass extends ConfigClass {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`=\"" . $this->model->getReligionId(0, 'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::mssql) {
-			$sql = "
+				$sql = "
 					SELECT	[religion].[religionId],
 							[religion].[religionDesc],
 							[religion].[isDefault],
@@ -270,7 +270,7 @@ class ReligionClass extends ConfigClass {
 					FROM 	[religion]
 					JOIN	[staff]
 					ON		[religion].[executeBy] = [staff].[staffId]
-					WHERE 	[religion].[isActive] ='1'	";
+					WHERE 	".$this->auditFilter;
 			if ($this->model->getReligionId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getReligionId(0, 'single') . "'";
 			}
@@ -291,7 +291,7 @@ class ReligionClass extends ConfigClass {
 					FROM 	RELIGION
 					JOIN	STAFF
 					ON		RELIGION.EXECUTEBY 	  	=	STAFF.STAFFID
-					WHERE 	RELIGION.ISACTIVE		=	'1'	";
+					WHERE 	".$this->auditFilter;
 			if ($this->model->getReligionId(0, 'single')) {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getReligionId(0, 'single') . "'";
 			}
@@ -389,12 +389,7 @@ class ReligionClass extends ConfigClass {
             			$sql = "
 							WITH [religionDerived] AS
 							(
-								SELECT *,
-								ROW_NUMBER() OVER (ORDER BY [religionId]) AS 'RowNumber'
-								FROM [religion]
-								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
-							)
-							SELECT		[religion].[religionId],
+								SELECT [religion].[religionId],
 										[religion].[religionDesc],
 										[religion].[isDefault],
 										[religion].[isNew],
@@ -404,11 +399,18 @@ class ReligionClass extends ConfigClass {
 										[religion].[isApproved],
 										[religion].[executeBy],
 										[religion].[executeTime],
-										[staff].[staffName]
+										[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [religionId]) AS 'RowNumber'
+								FROM 	[religion]
+								JOIN	[staff]
+								ON		[religion].[executeBy] = [staff].[staffId]
+								WHERE ".$this->auditFilter. $tempSql . $tempSql2 . "
+							)
+							SELECT		*
 							FROM 		[religionDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	" . $this->getStart() . "
-							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
+							BETWEEN	" . ($this->getStart()+1) . "
+							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
             		} else if ($this->getVendor() == self::oracle) {
             			/**
             			 *  Oracle using derived table also
@@ -433,10 +435,10 @@ class ReligionClass extends ConfigClass {
 								FROM 	RELIGION
 								JOIN	STAFF
 								ON		RELIGION.EXECUTEBY 	  	=	STAFF.STAFFID
-								WHERE 	RELIGION.ISACTIVE		=	'1'	  " . $tempSql . $tempSql2 . $orderBy . "
+								WHERE 	".$this->auditFilter. $tempSql . $tempSql2 . $orderBy . "
 								 ) a
-						where rownum <= '" . ($this->getStart() + $this->getLimit() - 1) . "' )
-						where r >=  '" . $this->getStart() . "'";
+						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
+						where r >=  '" . ($this->getStart()+1) . "'";
             		} else {
             			echo "undefine vendor";
             			exit();
@@ -467,7 +469,11 @@ class ReligionClass extends ConfigClass {
                 'success' => true,
                 'total' => $total,
                 'message' => 'Data Loaded',
-                'data' => $items
+                'data' => $items,
+				'firstRecord'=>$this->firstRecord('value'),
+				'previousRecord'=>$this->previousRecord('value',$this->model->getReligionId(0, 'single')),
+				'nextRecord'=>$this->nextRecord('value',$this->model->getReligionId(0, 'single')),
+				'lastRecord'=>$this->lastRecord('value')
             	));
             	$json_encode = str_replace("[", "", $json_encode);
             	$json_encode = str_replace("]", "", $json_encode);
@@ -659,7 +665,7 @@ class ReligionClass extends ConfigClass {
 			$this->q->fast($sql);
 
 		}
-		
+
 		$loop  = $this->model->getTotal();
 
 
@@ -788,19 +794,19 @@ class ReligionClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::mysql) {
 			$sql = "
-			SELECT	*
+			SELECT	`religionDesc`
 			FROM 	`religion`
 			WHERE 	`religionDesc` 	= 	\"" . $this->model->getReligionDesc() . "\"
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::mssql) {
 			$sql = "
-			SELECT	*
+			SELECT	[religionDesc]
 			FROM 	[religion]
 			WHERE 	[religionDesc] 	= 	'" . $this->model->getReligionDesc() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
-			SELECT	*
+			SELECT	RELIGIONDESC
 			FROM 	RELIGION
 			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc() . "'
 			AND		ISACTIVE		=	1";
@@ -814,21 +820,27 @@ class ReligionClass extends ConfigClass {
                 "message" => $this->q->responce
 			));
 			exit();
-		} else {
+		} 
+			
+		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			if ($this->duplicateTest == 1) {
-				return $total . "|" . $row['religionDesc'];
-			} else {
-
-				echo json_encode(array(
-                    "success" => "true",
-                    "total" => $total,
-                    "message" => "Duplicate Record",
-                    "religionDesc" => $row['religionDesc']
-				));
-				exit();
-			}
+			echo json_encode(array(
+				"success" => "true",
+				"total" => $total,
+				"message" => "Duplicate Record",
+				"religionDesc" => $row['religionDesc']
+			));
+			exit();
+			
+		} else {
+			echo json_encode(array(
+				"success" => "true",
+				"total" => $total,
+				"message" => "Duplicate Non"
+			));
+			exit();
 		}
+		
 	}
 
 	/* (non-PHPdoc)
@@ -951,12 +963,12 @@ if (isset($_POST['method'])) {
 	 * Admin Only
 	 */
 	if (isset($_POST['isAdmin'])) {
-		$religionObject->isAdmin = $_POST['isAdmin'];
+		$religionObject->setIsAdmin($_POST['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
-	if (isset($this->getStart())) {
+	if (isset($_POST['start'])) {
 		$religionObject->setStart($_POST['start']);
 	}
 	if (isset($_POST['limit'])) {
@@ -1005,7 +1017,13 @@ if (isset($_GET['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET['leafId'])) {
-		$religionObject->leafId = $_GET['leafId'];
+		$religionObject->setLeafId($_GET['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if (isset($_GET['isAdmin'])) {
+		$religionObject->setIsAdmin($_GET['isAdmin']);
 	}
 
 	/*
@@ -1026,11 +1044,25 @@ if (isset($_GET['method'])) {
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET['religionCode'])) {
-		if (strlen($_GET['religionCode']) > 0) {
+	if (isset($_GET['religionDesc'])) {
+		if (strlen($_GET['religionDesc']) > 0) {
 			$religionObject->duplicate();
 		}
 	}
+	if($_GET['method']=='dataNavigationRequest') { 
+		if($_GET['dataNavigation']=='first') { 
+			$religionObject->firstRecord('json');
+		}
+		if($_GET['dataNavigation']=='previous') { 
+			$religionObject->previousRecord('json',0);
+		} 
+		if($_GET['dataNavigation']=='next') { 
+			$religionObject->nextRecord('json',0);
+		} 
+		if($_GET['dataNavigation']=='last') { 
+			$religionObject->lastRecord('json');
+		}
+    }	
 	/*
 	 * Excel Reporting
 	 */

@@ -254,7 +254,7 @@ class departmentClass  extends configClass {
 					FROM 	[department]
 					JOIN	[staff]
 					ON		[department].[executeBy] = [staff].[staffId]
-					WHERE 	[department].[isActive] ='1'	";
+					WHERE 	".$this->auditFilter;
 			if ($this->model->getDepartmentId(0,'single')) {
 				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='". $this->model->getDepartmentId(0,'single') . "'";
 			}
@@ -277,7 +277,7 @@ class departmentClass  extends configClass {
 					FROM 	DEPARTMENT
 					JOIN	STAFF
 					ON		DEPARTMENT.EXECUTEBY = STAFF.STAFFID
-					WHERE 	ISACTIVE='1'	";
+					WHERE 	".$this->auditFilter;
 			if ($this->model->getDepartmentId(0,'single')) {
 				$sql .= " AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getPrimaryKeyName())."='". $this->model->getDepartmentId(0,'single') . "'";
 			}
@@ -377,7 +377,7 @@ class departmentClass  extends configClass {
 								SELECT *,
 								ROW_NUMBER() OVER (ORDER BY [departmentId]) AS 'RowNumber'
 								FROM [department]
-								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
+								WHERE ".$this->auditFilter. $tempSql . $tempSql2 . "
 							)
 							SELECT		[department].[departmentId],
 										[department].[departmentSequence],
@@ -422,7 +422,7 @@ class departmentClass  extends configClass {
 								FROM 	DEPARTMENT
 								JOIN	STAFF
 								ON		DEPARTMENT.EXECUTEBY = STAFF.STAFFID
-								WHERE 	ISACTIVE='1'  " . $tempSql . $tempSql2 . $orderBy . "
+								WHERE 	".$this->auditFilter. $tempSql . $tempSql2 . $orderBy . "
 								 ) a
 						where rownum <= '". ($this->getStart() + $this->getLimit() - 1) . "' )
 						where r >=  '". $this->getStart() . "'";

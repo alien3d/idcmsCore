@@ -213,8 +213,7 @@ Ext
 						leafId:leafId,
 						isAdmin:isAdmin
 					}
-				}), // Note: no dataurl, register a TreeLoader to make use of
-					// createNode()
+				}), 
 				lines : false,
 				expanded : false,
 				root : new Ext.tree.AsyncTreeNode({
