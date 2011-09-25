@@ -568,7 +568,7 @@ class PHPExcel_Writer_Excel2007 implements PHPExcel_Writer_IWriter
 		}
 		return $this;
 	}
-
+	 
 	/**
 	 * Get disk caching directory
 	 *

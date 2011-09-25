@@ -174,7 +174,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
 	public function getImageIndex() {
 		return $this->_imageIndex;
 	}
-
+	 
 	/**
 	 * Get Name
 	 *
@@ -341,10 +341,10 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
 			$ratio = $this->_height / $this->_width;
 			$this->_height = round($ratio * $pValue);
 		}
-			
+		 
 		// Set width
 		$this->_width = $pValue;
-			
+		 
 		return $this;
 	}
 
@@ -369,10 +369,10 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
 			$ratio = $this->_width / $this->_height;
 			$this->_width = round($ratio * $pValue);
 		}
-			
+		 
 		// Set height
 		$this->_height = $pValue;
-			
+		 
 		return $this;
 	}
 

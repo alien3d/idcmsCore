@@ -8708,7 +8708,7 @@ if (!class_exists('TCPDF', false)) {
 		 * </ul>
 		 * @param array $line_style Line style of ellipse. Array like for {@link SetLineStyle SetLineStyle}. Default value: default line style (empty array).
 		 * @param array $fill_color Fill color. Format: array(GREY) or array(R,G,B) or array(C,M,Y,K). Default value: default color (empty array).
-		 * @param int $nc Number of curves used in ellipse. Default value: 8.
+		 * @param integer $nc Number of curves used in ellipse. Default value: 8.
 		 * @access public
 		 * @since 2.1.000 (2008-01-08)
 		 */
@@ -8812,7 +8812,7 @@ if (!class_exists('TCPDF', false)) {
 		 * </ul>
 		 * @param array $line_style Line style of circle. Array like for {@link SetLineStyle SetLineStyle}. Default value: default line style (empty array).
 		 * @param array $fill_color Fill color. Format: array(red, green, blue). Default value: default color (empty array).
-		 * @param int $nc Number of curves used in circle. Default value: 8.
+		 * @param integer $nc Number of curves used in circle. Default value: 8.
 		 * @access public
 		 * @since 2.1.000 (2008-01-08)
 		 */
@@ -8962,7 +8962,7 @@ if (!class_exists('TCPDF', false)) {
 		 * @param float $x0 Abscissa of center point.
 		 * @param float $y0 Ordinate of center point.
 		 * @param float $r: Radius of inscribed circle.
-		 * @param int $ns Number of sides.
+		 * @param integer $ns Number of sides.
 		 * @param float $angle Angle oriented (anti-clockwise). Default value: 0.
 		 * @param boolean $draw_circle Draw inscribed circle or not. Default value: false.
 		 * @param string $style Style of rendering. Possible values are:
@@ -9015,8 +9015,8 @@ if (!class_exists('TCPDF', false)) {
 		 * @param float $x0 Abscissa of center point.
 		 * @param float $y0 Ordinate of center point.
 		 * @param float $r Radius of inscribed circle.
-		 * @param int $nv Number of vertices.
-		 * @param int $ng Number of gap (if ($ng % $nv = 1) then is a regular polygon).
+		 * @param integer $nv Number of vertices.
+		 * @param integer $ng Number of gap (if ($ng % $nv = 1) then is a regular polygon).
 		 * @param float $angle: Angle oriented (anti-clockwise). Default value: 0.
 		 * @param boolean $draw_circle: Draw inscribed circle or not. Default value is false.
 		 * @param string $style Style of rendering. Possible values are:
@@ -9275,10 +9275,10 @@ if (!class_exists('TCPDF', false)) {
 			if (!($forcertl OR $arabic OR preg_match(K_RE_PATTERN_RTL, $str))) {
 				return $ta;
 			}
-
+				
 			// get number of chars
 			$numchars = count($ta);
-
+				
 			if ($forcertl == 'R') {
 				$pel = 1;
 			} elseif ($forcertl == 'L') {
@@ -9297,7 +9297,7 @@ if (!class_exists('TCPDF', false)) {
 					}
 				}
 			}
-
+				
 			// Current Embedding Level
 			$cel = $pel;
 			// directional override status
@@ -9306,10 +9306,10 @@ if (!class_exists('TCPDF', false)) {
 			// start-of-level-run
 			$sor = $pel % 2 ? 'R' : 'L';
 			$eor = $sor;
-
+				
 			// Array of characters data
 			$chardata = Array();
-
+				
 			// X1. Begin by setting the current embedding level to the paragraph embedding level. Set the directional override status to neutral. Process each character iteratively, applying rules X2 through X9. Only embedding levels from 0 to 61 are valid in this phase.
 			// 	In the resolution of levels in rules I1 and I2, the maximum embedding level of 62 can be reached.
 			for ($i=0; $i < $numchars; ++$i) {
@@ -9397,16 +9397,16 @@ if (!class_exists('TCPDF', false)) {
 					$chardata[] = array('char' => $ta[$i], 'level' => $cel, 'type' => $chardir, 'sor' => $sor, 'eor' => $eor);
 				}
 			} // end for each char
-
+				
 			// X8. All explicit directional embeddings and overrides are completely terminated at the end of each paragraph. Paragraph separators are not included in the embedding.
 			// X9. Remove all RLE, LRE, RLO, LRO, PDF, and BN codes.
 			// X10. The remaining rules are applied to each run of characters at the same level. For each run, determine the start-of-level-run (sor) and end-of-level-run (eor) type, either L or R. This depends on the higher of the two levels on either side of the boundary (at the start or end of the paragraph, the level of the 'other' run is the base embedding level). If the higher level is odd, the type is R; otherwise, it is L.
-
+				
 			// 3.3.3 Resolving Weak Types
 			// Weak types are now resolved one level run at a time. At level run boundaries where the type of the character on the other side of the boundary is required, the type assigned to sor or eor is used.
 			// Nonspacing marks are now resolved based on the previous characters.
 			$numchars = count($chardata);
-
+				
 			// W1. Examine each nonspacing mark (NSM) in the level run, and change the type of the NSM to the type of the previous character. If the NSM is at the start of the level run, it will get the type of sor.
 			$prevlevel = -1; // track level changes
 			$levcount = 0; // counts consecutive chars at the same level
@@ -9425,7 +9425,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$prevlevel = $chardata[$i]['level'];
 			}
-
+				
 			// W2. Search backward from each instance of a European number until the first strong type (R, L, AL, or sor) is found. If an AL is found, change the type of the European number to Arabic number.
 			$prevlevel = -1;
 			$levcount = 0;
@@ -9446,14 +9446,14 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$prevlevel = $chardata[$i]['level'];
 			}
-
+				
 			// W3. Change all ALs to R.
 			for ($i=0; $i < $numchars; ++$i) {
 				if ($chardata[$i]['type'] == 'AL') {
 					$chardata[$i]['type'] = 'R';
 				}
 			}
-
+				
 			// W4. A single European separator between two European numbers changes to a European number. A single common separator between two numbers of the same type changes to that type.
 			$prevlevel = -1;
 			$levcount = 0;
@@ -9474,7 +9474,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$prevlevel = $chardata[$i]['level'];
 			}
-
+				
 			// W5. A sequence of European terminators adjacent to European numbers changes to all European numbers.
 			$prevlevel = -1;
 			$levcount = 0;
@@ -9502,7 +9502,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$prevlevel = $chardata[$i]['level'];
 			}
-
+				
 			// W6. Otherwise, separators and terminators change to Other Neutral.
 			$prevlevel = -1;
 			$levcount = 0;
@@ -9517,7 +9517,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$prevlevel = $chardata[$i]['level'];
 			}
-
+				
 			//W7. Search backward from each instance of a European number until the first strong type (R, L, or sor) is found. If an L is found, then change the type of the European number to L.
 			$prevlevel = -1;
 			$levcount = 0;
@@ -9538,7 +9538,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$prevlevel = $chardata[$i]['level'];
 			}
-
+				
 			// N1. A sequence of neutrals takes the direction of the surrounding strong text if the text on both sides has the same direction. European and Arabic numbers act as if they were R in terms of their influence on neutrals. Start-of-level-run (sor) and end-of-level-run (eor) are used at level run boundaries.
 			$prevlevel = -1;
 			$levcount = 0;
@@ -9589,7 +9589,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$prevlevel = $chardata[$i]['level'];
 			}
-
+				
 			// I1. For all characters with an even (left-to-right) embedding direction, those of type R go up one level and those of type AN or EN go up two levels.
 			// I2. For all characters with an odd (right-to-left) embedding direction, those of type L, EN or AN go up one level.
 			for ($i=0; $i < $numchars; ++$i) {
@@ -9607,7 +9607,7 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$maxlevel = max($chardata[$i]['level'],$maxlevel);
 			}
-
+				
 			// L1. On each line, reset the embedding level of the following characters to the paragraph embedding level:
 			//	1. Segment separators,
 			//	2. Paragraph separators,
@@ -9630,7 +9630,7 @@ if (!class_exists('TCPDF', false)) {
 					}
 				}
 			}
-
+				
 			// Arabic Shaping
 			// Cursively connected scripts, such as Arabic or Syriac, require the selection of positional character shapes that depend on adjacent characters. Shaping is logically applied after the Bidirectional Algorithm is used and is limited to characters within the same directional run.
 			if ($arabic) {
@@ -9775,7 +9775,7 @@ if (!class_exists('TCPDF', false)) {
 				unset($laaletter);
 				unset($charAL);
 			}
-
+				
 			// L2. From the highest level found in the text to the lowest odd level on each line, including intermediate levels not actually present in the text, reverse any contiguous sequence of characters that are at that level or higher.
 			for ($j=$maxlevel; $j > 0; $j--) {
 				$ordarray = Array();
@@ -9805,12 +9805,12 @@ if (!class_exists('TCPDF', false)) {
 				}
 				$chardata = $ordarray;
 			}
-
+				
 			$ordarray = array();
 			for ($i=0; $i < $numchars; ++$i) {
 				$ordarray[] = $chardata[$i]['char'];
 			}
-
+				
 			return $ordarray;
 		}
 
@@ -10041,7 +10041,7 @@ if (!class_exists('TCPDF', false)) {
 				if (strcmp(substr($key, -5), 'Color') == 0) {
 					$val = $this->_JScolor($val);
 				} else {
-					$val = "\"".$val."\"";
+					$val = "'".$val."'";
 				}
 				$this->javascript .= 'f'.$name.'.'.$key.'='.$val.";\n";
 			}
@@ -10646,7 +10646,7 @@ if (!class_exists('TCPDF', false)) {
 				$this->_addfield('listbox', $name, $x, $y, $w, $h, $prop);
 				$s = '';
 				foreach ($values as $value) {
-					$s .= "\"".addslashes($value)."\",";
+					$s .= "'".addslashes($value)."',";
 				}
 				$this->javascript .= 'f'.$name.'.setItems(['.substr($s, 0, -1)."]);\n";
 				return;
@@ -10706,7 +10706,7 @@ if (!class_exists('TCPDF', false)) {
 				$this->_addfield('combobox', $name, $x, $y, $w, $h, $prop);
 				$s = '';
 				foreach ($values as $value) {
-					$s .= "\"".addslashes($value)."\",";
+					$s .= "'".addslashes($value)."',";
 				}
 				$this->javascript .= 'f'.$name.'.setItems(['.substr($s, 0, -1)."]);\n";
 				return;
@@ -10835,8 +10835,8 @@ if (!class_exists('TCPDF', false)) {
 			}
 			if ($js) {
 				$this->_addfield('button', $name, $this->x, $this->y, $w, $h, $prop);
-				$this->javascript .= 'f'.$name.".buttonSetCaption(\"".addslashes($caption)."\");\n";
-				$this->javascript .= 'f'.$name.".setAction('MouseUp',\"".addslashes($action)."\");\n";
+				$this->javascript .= 'f'.$name.".buttonSetCaption('".addslashes($caption)."');\n";
+				$this->javascript .= 'f'.$name.".setAction('MouseUp','".addslashes($action)."');\n";
 				$this->javascript .= 'f'.$name.".highlight='push';\n";
 				$this->javascript .= 'f'.$name.".print=false;\n";
 				return;
@@ -15679,7 +15679,7 @@ if (!class_exists('TCPDF', false)) {
 					$newpage = $pagenum;
 				}
 				--$newpage;
-				return "this.addField(\\"".$matches[1]."\',\\"".$matches[2]."\',".$newpage."";'), $tmpjavascript);
+				return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage."";'), $tmpjavascript);
 			// return to last page
 			$this->lastPage(true);
 			return true;
@@ -15816,7 +15816,7 @@ if (!class_exists('TCPDF', false)) {
 					$newpage = $pagenum;
 				}
 				--$newpage;
-				return "this.addField(\\"".$matches[1]."\',\\"".$matches[2]."\',".$newpage."";'), $tmpjavascript);
+				return "this.addField(\'".$matches[1]."\',\'".$matches[2]."\',".$newpage."";'), $tmpjavascript);
 			// return to last page
 			$this->lastPage(true);
 			return true;

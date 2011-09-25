@@ -88,19 +88,19 @@ class PHPExcel_RichText implements PHPExcel_IComparable
 	{
 		// Initialise variables
 		$this->_richTextElements = array();
-			
+		 
 		// Set parent?
 		if (!is_null($pCell)) {
 			// Set parent cell
 			$this->_parent = $pCell;
-
+	   
 			// Add cell text and style
 			if ($this->_parent->getValue() != "") {
 				$objRun = new PHPExcel_RichText_Run($this->_parent->getValue());
 				$objRun->setFont(clone $this->_parent->getParent()->getStyle($this->_parent->getCoordinate())->getFont());
 				$this->addText($objRun);
 			}
-
+	   
 			// Set parent value
 			$this->_parent->setValueExplicit($this, PHPExcel_Cell_DataType::TYPE_STRING);
 		}
@@ -156,12 +156,12 @@ class PHPExcel_RichText implements PHPExcel_IComparable
 	{
 		// Return value
 		$returnValue = '';
-			
+		 
 		// Loop through all PHPExcel_RichText_ITextElement
 		foreach ($this->_richTextElements as $text) {
 			$returnValue .= $text->getText();
 		}
-			
+		 
 		// Return
 		return $returnValue;
 	}
@@ -220,7 +220,7 @@ class PHPExcel_RichText implements PHPExcel_IComparable
 	public function setParent(PHPExcel_Cell $value) {
 		// Set parent
 		$this->_parent = $value;
-			
+		 
 		// Set parent value
 		$this->_parent->setValueExplicit($this, PHPExcel_Cell_DataType::TYPE_STRING);
 
@@ -230,7 +230,7 @@ class PHPExcel_RichText implements PHPExcel_IComparable
 		$cellFont = $sheet->getStyle($this->_parent->getCoordinate())->getFont()->getSharedComponent();
 		foreach ($this->getRichTextElements() as $element) {
 			if (!($element instanceof PHPExcel_RichText_Run)) continue;
-
+				
 			if ($element->getFont()->getHashCode() == $sheet->getDefaultStyle()->getFont()->getHashCode()) {
 				if ($element->getFont()->getHashCode() != $cellFont->getHashCode()) {
 					$element->setFont(clone $cellFont);
@@ -264,7 +264,7 @@ class PHPExcel_RichText implements PHPExcel_IComparable
 		$vars = get_object_vars($this);
 		foreach ($vars as $key => $value) {
 			if ($key == '_parent') continue;
-
+				
 			if (is_object($value)) {
 				$this->$key = clone $value;
 			} else {

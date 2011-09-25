@@ -483,7 +483,7 @@ class PHPExcel_Shared_Font
 				break;
 
 			case 'Microsoft Sans Serif':
-				$fontFile = self::mssql_SANS_SERIF;
+				$fontFile = self::MICROSOFT_SANS_SERIF;
 				break;
 
 			case 'Palatino Linotype':
@@ -525,7 +525,7 @@ class PHPExcel_Shared_Font
 				break;
 
 			default:
-				throw new Exception("Unknown font name ". $name ."Cannot map to TrueType font file");
+				throw new Exception('Unknown font name "'. $name .'". Cannot map to TrueType font file');
 				break;
 		}
 

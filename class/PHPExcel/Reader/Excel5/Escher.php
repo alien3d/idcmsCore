@@ -139,11 +139,11 @@ class PHPExcel_Reader_Excel5_Escher
 
 		// Parse Escher stream
 		while ($this->_pos < $this->_dataSize) {
-
-
+				
+				
 			// offset: 2; size: 2: Record Type
 			$fbt = $this->_GetInt2d($this->_data, $this->_pos + 2);
-
+				
 			switch ($fbt) {
 				case self::DGGCONTAINER:	$this->_readDggContainer();		break;
 				case self::DGG:				$this->_readDgg();				break;

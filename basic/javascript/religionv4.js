@@ -9,7 +9,7 @@ Ext.onReady(function() {
     
     var pagePrint;
     
-    var perPage = 15;
+    var perPage =14;
     var encode = false;
    
     var jsonResponse;
@@ -476,7 +476,13 @@ Ext.onReady(function() {
         bbar: new Ext.PagingToolbar({
             store: religionStore,
             pageSize: perPage
-        })
+        }),
+        view: new Ext.ux.grid.BufferView({
+		    // custom row height
+		    rowHeight: 34,
+		    // render rows as they come into viewable area.
+		    scrollDelay: false
+	    })
     });
     var toolbarPanel = new Ext.Toolbar({
         items: [{

@@ -46,8 +46,8 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 	public $_tmp_dir;
 
 	/**
-	 * @param int $time_1st A timestamp
-	 * @param int $time_2nd A timestamp
+	 * @param integer $time_1st A timestamp
+	 * @param integer $time_2nd A timestamp
 	 */
 	public function __construct($time_1st, $time_2nd, $raChild)
 	{
@@ -183,7 +183,7 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 	 * Helper function for caculating a magic value for block sizes
 	 *
 	 * @access public
-	 * @param int $i2 The argument
+	 * @param integer $i2 The argument
 	 * @see save()
 	 * @return integer
 	 */
@@ -197,9 +197,9 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 	 * Save OLE header
 	 *
 	 * @access public
-	 * @param int $iSBDcnt
-	 * @param int $iBBcnt
-	 * @param int $iPPScnt
+	 * @param integer $iSBDcnt
+	 * @param integer $iBBcnt
+	 * @param integer $iPPScnt
 	 */
 	public function _saveHeader($iSBDcnt, $iBBcnt, $iPPScnt)
 	{
@@ -275,7 +275,7 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 	 * Saving big data (PPS's with data bigger than PHPExcel_Shared_OLE::OLE_DATA_SIZE_SMALL)
 	 *
 	 * @access public
-	 * @param int $iStBlk
+	 * @param integer $iStBlk
 	 * @param array &$raList Reference to array of PPS's
 	 */
 	public function _saveBigData($iStBlk, &$raList)
@@ -404,9 +404,9 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 	 * Saving Big Block Depot
 	 *
 	 * @access public
-	 * @param int $iSbdSize
-	 * @param int $iBsize
-	 * @param int $iPpsCnt
+	 * @param integer $iSbdSize
+	 * @param integer $iBsize
+	 * @param integer $iPpsCnt
 	 */
 	public function _saveBbd($iSbdSize, $iBsize, $iPpsCnt)
 	{

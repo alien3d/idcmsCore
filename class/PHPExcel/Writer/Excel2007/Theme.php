@@ -88,7 +88,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			// a:clrScheme
 			$objWriter->startElement('a:clrScheme');
 			$objWriter->writeAttribute('name', 'Office');
-
+				
 			// a:dk1
 			$objWriter->startElement('a:dk1');
 
@@ -97,7 +97,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('val', 'windowText');
 			$objWriter->writeAttribute('lastClr', '000000');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:lt1
@@ -108,7 +108,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('val', 'window');
 			$objWriter->writeAttribute('lastClr', 'FFFFFF');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:dk2
@@ -118,7 +118,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '1F497D');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:lt2
@@ -128,7 +128,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', 'EEECE1');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:accent1
@@ -138,7 +138,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '4F81BD');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:accent2
@@ -148,7 +148,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', 'C0504D');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:accent3
@@ -158,7 +158,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '9BBB59');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:accent4
@@ -168,7 +168,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '8064A2');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:accent5
@@ -178,7 +178,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '4BACC6');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:accent6
@@ -188,7 +188,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', 'F79646');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:hlink
@@ -198,7 +198,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '0000FF');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:folHlink
@@ -208,9 +208,9 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '800080');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 		}
 			
@@ -218,7 +218,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			// a:fontScheme
 			$objWriter->startElement('a:fontScheme');
 			$objWriter->writeAttribute('name', 'Office');
-
+				
 			// a:majorFont
 			$objWriter->startElement('a:majorFont');
 
@@ -236,7 +236,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:cs');
 			$objWriter->writeAttribute('typeface', '');
 			$objWriter->endElement();
-
+				
 			// a:font
 			$objWriter->startElement('a:font');
 			$objWriter->writeAttribute('script', 'Jpan');
@@ -404,13 +404,13 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('script', 'Viet');
 			$objWriter->writeAttribute('typeface', 'Times New Roman');
 			$objWriter->endElement();
-
+				
 			// a:font
 			$objWriter->startElement('a:font');
 			$objWriter->writeAttribute('script', 'Uigh');
 			$objWriter->writeAttribute('typeface', 'Microsoft Uighur');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:minorFont
@@ -490,7 +490,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('script', 'Gujr');
 			$objWriter->writeAttribute('typeface', 'Shruti');
 			$objWriter->endElement();
-
+				
 			// a:font
 			$objWriter->startElement('a:font');
 			$objWriter->writeAttribute('script', 'Khmr');
@@ -604,7 +604,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('script', 'Uigh');
 			$objWriter->writeAttribute('typeface', 'Microsoft Uighur');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			$objWriter->endElement();
@@ -614,31 +614,31 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			// a:fmtScheme
 			$objWriter->startElement('a:fmtScheme');
 			$objWriter->writeAttribute('name', 'Office');
-
+				
 			// a:fillStyleLst
 			$objWriter->startElement('a:fillStyleLst');
 
 			// a:solidFill
 			$objWriter->startElement('a:solidFill');
-
+				
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			// a:gradFill
 			$objWriter->startElement('a:gradFill');
 			$objWriter->writeAttribute('rotWithShape', '1');
-
+				
 			// a:gsLst
 			$objWriter->startElement('a:gsLst');
 
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '0');
-
+				
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
@@ -647,7 +647,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:tint');
 			$objWriter->writeAttribute('val', '50000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '300000');
@@ -656,11 +656,11 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '35000');
-
+				
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
@@ -669,7 +669,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:tint');
 			$objWriter->writeAttribute('val', '37000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '300000');
@@ -678,11 +678,11 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '100000');
-
+				
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
@@ -691,7 +691,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:tint');
 			$objWriter->writeAttribute('val', '15000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '350000');
@@ -700,7 +700,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:lin
@@ -708,13 +708,13 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('ang', '16200000');
 			$objWriter->writeAttribute('scaled', '1');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			// a:gradFill
 			$objWriter->startElement('a:gradFill');
 			$objWriter->writeAttribute('rotWithShape', '1');
-
+				
 			// a:gsLst
 			$objWriter->startElement('a:gsLst');
 
@@ -725,12 +725,12 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
-
+				
 			// a:shade
 			$objWriter->startElement('a:shade');
 			$objWriter->writeAttribute('val', '51000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '130000');
@@ -739,7 +739,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '80000');
@@ -747,12 +747,12 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
-
+				
 			// a:shade
 			$objWriter->startElement('a:shade');
 			$objWriter->writeAttribute('val', '93000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '130000');
@@ -761,7 +761,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '100000');
@@ -774,7 +774,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:shade');
 			$objWriter->writeAttribute('val', '94000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '135000');
@@ -783,7 +783,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:lin
@@ -791,7 +791,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('ang', '16200000');
 			$objWriter->writeAttribute('scaled', '0');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			$objWriter->endElement();
@@ -805,24 +805,24 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('cap', 'flat');
 			$objWriter->writeAttribute('cmpd', 'sng');
 			$objWriter->writeAttribute('algn', 'ctr');
-
+				
 			// a:solidFill
 			$objWriter->startElement('a:solidFill');
 
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
-
+				
 			// a:shade
 			$objWriter->startElement('a:shade');
 			$objWriter->writeAttribute('val', '95000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '105000');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			$objWriter->endElement();
@@ -831,16 +831,16 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:prstDash');
 			$objWriter->writeAttribute('val', 'solid');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			// a:ln
 			$objWriter->startElement('a:ln');
 			$objWriter->writeAttribute('w', '25400');
 			$objWriter->writeAttribute('cap', 'flat');
 			$objWriter->writeAttribute('cmpd', 'sng');
 			$objWriter->writeAttribute('algn', 'ctr');
-
+				
 			// a:solidFill
 			$objWriter->startElement('a:solidFill');
 
@@ -855,16 +855,16 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:prstDash');
 			$objWriter->writeAttribute('val', 'solid');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			// a:ln
 			$objWriter->startElement('a:ln');
 			$objWriter->writeAttribute('w', '38100');
 			$objWriter->writeAttribute('cap', 'flat');
 			$objWriter->writeAttribute('cmpd', 'sng');
 			$objWriter->writeAttribute('algn', 'ctr');
-
+				
 			// a:solidFill
 			$objWriter->startElement('a:solidFill');
 
@@ -879,7 +879,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:prstDash');
 			$objWriter->writeAttribute('val', 'solid');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			$objWriter->endElement();
@@ -891,7 +891,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 
 			// a:effectStyle
 			$objWriter->startElement('a:effectStyle');
-
+				
 			// a:effectLst
 			$objWriter->startElement('a:effectLst');
 
@@ -901,7 +901,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('dist', '20000');
 			$objWriter->writeAttribute('dir', '5400000');
 			$objWriter->writeAttribute('rotWithShape', '0');
-
+				
 			// a:srgbClr
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '000000');
@@ -912,16 +912,16 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
+			$objWriter->endElement();
+				
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
-			$objWriter->endElement();
-
+				
 			// a:effectStyle
 			$objWriter->startElement('a:effectStyle');
-
+				
 			// a:effectLst
 			$objWriter->startElement('a:effectLst');
 
@@ -931,7 +931,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('dist', '23000');
 			$objWriter->writeAttribute('dir', '5400000');
 			$objWriter->writeAttribute('rotWithShape', '0');
-
+				
 			// a:srgbClr
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '000000');
@@ -942,16 +942,16 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			$objWriter->endElement();
 
 			// a:effectStyle
 			$objWriter->startElement('a:effectStyle');
-
+				
 			// a:effectLst
 			$objWriter->startElement('a:effectLst');
 
@@ -961,7 +961,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('dist', '23000');
 			$objWriter->writeAttribute('dir', '5400000');
 			$objWriter->writeAttribute('rotWithShape', '0');
-
+				
 			// a:srgbClr
 			$objWriter->startElement('a:srgbClr');
 			$objWriter->writeAttribute('val', '000000');
@@ -972,9 +972,9 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:scene3d
@@ -990,7 +990,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('lon', '0');
 			$objWriter->writeAttribute('rev', '0');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:lightRig
@@ -1004,9 +1004,9 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('lon', '0');
 			$objWriter->writeAttribute('rev', '1200000');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:sp3d
@@ -1017,7 +1017,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->writeAttribute('w', '63500');
 			$objWriter->writeAttribute('h', '25400');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			$objWriter->endElement();
@@ -1034,24 +1034,24 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			// a:gradFill
 			$objWriter->startElement('a:gradFill');
 			$objWriter->writeAttribute('rotWithShape', '1');
-
+				
 			// a:gsLst
 			$objWriter->startElement('a:gsLst');
 
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '0');
-
+				
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
-
+				
 			// a:tint
 			$objWriter->startElement('a:tint');
 			$objWriter->writeAttribute('val', '40000');
@@ -1065,11 +1065,11 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '40000');
-
+				
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
@@ -1078,12 +1078,12 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:tint');
 			$objWriter->writeAttribute('val', '45000');
 			$objWriter->endElement();
-
+				
 			// a:shade
 			$objWriter->startElement('a:shade');
 			$objWriter->writeAttribute('val', '99000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '350000');
@@ -1092,11 +1092,11 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '100000');
-
+				
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
@@ -1105,7 +1105,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:shade');
 			$objWriter->writeAttribute('val', '20000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '255000');
@@ -1114,7 +1114,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:path
@@ -1130,24 +1130,24 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			// a:gradFill
 			$objWriter->startElement('a:gradFill');
 			$objWriter->writeAttribute('rotWithShape', '1');
-
+				
 			// a:gsLst
 			$objWriter->startElement('a:gsLst');
 
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '0');
-
+				
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
-
+				
 			// a:tint
 			$objWriter->startElement('a:tint');
 			$objWriter->writeAttribute('val', '80000');
@@ -1161,11 +1161,11 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			// a:gs
 			$objWriter->startElement('a:gs');
 			$objWriter->writeAttribute('pos', '100000');
-
+				
 			// a:schemeClr
 			$objWriter->startElement('a:schemeClr');
 			$objWriter->writeAttribute('val', 'phClr');
@@ -1174,7 +1174,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->startElement('a:shade');
 			$objWriter->writeAttribute('val', '30000');
 			$objWriter->endElement();
-
+				
 			// a:satMod
 			$objWriter->startElement('a:satMod');
 			$objWriter->writeAttribute('val', '200000');
@@ -1183,7 +1183,7 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			// a:path
@@ -1199,9 +1199,9 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 			$objWriter->endElement();
 
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 
 			$objWriter->endElement();

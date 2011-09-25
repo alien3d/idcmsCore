@@ -56,8 +56,7 @@ include_once "includes/navbar.php";
 ?>
 <p>Download current version:</p>
 <ul>
-	<li><a href='<?php echo $_SERVER['PHP_SELF']."?op=download"; ?>'><?php echo $tarName ?>
-	</a></li>
+	<li><a href='<?php echo $_SERVER['PHP_SELF']."?op=download"; ?>'><?php echo $tarName ?></a></li>
 </ul>
 <?php
 include_once "includes/footer.php";

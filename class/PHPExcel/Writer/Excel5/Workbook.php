@@ -281,7 +281,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 		$countSheets = count($phpExcel->getAllSheets());
 		for ($i = 0; $i < $countSheets; ++$i) {
 			$phpSheet  = $phpExcel->getSheet($i);
-
+				
 			$this->_parser->setExtSheet($phpSheet->getTitle(), $i);  // Register worksheet name with parser
 
 			// for BIFF8
@@ -838,7 +838,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 
 					// construct formula data manually because parser does not recognize absolute 3d cell references
 					$formulaData .= pack('Cvvvvv', 0x3B, $i, $print_rowmin, $print_rowmax, $print_colmin, $print_colmax);
-
+						
 					if ($j > 0) {
 						$formulaData .= pack('C', 0x10); // list operator token ','
 					}
@@ -942,7 +942,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Writes Excel BIFF BOUNDSHEET record.
 	 *
 	 * @param PHPExcel_Worksheet  $sheet Worksheet name
-	 * @param int $offset    Location of worksheet BOF
+	 * @param integer $offset    Location of worksheet BOF
 	 * @access private
 	 */
 	function _storeBoundsheet($sheet, $offset)
@@ -1034,7 +1034,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Writes Excel FORMAT record for non "built-in" numerical formats.
 	 *
 	 * @param string  $format Custom format string
-	 * @param int $ifmt   Format index code
+	 * @param integer $ifmt   Format index code
 	 * @access private
 	 */
 	function _storeNumFormat($format, $ifmt)
@@ -1089,7 +1089,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 *
 	 * A similar method is used in Worksheet.php for a slightly different purpose.
 	 *
-	 * @param int $cxals Number of external references
+	 * @param integer $cxals Number of external references
 	 * @access private
 	 */
 	function _storeExterncount($cxals)
@@ -1131,12 +1131,12 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * Store the NAME record in the short format that is used for storing the print
 	 * area, repeat rows only and repeat columns only.
 	 *
-	 * @param int $index  Sheet index
-	 * @param int $type   Built-in name type
-	 * @param int $rowmin Start row
-	 * @param int $rowmax End row
-	 * @param int $colmin Start colum
-	 * @param int $colmax End column
+	 * @param integer $index  Sheet index
+	 * @param integer $type   Built-in name type
+	 * @param integer $rowmin Start row
+	 * @param integer $rowmax End row
+	 * @param integer $colmin Start colum
+	 * @param integer $colmax End column
 	 * @access private
 	 */
 	function _storeNameShort($index, $type, $rowmin, $rowmax, $colmin, $colmax)
@@ -1197,12 +1197,12 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * _storeNameShort() but we use a separate method to keep the code clean.
 	 * Code abstraction for reuse can be carried too far, and I should know. ;-)
 	 *
-	 * @param int $index Sheet index
-	 * @param int $type  Built-in name type
-	 * @param int $rowmin Start row
-	 * @param int $rowmax End row
-	 * @param int $colmin Start colum
-	 * @param int $colmax End column
+	 * @param integer $index Sheet index
+	 * @param integer $type  Built-in name type
+	 * @param integer $rowmin Start row
+	 * @param integer $rowmax End row
+	 * @param integer $colmin Start colum
+	 * @param integer $colmax End column
 	 * @access private
 	 */
 	function _storeNameLong($index, $type, $rowmin, $rowmax, $colmin, $colmax)

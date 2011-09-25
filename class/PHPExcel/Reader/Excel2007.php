@@ -538,7 +538,7 @@ class PHPExcel_Reader_Excel2007 implements PHPExcel_Reader_IReader
 							$xmlSheet = simplexml_load_string($this->_getFromZipArchive($zip, "$dir/$fileWorksheet"));  //~ http://schemas.openxmlformats.org/spreadsheetml/2006/main");
 
 							$sharedFormulas = array();
-
+								
 							if (isset($eleSheet["state"]) && (string) $eleSheet["state"] != '') {
 								$docSheet->setSheetState( (string) $eleSheet["state"] );
 							}
@@ -589,7 +589,7 @@ class PHPExcel_Reader_Excel2007 implements PHPExcel_Reader_IReader
 								}
 
 							}
-
+								
 							if (isset($xmlSheet->sheetPr) && isset($xmlSheet->sheetPr->tabColor)) {
 								if (isset($xmlSheet->sheetPr->tabColor['rgb'])) {
 									$docSheet->getTabColor()->setARGB( (string)$xmlSheet->sheetPr->tabColor['rgb'] );

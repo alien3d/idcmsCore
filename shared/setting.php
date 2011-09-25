@@ -116,7 +116,7 @@ if ($q->vendor == sharedx::mysql) {
         AND  	`leafAccess`.`staffId`			=	\"" . $_SESSION[$staffId] . "\"
         AND		`leafTranslate`.`languageId`	=	\"" . $_SESSION['languageId'] . "\"";
 } else if ($q->vendor == sharedx::mssql) {
-    $sql =
+  		  $sql =
             "	SELECT	*
         FROM	[leaf]
         JOIN	[leafAccess]

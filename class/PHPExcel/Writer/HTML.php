@@ -373,7 +373,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 
 			// Write table footer
 			$html .= $this->_generateTableFooter();
-
+				
 			// Writing PDF?
 			if ($this->_isPdf)
 			{
@@ -381,7 +381,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 					$html .= '<tcpdf method="AddPage" />';
 				}
 			}
-
+				
 			// Next sheet
 			++$sheetId;
 		}
@@ -571,7 +571,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 					$column = PHPExcel_Cell::columnIndexFromString($columnDimension->getColumnIndex()) - 1;
 					$this->_columnWidths[$sheetIndex][$column] = $width;
 					$css['table.sheet' . $sheetIndex . ' col.col' . $column]['width'] = $width . 'pt';
-
+						
 					if ($columnDimension->getVisible() === false) {
 						$css['table.sheet' . $sheetIndex . ' col.col' . $column]['visibility'] = 'collapse';
 						$css['table.sheet' . $sheetIndex . ' col.col' . $column]['*display'] = 'none'; // target IE6+7
@@ -835,7 +835,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 		if (is_array($pValues)) {
 			// Construct HTML
 			$html = '';
-
+				
 			// Sheet index
 			$sheetIndex = $pSheet->getParent()->getIndex($pSheet);
 
@@ -1015,7 +1015,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 
 					// Cell data
 					$html .= $cellData;
-
+						
 					// Column end
 					$html .= '</td>' . "\r\n";
 				}

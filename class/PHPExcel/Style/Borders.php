@@ -354,7 +354,7 @@ class PHPExcel_Style_Borders implements PHPExcel_IComparable
 	public function getRight() {
 		return $this->_right;
 	}
-
+	 
 	/**
 	 * Get Top
 	 *

@@ -249,13 +249,13 @@ switch($_REQUEST['decomposition']) {
 		?>
 <ul>
 	<li><a href="benchmark.php?decomposition=all">Complete Benchmark</a>
-		<ul>
-			<li><a href="benchmark.php?decomposition=cholesky">Cholesky</a></li>
-			<li><a href="benchmark.php?decomposition=eigenvalue">Eigenvalue</a></li>
-			<li><a href="benchmark.php?decomposition=lu">LU</a></li>
-			<li><a href="benchmark.php?decomposition=qr">QR</a></li>
-			<li><a href="benchmark.php?decomposition=svd">Singular Value</a></li>
-		</ul>
+	<ul>
+		<li><a href="benchmark.php?decomposition=cholesky">Cholesky</a></li>
+		<li><a href="benchmark.php?decomposition=eigenvalue">Eigenvalue</a></li>
+		<li><a href="benchmark.php?decomposition=lu">LU</a></li>
+		<li><a href="benchmark.php?decomposition=qr">QR</a></li>
+		<li><a href="benchmark.php?decomposition=svd">Singular Value</a></li>
+	</ul>
 	</li>
 </ul>
 		<?php

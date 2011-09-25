@@ -63,7 +63,7 @@ class PHPExcel_Shared_Date
 	/**
 	 * Set the Excel calendar (Windows 1900 or Mac 1904)
 	 *
-	 * @param int	$baseDate			Excel base date
+	 * @param	 integer	$baseDate			Excel base date
 	 * @return	 boolean						Success or failure
 	 */
 	public static function setExcelCalendar($baseDate) {

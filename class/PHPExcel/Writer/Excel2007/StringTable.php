@@ -79,10 +79,10 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 			if (!is_null($pExistingTable) && is_array($pExistingTable)) {
 				$aStringTable = $pExistingTable;
 			}
-
+				
 			// Fill index array
 			$aFlippedStringTable = $this->flipStringTable($aStringTable);
-
+				
 			// Loop through cells
 			$cellCollection = $pSheet->getCellCollection();
 			foreach ($cellCollection as $cell) {
@@ -128,15 +128,15 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 			} else {
 				$objWriter = new PHPExcel_Shared_XMLWriter(PHPExcel_Shared_XMLWriter::STORAGE_MEMORY);
 			}
-
+				
 			// XML header
 			$objWriter->startDocument('1.0','UTF-8','yes');
-
+				
 			// String table
 			$objWriter->startElement('sst');
 			$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/spreadsheetml/2006/main');
 			$objWriter->writeAttribute('uniqueCount', count($pStringTable));
-
+				
 			// Loop through string table
 			foreach ($pStringTable as $textElement) {
 				$objWriter->startElement('si');
@@ -233,13 +233,13 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 
 				$objWriter->endElement();
 			}
-
+				
 			// t
 			$objWriter->startElement('t');
 			$objWriter->writeAttribute('xml:space', 'preserve');
 			$objWriter->writeRaw(PHPExcel_Shared_String::ControlCharacterPHP2OOXML( $element->getText() ));
 			$objWriter->endElement();
-
+				
 			$objWriter->endElement();
 		}
 	}

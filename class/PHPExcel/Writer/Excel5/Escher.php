@@ -217,7 +217,7 @@ class PHPExcel_Writer_Excel5_Escher
 					
 				// write the record
 				switch ($this->_object->getParent()->getBlipType()) {
-
+						
 					case PHPExcel_Shared_Escher_DggContainer_BstoreContainer_BSE::BLIPTYPE_JPEG:
 						// initialize
 						$innerData = '';

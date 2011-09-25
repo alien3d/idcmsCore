@@ -119,7 +119,7 @@ class PHPExcel_Worksheet_HeaderFooterDrawing extends PHPExcel_Worksheet_Drawing 
 		$this->_height				= 0;
 		$this->_resizeProportional	= true;
 	}
-
+	 
 	/**
 	 * Get Name
 	 *
@@ -201,10 +201,10 @@ class PHPExcel_Worksheet_HeaderFooterDrawing extends PHPExcel_Worksheet_Drawing 
 			$ratio = $this->_width / $this->_height;
 			$this->_height = round($ratio * $pValue);
 		}
-			
+		 
 		// Set width
 		$this->_width = $pValue;
-			
+		 
 		return $this;
 	}
 
@@ -229,10 +229,10 @@ class PHPExcel_Worksheet_HeaderFooterDrawing extends PHPExcel_Worksheet_Drawing 
 			$ratio = $this->_width / $this->_height;
 			$this->_width = round($ratio * $pValue);
 		}
-			
+		 
 		// Set height
 		$this->_height = $pValue;
-			
+		 
 		return $this;
 	}
 
@@ -323,7 +323,7 @@ class PHPExcel_Worksheet_HeaderFooterDrawing extends PHPExcel_Worksheet_Drawing 
 		if ($pVerifyFile) {
 			if (file_exists($pValue)) {
 				$this->_path = $pValue;
-					
+				 
 				if ($this->_width == 0 && $this->_height == 0) {
 					// Get width/height
 					list($this->_width, $this->_height) = getimagesize($pValue);

@@ -116,7 +116,7 @@ class PHPExcel_HashTable
 	public function remove(PHPExcel_IComparable $pSource = null) {
 		if (isset($this->_items[  $pSource->getHashCode()  ])) {
 			unset($this->_items[  $pSource->getHashCode()  ]);
-
+	   
 			$deleteKey = -1;
 			foreach ($this->_keyMap as $key => $value) {
 				if ($deleteKey >= 0) {
@@ -170,7 +170,7 @@ class PHPExcel_HashTable
 		if (isset($this->_keyMap[$pIndex])) {
 			return $this->getByHashCode( $this->_keyMap[$pIndex] );
 		}
-			
+		 
 		return null;
 	}
 
@@ -185,7 +185,7 @@ class PHPExcel_HashTable
 		if (isset($this->_items[$pHashCode])) {
 			return $this->_items[$pHashCode];
 		}
-			
+		 
 		return null;
 	}
 

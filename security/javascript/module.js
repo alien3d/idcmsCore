@@ -230,27 +230,27 @@ Ext
 					type : 'numeric',
 					dataIndex : 'moduleSequence',
 					column : 'moduleSequence',
-					modulele : 'module'
+					module : 'module'
 				},{
 					type : 'numeric',
 					dataIndex : 'moduleCode',
 					column : 'moduleCode',
-					modulele : 'module'
+					module : 'module'
 				}, {
 					type : 'string',
 					dataIndex : 'moduleNote',
 					column : 'moduleNote',
-					modulele : 'module'
+					module : 'module'
 				}, {
 					type : 'string',
 					dataIndex : 'iconId',
 					column : 'iconId',
-					modulele : 'module'
+					module : 'module'
 				},  {
 					type : "list",
 					dataIndex : "By",
 					column : "By",
-					modulele : "module",
+					module : "module",
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
@@ -259,7 +259,7 @@ Ext
 					dateFormat : 'Y-m-d H:i:s',
 					dataIndex : 'createTime',
 					column : 'createTime',
-					modulele : 'module'
+					module : 'module'
 				} ]
 			});
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
@@ -302,21 +302,21 @@ Ext
 					{
 						dataIndex : "moduleSequence",
 						header : moduleSequenceLabel,
-						sormodulele : true,
+						sormodule : true,
 						hidden : false,
 						width : 50
 					},
 					{
 						dataIndex : "moduleNote",
 						header : moduleNoteLabel,
-						sormodulele : true,
+						sormodule : true,
 						hidden : false,
 						width : 100
 					},
 					{
 						dataIndex : 'iconName',
 						header : iconNameLabel,
-						sormodulele : false,
+						sormodule : false,
 						hidden : false,
 						width : 50,
 						renderer : function(value, metaData, record, rowIndex,
@@ -330,39 +330,39 @@ Ext
 					isDeleteGrid, isActiveGrid, isApprovedGrid, {
 						dataIndex : 'By',
 						header : createByLabel,
-						sormodulele : true,
+						sormodule : true,
 						hidden : true,
 						width : 100
 					}, {
 						dataIndex : 'Time',
 						header : createTimeLabel,
 						type : 'date',
-						sormodulele : true,
+						sormodule : true,
 						hidden : true,
 						width : 100
 					} ];
 			var moduleTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
 				dataIndex : "moduleNote",
 				header : moduleSequenceLabel,
-				sormodulele : true,
+				sormodule : true,
 				hidden : true,
 				width : 50
 			}, {
 				dataIndex : "languageCode",
 				header : "languageCode",
-				sormodulele : true,
+				sormodule : true,
 				hidden : false,
 				width : 100
 			}, {
 				dataIndex : "languageDesc",
 				header : "languageDesc",
-				sormodulele : true,
+				sormodule : true,
 				hidden : false,
 				width : 100
 			}, {
 				dataIndex : "moduleTranslate",
 				header : "moduleTranslate",
-				sormodulele : true,
+				sormodule : true,
 				hidden : false,
 				width : 100,
 				editor : {
@@ -637,7 +637,7 @@ Ext
 													params : {
 														method : 'read',
 														field : 'sequence',
-														modulele : 'module',
+														module : 'module',
 														leafId : leafId
 													},
 													success : function(
@@ -1001,7 +1001,7 @@ Ext
 								{
 									text : resetButtonLabel,
 									type : 'reset',
-									iconCls : 'modulele_refresh',
+									iconCls : 'module_refresh',
 									handler : function() {
 										formPanel.getForm().reset();
 									}

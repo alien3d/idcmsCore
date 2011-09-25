@@ -1953,7 +1953,7 @@ class PHPExcel_Calculation {
 									  *
 									  *	@param	mixed		&$operand1	First matrix operand
 									  *	@param	mixed		&$operand2	Second matrix operand
-									  *	@param int		$resize		Flag indicating whether the matrices should be resized to match
+									  *	@param	integer		$resize		Flag indicating whether the matrices should be resized to match
 									  *										and (if so), whether the smaller dimension should grow or the
 									  *										larger should shrink.
 									  *											0 = no resize
@@ -2329,63 +2329,63 @@ class PHPExcel_Calculation {
 								   			//					} else {
 								   			//						echo 'With '.$argumentCount.' arguments<br />';
 								   			//					}
-								   			$output[] = $d;						//	Dump the argument count on the output
-								   			$output[] = $stack->pop();			//	Pop the function and push onto the output
-								   			if (array_key_exists($functionName, $this->_controlFunctions)) {
-								   				//						echo 'Built-in function '.$functionName.'<br />';
-								   				$expectedArgumentCount = $this->_controlFunctions[$functionName]['argumentCount'];
-								   				$functionCall = $this->_controlFunctions[$functionName]['functionCall'];
-								   			} elseif (array_key_exists($functionName, $this->_PHPExcelFunctions)) {
-								   				//						echo 'PHPExcel function '.$functionName.'<br />';
-								   				$expectedArgumentCount = $this->_PHPExcelFunctions[$functionName]['argumentCount'];
-								   				$functionCall = $this->_PHPExcelFunctions[$functionName]['functionCall'];
-								   			} else {	// did we somehow push a non-function on the stack? this should never happen
-								   				return $this->_raiseFormulaError("Formula Error: Internal error, non-function on stack");
-								   			}
-								   			//	Check the argument count
-								   			$argumentCountError = False;
-								   			if (is_numeric($expectedArgumentCount)) {
-								   				if ($expectedArgumentCount < 0) {
-								   					//							echo '$expectedArgumentCount is between 0 and '.abs($expectedArgumentCount).'<br />';
-								   					if ($argumentCount > abs($expectedArgumentCount)) {
-								   						$argumentCountError = True;
-								   						$expectedArgumentCountString = 'no more than '.abs($expectedArgumentCount);
+								   				$output[] = $d;						//	Dump the argument count on the output
+								   				$output[] = $stack->pop();			//	Pop the function and push onto the output
+								   				if (array_key_exists($functionName, $this->_controlFunctions)) {
+								   					//						echo 'Built-in function '.$functionName.'<br />';
+								   					$expectedArgumentCount = $this->_controlFunctions[$functionName]['argumentCount'];
+								   					$functionCall = $this->_controlFunctions[$functionName]['functionCall'];
+								   				} elseif (array_key_exists($functionName, $this->_PHPExcelFunctions)) {
+								   					//						echo 'PHPExcel function '.$functionName.'<br />';
+								   					$expectedArgumentCount = $this->_PHPExcelFunctions[$functionName]['argumentCount'];
+								   					$functionCall = $this->_PHPExcelFunctions[$functionName]['functionCall'];
+								   				} else {	// did we somehow push a non-function on the stack? this should never happen
+								   					return $this->_raiseFormulaError("Formula Error: Internal error, non-function on stack");
+								   				}
+								   				//	Check the argument count
+								   				$argumentCountError = False;
+								   				if (is_numeric($expectedArgumentCount)) {
+								   					if ($expectedArgumentCount < 0) {
+								   						//							echo '$expectedArgumentCount is between 0 and '.abs($expectedArgumentCount).'<br />';
+								   						if ($argumentCount > abs($expectedArgumentCount)) {
+								   							$argumentCountError = True;
+								   							$expectedArgumentCountString = 'no more than '.abs($expectedArgumentCount);
+								   						}
+								   					} else {
+								   						//							echo '$expectedArgumentCount is numeric '.$expectedArgumentCount.'<br />';
+								   						if ($argumentCount != $expectedArgumentCount) {
+								   							$argumentCountError = True;
+								   							$expectedArgumentCountString = $expectedArgumentCount;
+								   						}
 								   					}
-								   				} else {
-								   					//							echo '$expectedArgumentCount is numeric '.$expectedArgumentCount.'<br />';
-								   					if ($argumentCount != $expectedArgumentCount) {
-								   						$argumentCountError = True;
-								   						$expectedArgumentCountString = $expectedArgumentCount;
+								   				} elseif ($expectedArgumentCount != '*') {
+								   					$isOperandOrFunction = preg_match('/(\d*)([-+,])(\d*)/',$expectedArgumentCount,$argMatch);
+								   					//						print_r($argMatch);
+								   					//						echo '<br />';
+								   					switch ($argMatch[2]) {
+								   						case '+' :
+								   							if ($argumentCount < $argMatch[1]) {
+								   								$argumentCountError = True;
+								   								$expectedArgumentCountString = $argMatch[1].' or more ';
+								   							}
+								   							break;
+								   						case '-' :
+								   							if (($argumentCount < $argMatch[1]) || ($argumentCount > $argMatch[3])) {
+								   								$argumentCountError = True;
+								   								$expectedArgumentCountString = 'between '.$argMatch[1].' and '.$argMatch[3];
+								   							}
+								   							break;
+								   						case ',' :
+								   							if (($argumentCount != $argMatch[1]) && ($argumentCount != $argMatch[3])) {
+								   								$argumentCountError = True;
+								   								$expectedArgumentCountString = 'either '.$argMatch[1].' or '.$argMatch[3];
+								   							}
+								   							break;
 								   					}
 								   				}
-								   			} elseif ($expectedArgumentCount != '*') {
-								   				$isOperandOrFunction = preg_match('/(\d*)([-+,])(\d*)/',$expectedArgumentCount,$argMatch);
-								   				//						print_r($argMatch);
-								   				//						echo '<br />';
-								   				switch ($argMatch[2]) {
-								   					case '+' :
-								   						if ($argumentCount < $argMatch[1]) {
-								   							$argumentCountError = True;
-								   							$expectedArgumentCountString = $argMatch[1].' or more ';
-								   						}
-								   						break;
-								   					case '-' :
-								   						if (($argumentCount < $argMatch[1]) || ($argumentCount > $argMatch[3])) {
-								   							$argumentCountError = True;
-								   							$expectedArgumentCountString = 'between '.$argMatch[1].' and '.$argMatch[3];
-								   						}
-								   						break;
-								   					case ',' :
-								   						if (($argumentCount != $argMatch[1]) && ($argumentCount != $argMatch[3])) {
-								   							$argumentCountError = True;
-								   							$expectedArgumentCountString = 'either '.$argMatch[1].' or '.$argMatch[3];
-								   						}
-								   						break;
+								   				if ($argumentCountError) {
+								   					return $this->_raiseFormulaError("Formula Error: Wrong number of arguments for $functionName() function: $argumentCount given, ".$expectedArgumentCountString." expected");
 								   				}
-								   			}
-								   			if ($argumentCountError) {
-								   				return $this->_raiseFormulaError("Formula Error: Wrong number of arguments for $functionName() function: $argumentCount given, ".$expectedArgumentCountString." expected");
-								   			}
 								   		}
 								   		++$index;
 

@@ -188,7 +188,7 @@ class PHPExcel_Style_Conditional implements PHPExcel_IComparable
 		if (isset($this->_condition[0])) {
 			return $this->_condition[0];
 		}
-			
+		 
 		return '';
 	}
 

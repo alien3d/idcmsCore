@@ -70,7 +70,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
 	{
 		// Initialise values
 		$this->_path				= '';
-			
+		 
 		// Initialize parent
 		parent::__construct();
 	}
@@ -126,7 +126,7 @@ class PHPExcel_Worksheet_Drawing extends PHPExcel_Worksheet_BaseDrawing implemen
 		if ($pVerifyFile) {
 			if (file_exists($pValue)) {
 				$this->_path = $pValue;
-					
+				 
 				if ($this->_width == 0 && $this->_height == 0) {
 					// Get width/height
 					list($this->_width, $this->_height) = getimagesize($pValue);

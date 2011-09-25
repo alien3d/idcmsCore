@@ -180,7 +180,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 		$countSheets = count($this->_phpExcel->getAllSheets());
 		for ($i = 0; $i < $countSheets; ++$i) {
 			$phpSheet  = $this->_phpExcel->getSheet($i);
-
+				
 			$writerWorksheet = new PHPExcel_Writer_Excel5_Worksheet($this->_BIFF_version,
 			$this->_str_total, $this->_str_unique,
 			$this->_str_table, $this->_colors,

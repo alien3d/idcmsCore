@@ -409,60 +409,60 @@ class PHPExcel_Reader_OOCalc implements PHPExcel_Reader_IReader
 										//										if (!is_null($hyperlink)) {
 										//											echo 'Hyperlink is '.$hyperlink.'<br />';
 										//										}
-									}
+										}
 
-									if ($hasCalculatedValue) {
-										$type = PHPExcel_Cell_DataType::TYPE_FORMULA;
-										//										echo 'Formula: '.$cellDataFormula.'<br />';
-										$cellDataFormula = substr($cellDataFormula,strpos($cellDataFormula,':=')+1);
-										$temp = explode('"',$cellDataFormula);
-										foreach($temp as $key => &$value) {
-											//	Only replace in alternate array entries (i.e. non-quoted blocks)
-											if (($key % 2) == 0) {
-												$value = preg_replace('/\[\.(.*):\.(.*)\]/Ui','$1:$2',$value);
-												$value = preg_replace('/\[\.(.*)\]/Ui','$1',$value);
+										if ($hasCalculatedValue) {
+											$type = PHPExcel_Cell_DataType::TYPE_FORMULA;
+											//										echo 'Formula: '.$cellDataFormula.'<br />';
+											$cellDataFormula = substr($cellDataFormula,strpos($cellDataFormula,':=')+1);
+											$temp = explode('"',$cellDataFormula);
+											foreach($temp as $key => &$value) {
+												//	Only replace in alternate array entries (i.e. non-quoted blocks)
+												if (($key % 2) == 0) {
+													$value = preg_replace('/\[\.(.*):\.(.*)\]/Ui','$1:$2',$value);
+													$value = preg_replace('/\[\.(.*)\]/Ui','$1',$value);
+												}
+											}
+											unset($value);
+											//	Then rebuild the formula string
+											$cellDataFormula = implode('"',$temp);
+											//										echo 'Adjusted Formula: '.$cellDataFormula.'<br />';
+										}
+
+										if (!is_null($type)) {
+											$objPHPExcel->getActiveSheet()->getCell($columnID.$rowID)->setValueExplicit((($hasCalculatedValue) ? $cellDataFormula : $dataValue),$type);
+											if ($hasCalculatedValue) {
+												//											echo 'Forumla result is '.$dataValue.'<br />';
+												$objPHPExcel->getActiveSheet()->getCell($columnID.$rowID)->setCalculatedValue($dataValue);
+											}
+											if (($cellDataOfficeAttributes['value-type'] == 'date') ||
+											($cellDataOfficeAttributes['value-type'] == 'time')) {
+												$objPHPExcel->getActiveSheet()->getStyle($columnID.$rowID)->getNumberFormat()->setFormatCode($formatting);
+											}
+											if (!is_null($hyperlink)) {
+												$objPHPExcel->getActiveSheet()->getCell($columnID.$rowID)->getHyperlink()->setUrl($hyperlink);
 											}
 										}
-										unset($value);
-										//	Then rebuild the formula string
-										$cellDataFormula = implode('"',$temp);
-										//										echo 'Adjusted Formula: '.$cellDataFormula.'<br />';
-									}
 
-									if (!is_null($type)) {
-										$objPHPExcel->getActiveSheet()->getCell($columnID.$rowID)->setValueExplicit((($hasCalculatedValue) ? $cellDataFormula : $dataValue),$type);
-										if ($hasCalculatedValue) {
-											//											echo 'Forumla result is '.$dataValue.'<br />';
-											$objPHPExcel->getActiveSheet()->getCell($columnID.$rowID)->setCalculatedValue($dataValue);
+										//	Merged cells
+										if ((isset($cellDataTableAttributes['number-columns-spanned'])) || (isset($cellDataTableAttributes['number-rows-spanned']))) {
+											$columnTo = $columnID;
+											if (isset($cellDataTableAttributes['number-columns-spanned'])) {
+												$columnTo = PHPExcel_Cell::stringFromColumnIndex(PHPExcel_Cell::columnIndexFromString($columnID) + $cellDataTableAttributes['number-columns-spanned'] -2);
+											}
+											$rowTo = $rowID;
+											if (isset($cellDataTableAttributes['number-rows-spanned'])) {
+												$rowTo = $rowTo + $cellDataTableAttributes['number-rows-spanned'] - 1;
+											}
+											$cellRange = $columnID.$rowID.':'.$columnTo.$rowTo;
+											$objPHPExcel->getActiveSheet()->mergeCells($cellRange);
 										}
-										if (($cellDataOfficeAttributes['value-type'] == 'date') ||
-										($cellDataOfficeAttributes['value-type'] == 'time')) {
-											$objPHPExcel->getActiveSheet()->getStyle($columnID.$rowID)->getNumberFormat()->setFormatCode($formatting);
-										}
-										if (!is_null($hyperlink)) {
-											$objPHPExcel->getActiveSheet()->getCell($columnID.$rowID)->getHyperlink()->setUrl($hyperlink);
-										}
-									}
 
-									//	Merged cells
-									if ((isset($cellDataTableAttributes['number-columns-spanned'])) || (isset($cellDataTableAttributes['number-rows-spanned']))) {
-										$columnTo = $columnID;
-										if (isset($cellDataTableAttributes['number-columns-spanned'])) {
-											$columnTo = PHPExcel_Cell::stringFromColumnIndex(PHPExcel_Cell::columnIndexFromString($columnID) + $cellDataTableAttributes['number-columns-spanned'] -2);
+										if (isset($cellDataTableAttributes['number-columns-repeated'])) {
+											//										echo 'Repeated '.$cellDataTableAttributes['number-columns-repeated'].' times<br />';
+											$columnID = PHPExcel_Cell::stringFromColumnIndex(PHPExcel_Cell::columnIndexFromString($columnID) + $cellDataTableAttributes['number-columns-repeated'] - 2);
 										}
-										$rowTo = $rowID;
-										if (isset($cellDataTableAttributes['number-rows-spanned'])) {
-											$rowTo = $rowTo + $cellDataTableAttributes['number-rows-spanned'] - 1;
-										}
-										$cellRange = $columnID.$rowID.':'.$columnTo.$rowTo;
-										$objPHPExcel->getActiveSheet()->mergeCells($cellRange);
-									}
-
-									if (isset($cellDataTableAttributes['number-columns-repeated'])) {
-										//										echo 'Repeated '.$cellDataTableAttributes['number-columns-repeated'].' times<br />';
-										$columnID = PHPExcel_Cell::stringFromColumnIndex(PHPExcel_Cell::columnIndexFromString($columnID) + $cellDataTableAttributes['number-columns-repeated'] - 2);
-									}
-									++$columnID;
+										++$columnID;
 								}
 								++$rowID;
 								break;

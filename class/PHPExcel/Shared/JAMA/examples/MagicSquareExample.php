@@ -179,5 +179,4 @@ class MagicSquareExample {
 $magic = new MagicSquareExample();
 $magic->main();
 
-?>
-</table>
+?></table>

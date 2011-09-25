@@ -1,21 +1,24 @@
 <?php
 require_once("../../class/classValidation.php");
 /**
- * this is religion model file.This is to ensure strict setting enable for all variable enter to database
+ * this is religion Detail model file (Master And Detail Concept).This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package religion
+ * @package religionDetail
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ReligionModel extends ValidationClass
+class ReligionDetailModel extends ValidationClass
 {
 
 	// table field
+	private $religionDetailId;
 	private $religionId;
-	private $religionDesc;
+	private $religionDetailTitle;
+	private $religionDetailDesc;
+
 
 	/* (non-PHPdoc)
 	 * @see validationClass::execute()
@@ -25,8 +28,9 @@ class ReligionModel extends ValidationClass
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('religion');
-		$this->setPrimaryKeyName('religionId');
+		$this->setTableName('religionDetail');
+		$this->setPrimaryKeyName('religionDetailId');
+		$this->setMasterForeignKeyName('religionId');
 		/*
 		 * SET ALL OUTSIDE VARIABLE FROM POST OR GET OR PUT OR DELETE
 		 * Restfull Format  POST 			-->Is to View Data
@@ -34,15 +38,18 @@ class ReligionModel extends ValidationClass
 		 *                  PUT  			-->Is To Update Data
 		 *                  DELETE/Destroy  -->Is To Delete/Destroy Data
 		 */
+		if (isset($_POST['religionDetailId'])) {
+			$this->setReligionDetailId($this->strict($_POST['religionDetailId'], 'numeric'),0,'single');
+		}
 		if (isset($_POST['religionId'])) {
-			$this->setReligionId($this->strict($_POST['religionId'], 'numeric'),0,'single');
+			$this->setReligionId($this->strict($_POST['religionId'], 'numeric'));
 		}
-		if (isset($_POST['religionDesc'])) {
-			$this->setReligionDesc($this->strict($_POST['religionDesc'], 'memo'));
+		if (isset($_POST['religionTitle'])) {
+			$this->setReligionDetailTitle($this->strict($_POST['religionDetailTitle'], 'memo'));
 		}
-		
-		if (isset($_GET['religionDesc'])) {
-			$this->setReligionDesc($this->strict($_GET['religionDesc'], 'memo'));
+
+		if (isset($_GET['religionTitleDesc'])) {
+			$this->setReligionDetailDesc($this->strict($_GET['religionDetailDesc'], 'memo'));
 		}
 		/**
 		 *      Don't change below code
@@ -58,7 +65,7 @@ class ReligionModel extends ValidationClass
 		} else if ($this->getVendor()==self::oracle) {
 			$this->setExecuteTime("to_date(\"" . date("Y-m-d H:i:s") . "\",'YYYY-MM-DD HH24:MI:SS')");
 		}
-                
+
 		// updateStatus
 		//	echo "Jumlah record ".count($_GET['religionId']);
 		$this->setTotal(count($_GET['religionId']));
@@ -94,7 +101,7 @@ class ReligionModel extends ValidationClass
             	$this->isApproved = array();
             }
             for ($i = 0; $i < $this->getTotal(); $i++) {
-            	$this->setReligionId($this->strict($_GET['religionId'][$i], 'numeric'), $i, 'array');
+            	$this->setReligionDetailId($this->strict($_GET['religionDetailId'][$i], 'numeric'), $i, 'array');
             	if ($_GET['isDefault'][$i] == 'true') {
             		$this->setIsDefault(1, $i, 'array');
             	} else if ($_GET['default'] == 'false') {
@@ -130,7 +137,7 @@ class ReligionModel extends ValidationClass
             	} else {
             		$this->setIsApproved(0, $i, 'array');
             	}
-            	$primaryKeyAll .= $this->getReligionId($i, 'array') . ",";
+            	$primaryKeyAll .= $this->getReligionDetailId($i, 'array') . ",";
             }
             $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, -1)));
 	}
@@ -227,17 +234,17 @@ class ReligionModel extends ValidationClass
 		}
 	}
 	/**
-	 * Set Religion Identification  Value
+	 * Set Religion Detail Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setReligionId($value, $key, $type)
+	public function setReligionDetailId($value, $key, $type)
 	{
 		if ($type=='single') {
-			$this->religionId = $value;
+			$this->religionDetailId = $value;
 		} else if ($type == 'array') {
-			$this->religionId[$key] = $value;
+			$this->religionDetailId[$key] = $value;
 		}else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setReligionId ?"));
 			exit();
@@ -249,32 +256,64 @@ class ReligionModel extends ValidationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getReligionId($key, $type)
+	public function getReligionDetailId($key, $type)
 	{
 		if ($type=='single') {
-			return $this->religionId;
+			return $this->religionDetailId;
 		} else if ($type == 'array') {
-			return $this->religionId[$key];
+			return $this->religionDetailId[$key];
 		} else {
 			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getReligionId ?"));
 			exit();
 		}
 	}
 	/**
+	 * Set Religion Identification Value
+	 * @param int $value
+	 */
+	public function setReligionId($value)
+	{
+		$this->religionId = $value;
+	}
+	/**
+	 * Return Religion Identification
+	 * @return int
+	 */
+	public function getReligionId()
+	{
+		return $this->religionId;
+	}
+	/**
+	 * Set Religion Title Value
+	 * @param string $value
+	 */
+	public function setReligionDetailTitle($value)
+	{
+		$this->religionDetailTitle = $value;
+	}
+	/**
+	 * Return Religion Title
+	 * @return string
+	 */
+	public function getReligionDetailTitle()
+	{
+		return $this->religionDetailTitle;
+	}
+	/**
 	 * Set Religion Description Value
 	 * @param string $value
 	 */
-	public function setReligionDesc($value)
+	public function setReligionDetailDesc($value)
 	{
-		$this->religionDesc = $value;
+		$this->religionDetailDesc = $value;
 	}
 	/**
 	 * Return Religion Description
 	 * @return string
 	 */
-	public function getReligionDesc()
+	public function getReligionDetailDesc()
 	{
-		return $this->religionDesc;
+		return $this->religionDetailDesc;
 	}
 }
 ?>

@@ -163,7 +163,7 @@ class PHPExcel_Writer_Excel5_Xf
 	 * Constructor
 	 *
 	 * @access private
-	 * @param int $index the XF index for the format.
+	 * @param integer $index the XF index for the format.
 	 * @param PHPExcel_Style
 	 */
 	public function __construct(PHPExcel_Style $style = null)
@@ -438,7 +438,7 @@ class PHPExcel_Writer_Excel5_Xf
 	 * It can be date, time, currency, etc...
 	 *
 	 * @access public
-	 * @param int $numberFormatIndex Index to format record
+	 * @param integer $numberFormatIndex Index to format record
 	 */
 	function setNumberFormatIndex($numberFormatIndex)
 	{

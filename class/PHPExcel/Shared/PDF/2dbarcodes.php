@@ -110,9 +110,9 @@ class TCPDF2DBarcode {
 				);
 				break;
 			}
-
+				
 			// ... Add here real 2D barcodes ...
-
+				
 			default: {
 				$this->barcode_array = false;
 			}

@@ -1034,7 +1034,7 @@ class Base {/*{{{*/
 	 * where: N = sample size, avg = sample mean.
 	 *
 	 * @access public
-	 * @param int $n moment to calculate
+	 * @param integer $n moment to calculate
 	 * @return mixed the numeric value of the moment on success, PEAR_Error otherwise
 	 */
 	function sampleCentralMoment($n) {/*{{{*/
@@ -1070,7 +1070,7 @@ class Base {/*{{{*/
 	 * where: N = sample size, avg = sample mean.
 	 *
 	 * @access public
-	 * @param int $n moment to calculate
+	 * @param integer $n moment to calculate
 	 * @return mixed the numeric value of the moment on success, PEAR_Error otherwise
 	 */
 	function sampleRawMoment($n) {/*{{{*/

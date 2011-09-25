@@ -1371,7 +1371,7 @@ Ext
 										if(Ext.getCmp('previousRecord').getValue() == ''){
 											Ext.MessageBox.Alert("Please Pick A Record First Ya");
 										}
-										if (Ex.getCmp('firstRecord').getValue() >= 1) {
+										if (Ext.getCmp('firstRecord').getValue() >= 1) {
 											formPanel.form
 													.load({
 														url : "../controller/religionController.php",
@@ -1420,7 +1420,7 @@ Ext
 										if(Ext.getCmp('nextRecord').getValue() == ''){
 											Ext.MessageBox.Alert("Please Pick A Record First Ya");
 										}
-										if (Ex.getCmp('nextRecord').getValue() <= Ext
+										if (Ext.getCmp('nextRecord').getValue() <= Ext
 												.getCmp('lastRecord')
 												.getValue()) {
 											formPanel.form
@@ -1504,7 +1504,7 @@ Ext
 												}
 											});
 										}
-										if (Ex.getCmp('endRecord').getValue() <= Ext
+										if (Ext.getCmp('endRecord').getValue() <= Ext
 												.getCmp('lastRecord')
 												.getValue()) {
 											formPanel.form

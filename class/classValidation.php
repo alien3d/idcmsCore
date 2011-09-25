@@ -10,6 +10,7 @@ abstract class ValidationClass {
 	private $tableName;
 	private $primaryKeyName;
 	private $primaryKeyAll;
+	private $masterForeignKeyName;
 	private $total;
 
 	// common field value
@@ -237,7 +238,22 @@ abstract class ValidationClass {
 	public function getPrimaryKeyName() {
 		return $this->primaryKeyName;
 	}
+	
+	/**
+	 * Set Master Detail Foreign Key Identification
+	 * @param string $value
+	 */
+	public function setMasterForeignKeyName($value) {
+		$this->masterForeignKeyName = $value;
 
+	}
+	/**
+	 * Return Master Detail Foreign Key Identification
+	 * @return string
+	 */
+	public function getMasterForeignKeyName() {
+		return $this->masterForeignKeyName;
+	}
 	/**
 	 * Set Primary Key All
 	 * @param string $value

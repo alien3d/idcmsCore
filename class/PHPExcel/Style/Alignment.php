@@ -366,7 +366,7 @@ class PHPExcel_Style_Alignment implements PHPExcel_IComparable
 		} else {
 			throw new Exception("Text rotation should be a value between -90 and 90.");
 		}
-			
+		 
 		return $this;
 	}
 

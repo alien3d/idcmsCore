@@ -177,9 +177,9 @@ class LevenbergMarquardt {
 			//					if (vary[i]) a[i] = na[i];
 			//				}
 			//			}
-		} while(!$done);
+			} while(!$done);
 
-		return $lambda;
-	}	//	function solve()
+			return $lambda;
+			}	//	function solve()
 
 }	//	class LevenbergMarquardt

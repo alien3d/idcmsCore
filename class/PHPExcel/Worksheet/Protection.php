@@ -158,7 +158,7 @@ class PHPExcel_Worksheet_Protection
 	 * @var boolean
 	 */
 	private $_selectUnlockedCells;
-
+		
 	/**
 	 * Password
 	 *

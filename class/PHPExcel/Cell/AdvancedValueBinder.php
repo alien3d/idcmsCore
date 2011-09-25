@@ -91,7 +91,7 @@ class PHPExcel_Cell_AdvancedValueBinder extends PHPExcel_Cell_DefaultValueBinder
 
 				return true;
 			}
-
+				
 			// Check for time e.g. '9:45', '09:45'
 			if (preg_match('/^(\d|[0-1]\d|2[0-3]):[0-5]\d$/', $value)) {
 				list($h, $m) = explode(':', $value);
@@ -105,7 +105,7 @@ class PHPExcel_Cell_AdvancedValueBinder extends PHPExcel_Cell_DefaultValueBinder
 
 				return true;
 			}
-
+				
 			// Check for date
 			if (strtotime($value) !== false) {
 				// make sure we have UTC for the sake of strtotime

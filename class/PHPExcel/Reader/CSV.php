@@ -231,7 +231,7 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 					// Unescape enclosures
 					$rowData[$i] = str_replace("\\" . $this->_enclosure, $this->_enclosure, $rowData[$i]);
 					$rowData[$i] = str_replace($this->_enclosure . $this->_enclosure, $this->_enclosure, $rowData[$i]);
-
+						
 					// Convert encoding if necessary
 					if ($this->_inputEncoding !== 'UTF-8') {
 						$rowData[$i] = PHPExcel_Shared_String::ConvertEncoding($rowData[$i], 'UTF-8', $this->_inputEncoding);

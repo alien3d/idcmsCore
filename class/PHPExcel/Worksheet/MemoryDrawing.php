@@ -106,7 +106,7 @@ class PHPExcel_Worksheet_MemoryDrawing extends PHPExcel_Worksheet_BaseDrawing im
 		$this->_renderingFunction 	= self::RENDERING_DEFAULT;
 		$this->_mimeType			= self::MIMETYPE_DEFAULT;
 		$this->_uniqueName			= md5(rand(0, 9999). time() . rand(0, 9999));
-			
+		 
 		// Initialize parent
 		parent::__construct();
 	}
@@ -128,7 +128,7 @@ class PHPExcel_Worksheet_MemoryDrawing extends PHPExcel_Worksheet_BaseDrawing im
 	 */
 	public function setImageResource($value = null) {
 		$this->_imageResource = $value;
-			
+		 
 		if (!is_null($this->_imageResource)) {
 			// Get width/height
 			$this->_width	= imagesx($this->_imageResource);

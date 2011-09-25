@@ -106,7 +106,7 @@ class PHPExcel_RichText_TextElement implements PHPExcel_RichText_ITextElement
 		. __CLASS__
 		);
 	}
-
+	 
 	/**
 	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
 	 */

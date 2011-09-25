@@ -1633,7 +1633,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			// offset: 0; size: 2; 0x087D = repeated header
 
 			// offset: 2; size: 2
-
+				
 			// offset: 4; size: 8; not used
 
 			// offset: 12; size: 2; record version
@@ -1645,7 +1645,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 			// offset: 18; size: 2; number of extension properties that follow
 			$cexts = $this->_GetInt2d($recordData, 18);
-
+				
 			// start reading the actual extension data
 			$offset = 20;
 			while ($offset < $length) {
@@ -3550,7 +3550,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			$cellRangeAddressList = $this->_readBIFF5CellRangeAddressList($data); // note: also BIFF8 uses BIFF5 syntax
 
 			$selectedCells = $cellRangeAddressList['cellRangeAddresses'][0];
-
+				
 			// first row '1' + last row '16384' indicates that full column is selected (apparently also in BIFF8!)
 			if (preg_match('/^([A-Z]+1\:[A-Z]+)16384$/', $selectedCells)) {
 				$selectedCells = preg_replace('/^([A-Z]+1\:[A-Z]+)16384$/', '${1}1048576', $selectedCells);
@@ -5209,7 +5209,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		if (isset($this->_ref[$index])) {
 
 			$type = $this->_externalBooks[$this->_ref[$index]['externalBookIndex']]['type'];
-
+				
 			switch ($type) {
 				case 'internal':
 					// check if we have a deleted 3d reference

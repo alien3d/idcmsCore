@@ -417,7 +417,7 @@ class PHPExcel_Style implements PHPExcel_IComparable
 
 							// build range for region
 							$range = $colStart . $rowStart . ':' . $colEnd . $rowEnd;
-
+								
 							// retrieve relevant style array for region
 							$regionStyles = $pStyles;
 							unset($regionStyles['borders']['inside']);
@@ -503,7 +503,7 @@ class PHPExcel_Style implements PHPExcel_IComparable
 					$style = $workbook->getCellXfByIndex($oldXfIndex);
 					$newStyle = clone $style;
 					$newStyle->applyFromArray($pStyles);
-
+						
 					if ($existingStyle = $workbook->getCellXfByHashCode($newStyle->getHashCode())) {
 						// there is already such cell Xf in our collection
 						$newXfIndexes[$oldXfIndex] = $existingStyle->getIndex();
@@ -636,7 +636,7 @@ class PHPExcel_Style implements PHPExcel_IComparable
 	public function getConditionalStyles() {
 		return $this->getActiveSheet()->getConditionalStyles($this->getActiveCell());
 	}
-
+	 
 	/**
 	 * Set Conditional Styles. Only used on supervisor.
 	 *
@@ -660,7 +660,7 @@ class PHPExcel_Style implements PHPExcel_IComparable
 	public function getProtection() {
 		return $this->_protection;
 	}
-
+	 
 	/**
 	 * Get hash code
 	 *

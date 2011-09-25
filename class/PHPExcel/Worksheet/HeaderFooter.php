@@ -449,7 +449,7 @@ class PHPExcel_Worksheet_HeaderFooter
 		if (!is_array($images)) {
 			throw new Exception('Invalid parameter!');
 		}
-			
+		 
 		$this->_headerFooterImages = $images;
 		return $this;
 	}
@@ -469,7 +469,7 @@ class PHPExcel_Worksheet_HeaderFooter
 		if (isset($this->_headerFooterImages[self::IMAGE_FOOTER_CENTER])) 	$images[self::IMAGE_FOOTER_CENTER] = 	$this->_headerFooterImages[self::IMAGE_FOOTER_CENTER];
 		if (isset($this->_headerFooterImages[self::IMAGE_FOOTER_RIGHT])) 	$images[self::IMAGE_FOOTER_RIGHT] = 	$this->_headerFooterImages[self::IMAGE_FOOTER_RIGHT];
 		$this->_headerFooterImages = $images;
-			
+		 
 		return $this->_headerFooterImages;
 	}
 

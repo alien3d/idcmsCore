@@ -381,11 +381,11 @@ class PHPExcel_Style_Color implements PHPExcel_IComparable
 			self::$_indexedColors[] = '00333399';
 			self::$_indexedColors[] = '00333333';
 		}
-			
+		 
 		if (array_key_exists($pIndex, self::$_indexedColors)) {
 			return new PHPExcel_Style_Color(self::$_indexedColors[$pIndex]);
 		}
-			
+		 
 		return new PHPExcel_Style_Color();
 	}
 

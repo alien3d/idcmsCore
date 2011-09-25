@@ -442,7 +442,6 @@ abstract class ConfigClass
 		SELECT (`".$this->model->getPrimaryKeyName()."`) AS `previousRecord`
 		FROM 	`".$this->model->getTableName()."`
 		WHERE 	`".$this->model->getPrimaryKeyName()."` < ".$primaryKeyValue."
-		ORDER BY `staffId`	DESC
 		LIMIT 	1";
 		} else if ($this->getVendor()==self::mssql){
 			$sql="

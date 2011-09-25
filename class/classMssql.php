@@ -194,6 +194,7 @@ class vendor
 			$error.=	" TE Sql State : ".$errorArray[0]['SQLSTATE'];
 			$error.=	" Code : ".$errorArray[0]['code'];
 			$error.=	" Message : ".$errorArray[0]['message'];
+			$error.=	" Message : ".$sql;
 			$this->responce	=	$error;
 			$error             = 1;
 		}

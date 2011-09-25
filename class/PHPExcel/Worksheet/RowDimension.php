@@ -179,7 +179,7 @@ class PHPExcel_Worksheet_RowDimension
 		if ($pValue < 0 || $pValue > 7) {
 			throw new Exception("Outline level must range between 0 and 7.");
 		}
-			
+		 
 		$this->_outlineLevel = $pValue;
 		return $this;
 	}
