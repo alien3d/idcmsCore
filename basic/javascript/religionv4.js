@@ -9,7 +9,7 @@ Ext.onReady(function() {
     
     var pagePrint;
     
-    var perPage =14;
+    var perPage =500;
     var encode = false;
    
     var jsonResponse;
@@ -350,6 +350,7 @@ Ext.onReady(function() {
         store: religionStore,
         autoHeight: false,
         height: 400,
+        autoScroll:true,
         columns: religionColumnModelGrid,
         plugins: [filters, religionEditor],
         sm: new Ext.grid.RowSelectionModel({

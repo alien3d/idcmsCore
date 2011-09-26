@@ -123,7 +123,8 @@ class religionDetailDetailClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `religionDetail`
 					(
-						`religionDetailDesc`,						`isDefault`,
+						`religionId`,						`religionDetailTitle`,						
+						`religionDetailDesc`,				`isDefault`,
 						`isNew`,							`isDraft`,
 						`isUpdate`,							`isDelete`,
 						`isActive`,							`isApproved`,
@@ -131,6 +132,7 @@ class religionDetailDetailClass extends ConfigClass {
 					)
 			VALUES
 					(
+						\"" . $this->model->getReligionId() . "\",			\"" . $this->model->getReligionDetailTitle() . "\",					
 						\"" . $this->model->getReligionDetailDesc() . "\",	\"" . $this->model->getIsDefault(0, 'single') . "\",
 						\"" . $this->model->getIsNew(0, 'single') . "\",			\"" . $this->model->getIsDraft(0, 'single') . "\",
 						\"" . $this->model->getIsUpdate(0, 'single') . "\",		\"" . $this->model->getIsDelete(0, 'single') . "\",
@@ -141,7 +143,8 @@ class religionDetailDetailClass extends ConfigClass {
 			$sql = "
 			INSERT INTO [religionDetail]
 					(
-						[religionDetailDesc],						[isDefault],
+						[religionId],						[religionDetailTitle],					
+						[religionDetailDesc],				[isDefault],
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
 						[isActive],							[isApproved],
@@ -149,6 +152,7 @@ class religionDetailDetailClass extends ConfigClass {
 					)
 			VALUES
 					(
+						'" . $this->model->getReligionId() . "',			'" . $this->model->getReligionDetailTitle() . "',										
 						'" . $this->model->getReligionDetailDesc() . "',				'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -159,8 +163,8 @@ class religionDetailDetailClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	RELIGIONDETAIL
 					(
-						RELIGIONDETAILTITLE,				RELIGIONDETAILDESC,
-						ISDEFAULT,
+						RELIGIONID,						RELIGIONDETAILTITLE,
+						RELIGIONDETAILDESC,				ISDEFAULT,
 						ISNEW,							ISDRAFT,
 						ISUPDATE,						ISDELETE,
 						ISACTIVE,						ISAPPROVED,
@@ -168,6 +172,7 @@ class religionDetailDetailClass extends ConfigClass {
 					)
 			VALUES
 					(
+						'" . $this->model->getReligionId() . "',			'" . $this->model->getReligionDetailTitle() . "',
 						'" . $this->model->getReligionTitleDesc() . "',			'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',		'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',	'" . $this->model->getIsDelete(0, 'single') . "',
@@ -247,8 +252,11 @@ class religionDetailDetailClass extends ConfigClass {
 							`religionDetail`.`isApproved`,
 							`religionDetail`.`executeBy`,
 							`religionDetail`.`executeTime`,
+							`religion`.`religionDesc`,
 							`staff`.`staffName`
  					FROM 	`religionDetail`
+ 					JOIN	`religion`
+ 					USING	(`religionId`)
 					JOIN	`staff`
 					ON		`religionDetail`.`executeBy` = `staff`.`staffId`
 					WHERE 	 " . $this->auditFilter;

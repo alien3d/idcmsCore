@@ -376,7 +376,7 @@ class ReligionClass extends ConfigClass {
             if (empty($this->filter)) {
 
             	if ($this->getLimit()) {
-
+					
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
@@ -970,7 +970,7 @@ if (isset($_POST['method'])) {
 	if (isset($_POST['start'])) {
 		$religionObject->setStart($_POST['start']);
 	}
-	if (isset($_POST['limit'])) {
+	if (isset($_POST['perPage'])) {
 		$religionObject->setLimit($_POST['perPage']);
 	}
 	/*
