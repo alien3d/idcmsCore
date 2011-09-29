@@ -95,7 +95,7 @@ class religionDetailDetailClass extends ConfigClass {
 		$this->model = new religionDetailModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-
+        
 		$this->documentTrail = new documentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());

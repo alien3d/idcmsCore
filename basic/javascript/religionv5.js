@@ -121,7 +121,7 @@ Ext
 					dateFormat : "Y-m-d H:i:s"
 				} ]
 			});
-
+            
 			// detail table
 			var religionDetailProxy = new Ext.data.HttpProxy({
 				url : "../controller/religionDetailController.php",
