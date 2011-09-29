@@ -141,9 +141,9 @@ if($q->vendor==sharedx::mysql) {
 	$sql	=
 "	SELECT	LEAF.LEAFID 				 		AS	\"leafId\",
 			LEAFTRANSLATE.LEAFTRANSLATE	 		AS	\"leafTranslate\",
-			LEAFACCESS.LEAFCREATEACCESSVALUE 	AS	\"leafCreateAccessValue\",
-			LEAFACCESS.LEAFREADACCESSVALUE 		AS	\"leafReadAccessValue\",
-			LEAFACCESS.LEAFPRINTACCESSVALUE 	AS	\"leafPrintAccessValue\"
+			LEAFACCESS.leafAccessCreateValue 	AS	\"leafAccessCreateValue\",
+			LEAFACCESS.leafAccessReadValue 		AS	\"leafAccessReadValue\",
+			LEAFACCESS.leafAccessPrintValue 	AS	\"leafAccessPrintValue\"
 	FROM	LEAF
 	JOIN	LEAFACCESS
 	ON 		LEAF.LEAFID					= 	LEAFACCESS.LEAFID
@@ -163,9 +163,11 @@ $row_leafAccess 		= 	$q->fetchAssoc($result);
 
 var leafIdTemp			= '<?php echo $row_leafAccess['leafId'];   ?>';
 var leafNote			= '<?php echo $row_leafAccess['leafTranslate'];   ?>';
-var leafCreateAccessValue	= '<?php echo $row_leafAccess['leafCreateAccessValue'];   ?>';
-var leafReadAccessValue		= '<?php echo $row_leafAccess['leafReadAccessValue'];   ?>';
-var leafPrintAccessValue	= '<?php echo $row_leafAccess['leafPrintAccessValue'];   ?>';
+var leafAccessCreateValue	= '<?php echo $row_leafAccess['leafAccessCreateValue'];   ?>';
+var leafAccessReadValue		= '<?php echo $row_leafAccess['leafAccessReadValue'];   ?>';
+var leafAccessPrintValue	= '<?php echo $row_leafAccess['leafAccessPrintValue'];   ?>';
+var leafPostAccessValue	= '<?php echo $row_leafAccess['leafPostAccessValue']; ?>';
+
 <?php
 		if( $q->vendor==sharedx::mysql) {
 			$sql	=	"

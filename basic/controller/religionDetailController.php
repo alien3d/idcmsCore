@@ -95,7 +95,7 @@ class religionDetailDetailClass extends ConfigClass {
 		$this->model = new religionDetailModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-        
+
 		$this->documentTrail = new documentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());
@@ -267,7 +267,7 @@ class religionDetailDetailClass extends ConfigClass {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getMasterForeignKeyName() . "`=\"" . $this->model->getReligionId() . "\"";
 			}
 		} else if ($this->getVendor() == self::mssql) {
-				$sql = "
+			$sql = "
 					SELECT	[religionDetail].[religionDetailId],
 							[religionDetail].[religionDetailTitle],
 							[religionDetail].[religionDetailDesc],
@@ -524,6 +524,7 @@ class religionDetailDetailClass extends ConfigClass {
                     "success" => false,
                     "message" => $this->q->responce
 				));
+				
 				exit();
 			}
 		}
@@ -576,9 +577,9 @@ class religionDetailDetailClass extends ConfigClass {
 		/*
 		 *  require three variable below to track  table audit
 		 */
-		$this->q->tableName = $this->model->gettTableName();
+		$this->q->tableName = $this->model->getTableName();
 		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-		$this->q->primaryKeyValue = $this->model->getReligionDetailId();
+		$this->q->primaryKeyValue = $this->model->getReligionDetailId(0,'single');
 		$this->q->audit = $this->audit;
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -838,7 +839,7 @@ class religionDetailDetailClass extends ConfigClass {
                 "message" => $this->q->responce
 			));
 			exit();
-		} 
+		}
 			
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
@@ -849,16 +850,16 @@ class religionDetailDetailClass extends ConfigClass {
 				"religionDetailDesc" => $row['religionDetailDesc']
 			));
 			exit();
-			
+				
 		} else {
 			echo json_encode(array(
 				"success" => "true",
 				"total" => $total,
 				"message" => "Duplicate Non"
-			));
-			exit();
+				));
+				exit();
 		}
-		
+
 	}
 
 	/* (non-PHPdoc)
@@ -1013,7 +1014,10 @@ if (isset($_POST['method'])) {
 	if ($_POST['method'] == 'create') {
 		$religionDetailObject->create();
 	}
-
+	if ($_POST['method'] == 'save') {
+	
+		$religionDetailObject->update();
+	}
 	if ($_POST['method'] == 'read') {
 		$religionDetailObject->read();
 	}
@@ -1059,20 +1063,20 @@ if (isset($_GET['method'])) {
 			$religionDetailObject->duplicate();
 		}
 	}
-	if($_GET['method']=='dataNavigationRequest') { 
-		if($_GET['dataNavigation']=='first') { 
+	if($_GET['method']=='dataNavigationRequest') {
+		if($_GET['dataNavigation']=='first') {
 			$religionDetailObject->firstRecord('json');
 		}
-		if($_GET['dataNavigation']=='previous') { 
+		if($_GET['dataNavigation']=='previous') {
 			$religionDetailObject->previousRecord('json',0);
-		} 
-		if($_GET['dataNavigation']=='next') { 
+		}
+		if($_GET['dataNavigation']=='next') {
 			$religionDetailObject->nextRecord('json',0);
-		} 
-		if($_GET['dataNavigation']=='last') { 
+		}
+		if($_GET['dataNavigation']=='last') {
 			$religionDetailObject->lastRecord('json');
 		}
-    }	
+	}
 	/*
 	 * Excel Reporting
 	 */

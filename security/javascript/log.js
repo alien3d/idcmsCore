@@ -15,14 +15,14 @@ Ext
 				pageCreate = true;
 				pageCreateList = true;
 			}
-			if (leafReadAccessValue == 1) {
+			if (leafAccessReadValue == 1) {
 				pageReload = false;
 				pageReloadList = false;
 			} else {
 				pageReload = true;
 				pageReloadList = true;
 			}
-			if (leafPrintAccessValue == 1) {
+			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
 				pagePrintList = false;
 			} else {

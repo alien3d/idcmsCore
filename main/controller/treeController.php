@@ -364,7 +364,7 @@ class treeClass extends configClass
 							 $sqlLeaf = "
 					          SELECT  	LEAFACCESS.LEAFACCESSID 		AS 	\"leafAccessId\",
 						      			LEAFACCESS.STAFFID 				AS 	\"staffId\",
-						      			LEAFACCESS.LEAFREADACCESSVALUE 	AS	\"leafReadAccessValue\",
+						      			LEAFACCESS.leafAccessReadValue 	AS	\"leafAccessReadValue\",
 						      			LEAF.LEAFID 					AS 	\"leafId\",
 						      			LEAF.LEAFFILENAME				AS	\"leafFilename\",
 						      			LEAFTRANSLATE.LEAFTRANSLATE 	AS 	\"leafTranslate\",
@@ -382,7 +382,7 @@ class treeClass extends configClass
 					          AND		LEAF.MODULEID					=	'" . $moduleId . "'
 					          AND      	LEAFACCESS.STAFFID				=	'" . $_SESSION['staffId'] . "'
 					          AND      	LEAFTRANSLATE.LANGUAGEID		=	'" . $_SESSION['languageId'] . "'
-					          AND		LEAFACCESS.LEAFREADACCESSVALUE 	=	1
+					          AND		LEAFACCESS.leafAccessReadValue 	=	1
 					          ORDER BY  LEAF.LEAFSEQUENCE";
 						}
 						$resultLeaf = $this->q->fast($sqlLeaf);

@@ -619,7 +619,7 @@ class vendor {
 	 */
 	public function delete($sql) {
 		if(strlen($sql)> 0 ){
-			if($this->module('leafDeleteAccessValue')== 1) {
+			if($this->module('leafAccessDeleteValue')== 1) {
 				$logAdvanceType='D';
 				$sqlColumn 	= "SHOW COLUMNS FROM `".$this->tableName."`";
 				if($this->vendor=='normal'){
@@ -750,7 +750,7 @@ class vendor {
 
 
 
-			if(	$this->module('leafCreateAccessValue')	==	1) {
+			if(	$this->module('leafAccessCreateValue')	==	1) {
 				return($this->query($this->sql));
 			}	else{
 				echo "no access insert ";
@@ -775,7 +775,7 @@ class vendor {
 		$this->sql	=	$sql;
 		if(strlen($sql)> 0) {
 
-			if(	$this->module('leafUpdateAccessValue')	==	1) {
+			if(	$this->module('leafAccessUpdateValue')	==	1) {
 				if($this->audit == 1 ){
 					$logAdvanceType 	= 'U'; // aka update
 					$sqlColumn 	= "SHOW COLUMNS FROM `".$this->tableName."`";
@@ -986,7 +986,7 @@ class vendor {
 		if(strlen($sql)> 0 ) {
 
 
-			if(	$this->module('leafReadAccessValue')	==	1) {
+			if(	$this->module('leafAccessReadValue')	==	1) {
 
 				return($this->query($this->sql));
 			} else {

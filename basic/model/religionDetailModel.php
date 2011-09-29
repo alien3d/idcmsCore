@@ -162,7 +162,7 @@ class ReligionDetailModel extends ValidationClass
 		$this->setIsDefault(0,0,'single');
 		$this->setIsNew(0,0,'single');
 		$this->setIsDraft(0,0,'single');
-		$this->setIsUpdate(1, '', 'string');
+		$this->setIsUpdate(1, '', 'single');
 		$this->setIsActive(1,0,'single');
 		$this->setIsDelete(0,0,'single');
 		$this->setIsApproved(0,0,'single');
@@ -246,7 +246,7 @@ class ReligionDetailModel extends ValidationClass
 		} else if ($type == 'array') {
 			$this->religionDetailId[$key] = $value;
 		}else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setReligionId ?"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:setReligionDetailId ?"));
 			exit();
 		}
 	}
@@ -263,7 +263,7 @@ class ReligionDetailModel extends ValidationClass
 		} else if ($type == 'array') {
 			return $this->religionDetailId[$key];
 		} else {
-			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getReligionId ?"));
+			echo json_encode(array("success"=>false,"message"=>"Cannot Identifiy Type String Or Array:getReligionDetailId ?"));
 			exit();
 		}
 	}

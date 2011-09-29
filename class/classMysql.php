@@ -315,7 +315,7 @@ class Vendor
 		$this->sql = NULL;
 		$this->sql = $sql;
 		if (strlen($sql) > 0) {
-			if ($this->module('leafCreateAccessValue') == 1) {
+			if ($this->module('leafAccessCreateValue') == 1) {
 				$this->query($this->sql);
 				if($this->audit==1){
 					//echo "sepatutnya tak keluar";
@@ -406,7 +406,7 @@ class Vendor
 		$this->sql = NULL;
 		$this->sql = $sql;
 		if (strlen($sql) > 0) {
-			if ($this->module('leafUpdateAccessValue') == 1) {
+			if ($this->module('leafAccessUpdateValue') == 1) {
 				if ($this->audit == 1) {
 					$logAdvanceType = 'U'; // aka update
 					$sqlColumn       = "SHOW COLUMNS FROM `" . $this->tableName . "`";
@@ -539,7 +539,7 @@ class Vendor
 		 *  Test string of sql statement.If forgot or not
 		 */
 		if (strlen($sql) > 0) {
-			if ($this->module('leafReadAccessValue') == 1) {
+			if ($this->module('leafAccessReadValue') == 1) {
 				return ($this->query($this->sql));
 			} else {
 				$this->execute     = 'fail';

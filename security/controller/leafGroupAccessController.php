@@ -128,41 +128,41 @@ class leafGroupAccessClass  extends  configClass {
 						`leafGroupAccess`.`leafId`,
 						`leafGroupAccess`.`groupId`,
 						`leafGroupAccess`.`leafGroupAccessId`,
-						(CASE `leafGroupAccess`.`leafCreateAccessValue`
+						(CASE `leafGroupAccess`.`leafAccessCreateValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafCreateAccessValue`,
+						END) AS `leafAccessCreateValue`,
 
 
-						(CASE `leafGroupAccess`.`leafReadAccessValue`
+						(CASE `leafGroupAccess`.`leafAccessReadValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafReadAccessValue`,
+						END) AS `leafAccessReadValue`,
 
-						(CASE `leafGroupAccess`.`leafUpdateAccessValue`
+						(CASE `leafGroupAccess`.`leafAccessUpdateValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafUpdateAccessValue`,
+						END) AS `leafAccessUpdateValue`,
 
-						(CASE `leafGroupAccess`.`leafDeleteAccessValue`
+						(CASE `leafGroupAccess`.`leafAccessDeleteValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafDeleteAccessValue` ,
+						END) AS `leafAccessDeleteValue` ,
 
-						(CASE `leafGroupAccess`.`leafPrintAccessValue`
+						(CASE `leafGroupAccess`.`leafAccessPrintValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafPrintAccessValue`,
+						END) AS `leafAccessPrintValue`,
 
 						(CASE `leafGroupAccess`.`leafPostAccessValue`
 							WHEN '1' THEN
@@ -204,41 +204,41 @@ class leafGroupAccessClass  extends  configClass {
 						[leafGroupAccess].[leafId],
 						[leafGroupAccess].[groupId],
 						[leafGroupAccess].[leafGroupAccessId],
-						(CASE [leafGroupAccess].[leafCreateAccessValue`
+						(CASE [leafGroupAccess].[leafAccessCreateValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafCreateAccessValue],
+						END) AS [leafAccessCreateValue],
 
 
-						(CASE [leafGroupAccess].[leafReadAccessValue]
+						(CASE [leafGroupAccess].[leafAccessReadValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafReadAccessValue],
+						END) AS [leafAccessReadValue],
 
-						(CASE [leafGroupAccess].[leafUpdateAccessValue]
+						(CASE [leafGroupAccess].[leafAccessUpdateValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafUpdateAccessValue],
+						END) AS [leafAccessUpdateValue],
 
-						(CASE [leafGroupAccess].[leafDeleteAccessValue]
+						(CASE [leafGroupAccess].[leafAccessDeleteValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafDeleteAccessValue] ,
+						END) AS [leafAccessDeleteValue] ,
 
-						(CASE [leafGroupAccess].[leafPrintAccessValue]
+						(CASE [leafGroupAccess].[leafAccessPrintValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafPrintAccessValue],
+						END) AS [leafAccessPrintValue],
 
 						(CASE [leafGroupAccess].[leafPostAccessValue]
 							WHEN '1' THEN
@@ -280,48 +280,48 @@ class leafGroupAccessClass  extends  configClass {
 						LEAFGROUPACCESS.LEAFID,
 						LEAFGROUPACCESS.GROUPID,
 						LEAFGROUPACCESS.LEAFGROUPACCESSID,
-						(CASE LEAFGROUPACCESS.LEAFCREATEACCESSVALUE
+						(CASE LEAFGROUPACCESS.leafAccessCreateValue
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFCREATEACCESSVALUE,
+						END) AS leafAccessCreateValue,
 
 
-						(CASE LEAFGROUPACCESS.LEAFREADACCESSVALUE
+						(CASE LEAFGROUPACCESS.leafAccessReadValue
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFREADACCESSVALUE,
+						END) AS leafAccessReadValue,
 
-						(CASE LEAFGROUPACCESS.LEAFUPDATEACCESSVALUE
+						(CASE LEAFGROUPACCESS.leafAccessUpdateValue
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFUPDATEACCESSVALUE,
+						END) AS leafAccessUpdateValue,
 
-						(CASE LEAFGROUPACCESS.LEAFDELETEACCESSVALUE
+						(CASE LEAFGROUPACCESS.leafAccessDeleteValue
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFDELETEACCESSVALUE ,
+						END) AS leafAccessDeleteValue ,
 
-						(CASE LEAFGROUPACCESS.LEAFPRINTACCESSVALUE
+						(CASE LEAFGROUPACCESS.leafAccessPrintValue
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFPRINTACCESSVALUE,
+						END) AS leafAccessPrintValue,
 
-						(CASE LEAFGROUPACCESS.LEAFPOSTACCESSVALUE
+						(CASE LEAFGROUPACCESS.leafPostAccessValue
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFPOSTACCESSVALUE
+						END) AS leafPostAccessValue
 				FROM 	LEAFGROUPACCESS
 				JOIN	LEAF
 				USING	(LEAFID)
@@ -404,33 +404,33 @@ class leafGroupAccessClass  extends  configClass {
 			if($this->getVendor() == self::mysql) {
 				$sql="
 					UPDATE 	`leafGroupAccess`
-					SET 	`leafCreateAccessValue`	=	\"".$this->strict($data_array[2],'boolean')."\",
-							`leafReadAccessValue`	=	\"".$this->strict($data_array[2],'boolean')."\",
-							`leafUpdateAccessValue`	=	\"".$this->strict($data_array[3],'boolean')."\",
-							`leafDeleteAccessValue`	=	\"".$this->strict($data_array[4],'boolean')."\",
-							`leafPrintAccessValue`	=	\"".$this->strict($data_array[5],'boolean')."\",
+					SET 	`leafAccessCreateValue`	=	\"".$this->strict($data_array[2],'boolean')."\",
+							`leafAccessReadValue`	=	\"".$this->strict($data_array[2],'boolean')."\",
+							`leafAccessUpdateValue`	=	\"".$this->strict($data_array[3],'boolean')."\",
+							`leafAccessDeleteValue`	=	\"".$this->strict($data_array[4],'boolean')."\",
+							`leafAccessPrintValue`	=	\"".$this->strict($data_array[5],'boolean')."\",
 							`leafPostAccessValue`	=	\"".$this->strict($data_array[6],'boolean')."\"
 					WHERE 	`leafGroupAccessId`	=	\"".$this->strict($data_array[0],'numeric')."\"";
 				//echo $sql."<br>";
 			} else if ($this->getVendor()==self::mssql) {
 				$sql="
 					UPDATE 	[leafGroupAccess]
-					SET 	[leafCreateAccessValue]	=	\"".$this->strict($data_array[2],'boolean')."\",
-							[leafReadAccessValue]	=	\"".$this->strict($data_array[2],'boolean')."\",
-							[leafUpdateAccessValue]	=	\"".$this->strict($data_array[3],'boolean')."\",
-							[leafDeleteAccessValue]	=	\"".$this->strict($data_array[4],'boolean')."\",
-							[leafPrintAccessValue]	=	\"".$this->strict($data_array[5],'boolean')."\",
+					SET 	[leafAccessCreateValue]	=	\"".$this->strict($data_array[2],'boolean')."\",
+							[leafAccessReadValue]	=	\"".$this->strict($data_array[2],'boolean')."\",
+							[leafAccessUpdateValue]	=	\"".$this->strict($data_array[3],'boolean')."\",
+							[leafAccessDeleteValue]	=	\"".$this->strict($data_array[4],'boolean')."\",
+							[leafAccessPrintValue]	=	\"".$this->strict($data_array[5],'boolean')."\",
 							[leafPostAccessValue]	=	\"".$this->strict($data_array[6],'boolean')."\"
 					WHERE 	[leafGroupAccessId]	=	\"".$this->strict($data_array[0],'numeric')."\"";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql="
 					UPDATE 	LEAFGROUPACCESS
-					SET 	LEAFCREATEACCESSVALUE	=	\"".$this->strict($data_array[2],'boolean')."\",
-							LEAFREADACCESSVALUE		=	\"".$this->strict($data_array[2],'boolean')."\",
-							LEAFUPDATEACCESSVALUE	=	\"".$this->strict($data_array[3],'boolean')."\",
-							LEAFDELETEACCESSVALUE	=	\"".$this->strict($data_array[4],'boolean')."\",
-							LEAFPRINTACCESSVALUE	=	\"".$this->strict($data_array[5],'boolean')."\",
-							LEAFPOSTACCESSVALUE		=	\"".$this->strict($data_array[6],'boolean')."\"
+					SET 	leafAccessCreateValue	=	\"".$this->strict($data_array[2],'boolean')."\",
+							leafAccessReadValue		=	\"".$this->strict($data_array[2],'boolean')."\",
+							leafAccessUpdateValue	=	\"".$this->strict($data_array[3],'boolean')."\",
+							leafAccessDeleteValue	=	\"".$this->strict($data_array[4],'boolean')."\",
+							leafAccessPrintValue	=	\"".$this->strict($data_array[5],'boolean')."\",
+							leafPostAccessValue		=	\"".$this->strict($data_array[6],'boolean')."\"
 					WHERE 	LEAFGROUPACCESSID		=	\"".$this->strict($data_array[0],'numeric')."\"";
 			}
 			$this->q->update($sql);

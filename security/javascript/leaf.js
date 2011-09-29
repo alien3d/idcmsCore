@@ -13,12 +13,12 @@ Ext
 			} else {
 				var pageCreate = true;
 			}
-			if (leafReadAccessValue == 1) {
+			if (leafAccessReadValue == 1) {
 				var pageReload = false;
 			} else {
 				var pageReload = true;
 			}
-			if (leafPrintAccessValue == 1) {
+			if (leafAccessPrintValue == 1) {
 				var pagePrint = false;
 			} else {
 				var pagePrint = true;

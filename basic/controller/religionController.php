@@ -253,7 +253,7 @@ class ReligionClass extends ConfigClass {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`=\"" . $this->model->getReligionId(0, 'single') . "\"";
 			}
 		} else if ($this->getVendor() == self::mssql) {
-				$sql = "
+			$sql = "
 					SELECT	[religion].[religionId],
 							[religion].[religionDesc],
 							[religion].[isDefault],
@@ -376,7 +376,7 @@ class ReligionClass extends ConfigClass {
             if (empty($this->filter)) {
 
             	if ($this->getLimit()) {
-					
+            			
             		// only mysql have limit
             		if ($this->getVendor() == self::mysql) {
             			$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
@@ -557,9 +557,9 @@ class ReligionClass extends ConfigClass {
 		/*
 		 *  require three variable below to track  table audit
 		 */
-		$this->q->tableName = $this->model->gettTableName();
+		$this->q->tableName = $this->model->getTableName();
 		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-		$this->q->primaryKeyValue = $this->model->getReligionId();
+		$this->q->primaryKeyValue = $this->model->getReligionId(0,'single');
 		$this->q->audit = $this->audit;
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -819,7 +819,7 @@ class ReligionClass extends ConfigClass {
                 "message" => $this->q->responce
 			));
 			exit();
-		} 
+		}
 			
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
@@ -830,16 +830,16 @@ class ReligionClass extends ConfigClass {
 				"religionDesc" => $row['religionDesc']
 			));
 			exit();
-			
+				
 		} else {
 			echo json_encode(array(
 				"success" => "true",
 				"total" => $total,
 				"message" => "Duplicate Non"
-			));
-			exit();
+				));
+				exit();
 		}
-		
+
 	}
 
 	/* (non-PHPdoc)
@@ -1002,7 +1002,9 @@ if (isset($_POST['method'])) {
 	if ($_POST['method'] == 'create') {
 		$religionObject->create();
 	}
-
+	if ($_POST['method'] == 'save') {
+		$religionObject->update();
+	}
 	if ($_POST['method'] == 'read') {
 		$religionObject->read();
 	}
@@ -1048,20 +1050,20 @@ if (isset($_GET['method'])) {
 			$religionObject->duplicate();
 		}
 	}
-	if($_GET['method']=='dataNavigationRequest') { 
-		if($_GET['dataNavigation']=='first') { 
+	if($_GET['method']=='dataNavigationRequest') {
+		if($_GET['dataNavigation']=='first') {
 			$religionObject->firstRecord('json');
 		}
-		if($_GET['dataNavigation']=='previous') { 
+		if($_GET['dataNavigation']=='previous') {
 			$religionObject->previousRecord('json',0);
-		} 
-		if($_GET['dataNavigation']=='next') { 
+		}
+		if($_GET['dataNavigation']=='next') {
 			$religionObject->nextRecord('json',0);
-		} 
-		if($_GET['dataNavigation']=='last') { 
+		}
+		if($_GET['dataNavigation']=='last') {
 			$religionObject->lastRecord('json');
 		}
-    }	
+	}
 	/*
 	 * Excel Reporting
 	 */

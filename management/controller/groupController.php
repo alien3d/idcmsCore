@@ -379,11 +379,11 @@ class groupClass  extends configClass {
 					INSERT INTO 	`leafGroupAccess`
 								(
 									`leafId`,
-									`leafReadAccessValue`,
-									`leafCreateAccessValue`,
-									`leafUpdateAccessValue`,
-									`leafDeleteAccessValue`,
-									`leafPrintAccessValue`,
+									`leafAccessReadValue`,
+									`leafAccessCreateValue`,
+									`leafAccessUpdateValue`,
+									`leafAccessDeleteValue`,
+									`leafAccessPrintValue`,
 									`leafPostAccessValue`,
 									`groupId`
 								)
@@ -393,11 +393,11 @@ class groupClass  extends configClass {
 			$sql =	"
 					INSERT INTO 	[leafGroupAccess]
 								(	[leafId],
-									[leafReadAccessValue],
-									[leafCreateAccessValue],
-									[leafUpdateAccessValue],
-									[leafDeleteAccessValue],
-									[leafPrintAccessValue],
+									[leafAccessReadValue],
+									[leafAccessCreateValue],
+									[leafAccessUpdateValue],
+									[leafAccessDeleteValue],
+									[leafAccessPrintValue],
 									[leafPostAccessValue],
 									[groupId]
 								)
@@ -407,12 +407,12 @@ class groupClass  extends configClass {
 					INSERT INTO 	LEAFGROUPACCESS
 								(
 									LEAFID,
-									LEAFREADACCESSVALUE,
-									LEAFCREATEACCESSVALUE,
-									LEAFUPDATEACCESSVALUE,
-									LEAFDELETEACCESSVALUE,
-									LEAFPRINTACCESSVALUE,
-									LEAFPOSTACCESSVALUE,
+									leafAccessReadValue,
+									leafAccessCreateValue,
+									leafAccessUpdateValue,
+									leafAccessDeleteValue,
+									leafAccessPrintValue,
+									leafPostAccessValue,
 									GROUPID
 								)
 					VALUES ";

@@ -15,21 +15,21 @@ Ext
 			var local = false;
 			var jsonResponse;
 			var duplicate = 0;
-			if (leafReadAccessValue == 1) {
+			if (leafAccessReadValue == 1) {
 				pageCreate = false;
 				pageCreateList = false;
 			} else {
 				pageCreate = true;
 				pageCreateList = true;
 			}
-			if (leafReadAccessValue == 1) {
+			if (leafAccessReadValue == 1) {
 				pageReload = false;
 				pageReloadList = false;
 			} else {
 				pageReload = true;
 				pageReloadList = true;
 			}
-			if (leafPrintAccessValue == 1) {
+			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
 				pagePrintList = false;
 			} else {

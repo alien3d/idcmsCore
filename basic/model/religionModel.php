@@ -155,7 +155,7 @@ class ReligionModel extends ValidationClass
 		$this->setIsDefault(0,0,'single');
 		$this->setIsNew(0,0,'single');
 		$this->setIsDraft(0,0,'single');
-		$this->setIsUpdate(1, '', 'string');
+		$this->setIsUpdate(1, '', 'single');
 		$this->setIsActive(1,0,'single');
 		$this->setIsDelete(0,0,'single');
 		$this->setIsApproved(0,0,'single');

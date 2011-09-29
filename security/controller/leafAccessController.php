@@ -123,41 +123,41 @@ class leafAccessClass extends  configClass {
 						`leafAccess`.`leafId`,
 						`leafAccess`.`staffId`,
 						`leafAccess`.`leafAccessId`,
-						 (CASE `leafAccess`.`leafCreateAccessValue`
+						 (CASE `leafAccess`.`leafAccessCreateValue`
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafCreateAccessValue`,
+						END) AS `leafAccessCreateValue`,
 
 
-						 (CASE `leafAccess`.`leafReadAccessValue`
+						 (CASE `leafAccess`.`leafAccessReadValue`
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafReadAccessValue`,
+						END) AS `leafAccessReadValue`,
 
-						(CASE `leafAccess`.`leafUpdateAccessValue`
+						(CASE `leafAccess`.`leafAccessUpdateValue`
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafUpdateAccessValue`,
+						END) AS `leafAccessUpdateValue`,
 
-						(CASE `leafAccess`.`leafDeleteAccessValue`
+						(CASE `leafAccess`.`leafAccessDeleteValue`
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafDeleteAccessValue` ,
+						END) AS `leafAccessDeleteValue` ,
 
-						(CASE `leafAccess`.`leafPrintAccessValue`
+						(CASE `leafAccess`.`leafAccessPrintValue`
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafPrintAccessValue`,
+						END) AS `leafAccessPrintValue`,
 
 						(CASE `leafAccess`.`leafPostAccessValue`
 						 	WHEN '1' THEN
@@ -200,41 +200,41 @@ class leafAccessClass extends  configClass {
 						[leafAccess].[leafId],
 						[leafAccess].[staffId],
 						[leafAccess].[leafAccessId],
-						 (CASE [leafAccess].[leafCreateAccessValue]
+						 (CASE [leafAccess].[leafAccessCreateValue]
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafCreateAccessValue],
+						END) AS [leafAccessCreateValue],
 
 
-						 (CASE [leafAccess].[leafReadAccessValue]
+						 (CASE [leafAccess].[leafAccessReadValue]
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafReadAccessValue],
+						END) AS [leafAccessReadValue],
 
-						(CASE [leafAccess].[leafUpdateAccessValue]
+						(CASE [leafAccess].[leafAccessUpdateValue]
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafUpdateAccessValue],
+						END) AS [leafAccessUpdateValue],
 
-						(CASE [leafAccess].[leafDeleteAccessValue]
+						(CASE [leafAccess].[leafAccessDeleteValue]
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafDeleteAccessValue] ,
+						END) AS [leafAccessDeleteValue] ,
 
-						(CASE [leafAccess].[leafPrintAccessValue]
+						(CASE [leafAccess].[leafAccessPrintValue]
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafPrintAccessValue],
+						END) AS [leafAccessPrintValue],
 
 						(CASE [leafAccess].[leafPostAccessValue]
 						 	WHEN '1' THEN
@@ -277,48 +277,48 @@ class leafAccessClass extends  configClass {
 						LEAFACCESS.LEAFID,
 						LEAFACCESS.STAFFID,
 						LEAFACCESS.LEAFACCESSID,
-						 (CASE LEAFACCESS.LEAFCREATEACCESSVALUE
+						 (CASE LEAFACCESS.leafAccessCreateValue
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFCREATEACCESSVALUE,
+						END) AS leafAccessCreateValue,
 
 
-						 (CASE LEAFACCESS.LEAFREADACCESSVALUE
+						 (CASE LEAFACCESS.leafAccessReadValue
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFREADACCESSVALUE,
+						END) AS leafAccessReadValue,
 
-						(CASE LEAFACCESS.LEAFUPDATEACCESSVALUE
+						(CASE LEAFACCESS.leafAccessUpdateValue
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFUPDATEACCESSVALUE,
+						END) AS leafAccessUpdateValue,
 
-						(CASE LEAFACCESS.LEAFDELETEACCESSVALUE
+						(CASE LEAFACCESS.leafAccessDeleteValue
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFDELETEACCESSVALUE ,
+						END) AS leafAccessDeleteValue ,
 
-						(CASE LEAFACCESS.LEAFPRINTACCESSVALUE
+						(CASE LEAFACCESS.leafAccessPrintValue
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFPRINTACCESSVALUE,
+						END) AS leafAccessPrintValue,
 
-						(CASE LEAFACCESS.LEAFPOSTACCESSVALUE
+						(CASE LEAFACCESS.leafPostAccessValue
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS LEAFPOSTACCESSVALUE
+						END) AS leafPostAccessValue
 				FROM 	LEAFACCESS
 				JOIN	LEAF
 				USING	(LEAFID)
@@ -432,35 +432,35 @@ class leafAccessClass extends  configClass {
 			if($this->getVendor() == self::mysql) {
 				$sql="
 					UPDATE 	`leafAccess`
-					SET 	`leafCreateAccessValue`	=	\"".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."\",
-							`leafReadAccessValue`	=	\"".$this->strict($_GET['leafReadAccessValue'][$i],'numeric')."\",
-							`leafUpdateAccessValue`	=	\"".$this->strict($_GET['leafUpdateAccessValue'][$i],'numeric')."\",
-							`leafDeleteAccessValue`	=	\"".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."\",
-							`leafDeleteAccessValue`	=	\"".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."\",
-							`leafPrintAccessValue`	=	\"".$this->strict($_GET['leafPrintAccessValue'][$i],'numeric')."\",
+					SET 	`leafAccessCreateValue`	=	\"".$this->strict($_GET['leafAccessCreateValue'][$i],'numeric')."\",
+							`leafAccessReadValue`	=	\"".$this->strict($_GET['leafAccessReadValue'][$i],'numeric')."\",
+							`leafAccessUpdateValue`	=	\"".$this->strict($_GET['leafAccessUpdateValue'][$i],'numeric')."\",
+							`leafAccessDeleteValue`	=	\"".$this->strict($_GET['leafAccessDeleteValue'][$i],'numeric')."\",
+							`leafAccessDeleteValue`	=	\"".$this->strict($_GET['leafAccessDeleteValue'][$i],'numeric')."\",
+							`leafAccessPrintValue`	=	\"".$this->strict($_GET['leafAccessPrintValue'][$i],'numeric')."\",
 							`leafPostAccessValue`	=	\"".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."\"
 					WHERE 	`leafAccessId`			=	\"".$this->strict($_GET['leafAccessId'][$i],'numeric')."\"";
 			} else if ($this->getVendor()==self::mssql) {
 				$sql="
 					UPDATE 	[leafAccess]
-					SET 	[leafCreateAccessValue]	=	'".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."',
-							[leafReadAccessValue]	=	'".$this->strict($_GET['leafReadAccessValue'][$i],'numeric')."',
-							[leafUpdateAccessValue]	=	'".$this->strict($_GET['leafUpdateAccessValue'][$i],'numeric')."',
-							[leafDeleteAccessValue]	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-							[leafDeleteAccessValue]	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-							[leafPrintAccessValue]	=	'".$this->strict($_GET['leafPrintAccessValue'][$i],'numeric')."',
+					SET 	[leafAccessCreateValue]	=	'".$this->strict($_GET['leafAccessCreateValue'][$i],'numeric')."',
+							[leafAccessReadValue]	=	'".$this->strict($_GET['leafAccessReadValue'][$i],'numeric')."',
+							[leafAccessUpdateValue]	=	'".$this->strict($_GET['leafAccessUpdateValue'][$i],'numeric')."',
+							[leafAccessDeleteValue]	=	'".$this->strict($_GET['leafAccessDeleteValue'][$i],'numeric')."',
+							[leafAccessDeleteValue]	=	'".$this->strict($_GET['leafAccessDeleteValue'][$i],'numeric')."',
+							[leafAccessPrintValue]	=	'".$this->strict($_GET['leafAccessPrintValue'][$i],'numeric')."',
 							[leafPostAccessValue]	=	'".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."'
 					WHERE 	[leafAccessId]			=	'".$this->strict($_GET['leafAccessId'][$i],'numeric')."'";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql="
 				UPDATE 	LEAFACCESS
-				SET 	LEAFCREATEACCESSVALUE	=	'".$this->strict($_GET['leafCreateAccessValue'][$i],'numeric')."',
-						LEAFREADACCESSVALUE		=	'".$this->strict($_GET['leafReadAccessValue'][$i],'numeric')."',
-						LEAFUPDATEACCESSVALUE	=	'".$this->strict($_GET['leafUpdateAccessValue'][$i],'numeric')."',
-						LEAFDELETEACCESSVALUE	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-						LEAFDELETEACCESSVALUE	=	'".$this->strict($_GET['leafDeleteAccessValue'][$i],'numeric')."',
-						LEAFPRINTACCESSVALUE	=	'".$this->strict($_GET['leafPrintAccessValue'][$i],'numeric')."',
-						LEAFPOSTACCESSVALUE		=	'".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."'
+				SET 	leafAccessCreateValue	=	'".$this->strict($_GET['leafAccessCreateValue'][$i],'numeric')."',
+						leafAccessReadValue		=	'".$this->strict($_GET['leafAccessReadValue'][$i],'numeric')."',
+						leafAccessUpdateValue	=	'".$this->strict($_GET['leafAccessUpdateValue'][$i],'numeric')."',
+						leafAccessDeleteValue	=	'".$this->strict($_GET['leafAccessDeleteValue'][$i],'numeric')."',
+						leafAccessDeleteValue	=	'".$this->strict($_GET['leafAccessDeleteValue'][$i],'numeric')."',
+						leafAccessPrintValue	=	'".$this->strict($_GET['leafAccessPrintValue'][$i],'numeric')."',
+						leafPostAccessValue		=	'".$this->strict($_GET['leafPostAccessValue'][$i],'numeric')."'
 				WHERE 	LEAFACCESSID			=	'".$this->strict($_GET['leafAccessId'][$i],'numeric')."'";
 			}
 			$this->q->update($sql);

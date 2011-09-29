@@ -226,10 +226,10 @@ class leafClass extends configClass
 			INSERT INTO	`leafAccess`
 					(
 						`leafId`,					`staffId`,
-						`leafReadAccessValue`,		`leafCreateAccessValue`,
-						`leafUpdateAccessValue`,	`leafDeleteAccessValue`,
-						`leafPrintAccessValue`,		`leafPostAccessValue`,
-						`leafDraftAccessValue`
+						`leafAccessReadValue`,		`leafAccessCreateValue`,
+						`leafAccessUpdateValue`,	`leafAccessDeleteValue`,
+						`leafAccessPrintValue`,		`leafPostAccessValue`,
+						`leafAccessDraftValue`
 					)
 			VALUES";
 		} else if ($this->getVendor() == self::mssql) {
@@ -237,10 +237,10 @@ class leafClass extends configClass
 			INSERT INTO	[leafAccess]
 				(
 					[leafId],					[staffId],
-					[leafReadAccessValue],		[leafCreateAccessValue],
-					[leafUpdateAccessValue],	[leafDeleteAccessValue],
-					[leafPrintAccessValue],		[leafPostAccessValue],
-					[leafDraftAccessValue]
+					[leafAccessReadValue],		[leafAccessCreateValue],
+					[leafAccessUpdateValue],	[leafAccessDeleteValue],
+					[leafAccessPrintValue],		[leafPostAccessValue],
+					[leafAccessDraftValue]
 				)
 			VALUES";
 		} else if ($this->getVendor() == self::oracle) {
@@ -248,10 +248,10 @@ class leafClass extends configClass
 			INSERT INTO 	LEAFACCESS
 						(
 							LEAFID,					STAFFID,
-							LEAFREADACCESSVALUE,	LEAFCREATEACCESSVALUE,
-							LEAFUPDATEACCESSVALUE,	LEAFDELETEACCESSVALUE,
-							LEAFPRINTACCESSVALUE,	LEAFPOSTACCESSVALUE,
-							LEAFDRAFTACCESSVALUE
+							leafAccessReadValue,	leafAccessCreateValue,
+							leafAccessUpdateValue,	leafAccessDeleteValue,
+							leafAccessPrintValue,	leafPostAccessValue,
+							leafAccessDraftValue
 						)
 			VALUES";
 		}

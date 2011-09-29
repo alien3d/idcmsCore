@@ -48,27 +48,27 @@ class leafAccessModel extends validationClass{
 	 * Leaf Create Access Value
 	 * @var bool
 	 */
-	private $leafCreateAccessValue;
+	private $leafAccessCreateValue;
 	/**
 	 * Leaf Read Access Value
 	 * @var bool
 	 */
-	private $leafReadAccessValue;
+	private $leafAccessReadValue;
 	/**
 	 * Leaf Update Access Value
 	 * @var bool
 	 */
-	private $leafUpdateAccessValue;
+	private $leafAccessUpdateValue;
 	/**
 	 * Leaf Delete Access Value
 	 * @var bool
 	 */
-	private $leafDeleteAccessValue;
+	private $leafAccessDeleteValue;
 	/**
 	 * Leaf Print Access Value
 	 * @var bool
 	 */
-	private $leafPrintAccessValue;
+	private $leafAccessPrintValue;
 	/**
 	 * Leaf Posting Access Value
 	 * @var bool
@@ -134,52 +134,52 @@ class leafAccessModel extends validationClass{
 			$this->setLeafAccessId($this->strict($_GET['leafAccessId'][$i],'numeric'),$i);
 
 
-			if($_GET['leafCreateAccessValue'][$i]=='true') {
-				$this->setLeafCreateAccessValue($i, 1);
+			if($_GET['leafAccessCreateValue'][$i]=='true') {
+				$this->setleafAccessCreateValue($i, 1);
 
 			} else {
-				$this->setLeafCreateAccessValue($i, 0);
+				$this->setleafAccessCreateValue($i, 0);
 			}
 
-			if($_GET['leafReadAccessValue'][$i]=='true') {
+			if($_GET['leafAccessReadValue'][$i]=='true') {
 
-				$this->setLeafReadAccessValue($i, 1);
+				$this->setleafAccessReadValue($i, 1);
 			} else {
 
-				$this->setLeafReadAccessValue($i, 0);
+				$this->setleafAccessReadValue($i, 0);
 			}
 
-			if($_GET['leafUpdateAccessValue'][$i]=='true') {
+			if($_GET['leafAccessUpdateValue'][$i]=='true') {
 					
-				$this->setLeafUpdateAccessValue($i, 1);
+				$this->setleafAccessUpdateValue($i, 1);
 			} else {
 					
-				$this->setLeafUpdateAccessValue($i, 0);
+				$this->setleafAccessUpdateValue($i, 0);
 			}
 
-			if($_GET['leafDeleteAccessValue'][$i]=='true') {
-				$this->setLeafDeleteAccessValue($i, 1);
+			if($_GET['leafAccessDeleteValue'][$i]=='true') {
+				$this->setleafAccessDeleteValue($i, 1);
 			} else {
-				$this->setLeafDeleteAccessValue($i, 1);
+				$this->setleafAccessDeleteValue($i, 1);
 			}
 
-			if($_GET['leafPrintAccessValue'][$i]=='true') {
-				$this->setLeafPrintAccessValue($i, 1);
+			if($_GET['leafAccessPrintValue'][$i]=='true') {
+				$this->setleafAccessPrintValue($i, 1);
 			} else {
-				$this->setLeafPrintAccessValue($i, 0);
+				$this->setleafAccessPrintValue($i, 0);
 			}
 
 			if($_GET['leafPostAccessValue'][$i]=='true') {
-				$this->setLeafPostAccessValue($i, 1);
+				$this->setleafPostAccessValue($i, 1);
 			} else {
-				$this->setLeafPostAccessValue($i, 0);
+				$this->setleafPostAccessValue($i, 0);
 			}
-			if($_GET['leafDraftAccessValue'][$i]=='true') {
-				$this->leafDraftAccessValue[$i] =1;
-				$this->setLeafDraftAccessValue($i, 1);
+			if($_GET['leafAccessDraftValue'][$i]=='true') {
+				$this->leafAccessDraftValue[$i] =1;
+				$this->setleafAccessDraftValue($i, 1);
 			} else {
-				$this->leafDraftAccessValue[$i]=0;
-				$this->setLeafDraftAccessValue($i, 0);
+				$this->leafAccessDraftValue[$i]=0;
+				$this->setleafAccessDraftValue($i, 0);
 			}
 			$primaryKeyAll .= $this->getLeafAccessId($i, 'array') . ",";
 

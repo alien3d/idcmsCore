@@ -8,12 +8,12 @@ Ext.onReady(function(){
 		} else { 
 			var pageCreate = true;
 		}
-		if(leafReadAccessValue  == 1 ){ 
+		if(leafAccessReadValue  == 1 ){ 
 			var pageReload=false;
 		} else { 
 			var pageReload=true;
 		} 
-		if(leafPrintAccessValue == 1 ) {
+		if(leafAccessPrintValue == 1 ) {
 			var pagePrint=false;
 		} else {
 			var pagePrint=true;
@@ -90,19 +90,19 @@ Ext.onReady(function(){
 			 	name		: 	'leafCreateAccessValue',
                 type        :   'boolean'							
 			},{
-				name		: 	'leafReadAccessValue',
+				name		: 	'leafAccessReadValue',
                 type        :   'boolean'							
 			},{
-				name		: 	'leafUpdateAccessValue',
+				name		: 	'leafAccessUpdateValue',
                 type        :   'boolean'							
 			},{
-				name		: 	'leafDeleteAccessValue',
+				name		: 	'leafAccessDeleteValue',
                 type        :   'boolean'							
 			},{
-				name		: 	'leafPrintAccessValue',
+				name		: 	'leafAccessPrintValue',
                 type        :   'boolean'							
 			},{
-				name		: 	'leafPostAccessValue',
+				name		: 	'leafAccessPostValue',
                 type        :   'boolean'							
 			}
 		]
@@ -251,39 +251,39 @@ Ext.onReady(function(){
        width: 55
   });
   
-  var  leafReadAccessValue = new Ext.grid.CheckColumn({
-       header: leafReadAccessValueLabel,
-       dataIndex: 'leafReadAccessValue',
-	   id:'leafReadAccessValue',
+  var  leafAccessReadValue = new Ext.grid.CheckColumn({
+       header: leafAccessReadValueLabel,
+       dataIndex: 'leafAccessReadValue',
+	   id:'leafAccessReadValue',
        width: 55
   });
   
-  var  leafUpdateAccessValue = new Ext.grid.CheckColumn({
-       header: leafUpdateAccessValueLabel,
-       dataIndex: 'leafUpdateAccessValue',
-	   id:'leafUpdateAccessValue',
+  var  leafAccessUpdateValue = new Ext.grid.CheckColumn({
+       header: leafAccessUpdateValueLabel,
+       dataIndex: 'leafAccessUpdateValue',
+	   id:'leafAccessUpdateValue',
        width: 55
   });
   
-  var  leafDeleteAccessValue = new Ext.grid.CheckColumn({
-       header: leafDeleteAccessValueLabel,
-       dataIndex: 'leafDeleteAccessValue',
-	   id:'leafDeleteAccessValue',
+  var  leafAccessDeleteValue = new Ext.grid.CheckColumn({
+       header: leafAccessDeleteValueLabel,
+       dataIndex: 'leafAccessDeleteValue',
+	   id:'leafAccessDeleteValue',
        width: 55
   });
   
-  var  leafPrintAccessValue = new Ext.grid.CheckColumn({
-       header: leafPrintAccessValueLabel,
-       dataIndex: 'leafPrintAccessValue',
-	   id:'leafPrintAccessValue',
+  var  leafAccessPrintValue = new Ext.grid.CheckColumn({
+       header: leafAccessPrintValueLabel,
+       dataIndex: 'leafAccessPrintValue',
+	   id:'leafAccessPrintValue',
        width: 55
   });
   
   
-  var  leafPostAccessValue = new Ext.grid.CheckColumn({
-       header: leafPostAccessValueLabel,
-       dataIndex: 'leafPostAccessValue',
-	   id:'leafPostAccessValue',
+  var  leafAccessPostValue = new Ext.grid.CheckColumn({
+       header: leafAccessPostValueLabel,
+       dataIndex: 'leafAccessPostValue',
+	   id:'leafAccessPostValue',
        width: 55
   });
   
@@ -305,7 +305,7 @@ Ext.onReady(function(){
 		},{
 			header		:	staffNameLabel,
 			dataIndex	:	'staffName'
-		},leafCreateAccessValue,leafReadAccessValue,leafUpdateAccessValue,leafDeleteAccessValue,leafPrintAccessValue,leafPostAccessValue]
+		},leafCreateAccessValue,leafAccessReadValue,leafAccessUpdateValue,leafAccessDeleteValue,leafAccessPrintValue,leafAccessPostValue]
 	});
 	
 	
@@ -493,7 +493,7 @@ Ext.onReady(function(){
 		items	:	[groupId,moduleId,folderId,staffId]
 									  
 	});
-	var  access_array = ['leafCreateAccessValue','leafReadAccessValue','leafUpdateAccessValue','leafDeleteAccessValue','leafPrintAccessValue','leafPostAccessValue'];
+	var  access_array = ['leafCreateAccessValue','leafAccessReadValue','leafAccessUpdateValue','leafAccessDeleteValue','leafAccessPrintValue','leafAccessPostValue'];
 	var gridPanel = new Ext.grid.GridPanel({ 
 		region		:	'west',
 		store		:	leafAccessStore,
@@ -506,11 +506,11 @@ Ext.onReady(function(){
         iconCls		:	'application_view_detail',
 		plugins		: 	[	
 					   		leafCreateAccessValue,
-							leafReadAccessValue,
-							leafUpdateAccessValue,
-							leafDeleteAccessValue,
-							leafPrintAccessValue,
-							leafPostAccessValue
+							leafAccessReadValue,
+							leafAccessUpdateValue,
+							leafAccessDeleteValue,
+							leafAccessPrintValue,
+							leafAccessPostValue
 						],
 		tbar 		: 	{ 
 			items:[{
@@ -554,11 +554,11 @@ Ext.onReady(function(){
 						var record = leafAccessStore.getAt(i);
 						sub_url = sub_url + '&leafAccessId[]='+record.get('leafAccessId');
 						sub_url = sub_url + '&leafCreateAccessValue[]='+record.get('leafCreateAccessValue');
-						sub_url = sub_url + '&leafReadAccessValue[]='+record.get('leafReadAccessValue');
-						sub_url = sub_url + '&leafUpdateAccessValue[]='+record.get('leafUpdateAccessValue');
-						sub_url = sub_url + '&leafDeleteAccessValue[]='+record.get('leafDeleteAccessValue');
-						sub_url = sub_url + '&leafPrintAccessValue[]='+record.get('leafPrintAccessValue');
-						sub_url = sub_url + '&leafPostAccessValue[]='+record.get('leafPostAccessValue');
+						sub_url = sub_url + '&leafAccessReadValue[]='+record.get('leafAccessReadValue');
+						sub_url = sub_url + '&leafAccessUpdateValue[]='+record.get('leafAccessUpdateValue');
+						sub_url = sub_url + '&leafAccessDeleteValue[]='+record.get('leafAccessDeleteValue');
+						sub_url = sub_url + '&leafAccessPrintValue[]='+record.get('leafAccessPrintValue');
+						sub_url = sub_url + '&leafAccessPostValue[]='+record.get('leafAccessPostValue');
 					}
 					url = url+sub_url;
 					// reques and ajax
