@@ -419,7 +419,7 @@ class languageClass  extends configClass {
 					FROM 	LANGUAGE
 					JOIN	STAFF
 					ON		LANGUAGE.EXECUTEBY = STAFF.STAFFID
-					WHERE 	LANGUAGE.ISACTIVE='1'  " . $tempSql . $tempSql2 . $orderBy . "
+					WHERE 	LANGUAGE.ISACTIVE='1'  " . $tempSql . $tempSql2  . "
 								 ) a
 						where rownum <= '". ($this->getStart() + $this->getLimit() - 1) . "' )
 						where r >=  '". $this->getStart() . "'";
@@ -443,7 +443,7 @@ class languageClass  extends configClass {
             	}
             }
             $items = array();
-            while ($row = $this->q->fetchAssoc()) {
+            while (($row = $this->q->fetchAssoc()) == true) {
             	$items[] = $row;
             }
             if ($this->model->getlanguageId(0,'single')) {
@@ -907,7 +907,7 @@ class languageClass  extends configClass {
                         //
                         $loopRow = 4;
                         $i       = 0;
-                        while ($row = $this->q->fetchAssoc()) {
+                        while (($row = $this->q->fetchAssoc()) == true) {
                         	//	echo print_r($row);
                         	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
                         	if($this->isAdmin==1){

@@ -578,7 +578,7 @@ class moduleClass extends configClass
 											MODULE.EXECUTETIME,
 											STAFF.STAFFNAME
 									FROM 	MODULE
-									WHERE 	MODULE.ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
+									WHERE 	MODULE.ISACTIVE=1  " . $tempSql . $tempSql2  . "
 								 ) a
 						where rownum <= \"". ($this->getStart() + $this->getLimit() - 1) . "\" )
 						where r >=  \"". $this->getStart() . "\"";
@@ -602,7 +602,7 @@ class moduleClass extends configClass
             	}
             }
             $items = array();
-            while ($row = $this->q->fetchAssoc()) {
+            while (($row = $this->q->fetchAssoc()) == TRUE) {
             	$items[] = $row;
             }
             if ($this->model->getModuleId(0,'single')) {
@@ -828,7 +828,7 @@ class moduleClass extends configClass
                         //
                         $loopRow = 4;
                         $i       = 0;
-                        while ($row = $this->q->fetchAssoc()) {
+                        while (($row = $this->q->fetchAssoc())== TRUE)  {
                         	//	echo print_r($row);
                         	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
                         	$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row['moduleNote']);

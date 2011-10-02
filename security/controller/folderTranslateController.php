@@ -483,7 +483,7 @@ class folderTranslateClass extends  configClass {
 									LEFT JOIN	ICON
 									ON			FOLDER.ICONID=ICON.ICONID
 									WHERE		\"tab\".ISACTIVE=1
-									AND			FOLDER.ISACTIVE=1 ".$tempSql.$tempSql2.$orderBy."
+									AND			FOLDER.ISACTIVE=1 ".$tempSql.$tempSql2."
 								 ) a
 						WHERE rownum <= '".($this->getStart()+$this->getLimit()-1)."' )
 						where r >=  '".$this->getStart()."'";
@@ -510,7 +510,7 @@ class folderTranslateClass extends  configClass {
 			}
 		}
 		$items 			= 	array();
-		while($row  	= 	$this->q->fetchAssoc()) {
+		while(($row  	= 	$this->q->fetchAssoc()) == TRUE) {
 			$items[]	=	$row;
 		}
 
@@ -798,7 +798,7 @@ class folderTranslateClass extends  configClass {
 			FROM 	LANGUAGE ";
 		}
 		$result= $this->q->fast($sql);
-		while ($row = $this->q->fetchAssoc($result)) {
+		while (($row = $this->q->fetchAssoc($result)) == TRUE) {
 			$languageId 	= 	$row['languageId'];
 			$languageCode	= 	$row['languageCode'];
 			$to 		  	=	$languageCode;
@@ -818,13 +818,13 @@ class folderTranslateClass extends  configClass {
 			}  else if ($this->getVendor()==self::oracle) {
 				$sql="
 				SELECT 	*
-				FROM 	\"folderTranslate\"
+				FROM 	FOLDERID        =
 				WHERE 	FOLDERID		=	\"".$this->folderId."\"
 				AND 	LANGUAGEID		=	\"".$languageId."\"";
 			}
 			$resultfolderTranslate = $this->q->fast($sql);
 			if($this->q->numberRows($resultfolderTranslate) >  0 ) {
-				if($this->q->vendor=='normal'  ||$this->getVendor() == self::mysql) {
+				if($this->getVendor() == self::mysql) {
 					$sql="
 					UPDATE 	`folderTranslate`
 					SET 	`folderTranslate`		=	\"".$googleTranslate."\"
@@ -838,8 +838,8 @@ class folderTranslateClass extends  configClass {
 					AND 	[languageId]			=	\"".$languageId."\"";
 				} else if ($this->getVendor()==self::oracle) {
 					$sql="
-					UPDATE 	\"folderTranslate\"
-					SET 	\"folderTranslate\"		=	\"".$googleTranslate."\"
+					UPDATE 	FOLDERTRANSLATE
+					SET 	FOLDERTRANSLATE		=	\"".$googleTranslate."\"
 					WHERE 	FOLDERID			=	\"".$this->folderId."\"
 					AND 	LANGUAGEID			=	\"".$languageId."\"";
 				}
@@ -965,7 +965,7 @@ class folderTranslateClass extends  configClass {
 		//
 		$loopRow=4;
 		$i=0;
-		while($row  = 	$this->q->fetchAssoc()) {
+		while(($row  = 	$this->q->fetchAssoc()) == TRUE) {
 
 
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);

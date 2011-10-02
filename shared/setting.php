@@ -42,8 +42,8 @@ if ($q->vendor == sharedx::mysql) {
                 WHERE 			[tableMapping].[languageId]='" . $_SESSION['languageId'] . "'";
 } else if ($q->vendor == sharedx::oracle) {
     $sql = "
-                SELECT DISTINCT TABLEMAPPING.\"tableMappingColumnName\",
-                                TABLEMAPPINGTRANSLATE.\"tableMappingNativeLabel\"
+                SELECT DISTINCT TABLEMAPPING.TABLEMAPPINGCOLUMNNAME 			AS 	\"tableMappingColumnName\",
+                                TABLEMAPPINGTRANSLATE.TABLEMAPPINGNATIVELABEL	AS	\"tableMappingNativeLabel\"
                 FROM 			TABLEMAPPING
                 JOIN			TABLEMAPPINGTRANSLATE
                 USING			(TABLEMAPPINGID)
@@ -117,13 +117,14 @@ if ($q->vendor == sharedx::mysql) {
         AND		`leafTranslate`.`languageId`	=	\"" . $_SESSION['languageId'] . "\"";
 } else if ($q->vendor == sharedx::mssql) {
   		  $sql =
-            "	SELECT	*
+            "	
+        SELECT	*
         FROM	[leaf]
         JOIN	[leafAccess]
-        ON 		[leaf].[leafId]= 	[leafAccess].[leafId]
+        ON 		[leaf].[leafId]					= 	[leafAccess].[leafId]
         JOIN 	[leafTranslate]
-        ON		[leafAccess].[leafId]	=[leafTranslate].[leafId]
-        AND 	[leafTranslate].[leafId]= [leaf].[leafId]
+        ON		[leafAccess].[leafId]			=	[leafTranslate].[leafId]
+        AND 	[leafTranslate].[leafId]		= 	[leaf].[leafId]
         WHERE  	[leaf].[leafFilename]			=	'" . basename($_SERVER[$phpself]) . "'
         AND  	[leafAccess].[staffId]			=	'" . $_SESSION[$staffId] . "'
         AND		[leafTranslate].[languageId]	=	'" . $_SESSION['languageId'] . "'";
@@ -132,9 +133,9 @@ if ($q->vendor == sharedx::mysql) {
    $sql =
             "	SELECT	LEAF.LEAFID 						AS  \"leafId\",
                         LEAFTRANSLATE.LEAFTRANSLATE 		AS	\"leafNote\",
-                        LEAFACCESS.leafAccessCreateValue 	AS 	\"leafAccessCreateValue\",
-                        LEAFACCESS.leafAccessReadValue 		AS  \"leafAccessReadValue\",
-                        LEAFACCESS.leafAccessPrintValue 	AS 	\"leafAccessPrintValue\"
+                        LEAFACCESS.LEAFACCESSCREATEVALUE 	AS 	\"leafAccessCreateValue\",
+                        LEAFACCESS.LEAFACCESSREADVALUE		AS  \"leafAccessReadValue\",
+                        LEAFACCESS.LEAFACCESSPRINTVALUE 	AS 	\"leafAccessPrintValue\"
         FROM	LEAF
         JOIN	LEAFACCESS
         ON		LEAF.LEAFID 				= 	LEAFACCESS.LEAFID
@@ -150,12 +151,12 @@ $result = $q->fast($sql);
 $row_leafAccess = $q->fetchAssoc($result);
 ?>
 
-    var leafId			= '<?php echo $row_leafAccess['leafId']; ?>';
-    var leafNote			= '<?php echo $row_leafAccess['leafTranslate']; ?>';
+    var leafId					= '<?php echo $row_leafAccess['leafId']; ?>';
+    var leafNote				= '<?php echo $row_leafAccess['leafTranslate']; ?>';
     var leafAccessCreateValue	= '<?php echo $row_leafAccess['leafAccessCreateValue']; ?>';
     var leafAccessReadValue		= '<?php echo $row_leafAccess['leafAccessReadValue']; ?>';
     var leafAccessPrintValue	= '<?php echo $row_leafAccess['leafAccessPrintValue']; ?>';
-    var leafPostAccessValue	= '<?php echo $row_leafAccess['leafPostAccessValue']; ?>';
+    var leafAccessPostValue		= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>';
 <?php
 if ($q->vendor == sharedx::mysql) {
     $sql = "

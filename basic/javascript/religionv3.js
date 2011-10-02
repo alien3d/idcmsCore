@@ -13,7 +13,7 @@ Ext.onReady(function() {
     var encode = false;
    
     var jsonResponse;
-    var duplicate = 0;
+ 
     if (leafAccessReadValue == 1) {
         pageCreate = false;
         pageCreateList = false;
@@ -382,7 +382,7 @@ Ext.onReady(function() {
                     });
                     religionEditor.stopEditing();
                     religionStore.insert(0, e);
-                    var s = religionGrid.getSelectionModel().getSelections();
+                    religionGrid.getSelectionModel().getSelections();
                     religionEditor.startEditing(0);
                 }
             },
@@ -391,7 +391,7 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function() {
-                        var count = religionStore.getCount();
+                        
                         religionStore.each(function(rec) {
                             for (var access in accessArray) { // alert(access);
                                 rec.set(accessArray[access], true);
@@ -418,9 +418,9 @@ Ext.onReady(function() {
                 iconCls: 'bullet_disk',
                 listeners: {
                     'click': function(c) {
-                        var url;
-                        var count = religionStore.getCount();
-                        url = '../controller/religionController.php?';
+                       
+                       
+                        var url = '../controller/religionController.php?';
                         var sub_url;
                         sub_url = '';
                    
@@ -478,49 +478,7 @@ Ext.onReady(function() {
             pageSize: perPage
         })
     });
-    var toolbarPanel = new Ext.Toolbar({
-        items: [{
-            text: reloadToolbarLabel,
-            iconCls: "database_refresh",
-            id: "pageReload",
-            disabled: pageReload,
-            handler: function() {
-                religionStore.reload();
-            }
-        },
-        '-', {
-            text: addToolbarLabel,
-            iconCls: "add",
-            id: "pageCreate",
-            disabled: pageCreate,
-            handler: function() {
-                viewPort.items.get(1).expand();
-            }
-        },
-        '-', {
-            text: excelToolbarLabel,
-            iconCls: "page_excel",
-            id: "page_excel",
-            disabled: pagePrint,
-            handler: function() {
-                Ext.Ajax.request({
-                    url: "../controller/religionController.php?method=report&mode=excel&limit=" + perPage + "&leafId=" + leafId,
-                    method: "GET",
-                    success: function(response, options) {
-                        jsonResponse = Ext.decode(response.responseText);
-                        if (jsonResponse.success == true) {
-                            window.open("../../setting/document/excel/" + jsonResponse.filename);
-                        } else {
-                            Ext.MessageBox.alert(successLabel, jsonResponse.message);
-                        }
-                    },
-                    failure: function(response, options) {
-                        Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
-                    }
-                });
-            }
-        }]
-    });
+    
     var gridPanel = new Ext.Panel({
         title: leafNote,
         iconCls: "application_view_detail",
@@ -570,10 +528,7 @@ Ext.onReady(function() {
         })],
         items: [religionGrid]
     });
-    var religionDesc_temp = new Ext.form.Hidden({
-        name: "religionDesc_temp",
-        id: "religionDesc_temp"
-    });
+   
 	
 	
     var viewPort = new Ext.Viewport({

@@ -384,7 +384,7 @@ class groupClass  extends configClass {
 									`leafAccessUpdateValue`,
 									`leafAccessDeleteValue`,
 									`leafAccessPrintValue`,
-									`leafPostAccessValue`,
+									`leafAccessPostValue`,
 									`groupId`
 								)
 					VALUES";
@@ -398,7 +398,7 @@ class groupClass  extends configClass {
 									[leafAccessUpdateValue],
 									[leafAccessDeleteValue],
 									[leafAccessPrintValue],
-									[leafPostAccessValue],
+									[leafAccessPostValue],
 									[groupId]
 								)
 					VALUES";
@@ -412,7 +412,7 @@ class groupClass  extends configClass {
 									leafAccessUpdateValue,
 									leafAccessDeleteValue,
 									leafAccessPrintValue,
-									leafPostAccessValue,
+									leafAccessPostValue,
 									GROUPID
 								)
 					VALUES ";
@@ -668,7 +668,7 @@ class groupClass  extends configClass {
 							GROUP_.EXECUTETIME 		AS 	\"executeTime\",
 							STAFF.STAFFNAME 		AS 	\"staffName\"
 									FROM 	GROUP_
-									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
+									WHERE ISACTIVE=1  " . $tempSql . $tempSql2  . "
 								 ) a
 						where rownum <= \"". ($this->getStart() + $this->getLimit() - 1) . "\" )
 						where r >=  \"". $this->getStart() . "\"";
@@ -692,7 +692,7 @@ class groupClass  extends configClass {
             	}
             }
             $items = array();
-            while ($row = $this->q->fetchAssoc()) {
+            while (($row = $this->q->fetchAssoc())== TRUE) {
             	$items[] = $row;
             }
             if ($this->model->getGroupId(0,'single')) {

@@ -263,13 +263,7 @@ class tableMappingTranslateModel extends validationClass{
 
 		return $this->languageDesc;
 	}
-	/**
-	 * Set Table Mapping Translation Value
-	 * @param  string $value
-	 */
-	public function setTableMappingTranslationNativeLabel($value) {
-		$this->tableMappingTranslationNativeLabel = $value;
-	}
+	
 	/**
 	 * Return Language Value
 	 * @return string

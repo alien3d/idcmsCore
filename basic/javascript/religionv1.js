@@ -147,7 +147,7 @@ Ext
 			});
 			var religionStoreList = new Ext.data.JsonStore({
 				proxy : religionListProxy,
-				reader : religionListProxy,
+				reader : religionListReader,
 				autoLoad : true,
 				autoDestroy : true,
 				baseParams : {
@@ -794,68 +794,7 @@ Ext
 					pageSize : perPage
 				})
 			});
-			var toolbarPanel = new Ext.Toolbar(
-					{
-						items : [
-								{
-									text : reloadToolbarLabel,
-									iconCls : "database_refresh",
-									id : "pageReload",
-									disabled : pageReload,
-									handler : function() {
-										religionStore.reload();
-									}
-								},
-								{
-									text : addToolbarLabel,
-									iconCls : "add",
-									id : "pageCreate",
-									disabled : pageCreate,
-									handler : function() {
-										viewPort.items.get(1).expand();
-									}
-								},
-								{
-									text : excelToolbarLabel,
-									iconCls : "page_excel",
-									id : "page_excel",
-									disabled : pagePrint,
-									handler : function() {
-										Ext.Ajax
-												.request({
-													url : "../controller/religionController.php?method=report&mode=excel&limit="
-															+ perPage
-															+ "&leafId="
-															+ leafId,
-													method : "GET",
-													success : function(
-															response, options) {
-														jsonResponse = Ext
-																.decode(response.responseText);
-														if (jsonResponse.success == true) {
-															window
-																	.open("../../setting/document/excel/"
-																			+ jsonResponse.filename);
-														} else {
-															Ext.MessageBox
-																	.alert(
-																			successLabel,
-																			jsonResponse.message);
-														}
-													},
-													failure : function(
-															response, options) {
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		escape(response.status)
-																				+ ":"
-																				+ escape(response.statusText));
-													}
-												});
-									}
-								} ]
-					});
+			
 			var toolbarPanelList = new Ext.Toolbar(
 					{
 						items : [
@@ -1087,24 +1026,7 @@ Ext
 				id : "religionId"
 			});
 
-			var firstRecord = new Ext.form.Hidden({
-				name : 'firstRecord',
-				id : 'firstRecord'
-			});
-
-			var nextRecord = new Ext.form.Hidden({
-				name : 'nextRecord',
-				id : 'nextRecord'
-			});
-
-			var previousRecord = new Ext.form.Hidden({
-				name : 'previousRecord',
-				id : 'previousRecord'
-			});
-			var lastRecord = new Ext.form.Hidden({
-				name : 'lastRecord',
-				id : 'lastRecord'
-			});
+			
 			var formPanel = new Ext.form.FormPanel(
 					{
 						url : "../controller/religionController.php",

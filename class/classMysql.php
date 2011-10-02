@@ -257,7 +257,7 @@ class Vendor
 		 *  Only disable and Error Sql Statement will be log
 		 */
 		if ($result_row == 0  || $this->log == 1) {
-
+			$logError = $this->responce;
 			$sql_log = "
 			INSERT INTO `log`
 					(
@@ -332,7 +332,7 @@ class Vendor
 						$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($this->link);
 					} else {
 
-						while ($rowColumn = mysqli_fetch_array($resultColumn)) {
+						while (($rowColumn = mysqli_fetch_array($resultColumn)) == true) {
 
 							$fieldValue[] = $rowColumn['Field'];
 						}
@@ -347,7 +347,7 @@ class Vendor
 						$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($this->link);
 					} else {
 
-						while ($rowPrevious = mysqli_fetch_array($resultPrevious)) {
+						while (($rowPrevious = mysqli_fetch_array($resultPrevious)) == true) {
 							foreach ($fieldValue as $field) {
 								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
 								$previous[$field] = $rowPrevious[$field];
@@ -421,7 +421,7 @@ class Vendor
 						$this->responce = mysqli_error($this->link) . "Error Code" . mysqli_errno($$this->link);
 					} else {
 						//	echo "Jumlah Rekod".mysqli_num_rows($resultColumn);
-						while ($rowColumn = mysqli_fetch_array($resultColumn)) {
+						while (($rowColumn = mysqli_fetch_array($resultColumn)) == true) {
 							// create the field value
 							$fieldValue[] = $rowColumn['Field'];
 						}
@@ -437,7 +437,7 @@ class Vendor
 					} else {
 						// successfully
 						//	echo "Jumlah Rekod ".mysqli_num_rows($resultPrevious);
-						while ($rowPrevious = mysqli_fetch_array($resultPrevious)) {
+						while (($rowPrevious = mysqli_fetch_array($resultPrevious)) == true) {
 							foreach ($fieldValue as $field) {
 								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
 								$previous[$field] = $rowPrevious[$field];
@@ -480,7 +480,7 @@ class Vendor
 					WHERE 	`" . $this->primaryKeyName . "`=\"". $this->primaryKeyValue . "\"";
 					$resultCurrent = mysqli_query($this->link, $sqlCurrent);
 					if ($resultCurrent) {
-						while ($rowCurrent = mysqli_fetch_array($resultCurrent)) {
+						while (($rowCurrent = mysqli_fetch_array($resultCurrent)) == true) {
 							$textComparison .= $this->compare($fieldValue, $rowCurrent, $previous);
 						}
 					} else {
@@ -668,11 +668,11 @@ class Vendor
 	{
 		$d = array();
 		if ($result) {
-			while ($row = mysqli_fetch_assoc($result)) {
+			while (($row = mysqli_fetch_assoc($result)) == true) {
 				$d[] = $row;
 			}
 		} else {
-			while ($row = mysqli_fetch_assoc($this->result)) {
+			while (($row = mysqli_fetch_assoc($this->result)) == true) {
 				$d[] = $row;
 			}
 		}
@@ -809,7 +809,7 @@ class Vendor
 			$sql = "DESCRIBE	`" . $tableSearch . "`";
 			$result = mysqli_query($this->link,$sql);
 			if (mysqli_num_rows($result) > 0) {
-				while ($row = mysqli_fetch_array($result)) {
+				while (($row = mysqli_fetch_array($result)) == true) {
 					$strField = "`" . $tableSearch . "`.`" . $row['Field'] . "`";
 					$key      = array_search($strField, $filterArray, true);
 					if ($i > 0 && strlen($key) == 0) {

@@ -26,7 +26,7 @@ Ext
 			var local = false;
 			var folderProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderController.php",
-				method:"POST",
+				method : "POST",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -57,7 +57,7 @@ Ext
 				autoLoad : true,
 				autoDestroy : true,
 				pruneModifiedRecords : true,
-			
+
 				baseParams : {
 					method : "read",
 					page : "master",
@@ -226,7 +226,8 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,jsonResponse.message); //uncomment for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// //uncomment for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -513,9 +514,8 @@ Ext
 						sortable : true,
 						hidden : true,
 						width : 100
-					}  ];
+					} ];
 
-			
 			var folderTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
 				dataIndex : "folderNote",
 				header : folderSequenceLabel,
@@ -548,9 +548,10 @@ Ext
 				}
 
 			} ];
-			
-			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
-			 
+
+			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
+					'isDelete', 'isActive', 'isApproved' ];
+
 			var folderGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
@@ -584,7 +585,7 @@ Ext
 									success : function(form, action) {
 										Ext.getCmp("folderDesc_temp").setValue(
 												record.data.folderDesc);
-										
+
 										viewPort.items.get(1).expand();
 									},
 									failure : function(form, action) {
@@ -680,8 +681,8 @@ Ext
 													}
 												}
 												url = url + sub_url; // reques
-																		// and
-																		// ajax
+												// and
+												// ajax
 												Ext.Ajax
 														.request({
 															url : url,
@@ -762,7 +763,8 @@ Ext
 
 									},
 									success : function(response, options) {
-										jsonResponse = Ext.decode(response.responseText);
+										jsonResponse = Ext
+												.decode(response.responseText);
 										if (jsonResponse == false) {
 											Ext.MessageBox.alert(systemLabel,
 													jsonResponse.message);
@@ -848,7 +850,8 @@ Ext
 													method : 'GET',
 													success : function(
 															response, options) {
-														jsonResponse = Ext.decode(response.responseText);
+														jsonResponse = Ext
+																.decode(response.responseText);
 														if (jsonResponse == true) {
 
 															window
@@ -924,9 +927,11 @@ Ext
 								leafId : leafId
 							},
 							success : function(response, options) {
-								jsonResponse = Ext.decode(response.responseText);
+								jsonResponse = Ext
+										.decode(response.responseText);
 								if (jsonResponse == false) {
-									Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+									Ext.MessageBox.alert(systemLabel,
+											jsonResponse.message);
 								} else {
 
 									Ext.getCmp('folderSequence').setValue(
@@ -1100,7 +1105,7 @@ Ext
 				name : 'folderId',
 				id : 'folderId'
 			});
-			
+
 			var firstRecord = new Ext.form.Hidden({
 				name : 'firstRecord',
 				id : 'firstRecord'
@@ -1238,7 +1243,7 @@ Ext
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-										
+
 										Ext.Ajax
 												.request({
 

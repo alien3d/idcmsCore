@@ -75,7 +75,7 @@ class folderAccessModel extends validationClass{
 
 		for($i=0;$i<$this->getTotal();$i++) {
 			$this->setFolderAccessId($this->strict($_GET['folderAccessId'][$i],'numeric'),$i);
-			if($_GET[$folderAccessValue][$i]=='true') {
+			if($_GET['folderAccessValue'][$i]=='true') {
 				$this->setFolderAccessValue(1,$i);
 			} else {
 				$this->setFolderAccessValue(0,$i);

@@ -155,7 +155,7 @@ Ext.onReady(function() {
     });
     var religionStoreList = new Ext.data.JsonStore({
         proxy: religionListProxy,
-        reader: religionListProxy,
+        reader: religionListReader,
         autoLoad: true,
         autoDestroy: true,
         pruneModifiedRecords :true,

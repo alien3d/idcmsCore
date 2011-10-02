@@ -164,12 +164,12 @@ class leafGroupAccessClass  extends  configClass {
 								''
 						END) AS `leafAccessPrintValue`,
 
-						(CASE `leafGroupAccess`.`leafPostAccessValue`
+						(CASE `leafGroupAccess`.`leafAccessPostValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafPostAccessValue`
+						END) AS `leafAccessPostValue`
 				FROM 	`leafGroupAccess`
 				JOIN	`leaf`
 				USING	(`leafId`)
@@ -240,12 +240,12 @@ class leafGroupAccessClass  extends  configClass {
 								''
 						END) AS [leafAccessPrintValue],
 
-						(CASE [leafGroupAccess].[leafPostAccessValue]
+						(CASE [leafGroupAccess].[leafAccessPostValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafPostAccessValue]
+						END) AS [leafAccessPostValue]
 				FROM 	[leafGroupAccess]
 				JOIN	[leaf]
 				ON		[leafGroupAccess].[leafId]=[leaf].[leafId]
@@ -316,12 +316,12 @@ class leafGroupAccessClass  extends  configClass {
 								''
 						END) AS leafAccessPrintValue,
 
-						(CASE LEAFGROUPACCESS.leafPostAccessValue
+						(CASE LEAFGROUPACCESS.leafAccessPostValue
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS leafPostAccessValue
+						END) AS leafAccessPostValue
 				FROM 	LEAFGROUPACCESS
 				JOIN	LEAF
 				USING	(LEAFID)
@@ -409,7 +409,7 @@ class leafGroupAccessClass  extends  configClass {
 							`leafAccessUpdateValue`	=	\"".$this->strict($data_array[3],'boolean')."\",
 							`leafAccessDeleteValue`	=	\"".$this->strict($data_array[4],'boolean')."\",
 							`leafAccessPrintValue`	=	\"".$this->strict($data_array[5],'boolean')."\",
-							`leafPostAccessValue`	=	\"".$this->strict($data_array[6],'boolean')."\"
+							`leafAccessPostValue`	=	\"".$this->strict($data_array[6],'boolean')."\"
 					WHERE 	`leafGroupAccessId`	=	\"".$this->strict($data_array[0],'numeric')."\"";
 				//echo $sql."<br>";
 			} else if ($this->getVendor()==self::mssql) {
@@ -420,7 +420,7 @@ class leafGroupAccessClass  extends  configClass {
 							[leafAccessUpdateValue]	=	\"".$this->strict($data_array[3],'boolean')."\",
 							[leafAccessDeleteValue]	=	\"".$this->strict($data_array[4],'boolean')."\",
 							[leafAccessPrintValue]	=	\"".$this->strict($data_array[5],'boolean')."\",
-							[leafPostAccessValue]	=	\"".$this->strict($data_array[6],'boolean')."\"
+							[leafAccessPostValue]	=	\"".$this->strict($data_array[6],'boolean')."\"
 					WHERE 	[leafGroupAccessId]	=	\"".$this->strict($data_array[0],'numeric')."\"";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql="
@@ -430,7 +430,7 @@ class leafGroupAccessClass  extends  configClass {
 							leafAccessUpdateValue	=	\"".$this->strict($data_array[3],'boolean')."\",
 							leafAccessDeleteValue	=	\"".$this->strict($data_array[4],'boolean')."\",
 							leafAccessPrintValue	=	\"".$this->strict($data_array[5],'boolean')."\",
-							leafPostAccessValue		=	\"".$this->strict($data_array[6],'boolean')."\"
+							leafAccessPostValue		=	\"".$this->strict($data_array[6],'boolean')."\"
 					WHERE 	LEAFGROUPACCESSID		=	\"".$this->strict($data_array[0],'numeric')."\"";
 			}
 			$this->q->update($sql);

@@ -262,7 +262,7 @@ class leafTranslateClass extends  configClass {
 						`leafId`,					`staffId`,
 						`leafAccessReadValue`,		`leafAccessCreateValue`,
 						`leafAccessUpdateValue`,	`leafAccessDeleteValue`,
-						`leafAccessPrintValue`,		`leafPostAccessValue`,
+						`leafAccessPrintValue`,		`leafAccessPostValue`,
 						`leafAccessDraftValue`
 					)
 			VALUES";
@@ -273,7 +273,7 @@ class leafTranslateClass extends  configClass {
 					[leafId],					[staffId],
 					[leafAccessReadValue],		[leafAccessCreateValue],
 					[leafAccessUpdateValue],	[leafAccessDeleteValue],
-					[leafAccessPrintValue],		[leafPostAccessValue],
+					[leafAccessPrintValue],		[leafAccessPostValue],
 					[leafAccessDraftValue]
 				)
 			VALUES";
@@ -284,7 +284,7 @@ class leafTranslateClass extends  configClass {
 							LEAFID,					STAFFID,
 							leafAccessReadValue,	leafAccessCreateValue,
 							leafAccessUpdateValue,	leafAccessDeleteValue,
-							leafAccessPrintValue,	leafPostAccessValue,
+							leafAccessPrintValue,	leafAccessPostValue,
 							leafAccessDraftValue
 						)
 			VALUES";
@@ -487,7 +487,7 @@ class leafTranslateClass extends  configClass {
 						FROM (
 									SELECT *
 									FROM 	RELIGION
-									WHERE ISACTIVE=1  ".$tempSql.$tempSql2.$orderBy."
+									WHERE ISACTIVE=1  ".$tempSql.$tempSql2."
 								 ) a
 						WHERE rownum <= '".($this->getStart()+$this->getLimit()-1)."' )
 						where r >=  '".$this->getStart()."'";

@@ -522,8 +522,7 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = religionStore
-														.getCount();
+												
 												religionStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -837,7 +836,7 @@ Ext
 											});
 											religionDetailEditor.stopEditing();
 											religionDetailStore.insert(0, e);
-											var s = religionDetailGrid
+											 religionDetailGrid
 													.getSelectionModel()
 													.getSelections();
 											religionDetailEditor
@@ -886,8 +885,7 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = religionDetailStore
-														.getCount();
+												
 												url = '../controller/religionDetailController.php?';
 												var sub_url;
 												sub_url = '';

@@ -417,7 +417,7 @@ class Vendor
 			if ($this->module('leafAccessUpdateValue') == 1) {
 				if ($this->audit == 1) {
 					$logAdvanceType = 'U'; // aka update
-					$sqlColumn       = "SHOW COLUMNS FROM `" . strtoupper($this->tableName) . "`";
+					$sqlColumn       = "SHOW COLUMNS FROM \"" . strtoupper($this->tableName) . "\"";
 					$resultColumn    = mysqli_query($this->link, $sqlColumn);
 					if (!$resultColumn) {
 						$this->execute     = 'fail';
@@ -437,7 +437,7 @@ class Vendor
 					$sqlPrevious    = "
 					SELECT 	*
 					FROM 	" . strtoupper($this->tableName) . "
-					WHERE 	" . strtoupper($this->primaryKeyName) . " = ". $this->primaryKeyValue . "'";
+					WHERE 	" . strtoupper($this->primaryKeyName) . " = '". $this->primaryKeyValue . "'";
 					$resultPrevious = mysqli_query($this->link, $sqlPrevious);
 					if (!$resultPrevious) {
 						$this->execute     = 'fail';
@@ -482,8 +482,8 @@ class Vendor
 					// select the current update file
 					$sqlCurrent    = "
 					SELECT 	*
-					FROM 	" . strtoupper($this->tableName) . " 
-					WHERE 	" . strtoupper($this->primaryKeyName) . " ='". $this->primaryKeyValue . "'";
+					FROM 	\"" . strtoupper($this->tableName) . "\" 
+					WHERE 	\"" . strtoupper($this->primaryKeyName) . "\" ='". $this->primaryKeyValue . "'";
 					$resultCurrent = mysqli_query($this->link, $sqlCurrent);
 					if ($resultCurrent) {
 						while ($rowCurrent = mysqli_fetch_array($resultCurrent)) {
@@ -692,7 +692,7 @@ class Vendor
 	 * Retrieves the ID generated for an AUTO_INCREMENT column by the previous query (usually INSERT).
 	 * @return number
 	 */
-	public function lastInsertId()
+	public function lastInsertId($sequence)
 	{
 		$resultId = oci_parse($this->link,"SELECT \"".$sequence.".CURRVAL FROM DUAL");
 		oci_execute($resultId);
@@ -749,11 +749,11 @@ class Vendor
 	{
 		$d = array();
 		if($result) {
-			while($row=oci_fetch_array($result,OCI_ASSOC)){
+			while(($row=oci_fetch_array($result,OCI_ASSOC)) == TRUE){
 				$d[]=$row;
 			}
 		} else {
-			while($row=oci_fetch_array($this->result,OCI_ASSOC)){
+			while(($row=oci_fetch_array($this->result,OCI_ASSOC))== TRUE){
 				$d[]=$row;
 			}
 		}
@@ -891,7 +891,7 @@ class Vendor
 			$sql = "DESCRIBE	`" . $tableSearch . "`";
 			$this->query_view($sql);
 			if ($this->num_rows() > 0) {
-				while ($row = $this->fetch_array()) {
+				while (($row = $this->fetch_array()) == true) {
 					$strField = "\"" . $tableSearch . "\".\"" . $row['Name'] . "\"";
 					$key      = array_search($strField, $filterArray, true);
 					if ($i > 0 && strlen($key) == 0) {

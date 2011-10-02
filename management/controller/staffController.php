@@ -149,7 +149,7 @@ class staffClass extends configClass
 					'" . $this->model->getIsApproved(0,'single') . "',	'" . $this->model->getExecuteBy() . "',
 					" . $this->model->getExecuteTime() . "
 				);";
-		} else if ($this->q->vendor = 'oracle') {
+		} else if ($this->q->vendor == self::oracle) {
 			$sql = "
 				INSERT INTO STAFF 	(
 							STAFFNAME,		STAFFNO,
@@ -425,18 +425,18 @@ class staffClass extends configClass
 							`leafAccessUpdateValue`,
 							`leafAccessDeleteValue`,
 							`leafAccessPrintValue`,
-							`leafPostAccessValue`
+							`leafAccessPostValue`
 					)
 				VALUES
 					(
-							\"" . $rowLeafGroupAcess['leafId'] . "\",
+							\"" . $rowLeafGroupAccess['leafId'] . "\",
 							\"" . $lastInsertId . "\",
 							\"" . $rowLeafGroupAccess['leafAccessCreateValue'] . "\",
 							\"" . $rowLeafGroupAccess['leafAccessReadValue'] . "\",
 							\"" . $rowLeafGroupAccess['leafAccessUpdateValue'] . "\",
 							\"" . $rowLeafGroupAccess['leafAccessDeleteValue'] . "\",
 							\"" . $rowLeafGroupAccess['leafAccessPrintValue'] . "\",
-							\"" . $rowLeafGroupAccess['leafPostAccessValue'] . "\"
+							\"" . $rowLeafGroupAccess['leafAccessPostValue'] . "\"
 					)	";
 				} else if ($this->getVendor() == self::mssql) {
 					$sql = "
@@ -449,7 +449,7 @@ class staffClass extends configClass
 							[leafAccessUpdateValue],
 							[leafAccessDeleteValue],
 							[leafAccessPrintValue],
-							[leafPostAccessValue]
+							[leafAccessPostValue]
 					)
 				VALUES
 					(
@@ -460,7 +460,7 @@ class staffClass extends configClass
 							'" . $rowLeafGroupAccess['leafAccessUpdateValue'] . "',
 							'" . $rowLeafGroupAccess['leafAccessDeleteValue'] . "',
 							'" . $rowLeafGroupAccess['leafAccessPrintValue'] . "',
-							'" . $rowLeafGroupAccess['leafPostAccessValue'] . "'
+							'" . $rowLeafGroupAccess['leafAccessPostValue'] . "'
 					)	";
 				} else if ($this->getVendor() == self::oracle) {
 					$sql = "
@@ -473,7 +473,7 @@ class staffClass extends configClass
 							leafAccessUpdateValue,
 							leafAccessDeleteValue,
 							leafAccessPrintValue,
-							leafPostAccessValue
+							leafAccessPostValue
 					)
 				VALUES
 					(
@@ -484,7 +484,7 @@ class staffClass extends configClass
 							'" . $rowLeafGroupAccess['leafAccessUpdateValue'] . "',
 							'" . $rowLeafGroupAccess['leafAccessDeleteValue'] . "',
 							'" . $rowLeafGroupAccess['leafAccessPrintValue'] . "',
-							'" . $rowLeafGroupAccess['leafPostAccessValue'] . "'
+							'" . $rowLeafGroupAccess['leafAccessPostValue'] . "'
 					)	";
 				}
 				$this->q->create($sql);
@@ -826,7 +826,7 @@ class staffClass extends configClass
  					ON		DEPARTMENT.DEPARTMENTID		=	STAFF.DEPARTMENTID
 					WHERE 	STAFF.ISACTIVE				=	'1'
 					AND		GROUP_.ISACTIVE 			=	'1'
-					AND		DEPARTMENT.ISACTIVE			=	'1'  " . $tempSql . $tempSql2 . $orderBy . "
+					AND		DEPARTMENT.ISACTIVE			=	'1'  " . $tempSql . $tempSql2  . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit() - 1) . "' )
 						where r >=  '" . $this->getStart() . "'";
@@ -850,7 +850,7 @@ class staffClass extends configClass
             	}
             }
             $items = array();
-            while ($row = $this->q->fetchAssoc()) {
+            while (($row = $this->q->fetchAssoc())==TRUE)  {
             	$items[] = $row;
             }
             if ($this->model->getStaffId(0,'single')) {
@@ -1041,7 +1041,7 @@ class staffClass extends configClass
 					$sql = "
 					SELECT	leafAccessCreateValue	AS	\"leafAccessCreateValue\",
 							leafAccessDeleteValue	AS  \"leafAccessDeleteValue\",
-							leafPostAccessValue 	AS	\"leafPostAccessValue\",
+							leafAccessPostValue 	AS	\"leafAccessPostValue\",
 							leafAccessPrintValue 	AS	\"leafAccessPrintValue\",
 							leafAccessReadValue 	AS	\"leafAccessReadValue\",
 							leafAccessUpdateValue 	AS	\"leafAccessUpdateValue\"
@@ -1056,10 +1056,10 @@ class staffClass extends configClass
 						UPDATE 	`leafAccess`
 						SET 	`leafAccessCreateValue`			=	\"". $rowLeafGroupAccess['leafAccessCreateValue'] ."\",
 								`leafAccessDeleteValue`			=	\"". $rowLeafGroupAccess['leafAccessReadValue'] ."\",
-								`leafPostAccessValue`			=	\"". $rowLeafGroupAccess['leafAccessUpdateValue'] ."\",
+								`leafAccessPostValue`			=	\"". $rowLeafGroupAccess['leafAccessUpdateValue'] ."\",
 								`leafAccessPrintValue`			=	\"". $rowLeafGroupAccess['leafAccessDeleteValue'] ."\",
 								`leafAccessReadValue`			=	\"". $rowLeafGroupAccess['leafAccessPrintValue'] ."\",
-								`leafAccessUpdateValue`			=	\"". $rowLeafGroupAccess['leafPostAccessValue'] ."\"
+								`leafAccessUpdateValue`			=	\"". $rowLeafGroupAccess['leafAccessPostValue'] ."\"
 						WHERE 	`staffId`						=	\"". $this->model->getStaffId(0,'single') ."\"
 						AND		`leafId`						=	\"". $rowLeafGroupAccess['leafId'] ."\"";
 					} else if ($this->getVendor() == self::mssql) {
@@ -1067,10 +1067,10 @@ class staffClass extends configClass
 						UPDATE 	[leafAccess]
 						SET 	[leafAccessCreateValue]			=	'". $rowLeafGroupAccess['leafAccessCreateValue'] ."',
 								[leafAccessDeleteValue]			=	'". $rowLeafGroupAccess['leafAccessReadValue'] ."',
-								[leafPostAccessValue]			=	'". $rowLeafGroupAccess['leafAccessUpdateValue'] ."',
+								[leafAccessPostValue]			=	'". $rowLeafGroupAccess['leafAccessUpdateValue'] ."',
 								[leafAccessPrintValue]			=	'". $rowLeafGroupAccess['leafAccessDeleteValue'] ."',
 								[leafAccessReadValue]			=	'". $rowLeafGroupAccess['leafAccessPrintValue'] ."',
-								[leafAccessUpdateValue]			=	'". $rowLeafGroupAccess['leafPostAccessValue'] ."'
+								[leafAccessUpdateValue]			=	'". $rowLeafGroupAccess['leafAccessPostValue'] ."'
 						WHERE 	[staffId]						=	'". $this->model->getStaffId(0,'single') ."'
 						AND		[leafId]						=	'". $rowLeafGroupAccess['leafId'] ."'";
 					} else if ($this->getVendor() == self::oracle) {
@@ -1078,10 +1078,10 @@ class staffClass extends configClass
 								UPDATE 	LEAFACCESS
 						SET 	leafAccessCreateValue		=	'". $rowLeafGroupAccess['leafAccessCreateValue'] ."',
 								leafAccessDeleteValue		=	'". $rowLeafGroupAccess['leafAccessReadValue'] ."',
-								leafPostAccessValue			=	'". $rowLeafGroupAccess['leafAccessUpdateValue'] ."',
+								leafAccessPostValue			=	'". $rowLeafGroupAccess['leafAccessUpdateValue'] ."',
 								leafAccessPrintValue		=	'". $rowLeafGroupAccess['leafAccessDeleteValue'] ."',
 								leafAccessReadValue			=	'". $rowLeafGroupAccess['leafAccessPrintValue'] ."',
-								leafAccessUpdateValue		=	'". $rowLeafGroupAccess['leafPostAccessValue'] ."'
+								leafAccessUpdateValue		=	'". $rowLeafGroupAccess['leafAccessPostValue'] ."'
 						WHERE 	STAFFID						=	'". $this->model->getStaffId(0,'single') ."'
 						AND		LEAFID						=	'". $rowLeafGroupAccess['leafId'] ."'";
 					}
@@ -1104,7 +1104,7 @@ class staffClass extends configClass
 										`leafAccessUpdateValue`,
 										`leafAccessDeleteValue`,
 										`leafAccessPrintValue`,
-										`leafPostAccessValue`
+										`leafAccessPostValue`
 								)
 							VALUES
 								(
@@ -1114,7 +1114,7 @@ class staffClass extends configClass
 										\"". $rowLeafGroupAccess['leafAccessUpdateValue'] ."\",
 										\"". $rowLeafGroupAccess['leafAccessDeleteValue'] ."\",
 										\"". $rowLeafGroupAccess['leafAccessPrintValue'] ."\",
-										\"". $rowLeafGroupAccess['leafPostAccessValue'] ."\"
+										\"". $rowLeafGroupAccess['leafAccessPostValue'] ."\"
 								)	";
 					} else if ($this->getVendor() == self::mssql) {
 						$sql = "
@@ -1126,7 +1126,7 @@ class staffClass extends configClass
 										[leafAccessUpdateValue],
 										[leafAccessDeleteValue],
 										[leafAccessPrintValue],
-										[leafPostAccessValue]
+										[leafAccessPostValue]
 								)
 							VALUES
 								(
@@ -1136,7 +1136,7 @@ class staffClass extends configClass
 										'". $rowLeafGroupAccess['leafAccessUpdateValue'] ."',
 										'". $rowLeafGroupAccess['leafAccessDeleteValue'] ."',
 										'". $rowLeafGroupAccess['leafAccessPrintValue'] ."',
-										'". $rowLeafGroupAccess['leafPostAccessValue'] ."'
+										'". $rowLeafGroupAccess['leafAccessPostValue'] ."'
 								)	";
 					} else if ($this->getVendor() == self::oracle) {
 						$sql = "
@@ -1148,7 +1148,7 @@ class staffClass extends configClass
 										leafAccessUpdateValue,
 										leafAccessDeleteValue,
 										leafAccessPrintValue,
-										leafPostAccessValue
+										leafAccessPostValue
 								)
 							VALUES
 								(
@@ -1158,7 +1158,7 @@ class staffClass extends configClass
 										'". $rowLeafGroupAccess['leafAccessUpdateValue'] ."',
 										'". $rowLeafGroupAccess['leafAccessDeleteValue'] ."',
 										'". $rowLeafGroupAccess['leafAccessPrintValue'] ."',
-										'". $rowLeafGroupAccess['leafPostAccessValue'] ."'
+										'". $rowLeafGroupAccess['leafAccessPostValue'] ."'
 								)	";
 					}
 					$this->q->create($sql);
@@ -1507,7 +1507,7 @@ class staffClass extends configClass
                         //
                         $loopRow = 4;
                         $i       = 0;
-                        while ($row = $this->q->fetchAssoc()) {
+                        while (($row = $this->q->fetchAssoc()) == TRUE) {
                         	//	echo print_r($row);
                         	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
                         	$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row['staffName']);

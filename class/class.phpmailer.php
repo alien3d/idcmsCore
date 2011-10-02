@@ -1642,7 +1642,7 @@ class PHPMailer {
 		$eol = "\r\n";
 		$escape = '=';
 		$output = '';
-		while( list(, $line) = each($lines) ) {
+		while( (list(, $line) = each($lines)) == true) {
 			$linlen = strlen($line);
 			$newline = '';
 			for($i = 0; $i < $linlen; $i++) {

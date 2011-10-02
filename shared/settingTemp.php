@@ -166,7 +166,7 @@ var leafNote			= '<?php echo $row_leafAccess['leafTranslate'];   ?>';
 var leafAccessCreateValue	= '<?php echo $row_leafAccess['leafAccessCreateValue'];   ?>';
 var leafAccessReadValue		= '<?php echo $row_leafAccess['leafAccessReadValue'];   ?>';
 var leafAccessPrintValue	= '<?php echo $row_leafAccess['leafAccessPrintValue'];   ?>';
-var leafPostAccessValue	= '<?php echo $row_leafAccess['leafPostAccessValue']; ?>';
+var leafAccessPostValue	= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>';
 
 <?php
 		if( $q->vendor==sharedx::mysql) {

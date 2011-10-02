@@ -432,7 +432,7 @@ class themeClass  extends configClass {
 			FROM 	THEME
 			JOIN	STAFF
 			ON		THEME.EXECUTEBY 	= 	STAFF.STAFFID
-			WHERE 	THEME.ISACTIVE	=	1  " . $tempSql . $tempSql2 . $orderBy . "
+			WHERE 	THEME.ISACTIVE	=	1  " . $tempSql . $tempSql2  . "
 								 ) a
 						where rownum <= '". ($this->getStart() + $this->getLimit() - 1) . "' )
 						where r >=  '". $this->getStart() . "'";
@@ -456,7 +456,7 @@ class themeClass  extends configClass {
             	}
             }
             $items = array();
-            while ($row = $this->q->fetchAssoc()) {
+            while (($row = $this->q->fetchAssoc()) == true) {
             	$items[] = $row;
             }
             if ($this->model->getThemeId(0,'single')) {
@@ -923,7 +923,7 @@ class themeClass  extends configClass {
                         //
                         $loopRow = 4;
                         $i       = 0;
-                        while ($row = $this->q->fetchAssoc()) {
+                        while (($row = $this->q->fetchAssoc()) == true) {
                         	//	echo print_r($row);
                         	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
                         	if($this->isAdmin==1){

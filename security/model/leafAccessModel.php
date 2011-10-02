@@ -73,7 +73,7 @@ class leafAccessModel extends validationClass{
 	 * Leaf Posting Access Value
 	 * @var bool
 	 */
-	private $leafPostAccessValue;
+	private $leafAccessPostValue;
 
 
 
@@ -169,10 +169,10 @@ class leafAccessModel extends validationClass{
 				$this->setleafAccessPrintValue($i, 0);
 			}
 
-			if($_GET['leafPostAccessValue'][$i]=='true') {
-				$this->setleafPostAccessValue($i, 1);
+			if($_GET['leafAccessPostValue'][$i]=='true') {
+				$this->setleafAccessPostValue($i, 1);
 			} else {
-				$this->setleafPostAccessValue($i, 0);
+				$this->setleafAccessPostValue($i, 0);
 			}
 			if($_GET['leafAccessDraftValue'][$i]=='true') {
 				$this->leafAccessDraftValue[$i] =1;

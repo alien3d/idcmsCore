@@ -112,7 +112,7 @@ class tableMappingTranslationClass extends  configClass {
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
 
-		$this->model = new tableMappingTranslationTranslationModel();
+		$this->model = new tableMappingTranslateModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -356,7 +356,7 @@ class tableMappingTranslationClass extends  configClass {
 									SELECT 		*
 									FROM 		TABLEMAPPINGTRANSLATION
 									WHERE		1
-									AND 		".$tempSql.$tempSql2.$orderBy."
+									AND 		".$tempSql.$tempSql2."
 								 ) a
 						WHERE rownum <= '".($this->getStart()+$this->getLimit()-1)."' )
 						where r >=  '".$this->getStart()."'";
@@ -383,7 +383,7 @@ class tableMappingTranslationClass extends  configClass {
 			}
 		}
 		$items 			= 	array();
-		while($row  	= 	$this->q->fetchAssoc()) {
+		while(($row  	= 	$this->q->fetchAssoc()) == true) {
 			$items[]	=	$row;
 		}
 
@@ -740,7 +740,7 @@ class tableMappingTranslationClass extends  configClass {
 		//
 		$loopRow=4;
 		$i=0;
-		while($row  = 	$this->q->fetchAssoc()) {
+		while(($row  = 	$this->q->fetchAssoc()) == true) {
 
 
 			$this->excel->getActiveSheet()->setCellValue('B'.$loopRow,++$i);
@@ -771,7 +771,7 @@ class tableMappingTranslationClass extends  configClass {
 
 }
 
-$tableMappingTranslationTranslationObject  	= 	new tableMappingTranslationTranslationClass();
+$tableMappingTranslationTranslationObject  	= 	new tableMappingTranslationClass();
 
 /**
  *	crud -create,read,update,delete
