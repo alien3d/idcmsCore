@@ -67,7 +67,7 @@ class documentCategoryClass extends configClass
     function execute ()
     {
         parent::__construct();
-        $this->q = new vendor();
+        $this->q = new Vendor();
         $this->q->vendor = $this->getVendor();
         $this->q->leafId = $this->getLeafId();
         $this->q->staffId = $this->getStaffId();
@@ -82,7 +82,7 @@ class documentCategoryClass extends configClass
         $this->model = new documentCategoryModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
-        $this->documentTrail = new documentTrailClass();
+        $this->documentTrail = new DocumentTrailClass();
         $this->documentTrail->setVendor($this->getVendor());
         $this->documentTrail->setStaffId($this->getStaffId());
         $this->documentTrail->setLanguageId($this->getLanguageId());
@@ -816,8 +816,8 @@ class documentCategoryClass extends configClass
                 case 'isDefault':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" .
-                         $this->model->getDocumentCategoryId($i, 'array') . "\"
+							WHEN '" .
+                         $this->model->getDocumentCategoryId($i, 'array') . "'
 							THEN '" .
                          $this->model->getIsDefault($i, 'array') . "'";
                     }
@@ -825,8 +825,8 @@ class documentCategoryClass extends configClass
                 case 'isNew':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" .
-                         $this->model->getDocumentCategoryId($i, 'array') . "\"
+							WHEN '" .
+                         $this->model->getDocumentCategoryId($i, 'array') . "'
 							THEN '" .
                          $this->model->getIsNew($i, 'array') . "'";
                     }
@@ -834,8 +834,8 @@ class documentCategoryClass extends configClass
                 case 'isDraft':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" .
-                         $this->model->getDocumentCategoryId($i, 'array') . "\"
+							WHEN '" .
+                         $this->model->getDocumentCategoryId($i, 'array') . "'
 							THEN '" .
                          $this->model->getIsDraft($i, 'array') . "'";
                     }
@@ -843,8 +843,8 @@ class documentCategoryClass extends configClass
                 case 'isUpdate':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" .
-                         $this->model->getDocumentCategoryId($i, 'array') . "\"
+							WHEN '" .
+                         $this->model->getDocumentCategoryId($i, 'array') . "'
 							THEN '" .
                          $this->model->getIsUpdate($i, 'array') . "'";
                     }
@@ -852,8 +852,8 @@ class documentCategoryClass extends configClass
                 case 'isDelete':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" .
-                         $this->model->getDocumentCategoryId($i, 'array') . "\"
+							WHEN '" .
+                         $this->model->getDocumentCategoryId($i, 'array') . "'
 							THEN '" .
                          $this->model->getIsDelete($i, 'array') . "'";
                     }
@@ -861,8 +861,8 @@ class documentCategoryClass extends configClass
                 case 'isActive':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" .
-                         $this->model->getDocumentCategoryId($i, 'array') . "\"
+							WHEN '" .
+                         $this->model->getDocumentCategoryId($i, 'array') . "'
 							THEN '" .
                          $this->model->getIsActive($i, 'array') . "'";
                     }
@@ -870,12 +870,30 @@ class documentCategoryClass extends configClass
                 case 'isApproved':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" .
-                         $this->model->getDocumentCategoryId($i, 'array') . "\"
+							WHEN '" .
+                         $this->model->getDocumentCategoryId($i, 'array') . "'
 							THEN '" .
                          $this->model->getIsApproved($i, 'array') . "'";
                     }
                     break;
+                    case 'isReview':
+                        for ($i = 0; $i < $loop; $i ++) {
+                            $sqlLooping .= "
+                            WHEN '" .
+                            $this->model->getDocumentCategoryId($i, 'array') . "'
+                            THEN '" .
+                            $this->model->getIsReview($i, 'array') . "'";
+                        }
+                        break;
+                        case 'isPost':
+                            for ($i = 0; $i < $loop; $i ++) {
+                                $sqlLooping .= "
+                                WHEN '" .
+                                $this->model->getDocumentCategoryId($i, 'array') . "'
+                                THEN '" .
+                                $this->model->getIsPost($i, 'array') . "'";
+                            }
+                            break;
             }
             $sqlLooping .= " END,";
         }

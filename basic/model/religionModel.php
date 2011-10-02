@@ -156,6 +156,8 @@ class ReligionModel extends ValidationClass
         $this->setIsActive(1, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see validationClass::delete()
@@ -169,6 +171,8 @@ class ReligionModel extends ValidationClass
         $this->setIsActive(0, '', 'string');
         $this->setIsDelete(1, '', 'string');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see validationClass::draft()
@@ -182,9 +186,11 @@ class ReligionModel extends ValidationClass
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see validationClass::approved()
 	 */
     public function approved ()
     {
@@ -195,6 +201,38 @@ class ReligionModel extends ValidationClass
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(1, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
+    }
+    /* (non-PHPdoc)
+     * @see validationClass::review()
+    */
+    public function review ()
+    {
+        $this->setIsDefault(0, 0, 'single');
+        $this->setIsNew(1, 0, 'single');
+        $this->setIsDraft(0, 0, 'single');
+        $this->setIsUpdate(0, 0, 'single');
+        $this->setIsActive(0, 0, 'single');
+        $this->setIsDelete(0, 0, 'single');
+        $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(1, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
+    }
+    /* (non-PHPdoc)
+     * @see validationClass::post()
+    */
+    public function post ()
+    {
+        $this->setIsDefault(0, 0, 'single');
+        $this->setIsNew(1, 0, 'single');
+        $this->setIsDraft(0, 0, 'single');
+        $this->setIsUpdate(0, 0, 'single');
+        $this->setIsActive(0, 0, 'single');
+        $this->setIsDelete(0, 0, 'single');
+        $this->setIsApproved(1, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(1, 0, 'single');
     }
     /**
      * Update Religion Table Status

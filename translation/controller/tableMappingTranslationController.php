@@ -83,7 +83,7 @@ class tableMappingTranslationClass extends  configClass {
 	function execute() {
 		parent :: __construct();
 
-		$this->q 					=	new vendor();
+		$this->q 					=	new Vendor();
 
 		$this->q->vendor			=	$this->getVendor();
 
@@ -116,7 +116,7 @@ class tableMappingTranslationClass extends  configClass {
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
-		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail = new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
 

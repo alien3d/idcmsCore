@@ -120,7 +120,7 @@ class Security extends ConfigClass
     function execute ()
     {
         parent::__construct();
-        $this->q = new vendor();
+        $this->q = new Vendor();
         $this->q->vendor = $this->getVendor();
         $this->q->leafId = $this->getLeafId();
         $this->q->staffId = $this->getStaffId();

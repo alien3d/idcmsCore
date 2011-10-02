@@ -74,7 +74,7 @@ $vendor   =   $shared->v;
 $username =   $shared->u; 												// your username
 $password =   $shared->p;
   												// your database usernamer
-$q=new vendor();													// declare object
+$q=new Vendor();													// declare object
 
 $q->vendor =$vendor;
 $q->connect($connection, $username, $database, $password);

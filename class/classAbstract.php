@@ -95,12 +95,12 @@ abstract class ConfigClass
     public $isAdmin;
     /**
      * Enter description here ...
-     * @var unknown_type
+     * @var string
      */
     public $value;
     /**
      * Enter description here ...
-     * @var unknown_type
+     * @var string
      */
     public $type;
     /**
@@ -109,20 +109,31 @@ abstract class ConfigClass
      */
     private $application;
     /**
-     * Mysql Database
+     * Mysql Database (open Core)
      * @var const string
      */
     const mysql = 'mysql';
     /**
-     * Microsoft Sql Server Database
+     * Microsoft Sql Server Database (Close Source)
      * @var const string
      */
     const mssql = 'microsoft';
     /**
-     * Oracle Database
+     * Oracle Database (Close  Source)
      * @var const string
      */
     const oracle = 'oracle';
+    /**
+     * Database DB2 IBM ( Close Source)
+     * @var const string
+     */
+    const db2 = 'db2';
+    /**
+     * Postgress (Open Source)
+     * @var const string
+     */
+    const postgress = 'postgress';
+    
     // end basic access database
     /*
 	 *   @version  0.1  filter strict php setting
@@ -160,7 +171,18 @@ abstract class ConfigClass
             $this->setUsername('idcmsCore');
             $this->setPassword('pa$$word4SPH');
             $this->setApplication('idcmsCore');
-        } else {
+        }  elseif ($this->getVendor() == self::db2) {
+            require_once ('classDb2.php');
+            $this->setConnection('ADMIN-PC\X2');
+            $this->setUsername('root');
+            $this->setpassword("pa\$\$word4SPH");
+            $this->setApplication('idcmsCore');
+        } elseif ($this->getVendor() == self::postgress) {
+            require_once ('classPostgress.php');
+            $this->setConnection('localhost');
+            $this->setUsername('idcmsCore');
+            $this->setPassword('pa$$word4SPH');
+        }else {
             // undefined database vendor and application
         }
     }
@@ -180,6 +202,18 @@ abstract class ConfigClass
      * Delete Record From Database
      */
     abstract protected function delete ();
+    /**
+     * Draft Record From Database
+     */
+    abstract protected function draft ();
+    /**
+     * Review Record From Database
+     */
+    abstract protected function review ();
+    /**
+     * Post Record From Database
+     */
+    abstract protected function post ();
     /**
      * Microsoft Excel 2007 Ouput File Generation
      */

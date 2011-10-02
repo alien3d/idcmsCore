@@ -12,10 +12,22 @@ require_once ("../../class/classValidation.php");
  */
 class ReligionDetailModel extends ValidationClass
 {
-    // table field
+    
+    /**
+     * @var int
+     */
     private $religionDetailId;
+    /**
+     * @var int
+     */
     private $religionId;
+    /**
+     * @var string
+     */
     private $religionDetailTitle;
+    /**
+     * @var string
+     */
     private $religionDetailDesc;
     /* (non-PHPdoc)
 	 * @see validationClass::execute()
@@ -67,8 +79,7 @@ class ReligionDetailModel extends ValidationClass
                     "to_date(\"" . date("Y-m-d H:i:s") .
                      "\",'YYYY-MM-DD HH24:MI:SS')");
                 }
-        // updateStatus
-        //	echo "Jumlah record ".count($_GET['religionId']);
+      
         $this->setTotal(count($_GET['religionId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
         "isDelete", "isActive", "isApproved");
@@ -202,6 +213,36 @@ class ReligionDetailModel extends ValidationClass
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(1, 0, 'single');
+    }
+    /* (non-PHPdoc)
+     * @see validationClass::review()
+    */
+    public function review ()
+    {
+    $this->setIsDefault(0, 0, 'single');
+    $this->setIsNew(1, 0, 'single');
+    $this->setIsDraft(0, 0, 'single');
+    $this->setIsUpdate(0, 0, 'single');
+    $this->setIsActive(0, 0, 'single');
+    $this->setIsDelete(0, 0, 'single');
+    $this->setIsApproved(0, 0, 'single');
+    $this->setIsReview(1, 0, 'single');
+    $this->setIsPost(0, 0, 'single');
+    }
+    /* (non-PHPdoc)
+    * @see validationClass::post()
+    */
+    public function post ()
+    {
+    $this->setIsDefault(0, 0, 'single');
+    $this->setIsNew(1, 0, 'single');
+    $this->setIsDraft(0, 0, 'single');
+    $this->setIsUpdate(0, 0, 'single');
+    $this->setIsActive(0, 0, 'single');
+    $this->setIsDelete(0, 0, 'single');
+    $this->setIsApproved(1, 0, 'single');
+    $this->setIsReview(0, 0, 'single');
+    $this->setIsPost(1, 0, 'single');
     }
     /**
      * Update Religion Table Status

@@ -65,7 +65,7 @@ class groupClass  extends configClass {
 	function execute() {
 		parent :: __construct();
 
-		$this->q 					=	new vendor();
+		$this->q 					=	new Vendor();
 		$this->q->vendor			=	$this->getVendor();
 		$this->q->leafId			=	$this->getLeafId();
 		$this->q->staffId			=	$this->getStaffId();
@@ -81,7 +81,7 @@ class groupClass  extends configClass {
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
-		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail = new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());
 		$this->documentTrail->setLanguageId($this->getLanguageId());

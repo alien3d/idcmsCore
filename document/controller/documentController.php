@@ -14,7 +14,7 @@ require_once ("../model/documentModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class documentClass extends configClass
+class DocumentClass extends configClass
 {
     /**
      * Connection to the database
@@ -82,7 +82,7 @@ class documentClass extends configClass
     function execute ()
     {
         parent::__construct();
-        $this->q = new vendor();
+        $this->q = new Vendor();
         $this->q->vendor = $this->getVendor();
         $this->q->leafId = $this->getLeafId();
         $this->q->staffId = $this->getStaffId();
@@ -97,7 +97,7 @@ class documentClass extends configClass
         $this->model = new documentModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
-        $this->documentTrail = new documentTrailClass();
+        $this->documentTrail = new DocumentTrailClass();
         $this->documentTrail->setVendor($this->getVendor());
         $this->documentTrail->setStaffId($this->getStaffId());
         $this->documentTrail->setLanguageId($this->getLanguageId());
@@ -1301,7 +1301,7 @@ class documentClass extends configClass
         }
     }
 }
-$documentObject = new documentClass();
+$documentObject = new DocumentClass();
 //$documentObject->execute();
 //$documentObject->create();
 /**

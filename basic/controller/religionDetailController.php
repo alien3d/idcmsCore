@@ -14,21 +14,21 @@ require_once ("../model/religionDetailModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class religionDetailDetailClass extends ConfigClass
+class ReligionDetailClass extends ConfigClass
 {
     /**
      * Connection to the database
-     * @var string
+     * @var object
      */
     public $q;
     /**
      * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-     * @var string
+     * @var object
      */
     private $excel;
     /**
      * Document Trail Audit.
-     * @var string
+     * @var object
      */
     private $documentTrail;
     /**
@@ -67,7 +67,7 @@ class religionDetailDetailClass extends ConfigClass
     function execute ()
     {
         parent::__construct();
-        $this->q = new vendor();
+        $this->q = new Vendor();
         $this->q->vendor = $this->getVendor();
         $this->q->leafId = $this->getLeafId();
         $this->q->staffId = $this->getStaffId();
@@ -79,10 +79,10 @@ class religionDetailDetailClass extends ConfigClass
         $this->audit = 0;
         $this->log = 1;
         $this->q->log = $this->log;
-        $this->model = new religionDetailModel();
+        $this->model = new ReligionDetailModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
-        $this->documentTrail = new documentTrailClass();
+        $this->documentTrail = new DocumentTrailClass();
         $this->documentTrail->setVendor($this->getVendor());
         $this->documentTrail->setStaffId($this->getStaffId());
         $this->documentTrail->setLanguageId($this->getLanguageId());
@@ -772,6 +772,24 @@ class religionDetailDetailClass extends ConfigClass
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
                     }
                     break;
+                case 'isReview':
+                    for ($i = 0; $i < $loop; $i ++) {
+                        $sqlLooping .= "
+                            WHEN '" .
+                         $this->model->getReligionDetailId($i, 'array') . "'
+                            THEN '" . $this->model->getIsReview($i, 'array') .
+                         "'";
+                    }
+                    break;
+                case 'isPost':
+                    for ($i = 0; $i < $loop; $i ++) {
+                        $sqlLooping .= "
+                                WHEN '" .
+                         $this->model->getReligionDetailId($i, 'array') . "'
+                                THEN '" .
+                         $this->model->getIsPost($i, 'array') . "'";
+                    }
+                    break;
             }
             $sqlLooping .= " END,";
         }
@@ -955,7 +973,7 @@ class religionDetailDetailClass extends ConfigClass
         }
     }
 }
-$religionDetailObject = new religionDetailDetailClass();
+$religionDetailObject = new ReligionDetailClass();
 /**
  * crud -create,read,update,delete
  * */

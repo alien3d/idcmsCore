@@ -21,6 +21,8 @@ abstract class ValidationClass
     private $isActive;
     private $isDelete;
     private $isApproved;
+    private $isReview;
+    private $isPost;
     private $executeBy;
     private $executeTime;
     /*
@@ -552,6 +554,86 @@ abstract class ValidationClass
         } else 
             if ($type == 'array') {
                 return $this->isApproved[$key];
+            } else {
+                echo json_encode(
+                array("success" => false, 
+                "message" => "Cannot Identifiy Type String Or Array:getIsApproved ?"));
+                exit();
+            }
+    }
+    /**
+     * Set isReview Value
+     * @param bool $value
+     * @param array[int]int $key List Of Primary Key.
+     * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+     */
+    public function setIsReview($value, $key, $type)
+    {
+        if ($type == 'single') {
+            $this->isReview = $value;
+        } else 
+            if ($type == 'array') {
+                $this->isReview[$key] = $value;
+            } else {
+                echo json_encode(
+                array("success" => false, 
+                "message" => "Cannot Identifiy Type String Or Array:setIsApproved ?"));
+                exit();
+            }
+    }
+    /**
+     * Return isReview Value
+     * @param array[int]int $key List Of Primary Key.
+     * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+     * @return bool|array
+     */
+    public function getIsReview ($key, $type)
+    {
+        if ($type == 'single') {
+            return $this->isReview;
+        } else 
+            if ($type == 'array') {
+                return $this->isReview[$key];
+            } else {
+                echo json_encode(
+                array("success" => false, 
+                "message" => "Cannot Identifiy Type String Or Array:getIsApproved ?"));
+                exit();
+            }
+    }
+    /**
+     * Set isPost Value
+     * @param bool $value
+     * @param array[int]int $key List Of Primary Key.
+     * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+     */
+    public function setIsPost ($value, $key, $type)
+    {
+        if ($type == 'single') {
+            $this->isPost = $value;
+        } else 
+            if ($type == 'array') {
+                $this->isPost[$key] = $value;
+            } else {
+                echo json_encode(
+                array("success" => false, 
+                "message" => "Cannot Identifiy Type String Or Array:setIsApproved ?"));
+                exit();
+            }
+    }
+    /**
+     * Return isPost Value
+     * @param array[int]int $key List Of Primary Key.
+     * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+     * @return bool|array
+     */
+    public function getIsPost ($key, $type)
+    {
+        if ($type == 'single') {
+            return $this->isPost;
+        } else 
+            if ($type == 'array') {
+                return $this->isPost;
             } else {
                 echo json_encode(
                 array("success" => false, 

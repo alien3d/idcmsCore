@@ -83,7 +83,7 @@ class folderTranslateClass extends  configClass {
 	function execute() {
 		parent :: __construct();
 
-		$this->q 					=	new vendor();
+		$this->q 					=	new Vendor();
 
 		$this->q->vendor			=	$this->getVendor();
 
@@ -115,7 +115,7 @@ class folderTranslateClass extends  configClass {
 		$this->model = new folderModel();
 		$this->model->vendor = $this->getVendor();
 		$this->model->execute();
-		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail = new DocumentTrailClass();
 
 
 	}
@@ -697,7 +697,7 @@ class folderTranslateClass extends  configClass {
 			$this->q->fast($sql);
 
 		}
-		if( $this->q->vendor='mysql'){
+		if( $this->q->vendor==self ::mysql){
 			$sql="
 			SELECT	*
 			FROM 	`folderTranslate`

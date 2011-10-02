@@ -83,7 +83,7 @@ class moduleTranslateClass extends configClass
     function execute ()
     {
         parent::__construct();
-        $this->q = new vendor();
+        $this->q = new Vendor();
         $this->q->vendor = $this->vendor;
         $this->q->leafId = $this->leafId;
         $this->q->staffId = $this->staffId;
@@ -103,7 +103,7 @@ class moduleTranslateClass extends configClass
         $this->model = new moduleModel();
         $this->model->vendor = $this->vendor;
         $this->model->execute();
-        $this->documentTrail = new documentTrailClass();
+        $this->documentTrail = new DocumentTrailClass();
     }
     function create ()
     {

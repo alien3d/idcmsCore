@@ -25,7 +25,7 @@ class loginClass extends configClass {
 	public function execute(){
 		parent :: __construct();
 
-		$this->q 					=	new vendor();
+		$this->q 					=	new Vendor();
 
 		$this->q->vendor			=	$this->getVendor();
 

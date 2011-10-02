@@ -68,7 +68,7 @@ class logClass extends configClass
     public function execute ()
     {
         parent::__construct();
-        $this->q = new vendor();
+        $this->q = new Vendor();
         $this->q->vendor = $this->vendor;
         $this->q->leafId = $this->leafId;
         $this->q->staffId = $this->staffId;
@@ -83,7 +83,7 @@ class logClass extends configClass
         $this->model = new logModel();
         $this->model->vendor = $this->vendor;
         $this->model->execute();
-        $this->documentTrail = new documentTrailClass();
+        $this->documentTrail = new DocumentTrailClass();
     }
     /* (non-PHPdoc)
 	 * @see config::create()
@@ -178,7 +178,7 @@ class logClass extends configClass
         $_SESSION['start'] = $this->getStart();
         $_SESSION['limit'] = $_POST['limit'];
         $this->q->read($sql);
-        while ($row = $this->q->fetchAssoc()) {
+        while (($row = $this->q->fetchAssoc()) == TRUE) {
             $items[] = $row;
         }
         // bugs on extjs

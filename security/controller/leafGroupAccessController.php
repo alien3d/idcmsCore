@@ -66,7 +66,7 @@ class leafGroupAccessClass  extends  configClass {
 	function execute() {
 		parent :: __construct();
 
-		$this->q 					=	new vendor();
+		$this->q 					=	new Vendor();
 
 		$this->q->vendor			=	$this->vendor;
 
@@ -93,7 +93,7 @@ class leafGroupAccessClass  extends  configClass {
 		$this->model         = new leafGroupAccessModel();
 		$this->model->vendor = $this->vendor;
 		$this->model->execute();
-		$this->documentTrail = new documentTrailClass();
+		$this->documentTrail = new DocumentTrailClass();
 
 
 	}
