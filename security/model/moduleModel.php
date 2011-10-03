@@ -12,7 +12,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class moduleModel extends validationClass
+class ModuleModel extends ValidationClass
 {
     /**
      * Module Identification
@@ -156,7 +156,7 @@ class moduleModel extends validationClass
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -169,7 +169,7 @@ class moduleModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -182,7 +182,7 @@ class moduleModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -195,7 +195,7 @@ class moduleModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -208,7 +208,7 @@ class moduleModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -221,7 +221,7 @@ class moduleModel extends validationClass
         $this->setIsApproved(1, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::review()
+	 * @see ValidationClass::review()
 	*/
     public function review ()
     {
@@ -236,7 +236,7 @@ class moduleModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	* @see validationClass::post()
+	* @see ValidationClass::post()
 	*/
     public function post ()
     {

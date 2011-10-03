@@ -65,6 +65,14 @@ abstract class ValidationClass
      */
     abstract protected function approved ();
     /**
+     * Review Record From Database
+     */
+    abstract protected function review ();
+    /**
+     * Post Record From Database
+     */
+    abstract protected function post ();
+    /**
      * to filter data type.
      * @param value $v
      * value variable come from server request or variable

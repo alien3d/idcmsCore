@@ -15,7 +15,7 @@ require_once("../model/staffModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class staffClass extends configClass
+class StaffClass extends ConfigClass
 {
 	/**
 	 * Connection to the damodulease
@@ -82,7 +82,7 @@ class staffClass extends configClass
 		$this->log    = 0;
 		$this->q->log = $this->log;
 
-		$this->model  = new staffModel();
+		$this->model  = new StaffModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -234,7 +234,7 @@ class staffClass extends configClass
 				}
 				if ($this->q->numberRows() == 0) {
 					// record don't exist create new
-					if ($this->q->vendor == self::mysql || $this->q->vendor = 'mysql') {
+					if ($this->q->vendor == self::mysql) {
 						$sql = "
 						INSERT INTO `moduleAccess`	(
 									`moduleId`,				`groupId`,
@@ -244,7 +244,7 @@ class staffClass extends configClass
 							\"" . $this->model->getGroupId() . "\",
 							0
 						)	";
-					} else if ($this->q->vendor == 'microsft') {
+					} else if ($this->q->vendor == self::mssql) {
 						$sql = "
 						INSERT INTO [moduleAccess]	(
 									[moduleId],				[groupId],
@@ -643,7 +643,7 @@ class staffClass extends configClass
 					AND		[group].[isActive] ='1'
 					AND		[department].[isActive]='1'";
 			if ($this->model->getStaffId(0,'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]=\"" . $this->model->getStaffId(0,'single') . "\"";
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getStaffId(0,'single') . "'";
 			}
 		} else if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -674,7 +674,7 @@ class staffClass extends configClass
 					AND		GROUP_.ISACTIVE 			=	'1'
 					AND		DEPARTMENT.ISACTIVE			=	'1' ";
 			if ($this->model->getStaffId(0,'single')) {
-				$sql .= " AND \"" . $this->model->getTableName() . "\".\"" . $this->model->getPrimaryKeyName() . "\"=\"" . $this->model->getStaffId(0,'single') . "\"";
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getStaffId(0,'single') . "'";
 			}
 		} else {
 			echo json_encode(array(
@@ -1289,8 +1289,10 @@ class staffClass extends configClass
                 "isUpdate",
                 "isDelete",
                 "isActive",
-                "isApproved"
-                );
+                "isApproved",
+				"isReview",
+				"isPost"
+	                );
                 foreach ($access as $systemCheck) {
                 	if ($this->getVendor() == self::mysql) {
                 		$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
@@ -1349,6 +1351,20 @@ class staffClass extends configClass
 							THEN '". $this->model->getIsApproved($i, 'array') ."'";
                 			}
                 			break;
+                			case 'isReview':
+                			for ($i = 0; $i < $loop; $i++) {
+                				$sqlLooping .= "
+							WHEN '". $this->model->getStaffId($i, 'array') ."'
+							THEN '". $this->model->getIsReview($i, 'array') ."'";
+                			}
+                			break;
+                		case 'isPost':
+                			for ($i = 0; $i < $loop; $i++) {
+                				$sqlLooping .= "
+							WHEN '". $this->model->getStaffId($i, 'array') ."'
+							THEN '". $this->model->getIsPost($i, 'array') ."'";
+                			}
+                			break;
                 	}
                 	$sqlLooping .= " END,";
                 }
@@ -1358,10 +1374,10 @@ class staffClass extends configClass
 			WHERE `" . $this->model->getPrimaryKeyName() . "` IN (" . $this->model->getStaffIdAll() . ")";
                 } else if ($this->getVendor() == self::mssql) {
                 	$sql .= "
-			WHERE `=[" . $this->model->getPrimaryKeyName() . "] IN (" . $this->model->getStaffIdAll() . ")";
+			WHERE  [" . $this->model->getPrimaryKeyName() . "] IN (" . $this->model->getStaffIdAll() . ")";
                 } else if ($this->getVendor() == self::oracle) {
                 	$sql .= "
-			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "\" IN (" . $this->model->getStaffIdAll() . ")";
+			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . " IN (" . $this->model->getStaffIdAll() . ")";
                 }
 		
 		$this->q->update($sql);

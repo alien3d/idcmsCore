@@ -13,7 +13,7 @@ require_once("../model/leafAccessModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class leafAccessClass extends  configClass {
+class LeafAccessClass extends  ConfigClass {
 	/**
 	 * Connection to the database
 * @var string

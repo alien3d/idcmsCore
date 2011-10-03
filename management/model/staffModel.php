@@ -11,7 +11,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class staffModel extends validationClass
+class StaffModel extends ValidationClass
 {
     /**
      * Staff Identification
@@ -54,7 +54,7 @@ class staffModel extends validationClass
      */
     private $staffIc;
     /* (non-PHPdoc)
-	 * @see validationClass::execute()
+	 * @see ValidationClass::execute()
 	 */
     function execute ()
     {
@@ -113,7 +113,7 @@ class staffModel extends validationClass
             $this->setTotal(count($_GET['staffId']));
         }
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
-        "isDelete", "isActive", "isApproved");
+        "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
         if (isset($_GET['staffId'])) {
             if (is_array($_GET['staffId'])) {
@@ -223,7 +223,7 @@ class staffModel extends validationClass
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -236,7 +236,7 @@ class staffModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -249,7 +249,7 @@ class staffModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -262,7 +262,7 @@ class staffModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -275,7 +275,7 @@ class staffModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -288,7 +288,7 @@ class staffModel extends validationClass
         $this->setIsApproved(1, 0, 'single');
     }
     /* (non-PHPdoc)
-     * @see validationClass::review()
+     * @see ValidationClass::review()
     */
     public function review ()
     {
@@ -303,7 +303,7 @@ class staffModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-    * @see validationClass::post()
+    * @see ValidationClass::post()
     */
     public function post ()
     {
@@ -318,7 +318,7 @@ class staffModel extends validationClass
         $this->setIsPost(1, 0, 'single');
     }
     /* (non-PHPdoc)
-     * @see configClass::excel()
+     * @see ConfigClass::excel()
     */
     public function excel ()
     {}

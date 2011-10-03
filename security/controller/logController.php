@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require_once ("../../class/classAbstract.php");
 require_once ("../../document/class/classDocumentTrail.php");
@@ -15,7 +14,7 @@ require_once ("../model/logModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class logClass extends configClass
+class LogClass extends ConfigClass
 {
     /**
      * Connection to the database

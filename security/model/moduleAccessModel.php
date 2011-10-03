@@ -11,7 +11,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class moduleAccessModel extends validationClass
+class ModuleAccessModel extends ValidationClass
 {
     /**
      * Module Access  Identification
@@ -87,7 +87,7 @@ class moduleAccessModel extends validationClass
     function delete ()
     {}
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -100,7 +100,7 @@ class moduleAccessModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -113,7 +113,7 @@ class moduleAccessModel extends validationClass
         $this->setIsApproved(1, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::review()
+	 * @see ValidationClass::review()
 	*/
     public function review ()
     {
@@ -128,7 +128,7 @@ class moduleAccessModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	* @see validationClass::post()
+	* @see ValidationClass::post()
 	*/
     public function post ()
     {

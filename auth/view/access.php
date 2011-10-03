@@ -12,7 +12,7 @@ require_once("../model/staffWebAcessModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class loginClass extends configClass {
+class loginClass extends ConfigClass {
 
 
 	public $model;

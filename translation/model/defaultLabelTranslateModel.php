@@ -12,7 +12,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class defaultLabelTranslateModel extends validationClass
+class DefaultLabelTranslateModel extends ValidationClass
 {
     /**
      * Default Label Identification
@@ -70,7 +70,7 @@ class defaultLabelTranslateModel extends validationClass
             $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
         } else 
             if ($this->getVendor() == self::mssql) {
-                $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+                $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
             } else 
                 if ($this->getVendor() == self::oracle) {
                     $this->setExecuteTime(
@@ -79,7 +79,7 @@ class defaultLabelTranslateModel extends validationClass
                 }
         $this->setTotal(count($_GET['defaultLabelId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
-        "isDelete", "isActive", "isApproved");
+        "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
         if (is_array($_GET['defaultLabelId'])) {
             $this->defaultLabelId = array();
@@ -150,7 +150,7 @@ class defaultLabelTranslateModel extends validationClass
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -163,7 +163,7 @@ class defaultLabelTranslateModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -176,7 +176,7 @@ class defaultLabelTranslateModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -189,7 +189,7 @@ class defaultLabelTranslateModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -202,7 +202,7 @@ class defaultLabelTranslateModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -214,7 +214,7 @@ class defaultLabelTranslateModel extends validationClass
         $this->setIsDelete(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::review()
+	 * @see ValidationClass::review()
 	*/
     public function review ()
     {
@@ -229,7 +229,7 @@ class defaultLabelTranslateModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	* @see validationClass::post()
+	* @see ValidationClass::post()
 	*/
     public function post ()
     {

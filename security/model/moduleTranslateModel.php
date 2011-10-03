@@ -11,7 +11,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class moduleTranslationModel extends validationClass
+class ModuleTranslationModel extends ValidationClass
 {
     /**
      * Module Translation Identification
@@ -34,7 +34,7 @@ class moduleTranslationModel extends validationClass
      */
     private $moduleTranslate;
     /* (non-PHPdoc)
-	 * @see validationClass::execute()
+	 * @see ValidationClass::execute()
 	 */
     function execute ()
     {
@@ -76,7 +76,7 @@ class moduleTranslationModel extends validationClass
                 }
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -89,7 +89,7 @@ class moduleTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -102,7 +102,7 @@ class moduleTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -115,7 +115,7 @@ class moduleTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -128,7 +128,7 @@ class moduleTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -141,7 +141,7 @@ class moduleTranslationModel extends validationClass
         $this->setIsApproved(1, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::review()
+	 * @see ValidationClass::review()
 	*/
     public function review ()
     {
@@ -156,7 +156,7 @@ class moduleTranslationModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	* @see validationClass::post()
+	* @see ValidationClass::post()
 	*/
     public function post ()
     {

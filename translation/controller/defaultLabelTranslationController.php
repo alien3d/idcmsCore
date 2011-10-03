@@ -15,7 +15,7 @@ require_once ("../model/defaultLabelTranslationModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class defaultLabelTranslationClass extends configClass
+class DefaultLabelTranslationClass extends ConfigClass
 {
     /**
      * Connection to the database
@@ -171,7 +171,7 @@ class defaultLabelTranslationClass extends configClass
 							ISDEFAULT,								ISNEW,
 							ISDRAFT,								ISUPDATE,
 							ISDELETE,								ISACTIVE,
-							ISAPPROVED,								EXECUTEBY,
+							ISAPPROVED,							    EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
 							'" . $this->model->getdefaultLabelTranslation() . "',		'" .
@@ -657,7 +657,7 @@ class defaultLabelTranslationClass extends configClass
         } else 
             if ($this->getVendor() == self::mssql) {
                 $sql .= "
-			WHERE `=[" . $this->model->getPrimaryKeyName() . "] IN (" .
+			WHERE  [" . $this->model->getPrimaryKeyName() . "] IN (" .
                  $this->model->getPrimaryKeyAll() . ")";
             } else 
                 if ($this->getVendor() == self::oracle) {

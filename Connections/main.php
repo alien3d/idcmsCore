@@ -5,7 +5,7 @@
  */
 require_once("../../class/classAbstract.php");
 include("../../class/classValidation.php");
-class  sharedx extends  configClass  {
+class  sharedx extends  ConfigClass  {
 	/**
 	 * Username
 	 * @var string $u

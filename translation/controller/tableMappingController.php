@@ -15,7 +15,7 @@ require_once("../model/tableMappingModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class tableMappingClass extends  configClass {
+class TableMappingClass extends  ConfigClass {
 	/**
 	 * Connection to the database
 	 * @var string

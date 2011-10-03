@@ -12,7 +12,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class languageModel extends validationClass
+class LanguageModel extends ValidationClass
 {
     /**
      * ExtJS / Sencha Label Identification
@@ -70,7 +70,7 @@ class languageModel extends validationClass
                 }
         $this->setTotal(count($_GET['languageId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
-        "isDelete", "isActive", "isApproved");
+        "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
         if (is_array($_GET['languageId'])) {
             $this->languageId = array();
@@ -141,7 +141,7 @@ class languageModel extends validationClass
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -154,7 +154,7 @@ class languageModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -167,7 +167,7 @@ class languageModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -180,7 +180,7 @@ class languageModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -193,7 +193,7 @@ class languageModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {

@@ -14,7 +14,7 @@ require_once("../model/languageModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class languageClass  extends configClass {
+class LanguageClass  extends ConfigClass {
 	/**
 	 * Connection to the database
 	 * @var string
@@ -718,7 +718,7 @@ class languageClass  extends configClass {
 			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getPrimaryKeyAll().")";
 		} else if($this->getVendor()==self::mssql) {
 			$sql.="
-			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
+			WHERE  [".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql.="
 			WHERE ".strtoupper($this->model->getPrimaryKeyName())." IN (".$this->model->getPrimaryKeyAll().")";

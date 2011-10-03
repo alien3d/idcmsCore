@@ -14,7 +14,7 @@ require_once ("../model/eventModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class eventClass extends configClass
+class EventClass extends ConfigClass
 {
     /**
      * Connection to the database
@@ -79,7 +79,7 @@ class eventClass extends configClass
         $this->audit = 0;
         $this->log = 1;
         $this->q->log = $this->log;
-        $this->model = new eventModel();
+        $this->model = new EventModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
         $this->documentTrail = new DocumentTrailClass();
@@ -87,7 +87,7 @@ class eventClass extends configClass
         $this->documentTrail->execute();
     }
     /* (non-PHPdoc)
-	 * @see configClass::create()
+	 * @see ConfigClass::create()
 	 */
     public function create ()
     {
@@ -187,7 +187,7 @@ class eventClass extends configClass
         exit();
     }
     /* (non-PHPdoc)
-	 * @see configClass::read()
+	 * @see ConfigClass::read()
 	 */
     public function read ()
     {
@@ -273,7 +273,7 @@ class eventClass extends configClass
         }
     }
     /* (non-PHPdoc)
-	 * @see configClass::update()
+	 * @see ConfigClass::update()
 	 */
     function update ()
     {
@@ -342,7 +342,7 @@ class eventClass extends configClass
         exit();
     }
     /* (non-PHPdoc)
-	 * @see configClass::delete()
+	 * @see ConfigClass::delete()
 	 */
     function delete ()
     {
@@ -393,7 +393,7 @@ class eventClass extends configClass
         }
     }
 }
-$eventObject = new eventClass();
+$eventObject = new EventClass();
 if (isset($_POST['method'])) {
     /*
 	 *  Initilize Value before load in the loader

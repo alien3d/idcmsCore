@@ -15,7 +15,7 @@ require_once("../model/folderModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class folderTranslateClass extends  configClass {
+class FolderTranslateClass extends  ConfigClass {
 	/**
 	 * Connection to the database
 * @var string

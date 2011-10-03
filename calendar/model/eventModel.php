@@ -11,7 +11,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class eventModel extends validationClass
+class EventModel extends ValidationClass
 {
     /**
      * Event Identification
@@ -137,7 +137,7 @@ class eventModel extends validationClass
                 }
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -150,7 +150,7 @@ class eventModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -163,7 +163,7 @@ class eventModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -176,7 +176,7 @@ class eventModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -189,7 +189,7 @@ class eventModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -202,7 +202,7 @@ class eventModel extends validationClass
         $this->setIsApproved(1, 0, 'single');
     }
     /* (non-PHPdoc)
-     * @see validationClass::review()
+     * @see ValidationClass::review()
     */
     public function review ()
     {
@@ -217,7 +217,7 @@ class eventModel extends validationClass
     $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-    * @see validationClass::post()
+    * @see ValidationClass::post()
     */
     public function post ()
     {

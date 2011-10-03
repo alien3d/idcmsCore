@@ -12,7 +12,7 @@
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class themeModel extends validationClass{
+class themeModel extends ValidationClass{
 
 	/**
 	 * Theme Idenfitication
@@ -51,13 +51,13 @@ class themeModel extends validationClass{
 		 *  All the $_POST enviroment.
 		 */
 		if(isset($_POST['themeId'])){
-			$this->setthemeId($this->strict($_POST['themeId'],'numeric'),0,'single');
+			$this->setThemeId($this->strict($_POST['themeId'],'numeric'),0,'single');
 		}
 		if(isset($_POST['themeSequence'])){
-			$this->setthemeSequence($this->strict($_POST['themeSequence'],'memo'));
+			$this->setThemeSequence($this->strict($_POST['themeSequence'],'memo'));
 		}
 		if(isset($_POST['themeCode'])){
-			$this->setthemeCode($this->strict($_POST['themeCode'],'memo'));
+			$this->setThemeCode($this->strict($_POST['themeCode'],'memo'));
 		}
 		if(isset($_POST['themeNote'])){
 			$this->setThemeNote($this->strict($_POST['themeNote'],'memo'));
@@ -68,7 +68,7 @@ class themeModel extends validationClass{
 		if($this->getVendor()==self::mysql){
 			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
 		} else if ($this->getVendor()==self::mssql){
-			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
+			$this->setExecuteTime("'".date("Y-m-d H:i:s")."'");
 		} else if ($this->getVendor()==self::oracle){
 			$this->setExecuteTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
@@ -81,7 +81,9 @@ class themeModel extends validationClass{
             "isUpdate",
             "isDelete",
             "isActive",
-            "isApproved"
+            "isApproved",
+			"isReview",
+			"isPost"
             );
             // auto assign as array if true
             if(is_array($_GET['themeId'])){
@@ -109,7 +111,7 @@ class themeModel extends validationClass{
             	$this->isApproved = array();
             }
             for ($i = 0; $i < $this->getTotal(); $i++) {
-            	$this->setthemeId($this->strict($_GET['themeId'][$i], 'numeric'), $i, 'array');
+            	$this->setThemeId($this->strict($_GET['themeId'][$i], 'numeric'), $i, 'array');
             	if ($_GET['isDefault'][$i] == 'true') {
             		$this->setIsDefault(1, $i, 'array');
             	} else if ($_GET['default'] == 'false') {
@@ -151,7 +153,7 @@ class themeModel extends validationClass{
 
 	}
 	/* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
 	public function create()
 	{
@@ -164,7 +166,7 @@ class themeModel extends validationClass{
 		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
 	public function update()
 	{
@@ -177,7 +179,7 @@ class themeModel extends validationClass{
 		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
 	public function delete()
 	{
@@ -191,7 +193,7 @@ class themeModel extends validationClass{
 	}
 
 	/* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
 	public function draft()
 	{
@@ -204,7 +206,7 @@ class themeModel extends validationClass{
 		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
 	public function approved()
 	{

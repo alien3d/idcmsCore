@@ -15,7 +15,7 @@ require_once ("../model/folderModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class folderClass extends configClass
+class FolderClass extends ConfigClass
 {
     /**
      * Connection to the database

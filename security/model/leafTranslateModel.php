@@ -11,7 +11,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class leafTranslationModel extends validationClass
+class LeafTranslationModel extends ValidationClass
 {
     /**
      * Leaf Translation Identification
@@ -34,15 +34,15 @@ class leafTranslationModel extends validationClass
      */
     private $leafTranslate;
     /* (non-PHPdoc)
-	 * @see validationClass::execute()
+	 * @see ValidationClass::execute()
 	 */
     function execute ()
     {
         /**
          * Basic Information Table
          */
-        $this->setTableName('leaf');
-        $this->setPrimaryKeyName('leafId');
+        $this->setTableName('leafTranslate');
+        $this->setPrimaryKeyName('leafTranslateId');
         /**
          * All the $_POST enviroment.
          */
@@ -76,7 +76,7 @@ class leafTranslationModel extends validationClass
                 }
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -89,7 +89,7 @@ class leafTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -102,7 +102,7 @@ class leafTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -115,7 +115,7 @@ class leafTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -128,7 +128,7 @@ class leafTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -141,7 +141,7 @@ class leafTranslationModel extends validationClass
         $this->setIsApproved(1, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::review()
+	 * @see ValidationClass::review()
 	*/
     public function review ()
     {
@@ -156,7 +156,7 @@ class leafTranslationModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	* @see validationClass::post()
+	* @see ValidationClass::post()
 	*/
     public function post ()
     {

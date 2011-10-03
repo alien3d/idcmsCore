@@ -15,7 +15,7 @@ require_once("../model/tableMappingTranslationModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class tableMappingTranslationClass extends  configClass {
+class TableMappingTranslationClass extends  ConfigClass {
 	/**
 	 * Connection to the database
 * @var string
@@ -665,7 +665,7 @@ class tableMappingTranslationClass extends  configClass {
 			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getPrimaryKeyAll().")";
 			} else if($this->getVendor()==self::mssql) {
 				$sql.="
-			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
+			WHERE  [".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql.="
 			WHERE \"".$this->model->getPrimaryKeyName()."\" IN (".$this->model->getPrimaryKeyAll().")";

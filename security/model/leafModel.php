@@ -10,7 +10,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class leafModel extends validationClass
+class LeafModel extends ValidationClass
 {
     /**
      * This is  real leaf Id. A bit change conflic with the leafId for application
@@ -58,7 +58,7 @@ class leafModel extends validationClass
      */
     private $leafNote;
     /* (non-PHPdoc)
-	 * @see validationClass::execute()
+	 * @see ValidationClass::execute()
 	 */
     function execute ()
     {
@@ -110,7 +110,7 @@ class leafModel extends validationClass
                 }
         $this->setTotal(count($_GET['leafId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
-        "isDelete", "isActive", "isApproved");
+        "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
         if (is_array($_GET['isDefault'])) {
             $this->isDefault = array();
@@ -178,7 +178,7 @@ class leafModel extends validationClass
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -191,7 +191,7 @@ class leafModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -204,7 +204,7 @@ class leafModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -217,7 +217,7 @@ class leafModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -230,7 +230,7 @@ class leafModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -243,7 +243,7 @@ class leafModel extends validationClass
         $this->setIsApproved(1, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::review()
+	 * @see ValidationClass::review()
 	*/
     public function review ()
     {
@@ -258,7 +258,7 @@ class leafModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	* @see validationClass::post()
+	* @see ValidationClass::post()
 	*/
     public function post ()
     {

@@ -12,7 +12,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class folderModel extends validationClass
+class FolderModel extends ValidationClass
 {
     /**
      * Folder  Identification
@@ -50,7 +50,7 @@ class folderModel extends validationClass
      */
     private $folderNote;
     /* (non-PHPdoc)
-	 * @see validationClass::execute()
+	 * @see ValidationClass::execute()
 	 */
     function execute ()
     {
@@ -101,7 +101,7 @@ class folderModel extends validationClass
                 }
         $this->setTotal(count($_GET['folderId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
-        "isDelete", "isActive", "isApproved");
+        "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
         if (is_array($_GET['isDefault'])) {
             $this->isDefault = array();
@@ -169,7 +169,7 @@ class folderModel extends validationClass
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -182,7 +182,7 @@ class folderModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -195,7 +195,7 @@ class folderModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -208,7 +208,7 @@ class folderModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -221,7 +221,7 @@ class folderModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -234,7 +234,7 @@ class folderModel extends validationClass
         $this->setIsApproved(1, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::review()
+	 * @see ValidationClass::review()
 	*/
     public function review ()
     {
@@ -249,7 +249,7 @@ class folderModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	* @see validationClass::post()
+	* @see ValidationClass::post()
 	*/
     public function post ()
     {

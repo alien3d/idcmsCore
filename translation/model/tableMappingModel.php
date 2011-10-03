@@ -12,7 +12,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class tableMappingModel extends validationClass
+class TableMappingModel extends ValidationClass
 {
     /**
      * ExtJS / Sencha Label Identification
@@ -48,26 +48,26 @@ class tableMappingModel extends validationClass
 		 *  All the $_POST enviroment.
 		 */
         if (isset($_POST['tableMappingId'])) {
-            $this->settableMappingId(
+            $this->setTableMappingId(
             $this->strict($_POST['tableMappingId'], 'numeric'), 0, 'single');
         }
         if (isset($_POST['tableMappingSequence'])) {
-            $this->settableMappingSequence(
+            $this->setTableMappingSequence(
             $this->strict($_POST['tableMappingSequence'], 'memo'));
         }
         if (isset($_POST['tableMappingCode'])) {
-            $this->settableMappingCode(
+            $this->setTableMappingCode(
             $this->strict($_POST['tableMappingCode'], 'memo'));
         }
         if (isset($_POST['tableMappingNote'])) {
-            $this->settableMappingNote(
+            $this->setTableMappingNote(
             $this->strict($_POST['tableMappingNote'], 'memo'));
         }
         if (isset($_SESSION['staffId'])) {
             $this->setExecuteBy($_SESSION['staffId']);
         }
         if ($this->getVendor() == self::mysql) {
-            $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+            $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
         } else 
             if ($this->getVendor() == self::mssql) {
                 $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
@@ -79,7 +79,7 @@ class tableMappingModel extends validationClass
                 }
         $this->setTotal(count($_GET['tableMappingId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
-        "isDelete", "isActive", "isApproved");
+        "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
         if (is_array($_GET['tableMappingId'])) {
             $this->tableMappingId = array();
@@ -106,7 +106,7 @@ class tableMappingModel extends validationClass
             $this->isApproved = array();
         }
         for ($i = 0; $i < $this->getTotal(); $i ++) {
-            $this->settableMappingId(
+            $this->setTableMappingId(
             $this->strict($_GET['tableMappingId'][$i], 'numeric'), $i, 'array');
             if ($_GET['isDefault'][$i] == 'true') {
                 $this->setIsDefault(1, $i, 'array');
@@ -150,7 +150,7 @@ class tableMappingModel extends validationClass
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -163,7 +163,7 @@ class tableMappingModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -176,7 +176,7 @@ class tableMappingModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -189,7 +189,7 @@ class tableMappingModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -202,7 +202,7 @@ class tableMappingModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -214,7 +214,7 @@ class tableMappingModel extends validationClass
         $this->setIsDelete(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::review()
+	 * @see ValidationClass::review()
 	*/
     public function review ()
     {
@@ -229,7 +229,7 @@ class tableMappingModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	* @see validationClass::post()
+	* @see ValidationClass::post()
 	*/
     public function post ()
     {
@@ -249,7 +249,7 @@ class tableMappingModel extends validationClass
      * @param array[int]int $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      */
-    public function settableMappingId ($value, $key, $type)
+    public function setTableMappingId ($value, $key, $type)
     {
         if ($type == 'single') {
             $this->tableMappingId = $value;
@@ -282,7 +282,7 @@ class tableMappingModel extends validationClass
      * Set Default Label Value
      * @param  string $value
      */
-    public function settableMappingDesc ($value)
+    public function setTableMappingDesc ($value)
     {
         $this->tableMappingDesc = $value;
     }

@@ -16,21 +16,21 @@ require_once ("../model/extLabelModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class extLabelClass extends configClass
+class ExtLabelClass extends ConfigClass
 {
     /**
      * Connection to the database
-     * @var string
+     * @var object
      */
     public $q;
     /**
      * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-     * @var string
+     * @var object
      */
     private $excel;
     /**
      * Document Trail Audit.
-     * @var string 
+     * @var object 
      */
     private $documentTrail;
     /**

@@ -4,7 +4,7 @@
  * @author hafizan
  *
  */
-class DocumentTrailClass extends configClass
+class DocumentTrailClass extends ConfigClass
 {
     /**
      * Connection to the database

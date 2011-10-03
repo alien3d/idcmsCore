@@ -14,7 +14,7 @@ require_once("../model/themeModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class themeClass  extends configClass {
+class ThemeClass  extends ConfigClass {
 	/**
 	 * Connection to the database
 	 * @var string
@@ -79,7 +79,7 @@ class themeClass  extends configClass {
 		$this->log           = 1;
 		$this->q->log        = $this->log;
 
-		$this->model         = new themeModel();
+		$this->model         = new ThemeModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -172,6 +172,12 @@ class themeClass  extends configClass {
 						" . $this->model->getExecuteTime() . "	
 					);";
 
+		} else if ($this->getVendor()==self::db2){
+				
+		}else if($this->getVendor()==self::postgress){
+				
+		} else {
+				
 		}
 		$this->q->create($sql);
 
@@ -199,7 +205,11 @@ class themeClass  extends configClass {
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[theme].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
-				$this->auditFilter = "	\"theme\".ISACTIVE	=	1	";
+				$this->auditFilter = "	THEME.ISACTIVE	=	1	";
+			} else if ($this->getVendor() == self::db2){
+
+			}else if ($this->getVendor()== self::postgress){
+
 			}
 		} else if($this->isAdmin ==1) {
 			if($this->getVendor()==self::mysql) {
@@ -208,6 +218,10 @@ class themeClass  extends configClass {
 				$this->auditFilter = "	1 =  1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
 				$this->auditFilter = " 1 =  1 ";
+			}else if ($this->getVendor()== self::db2){
+				
+			} else if ($this->getVendor()==self::postgress){
+				
 			}
 		}
 		//UTF8
@@ -734,7 +748,7 @@ class themeClass  extends configClass {
 			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getPrimaryKeyAll().")";
 		} else if($this->getVendor()==self::mssql) {
 			$sql.="
-			WHERE `=[".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
+			WHERE  [".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql.="
 			WHERE '".$this->model->getPrimaryKeyName()."' IN (".$this->model->getPrimaryKeyAll().")";

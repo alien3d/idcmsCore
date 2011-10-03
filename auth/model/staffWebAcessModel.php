@@ -10,7 +10,7 @@
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class staffWebAcessModel extends validationClass{
+class staffWebAcessModel extends ValidationClass{
 
 
 	private $staffWebAccessId;
@@ -54,21 +54,21 @@ class staffWebAcessModel extends validationClass{
 
 	}
 	/* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
 	public function create()
 	{
 
 	}
 	/* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
 	public function update()
 	{
 
 	}
 	/* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
 	public function delete()
 	{
@@ -76,7 +76,7 @@ class staffWebAcessModel extends validationClass{
 	}
 
 	/* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
 	public function draft()
 	{
@@ -89,7 +89,7 @@ class staffWebAcessModel extends validationClass{
 		$this->setIsApproved(0,0,'single');
 	}
 	/* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
 	public function approved()
 	{

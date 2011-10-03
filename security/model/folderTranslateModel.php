@@ -1,5 +1,4 @@
 <?php
-
 require_once ("../../class/classValidation.php");
 /**
  * this is Folder Translation Model file.This is to ensure strict setting enable for all variable enter to database
@@ -11,7 +10,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class folderTranslationModel extends validationClass
+class FolderTranslationModel extends ValidationClass
 {
     /**
      * Folder  Translate Identification
@@ -34,15 +33,15 @@ class folderTranslationModel extends validationClass
      */
     private $folderTranslate;
     /* (non-PHPdoc)
-	 * @see validationClass::execute()
+	 * @see ValidationClass::execute()
 	 */
     function execute ()
     {
         /**
          * Basic Information Table
          */
-        $this->setTableName('folder');
-        $this->setPrimaryKeyName('folderId');
+        $this->setTableName('folderTranslate');
+        $this->setPrimaryKeyName('folderTranslateId');
         /**
          * All the $_POST enviroment.
          */
@@ -76,7 +75,7 @@ class folderTranslationModel extends validationClass
                 }
     }
     /* (non-PHPdoc)
-	 * @see validationClass::create()
+	 * @see ValidationClass::create()
 	 */
     public function create ()
     {
@@ -89,7 +88,7 @@ class folderTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::update()
+	 * @see ValidationClass::update()
 	 */
     public function update ()
     {
@@ -102,7 +101,7 @@ class folderTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::delete()
+	 * @see ValidationClass::delete()
 	 */
     public function delete ()
     {
@@ -115,7 +114,7 @@ class folderTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function draft ()
     {
@@ -128,7 +127,7 @@ class folderTranslationModel extends validationClass
         $this->setIsApproved(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::draft()
+	 * @see ValidationClass::draft()
 	 */
     public function approved ()
     {
@@ -141,7 +140,7 @@ class folderTranslationModel extends validationClass
         $this->setIsApproved(1, 0, 'single');
     }
     /* (non-PHPdoc)
-	 * @see validationClass::review()
+	 * @see ValidationClass::review()
 	*/
     public function review ()
     {
@@ -156,7 +155,7 @@ class folderTranslationModel extends validationClass
         $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
-	* @see validationClass::post()
+	* @see ValidationClass::post()
 	*/
     public function post ()
     {

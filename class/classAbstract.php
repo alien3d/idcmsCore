@@ -133,7 +133,6 @@ abstract class ConfigClass
      * @var const string
      */
     const postgress = 'postgress';
-    
     // end basic access database
     /*
 	 *   @version  0.1  filter strict php setting
@@ -171,7 +170,7 @@ abstract class ConfigClass
             $this->setUsername('idcmsCore');
             $this->setPassword('pa$$word4SPH');
             $this->setApplication('idcmsCore');
-        }  elseif ($this->getVendor() == self::db2) {
+        } elseif ($this->getVendor() == self::db2) {
             require_once ('classDb2.php');
             $this->setConnection('ADMIN-PC\X2');
             $this->setUsername('root');
@@ -182,7 +181,7 @@ abstract class ConfigClass
             $this->setConnection('localhost');
             $this->setUsername('idcmsCore');
             $this->setPassword('pa$$word4SPH');
-        }else {
+        } else {
             // undefined database vendor and application
         }
     }
@@ -202,18 +201,6 @@ abstract class ConfigClass
      * Delete Record From Database
      */
     abstract protected function delete ();
-    /**
-     * Draft Record From Database
-     */
-    abstract protected function draft ();
-    /**
-     * Review Record From Database
-     */
-    abstract protected function review ();
-    /**
-     * Post Record From Database
-     */
-    abstract protected function post ();
     /**
      * Microsoft Excel 2007 Ouput File Generation
      */
@@ -436,7 +423,8 @@ abstract class ConfigClass
             $sql = "
 		SELECT (`" .
              $this->model->getPrimaryKeyName() . "`) AS `nextRecord`
-		FROM 	`" . $this->model->getTableName() . "`
+		FROM 	`" . $this->model->getTableName() .
+             "`
 		WHERE 	`" .
              $this->model->getPrimaryKeyName() . "` > " . $primaryKeyValue . "
 		LIMIT 	1";
@@ -455,8 +443,7 @@ abstract class ConfigClass
 		SELECT (" .
                      strtoupper($this->model->getPrimaryKeyName()) . ") AS \"nextRecord\"
 		FROM 	" .
-                     strtoupper($this->model->getTableName()) .
-                     "
+                     strtoupper($this->model->getTableName()) . "
 		WHERE 	" .
                      strtoupper($this->model->getPrimaryKeyName()) . " > " .
                      $primaryKeyValue . "
@@ -491,7 +478,8 @@ abstract class ConfigClass
             $sql = "
 		SELECT (`" .
              $this->model->getPrimaryKeyName() . "`) AS `previousRecord`
-		FROM 	`" . $this->model->getTableName() . "`
+		FROM 	`" . $this->model->getTableName() .
+             "`
 		WHERE 	`" .
              $this->model->getPrimaryKeyName() . "` < " . $primaryKeyValue . "
 		LIMIT 	1";
@@ -510,8 +498,7 @@ abstract class ConfigClass
 		SELECT (" .
                      strtoupper($this->model->getPrimaryKeyName()) . ") AS \"previous\"
 		FROM 	" .
-                     strtoupper($this->model->getTableName()) .
-                     "
+                     strtoupper($this->model->getTableName()) . "
 		WHERE 	" .
                      strtoupper($this->model->getPrimaryKeyName()) . " < " .
                      $primaryKeyValue . "
