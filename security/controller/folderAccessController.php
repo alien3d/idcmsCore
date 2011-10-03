@@ -311,7 +311,7 @@ class FolderAccessClass extends ConfigClass
     function excel ()
     {}
 }
-$folderAccessObject = new folderAccessClass();
+$folderAccessObject = new FolderAccessClass();
 if (isset($_POST['method'])) {
     /*
 	 *  Initilize Value before load in the loader

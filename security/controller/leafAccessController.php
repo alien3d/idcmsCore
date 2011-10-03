@@ -496,7 +496,7 @@ class LeafAccessClass extends  ConfigClass {
 
 
 
-$leafAccessObject  	= 	new leafAccessClass();
+$leafAccessObject  	= 	new LeafAccessClass();
 
 
 if(isset($_POST['method'])){

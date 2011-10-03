@@ -1048,7 +1048,7 @@ class ModuleTranslateClass extends ConfigClass
 /**
  * Declare object
  **/
-$moduleTranslateObject = new moduleClass();
+$moduleTranslateObject = new ModuleTranslateClass();
 /**
  * Form Property .CRUD -create,read,update,delete
  **/

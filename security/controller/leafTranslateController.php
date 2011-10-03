@@ -1070,7 +1070,7 @@ class LeafTranslateClass extends ConfigClass
     }
 }
 //echo "string".$_GET['leafId'];
-$leafObject = new leafClass();
+$leafTranslateObject = new leafTranslateClass();
 /**
  * crud -create,read,update,delete
  **/
@@ -1079,57 +1079,57 @@ if (isset($_POST['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
     if (isset($_POST['leafId_temp'])) {
-        $leafObject->leafId_temp = $_POST['leafId_temp'];
+        $leafTranslateObject->leafId_temp = $_POST['leafId_temp'];
     }
     /*
 	 *  Leaf / Application Identification
 	 */
     if (isset($_POST['leafId'])) {
-        $leafObject->leafId = $_POST['leafId'];
+        $leafTranslateObject->leafId = $_POST['leafId'];
     }
     /*
 	 * Admin Only
 	 */
     if (isset($_POST['isAdmin'])) {
-        $leafObject->setIsAdmin($_POST['isAdmin']);
+        $leafTranslateObject->setIsAdmin($_POST['isAdmin']);
     }
     /*
 	 *  Filtering
 	 */
     if (isset($_POST['query'])) {
-        $leafObject->setFieldQuery($_POST['query']);
+        $leafTranslateObject->setFieldQuery($_POST['query']);
     }
     if (isset($_POST['filter'])) {
-        $leafObject->setGridQuery($_POST['filter']);
+        $leafTranslateObject->setGridQuery($_POST['filter']);
     }
     /*
 	 *  Ordering
 	 */
     if (isset($_POST['order'])) {
-        $leafObject->setOrder($_POST['order']);
+        $leafTranslateObject->setOrder($_POST['order']);
     }
     if (isset($_POST['sortField'])) {
-        $leafObject->setSortField($_POST['sortField']);
+        $leafTranslateObject->setSortField($_POST['sortField']);
     }
     /*
 	 *  Load the dynamic value
 	 */
-    $leafObject->execute();
+    $leafTranslateObject->execute();
     /*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
     if ($_POST['method'] == 'create') {
-        $leafObject->create();
+        $leafTranslateObject->create();
     }
     if ($_POST['method'] == 'read') {
-        $leafObject->read();
+        $leafTranslateObject->read();
     }
-    $leafObject->leafId = $_POST['leafId'];
+    $leafTranslateObject->leafId = $_POST['leafId'];
     if ($_POST['method'] == 'save') {
-        $leafObject->update();
+        $leafTranslateObject->update();
     }
     if ($_POST['method'] == 'delete') {
-        $leafObject->delete();
+        $leafTranslateObject->delete();
     }
 }
 if (isset($_GET['method'])) {
@@ -1137,42 +1137,42 @@ if (isset($_GET['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
     if (isset($_GET['leafId_temp'])) {
-        $leafObject->leafId_temp = $_GET['leafId_temp'];
+        $leafTranslateObject->leafId_temp = $_GET['leafId_temp'];
     }
     if (isset($_GET['leafId'])) {
-        $leafObject->setLeafId($_GET['leafId']);
+        $leafTranslateObject->setLeafId($_GET['leafId']);
     }
     /*
 	 * Admin Only
 	 */
     if (isset($_GET['isAdmin'])) {
-        $leafObject->setIsAdmin($_GET['isAdmin']);
+        $leafTranslateObject->setIsAdmin($_GET['isAdmin']);
     }
     /*
 	 *  Load the dynamic value
 	 */
-    $leafObject->execute();
+    $leafTranslateObject->execute();
     if (isset($_GET['field'])) {
         if ($_GET['field'] == 'staffId') {
-            $leafObject->staffId();
+            $leafTranslateObject->staffId();
         }
         if ($_GET['field'] == 'accordionId') {
-            $leafObject->accordion();
+            $leafTranslateObject->accordion();
         }
         if ($_GET['field'] == 'folderId') {
-            $leafObject->folder();
+            $leafTranslateObject->folder();
         }
         if ($_GET['field'] == 'sequence') {
-            $leafObject->nextSequence();
+            $leafTranslateObject->nextSequence();
         }
     }
     if (isset($_GET['mode'])) {
         if ($_GET['mode'] == 'excel') {
-            $leafObject->excel();
+            $leafTranslateObject->excel();
         }
     }
     if ($_GET['method'] == 'translate') {
-        $leafObject->translateMe();
+        $leafTranslateObject->translateMe();
     }
 }
 ?>

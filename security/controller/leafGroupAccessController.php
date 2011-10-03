@@ -476,7 +476,7 @@ class LeafGroupAccessClass extends ConfigClass
     function excel ()
     {}
 }
-$leafGroupAccessObject = new leafGroupAccessClass();
+$leafGroupAccessObject = new LeafGroupAccessClass();
 // crud -create,read,update,delete.
 if (isset($_POST['method'])) {
     /*

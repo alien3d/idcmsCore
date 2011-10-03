@@ -1003,7 +1003,7 @@ class ThemeClass  extends ConfigClass {
 }
 
 
-$themeObject  	= 	new themeClass();
+$themeObject  	= 	new ThemeClass();
 
 /**
  *	crud -create,read,update,delete

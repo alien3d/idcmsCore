@@ -1552,7 +1552,7 @@ class StaffClass extends ConfigClass
                         }
 	}
 }
-$staffObject = new staffClass();
+$staffObject = new StaffClass();
 /**
  *	crud -create,read,update,delete
  **/

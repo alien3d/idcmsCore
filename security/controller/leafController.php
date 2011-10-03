@@ -905,7 +905,7 @@ class LeafClass extends ConfigClass
     }
 }
 //echo "string".$_GET['leafId'];
-$leafObject = new leafClass();
+$leafObject = new LeafClass();
 /**
  * crud -create,read,update,delete
  **/

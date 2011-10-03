@@ -247,9 +247,9 @@ class FolderClass extends ConfigClass
              **/
             if ($this->getVendor() == self::mysql) {
                 $sqlLooping .= "(
-									\"" . $lastId . "\",
-									 \"" . $row['groupId'] . "\",
-									 \"0\"
+									'" . $lastId . "',
+									 '" . $row['groupId'] . "',
+									 '0'
 								),";
             } else 
                 if ($this->getVendor() == self::mssql ||
@@ -842,7 +842,7 @@ class FolderClass extends ConfigClass
         }
     }
 }
-$folderObject = new folderClass();
+$folderObject = new FolderClass();
 /**
  * crud -create,read,update,delete
  **/

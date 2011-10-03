@@ -28,7 +28,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 	private $excel;
 	/**
 	 * Document Trail Audit.
-	 * @var string 
+	 * @var string
 	 */
 	private $documentTrail;
 	/**
@@ -48,7 +48,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string 
+	 * @var string
 	 */
 	public $auditFilter;
 	/**
@@ -64,7 +64,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 
 	/**
 	 * Common class function for security menu
-	 * @var  string 
+	 * @var  string
 	 */
 	private $security;
 
@@ -467,7 +467,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 							ISAPPROVED	=	'".$this->model->getIsApproved(0,'single')."',
 							EXECUTEBY			=	'".$this->model->getExecuteBy()."',
 							EXECUTETIME		=	".$this->model->getExecuteTime()."
-					WHERE 	EXTLABELTRANSLATIONID		=	\"".$this->model->getExtLabelTranslationId(0,'single')."\"";
+					WHERE 	EXTLABELTRANSLATIONID		=	'".$this->model->getExtLabelTranslationId(0,'single')."'";
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
@@ -558,109 +558,123 @@ class ExtLabelTranslationClass extends  ConfigClass {
 			$this->q->fast($sql);
 
 		}
-		
+
 		$loop  = $this->model->getTotal();
 
-		
 
-			if($this->getVendor() == self::mysql) {
-				$sql="
+
+		if($this->getVendor() == self::mysql) {
+			$sql="
 				UPDATE `".$this->model->getTableName()."`
 				SET";
-			} else if($this->getVendor()==self::mssql) {
-				$sql="
+		} else if($this->getVendor()==self::mssql) {
+			$sql="
 			UPDATE 	[".$this->model->getTableName()."]
 			SET 	";
 
-			} else if ($this->getVendor()==self::oracle) {
-				$sql="
+		} else if ($this->getVendor()==self::oracle) {
+			$sql="
 			UPDATE ".strtoupper($this->model->getTableName())."
 			SET    ";
-			}
+		}
 			
-			/**
-			 *	System Validation Checking
-			 *  @var $access
-			 */
-			$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved","isReview","isPost");
-			foreach($access as $systemCheck) {
+		/**
+		 *	System Validation Checking
+		 *  @var $access
+		 */
+		$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved","isReview","isPost");
+		foreach($access as $systemCheck) {
 
 
-				if($this->getVendor() == self::mysql) {
-					$sqlLooping.=" `".$systemCheck."` = CASE `".$this->model->getPrimaryKeyName()."`";
-				} else if($this->getVendor()==self::mssql) {
-					$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
+			if($this->getVendor() == self::mysql) {
+				$sqlLooping.=" `".$systemCheck."` = CASE `".$this->model->getPrimaryKeyName()."`";
+			} else if($this->getVendor()==self::mssql) {
+				$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
 
-				} else if ($this->getVendor()==self::oracle) {
-					$sqlLooping.="	".strtoupper($systemCheck)." = CASE ".strtoupper($this->model->getPrimaryKeyName())." ";
-				}
-				switch ($systemCheck){
-					case 'isDefault':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN '".$this->model->getDepartmentId($i,'array')."'
+			} else if ($this->getVendor()==self::oracle) {
+				$sqlLooping.="	".strtoupper($systemCheck)." = CASE ".strtoupper($this->model->getPrimaryKeyName())." ";
+			}
+			switch ($systemCheck){
+				case 'isDefault':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN '".$this->model->getExtLabelTranslateId($i,'array')."'
 							THEN '".$this->model->getIsDefault($i,'array')."'";
-						}
-						break;
-					case 'isNew':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN '".$this->model->getDepartmentId($i,'array')."'
+					}
+					break;
+				case 'isNew':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN '".$this->model->getExtLabelTranslateId($i,'array')."'
 							THEN '".$this->model->getIsNew($i,'array')."'";
 
-						} break;
-					case 'isDraft':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN '".$this->model->getDepartmentId($i,'array')."'
+					} break;
+				case 'isDraft':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN '".$this->model->getExtLabelTranslateId($i,'array')."'
 							THEN '".$this->model->getIsDraft($i,'array')."'";
-						}
-						break;
-					case 'isUpdate':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN '".$this->model->getDepartmentId($i,'array')."'
+					}
+					break;
+				case 'isUpdate':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN '".$this->model->getExtLabelTranslateId($i,'array')."'
 							THEN '".$this->model->getIsUpdate($i,'array')."'";
-						}
-						break;
-					case 'isDelete':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN '".$this->model->getDepartmentId($i,'array')."'
+					}
+					break;
+				case 'isDelete':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN '".$this->model->getExtLabelTranslateId($i,'array')."'
 							THEN '".$this->model->getIsDelete($i,'array')."'";
-						}
-						break;
-					case 'isActive':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN '".$this->model->getDepartmentId($i,'array')."'
+					}
+					break;
+				case 'isActive':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN '".$this->model->getExtLabelTranslateId($i,'array')."'
 							THEN '".$this->model->getIsActive($i,'array')."'";
-						}
-						break;
-					case 'isApproved':
-						for($i=0;$i<$loop;$i++) {
-							$sqlLooping.="
-							WHEN '".$this->model->getDepartmentId($i,'array')."'
+					}
+					break;
+				case 'isApproved':
+					for($i=0;$i<$loop;$i++) {
+						$sqlLooping.="
+							WHEN '".$this->model->getExtLabelTranslateId($i,'array')."'
 							THEN '".$this->model->getIsApproved($i,'array')."'";
-						}
-						break;
-				}
-
-
-				$sqlLooping.= " END,";
+					}
+					break;
+				case 'isReview' :
+					for($i = 0; $i < $loop; $i ++) {
+						$sqlLooping .= "
+                            WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
+                            THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
+					}
+					break;
+				case 'isPost' :
+					for($i = 0; $i < $loop; $i ++) {
+						$sqlLooping .= "
+                                WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
+                                THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
+					}
+					break;
 			}
 
-			$sql.=substr($sqlLooping,0,-1);
-			if($this->getVendor() == self::mysql) {
-				$sql.="
+
+			$sqlLooping.= " END,";
+		}
+
+		$sql.=substr($sqlLooping,0,-1);
+		if($this->getVendor() == self::mysql) {
+			$sql.="
 			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getPrimaryKeyAll().")";
-			} else if($this->getVendor()==self::mssql) {
-				$sql.="
+		} else if($this->getVendor()==self::mssql) {
+			$sql.="
 			WHERE  [".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
-			} else if ($this->getVendor()==self::oracle) {
-				$sql.="
+		} else if ($this->getVendor()==self::oracle) {
+			$sql.="
 			WHERE ".strtoupper($this->model->getPrimaryKeyName())." IN (".$this->model->getPrimaryKeyAll().")";
-			}	
+		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array(

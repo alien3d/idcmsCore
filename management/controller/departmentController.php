@@ -1039,7 +1039,7 @@ class DepartmentClass extends ConfigClass
         }
     }
 }
-$departmentObject = new departmentClass();
+$departmentObject = new DepartmentClass();
 /**
  * crud -create,read,update,delete
  **/

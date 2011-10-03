@@ -317,7 +317,7 @@ class LogClass extends ConfigClass
         }
     }
 }
-$logObject = new logClass();
+$logObject = new LogClass();
 // crud -create,read,update,delete
 if (isset($_POST['method'])) {
     /*

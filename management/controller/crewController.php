@@ -1219,7 +1219,7 @@ class CrewClass extends ConfigClass
     function excel ()
     {}
 }
-$crewObject = new crewClass();
+$crewObject = new CrewClass();
 /**
  * crud -create,read,update,delete
  **/

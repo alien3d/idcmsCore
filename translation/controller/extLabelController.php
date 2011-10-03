@@ -732,7 +732,7 @@ class ExtLabelClass extends ConfigClass
         }
     }
 }
-$extLabelObject = new extLabelClass();
+$extLabelObject = new ExtLabelClass();
 /**
  * crud -create,read,update,delete
  **/

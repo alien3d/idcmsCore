@@ -286,7 +286,7 @@ class ModuleAccessClass extends ConfigClass
     function excel ()
     {}
 }
-$moduleAccessObject = new moduleAccessClass();
+$moduleAccessObject = new ModuleAccessClass();
 // crud -create,read,update,delete.
 if (isset($_POST['method'])) {
     /*

@@ -730,7 +730,7 @@ class ReligionClass extends ConfigClass {
 			WHERE [" . $this->model->getPrimaryKeyName () . "] IN (" . $this->model->getReligionIdAll () . ")";
 		} else if ($this->getVendor () == self::oracle) {
 			$sql .= "
-			WHERE \"" . strtoupper ( $this->model->getPrimaryKeyName () ) . "\" IN (" . $this->model->getReligionIdAll () . ")";
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
