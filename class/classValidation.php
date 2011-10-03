@@ -56,22 +56,7 @@ abstract class ValidationClass
      * Outside $_POST delete record
      */
     abstract protected function delete ();
-    /**
-     * Outside $_POST delete record
-     */
-    abstract protected function draft ();
-    /**
-     * Outside $_POST delete record
-     */
-    abstract protected function approved ();
-    /**
-     * Review Record From Database
-     */
-    abstract protected function review ();
-    /**
-     * Post Record From Database
-     */
-    abstract protected function post ();
+    
     /**
      * to filter data type.
      * @param value $v

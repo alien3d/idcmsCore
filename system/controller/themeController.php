@@ -751,7 +751,7 @@ class ThemeClass  extends ConfigClass {
 			WHERE  [".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql.="
-			WHERE '".$this->model->getPrimaryKeyName()."' IN (".$this->model->getPrimaryKeyAll().")";
+			WHERE '".strtoupper($this->model->getPrimaryKeyName())."' IN (".$this->model->getPrimaryKeyAll().")";
 		}
 
 		$this->q->update($sql);
