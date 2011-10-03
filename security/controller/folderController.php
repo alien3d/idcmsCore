@@ -484,7 +484,7 @@ class FolderClass extends ConfigClass
         }
         //echo $sql;
         $this->q->read($sql);
-        if ($this->q->redirect == 'fail') {
+        if ($this->q->execute == 'fail') {
             echo json_encode(
             array("success" => false, "message" => $this->q->responce));
             exit();
@@ -677,7 +677,7 @@ class FolderClass extends ConfigClass
 					WHERE 	FOLDERID		=	'" . $this->model->getFolderId(0, 'single') . "'";
                 }
         $this->q->update($sql);
-        if ($this->q->redirect == 'fail') {
+        if ($this->q->execute == 'fail') {
             echo json_encode(
             array("success" => false, "message" => $this->q->responce));
             exit();
@@ -744,7 +744,7 @@ class FolderClass extends ConfigClass
 					WHERE 	FOLDERID	=	'" . $this->model->getFolderId() . "'";
                 }
         $this->q->update($sql);
-        if ($this->q->redirect == 'fail') {
+        if ($this->q->execute == 'fail') {
             echo json_encode(
             array("success" => "false", "message" => $this->q->responce));
             exit();

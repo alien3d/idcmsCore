@@ -238,7 +238,7 @@ class DefaultLabelClass extends ConfigClass
 			if ($this->model->getDefaultLabelId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" .
 				$this->model->getPrimaryKeyName() . "`=\"" .
-				$this->model->getdefaultLabelId(0, 'single') . "\"";
+				$this->model->getDefaultLabelId(0, 'single') . "\"";
 			}
 		} else
 		if ($this->getVendor() == self::mssql) {
@@ -248,8 +248,8 @@ class DefaultLabelClass extends ConfigClass
 			WHERE 1 ";
 			if ($this->model->getDefaultLabelId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" .
-				$this->model->getPrimaryKeyName() . "]=\"" .
-				$this->model->getdefaultLabelId(0, 'single') . "\"";
+				$this->model->getPrimaryKeyName() . "]='" .
+				$this->model->getDefaultLabelId(0, 'single') . "'";
 			}
 		} else
 		if ($this->getVendor() == self::oracle) {
@@ -258,9 +258,9 @@ class DefaultLabelClass extends ConfigClass
 			FROM 		DEFAULTLABEL
 			WHERE 1";
 			if ($this->model->getDefaultLabelId(0, 'single')) {
-				$sql .= " AND \"" . $this->model->getTableName() . "`." .
-				$this->model->getPrimaryKeyName() . "\"=\"" .
-				$this->model->getdefaultLabelId(0, 'single') . "\"";
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "`." .
+				strtoupper($this->model->getPrimaryKeyName()) . "='" .
+				$this->model->getDefaultLabelId(0, 'single') . "'";
 			}
 		}
 		/**
@@ -305,7 +305,7 @@ class DefaultLabelClass extends ConfigClass
 			}
 		}
 		$this->q->read($sql);
-		if ($this->q->redirect == 'fail') {
+		if ($this->q->execute == 'fail') {
 			echo json_encode(
 			array("success" => false, "message" => $this->q->responce));
 			exit();
@@ -374,7 +374,7 @@ class DefaultLabelClass extends ConfigClass
 								 ) a
 						WHERE rownum <= '" .
 					($this->getStart() + $this->getLimit() - 1) . "' )
-						where r >=  '" . $this->getStart() . "'";
+						WHERE r >=  '" . $this->getStart() . "'";
 				} else {
 					echo "undefine vendor";
 				}
@@ -395,7 +395,7 @@ class DefaultLabelClass extends ConfigClass
 		while (($row = $this->q->fetchAssoc()) == true) {
 			$items[] = $row;
 		}
-		if ($this->model->getDefaultlabelId(0, 'single')) {
+		if ($this->model->getDefaultLabelId(0, 'single')) {
 			$json_encode = json_encode(
 			array('success' => true, 'total' => $total, 'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
@@ -510,7 +510,7 @@ class DefaultLabelClass extends ConfigClass
 			$this->model->getDefaultLabelId(0, 'single') . "'";
 		}
 		$this->q->update($sql);
-		if ($this->q->redirect == 'fail') {
+		if ($this->q->execute == 'fail') {
 			echo json_encode(
 			array("success" => false, "message" => $this->q->responce));
 			exit();
@@ -554,7 +554,7 @@ class DefaultLabelClass extends ConfigClass
 							`executeTime`			=	" .
 			$this->model->getExecuteTime() . "
 					WHERE 	`defaultLabelId`		=	\"" .
-			$this->model->getdefaultLabelId() . "\"";
+			$this->model->getDefaultLabelId() . "\"";
 		} else
 		if ($this->getVendor() == self::mssql) {
 			$sql = "
@@ -569,7 +569,7 @@ class DefaultLabelClass extends ConfigClass
 							[executeBy]		=	'" .$this->model->getExecuteBy() . "',
 							[executeTime]	=	" .$this->model->getExecuteTime() . "
 					WHERE 	[defaultLabelId]='" .
-			$this->model->getdefaultLabelId() . "'";
+			$this->model->getDefaultLabelId() . "'";
 		} else
 		if ($this->getVendor() == self::oracle) {
 			$sql = "
@@ -593,10 +593,10 @@ class DefaultLabelClass extends ConfigClass
 							EXECUTETIME		  =	" .
 			$this->model->getExecuteTime() . "
 					WHERE 	DEFAULTLABELID    =	'" .
-			$this->model->getdefaultLabelId() . "'";
+			$this->model->getDefaultLabelId() . "'";
 		}
 		$this->q->update($sql);
-		if ($this->q->redirect == 'fail') {
+		if ($this->q->execute == 'fail') {
 			echo json_encode(
 			array("success" => "false", "message" => $this->q->responce));
 			exit();
@@ -630,10 +630,10 @@ class DefaultLabelClass extends ConfigClass
 		} else
 		if ($this->getVendor() == self::oracle) {
 			$sql = "
-			UPDATE \"" . $this->model->getTableName() . "\"
+			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		}
-		//	echo "arnab[".$this->model->getDepartmentId(0,'array')."]";
+
 		/**
 		 * System Validation Checking
 		 * @var $access
@@ -658,7 +658,7 @@ class DefaultLabelClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getDepartmentId($i, 'array') . "'
+						$this->model->getDefaultLabelId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsDefault($i, 'array') . "'";
 					}
@@ -667,7 +667,7 @@ class DefaultLabelClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getDepartmentId($i, 'array') . "'
+						$this->model->getDefaultLabelId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsNew($i, 'array') . "'";
 					}
@@ -676,7 +676,7 @@ class DefaultLabelClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getDepartmentId($i, 'array') . "'
+						$this->model->getDefaultLabelId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsDraft($i, 'array') . "'";
 					}
@@ -685,7 +685,7 @@ class DefaultLabelClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getDepartmentId($i, 'array') . "'
+						$this->model->getDefaultLabelId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsUpdate($i, 'array') . "'";
 					}
@@ -694,7 +694,7 @@ class DefaultLabelClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getDepartmentId($i, 'array') . "'
+						$this->model->getDefaultLabelId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsDelete($i, 'array') . "'";
 					}
@@ -703,7 +703,7 @@ class DefaultLabelClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getDepartmentId($i, 'array') . "'
+						$this->model->getDefaultLabelId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsActive($i, 'array') . "'";
 					}
@@ -712,7 +712,7 @@ class DefaultLabelClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getDepartmentId($i, 'array') . "'
+						$this->model->getDefaultLabelId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsApproved($i, 'array') . "'";
 					}
@@ -721,7 +721,7 @@ class DefaultLabelClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
                             WHEN '" .
-						$this->model->getDepartmentId($i, 'array') . "'
+						$this->model->getDefaultLabelId($i, 'array') . "'
                             THEN '" .
 						$this->model->getIsReview($i, 'array') . "'";
 					}
@@ -730,7 +730,7 @@ class DefaultLabelClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
                             WHEN '" .
-						$this->model->getDepartmentId($i, 'array') . "'
+						$this->model->getDefaultLabelId($i, 'array') . "'
                             THEN '" .
 						$this->model->getIsPost($i, 'array') . "'";
 					}
@@ -754,7 +754,7 @@ class DefaultLabelClass extends ConfigClass
 		if ($this->getVendor() == self::oracle) {
 			$sql .= "
 			WHERE   " .
-			$this->model->getPrimaryKeyName() . " IN (" .
+			strtoupper($this->model->getPrimaryKeyName()) . " IN (" .
 			$this->model->getPrimaryKeyAll() . ")";
 		}
 		$this->q->update($sql);

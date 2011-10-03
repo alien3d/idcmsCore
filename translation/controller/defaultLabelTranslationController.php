@@ -293,7 +293,7 @@ class DefaultLabelTranslationClass extends ConfigClass
         }
         //echo $sql;
         $this->q->read($sql);
-        if ($this->q->redirect == 'fail') {
+        if ($this->q->execute == 'fail') {
             echo json_encode(
             array("success" => false, "message" => $this->q->responce));
             exit();
@@ -468,7 +468,7 @@ class DefaultLabelTranslationClass extends ConfigClass
                      "'";
                 }
         $this->q->update($sql);
-        if ($this->q->redirect == 'fail') {
+        if ($this->q->execute == 'fail') {
             echo json_encode(
             array("success" => false, "message" => $this->q->responce));
             exit();
@@ -536,7 +536,7 @@ class DefaultLabelTranslationClass extends ConfigClass
                      $this->model->getdefaultLabelTranslationId() . "'";
                 }
         $this->q->update($sql);
-        if ($this->q->redirect == 'fail') {
+        if ($this->q->execute == 'fail') {
             echo json_encode(
             array("success" => "false", "message" => $this->q->responce));
             exit();
@@ -572,8 +572,8 @@ class DefaultLabelTranslationClass extends ConfigClass
             } else 
                 if ($this->getVendor() == self::oracle) {
                     $sql = "
-			UPDATE \"" .
-                     $this->model->getTableName() . "\"
+			UPDATE " .
+                     strtoupper($this->model->getTableName()) . "
 			SET    ";
                 }
         //	echo "arnab[".$this->model->getDepartmentId(0,'array')."]";
@@ -593,28 +593,28 @@ class DefaultLabelTranslationClass extends ConfigClass
                      $this->model->getPrimaryKeyName() . "]";
                 } else 
                     if ($this->getVendor() == self::oracle) {
-                        $sqlLooping .= "	\"" . $systemCheck . "\" = CASE \"" .
-                         $this->model->getPrimaryKeyName() . "\"";
+                        $sqlLooping .= "	" . strtoupper($systemCheck) . "  = CASE " .
+                         strtoupper($this->model->getPrimaryKeyName()) . " ";
                     }
             switch ($systemCheck) {
                 case 'isDefault':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" . $this->model->getDepartmentId($i, 'array') . "\"
+							WHEN '" . $this->model->getDepartmentId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
                     }
                     break;
                 case 'isNew':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" . $this->model->getDepartmentId($i, 'array') . "\"
+							WHEN '" . $this->model->getDepartmentId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
                     }
                     break;
                 case 'isDraft':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" . $this->model->getDepartmentId($i, 'array') . "\"
+							WHEN '" . $this->model->getDepartmentId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
                     }
                     break;
@@ -628,21 +628,21 @@ class DefaultLabelTranslationClass extends ConfigClass
                 case 'isDelete':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" . $this->model->getDepartmentId($i, 'array') . "\"
+							WHEN '" . $this->model->getDepartmentId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
                     }
                     break;
                 case 'isActive':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" . $this->model->getDepartmentId($i, 'array') . "\"
+							WHEN '" . $this->model->getDepartmentId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
                     }
                     break;
                 case 'isApproved':
                     for ($i = 0; $i < $loop; $i ++) {
                         $sqlLooping .= "
-							WHEN \"" . $this->model->getDepartmentId($i, 'array') . "\"
+							WHEN '" . $this->model->getDepartmentId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
                     }
                     break;
@@ -662,7 +662,7 @@ class DefaultLabelTranslationClass extends ConfigClass
             } else 
                 if ($this->getVendor() == self::oracle) {
                     $sql .= "
-			WHERE \"" . $this->model->getPrimaryKeyName() . "\" IN (" .
+			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . " IN (" .
                      $this->model->getPrimaryKeyAll() . ")";
                 }
         $this->q->update($sql);
@@ -754,9 +754,11 @@ class DefaultLabelTranslationClass extends ConfigClass
         if ($file) {
             echo json_encode(
             array("success" => "true", "message" => "File generated"));
+        	exit();
         } else {
             echo json_encode(
             array("success" => "false", "message" => "File not generated"));
+        	exit();
         }
     }
 }

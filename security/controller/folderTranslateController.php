@@ -296,7 +296,7 @@ class FolderTranslateClass extends  ConfigClass {
 							 )	";
 			}
 			$this->q->update($sql);
-			if($this->q->redirect=='fail') {
+			if($this->q->execute=='fail') {
 				echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 				exit();
 			}
@@ -402,7 +402,7 @@ class FolderTranslateClass extends  ConfigClass {
 		}
 		//echo $sql;
 		$this->q->read($sql);
-		if($this->q->redirect=='fail') {
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
@@ -611,7 +611,7 @@ class FolderTranslateClass extends  ConfigClass {
 					WHERE 	FOLDERID		=	\"".$this->model->getFolderId()."\"";
 		}
 		$this->q->update($sql);
-		if($this->q->redirect=='fail') {
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
@@ -673,7 +673,7 @@ class FolderTranslateClass extends  ConfigClass {
 					WHERE 	FOLDERID	=	\"".$this->model->getFolderId()."\"";
 		}
 		$this->q->update($sql);
-		if($this->q->redirect=='fail') {
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 		}
@@ -844,7 +844,7 @@ class FolderTranslateClass extends  ConfigClass {
 					AND 	LANGUAGEID			=	\"".$languageId."\"";
 				}
 				$this->q->update($sql);
-				if($this->q->redirect=='fail') {
+				if($this->q->execute=='fail') {
 					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 					exit();
 
@@ -894,7 +894,7 @@ class FolderTranslateClass extends  ConfigClass {
 							)";
 				}
 				$this->q->create($sql);
-				if($this->q->redirect=='fail') {
+				if($this->q->execute=='fail') {
 					echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 					exit();
 

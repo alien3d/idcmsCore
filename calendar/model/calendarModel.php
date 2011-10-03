@@ -67,7 +67,7 @@ class CalendarModel extends ValidationClass
             $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
         } else 
             if ($this->getVendor() == self::mssql) {
-                $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+                $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
             } else 
                 if ($this->getVendor() == self::oracle) {
                     $this->setExecuteTime(

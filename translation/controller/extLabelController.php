@@ -340,7 +340,7 @@ class ExtLabelClass extends ConfigClass
         }
         //echo $sql;
         $this->q->read($sql);
-        if ($this->q->redirect == 'fail') {
+        if ($this->q->execute == 'fail') {
             echo json_encode(
             array("success" => false, "message" => $this->q->responce));
             exit();
@@ -431,7 +431,7 @@ class ExtLabelClass extends ConfigClass
         while (($row = $this->q->fetchAssoc()) == true) {
             $items[] = $row;
         }
-        if ($this->extLabelId) {
+        if ($this->model->getExtLabelId(0,'string')) {
             $json_encode = json_encode(
             array('success' => true, 'total' => $total, 'data' => $items));
             $json_encode = str_replace("[", "", $json_encode);
@@ -538,7 +538,7 @@ class ExtLabelClass extends ConfigClass
                      $this->model->getextLabelId(0, 'single') . "'";
                 }
         $this->q->update($sql);
-        if ($this->q->redirect == 'fail') {
+        if ($this->q->execute == 'fail') {
             echo json_encode(
             array("success" => false, "message" => $this->q->responce));
             exit();
@@ -633,7 +633,7 @@ class ExtLabelClass extends ConfigClass
                      $this->model->getextLabelId() . "'";
                 }
         $this->q->update($sql);
-        if ($this->q->redirect == 'fail') {
+        if ($this->q->execute == 'fail') {
             echo json_encode(
             array("success" => "false", "message" => $this->q->responce));
             exit();
@@ -724,9 +724,11 @@ class ExtLabelClass extends ConfigClass
         if ($file) {
             echo json_encode(
             array("success" => "true", "message" => "File generated"));
+        	exit();
         } else {
             echo json_encode(
             array("success" => "false", "message" => "File not generated"));
+			exit();
         }
     }
 }

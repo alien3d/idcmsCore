@@ -141,7 +141,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 					)
 			VALUES
 					(
-						\"".$this->model->getextLabelTranslation()."\",						\"".$this->model->getextLabelTranslationEnglish()."\"
+						\"".$this->model->getExtLabelTranslation()."\",						\"".$this->model->getExtLabelTranslationEnglish()."\"
 						\"". $this->model->getIsDefault(0,'single') . "\",				\"". $this->model->getIsNew(0,'single') . "\",
 						\"". $this->model->getIsDraft(0,'single') . "\",				\"". $this->model->getIsUpdate(0,'single') . "\",
 						\"". $this->model->getIsDelete(0,'single') . "\",				\"". $this->model->getIsActive(0,'single') . "\",
@@ -161,7 +161,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 				)
 			VALUES
 				(
-						'".$this->model->getextLabelTranslation()."',				'".$this->model->getextLabelTranslationEnglish()."'
+						'".$this->model->getExtLabelTranslation()."',				'".$this->model->getExtLabelTranslationEnglish()."'
 						'". $this->model->getIsDefault(0,'single') . "',			'". $this->model->getIsNew(0,'single') . "',
 						'". $this->model->getIsDraft(0,'single') . "',				'". $this->model->getIsUpdate(0,'single') . "',
 						'". $this->model->getIsDelete(0,'single') . "',				'". $this->model->getIsActive(0,'single') . "',
@@ -172,14 +172,14 @@ class ExtLabelTranslationClass extends  ConfigClass {
 			$sql="
 			INSERT INTO 	EXTLABELTRANSLATION
 						(
-							EXTLABELTRANSLATION,							\"extLabelTranslationEnglish\",
+							EXTLABELTRANSLATION,				    EXTLABELTRANSLATEENGLISH,
 							ISDEFAULT,								ISNEW,
 							ISDRAFT,								ISUPDATE,
 							ISDELETE,								ISACTIVE,
 							ISAPPROVED,								EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							'".$this->model->getextLabelTranslation()."',				'".$this->model->getextLabelTranslationEnglish()."'
+							'".$this->model->getExtLabelTranslation()."',				'".$this->model->getExtLabelTranslationEnglish()."'
 						'". $this->model->getIsDefault(0,'single') . "',			'". $this->model->getIsNew(0,'single') . "',
 						'". $this->model->getIsDraft(0,'single') . "',				'". $this->model->getIsUpdate(0,'single') . "',
 						'". $this->model->getIsDelete(0,'single') . "',				'". $this->model->getIsActive(0,'single') . "',
@@ -224,24 +224,24 @@ class ExtLabelTranslationClass extends  ConfigClass {
 			SELECT 		*
 			FROM 		`extLabelTranslation`
 			WHERE 1 ";
-			if($this->model->getextLabelTranslationId(0,'single')) {
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getextLabelTranslationId(0,'single')."\"";
+			if($this->model->getExtLabelTranslationId(0,'single')) {
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->getExtLabelTranslationId(0,'single')."\"";
 			}
 		} else if ($this->getVendor()==self::mssql) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		[extLabelTranslation]
 			WHERE 1 ";
-			if($this->model->getextLabelTranslationId(0,'single')) {
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]=\"".$this->model->getextLabelTranslationId(0,'single')."\"";
+			if($this->model->getExtLabelTranslationId(0,'single')) {
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='".$this->model->getExtLabelTranslationId(0,'single')."'";
 			}
 		} else if ($this->getVendor()==self::oracle) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		EXTLABELTRANSLATION
 			WHERE 1";
-			if($this->model->getextLabelTranslationId(0,'single')) {
-				$sql.=" AND \"".$this->model->getTableName()."`.".$this->model->getPrimaryKeyName()."\"=\"".$this->model->getextLabelTranslationId(0,'single')."\"";
+			if($this->model->getExtLabelTranslationId(0,'single')) {
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getPrimaryKeyName())."='".$this->model->getExtLabelTranslationId(0,'single')."'";
 			}
 		}
 		/**
@@ -284,7 +284,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 	 }
 		//echo $sql;
 		$this->q->read($sql);
-		if($this->q->redirect=='fail') {
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
@@ -361,7 +361,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if(!($this->getextLabelTranslationId(0,'single'))) {
+		if(!($this->getExtLabelTranslationId(0,'single'))) {
 
 			$this->q->read($sql);
 			if($this->q->execute=='fail') {
@@ -380,7 +380,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 
 
 
-		if($this->getextLabelTranslationId(0,'single')) {
+		if($this->getExtLabelTranslationId(0,'single')) {
 			$json_encode = json_encode(
 			array(
 						'success'	=>	true,
@@ -426,8 +426,8 @@ class ExtLabelTranslationClass extends  ConfigClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE 	`extLabelTranslation`
-					SET 	`extLabelTranslationNote`		=	\"".$this->model->getextLabelTranslationNote()."\",
-							`extLabelTranslationEnglish`	=	\"".$this->model->getextLabelTranslationEnglish()."\",
+					SET 	`extLabelTranslationNote`		=	\"".$this->model->getExtLabelTranslationNote()."\",
+							`extLabelTranslationEnglish`	=	\"".$this->model->getExtLabelTranslationEnglish()."\",
 							`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
 							`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
 							`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
@@ -437,40 +437,40 @@ class ExtLabelTranslationClass extends  ConfigClass {
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
 							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
 							`executeTime`			=	".$this->model->getExecuteTime()."
-					WHERE 	`extLabelTranslationId`			=	\"".$this->model->getextLabelTranslationId(0,'single')."\"";
+					WHERE 	`extLabelTranslationId`			=	\"".$this->model->getExtLabelTranslationId(0,'single')."\"";
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[extLabelTranslation]
-					SET 	[extLabelTranslationNote]		=	\"".$this->model->getextLabelTranslationNote()."\",
-							[extLabelTranslationEnglish]	=	\"".$this->model->getextLabelTranslationEnglish()."\",
-							[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+					SET 	[extLabelTranslationNote]		=	'".$this->model->getExtLabelTranslationNote()."',
+							[extLabelTranslationEnglish]	=	'".$this->model->getExtLabelTranslationEnglish()."',
+							[isDefault]		=	'".$this->model->getIsDefault(0,'single')."',
+							[isActive]		=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]			=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]		=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]		=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]		=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]	=	'".$this->model->getIsApproved(0,'single')."',
+							[executeBy]			=	'".$this->model->getExecuteBy()."',
 							[executeTime]			=	".$this->model->getExecuteTime()."
-					WHERE 	[extLabelTranslationId]			=	\"".$this->model->getextLabelTranslationId(0,'single')."\"";
+					WHERE 	[extLabelTranslationId]			=	'".$this->model->getExtLabelTranslationId(0,'single')."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	EXTLABELTRANSLATION
-					SET 	\"extLabelTranslationNote\"		=	\"".$this->model->getextLabelTranslationNote()."\",
-							\"extLabelTranslationEnglish\"	=	\"".$this->model->getextLabelTranslationEnglish()."\",
-							ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
-							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
-							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
-							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
-							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
-							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
-							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+					SET 	EXTLABELTRANSLATIONNOTE		=	'".$this->model->getExtLabelTranslationNote()."',
+							EXTLABELTRANSLATIONENGLISH	=	'".$this->model->getExtLabelTranslationEnglish()."',
+							ISDEFAULT	=	'".$this->model->getIsDefault(0,'single')."',
+							ISACTIVE	=	'".$this->model->getIsActive(0,'single')."',
+							ISNEW		=	'".$this->model->getIsNew(0,'single')."',
+							ISDRAFT		=	'".$this->model->getIsDraft(0,'single')."',
+							ISUPDATE	=	'".$this->model->getIsUpdate(0,'single')."',
+							ISDELETE	=	'".$this->model->getIsDelete(0,'single')."',
+							ISAPPROVED	=	'".$this->model->getIsApproved(0,'single')."',
+							EXECUTEBY			=	'".$this->model->getExecuteBy()."',
 							EXECUTETIME		=	".$this->model->getExecuteTime()."
-					WHERE 	\"extLabelTranslationId\"		=	\"".$this->model->getextLabelTranslationId(0,'single')."\"";
+					WHERE 	EXTLABELTRANSLATIONID		=	\"".$this->model->getExtLabelTranslationId(0,'single')."\"";
 		}
 		$this->q->update($sql);
-		if($this->q->redirect=='fail') {
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
@@ -505,37 +505,37 @@ class ExtLabelTranslationClass extends  ConfigClass {
 							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
 							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
 							`executeTime`			=	".$this->model->getExecuteTime()."
-					WHERE 	`extLabelTranslationId`		=	\"".$this->model->getextLabelTranslationId()."\"";
+					WHERE 	`extLabelTranslationId`		=	\"".$this->model->getExtLabelTranslationId()."\"";
 
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[extLabelTranslation]
-					SET		[isDefault]		=	\"".$this->model->getIsDefault(0,'single')."\",
-							[isActive]		=	\"".$this->model->getIsActive(0,'single')."\",
-							[isNew]			=	\"".$this->model->getIsNew(0,'single')."\",
-							[isDraft]		=	\"".$this->model->getIsDraft(0,'single')."\",
-							[isUpdate]		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							[isDelete]		=	\"".$this->model->getIsDelete(0,'single')."\",
-							[isApproved]	=	\"".$this->model->getIsApproved(0,'single')."\",
-							[executeBy]			=	\"".$this->model->getExecuteBy()."\",
+					SET		[isDefault]		=	'".$this->model->getIsDefault(0,'single')."',
+							[isActive]		=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]			=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]		=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]		=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]		=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]	=	'".$this->model->getIsApproved(0,'single')."',
+							[executeBy]		=	'".$this->model->getExecuteBy()."',
 							[executeTime]			=	".$this->model->getExecuteTime()."
-					WHERE 	[extLabelTranslationId]		=	\"".$this->model->getextLabelTranslationId()."\"";
+					WHERE 	[extLabelTranslationId]		=	'".$this->model->getExtLabelTranslationId()."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE	EXTLABELTRANSLATION
-					SET		ISDEFAULT	=	\"".$this->model->getIsDefault(0,'single')."\",
-							ISACTIVE	=	\"".$this->model->getIsActive(0,'single')."\",
-							ISNEW		=	\"".$this->model->getIsNew(0,'single')."\",
-							ISDRAFT		=	\"".$this->model->getIsDraft(0,'single')."\",
-							ISUPDATE	=	\"".$this->model->getIsUpdate(0,'single')."\",
-							ISDELETE	=	\"".$this->model->getIsDelete(0,'single')."\",
-							ISAPPROVED	=	\"".$this->model->getIsApproved(0,'single')."\",
-							EXECUTEBY			=	\"".$this->model->getExecuteBy()."\",
+					SET		ISDEFAULT	=	'".$this->model->getIsDefault(0,'single')."',
+							ISACTIVE	=	'".$this->model->getIsActive(0,'single')."',
+							ISNEW		=	'".$this->model->getIsNew(0,'single')."',
+							ISDRAFT		=	'".$this->model->getIsDraft(0,'single')."',
+							ISUPDATE	=	'".$this->model->getIsUpdate(0,'single')."',
+							ISDELETE	=	'".$this->model->getIsDelete(0,'single')."',
+							ISAPPROVED	=	'".$this->model->getIsApproved(0,'single')."',
+							EXECUTEBY			=	'".$this->model->getExecuteBy()."',
 							EXECUTETIME		=	".$this->model->getExecuteTime()."
-					WHERE 	\"extLabelTranslationId\"	=	\"".$this->model->getextLabelTranslationId()."\"";
+					WHERE 	EXTLABELTRANSLATIONID	=	'".$this->model->getExtLabelTranslationId()."'";
 		}
 		$this->q->update($sql);
-		if($this->q->redirect=='fail') {
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 		}
@@ -574,15 +574,15 @@ class ExtLabelTranslationClass extends  ConfigClass {
 
 			} else if ($this->getVendor()==self::oracle) {
 				$sql="
-			UPDATE \"".$this->model->getTableName()."\"
+			UPDATE ".strtoupper($this->model->getTableName())."
 			SET    ";
 			}
-			//	echo "arnab[".$this->model->getDepartmentId(0,'array')."]";
+			
 			/**
 			 *	System Validation Checking
 			 *  @var $access
 			 */
-			$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved");
+			$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved","isReview","isPost");
 			foreach($access as $systemCheck) {
 
 
@@ -592,55 +592,55 @@ class ExtLabelTranslationClass extends  ConfigClass {
 					$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
 
 				} else if ($this->getVendor()==self::oracle) {
-					$sqlLooping.="	\"".$systemCheck."\" = CASE \"".$this->model->getPrimaryKeyName()."\"";
+					$sqlLooping.="	".strtoupper($systemCheck)." = CASE ".strtoupper($this->model->getPrimaryKeyName())." ";
 				}
 				switch ($systemCheck){
 					case 'isDefault':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getDepartmentId($i,'array')."\"
+							WHEN '".$this->model->getDepartmentId($i,'array')."'
 							THEN '".$this->model->getIsDefault($i,'array')."'";
 						}
 						break;
 					case 'isNew':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getDepartmentId($i,'array')."\"
+							WHEN '".$this->model->getDepartmentId($i,'array')."'
 							THEN '".$this->model->getIsNew($i,'array')."'";
 
 						} break;
 					case 'isDraft':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getDepartmentId($i,'array')."\"
+							WHEN '".$this->model->getDepartmentId($i,'array')."'
 							THEN '".$this->model->getIsDraft($i,'array')."'";
 						}
 						break;
 					case 'isUpdate':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getDepartmentId($i,'array')."\"
+							WHEN '".$this->model->getDepartmentId($i,'array')."'
 							THEN '".$this->model->getIsUpdate($i,'array')."'";
 						}
 						break;
 					case 'isDelete':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getDepartmentId($i,'array')."\"
+							WHEN '".$this->model->getDepartmentId($i,'array')."'
 							THEN '".$this->model->getIsDelete($i,'array')."'";
 						}
 						break;
 					case 'isActive':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getDepartmentId($i,'array')."\"
+							WHEN '".$this->model->getDepartmentId($i,'array')."'
 							THEN '".$this->model->getIsActive($i,'array')."'";
 						}
 						break;
 					case 'isApproved':
 						for($i=0;$i<$loop;$i++) {
 							$sqlLooping.="
-							WHEN \"".$this->model->getDepartmentId($i,'array')."\"
+							WHEN '".$this->model->getDepartmentId($i,'array')."'
 							THEN '".$this->model->getIsApproved($i,'array')."'";
 						}
 						break;
@@ -659,7 +659,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 			WHERE  [".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
 			} else if ($this->getVendor()==self::oracle) {
 				$sql.="
-			WHERE \"".$this->model->getPrimaryKeyName()."\" IN (".$this->model->getPrimaryKeyAll().")";
+			WHERE ".strtoupper($this->model->getPrimaryKeyName())." IN (".$this->model->getPrimaryKeyAll().")";
 			}	
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -750,8 +750,10 @@ class ExtLabelTranslationClass extends  ConfigClass {
 		$file = fopen($path,'r');
 		if($file){
 			echo json_encode(array("success"=>"true","message"=>"File generated"));
+			exit();
 		} else {
 			echo json_encode(array("success"=>"false","message"=>"File not generated"));
+			exit();
 
 		}
 	}
@@ -761,7 +763,7 @@ class ExtLabelTranslationClass extends  ConfigClass {
 
 }
 
-$extLabelTranslationObject  	= 	new extLabelTranslationClass();
+$extLabelTranslationObject  	= 	new ExtLabelTranslationClass();
 
 /**
  *	crud -create,read,update,delete

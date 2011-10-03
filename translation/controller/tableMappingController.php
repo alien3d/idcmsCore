@@ -336,7 +336,7 @@ class TableMappingClass extends  ConfigClass {
 		 *	filter table
 		 * @variables $tableArray
 		 */
-		$tableArray = array('tab','tabTranslate','tableMapping','tableMappingTranslate');
+		$tableArray = array('module','moduleTranslate','tableMapping','tableMappingTranslate');
 
 	 if ($this->getFieldQuery()) {
 	 	if ($this->getVendor() == self::mysql) {
@@ -366,7 +366,7 @@ class TableMappingClass extends  ConfigClass {
 	 }
 		//echo $sql;
 		$this->q->read($sql);
-		if($this->q->redirect=='fail') {
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
@@ -407,8 +407,8 @@ class TableMappingClass extends  ConfigClass {
 								ROW_NUMBER() OVER (ORDER BY [tableMappingId]) AS 'RowNumber'
 								FROM 		[tableMapping]
 
-								JOIN 		[tab]
-								ON			[tab].[moduleId` = `tableMapping`.`moduleId`
+								JOIN 		[module]
+								ON			[module].[moduleId` = `tableMapping`.`moduleId`
 
 								LEFT JOIN	[icon]
 								ON			[tableMapping].[iconId]=[icon].[iconId]
@@ -439,11 +439,11 @@ class TableMappingClass extends  ConfigClass {
 									FROM 		TABLEMAPPING
 									JOIN		TABLEMAPPINGTRANSLATE
 									ON			TABLEMAPPING.TABLEMAPPINGID	=TABLEMAPPINGTRANSLATE.TABLEMAPPINGID
-									JOIN 		\"tab\"
-									ON			\"tab\".\"moduleId\" = TABLEMAPPING.\"moduleId\"
-									JOIN		\"tabTranslate\"
-									ON			\"tab\".\"moduleId\"=	\"tabTranslate\".\"moduleId\"
-									AND			\"tabTranslate\".\"moduleId\" =TABLEMAPPING.\"moduleId\"
+									JOIN 		MODULE
+									ON			MODULE.MODULEID = TABLEMAPPING.\"moduleId\"
+									JOIN		MODULETRANSLATE
+									ON			MODULE.\"moduleId\"=	\"tabTranslate\".\"moduleId\"
+									AND			MODULETRANSLATE.\"moduleId\" =TABLEMAPPING.\"moduleId\"
 									LEFT JOIN	ICON
 									ON			TABLEMAPPING.ICONID=ICON.ICONID
 									WHERE		\"tab\".ISACTIVE=1
@@ -545,40 +545,42 @@ class TableMappingClass extends  ConfigClass {
 		}  else if ( $this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE 	[tableMapping]
-					SET 	[moduleId]		=	'".$this->model->getmoduleId()."',
+					SET 	[moduleId]				=	'".$this->model->getmoduleId()."',
 							[tableMappingNote]		=	'".$this->model->gettableMappingNote()."',
 							[tableMappingSequence]	=	'".$this->model->gettableMappingSequence()."',
 							[tableMappingPath]		=	'".$this->model->gettableMappingPath()."',
-							[iconId]			=	'".$this->strict($_POST['iconId'],'string')."',
-							[isActive]			=	'".$this->model->getIsActive(0,'single')."',
-							[isNew]				=	'".$this->model->getIsNew(0,'single')."',
-							[isDraft]			=	'".$this->model->getIsDraft(0,'single')."',
-							[isUpdate]			=	'".$this->model->getIsUpdate(0,'single')."',
-							[isDelete]			=	'".$this->model->getIsDelete(0,'single')."',
-							[isApproved]		=	'".$this->model->getIsApproved(0,'single')."',
+							[iconId]				=	'".$this->strict($_POST['iconId'],'string')."',
+							[isActive]				=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]					=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]				=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]				=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]				=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]			=	'".$this->model->getIsApproved(0,'single')."',
 							[executeBy]				=	'".$this->model->getExecuteBy()."',
-							[executeTime]				=	".$this->model->getExecuteTime()."
-					WHERE 	[tableMappingId]			=	'".$this->model->gettableMappingId(0,'single')."'";
+							[executeTime]			=	".$this->model->getExecuteTime()."
+					WHERE 	[tableMappingId]		=	'".$this->model->gettableMappingId(0,'single')."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE 	TABLEMAPPING
-					SET 	\"moduleId\"		=	'".$this->model->getmoduleId()."',
-							\"tableMappingNote\"		=	'".$this->model->gettableMappingNote()."',
-							\"tableMappingSequence\"	=	'".$this->model->gettableMappingSequence()."',
-							\"tableMappingPath\"		=	'".$this->model->gettableMappingPath()."',
-							ISDEFAULT		=	'".$this->model->getIsDefault(0,'single')."',
-							ISACTIVE		=	'".$this->model->getIsActive(0,'single')."',
-							ISNEW			=	'".$this->model->getIsNew(0,'single')."',
-							ISDRAFT			=	'".$this->model->getIsDraft(0,'single')."',
-							ISUPDATE		=	'".$this->model->getIsUpdate(0,'single')."',
-							ISDELETE		=	'".$this->model->getIsDelete(0,'single')."',
-							ISAPPROVED		=	'".$this->model->getIsApproved(0,'single')."',
-							EXECUTEBY				=	'".$this->model->getExecuteBy()."',
-							EXECUTETIME			=	".$this->model->getExecuteTime()."
-					WHERE 	TABLEMAPPINGID		=	'".$this->model->gettableMappingId(0,'single')."'";
+					SET 	MODULEID				=	'".$this->model->getmoduleId()."',
+							TABLEMAPPINGNOTE		=	'".$this->model->gettableMappingNote()."',
+							TABLEMAPPINGSEQUENCE	=	'".$this->model->gettableMappingSequence()."',
+							TABLEMAPPINGPATH		=	'".$this->model->gettableMappingPath()."',
+							ISDEFAULT					=	'".$this->model->getIsDefault(0,'single')."',
+							ISACTIVE					=	'".$this->model->getIsActive(0,'single')."',
+							ISNEW						=	'".$this->model->getIsNew(0,'single')."',
+							ISDRAFT						=	'".$this->model->getIsDraft(0,'single')."',
+							ISUPDATE					=	'".$this->model->getIsUpdate(0,'single')."',
+							ISDELETE					=	'".$this->model->getIsDelete(0,'single')."',
+							ISAPPROVED					=	'".$this->model->getIsApproved(0,'single')."',
+							ISREVIEW		=	'".$this->model->getIsReview(0,'single')."',
+							ISPOST			=	'".$this->model->getIsPost(0,'single')."',
+							EXECUTEBY					=	'".$this->model->getExecuteBy()."',
+							EXECUTETIME					=	".$this->model->getExecuteTime()."
+					WHERE 	TABLEMAPPINGID				=	'".$this->model->gettableMappingId(0,'single')."'";
 		}
 		$this->q->update($sql);
-		if($this->q->redirect=='fail') {
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
@@ -604,46 +606,48 @@ class TableMappingClass extends  ConfigClass {
 		if($this->getVendor() == self::mysql) {
 			$sql="
 					UPDATE	`tableMapping`
-					SET		`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
-							`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
-							`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
-							`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
-							`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
-							`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
-							`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
+					SET		`isDefault`			=	\"".$this->model->getIsDefault(0,'single')."\",
+							`isActive`			=	\"".$this->model->getIsActive(0,'single')."\",
+							`isNew`				=	\"".$this->model->getIsNew(0,'single')."\",
+							`isDraft`			=	\"".$this->model->getIsDraft(0,'single')."\",
+							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'single')."\",
+							`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
+							`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
 							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
-							`executeTime`			=	".$this->model->getExecuteTime()."
-					WHERE 	`tableMappingId`		=	\"".$this->model->gettableMappingId()."\"";
+							`executeTime`		=	".$this->model->getExecuteTime()."
+					WHERE 	`tableMappingId`	=	\"".$this->model->gettableMappingId()."\"";
 
 		} else if ($this->getVendor()==self::mssql) {
 			$sql="
 					UPDATE	[tableMapping]
-					SET		[isDefault]		=	'".$this->model->getIsDefault(0,'single')."',
-							[isActive]		=	'".$this->model->getIsActive(0,'single')."',
-							[isNew]			=	'".$this->model->getIsNew(0,'single')."',
-							[isDraft]		=	'".$this->model->getIsDraft(0,'single')."',
-							[isUpdate]		=	'".$this->model->getIsUpdate(0,'single')."',
-							[isDelete]		=	'".$this->model->getIsDelete(0,'single')."',
-							[isApproved]	=	'".$this->model->getIsApproved(0,'single')."',
+					SET		[isDefault]			=	'".$this->model->getIsDefault(0,'single')."',
+							[isActive]			=	'".$this->model->getIsActive(0,'single')."',
+							[isNew]				=	'".$this->model->getIsNew(0,'single')."',
+							[isDraft]			=	'".$this->model->getIsDraft(0,'single')."',
+							[isUpdate]			=	'".$this->model->getIsUpdate(0,'single')."',
+							[isDelete]			=	'".$this->model->getIsDelete(0,'single')."',
+							[isApproved]		=	'".$this->model->getIsApproved(0,'single')."',
 							[executeBy]			=	'".$this->model->getExecuteBy()."',
-							[executeTime]			=	".$this->model->getExecuteTime()."
-					WHERE 	[tableMappingId]		=	'".$this->model->gettableMappingId()."'";
+							[executeTime]		=	".$this->model->getExecuteTime()."
+					WHERE 	[tableMappingId]	=	'".$this->model->gettableMappingId()."'";
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
 					UPDATE	TABLEMAPPING
-					SET		ISDEFAULT	=	'".$this->model->getIsDefault(0,'single')."',
-							ISACTIVE	=	'".$this->model->getIsActive(0,'single')."',
-							ISNEW		=	'".$this->model->getIsNew(0,'single')."',
-							ISDRAFT		=	'".$this->model->getIsDraft(0,'single')."',
-							ISUPDATE	=	'".$this->model->getIsUpdate(0,'single')."',
-							ISDELETE	=	'".$this->model->getIsDelete(0,'single')."',
-							ISAPPROVED	=	'".$this->model->getIsApproved(0,'single')."',
-							EXECUTEBY			=	'".$this->model->getExecuteBy()."',
+					SET		ISDEFAULT		=	'".$this->model->getIsDefault(0,'single')."',
+							ISACTIVE		=	'".$this->model->getIsActive(0,'single')."',
+							ISNEW			=	'".$this->model->getIsNew(0,'single')."',
+							ISDRAFT			=	'".$this->model->getIsDraft(0,'single')."',
+							ISUPDATE		=	'".$this->model->getIsUpdate(0,'single')."',
+							ISDELETE		=	'".$this->model->getIsDelete(0,'single')."',
+							ISAPPROVED		=	'".$this->model->getIsApproved(0,'single')."',
+							ISREVIEW		=	'".$this->model->getIsReview(0,'single')."',
+							ISPOST			=	'".$this->model->getIsPost(0,'single')."',
+							EXECUTEBY		=	'".$this->model->getExecuteBy()."',
 							EXECUTETIME		=	".$this->model->getExecuteTime()."
 					WHERE 	TABLEMAPPINGID	=	'".$this->model->gettableMappingId()."'";
 		}
 		$this->q->update($sql);
-		if($this->q->redirect=='fail') {
+		if($this->q->execute=='fail') {
 			echo json_encode(array("success"=>"false","message"=>$this->q->responce));
 			exit();
 		}

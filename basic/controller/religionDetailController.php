@@ -503,6 +503,8 @@ class ReligionDetailClass extends ConfigClass {
 					ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 					ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 					ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					ISREVIEW			=	'".$this->model->getIsReview(0,'single')."',
+					ISPOST				=	'".$this->model->getIsPost(0,'single')."',
 					EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime () . "
 			WHERE 	RELIGIONDETAILID	=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
@@ -572,6 +574,8 @@ class ReligionDetailClass extends ConfigClass {
 					ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 					ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 					ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					ISREVIEW		=	'".$this->model->getIsReview(0,'single')."',
+					ISPOST			=	'".$this->model->getIsPost(0,'single')."',
 					EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime () . "
 			WHERE 	RELIGIONDETAILID	=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
