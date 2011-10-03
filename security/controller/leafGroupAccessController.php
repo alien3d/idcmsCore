@@ -79,10 +79,10 @@ class LeafGroupAccessClass extends ConfigClass
         $this->getDatabase(), $this->getPassword());
         $this->excel = new PHPExcel();
         $this->audit = 0;
-        $this->security = new security();
+        $this->security = new Security();
         $this->security->vendor = $this->vendor;
         $this->security->execute();
-        $this->model = new leafGroupAccessModel();
+        $this->model = new LeafGroupAccessModel();
         $this->model->vendor = $this->vendor;
         $this->model->execute();
         $this->documentTrail = new DocumentTrailClass();

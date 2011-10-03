@@ -79,7 +79,7 @@ class LanguageClass  extends ConfigClass {
 		$this->log           = 1;
 		$this->q->log        = $this->log;
 
-		$this->model         = new languageModel();
+		$this->model         = new LanguageModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 

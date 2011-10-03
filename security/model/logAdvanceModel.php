@@ -60,11 +60,11 @@ class LogAdvanceModel extends ValidationClass
         if (isset($_POST['logAdvanceId'])) {
             $this->strict($_POST['logAdvanceId'], 'numeric');
         }
-        if ($this->vendor == 'normal' || $this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::mysql) {
             $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
         } else 
             if ($this->getVendor() == self::mssql) {
-                $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+                $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
             } else 
                 if ($this->getVendor() == self::oracle) {
                     $this->setExecuteTime(

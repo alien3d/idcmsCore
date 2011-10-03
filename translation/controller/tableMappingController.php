@@ -98,12 +98,12 @@ class TableMappingClass extends  ConfigClass {
 
 		$this->defaultLanguageId  	= 21;
 
-		$this->security 	= 	new security();
+		$this->security 	= 	new Security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
 
-		$this->model = new tableMappingModel();
+		$this->model = new TableMappingModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 

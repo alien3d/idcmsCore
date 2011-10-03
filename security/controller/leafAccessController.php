@@ -87,7 +87,7 @@ class LeafAccessClass extends  ConfigClass {
 
 		$this->q->log 				= $this->log;
 
-		$this->model                = new leafAccessModel();
+		$this->model                = new LeafAccessModel();
 
 
 		$this->model->vendor = $this->vendor;
@@ -390,8 +390,8 @@ class LeafAccessClass extends  ConfigClass {
 	/**
 	 * Enter description here ...
 	 */
-	function groupId() {
-		return $this->security->groupId();
+	function crewId() {
+		return $this->security->crewId();
 	}
 	/**
 	 * Enter description here ...
@@ -418,7 +418,7 @@ class LeafAccessClass extends  ConfigClass {
 		}
 		$this->model->update();
 		$loop=count($_GET['leafAccessId']);
-
+		// @todo  repair this code !!!
 		for($i=0;$i<$loop;$i++) {
 			// mysql doesn't support bolean expression
 			foreach($access_array as $access_type)  {

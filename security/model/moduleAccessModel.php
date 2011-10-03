@@ -24,10 +24,10 @@ class ModuleAccessModel extends ValidationClass
      */
     private $moduleId;
     /**
-     * Group Identification
+     * Crew Identification
      * @var int
      */
-    private $groupId;
+    private $crewId;
     /**
      * Module Access Value
      * @var bool
@@ -52,8 +52,8 @@ class ModuleAccessModel extends ValidationClass
         /*
 		 *  All the $_POST enviroment.
 		 */
-        if (isset($_POST['groupId'])) {
-            $this->setGroupId($_POST['groupId']);
+        if (isset($_POST['crewId'])) {
+            $this->setCrewId($_POST['crewId']);
         }
         // auto assign as array if true
         if (is_array($_GET['moduleAccessId'])) {
@@ -202,17 +202,17 @@ class ModuleAccessModel extends ValidationClass
      * Set Group Identification Value
      * @param  int $value
      */
-    public function setGroupId ($value)
+    public function setCrewId ($value)
     {
-        $this->groupId = $value;
+        $this->crewId = $value;
     }
     /**
      * Return Group Identification Value
      * @return int
      */
-    public function getGroupId ()
+    public function getCrewId ()
     {
-        return $this->groupId;
+        return $this->crewId;
     }
     /**
      * Set Module Access Value

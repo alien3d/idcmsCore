@@ -85,10 +85,10 @@ class ModuleAccessClass extends ConfigClass
         $this->audit = 0;
         $this->log = 1;
         $this->q->log = $this->log;
-        $this->security = new security();
+        $this->security = new Security();
         $this->security->setVendor($this->getVendor());
         $this->security->execute();
-        $this->model = new moduleAccessModel();
+        $this->model = new ModuleAccessModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
         $this->documentTrail = new DocumentTrailClass();

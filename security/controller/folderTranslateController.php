@@ -107,12 +107,12 @@ class FolderTranslateClass extends  ConfigClass {
 
 		$this->defaultLanguageId  	= 21;
 
-		$this->security 	= 	new security();
+		$this->security 	= 	new Security();
 		$this->security->vendor = $this->getVendor();
 		$this->security->leafId = $this->getLeafId();
 		$this->security->execute();
 
-		$this->model = new folderModel();
+		$this->model = new FolderModel();
 		$this->model->vendor = $this->getVendor();
 		$this->model->execute();
 		$this->documentTrail = new DocumentTrailClass();

@@ -85,11 +85,11 @@ class LeafClass extends ConfigClass
         $this->audit = 0;
         $this->log = 1;
         $this->q->log = $this->log;
-        $this->security = new security();
+        $this->security = new Security();
         $this->security->setVendor($this->getVendor());
         $this->security->setLeafId($this->getLeafId());
         $this->security->execute();
-        $this->model = new leafModel();
+        $this->model = new LeafModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
     }
@@ -159,25 +159,25 @@ class LeafClass extends ConfigClass
 						[executeBy],							[executeTime]
 			VALUES
 					(
-						\"" .
-                 $this->model->getModuleId() . "\",			\"" .
-                 $this->model->getFolderId() . "\",
-						\"" .
-                 $this->model->getLeafNote() . "\",					\"" .
-                 $this->model->getLeafSequence() . "\",
-						\"" .
-                 $this->model->getLeafCode() . "\",					\"" .
-                 $this->model->getLeafFilename() . "\",
-						\"" .
-                 $this->model->getIconId() . "\",						\"" .
-                 $this->model->getIsDraft(0, 'single') . "\",
-						\"" .
-                 $this->model->getIsUpdate(0, 'single') . "\",				\"" .
-                 $this->model->getIsDelete(0, 'single') . "\",
-						\"" .
-                 $this->model->getIsActive(0, 'single') . "\",				\"" .
-                 $this->model->getIsApproved(0, 'single') . "\",
-						\"" .
+						'" .
+                 $this->model->getModuleId() . "',			'" .
+                 $this->model->getFolderId() . "',
+						'" .
+                 $this->model->getLeafNote() . "',					'" .
+                 $this->model->getLeafSequence() . "',
+						'" .
+                 $this->model->getLeafCode() . "',					'" .
+                 $this->model->getLeafFilename() . "',
+						'" .
+                 $this->model->getIconId() . "',						'" .
+                 $this->model->getIsDraft(0, 'single') . "',
+						'" .
+                 $this->model->getIsUpdate(0, 'single') . "',				'" .
+                 $this->model->getIsDelete(0, 'single') . "',
+						'" .
+                 $this->model->getIsActive(0, 'single') . "',				'" .
+                 $this->model->getIsApproved(0, 'single') . "',
+						'" .
                  $this->model->getExecuteBy() . "\",								" .
                  $this->model->getExecuteTime() . "
 					)";
@@ -197,25 +197,25 @@ class LeafClass extends ConfigClass
 					)
 			VALUES
 					(
-						\"" .
-                     $this->model->getModuleId() . "\",			\"" .
-                     $this->model->getFolderId() . "\",
-						\"" .
-                     $this->model->getLeafNote() . "\",					\"" .
-                     $this->model->getLeafSequence() . "\",
-						\"" .
-                     $this->model->getLeafCode() . "\",					\"" .
-                     $this->model->getLeafFilename() . "\",
-						\"" .
-                     $this->model->getIconId() . "\",						\"" .
-                     $this->model->getIsDraft(0, 'single') . "\",
-						\"" .
-                     $this->model->getIsUpdate(0, 'single') . "\",				\"" .
-                     $this->model->getIsDelete(0, 'single') . "\",
-						\"" .
-                     $this->model->getIsActive(0, 'single') . "\",				\"" .
-                     $this->model->getIsApproved(0, 'single') . "\",
-						\"" .
+						'" .
+                     $this->model->getModuleId() . "',			'" .
+                     $this->model->getFolderId() . "',
+						'" .
+                     $this->model->getLeafNote() . "',					'" .
+                     $this->model->getLeafSequence() . "',
+						'" .
+                     $this->model->getLeafCode() . "',					'" .
+                     $this->model->getLeafFilename() . "',
+						'" .
+                     $this->model->getIconId() . "',						'" .
+                     $this->model->getIsDraft(0, 'single') . "',
+						'" .
+                     $this->model->getIsUpdate(0, 'single') . "',				'" .
+                     $this->model->getIsDelete(0, 'single') . "',
+						'" .
+                     $this->model->getIsActive(0, 'single') . "',				'" .
+                     $this->model->getIsApproved(0, 'single') . "',
+						'" .
                      $this->model->getExecuteBy() . "\",								" .
                      $this->model->getExecuteTime() . "
 					);";

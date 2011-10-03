@@ -666,7 +666,7 @@ class ThemeClass  extends ConfigClass {
 
 		} else if ($this->getVendor()==self::oracle) {
 			$sql="
-			UPDATE '".$this->model->getTableName()."'
+			UPDATE ".strtoupper($this->model->getTableName())."
 			SET    ";
 		}
 		//	echo "arnab[".$this->model->getThemeId(0,'array')."]";
@@ -674,7 +674,7 @@ class ThemeClass  extends ConfigClass {
 		 *	System Validation Checking
 		 *  @var $access
 		 */
-		$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved");
+		$access  = array("isDefault","isNew","isDraft","isUpdate","isDelete","isActive","isApproved","isReview","isPost");
 		foreach($access as $systemCheck) {
 
 
@@ -684,55 +684,55 @@ class ThemeClass  extends ConfigClass {
 				$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
 
 			} else if ($this->getVendor()==self::oracle) {
-				$sqlLooping.="	\"".$systemCheck."\" = CASE \"".$this->model->getPrimaryKeyName()."\"";
+				$sqlLooping.="	".strtoupper($systemCheck)." = CASE '".$this->model->getPrimaryKeyName()."'";
 			}
 			switch ($systemCheck){
 				case 'isDefault':
 					for($i=0;$i<$loop;$i++) {
 						$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							WHEN '".$this->model->getThemeId($i,'array')."'
 							THEN '".$this->model->getIsDefault($i,'array')."'";
 					}
 					break;
 				case 'isNew':
 					for($i=0;$i<$loop;$i++) {
 						$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							WHEN '".$this->model->getThemeId($i,'array')."'
 							THEN '".$this->model->getIsNew($i,'array')."'";
 
 					} break;
 				case 'isDraft':
 					for($i=0;$i<$loop;$i++) {
 						$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							WHEN '".$this->model->getThemeId($i,'array')."'
 							THEN '".$this->model->getIsDraft($i,'array')."'";
 					}
 					break;
 				case 'isUpdate':
 					for($i=0;$i<$loop;$i++) {
 						$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							WHEN '".$this->model->getThemeId($i,'array')."'
 							THEN '".$this->model->getIsUpdate($i,'array')."'";
 					}
 					break;
 				case 'isDelete':
 					for($i=0;$i<$loop;$i++) {
 						$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							WHEN '".$this->model->getThemeId($i,'array')."'
 							THEN '".$this->model->getIsDelete($i,'array')."'";
 					}
 					break;
 				case 'isActive':
 					for($i=0;$i<$loop;$i++) {
 						$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							WHEN '".$this->model->getThemeId($i,'array')."'
 							THEN '".$this->model->getIsActive($i,'array')."'";
 					}
 					break;
 				case 'isApproved':
 					for($i=0;$i<$loop;$i++) {
 						$sqlLooping.="
-							WHEN \"".$this->model->getThemeId($i,'array')."\"
+							WHEN '".$this->model->getThemeId($i,'array')."'
 							THEN '".$this->model->getIsApproved($i,'array')."'";
 					}
 					break;

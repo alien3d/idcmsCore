@@ -12,7 +12,7 @@
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class themeModel extends ValidationClass{
+class ThemeModel extends ValidationClass{
 
 	/**
 	 * Theme Idenfitication

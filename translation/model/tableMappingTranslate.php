@@ -70,7 +70,7 @@ class TableMappingTranslateModel extends ValidationClass
             $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
         } else 
             if ($this->getVendor() == self::mssql) {
-                $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+                $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
             } else 
                 if ($this->getVendor() == self::oracle) {
                     $this->setExecuteTime(
@@ -79,7 +79,7 @@ class TableMappingTranslateModel extends ValidationClass
                 }
         $this->setTotal(count($_GET['tableMappingId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
-        "isDelete", "isActive", "isApproved");
+        "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
         if (is_array($_GET['tableMappingId'])) {
             $this->tableMappingId = array();

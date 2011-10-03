@@ -96,11 +96,11 @@ class LeafTranslateClass extends ConfigClass
         $this->audit = 0;
         $this->log = 1;
         $this->q->log = $this->log;
-        $this->security = new security();
+        $this->security = new Security();
         $this->security->vendor = $this->vendor;
         $this->security->leafId = $this->leafId_temp;
         $this->security->execute();
-        $this->model = new leafModel();
+        $this->model = new LeafTranslateModel();
         $this->model->vendor = $this->vendor;
         $this->model->execute();
     }

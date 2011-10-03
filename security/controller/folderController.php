@@ -86,11 +86,11 @@ class FolderClass extends ConfigClass
         $this->log = 0;
         $this->q->log = $this->log;
         $this->defaultLanguageId = 21;
-        $this->security = new security();
+        $this->security = new Security();
         $this->security->setVendor($this->getVendor());
         $this->security->setLeafId($this->getLeafId());
         $this->security->execute();
-        $this->model = new folderModel();
+        $this->model = new FolderModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
         $this->documentTrail = new DocumentTrailClass();
@@ -159,19 +159,19 @@ class FolderClass extends ConfigClass
 				)
 			VALUES
 				(
-						\"" . $this->model->getModuleId() . "\",						\"" .
-                 $this->model->getIconId() . "\",
-						\"" . $this->model->getFolderSequence() . "\", 				\"" .
-                 $this->model->getFolderCode() . "\",
-						\"" . $this->model->getfolderPath() . "\"	,				\"" .
-                 $this->model->getfolderNote() . "\",
-						\"" . $this->model->getIsDefault(0, 'single') . "\",		\"" .
-                 $this->model->getIsNew(0, 'single') . "\",
-						\"" . $this->model->getIsDraft(0, 'single') . "\",		\"" .
+						'" . $this->model->getModuleId() . "',						'" .
+                 $this->model->getIconId() . "',
+						'" . $this->model->getFolderSequence() . "', 				'" .
+                 $this->model->getFolderCode() . "',
+						'" . $this->model->getfolderPath() . "'	,				'" .
+                 $this->model->getfolderNote() . "',
+						'" . $this->model->getIsDefault(0, 'single') . "',		'" .
+                 $this->model->getIsNew(0, 'single') . "',
+						'" . $this->model->getIsDraft(0, 'single') . "',		'" .
                  $this->model->getIsUpdate(0, 'single') . "\",
-						\"" . $this->model->getIsDelete(0, 'single') . "\",		\"" .
+						'" . $this->model->getIsDelete(0, 'single') . "',		'" .
                  $this->model->getIsActive(0, 'single') . "\",
-						\"" . $this->model->getIsApproved(0, 'single') . "\",	\"" .
+						'" . $this->model->getIsApproved(0, 'single') . "',	'" .
                  $this->model->getExecuteBy() . "\",
 						" . $this->model->getExecuteTime() . "
 					
@@ -661,20 +661,20 @@ class FolderClass extends ConfigClass
                 if ($this->getVendor() == self::oracle) {
                     $sql = "
 					UPDATE 	FOLDER
-					SET 	MODULEID		=	\"" . $this->model->getModuleId() . "\",
-							FOLDERNOTE		=	\"" . $this->model->getfolderNote() . "\",
-							FOLDERSEQUENCE	=	\"" . $this->model->getfolderSequence() . "\",
-							FOLDERPATH		=	\"" . $this->model->getfolderPath() . "\",
-							ISDEFAULT		=	\"" . $this->model->getIsDefault(0, 'single') . "\",
-							ISACTIVE		=	\"" . $this->model->getIsActive(0, 'single') . "\",
-							ISNEW			=	\"" . $this->model->getIsNew(0, 'single') . "\",
-							ISDRAFT			=	\"" . $this->model->getIsDraft(0, 'single') . "\",
-							ISUPDATE		=	\"" . $this->model->getIsUpdate(0, 'single') . "\",
-							ISDELETE		=	\"" . $this->model->getIsDelete(0, 'single') . "\",
-							ISAPPROVED		=	\"" . $this->model->getIsApproved(0, 'single') . "\",
-							EXECUTEBY		=	\"" . $this->model->getExecuteBy() . "\",
+					SET 	MODULEID		=	'" . $this->model->getModuleId() . "',
+							FOLDERNOTE		=	'" . $this->model->getfolderNote() . "',
+							FOLDERSEQUENCE	=	'" . $this->model->getfolderSequence() . "',
+							FOLDERPATH		=	'" . $this->model->getfolderPath() . "',
+							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
+							ISACTIVE		=	'" . $this->model->getIsActive(0, 'single') . "',
+							ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
+							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							ISUPDATE		=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							ISDELETE		=	'" . $this->model->getIsDelete(0, 'single') . "',
+							ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-					WHERE 	FOLDERID		=	\"" . $this->model->getFolderId(0, 'single') . "\"";
+					WHERE 	FOLDERID		=	'" . $this->model->getFolderId(0, 'single') . "'";
                 }
         $this->q->update($sql);
         if ($this->q->redirect == 'fail') {

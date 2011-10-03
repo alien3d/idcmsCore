@@ -86,11 +86,11 @@ class DefaultLabelTranslationClass extends ConfigClass
         $this->log = 0;
         $this->q->log = $this->log;
         $this->defaultLanguageId = 21;
-        $this->security = new security();
+        $this->security = new Security();
         $this->security->setVendor($this->getVendor());
         $this->security->setLeafId($this->getLeafId());
         $this->security->execute();
-        $this->model = new defaultLabelTranslateModel();
+        $this->model = new DefaultLabelTranslateModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
         $this->documentTrail = new DocumentTrailClass();

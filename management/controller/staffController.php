@@ -91,7 +91,7 @@ class StaffClass extends ConfigClass
 		$this->documentTrail->setStaffId($this->getStaffId());
 		$this->documentTrail->setLanguageId($this->getLanguageId());
 
-		$this->security = new security();
+		$this->security = new Security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->setStaffId($this->getStaffId());
 		$this->security->setLanguageId($this->getLanguageId());

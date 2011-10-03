@@ -76,7 +76,7 @@ class ModuleModel extends ValidationClass
             $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
         } else 
             if ($this->getVendor() == self::mssql) {
-                $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+                $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
             } else 
                 if ($this->getVendor() == self::oracle) {
                     $this->setExecuteTime(
@@ -85,10 +85,10 @@ class ModuleModel extends ValidationClass
                 }
         $this->setTotal(count($_GET['tabId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
-        "isDelete", "isActive", "isApproved");
+        "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
-        if (is_array($_GET['tabId'])) {
-            $this->tabId = array();
+        if (is_array($_GET['moduleId'])) {
+            $this->moduleId = array();
         }
         if (is_array($_GET['isDefault'])) {
             $this->isDefault = array();

@@ -96,11 +96,11 @@ class ModuleTranslateClass extends ConfigClass
         $this->log = 1;
         $this->q->log = $this->log;
         $this->defaultLanguageId = 21;
-        $this->security = new security();
+        $this->security = new Security();
         $this->security->vendor = $this->vendor;
         $this->security->leafId = $this->leafId;
         $this->security->execute();
-        $this->model = new moduleModel();
+        $this->model = new ModuleTranslateModel();
         $this->model->vendor = $this->vendor;
         $this->model->execute();
         $this->documentTrail = new DocumentTrailClass();
