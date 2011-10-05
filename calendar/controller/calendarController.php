@@ -92,7 +92,7 @@ class CalendarClass extends ConfigClass
 	function create ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -104,12 +104,12 @@ class CalendarClass extends ConfigClass
 	function read ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 		SELECT	*
 		FROM 	`calendarColor`
@@ -118,7 +118,7 @@ class CalendarClass extends ConfigClass
 		
 		WHERE 	`staffId` = \"" . $this->model->getExecuteBy() . "\" ";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 		SELECT	*
 		FROM 	[calendarColor]
@@ -126,7 +126,7 @@ class CalendarClass extends ConfigClass
 		USING   [calendar].[calendarColorId] = [calendarColor].[colorColorId]
 		WHERE 	`staffId` = '" . $this->model->getExecuteBy() . "' ";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 		SELECT	*
 		FROM 	CALENDARCOLOR
@@ -172,27 +172,27 @@ class CalendarClass extends ConfigClass
 	function update ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					UPDATE 	`calendar`
 					SET 	`calendarTitle`	=	\"" . $this->strict($_POST['cal_title'], 's') . "\"
 					WHERE 	`calendarId`		=	\"" .
 			$this->strict($_POST['cal_own_uniqueId'], 'n') . "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					UPDATE 	[calendar]
 					SET 	[calendarTitle]	=	\"" . $this->strict($_POST['cal_title'], 's') . "\"
 					WHERE 	[calendarId]		=	\"" . $this->strict($_POST['calendarId'], 'n') .
                  "\"";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 					UPDATE 	CALENDAR
 					SET 	CALENDARTITLE	=	'" . $this->strict($_POST['cal_title'], 's') . "'
@@ -219,7 +219,7 @@ class CalendarClass extends ConfigClass
 	function delete ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);

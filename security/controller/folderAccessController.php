@@ -97,13 +97,13 @@ class FolderAccessClass extends ConfigClass
     {
         header('Content-Type', 'application/json; charset=utf-8');
         $items = array();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         // by default if add new group will add access to module and folder.
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 				SELECT	`module`.`moduleNote`,
 						`module`.`moduleId`,
@@ -137,7 +137,7 @@ class FolderAccessClass extends ConfigClass
                  $this->model->getModuleId() . "\"";
             }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 				SELECT	[module].[moduleNote],
 						[module].[moduleId],
@@ -171,7 +171,7 @@ class FolderAccessClass extends ConfigClass
                      $this->model->getModuleId() . "\"";
                 }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 				SELECT	MODULE.MODULENOTE 	AS	\"moduleNote\",
 						MODULE.MODULEID 	AS 	\"moduleId\",
@@ -218,15 +218,15 @@ class FolderAccessClass extends ConfigClass
         $total = $this->q->numberRows();
         //paging
         if ($this->getOrder() && $this->getSortField()) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql .= "	ORDER BY `" . $this->getSortField() . "` " .
                  $this->getOrder() . " ";
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $sql .= "	ORDER BY [" . $this->getSortField() . "] " .
                      $this->getOrder() . " ";
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $sql .= "	ORDER BY " . strtoupper($this->getSortField()) .
                          "  " . strtoupper($this->getOrder()) . " ";
                     }
@@ -252,13 +252,13 @@ class FolderAccessClass extends ConfigClass
     {
         header('Content-Type', 'application/json; charset=utf-8');
         //UTF8
-        if ($this->q->vendor == self::mysql) {
+        if ($this->q->vendor == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->model->update();
         $loop = $this->model->getTotal();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE 	`" . $this->model->getTableName() . "`
 			SET 	";

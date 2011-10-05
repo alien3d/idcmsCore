@@ -32,20 +32,20 @@ class staffWebAcessModel extends ValidationClass{
 		
 
 
-		if($this->getVendor()==self::mysql){
+		if($this->getVendor()==self::MYSQL){
 			$this->setStaffWebAccessLogIn("\"".date("Y-m-d H:i:s")."\"");
-		} else if ($this->getVendor()==self::mssql){
+		} else if ($this->getVendor()==self::MSSQL){
 			$this->setStaffWebAccessLogIn("\"".date("Y-m-d H:i:s")."\"");
-		} else if ($this->getVendor()==self::oracle){
+		} else if ($this->getVendor()==self::ORACLE){
 			$this->setStaffWebAccessLogIn("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		} else{
 			echo "udentified vendor ?";
 		}
-		if($this->getVendor()==self::mysql){
+		if($this->getVendor()==self::MYSQL){
 			$this->setStaffWebAccessLogin("\"".date("Y-m-d H:i:s")."\"");
-		} else if ($this->getVendor()==self::mssql){
+		} else if ($this->getVendor()==self::MSSQL){
 			$this->setStaffWebAccessLogOut("\"".date("Y-m-d H:i:s")."\"");
-		} else if ($this->getVendor()==self::oracle){
+		} else if ($this->getVendor()==self::ORACLE){
 			$this->setStaffWebAccessLogOut("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		} else{
 			echo "udentified vendor ?";

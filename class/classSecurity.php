@@ -159,26 +159,26 @@ class Security extends ConfigClass
     public function group ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	`group`.`groupId`,
 					`group`.`groupNote`
 			FROM   	`group`
 			WHERE 	`group`.`isActive`=1";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT 	[group].[groupId],
 					[group].[groupNote]
 			FROM   	[group]
 			WHERE   [group].[isActive]=1";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT 	GROUP_.GROUPID,
 					GROUP_.GROUPNOTE
@@ -215,26 +215,26 @@ class Security extends ConfigClass
     public function department ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	`department`.`departmentId`,
 					`department`.`departmentNote`
 			FROM   	`department`
 			WHERE   `department`.`isActive`=1";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT 	[department].[departmentId],
 					[department].[departmentNote]
 			FROM   	[department]
 			WHERE   [department].[isActive]=1";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT 	DEPARTMENT.DEPARTMENTID,
 					DEPARTMENT.DEPARTMENTNOTE
@@ -281,12 +281,12 @@ class Security extends ConfigClass
         if (isset($_GET['type'])) {
             $type = intval($_GET['type']);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             if ($type == 1) {
                 $sql = "
 				SELECT 	`module`.`moduleId`,
@@ -310,7 +310,7 @@ class Security extends ConfigClass
                     }
                 }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 if ($type == 1) {
                     $sql = "
 			SELECT 	[module].[moduleId],
@@ -334,7 +334,7 @@ class Security extends ConfigClass
                         }
                     }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     if ($type == 1) {
                         $sql = "
 			SELECT 	MODULE.MODULEID,
@@ -401,12 +401,12 @@ class Security extends ConfigClass
         if (isset($_GET['type'])) {
             $type = intval($_GET['type']);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             if ($type == 1) {
                 $sql = "
 			SELECT	`folder`.`folderId`,
@@ -432,7 +432,7 @@ class Security extends ConfigClass
                  $this->strict($_GET['moduleId'], 'numeric') . "\"";
             }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 if ($type == 1) {
                     $sql = "
 			SELECT	[folder].[folderId],
@@ -458,7 +458,7 @@ class Security extends ConfigClass
                      $this->strict($_GET['moduleId'], 'numeric') . "\"";
                 }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     if ($type == 1) {
                         $sql = "
 			SELECT 	FOLDER.FOLDERID,
@@ -517,7 +517,7 @@ class Security extends ConfigClass
          * initilize dummy value  to 0
          */
         $nextSequence = 0;
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -525,19 +525,19 @@ class Security extends ConfigClass
         if (isset($_GET['table'])) {
             $table = $_GET['table'];
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	(MAX(`" . $table . "Sequence`)+1) AS `nextSequence`
 			FROM 	`" . $table . "`
 			WHERE	`isActive` = 1";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT 	(MAX([" . $table . "Sequence])+1) AS [nextSequence]
 			FROM 	[" . $table . "]
 			WHERE 	[isActive]=1";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT 	(MAX(\"" . $table . "Sequence\")+1) AS \"nextSequence\"
 			FROM 	\"" . $table . "\"

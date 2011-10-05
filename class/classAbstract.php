@@ -112,27 +112,37 @@ abstract class ConfigClass
      * Mysql Database (open Core)
      * @var const string
      */
-    const mysql = 'mysql';
+    const MYSQL = 'mysql';
     /**
      * Microsoft Sql Server Database (Close Source)
      * @var const string
      */
-    const mssql = 'microsoft';
+    const MSSQL = 'microsoft';
     /**
      * Oracle Database (Close  Source)
      * @var const string
      */
-    const oracle = 'oracle';
+    const ORACLE = 'oracle';
     /**
      * Database DB2 IBM ( Close Source)
      * @var const string
      */
-    const db2 = 'db2';
+    const DB2 = 'db2';
     /**
      * Postgress (Open Source)
      * @var const string
      */
-    const postgress = 'postgress';
+    const POSTGRESS = 'postgress';
+    /**
+     * Cubrid Database ? korean database 
+     * @var const string
+     */
+    const CUBRID = 'cubrid';
+    /**
+     * Firebird / Interbase
+     * @var const string
+     */
+    const IBASE = 'ibase';
     // end basic access database
     /*
 	 *   @version  0.1  filter strict php setting
@@ -152,31 +162,31 @@ abstract class ConfigClass
         if (isset($_SESSION['staffId'])) {
             $this->setStaffId($_SESSION['staffId']);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             require_once ('classMysql.php');
             $this->setConnection('localhost');
             $this->setUsername('root');
             $this->setPassword('123456');
             $this->setApplication('idcmsCore');
-        } elseif ($this->getVendor() == self::mssql) {
+        } elseif ($this->getVendor() == self::MSSQL) {
             require_once ('classMssql.php');
             $this->setConnection('ADMIN-PC\X2');
             $this->setUsername('root');
             $this->setpassword("pa\$\$word4SPH");
             $this->setApplication('idcmsCore');
-        } elseif ($this->getVendor() == self::oracle) {
+        } elseif ($this->getVendor() == self::ORACLE) {
             require_once ('classOracle.php');
             $this->setConnection('localhost');
             $this->setUsername('idcmsCore');
             $this->setPassword('pa$$word4SPH');
             $this->setApplication('idcmsCore');
-        } elseif ($this->getVendor() == self::db2) {
+        } elseif ($this->getVendor() == self::DB2) {
             require_once ('classDb2.php');
             $this->setConnection('ADMIN-PC\X2');
             $this->setUsername('root');
             $this->setpassword("pa\$\$word4SPH");
             $this->setApplication('idcmsCore');
-        } elseif ($this->getVendor() == self::postgress) {
+        } elseif ($this->getVendor() == self::POSTGRESS) {
             require_once ('classPostgress.php');
             $this->setConnection('localhost');
             $this->setUsername('idcmsCore');
@@ -211,7 +221,7 @@ abstract class ConfigClass
     public function staff ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	`staffId`,
 					`staffNo`,
@@ -219,7 +229,7 @@ abstract class ConfigClass
 			FROM   	`staff`
 			WHERE	`isActive`=1";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT 	[staffId],
 					[staffNo],
@@ -227,7 +237,7 @@ abstract class ConfigClass
 			FROM   	[staff]
 			WHERE  	[isActive]=1";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT 	STAFFID 	AS 	STAFFID,
 					STAFFNO 	AS 	STAFFNO,
@@ -373,21 +383,21 @@ abstract class ConfigClass
     public function firstRecord ($value)
     {
         $first = 0;
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	MIN(`" .
              $this->model->getPrimaryKeyName() . "`) AS `firstRecord`
 			FROM 	`" . $this->model->getTableName() .
              "`";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT 	MIN([" .
                  $this->model->getPrimaryKeyName() . "]) AS [firstRecord]
 			FROM 	[" . $this->model->getTableName() .
                  "]";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT 	MIN(" .
                      strtoupper($this->model->getPrimaryKeyName()) . ") AS \"firstRecord\"
@@ -419,7 +429,7 @@ abstract class ConfigClass
     public function nextRecord ($value, $primaryKeyValue)
     {
         $next = 0;
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 		SELECT (`" .
              $this->model->getPrimaryKeyName() . "`) AS `nextRecord`
@@ -429,7 +439,7 @@ abstract class ConfigClass
              $this->model->getPrimaryKeyName() . "` > " . $primaryKeyValue . "
 		LIMIT 	1";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 		SELECT  TOP 1 ([" .
                  $this->model->getPrimaryKeyName() . "]) AS [nextRecord]
@@ -438,7 +448,7 @@ abstract class ConfigClass
                  $this->model->getPrimaryKeyName() . "] > " . $primaryKeyValue .
                  " ";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 		SELECT (" .
                      strtoupper($this->model->getPrimaryKeyName()) . ") AS \"nextRecord\"
@@ -474,7 +484,7 @@ abstract class ConfigClass
     public function previousRecord ($value, $primaryKeyValue)
     {
         $previous = 0;
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 		SELECT (`" .
              $this->model->getPrimaryKeyName() . "`) AS `previousRecord`
@@ -484,7 +494,7 @@ abstract class ConfigClass
              $this->model->getPrimaryKeyName() . "` < " . $primaryKeyValue . "
 		LIMIT 	1";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 		SELECT TOP 1 ([" .
                  $this->model->getPrimaryKeyName() . "]) AS [previousRecord]
@@ -493,7 +503,7 @@ abstract class ConfigClass
                  $this->model->getPrimaryKeyName() . "] < " . $primaryKeyValue .
                  " ";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 		SELECT (" .
                      strtoupper($this->model->getPrimaryKeyName()) . ") AS \"previous\"
@@ -529,21 +539,21 @@ abstract class ConfigClass
     public function lastRecord ($value)
     {
         $lastRecord = 0;
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 		SELECT	MAX(`" .
              $this->model->getPrimaryKeyName() . "`) AS `lastRecord`
 		FROM 	`" . $this->model->getTableName() .
              "`";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 		SELECT	MAX([" .
                  $this->model->getPrimaryKeyName() . "]) AS [lastRecord]
 		FROM 	[" . $this->model->getTableName() .
                  "]";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 		SELECT	MAX(" .
                      $this->model->getPrimaryKeyName() . ") AS \"lastRecord\"

@@ -370,7 +370,7 @@ class Vendor
                             $this->responce = "Error selecting table";
                         }
                     } else 
-                        if ($this->getVendor() == self::mysql) {
+                        if ($this->getVendor() == self::MYSQL) {
                             $resultColumn = mysqli_query($this->link, 
                             $sqlColumn);
                             if (! $resultColumn) {
@@ -390,7 +390,7 @@ class Vendor
                                 $fieldValue[] = $rowColumn['Field'];
                             }
                         }
-                    } elseif ($this->getVendor() == self::mysql) {
+                    } elseif ($this->getVendor() == self::MYSQL) {
                         if (! $resultColumn) {
                             $this->execute = 'fail';
                             $this->responce = mysqli_error($this->link) .
@@ -426,7 +426,7 @@ class Vendor
                             }
                         }
                     } else 
-                        if ($this->getVendor() == self::mysql) {
+                        if ($this->getVendor() == self::MYSQL) {
                             $resultPrevious = mysqli_query($this->link, 
                             $sqlPrevious);
                             if (! $resultPrevious) {
@@ -470,7 +470,7 @@ class Vendor
                             $this->responce = "Error inserting Query Advance insert";
                         }
                     } else 
-                        if ($this->getVendor() == self::mysql) {
+                        if ($this->getVendor() == self::MYSQL) {
                             $resultLogAdvance = mysqli_query($this->link, 
                             $sqlLogAdvance);
                             if ($resultLogAdvance) {
@@ -505,7 +505,7 @@ class Vendor
                             $this->responce = "Error Query on advance select";
                         }
                     } else 
-                        if ($this->getVendor() == self::mysql) {
+                        if ($this->getVendor() == self::MYSQL) {
                             $resultCurrent = mysqli_query($this->link, 
                             $sqlCurrent);
                             if ($resultCurrent) {
@@ -536,7 +536,7 @@ class Vendor
                             $this->responce = "Error Query update log advance";
                         }
                     } else 
-                        if ($this->getVendor() == self::mysql) {
+                        if ($this->getVendor() == self::MYSQL) {
                             $result = mysqli_query($this->link, $sql);
                             if (! $result) {
                                 $this->execute = 'fail';

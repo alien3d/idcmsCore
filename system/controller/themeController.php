@@ -97,7 +97,7 @@ class ThemeClass  extends ConfigClass {
 	function create() 				{
 		header('Content-Type','application/json; charset=utf-8');
 
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -105,7 +105,7 @@ class ThemeClass  extends ConfigClass {
 		}
 		$this->q->start();
 		$this->model->create();
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="
 			INSERT INTO `theme`
 					(
@@ -127,7 +127,7 @@ class ThemeClass  extends ConfigClass {
 						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",								
 						" . $this->model->getExecuteTime() . "
 					);";
-		}  else if ( $this->getVendor()==self::mssql) {
+		}  else if ( $this->getVendor()==self::MSSQL) {
 			$sql="
 			INSERT INTO [theme]
 					(
@@ -149,7 +149,7 @@ class ThemeClass  extends ConfigClass {
 						'". $this->model->getIsApproved(0,'single') . "',		'". $this->model->getExecuteBy() . "',								
 						" . $this->model->getExecuteTime() . "
 					);";
-		}  else if ($this->getVendor()==self::oracle) {
+		}  else if ($this->getVendor()==self::ORACLE) {
 			$sql="
 			INSERT INTO THEME
 					(
@@ -172,9 +172,9 @@ class ThemeClass  extends ConfigClass {
 						" . $this->model->getExecuteTime() . "	
 					);";
 
-		} else if ($this->getVendor()==self::db2){
+		} else if ($this->getVendor()==self::DB2){
 				
-		}else if($this->getVendor()==self::postgress){
+		}else if($this->getVendor()==self::POSTGRESS){
 				
 		} else {
 				
@@ -200,37 +200,37 @@ class ThemeClass  extends ConfigClass {
 	function read() 				{
 		header('Content-Type', 'application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
-			if($this->getVendor()==self::mysql) {
+			if($this->getVendor()==self::MYSQL) {
 				$this->auditFilter = "	`theme`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[theme].[isActive]		=	1	";
 			} else if  ($this->q->vendor == self :: oracle) {
 				$this->auditFilter = "	THEME.ISACTIVE	=	1	";
-			} else if ($this->getVendor() == self::db2){
+			} else if ($this->getVendor() == self::DB2){
 
-			}else if ($this->getVendor()== self::postgress){
+			}else if ($this->getVendor()== self::POSTGRESS){
 
 			}
 		} else if($this->isAdmin ==1) {
-			if($this->getVendor()==self::mysql) {
+			if($this->getVendor()==self::MYSQL) {
 				$this->auditFilter = "	 1 = 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	1 =  1 ";
 			} else if  ($this->q->vendor == self :: oracle) {
 				$this->auditFilter = " 1 =  1 ";
-			}else if ($this->getVendor()== self::db2){
+			}else if ($this->getVendor()== self::DB2){
 				
-			} else if ($this->getVendor()==self::postgress){
+			} else if ($this->getVendor()==self::POSTGRESS){
 				
 			}
 		}
 		//UTF8
 		$items=array();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					SELECT	`theme`.`themeId`,
 							`theme`.`themeSequence`,
@@ -256,7 +256,7 @@ class ThemeClass  extends ConfigClass {
 
 			}
 
-		} else if ($this->getVendor() ==  self::mssql) {
+		} else if ($this->getVendor() ==  self::MSSQL) {
 			$sql = "
 					SELECT	[theme].[themeId],
 							[theme].[themeSequence],
@@ -280,7 +280,7 @@ class ThemeClass  extends ConfigClass {
 			if ($this->model->getThemeId(0,'single')) {
 				$sql .= " AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='". $this->model->getThemeId(0,'single') . "'";
 			}
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	THEME.THEMEID 		AS	\"themeId\",
 					THEME.THEMECODE 	AS 	\"themeCode\",
@@ -329,12 +329,12 @@ class ThemeClass  extends ConfigClass {
             'theme'
             );
             if ($this->getfieldQuery()) {
-            	if ($this->getVendor() == self::mysql) {
+            	if ($this->getVendor() == self::MYSQL) {
             		$sql .= $this->q->quickSearch($tableArray, $filterArray);
-            	} else if ($this->getVendor() == self::mssql) {
+            	} else if ($this->getVendor() == self::MSSQL) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
-            	} else if ($this->getVendor() == self::oracle) {
+            	} else if ($this->getVendor() == self::ORACLE) {
             		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
             		$sql .= $tempSql;
             	}
@@ -344,12 +344,12 @@ class ThemeClass  extends ConfigClass {
              */
             if ($this->getGridQuery()) {
 
-            	if ($this->getVendor() == self::mysql) {
+            	if ($this->getVendor() == self::MYSQL) {
             		$sql .= $this->q->searching();
-            	} else if ($this->getVendor() == self::mssql) {
+            	} else if ($this->getVendor() == self::MSSQL) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
-            	} else if ($this->getVendor() == self::oracle) {
+            	} else if ($this->getVendor() == self::ORACLE) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
             	}
@@ -373,11 +373,11 @@ class ThemeClass  extends ConfigClass {
             }
             $total = $this->q->numberRows();
             if ($this->getOrder() && $this->getSortField()) {
-            	if ($this->getVendor() == self::mysql) {
+            	if ($this->getVendor() == self::MYSQL) {
             		$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
-            	} else if ($this->getVendor() ==  self::mssql) {
+            	} else if ($this->getVendor() ==  self::MSSQL) {
             		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
-            	} else if ($this->getVendor() == self::oracle) {
+            	} else if ($this->getVendor() == self::ORACLE) {
             		$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
             	}
             }
@@ -387,9 +387,9 @@ class ThemeClass  extends ConfigClass {
             if (!($this->getGridQuery())) {
             	if ($this->getLimit()) {
             		// only mysql have limit
-            		if ($this->getVendor() == self::mysql) {
+            		if ($this->getVendor() == self::MYSQL) {
             			$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
-            		} else if ($this->getVendor() == self::mssql) {
+            		} else if ($this->getVendor() == self::MSSQL) {
             			/**
             			 *	 Sql Server and Oracle used row_number
             			 *	 Parameterize Query We don't support
@@ -419,7 +419,7 @@ class ThemeClass  extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
-            		} else if ($this->getVendor() == self::oracle) {
+            		} else if ($this->getVendor() == self::ORACLE) {
             			/**
             			 *  Oracle using derived table also
             			 */
@@ -504,7 +504,7 @@ class ThemeClass  extends ConfigClass {
 	 */
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -512,7 +512,7 @@ class ThemeClass  extends ConfigClass {
 		}
 		$this->q->commit();
 		$this->model->update();
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="
 				UPDATE 	`theme`
 				SET		`themeSequence`	=	\"".$this->model->getThemeSequence()."\",
@@ -528,7 +528,7 @@ class ThemeClass  extends ConfigClass {
 						`executeBy`		=	\"".$this->model->getExecuteBy()."\",
 						`executeTime`	=	".$this->model->getExecuteTime()."
 				WHERE 	`themeId`		=	\"".$this->model->getThemeId(0,'single')."\"";
-		} else if ($this->getVendor()==self::mssql) {
+		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="
 				UPDATE 	[theme]
 				SET 	[themeSequence]	=	'".$this->model->getThemeSequence()."',
@@ -545,7 +545,7 @@ class ThemeClass  extends ConfigClass {
 						[executeTime]	=	".$this->model->getExecuteTime()."
 				WHERE 	[themeId]		=	'".$this->model->getThemeId(0,'single')."'";
 
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql="
 				UPDATE  THEME
 				SET 	THEMESEQUENCE	=	'".$this->model->getThemeSequence()."',
@@ -577,7 +577,7 @@ class ThemeClass  extends ConfigClass {
 	 */
 	function delete()				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -585,7 +585,7 @@ class ThemeClass  extends ConfigClass {
 		}
 		$this->q->commit();
 		$this->model->delete();
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="
 				UPDATE 	`theme`
 				SET 	`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
@@ -598,7 +598,7 @@ class ThemeClass  extends ConfigClass {
 						`executeBy`		=	\"".$this->model->getBy(0,'single')."\",
 						`executeTime	=	".$this->model->getExecuteTime()."
 				WHERE 	`themeId`		=	\"".$this->model->getDepartrmentId(0,'single')."\"";
-		} else if ($this->getVendor()==self::mssql) {
+		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="
 				UPDATE 	[theme]
 				SET 	[isDefault]		=	'".$this->model->getIsDefault(0,'single')."',
@@ -612,7 +612,7 @@ class ThemeClass  extends ConfigClass {
 						[executeTime]	=	".$this->model->getExecuteTime()."
 				WHERE 	[themeId]		=	'".$this->model->getThemeId(0,'single')."'";
 
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql="
 				UPDATE 	THEME
 				SET 	ISDEFAULT	=	'".$this->model->getIsDefault(0,'single')."',
@@ -644,7 +644,7 @@ class ThemeClass  extends ConfigClass {
 	function updateStatus () {
 		header('Content-Type','application/json; charset=utf-8');
 
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -655,16 +655,16 @@ class ThemeClass  extends ConfigClass {
 
 
 
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="
 				UPDATE `".$this->model->getTableName()."`
 				SET";
-		} else if($this->getVendor()==self::mssql) {
+		} else if($this->getVendor()==self::MSSQL) {
 			$sql="
 			UPDATE 	[".$this->model->getTableName()."]
 			SET 	";
 
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql="
 			UPDATE ".strtoupper($this->model->getTableName())."
 			SET    ";
@@ -678,12 +678,12 @@ class ThemeClass  extends ConfigClass {
 		foreach($access as $systemCheck) {
 
 
-			if($this->getVendor() == self::mysql) {
+			if($this->getVendor() == self::MYSQL) {
 				$sqlLooping.=" `".$systemCheck."` = CASE `".$this->model->getPrimaryKeyName()."`";
-			} else if($this->getVendor()==self::mssql) {
+			} else if($this->getVendor()==self::MSSQL) {
 				$sqlLooping.="  [".$systemCheck."] = CASE [".$this->model->getPrimaryKeyName()."]";
 
-			} else if ($this->getVendor()==self::oracle) {
+			} else if ($this->getVendor()==self::ORACLE) {
 				$sqlLooping.="	".strtoupper($systemCheck)." = CASE '".$this->model->getPrimaryKeyName()."'";
 			}
 			switch ($systemCheck){
@@ -743,13 +743,13 @@ class ThemeClass  extends ConfigClass {
 		}
 
 		$sql.=substr($sqlLooping,0,-1);
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql.="
 			WHERE `".$this->model->getPrimaryKeyName()."` IN (".$this->model->getPrimaryKeyAll().")";
-		} else if($this->getVendor()==self::mssql) {
+		} else if($this->getVendor()==self::MSSQL) {
 			$sql.="
 			WHERE  [".$this->model->getPrimaryKeyName()."] IN (".$this->model->getPrimaryKeyAll().")";
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql.="
 			WHERE '".strtoupper($this->model->getPrimaryKeyName())."' IN (".$this->model->getPrimaryKeyAll().")";
 		}
@@ -776,24 +776,24 @@ class ThemeClass  extends ConfigClass {
 	function duplicate()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	`theme`
 			WHERE 	`themeCode` 	= 	\"". $this->model->getThemeCode(). "\"
 			AND		`isActive`		=	1";
-		} else if ($this->getVendor() ==  self::mssql) {
+		} else if ($this->getVendor() ==  self::MSSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	[theme]
 			WHERE 	[themeCode] 	= 	'". $this->model->getThemeCode() . "'
 			AND		[isActive]		=	1";
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	*
 			FROM 	THEME
@@ -832,7 +832,7 @@ class ThemeClass  extends ConfigClass {
 
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

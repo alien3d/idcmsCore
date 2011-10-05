@@ -119,7 +119,7 @@ class DocumentClass extends ConfigClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		//	    echo '{success:true, message:'.json_encode($_FILES['documentFilename']['name']).'}';
 		//	exit();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -178,7 +178,7 @@ class DocumentClass extends ConfigClass
 			exit();
 		}
 		// create versioning
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT 	count(*) 
 			FROM 	`document` 
@@ -186,7 +186,7 @@ class DocumentClass extends ConfigClass
 			$this->model->getDocumentOriginalFilename() . "'
 			AND		`executeBy`			=   '" . $this->model->getExecuteBy() . "'";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT 	count(*) 
 			FROM 	[document] 
@@ -194,7 +194,7 @@ class DocumentClass extends ConfigClass
 			$this->model->getDocumentOriginalFilename() . "'
 			AND		[executeBy]			=   '" . $this->model->getExecuteBy() . "'";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT 	count(*) 
 			FROM 	DOCUMENT 
@@ -210,7 +210,7 @@ class DocumentClass extends ConfigClass
 		}
 		$total = $this->q->numberRows();
 		$this->model->setDocumentVersion($total);
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 		INSERT INTO `document` 
 				(
@@ -252,7 +252,7 @@ class DocumentClass extends ConfigClass
 						" . $this->model->getExecuteTime() . "
 				);";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 		INSERT INTO [document] 
 				(
@@ -293,7 +293,7 @@ class DocumentClass extends ConfigClass
 					" . $this->model->getExecuteTime() . "	
 				);";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 		INSERT INTO DOCUMENT
 				(
@@ -357,34 +357,34 @@ class DocumentClass extends ConfigClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	`document`.`isActive`		=	1	";
 			} else
-			if ($this->q->vendor == self::mssql) {
+			if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	[document].[isActive]		=	1	";
 			} else
-			if ($this->q->vendor == self::oracle) {
+			if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	DOCUMENT.ISACTIVE	=	1	";
 			}
 		} else
 		if ($this->isAdmin == 1) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	1= 1 ";
 			} else
-			if ($this->q->vendor == self::mssql) {
+			if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	1= 1 ";
 			} else
-			if ($this->q->vendor == self::oracle) {
+			if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = " 1=  1 ";
 			}
 		}
 		//UTF8
 		$items = array();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					SELECT	`document`.`documentId`,
 							`document`.`documentTitle`,
@@ -414,7 +414,7 @@ class DocumentClass extends ConfigClass
 				$this->model->getDocumentId(0, 'single') . "\"";
 			}
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					SELECT	[document].[documentId],
 							[document].[documentTitle],
@@ -444,7 +444,7 @@ class DocumentClass extends ConfigClass
 				$this->model->getDocumentId(0, 'single') . "'";
 			}
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 					SELECT	DOCUMENT.DOCUMENTID 		AS 	DOCUMENTID,
 							DOCUMENT.DOCUMENTTITLE		AS	\"documentTitle\",
@@ -494,14 +494,14 @@ class DocumentClass extends ConfigClass
 		$tableArray = null;
 		$tableArray = array('document');
 		if ($this->getfieldQuery()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$tempSql = $this->q->quickSearch($tableArray, $filterArray);
 				$sql .= $tempSql;
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$tempSql = $this->q->quickSearch($tableArray,
 				$filterArray);
 				$sql .= $tempSql;
@@ -511,14 +511,14 @@ class DocumentClass extends ConfigClass
 		 * Extjs filtering mode
 		 */
 		if ($this->getGridQuery()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->searching();
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$tempSql2 = $this->q->searching();
 				$sql .= $tempSql2;
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$tempSql2 = $this->q->searching();
 				$sql .= $tempSql2;
 			}
@@ -540,15 +540,15 @@ class DocumentClass extends ConfigClass
 		}
 		$total = $this->q->numberRows();
 		if ($this->getOrder() && $this->getSortField()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= "	ORDER BY `" . $this->getSortField() . "` " .
 				$this->getOrder() . " ";
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " .
 				$this->getOrder() . " ";
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) .
                          "  " . strtoupper($this->getOrder()) . " ";
 			}
@@ -559,11 +559,11 @@ class DocumentClass extends ConfigClass
 		if (! ($this->getGridQuery())) {
 			if ($this->getLimit()) {
 				// only mysql have limit
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sql .= " LIMIT  " . $this->getStart() . "," .
 					$this->getLimit() . " ";
 				} else
-				if ($this->getVendor() == self::mssql) {
+				if ($this->getVendor() == self::MSSQL) {
 					/**
 					 * Sql Server and Oracle used row_number
 					 * Parameterize Query We don't support
@@ -596,7 +596,7 @@ class DocumentClass extends ConfigClass
 							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
 				} else
-				if ($this->getVendor() == self::oracle) {
+				if ($this->getVendor() == self::ORACLE) {
 					/**
 					 * Oracle using derived table also
 					 */
@@ -674,7 +674,7 @@ class DocumentClass extends ConfigClass
 	function update ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -729,7 +729,7 @@ class DocumentClass extends ConfigClass
 			exit();
 		}
 		// create versioning
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT 	count(*) 
 			FROM 	`document` 
@@ -737,7 +737,7 @@ class DocumentClass extends ConfigClass
 			$this->model->getDocumentOriginalFilename() . "'
 			AND		`executeBy`					=   '" . $this->model->getExecuteBy() . "'";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT 	count(*) 
 			FROM 	[document] 
@@ -745,7 +745,7 @@ class DocumentClass extends ConfigClass
 			$this->model->getDocumentOriginalFilename() . "'
 			AND		[executeBy]					=   '" . $this->model->getExecuteBy() . "'";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT 	COUNT(*) 
 			FROM 	DOCUMENT 
@@ -761,7 +761,7 @@ class DocumentClass extends ConfigClass
 		}
 		$total = $this->q->numberRows();
 		$this->model->setDocumentVersion($total);
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 		UPDATE 	`document`
 		SET 	`documentCategoryId` 		=	\"" . $this->model->getDocumentCategoryId() . "\",
@@ -787,7 +787,7 @@ class DocumentClass extends ConfigClass
 		WHERE 	`documentId`				=	\"" . $this->model->getDocumentId(0, 'single') .
              "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 		UPDATE 	[document]
 		SET 	[documentCategoryId] 		=	'" . $this->model->getDocumentCategoryId() . "',
@@ -812,7 +812,7 @@ class DocumentClass extends ConfigClass
 		WHERE 	[documentId]				=	\"" . $this->model->getDocumentId(0, 'single') .
                  "'";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 		UPDATE 	DOCUMENT
 		SET 	DOCUMENTCATEGORYID 		=	'" . $this->model->getDocumentCategoryId() . "',
@@ -844,14 +844,14 @@ class DocumentClass extends ConfigClass
 	function delete ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->commit();
 		$this->model->delete();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				UPDATE 	`document`
 				SET 	`isDefault`		=	\"" . $this->model->getIsDefault(0, 'single') . "\",
@@ -866,7 +866,7 @@ class DocumentClass extends ConfigClass
 				WHERE 	`documentId`	=	\"" . $this->model->getDepartrmentId(0, 'single') .
              "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 				UPDATE 	[document]
 				SET 	[isDefault]		=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -880,7 +880,7 @@ class DocumentClass extends ConfigClass
 						[executeTime]	=	" . $this->model->getExecuteTime() . "
 				WHERE 	[documentId]	=	'" . $this->model->getDocumentId(0, 'single') . "'";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 				UPDATE 	DOCUMENT
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -910,26 +910,26 @@ class DocumentClass extends ConfigClass
 	function updateStatus ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$loop = $this->model->getTotal();
 		 
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				UPDATE `" .
 			$this->model->getTableName() . "`
 				SET";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			UPDATE 	[" .
 			$this->model->getTableName() . "]
 			SET 	";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			UPDATE  " . strtoupper($this->model->getTableName()) . "
 			SET    ";
@@ -942,15 +942,15 @@ class DocumentClass extends ConfigClass
 		$access = array("isDefault", "isNew", "isDraft", "isUpdate",
                 "isDelete", "isActive", "isApproved","isReview","isPost");
 		foreach ($access as $systemCheck) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sqlLooping .= " `" . $systemCheck . "` = CASE `" .
 				$this->model->getPrimaryKeyName() . "`";
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" .
 				$this->model->getPrimaryKeyName() . "]";
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper($systemCheck) .
                                  " = CASE " .
 				strtoupper($this->model->getPrimaryKeyName()) .
@@ -1010,17 +1010,17 @@ class DocumentClass extends ConfigClass
 			$sqlLooping .= " END,";
 		}
 		$sql .= substr($sqlLooping, 0, - 1);
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql .= "
 			WHERE `" . $this->model->getPrimaryKeyName() . "` IN (" .
 			$this->model->getPrimaryKeyAll() . ")";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql .= "
 			WHERE  [" . $this->model->getPrimaryKeyName() . "] IN (" .
 			$this->model->getPrimaryKeyAll() . ")";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql .= "
 			WHERE 	" . strtoupper($this->model->getPrimaryKeyName()) . " IN (" .
 			$this->model->getPrimaryKeyAll() . ")";
@@ -1042,7 +1042,7 @@ class DocumentClass extends ConfigClass
 	function excel ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -1140,32 +1140,32 @@ class DocumentClass extends ConfigClass
 	function documentCategoryId ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		if($this->getVendor()==self::mysql){
+		if($this->getVendor()==self::MYSQL){
 			$sql = "
 		SELECT	*
 		FROM   `documentCategory`
 		WHERE  `isActive`	=1 ";
-		} else if ($this->getVendor()==self::mssql){
+		} else if ($this->getVendor()==self::MSSQL){
 			$sql = "
 		SELECT	*
 		FROM   [documentCategory]
 		WHERE  [isActive]	=1 ";	
-		} else if ($this->getVendor()==self::oracle){
+		} else if ($this->getVendor()==self::ORACLE){
 			$sql = "
 		SELECT	*
 		FROM   `documentCategory`
 		WHERE  `isActive`	=1 ";
-		} else if ($this->getVendor()==self::db2){
+		} else if ($this->getVendor()==self::DB2){
 			$sql = "
 		SELECT	*
 		FROM   `documentCategory`
 		WHERE  `isActive`	=1 ";
-		}else if ($this->getVendor()==self::postgress){
+		}else if ($this->getVendor()==self::POSTGRESS){
 			$sql = "
 		SELECT	*
 		FROM   `documentCategory`

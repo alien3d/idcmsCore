@@ -104,13 +104,13 @@ class StaffClass extends ConfigClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->create();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			INSERT INTO `staff` 	(
 						`staffName`,			`staffNo`,
@@ -132,7 +132,7 @@ class StaffClass extends ConfigClass
 					\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
 					" . $this->model->getExecuteTime() . "
 				);";
-		} else if ($this->getVendor() == self::mssql) {
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 				INSERT INTO [staff] 	(
 							[staffName],		[staffNo],
@@ -149,7 +149,7 @@ class StaffClass extends ConfigClass
 					'" . $this->model->getIsApproved(0,'single') . "',	'" . $this->model->getExecuteBy() . "',
 					" . $this->model->getExecuteTime() . "
 				);";
-		} else if ($this->q->vendor == self::oracle) {
+		} else if ($this->q->vendor == self::ORACLE) {
 			$sql = "
 				INSERT INTO STAFF 	(
 							STAFFNAME,		STAFFNO,
@@ -177,17 +177,17 @@ class StaffClass extends ConfigClass
 		}
 		$lastInsertId = $this->q->lastInsertId();
 		// insert module access
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				SELECT	`moduleId`
 				FROM 	`module`
 				WHERE 	`isActive`	=	1	";
-		} else if ($this->getVendor() == self::mssql) {
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 				SELECT	[moduleId]
 				FROM 	[module]
 				WHERE 	[isActive]	=	1	";
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 				SELECT	MODULEID  AS \"moduleId\"
 				FROM 	MODULE
@@ -205,19 +205,19 @@ class StaffClass extends ConfigClass
 			$data = $this->q->activeRecord();
 			foreach ($data as $rowModule) {
 				// check if group access define in  moduleAccess else insert
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sql = "
 						SELECT *
 						FROM 	`moduleAccess`
 						WHERE 	`groupId`			=	\"" . $this->model->getGroupId() . "\"
 						AND		`moduleId`		=	\"" . $rowModule['moduleId'] . "\"";
-				} else if ($this->getVendor() == self::mssql) {
+				} else if ($this->getVendor() == self::MSSQL) {
 					$sql = "
 						SELECT *
 						FROM 	[moduleAccess]
 						WHERE 	[groupId]			=	'" . $this->model->getGroupId() . "'
 					AND		`moduleId`			=	'" . $rowModule['moduleId'] . "'";
-				} else if ($this->getVendor() == self::oracle) {
+				} else if ($this->getVendor() == self::ORACLE) {
 					$sql = "
 						SELECT *
 						FROM 	MODULEACCESS
@@ -234,7 +234,7 @@ class StaffClass extends ConfigClass
 				}
 				if ($this->q->numberRows() == 0) {
 					// record don't exist create new
-					if ($this->q->vendor == self::mysql) {
+					if ($this->q->vendor == self::MYSQL) {
 						$sql = "
 						INSERT INTO `moduleAccess`	(
 									`moduleId`,				`groupId`,
@@ -244,7 +244,7 @@ class StaffClass extends ConfigClass
 							\"" . $this->model->getGroupId() . "\",
 							0
 						)	";
-					} else if ($this->q->vendor == self::mssql) {
+					} else if ($this->q->vendor == self::MSSQL) {
 						$sql = "
 						INSERT INTO [moduleAccess]	(
 									[moduleId],				[groupId],
@@ -253,7 +253,7 @@ class StaffClass extends ConfigClass
 							'" . $rowModule['moduleId'] . "',
 							'" . $this->model->getGroupId() . "',
 							0					)	";
-					} else if ($this->getVendor() == self::oracle) {
+					} else if ($this->getVendor() == self::ORACLE) {
 						$sql = "
 						INSERT INTO MODULEACCESS	(
 									MODULEID,				GROUPID,
@@ -276,17 +276,17 @@ class StaffClass extends ConfigClass
 			}
 		}
 		// insert folder access
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				SELECT	*
 				FROM 	`folder`
 				WHERE 	`isActive`=1";
-		} else if ($this->getVendor() == self::mssql) {
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 				SELECT	*
 				FROM 	[folder]
 				WHERE 	[isActive]=1";
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 				SELECT	*
 				FROM 	FOLDER
@@ -304,19 +304,19 @@ class StaffClass extends ConfigClass
 			$data = $this->q->activeRecord();
 			foreach ($data as $rowFolder) {
 				// check if group access define in  moduleAccess else insert
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sql = "
 					SELECT *
 					FROM 	`folderAccess`
 					WHERE 	`groupId`		=	\"". $this->model->getGroupId() ."\"
 					AND		`folderId`		=	\"". $rowFolder['folderId'] ."\"";
-				} else if ($this->getVendor() == self::mssql) {
+				} else if ($this->getVendor() == self::MSSQL) {
 					$sql = "
 					SELECT *
 					FROM 	[folderAccess]
 					WHERE 	[groupId]		=	'". $this->model->getGroupId() ."'
 					AND		[folderId]		=	'". $rowFolder['folderId'] ."'";
-				} else if ($this->getVendor() == self::oracle) {
+				} else if ($this->getVendor() == self::ORACLE) {
 					$sql = "
 					SELECT *
 					FROM 	FOLDERACCESS
@@ -335,7 +335,7 @@ class StaffClass extends ConfigClass
 					// record exist do nothing
 				} else {
 					// record don't exist create new
-					if ($this->getVendor() == self::mysql) {
+					if ($this->getVendor() == self::MYSQL) {
 						$sql = "
 					INSERT INTO `folderAccess`
 						(
@@ -348,7 +348,7 @@ class StaffClass extends ConfigClass
 								\"". $this->model->getGroupId() ."\",
 								0
 					)	";
-					} else if ($this->getVendor() == self::mssql) {
+					} else if ($this->getVendor() == self::MSSQL) {
 						$sql = "
 					INSERT INTO [folderAccess`
 						(
@@ -361,7 +361,7 @@ class StaffClass extends ConfigClass
 								'". $this->model->getGroupId() ."',
 								0
 					)	";
-					} else if ($this->getVendor() == self::oracle) {
+					} else if ($this->getVendor() == self::ORACLE) {
 						$sql = "
 					INSERT INTO FOLDERACCESS
 						(
@@ -387,17 +387,17 @@ class StaffClass extends ConfigClass
 			}
 		}
 		// insert leaf access according to the group choosen
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	`leafGroupAccess`
 			WHERE 	`groupId`=\"". $this->model->getGroupId() ."\" ";
-		} else if ($this->getVendor() == self::mssql) {
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	[leafGroupAccess]
 			WHERE 	[groupId]	=	'". $this->model->getGroupId() ."' ";
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	*
 			FROM 	LEAFGROUPACCESS
@@ -414,7 +414,7 @@ class StaffClass extends ConfigClass
 		if ($this->q->numberRows() > 0) {
 			$data = $this->q->activeRecord();
 			foreach ($data as $rowLeafGroupAccess) {
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sql = "
 				INSERT INTO	`leafAccess`
 					(
@@ -438,7 +438,7 @@ class StaffClass extends ConfigClass
 							\"" . $rowLeafGroupAccess['leafAccessPrintValue'] . "\",
 							\"" . $rowLeafGroupAccess['leafAccessPostValue'] . "\"
 					)	";
-				} else if ($this->getVendor() == self::mssql) {
+				} else if ($this->getVendor() == self::MSSQL) {
 					$sql = "
 				INSERT INTO	[leafAccess]
 					(
@@ -462,7 +462,7 @@ class StaffClass extends ConfigClass
 							'" . $rowLeafGroupAccess['leafAccessPrintValue'] . "',
 							'" . $rowLeafGroupAccess['leafAccessPostValue'] . "'
 					)	";
-				} else if ($this->getVendor() == self::oracle) {
+				} else if ($this->getVendor() == self::ORACLE) {
 					$sql = "
 				INSERT INTO	LEAFACCESS
 					(
@@ -501,7 +501,7 @@ class StaffClass extends ConfigClass
 		 * generate category for each staff
 		 */
 		for ($i = 1; $i <= 10; $i++) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				INSERT INTO 	`calendar`
 							(
@@ -513,7 +513,7 @@ class StaffClass extends ConfigClass
 								\"". "other" . $i ."\",
 								\"". $lastInsertId ."\"
 							)";
-			} else if ($this->getVendor() == self::mssql) {
+			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				INSERT INTO 	[calendar]
 							(
@@ -525,7 +525,7 @@ class StaffClass extends ConfigClass
 								'". "other" . $i ."',
 								'". $lastInsertId ."'
 							)";
-			} else if ($this->getVendor() == self::oracle) {
+			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				INSERT INTO 	CALENDAR
 							(
@@ -561,29 +561,29 @@ class StaffClass extends ConfigClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	`staff`.`isActive`		=	1	";
-			} else if ($this->q->vendor == self::mssql) {
+			} else if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	[staff].[isActive]		=	1	";
-			} else if ($this->q->vendor == self::oracle) {
+			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	STAFF.ISACTIVE	=	1	";
 			}
 		} else if ($this->isAdmin == 1) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	 1 =  1 ";
-			} else if ($this->q->vendor == self::mssql) {
+			} else if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	1 = 1 ";
-			} else if ($this->q->vendor == self::oracle) {
+			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
 		//UTF8
 		$items = array();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					SELECT	`staff`.`staffId`,
 							`staff`.`groupId`,
@@ -614,7 +614,7 @@ class StaffClass extends ConfigClass
 			if ($this->model->getStaffId(0,'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`=\"" . $this->model->getStaffId(0,'single') . "\"";
 			}
-		} else if ($this->getVendor() == self::mssql) {
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					SELECT	[staff].[staffId],
 							[staff].[groupId],
@@ -645,7 +645,7 @@ class StaffClass extends ConfigClass
 			if ($this->model->getStaffId(0,'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getStaffId(0,'single') . "'";
 			}
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 					SELECT	STAFF.STAFFID 		AS 	\"staffId\",
 							STAFF.GROUPID 		AS 	\"groupId\",
@@ -701,12 +701,12 @@ class StaffClass extends ConfigClass
             'staff'
             );
             if ($this->getFieldQuery()) {
-            	if ($this->getVendor() == self::mysql) {
+            	if ($this->getVendor() == self::MYSQL) {
             		$sql .= $this->q->quickSearch($moduleleArray, $filterArray);
-            	} else if ($this->getVendor() == self::mssql) {
+            	} else if ($this->getVendor() == self::MSSQL) {
             		$tempSql = $this->q->quickSearch($moduleleArray, $filterArray);
             		$sql .= $tempSql;
-            	} else if ($this->getVendor() == self::oracle) {
+            	} else if ($this->getVendor() == self::ORACLE) {
             		$tempSql = $this->q->quickSearch($moduleleArray, $filterArray);
             		$sql .= $tempSql;
             	}
@@ -715,12 +715,12 @@ class StaffClass extends ConfigClass
              *	Extjs filtering mode
              */
             if ($this->getGridQuery()) {
-            	if ($this->getVendor() == self::mysql) {
+            	if ($this->getVendor() == self::MYSQL) {
             		$sql .= $this->q->searching();
-            	} else if ($this->getVendor() == self::mssql) {
+            	} else if ($this->getVendor() == self::MSSQL) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
-            	} else if ($this->getVendor() == self::oracle) {
+            	} else if ($this->getVendor() == self::ORACLE) {
             		$tempSql2 = $this->q->searching();
             		$sql .= $tempSql2;
             	}
@@ -745,11 +745,11 @@ class StaffClass extends ConfigClass
             }
             $total = $this->q->numberRows();
             if ($this->getOrder() && $this->getSortField()) {
-            	if ($this->getVendor() == self::mysql) {
+            	if ($this->getVendor() == self::MYSQL) {
             		$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
-            	} else if ($this->getVendor() ==  self::mssql) {
+            	} else if ($this->getVendor() ==  self::MSSQL) {
             		$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
-            	} else if ($this->getVendor() == self::oracle) {
+            	} else if ($this->getVendor() == self::ORACLE) {
             		$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
             	}
             }
@@ -759,9 +759,9 @@ class StaffClass extends ConfigClass
             if (empty($this->filter)) {
             	if ($this->getLimit()) {
             		// only mysql have limit
-            		if ($this->getVendor() == self::mysql) {
+            		if ($this->getVendor() == self::MYSQL) {
             			$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
-            		} else if ($this->getVendor() == self::mssql) {
+            		} else if ($this->getVendor() == self::MSSQL) {
             			/**
             			 *	 Sql Server and Oracle used row_number
             			 *	 Parameterize Query We don't support
@@ -791,7 +791,7 @@ class StaffClass extends ConfigClass
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
-            		} else if ($this->getVendor() == self::oracle) {
+            		} else if ($this->getVendor() == self::ORACLE) {
             			/**
             			 *  Oracle using derived table also
             			 */
@@ -886,7 +886,7 @@ class StaffClass extends ConfigClass
 	public function update()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -894,19 +894,19 @@ class StaffClass extends ConfigClass
 		$this->q->start();
 		$this->model->update();
 		//  original group
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`groupId`,
 					`staffPassword`
 			FROM 	`staff`
 			WHERE 	`staffId`	=	\"". $this->model->getStaffId(0,'single') ."\"";
-		} else if ($this->getVendor() == self::mssql) {
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT 	[groupId],
 					[staffPassword]
 			FROM 	[staff]
 			WHERE 	[staffId]	=	'". $this->model->getStaffId(0,'single') ."'";
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT 	GROUPID 		AS 	\"groupId\",
 					STAFFPASSWORD	AS	\"staffPassword\"
@@ -925,7 +925,7 @@ class StaffClass extends ConfigClass
 			$staffPassword = $this->model->getStaffPassword();
 		}
 		$groupId = $data['groupId'];
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				UPDATE 	`staff`
 				SET 	`staffIc`		=	\"". $this->model->getStaffIc() ."\",
@@ -944,7 +944,7 @@ class StaffClass extends ConfigClass
 						`executeBy`			=	\"". $this->model->getExecuteBy() ."\",
 						`Time			=	" . $this->model->getExecuteTime() . "
 				WHERE 	`staffId`		=	\"". $this->model->getStaffId(0,'single') ."\"";
-		} else if ($this->getVendor() == self::mssql) {
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 				UPDATE 	[staff]
 				SET 	[staffIc]		=	'". $this->model->getStaffIc() ."',
@@ -964,7 +964,7 @@ class StaffClass extends ConfigClass
 						[executeBy]		=	'". $this->model->getExecuteBy() ."',
 						[executeTime]	=	" . $this->model->getExecuteTime() . "
 				WHERE 	[staffId]		=	'". $this->model->getStaffId(0,'single') ."'";
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 				UPDATE 	STAFF
 				SET 	STAFFIC			=	'". $this->model->getStaffIc() ."',
@@ -998,17 +998,17 @@ class StaffClass extends ConfigClass
 			/**
 			 *  update  leaf group access
 			 * */
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 					SELECT	`leafId`
 					FROM 	`leafGroupAccess`
 					WHERE 	`groupId`			=	\"". $this->model->getGroupId() ."\" ";
-			} else if ($this->getVendor() == self::mssql) {
+			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 					SELECT	[leafId]
 					FROM 	[leafGroupAccess]
 					WHERE 	[groupId]			=	'". $this->model->getGroupId() ."'";
-			} else if ($this->getVendor() == self::oracle) {
+			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 					SELECT	LEAFID		AS 	\"leafId\"
 					FROM 	LEAFGROUPACCESS
@@ -1025,19 +1025,19 @@ class StaffClass extends ConfigClass
 			$data = $this->q->activeRecord();
 			foreach ($data as $rowLeafGroupAccess) {
 				// check if exist record or not
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sql = "
 					SELECT	*
 					FROM 	`leafAccess`
 					WHERE 	`staffId`			=	\"". $this->model->getStaffId(0,'single') ."\"
 					AND		`leafId`			=	\"". $rowLeafGroupAccess['leafId'] ."\" ";
-				} else if ($this->getVendor() == self::mssql) {
+				} else if ($this->getVendor() == self::MSSQL) {
 					$sql = "
 					SELECT	*
 					FROM 	[leafAccess]
 					WHERE 	[staffId]			=	'". $this->model->getStaffId(0,'single') ."'
 					AND		[leafId]			=	'". $rowLeafGroupAccess['leafId'] ."' ";
-				} else if ($this->getVendor() == self::oracle) {
+				} else if ($this->getVendor() == self::ORACLE) {
 					$sql = "
 					SELECT	leafAccessCreateValue	AS	\"leafAccessCreateValue\",
 							leafAccessDeleteValue	AS  \"leafAccessDeleteValue\",
@@ -1051,7 +1051,7 @@ class StaffClass extends ConfigClass
 				}
 				$this->q->read($sql);
 				if ($this->q->numberRows() > 0) {
-					if ($this->getVendor() == self::mysql) {
+					if ($this->getVendor() == self::MYSQL) {
 						$sql = "
 						UPDATE 	`leafAccess`
 						SET 	`leafAccessCreateValue`			=	\"". $rowLeafGroupAccess['leafAccessCreateValue'] ."\",
@@ -1062,7 +1062,7 @@ class StaffClass extends ConfigClass
 								`leafAccessUpdateValue`			=	\"". $rowLeafGroupAccess['leafAccessPostValue'] ."\"
 						WHERE 	`staffId`						=	\"". $this->model->getStaffId(0,'single') ."\"
 						AND		`leafId`						=	\"". $rowLeafGroupAccess['leafId'] ."\"";
-					} else if ($this->getVendor() == self::mssql) {
+					} else if ($this->getVendor() == self::MSSQL) {
 						$sql = "
 						UPDATE 	[leafAccess]
 						SET 	[leafAccessCreateValue]			=	'". $rowLeafGroupAccess['leafAccessCreateValue'] ."',
@@ -1073,7 +1073,7 @@ class StaffClass extends ConfigClass
 								[leafAccessUpdateValue]			=	'". $rowLeafGroupAccess['leafAccessPostValue'] ."'
 						WHERE 	[staffId]						=	'". $this->model->getStaffId(0,'single') ."'
 						AND		[leafId]						=	'". $rowLeafGroupAccess['leafId'] ."'";
-					} else if ($this->getVendor() == self::oracle) {
+					} else if ($this->getVendor() == self::ORACLE) {
 						$sql = "
 								UPDATE 	LEAFACCESS
 						SET 	leafAccessCreateValue		=	'". $rowLeafGroupAccess['leafAccessCreateValue'] ."',
@@ -1094,7 +1094,7 @@ class StaffClass extends ConfigClass
 						exit();
 					}
 				} else {
-					if ($this->getVendor() == self::mysql) {
+					if ($this->getVendor() == self::MYSQL) {
 						$sql = "
 							INSERT INTO	`leafAccess`
 								(
@@ -1116,7 +1116,7 @@ class StaffClass extends ConfigClass
 										\"". $rowLeafGroupAccess['leafAccessPrintValue'] ."\",
 										\"". $rowLeafGroupAccess['leafAccessPostValue'] ."\"
 								)	";
-					} else if ($this->getVendor() == self::mssql) {
+					} else if ($this->getVendor() == self::MSSQL) {
 						$sql = "
 							INSERT INTO	[leafAccess`
 								(
@@ -1138,7 +1138,7 @@ class StaffClass extends ConfigClass
 										'". $rowLeafGroupAccess['leafAccessPrintValue'] ."',
 										'". $rowLeafGroupAccess['leafAccessPostValue'] ."'
 								)	";
-					} else if ($this->getVendor() == self::oracle) {
+					} else if ($this->getVendor() == self::ORACLE) {
 						$sql = "
 							INSERT INTO	LEAFACCESS
 								(
@@ -1187,14 +1187,14 @@ class StaffClass extends ConfigClass
 	public function delete()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->delete();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				UPDATE	`staff`
 				SET		`isDefault`			=	\"". $this->model->getIsActive(0,'single') ."\",
@@ -1207,7 +1207,7 @@ class StaffClass extends ConfigClass
 						`executeBy`			=	\"". $this->model->getExecuteBy() ."\",
 						`Time				=	" . $this->model->getExecuteTime() . "
 				WHERE 	`staffId`			=	\"". $this->model->staffId ."\"";
-		} else if ($this->getVendor() == self::mssql) {
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 				UPDATE	[staff]
 				SET		[isDefault]		= 	'". $this->model->getIsDefault(0,'single') ."',
@@ -1220,7 +1220,7 @@ class StaffClass extends ConfigClass
 						[executeBy]		=	'". $this->model->getExecuteBy() ."',
 						[executeTime]	=	" . $this->model->getExecuteTime() . "
 				WHERE 	[staffId]		=	'". $this->model->getStaffId(0,'single') ."'";
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 				UPDATE	STAFF
 				SET		ISDEFAULT 		=   '". $this->model->getIsDefault(0,'single') ."',
@@ -1254,7 +1254,7 @@ class StaffClass extends ConfigClass
 	{
 		header('Content-Type','application/json; charset=utf-8');
 
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -1263,15 +1263,15 @@ class StaffClass extends ConfigClass
 		
 		$loop  = $this->model->getTotal();
 		
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE `" . $this->model->getTableName() . "`
 				SET";
-			} else if ($this->getVendor() == self::mssql) {
+			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 			UPDATE 	[" . $this->model->getTableName() . "]
 			SET 	";
-			} else if ($this->getVendor() == self::oracle) {
+			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
@@ -1294,11 +1294,11 @@ class StaffClass extends ConfigClass
 				"isPost"
 	                );
                 foreach ($access as $systemCheck) {
-                	if ($this->getVendor() == self::mysql) {
+                	if ($this->getVendor() == self::MYSQL) {
                 		$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                	} else if ($this->getVendor() == self::mssql) {
+                	} else if ($this->getVendor() == self::MSSQL) {
                 		$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                	} else if ($this->getVendor() == self::oracle) {
+                	} else if ($this->getVendor() == self::ORACLE) {
                 		$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                 	}
                 	switch ($systemCheck) {
@@ -1369,13 +1369,13 @@ class StaffClass extends ConfigClass
                 	$sqlLooping .= " END,";
                 }
                 $sql .= substr($sqlLooping, 0, -1);
-                if ($this->getVendor() == self::mysql) {
+                if ($this->getVendor() == self::MYSQL) {
                 	$sql .= "
 			WHERE `" . $this->model->getPrimaryKeyName() . "` IN (" . $this->model->getStaffIdAll() . ")";
-                } else if ($this->getVendor() == self::mssql) {
+                } else if ($this->getVendor() == self::MSSQL) {
                 	$sql .= "
 			WHERE  [" . $this->model->getPrimaryKeyName() . "] IN (" . $this->model->getStaffIdAll() . ")";
-                } else if ($this->getVendor() == self::oracle) {
+                } else if ($this->getVendor() == self::ORACLE) {
                 	$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . " IN (" . $this->model->getStaffIdAll() . ")";
                 }
@@ -1401,24 +1401,24 @@ class StaffClass extends ConfigClass
 	function duplicate()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	`staff`
 			WHERE 	`staffNo` 	= 	\"" . $this->model->getStaffNo() . "\"
 			AND		`isActive`		=	1";
-		} else if ($this->getVendor() == self::mssql) {
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	[staff]
 			WHERE 	[staffNo] 		= 	'" . $this->model->getStaffNo() . "'
 			AND		[isActive]		=	1";
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	*
 			FROM 	STAFF
@@ -1469,7 +1469,7 @@ class StaffClass extends ConfigClass
 	 */
 	public function excel()
 	{
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);

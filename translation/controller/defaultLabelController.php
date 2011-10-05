@@ -104,14 +104,14 @@ class DefaultLabelClass extends ConfigClass
 	function create ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->create();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			INSERT INTO `defaultLabel`
 					(
@@ -143,7 +143,7 @@ class DefaultLabelClass extends ConfigClass
 						" . $this->model->getExecuteTime() . "
 					);";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			INSERT INTO [defaultLabel]
 					(
@@ -174,7 +174,7 @@ class DefaultLabelClass extends ConfigClass
 						" . $this->model->getExecuteTime() . "
 			);";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			INSERT INTO 	DEFAULTLABEL
 						(
@@ -224,13 +224,13 @@ class DefaultLabelClass extends ConfigClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
 		$items = array();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		// everything given flexibility  on todo
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT 		*
 			FROM 		`defaultLabel`
@@ -241,7 +241,7 @@ class DefaultLabelClass extends ConfigClass
 				$this->model->getDefaultLabelId(0, 'single') . "\"";
 			}
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT 		*
 			FROM 		[defaultLabel]
@@ -252,7 +252,7 @@ class DefaultLabelClass extends ConfigClass
 				$this->model->getDefaultLabelId(0, 'single') . "'";
 			}
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT 		*
 			FROM 		DEFAULTLABEL
@@ -275,14 +275,14 @@ class DefaultLabelClass extends ConfigClass
 		 */
 		$tableArray = array('defaultLabel');
 		if ($this->getFieldQuery()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$tempSql = $this->q->quickSearch($tableArray, $filterArray);
 				$sql .= $tempSql;
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$tempSql = $this->q->quickSearch($tableArray,
 				$filterArray);
 				$sql .= $tempSql;
@@ -292,14 +292,14 @@ class DefaultLabelClass extends ConfigClass
 		 * Extjs filtering mode
 		 */
 		if ($this->getGridQuery()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->searching();
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$tempSql2 = $this->q->searching();
 				$sql .= $tempSql2;
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$tempSql2 = $this->q->searching();
 				$sql .= $tempSql2;
 			}
@@ -312,15 +312,15 @@ class DefaultLabelClass extends ConfigClass
 		}
 		$total = $this->q->numberRows();
 		if ($this->getOrder() && $this->getSortField()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= "	ORDER BY `" . $this->getSortField() . "` " .
 				$this->getOrder() . " ";
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " .
 				$this->getOrder() . " ";
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) .
                          "  " . strtoupper($this->getOrder()) . " ";
 			}
@@ -331,12 +331,12 @@ class DefaultLabelClass extends ConfigClass
 		if (empty($_POST['filter'])) {
 			if (isset($this->getStart()) && isset($_POST['limit'])) {
 				// only mysql have limit
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sql .= " LIMIT  " . $this->getStart() . "," .
 					$_POST['limit'] . " ";
 					$sqlLimit = $sql;
 				} else
-				if ($this->getVendor() == self::mssql) {
+				if ($this->getVendor() == self::MSSQL) {
 					/**
 					 * Sql Server and Oracle used row_number
 					 * Parameterize Query We don't support
@@ -358,7 +358,7 @@ class DefaultLabelClass extends ConfigClass
 							AND 			" .
 					($this->getStart() + $_POST['limit'] - 1) . ";";
 				} else
-				if ($this->getVendor() == self::oracle) {
+				if ($this->getVendor() == self::ORACLE) {
 					/**
 					 * Oracle using derived table also
 					 */
@@ -416,14 +416,14 @@ class DefaultLabelClass extends ConfigClass
 	function update ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->update();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					UPDATE 	`defaultLabel`
 					SET 	`defaultLabelNote`		=	\"" .
@@ -452,7 +452,7 @@ class DefaultLabelClass extends ConfigClass
 					WHERE 	`defaultLabelId`			=	\"" .
 			$this->model->getDefaultLabelId(0, 'single') . "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					UPDATE 	[defaultLabel]
 					SET 	[defaultLabelNote]		=	'" .
@@ -481,7 +481,7 @@ class DefaultLabelClass extends ConfigClass
 					WHERE 	[defaultLabelId]			=	\"" .
 			$this->model->getDefaultLabelId(0, 'single') . "\"";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 					UPDATE 	DEFAULTLABEL
 					SET     DEFAULTLABELNOTE		=	'" .
@@ -525,14 +525,14 @@ class DefaultLabelClass extends ConfigClass
 	function delete ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->delete();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					UPDATE	`defaultLabel`
 					SET		`isDefault`		=	\"" .
@@ -556,7 +556,7 @@ class DefaultLabelClass extends ConfigClass
 					WHERE 	`defaultLabelId`		=	\"" .
 			$this->model->getDefaultLabelId() . "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					UPDATE	[defaultLabel]
 					SET		[isDefault]		=	'" .$this->model->getIsDefault(0, 'single') . "',
@@ -571,7 +571,7 @@ class DefaultLabelClass extends ConfigClass
 					WHERE 	[defaultLabelId]='" .
 			$this->model->getDefaultLabelId() . "'";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 					UPDATE	DEFAULTLABEL
 					SET		ISDEFAULT	=	'" .
@@ -612,23 +612,23 @@ class DefaultLabelClass extends ConfigClass
 	function updateStatus ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$loop = $this->model->getTotal();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				UPDATE `" . $this->model->getTableName() . "`
 				SET";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			UPDATE 	[" . $this->model->getTableName() . "]
 			SET 	";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
@@ -641,15 +641,15 @@ class DefaultLabelClass extends ConfigClass
 		$access = array("isDefault", "isNew", "isDraft", "isUpdate", "isDelete",
         "isActive", "isApproved", "isReview", "isPost");
 		foreach ($access as $systemCheck) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sqlLooping .= " `" . $systemCheck . "` = CASE `" .
 				$this->model->getPrimaryKeyName() . "`";
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" .
 				$this->model->getPrimaryKeyName() . "]";
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE '" .
 				$this->model->getPrimaryKeyName() . "'";
 			}
@@ -739,19 +739,19 @@ class DefaultLabelClass extends ConfigClass
 			$sqlLooping .= " END,";
 		}
 		$sql .= substr($sqlLooping, 0, - 1);
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql .= "
 			WHERE `" .
 			$this->model->getPrimaryKeyName() . "` IN (" .
 			$this->model->getPrimaryKeyAll() . ")";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql .= "
 			WHERE [" .
 			$this->model->getPrimaryKeyName() . "] IN (" .
 			$this->model->getPrimaryKeyAll() . ")";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql .= "
 			WHERE   " .
 			strtoupper($this->model->getPrimaryKeyName()) . " IN (" .
@@ -773,7 +773,7 @@ class DefaultLabelClass extends ConfigClass
 	function excel ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);

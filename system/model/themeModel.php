@@ -65,11 +65,11 @@ class ThemeModel extends ValidationClass{
 		if(isset($_SESSION['staffId'])){
 			$this->setExecuteBy($_SESSION['staffId']);
 		}
-		if($this->getVendor()==self::mysql){
+		if($this->getVendor()==self::MYSQL){
 			$this->setExecuteTime("\"".date("Y-m-d H:i:s")."\"");
-		} else if ($this->getVendor()==self::mssql){
+		} else if ($this->getVendor()==self::MSSQL){
 			$this->setExecuteTime("'".date("Y-m-d H:i:s")."'");
-		} else if ($this->getVendor()==self::oracle){
+		} else if ($this->getVendor()==self::ORACLE){
 			$this->setExecuteTime("to_date('".date("Y-m-d H:i:s")."','YYYY-MM-DD HH24:MI:SS')");
 		}
 

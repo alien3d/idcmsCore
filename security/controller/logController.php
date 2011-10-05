@@ -95,12 +95,12 @@ class LogClass extends ConfigClass
     public function read ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT	*
 			FROM 	`log`
@@ -114,7 +114,7 @@ class LogClass extends ConfigClass
                  $this->strict($_POST['logId'], 'n') . "\"";
             }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT	*
 			FROM 	[log]
@@ -128,7 +128,7 @@ class LogClass extends ConfigClass
                      $this->strict($_POST['logId'], 'n') . "\"";
                 }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT	*
 			FROM 	LOG
@@ -215,7 +215,7 @@ class LogClass extends ConfigClass
     function excel ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);

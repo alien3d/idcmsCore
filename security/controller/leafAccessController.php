@@ -105,13 +105,13 @@ class LeafAccessClass extends  ConfigClass {
 	 */
 	function read() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		// by default if add new group will add access to module and leaf.
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="
 				SELECT	`leaf`.`moduleId`,
 						`leaf`.`folderId`,
@@ -188,7 +188,7 @@ class LeafAccessClass extends  ConfigClass {
 			if($this->model->getStaffId()) {
 				$sql.=" AND `leafAccess`.`staffId`	=	\"".$this->model->getStaffId()."\"";
 			}
-		} else if ($this->getVendor()==self::mssql) {
+		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="
 				SELECT	[leaf].[moduleId],
 						[leaf].[folderId],
@@ -265,7 +265,7 @@ class LeafAccessClass extends  ConfigClass {
 			if($this->model->getStaffId()) {
 				$sql.=" AND [leafAccess`.[staffId]	=	'".$this->strict($this->staffId,'numeric')."'";
 			}
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql="
 				SELECT	LEAF.MODULEID,
 						LEAF.FOLDERID,
@@ -410,7 +410,7 @@ class LeafAccessClass extends  ConfigClass {
 	 */
 	function update() 				{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -429,7 +429,7 @@ class LeafAccessClass extends  ConfigClass {
 				}
 			}
 
-			if($this->getVendor() == self::mysql) {
+			if($this->getVendor() == self::MYSQL) {
 				$sql="
 					UPDATE 	`leafAccess`
 					SET 	`leafAccessCreateValue`	=	\"".$this->strict($_GET['leafAccessCreateValue'][$i],'numeric')."\",
@@ -440,7 +440,7 @@ class LeafAccessClass extends  ConfigClass {
 							`leafAccessPrintValue`	=	\"".$this->strict($_GET['leafAccessPrintValue'][$i],'numeric')."\",
 							`leafAccessPostValue`	=	\"".$this->strict($_GET['leafAccessPostValue'][$i],'numeric')."\"
 					WHERE 	`leafAccessId`			=	\"".$this->strict($_GET['leafAccessId'][$i],'numeric')."\"";
-			} else if ($this->getVendor()==self::mssql) {
+			} else if ($this->getVendor()==self::MSSQL) {
 				$sql="
 					UPDATE 	[leafAccess]
 					SET 	[leafAccessCreateValue]	=	'".$this->strict($_GET['leafAccessCreateValue'][$i],'numeric')."',
@@ -451,7 +451,7 @@ class LeafAccessClass extends  ConfigClass {
 							[leafAccessPrintValue]	=	'".$this->strict($_GET['leafAccessPrintValue'][$i],'numeric')."',
 							[leafAccessPostValue]	=	'".$this->strict($_GET['leafAccessPostValue'][$i],'numeric')."'
 					WHERE 	[leafAccessId]			=	'".$this->strict($_GET['leafAccessId'][$i],'numeric')."'";
-			} else if ($this->getVendor()==self::oracle) {
+			} else if ($this->getVendor()==self::ORACLE) {
 				$sql="
 				UPDATE 	LEAFACCESS
 				SET 	LEAFACCESSCREATEVALUE	=	'".$this->strict($_GET['leafAccessCreateValue'][$i],'numeric')."',

@@ -100,7 +100,7 @@ class ModuleClass extends ConfigClass
     function create ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES utf8";
             $this->q->fast($sql);
@@ -110,7 +110,7 @@ class ModuleClass extends ConfigClass
         /**
          * Example  using Constant .This much cleaner approch  to Sql Statement
          */
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			INSERT INTO `module`
 					(
@@ -150,7 +150,7 @@ class ModuleClass extends ConfigClass
 						" . $this->model->getExecuteTime() . "
 					);";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			INSERT INTO [module]
 					(
@@ -190,7 +190,7 @@ class ModuleClass extends ConfigClass
 						" . $this->model->getExecuteTime() . "
 					);";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			INSERT INTO MODULE
 					(
@@ -239,19 +239,19 @@ class ModuleClass extends ConfigClass
         $lastId = $this->q->lastInsertId();
         //  create a record  in moduleAccess.update no effect
         // loop the group
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	*
 			FROM 	`group`
 			WHERE 	`isActive`	=	1 ";
         } else 
-            if ($this->q->vendor == self::mssql) {
+            if ($this->q->vendor == self::MSSQL) {
                 $sql = "
 			SELECT 	*
 			FROM 	[group]
 			WHERE 	[isActive]	=	1 ";
             } else 
-                if ($this->q->vendor == self::oracle) {
+                if ($this->q->vendor == self::ORACLE) {
                     $sql = "
 			SELECT 	*
 			FROM 	GROUP_
@@ -274,7 +274,7 @@ class ModuleClass extends ConfigClass
 							 \"0\"
 						),";
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 				INSERT INTO	`moduleAccess`
 						(
@@ -283,7 +283,7 @@ class ModuleClass extends ConfigClass
 							`moduleAccessValue`
 						) VALUES";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 				INSERT INTO	[moduleAccess]
 						(
@@ -292,7 +292,7 @@ class ModuleClass extends ConfigClass
 							[moduleAccessValue]
 					) VALUES";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 				INSERT INTO	MODULEACCESS
 						(
@@ -315,7 +315,7 @@ class ModuleClass extends ConfigClass
         /**
          * insert default value to detail modulele .English only
          **/
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 		 	INSERT INTO `moduleTranslate`
 		 		(
@@ -328,7 +328,7 @@ class ModuleClass extends ConfigClass
 					\"" . $this->model->getmoduleNote() . "\"
 				);";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 		 	INSERT INTO  [moduleTranslate]
 					(
@@ -342,7 +342,7 @@ class ModuleClass extends ConfigClass
                  $this->model->getmoduleNote() . "'
 					);";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 		 	INSERT INTO	MODULETRANSLATE
 					(
@@ -375,34 +375,34 @@ class ModuleClass extends ConfigClass
     {
         header('Content-Type', 'application/json; charset=utf-8');
         if ($this->isAdmin == 0) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $this->auditFilter = "	`module`.`isActive`		=	1	";
             } else 
-                if ($this->q->vendor == self::mssql) {
+                if ($this->q->vendor == self::MSSQL) {
                     $this->auditFilter = "	[module].[isActive]		=	1	";
                 } else 
-                    if ($this->q->vendor == self::oracle) {
+                    if ($this->q->vendor == self::ORACLE) {
                         $this->auditFilter = "	MODULE.ISACTIVE	=	1	";
                     }
         } else 
             if ($this->isAdmin == 1) {
-                if ($this->getVendor() == self::mysql) {
+                if ($this->getVendor() == self::MYSQL) {
                      $this->auditFilter = "	 1=1 ";
                 } else 
-                    if ($this->q->vendor == self::mssql) {
+                    if ($this->q->vendor == self::MSSQL) {
                         $this->auditFilter = "	1 = 1 ";
                     } else 
-                        if ($this->q->vendor == self::oracle) {
+                        if ($this->q->vendor == self::ORACLE) {
                             $this->auditFilter = "  1 = 1 ";
                         }
             }
         //UTF8
         $items = array();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 					SELECT	`module`.`moduleId`,
 							`module`.`iconId`,
@@ -432,7 +432,7 @@ class ModuleClass extends ConfigClass
                  $this->model->getModuleId(0, 'single') . "\"";
             }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 					SELECT	[module].[moduleId],
 							[module].[iconId],
@@ -462,7 +462,7 @@ class ModuleClass extends ConfigClass
                      $this->model->getModuleId(0, 'single') . "'";
                 }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 					SELECT	MODULE.MODULEID,
 							MODULE.ICONID,
@@ -511,15 +511,15 @@ class ModuleClass extends ConfigClass
         $moduleleArray = null;
         $moduleleArray = array('module');
         if ($this->getFieldQuery()) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql .= $this->q->quickSearch($moduleleArray, $filterArray);
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $tempSql = $this->q->quickSearch($moduleleArray, 
                     $filterArray);
                     $sql .= $tempSql;
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $tempSql = $this->q->quickSearch($moduleleArray, 
                         $filterArray);
                         $sql .= $tempSql;
@@ -529,14 +529,14 @@ class ModuleClass extends ConfigClass
          * Extjs filtering mode
          */
         if ($this->getGridQuery()) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql .= $this->q->searching();
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $tempSql2 = $this->q->searching();
                     $sql .= $tempSql2;
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $tempSql2 = $this->q->searching();
                         $sql .= $tempSql2;
                     }
@@ -558,15 +558,15 @@ class ModuleClass extends ConfigClass
         }
         $total = $this->q->numberRows();
         if ($this->getOrder() && $this->getSortField()) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql .= "	ORDER BY `" . $this->getSortField() . "` " .
                  $this->getOrder() . " ";
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $sql .= "	ORDER BY [" . $this->getSortField() . "] " .
                      $this->getOrder() . " ";
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $sql .= "	ORDER BY " . strtoupper($this->getSortField()) .
                          "  " . strtoupper($this->getOrder()) . " ";
                     }
@@ -577,11 +577,11 @@ class ModuleClass extends ConfigClass
         if (! ($this->getGridQuery())) {
             if ($this->getLimit()) {
                 // only mysql have limit
-                if ($this->getVendor() == self::mysql) {
+                if ($this->getVendor() == self::MYSQL) {
                     $sql .= " LIMIT  " . $this->getStart() . "," .
                      $this->getLimit() . " ";
                 } else 
-                    if ($this->getVendor() == self::mssql) {
+                    if ($this->getVendor() == self::MSSQL) {
                         /**
                          * Sql Server and Oracle used row_number
                          * Parameterize Query We don't support
@@ -615,7 +615,7 @@ class ModuleClass extends ConfigClass
 							AND 			" .
                          ($this->getStart() + $this->getLimit() - 1) . ";";
                     } else 
-                        if ($this->getVendor() == self::oracle) {
+                        if ($this->getVendor() == self::ORACLE) {
                             /**
                              * Oracle using derived modulele also
                              */
@@ -689,14 +689,14 @@ class ModuleClass extends ConfigClass
     function update ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
         $this->q->start();
         $this->model->update();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE 	`module`
 			SET 	`moduleSequence`	= 	\"" .
@@ -724,7 +724,7 @@ class ModuleClass extends ConfigClass
 			WHERE 	`moduleId`			=	\"" .
              $this->model->getModuleId(0, 'single') . "\"";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			UPDATE 	[module]
 			SET 	[moduleSequence]	= 	'" .
@@ -753,7 +753,7 @@ class ModuleClass extends ConfigClass
 			WHERE 	[moduleId]			=	'" .
                  $this->model->getModuleId(0, 'single') . "'";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			UPDATE 	MODULE
 			SET 	MODULESEQUENCE	= 	'" .
@@ -798,14 +798,14 @@ class ModuleClass extends ConfigClass
     function delete ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
         $this->q->start();
         $this->model->delete();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE 	`module`
 			SET 	`isDefault`		=	\"" .
@@ -829,7 +829,7 @@ class ModuleClass extends ConfigClass
 			WHERE 	`moduleId`		=	\"" .
              $this->model->moduleId . "\"";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			UPDATE 	[module]
 			SET 	[isDefault]		=	'" .
@@ -853,7 +853,7 @@ class ModuleClass extends ConfigClass
 			WHERE 	[moduleId]			=	'" .
                  $this->model->getModuleId(0, 'single') . "'";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			UPDATE 	MODULE
 			SET 	ISDEFAULT		=	'" .
@@ -898,7 +898,7 @@ class ModuleClass extends ConfigClass
     function excel ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES utf8";
             $this->q->fast($sql);

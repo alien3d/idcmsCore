@@ -96,14 +96,14 @@ class CrewClass extends ConfigClass
 	function create ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->create();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			INSERT INTO `crew`
 					(
@@ -142,7 +142,7 @@ class CrewClass extends ConfigClass
 			$this->model->getExecuteTime() . "
 					);";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			INSERT INTO [crew]
 					(
@@ -181,7 +181,7 @@ class CrewClass extends ConfigClass
 			$this->model->getExecuteTime() . "
 					);";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			INSERT INTO GROUP_
 					(
@@ -224,19 +224,19 @@ class CrewClass extends ConfigClass
 		$lastInsertId = $this->q->lastInsertId();
 		// loop the tab and create new record
 		//** no need to log in db
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 		SELECT 	*
 		FROM 	`module`
 		WHERE 	`isActive`=1";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 		SELECT 	*
 		FROM 	[module]
 		WHERE 	[isActive]=1";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 		SELECT 	*
 		FROM 	MODULE
@@ -252,7 +252,7 @@ class CrewClass extends ConfigClass
 		$sqlLooping = null;
 		if ($this->q->numberRows() > 0) {
 			foreach ($data as $row) {
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sqlLooping .= "
 					(
 									\"" . $row['tabId'] . "\",
@@ -260,8 +260,8 @@ class CrewClass extends ConfigClass
 									\"" . $lastInsertId . "\"
 					),";
 				} else
-				if ($this->getVendor() == self::mssql ||
-				$this->getVendor() == self::oracle) {
+				if ($this->getVendor() == self::MSSQL ||
+				$this->getVendor() == self::ORACLE) {
 					$sqlLooping .= "
 					(
 									'" . $row['tabId'] . "',
@@ -271,7 +271,7 @@ class CrewClass extends ConfigClass
 				}
 			}
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "	INSERT INTO	`moduleAccess`
 				(
 									`moduleId`,
@@ -280,7 +280,7 @@ class CrewClass extends ConfigClass
 				)
 				VALUES ";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "	INSERT INTO	[moduleAccess]
 				(
 									[moduleId],
@@ -289,7 +289,7 @@ class CrewClass extends ConfigClass
 				)
 				VALUES ";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "	INSERT INTO	TABACCESS
 				(
 									MODULEID,
@@ -307,19 +307,19 @@ class CrewClass extends ConfigClass
 			exit();
 		}
 		// loop the folder and create new record;
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 		SELECT 	*
 		FROM 	`folder`
 		WHERE 	`isActive`=1";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 		SELECT 	*
 		FROM 	[folder]
 		WHERE 	[isActive]=1";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 		SELECT 	*
 		FROM 	FOLDER
@@ -335,7 +335,7 @@ class CrewClass extends ConfigClass
 		if ($this->q->numberRows() > 0) {
 			$data = $this->q->activeRecord();
 			foreach ($data as $row) {
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sqlLooping .= "
 					(
 						\"" . $row['folderId'] . "\",
@@ -343,8 +343,8 @@ class CrewClass extends ConfigClass
 						\"" . $lastInsertId . "\"
 					),";
 				} else
-				if ($this->getVendor() == self::mssql ||
-				$this->getVendor() == self::oracle) {
+				if ($this->getVendor() == self::MSSQL ||
+				$this->getVendor() == self::ORACLE) {
 					$sqlLooping .= "
 					(
 						'" . $row['folderId'] . "',
@@ -354,7 +354,7 @@ class CrewClass extends ConfigClass
 				}
 			}
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					INSERT INTO 	`folderAccess`
 								(
@@ -364,7 +364,7 @@ class CrewClass extends ConfigClass
 								)
 					VALUES";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					INSERT INTO 	[folderAccess]
 								(
@@ -374,7 +374,7 @@ class CrewClass extends ConfigClass
 								)
 					";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 					INSERT INTO 	FOLDERACCESS
 								(
@@ -393,13 +393,13 @@ class CrewClass extends ConfigClass
 			exit();
 		}
 		// create a template access which user can access to
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SELECT * FROM `leaf` WHERE `isActive`=1  ";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "SELECT * FROM [leaf] WHERE [isActive]=1  ";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "SELECT * FROM LEAF WHERE ISACTIVE=1  ";
 		}
 		$this->q->read($sql);
@@ -413,7 +413,7 @@ class CrewClass extends ConfigClass
 		if ($total > 0) {
 			$data = $this->q->activeRecord();
 			foreach ($data as $row) {
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sqlLooping .= "
 					(
 						\"" . $row['leafId'] . "\",
@@ -426,8 +426,8 @@ class CrewClass extends ConfigClass
 						\"" . $lastInsertId . "\"
 					),";
 				} else
-				if ($this->getVendor() == self::mssql ||
-				$this->getVendor() = self::oracle) {
+				if ($this->getVendor() == self::MSSQL ||
+				$this->getVendor() = self::ORACLE) {
 					$sqlLooping .= "
 					(
 						'" . $row['leafId'] . "',
@@ -442,7 +442,7 @@ class CrewClass extends ConfigClass
 				}
 			}
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					INSERT INTO 	`leafCrewAccess`
 								(
@@ -457,7 +457,7 @@ class CrewClass extends ConfigClass
 								)
 					VALUES";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					INSERT INTO 	[leafCrewAccess]
 								(	[leafId],
@@ -471,7 +471,7 @@ class CrewClass extends ConfigClass
 								)
 					VALUES";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 					INSERT INTO 	LEAFGROUPACCESS
 								(
@@ -506,34 +506,34 @@ class CrewClass extends ConfigClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	`crew`.`isActive`		=	1	";
 			} else
-			if ($this->q->vendor == self::mssql) {
+			if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	[crew].[isActive]		=	1	";
 			} else
-			if ($this->q->vendor == self::oracle) {
+			if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	GROUP_.ISACTIVE	=	1	";
 			}
 		} else
 		if ($this->isAdmin == 1) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	 1 = 1 ";
 			} else
-			if ($this->q->vendor == self::mssql) {
+			if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	1 = 1 ";
 			} else
-			if ($this->q->vendor == self::oracle) {
+			if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
 		//UTF8
 		$items = array();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					SELECT	`crew`.`crewId`,
 							`crew`.`crewSequence`,
@@ -559,7 +559,7 @@ class CrewClass extends ConfigClass
 				$this->model->getCrewId(0, 'single') . "\"";
 			}
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					SELECT	[crew].[crewId],
 							[crew].[crewSequence],
@@ -585,7 +585,7 @@ class CrewClass extends ConfigClass
 				$this->model->getCrewId(0, 'single') . "'";
 			}
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 					SELECT	GROUP_.GROUPID  		AS	\"crewId\",
 							GROUP_.GROUPCODE 		AS 	\"crewCode\",
@@ -631,14 +631,14 @@ class CrewClass extends ConfigClass
 		$tableArray = null;
 		$tableArray = array('crew');
 		if ($this->getFieldQuery()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$tempSql = $this->q->quickSearch($tableArray, $filterArray);
 				$sql .= $tempSql;
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$tempSql = $this->q->quickSearch($tableArray,
 				$filterArray);
 				$sql .= $tempSql;
@@ -648,14 +648,14 @@ class CrewClass extends ConfigClass
 		 * Extjs filtering mode
 		 */
 		if ($this->getGridQuery()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->searching();
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$tempSql2 = $this->q->searching();
 				$sql .= $tempSql2;
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$tempSql2 = $this->q->searching();
 				$sql .= $tempSql2;
 			}
@@ -677,15 +677,15 @@ class CrewClass extends ConfigClass
 		}
 		$total = $this->q->numberRows();
 		if ($this->getOrder() && $this->getSortField()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= "	ORDER BY `" . $this->getSortField() . "` " .
 				$this->getOrder() . " ";
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " .
 				$this->getOrder() . " ";
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) .
                          "  " . strtoupper($this->getOrder()) . " ";
 			}
@@ -696,11 +696,11 @@ class CrewClass extends ConfigClass
 		if (empty($this->filter)) {
 			if ($this->getLimit()) {
 				// only mysql have limit
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sql .= " LIMIT  " . $this->getStart() . "," .
 					$this->getLimit() . " ";
 				} else
-				if ($this->getVendor() == self::mssql) {
+				if ($this->getVendor() == self::MSSQL) {
 					/**
 					 * Sql Server and Oracle used row_number
 					 * Parameterize Query We don't support
@@ -733,7 +733,7 @@ class CrewClass extends ConfigClass
 							AND 			" .
 					($this->getStart() + $this->getLimit() - 1) . ";";
 				} else
-				if ($this->getVendor() == self::oracle) {
+				if ($this->getVendor() == self::ORACLE) {
 					/**
 					 * Oracle using derived table also
 					 */
@@ -806,14 +806,14 @@ class CrewClass extends ConfigClass
 	function update ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->commit();
 		$this->model->update();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			UPDATE 	`crew`
 			SET 	`crewSequence` =   '" .
@@ -843,7 +843,7 @@ class CrewClass extends ConfigClass
 			WHERE 	`crewId`		=	'" .
 			$this->model->getCrewId(0, 'single') . "'";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			UPDATE 	[crew]
 			SET 	[crewSequence] =   '" .
@@ -873,7 +873,7 @@ class CrewClass extends ConfigClass
 			WHERE 	[crewId]		=	'" .
 			$this->model->getCrewId(0, 'single') . "'";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			UPDATE 	GROUP_
 			SET 	GROUPSEQUENCE	=   '" .
@@ -918,13 +918,13 @@ class CrewClass extends ConfigClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		//UTF8
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->delete();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			UPDATE 	`crew`
 			SET 	`isDefault`			=	\"" .
@@ -948,7 +948,7 @@ class CrewClass extends ConfigClass
 			WHERE 	`crewId`		=	\"" .
 			$this->model->getCrewId(0, 'single') . "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			UPDATE 	[crew]
 			SET 	[isDefault]			=	'" .
@@ -972,7 +972,7 @@ class CrewClass extends ConfigClass
 			WHERE 	[crewId]			=	'" .
 			$this->model->getCrewId . "\"";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			UPDATE 	GROUP_
 			SET 	GROUPDESC		=	'" .
@@ -1020,23 +1020,23 @@ class CrewClass extends ConfigClass
 	function updateStatus ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$loop = $this->model->getTotal();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				UPDATE `" . $this->model->getTableName() . "`
 				SET";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			UPDATE 	[" . $this->model->getTableName() . "]
 			SET 	";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			UPDATE  " . strtoupper($this->model->getTableName()) . "
 			SET    ";
@@ -1049,15 +1049,15 @@ class CrewClass extends ConfigClass
 		$access = array("isDefault", "isNew", "isDraft", "isUpdate", "isDelete",
         "isActive", "isApproved","isReview","isPost");
 		foreach ($access as $systemCheck) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sqlLooping .= " `" . $systemCheck . "` = CASE `" .
 				$this->model->getPrimaryKeyName() . "`";
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" .
 				$this->model->getPrimaryKeyName() . "]";
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE '" .
 				$this->model->getPrimaryKeyName() . "'";
 			}
@@ -1143,19 +1143,19 @@ class CrewClass extends ConfigClass
 			$sqlLooping .= " END,";
 		}
 		$sql .= substr($sqlLooping, 0, - 1);
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql .= "
 			WHERE `" .
 			$this->model->getPrimaryKeyName() . "` IN (" .
 			$this->model->getCrewIdAll() . ")";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql .= "
 			WHERE [" .
 			$this->model->getPrimaryKeyName() . "] IN (" .
 			$this->model->getCrewIdAll() . ")";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql .= "
 			WHERE \"" .
 			$this->model->getPrimaryKeyName() . "\" IN (" .
@@ -1178,12 +1178,12 @@ class CrewClass extends ConfigClass
 	function duplicate ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	`crew`
@@ -1191,7 +1191,7 @@ class CrewClass extends ConfigClass
 			$this->model->getCrewCode() . "\"
 			AND		`isActive`		=	1";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	[crew]
@@ -1199,7 +1199,7 @@ class CrewClass extends ConfigClass
 			$this->model->getCrewCode() . "'
 			AND		[isActive]		=	1";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	*
 			FROM 	CREW_

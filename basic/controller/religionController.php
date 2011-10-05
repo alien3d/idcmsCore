@@ -92,13 +92,13 @@ class ReligionClass extends ConfigClass {
 	public function create() {
 		header ( 'Content-Type', 'application/json; charset=utf-8' );
 		//UTF8
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
 		$this->q->start ();
 		$this->model->create ();
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			INSERT INTO `religion`
 					(
@@ -118,7 +118,7 @@ class ReligionClass extends ConfigClass {
              \"" . $this->model->getIsReview ( 0, 'single' ) . "\",		\"" . $this->model->getIsPost ( 0, 'single' ) . "\",
 						\"" . $this->model->getExecuteBy () . "\",				" . $this->model->getExecuteTime () . "
 					);";
-		} else if ($this->getVendor () == self::mssql) {
+		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			INSERT INTO [religion]
 					(
@@ -138,7 +138,7 @@ class ReligionClass extends ConfigClass {
 						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
 						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					);";
-		} else if ($this->getVendor () == self::oracle) {
+		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			INSERT INTO	RELIGION
 					(
@@ -158,9 +158,9 @@ class ReligionClass extends ConfigClass {
 						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',						
 						'" . $this->model->getExecuteBy () . "',				" . $this->model->getExecuteTime () . "
 					)";
-		} else if ($this->getVendor () == self::db2) {
+		} else if ($this->getVendor () == self::DB2) {
 		
-		} else if ($this->getVendor () == self::postgress) {
+		} else if ($this->getVendor () == self::POSTGRESS) {
 		
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
@@ -187,37 +187,37 @@ class ReligionClass extends ConfigClass {
 	public function read() {
 		//	header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
-			if ($this->q->vendor == self::mysql) {
+			if ($this->q->vendor == self::MYSQL) {
 				$this->auditFilter = "	AND `religion`.`isActive`		=	1	";
-			} else if ($this->q->vendor == self::mssql) {
+			} else if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	AND [religion].[isActive]		=	1	";
-			} else if ($this->q->vendor == self::oracle) {
+			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	AND RELIGION.ISACTIVE	=	1	";
-			} else if ($this->q->vendor == self::db2) {
+			} else if ($this->q->vendor == self::DB2) {
 			
-			} else if ($this->q->vendor == self::postgress) {
+			} else if ($this->q->vendor == self::POSTGRESS) {
 			
 			}
 		} else if ($this->isAdmin == 1) {
-			if ($this->getVendor () == self::mysql) {
+			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	1	=	1	";
-			} else if ($this->q->vendor == self::mssql) {
+			} else if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	1	=	1 	";
-			} else if ($this->q->vendor == self::oracle) {
+			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	1	=	1 	";
-			} else if ($this->q->vendor == self::db2) {
+			} else if ($this->q->vendor == self::DB2) {
 			
-			} else if ($this->q->vendor == self::postgress) {
+			} else if ($this->q->vendor == self::POSTGRESS) {
 			
 			}
 		}
 		//UTF8
 		$items = array ();
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 					SELECT	`religion`.`religionId`,
 							`religion`.`religionDesc`,
@@ -240,7 +240,7 @@ class ReligionClass extends ConfigClass {
 			if ($this->model->getReligionId ( 0, 'single' )) {
 				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`=\"" . $this->model->getReligionId ( 0, 'single' ) . "\"";
 			}
-		} else if ($this->getVendor () == self::mssql) {
+		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 					SELECT	[religion].[religionId],
 							[religion].[religionDesc],
@@ -263,7 +263,7 @@ class ReligionClass extends ConfigClass {
 			if ($this->model->getReligionId ( 0, 'single' )) {
 				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			}
-		} else if ($this->getVendor () == self::oracle) {
+		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT	RELIGION.RELIGIONID   		  AS 	\"religionId\",
 							RELIGION.RELIGIONDESC AS 	\"religionDesc\",
@@ -286,8 +286,8 @@ class ReligionClass extends ConfigClass {
 			if ($this->model->getReligionId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			}
-		} else if ($this->q->vendor == self::db2) {
-		} else if ($this->q->vendor == self::postgress) {
+		} else if ($this->q->vendor == self::DB2) {
+		} else if ($this->q->vendor == self::POSTGRESS) {
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 			exit ();
@@ -306,12 +306,12 @@ class ReligionClass extends ConfigClass {
 		$tableArray = null;
 		$tableArray = array ('religion' );
 		if ($this->quickFilter) {
-			if ($this->getVendor () == self::mysql) {
+			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );
-			} else if ($this->getVendor () == self::mssql) {
+			} else if ($this->getVendor () == self::MSSQL) {
 				$tempSql = $this->q->quickSearch ( $tableArray, $filterArray );
 				$sql .= $tempSql;
-			} else if ($this->getVendor () == self::oracle) {
+			} else if ($this->getVendor () == self::ORACLE) {
 				$tempSql = $this->q->quickSearch ( $tableArray, $filterArray );
 				$sql .= $tempSql;
 			}
@@ -320,12 +320,12 @@ class ReligionClass extends ConfigClass {
 		 * Extjs filtering mode
 		 */
 		if ($this->filter) {
-			if ($this->getVendor () == self::mysql) {
+			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->searching ();
-			} else if ($this->getVendor () == self::mssql) {
+			} else if ($this->getVendor () == self::MSSQL) {
 				$tempSql2 = $this->q->searching ();
 				$sql .= $tempSql2;
-			} else if ($this->getVendor () == self::oracle) {
+			} else if ($this->getVendor () == self::ORACLE) {
 				$tempSql2 = $this->q->searching ();
 				$sql .= $tempSql2;
 			}
@@ -346,15 +346,15 @@ class ReligionClass extends ConfigClass {
 		}
 		$total = $this->q->numberRows ();
 		if ($this->getOrder () && $this->getSortField ()) {
-			if ($this->getVendor () == self::mysql) {
+			if ($this->getVendor () == self::MYSQL) {
 				$sql .= "	ORDER BY `" . $this->getSortField () . "` " . $this->getOrder () . " ";
-			} else if ($this->getVendor () == self::mssql) {
+			} else if ($this->getVendor () == self::MSSQL) {
 				$sql .= "	ORDER BY [" . $this->getSortField () . "] " . $this->getOrder () . " ";
-			} else if ($this->getVendor () == self::oracle) {
+			} else if ($this->getVendor () == self::ORACLE) {
 				$sql .= "	ORDER BY " . strtoupper ( $this->getSortField () ) . " " . strtoupper ( $this->getOrder () ) . " ";
-			} else if ($this->getVendor () == self::db2) {
+			} else if ($this->getVendor () == self::DB2) {
 			
-			} else if ($this->getVendor () == self::postgress) {
+			} else if ($this->getVendor () == self::POSTGRESS) {
 			
 			}
 		}
@@ -364,9 +364,9 @@ class ReligionClass extends ConfigClass {
 		if (empty ( $this->filter )) {
 			if ($this->getLimit ()) {
 				// only mysql have limit
-				if ($this->getVendor () == self::mysql) {
+				if ($this->getVendor () == self::MYSQL) {
 					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-				} else if ($this->getVendor () == self::mssql) {
+				} else if ($this->getVendor () == self::MSSQL) {
 					/**
 					 * Sql Server and Oracle used row_number
 					 * Parameterize Query We don't support
@@ -396,7 +396,7 @@ class ReligionClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart () + 1) . "
 							AND 			" . ($this->getStart () + $this->getLimit ()) . ";";
-				} else if ($this->getVendor () == self::oracle) {
+				} else if ($this->getVendor () == self::ORACLE) {
 					/**
 					 * Oracle using derived table also
 					 */
@@ -424,9 +424,9 @@ class ReligionClass extends ConfigClass {
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit ()) . "' )
 						where r >=  '" . ($this->getStart () + 1) . "'";
-				} else if ($this->getVendor () == self::db2) {
+				} else if ($this->getVendor () == self::DB2) {
 				
-				} else if ($this->getVendor () == self::oracle) {
+				} else if ($this->getVendor () == self::ORACLE) {
 				} else {
 					
 					echo "undefine vendor";
@@ -467,7 +467,7 @@ class ReligionClass extends ConfigClass {
 	function update() {
 		header ( 'Content-Type', 'application/json; charset=utf-8' );
 		//UTF8
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 			if ($this->q->execute == 'fail') {
@@ -477,7 +477,7 @@ class ReligionClass extends ConfigClass {
 		}
 		$this->q->start ();
 		$this->model->update ();
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			UPDATE 	`religion`
 			SET 	`religionDesc`		=	\"" . $this->model->getReligionDesc () . "\",
@@ -493,7 +493,7 @@ class ReligionClass extends ConfigClass {
 					`executeBy`			=	\"" . $this->model->getExecuteBy () . "\",
 					`executeTime`		=	" . $this->model->getExecuteTime () . "
 			WHERE 	`religionId`		=	\"" . $this->model->getReligionId ( 0, 'single' ) . "\"";
-		} else if ($this->getVendor () == self::mssql) {
+		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			UPDATE 	[religion]
 			SET 	[religionDesc]		=	'" . $this->model->getReligionDesc () . "',
@@ -509,7 +509,7 @@ class ReligionClass extends ConfigClass {
 					[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 					[executeTime]		=	" . $this->model->getExecuteTime () . "
 			WHERE 	[religionId]		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::oracle) {
+		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			UPDATE 	RELIGION
 			SET 	RELIGIONDESC	=	'" . $this->model->getReligionDesc () . "',
@@ -525,9 +525,9 @@ class ReligionClass extends ConfigClass {
 					EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
 					EXECUTETIME		=	" . $this->model->getExecuteTime () . "
 			WHERE 	RELIGIONID		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
-		}else if ($this->getVendor () == self::db2) {
+		}else if ($this->getVendor () == self::DB2) {
 			
-		}else if ($this->getVendor () == self::postgress) {
+		}else if ($this->getVendor () == self::POSTGRESS) {
 			
 		} else{
 			
@@ -554,13 +554,13 @@ class ReligionClass extends ConfigClass {
 	function delete() {
 		header ( 'Content-Type', 'application/json; charset=utf-8' );
 		//UTF8
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
 		$this->q->start ();
 		$this->model->delete ();
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			UPDATE 	`religion`
 			SET 	`isDefault`			=	\"" . $this->model->getIsDefault ( 0, 'single' ) . "\",
@@ -573,7 +573,7 @@ class ReligionClass extends ConfigClass {
 					`executeBy`			=	\"" . $this->model->getExecuteBy () . "\",
 					`executeTime`		=	" . $this->model->getExecuteTime () . "
 			WHERE 	`religionId`		=	\"" . $this->model->getReligionId ( 0, 'single' ) . "\"";
-		} else if ($this->getVendor () == self::mssql) {
+		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			UPDATE 	[religion]
 			SET 	[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
@@ -586,7 +586,7 @@ class ReligionClass extends ConfigClass {
 					[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 					[executeTime]		=	" . $this->model->getExecuteTime () . "
 			WHERE 	[religionId]		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::oracle) {
+		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			UPDATE 	RELIGION
 			SET 	ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
@@ -621,21 +621,21 @@ class ReligionClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header ( 'Content-Type', 'application/json; charset=utf-8' );
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
 		$loop = $this->model->getTotal ();
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 				UPDATE `" . $this->model->getTableName () . "`
 				SET";
-		} else if ($this->getVendor () == self::mssql) {
+		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			UPDATE 	[" . $this->model->getTableName () . "]
 			SET 	";
-		} else if ($this->getVendor () == self::oracle) {
+		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			UPDATE '" . strtoupper ( $this->model->getTableName () ) . "'
 			SET    ";
@@ -647,11 +647,11 @@ class ReligionClass extends ConfigClass {
 		 */
 		$access = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved","isReview","isPost");
 		foreach ( $access as $systemCheck ) {
-			if ($this->getVendor () == self::mysql) {
+			if ($this->getVendor () == self::MYSQL) {
 				$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName () . "`";
-			} else if ($this->getVendor () == self::mssql) {
+			} else if ($this->getVendor () == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
-			} else if ($this->getVendor () == self::oracle) {
+			} else if ($this->getVendor () == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE '" . strtoupper ( $this->model->getPrimaryKeyName () ) . "'";
 			}
 			switch ($systemCheck) {
@@ -722,13 +722,13 @@ class ReligionClass extends ConfigClass {
 			$sqlLooping .= " END,";
 		}
 		$sql .= substr ( $sqlLooping, 0, - 1 );
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql .= "
 			WHERE `" . $this->model->getPrimaryKeyName () . "` IN (" . $this->model->getReligionIdAll () . ")";
-		} else if ($this->getVendor () == self::mssql) {
+		} else if ($this->getVendor () == self::MSSQL) {
 			$sql .= "
 			WHERE [" . $this->model->getPrimaryKeyName () . "] IN (" . $this->model->getReligionIdAll () . ")";
-		} else if ($this->getVendor () == self::oracle) {
+		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
 		}
@@ -746,24 +746,24 @@ class ReligionClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header ( 'Content-Type', 'application/json; charset=utf-8' );
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			SELECT	`religionDesc`
 			FROM 	`religion`
 			WHERE 	`religionDesc` 	= 	\"" . $this->model->getReligionDesc () . "\"
 			AND		`isActive`		=	1";
-		} else if ($this->getVendor () == self::mssql) {
+		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			SELECT	[religionDesc]
 			FROM 	[religion]
 			WHERE 	[religionDesc] 	= 	'" . $this->model->getReligionDesc () . "'
 			AND		[isActive]		=	1";
-		} else if ($this->getVendor () == self::oracle) {
+		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT	RELIGIONDESC
 			FROM 	RELIGION
@@ -792,7 +792,7 @@ class ReligionClass extends ConfigClass {
 	function excel() {
 		header ( 'Content-Type', 'application/json; charset=utf-8' );
 		//UTF8
-		if ($this->getVendor () == self::mysql) {
+		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}

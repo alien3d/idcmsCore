@@ -98,7 +98,7 @@ class LeafGroupAccessClass extends ConfigClass
     function read ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -106,7 +106,7 @@ class LeafGroupAccessClass extends ConfigClass
         // by default if add new group will add access to module and leaf.
         // just checking
         //	$this->checkLeaf();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 				SELECT	`leaf`.`moduleId`,
 						`leaf`.`folderId`,
@@ -185,7 +185,7 @@ class LeafGroupAccessClass extends ConfigClass
                  $this->strict($this->folderId, 'numeric') . "\"";
             }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 				SELECT	[leaf].[moduleId],
 						[leaf].[folderId],
@@ -264,7 +264,7 @@ class LeafGroupAccessClass extends ConfigClass
                      $this->strict($this->folderId, 'numeric') . "\"";
                 }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 				SELECT	LEAF.MODULEID,
 						LEAF.FOLDERID,
@@ -375,7 +375,7 @@ class LeafGroupAccessClass extends ConfigClass
     function update ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -387,7 +387,7 @@ class LeafGroupAccessClass extends ConfigClass
             // mysql doesn't support bolean expression
             $data_array = explode(",", $data[$i]);
             //echo print_r($data_array);
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql = "
 					UPDATE 	`leafGroupAccess`
 					SET 	`leafAccessCreateValue`	=	\"" .
@@ -411,7 +411,7 @@ class LeafGroupAccessClass extends ConfigClass
                  $this->strict($data_array[0], 'numeric') . "\"";
                  //echo $sql."<br>";
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $sql = "
 					UPDATE 	[leafGroupAccess]
 					SET 	[leafAccessCreateValue]	=	\"" .
@@ -434,7 +434,7 @@ class LeafGroupAccessClass extends ConfigClass
 					WHERE 	[leafGroupAccessId]	=	\"" .
                      $this->strict($data_array[0], 'numeric') . "\"";
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $sql = "
 					UPDATE 	LEAFGROUPACCESS
 					SET 	leafAccessCreateValue	=	\"" .

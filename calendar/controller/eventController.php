@@ -92,14 +92,14 @@ class EventClass extends ConfigClass
     public function create ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->model->create();
         $this->q->start();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			INSERT INTO `event`(
 						`calendarId`,		`eventTitle`,
@@ -124,7 +124,7 @@ class EventClass extends ConfigClass
 				
 							);";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			INSERT INTO [event`(
 						[calendarId],		[eventTitle],
@@ -146,7 +146,7 @@ class EventClass extends ConfigClass
                  $this->model->getExecuteTime() . "
 				
 							);";
-            } elseif ($this->getVendor() == self::oracle) {
+            } elseif ($this->getVendor() == self::ORACLE) {
                 $sql = "
 			INSERT INTO EVENT (
 						CALENDARID,			EVENTTITLE,
@@ -192,12 +192,12 @@ class EventClass extends ConfigClass
     public function read ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT	*
 			FROM 	`event`
@@ -212,7 +212,7 @@ class EventClass extends ConfigClass
 				AND	`event`.`eventEnd` 		<=	'" . $this->model->getEventEnd() . "'";
             }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT	*
 			FROM 	[event]
@@ -228,7 +228,7 @@ class EventClass extends ConfigClass
 				AND	[event].[eventEnd] 		<=	'" . $this->model->getEventEnd() . "'";
                 }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT	*
 			FROM 	EVENT
@@ -278,14 +278,14 @@ class EventClass extends ConfigClass
     function update ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->q->commit();
         $this->model->update();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE	`event`
 			SET		`calendarId`		=	\"" . $this->model->getCalendarId() . "\",
@@ -300,7 +300,7 @@ class EventClass extends ConfigClass
 					`eventIsNew`		=	\"" . $this->model->getEventIsNew() . "\"
 			WHERE 	`eventId`			=	\"" . $this->model->getEventId(0, 'single') . "\"";
         } else 
-            if ($this->q->vendor == self::mssql) {
+            if ($this->q->vendor == self::MSSQL) {
                 $sql = "
 			UPDATE	[event]
 			SET		[calendarId]		=	'" . $this->model->getCalendarId() . "',
@@ -315,7 +315,7 @@ class EventClass extends ConfigClass
 					[eventIsNew]		=	'" . $this->model->getEventIsNew() . "'
 			WHERE 	[eventId]			=	'" . $this->model->getEventId(0, 'single') . "'";
             } else 
-                if ($this->q->vendor == self::oracle) {
+                if ($this->q->vendor == self::ORACLE) {
                     $sql = "
 			UPDATE	EVENT
 			SET		CALENDARID		=	'" . $this->model->getCalendarId() . "',
@@ -347,24 +347,24 @@ class EventClass extends ConfigClass
     function delete ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->model->delete();
         $this->q->start();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			DELETE 	FROM	`event`
 			WHERE 			`eventId`		=	\"" . $this->model->getEventId(0, 'single') . "\"";
         } else 
-            if ($this->q->vendor == self::mssql) {
+            if ($this->q->vendor == self::MSSQL) {
                 $sql = "
 			DELETE 	FROM	[event]
 			WHERE 			[eventId]		=	'" . $this->model->getEventId(0, 'single') . "'";
             } else 
-                if ($this->q->vendor == self::oracle) {
+                if ($this->q->vendor == self::ORACLE) {
                     $sql = "
 			DELETE 	FROM	EVENT
 			WHERE 			EVENT		=	'" . $this->model->getEventId(0, 'single') . "'";
@@ -386,7 +386,7 @@ class EventClass extends ConfigClass
     function excel ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);

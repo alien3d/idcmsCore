@@ -110,19 +110,19 @@ class ModuleTranslateClass extends ConfigClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		$this->q->start();
 		$this->model->create();
-		if ($this->q->vendor == self::mysql) {
+		if ($this->q->vendor == self::MYSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	`module`
 			WHERE 	`moduleId`	=	\"" . $this->model->getModuleTranslateId() . "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	[module]
 			WHERE 	`moduleId`	=	'" . $this->model->getModuleTranslateId() . "'";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	*
 			FROM 	MODULE
@@ -133,17 +133,17 @@ class ModuleTranslateClass extends ConfigClass
 			$rowDefault = $this->q->fetch_array($resultDefault);
 			$value = $rowDefault['moduleNote'];
 		}
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	`language`";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT 	*
 			FROM 	[language] ";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT 	*
 			FROM 	LANGUAGE ";
@@ -162,14 +162,14 @@ class ModuleTranslateClass extends ConfigClass
 				WHERE 	`moduleId`			=	\"" . $this->model->getModuleTranslateId() . "\"
 				AND 	`languageId`			=	\"" . $languageId . "\"";
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				SELECT	*
 				FROM 	[moduleTranslate]
 				WHERE 	[moduleId]			=	'" . $this->model->getModuleTranslateId() . "'
 				AND 	[languageId]		=	'" . $languageId . "'";
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				SELECT	*
 				FROM 	MODULETRANSLATE
@@ -178,21 +178,21 @@ class ModuleTranslateClass extends ConfigClass
 			}
 			$resultmoduleTranslate = $this->q->fast($sql);
 			if ($this->q->numberRows($resultmoduleTranslate) > 0) {
-				if ($this->q->vendor == self::mysql) {
+				if ($this->q->vendor == self::MYSQL) {
 					$sql = "
 					UPDATE	`moduleTranslate`
 					SET 	`moduleTranslate`		=	\"" . $googleTranslate . "\"
 					WHERE 	`moduleId`				=	\"" . $this->moduledId . "\"
 					AND 	`languageId`				=	\"" . $languageId . "\"";
 				} else
-				if ($this->q->vendor == self::mssql) {
+				if ($this->q->vendor == self::MSSQL) {
 					$sql = "
 					UPDATE	[moduleTranslate]
 					SET 	[moduleTranslate]		=	'" . $googleTranslate . "'
 					WHERE 	[moduleId]				=	'" . $this->moduledId . "'
 					AND		[languageId]			=	'" . $languageId . "'";
 				} else
-				if ($this->getVendor() == self::oracle) {
+				if ($this->getVendor() == self::ORACLE) {
 					$sql = "
 					UPDATE 	MODULETRANSLATE
 					SET 	MODULETRANSLATE		=	'" . $googleTranslate . "'
@@ -206,7 +206,7 @@ class ModuleTranslateClass extends ConfigClass
 					exit();
 				}
 			} else {
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					$sql = "
 					INSERT INTO	`moduleTranslate`
 							(
@@ -219,7 +219,7 @@ class ModuleTranslateClass extends ConfigClass
 								\"" . $googleTranslate . "\"
 					)";
 				} else
-				if ($this->getVendor() == self::mssql) {
+				if ($this->getVendor() == self::MSSQL) {
 					$sql = "
 					INSERT INTO [moduleTranslate]
 							(
@@ -232,7 +232,7 @@ class ModuleTranslateClass extends ConfigClass
 								'" . $googleTranslate . "'
 							)";
 				} else
-				if ($this->getVendor() == self::oracle) {
+				if ($this->getVendor() == self::ORACLE) {
 					$sql = "
 					INSERT INTO MODULETRANSLATE
 							(
@@ -265,30 +265,30 @@ class ModuleTranslateClass extends ConfigClass
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	`module`.`isActive`		=	1	";
 			} else
-			if ($this->q->vendor == self::mssql) {
+			if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	[module].[isActive]		=	1	";
 			} else
-			if ($this->q->vendor == self::oracle) {
+			if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	MODULE.ISACTIVE	=	1	";
 			}
 		} else
 		if ($this->isAdmin == 1) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	1 = 1 ";
 			} else
-			if ($this->q->vendor == self::mssql) {
+			if ($this->q->vendor == self::MSSQL) {
 				$this->auditFilter = "	1 = 1 ";
 			} else
-			if ($this->q->vendor == self::oracle) {
+			if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
 		//UTF8
 		$items = array();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			/**
 			 * UTF 8
 			 **/
@@ -305,7 +305,7 @@ class ModuleTranslateClass extends ConfigClass
 			WHERE	`moduleTranslate`.`moduleId`=\"" .
 			$this->model->getModuleTranslateId() . "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	*
 			FROM 	[moduleTranslate]
@@ -314,7 +314,7 @@ class ModuleTranslateClass extends ConfigClass
 			WHERE	[moduleTranslate].[moduleId]='" .
 			$this->model->getModuleTranslateId(). "'";
 		} else
-		if ($this->q->vendor == self::oracle) {
+		if ($this->q->vendor == self::ORACLE) {
 			$sql = "
 			SELECT	*
 			FROM 	MODULETRANSLATE
@@ -353,14 +353,14 @@ class ModuleTranslateClass extends ConfigClass
 		/**
 		 * Extjs filtering mode
 		 */
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql .= $this->q->searching();
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$tempSql2 = $this->q->searching();
 			$sql .= $tempSql2;
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$tempSql2 = $this->q->searching();
 			$sql .= $tempSql2;
 		}
@@ -372,13 +372,13 @@ class ModuleTranslateClass extends ConfigClass
 		}
 		$total = $this->q->numberRows();
 		if ($this->order && $this->sortField) {
-			if ($this->getVendor() == self::mysql || $this->q->vendor == 'normal') {
+			if ($this->getVendor() == self::MYSQL || $this->q->vendor == 'normal') {
 				$sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
 			} else
-			if ($this->getVendor() == self::mssql) {
+			if ($this->getVendor() == self::MSSQL) {
 				$sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
 			} else
-			if ($this->getVendor() == self::oracle) {
+			if ($this->getVendor() == self::ORACLE) {
 				$sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
 			}
 		}
@@ -387,14 +387,14 @@ class ModuleTranslateClass extends ConfigClass
 		$_SESSION['limit'] = $_POST['limit'];
 		if (empty($_POST['filter'])) {
 			if (isset($this->getStart()) && isset($_POST['limit'])) {
-				if ($this->getVendor() == self::mysql) {
+				if ($this->getVendor() == self::MYSQL) {
 					/**
 					 * Mysql,Postgress and IBM using LIMIT
 					 **/
 					$sql .= " LIMIT  " . $this->getStart() . "," .
 					$_POST['limit'] . " ";
 				} else
-				if ($this->getVendor() == self::mssql) {
+				if ($this->getVendor() == self::MSSQL) {
 					/**
 					 * Sql Server and Oracle used row_number
 					 * Parameterize Query We don't support
@@ -413,7 +413,7 @@ class ModuleTranslateClass extends ConfigClass
 					BETWEEN	" . $this->getStart() . "
 					AND 			" . ($this->getStart() + $_POST['limit'] - 1) . ";";
 				} else
-				if ($this->getVendor() == self::oracle) {
+				if ($this->getVendor() == self::ORACLE) {
 					/**
 					 * Oracle using derived modulele also
 					 */
@@ -464,14 +464,14 @@ class ModuleTranslateClass extends ConfigClass
 	function update ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->update();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			UPDATE 	`moduleTranslate`
 			SET 	`moduleSequence`	= 	\"" . $this->model->getmoduleSequence() . "\",
@@ -487,7 +487,7 @@ class ModuleTranslateClass extends ConfigClass
 					`Time				=	" . $this->model->getExecuteTime() . "
 			WHERE 	`moduleTranslateId`			=	\"" . $this->model->getModuleTranslateId() . "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			UPDATE 	[moduleTranslate]
 			SET 	[moduleSequence]	= 	'" . $this->model->moduleSequence . "',
@@ -502,7 +502,7 @@ class ModuleTranslateClass extends ConfigClass
 					[executeTime]		=	" . $this->model->getExecuteTime() . "
 			WHERE 	[moduleTranslateId]			=	\"" . $this->model->getModuleTranslateId(). "\"";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			UPDATE 	MODULETRANSLATE
 			SET 	MODULESEQUENCE		= 	'" . $this->model->moduleSequence . "',
@@ -534,14 +534,14 @@ class ModuleTranslateClass extends ConfigClass
 	function delete ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->delete();
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			UPDATE 	`module`
 			SET 	`isActive`			=	\"" . $this->model->getIsActive(0, 'single') . "\",
@@ -554,7 +554,7 @@ class ModuleTranslateClass extends ConfigClass
 					`Time				=	" . $this->model->getExecuteTime() . "
 			WHERE 	`moduleId`			=	\"" . $this->model->moduleId . "\"";
 		} else
-		if ($this->getVendor() == self::mssql) {
+		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			UPDATE 	[module]
 			SET 	[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
@@ -567,7 +567,7 @@ class ModuleTranslateClass extends ConfigClass
 					[executeTime]		=	" . $this->model->getExecuteTime() . "
 			WHERE 	[moduleId]			=	'" . $this->model->moduleId . "'";
 		} else
-		if ($this->getVendor() == self::oracle) {
+		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			UPDATE 	MODULE
 			SET 	ISACTIVE	=	'" . $this->model->getIsActive(0, 'single') . "',
@@ -598,7 +598,7 @@ class ModuleTranslateClass extends ConfigClass
 	function excel ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);

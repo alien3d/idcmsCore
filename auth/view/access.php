@@ -54,14 +54,14 @@ class loginClass extends ConfigClass {
 		header('Content-Type','application/json; charset=utf-8');
 		//UTF8
 
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		/**
 		 *  Most Vendor don't much implement ansi 92 standard.Sql Statement Prefer Follow  Vendor Database Rule Standard.
 		 **/
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql	=	"
 			SELECT	*
 			FROM 	`staff`
@@ -74,7 +74,7 @@ class loginClass extends ConfigClass {
 			AND		`staff`.`isActive`			=	1
 			AND		`group`.`isActive`			=	1
 			AND		`department`.`isActive`		=	1";
-		} else if ($this->getVendor()==self::mssql) {
+		} else if ($this->getVendor()==self::MSSQL) {
 			$sql	=	"
 			SELECT	*
 			FROM 	[staff]
@@ -87,7 +87,7 @@ class loginClass extends ConfigClass {
 			AND		[staff].[isActive]			=	1
 			AND		[group].[isActive]			=	1
 			AND		[department].[isActive]		=	1";
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql	=	"
 			SELECT	STAFF.STAFFID 			AS	\"staffId\",
 					STAFF.STAFFNO 			AS 	\"staffNo\",
@@ -133,7 +133,7 @@ class loginClass extends ConfigClass {
 			$this->staffWebAceess->setStaffId($_SESSION['staffId']);
 
 			// audit Log Time In
-			if($this->getVendor()==self::mysql){
+			if($this->getVendor()==self::MYSQL){
 				$sql="
 				INSERT INTO `staffWebAccess`
 						(
@@ -144,7 +144,7 @@ class loginClass extends ConfigClass {
 							\"".$this->staffWebAceess->getStaffId()."\",
 							\"".$this->staffWebAceess->getStaffWebAccessLogIn()."\"
 						)";
-			} else if ($this->getVendor()==self::mssql){
+			} else if ($this->getVendor()==self::MSSQL){
 				$sql="
 				INSERT INTO [staffWebAccess]
 						(
@@ -155,7 +155,7 @@ class loginClass extends ConfigClass {
 							'".$this->staffWebAceess->getStaffId()."',
 							'".$this->staffWebAceess->getStaffWebAccessLogIn()."'
 						)";
-			} else if ($this->getVendor()==self::oracle){
+			} else if ($this->getVendor()==self::ORACLE){
 				$sql="
 				INSERT INTO STAFFWEBACCESS
 						(

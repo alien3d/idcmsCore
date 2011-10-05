@@ -107,12 +107,12 @@ class ModuleAccessClass extends ConfigClass
     {
         header('Content-Type', 'application/json; charset=utf-8');
         //UTF8
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         // by default if add new group will add access to module and folder.
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
@@ -137,7 +137,7 @@ class ModuleAccessClass extends ConfigClass
                  "\"";
             }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
@@ -162,7 +162,7 @@ class ModuleAccessClass extends ConfigClass
                      $this->model->getGroupId() . "\"";
                 }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
@@ -234,13 +234,13 @@ class ModuleAccessClass extends ConfigClass
     {
         header('Content-Type', 'application/json; charset=utf-8');
         //UTF8
-        if ($this->q->vendor == self::mysql) {
+        if ($this->q->vendor == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->model->update();
         $loop = $this->model->getTotal();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE 	`" . $this->model->getTableName() . "`
 			SET 	";

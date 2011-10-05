@@ -110,14 +110,14 @@ class LeafTranslateClass extends ConfigClass
     function create ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->q->start();
         $this->model->create();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			INSERT INTO `leaf`
 					(
@@ -157,7 +157,7 @@ class LeafTranslateClass extends ConfigClass
 						" . $this->model->getExecuteTime() . "
 					) ";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			INSERT INTO [leaf]
 					(
@@ -197,7 +197,7 @@ class LeafTranslateClass extends ConfigClass
 						" . $this->model->getExecuteTime() . "
 					)";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			INSERT INTO LEAF
 					(
@@ -279,24 +279,24 @@ class LeafTranslateClass extends ConfigClass
         $lastId = $rowLastId['lastId'];
         // loop the group
         if ($this->q->vendor == 'normal' ||
-         $this->getVendor() == self::mysql) {
+         $this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	*
 			FROM 	`staff`
 			WHERE 	`isActive`	=	1 ";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT 	*
 			FROM 	[staff]
 			WHERE 	[isActive]	=	1 ";
             } else 
-                if ($this->q->vendor == self::mysql) {
+                if ($this->q->vendor == self::MYSQL) {
                     $sql = "SELECT * FROM STAFF WHERE ISACTIVE	=	1 ";
                 }
         $this->q->read($sql);
         $data = $this->q->activeRecord();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			INSERT INTO	`leafAccess`
 					(
@@ -308,7 +308,7 @@ class LeafTranslateClass extends ConfigClass
 					)
 			VALUES";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			INSERT INTO	[leafAccess]
 				(
@@ -320,7 +320,7 @@ class LeafTranslateClass extends ConfigClass
 				)
 			VALUES";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			INSERT INTO 	LEAFACCESS
 						(
@@ -364,13 +364,13 @@ class LeafTranslateClass extends ConfigClass
     function read ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         // everything given flexibility  on todo
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT		*
 			FROM 		`leaf`
@@ -387,7 +387,7 @@ class LeafTranslateClass extends ConfigClass
                 $sql .= " AND `leafId`=\"" . $this->leafId . "\"";
             }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT		*
 			FROM 		[leaf]
@@ -405,7 +405,7 @@ class LeafTranslateClass extends ConfigClass
                     $sql .= " AND `leafId`=\"" . $this->leafId . "\"";
                 }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT		*
 			FROM 		\"leaf`
@@ -441,14 +441,14 @@ class LeafTranslateClass extends ConfigClass
                 $query = $_POST['query'];
             }
         if ($query) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql .= $this->q->quickSearch($tableArray, $filterArray);
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $tempSql = $this->q->quickSearch($tableArray, $filterArray);
                     $sql .= $tempSql;
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $tempSql = $this->q->quickSearch($tableArray, 
                         $filterArray);
                         $sql .= $tempSql;
@@ -457,14 +457,14 @@ class LeafTranslateClass extends ConfigClass
         /**
          * Extjs filtering mode
          */
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql .= $this->q->searching();
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $tempSql2 = $this->q->searching();
                 $sql .= $tempSql2;
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $tempSql2 = $this->q->searching();
                     $sql .= $tempSql2;
                 }
@@ -481,13 +481,13 @@ class LeafTranslateClass extends ConfigClass
         } else {
             $sortField = $_POST['sort'];
         }
-        if ($this->q->vendor == self::mysql || $this->q->vendor == 'normal') {
+        if ($this->q->vendor == self::MYSQL || $this->q->vendor == 'normal') {
             $sql .= "	ORDER BY `" . $sortField . "` " . $dir . " ";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql .= "	ORDER BY [" . $sortField . "] " . $dir . " ";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql .= "	ORDER BY \"" . $sortField . "\"  " . $dir . " ";
                 }
         $_SESSION['sql'] = $sql; // push to session so can make report via excel and pdf
@@ -496,11 +496,11 @@ class LeafTranslateClass extends ConfigClass
         if (empty($_POST['filter'])) {
             if (isset($this->getStart()) && isset($_POST['limit'])) {
                 // only mysql have limit
-                if ($this->getVendor() == self::mysql) {
+                if ($this->getVendor() == self::MYSQL) {
                     $sql .= " LIMIT  " . $this->getStart() . "," .
                      $_POST['limit'] . " ";
                 } else 
-                    if ($this->getVendor() == self::mssql) {
+                    if ($this->getVendor() == self::MSSQL) {
                         /**
                          * Sql Server and Oracle used row_number
                          * Parameterize Query We don't support
@@ -520,7 +520,7 @@ class LeafTranslateClass extends ConfigClass
 							AND 			" .
                          ($this->getStart() + $_POST['limit'] - 1) . ";";
                     } else 
-                        if ($this->getVendor() == self::oracle) {
+                        if ($this->getVendor() == self::ORACLE) {
                             /**
                              * Oracle using derived table also
                              */
@@ -593,13 +593,13 @@ class LeafTranslateClass extends ConfigClass
     {
         header('Content-Type', 'application/json; charset=utf-8');
         //UTF8
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->q->start();
         $this->model->update();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE	`leaf`
 			SET		`isActive`	=	\"" .
@@ -617,7 +617,7 @@ class LeafTranslateClass extends ConfigClass
 					`Time		=	" . $this->model->getTime . "
 			WHERE 	`leafId`	=	\"" . $this->leafId . "\"";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			UPDATE	[leaf]
 			SET		[isActive]	=	\"" .
@@ -635,7 +635,7 @@ class LeafTranslateClass extends ConfigClass
 					[executeTime]		=	" . $this->model->getTime . "
 			WHERE 	[leafId]	=	\"" . $this->leafId . "\"";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			UPDATE	LEAF
 			SET		ISACTIVE	=	\"" .
@@ -664,14 +664,14 @@ class LeafTranslateClass extends ConfigClass
     function delete ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->q->start();
         $this->model->delete();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE	`leaf`
 			SET		`isActive`	=	\"" .
@@ -689,7 +689,7 @@ class LeafTranslateClass extends ConfigClass
 					`Time		=	" . $this->model->getTime . "
 			WHERE 	`leafId`	=	\"" . $this->leafId . "\"";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			UPDATE	[leaf]
 			SET		[isActive]	=	\"" .
@@ -707,7 +707,7 @@ class LeafTranslateClass extends ConfigClass
 					[executeTime]		=	" . $this->model->getTime . "
 			WHERE 	[leafId]	=	\"" . $this->leafId . "\"";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			UPDATE	LEAF
 			SET		ISACTIVE	=	\"" .
@@ -739,7 +739,7 @@ class LeafTranslateClass extends ConfigClass
     function translateRead ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             /**
              * UTF 8
              **/
@@ -755,7 +755,7 @@ class LeafTranslateClass extends ConfigClass
 			WHERE	`leafTranslate`.`leafId`=\"" .
              $this->strict($_POST['leafId'], 'numeric') . "\"";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT	*
 			FROM 	[leafTranslate]
@@ -764,7 +764,7 @@ class LeafTranslateClass extends ConfigClass
 			WHERE	[leafTranslate].[leafId]=\"" .
                  $this->strict($_POST['leafId'], 'numeric') . "\"";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT	*
 			FROM 	\"leafTranslate\"
@@ -790,7 +790,7 @@ class LeafTranslateClass extends ConfigClass
     {
         header('Content-Type', 'application/json; charset=utf-8');
         $this->q->commit();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 		UPDATE	`leafTranslate`
 		SET		`leafTranslate` 	=	\"" .
@@ -799,7 +799,7 @@ class LeafTranslateClass extends ConfigClass
 		WHERE 	`leafTranslateId`	=	\"" .
              $this->strict($_POST['TranslateId'], 'numeric') . "\"";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 		UPDATE	[leafTranslate]
 		SET		[leafTranslate] 	=	\"" .
@@ -808,7 +808,7 @@ class LeafTranslateClass extends ConfigClass
 		WHERE 	[leafTranslateId]	=	\"" .
                  $this->strict($_POST['leafTranslateId'], 'numeric') . "\"";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 		UPDATE	\"leafTranslate\"
 		SET		\"leafTranslate\" 		=	\"" .
@@ -835,15 +835,15 @@ class LeafTranslateClass extends ConfigClass
     {
         //	header('Content-Type','application/json; charset=utf-8');
         $this->q->start();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "SELECT * FROM `leaf` WHERE `leafId`=\"" . $this->leafId .
              "\"";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "SELECT * FROM [leaf] WHERE [leafId]=\"" . $this->leafId .
                  "\"";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "SELECT * FROM LEAF WHERE LEAFID=\"" . $this->leafId .
                      "\"";
                 }
@@ -852,13 +852,13 @@ class LeafTranslateClass extends ConfigClass
             $rowDefault = $this->q->fetchAssoc($resultDefault);
             $value = $rowDefault['leafNote'];
         }
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "SELECT * FROM `language`";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "SELECT * FROM [language] ";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "SELECT * FROM LANGUAGE ";
                 }
         $result = $this->q->fast($sql);
@@ -868,21 +868,21 @@ class LeafTranslateClass extends ConfigClass
             $to = $languageCode;
             $googleTranslate = $this->security->changeLanguage($from = "en", 
             $to, $value);
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql = "
 				SELECT 	*
 				FROM 	`leafTranslate`
 				WHERE 	`leafId`		=	\"" . $this->leafId . "\"
 				AND 	`languageId`	=	\"" . $languageId . "\"";
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $sql = "
 				SELECT 	*
 				FROM 	[leafTranslate]
 				WHERE 	[leafId]		=	\"" . $leafId . "\"
 				AND 	[languageId]	=	\"" . $languageId . "\"";
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $sql = "
 				SELECT 	*
 				FROM 	\"leafTranslate\"
@@ -892,21 +892,21 @@ class LeafTranslateClass extends ConfigClass
             $resultleafTranslate = $this->q->fast($sql);
             if ($this->q->numberRows($resultleafTranslate) > 0) {
                 if ($this->q->vendor == 'normal' ||
-                 $this->getVendor() == self::mysql) {
+                 $this->getVendor() == self::MYSQL) {
                     $sql = "
 					UPDATE 	`leafTranslate`
 					SET 	`leafTranslate`	=	\"" . $googleTranslate . "\"
 					WHERE 	`leafId`		=	\"" . $this->leafId . "\"
 					AND		`languageId`	=	\"" . $languageId . "\"";
                 } else 
-                    if ($this->getVendor() == self::mssql) {
+                    if ($this->getVendor() == self::MSSQL) {
                         $sql = "
 					UPDATE 	[leafTranslate]
 					SET 	[leafTranslate]	=	\"" . $googleTranslate . "\"
 					WHERE 	[leafId]		=	\"" . $this->leafId . "\"
 					AND 	[languageId]	=	\"" . $languageId . "\"";
                     } else 
-                        if ($this->getVendor() == self::oracle) {
+                        if ($this->getVendor() == self::ORACLE) {
                             $sql = "
 					UPDATE 	\"leafTranslate\"
 					SET 	\"leafTranslate\"	=	\"" . $googleTranslate . "\"
@@ -921,7 +921,7 @@ class LeafTranslateClass extends ConfigClass
                 }
             } else {
                 if ($this->q->vendor == 'normal' ||
-                 $this->getVendor() == self::mysql) {
+                 $this->getVendor() == self::MYSQL) {
                     $sql = "
 					INSERT INTO `leafTranslate`
 							(
@@ -936,7 +936,7 @@ class LeafTranslateClass extends ConfigClass
 								\"" . $googleTranslate . "\"
 							)";
                 } else 
-                    if ($this->getVendor() == self::mssql) {
+                    if ($this->getVendor() == self::MSSQL) {
                         $sql = "
 					INSERT INTO [leafTranslate]
 							(
@@ -951,7 +951,7 @@ class LeafTranslateClass extends ConfigClass
 								\"" . $googleTranslate . "\"
 							)";
                     } else 
-                        if ($this->getVendor() == self::oracle) {
+                        if ($this->getVendor() == self::ORACLE) {
                             $sql = "
 					INSERT INTO \"leafTranslate\"
 							(
@@ -987,7 +987,7 @@ class LeafTranslateClass extends ConfigClass
     function excel ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);

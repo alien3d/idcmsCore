@@ -99,14 +99,14 @@ class LeafClass extends ConfigClass
     function create ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->q->start();
         $this->model->create();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			INSERT INTO `leaf`
 					(
@@ -145,7 +145,7 @@ class LeafClass extends ConfigClass
 						" . $this->model->getExecuteTime() . "
 					) ";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			INSERT INTO [leaf]
 					(
@@ -182,7 +182,7 @@ class LeafClass extends ConfigClass
                  $this->model->getExecuteTime() . "
 					)";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			INSERT INTO LEAF
 					(
@@ -228,19 +228,19 @@ class LeafClass extends ConfigClass
         }
         $lastId = $this->q->lastInsertId();
         // loop the group
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	*
 			FROM 	`staff`
 			WHERE 	`isActive`	=	1 ";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT 	*
 			FROM 	[staff]
 			WHERE 	[isActive]	=	1 ";
             } else 
-                if ($this->q->vendor == self::mysql) {
+                if ($this->q->vendor == self::MYSQL) {
                     $sql = "
 			SELECT 	* 
 			FROM 	STAFF 
@@ -261,7 +261,7 @@ class LeafClass extends ConfigClass
 				),";
         }
         // optimize to 1 Query
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			INSERT INTO	`leafAccess`
 					(
@@ -273,7 +273,7 @@ class LeafClass extends ConfigClass
 					)
 			VALUES";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			INSERT INTO	[leafAccess]
 				(
@@ -285,7 +285,7 @@ class LeafClass extends ConfigClass
 				)
 			VALUES";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			INSERT INTO 	LEAFACCESS
 						(
@@ -317,36 +317,36 @@ class LeafClass extends ConfigClass
     {
         header('Content-Type', 'application/json; charset=utf-8');
         if ($this->isAdmin == 0) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $this->auditFilter = "	`leaf`.`isActive`		=	1	";
             } else 
-                if ($this->q->vendor == self::mssql) {
+                if ($this->q->vendor == self::MSSQL) {
                     $this->auditFilter = "	[leaf].[isActive]		=	1	";
                 } else 
-                    if ($this->q->vendor == self::oracle) {
+                    if ($this->q->vendor == self::ORACLE) {
                         $this->auditFilter = "	LEAF.ISACTIVE	=	1	";
                     }
         } else 
             if ($this->isAdmin == 1) {
-                if ($this->getVendor() == self::mysql) {
+                if ($this->getVendor() == self::MYSQL) {
                     $this->auditFilter = "	 1 ";
                 } else 
-                    if ($this->q->vendor == self::mssql) {
+                    if ($this->q->vendor == self::MSSQL) {
                         $this->auditFilter = "	1 = 1 ";
                     } else 
-                        if ($this->q->vendor == self::oracle) {
+                        if ($this->q->vendor == self::ORACLE) {
                             $this->auditFilter = " 1 = 1 ";
                         }
             }
         //UTF8
         $items = array();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         // everything given flexibility  on todo
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT		*
 			FROM 		`leaf`
@@ -365,7 +365,7 @@ class LeafClass extends ConfigClass
                  $this->model->getLeafId(0, 'single') . "\"";
             }
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT		*
 			FROM 		[leaf]
@@ -385,7 +385,7 @@ class LeafClass extends ConfigClass
                      $this->model->getLeafId(0, 'single') . "'";
                 }
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			SELECT		LEAF.LEAFID 		AS	\"leafId\",
 						LEAF.LEAFCODE 		AS 	\"leafCode\",
@@ -440,15 +440,15 @@ class LeafClass extends ConfigClass
         $moduleleArray = array('module', 'moduleTranslate', 'folder', 
         'folderTranslate', 'leaf', 'leafTranslate');
         if ($this->getfieldQuery()) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql .= $this->q->quickSearch($moduleleArray, $filterArray);
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $tempSql = $this->q->quickSearch($moduleleArray, 
                     $filterArray);
                     $sql .= $tempSql;
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $tempSql = $this->q->quickSearch($moduleleArray, 
                         $filterArray);
                         $sql .= $tempSql;
@@ -458,14 +458,14 @@ class LeafClass extends ConfigClass
          * Extjs filtering mode
          */
         if ($this->getGridQuery()) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql .= $this->q->searching();
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $tempSql2 = $this->q->searching();
                     $sql .= $tempSql2;
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $tempSql2 = $this->q->searching();
                         $sql .= $tempSql2;
                     }
@@ -484,15 +484,15 @@ class LeafClass extends ConfigClass
             $sortField = $_POST['sort'];
         }
         if ($this->getOrder() && $this->getSortField()) {
-            if ($this->getVendor() == self::mysql) {
+            if ($this->getVendor() == self::MYSQL) {
                 $sql .= "	ORDER BY `" . $this->getSortField() . "` " .
                  $this->getOrder() . " ";
             } else 
-                if ($this->getVendor() == self::mssql) {
+                if ($this->getVendor() == self::MSSQL) {
                     $sql .= "	ORDER BY [" . $this->getSortField() . "] " .
                      $this->getOrder() . " ";
                 } else 
-                    if ($this->getVendor() == self::oracle) {
+                    if ($this->getVendor() == self::ORACLE) {
                         $sql .= "	ORDER BY " . strtoupper($this->getSortField()) .
                          "  " . strtoupper($this->getOrder()) . " ";
                     }
@@ -503,11 +503,11 @@ class LeafClass extends ConfigClass
         if (! ($this->getGridQuery())) {
             if ($this->getLimit()) {
                 // only mysql have limit
-                if ($this->getVendor() == self::mysql) {
+                if ($this->getVendor() == self::MYSQL) {
                     $sql .= " LIMIT  " . $this->getStart() . "," .
                      $this->getLimit() . " ";
                 } else 
-                    if ($this->getVendor() == self::mssql) {
+                    if ($this->getVendor() == self::MSSQL) {
                         /**
                          * Sql Server and Oracle used row_number
                          * Parameterize Query We don't support
@@ -538,7 +538,7 @@ class LeafClass extends ConfigClass
 							AND 			" .
                          ($this->getStart() + $_POST['limit'] - 1) . ";";
                     } else 
-                        if ($this->getVendor() == self::oracle) {
+                        if ($this->getVendor() == self::ORACLE) {
                             /**
                              * Oracle using derived modulele also
                              */
@@ -642,13 +642,13 @@ class LeafClass extends ConfigClass
     {
         header('Content-Type', 'application/json; charset=utf-8');
         //UTF8
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->q->start();
         $this->model->update();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE	`leaf`
 			SET		`isDefault`				=	\"" .
@@ -672,7 +672,7 @@ class LeafClass extends ConfigClass
 			WHERE 	`leafId`				=	\"" .
              $this->getLeafId(0, 'single') . "\"";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			UPDATE	[leaf]
 			SET		 [isDefault]			=	'" .
@@ -696,7 +696,7 @@ class LeafClass extends ConfigClass
 			WHERE 	[leafId]				=	'" .
                  $this->getLeafId(0, 'single') . "'";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			UPDATE	LEAF
 			SET		ISACTIVE		=	'" .
@@ -728,14 +728,14 @@ class LeafClass extends ConfigClass
     function delete ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $this->q->start();
         $this->model->delete();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE	`leaf`
 			SET		`isActive`	=	\"" .
@@ -754,7 +754,7 @@ class LeafClass extends ConfigClass
 			WHERE 	`leafId`	=	\"" .
              $this->model->getLeafId(0, 'single') . "\"";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			UPDATE	[leaf]
 			SET		[isDefault]				=	'" .
@@ -778,7 +778,7 @@ class LeafClass extends ConfigClass
 			WHERE 	[leafId]				=	'" .
                  $this->getLeafId(0, 'single') . "'";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			UPDATE	LEAF
 			SET		ISDEFAULT		=	'" .
@@ -822,7 +822,7 @@ class LeafClass extends ConfigClass
     function excel ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);

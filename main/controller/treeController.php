@@ -155,13 +155,13 @@ class TreeClass extends ConfigClass
         header('Content-Type', 'application/json; charset=utf-8');
         //UTF8
         $items = array();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         $counterModule = 0;
         $treeJsonString = " [";
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sqlModule = "
 		      SELECT    *
 		      FROM		`moduleAccess`
@@ -180,7 +180,7 @@ class TreeClass extends ConfigClass
 		      AND		`group`.`isActive`					=	1
 		      ORDER BY  `module`.`moduleSequence`   ";
              //	print"<br><br>";
-        } elseif ($this->getVendor() == self::mssql) {
+        } elseif ($this->getVendor() == self::MSSQL) {
             $sqlModule = "
 		      SELECT    *
 		      FROM     	[moduleAccess]
@@ -198,7 +198,7 @@ class TreeClass extends ConfigClass
              $_SESSION['languageId'] . "'
 		      AND		[group].[isActive]=1
 		      ORDER BY  [module].[moduleSequence]  ";
-        } elseif ($this->getVendor() == self::oracle) {
+        } elseif ($this->getVendor() == self::ORACLE) {
             $sqlModule = "
 		      SELECT    MODULEACCESS.MODULEACCESSID 	AS \"moduleAccessId\",
 		      			MODULEACCESS.MODULEID 			AS \"moduleId\",
@@ -236,7 +236,7 @@ class TreeClass extends ConfigClass
 						\"text\"	:	\"" . $moduleTranslate . "\",
 					    \"iconCls\"	:	\"" . $iconName . "\",
 					    \"expanded\":	true,";
-                if ($this->getVendor() == self::mysql) {
+                if ($this->getVendor() == self::MYSQL) {
                     $sqlFolder = "
 					      SELECT    *
 					      FROM    	`folderAccess`
@@ -255,7 +255,7 @@ class TreeClass extends ConfigClass
                      $_SESSION['languageId'] . "'
 					      AND		`group`.`isActive`					=	1	
 					      ORDER BY   `folder`.`folderSequence`  ";
-                } elseif ($this->getVendor() == self::mssql) {
+                } elseif ($this->getVendor() == self::MSSQL) {
                     $sqlFolder = "
 				      SELECT    	*
 				      FROM     	[folderAccess]
@@ -274,7 +274,7 @@ class TreeClass extends ConfigClass
                      $_SESSION['languageId'] . "'
 				      AND		[group].[isActive]					=	1
 				      ORDER BY	[folder].[folderSequence]  	";
-                } elseif ($this->getVendor() == self::oracle) {
+                } elseif ($this->getVendor() == self::ORACLE) {
                     $sqlFolder = "
 				      SELECT    FOLDERACCESS.FOLDERACCESSID 	AS	\"folderAccessId\",
 				      			FOLDERACCESS.GROUPID 			AS 	\"groupId\",
@@ -317,7 +317,7 @@ class TreeClass extends ConfigClass
               						\"text\" 	  	:	\"" . $folderTranslate . "\", 
               						\"iconCls\"		:	\"" . $iconName . "\",";
                         $counter_leaf = 0;
-                        if ($this->getVendor() == self::mysql) {
+                        if ($this->getVendor() == self::MYSQL) {
                             $sqlLeaf = "
 					          SELECT    *
 					          FROM    `leafAccess`
@@ -335,7 +335,7 @@ class TreeClass extends ConfigClass
 					          ORDER BY  `leaf`.`leafSequence`  ";
                              //	print"<br><br>";
                         } elseif ($this->getVendor() ==
-                         self::mssql) {
+                         self::MSSQL) {
                             $sqlLeaf = "
 					          SELECT    *
 					          FROM    	[leafAccess]
@@ -351,7 +351,7 @@ class TreeClass extends ConfigClass
 					          AND      	[leafTranslate].[languageId]	=	'" .
                              $_SESSION['languageId'] . "'
 					          ORDER BY  [leaf].[leafSequence]";
-                        } elseif ($this->getVendor() == self::oracle) {
+                        } elseif ($this->getVendor() == self::ORACLE) {
                             $sqlLeaf = "
 					          SELECT  	LEAFACCESS.LEAFACCESSID 		AS 	\"leafAccessId\",
 						      			LEAFACCESS.STAFFID 				AS 	\"staffId\",

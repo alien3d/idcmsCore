@@ -59,7 +59,7 @@ class DocumentTrailClass extends ConfigClass
         $this->model->setDocumentPath($this->getDocumentPath());
         $this->model->setDocumentFilename($this->getDocumentFilename());
         $this->q->start();
-        if ($this->getVendor() == self::mysql) {
+        if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			INSERT INTO `document`	(
 						`documentCategoryId`,			`leafId`,
@@ -100,7 +100,7 @@ class DocumentTrailClass extends ConfigClass
 						 " . $this->model->getExecuteTime() . "
 			); ";
         } else 
-            if ($this->getVendor() == self::mssql) {
+            if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			INSERT INTO [document]	(
 						[documentCategoryId],			[leafId],
@@ -139,7 +139,7 @@ class DocumentTrailClass extends ConfigClass
 						 " . $this->model->getExecuteTime() . "
 			); ";
             } else 
-                if ($this->getVendor() == self::oracle) {
+                if ($this->getVendor() == self::ORACLE) {
                     $sql = "
 			INSERT INTO \"document`	(
 						DOCUMENTCATEGORYID,			LEAFID,

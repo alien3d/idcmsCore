@@ -120,7 +120,7 @@ class TableMappingClass extends  ConfigClass {
 	 */
 	function create() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -128,7 +128,7 @@ class TableMappingClass extends  ConfigClass {
 		}
 		$this->q->start();
 		$this->model->create();
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="
 			INSERT INTO `tableMapping`
 					(
@@ -154,7 +154,7 @@ class TableMappingClass extends  ConfigClass {
 
 
 					);";
-		}else if ($this->getVendor()==self::mssql) {
+		}else if ($this->getVendor()==self::MSSQL) {
 			$sql="
 			INSERT INTO [tableMapping]
 					(
@@ -179,7 +179,7 @@ class TableMappingClass extends  ConfigClass {
 						" . $this->model->getExecuteTime() . "
 
 					);";
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql="
 			INSERT INTO 	TABLEMAPPING
 						(
@@ -221,7 +221,7 @@ class TableMappingClass extends  ConfigClass {
 		/**
 		 *	 insert default value to detail tableMappingle .English only
 		 **/
-		if ($this->getVendor() == self::mysql) {
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				 	INSERT INTO `tableMapping`
 				 		(
@@ -233,7 +233,7 @@ class TableMappingClass extends  ConfigClass {
 							21,
 							\"" . $this->model->gettableMappingNote() . "\"
 						);";
-		} else if ($this->getVendor() ==  self::mssql) {
+		} else if ($this->getVendor() ==  self::MSSQL) {
 			$sql = "
 				 	INSERT INTO  [tableMapping]
 							(
@@ -245,7 +245,7 @@ class TableMappingClass extends  ConfigClass {
 								21,
 								'" .  $this->model->gettableMappingNote() . "'
 							);";
-		} else if ($this->getVendor() == self::oracle) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 				 	INSERT INTO	TABLEMAPPING
 							(
@@ -276,7 +276,7 @@ class TableMappingClass extends  ConfigClass {
 	function read() 							{
 		header('Content-Type','application/json; charset=utf-8');
 		if($this->isAdmin == 0) {
-			if($this->getVendor()==self::mysql) {
+			if($this->getVendor()==self::MYSQL) {
 				$this->auditFilter = "	`tableMapping`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	[tableMapping].[isActive]		=	1	";
@@ -284,7 +284,7 @@ class TableMappingClass extends  ConfigClass {
 				$this->auditFilter = "	TABLEMAPPING.ISACTIVE	=	1	";
 			}
 		} else if($this->isAdmin ==1) {
-			if($this->getVendor()==self::mysql) {
+			if($this->getVendor()==self::MYSQL) {
 				$this->auditFilter = "	 1 = 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
 				$this->auditFilter = "	1 = 1 ";
@@ -294,14 +294,14 @@ class TableMappingClass extends  ConfigClass {
 		}
 		//UTF8
 		$items=array();
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
 		// everything given flexibility  on todo
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="
 			SELECT 		*
 			FROM 		`tableMapping`
@@ -309,7 +309,7 @@ class TableMappingClass extends  ConfigClass {
 			if($this->model->gettableMappingId(0,'single')) {
 				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->gettableMappingId(0,'single')."\"";
 			}
-		} else if ($this->getVendor()==self::mssql) {
+		} else if ($this->getVendor()==self::MSSQL) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		[tableMapping]
@@ -317,7 +317,7 @@ class TableMappingClass extends  ConfigClass {
 			if($this->model->gettableMappingId(0,'single')) {
 				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getPrimaryKeyName()."]='".$this->model->gettableMappingId(0,'single')."'";
 			}
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql	=	"
 			SELECT 		*
 			FROM 		TABLEMAPPING
@@ -339,12 +339,12 @@ class TableMappingClass extends  ConfigClass {
 		$tableArray = array('module','moduleTranslate','tableMapping','tableMappingTranslate');
 
 	 if ($this->getFieldQuery()) {
-	 	if ($this->getVendor() == self::mysql) {
+	 	if ($this->getVendor() == self::MYSQL) {
 	 		$sql .= $this->q->quickSearch($tableArray, $filterArray);
-	 	} else if ($this->getVendor() == self::mssql) {
+	 	} else if ($this->getVendor() == self::MSSQL) {
 	 		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
 	 		$sql .= $tempSql;
-	 	} else if ($this->getVendor() == self::oracle) {
+	 	} else if ($this->getVendor() == self::ORACLE) {
 	 		$tempSql = $this->q->quickSearch($tableArray, $filterArray);
 	 		$sql .= $tempSql;
 	 	}
@@ -354,12 +354,12 @@ class TableMappingClass extends  ConfigClass {
 	  */
 	 if ($this->getGridQuery()) {
 
-	 	if ($this->getVendor() == self::mysql) {
+	 	if ($this->getVendor() == self::MYSQL) {
 	 		$sql .= $this->q->searching();
-	 	} else if ($this->getVendor() == self::mssql) {
+	 	} else if ($this->getVendor() == self::MSSQL) {
 	 		$tempSql2 = $this->q->searching();
 	 		$sql .= $tempSql2;
-	 	} else if ($this->getVendor() == self::oracle) {
+	 	} else if ($this->getVendor() == self::ORACLE) {
 	 		$tempSql2 = $this->q->searching();
 	 		$sql .= $tempSql2;
 	 	}
@@ -373,11 +373,11 @@ class TableMappingClass extends  ConfigClass {
 		$total	= $this->q->numberRows();
 
 		if ($this->getOrder() && $this->getSortField()) {
-			if ($this->getVendor() == self::mysql) {
+			if ($this->getVendor() == self::MYSQL) {
 				$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder(). " ";
-			} else if ($this->getVendor() ==  self::mssql) {
+			} else if ($this->getVendor() ==  self::MSSQL) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
-			} else if ($this->getVendor() == self::oracle) {
+			} else if ($this->getVendor() == self::ORACLE) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()). " ";
 			}
 		}
@@ -390,10 +390,10 @@ class TableMappingClass extends  ConfigClass {
 			if(isset($this->getStart()) && isset($_POST['limit'])) {
 				// only mysql have limit
 
-				if($this->getVendor() == self::mysql) {
+				if($this->getVendor() == self::MYSQL) {
 					$sql.=" LIMIT  ".$this->getStart().",".$_POST['limit']." ";
 					$sqlLimit = $sql;
-				} else if ($this->getVendor()==self::mssql) {
+				} else if ($this->getVendor()==self::MSSQL) {
 					/**
 					 *	 Sql Server and Oracle used row_number
 					 *	 Parameterize Query We don't support
@@ -422,7 +422,7 @@ class TableMappingClass extends  ConfigClass {
 							AND 			".($this->getStart()+$_POST['limit']-1).";";
 
 
-				}  else if ($this->getVendor()==self::oracle) {
+				}  else if ($this->getVendor()==self::ORACLE) {
 					/**
 					 *  Oracle using derived table also
 					 */
@@ -515,7 +515,7 @@ class TableMappingClass extends  ConfigClass {
 	 */
 	function update() 							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -523,7 +523,7 @@ class TableMappingClass extends  ConfigClass {
 		}
 		$this->q->start();
 		$this->model->update();
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="
 					UPDATE 	`tableMapping`
 					SET 	`moduleId`				=	\"".$this->model->getmoduleId()."\",
@@ -542,7 +542,7 @@ class TableMappingClass extends  ConfigClass {
 							`executeBy`				=	\"".$this->model->getExecuteBy()."\",
 							`executeTime`				=	".$this->model->getExecuteTime()."
 					WHERE 	`tableMappingId`			=	\"".$this->model->gettableMappingId(0,'single')."\"";
-		}  else if ( $this->getVendor()==self::mssql) {
+		}  else if ( $this->getVendor()==self::MSSQL) {
 			$sql="
 					UPDATE 	[tableMapping]
 					SET 	[moduleId]				=	'".$this->model->getmoduleId()."',
@@ -559,7 +559,7 @@ class TableMappingClass extends  ConfigClass {
 							[executeBy]				=	'".$this->model->getExecuteBy()."',
 							[executeTime]			=	".$this->model->getExecuteTime()."
 					WHERE 	[tableMappingId]		=	'".$this->model->gettableMappingId(0,'single')."'";
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql="
 					UPDATE 	TABLEMAPPING
 					SET 	MODULEID				=	'".$this->model->getmoduleId()."',
@@ -595,7 +595,7 @@ class TableMappingClass extends  ConfigClass {
 	 */
 	function delete()							{
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -603,7 +603,7 @@ class TableMappingClass extends  ConfigClass {
 		}
 		$this->q->start();
 		$this->model->delete();
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			$sql="
 					UPDATE	`tableMapping`
 					SET		`isDefault`			=	\"".$this->model->getIsDefault(0,'single')."\",
@@ -617,7 +617,7 @@ class TableMappingClass extends  ConfigClass {
 							`executeTime`		=	".$this->model->getExecuteTime()."
 					WHERE 	`tableMappingId`	=	\"".$this->model->gettableMappingId()."\"";
 
-		} else if ($this->getVendor()==self::mssql) {
+		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="
 					UPDATE	[tableMapping]
 					SET		[isDefault]			=	'".$this->model->getIsDefault(0,'single')."',
@@ -630,7 +630,7 @@ class TableMappingClass extends  ConfigClass {
 							[executeBy]			=	'".$this->model->getExecuteBy()."',
 							[executeTime]		=	".$this->model->getExecuteTime()."
 					WHERE 	[tableMappingId]	=	'".$this->model->gettableMappingId()."'";
-		} else if ($this->getVendor()==self::oracle) {
+		} else if ($this->getVendor()==self::ORACLE) {
 			$sql="
 					UPDATE	TABLEMAPPING
 					SET		ISDEFAULT		=	'".$this->model->getIsDefault(0,'single')."',
@@ -662,7 +662,7 @@ class TableMappingClass extends  ConfigClass {
  
 	function excel() {
 		header('Content-Type','application/json; charset=utf-8');
-		if($this->getVendor() == self::mysql) {
+		if($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
