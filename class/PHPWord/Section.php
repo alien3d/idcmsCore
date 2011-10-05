@@ -180,6 +180,7 @@ class PHPWord_Section {
 	 */
 	public function addListItem($text, $depth = 0, $styleFont = null, $styleList = null, $styleParagraph = null) {
 		$text = utf8_encode($text);
+		$styleText="";
 		$listItem = new PHPWord_Section_ListItem($text, $depth, $styleText, $styleList, $styleParagraph);
 		$this->_elementCollection[] = $listItem;
 		return $listItem;

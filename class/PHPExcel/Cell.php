@@ -511,7 +511,7 @@ class PHPExcel_Cell
 		} else if ($pCoordinateString == '') {
 			throw new Exception('Cell coordinate can not be zero-length string.');
 
-		} else if (preg_match("/([$]?[A-Z]+)([$]?\d+)/", $pCoordinateString, $matches)) {
+		} else if (preg_match("/([$]?[A-Z]+)([$]?+)/", $pCoordinateString, $matches)) {
 			list(, $column, $row) = $matches;
 			return array($column, $row);
 

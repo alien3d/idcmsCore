@@ -252,7 +252,7 @@ class PHPExcel_Calculation_FormulaParser {
 			// scientific notation check
 			if (strpos(PHPExcel_Calculation_FormulaParser::OPERATORS_SN, $this->_formula{$index}) !== false) {
 				if (strlen($value) > 1) {
-					if (preg_match("/^[1-9]{1}(\.[0-9]+)?E{1}$/", $this->_formula{$index}) != 0) {
+					if (preg_match("/^[1-9]{1}(\\.[0-9]+)?E{1}$/", $this->_formula{$index}) != 0) {
 						$value .= $this->_formula{$index};
 						++$index;
 						continue;

@@ -5262,8 +5262,8 @@ class PHPExcel_Calculation_Functions {
 										 			}
 										 		}
 										 	}
-
-										 	return $left.$newText.$right;
+										
+										// 	return $left.$newText.$right;
 										 }	//	function SUBSTITUTE()
 
 
