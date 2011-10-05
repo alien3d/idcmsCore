@@ -4466,12 +4466,12 @@ if (!class_exists('TCPDF', false)) {
 				switch ($align) {
 					case 'J':
 					case 'C': {
-						$w = $w;
+					//	$w = $w;
 						break;
 					}
 					case 'L': {
 						if ($this->rtl) {
-							$w = $w;
+						//	$w = $w;
 						} else {
 							$w = $l;
 						}

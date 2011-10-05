@@ -626,7 +626,7 @@ class DocumentClass extends ConfigClass
 					ON		DOCUMENT.EXECUTEBY = STAFF.STAFFID
 					JOIN	DOCUMENTCATEGORY
 					ON		DOCUMENTCATEGORY.DOCUMENTCATEGORYID = DOCUMENT.DOCUMENTCATEGORYID
-					WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . $orderBy . "
+					WHERE ISACTIVE=1  " . $tempSql . $tempSql2  . "
 								 ) a
 						WHERE rownum <= '" . ($this->getStart() + $this->getLimit() - 1) . "' )
 						WHERE r >=  '" . $this->getStart() . "'";

@@ -63,7 +63,7 @@
 
 	$result	=	$q->fast($sql);
 
-while ($row = $q->fetchAssoc($result)) {
+while (($row = $q->fetchAssoc($result))== TRUE)  {
 
 		echo "var ".$row['tableMappingColumnName']."Label = \"".$row['tableMappingNativeLabel']."\";\n";
 	   } 
@@ -96,7 +96,7 @@ while ($row = $q->fetchAssoc($result)) {
 			WHERE 	DEFAULTLABELTRANSLATE.LANGUAGEID	=	'".$_SESSION['languageId']."'";
 	}
 	$result	=	$q->fast($sql);
-	while ($row = $q->fetchAssoc($result)) {
+	while (($row = $q->fetchAssoc($result))==TRUE) {
 
 
 

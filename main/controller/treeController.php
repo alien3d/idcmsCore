@@ -226,7 +226,7 @@ class TreeClass extends ConfigClass
         $totalModule = $this->q->numberRows($resultModule, $sqlModule);
         if ($totalModule > 0) {
             $counterModule = 0;
-            while ($rowModule = $this->q->fetchArray($resultModule)) {
+            while (($rowModule = $this->q->fetchArray($resultModule)) == TRUE) {
                 $moduleTranslate = $rowModule['moduleTranslate'];
                 $iconName = $rowModule['iconName'];
                 $moduleId = $rowModule['moduleId'];
@@ -305,7 +305,7 @@ class TreeClass extends ConfigClass
                 $counterFolder = 0;
                 if ($totalFolder > 0) {
                     $treeJsonString .= "\"children\":[";
-                    while ($rowFolder = $this->q->fetchArray($resultFolder)) {
+                    while (($rowFolder = $this->q->fetchArray($resultFolder)) == TRUE) {
                         $folderTranslate = $rowFolder['folderTranslate'];
                         $iconName = $rowFolder['iconName'];
                         $folderId = $rowFolder['folderId'];
@@ -382,7 +382,7 @@ class TreeClass extends ConfigClass
                         $counterLeaf = 0;
                         if ($totalLeaf > 0) {
                             $treeJsonString .= "\"children\":[";
-                            while ($rowLeaf = $this->q->fetchArray($resultLeaf)) {
+                            while (($rowLeaf = $this->q->fetchArray($resultLeaf)) == TRUE) {
                                 $leafTranslate = $rowLeaf['leafTranslate'];
                                 $iconName = $rowLeaf['iconName'];
                                 $leafFilename = $rowLeaf['leafFilename'];
