@@ -25,6 +25,9 @@ abstract class ValidationClass
     private $isPost;
     private $executeBy;
     private $executeTime;
+    
+    private $type;
+    private $value;
     /*
 	 * Mysql Database
 	 * @var const string
@@ -97,7 +100,7 @@ abstract class ValidationClass
                 return (intval($this->value));
             }
         } elseif ($this->type == 'boolean' || $this->type == 'b') {
-            if ($this->value == 'true') {
+            if ($this->value == 'TRUE') {
                 return 1;
             } elseif ($this->value) {
                 return 0;

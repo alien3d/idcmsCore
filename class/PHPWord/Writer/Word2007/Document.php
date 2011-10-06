@@ -236,7 +236,7 @@ class PHPWord_Writer_Word2007_Document extends PHPWord_Writer_Word2007_Base {
 		$textObject = $listItem->getTextObject();
 		$text = $textObject->getText();
 		$styleParagraph = $textObject->getParagraphStyle();
-		$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? true : false;
+		$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? TRUE : false;
 
 		$depth = $listItem->getDepth();
 		$listType = $listItem->getStyle()->getListType();
@@ -245,7 +245,7 @@ class PHPWord_Writer_Word2007_Document extends PHPWord_Writer_Word2007_Base {
 		$objWriter->startElement('w:pPr');
 
 		if($SpIsObject) {
-			$this->_writeParagraphStyle($objWriter, $styleParagraph, true);
+			$this->_writeParagraphStyle($objWriter, $styleParagraph, TRUE);
 		} elseif(!$SpIsObject && !is_null($styleParagraph)) {
 			$objWriter->startElement('w:pStyle');
 			$objWriter->writeAttribute('w:val', $styleParagraph);
@@ -265,7 +265,7 @@ class PHPWord_Writer_Word2007_Document extends PHPWord_Writer_Word2007_Base {
 		$objWriter->endElement();
 		$objWriter->endElement();
 			
-		$this->_writeText($objWriter, $textObject, true);
+		$this->_writeText($objWriter, $textObject, TRUE);
 			
 		$objWriter->endElement();
 	}
@@ -337,7 +337,7 @@ class PHPWord_Writer_Word2007_Document extends PHPWord_Writer_Word2007_Base {
 		$tabLeader = $styleTOC->getTabLeader();
 		$tabPos = $styleTOC->getTabPos();
 
-		$isObject = ($styleFont instanceof PHPWord_Style_Font) ? true : false;
+		$isObject = ($styleFont instanceof PHPWord_Style_Font) ? TRUE : false;
 
 		for($i=0; $i<count($titles); $i++) {
 			$title = $titles[$i];

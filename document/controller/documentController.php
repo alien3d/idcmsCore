@@ -32,12 +32,12 @@ class DocumentClass extends ConfigClass
 	 */
 	private $documentTrail;
 	/**
-	 * Audit Row True or False
+	 * Audit Row TRUE or False
 	 * @var bool
 	 */
 	private $audit;
 	/**
-	 * Log Sql Statement True or False
+	 * Log Sql Statement TRUE or False
 	 * @var string
 	 */
 	private $log;
@@ -107,7 +107,7 @@ class DocumentClass extends ConfigClass
 		 * Upload Setting
 		 */
 		$this->maximumFileSize = 100 * 1024 * 1024; // eq to 100 mb
-		$this->validFileType = "/^\.(jpg|jpeg|gif|png|doc|docx|txt|rtf|pdf|xls|xlsx|ppt|pptx){1}$/i";
+		$this->validFileType = "/^\\.(jpg|jpeg|gif|png|doc|docx|txt|rtf|pdf|xls|xlsx|ppt|pptx){1}$/i";
 		$this->path = $_SERVER["DOCUMENT_ROOT"] .
          "idcmsCore/document/document/user/" . $_SESSION['staffId'] . "/";
 	}
@@ -117,7 +117,7 @@ class DocumentClass extends ConfigClass
 	function create ()
 	{
 		header('Content-Type', 'application/json; charset=utf-8');
-		//	    echo '{success:true, message:'.json_encode($_FILES['documentFilename']['name']).'}';
+		//	    echo '{success:TRUE, message:'.json_encode($_FILES['documentFilename']['name']).'}';
 		//	exit();
 		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
@@ -128,7 +128,7 @@ class DocumentClass extends ConfigClass
 		$this->model->create();
 		$isFile = is_uploaded_file($_FILES['documentFilename']['tmp_name']);
 		if ($isFile) {
-			$safeFilename = preg_replace(array("/\s+/", "/[^-\.\w]+/"),
+			$safeFilename = preg_replace(array("/\\s+/", "/[^-\.\w]+/"),
 			array("_", ""), trim($_FILES['documentFilename']['name']));
 			$fileSize = $_FILES['documentFilename']['size'];
 			$maxSize = $this->maximumFileSize;
@@ -144,7 +144,7 @@ class DocumentClass extends ConfigClass
 				array("success" => false, "message" => "not valid type"));
 				exit();
 			}
-			//	echo '{success:true,message:\' 3document size :'.$fileSize.' maxSize: '.$maxSize.' \'}';
+			//	echo '{success:TRUE,message:\' 3document size :'.$fileSize.' maxSize: '.$maxSize.' \'}';
 			//	exit();
 			if (! is_dir($this->path)) {
 				echo json_encode(
@@ -346,7 +346,7 @@ class DocumentClass extends ConfigClass
 		chmod($source, 0777);
 		$this->q->commit();
 		echo json_encode(
-		array("success" => true, "message" => "Record Created",
+		array("success" => TRUE, "message" => "Record Created",
         "documentId" => $documentId));
 		exit();
 	}
@@ -648,12 +648,12 @@ class DocumentClass extends ConfigClass
 			}
 		}
 		$items = array();
-		while (($row = $this->q->fetchAssoc()) == true) {
+		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items[] = $row;
 		}
 		if ($this->model->getDocumentId(0, 'single')) {
 			$json_encode = json_encode(
-			array('success' => true, 'total' => $total,
+			array('success' => TRUE, 'total' => $total,
             'message' => 'Data Loaded', 'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
@@ -663,7 +663,7 @@ class DocumentClass extends ConfigClass
 				$items = '';
 			}
 			echo json_encode(
-			array('success' => true, 'total' => $total,
+			array('success' => TRUE, 'total' => $total,
             'message' => 'data loaded', 'data' => $items));
 			exit();
 		}
@@ -681,7 +681,7 @@ class DocumentClass extends ConfigClass
 		}
 		$isFile = is_uploaded_file($_FILES['documentFilename']['tmp_name']);
 		if ($isFile) {
-			$safeFilename = preg_replace(array("/\s+/", "/[^-\.\w]+/"),
+			$safeFilename = preg_replace(array("/\\s+/", "/[^-\\.\\w]+/"),
 			array("_", ""), trim($_FILES['documentFilename']['name']));
 			$fileSize = $_FILES['documentFilename']['size'];
 			$maxSize = $this->maximumFileSize;
@@ -901,7 +901,7 @@ class DocumentClass extends ConfigClass
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Remove"));
+		echo json_encode(array("success" => TRUE, "message" => "Record Remove"));
 		exit();
 	}
 	/**
@@ -1033,7 +1033,7 @@ class DocumentClass extends ConfigClass
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		echo json_encode(array("success" => TRUE, "message" => "Deleted"));
 		exit();
 	}
 	/* (non-PHPdoc)
@@ -1066,16 +1066,16 @@ class DocumentClass extends ConfigClass
 		// header all using  3 line  starting b
 		$this->excel->getActiveSheet()
 		->getColumnDimension('B')
-		->setAutoSize(true);
+		->setAutoSize(TRUE);
 		$this->excel->getActiveSheet()
 		->getColumnDimension('C')
-		->setAutoSize(true);
+		->setAutoSize(TRUE);
 		$this->excel->getActiveSheet()
 		->getColumnDimension('D')
-		->setAutoSize(true);
+		->setAutoSize(TRUE);
 		$this->excel->getActiveSheet()
 		->getColumnDimension('E')
-		->setAutoSize(true);
+		->setAutoSize(TRUE);
 		$this->excel->getActiveSheet()->setCellValue('B2', $this->title);
 		$this->excel->getActiveSheet()->setCellValue('E2', '');
 		$this->excel->getActiveSheet()->mergeCells('B2:E2');
@@ -1104,7 +1104,7 @@ class DocumentClass extends ConfigClass
 		//
 		$loopRow = 4;
 		$i = 0;
-		while (($row = $this->q->fetchAssoc()) == true) {
+		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue(
             'B' . $loopRow, ++ $i);
@@ -1129,7 +1129,7 @@ class DocumentClass extends ConfigClass
 		$file = fopen("/kospek/document/document/excel/" . $filename, 'r');
 		if ($file) {
 			echo json_encode(
-			array("success" => 'true', "message" => "File generated"));
+			array("success" => 'TRUE', "message" => "File generated"));
 			exit();
 		} else {
 			echo json_encode(
@@ -1179,19 +1179,19 @@ class DocumentClass extends ConfigClass
 		}
 		$total = $this->q->numberRows();
 		$items = array();
-		while (($row = $this->q->fetchAssoc()) == true) {
+		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items[] = $row;
 		}
 		if ($total == 1) {
 			$json_encode = json_encode(
-			array('success' => true, 'total' => $total,
+			array('success' => TRUE, 'total' => $total,
             'documentCategory' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo json_encode;
 		} else {
 			echo json_encode(
-			array('success' => true, 'total' => $total,
+			array('success' => TRUE, 'total' => $total,
             'documentCategory' => $items));
 		}
 	}

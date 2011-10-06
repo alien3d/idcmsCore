@@ -27,7 +27,7 @@ class TestAction {
         	    array_push($out, array(
         	    	'id'=>$id . $i,
         	    	'text'=>'Node ' . $num . '.' . $i,
-        	    	'leaf'=>true
+        	    	'leaf'=>TRUE
         	    ));
         	}
         }

@@ -21,7 +21,7 @@ $filters = isset($_REQUEST['filter']) ? $_REQUEST['filter'] : null;
 if (is_array($filters)) {
     $encoded = false;
 } else {
-    $encoded = true;
+    $encoded = TRUE;
     $filters = json_decode($filters);
 }
 

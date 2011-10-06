@@ -172,14 +172,14 @@ class PHPExcel_Worksheet_HeaderFooter
 	private $_differentFirst;
 
 	/**
-	 * Scale with document, defaults to true
+	 * Scale with document, defaults to TRUE
 	 *
 	 * @var boolean
 	 */
 	private $_scaleWithDocument;
 
 	/**
-	 * Align with margins, defaults to true
+	 * Align with margins, defaults to TRUE
 	 *
 	 * @var boolean
 	 */
@@ -206,8 +206,8 @@ class PHPExcel_Worksheet_HeaderFooter
 		$this->_firstFooter			= '';
 		$this->_differentOddEven 	= false;
 		$this->_differentFirst 		= false;
-		$this->_scaleWithDocument 	= true;
-		$this->_alignWithMargins 	= true;
+		$this->_scaleWithDocument 	= TRUE;
+		$this->_alignWithMargins 	= TRUE;
 		$this->_headerFooterImages	= array();
 	}
 
@@ -386,7 +386,7 @@ class PHPExcel_Worksheet_HeaderFooter
 	 * @param boolean $pValue
 	 * @return PHPExcel_Worksheet_HeaderFooter
 	 */
-	public function setScaleWithDocument($pValue = true) {
+	public function setScaleWithDocument($pValue = TRUE) {
 		$this->_scaleWithDocument = $pValue;
 		return $this;
 	}
@@ -406,7 +406,7 @@ class PHPExcel_Worksheet_HeaderFooter
 	 * @param boolean $pValue
 	 * @return PHPExcel_Worksheet_HeaderFooter
 	 */
-	public function setAlignWithMargins($pValue = true) {
+	public function setAlignWithMargins($pValue = TRUE) {
 		$this->_alignWithMargins = $pValue;
 		return $this;
 	}

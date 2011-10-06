@@ -12,7 +12,7 @@ foreach($API as $aname=>&$a){
 			'len'=>$m['len']
 		);
 		if(isset($m['formHandler'])){
-			$md['formHandler'] = true;
+			$md['formHandler'] = TRUE;
 		}
 		$methods[] = $md;
 	}

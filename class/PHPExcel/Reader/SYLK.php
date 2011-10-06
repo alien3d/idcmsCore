@@ -160,7 +160,7 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 			return false;
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -266,9 +266,9 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 						case 'S' :	$styleSettings = substr($rowDatum,1);
 						for ($i=0;$i<strlen($styleSettings);++$i) {
 							switch ($styleSettings{$i}) {
-								case 'I' :	$formatArray['font']['italic'] = true;
+								case 'I' :	$formatArray['font']['italic'] = TRUE;
 								break;
-								case 'D' :	$formatArray['font']['bold'] = true;
+								case 'D' :	$formatArray['font']['bold'] = TRUE;
 								break;
 								case 'T' :	$formatArray['borders']['top']['style'] = PHPExcel_Style_Border::BORDER_THIN;
 								break;
@@ -331,7 +331,7 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 						unset($value);
 						//	Then rebuild the formula string
 						$cellDataFormula = implode('"',$temp);
-						$hasCalculatedValue = true;
+						$hasCalculatedValue = TRUE;
 						break;
 					}
 				}
@@ -362,9 +362,9 @@ class PHPExcel_Reader_SYLK implements PHPExcel_Reader_IReader
 						case 'S' :	$styleSettings = substr($rowDatum,1);
 						for ($i=0;$i<strlen($styleSettings);++$i) {
 							switch ($styleSettings{$i}) {
-								case 'I' :	$styleData['font']['italic'] = true;
+								case 'I' :	$styleData['font']['italic'] = TRUE;
 								break;
-								case 'D' :	$styleData['font']['bold'] = true;
+								case 'D' :	$styleData['font']['bold'] = TRUE;
 								break;
 								case 'T' :	$styleData['borders']['top']['style'] = PHPExcel_Style_Border::BORDER_THIN;
 								break;

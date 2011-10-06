@@ -81,7 +81,7 @@ class PHPExcel_Worksheet_CellIterator extends IteratorIterator
 	 *
 	 * @var boolean
 	 */
-	private $_onlyExistingCells = true;
+	private $_onlyExistingCells = TRUE;
 
 	/**
 	 * Create a new cell iterator
@@ -173,7 +173,7 @@ class PHPExcel_Worksheet_CellIterator extends IteratorIterator
 	 *
 	 * @return boolean
 	 */
-	public function setIterateOnlyExistingCells($value = true) {
+	public function setIterateOnlyExistingCells($value = TRUE) {
 		$this->_onlyExistingCells = $value;
 	}
 }

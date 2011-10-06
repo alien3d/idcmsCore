@@ -6,7 +6,7 @@ class Albums {
         $res = $db->query('select * from Albums');
         $json = array();
         while ($o = $res->fetchObject()) {
-            $o->leaf = true;
+            $o->leaf = TRUE;
             array_push($json,$o);
         }
         return $json;
@@ -20,13 +20,13 @@ class Albums {
         } else {
             $res = $db->query('UPDATE Albums SET text ="'.$data->text.'" WHERE id = "'.$data->id.'"');
         }
-        return array(success => true);
+        return array(success => TRUE);
     }
 
     function remove($data) {
         $db = new SQLiteDatabase('sql/imgorg.db');
         $q = $db->queryExec('DELETE FROM Albums where id ="'.$data->album.'"');
-        return array(success=>true, album => $data->album);
+        return array(success=>TRUE, album => $data->album);
     }
 
     function load($data){

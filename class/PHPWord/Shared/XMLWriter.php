@@ -76,7 +76,7 @@ class PHPWord_Shared_XMLWriter {
 
 		// Set default values
 		// proposed to be false in production version
-		$this->_xmlWriter->setIndent(true);
+		$this->_xmlWriter->setIndent(TRUE);
 		//$this->_xmlWriter->setIndent(false);
 
 		// Set indent
@@ -105,7 +105,7 @@ class PHPWord_Shared_XMLWriter {
 	 */
 	public function getData() {
 		if ($this->_tempFileName == '') {
-			return $this->_xmlWriter->outputMemory(true);
+			return $this->_xmlWriter->outputMemory(TRUE);
 		} else {
 			$this->_xmlWriter->flush();
 			return file_get_contents($this->_tempFileName);

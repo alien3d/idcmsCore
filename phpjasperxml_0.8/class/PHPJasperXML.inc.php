@@ -13,7 +13,7 @@ class PHPJasperXML {
     public $newPageGroup = false;
     private $curgroup=0;
     private $groupno=0;
-    private $footershowed=true;
+    private $footershowed=TRUE;
     private $titleheight=0;
     public function PHPJasperXML($lang="en",$pdflib="FPDF") {
         $this->lang=$lang;
@@ -34,8 +34,8 @@ class PHPJasperXML {
                 if($this->myconn) {
                     $seldb = @mysql_select_db($db_or_dsn_name,$this->myconn);
                     if($seldb) {
-                        $this->con = true;
-                        return true;
+                        $this->con = TRUE;
+                        return TRUE;
                     }
                     else {
                         return false;
@@ -44,9 +44,9 @@ class PHPJasperXML {
                     return false;
                 }
             } else {
-                return true;
+                return TRUE;
             }
-            return true;
+            return TRUE;
         }elseif($cndriver=="psql") {
             global $pgport;
             if($pgport=="" || $pgport==0)
@@ -57,9 +57,9 @@ class PHPJasperXML {
 
 
             if($this->myconn) {
-                $this->con = true;
+                $this->con = TRUE;
 
-                return true;
+                return TRUE;
             }else
                 return false;
         }
@@ -69,13 +69,13 @@ class PHPJasperXML {
                 $this->myconn = odbc_connect($db_or_dsn_name,$db_user,$db_pass);
 
                 if( $this->myconn) {
-                    $this->con = true;
-                    return true;
+                    $this->con = TRUE;
+                    return TRUE;
                 } else {
                     return false;
                 }
             } else {
-                return true;
+                return TRUE;
             }
         }
     }
@@ -85,7 +85,7 @@ class PHPJasperXML {
             if($this->con) {
                 if(@mysql_close()) {
                     $this->con = false;
-                    return true;
+                    return TRUE;
                 }
                 else {
                     return false;
@@ -200,8 +200,8 @@ class PHPJasperXML {
 //        $this->arraygroup=$xml_path;
 
 
-        if($xml_path["isStartNewPage"]=="true")
-            $this->newPageGroup=true;
+        if($xml_path["isStartNewPage"]=="TRUE")
+            $this->newPageGroup=TRUE;
         else
             $this->newPageGroup="";
 
@@ -321,7 +321,7 @@ class PHPJasperXML {
         $rotation="";
         $drawcolor=array("r"=>0,"g"=>0,"b"=>0);
         $height=$data->reportElement["height"];
-        $stretchoverflow="true";
+        $stretchoverflow="TRUE";
         $printoverflow="false";
         if(isset($data->reportElement["forecolor"])) {
             $textcolor = array("r"=>hexdec(substr($data->reportElement["forecolor"],1,2)),"g"=>hexdec(substr($data->reportElement["forecolor"],3,2)),"b"=>hexdec(substr($data->reportElement["forecolor"],5,2)));
@@ -332,11 +332,11 @@ class PHPJasperXML {
         if($data->reportElement["mode"]=="Opaque") {
             $fill=1;
         }
-        if(isset($data["isStretchWithOverflow"])&&$data["isStretchWithOverflow"]=="true") {
-            $stretchoverflow="true";
+        if(isset($data["isStretchWithOverflow"])&&$data["isStretchWithOverflow"]=="TRUE") {
+            $stretchoverflow="TRUE";
         }
-        if(isset($data->reportElement["isPrintWhenDetailOverflows"])&&$data->reportElement["isPrintWhenDetailOverflows"]=="true") {
-            $printoverflow="true";
+        if(isset($data->reportElement["isPrintWhenDetailOverflows"])&&$data->reportElement["isPrintWhenDetailOverflows"]=="TRUE") {
+            $printoverflow="TRUE";
             $stretchoverflow="false";
         }
         if((isset($data->box))&&($data->box->pen["lineWidth"]>0)) {
@@ -357,13 +357,13 @@ class PHPJasperXML {
         if(isset($data->textElement->font["size"])) {
             $fontsize=$data->textElement->font["size"];
         }
-        if(isset($data->textElement->font["isBold"])&&$data->textElement->font["isBold"]=="true") {
+        if(isset($data->textElement->font["isBold"])&&$data->textElement->font["isBold"]=="TRUE") {
             $fontstyle=$fontstyle."B";
         }
-        if(isset($data->textElement->font["isItalic"])&&$data->textElement->font["isItalic"]=="true") {
+        if(isset($data->textElement->font["isItalic"])&&$data->textElement->font["isItalic"]=="TRUE") {
             $fontstyle=$fontstyle."I";
         }
-        if(isset($data->textElement->font["isUnderline"])&&$data->textElement->font["isUnderline"]=="true") {
+        if(isset($data->textElement->font["isUnderline"])&&$data->textElement->font["isUnderline"]=="TRUE") {
             $fontstyle=$fontstyle."U";
         }
         if(isset($data->reportElement["key"])) {
@@ -450,11 +450,11 @@ class PHPJasperXML {
         if($data->reportElement["mode"]=="Opaque") {
             $fill=1;
         }
-        if(isset($data["isStretchWithOverflow"])&&$data["isStretchWithOverflow"]=="true") {
-            $stretchoverflow="true";
+        if(isset($data["isStretchWithOverflow"])&&$data["isStretchWithOverflow"]=="TRUE") {
+            $stretchoverflow="TRUE";
         }
-        if(isset($data->reportElement["isPrintWhenDetailOverflows"])&&$data->reportElement["isPrintWhenDetailOverflows"]=="true") {
-            $printoverflow="true";
+        if(isset($data->reportElement["isPrintWhenDetailOverflows"])&&$data->reportElement["isPrintWhenDetailOverflows"]=="TRUE") {
+            $printoverflow="TRUE";
         }
         if(isset($data->box)&&$data->box->pen["lineWidth"]>0) {
             $border=1;
@@ -477,13 +477,13 @@ class PHPJasperXML {
         if(isset($data->textElement->font["size"])) {
             $fontsize=$data->textElement->font["size"];
         }
-        if(isset($data->textElement->font["isBold"])&&$data->textElement->font["isBold"]=="true") {
+        if(isset($data->textElement->font["isBold"])&&$data->textElement->font["isBold"]=="TRUE") {
             $fontstyle=$fontstyle."B";
         }
-        if(isset($data->textElement->font["isItalic"])&&$data->textElement->font["isItalic"]=="true") {
+        if(isset($data->textElement->font["isItalic"])&&$data->textElement->font["isItalic"]=="TRUE") {
             $fontstyle=$fontstyle."I";
         }
-        if(isset($data->textElement->font["isUnderline"])&&$data->textElement->font["isUnderline"]=="true") {
+        if(isset($data->textElement->font["isUnderline"])&&$data->textElement->font["isUnderline"]=="TRUE") {
             $fontstyle=$fontstyle."U";
         }
         $this->pointer[]=array("type"=>"SetXY","x"=>$data->reportElement["x"],"y"=>$data->reportElement["y"],"hidden_type"=>"SetXY");
@@ -560,7 +560,7 @@ class PHPJasperXML {
             echo "Fail to connect database";
             exit(0);
         }
-        if($this->debugsql==true) {
+        if($this->debugsql==TRUE) {
             echo $this->sql;
             die;
         }
@@ -852,7 +852,7 @@ class PHPJasperXML {
         $this->pdf->SetLeftMargin($this->arrayPageSetting["leftMargin"]);
         $this->pdf->SetRightMargin($this->arrayPageSetting["rightMargin"]);
         $this->pdf->SetTopMargin($this->arrayPageSetting["topMargin"]);
-        $this->pdf->SetAutoPageBreak(true,$this->arrayPageSetting["bottomMargin"]/2);
+        $this->pdf->SetAutoPageBreak(TRUE,$this->arrayPageSetting["bottomMargin"]/2);
         $this->pdf->AliasNbPages();
 
 
@@ -2154,7 +2154,7 @@ foreach($this->arrayVariable as $name=>$value){
         foreach ($this->arraybackground as $out) {
             switch($out["hidden_type"]) {
                 case "field":
-                    $this->display($out,$this->arrayPageSetting["topMargin"],true);
+                    $this->display($out,$this->arrayPageSetting["topMargin"],TRUE);
                     break;
                 default:
                     $this->display($out,$this->arrayPageSetting["topMargin"],false);
@@ -2173,7 +2173,7 @@ foreach($this->arrayVariable as $name=>$value){
         foreach ($this->arraypageHeader as $out) {
             switch($out["hidden_type"]) {
                 case "field":
-                    $this->display($out,$this->arraypageHeader[0]["y_axis"],true);
+                    $this->display($out,$this->arraypageHeader[0]["y_axis"],TRUE);
                     break;
                 default:
                     $this->display($out,$this->arraypageHeader[0]["y_axis"],false);
@@ -2192,10 +2192,10 @@ foreach($this->arrayVariable as $name=>$value){
         foreach ($this->arraypageHeader as $out) {
             switch($out["hidden_type"]) {
                 case "textfield":
-                    $this->display($out,$this->arraypageHeader[0]["y_axis"],true);
+                    $this->display($out,$this->arraypageHeader[0]["y_axis"],TRUE);
                     break;
                 default:
-                    $this->display($out,$this->arraypageHeader[0]["y_axis"],true);
+                    $this->display($out,$this->arraypageHeader[0]["y_axis"],TRUE);
                     break;
             }
         }
@@ -2218,7 +2218,7 @@ foreach($this->arrayVariable as $name=>$value){
 
             switch($out["hidden_type"]) {
                 case "field":
-                    $this->display($out,$this->arraytitle[0]["y_axis"],true);
+                    $this->display($out,$this->arraytitle[0]["y_axis"],TRUE);
                     break;
                 default:
                     $this->display($out,$this->arraytitle[0]["y_axis"],false);
@@ -2241,7 +2241,7 @@ foreach($this->arrayVariable as $name=>$value){
 
             switch($out["hidden_type"]) {
                 case "field":
-                    $this->display($out,$y,true);
+                    $this->display($out,$y,TRUE);
                     break;
                 default:
                     $this->display($out,$y,false);
@@ -2278,7 +2278,7 @@ foreach($this->arrayVariable as $name=>$value){
                             switch($path["hidden_type"]) {
                                 case "field":
 
-                                    $this->display($path,$this->arraygroup[$gname]["groupHeader"][0]["y_axis"],true);
+                                    $this->display($path,$this->arraygroup[$gname]["groupHeader"][0]["y_axis"],TRUE);
                                     break;
                                 default:
 
@@ -2291,7 +2291,7 @@ foreach($this->arrayVariable as $name=>$value){
                         foreach($out as $path) {
                             switch($path["hidden_type"]) {
                                 case "field":
-                                    $this->display($path,$this->arraygroup[$gname]["groupFooter"][0]["y_axis"],true);
+                                    $this->display($path,$this->arraygroup[$gname]["groupFooter"][0]["y_axis"],TRUE);
                                     break;
                                 default:
                                     $this->display($path,$this->arraygroup[$gname]["groupFooter"][0]["y_axis"],false);
@@ -2327,7 +2327,7 @@ foreach($this->arrayVariable as $name=>$value){
                         foreach($out as $path) {
                             switch($path["hidden_type"]) {
                                 case "field":
-                                    $this->display($path,$this->arraygroup[$gname]["groupHeader"][0]["y_axis"],true);
+                                    $this->display($path,$this->arraygroup[$gname]["groupHeader"][0]["y_axis"],TRUE);
                                     break;
                                 default:
 
@@ -2340,7 +2340,7 @@ foreach($this->arrayVariable as $name=>$value){
                         foreach($out as $path) {
                             switch($path["hidden_type"]) {
                                 case "field":
-                                    $this->display($path,$this->arraygroup[$gname]["groupFooter"][0]["y_axis"],true);
+                                    $this->display($path,$this->arraygroup[$gname]["groupFooter"][0]["y_axis"],TRUE);
                                     break;
                                 default:
                                     $this->display($path,$this->arraygroup[$gname]["groupFooter"][0]["y_axis"],false);
@@ -2360,7 +2360,7 @@ foreach($this->arrayVariable as $name=>$value){
             foreach ($this->arraypageFooter as $out) {
                 switch($out["hidden_type"]) {
                     case "field":
-                        $this->display($out,$this->arrayPageSetting["pageHeight"]-$this->arraypageFooter[0]["height"]-$this->arrayPageSetting["bottomMargin"],true);
+                        $this->display($out,$this->arrayPageSetting["pageHeight"]-$this->arraypageFooter[0]["height"]-$this->arrayPageSetting["bottomMargin"],TRUE);
                         break;
                     default:
                         $this->display($out,$this->arrayPageSetting["pageHeight"]-$this->arraypageFooter[0]["height"]-$this->arrayPageSetting["bottomMargin"],false);
@@ -2378,7 +2378,7 @@ foreach($this->arrayVariable as $name=>$value){
             foreach ($this->arraylastPageFooter as $out) {
                 switch($out["hidden_type"]) {
                     case "field":
-                        $this->display($out,$this->arrayPageSetting["pageHeight"]-$this->arraylastPageFooter[0]["height"]-$this->arrayPageSetting["bottomMargin"],true);
+                        $this->display($out,$this->arrayPageSetting["pageHeight"]-$this->arraylastPageFooter[0]["height"]-$this->arrayPageSetting["bottomMargin"],TRUE);
                         break;
                     default:
                         $this->display($out,$this->arrayPageSetting["pageHeight"]-$this->arraylastPageFooter[0]["height"]-$this->arrayPageSetting["bottomMargin"],false);
@@ -2459,7 +2459,7 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                 {
                     if($this->footershowed==false)
                     $ghfoot= $this->showGroupFooter($compare["height"]+$this->pdf->getY());
-                    $this->footershowed=true;
+                    $this->footershowed=TRUE;
                     $this->pdf->SetY($newY+$checkpoint+$ghfoot);
                     $headerY = $biggestY;//+40;
                     $checkpoint=$headerY;//+40;
@@ -2560,7 +2560,7 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                         case "field":
 
                             $this->prepare_print_array=array("type"=>"MultiCell","width"=>$out["width"],"height"=>$out["height"],"txt"=>$out["txt"],"border"=>$out["border"],"align"=>$out["align"],"fill"=>$out["fill"],"hidden_type"=>$out["hidden_type"],"printWhenExpression"=>$out["printWhenExpression"],"soverflow"=>$out["soverflow"],"poverflow"=>$out["poverflow"],"link"=>$out["link"],"pattern"=>$out["pattern"],"writeHTML"=>$out["writeHTML"],"isPrintRepeatedValues"=>$out["isPrintRepeatedValues"]);
-                            $this->display($this->prepare_print_array,0,true);
+                            $this->display($this->prepare_print_array,0,TRUE);
 
                             if($this->pdf->GetY()>$biggestY) {
                                 $biggestY=$this->pdf->GetY();
@@ -2748,7 +2748,7 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                         case "field":
 
                             $this->prepare_print_array=array("type"=>"MultiCell","width"=>$out["width"],"height"=>$out["height"],"txt"=>$out["txt"],"border"=>$out["border"],"align"=>$out["align"],"fill"=>$out["fill"],"hidden_type"=>$out["hidden_type"],"printWhenExpression"=>$out["printWhenExpression"],"soverflow"=>$out["soverflow"],"poverflow"=>$out["poverflow"],"link"=>$out["link"],"pattern"=>$out["pattern"]);
-                            $this->display($this->prepare_print_array,0,true);
+                            $this->display($this->prepare_print_array,0,TRUE);
 
                             if($this->pdf->GetY() > $biggestY) {
                                 $biggestY = $this->pdf->GetY();
@@ -2805,7 +2805,7 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
 
         $bandheight=$this->arraygrouphead[0]['height'];
         foreach ($this->arraygrouphead as $out) {
-            $this->display($out,$y,true);
+            $this->display($out,$y,TRUE);
         }
         return $bandheight;
     }
@@ -2814,10 +2814,10 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
         //$this->pdf->MultiCell(100,10,"???1-$y,XY=". $this->pdf->GetX().",". $this->pdf->GetY());
         $bandheight=$this->arraygroupfoot[0]['height'];
         foreach ($this->arraygroupfoot as $out) {
-            $this->display($out,$y,true);
+            $this->display($out,$y,TRUE);
 
         }
-        $this->footershowed=true;
+        $this->footershowed=TRUE;
         return $bandheight;
         //$this->pdf->MultiCell(100,10,"???1-$y,XY=". $this->pdf->GetX().",". $this->pdf->GetY());
 
@@ -2846,8 +2846,8 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
     }
     elseif($arraydata["rotation"]=="UpsideDown"){
         //soverflow"=>$stretchoverflow,"poverflow"
-        $arraydata["soverflow"]=true;
-        $arraydata["poverflow"]=true;
+        $arraydata["soverflow"]=TRUE;
+        $arraydata["poverflow"]=TRUE;
        //   $w=$arraydata["width"];
        // $arraydata["width"]=$arraydata["height"];
         //$arraydata["height"]=$w;
@@ -2858,7 +2858,7 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
 
         if($arraydata["type"]=="SetFont") {
             if($arraydata["font"]=='uGB')
-                $this->pdf->isUnicode=true;
+                $this->pdf->isUnicode=TRUE;
             else
                 $this->pdf->isUnicode=false;
 
@@ -2874,7 +2874,7 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
             if($fielddata==false) {
                 $this->checkoverflow($arraydata,$this->updatePageNo($arraydata["txt"]));
             }
-            elseif($fielddata==true) {
+            elseif($fielddata==TRUE) {
 
 
                 $this->checkoverflow($arraydata,$this->updatePageNo($this->analyse_expression($arraydata["txt"],$arraydata["isPrintRepeatedValues"] )));
@@ -2954,7 +2954,7 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
         $this->print_expression($arraydata);
 
       
-        if($this->print_expression_result==true) {
+        if($this->print_expression_result==TRUE) {
 
             if($arraydata["link"]) {
                 $arraydata["link"]=$this->analyse_expression($arraydata["link"],"");
@@ -2965,7 +2965,7 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
                 $this->pdf->writeHTML($txt);
 
             }
-            elseif($arraydata["poverflow"]=="true"&&$arraydata["soverflow"]=="false") {
+            elseif($arraydata["poverflow"]=="TRUE"&&$arraydata["soverflow"]=="false") {
                 
                 $this->pdf->Cell($arraydata["width"], $arraydata["height"], $this->formatText($txt, $arraydata["pattern"]),$arraydata["border"],"",$arraydata["align"],$arraydata["fill"],$arraydata["link"]);
                 
@@ -2979,7 +2979,7 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
     
 
             }
-            elseif($arraydata["poverflow"]=="false"&&$arraydata["soverflow"]=="true") {
+            elseif($arraydata["poverflow"]=="false"&&$arraydata["soverflow"]=="TRUE") {
                 $this->pdf->MultiCell($arraydata["width"], $arraydata["height"], $this->formatText($txt, $arraydata["pattern"]), $arraydata["border"], $arraydata["align"], $arraydata["fill"]);
          
 
@@ -3017,7 +3017,7 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
         return substr($string, 0, $count);
     }
 
-    public function analyse_expression($data,$isPrintRepeatedValue="true") {
+    public function analyse_expression($data,$isPrintRepeatedValue="TRUE") {
         $arrdata=explode("+",$data);
 
         $i=0;
@@ -3029,7 +3029,7 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
 
             if(substr($out,0,3)=='$F{') {
                 
-                if($isPrintRepeatedValue=="true" ||$isPrintRepeatedValue=="") {
+                if($isPrintRepeatedValue=="TRUE" ||$isPrintRepeatedValue=="") {
                     $arrdata[$num]=$this->arraysqltable[$this->global_pointer][substr($out,3,-1)];
                     
                 }
@@ -3121,10 +3121,10 @@ if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$t
         $expression=str_replace('}',']',$expression);
         $this->print_expression_result=false;
         if($expression!="") {
-            eval('if('.$expression.'){$this->print_expression_result=true;}');
+            eval('if('.$expression.'){$this->print_expression_result=TRUE;}');
         }
         elseif($expression=="") {
-            $this->print_expression_result=true;
+            $this->print_expression_result=TRUE;
         }
 
     }

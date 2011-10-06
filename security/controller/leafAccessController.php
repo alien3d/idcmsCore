@@ -369,7 +369,7 @@ class LeafAccessClass extends  ConfigClass {
 			exit();
 		}
 
-		while($row  = 	$this->q->fetchAssoc()) {
+		while(($row  = 	$this->q->fetchAssoc()) == TRUE) {
 			// select module access
 
 			$items[]=$row;
@@ -390,8 +390,8 @@ class LeafAccessClass extends  ConfigClass {
 	/**
 	 * Enter description here ...
 	 */
-	function crewId() {
-		return $this->security->crewId();
+	function teamId() {
+		return $this->security->teamId();
 	}
 	/**
 	 * Enter description here ...
@@ -421,7 +421,7 @@ class LeafAccessClass extends  ConfigClass {
 		// @todo  repair this code !!!
 		for($i=0;$i<$loop;$i++) {
 			// mysql doesn't support bolean expression
-			foreach($access_array as $access_type)  {
+			foreach($this->model->getLeafTempId() as $access_type)  {
 				if($_GET['leaf_'.$access_type.'_acs_val'][$i]=='true') {
 					$_GET['leaf_'.$access_type.'_acs_val'][$i]=1;
 				} else {

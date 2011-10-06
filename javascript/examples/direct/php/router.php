@@ -14,8 +14,8 @@ if(isset($HTTP_RAW_POST_DATA)){
 	header('Content-Type: text/javascript');
 	$data = json_decode($HTTP_RAW_POST_DATA);
 }else if(isset($_POST['extAction'])){ // form post
-	$isForm = true;
-	$isUpload = $_POST['extUpload'] == 'true';
+	$isForm = TRUE;
+	$isUpload = $_POST['extUpload'] == 'TRUE';
 	$data = new BogusAction();
 	$data->action = $_POST['extAction'];
 	$data->method = $_POST['extMethod'];

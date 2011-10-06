@@ -175,7 +175,7 @@ class POP3 {
 			if ($login_result) {
 				$this->Disconnect();
 
-				return true;
+				return TRUE;
 			}
 
 		}
@@ -197,7 +197,7 @@ class POP3 {
 	public function Connect ($host, $port = false, $tval = 30) {
 		//  Are we already connected?
 		if ($this->connected) {
-			return true;
+			return TRUE;
 		}
 
 		/*
@@ -256,8 +256,8 @@ class POP3 {
 		//  Check for the +OK
 		if ($this->checkResponse($pop3_response)) {
 			//  The connection is established and the POP3 server is talking
-			$this->connected = true;
-			return true;
+			$this->connected = TRUE;
+			return TRUE;
 		}
 
 	}
@@ -299,7 +299,7 @@ class POP3 {
 			$pop3_response = $this->getResponse();
 
 			if ($this->checkResponse($pop3_response)) {
-				return true;
+				return TRUE;
 			} else {
 				return false;
 			}
@@ -367,7 +367,7 @@ class POP3 {
 
         return false;
 		} else {
-			return true;
+			return TRUE;
 		}
 
 	}

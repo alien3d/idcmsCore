@@ -215,7 +215,7 @@ class PHPExcel_Reader_Excel2003XML implements PHPExcel_Reader_IReader
 				fclose($fh);
 
 				$headers = explode("\n",$data);
-				$valid = true;
+				$valid = TRUE;
 				foreach($signature as $key => $match) {
 					if (isset($headers[$key])) {
 						$line = trim(rtrim($headers[$key], "\r\n"));
@@ -252,7 +252,7 @@ class PHPExcel_Reader_Excel2003XML implements PHPExcel_Reader_IReader
 		foreach($styleList as $style) {
 			if ($styleAttributeValue == strtolower($style)) {
 				$styleAttributeValue = $style;
-				return true;
+				return TRUE;
 			}
 		}
 		return false;
@@ -324,7 +324,7 @@ class PHPExcel_Reader_Excel2003XML implements PHPExcel_Reader_IReader
 		}
 
 		$xml = simplexml_load_file($pFilename);
-		$namespaces = $xml->getNamespaces(true);
+		$namespaces = $xml->getNamespaces(TRUE);
 		//		echo '<pre>';
 		//		print_r($namespaces);
 		//		echo '</pre><hr />';
@@ -397,7 +397,7 @@ class PHPExcel_Reader_Excel2003XML implements PHPExcel_Reader_IReader
 									}
 									break;
 								case 'WrapText' :
-									$this->_styles[$styleID]['alignment']['wrap'] = true;
+									$this->_styles[$styleID]['alignment']['wrap'] = TRUE;
 									break;
 							}
 						}
@@ -447,10 +447,10 @@ class PHPExcel_Reader_Excel2003XML implements PHPExcel_Reader_IReader
 									$this->_styles[$styleID]['font']['color']['rgb'] = substr($styleAttributeValue,1);
 									break;
 								case 'Bold' :
-									$this->_styles[$styleID]['font']['bold'] = true;
+									$this->_styles[$styleID]['font']['bold'] = TRUE;
 									break;
 								case 'Italic' :
-									$this->_styles[$styleID]['font']['italic'] = true;
+									$this->_styles[$styleID]['font']['italic'] = TRUE;
 									break;
 								case 'Underline' :
 									if (self::identifyFixedStyleValue($underlineStyles,$styleAttributeValue)) {
@@ -567,7 +567,7 @@ class PHPExcel_Reader_Excel2003XML implements PHPExcel_Reader_IReader
 					$cellDataFormula = '';
 					if (isset($cell_ss['Formula'])) {
 						$cellDataFormula = $cell_ss['Formula'];
-						$hasCalculatedValue = true;
+						$hasCalculatedValue = TRUE;
 					}
 					if (isset($cell->Data)) {
 						$cellValue = $cellData = $cell->Data;

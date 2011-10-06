@@ -92,7 +92,7 @@ class MC_TCPDF extends TCPDF {
 			$this->y = $this->col_start_y;
 		}
 		// fix for HTML mode
-		$this->newline = true;
+		$this->newline = TRUE;
 	}
 	
 	/**
@@ -131,7 +131,7 @@ class MC_TCPDF extends TCPDF {
 	/**
 	 * Print chapter body
 	 * @param string $file name of the file containing the chapter body
-	 * @param boolean $mode if true the chapter body is in HTML, otherwise in simple text.
+	 * @param boolean $mode if TRUE the chapter body is in HTML, otherwise in simple text.
 	 * @access public
 	 */
 	public function ChapterBody($file, $mode=false) {
@@ -146,10 +146,10 @@ class MC_TCPDF extends TCPDF {
 		$this->SetCol(0);
 		if ($mode) {
 			// ------ HTML MODE ------
-			$this->writeHTML($txt, true, false, true, false, 'J');
+			$this->writeHTML($txt, TRUE, false, TRUE, false, 'J');
 		} else {
 			// ------ TEXT MODE ------
-			$this->Write(0, $txt, '', 0, 'J', true, 0, false, false, 0);
+			$this->Write(0, $txt, '', 0, 'J', TRUE, 0, false, false, 0);
 		}
 		$this->Ln();
 		// Go back to first column
@@ -164,7 +164,7 @@ class MC_TCPDF extends TCPDF {
 	 * @param int $num chapter number
 	 * @param string $title chapter title
 	 * @param string $file name of the file containing the chapter body
-	 * @param boolean $mode if true the chapter body is in HTML, otherwise in simple text.
+	 * @param boolean $mode if TRUE the chapter body is in HTML, otherwise in simple text.
 	 * @access public
 	 */
 	public function PrintChapter($num, $title, $file, $mode=false) {
@@ -178,7 +178,7 @@ class MC_TCPDF extends TCPDF {
 // EXAMPLE
 // ---------------------------------------------------------
 // create new PDF document
-$pdf = new MC_TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+$pdf = new MC_TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, TRUE, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -217,7 +217,7 @@ $pdf->setLanguageArray($l);
 $pdf->PrintChapter(1, 'A RUNAWAY REEF', '../cache/chapter_demo_1.txt', false);
 
 // print an html text
-$pdf->PrintChapter(2, 'THE PROS AND CONS', '../cache/chapter_demo_2.txt', true);
+$pdf->PrintChapter(2, 'THE PROS AND CONS', '../cache/chapter_demo_2.txt', TRUE);
 
 // ---------------------------------------------------------
 

@@ -359,7 +359,7 @@ class TestMatrix {
 		if (abs($x-$y) > 10 * $eps * max(abs($x),abs($y)))
 		return false;
 		else
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -398,15 +398,15 @@ class TestMatrix {
 		return false;
 
 		$eps = pow(2.0,-52.0);
-		if ($X->norm1() == 0. & $Y->norm1() < 10*$eps) return true;
-		if ($Y->norm1() == 0. & $X->norm1() < 10*$eps) return true;
+		if ($X->norm1() == 0. & $Y->norm1() < 10*$eps) return TRUE;
+		if ($Y->norm1() == 0. & $X->norm1() < 10*$eps) return TRUE;
 
 		$A = $X->minus($Y);
 
 		if ($A->norm1() > 1000 * $eps * max($X->norm1(),$Y->norm1()))
 		die("The norm of (X-Y) is too large: ".$A->norm1());
 		else
-		return true;
+		return TRUE;
 	}
 
 }

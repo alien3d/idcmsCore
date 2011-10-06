@@ -67,7 +67,7 @@ class PHPExcel_Shared_Excel5
 
 		$columnDimensions = $sheet->getColumnDimensions();
 
-		// first find the true column width in pixels (uncollapsed and unhidden)
+		// first find the TRUE column width in pixels (uncollapsed and unhidden)
 		if ( isset($columnDimensions[$col]) and $columnDimensions[$col]->getWidth() != -1 ) {
 
 			// then we have column dimension with explicit width
@@ -85,7 +85,7 @@ class PHPExcel_Shared_Excel5
 		} else {
 
 			// we don't even have any default column dimension. Width depends on default font
-			$pixelWidth = PHPExcel_Shared_Font::getDefaultColumnWidthByFont($font, true);
+			$pixelWidth = PHPExcel_Shared_Font::getDefaultColumnWidthByFont($font, TRUE);
 		}
 
 		// now find the effective column width in pixels
@@ -114,7 +114,7 @@ class PHPExcel_Shared_Excel5
 
 		$rowDimensions = $sheet->getRowDimensions();
 
-		// first find the true row height in pixels (uncollapsed and unhidden)
+		// first find the TRUE row height in pixels (uncollapsed and unhidden)
 		if ( isset($rowDimensions[$row]) and $rowDimensions[$row]->getRowHeight() != -1) {
 
 			// then we have a row dimension

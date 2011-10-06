@@ -288,7 +288,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	 *
 	 * @var boolean
 	 */
-	private $_showGridlines = true;
+	private $_showGridlines = TRUE;
 
 	/**
 	 * Print gridlines?
@@ -302,14 +302,14 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	 *
 	 * @var boolean
 	 */
-	private $_showSummaryBelow = true;
+	private $_showSummaryBelow = TRUE;
 
 	/**
 	 * Show summary right? (Row/Column outline)
 	 *
 	 * @var boolean
 	 */
-	private $_showSummaryRight = true;
+	private $_showSummaryRight = TRUE;
 
 	/**
 	 * Collection of comments
@@ -406,12 +406,12 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 		$this->_protection			= new PHPExcel_Worksheet_Protection();
 
 		// Gridlines
-		$this->_showGridlines		= true;
+		$this->_showGridlines		= TRUE;
 		$this->_printGridlines		= false;
 
 		// Outline summary
-		$this->_showSummaryBelow	= true;
-		$this->_showSummaryRight	= true;
+		$this->_showSummaryBelow	= TRUE;
+		$this->_showSummaryRight	= TRUE;
 
 		// Default row dimension
 		$this->_defaultRowDimension = new PHPExcel_Worksheet_RowDimension(null);
@@ -448,7 +448,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	 * @param boolean $pSorted Also sort the cell collection?
 	 * @return PHPExcel_Cell[]
 	 */
-	public function getCellCollection($pSorted = true)
+	public function getCellCollection($pSorted = TRUE)
 	{
 		if ($pSorted) {
 			// Re-order cell collection
@@ -489,7 +489,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 
 			$this->_cellCollection = $newCellCollection;
 
-			$this->_cellCollectionIsSorted = true;
+			$this->_cellCollectionIsSorted = TRUE;
 		}
 		return $this;
 	}
@@ -954,7 +954,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 
 		// Worksheet reference?
 		if (strpos($pCoordinate, '!') !== false) {
-			$worksheetReference = PHPExcel_Worksheet::extractSheetTitle($pCoordinate, true);
+			$worksheetReference = PHPExcel_Worksheet::extractSheetTitle($pCoordinate, TRUE);
 			return $this->getParent()->getSheetByName($worksheetReference[0])->getCell($worksheetReference[1]);
 		}
 
@@ -1058,7 +1058,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	{
 		// Worksheet reference?
 		if (strpos($pCoordinate, '!') !== false) {
-			$worksheetReference = PHPExcel_Worksheet::extractSheetTitle($pCoordinate, true);
+			$worksheetReference = PHPExcel_Worksheet::extractSheetTitle($pCoordinate, TRUE);
 			return $this->getParent()->getSheetByName($worksheetReference[0])->cellExists($worksheetReference[1]);
 		}
 
@@ -1242,7 +1242,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	public function conditionalStylesExists($pCoordinate = 'A1')
 	{
 		if (isset($this->_conditionalStylesCollection[$pCoordinate])) {
-			return true;
+			return TRUE;
 		}
 		return false;
 	}
@@ -1389,7 +1389,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	 * @throws	Exception
 	 * @return PHPExcel_Worksheet
 	 */
-	public function duplicateStyleArray($pStyles = null, $pRange = '', $pAdvanced = true)
+	public function duplicateStyleArray($pStyles = null, $pRange = '', $pAdvanced = TRUE)
 	{
 		$this->getStyle($pRange)->applyFromArray($pStyles, $pAdvanced);
 		return $this;
@@ -1547,7 +1547,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	 *
 	 * @param 	string			$pRange				Cell (e.g. A1) or cell range (e.g. A1:E1)
 	 * @param 	string			$pPassword			Password to unlock the protection
-	 * @param 	boolean 		$pAlreadyHashed 	If the password has already been hashed, set this to true
+	 * @param 	boolean 		$pAlreadyHashed 	If the password has already been hashed, set this to TRUE
 	 * @throws	Exception
 	 * @return PHPExcel_Worksheet
 	 */
@@ -1572,7 +1572,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	 * @param 	int 	$pColumn2			Numeric column coordinate of the last cell
 	 * @param 	int 	$pRow2				Numeric row coordinate of the last cell
 	 * @param 	string	$pPassword			Password to unlock the protection
-	 * @param 	boolean $pAlreadyHashed 	If the password has already been hashed, set this to true
+	 * @param 	boolean $pAlreadyHashed 	If the password has already been hashed, set this to TRUE
 	 * @throws	Exception
 	 * @return PHPExcel_Worksheet
 	 */
@@ -1610,7 +1610,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	 * @param 	int 	$pColumn2			Numeric column coordinate of the last cell
 	 * @param 	int 	$pRow2				Numeric row coordinate of the last cell
 	 * @param 	string	$pPassword			Password to unlock the protection
-	 * @param 	boolean $pAlreadyHashed 	If the password has already been hashed, set this to true
+	 * @param 	boolean $pAlreadyHashed 	If the password has already been hashed, set this to TRUE
 	 * @throws	Exception
 	 * @return PHPExcel_Worksheet
 	 */
@@ -1849,7 +1849,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	/**
 	 * Set show gridlines
 	 *
-	 * @param boolean $pValue	Show gridlines (true/false)
+	 * @param boolean $pValue	Show gridlines (TRUE/false)
 	 * @return PHPExcel_Worksheet
 	 */
 	public function setShowGridlines($pValue = false) {
@@ -1869,7 +1869,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	/**
 	 * Set print gridlines
 	 *
-	 * @param boolean $pValue Print gridlines (true/false)
+	 * @param boolean $pValue Print gridlines (TRUE/false)
 	 * @return PHPExcel_Worksheet
 	 */
 	public function setPrintGridlines($pValue = false) {
@@ -1889,10 +1889,10 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	/**
 	 * Set show summary below
 	 *
-	 * @param boolean $pValue	Show summary below (true/false)
+	 * @param boolean $pValue	Show summary below (TRUE/false)
 	 * @return PHPExcel_Worksheet
 	 */
-	public function setShowSummaryBelow($pValue = true) {
+	public function setShowSummaryBelow($pValue = TRUE) {
 		$this->_showSummaryBelow = $pValue;
 		return $this;
 	}
@@ -1909,10 +1909,10 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	/**
 	 * Set show summary right
 	 *
-	 * @param boolean $pValue	Show summary right (true/false)
+	 * @param boolean $pValue	Show summary right (TRUE/false)
 	 * @return PHPExcel_Worksheet
 	 */
-	public function setShowSummaryRight($pValue = true) {
+	public function setShowSummaryRight($pValue = TRUE) {
 		$this->_showSummaryRight = $pValue;
 		return $this;
 	}
@@ -2071,7 +2071,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	/**
 	 * Set right-to-left
 	 *
-	 * @param boolean $value Right-to-left true/false
+	 * @param boolean $value Right-to-left TRUE/false
 	 * @return PHPExcel_Worksheet
 	 */
 	public function setRightToLeft($value = false) {
@@ -2122,7 +2122,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	 * @param boolean $calculateFormulas Should formulas be calculated?
 	 * @return array
 	 */
-	public function toArray($nullValue = null, $calculateFormulas = true) {
+	public function toArray($nullValue = null, $calculateFormulas = TRUE) {
 		// Returnvalue
 		$returnValue = array();
 
@@ -2185,7 +2185,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 		$imageCoordinates = array();
 		$iterator = $this->getDrawingCollection()->getIterator();
 		while ($iterator->valid()) {
-			$imageCoordinates[$iterator->current()->getCoordinates()] = true;
+			$imageCoordinates[$iterator->current()->getCoordinates()] = TRUE;
 
 			$iterator->next();
 		}
@@ -2203,12 +2203,12 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 			if (is_null($cell->getValue()) || (!is_object($cell->getValue()) && $cell->getValue() === '' && !$cell->hasHyperlink())) {
 				// default style ?
 				if ($cell->getXfIndex() == 0) {
-					$canBeCleaned = true;
+					$canBeCleaned = TRUE;
 				}
 			}
 
 			// Referenced in image?
-			if (isset($imageCoordinates[$coordinate]) && $imageCoordinates[$coordinate] === true) {
+			if (isset($imageCoordinates[$coordinate]) && $imageCoordinates[$coordinate] === TRUE) {
 				$canBeCleaned = false;
 			}
 
@@ -2272,7 +2272,7 @@ class PHPExcel_Worksheet implements PHPExcel_IComparable
 	 * Extract worksheet title from range.
 	 *
 	 * Example: extractSheetTitle('test!A1') ==> 'A1'
-	 * Example: extractSheetTitle('test!A1', true) ==> array('test', 'A1');
+	 * Example: extractSheetTitle('test!A1', TRUE) ==> array('test', 'A1');
 	 *
 	 * @param string $pRange	Range to extract title from
 	 * @param bool $returnRange	Return range? (see example)

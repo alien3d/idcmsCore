@@ -81,7 +81,7 @@ class PHPExcel_Logarithmic_Best_Fit extends PHPExcel_Best_Fit
 	}	//	function _logarithmic_regression()
 
 
-	function __construct($yValues, $xValues=array(), $const=True) {
+	function __construct($yValues, $xValues=array(), $const=TRUE) {
 		if (parent::__construct($yValues, $xValues) !== False) {
 			$this->_logarithmic_regression($yValues, $xValues, $const);
 		}

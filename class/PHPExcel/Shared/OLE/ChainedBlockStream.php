@@ -79,7 +79,7 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
 	 * @param  string  only "r" is supported
 	 * @param  int     mask of STREAM_REPORT_ERRORS and STREAM_USE_PATH
 	 * @param  string  absolute path of the opened stream (out parameter)
-	 * @return bool    true on success
+	 * @return bool    TRUE on success
 	 */
 	public function stream_open($path, $mode, $options, &$openedPath)
 	{
@@ -134,7 +134,7 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
 			$openedPath = $path;
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -205,7 +205,7 @@ class PHPExcel_Shared_OLE_ChainedBlockStream
 		} else {
 			return false;
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**

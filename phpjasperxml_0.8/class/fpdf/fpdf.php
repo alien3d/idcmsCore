@@ -169,11 +169,11 @@ function FPDF($orientation='P',$unit='mm',$format='A4')
 	//Line width (0.2 mm)
 	$this->LineWidth=.567/$this->k;
 	//Automatic page break
-	$this->SetAutoPageBreak(true,2*$margin);
+	$this->SetAutoPageBreak(TRUE,2*$margin);
 	//Full width display mode
 	$this->SetDisplayMode('fullwidth');
 	//Enable compression
-	$this->SetCompression(true);
+	$this->SetCompression(TRUE);
 	//Set default PDF version number
 	$this->PDFVersion='1.3';
 }
@@ -294,7 +294,7 @@ function Close()
 	if($this->page==0)
 		$this->AddPage();
 	//Page footer
-	$this->InFooter=true;
+	$this->InFooter=TRUE;
 	$this->Footer();
 	$this->InFooter=false;
 	//Close page
@@ -319,7 +319,7 @@ function AddPage($orientation='')
 	if($this->page>0)
 	{
 		//Page footer
-		$this->InFooter=true;
+		$this->InFooter=TRUE;
 		$this->Footer();
 		$this->InFooter=false;
 		//Close page
@@ -459,7 +459,7 @@ function Rect($x,$y,$w,$h,$style='')
 
 function AddFont($family,$style='',$file='')
 {
-	//Add a TrueType or Type1 font
+	//Add a TRUEType or Type1 font
 	$family=strtolower($family);
 	if($file=='')
 		$file=str_replace(' ','',$family).strtolower($style).'.php';
@@ -498,7 +498,7 @@ function AddFont($family,$style='',$file='')
 	}
 	if($file)
 	{
-		if($type=='TrueType')
+		if($type=='TRUEType')
 			$this->FontFiles[$file]=array('length1'=>$originalsize);
 		else
 			$this->FontFiles[$file]=array('length1'=>$size1,'length2'=>$size2);
@@ -520,7 +520,7 @@ function SetFont($family,$style='',$size=0)
 	$style=strtoupper($style);
 	if(strpos($style,'U')!==false)
 	{
-		$this->underline=true;
+		$this->underline=TRUE;
 		$style=str_replace('U','',$style);
 	}
 	else
@@ -1216,9 +1216,9 @@ function _putfonts()
 			$this->_out('>>');
 			$this->_out('endobj');
 		}
-		elseif($type=='Type1' || $type=='TrueType')
+		elseif($type=='Type1' || $type=='TRUEType')
 		{
-			//Additional Type1 or TrueType font
+			//Additional Type1 or TRUEType font
 			$this->_newobj();
 			$this->_out('<</Type /Font');
 			$this->_out('/BaseFont /'.$name);
@@ -1442,7 +1442,7 @@ function _beginpage($orientation)
 	{
 		$orientation=strtoupper($orientation{0});
 		if($orientation!=$this->DefOrientation)
-			$this->OrientationChanges[$this->page]=true;
+			$this->OrientationChanges[$this->page]=TRUE;
 	}
 	if($orientation!=$this->CurOrientation)
 	{

@@ -70,7 +70,7 @@ class PHPExcel_Shared_Date
 		if (($baseDate == self::CALENDAR_WINDOWS_1900) ||
 		($baseDate == self::CALENDAR_MAC_1904)) {
 			self::$ExcelBaseDate = $baseDate;
-			return True;
+			return TRUE;
 		}
 		return False;
 	}	//	function setExcelCalendar()
@@ -186,7 +186,7 @@ class PHPExcel_Shared_Date
 			//	Fudge factor for the erroneous fact that the year 1900 is treated as a Leap Year in MS Excel
 			//	This affects every date following 28th February 1900
 			//
-			$excel1900isLeapYear = True;
+			$excel1900isLeapYear = TRUE;
 			if (($year == 1900) && ($month <= 2)) { $excel1900isLeapYear = False; }
 			$myExcelBaseDate = 2415020;
 		} else {
@@ -268,12 +268,12 @@ class PHPExcel_Shared_Date
 			case PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX16:
 			case PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX17:
 			case PHPExcel_Style_NumberFormat::FORMAT_DATE_XLSX22:
-				return true;
+				return TRUE;
 		}
 
 		// Try checking for any of the date formatting characters that don't appear within square braces
 		if (preg_match('/(^|\])[^\[]*['.self::$possibleDateFormatCharacters.']/i',$pFormatCode)) {
-			return true;
+			return TRUE;
 		}
 
 		// No date...

@@ -72,7 +72,7 @@ class PHPExcel_Linear_Best_Fit extends PHPExcel_Best_Fit
 	}	//	function _linear_regression()
 
 
-	function __construct($yValues, $xValues=array(), $const=True) {
+	function __construct($yValues, $xValues=array(), $const=TRUE) {
 		if (parent::__construct($yValues, $xValues) !== False) {
 			$this->_linear_regression($yValues, $xValues, $const);
 		}

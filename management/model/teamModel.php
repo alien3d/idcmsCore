@@ -75,7 +75,7 @@ class TeamModel extends ValidationClass
         $this->setTotal(count($_GET['teamId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
         "isDelete", "isActive", "isApproved","isReview","isPost");
-        // auto assign as array if true
+        // auto assign as array if TRUE
         if (is_array($_GET['teamId'])) {
             $this->teamId = array();
         }
@@ -103,44 +103,44 @@ class TeamModel extends ValidationClass
         for ($i = 0; $i < $this->getTotal(); $i ++) {
             $this->setTeamId($this->strict($_GET['teamId'][$i], 'numeric'), 
             $i, 'array');
-            if ($_GET['isDefault'][$i] == 'true') {
+            if ($_GET['isDefault'][$i] == 'TRUE') {
                 $this->setIsDefault(1, $i, 'array');
             } else 
                 if ($_GET['default'] == 'false') {
                     $this->setIsDefault(0, $i, 'array');
                 }
-            if ($_GET['isNew'][$i] == 'true') {
+            if ($_GET['isNew'][$i] == 'TRUE') {
                 $this->setIsNew(1, $i, 'array');
             } else {
                 $this->setIsNew(0, $i, 'array');
             }
-            if ($_GET['isDraft'][$i] == 'true') {
+            if ($_GET['isDraft'][$i] == 'TRUE') {
                 $this->setIsDraft(1, $i, 'array');
             } else {
                 $this->setIsDraft(0, $i, 'array');
             }
-            if ($_GET['isUpdate'][$i] == 'true') {
+            if ($_GET['isUpdate'][$i] == 'TRUE') {
                 $this->setIsUpdate(1, $i, 'array');
             } else {
                 $this->setIsUpdate(0, $i, 'array');
             }
-            if ($_GET['isDelete'][$i] == 'true') {
+            if ($_GET['isDelete'][$i] == 'TRUE') {
                 $this->setIsDelete(1, $i, 'array');
             } else 
                 if ($_GET['isDelete'][$i] == 'false') {
                     $this->setIsDelete(0, $i, 'array');
                 }
-            if ($_GET['isActive'][$i] == 'true') {
+            if ($_GET['isActive'][$i] == 'TRUE') {
                 $this->setIsActive(1, $i, 'array');
             } else {
                 $this->setIsActive(0, $i, 'array');
             }
-            if ($_GET['isApproved'][$i] == 'true') {
+            if ($_GET['isApproved'][$i] == 'TRUE') {
                 $this->setIsApproved(1, $i, 'array');
             } else {
                 $this->setIsApproved(0, $i, 'array');
             }
-            $primaryKeyAll .= $this->getDefaultLabelId($i, 'array') . ",";
+            $primaryKeyAll .= $this->getTeamId($i, 'array') . ",";
         }
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
     }

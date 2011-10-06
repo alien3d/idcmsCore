@@ -268,7 +268,7 @@ class PHPExcel_Calculation_FormulaParser {
 					$tokens1[] = new PHPExcel_Calculation_FormulaToken($value, PHPExcel_Calculation_FormulaToken::TOKEN_TYPE_UNKNOWN);
 					$value = "";
 				}
-				$inString = true;
+				$inString = TRUE;
 				++$index;
 				continue;
 			}
@@ -278,13 +278,13 @@ class PHPExcel_Calculation_FormulaParser {
 					$tokens1[] = new PHPExcel_Calculation_FormulaToken($value, PHPExcel_Calculation_FormulaToken::TOKEN_TYPE_UNKNOWN);
 					$value = "";
 				}
-				$inPath = true;
+				$inPath = TRUE;
 				++$index;
 				continue;
 			}
 
 			if ($this->_formula{$index} == PHPExcel_Calculation_FormulaParser::BRACKET_OPEN) {
-				$inRange = true;
+				$inRange = TRUE;
 				$value .= PHPExcel_Calculation_FormulaParser::BRACKET_OPEN;
 				++$index;
 				continue;
@@ -295,7 +295,7 @@ class PHPExcel_Calculation_FormulaParser {
 					$tokens1[] = new PHPExcel_Calculation_FormulaToken($value, PHPExcel_Calculation_FormulaToken::TOKEN_TYPE_UNKNOWN);
 					$value = "";
 				}
-				$inError = true;
+				$inError = TRUE;
 				$value .= PHPExcel_Calculation_FormulaParser::ERROR_START;
 				++$index;
 				continue;

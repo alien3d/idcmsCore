@@ -89,7 +89,7 @@ class PHPExcel_Cell_AdvancedValueBinder extends PHPExcel_Cell_DefaultValueBinder
 				// Set style
 				$cell->getParent()->getStyle( $cell->getCoordinate() )->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_PERCENTAGE );
 
-				return true;
+				return TRUE;
 			}
 				
 			// Check for time e.g. '9:45', '09:45'
@@ -103,7 +103,7 @@ class PHPExcel_Cell_AdvancedValueBinder extends PHPExcel_Cell_DefaultValueBinder
 				// Set style
 				$cell->getParent()->getStyle( $cell->getCoordinate() )->getNumberFormat()->setFormatCode( PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME3 );
 
-				return true;
+				return TRUE;
 			}
 				
 			// Check for date
@@ -121,7 +121,7 @@ class PHPExcel_Cell_AdvancedValueBinder extends PHPExcel_Cell_DefaultValueBinder
 				// restore original value for timezone
 				date_default_timezone_set($saveTimeZone);
 
-				return true;
+				return TRUE;
 			}
 		}
 

@@ -101,7 +101,7 @@ class PHPExcel_Shared_String
 		}
 
 		self::$_isMbstringEnabled = function_exists('mb_convert_encoding') ?
-		true : false;
+		TRUE : false;
 
 		return self::$_isMbstringEnabled;
 	}
@@ -126,7 +126,7 @@ class PHPExcel_Shared_String
 		&& @iconv('UTF-8', 'UTF-16LE', 'x')
 		&& @iconv_substr('A', 0, 1, 'UTF-8') ) {
 
-			self::$_isIconvEnabled = true;
+			self::$_isIconvEnabled = TRUE;
 		} else {
 			self::$_isIconvEnabled = false;
 		}
@@ -362,7 +362,7 @@ class PHPExcel_Shared_String
 			$sign = ($match[1] == '-') ? '-' : '+';
 			$fractionFormula = '='.$sign.$match[2].$sign.$match[3];
 			$operand = PHPExcel_Calculation::getInstance()->_calculateFormulaValue($fractionFormula);
-			return true;
+			return TRUE;
 		}
 		return false;
 	}	//	function convertToNumberIfFraction()

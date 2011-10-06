@@ -160,7 +160,7 @@ class PHPExcel_Calculation_Functions {
 										 	($compatibilityMode == self::COMPATIBILITY_GNUMERIC) ||
 										 	($compatibilityMode == self::COMPATIBILITY_OPENOFFICE)) {
 										 		self::$compatibilityMode = $compatibilityMode;
-										 		return True;
+										 		return TRUE;
 										 	}
 										 	return False;
 										 }	//	function setCompatibilityMode()
@@ -199,7 +199,7 @@ class PHPExcel_Calculation_Functions {
 										 	($returnDateType == self::RETURNDATE_PHP_OBJECT) ||
 										 	($returnDateType == self::RETURNDATE_EXCEL)) {
 										 		self::$ReturnDateType = $returnDateType;
-										 		return True;
+										 		return TRUE;
 										 	}
 										 	return False;
 										 }	//	function setReturnDateType()
@@ -319,8 +319,8 @@ class PHPExcel_Calculation_Functions {
 										  *		The arguments must evaluate to logical values such as TRUE or FALSE, or the arguments must be arrays
 										  *			or references that contain logical values.
 										  *
-										  *		Boolean arguments are treated as True or False as appropriate
-										  *		Integer or floating point arguments are treated as True, except for 0 or 0.0 which are False
+										  *		Boolean arguments are treated as TRUE or False as appropriate
+										  *		Integer or floating point arguments are treated as TRUE, except for 0 or 0.0 which are False
 										  *		If any argument value is a string, or a Null, the function returns a #VALUE! error, unless the string holds
 										  *			the value TRUE or FALSE, in which case it is evaluated as the corresponding boolean value
 										  *
@@ -331,7 +331,7 @@ class PHPExcel_Calculation_Functions {
 										  */
 										 public static function LOGICAL_AND() {
 										 	// Return value
-										 	$returnValue = True;
+										 	$returnValue = TRUE;
 
 										 	// Loop through the arguments
 										 	$aArgs = self::flattenArray(func_get_args());
@@ -375,8 +375,8 @@ class PHPExcel_Calculation_Functions {
 										  *		The arguments must evaluate to logical values such as TRUE or FALSE, or the arguments must be arrays
 										  *			or references that contain logical values.
 										  *
-										  *		Boolean arguments are treated as True or False as appropriate
-										  *		Integer or floating point arguments are treated as True, except for 0 or 0.0 which are False
+										  *		Boolean arguments are treated as TRUE or False as appropriate
+										  *		Integer or floating point arguments are treated as TRUE, except for 0 or 0.0 which are False
 										  *		If any argument value is a string, or a Null, the function returns a #VALUE! error, unless the string holds
 										  *			the value TRUE or FALSE, in which case it is evaluated as the corresponding boolean value
 										  *
@@ -447,10 +447,10 @@ class PHPExcel_Calculation_Functions {
 										  *
 										  *	@access	public
 										  *	@category Logical Functions
-										  *	@return	boolean		True
+										  *	@return	boolean		TRUE
 										  */
 										 public static function LOGICAL_TRUE() {
-										 	return True;
+										 	return TRUE;
 										 }	//	function LOGICAL_TRUE()
 
 
@@ -464,8 +464,8 @@ class PHPExcel_Calculation_Functions {
 										  *
 										  *		The argument must evaluate to a logical value such as TRUE or FALSE
 										  *
-										  *		Boolean arguments are treated as True or False as appropriate
-										  *		Integer or floating point arguments are treated as True, except for 0 or 0.0 which are False
+										  *		Boolean arguments are treated as TRUE or False as appropriate
+										  *		Integer or floating point arguments are treated as TRUE, except for 0 or 0.0 which are False
 										  *		If any argument value is a string, or a Null, the function returns a #VALUE! error, unless the string holds
 										  *			the value TRUE or FALSE, in which case it is evaluated as the corresponding boolean value
 										  *
@@ -481,7 +481,7 @@ class PHPExcel_Calculation_Functions {
 										 		if ($logical == 'TRUE') {
 										 			return False;
 										 		} elseif ($logical == 'FALSE') {
-										 			return True;
+										 			return TRUE;
 										 		} else {
 										 			return self::$_errorCodes['value'];
 										 		}
@@ -497,18 +497,18 @@ class PHPExcel_Calculation_Functions {
 										  *	Returns one value if a condition you specify evaluates to TRUE and another value if it evaluates to FALSE.
 										  *
 										  *	Excel Function:
-										  *		=IF(condition[,returnIfTrue[,returnIfFalse]])
+										  *		=IF(condition[,returnIfTRUE[,returnIfFalse]])
 										  *
 										  *		Condition is any value or expression that can be evaluated to TRUE or FALSE.
 										  *			For example, A10=100 is a logical expression; if the value in cell A10 is equal to 100,
 										  *			the expression evaluates to TRUE. Otherwise, the expression evaluates to FALSE.
 										  *			This argument can use any comparison calculation operator.
-										  *		ReturnIfTrue is the value that is returned if condition evaluates to TRUE.
+										  *		ReturnIfTRUE is the value that is returned if condition evaluates to TRUE.
 										  *			For example, if this argument is the text string "Within budget" and the condition argument evaluates to TRUE,
 										  *			then the IF function returns the text "Within budget"
-										  *			If condition is TRUE and ReturnIfTrue is blank, this argument returns 0 (zero). To display the word TRUE, use
+										  *			If condition is TRUE and ReturnIfTRUE is blank, this argument returns 0 (zero). To display the word TRUE, use
 										  *			the logical value TRUE for this argument.
-										  *			ReturnIfTrue can be another formula.
+										  *			ReturnIfTRUE can be another formula.
 										  *		ReturnIfFalse is the value that is returned if condition evaluates to FALSE.
 										  *			For example, if this argument is the text string "Over budget" and the condition argument evaluates to FALSE,
 										  *			then the IF function returns the text "Over budget".
@@ -519,16 +519,16 @@ class PHPExcel_Calculation_Functions {
 										  *	@access	public
 										  *	@category Logical Functions
 										  *	@param	mixed	$condition		Condition to evaluate
-										  *	@param	mixed	$returnIfTrue	Value to return when condition is true
+										  *	@param	mixed	$returnIfTRUE	Value to return when condition is TRUE
 										  *	@param	mixed	$returnIfFalse	Optional value to return when condition is false
-										  *	@return	mixed	The value of returnIfTrue or returnIfFalse determined by condition
+										  *	@return	mixed	The value of returnIfTRUE or returnIfFalse determined by condition
 										  */
-										 public static function STATEMENT_IF($condition = true, $returnIfTrue = 0, $returnIfFalse = False) {
-										 	$condition		= (is_null($condition))		? True :	(boolean) self::flattenSingleValue($condition);
-										 	$returnIfTrue	= (is_null($returnIfTrue))	? 0 :		self::flattenSingleValue($returnIfTrue);
+										 public static function STATEMENT_IF($condition = TRUE, $returnIfTRUE = 0, $returnIfFalse = False) {
+										 	$condition		= (is_null($condition))		? TRUE :	(boolean) self::flattenSingleValue($condition);
+										 	$returnIfTRUE	= (is_null($returnIfTRUE))	? 0 :		self::flattenSingleValue($returnIfTRUE);
 										 	$returnIfFalse	= (is_null($returnIfFalse))	? False :	self::flattenSingleValue($returnIfFalse);
 
-										 	return ($condition ? $returnIfTrue : $returnIfFalse);
+										 	return ($condition ? $returnIfTRUE : $returnIfFalse);
 										 }	//	function STATEMENT_IF()
 
 
@@ -1403,7 +1403,7 @@ class PHPExcel_Calculation_Functions {
 										 		foreach($frequencyArray as $key => $value) {
 										 			if ((string) $value['value'] == (string) $datum) {
 										 				++$frequencyArray[$key]['frequency'];
-										 				$found = True;
+										 				$found = TRUE;
 										 				break;
 										 			}
 										 		}
@@ -2174,7 +2174,7 @@ class PHPExcel_Calculation_Functions {
 										 	$array1 = array_merge($array1);
 										 	$array2 = array_merge($array2);
 
-										 	return True;
+										 	return TRUE;
 										 }	//	function _checkTrendArrays()
 
 
@@ -2355,8 +2355,8 @@ class PHPExcel_Calculation_Functions {
 										  *	@param	boolean				A logical value specifying whether to return additional regression statistics.
 										  *	@return	array
 										  */
-										 public static function LINEST($yValues,$xValues=null,$const=True,$stats=False) {
-										 	$const	= (is_null($const))	? True :	(boolean) self::flattenSingleValue($const);
+										 public static function LINEST($yValues,$xValues=null,$const=TRUE,$stats=False) {
+										 	$const	= (is_null($const))	? TRUE :	(boolean) self::flattenSingleValue($const);
 										 	$stats	= (is_null($stats))	? False :	(boolean) self::flattenSingleValue($stats);
 										 	if (is_null($xValues)) $xValues = range(1,count(self::flattenArray($yValues)));
 
@@ -2408,8 +2408,8 @@ class PHPExcel_Calculation_Functions {
 										  *	@param	boolean				A logical value specifying whether to return additional regression statistics.
 										  *	@return	array
 										  */
-										 public static function LOGEST($yValues,$xValues=null,$const=True,$stats=False) {
-										 	$const	= (is_null($const))	? True :	(boolean) self::flattenSingleValue($const);
+										 public static function LOGEST($yValues,$xValues=null,$const=TRUE,$stats=False) {
+										 	$const	= (is_null($const))	? TRUE :	(boolean) self::flattenSingleValue($const);
 										 	$stats	= (is_null($stats))	? False :	(boolean) self::flattenSingleValue($stats);
 										 	if (is_null($xValues)) $xValues = range(1,count(self::flattenArray($yValues)));
 
@@ -2499,11 +2499,11 @@ class PHPExcel_Calculation_Functions {
 										  *	@param	boolean				A logical value specifying whether to force the intersect to equal 0.
 										  *	@return	array of float
 										  */
-										 public static function TREND($yValues,$xValues=array(),$newValues=array(),$const=True) {
+										 public static function TREND($yValues,$xValues=array(),$newValues=array(),$const=TRUE) {
 										 	$yValues = self::flattenArray($yValues);
 										 	$xValues = self::flattenArray($xValues);
 										 	$newValues = self::flattenArray($newValues);
-										 	$const	= (is_null($const))	? True :	(boolean) self::flattenSingleValue($const);
+										 	$const	= (is_null($const))	? TRUE :	(boolean) self::flattenSingleValue($const);
 
 										 	$bestFitLinear = trendClass::calculate(trendClass::TREND_LINEAR,$yValues,$xValues,$const);
 										 	if (count($newValues) == 0) {
@@ -2530,11 +2530,11 @@ class PHPExcel_Calculation_Functions {
 										  *	@param	boolean				A logical value specifying whether to force the intersect to equal 0.
 										  *	@return	array of float
 										  */
-										 public static function GROWTH($yValues,$xValues=array(),$newValues=array(),$const=True) {
+										 public static function GROWTH($yValues,$xValues=array(),$newValues=array(),$const=TRUE) {
 										 	$yValues = self::flattenArray($yValues);
 										 	$xValues = self::flattenArray($xValues);
 										 	$newValues = self::flattenArray($newValues);
-										 	$const	= (is_null($const))	? True :	(boolean) self::flattenSingleValue($const);
+										 	$const	= (is_null($const))	? TRUE :	(boolean) self::flattenSingleValue($const);
 
 										 	$bestFitExponential = trendClass::calculate(trendClass::TREND_EXPONENTIAL,$yValues,$xValues,$const);
 										 	if (count($newValues) == 0) {
@@ -3377,7 +3377,7 @@ class PHPExcel_Calculation_Functions {
 										 			$TotalUnscaledProbability += $CurrentValue;
 										 			if ($k == $Guess) { $UnscaledPGuess += $CurrentValue; }
 										 			if ($k <= $Guess) { $UnscaledCumPGuess += $CurrentValue; }
-										 			if ($CurrentValue <= $EssentiallyZero) { $Done = True; }
+										 			if ($CurrentValue <= $EssentiallyZero) { $Done = TRUE; }
 										 			$PreviousValue = $CurrentValue;
 										 			++$k;
 										 		}
@@ -3390,7 +3390,7 @@ class PHPExcel_Calculation_Functions {
 										 			$TotalUnscaledProbability += $CurrentValue;
 										 			if ($k == $Guess) { $UnscaledPGuess += $CurrentValue; }
 										 			if ($k <= $Guess) { $UnscaledCumPGuess += $CurrentValue; }
-										 			if ($CurrentValue <= $EssentiallyZero) { $Done = True; }
+										 			if ($CurrentValue <= $EssentiallyZero) { $Done = TRUE; }
 										 			$PreviousValue = $CurrentValue;
 										 			--$k;
 										 		}
@@ -3401,7 +3401,7 @@ class PHPExcel_Calculation_Functions {
 										 		//			$CumPGuessMinus1 = $CumPGuess - $PGuess;
 										 		$CumPGuessMinus1 = $CumPGuess - 1;
 
-										 		while (True) {
+										 		while (TRUE) {
 										 			if (($CumPGuessMinus1 < $alpha) && ($CumPGuess >= $alpha)) {
 										 				return $Guess;
 										 			} elseif (($CumPGuessMinus1 < $alpha) && ($CumPGuess < $alpha)) {
@@ -4111,7 +4111,7 @@ class PHPExcel_Calculation_Functions {
 
 										 		while ((abs($dx) > PRECISION) && ($i++ < MAX_ITERATIONS)) {
 										 			// Apply Newton-Raphson step
-										 			$error = self::GAMMADIST($x, $alpha, $beta, True) - $probability;
+										 			$error = self::GAMMADIST($x, $alpha, $beta, TRUE) - $probability;
 										 			if ($error < 0.0) {
 										 				$xLo = $x;
 										 			} else {
@@ -4210,7 +4210,7 @@ class PHPExcel_Calculation_Functions {
 										 public static function NORMSDIST($value) {
 										 	$value	= self::flattenSingleValue($value);
 
-										 	return self::NORMDIST($value, 0, 1, True);
+										 	return self::NORMDIST($value, 0, 1, TRUE);
 										 }	//	function NORMSDIST()
 
 
@@ -4979,7 +4979,7 @@ class PHPExcel_Calculation_Functions {
 										 			$characters = (int) $characters;
 										 		} else {
 										 			if ($characters) {
-										 				$characters = 'True';
+										 				$characters = 'TRUE';
 										 			} else {
 										 				$characters = 'False';
 										 			}
@@ -5492,7 +5492,7 @@ class PHPExcel_Calculation_Functions {
 										  *	@param	mixed	$value		Value to check
 										  *	@return	boolean
 										  */
-										 public static function IS_LOGICAL($value = true) {
+										 public static function IS_LOGICAL($value = TRUE) {
 										 	$value		= self::flattenSingleValue($value);
 
 										 	return is_bool($value);
@@ -5685,7 +5685,7 @@ class PHPExcel_Calculation_Functions {
 										 				return self::$_errorCodes['value'];
 										 			} else {
 										 				$t += 1900;
-										 				$yearFound = true;
+										 				$yearFound = TRUE;
 										 			}
 										 		}
 										 	}
@@ -6063,7 +6063,7 @@ class PHPExcel_Calculation_Functions {
 										 				return self::DATEDIF($startDate,$endDate) / 365;
 										 				break;
 										 			case 4	:
-										 				return self::DAYS360($startDate,$endDate,True) / 360;
+										 				return self::DAYS360($startDate,$endDate,TRUE) / 360;
 										 				break;
 										 		}
 										 	}
@@ -7591,52 +7591,52 @@ class PHPExcel_Calculation_Functions {
 										 }	//	function IMPRODUCT()
 
 
-										 private static $_conversionUnits = array( 'g'		=> array(	'Group'	=> 'Mass',			'Unit Name'	=> 'Gram',						'AllowPrefix'	=> True		),
+										 private static $_conversionUnits = array( 'g'		=> array(	'Group'	=> 'Mass',			'Unit Name'	=> 'Gram',						'AllowPrefix'	=> TRUE		),
 											  'sg'		=> array(	'Group'	=> 'Mass',			'Unit Name'	=> 'Slug',						'AllowPrefix'	=> False	),
 											  'lbm'		=> array(	'Group'	=> 'Mass',			'Unit Name'	=> 'Pound mass (avoirdupois)',	'AllowPrefix'	=> False	),
-											  'u'		=> array(	'Group'	=> 'Mass',			'Unit Name'	=> 'U (atomic mass unit)',		'AllowPrefix'	=> True		),
+											  'u'		=> array(	'Group'	=> 'Mass',			'Unit Name'	=> 'U (atomic mass unit)',		'AllowPrefix'	=> TRUE		),
 											  'ozm'		=> array(	'Group'	=> 'Mass',			'Unit Name'	=> 'Ounce mass (avoirdupois)',	'AllowPrefix'	=> False	),
-											  'm'		=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Meter',						'AllowPrefix'	=> True		),
+											  'm'		=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Meter',						'AllowPrefix'	=> TRUE		),
 											  'mi'		=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Statute mile',				'AllowPrefix'	=> False	),
 											  'Nmi'		=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Nautical mile',				'AllowPrefix'	=> False	),
 											  'in'		=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Inch',						'AllowPrefix'	=> False	),
 											  'ft'		=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Foot',						'AllowPrefix'	=> False	),
 											  'yd'		=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Yard',						'AllowPrefix'	=> False	),
-											  'ang'		=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Angstrom',					'AllowPrefix'	=> True		),
+											  'ang'		=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Angstrom',					'AllowPrefix'	=> TRUE		),
 											  'Pica'	=> array(	'Group'	=> 'Distance',		'Unit Name'	=> 'Pica (1/72 in)',			'AllowPrefix'	=> False	),
 											  'yr'		=> array(	'Group'	=> 'Time',			'Unit Name'	=> 'Year',						'AllowPrefix'	=> False	),
 											  'day'		=> array(	'Group'	=> 'Time',			'Unit Name'	=> 'Day',						'AllowPrefix'	=> False	),
 											  'hr'		=> array(	'Group'	=> 'Time',			'Unit Name'	=> 'Hour',						'AllowPrefix'	=> False	),
 											  'mn'		=> array(	'Group'	=> 'Time',			'Unit Name'	=> 'Minute',					'AllowPrefix'	=> False	),
-											  'sec'		=> array(	'Group'	=> 'Time',			'Unit Name'	=> 'Second',					'AllowPrefix'	=> True		),
-											  'Pa'		=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'Pascal',					'AllowPrefix'	=> True		),
-											  'p'		=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'Pascal',					'AllowPrefix'	=> True		),
-											  'atm'		=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'Atmosphere',				'AllowPrefix'	=> True		),
-											  'at'		=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'Atmosphere',				'AllowPrefix'	=> True		),
-											  'mmHg'	=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'mm of Mercury',				'AllowPrefix'	=> True		),
-											  'N'		=> array(	'Group'	=> 'Force',			'Unit Name'	=> 'Newton',					'AllowPrefix'	=> True		),
-											  'dyn'		=> array(	'Group'	=> 'Force',			'Unit Name'	=> 'Dyne',						'AllowPrefix'	=> True		),
-											  'dy'		=> array(	'Group'	=> 'Force',			'Unit Name'	=> 'Dyne',						'AllowPrefix'	=> True		),
+											  'sec'		=> array(	'Group'	=> 'Time',			'Unit Name'	=> 'Second',					'AllowPrefix'	=> TRUE		),
+											  'Pa'		=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'Pascal',					'AllowPrefix'	=> TRUE		),
+											  'p'		=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'Pascal',					'AllowPrefix'	=> TRUE		),
+											  'atm'		=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'Atmosphere',				'AllowPrefix'	=> TRUE		),
+											  'at'		=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'Atmosphere',				'AllowPrefix'	=> TRUE		),
+											  'mmHg'	=> array(	'Group'	=> 'Pressure',		'Unit Name'	=> 'mm of Mercury',				'AllowPrefix'	=> TRUE		),
+											  'N'		=> array(	'Group'	=> 'Force',			'Unit Name'	=> 'Newton',					'AllowPrefix'	=> TRUE		),
+											  'dyn'		=> array(	'Group'	=> 'Force',			'Unit Name'	=> 'Dyne',						'AllowPrefix'	=> TRUE		),
+											  'dy'		=> array(	'Group'	=> 'Force',			'Unit Name'	=> 'Dyne',						'AllowPrefix'	=> TRUE		),
 											  'lbf'		=> array(	'Group'	=> 'Force',			'Unit Name'	=> 'Pound force',				'AllowPrefix'	=> False	),
-											  'J'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Joule',						'AllowPrefix'	=> True		),
-											  'e'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Erg',						'AllowPrefix'	=> True		),
-											  'c'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Thermodynamic calorie',		'AllowPrefix'	=> True		),
-											  'cal'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'IT calorie',				'AllowPrefix'	=> True		),
-											  'eV'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Electron volt',				'AllowPrefix'	=> True		),
-											  'ev'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Electron volt',				'AllowPrefix'	=> True		),
+											  'J'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Joule',						'AllowPrefix'	=> TRUE		),
+											  'e'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Erg',						'AllowPrefix'	=> TRUE		),
+											  'c'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Thermodynamic calorie',		'AllowPrefix'	=> TRUE		),
+											  'cal'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'IT calorie',				'AllowPrefix'	=> TRUE		),
+											  'eV'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Electron volt',				'AllowPrefix'	=> TRUE		),
+											  'ev'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Electron volt',				'AllowPrefix'	=> TRUE		),
 											  'HPh'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Horsepower-hour',			'AllowPrefix'	=> False	),
 											  'hh'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Horsepower-hour',			'AllowPrefix'	=> False	),
-											  'Wh'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Watt-hour',					'AllowPrefix'	=> True		),
-											  'wh'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Watt-hour',					'AllowPrefix'	=> True		),
+											  'Wh'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Watt-hour',					'AllowPrefix'	=> TRUE		),
+											  'wh'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Watt-hour',					'AllowPrefix'	=> TRUE		),
 											  'flb'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'Foot-pound',				'AllowPrefix'	=> False	),
 											  'BTU'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'BTU',						'AllowPrefix'	=> False	),
 											  'btu'		=> array(	'Group'	=> 'Energy',		'Unit Name'	=> 'BTU',						'AllowPrefix'	=> False	),
 											  'HP'		=> array(	'Group'	=> 'Power',			'Unit Name'	=> 'Horsepower',				'AllowPrefix'	=> False	),
 											  'h'		=> array(	'Group'	=> 'Power',			'Unit Name'	=> 'Horsepower',				'AllowPrefix'	=> False	),
-											  'W'		=> array(	'Group'	=> 'Power',			'Unit Name'	=> 'Watt',						'AllowPrefix'	=> True		),
-											  'w'		=> array(	'Group'	=> 'Power',			'Unit Name'	=> 'Watt',						'AllowPrefix'	=> True		),
-											  'T'		=> array(	'Group'	=> 'Magnetism',		'Unit Name'	=> 'Tesla',						'AllowPrefix'	=> True		),
-											  'ga'		=> array(	'Group'	=> 'Magnetism',		'Unit Name'	=> 'Gauss',						'AllowPrefix'	=> True		),
+											  'W'		=> array(	'Group'	=> 'Power',			'Unit Name'	=> 'Watt',						'AllowPrefix'	=> TRUE		),
+											  'w'		=> array(	'Group'	=> 'Power',			'Unit Name'	=> 'Watt',						'AllowPrefix'	=> TRUE		),
+											  'T'		=> array(	'Group'	=> 'Magnetism',		'Unit Name'	=> 'Tesla',						'AllowPrefix'	=> TRUE		),
+											  'ga'		=> array(	'Group'	=> 'Magnetism',		'Unit Name'	=> 'Gauss',						'AllowPrefix'	=> TRUE		),
 											  'C'		=> array(	'Group'	=> 'Temperature',	'Unit Name'	=> 'Celsius',					'AllowPrefix'	=> False	),
 											  'cel'		=> array(	'Group'	=> 'Temperature',	'Unit Name'	=> 'Celsius',					'AllowPrefix'	=> False	),
 											  'F'		=> array(	'Group'	=> 'Temperature',	'Unit Name'	=> 'Fahrenheit',				'AllowPrefix'	=> False	),
@@ -7652,8 +7652,8 @@ class PHPExcel_Calculation_Functions {
 											  'uk_pt'	=> array(	'Group'	=> 'Liquid',		'Unit Name'	=> 'U.K. Pint',					'AllowPrefix'	=> False	),
 											  'qt'		=> array(	'Group'	=> 'Liquid',		'Unit Name'	=> 'Quart',						'AllowPrefix'	=> False	),
 											  'gal'		=> array(	'Group'	=> 'Liquid',		'Unit Name'	=> 'Gallon',					'AllowPrefix'	=> False	),
-											  'l'		=> array(	'Group'	=> 'Liquid',		'Unit Name'	=> 'Litre',						'AllowPrefix'	=> True		),
-											  'lt'		=> array(	'Group'	=> 'Liquid',		'Unit Name'	=> 'Litre',						'AllowPrefix'	=> True		)
+											  'l'		=> array(	'Group'	=> 'Liquid',		'Unit Name'	=> 'Litre',						'AllowPrefix'	=> TRUE		),
+											  'lt'		=> array(	'Group'	=> 'Liquid',		'Unit Name'	=> 'Litre',						'AllowPrefix'	=> TRUE		)
 											);
 
 											private static $_conversionMultipliers = array(	'Y'	=> array(	'multiplier'	=> 1E24,	'name'	=> 'yotta'	),
@@ -10361,7 +10361,7 @@ class PHPExcel_Calculation_Functions {
 											 *	@param	sheetText		Optional Name of worksheet to use
 											 *	@return	string
 											 */
-											public static function CELL_ADDRESS($row, $column, $relativity=1, $referenceStyle=True, $sheetText='') {
+											public static function CELL_ADDRESS($row, $column, $relativity=1, $referenceStyle=TRUE, $sheetText='') {
 												$row		= self::flattenSingleValue($row);
 												$column		= self::flattenSingleValue($column);
 												$relativity	= self::flattenSingleValue($relativity);
@@ -11149,7 +11149,7 @@ class PHPExcel_Calculation_Functions {
 											 * @param	not_exact_match	Determines if you are looking for an exact match based on lookup_value.
 											 * @return	mixed			The value of the found cell
 											 */
-											public static function VLOOKUP($lookup_value, $lookup_array, $index_number, $not_exact_match=true) {
+											public static function VLOOKUP($lookup_value, $lookup_array, $index_number, $not_exact_match=TRUE) {
 												// index_number must be greater than or equal to 1
 												if ($index_number < 1) {
 													return self::$_errorCodes['value'];
@@ -11385,7 +11385,7 @@ if (!function_exists('money_format')) {
 					  $left	= trim($fmatch[3]) ? (int)$fmatch[3] : 0;
 					  $right	= trim($fmatch[4]) ? (int)$fmatch[4] : $locale['int_frac_digits'];
 					  $conversion = $fmatch[5];
-					  $positive = true;
+					  $positive = TRUE;
 					  if ($number < 0) {
 					  	$positive = false;
 					  	$number *= -1;
@@ -11394,7 +11394,7 @@ if (!function_exists('money_format')) {
 					  $prefix = $suffix = $cprefix = $csuffix = $signal = '';
 					  if (!$positive) {
 					  	$signal = $locale['negative_sign'];
-					  	switch (true) {
+					  	switch (TRUE) {
 					  		case $locale['n_sign_posn'] == 0 || $flags['usesignal'] == '(':
 					  			$prefix = '(';
 					  			$suffix = ')';

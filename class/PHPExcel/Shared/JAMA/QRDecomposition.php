@@ -94,7 +94,7 @@ class QRDecomposition {
 	/**
 	 *	Is the matrix full rank?
 	 *
-	 *	@return boolean true if R, and hence A, has full rank, else false.
+	 *	@return boolean TRUE if R, and hence A, has full rank, else false.
 	 */
 	public function isFullRank() {
 		for ($j = 0; $j < $this->n; ++$j) {
@@ -102,7 +102,7 @@ class QRDecomposition {
 				return false;
 			}
 		}
-		return true;
+		return TRUE;
 	}	//	function isFullRank()
 
 

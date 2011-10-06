@@ -74,7 +74,7 @@ class TCPDFBarcode {
 	 * <li>$arrcode['maxh'] max bar height</li>
 	 * <li>$arrcode['maxw'] max bar width</li>
 	 * <li>$arrcode['bcode'][$k] single bar or space in $k position</li>
-	 * <li>$arrcode['bcode'][$k]['t'] bar type: true = bar, false = space.</li>
+	 * <li>$arrcode['bcode'][$k]['t'] bar type: TRUE = bar, false = space.</li>
 	 * <li>$arrcode['bcode'][$k]['w'] bar width in units.</li>
 	 * <li>$arrcode['bcode'][$k]['h'] bar height in units.</li>
 	 * <li>$arrcode['bcode'][$k]['p'] bar top position (0 = top, 1 = middle)</li></ul>
@@ -106,15 +106,15 @@ class TCPDFBarcode {
 				break;
 			}
 			case 'C39+': { // CODE 39 with checksum
-				$arrcode = $this->barcode_code39($code, false, true);
+				$arrcode = $this->barcode_code39($code, false, TRUE);
 				break;
 			}
 			case 'C39E': { // CODE 39 EXTENDED
-				$arrcode = $this->barcode_code39($code, true, false);
+				$arrcode = $this->barcode_code39($code, TRUE, false);
 				break;
 			}
 			case 'C39E+': { // CODE 39 EXTENDED + CHECKSUM
-				$arrcode = $this->barcode_code39($code, true, true);
+				$arrcode = $this->barcode_code39($code, TRUE, TRUE);
 				break;
 			}
 			case 'C93': { // CODE 93 - USS-93
@@ -126,7 +126,7 @@ class TCPDFBarcode {
 				break;
 			}
 			case 'S25+': { // Standard 2 of 5 + CHECKSUM
-				$arrcode = $this->barcode_s25($code, true);
+				$arrcode = $this->barcode_s25($code, TRUE);
 				break;
 			}
 			case 'I25': { // Interleaved 2 of 5
@@ -134,7 +134,7 @@ class TCPDFBarcode {
 				break;
 			}
 			case 'I25+': { // Interleaved 2 of 5 + CHECKSUM
-				$arrcode = $this->barcode_i25($code, true);
+				$arrcode = $this->barcode_i25($code, TRUE);
 				break;
 			}
 			case 'C128A': { // CODE 128 A
@@ -178,7 +178,7 @@ class TCPDFBarcode {
 				break;
 			}
 			case 'MSI+': { // MSI + CHECKSUM (modulo 11)
-				$arrcode = $this->barcode_msi($code, true);
+				$arrcode = $this->barcode_msi($code, TRUE);
 				break;
 			}
 			case 'POSTNET': { // POSTNET
@@ -186,7 +186,7 @@ class TCPDFBarcode {
 				break;
 			}
 			case 'PLANET': { // PLANET
-				$arrcode = $this->barcode_postnet($code, true);
+				$arrcode = $this->barcode_postnet($code, TRUE);
 				break;
 			}
 			case 'RMS4CC': { // RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code)
@@ -194,7 +194,7 @@ class TCPDFBarcode {
 				break;
 			}
 			case 'KIX': { // KIX (Klant index - Customer index)
-				$arrcode = $this->barcode_rms4cc($code, true);
+				$arrcode = $this->barcode_rms4cc($code, TRUE);
 				break;
 			}
 			case 'IMB': { // IMB - Intelligent Mail Barcode - Onecode - USPS-B-3200
@@ -230,7 +230,7 @@ class TCPDFBarcode {
 	 * CODE 39 - ANSI MH10.8M-1983 - USD-3 - 3 of 9.
 	 * General-purpose code in very wide use world-wide
 	 * @param string $code code to represent.
-	 * @param boolean $checksum if true add a checksum to the code
+	 * @param boolean $checksum if TRUE add a checksum to the code
 	 * @return array barcode representation.
 	 * @access protected
 	 */
@@ -306,7 +306,7 @@ class TCPDFBarcode {
 			}
 			for ($j = 0; $j < 9; ++$j) {
 				if (($j % 2) == 0) {
-					$t = true; // bar
+					$t = TRUE; // bar
 				} else {
 					$t = false; // space
 				}
@@ -399,7 +399,7 @@ class TCPDFBarcode {
 	 * CODE 93 - USS-93
 	 * Compact code similar to Code 39
 	 * @param string $code code to represent.
-	 * @param boolean $checksum if true add a checksum to the code
+	 * @param boolean $checksum if TRUE add a checksum to the code
 	 * @return array barcode representation.
 	 * @access protected
 	 */
@@ -509,7 +509,7 @@ class TCPDFBarcode {
 			}
 			for ($j = 0; $j < 6; ++$j) {
 				if (($j % 2) == 0) {
-					$t = true; // bar
+					$t = TRUE; // bar
 				} else {
 					$t = false; // space
 				}
@@ -519,7 +519,7 @@ class TCPDFBarcode {
 				++$k;
 			}
 		}
-		$bararray['bcode'][$k] = array('t' => true, 'w' => 1, 'h' => 1, 'p' => 0);
+		$bararray['bcode'][$k] = array('t' => TRUE, 'w' => 1, 'h' => 1, 'p' => 0);
 		$bararray['maxw'] += 1;
 		++$k;		
 		return $bararray;
@@ -598,7 +598,7 @@ class TCPDFBarcode {
 	 * Variation of Plessey code, with similar applications 
 	 * Contains digits (0 to 9) and encodes the data only in the width of bars.
 	 * @param string $code code to represent.
-	 * @param boolean $checksum if true add a checksum to the code (modulo 11)
+	 * @param boolean $checksum if TRUE add a checksum to the code (modulo 11)
 	 * @return array barcode representation.
 	 * @access protected
 	 */
@@ -657,7 +657,7 @@ class TCPDFBarcode {
 	 * Used in airline ticket marking, photofinishing
 	 * Contains digits (0 to 9) and encodes the data only in the width of bars.
 	 * @param string $code code to represent.
-	 * @param boolean $checksum if true add a checksum to the code
+	 * @param boolean $checksum if TRUE add a checksum to the code
 	 * @return array barcode representation.
 	 * @access protected
 	 */
@@ -710,7 +710,7 @@ class TCPDFBarcode {
 			$w += 1;
 			if (($i == ($len - 1)) OR (($i < ($len - 1)) AND ($seq{$i} != $seq{($i+1)}))) {
 				if ($seq{$i} == '1') {
-					$t = true; // bar
+					$t = TRUE; // bar
 				} else {
 					$t = false; // space
 				}
@@ -728,7 +728,7 @@ class TCPDFBarcode {
 	 * Compact numeric code, widely used in industry, air cargo
 	 * Contains digits (0 to 9) and encodes the data in the width of both bars and spaces.
 	 * @param string $code code to represent.
-	 * @param boolean $checksum if true add a checksum to the code
+	 * @param boolean $checksum if TRUE add a checksum to the code
 	 * @return array barcode representation.
 	 * @access protected
 	 */
@@ -775,7 +775,7 @@ class TCPDFBarcode {
 			$seqlen = strlen($seq);
 			for ($j = 0; $j < $seqlen; ++$j) {
 				if (($j % 2) == 0) {
-					$t = true; // bar
+					$t = TRUE; // bar
 				} else {
 					$t = false; // space
 				}
@@ -969,7 +969,7 @@ class TCPDFBarcode {
 			}
 			for ($j = 0; $j < 6; ++$j) {
 				if (($j % 2) == 0) {
-					$t = true; // bar
+					$t = TRUE; // bar
 				} else {
 					$t = false; // space
 				}
@@ -996,7 +996,7 @@ class TCPDFBarcode {
 		$upce = false;
 		if ($len == 6) {
 			$len = 12; // UPC-A
-			$upce = true; // UPC-E mode
+			$upce = TRUE; // UPC-E mode
 		}
 		$data_len = $len - 1;
 		//Padding
@@ -1163,7 +1163,7 @@ class TCPDFBarcode {
 			$w += 1;
 			if (($i == ($clen - 1)) OR (($i < ($clen - 1)) AND ($seq{$i} != $seq{($i+1)}))) {
 				if ($seq{$i} == '1') {
-					$t = true; // bar
+					$t = TRUE; // bar
 				} else {
 					$t = false; // space
 				}
@@ -1256,7 +1256,7 @@ class TCPDFBarcode {
 	 * POSTNET and PLANET barcodes.
 	 * Used by U.S. Postal Service for automated mail sorting
 	 * @param string $code zip code to represent. Must be a string containing a zip code of the form DDDDD or DDDDD-DDDD.
-	 * @param boolean $planet if true print the PLANET barcode, otherwise print POSTNET
+	 * @param boolean $planet if TRUE print the PLANET barcode, otherwise print POSTNET
 	 * @return array barcode representation.
 	 * @access protected
 	 */
@@ -1329,7 +1329,7 @@ class TCPDFBarcode {
 	 * RMS4CC (Royal Mail 4-state Customer Code) - CBC (Customer Bar Code) - KIX (Klant index - Customer index)
 	 * RM4SCC is the name of the barcode symbology used by the Royal Mail for its Cleanmail service.
 	 * @param string $code code to print
-	 * @param boolean $kix if true prints the KIX variation (doesn't use the start and end symbols, and the checksum) - in this case the house number must be sufficed with an X and placed at the end of the code.
+	 * @param boolean $kix if TRUE prints the KIX variation (doesn't use the start and end symbols, and the checksum) - in this case the house number must be sufficed with an X and placed at the end of the code.
 	 * @return array barcode representation.
 	 * @access protected
 	 */
@@ -1520,7 +1520,7 @@ class TCPDFBarcode {
 			$seq = $chr[$code{$i}];
 			for ($j = 0; $j < 8; ++$j) {
 				if (($j % 2) == 0) {
-					$t = true; // bar
+					$t = TRUE; // bar
 				} else {
 					$t = false; // space
 				}
@@ -1612,7 +1612,7 @@ class TCPDFBarcode {
 			$seq = $chr[$code{$i}];
 			for ($j = 0; $j < 6; ++$j) {
 				if (($j % 2) == 0) {
-					$t = true; // bar
+					$t = TRUE; // bar
 				} else {
 					$t = false; // space
 				}

@@ -248,11 +248,11 @@ abstract class ConfigClass
         $result = $this->q->fast($sql);
         $total = $this->q->numberRows($result);
         $items = array();
-        while (($row = $this->q->fetchAssoc($result)) == true) {
+        while (($row = $this->q->fetchAssoc($result)) == TRUE) {
             $items[] = $row;
         }
         echo json_encode(
-        array('success' => true, 'total' => $total, 'message' => 'Data loaded', 
+        array('success' => TRUE, 'total' => $total, 'message' => 'Data loaded', 
         'staff' => $items));
     }
     /**
@@ -295,7 +295,7 @@ abstract class ConfigClass
                 return (intval($this->value));
             }
         } elseif ($this->type == 'boolean' || $this->type == 'b') {
-            if ($this->value == 'true') {
+            if ($this->value == 'TRUE') {
                 return 1;
             } elseif ($this->value) {
                 return 0;
@@ -416,7 +416,7 @@ abstract class ConfigClass
             return intval($firstRecord);
         } else {
             $json_encode = json_encode(
-            array('success' => true, 'total' => $total, 
+            array('success' => TRUE, 'total' => $total, 
             'firstRecord' => $firstRecord));
             exit();
         }
@@ -471,7 +471,7 @@ abstract class ConfigClass
             return intval($nextRecord);
         } else {
             $json_encode = json_encode(
-            array('success' => true, 'total' => $total, 
+            array('success' => TRUE, 'total' => $total, 
             'nextRecord' => $nextRecord));
             exit();
         }
@@ -527,7 +527,7 @@ abstract class ConfigClass
             return intval($previousRecord);
         } else {
             $json_encode = json_encode(
-            array('success' => true, 'total' => $total, 
+            array('success' => TRUE, 'total' => $total, 
             'previousRecord' => $previousRecord));
             exit();
         }
@@ -572,7 +572,7 @@ abstract class ConfigClass
             return intval($lastRecord);
         } else {
             $json_encode = json_encode(
-            array('success' => true, 'total' => $total, 
+            array('success' => TRUE, 'total' => $total, 
             'lastRecord' => $lastRecord));
             exit();
         }

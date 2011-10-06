@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, TRUE, 'UTF-8', false); 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -88,10 +88,10 @@ $second_column_width = 80;
 $current_y_position = $pdf->getY();
 
 // write the first column
-$pdf->MultiCell($first_column_width, 0, $left_column, 1, 'J', 0, 0, '', '', true, 0);
+$pdf->MultiCell($first_column_width, 0, $left_column, 1, 'J', 0, 0, '', '', TRUE, 0);
 
 // write the second column
-$pdf->MultiCell($second_column_width, 0, $right_column, 1, 'J', 0, 1, '', '', true, 0);
+$pdf->MultiCell($second_column_width, 0, $right_column, 1, 'J', 0, 1, '', '', TRUE, 0);
 
 // reset pointer to the last page
 $pdf->lastPage();

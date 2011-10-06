@@ -31,13 +31,13 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 	protected function _writeText(PHPWord_Shared_XMLWriter $objWriter = null, PHPWord_Section_Text $text, $withoutP = false) {
 		$styleFont = $text->getFontStyle();
 
-		$SfIsObject = ($styleFont instanceof PHPWord_Style_Font) ? true : false;
+		$SfIsObject = ($styleFont instanceof PHPWord_Style_Font) ? TRUE : false;
 
 		if(!$withoutP) {
 			$objWriter->startElement('w:p');
 				
 			$styleParagraph = $text->getParagraphStyle();
-			$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? true : false;
+			$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? TRUE : false;
 				
 			if($SpIsObject) {
 				$this->_writeParagraphStyle($objWriter, $styleParagraph);
@@ -81,7 +81,7 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 		$elements = $textrun->getElements();
 		$styleParagraph = $textrun->getParagraphStyle();
 
-		$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? true : false;
+		$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? TRUE : false;
 
 		$objWriter->startElement('w:p');
 
@@ -98,9 +98,9 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 		if(count($elements) > 0) {
 			foreach($elements as $element) {
 				if($element instanceof PHPWord_Section_Text) {
-					$this->_writeText($objWriter, $element, true);
+					$this->_writeText($objWriter, $element, TRUE);
 				} elseif($element instanceof PHPWord_Section_Link) {
-					$this->_writeLink($objWriter, $element, true);
+					$this->_writeLink($objWriter, $element, TRUE);
 				}
 			}
 		}
@@ -159,13 +159,13 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 		}
 
 		$styleFont = $link->getFontStyle();
-		$SfIsObject = ($styleFont instanceof PHPWord_Style_Font) ? true : false;
+		$SfIsObject = ($styleFont instanceof PHPWord_Style_Font) ? TRUE : false;
 
 		if(!$withoutP) {
 			$objWriter->startElement('w:p');
 				
 			$styleParagraph = $link->getParagraphStyle();
-			$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? true : false;
+			$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? TRUE : false;
 				
 			if($SpIsObject) {
 				$this->_writeParagraphStyle($objWriter, $styleParagraph);
@@ -210,8 +210,8 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 		$styleFont = $textrun->getFontStyle();
 		$styleParagraph = $textrun->getParagraphStyle();
 
-		$SfIsObject = ($styleFont instanceof PHPWord_Style_Font) ? true : false;
-		$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? true : false;
+		$SfIsObject = ($styleFont instanceof PHPWord_Style_Font) ? TRUE : false;
+		$SpIsObject = ($styleParagraph instanceof PHPWord_Style_Paragraph) ? TRUE : false;
 
 		$arrText = $textrun->getText();
 
@@ -457,10 +457,10 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 
 	protected function _writeTableStyle(PHPWord_Shared_XMLWriter $objWriter = null, PHPWord_Style_Table $style = null) {
 		$margins = $style->getCellMargin();
-		$mTop = (!is_null($margins[0])) ? true : false;
-		$mLeft = (!is_null($margins[1])) ? true : false;
-		$mRight = (!is_null($margins[2])) ? true : false;
-		$mBottom = (!is_null($margins[3])) ? true : false;
+		$mTop = (!is_null($margins[0])) ? TRUE : false;
+		$mLeft = (!is_null($margins[1])) ? TRUE : false;
+		$mRight = (!is_null($margins[2])) ? TRUE : false;
+		$mBottom = (!is_null($margins[3])) ? TRUE : false;
 
 		if($mTop || $mLeft || $mRight || $mBottom) {
 			$objWriter->startElement('w:tblPr');
@@ -506,13 +506,13 @@ class PHPWord_Writer_Word2007_Base extends PHPWord_Writer_Word2007_WriterPart {
 		$brdSz = $style->getBorderSize();
 		$brdCol = $style->getBorderColor();
 
-		$bTop = (!is_null($brdSz[0])) ? true : false;
-		$bLeft = (!is_null($brdSz[1])) ? true : false;
-		$bRight = (!is_null($brdSz[2])) ? true : false;
-		$bBottom = (!is_null($brdSz[3])) ? true : false;
-		$borders = ($bTop || $bLeft || $bRight || $bBottom) ? true : false;
+		$bTop = (!is_null($brdSz[0])) ? TRUE : false;
+		$bLeft = (!is_null($brdSz[1])) ? TRUE : false;
+		$bRight = (!is_null($brdSz[2])) ? TRUE : false;
+		$bBottom = (!is_null($brdSz[3])) ? TRUE : false;
+		$borders = ($bTop || $bLeft || $bRight || $bBottom) ? TRUE : false;
 
-		$styles = (!is_null($bgColor) || !is_null($valign) || !is_null($textDir) || $borders) ? true : false;
+		$styles = (!is_null($bgColor) || !is_null($valign) || !is_null($textDir) || $borders) ? TRUE : false;
 
 		if($styles) {
 			if(!is_null($textDir)) {

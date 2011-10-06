@@ -104,7 +104,7 @@ class PHPMailer {
 
 	/**
 	 * Sets the Body of the message.  This can be either an HTML or text body.
-	 * If HTML then run IsHTML(true).
+	 * If HTML then run IsHTML(TRUE).
 	 * @var string
 	 */
 	public $Body              = '';
@@ -231,7 +231,7 @@ class PHPMailer {
 
 	/**
 	 * Prevents the SMTP connection from being closed after each mail
-	 * sending.  If this is set to true then to close the connection
+	 * sending.  If this is set to TRUE then to close the connection
 	 * requires an explicit call to SmtpClose().
 	 * @var bool
 	 */
@@ -245,7 +245,7 @@ class PHPMailer {
 	public $SingleTo      = false;
 
 	/**
-	 * If SingleTo is true, this provides the array to hold the email addresses
+	 * If SingleTo is TRUE, this provides the array to hold the email addresses
 	 * @var bool
 	 */
 	public $SingleToArray = array();
@@ -340,7 +340,7 @@ class PHPMailer {
 	 * @param boolean $exceptions Should we throw external exceptions?
 	 */
 	public function __construct($exceptions = false) {
-		$this->exceptions = ($exceptions == true);
+		$this->exceptions = ($exceptions == TRUE);
 	}
 
 	/**
@@ -348,7 +348,7 @@ class PHPMailer {
 	 * @param bool $ishtml
 	 * @return void
 	 */
-	public function IsHTML($ishtml = true) {
+	public function IsHTML($ishtml = TRUE) {
 		if ($ishtml) {
 			$this->ContentType = 'text/html';
 		} else {
@@ -402,7 +402,7 @@ class PHPMailer {
 	 * Adds a "To" address.
 	 * @param string $address
 	 * @param string $name
-	 * @return boolean true on success, false if address already used
+	 * @return boolean TRUE on success, false if address already used
 	 */
 	public function AddAddress($address, $name = '') {
 		return $this->AddAnAddress('to', $address, $name);
@@ -413,7 +413,7 @@ class PHPMailer {
 	 * Note: this function works with the SMTP mailer on win32, not with the "mail" mailer.
 	 * @param string $address
 	 * @param string $name
-	 * @return boolean true on success, false if address already used
+	 * @return boolean TRUE on success, false if address already used
 	 */
 	public function AddCC($address, $name = '') {
 		return $this->AddAnAddress('cc', $address, $name);
@@ -424,7 +424,7 @@ class PHPMailer {
 	 * Note: this function works with the SMTP mailer on win32, not with the "mail" mailer.
 	 * @param string $address
 	 * @param string $name
-	 * @return boolean true on success, false if address already used
+	 * @return boolean TRUE on success, false if address already used
 	 */
 	public function AddBCC($address, $name = '') {
 		return $this->AddAnAddress('bcc', $address, $name);
@@ -446,7 +446,7 @@ class PHPMailer {
 	 * @param string $kind One of 'to', 'cc', 'bcc', 'ReplyTo'
 	 * @param string $address The email address to send to
 	 * @param string $name
-	 * @return boolean true on success, false if address already used or invalid in some way
+	 * @return boolean TRUE on success, false if address already used or invalid in some way
 	 * @access private
 	 */
 	private function AddAnAddress($kind, $address, $name = '') {
@@ -467,13 +467,13 @@ class PHPMailer {
 		if ($kind != 'ReplyTo') {
 			if (!isset($this->all_recipients[strtolower($address)])) {
 				array_push($this->$kind, array($address, $name));
-				$this->all_recipients[strtolower($address)] = true;
-				return true;
+				$this->all_recipients[strtolower($address)] = TRUE;
+				return TRUE;
 			}
 		} else {
 			if (!array_key_exists(strtolower($address), $this->ReplyTo)) {
 				$this->ReplyTo[strtolower($address)] = array($address, $name);
-				return true;
+				return TRUE;
 			}
 		}
 		return false;
@@ -506,7 +506,7 @@ class PHPMailer {
 				$this->Sender = $address;
 			}
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -525,7 +525,7 @@ class PHPMailer {
 			if(filter_var($address, FILTER_VALIDATE_EMAIL) === FALSE) {
 				return false;
 			} else {
-				return true;
+				return TRUE;
 			}
 		} else {
 			return preg_match('/^(?:[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+\.)*[\w\!\#\$\%\&\'\*\+\-\/\=\?\^\`\{\|\}\~]+@(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!\.)){0,61}[a-zA-Z0-9_-]?\.)+[a-zA-Z0-9_](?:[a-zA-Z0-9_\-](?!$)){0,61}[a-zA-Z0-9_]?)|(?:\[(?:(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\.){3}(?:[01]?\d{1,2}|2[0-4]\d|25[0-5])\]))$/', $address);
@@ -601,7 +601,7 @@ class PHPMailer {
 		} else {
 			$sendmail = sprintf("%s -oi -t", escapeshellcmd($this->Sendmail));
 		}
-		if ($this->SingleTo === true) {
+		if ($this->SingleTo === TRUE) {
 			foreach ($this->SingleToArray as $key => $val) {
 				if(!@$mail = popen($sendmail, 'w')) {
 					throw new phpmailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
@@ -631,7 +631,7 @@ class PHPMailer {
 				throw new phpmailerException($this->Lang('execute') . $this->Sendmail, self::STOP_CRITICAL);
 			}
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -652,7 +652,7 @@ class PHPMailer {
 		if ($this->Sender != '' && strlen(ini_get('safe_mode'))< 1) {
 			$old_from = ini_get('sendmail_from');
 			ini_set('sendmail_from', $this->Sender);
-			if ($this->SingleTo === true && count($toArr) > 1) {
+			if ($this->SingleTo === TRUE && count($toArr) > 1) {
 				foreach ($toArr as $key => $val) {
 					$rt = @mail($val, $this->EncodeHeader($this->SecureHeader($this->Subject)), $body, $header, $params);
 					// implement call back function if it exists
@@ -666,7 +666,7 @@ class PHPMailer {
 				$this->doCallback($isSent,$to,$this->cc,$this->bcc,$this->Subject,$body);
 			}
 		} else {
-			if ($this->SingleTo === true && count($toArr) > 1) {
+			if ($this->SingleTo === TRUE && count($toArr) > 1) {
 				foreach ($toArr as $key => $val) {
 					$rt = @mail($val, $this->EncodeHeader($this->SecureHeader($this->Subject)), $body, $header, $params);
 					// implement call back function if it exists
@@ -686,7 +686,7 @@ class PHPMailer {
 		if(!$rt) {
 			throw new phpmailerException($this->Lang('instantiate'), self::STOP_CRITICAL);
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -756,10 +756,10 @@ class PHPMailer {
 		if(!$this->smtp->Data($header . $body)) {
 			throw new phpmailerException($this->Lang('data_not_accepted'), self::STOP_CRITICAL);
 		}
-		if($this->SMTPKeepAlive == true) {
+		if($this->SMTPKeepAlive == TRUE) {
 			$this->smtp->Reset();
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -808,7 +808,7 @@ class PHPMailer {
 						$this->smtp->Hello($hello);
 					}
 
-					$connection = true;
+					$connection = TRUE;
 					if ($this->SMTPAuth) {
 						if (!$this->smtp->Authenticate($this->Username, $this->Password)) {
 							throw new phpmailerException($this->Lang('authenticate'));
@@ -824,7 +824,7 @@ class PHPMailer {
 			$this->smtp->Reset();
 			throw $e;
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -869,12 +869,12 @@ class PHPMailer {
       'variable_set' => 'Cannot set or reset variable: '
       );
       //Overwrite language-specific strings. This way we'll never have missing translations - no more "language string failed to load"!
-      $l = true;
+      $l = TRUE;
       if ($langcode != 'en') { //There is no English translation file
       	$l = @include $lang_path.'phpmailer.lang-'.$langcode.'.php';
       }
       $this->language = $PHPMAILER_LANG;
-      return ($l == true); //Returns false if language not found
+      return ($l == TRUE); //Returns false if language not found
 	}
 
 	/**
@@ -1027,17 +1027,17 @@ class PHPMailer {
 					// otherwise reduce maxLength to start of the encoded char
 					$maxLength = ($encodedCharPos == 0) ? $maxLength :
 					$maxLength - ($lookBack - $encodedCharPos);
-					$foundSplitPos = true;
+					$foundSplitPos = TRUE;
 				} elseif ($dec >= 192) { // First byte of a multi byte character
 					// Reduce maxLength to split at start of character
 					$maxLength = $maxLength - ($lookBack - $encodedCharPos);
-					$foundSplitPos = true;
+					$foundSplitPos = TRUE;
 				} elseif ($dec < 192) { // Middle byte of a multi byte character, look further back
 					$lookBack += 3;
 				}
 			} else {
 				// No encoded character found
-				$foundSplitPos = true;
+				$foundSplitPos = TRUE;
 			}
 		}
 		return $maxLength;
@@ -1087,7 +1087,7 @@ class PHPMailer {
 
 		// To be created automatically by mail()
 		if($this->Mailer != 'mail') {
-			if ($this->SingleTo === true) {
+			if ($this->SingleTo === TRUE) {
 				foreach($this->to as $t) {
 					$this->SingleToArray[] = $this->AddrFormat($t);
 				}
@@ -1372,7 +1372,7 @@ class PHPMailer {
 				return false;
 			}
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -1414,7 +1414,7 @@ class PHPMailer {
 			$cid         = $attachment[7];
 			$incl[]      = $attachment[0];
 			if ( $disposition == 'inline' && isset($cidUniq[$cid]) ) { continue; }
-			$cidUniq[$cid] = true;
+			$cidUniq[$cid] = TRUE;
 
 			$mime[] = sprintf("--%s%s", $this->boundary[1], $this->LE);
 			$mime[] = sprintf("Content-Type: %s; name=\"%s\"%s", $type, $this->EncodeHeader($this->SecureHeader($name)), $this->LE);
@@ -1564,7 +1564,7 @@ class PHPMailer {
 		} else {
 			$encoding = 'Q';
 			$encoded = $this->EncodeQ($str, $position);
-			$encoded = $this->WrapText($encoded, $maxlen, true);
+			$encoded = $this->WrapText($encoded, $maxlen, TRUE);
 			$encoded = str_replace('='.$this->LE, "\n", trim($encoded));
 		}
 
@@ -1642,7 +1642,7 @@ class PHPMailer {
 		$eol = "\r\n";
 		$escape = '=';
 		$output = '';
-		while( (list(, $line) = each($lines)) == true) {
+		while( (list(, $line) = each($lines)) == TRUE) {
 			$linlen = strlen($line);
 			$newline = '';
 			for($i = 0; $i < $linlen; $i++) {
@@ -1761,7 +1761,7 @@ class PHPMailer {
 		2 => basename($filename),
 		3 => $encoding,
 		4 => $type,
-		5 => true,  // isStringAttachment
+		5 => TRUE,  // isStringAttachment
 		6 => 'attachment',
 		7 => 0
 		);
@@ -1804,18 +1804,18 @@ class PHPMailer {
 		7 => $cid
 		);
 
-		return true;
+		return TRUE;
 	}
 
 	/**
-	 * Returns true if an inline attachment is present.
+	 * Returns TRUE if an inline attachment is present.
 	 * @access public
 	 * @return bool
 	 */
 	public function InlineImageExists() {
 		foreach($this->attachment as $attachment) {
 			if ($attachment[6] == 'inline') {
-				return true;
+				return TRUE;
 			}
 		}
 		return false;
@@ -1966,7 +1966,7 @@ class PHPMailer {
 	}
 
 	/**
-	 * Returns true if an error occurred.
+	 * Returns TRUE if an error occurred.
 	 * @access public
 	 * @return bool
 	 */
@@ -2020,7 +2020,7 @@ class PHPMailer {
 				}
 			}
 		}
-		$this->IsHTML(true);
+		$this->IsHTML(TRUE);
 		$this->Body = $message;
 		$textMsg = trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s','',$message)));
 		if (!empty($textMsg) && empty($this->AltBody)) {
@@ -2156,7 +2156,7 @@ class PHPMailer {
 				return false;
 			}
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**

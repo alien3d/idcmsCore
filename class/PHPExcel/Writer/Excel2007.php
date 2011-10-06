@@ -103,7 +103,7 @@ class PHPExcel_Writer_Excel2007 implements PHPExcel_Writer_IWriter
 	 *
 	 * @var boolean
 	 */
-	private $_preCalculateFormulas = true;
+	private $_preCalculateFormulas = TRUE;
 
 	/**
 	 * Office2003 compatibility
@@ -287,8 +287,8 @@ class PHPExcel_Writer_Excel2007 implements PHPExcel_Writer_IWriter
 			$objZip = new ZipArchive();
 
 			// Try opening the ZIP file
-			if ($objZip->open($pFilename, ZIPARCHIVE::OVERWRITE) !== true) {
-				if ($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== true) {
+			if ($objZip->open($pFilename, ZIPARCHIVE::OVERWRITE) !== TRUE) {
+				if ($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== TRUE) {
 					throw new Exception("Could not open " . $pFilename . " for writing.");
 				}
 			}
@@ -515,7 +515,7 @@ class PHPExcel_Writer_Excel2007 implements PHPExcel_Writer_IWriter
 	 *
 	 * @param boolean $pValue	Pre-Calculate Formulas?
 	 */
-	public function setPreCalculateFormulas($pValue = true) {
+	public function setPreCalculateFormulas($pValue = TRUE) {
 		$this->_preCalculateFormulas = $pValue;
 	}
 

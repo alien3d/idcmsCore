@@ -126,7 +126,7 @@ class PHPExcel_Reader_CSV implements PHPExcel_Reader_IReader
 			throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**

@@ -65,7 +65,7 @@ class ReligionModel extends ValidationClass
         }
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
         "isDelete", "isActive", "isApproved", "isReview", "isPost");
-        // auto assign as array if true
+        // auto assign as array if TRUE
         if (isset($_GET['isDefault'])) {
             if (is_array($_GET['isDefault'])) {
                 $this->isDefault = array();
@@ -117,7 +117,7 @@ class ReligionModel extends ValidationClass
                 $this->strict($_GET['religionId'][$i], 'numeric'), $i, 'array');
             }
             if (isset($_GET['isDefault'])) {
-                if ($_GET['isDefault'][$i] == 'true') {
+                if ($_GET['isDefault'][$i] == 'TRUE') {
                     $this->setIsDefault(1, $i, 'array');
                 } else 
                     if ($_GET['default'] == 'false') {
@@ -125,28 +125,28 @@ class ReligionModel extends ValidationClass
                     }
             }
             if (isset($_GET['isNew'])) {
-                if ($_GET['isNew'][$i] == 'true') {
+                if ($_GET['isNew'][$i] == 'TRUE') {
                     $this->setIsNew(1, $i, 'array');
                 } else {
                     $this->setIsNew(0, $i, 'array');
                 }
             }
             if (isset($_GET['isDraft'])) {
-                if ($_GET['isDraft'][$i] == 'true') {
+                if ($_GET['isDraft'][$i] == 'TRUE') {
                     $this->setIsDraft(1, $i, 'array');
                 } else {
                     $this->setIsDraft(0, $i, 'array');
                 }
             }
             if (isset($_GET['isUpdate'])) {
-                if ($_GET['isUpdate'][$i] == 'true') {
+                if ($_GET['isUpdate'][$i] == 'TRUE') {
                     $this->setIsUpdate(1, $i, 'array');
                 } else {
                     $this->setIsUpdate(0, $i, 'array');
                 }
             }
             if (isset($_GET['isDelete'])) {
-                if ($_GET['isDelete'][$i] == 'true') {
+                if ($_GET['isDelete'][$i] == 'TRUE') {
                     $this->setIsDelete(1, $i, 'array');
                 } else 
                     if ($_GET['isDelete'][$i] == 'false') {
@@ -154,14 +154,14 @@ class ReligionModel extends ValidationClass
                     }
             }
             if (isset($_GET['isActive'])) {
-                if ($_GET['isActive'][$i] == 'true') {
+                if ($_GET['isActive'][$i] == 'TRUE') {
                     $this->setIsActive(1, $i, 'array');
                 } else {
                     $this->setIsActive(0, $i, 'array');
                 }
             }
             if (isset($_GET['isApproved'])) {
-                if ($_GET['isApproved'][$i] == 'true') {
+                if ($_GET['isApproved'][$i] == 'TRUE') {
                     $this->setIsApproved(1, $i, 'array');
                 } else 
                     if ($_GET['isApproved'][$i] == 'false') {
@@ -169,7 +169,7 @@ class ReligionModel extends ValidationClass
                     }
             }
             if (isset($_GET['isReview'])) {
-                if ($_GET['isReview'][$i] == 'true') {
+                if ($_GET['isReview'][$i] == 'TRUE') {
                     $this->setIsReview(1, $i, 'array');
                 } else 
                     if ($_GET['isReview'][$i] == 'false') {
@@ -177,7 +177,7 @@ class ReligionModel extends ValidationClass
                     }
             }
             if (isset($_GET['isPost'])) {
-                if ($_GET['isPost'][$i] == 'true') {
+                if ($_GET['isPost'][$i] == 'TRUE') {
                     $this->setIsPost(1, $i, 'array');
                 } else 
                     if ($_GET['isPost'][$i] == 'false') {

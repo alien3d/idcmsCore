@@ -142,11 +142,11 @@ class PHPExcel_Shared_Font
 	private static $autoSizeMethod = self::AUTOSIZE_METHOD_APPROX;
 
 	/**
-	 * Path to folder containing TrueType font .ttf files
+	 * Path to folder containing TRUEType font .ttf files
 	 *
 	 * @var string
 	 */
-	private static $trueTypeFontPath = null;
+	private static $TRUETypeFontPath = null;
 
 	/**
 	 * How wide is a default column for a given default font and size?
@@ -220,15 +220,15 @@ class PHPExcel_Shared_Font
 	 * Typical locations on variout some platforms:
 	 *	<ul>
 	 *		<li>C:/Windows/Fonts/</li>
-	 *		<li>/usr/share/fonts/truetype/</li>
+	 *		<li>/usr/share/fonts/TRUEtype/</li>
 	 *		<li>~/.fonts/</li>
 	 *	</ul>
 	 *
 	 * @param string $pValue
 	 */
-	public static function setTrueTypeFontPath($pValue = '')
+	public static function setTRUETypeFontPath($pValue = '')
 	{
-		self::$trueTypeFontPath = $pValue;
+		self::$TRUETypeFontPath = $pValue;
 	}
 
 	/**
@@ -236,16 +236,16 @@ class PHPExcel_Shared_Font
 	 *
 	 * @return string
 	 */
-	public static function getTrueTypeFontPath()
+	public static function getTRUETypeFontPath()
 	{
-		return self::$trueTypeFontPath;
+		return self::$TRUETypeFontPath;
 	}
 
 	/**
 	 * Calculate an (approximate) OpenXML column width, based on font size and text contained
 	 *
 	 * @param 	int		$fontSize			Font size (in pixels or points)
-	 * @param 	bool	$fontSizeInPixels	Is the font size specified in pixels (true) or in points (false) ?
+	 * @param 	bool	$fontSizeInPixels	Is the font size specified in pixels (TRUE) or in points (false) ?
 	 * @param 	string	$columnText			Text to calculate width
 	 * @param 	int		$rotation			Rotation angle
 	 * @return 	int		Column width
@@ -306,7 +306,7 @@ class PHPExcel_Shared_Font
 
 		// font size should really be supplied in pixels in GD2,
 		// but since GD2 seems to assume 72dpi, pixels and points are the same
-		$fontFile = self::getTrueTypeFontFileFromFont($font);
+		$fontFile = self::getTRUETypeFontFileFromFont($font);
 		$textBox = imagettfbbox($font->getSize(), $rotation, $fontFile, $text);
 
 		// Get corners positions
@@ -416,18 +416,18 @@ class PHPExcel_Shared_Font
 	 * Returns the font path given the font
 	 *
 	 * @param PHPExcel_Style_Font
-	 * @return string Path to TrueType font file
+	 * @return string Path to TRUEType font file
 	 */
-	public static function getTrueTypeFontFileFromFont($font) {
-		if (!file_exists(self::$trueTypeFontPath) || !is_dir(self::$trueTypeFontPath)) {
-			throw new Exception('Valid directory to TrueType Font files not specified');
+	public static function getTRUETypeFontFileFromFont($font) {
+		if (!file_exists(self::$TRUETypeFontPath) || !is_dir(self::$TRUETypeFontPath)) {
+			throw new Exception('Valid directory to TRUEType Font files not specified');
 		}
 
 		$name		= $font->getName();
 		$bold		= $font->getBold();
 		$italic		= $font->getItalic();
 
-		// Check if we can map font to true type font file
+		// Check if we can map font to TRUE type font file
 		switch ($name) {
 			case 'Arial':
 				$fontFile = (
@@ -525,15 +525,15 @@ class PHPExcel_Shared_Font
 				break;
 
 			default:
-				throw new Exception('Unknown font name "'. $name .'". Cannot map to TrueType font file');
+				throw new Exception('Unknown font name "'. $name .'". Cannot map to TRUEType font file');
 				break;
 		}
 
-		$fontFile = self::$trueTypeFontPath . $fontFile;
+		$fontFile = self::$TRUETypeFontPath . $fontFile;
 
 		// Check if file actually exists
 		if (!file_exists($fontFile)) {
-			throw New Exception('TrueType Font file not found');
+			throw New Exception('TRUEType Font file not found');
 		}
 
 		return $fontFile;
@@ -562,7 +562,7 @@ class PHPExcel_Shared_Font
 	 * For example, for Calibri 11 this is 9.140625 (64 px)
 	 *
 	 * @param PHPExcel_Style_Font $font The workbooks default font
-	 * @param boolean $pPixels true = return column width in pixels, false = return in OOXML units
+	 * @param boolean $pPixels TRUE = return column width in pixels, false = return in OOXML units
 	 * @return mixed Column width
 	 */
 	public static function getDefaultColumnWidthByFont(PHPExcel_Style_Font $font, $pPixels = false)

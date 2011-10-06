@@ -101,8 +101,8 @@ class PHPExcel_Writer_Serialized implements PHPExcel_Writer_IWriter
 			$objZip = new ZipArchive();
 
 			// Try opening the ZIP file
-			if ($objZip->open($pFilename, ZIPARCHIVE::OVERWRITE) !== true) {
-				if ($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== true) {
+			if ($objZip->open($pFilename, ZIPARCHIVE::OVERWRITE) !== TRUE) {
+				if ($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== TRUE) {
 					throw new Exception("Could not open " . $pFilename . " for writing.");
 				}
 			}
@@ -183,7 +183,7 @@ class PHPExcel_Writer_Serialized implements PHPExcel_Writer_IWriter
 		// Create XML writer
 		$objWriter = new xmlWriter();
 		$objWriter->openMemory();
-		$objWriter->setIndent(true);
+		$objWriter->setIndent(TRUE);
 
 		// XML header
 		$objWriter->startDocument('1.0','UTF-8','yes');
@@ -203,6 +203,6 @@ class PHPExcel_Writer_Serialized implements PHPExcel_Writer_IWriter
 		$objWriter->endElement();
 
 		// Return
-		return $objWriter->outputMemory(true);
+		return $objWriter->outputMemory(TRUE);
 	}
 }

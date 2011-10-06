@@ -243,7 +243,7 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 		// Sheet selected?
 		$sheetSelected = false;
 		if ($this->getParentWriter()->getPHPExcel()->getIndex($pSheet) == $this->getParentWriter()->getPHPExcel()->getActiveSheetIndex())
-		$sheetSelected = true;
+		$sheetSelected = TRUE;
 
 
 		// sheetView
@@ -261,14 +261,14 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 
 		// Gridlines
 		if ($pSheet->getShowGridlines()) {
-			$objWriter->writeAttribute('showGridLines',	'true');
+			$objWriter->writeAttribute('showGridLines',	'TRUE');
 		} else {
 			$objWriter->writeAttribute('showGridLines',	'false');
 		}
 
 		// Right-to-left
 		if ($pSheet->getRightToLeft()) {
-			$objWriter->writeAttribute('rightToLeft',	'true');
+			$objWriter->writeAttribute('rightToLeft',	'TRUE');
 		}
 
 		// Pane
@@ -316,7 +316,7 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 
 		// Default row height
 		if ($pSheet->getDefaultRowDimension()->getRowHeight() >= 0) {
-			$objWriter->writeAttribute('customHeight',		'true');
+			$objWriter->writeAttribute('customHeight',		'TRUE');
 			$objWriter->writeAttribute('defaultRowHeight', 	PHPExcel_Shared_String::FormatNumber($pSheet->getDefaultRowDimension()->getRowHeight()));
 		} else {
 			$objWriter->writeAttribute('defaultRowHeight', 	'12.75');
@@ -380,22 +380,22 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 
 				// Column visibility
 				if ($colDimension->getVisible() == false) {
-					$objWriter->writeAttribute('hidden',		'true');
+					$objWriter->writeAttribute('hidden',		'TRUE');
 				}
 
 				// Auto size?
 				if ($colDimension->getAutoSize()) {
-					$objWriter->writeAttribute('bestFit',		'true');
+					$objWriter->writeAttribute('bestFit',		'TRUE');
 				}
 
 				// Custom width?
 				if ($colDimension->getWidth() != $pSheet->getDefaultColumnDimension()->getWidth()) {
-					$objWriter->writeAttribute('customWidth',	'true');
+					$objWriter->writeAttribute('customWidth',	'TRUE');
 				}
 
 				// Collapsed
-				if ($colDimension->getCollapsed() == true) {
-					$objWriter->writeAttribute('collapsed',		'true');
+				if ($colDimension->getCollapsed() == TRUE) {
+					$objWriter->writeAttribute('collapsed',		'TRUE');
 				}
 
 				// Outline level
@@ -429,22 +429,22 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 			$objWriter->writeAttribute('password',				$pSheet->getProtection()->getPassword());
 		}
 
-		$objWriter->writeAttribute('sheet',				($pSheet->getProtection()->getSheet()				? 'true' : 'false'));
-		$objWriter->writeAttribute('objects',				($pSheet->getProtection()->getObjects()			? 'true' : 'false'));
-		$objWriter->writeAttribute('scenarios',			($pSheet->getProtection()->getScenarios()			? 'true' : 'false'));
-		$objWriter->writeAttribute('formatCells',			($pSheet->getProtection()->getFormatCells()		? 'true' : 'false'));
-		$objWriter->writeAttribute('formatColumns',		($pSheet->getProtection()->getFormatColumns()		? 'true' : 'false'));
-		$objWriter->writeAttribute('formatRows',			($pSheet->getProtection()->getFormatRows()			? 'true' : 'false'));
-		$objWriter->writeAttribute('insertColumns',		($pSheet->getProtection()->getInsertColumns()		? 'true' : 'false'));
-		$objWriter->writeAttribute('insertRows',			($pSheet->getProtection()->getInsertRows()			? 'true' : 'false'));
-		$objWriter->writeAttribute('insertHyperlinks',		($pSheet->getProtection()->getInsertHyperlinks()	? 'true' : 'false'));
-		$objWriter->writeAttribute('deleteColumns',		($pSheet->getProtection()->getDeleteColumns()		? 'true' : 'false'));
-		$objWriter->writeAttribute('deleteRows',			($pSheet->getProtection()->getDeleteRows()			? 'true' : 'false'));
-		$objWriter->writeAttribute('selectLockedCells',	($pSheet->getProtection()->getSelectLockedCells()	? 'true' : 'false'));
-		$objWriter->writeAttribute('sort',					($pSheet->getProtection()->getSort()				? 'true' : 'false'));
-		$objWriter->writeAttribute('autoFilter',			($pSheet->getProtection()->getAutoFilter()			? 'true' : 'false'));
-		$objWriter->writeAttribute('pivotTables',			($pSheet->getProtection()->getPivotTables()		? 'true' : 'false'));
-		$objWriter->writeAttribute('selectUnlockedCells',	($pSheet->getProtection()->getSelectUnlockedCells()	? 'true' : 'false'));
+		$objWriter->writeAttribute('sheet',				($pSheet->getProtection()->getSheet()				? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('objects',				($pSheet->getProtection()->getObjects()			? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('scenarios',			($pSheet->getProtection()->getScenarios()			? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('formatCells',			($pSheet->getProtection()->getFormatCells()		? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('formatColumns',		($pSheet->getProtection()->getFormatColumns()		? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('formatRows',			($pSheet->getProtection()->getFormatRows()			? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('insertColumns',		($pSheet->getProtection()->getInsertColumns()		? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('insertRows',			($pSheet->getProtection()->getInsertRows()			? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('insertHyperlinks',		($pSheet->getProtection()->getInsertHyperlinks()	? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('deleteColumns',		($pSheet->getProtection()->getDeleteColumns()		? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('deleteRows',			($pSheet->getProtection()->getDeleteRows()			? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('selectLockedCells',	($pSheet->getProtection()->getSelectLockedCells()	? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('sort',					($pSheet->getProtection()->getSort()				? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('autoFilter',			($pSheet->getProtection()->getAutoFilter()			? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('pivotTables',			($pSheet->getProtection()->getPivotTables()		? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('selectUnlockedCells',	($pSheet->getProtection()->getSelectUnlockedCells()	? 'TRUE' : 'false'));
 		$objWriter->endElement();
 	}
 
@@ -695,15 +695,15 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 		// printOptions
 		$objWriter->startElement('printOptions');
 
-		$objWriter->writeAttribute('gridLines',	($pSheet->getPrintGridlines() ? 'true': 'false'));
-		$objWriter->writeAttribute('gridLinesSet',	'true');
+		$objWriter->writeAttribute('gridLines',	($pSheet->getPrintGridlines() ? 'TRUE': 'false'));
+		$objWriter->writeAttribute('gridLinesSet',	'TRUE');
 
 		if ($pSheet->getPageSetup()->getHorizontalCentered()) {
-			$objWriter->writeAttribute('horizontalCentered', 'true');
+			$objWriter->writeAttribute('horizontalCentered', 'TRUE');
 		}
 
 		if ($pSheet->getPageSetup()->getVerticalCentered()) {
-			$objWriter->writeAttribute('verticalCentered', 'true');
+			$objWriter->writeAttribute('verticalCentered', 'TRUE');
 		}
 
 		$objWriter->endElement();
@@ -792,10 +792,10 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 	{
 		// headerFooter
 		$objWriter->startElement('headerFooter');
-		$objWriter->writeAttribute('differentOddEven',	($pSheet->getHeaderFooter()->getDifferentOddEven() ? 'true' : 'false'));
-		$objWriter->writeAttribute('differentFirst',	($pSheet->getHeaderFooter()->getDifferentFirst() ? 'true' : 'false'));
-		$objWriter->writeAttribute('scaleWithDoc',		($pSheet->getHeaderFooter()->getScaleWithDocument() ? 'true' : 'false'));
-		$objWriter->writeAttribute('alignWithMargins',	($pSheet->getHeaderFooter()->getAlignWithMargins() ? 'true' : 'false'));
+		$objWriter->writeAttribute('differentOddEven',	($pSheet->getHeaderFooter()->getDifferentOddEven() ? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('differentFirst',	($pSheet->getHeaderFooter()->getDifferentFirst() ? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('scaleWithDoc',		($pSheet->getHeaderFooter()->getScaleWithDocument() ? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('alignWithMargins',	($pSheet->getHeaderFooter()->getAlignWithMargins() ? 'TRUE' : 'false'));
 
 		$objWriter->writeElement('oddHeader',		$pSheet->getHeaderFooter()->getOddHeader());
 		$objWriter->writeElement('oddFooter',		$pSheet->getHeaderFooter()->getOddFooter());
@@ -902,7 +902,7 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 				$writeCurrentRow = 	isset($cellsByRow[$currentRow]) ||
 				$rowDimension->getRowHeight() >= 0 ||
 				$rowDimension->getVisible() == false ||
-				$rowDimension->getCollapsed() == true ||
+				$rowDimension->getCollapsed() == TRUE ||
 				$rowDimension->getOutlineLevel() > 0 ||
 				$rowDimension->getXfIndex() !== null;
 
@@ -920,12 +920,12 @@ class PHPExcel_Writer_Excel2007_Worksheet extends PHPExcel_Writer_Excel2007_Writ
 
 					// Row visibility
 					if ($rowDimension->getVisible() == false) {
-						$objWriter->writeAttribute('hidden',		'true');
+						$objWriter->writeAttribute('hidden',		'TRUE');
 					}
 
 					// Collapsed
-					if ($rowDimension->getCollapsed() == true) {
-						$objWriter->writeAttribute('collapsed',		'true');
+					if ($rowDimension->getCollapsed() == TRUE) {
+						$objWriter->writeAttribute('collapsed',		'TRUE');
 					}
 
 					// Outline level

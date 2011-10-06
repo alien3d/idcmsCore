@@ -407,7 +407,7 @@ class Matrix {
 	public function checkMatrixDimensions($B = null) {
 		if ($B instanceof Matrix) {
 			if (($this->m == $B->getRowDimension()) && ($this->n == $B->getColumnDimension())) {
-				return true;
+				return TRUE;
 			} else {
 				throw new Exception(JAMAError(MatrixDimensionException));
 			}
@@ -762,7 +762,7 @@ class Matrix {
 			$this->checkMatrixDimensions($M);
 			for($i = 0; $i < $this->m; ++$i) {
 				for($j = 0; $j < $this->n; ++$j) {
-					$validValues = True;
+					$validValues = TRUE;
 					$value = $M->get($i, $j);
 					if ((is_string($this->A[$i][$j])) && (!is_numeric($this->A[$i][$j]))) {
 						$this->A[$i][$j] = trim($this->A[$i][$j],'"');
@@ -848,7 +848,7 @@ class Matrix {
 			$this->checkMatrixDimensions($M);
 			for($i = 0; $i < $this->m; ++$i) {
 				for($j = 0; $j < $this->n; ++$j) {
-					$validValues = True;
+					$validValues = TRUE;
 					$value = $M->get($i, $j);
 					if ((is_string($this->A[$i][$j])) && (!is_numeric($this->A[$i][$j]))) {
 						$this->A[$i][$j] = trim($this->A[$i][$j],'"');
@@ -936,7 +936,7 @@ class Matrix {
 			$this->checkMatrixDimensions($M);
 			for($i = 0; $i < $this->m; ++$i) {
 				for($j = 0; $j < $this->n; ++$j) {
-					$validValues = True;
+					$validValues = TRUE;
 					$value = $M->get($i, $j);
 					if ((is_string($this->A[$i][$j])) && (!is_numeric($this->A[$i][$j]))) {
 						$this->A[$i][$j] = trim($this->A[$i][$j],'"');
@@ -987,7 +987,7 @@ class Matrix {
 			$this->checkMatrixDimensions($M);
 			for($i = 0; $i < $this->m; ++$i) {
 				for($j = 0; $j < $this->n; ++$j) {
-					$validValues = True;
+					$validValues = TRUE;
 					$value = $M->get($i, $j);
 					if ((is_string($this->A[$i][$j])) && (!is_numeric($this->A[$i][$j]))) {
 						$this->A[$i][$j] = trim($this->A[$i][$j],'"');
@@ -1244,7 +1244,7 @@ class Matrix {
 			$this->checkMatrixDimensions($M);
 			for($i = 0; $i < $this->m; ++$i) {
 				for($j = 0; $j < $this->n; ++$j) {
-					$validValues = True;
+					$validValues = TRUE;
 					$value = $M->get($i, $j);
 					if ((is_string($this->A[$i][$j])) && (!is_numeric($this->A[$i][$j]))) {
 						$this->A[$i][$j] = trim($this->A[$i][$j],'"');

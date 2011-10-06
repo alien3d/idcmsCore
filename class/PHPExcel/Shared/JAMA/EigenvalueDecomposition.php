@@ -783,7 +783,7 @@ class EigenvalueDecomposition {
 		$this->A = $Arg->getArray();
 		$this->n = $Arg->getColumnDimension();
 
-		$issymmetric = true;
+		$issymmetric = TRUE;
 		for ($j = 0; ($j < $this->n) & $issymmetric; ++$j) {
 			for ($i = 0; ($i < $this->n) & $issymmetric; ++$i) {
 				$issymmetric = ($this->A[$i][$j] == $this->A[$j][$i]);

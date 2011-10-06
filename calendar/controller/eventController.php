@@ -32,12 +32,12 @@ class EventClass extends ConfigClass
      */
     private $documentTrail;
     /**
-     * Audit Row True or False
+     * Audit Row TRUE or False
      * @var bool
      */
     private $audit;
     /**
-     * Log Sql Statement True or False
+     * Log Sql Statement TRUE or False
      * @var bool
      */
     private $log;
@@ -182,7 +182,7 @@ class EventClass extends ConfigClass
         }
         $this->q->commit();
         echo json_encode(
-        array("success" => true, "message" => "Record Created", "evts" => $data, 
+        array("success" => TRUE, "message" => "Record Created", "evts" => $data, 
         "eventId" => $eventId));
         exit();
     }
@@ -253,12 +253,12 @@ class EventClass extends ConfigClass
         }
         $total = $this->q->numberRows();
         $items = array();
-        while (($row = $this->q->fetchAssoc()) == true) {
+        while (($row = $this->q->fetchAssoc()) == TRUE) {
             $items[] = $row;
         }
         if ($this->model->getEventId(0, 'single')) {
             $json_encode = json_encode(
-            array('success' => true, 'total' => $total, 
+            array('success' => TRUE, 'total' => $total, 
             'message' => 'Data Loaded', 'data' => $items));
             $json_encode = str_replace("[", "", $json_encode);
             $json_encode = str_replace("]", "", $json_encode);
@@ -268,7 +268,7 @@ class EventClass extends ConfigClass
                 $items = '';
             }
             echo json_encode(
-            array('success' => true, 'total' => $total, 
+            array('success' => TRUE, 'total' => $total, 
             'message' => 'data loaded', 'evts' => $items));
         }
     }
@@ -338,7 +338,7 @@ class EventClass extends ConfigClass
         }
         $this->q->commit();
         echo json_encode(
-        array("success" => true, "message" => "Record updated"));
+        array("success" => TRUE, "message" => "Record updated"));
         exit();
     }
     /* (non-PHPdoc)
@@ -377,7 +377,7 @@ class EventClass extends ConfigClass
         }
         $this->q->commit();
         echo json_encode(
-        array("success" => true, "message" => "Record updated"));
+        array("success" => TRUE, "message" => "Record updated"));
         exit();
     }
     /* (non-PHPdoc)

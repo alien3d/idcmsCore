@@ -332,7 +332,7 @@ class Vendor
 						$this->responce = maxdb_error($this->link) . "Error Code" . maxdb_errno($this->link);
 					} else {
 
-						while (($rowColumn = maxdb_fetch_array($resultColumn)) == true) {
+						while (($rowColumn = maxdb_fetch_array($resultColumn)) == TRUE) {
 
 							$fieldValue[] = $rowColumn['Field'];
 						}
@@ -347,7 +347,7 @@ class Vendor
 						$this->responce = maxdb_error($this->link) . "Error Code" . maxdb_errno($this->link);
 					} else {
 
-						while (($rowPrevious = maxdb_fetch_array($resultPrevious)) == true) {
+						while (($rowPrevious = maxdb_fetch_array($resultPrevious)) == TRUE) {
 							foreach ($fieldValue as $field) {
 								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
 								$previous[$field] = $rowPrevious[$field];
@@ -421,7 +421,7 @@ class Vendor
 						$this->responce = maxdb_error($this->link) . "Error Code" . maxdb_errno($$this->link);
 					} else {
 						//	echo "Jumlah Rekod".maxdb_num_rows($resultColumn);
-						while (($rowColumn = maxdb_fetch_array($resultColumn)) == true) {
+						while (($rowColumn = maxdb_fetch_array($resultColumn)) == TRUE) {
 							// create the field value
 							$fieldValue[] = $rowColumn['Field'];
 						}
@@ -437,7 +437,7 @@ class Vendor
 					} else {
 						// successfully
 						//	echo "Jumlah Rekod ".maxdb_num_rows($resultPrevious);
-						while (($rowPrevious = maxdb_fetch_array($resultPrevious)) == true) {
+						while (($rowPrevious = maxdb_fetch_array($resultPrevious)) == TRUE) {
 							foreach ($fieldValue as $field) {
 								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
 								$previous[$field] = $rowPrevious[$field];
@@ -480,7 +480,7 @@ class Vendor
 					WHERE 	`" . $this->primaryKeyName . "`=\"". $this->primaryKeyValue . "\"";
 					$resultCurrent = maxdb_query($this->link, $sqlCurrent);
 					if ($resultCurrent) {
-						while (($rowCurrent = maxdb_fetch_array($resultCurrent)) == true) {
+						while (($rowCurrent = maxdb_fetch_array($resultCurrent)) == TRUE) {
 							$textComparison .= $this->compare($fieldValue, $rowCurrent, $previous);
 						}
 					} else {
@@ -668,11 +668,11 @@ class Vendor
 	{
 		$d = array();
 		if ($result) {
-			while (($row = maxdb_fetch_assoc($result)) == true) {
+			while (($row = maxdb_fetch_assoc($result)) == TRUE) {
 				$d[] = $row;
 			}
 		} else {
-			while (($row = maxdb_fetch_assoc($this->result)) == true) {
+			while (($row = maxdb_fetch_assoc($this->result)) == TRUE) {
 				$d[] = $row;
 			}
 		}
@@ -809,9 +809,9 @@ class Vendor
 			$sql = "DESCRIBE	`" . $tableSearch . "`";
 			$result = maxdb_query($this->link,$sql);
 			if (maxdb_num_rows($result) > 0) {
-				while (($row = maxdb_fetch_array($result)) == true) {
+				while (($row = maxdb_fetch_array($result)) == TRUE) {
 					$strField = "`" . $tableSearch . "`.`" . $row['Field'] . "`";
-					$key      = array_search($strField, $filterArray, true);
+					$key      = array_search($strField, $filterArray, TRUE);
 					if ($i > 0 && strlen($key) == 0) {
 						$strSearch .= " OR  ";
 					}
@@ -895,7 +895,7 @@ class Vendor
 		}
 	}
 	/**
-	 * Checking date if  true or false
+	 * Checking date if  TRUE or false
 	 * @param date $dateTime
 	 * @return boolean
 	 */
@@ -903,7 +903,7 @@ class Vendor
 	{
 		if (preg_match("/^({4})-({2})-({2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/", $dateTime, $matches)) {
 			if (checkdate($matches[2], $matches[3], $matches[1])) {
-				return true;
+				return TRUE;
 			}
 		}
 		return false;

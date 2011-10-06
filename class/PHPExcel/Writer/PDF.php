@@ -81,7 +81,7 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
 	 */
 	public function __construct(PHPExcel $phpExcel) {
 		parent::__construct($phpExcel);
-		$this->setUseInlineCss(true);
+		$this->setUseInlineCss(TRUE);
 		$this->_tempDir = PHPExcel_Shared_File::sys_get_temp_dir();
 	}
 
@@ -105,10 +105,10 @@ class PHPExcel_Writer_PDF extends PHPExcel_Writer_HTML implements PHPExcel_Write
 		}
 
 		// Set PDF
-		$this->_isPdf = true;
+		$this->_isPdf = TRUE;
 
 		// Build CSS
-		$this->buildCSS(true);
+		$this->buildCSS(TRUE);
 
 		// Generate HTML
 		$html = '';

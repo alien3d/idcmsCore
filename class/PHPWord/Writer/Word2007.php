@@ -70,8 +70,8 @@ class PHPWord_Writer_Word2007 implements PHPWord_Writer_IWriter {
 			$objZip = new ZipArchive();
 				
 			// Try opening the ZIP file
-			if($objZip->open($pFilename, ZIPARCHIVE::OVERWRITE) !== true) {
-				if($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== true) {
+			if($objZip->open($pFilename, ZIPARCHIVE::OVERWRITE) !== TRUE) {
+				if($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== TRUE) {
 					throw new Exception("Could not open " . $pFilename . " for writing.");
 				}
 			}

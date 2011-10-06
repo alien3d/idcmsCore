@@ -786,7 +786,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 				$formulaData .= pack('C', 0x10); // tList
 
 				// store the DEFINEDNAME record
-				$chunk .= $this->writeData($this->_writeDefinedNameBiff8(pack('C', 0x07), $formulaData, $i + 1, true));
+				$chunk .= $this->writeData($this->_writeDefinedNameBiff8(pack('C', 0x07), $formulaData, $i + 1, TRUE));
 
 				// (exclusive) either repeatColumns or repeatRows
 			} else if ($this->_phpExcel->getSheet($i)->getPageSetup()->isColumnsToRepeatAtLeftSet() || $this->_phpExcel->getSheet($i)->getPageSetup()->isRowsToRepeatAtTopSet()) {
@@ -814,7 +814,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 				$formulaData = pack('Cvvvvv', 0x3B, $i, $rowmin, $rowmax, $colmin, $colmax);
 
 				// store the DEFINEDNAME record
-				$chunk .= $this->writeData($this->_writeDefinedNameBiff8(pack('C', 0x07), $formulaData, $i + 1, true));
+				$chunk .= $this->writeData($this->_writeDefinedNameBiff8(pack('C', 0x07), $formulaData, $i + 1, TRUE));
 			}
 		}
 
@@ -845,7 +845,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 				}
 
 				// store the DEFINEDNAME record
-				$chunk .= $this->writeData($this->_writeDefinedNameBiff8(pack('C', 0x06), $formulaData, $i + 1, true));
+				$chunk .= $this->writeData($this->_writeDefinedNameBiff8(pack('C', 0x06), $formulaData, $i + 1, TRUE));
 			}
 		}
 
@@ -1385,7 +1385,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 					$recordData .= $string;
 
 					// we are finished writing this string
-					$finished = true;
+					$finished = TRUE;
 
 				} else if (strlen($recordData) + strlen($string) == $continue_limit) {
 					// then we can also write the string (or remainder of string)
@@ -1396,7 +1396,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 					$recordData = '';
 
 					// we are finished writing this string
-					$finished = true;
+					$finished = TRUE;
 
 				} else {
 					// special treatment writing the string (or remainder of the string)
@@ -1477,7 +1477,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 		$found = false;
 		foreach ($this->_phpExcel->getAllSheets() as $sheet) {
 			if (count($sheet->getDrawingCollection()) > 0) {
-				$found = true;
+				$found = TRUE;
 			}
 		}
 

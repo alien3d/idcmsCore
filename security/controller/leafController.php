@@ -872,7 +872,7 @@ class LeafClass extends ConfigClass
         $loopRow = 4;
         $this->q->numberRows();
         $i = 0;
-        while ($row = $this->q->fetchAssoc()) {
+        while (($row = $this->q->fetchAssoc()) == TRUE) {
             //	echo print_r($row);
             $this->excel->getActiveSheet()->setCellValue(
             'B' . $loopRow, ++ $i);
@@ -929,10 +929,10 @@ if (isset($_POST['method'])) {
      * Paging
      */
     if (isset($_POST['start'])) {
-        $themeObject->setStart($_POST['start']);
+        $leafObject->setStart($_POST['start']);
     }
     if (isset($_POST['limit'])) {
-        $themeObject->setLimit($_POST['perPage']);
+        $leafObject->setLimit($_POST['perPage']);
     }
     /*
 	 *  Filtering

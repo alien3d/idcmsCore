@@ -233,7 +233,7 @@ class PHPExcel_ReferenceHelper
 
 
 		// Update worksheet: column dimensions
-		$aColumnDimensions = array_reverse($pSheet->getColumnDimensions(), true);
+		$aColumnDimensions = array_reverse($pSheet->getColumnDimensions(), TRUE);
 		if (count($aColumnDimensions) > 0) {
 			foreach ($aColumnDimensions as $objColumnDimension) {
 				$newReference = $this->updateCellReference($objColumnDimension->getColumnIndex() . '1', $pBefore, $pNumCols, $pNumRows);
@@ -247,7 +247,7 @@ class PHPExcel_ReferenceHelper
 
 
 		// Update worksheet: row dimensions
-		$aRowDimensions = array_reverse($pSheet->getRowDimensions(), true);
+		$aRowDimensions = array_reverse($pSheet->getRowDimensions(), TRUE);
 		if (count($aRowDimensions) > 0) {
 			foreach ($aRowDimensions as $objRowDimension) {
 				$newReference = $this->updateCellReference('A' . $objRowDimension->getRowIndex(), $pBefore, $pNumCols, $pNumRows);
@@ -270,7 +270,7 @@ class PHPExcel_ReferenceHelper
 
 
 		// Update worksheet: breaks
-		$aBreaks = array_reverse($pSheet->getBreaks(), true);
+		$aBreaks = array_reverse($pSheet->getBreaks(), TRUE);
 		foreach ($aBreaks as $key => $value) {
 			$newReference = $this->updateCellReference($key, $pBefore, $pNumCols, $pNumRows);
 			if ($key != $newReference) {
@@ -281,7 +281,7 @@ class PHPExcel_ReferenceHelper
 
 
 		// Update worksheet: hyperlinks
-		$aHyperlinkCollection = array_reverse($pSheet->getHyperlinkCollection(), true);
+		$aHyperlinkCollection = array_reverse($pSheet->getHyperlinkCollection(), TRUE);
 		foreach ($aHyperlinkCollection as $key => $value) {
 			$newReference = $this->updateCellReference($key, $pBefore, $pNumCols, $pNumRows);
 			if ($key != $newReference) {
@@ -292,7 +292,7 @@ class PHPExcel_ReferenceHelper
 
 
 		// Update worksheet: data validations
-		$aDataValidationCollection = array_reverse($pSheet->getDataValidationCollection(), true);
+		$aDataValidationCollection = array_reverse($pSheet->getDataValidationCollection(), TRUE);
 		foreach ($aDataValidationCollection as $key => $value) {
 			$newReference = $this->updateCellReference($key, $pBefore, $pNumCols, $pNumRows);
 			if ($key != $newReference) {
@@ -313,11 +313,11 @@ class PHPExcel_ReferenceHelper
 
 
 		// Update worksheet: protected cells
-		$aProtectedCells = array_reverse($pSheet->getProtectedCells(), true);
+		$aProtectedCells = array_reverse($pSheet->getProtectedCells(), TRUE);
 		foreach ($aProtectedCells as $key => $value) {
 			$newReference = $this->updateCellReference($key, $pBefore, $pNumCols, $pNumRows);
 			if ($key != $newReference) {
-				$pSheet->protectCells( $newReference, $value, true );
+				$pSheet->protectCells( $newReference, $value, TRUE );
 				$pSheet->unprotectCells( $key );
 			}
 		}

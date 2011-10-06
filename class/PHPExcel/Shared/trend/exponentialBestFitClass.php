@@ -97,7 +97,7 @@ class PHPExcel_Exponential_Best_Fit extends PHPExcel_Best_Fit
 	}	//	function _exponential_regression()
 
 
-	function __construct($yValues, $xValues=array(), $const=True) {
+	function __construct($yValues, $xValues=array(), $const=TRUE) {
 		if (parent::__construct($yValues, $xValues) !== False) {
 			$this->_exponential_regression($yValues, $xValues, $const);
 		}

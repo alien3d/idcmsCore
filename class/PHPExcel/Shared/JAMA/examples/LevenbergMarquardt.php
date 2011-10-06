@@ -159,10 +159,10 @@ class LevenbergMarquardt {
 			//				term++;
 			//				if (term == 4) {
 			//					System.out.println("terminating after " + iter + " iterations");
-			//					done = true;
+			//					done = TRUE;
 			//				}
 			//			}
-			//			if (iter >= maxiter) done = true;
+			//			if (iter >= maxiter) done = TRUE;
 
 			// in the C++ version, found that changing this to e1 >= e0
 			// was not a good idea.  See comment there.

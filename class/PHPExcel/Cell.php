@@ -264,7 +264,7 @@ class PHPExcel_Cell
 	 *
 	 * @return mixed
 	 */
-	public function getCalculatedValue($resetLog=true)
+	public function getCalculatedValue($resetLog=TRUE)
 	{
 		//		echo 'Cell '.$this->getCoordinate().' value is a '.$this->_dataType.' with a value of '.$this->getValue().'<br />';
 		if (!is_null($this->_calculatedValue) && $this->_dataType == PHPExcel_Cell_DataType::TYPE_FORMULA) {

@@ -36,7 +36,7 @@ class CholeskyDecomposition {
 	 *	@var boolean
 	 *	@access private
 	 */
-	private $isspd = true;
+	private $isspd = TRUE;
 
 
 	/**

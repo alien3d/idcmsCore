@@ -74,7 +74,7 @@ class PHPExcel_Cell_DefaultValueBinder implements PHPExcel_Cell_IValueBinder
 		$cell->setValueExplicit( $value, PHPExcel_Cell_DataType::dataTypeForValue($value) );
 
 		// Done!
-		return true;
+		return TRUE;
 	}
 
 	/**

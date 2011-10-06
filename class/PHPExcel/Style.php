@@ -264,7 +264,7 @@ class PHPExcel_Style implements PHPExcel_IComparable
 	 * 		array(
 	 * 			'font'    => array(
 	 * 				'name'      => 'Arial',
-	 * 				'bold'      => true,
+	 * 				'bold'      => TRUE,
 	 * 				'italic'    => false,
 	 * 				'underline' => PHPExcel_Style_Font::UNDERLINE_DOUBLE,
 	 * 				'strike'    => false,
@@ -295,7 +295,7 @@ class PHPExcel_Style implements PHPExcel_IComparable
 	 * @throws	Exception
 	 * @return PHPExcel_Style
 	 */
-	public function applyFromArray($pStyles = null, $pAdvanced = true) {
+	public function applyFromArray($pStyles = null, $pAdvanced = TRUE) {
 		if (is_array($pStyles)) {
 			if ($this->_isSupervisor) {
 
@@ -472,7 +472,7 @@ class PHPExcel_Style implements PHPExcel_IComparable
 					case 'COLUMN':
 						$oldXfIndexes = array();
 						for ($col = $rangeStart[0]; $col <= $rangeEnd[0]; ++$col) {
-							$oldXfIndexes[$this->getActiveSheet()->getColumnDimensionByColumn($col)->getXfIndex()] = true;
+							$oldXfIndexes[$this->getActiveSheet()->getColumnDimensionByColumn($col)->getXfIndex()] = TRUE;
 						}
 						break;
 
@@ -480,9 +480,9 @@ class PHPExcel_Style implements PHPExcel_IComparable
 						$oldXfIndexes = array();
 						for ($row = $rangeStart[1]; $row <= $rangeEnd[1]; ++$row) {
 							if ($this->getActiveSheet()->getRowDimension($row)->getXfIndex() == null) {
-								$oldXfIndexes[0] = true; // row without explicit style should be formatted based on default style
+								$oldXfIndexes[0] = TRUE; // row without explicit style should be formatted based on default style
 							} else {
-								$oldXfIndexes[$this->getActiveSheet()->getRowDimension($row)->getXfIndex()] = true;
+								$oldXfIndexes[$this->getActiveSheet()->getRowDimension($row)->getXfIndex()] = TRUE;
 							}
 						}
 						break;
@@ -491,7 +491,7 @@ class PHPExcel_Style implements PHPExcel_IComparable
 						$oldXfIndexes = array();
 						for ($col = $rangeStart[0]; $col <= $rangeEnd[0]; ++$col) {
 							for ($row = $rangeStart[1]; $row <= $rangeEnd[1]; ++$row) {
-								$oldXfIndexes[$this->getActiveSheet()->getCellByColumnAndRow($col, $row)->getXfIndex()] = true;
+								$oldXfIndexes[$this->getActiveSheet()->getCellByColumnAndRow($col, $row)->getXfIndex()] = TRUE;
 							}
 						}
 						break;

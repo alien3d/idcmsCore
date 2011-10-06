@@ -80,7 +80,7 @@ class PHPExcel_Shared_XMLWriter {
 		}
 
 		// Set default values
-		$this->_xmlWriter->setIndent(true);
+		$this->_xmlWriter->setIndent(TRUE);
 	}
 
 	/**
@@ -103,7 +103,7 @@ class PHPExcel_Shared_XMLWriter {
 	 */
 	public function getData() {
 		if ($this->_tempFileName == '') {
-			return $this->_xmlWriter->outputMemory(true);
+			return $this->_xmlWriter->outputMemory(TRUE);
 		} else {
 			$this->_xmlWriter->flush();
 			return file_get_contents($this->_tempFileName);

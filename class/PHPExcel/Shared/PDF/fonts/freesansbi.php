@@ -1,5 +1,5 @@
 <?php
-$type='TrueTypeUnicode';
+$type='TRUETypeUnicode';
 $name='FreeSansBoldOblique';
 $desc=array('Ascent'=>1000,'Descent'=>-300,'CapHeight'=>22,'Flags'=>96,'FontBBox'=>'[-769 -1175 1591 1639]','ItalicAngle'=>-12,'StemV'=>120,'MissingWidth'=>600);
 $up=-145;

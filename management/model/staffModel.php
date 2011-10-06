@@ -22,7 +22,7 @@ class StaffModel extends ValidationClass
      * Group Identification
      * @var int
      */
-    private $groupId;
+    private $teamId;
     /**
      * Group Identification
      * @var int
@@ -114,7 +114,7 @@ class StaffModel extends ValidationClass
         }
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
         "isDelete", "isActive", "isApproved","isReview","isPost");
-        // auto assign as array if true
+        // auto assign as array if TRUE
         if (isset($_GET['staffId'])) {
             if (is_array($_GET['staffId'])) {
                 $this->staffId = array();
@@ -161,7 +161,7 @@ class StaffModel extends ValidationClass
                 $this->strict($_GET['staffId'][$i], 'numeric'), $i, 'array');
             }
             if (isset($_GET['staffId'])) {
-                if ($_GET['isDefault'][$i] == 'true') {
+                if ($_GET['isDefault'][$i] == 'TRUE') {
                     $this->setIsDefault(1, $i, 'array');
                 } else 
                     if ($_GET['default'] == 'false') {
@@ -169,28 +169,28 @@ class StaffModel extends ValidationClass
                     }
             }
             if (isset($_GET['staffId'])) {
-                if ($_GET['isNew'][$i] == 'true') {
+                if ($_GET['isNew'][$i] == 'TRUE') {
                     $this->setIsNew(1, $i, 'array');
                 } else {
                     $this->setIsNew(0, $i, 'array');
                 }
             }
             if (isset($_GET['staffId'])) {
-                if ($_GET['isDraft'][$i] == 'true') {
+                if ($_GET['isDraft'][$i] == 'TRUE') {
                     $this->setIsDraft(1, $i, 'array');
                 } else {
                     $this->setIsDraft(0, $i, 'array');
                 }
             }
             if (isset($_GET['staffId'])) {
-                if ($_GET['isUpdate'][$i] == 'true') {
+                if ($_GET['isUpdate'][$i] == 'TRUE') {
                     $this->setIsUpdate(1, $i, 'array');
                 } else {
                     $this->setIsUpdate(0, $i, 'array');
                 }
             }
             if (isset($_GET['staffId'])) {
-                if ($_GET['isDelete'][$i] == 'true') {
+                if ($_GET['isDelete'][$i] == 'TRUE') {
                     $this->setIsDelete(1, $i, 'array');
                 } else 
                     if ($_GET['isDelete'][$i] == 'false') {
@@ -198,21 +198,21 @@ class StaffModel extends ValidationClass
                     }
             }
             if (isset($_GET['staffId'])) {
-                if ($_GET['isActive'][$i] == 'true') {
+                if ($_GET['isActive'][$i] == 'TRUE') {
                     $this->setIsActive(1, $i, 'array');
                 } else {
                     $this->setIsActive(0, $i, 'array');
                 }
             }
             if (isset($_GET['staffId'])) {
-                if ($_GET['isApproved'][$i] == 'true') {
+                if ($_GET['isApproved'][$i] == 'TRUE') {
                     $this->setIsApproved(1, $i, 'array');
                 } else {
                     $this->setIsApproved(0, $i, 'array');
                 }
             }
             if (isset($_GET['isApproved'])) {
-                if ($_GET['isApproved'][$i] == 'true') {
+                if ($_GET['isApproved'][$i] == 'TRUE') {
                     $this->setIsApproved(1, $i, 'array');
                 } else {
                     $this->setIsApproved(0, $i, 'array');

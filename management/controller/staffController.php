@@ -33,12 +33,12 @@ class StaffClass extends ConfigClass
 	 */
 	private $documentTrail;
 	/**
-	 * Audit Row True or False
+	 * Audit Row TRUE or False
 	 * @var bool
 	 */
 	private $audit;
 	/**
-	 * Log Sql Statement True or False
+	 * Log Sql Statement TRUE or False
 	 * @var string
 	 */
 	private $log;
@@ -62,6 +62,16 @@ class StaffClass extends ConfigClass
 	 * @var bool
 	 */
 	public $duplicateTest;
+	/**
+	 * Title Of Microsoft Excel Report
+	 * @var string
+	 */
+	private $title;
+	/**
+	 * Security Object
+	 * @var strig
+	 */
+	private $security;
 	/**
 	 * Class Loader
 	 */
@@ -549,7 +559,7 @@ class StaffClass extends ConfigClass
 		}
 		$this->q->commit();
 		echo json_encode(array(
-            "success" => "true",
+            "success" => "TRUE",
             "message" => "Record Created"
             ));
             exit();
@@ -855,7 +865,7 @@ class StaffClass extends ConfigClass
             }
             if ($this->model->getStaffId(0,'single')) {
             	$json_encode = json_encode(array(
-                'success' => true,
+                'success' => TRUE,
                 'total' => $total,
                 'message' => 'Data Loaded',
                 'firstRecord'=>$this->firstRecord(),
@@ -872,7 +882,7 @@ class StaffClass extends ConfigClass
             		$items = '';
             	}
             	echo json_encode(array(
-                'success' => true,
+                'success' => TRUE,
                 'total' => $total,
                 'message' => 'data loaded',
                 'data' => $items
@@ -924,7 +934,7 @@ class StaffClass extends ConfigClass
 		} else {
 			$staffPassword = $this->model->getStaffPassword();
 		}
-		$groupId = $data['groupId'];
+		$teamId = $data['groupId'];
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				UPDATE 	`staff`
@@ -994,7 +1004,7 @@ class StaffClass extends ConfigClass
 			exit();
 		}
 		// check change group or not
-		if ($this->model->getGroupId() != $groupId) {
+		if ($this->model->getGroupId() != $teamId) {
 			/**
 			 *  update  leaf group access
 			 * */
@@ -1390,7 +1400,7 @@ class StaffClass extends ConfigClass
 		}
 		$this->q->commit();
 		echo json_encode(array(
-            "success" => true,
+            "success" => TRUE,
             "message" => "Deleted"
             ));
             exit();
@@ -1440,7 +1450,7 @@ class StaffClass extends ConfigClass
 				return $total . "|" . $row['staffNo'];
 			} else {
 				echo json_encode(array(
-                    "success" => "true",
+                    "success" => "TRUE",
                     "total" => $total,
                     "message" => "Duplicate Record",
                     "staffNo" => $row['staffNo']
@@ -1455,9 +1465,9 @@ class StaffClass extends ConfigClass
 	/**
 	 * Enter description here ...
 	 */
-	public function group()
+	public function team()
 	{
-		$this->security->group();
+		$this->security->team();
 
 	}
 	public function department()
@@ -1507,9 +1517,9 @@ class StaffClass extends ConfigClass
                         )
                         );
                         // header all using  3 line  starting b
-                        $this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-                        $this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
-                        $this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+                        $this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(TRUE);
+                        $this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(TRUE);
+                        $this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(TRUE);
                         $this->excel->getActiveSheet()->setCellValue('B2', $this->title);
                         $this->excel->getActiveSheet()->setCellValue('D2', '');
                         $this->excel->getActiveSheet()->mergeCells('B2:D2');
@@ -1541,7 +1551,7 @@ class StaffClass extends ConfigClass
                         $file = fopen($_SERVER['document_root'] . "/idcmsCore/management/document/excel/" . $filename, 'r');
                         if ($file) {
                         	echo json_encode(array(
-                "success" => "true",
+                "success" => "TRUE",
                 "message" => "File generated"
                 ));
                         } else {

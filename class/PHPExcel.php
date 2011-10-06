@@ -138,7 +138,7 @@ class PHPExcel
 		$this->_namedRanges = array();
 
 		// Create the cellXf supervisor
-		$this->_cellXfSupervisor = new PHPExcel_Style(true);
+		$this->_cellXfSupervisor = new PHPExcel_Style(TRUE);
 		$this->_cellXfSupervisor->bindParent($this);
 
 		// Create the default style
@@ -444,7 +444,7 @@ class PHPExcel
 	 */
 	public function addNamedRange(PHPExcel_NamedRange $namedRange) {
 		$this->_namedRanges[$namedRange->getWorksheet()->getTitle().'!'.$namedRange->getName()] = $namedRange;
-		return true;
+		return TRUE;
 	}
 
 	/**

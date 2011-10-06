@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, TRUE, 'UTF-8', false); 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -112,7 +112,7 @@ $pdf->RadioButton('drink', 5, array(), array(), 'Water');
 $pdf->Cell(35, 5, 'Water');
 $pdf->Ln(6);
 $pdf->Cell(35, 5, '');
-$pdf->RadioButton('drink', 5, array(), array(), 'Beer', true);
+$pdf->RadioButton('drink', 5, array(), array(), 'Beer', TRUE);
 $pdf->Cell(35, 5, 'Beer');
 $pdf->Ln(6);
 $pdf->Cell(35, 5, '');
@@ -122,12 +122,12 @@ $pdf->Ln(10);
 
 // Listbox
 $pdf->Cell(35, 5, 'List:');
-$pdf->ListBox('listbox', 60, 15, array('', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7'), array('multipleSelection'=>'true'));
+$pdf->ListBox('listbox', 60, 15, array('', 'item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7'), array('multipleSelection'=>'TRUE'));
 $pdf->Ln(20);
 
 // Adress
 $pdf->Cell(35, 5, 'Address:');
-$pdf->TextField('address', 60, 18, array('multiline'=>true));
+$pdf->TextField('address', 60, 18, array('multiline'=>TRUE));
 $pdf->Ln(19);
 
 // E-mail
@@ -137,7 +137,7 @@ $pdf->Ln(6);
 
 // Newsletter
 $pdf->Cell(35, 5, 'Newsletter:');
-$pdf->CheckBox('newsletter', 5, true, array(), array(), 'OK');
+$pdf->CheckBox('newsletter', 5, TRUE, array(), array(), 'OK');
 $pdf->Ln(10);
 
 // Date of the day
@@ -166,7 +166,7 @@ function CheckField(name,message) {
 	    f.setFocus();
 	    return false;
 	}
-	return true;
+	return TRUE;
 }
 function Print() {
 	if(!CheckField('firstname','First name is mandatory')) {return;}

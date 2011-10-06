@@ -32,12 +32,12 @@ class CalendarClass extends ConfigClass
 	 */
 	private $documentTrail;
 	/**
-	 * Audit Row True or False
+	 * Audit Row TRUE or False
 	 * @var bool
 	 */
 	private $audit;
 	/**
-	 * Log Sql Statement True or False
+	 * Log Sql Statement TRUE or False
 	 * @var string
 	 */
 	private $log;
@@ -140,7 +140,7 @@ class CalendarClass extends ConfigClass
 		$total = $this->q->numberRows();
 		$this->q->read($sql);
 		$items = array();
-		while (($row = $this->q->fetchAssoc()) == true) {
+		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$row['ColorId'] = $row['calendarColorId']; // testing maaping color
 			$items[] = $row;
 		}
@@ -153,7 +153,7 @@ class CalendarClass extends ConfigClass
 			if ($_POST['method'] == 'read' &&
 			$_POST['mode'] == 'update') {
 				$json_encode = json_encode(
-				array('success' => true, 'total' => $total, 'data' => $items));
+				array('success' => TRUE, 'total' => $total, 'data' => $items));
 				$json_encode = str_replace("[", "", $json_encode);
 				$json_encode = str_replace("]", "", $json_encode);
 				echo $json_encode;
@@ -162,7 +162,7 @@ class CalendarClass extends ConfigClass
 					$items = '';
 				}
 				echo json_encode(
-				array('success' => true, 'total' => $total, 'data' => $items));
+				array('success' => TRUE, 'total' => $total, 'data' => $items));
 			}
 		}
 	}
@@ -206,7 +206,7 @@ class CalendarClass extends ConfigClass
 			exit();
 		} else {
 			echo json_encode(
-			array("success" => true, "message" => "update success"));
+			array("success" => TRUE, "message" => "update success"));
 			exit();
 		}
 	}

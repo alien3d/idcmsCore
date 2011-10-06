@@ -349,7 +349,7 @@ class PHPExcel_Worksheet_PageSetup
 	 * @throws 	Exception
 	 * @return PHPExcel_Worksheet_PageSetup
 	 */
-	public function setScale($pValue = 100, $pUpdate = true) {
+	public function setScale($pValue = 100, $pUpdate = TRUE) {
 		// Microsoft Office Excel 2007 only allows setting a scale between 10 and 400 via the user interface,
 		// but it is apparently still able to handle any scale >= 0, where 0 results in 100
 		if (($pValue >= 0) || is_null($pValue)) {
@@ -378,7 +378,7 @@ class PHPExcel_Worksheet_PageSetup
 	 * @param boolean $pValue
 	 * @return PHPExcel_Worksheet_PageSetup
 	 */
-	public function setFitToPage($pValue = true) {
+	public function setFitToPage($pValue = TRUE) {
 		$this->_fitToPage = $pValue;
 		return $this;
 	}
@@ -399,10 +399,10 @@ class PHPExcel_Worksheet_PageSetup
 	 * @param boolean $pUpdate Update fitToPage so it applies rather than scaling
 	 * @return PHPExcel_Worksheet_PageSetup
 	 */
-	public function setFitToHeight($pValue = 1, $pUpdate = true) {
+	public function setFitToHeight($pValue = 1, $pUpdate = TRUE) {
 		$this->_fitToHeight = $pValue;
 		if ($pUpdate) {
-			$this->_fitToPage = true;
+			$this->_fitToPage = TRUE;
 		}
 		return $this;
 	}
@@ -423,10 +423,10 @@ class PHPExcel_Worksheet_PageSetup
 	 * @param boolean $pUpdate Update fitToPage so it applies rather than scaling
 	 * @return PHPExcel_Worksheet_PageSetup
 	 */
-	public function setFitToWidth($pValue = 1, $pUpdate = true) {
+	public function setFitToWidth($pValue = 1, $pUpdate = TRUE) {
 		$this->_fitToWidth = $pValue;
 		if ($pUpdate) {
-			$this->_fitToPage = true;
+			$this->_fitToPage = TRUE;
 		}
 		return $this;
 	}
@@ -439,7 +439,7 @@ class PHPExcel_Worksheet_PageSetup
 	public function isColumnsToRepeatAtLeftSet() {
 		if (is_array($this->_columnsToRepeatAtLeft)) {
 			if ($this->_columnsToRepeatAtLeft[0] != '' && $this->_columnsToRepeatAtLeft[1] != '') {
-				return true;
+				return TRUE;
 			}
 		}
 
@@ -488,7 +488,7 @@ class PHPExcel_Worksheet_PageSetup
 	public function isRowsToRepeatAtTopSet() {
 		if (is_array($this->_rowsToRepeatAtTop)) {
 			if ($this->_rowsToRepeatAtTop[0] != 0 && $this->_rowsToRepeatAtTop[1] != 0) {
-				return true;
+				return TRUE;
 			}
 		}
 

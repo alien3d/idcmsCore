@@ -39,7 +39,7 @@
 		Ext.onReady(function(){
 			Ext.QuickTips.init();
 			var buttonWithIconCfg = {
-				buttonOnly : true,
+				buttonOnly : TRUE,
 				buttonCfg : {
 					text: 'Add Screenshot',
 					iconCls: 'image-add-icon',
@@ -48,7 +48,7 @@
 				name : 'screenshot'
 			};
 			var buttonWithoutIconCfg = {
-				buttonOnly : true,
+				buttonOnly : TRUE,
 				buttonCfg : {
 					text: 'Add Screenshot',
 					tooltip: 'Click here to upload a screenshot.'
@@ -61,7 +61,7 @@
 				height:350,
 				width:375,
 				title:'Ext.ux.form.FileUploadField example',
-				frame : true,
+				frame : TRUE,
 				tbar : [
 					new Ext.ux.form.FileUploadField(buttonWithIconCfg),
 					new Ext.ux.form.FileUploadField(buttonWithoutIconCfg)

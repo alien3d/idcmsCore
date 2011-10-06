@@ -33,12 +33,12 @@ class TeamClass extends ConfigClass
 	 */
 	private $documentTrail;
 	/**
-	 * Audit Row True or False
+	 * Audit Row TRUE or False
 	 * @var bool
 	 */
 	private $audit;
 	/**
-	 * Log Sql Statement True or False
+	 * Log Sql Statement TRUE or False
 	 * @var string
 	 */
 	private $log;
@@ -495,7 +495,7 @@ class TeamClass extends ConfigClass
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => "true",
+		echo json_encode(array("success" => "TRUE",
         "message" => "Record Created"));
 		exit();
 	}
@@ -785,7 +785,7 @@ class TeamClass extends ConfigClass
 		}
 		if ($this->model->getTeamId(0, 'single')) {
 			$json_encode = json_encode(
-			array('success' => true, 'total' => $total,
+			array('success' => TRUE, 'total' => $total,
             'message' => 'Data Loaded', 'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
@@ -795,7 +795,7 @@ class TeamClass extends ConfigClass
 				$items = '';
 			}
 			echo json_encode(
-			array('success' => true, 'total' => $total,
+			array('success' => TRUE, 'total' => $total,
             'message' => 'data loaded', 'data' => $items));
 			exit();
 		}
@@ -908,7 +908,7 @@ class TeamClass extends ConfigClass
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Update"));
+		echo json_encode(array("success" => TRUE, "message" => "Record Update"));
 		exit();
 	}
 	/* (non-PHPdoc)
@@ -1011,7 +1011,7 @@ class TeamClass extends ConfigClass
 		}
 		$this->q->commit();
 		echo json_encode(
-		array("success" => true, "message" => "Deleted"));
+		array("success" => TRUE, "message" => "Deleted"));
 		exit();
 	}
 	/**
@@ -1169,7 +1169,7 @@ class TeamClass extends ConfigClass
 		}
 		$this->q->commit();
 		echo json_encode(
-		array("success" => true, "message" => "Deleted"));
+		array("success" => TRUE, "message" => "Deleted"));
 		exit();
 	}
 	/**
@@ -1220,7 +1220,7 @@ class TeamClass extends ConfigClass
 				return $total . "|" . $row['teamCode'];
 			} else {
 				echo json_encode(
-				array("success" => "true", "total" => $total,
+				array("success" => "TRUE", "total" => $total,
                 "message" => "Duplicate Record", 
                 "teamCode" => $row['teamCode']));
 				exit();

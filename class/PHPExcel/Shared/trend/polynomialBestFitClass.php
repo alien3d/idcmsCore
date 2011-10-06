@@ -157,17 +157,17 @@ class PHPExcel_Polynomial_Best_Fit extends PHPExcel_Best_Fit
 	}	//	function _polynomial_regression()
 
 
-	function __construct($order, $yValues, $xValues=array(), $const=True) {
+	function __construct($order, $yValues, $xValues=array(), $const=TRUE) {
 		if (parent::__construct($yValues, $xValues) !== False) {
 			if ($order < $this->_valueCount) {
 				$this->_bestFitType .= '_'.$order;
 				$this->_order = $order;
 				$this->_polynomial_regression($order, $yValues, $xValues, $const);
 				if (($this->getGoodnessOfFit() < 0.0) || ($this->getGoodnessOfFit() > 1.0)) {
-					$this->_error = True;
+					$this->_error = TRUE;
 				}
 			} else {
-				$this->_error = True;
+				$this->_error = TRUE;
 			}
 		}
 	}	//	function __construct()

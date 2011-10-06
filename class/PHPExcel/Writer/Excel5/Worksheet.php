@@ -291,7 +291,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 
 		//$this->ext_sheets		= array();
 		$this->_filehandle		= '';
-		$this->_using_tmpfile	= true;
+		$this->_using_tmpfile	= TRUE;
 		//$this->fileclosed		= 0;
 		//$this->offset			= 0;
 		$this->_xls_strmax		= 255;
@@ -727,7 +727,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 	 * @param bool $symbols_right
 	 * @param bool $auto_style
 	 */
-	function setOutline($visible = true, $symbols_below = true, $symbols_right = true, $auto_style = false)
+	function setOutline($visible = TRUE, $symbols_below = TRUE, $symbols_right = TRUE, $auto_style = false)
 	{
 		$this->_outline_on	= $visible;
 		$this->_outline_below = $symbols_below;
@@ -2852,7 +2852,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 		$planes_and_bitcount = unpack("v2", substr($data, 0, 4));
 		$data = substr($data, 4);
 		if ($planes_and_bitcount[2] != 24) { // Bitcount
-			throw new Exception("$bitmap isn't a 24bit true color bitmap.\n");
+			throw new Exception("$bitmap isn't a 24bit TRUE color bitmap.\n");
 		}
 		if ($planes_and_bitcount[1] != 1) {
 			throw new Exception("$bitmap: only 1 plane supported in bitmap image.\n");
@@ -2924,7 +2924,7 @@ class PHPExcel_Writer_Excel5_Worksheet extends PHPExcel_Writer_Excel5_BIFFwriter
 
 		// add one shape which is the group shape
 		$spContainer = new PHPExcel_Shared_Escher_DgContainer_SpgrContainer_SpContainer();
-		$spContainer->setSpgr(true);
+		$spContainer->setSpgr(TRUE);
 		$spContainer->setSpType(0);
 		$spContainer->setSpId(($this->_phpSheet->getParent()->getIndex($this->_phpSheet) + 1) << 10);
 		$spgrContainer->addChild($spContainer);

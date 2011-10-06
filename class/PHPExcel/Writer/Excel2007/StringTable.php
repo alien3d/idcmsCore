@@ -192,12 +192,12 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 					
 				// Bold
 				$objWriter->startElement('b');
-				$objWriter->writeAttribute('val', ($element->getFont()->getBold() ? 'true' : 'false'));
+				$objWriter->writeAttribute('val', ($element->getFont()->getBold() ? 'TRUE' : 'false'));
 				$objWriter->endElement();
 					
 				// Italic
 				$objWriter->startElement('i');
-				$objWriter->writeAttribute('val', ($element->getFont()->getItalic() ? 'true' : 'false'));
+				$objWriter->writeAttribute('val', ($element->getFont()->getItalic() ? 'TRUE' : 'false'));
 				$objWriter->endElement();
 
 				// Superscript / subscript
@@ -213,7 +213,7 @@ class PHPExcel_Writer_Excel2007_StringTable extends PHPExcel_Writer_Excel2007_Wr
 					
 				// Strikethrough
 				$objWriter->startElement('strike');
-				$objWriter->writeAttribute('val', ($element->getFont()->getStrikethrough() ? 'true' : 'false'));
+				$objWriter->writeAttribute('val', ($element->getFont()->getStrikethrough() ? 'TRUE' : 'false'));
 				$objWriter->endElement();
 					
 				// Color

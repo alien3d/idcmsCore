@@ -507,7 +507,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 			// get excel data
 			$res = $this->_ole->read($pFilename);
-			return true;
+			return TRUE;
 
 		} catch (Exception $e) {
 			return false;
@@ -1224,12 +1224,12 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			// bit: 0; mask 0x0001; bold (redundant in BIFF5-BIFF8)
 			// bit: 1; mask 0x0002; italic
 			$isItalic = (0x0002 & $this->_GetInt2d($recordData, 2)) >> 1;
-			if ($isItalic) $objFont->setItalic(true);
+			if ($isItalic) $objFont->setItalic(TRUE);
 
 			// bit: 2; mask 0x0004; underlined (redundant in BIFF5-BIFF8)
 			// bit: 3; mask 0x0008; strike
 			$isStrike = (0x0008 & $this->_GetInt2d($recordData, 2)) >> 3;
-			if ($isStrike) $objFont->setStrikethrough(true);
+			if ($isStrike) $objFont->setStrikethrough(TRUE);
 
 			// offset: 4; size: 2; colour index
 			$colorIndex = $this->_GetInt2d($recordData, 4);
@@ -1239,7 +1239,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			$weight = $this->_GetInt2d($recordData, 6);
 			switch ($weight) {
 				case 0x02BC:
-					$objFont->setBold(true);
+					$objFont->setBold(TRUE);
 					break;
 			}
 
@@ -1247,10 +1247,10 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			$escapement = $this->_GetInt2d($recordData, 8);
 			switch ($escapement) {
 				case 0x0001:
-					$objFont->setSuperScript(true);
+					$objFont->setSuperScript(TRUE);
 					break;
 				case 0x0002:
-					$objFont->setSubScript(true);
+					$objFont->setSubScript(TRUE);
 					break;
 			}
 
@@ -1420,7 +1420,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 					$objStyle->getAlignment()->setWrapText(false);
 					break;
 				case 1:
-					$objStyle->getAlignment()->setWrapText(true);
+					$objStyle->getAlignment()->setWrapText(TRUE);
 					break;
 			}
 			// bit 6-4, mask 0x70; vertical alignment
@@ -1465,7 +1465,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 						$objStyle->getAlignment()->setShrinkToFit(false);
 						break;
 					case 1:
-						$objStyle->getAlignment()->setShrinkToFit(true);
+						$objStyle->getAlignment()->setShrinkToFit(TRUE);
 						break;
 				}
 
@@ -1496,19 +1496,19 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 				// bit: 30; mask: 0x40000000; 1 = diagonal line from top left to right bottom
 				$diagonalDown = (0x40000000 & $this->_GetInt4d($recordData, 10)) >> 30 ?
-				true : false;
+				TRUE : false;
 
 				// bit: 31; mask: 0x80000000; 1 = diagonal line from bottom left to top right
 				$diagonalUp = (0x80000000 & $this->_GetInt4d($recordData, 10)) >> 31 ?
-				true : false;
+				TRUE : false;
 
 				if ($diagonalUp == false && $diagonalDown == false) {
 					$objStyle->getBorders()->setDiagonalDirection(PHPExcel_Style_Borders::DIAGONAL_NONE);
-				} elseif ($diagonalUp == true && $diagonalDown == false) {
+				} elseif ($diagonalUp == TRUE && $diagonalDown == false) {
 					$objStyle->getBorders()->setDiagonalDirection(PHPExcel_Style_Borders::DIAGONAL_UP);
-				} elseif ($diagonalUp == false && $diagonalDown == true) {
+				} elseif ($diagonalUp == false && $diagonalDown == TRUE) {
 					$objStyle->getBorders()->setDiagonalDirection(PHPExcel_Style_Borders::DIAGONAL_DOWN);
-				} elseif ($diagonalUp == true && $diagonalDown == true) {
+				} elseif ($diagonalUp == TRUE && $diagonalDown == TRUE) {
 					$objStyle->getBorders()->setDiagonalDirection(PHPExcel_Style_Borders::DIAGONAL_BOTH);
 				}
 
@@ -2185,7 +2185,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 						$len = min($charsLeft, $limitpos - $pos);
 						$retstr .= substr($recordData, $pos, $len);
 						$charsLeft -= $len;
-						$isCompressed = true;
+						$isCompressed = TRUE;
 
 					} elseif (!$isCompressed && ($option != 0)) {
 						// 1st fragment uncompressed
@@ -2675,7 +2675,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 		if (!$this->_readDataOnly) {
 			// offset: 0; size: 2; 16-bit hash value of password
 			$password = strtoupper(dechex($this->_GetInt2d($recordData, 0))); // the hashed password
-			$this->_phpSheet->getProtection()->setPassword($password, true);
+			$this->_phpSheet->getProtection()->setPassword($password, TRUE);
 		}
 	}
 
@@ -3066,7 +3066,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			$isPartOfSharedFormula = (bool) (0x0008 & $options);
 
 			// WARNING:
-			// We can apparently not rely on $isPartOfSharedFormula. Even when $isPartOfSharedFormula = true
+			// We can apparently not rely on $isPartOfSharedFormula. Even when $isPartOfSharedFormula = TRUE
 			// the formula data may be ordinary formula data, therefore we need to check
 			// explicitly for the tExp token (0x01)
 			$isPartOfSharedFormula = $isPartOfSharedFormula && ord($formulaStructure{2}) == 0x01;
@@ -3108,7 +3108,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 			&& (ord($recordData{12}) == 255)
 			&& (ord($recordData{13}) == 255)) {
 
-				// Boolean formula. Result is in +2; 0=false, 1=true
+				// Boolean formula. Result is in +2; 0=false, 1=TRUE
 				$dataType = PHPExcel_Cell_DataType::TYPE_BOOL;
 				$value = (bool) ord($recordData{8});
 
@@ -3701,7 +3701,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 					// offset: var; size: sl; character array of the shortened file path and name in 8.3-DOS-format (compressed Unicode string)
 					$shortenedFilePath = substr($recordData, $offset, $sl);
-					$shortenedFilePath = $this->_encodeUTF16($shortenedFilePath, true);
+					$shortenedFilePath = $this->_encodeUTF16($shortenedFilePath, TRUE);
 					$shortenedFilePath = substr($shortenedFilePath, 0, -1); // remove trailing zero
 
 					$offset += $sl;
@@ -3953,7 +3953,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 
 			// Apply range protection to sheet
 			if ($cellRanges) {
-				$this->_phpSheet->protectCells(implode(' ', $cellRanges), strtoupper(dechex($wPassword)), true);
+				$this->_phpSheet->protectCells(implode(' ', $cellRanges), strtoupper(dechex($wPassword)), TRUE);
 			}
 		}
 	}
@@ -3998,7 +3998,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 				// offset: 6; size: 2; bcHeight, specifies the height of the bitmap, in pixels.
 				$bcHeight = $this->_GetInt2d($iData, 6);
 				var_dump($bcHeight);
-				$ih = imagecreatetruecolor($bcWidth, $bcHeight);
+				$ih = imagecreateTRUEcolor($bcWidth, $bcHeight);
 
 				// offset: 8; size: 2; bcPlanes, specifies the number of planes for the target device. This value must be 1
 
@@ -4458,7 +4458,7 @@ class PHPExcel_Reader_Excel5 implements PHPExcel_Reader_IReader
 				$data = $this->_mapErrorCode(ord($formulaData[1]));
 				break;
 			case 0x1D: // boolean
-				// offset: 1; size: 1; 0 = false, 1 = true;
+				// offset: 1; size: 1; 0 = false, 1 = TRUE;
 				$name = 'tBool';
 				$size = 2;
 				$data = ord($formulaData[1]) ? 'TRUE' : 'FALSE';

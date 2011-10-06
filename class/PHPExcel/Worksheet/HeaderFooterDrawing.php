@@ -117,7 +117,7 @@ class PHPExcel_Worksheet_HeaderFooterDrawing extends PHPExcel_Worksheet_Drawing 
 		$this->_offsetY				= 0;
 		$this->_width				= 0;
 		$this->_height				= 0;
-		$this->_resizeProportional	= true;
+		$this->_resizeProportional	= TRUE;
 	}
 	 
 	/**
@@ -240,7 +240,7 @@ class PHPExcel_Worksheet_HeaderFooterDrawing extends PHPExcel_Worksheet_Drawing 
 	 * Set width and height with proportional resize
 	 * Example:
 	 * <code>
-	 * $objDrawing->setResizeProportional(true);
+	 * $objDrawing->setResizeProportional(TRUE);
 	 * $objDrawing->setWidthAndHeight(160,120);
 	 * </code>
 	 *
@@ -279,7 +279,7 @@ class PHPExcel_Worksheet_HeaderFooterDrawing extends PHPExcel_Worksheet_Drawing 
 	 * @param boolean $pValue
 	 * @return PHPExcel_Worksheet_HeaderFooterDrawing
 	 */
-	public function setResizeProportional($pValue = true) {
+	public function setResizeProportional($pValue = TRUE) {
 		$this->_resizeProportional = $pValue;
 		return $this;
 	}
@@ -319,7 +319,7 @@ class PHPExcel_Worksheet_HeaderFooterDrawing extends PHPExcel_Worksheet_Drawing 
 	 * @throws 	Exception
 	 * @return PHPExcel_Worksheet_HeaderFooterDrawing
 	 */
-	public function setPath($pValue = '', $pVerifyFile = true) {
+	public function setPath($pValue = '', $pVerifyFile = TRUE) {
 		if ($pVerifyFile) {
 			if (file_exists($pValue)) {
 				$this->_path = $pValue;

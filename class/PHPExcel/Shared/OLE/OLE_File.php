@@ -73,13 +73,13 @@ class PHPExcel_Shared_OLE_PPS_File extends PHPExcel_Shared_OLE_PPS
 	 *
 	 * @access public
 	 * @param string $dir The dir to be used as temp dir
-	 * @return true if given dir is valid, false otherwise
+	 * @return TRUE if given dir is valid, false otherwise
 	 */
 	public function setTempDir($dir)
 	{
 		if (is_dir($dir)) {
 			$this->_tmp_dir = $dir;
-			return true;
+			return TRUE;
 		}
 		return false;
 	}
@@ -88,7 +88,7 @@ class PHPExcel_Shared_OLE_PPS_File extends PHPExcel_Shared_OLE_PPS
 	 * Initialization method. Has to be called right after OLE_PPS_File().
 	 *
 	 * @access public
-	 * @return mixed true on success
+	 * @return mixed TRUE on success
 	 */
 	public function init()
 	{
@@ -101,7 +101,7 @@ class PHPExcel_Shared_OLE_PPS_File extends PHPExcel_Shared_OLE_PPS
 		if ($this->_PPS_FILE) {
 			fseek($this->_PPS_FILE, 0);
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**

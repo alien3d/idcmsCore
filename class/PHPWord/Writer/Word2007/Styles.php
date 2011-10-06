@@ -142,19 +142,19 @@ class PHPWord_Writer_Word2007_Styles extends PHPWord_Writer_Word2007_Base {
 		$bgColor = $style->getBgColor();
 		$cellMargin = $style->getCellMargin();
 
-		$bTop = (!is_null($brdSz[0])) ? true : false;
-		$bLeft = (!is_null($brdSz[1])) ? true : false;
-		$bRight = (!is_null($brdSz[2])) ? true : false;
-		$bBottom = (!is_null($brdSz[3])) ? true : false;
-		$bInsH = (!is_null($brdSz[4])) ? true : false;
-		$bInsV = (!is_null($brdSz[5])) ? true : false;
-		$borders = ($bTop || $bLeft || $bRight || $bBottom || $bInsH || $bInsV) ? true : false;
+		$bTop = (!is_null($brdSz[0])) ? TRUE : false;
+		$bLeft = (!is_null($brdSz[1])) ? TRUE : false;
+		$bRight = (!is_null($brdSz[2])) ? TRUE : false;
+		$bBottom = (!is_null($brdSz[3])) ? TRUE : false;
+		$bInsH = (!is_null($brdSz[4])) ? TRUE : false;
+		$bInsV = (!is_null($brdSz[5])) ? TRUE : false;
+		$borders = ($bTop || $bLeft || $bRight || $bBottom || $bInsH || $bInsV) ? TRUE : false;
 
-		$mTop = (!is_null($cellMargin[0])) ? true : false;
-		$mLeft = (!is_null($cellMargin[1])) ? true : false;
-		$mRight = (!is_null($cellMargin[2])) ? true : false;
-		$mBottom = (!is_null($cellMargin[3])) ? true : false;
-		$margins = ($mTop || $mLeft || $mRight || $mBottom) ? true : false;
+		$mTop = (!is_null($cellMargin[0])) ? TRUE : false;
+		$mLeft = (!is_null($cellMargin[1])) ? TRUE : false;
+		$mRight = (!is_null($cellMargin[2])) ? TRUE : false;
+		$mBottom = (!is_null($cellMargin[3])) ? TRUE : false;
+		$margins = ($mTop || $mLeft || $mRight || $mBottom) ? TRUE : false;
 
 		$objWriter->startElement('w:tblPr');
 			
@@ -260,11 +260,11 @@ class PHPWord_Writer_Word2007_Styles extends PHPWord_Writer_Word2007_Base {
 		$brdCol = $style->getBorderColor();
 		$bgColor = $style->getBgColor();
 
-		$bTop = (!is_null($brdSz[0])) ? true : false;
-		$bLeft = (!is_null($brdSz[1])) ? true : false;
-		$bRight = (!is_null($brdSz[2])) ? true : false;
-		$bBottom = (!is_null($brdSz[3])) ? true : false;
-		$borders = ($bTop || $bLeft || $bRight || $bBottom) ? true : false;
+		$bTop = (!is_null($brdSz[0])) ? TRUE : false;
+		$bLeft = (!is_null($brdSz[1])) ? TRUE : false;
+		$bRight = (!is_null($brdSz[2])) ? TRUE : false;
+		$bBottom = (!is_null($brdSz[3])) ? TRUE : false;
+		$borders = ($bTop || $bLeft || $bRight || $bBottom) ? TRUE : false;
 
 		$objWriter->startElement('w:tblStylePr');
 		$objWriter->writeAttribute('w:type', $type);

@@ -27,7 +27,7 @@ class ModuleAccessModel extends ValidationClass
      * Crew Identification
      * @var int
      */
-    private $crewId;
+    private $teamId;
     /**
      * Module Access Value
      * @var bool

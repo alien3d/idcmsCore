@@ -53,7 +53,7 @@ if (is_dir($directory)){
             $nodes[] = array(
                 'text' => $f,
                 'id'   => $node.'/'.$f,
-                'leaf' => true,
+                'leaf' => TRUE,
                 //'qtip' => $qtip,
                 //'qtipTitle' => $f,
                 'cls'  => 'file'

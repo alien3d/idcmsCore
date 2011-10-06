@@ -97,7 +97,7 @@ class PHPExcel_Worksheet_ColumnDimension
 		$this->_columnIndex		= $pIndex;
 		$this->_width			= -1;
 		$this->_autoSize		= false;
-		$this->_visible			= true;
+		$this->_visible			= TRUE;
 		$this->_outlineLevel	= 0;
 		$this->_collapsed		= false;
 
@@ -180,7 +180,7 @@ class PHPExcel_Worksheet_ColumnDimension
 	 * @param bool $pValue
 	 * @return PHPExcel_Worksheet_ColumnDimension
 	 */
-	public function setVisible($pValue = true) {
+	public function setVisible($pValue = TRUE) {
 		$this->_visible = $pValue;
 		return $this;
 	}
@@ -227,7 +227,7 @@ class PHPExcel_Worksheet_ColumnDimension
 	 * @param bool $pValue
 	 * @return PHPExcel_Worksheet_ColumnDimension
 	 */
-	public function setCollapsed($pValue = true) {
+	public function setCollapsed($pValue = TRUE) {
 		$this->_collapsed = $pValue;
 		return $this;
 	}

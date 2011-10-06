@@ -104,7 +104,7 @@ class PHPExcel_Shared_OLE
 	 *
 	 * @acces public
 	 * @param string $file
-	 * @return mixed true on success, PEAR_Error on failure
+	 * @return mixed TRUE on success, PEAR_Error on failure
 	 */
 	public function read($file)
 	{
@@ -188,7 +188,7 @@ class PHPExcel_Shared_OLE
 
 		$this->_readPpsWks($directoryFirstBlockId);
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -213,7 +213,7 @@ class PHPExcel_Shared_OLE
 		if (!$isRegistered) {
 			stream_wrapper_register('ole-chainedblockstream',
 				'PHPExcel_Shared_OLE_ChainedBlockStream');
-			$isRegistered = true;
+			$isRegistered = TRUE;
 		}
 
 		// Store current instance in global array, so that it can be accessed
@@ -274,7 +274,7 @@ class PHPExcel_Shared_OLE
 	 *
 	 * @access public
 	 * @param  integer  the block id of the first block
-	 * @return mixed true on success, PEAR_Error on failure
+	 * @return mixed TRUE on success, PEAR_Error on failure
 	 */
 	public function _readPpsWks($blockId)
 	{
@@ -342,7 +342,7 @@ class PHPExcel_Shared_OLE
 			}
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -371,7 +371,7 @@ class PHPExcel_Shared_OLE
 	 *
 	 * @access public
 	 * @param integer $index The index for the PPS
-	 * @return bool true if it's a File PPS, false otherwise
+	 * @return bool TRUE if it's a File PPS, false otherwise
 	 */
 	public function isFile($index)
 	{
@@ -387,7 +387,7 @@ class PHPExcel_Shared_OLE
 	 *
 	 * @access public
 	 * @param integer $index The index for the PPS.
-	 * @return bool true if it's a Root PPS, false otherwise
+	 * @return bool TRUE if it's a Root PPS, false otherwise
 	 */
 	public function isRoot($index)
 	{

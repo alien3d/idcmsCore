@@ -88,11 +88,11 @@ class PHPWord_Media {
 			if($type == 'image') {
 				$cImg++;
 				$inf = pathinfo($src);
-				$isMemImage = (substr(strtolower($inf['extension']), 0, 3) == 'php' && $type == 'image') ? true : false;
+				$isMemImage = (substr(strtolower($inf['extension']), 0, 3) == 'php' && $type == 'image') ? TRUE : false;
 
 				if($isMemImage) {
 					$ext = $memoryImage->getImageExtension();
-					$media['isMemImage'] = true;
+					$media['isMemImage'] = TRUE;
 					$media['createfunction'] = $memoryImage->getImageCreateFunction();
 					$media['imagefunction'] = $memoryImage->getImageFunction();
 				} else {
@@ -208,12 +208,12 @@ class PHPWord_Media {
 				
 			$cImg++;
 			$inf = pathinfo($src);
-			$isMemImage = (substr(strtolower($inf['extension']), 0, 3) == 'php') ? true : false;
+			$isMemImage = (substr(strtolower($inf['extension']), 0, 3) == 'php') ? TRUE : false;
 				
 			$media = array();
 			if($isMemImage) {
 				$ext = $memoryImage->getImageExtension();
-				$media['isMemImage'] = true;
+				$media['isMemImage'] = TRUE;
 				$media['createfunction'] = $memoryImage->getImageCreateFunction();
 				$media['imagefunction'] = $memoryImage->getImageFunction();
 			} else {
@@ -277,12 +277,12 @@ class PHPWord_Media {
 				
 			$cImg++;
 			$inf = pathinfo($src);
-			$isMemImage = (substr(strtolower($inf['extension']), 0, 3) == 'php') ? true : false;
+			$isMemImage = (substr(strtolower($inf['extension']), 0, 3) == 'php') ? TRUE : false;
 				
 			$media = array();
 			if($isMemImage) {
 				$ext = $memoryImage->getImageExtension();
-				$media['isMemImage'] = true;
+				$media['isMemImage'] = TRUE;
 				$media['createfunction'] = $memoryImage->getImageCreateFunction();
 				$media['imagefunction'] = $memoryImage->getImageFunction();
 			} else {

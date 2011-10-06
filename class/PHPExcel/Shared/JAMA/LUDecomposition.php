@@ -180,7 +180,7 @@ class LUDecomposition {
 	/**
 	 *	Is the matrix nonsingular?
 	 *
-	 *	@return true if U, and hence A, is nonsingular.
+	 *	@return TRUE if U, and hence A, is nonsingular.
 	 */
 	public function isNonsingular() {
 		for ($j = 0; $j < $this->n; ++$j) {
@@ -188,7 +188,7 @@ class LUDecomposition {
 				return false;
 			}
 		}
-		return true;
+		return TRUE;
 	}	//	function isNonsingular()
 
 

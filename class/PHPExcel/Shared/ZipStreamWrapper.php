@@ -110,7 +110,7 @@ class PHPExcel_Shared_ZipStreamWrapper {
 		$this->_position = 0;
 		$this->_data = $this->_archive->getFromName( $this->_fileNameInArchive );
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -151,7 +151,7 @@ class PHPExcel_Shared_ZipStreamWrapper {
 			case SEEK_SET:
 				if ($offset < strlen($this->_data) && $offset >= 0) {
 					$this->_position = $offset;
-					return true;
+					return TRUE;
 				} else {
 					return false;
 				}
@@ -160,7 +160,7 @@ class PHPExcel_Shared_ZipStreamWrapper {
 			case SEEK_CUR:
 				if ($offset >= 0) {
 					$this->_position += $offset;
-					return true;
+					return TRUE;
 				} else {
 					return false;
 				}
@@ -169,7 +169,7 @@ class PHPExcel_Shared_ZipStreamWrapper {
 			case SEEK_END:
 				if (strlen($this->_data) + $offset >= 0) {
 					$this->_position = strlen($this->_data) + $offset;
-					return true;
+					return TRUE;
 				} else {
 					return false;
 				}

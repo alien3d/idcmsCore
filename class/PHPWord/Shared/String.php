@@ -74,7 +74,7 @@ class PHPWord_Shared_String
 		}
 
 		self::$_isMbstringEnabled = function_exists('mb_convert_encoding') ?
-		true : false;
+		TRUE : false;
 
 		return self::$_isMbstringEnabled;
 	}
@@ -91,7 +91,7 @@ class PHPWord_Shared_String
 		}
 
 		self::$_isIconvEnabled = function_exists('iconv') ?
-		true : false;
+		TRUE : false;
 
 		return self::$_isIconvEnabled;
 	}

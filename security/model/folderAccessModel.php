@@ -28,7 +28,7 @@ class FolderAccessModel extends ValidationClass
 	 * Group Identification
 	 * @var int
 	 */
-	private $groupId;
+	private $teamId;
 	/**
 	 * Folder Access Value
 	 * @var bool

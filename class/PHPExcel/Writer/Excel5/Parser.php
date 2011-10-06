@@ -1229,7 +1229,7 @@ class PHPExcel_Writer_Excel5_Parser
 	 * @access public
 	 * @param string $formula The formula to parse, without the initial equal
 	 *                        sign (=).
-	 * @return mixed true on success
+	 * @return mixed TRUE on success
 	 */
 	function parse($formula)
 	{
@@ -1238,7 +1238,7 @@ class PHPExcel_Writer_Excel5_Parser
 		$this->_lookahead    = $formula{1};
 		$this->_advance();
 		$this->_parse_tree   = $this->_condition();
-		return true;
+		return TRUE;
 	}
 
 	/**

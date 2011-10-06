@@ -70,14 +70,14 @@
 
      $this->XSize   = $XSize;
      $this->YSize   = $YSize;
-     $this->Picture = imagecreatetruecolor($XSize,$YSize);
+     $this->Picture = imagecreateTRUEcolor($XSize,$YSize);
 
      if ( $this->TransparentBackground )
       {
        imagealphablending($this->Picture,FALSE);
        imagefilledrectangle($this->Picture, 0,0,$XSize, $YSize, imagecolorallocatealpha($this->Picture, 255, 255, 255, 127));
        imagealphablending($this->Picture,TRUE);
-       imagesavealpha($this->Picture,true); 
+       imagesavealpha($this->Picture,TRUE); 
       }
      else
       {
@@ -127,14 +127,14 @@
    /* Render the picture to a file */
    function render($FileName)
     {
-     if ( $this->TransparentBackground ) { imagealphablending($this->Picture,false); imagesavealpha($this->Picture,true); }
+     if ( $this->TransparentBackground ) { imagealphablending($this->Picture,false); imagesavealpha($this->Picture,TRUE); }
      imagepng($this->Picture,$FileName);
     }
 
    /* Render the picture to a web browser stream */
    function stroke()
     {
-     if ( $this->TransparentBackground ) { imagealphablending($this->Picture,false); imagesavealpha($this->Picture,true); }
+     if ( $this->TransparentBackground ) { imagealphablending($this->Picture,false); imagesavealpha($this->Picture,TRUE); }
 
      header('Content-type: image/png');
      imagepng($this->Picture);

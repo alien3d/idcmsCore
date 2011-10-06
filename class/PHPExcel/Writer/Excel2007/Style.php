@@ -333,14 +333,14 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		// Bold
 		if ($pFont->getBold()) {
 			$objWriter->startElement('b');
-			$objWriter->writeAttribute('val', 'true');
+			$objWriter->writeAttribute('val', 'TRUE');
 			$objWriter->endElement();
 		}
 
 		// Italic
 		if ($pFont->getItalic()) {
 			$objWriter->startElement('i');
-			$objWriter->writeAttribute('val', 'true');
+			$objWriter->writeAttribute('val', 'TRUE');
 			$objWriter->endElement();
 		}
 
@@ -363,7 +363,7 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		// Strikethrough
 		if ($pFont->getStrikethrough()) {
 			$objWriter->startElement('strike');
-			$objWriter->writeAttribute('val', 'true');
+			$objWriter->writeAttribute('val', 'TRUE');
 			$objWriter->endElement();
 		}
 
@@ -389,16 +389,16 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		// Diagonal?
 		switch ($pBorders->getDiagonalDirection()) {
 			case PHPExcel_Style_Borders::DIAGONAL_UP:
-				$objWriter->writeAttribute('diagonalUp', 	'true');
+				$objWriter->writeAttribute('diagonalUp', 	'TRUE');
 				$objWriter->writeAttribute('diagonalDown', 	'false');
 				break;
 			case PHPExcel_Style_Borders::DIAGONAL_DOWN:
 				$objWriter->writeAttribute('diagonalUp', 	'false');
-				$objWriter->writeAttribute('diagonalDown', 	'true');
+				$objWriter->writeAttribute('diagonalDown', 	'TRUE');
 				break;
 			case PHPExcel_Style_Borders::DIAGONAL_BOTH:
-				$objWriter->writeAttribute('diagonalUp', 	'true');
-				$objWriter->writeAttribute('diagonalDown', 	'true');
+				$objWriter->writeAttribute('diagonalUp', 	'TRUE');
+				$objWriter->writeAttribute('diagonalDown', 	'TRUE');
 				break;
 		}
 
@@ -442,7 +442,7 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		$objWriter->writeAttribute('applyBorder', 		($pPHPExcel->getDefaultStyle()->getBorders()->getHashCode() != $pStyle->getBorders()->getHashCode()) ? '1' : '0');
 		$objWriter->writeAttribute('applyAlignment',	($pPHPExcel->getDefaultStyle()->getAlignment()->getHashCode() != $pStyle->getAlignment()->getHashCode()) ? '1' : '0');
 		if ($pStyle->getProtection()->getLocked() != PHPExcel_Style_Protection::PROTECTION_INHERIT || $pStyle->getProtection()->getHidden() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
-			$objWriter->writeAttribute('applyProtection', 'true');
+			$objWriter->writeAttribute('applyProtection', 'TRUE');
 		}
 
 		// alignment
@@ -458,8 +458,8 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		}
 
 		$objWriter->writeAttribute('textRotation', 	$textRotation);
-		$objWriter->writeAttribute('wrapText', 		($pStyle->getAlignment()->getWrapText() ? 'true' : 'false'));
-		$objWriter->writeAttribute('shrinkToFit', 	($pStyle->getAlignment()->getShrinkToFit() ? 'true' : 'false'));
+		$objWriter->writeAttribute('wrapText', 		($pStyle->getAlignment()->getWrapText() ? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('shrinkToFit', 	($pStyle->getAlignment()->getShrinkToFit() ? 'TRUE' : 'false'));
 
 		if ($pStyle->getAlignment()->getIndent() > 0) {
 			$objWriter->writeAttribute('indent', 	$pStyle->getAlignment()->getIndent());
@@ -470,10 +470,10 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		if ($pStyle->getProtection()->getLocked() != PHPExcel_Style_Protection::PROTECTION_INHERIT || $pStyle->getProtection()->getHidden() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
 			$objWriter->startElement('protection');
 			if ($pStyle->getProtection()->getLocked() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
-				$objWriter->writeAttribute('locked', 		($pStyle->getProtection()->getLocked() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'true' : 'false'));
+				$objWriter->writeAttribute('locked', 		($pStyle->getProtection()->getLocked() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'false'));
 			}
 			if ($pStyle->getProtection()->getHidden() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
-				$objWriter->writeAttribute('hidden', 		($pStyle->getProtection()->getHidden() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'true' : 'false'));
+				$objWriter->writeAttribute('hidden', 		($pStyle->getProtection()->getHidden() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'false'));
 			}
 			$objWriter->endElement();
 		}
@@ -524,10 +524,10 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		if ($pStyle->getProtection()->getLocked() != PHPExcel_Style_Protection::PROTECTION_INHERIT || $pStyle->getProtection()->getHidden() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
 			$objWriter->startElement('protection');
 			if ($pStyle->getProtection()->getLocked() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
-				$objWriter->writeAttribute('locked', 		($pStyle->getProtection()->getLocked() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'true' : 'false'));
+				$objWriter->writeAttribute('locked', 		($pStyle->getProtection()->getLocked() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'false'));
 			}
 			if ($pStyle->getProtection()->getHidden() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
-				$objWriter->writeAttribute('hidden', 		($pStyle->getProtection()->getHidden() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'true' : 'false'));
+				$objWriter->writeAttribute('hidden', 		($pStyle->getProtection()->getHidden() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'false'));
 			}
 			$objWriter->endElement();
 		}

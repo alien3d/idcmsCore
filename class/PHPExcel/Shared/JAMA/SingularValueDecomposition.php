@@ -67,8 +67,8 @@ class SingularValueDecomposition  {
 		$nu      = min($this->m, $this->n);
 		$e       = array();
 		$work    = array();
-		$wantu   = true;
-		$wantv   = true;
+		$wantu   = TRUE;
+		$wantv   = TRUE;
 		$nct = min($this->m - 1, $this->n);
 		$nrt = max(0, min($this->n - 2, $this->m));
 

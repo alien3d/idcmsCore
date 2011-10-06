@@ -70,13 +70,13 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 	 *
 	 * @access public
 	 * @param string $dir The dir to be used as temp dir
-	 * @return true if given dir is valid, false otherwise
+	 * @return TRUE if given dir is valid, false otherwise
 	 */
 	public function setTempDir($dir)
 	{
 		if (is_dir($dir)) {
 			$this->_tmp_dir = $dir;
-			return true;
+			return TRUE;
 		}
 		return false;
 	}
@@ -88,7 +88,7 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 	 *
 	 * @param string $filename The name of the file where to save the OLE container
 	 * @access public
-	 * @return mixed true on success
+	 * @return mixed TRUE on success
 	 */
 	public function save($filename)
 	{
@@ -139,7 +139,7 @@ class PHPExcel_Shared_OLE_PPS_Root extends PHPExcel_Shared_OLE_PPS
 			fclose($this->_FILEH_);
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**

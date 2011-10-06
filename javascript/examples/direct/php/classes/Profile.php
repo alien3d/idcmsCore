@@ -15,7 +15,7 @@ class Profile {
                 'email'=>'already taken'
             );
         } else {
-            $success = true;
+            $success = TRUE;
         }
         $response['success'] = $success;
         // return form packet for demonstration/testing purposes
@@ -33,7 +33,7 @@ class Profile {
     */
     function getBasicInfo($userId, $foo){
         return array(
-            'success'=>true,
+            'success'=>TRUE,
             'data'=>array(
                 'foo'=>$foo,
                 'name'=>'Aaron Conran',
@@ -45,7 +45,7 @@ class Profile {
 
     function getPhoneInfo($userId) {
         return array(
-            'success'=>true,
+            'success'=>TRUE,
             'data'=>array(
                 'cell'=>'443-555-1234',
                 'office'=>'1-800-CALLEXT',
@@ -56,7 +56,7 @@ class Profile {
 
     function getLocationInfo($userId) {
         return array(
-            'success'=>true,
+            'success'=>TRUE,
             'data'=>array(
                 'street'=>'1234 Red Dog Rd.',
                 'city'=>'Seminole',

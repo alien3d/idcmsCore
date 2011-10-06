@@ -56,6 +56,6 @@ class PHPExcel_Reader_DefaultReadFilter implements PHPExcel_Reader_IReadFilter
 	 * @return	boolean
 	 */
 	public function readCell($column, $row, $worksheetName = '') {
-		return true;
+		return TRUE;
 	}
 }

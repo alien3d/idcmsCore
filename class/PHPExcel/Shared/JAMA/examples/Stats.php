@@ -184,7 +184,7 @@ class Base {/*{{{*/
 	 * @access public
 	 * @param   array   $arr    the data set
 	 * @param   optional    int $opt    data format: STATS_DATA_CUMMULATIVE or STATS_DATA_SIMPLE (default)
-	 * @return  mixed   true on success, a PEAR_Error object otherwise
+	 * @return  mixed   TRUE on success, a PEAR_Error object otherwise
 	 */
 	function setData($arr, $opt=STATS_DATA_SIMPLE) {/*{{{*/
 		if (!is_array($arr)) {
@@ -230,7 +230,7 @@ class Base {/*{{{*/
 	 * Must be called before assigning a new data set containing null values
 	 *
 	 * @access  public
-	 * @return  mixed   true on success, a PEAR_Error object otherwise
+	 * @return  mixed   TRUE on success, a PEAR_Error object otherwise
 	 * @see _validate()
 	 */
 	function setNullOption($nullOption) {/*{{{*/
@@ -238,7 +238,7 @@ class Base {/*{{{*/
 		|| $nullOption == STATS_IGNORE_NULL
 		|| $nullOption == STATS_USE_NULL_AS_ZERO) {
 			$this->_nullOption = $nullOption;
-			return true;
+			return TRUE;
 		} else {
 			return PEAR::raiseError('invalid null handling option expecting: '.
                         'STATS_REJECT_NULL, STATS_IGNORE_NULL or STATS_USE_NULL_AS_ZERO');
@@ -251,7 +251,7 @@ class Base {/*{{{*/
 	 * values to their original (unset) defaults.
 	 *
 	 * @access public
-	 * @return mixed true on success, a PEAR_Error object otherwise
+	 * @return mixed TRUE on success, a PEAR_Error object otherwise
 	 * @see mean()
 	 * @see stDev()
 	 * @see setData()
@@ -288,7 +288,7 @@ class Base {/*{{{*/
 	 * This will reset all pre-calculated values to their original (unset) defaults.
 	 *
 	 * @access public
-	 * @return mixed true on success, a PEAR_Error object otherwise
+	 * @return mixed TRUE on success, a PEAR_Error object otherwise
 	 * @see mean()
 	 * @see setData()
 	 */
@@ -317,13 +317,13 @@ class Base {/*{{{*/
 	 *
 	 * @access  public
 	 * @param   int $mode   one of STATS_BASIC or STATS_FULL
-	 * @param boolean $returnErrorObject whether the raw PEAR_Error (when true, default),
+	 * @param boolean $returnErrorObject whether the raw PEAR_Error (when TRUE, default),
 	 *                  or only the error message will be returned (when false), if an error happens.
 	 * @return  mixed   an associative array of statistics on success, a PEAR_Error object otherwise
 	 * @see calcBasic()
 	 * @see calcFull()
 	 */
-	function calc($mode, $returnErrorObject=true) {/*{{{*/
+	function calc($mode, $returnErrorObject=TRUE) {/*{{{*/
 		if ($this->_data == null) {
 			return PEAR::raiseError('data has not been set');
 		}
@@ -340,13 +340,13 @@ class Base {/*{{{*/
 	 * Calculates a basic set of statistics
 	 *
 	 * @access  public
-	 * @param boolean $returnErrorObject whether the raw PEAR_Error (when true, default),
+	 * @param boolean $returnErrorObject whether the raw PEAR_Error (when TRUE, default),
 	 *                  or only the error message will be returned (when false), if an error happens.
 	 * @return  mixed   an associative array of statistics on success, a PEAR_Error object otherwise
 	 * @see calc()
 	 * @see calcFull()
 	 */
-	function calcBasic($returnErrorObject=true) {/*{{{*/
+	function calcBasic($returnErrorObject=TRUE) {/*{{{*/
 		return array (
                 'min' => $this->__format($this->min(), $returnErrorObject),
                 'max' => $this->__format($this->max(), $returnErrorObject),
@@ -364,13 +364,13 @@ class Base {/*{{{*/
 	 * Calculates a full set of statistics
 	 *
 	 * @access  public
-	 * @param boolean $returnErrorObject whether the raw PEAR_Error (when true, default),
+	 * @param boolean $returnErrorObject whether the raw PEAR_Error (when TRUE, default),
 	 *                  or only the error message will be returned (when false), if an error happens.
 	 * @return  mixed   an associative array of statistics on success, a PEAR_Error object otherwise
 	 * @see calc()
 	 * @see calcBasic()
 	 */
-	function calcFull($returnErrorObject=true) {/*{{{*/
+	function calcFull($returnErrorObject=TRUE) {/*{{{*/
 		return array (
                 'min' => $this->__format($this->min(), $returnErrorObject),
                 'max' => $this->__format($this->max(), $returnErrorObject),
@@ -1242,7 +1242,7 @@ class Base {/*{{{*/
 			$q1 = $quart['25'];
 			$sum = 0;
 			$n = 0;
-			foreach ($this->getData(true) as $val) {
+			foreach ($this->getData(TRUE) as $val) {
 				if ($val >= $q1 && $val <= $q3) {
 					$sum += $val;
 					++$n;
@@ -1536,13 +1536,13 @@ class Base {/*{{{*/
 	 *
 	 * @access private
 	 * @param mixed $v value to be formatted
-	 * @param boolean $returnErrorObject whether the raw PEAR_Error (when true, default),
+	 * @param boolean $returnErrorObject whether the raw PEAR_Error (when TRUE, default),
 	 *                  or only the error message will be returned (when false)
 	 * @return mixed if the value is a PEAR_Error object, and $useErrorObject
 	 *              is false, then a string with the error message will be returned,
 	 *              otherwise the value will not be modified and returned as passed.
 	 */
-	function __format($v, $useErrorObject=true) {/*{{{*/
+	function __format($v, $useErrorObject=TRUE) {/*{{{*/
 		if (PEAR::isError($v) && $useErrorObject == false) {
 			return $v->getMessage();
 		} else {
@@ -1555,7 +1555,7 @@ class Base {/*{{{*/
 	 * according to the current null handling option
 	 *
 	 * @access  private
-	 * @return  mixed true on success, a PEAR_Error object otherwise
+	 * @return  mixed TRUE on success, a PEAR_Error object otherwise
 	 *
 	 * @see setData()
 	 */
@@ -1594,7 +1594,7 @@ class Base {/*{{{*/
 		} else {
 			sort($this->_data);
 		}
-		return true;
+		return TRUE;
 	}/*}}}*/
 
 }/*}}}*/

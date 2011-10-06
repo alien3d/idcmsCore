@@ -25,6 +25,7 @@ class Vendor
 	// private property
 	private $connection;
 	private $username;
+	private $password;
 	private $databaseName;
 	private $operation;
 	private $port;
@@ -172,7 +173,7 @@ class Vendor
 	 */
 	public function start()
 	{
-		pg_autocommit($this->link, FALSE);
+		pg_query($this->link,'BEGIN');
 	}
 	/**
 	 * query database
@@ -184,7 +185,6 @@ class Vendor
 	private function query($sql)
 	{
 		$this->sql         = NULL;
-		$this->type        = NULL;
 		$this->result      = NULL;
 		$this->countRecord = NULL;
 		$this->sql         = $sql;
@@ -192,7 +192,7 @@ class Vendor
 		$this->result      = pg_query($this->link, $this->sql);
 		if (!$this->result) {
 			$this->execute 	=	'fail';
-			$this->responce = 	"Sql Stament Error" . $this->sql . " \n\r" . pg_last_error($this->link) . " <br> Error Code :x " . pg_errno($this->link);
+			$this->responce = 	"Sql Stament Error" . $this->sql . " \n\r" . pg_last_error($this->link) ;
 			$error          = 	1;
 		}
 		if ($error == 1) {
@@ -218,7 +218,7 @@ class Vendor
 					)";
 			$result_row = pg_query($this->link, $sql_log);
 			if (!$result_row) {
-				$this->responce=$sql_log."<br>".pg_last_error($this->link)."<br> Error Code :y ".pg_errno($this->link);
+				$this->responce=$sql_log."<br>".pg_last_error($this->link);
 			}
 		}
 
@@ -331,10 +331,10 @@ class Vendor
 					$fieldValue = array();
 					if (!$resultColumn) {
 						$this->execute     = 'fail';
-						$this->responce = pg_last_error($this->link) . "Error Code" . pg_errno($this->link);
+						$this->responce = pg_last_error($this->link) ;
 					} else {
 
-						while (($rowColumn = pg_fetch_array($resultColumn)) == true) {
+						while (($rowColumn = pg_fetch_array($resultColumn)) == TRUE) {
 
 							$fieldValue[] = $rowColumn['Field'];
 						}
@@ -346,10 +346,10 @@ class Vendor
 					$resultPrevious = pg_query($this->link, $sqlPrevious);
 					if (!$resultPrevious) {
 						$this->execute     = 'fail';
-						$this->responce = pg_last_error($this->link) . "Error Code" . pg_errno($this->link);
+						$this->responce = pg_last_error($this->link) ;
 					} else {
 
-						while (($rowPrevious = pg_fetch_array($resultPrevious)) == true) {
+						while (($rowPrevious = pg_fetch_array($resultPrevious)) == TRUE) {
 							foreach ($fieldValue as $field) {
 								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
 								$previous[$field] = $rowPrevious[$field];
@@ -420,10 +420,10 @@ class Vendor
 					$fieldValue = array();
 					if (!$resultColumn) {
 						$this->execute     = 'fail';
-						$this->responce = pg_last_error($this->link) . "Error Code" . pg_errno($$this->link);
+						$this->responce = pg_last_error($this->link);
 					} else {
 						//	echo "Jumlah Rekod".pg_num_rows($resultColumn);
-						while (($rowColumn = pg_fetch_array($resultColumn)) == true) {
+						while (($rowColumn = pg_fetch_array($resultColumn)) == TRUE) {
 							// create the field value
 							$fieldValue[] = $rowColumn['Field'];
 						}
@@ -435,11 +435,11 @@ class Vendor
 					$resultPrevious = pg_query($this->link, $sqlPrevious);
 					if (!$resultPrevious) {
 						$this->execute     = 'fail';
-						$this->responce = pg_last_error($this->link) . "Error Code" . pg_errno($this->link);
+						$this->responce = pg_last_error($this->link) ;
 					} else {
 						// successfully
 						//	echo "Jumlah Rekod ".pg_num_rows($resultPrevious);
-						while (($rowPrevious = pg_fetch_array($resultPrevious)) == true) {
+						while (($rowPrevious = pg_fetch_array($resultPrevious)) == TRUE) {
 							foreach ($fieldValue as $field) {
 								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
 								$previous[$field] = $rowPrevious[$field];
@@ -466,7 +466,7 @@ class Vendor
 					$resultLogAdvance = pg_query($this->link, $sqlLogAdvance);
 					if ($resultLogAdvance) {
 						// take the last id for references
-						$logAdvanceId = pg_insert_id($this->link); //
+						$logAdvanceId = $this->lastInsertId(); //
 					} else {
 						$this->execute  = 	'fail';
 						$this->responce	=	"error inserting query update insert";
@@ -482,7 +482,7 @@ class Vendor
 					WHERE 	`" . $this->primaryKeyName . "`=\"". $this->primaryKeyValue . "\"";
 					$resultCurrent = pg_query($this->link, $sqlCurrent);
 					if ($resultCurrent) {
-						while (($rowCurrent = pg_fetch_array($resultCurrent)) == true) {
+						while (($rowCurrent = pg_fetch_array($resultCurrent)) == TRUE) {
 							$textComparison .= $this->compare($fieldValue, $rowCurrent, $previous);
 						}
 					} else {
@@ -613,13 +613,18 @@ class Vendor
 	}
 	/**
 	 * Retrieves the ID generated for an AUTO_INCREMENT column by the previous query (usually INSERT).
+	 * @params $sql old sql transaction
 	 * @return number
 	 */
-	public function lastInsertId()
+	public function lastInsertId($sql)
 	{
-		// must include this before q->commit; after commit will no output
-		$this->insertId = pg_insert_id($this->link);
-		return  $this->insertId;
+		$regExp = preg_match_all("/nextval\('([a-zA-Z0-9_]+)'\)/",$query,$array);
+		$sequence = $array[1][0];
+		$select = "SELECT currval('$sequence')";
+		$load = pg_query($this->link,$select);
+		$id = pg_fetch_array($load,null,PGSQL_NUM);
+		return $id[0];
+		
 	}
 	/**
 	 * Get the number of affected rows by the last INSERT, UPDATE, REPLACE or DELETE query associated with link_identifier.
@@ -635,14 +640,14 @@ class Vendor
 	 */
 	public function commit()
 	{
-		pg_commit($this->link);
+		pg_query($this->link,'COMMIT');
 	}
 	/**
 	 * Rollbacks the current transaction for the database.
 	 */
 	private function rollback()
 	{
-		pg_rollback($this->link);
+	//	pg_rollback($this->link);
 		$this->execute = 'fail';
 	}
 	/**
@@ -670,11 +675,11 @@ class Vendor
 	{
 		$d = array();
 		if ($result) {
-			while (($row = pg_fetch_assoc($result)) == true) {
+			while (($row = pg_fetch_assoc($result)) == TRUE) {
 				$d[] = $row;
 			}
 		} else {
-			while (($row = pg_fetch_assoc($this->result)) == true) {
+			while (($row = pg_fetch_assoc($this->result)) == TRUE) {
 				$d[] = $row;
 			}
 		}
@@ -794,7 +799,7 @@ class Vendor
 	}
 	public function realEscapeString($data)
 	{
-		return pg_real_escape_string($this->link, $data);
+		return pg_escape_string($this->link, $data);
 	}
 	/**
 	 * to send filter result.Quick Search mode
@@ -811,9 +816,9 @@ class Vendor
 			$sql = "DESCRIBE	`" . $tableSearch . "`";
 			$result = pg_query($this->link,$sql);
 			if (pg_num_rows($result) > 0) {
-				while (($row = pg_fetch_array($result)) == true) {
+				while (($row = pg_fetch_array($result)) == TRUE) {
 					$strField = "`" . $tableSearch . "`.`" . $row['Field'] . "`";
-					$key      = array_search($strField, $filterArray, true);
+					$key      = array_search($strField, $filterArray, TRUE);
 					if ($i > 0 && strlen($key) == 0) {
 						$strSearch .= " OR  ";
 					}
@@ -897,7 +902,7 @@ class Vendor
 		}
 	}
 	/**
-	 * Checking date if  true or false
+	 * Checking date if  TRUE or false
 	 * @param date $dateTime
 	 * @return boolean
 	 */
@@ -905,7 +910,7 @@ class Vendor
 	{
 		if (preg_match("/^({4})-({2})-({2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/", $dateTime, $matches)) {
 			if (checkdate($matches[2], $matches[3], $matches[1])) {
-				return true;
+				return TRUE;
 			}
 		}
 		return false;

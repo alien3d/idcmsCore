@@ -27,7 +27,7 @@ $API = array(
             ),
             'updateBasicInfo'=>array(
                 'len'=>2,
-                'formHandler'=>true
+                'formHandler'=>TRUE
             )
         )
     )

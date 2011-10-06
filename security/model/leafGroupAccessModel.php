@@ -22,7 +22,7 @@ class LeafGroupAccessModel extends ValidationClass
 	 * Leaf Access  Identification
 	 * @var int
 	 */
-	private $groupId;
+	private $teamId;
 	/**
 	 * Module   Identification (** For Filtering  Only)
 	 * @var bool

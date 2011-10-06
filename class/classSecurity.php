@@ -76,7 +76,7 @@ class Security extends ConfigClass
      */
     private $defaultLanguageId;
     /**
-     * Audit Row True or False
+     * Audit Row TRUE or False
      * @var boolean $audit
      */
     private $audit;
@@ -96,16 +96,15 @@ class Security extends ConfigClass
     //	private $leafId;
     /**
      * Group Identification
-     * @var numeric $groupId
+     * @var numeric $teamId
      */
-    private $groupId;
+    private $teamId;
     /**
      * Language Identification
      * @var numeric $languageId
      */
     private $languageId;
     /*
-	 * Google API Translation
 	 * @var string $googleId
 	 */
     private $googleId = 'AIzaSyCKRpBlJzhuO0GWEvgq4WwlYus0O2qI0Ws';
@@ -189,7 +188,7 @@ class Security extends ConfigClass
         $total = $this->q->numberRows($result);
         $items = array();
         if ($total > 0) {
-            while (($row = $this->q->fetchAssoc($result)) == true) {
+            while (($row = $this->q->fetchAssoc($result)) == TRUE) {
                 $items[] = $row;
             }
         } else {
@@ -200,7 +199,7 @@ class Security extends ConfigClass
         }
         if ($total == 1) {
             $jsonEncode = json_encode(
-            array('success' => true, 'total' => $total, 'group' => $items, 
+            array('success' => TRUE, 'total' => $total, 'group' => $items, 
             'message' => 'Data loaded'));
             $jsonEncode = str_replace("[", "", $jsonEncode);
             $jsonEncode = str_replace("]", "", $jsonEncode);
@@ -208,7 +207,7 @@ class Security extends ConfigClass
             exit();
         } else {
             echo json_encode(
-            array('success' => true, 'total' => $total, 'group' => $items));
+            array('success' => TRUE, 'total' => $total, 'group' => $items));
             exit();
         }
     }
@@ -246,7 +245,7 @@ class Security extends ConfigClass
         $total = $this->q->numberRows($result);
         $items = array();
         if ($total > 0) {
-            while (($row = $this->q->fetchAssoc($result)) == true) {
+            while (($row = $this->q->fetchAssoc($result)) == TRUE) {
                 $items[] = $row;
             }
         } else {
@@ -256,14 +255,14 @@ class Security extends ConfigClass
         }
         if ($total == 1) {
             $jsonEncode = json_encode(
-            array('success' => true, 'total' => $total, 'department' => $items));
+            array('success' => TRUE, 'total' => $total, 'department' => $items));
             $jsonEncode = str_replace("[", "", $jsonEncode);
             $jsonEncode = str_replace("]", "", $jsonEncode);
             echo $jsonEncode;
             exit();
         } else {
             echo json_encode(
-            array('success' => true, 'total' => $total, 'department' => $items));
+            array('success' => TRUE, 'total' => $total, 'department' => $items));
             exit();
         }
     }
@@ -366,13 +365,13 @@ class Security extends ConfigClass
         $total = $this->q->numberRows($result);
         $items = array();
         if ($total > 0) {
-            while (($row = $this->q->fetchAssoc($result)) == true) {
+            while (($row = $this->q->fetchAssoc($result)) == TRUE) {
                 $items[] = $row;
             }
         }
         if ($total == 1) {
             $jsonEncode = json_encode(
-            array('success' => true, 'total' => $total, 'module' => $items, 
+            array('success' => TRUE, 'total' => $total, 'module' => $items, 
             'message' => "data loaded"));
             $jsonEncode = str_replace("[", "", $jsonEncode);
             $jsonEncode = str_replace("]", "", $jsonEncode);
@@ -380,7 +379,7 @@ class Security extends ConfigClass
             exit();
         } else {
             echo json_encode(
-            array('success' => true, 'total' => $total, 'module' => $items, 
+            array('success' => TRUE, 'total' => $total, 'module' => $items, 
             'message' => "data loaded"));
             exit();
         }
@@ -488,13 +487,13 @@ class Security extends ConfigClass
         $total = $this->q->numberRows($result);
         $items = array();
         if ($total > 0) {
-            while (($row = $this->q->fetchAssoc($result)) == true) {
+            while (($row = $this->q->fetchAssoc($result)) == TRUE) {
                 $items[] = $row;
             }
         }
         if ($total == 1) {
             $jsonEncode = json_encode(
-            array('success' => true, 'total' => $total, 'folder' => $items, 
+            array('success' => TRUE, 'total' => $total, 'folder' => $items, 
             'message' => "data loaded"));
             $jsonEncode = str_replace("[", "", $jsonEncode);
             $jsonEncode = str_replace("]", "", $jsonEncode);
@@ -502,7 +501,7 @@ class Security extends ConfigClass
             exit();
         } else {
             echo json_encode(
-            array('success' => true, 'total' => $total, 'folder' => $items, 
+            array('success' => TRUE, 'total' => $total, 'folder' => $items, 
             'message' => "data loaded"));
             exit();
         }
@@ -563,7 +562,7 @@ class Security extends ConfigClass
             $nextSequence = 1;
         }
         echo json_encode(
-        array("success" => true, "nextSequence" => $nextSequence));
+        array("success" => TRUE, "nextSequence" => $nextSequence));
     }
     /**
      * Google Api Change Language
@@ -578,7 +577,7 @@ class Security extends ConfigClass
         $handle = fopen(
         "https://www.googleapis.com/language/translate/v2?key=" . $this->googleId .
          "&q=" . $value . "&source=" . $from . "&target=" . $to .
-         "&callback=handleResponse&prettyprint=true", "rb");
+         "&callback=handleResponse&prettyprint=TRUE", "rb");
         $contents = stream_get_contents($handle);
         $a = explode(":", $contents);
         $x = explode("\"", $a[3]);

@@ -898,7 +898,7 @@ class Vendor
                             $strField = "[" . $tableSearch . "].[" .
                              $row['COLUMN_NAME'] . "]";
                         
-                    $key = array_search($strField, $filterArray, true);
+                    $key = array_search($strField, $filterArray, TRUE);
                     if ($i > 0 && strlen($key) == 0) {
                         $strSearch .= " OR  ";
                     }
@@ -1008,7 +1008,7 @@ class Vendor
         }
     }
     /**
-     * Checking date if  true or false
+     * Checking date if  TRUE or false
      * @param date $dateTime
      * @return boolean
      */
@@ -1017,7 +1017,7 @@ class Vendor
         if (preg_match("/^(\\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/", 
         $dateTime, $matches)) {
             if (checkdate($matches[2], $matches[3], $matches[1])) {
-                return true;
+                return TRUE;
             }
         }
         return false;

@@ -31,12 +31,12 @@ class ReligionDetailClass extends ConfigClass {
 	 */
 	private $documentTrail;
 	/**
-	 * Audit Row True or False
+	 * Audit Row TRUE or False
 	 * @var bool
 	 */
 	private $audit;
 	/**
-	 * Log Sql Statement True or False
+	 * Log Sql Statement TRUE or False
 	 * @var string
 	 */
 	private $log;
@@ -171,7 +171,7 @@ class ReligionDetailClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Record Created", "religionDetailId" => $religionDetailId ) );
+		echo json_encode ( array ("success" => TRUE, "message" => "Record Created", "religionDetailId" => $religionDetailId ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -431,11 +431,11 @@ class ReligionDetailClass extends ConfigClass {
 			}
 		}
 		$items = array ();
-		while ( ($row = $this->q->fetchAssoc ()) == true ) {
+		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
 			$items [] = $row;
 		}
 		if ($this->model->getReligionDetailId ( 0, 'single' )) {
-			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'message' => 'Data Loaded', 'dataDetail' => $items, 'firstRecord' => $this->firstRecord ( 'value' ), 'previousRecord' => $this->previousRecord ( 'value', $this->model->getReligionDetailId ( 0, 'single' ) ), 'nextRecord' => $this->nextRecord ( 'value', $this->model->getReligionDetailId ( 0, 'single' ) ), 'lastRecord' => $this->lastRecord ( 'value' ) ) );
+			$json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'dataDetail' => $items, 'firstRecord' => $this->firstRecord ( 'value' ), 'previousRecord' => $this->previousRecord ( 'value', $this->model->getReligionDetailId ( 0, 'single' ) ), 'nextRecord' => $this->nextRecord ( 'value', $this->model->getReligionDetailId ( 0, 'single' ) ), 'lastRecord' => $this->lastRecord ( 'value' ) ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -443,7 +443,7 @@ class ReligionDetailClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( array ('success' => true, 'total' => $total, 'message' => 'data loaded', 'dataDetail' => $items ) );
+			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'data loaded', 'dataDetail' => $items ) );
 			exit ();
 		}
 	}
@@ -522,7 +522,7 @@ class ReligionDetailClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "true", "message" => "Updated" ) );
+		echo json_encode ( array ("success" => "TRUE", "message" => "Updated" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -591,7 +591,7 @@ class ReligionDetailClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -716,7 +716,7 @@ class ReligionDetailClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -757,10 +757,10 @@ class ReligionDetailClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray ();
-			echo json_encode ( array ("success" => "true", "total" => $total, "message" => "Duplicate Record", "religionDetailDesc" => $row ['religionDetailDesc'] ) );
+			echo json_encode ( array ("success" => "TRUE", "total" => $total, "message" => "Duplicate Record", "religionDetailDesc" => $row ['religionDetailDesc'] ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => "true", "total" => $total, "message" => "Duplicate Non" ) );
+			echo json_encode ( array ("success" => "TRUE", "total" => $total, "message" => "Duplicate Non" ) );
 			exit ();
 		}
 	}
@@ -789,8 +789,8 @@ class ReligionDetailClass extends ConfigClass {
 		// check file exist or not and return response
 		$styleThinBlackBorderOutline = array ('borders' => array ('inside' => array ('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array ('argb' => '000000' ) ), 'outline' => array ('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array ('argb' => '000000' ) ) ) );
 		// header all using  3 line  starting b
-		$this->excel->getActiveSheet ()->getColumnDimension ( 'B' )->setAutoSize ( true );
-		$this->excel->getActiveSheet ()->getColumnDimension ( 'C' )->setAutoSize ( true );
+		$this->excel->getActiveSheet ()->getColumnDimension ( 'B' )->setAutoSize ( TRUE );
+		$this->excel->getActiveSheet ()->getColumnDimension ( 'C' )->setAutoSize ( TRUE );
 		$this->excel->getActiveSheet ()->setCellValue ( 'B2', $this->title );
 		$this->excel->getActiveSheet ()->setCellValue ( 'C2', '' );
 		$this->excel->getActiveSheet ()->mergeCells ( 'B2:C2' );
@@ -803,7 +803,7 @@ class ReligionDetailClass extends ConfigClass {
 		//
 		$loopRow = 4;
 		$i = 0;
-		while ( ($row = $this->q->fetchAssoc ()) == true ) {
+		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
 			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, 'a' . $row ['religionDetailDesc'] );
@@ -821,7 +821,7 @@ class ReligionDetailClass extends ConfigClass {
 		$objWriter->save ( $path );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => 'true', "message" => "File generated", "filename" => $filename ) );
+			echo json_encode ( array ("success" => 'TRUE', "message" => "File generated", "filename" => $filename ) );
 			exit ();
 		} else {
 			echo json_encode ( array ("success" => 'false', "message" => "File not generated" ) );

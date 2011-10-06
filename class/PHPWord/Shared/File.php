@@ -44,7 +44,7 @@ class PHPWord_Shared_File
 			$archiveFile 	= substr($pFilename, strpos($pFilename, '#') + 1);
 
 			$zip = new ZipArchive();
-			if ($zip->open($zipFile) === true) {
+			if ($zip->open($zipFile) === TRUE) {
 				$returnValue = ($zip->getFromName($archiveFile) !== false);
 				$zip->close();
 				return $returnValue;

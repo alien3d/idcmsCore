@@ -195,7 +195,7 @@ class PHPExcel_Reader_OOCalc implements PHPExcel_Reader_IReader
 
 		// Load file
 		$zip = new ZipArchive;
-		if ($zip->open($pFilename) === true) {
+		if ($zip->open($pFilename) === TRUE) {
 			// check if it is an OOXML archive
 			$mimeType = $zip->getFromName("mimetype");
 
@@ -227,7 +227,7 @@ class PHPExcel_Reader_OOCalc implements PHPExcel_Reader_IReader
 		foreach($styleList as $style) {
 			if ($styleAttributeValue == strtolower($style)) {
 				$styleAttributeValue = $style;
-				return true;
+				return TRUE;
 			}
 		}
 		return false;
@@ -248,10 +248,10 @@ class PHPExcel_Reader_OOCalc implements PHPExcel_Reader_IReader
 		}
 
 		$zip = new ZipArchive;
-		if ($zip->open($pFilename) === true) {
+		if ($zip->open($pFilename) === TRUE) {
 			//			echo '<h1>Meta Information</h1>';
 			$xml = simplexml_load_string($zip->getFromName("meta.xml"));
-			$namespacesMeta = $xml->getNamespaces(true);
+			$namespacesMeta = $xml->getNamespaces(TRUE);
 			//			echo '<pre>';
 			//			print_r($namespacesMeta);
 			//			echo '</pre><hr />';
@@ -309,7 +309,7 @@ class PHPExcel_Reader_OOCalc implements PHPExcel_Reader_IReader
 
 			//			echo '<h1>Workbook Content</h1>';
 			$xml = simplexml_load_string($zip->getFromName("content.xml"));
-			$namespacesContent = $xml->getNamespaces(true);
+			$namespacesContent = $xml->getNamespaces(TRUE);
 			//			echo '<pre>';
 			//			print_r($namespacesContent);
 			//			echo '</pre><hr />';
@@ -364,7 +364,7 @@ class PHPExcel_Reader_OOCalc implements PHPExcel_Reader_IReader
 									$cellDataFormula = '';
 									if (isset($cellDataTableAttributes['formula'])) {
 										$cellDataFormula = $cellDataTableAttributes['formula'];
-										$hasCalculatedValue = true;
+										$hasCalculatedValue = TRUE;
 									}
 
 									if (isset($cellDataText->p)) {
@@ -381,7 +381,7 @@ class PHPExcel_Reader_OOCalc implements PHPExcel_Reader_IReader
 												break;
 											case 'boolean' :
 												$type = PHPExcel_Cell_DataType::TYPE_BOOL;
-												$dataValue = ($cellDataText->p == 'TRUE') ? True : False;
+												$dataValue = ($cellDataText->p == 'TRUE') ? TRUE : False;
 												break;
 											case 'float' :
 												$type = PHPExcel_Cell_DataType::TYPE_NUMERIC;

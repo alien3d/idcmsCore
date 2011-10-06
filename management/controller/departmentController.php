@@ -32,12 +32,12 @@ class DepartmentClass extends ConfigClass
 	 */
 	private $documentTrail;
 	/**
-	 * Audit Row True or False
+	 * Audit Row TRUE or False
 	 * @var bool
 	 */
 	private $audit;
 	/**
-	 * Log Sql Statement True or False
+	 * Log Sql Statement TRUE or False
 	 * @var string
 	 */
 	private $log;
@@ -61,6 +61,11 @@ class DepartmentClass extends ConfigClass
 	 * @var bool
 	 */
 	public $duplicateTest;
+	/**
+	 * Title Of Microsoft Excel Report
+	 * @var string
+	 */
+	public $title;
 	/**
 	 * Class Loader
 	 */
@@ -191,7 +196,7 @@ class DepartmentClass extends ConfigClass
 		}
 		$this->q->commit();
 		echo json_encode(
-		array("success" => "true", "message" => "Record Created"));
+		array("success" => "TRUE", "message" => "Record Created"));
 		exit();
 	}
 	/* (non-PHPdoc)
@@ -474,12 +479,12 @@ class DepartmentClass extends ConfigClass
 			}
 		}
 		$items = array();
-		while (($row = $this->q->fetchAssoc()) == true) {
+		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items[] = $row;
 		}
 		if ($this->model->getDepartmentId(0, 'single')) {
 			$json_encode = json_encode(
-			array('success' => true, 'total' => $total,
+			array('success' => TRUE, 'total' => $total,
             'message' => 'Data Loaded', 'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
@@ -489,7 +494,7 @@ class DepartmentClass extends ConfigClass
 				$items = '';
 			}
 			echo json_encode(
-			array('success' => true, 'total' => $total,
+			array('success' => TRUE, 'total' => $total,
             'message' => 'data loaded', 'data' => $items));
 			exit();
 		}
@@ -568,7 +573,7 @@ class DepartmentClass extends ConfigClass
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Update"));
+		echo json_encode(array("success" => TRUE, "message" => "Record Update"));
 		exit();
 	}
 	/* (non-PHPdoc)
@@ -636,7 +641,7 @@ class DepartmentClass extends ConfigClass
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Remove"));
+		echo json_encode(array("success" => TRUE, "message" => "Record Remove"));
 		exit();
 	}
 	/**
@@ -779,7 +784,7 @@ class DepartmentClass extends ConfigClass
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		echo json_encode(array("success" => TRUE, "message" => "Deleted"));
 		exit();
 	}
 	/**
@@ -827,7 +832,7 @@ class DepartmentClass extends ConfigClass
 				return $total . "|" . $row['departmentCode'];
 			} else {
 				echo json_encode(
-				array("success" => "true", "total" => $total,
+				array("success" => "TRUE", "total" => $total,
                 "message" => "Duplicate Record", 
                 "departmentCode" => $row['departmentCode']));
 				exit();
@@ -870,62 +875,62 @@ class DepartmentClass extends ConfigClass
 		if ($this->isAdmin == 1) {
 			$this->excel->getActiveSheet()
 			->getColumnDimension('B')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('C')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('D')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('E')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('F')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('G')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('H')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('I')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('J')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('K')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('L')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('M')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('N')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('O')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 		} else {
 			$this->excel->getActiveSheet()
 			->getColumnDimension('B')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('C')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('D')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('E')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()
 			->getColumnDimension('F')
-			->setAutoSize(true);
+			->setAutoSize(TRUE);
 		}
 		if ($this->isAdmin == 1) {
 			$start = 'B';
@@ -935,8 +940,7 @@ class DepartmentClass extends ConfigClass
 			$end = 'F';
 		}
 		// merge header title
-		$this->excel->getActiveSheet()->setCellValue($start . '2',
-		$this->title);
+		$this->excel->getActiveSheet()->setCellValue($start . '2',$this->title);
 		$this->excel->getActiveSheet()->setCellValue($end . '2', '');
 		$this->excel->getActiveSheet()->mergeCells($start . '2:' . $end . '3');
 		// header of the row
@@ -984,7 +988,7 @@ class DepartmentClass extends ConfigClass
 		//
 		$loopRow = 4;
 		$i = 0;
-		while (($row = $this->q->fetchAssoc()) == true) {
+		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue(
             'B' . $loopRow, ++ $i);
@@ -1043,7 +1047,7 @@ class DepartmentClass extends ConfigClass
 		$file = fopen($path, 'r');
 		if ($file) {
 			echo json_encode(
-			array("success" => true, "message" => "File generated",
+			array("success" => TRUE, "message" => "File generated",
             "filename" => $filename));
 			exit();
 		} else {
@@ -1076,7 +1080,7 @@ if (isset($_POST['method'])) {
 	/*
 	 *  Paging
 	 */
-	if (isset($this->getStart())) {
+	if (isset($_POST['start'])) {
 		$departmentObject->setStart($_POST['start']);
 	}
 	if (isset($_POST['limit'])) {

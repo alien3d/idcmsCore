@@ -10,7 +10,7 @@ class Users extends ApplicationController {
      */
     public function view() {
         $res = new Response();
-        $res->success = true;
+        $res->success = TRUE;
         $res->message = "Loaded data";
         $res->data = User::all();
         return $res->to_json();
@@ -26,11 +26,11 @@ class Users extends ApplicationController {
             foreach ($this->params as $data) {
                 array_push($res->data, User::create($data)->to_hash());
             }
-            $res->success = true;
+            $res->success = TRUE;
             $res->message = "Created " . count($res->data) . ' records';
         } else {
             if ($rec =  User::create($this->params)) {
-                $res->success = true;
+                $res->success = TRUE;
                 $res->data = $rec->to_hash();
                 $res->message = "Created record";
             } else {
@@ -54,7 +54,7 @@ class Users extends ApplicationController {
                     array_push($res->data, $rec->to_hash());
                 }
             }
-            $res->success = true;
+            $res->success = TRUE;
             $res->message = "Updated " . count($res->data) . " records";
         } else {
             if ($rec = User::update($this->params->id, $this->params)) {
@@ -65,7 +65,7 @@ class Users extends ApplicationController {
                     $res->success = false;
                     $res->message = "SIMULATED ERROR:  Lorem ipsum dolor sit amet, placerat consectetuer, nec lacus imperdiet velit dui interdum vestibulum, sagittis lectus morbi, urna aliquet minus natoque commodo egestas non, libero libero arcu sed sed.";
                 } else {
-                    $res->success = true;
+                    $res->success = TRUE;
                     $res->message = "Updated record";
                 }
             } else {
@@ -90,12 +90,12 @@ class Users extends ApplicationController {
                     array_push($destroyed, $rec);
                 }
             }
-            $res->success = true;
+            $res->success = TRUE;
             $res->message = 'Destroyed ' . count($destroyed) . ' records';
         } else {
             if ($rec = User::destroy($this->params)) {
                 $res->message = "Destroyed User";
-                $res->success = true;
+                $res->success = TRUE;
             } else {
                 $res->message = "Failed to Destroy user";
             }

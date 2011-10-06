@@ -2,7 +2,7 @@
     require('remote/init.php');
 
     // Get Request
-    $request = new Request(array('restful' => true));
+    $request = new Request(array('restful' => TRUE));
 
     // Get Controller
     require('remote/app/controllers/' . $request->controller . '.php');

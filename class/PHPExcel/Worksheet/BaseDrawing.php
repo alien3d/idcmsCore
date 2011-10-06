@@ -157,7 +157,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
 		$this->_offsetY				= 0;
 		$this->_width				= 0;
 		$this->_height				= 0;
-		$this->_resizeProportional	= true;
+		$this->_resizeProportional	= TRUE;
 		$this->_rotation			= 0;
 		$this->_shadow				= new PHPExcel_Worksheet_Drawing_Shadow();
 
@@ -380,7 +380,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
 	 * Set width and height with proportional resize
 	 * Example:
 	 * <code>
-	 * $objDrawing->setResizeProportional(true);
+	 * $objDrawing->setResizeProportional(TRUE);
 	 * $objDrawing->setWidthAndHeight(160,120);
 	 * </code>
 	 *
@@ -419,7 +419,7 @@ class PHPExcel_Worksheet_BaseDrawing implements PHPExcel_IComparable
 	 * @param boolean $pValue
 	 * @return PHPExcel_Worksheet_BaseDrawing
 	 */
-	public function setResizeProportional($pValue = true) {
+	public function setResizeProportional($pValue = TRUE) {
 		$this->_resizeProportional = $pValue;
 		return $this;
 	}

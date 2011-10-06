@@ -80,7 +80,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 	 *
 	 * @var boolean
 	 */
-	private $_preCalculateFormulas = true;
+	private $_preCalculateFormulas = TRUE;
 
 	/**
 	 * Images root
@@ -298,7 +298,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 		$html .= '    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">' . "\r\n";
 		$html .= '    <title>' . htmlspecialchars($this->_phpExcel->getProperties()->getTitle()) . '</title>' . "\r\n";
 		if ($pIncludeStyles) {
-			$html .= $this->generateStyles(true);
+			$html .= $this->generateStyles(TRUE);
 		}
 		$html .= '  </head>' . "\r\n";
 		$html .= '' . "\r\n";
@@ -441,7 +441,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 	 * @return	string
 	 * @throws	Exception
 	 */
-	public function generateStyles($generateSurroundingHTML = true) {
+	public function generateStyles($generateSurroundingHTML = TRUE) {
 		// PHPExcel object known?
 		if (is_null($this->_phpExcel)) {
 			throw new Exception('Internal PHPExcel object not set to an instance of an object.');
@@ -482,7 +482,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 	 * @return	array
 	 * @throws	Exception
 	 */
-	public function buildCSS($generateSurroundingHTML = true) {
+	public function buildCSS($generateSurroundingHTML = TRUE) {
 		// PHPExcel object known?
 		if (is_null($this->_phpExcel)) {
 			throw new Exception('Internal PHPExcel object not set to an instance of an object.');
@@ -863,7 +863,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 				}
 				$colSpan = 1;
 				$rowSpan = 1;
-				$writeCell = true;	// Write cell
+				$writeCell = TRUE;	// Write cell
 
 				// initialize
 				$cellData = '';
@@ -1066,7 +1066,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 	 * @param boolean $pValue	Pre-Calculate Formulas?
 	 * @return PHPExcel_Writer_HTML
 	 */
-	public function setPreCalculateFormulas($pValue = true) {
+	public function setPreCalculateFormulas($pValue = TRUE) {
 		$this->_preCalculateFormulas = $pValue;
 		return $this;
 	}
@@ -1248,7 +1248,7 @@ class PHPExcel_Writer_HTML implements PHPExcel_Writer_IWriter {
 		}
 
 		// We have calculated the spans
-		$this->_spansAreCalculated = true;
+		$this->_spansAreCalculated = TRUE;
 	}
 
 }

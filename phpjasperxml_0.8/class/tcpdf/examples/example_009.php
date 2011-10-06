@@ -34,7 +34,7 @@ require_once('../config/lang/eng.php');
 require_once('../tcpdf.php');
 
 // create new PDF document
-$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
+$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, TRUE, 'UTF-8', false); 
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -76,7 +76,7 @@ $pdf->AddPage();
 $pdf->setJPEGQuality(75);
 
 // Image example
-$pdf->Image('../images/image_demo.jpg', 50, 50, 100, 150, '', 'http://www.tcpdf.org', '', true, 150);
+$pdf->Image('../images/image_demo.jpg', 50, 50, 100, 150, '', 'http://www.tcpdf.org', '', TRUE, 150);
 
 // ---------------------------------------------------------
 

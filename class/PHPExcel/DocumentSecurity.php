@@ -179,7 +179,7 @@ class PHPExcel_DocumentSecurity
 	 * Set RevisionsPassword
 	 *
 	 * @param string 	$pValue
-	 * @param boolean 	$pAlreadyHashed If the password has already been hashed, set this to true
+	 * @param boolean 	$pAlreadyHashed If the password has already been hashed, set this to TRUE
 	 * @return PHPExcel_DocumentSecurity
 	 */
 	function setRevisionsPassword($pValue = '', $pAlreadyHashed = false) {
@@ -203,7 +203,7 @@ class PHPExcel_DocumentSecurity
 	 * Set WorkbookPassword
 	 *
 	 * @param string 	$pValue
-	 * @param boolean 	$pAlreadyHashed If the password has already been hashed, set this to true
+	 * @param boolean 	$pAlreadyHashed If the password has already been hashed, set this to TRUE
 	 * @return PHPExcel_DocumentSecurity
 	 */
 	function setWorkbookPassword($pValue = '', $pAlreadyHashed = false) {

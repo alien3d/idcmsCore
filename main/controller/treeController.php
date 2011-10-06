@@ -89,12 +89,12 @@ class TreeClass extends ConfigClass
      */
     private $defaultLanguageId;
     /**
-     * Audit Row True or False
+     * Audit Row TRUE or False
      * @var boolean $audit
      */
     private $audit;
     /**
-     * Log Sql Statement True or False
+     * Log Sql Statement TRUE or False
      * @var unknown_type
      */
     private $log;
@@ -235,7 +235,7 @@ class TreeClass extends ConfigClass
 						\"leaf\"	:	false,
 						\"text\"	:	\"" . $moduleTranslate . "\",
 					    \"iconCls\"	:	\"" . $iconName . "\",
-					    \"expanded\":	true,";
+					    \"expanded\":	TRUE,";
                 if ($this->getVendor() == self::MYSQL) {
                     $sqlFolder = "
 					      SELECT    *
@@ -313,7 +313,7 @@ class TreeClass extends ConfigClass
                         $counterFolder ++;
                         $treeJsonString .= " {
               						\"leaf\"		:	false,
-									\"expanded\"  	: 	true, 
+									\"expanded\"  	: 	TRUE, 
               						\"text\" 	  	:	\"" . $folderTranslate . "\", 
               						\"iconCls\"		:	\"" . $iconName . "\",";
                         $counter_leaf = 0;
@@ -393,7 +393,7 @@ class TreeClass extends ConfigClass
 							                \"folderPath\"		:	\"" . $folderPath . "\",
 							                \"leafFilename\"	:	\"" . $leafFilename . "\",
 											\"emptyLeaf\"		:	false,
-							                \"leaf\" 			:	true, 
+							                \"leaf\" 			:	TRUE, 
 							                \"iconCls\" 		: 	\"" . $iconName . "\"
 							            } ";
                                 if ($counterLeaf != $totalLeaf) {
@@ -405,8 +405,8 @@ class TreeClass extends ConfigClass
                         } else {
                             $treeJsonString .= "  \"children\" :  {
                 										\"text\"		:	\"No Leaf Identify\",
-                										\"emptyLeaf\"	:	true,
-                										\"leaf\"		:	true 
+                										\"emptyLeaf\"	:	TRUE,
+                										\"leaf\"		:	TRUE 
               										}";
                         }
                         if ($counterFolder != $totalFolder) {
@@ -417,9 +417,9 @@ class TreeClass extends ConfigClass
                     }
                 } else {
                     $treeJsonString .= "	\"children\" : {
-									    		\"leaf\"		:	true,	
+									    		\"leaf\"		:	TRUE,	
 												\"text\"		:	\"No Folder Identify\",
-												\"expanded\"	:	true
+												\"expanded\"	:	TRUE
 											}";
                 }
                 if ($counterModule != $totalModule) {
@@ -430,9 +430,9 @@ class TreeClass extends ConfigClass
             }
         } else {
             $treeJsonString .= " \"children\" :{
-									\"leaf\"		:	true,
+									\"leaf\"		:	TRUE,
 									\"text\"		:	\"No module Identify\",
-									\"expanded\"	:	true 
+									\"expanded\"	:	TRUE 
 								}]";
         }
         $treeJsonString = preg_replace('/\s+/', '', $treeJsonString);

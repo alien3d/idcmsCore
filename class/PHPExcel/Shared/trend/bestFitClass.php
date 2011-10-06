@@ -308,7 +308,7 @@ class PHPExcel_Best_Fit
 	}	//	function _leastSquareFit()
 
 
-	function __construct($yValues, $xValues=array(), $const=True) {
+	function __construct($yValues, $xValues=array(), $const=TRUE) {
 		//	Calculate number of points
 		$nY = count($yValues);
 		$nX = count($xValues);
@@ -319,7 +319,7 @@ class PHPExcel_Best_Fit
 			$nX = $nY;
 		} elseif ($nY != $nX) {
 			//	Ensure both arrays of points are the same size
-			$this->_error = True;
+			$this->_error = TRUE;
 			return False;
 		}
 

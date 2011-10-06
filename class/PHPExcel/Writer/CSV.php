@@ -95,7 +95,7 @@ class PHPExcel_Writer_CSV implements PHPExcel_Writer_IWriter {
 	 *
 	 * @var boolean
 	 */
-	private $_preCalculateFormulas = true;
+	private $_preCalculateFormulas = TRUE;
 
 	/**
 	 * Whether to write a BOM (for UTF8).
@@ -281,7 +281,7 @@ class PHPExcel_Writer_CSV implements PHPExcel_Writer_IWriter {
 				if ($writeDelimiter) {
 					$line .= $this->_delimiter;
 				} else {
-					$writeDelimiter = true;
+					$writeDelimiter = TRUE;
 				}
 
 				// Add enclosed string
@@ -313,7 +313,7 @@ class PHPExcel_Writer_CSV implements PHPExcel_Writer_IWriter {
 	 * @param boolean $pValue	Pre-Calculate Formulas?
 	 * @return PHPExcel_Writer_CSV
 	 */
-	public function setPreCalculateFormulas($pValue = true) {
+	public function setPreCalculateFormulas($pValue = TRUE) {
 		$this->_preCalculateFormulas = $pValue;
 		return $this;
 	}

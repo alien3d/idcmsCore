@@ -100,7 +100,7 @@ function ReadAFM($file,&$map)
 		elseif($code=='UnderlinePosition')
 			$fm['UnderlinePosition']=(int)$param;
 		elseif($code=='IsFixedPitch')
-			$fm['IsFixedPitch']=($param=='true');
+			$fm['IsFixedPitch']=($param=='TRUE');
 		elseif($code=='FontBBox')
 			$fm['FontBBox']=array($e[1],$e[2],$e[3],$e[4]);
 		elseif($code=='CapHeight')
@@ -264,7 +264,7 @@ function CheckTTF($file)
 	{
 		if(fread($f,4)=='OS/2')
 		{
-			$found=true;
+			$found=TRUE;
 			break;
 		}
 		fseek($f,12,SEEK_CUR);
@@ -295,7 +295,7 @@ function CheckTTF($file)
 * $patch :    patch optionnel pour l'encodage                                  *
 * $type :     type de la police si $fontfile est vide                          *
 *******************************************************************************/
-function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueType')
+function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TRUEType')
 {
 	//Generate a font definition file
 	set_magic_quotes_runtime(0);
@@ -321,7 +321,7 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueTyp
 	{
 		$ext=strtolower(substr($fontfile,-3));
 		if($ext=='ttf')
-			$type='TrueType';
+			$type='TRUEType';
 		elseif($ext=='pfb')
 			$type='Type1';
 		else
@@ -329,7 +329,7 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueTyp
 	}
 	else
 	{
-		if($type!='TrueType' and $type!='Type1')
+		if($type!='TRUEType' and $type!='Type1')
 			die('<B>Error:</B> incorrect font type: '.$type);
 	}
 	//Start generation
@@ -353,7 +353,7 @@ function MakeFont($fontfile,$afmfile,$enc='cp1252',$patch=array(),$type='TrueTyp
 		//Embedded font
 		if(!file_exists($fontfile))
 			die('<B>Error:</B> font file not found: '.$fontfile);
-		if($type=='TrueType')
+		if($type=='TRUEType')
 			CheckTTF($fontfile);
 		$f=fopen($fontfile,'rb');
 		if(!$f)

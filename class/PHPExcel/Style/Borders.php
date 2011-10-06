@@ -173,11 +173,11 @@ class PHPExcel_Style_Borders implements PHPExcel_IComparable
 		// Specially for supervisor
 		if ($isSupervisor) {
 			// Initialize pseudo-borders
-			$this->_allBorders			= new PHPExcel_Style_Border(true);
-			$this->_outline				= new PHPExcel_Style_Border(true);
-			$this->_inside				= new PHPExcel_Style_Border(true);
-			$this->_vertical			= new PHPExcel_Style_Border(true);
-			$this->_horizontal			= new PHPExcel_Style_Border(true);
+			$this->_allBorders			= new PHPExcel_Style_Border(TRUE);
+			$this->_outline				= new PHPExcel_Style_Border(TRUE);
+			$this->_inside				= new PHPExcel_Style_Border(TRUE);
+			$this->_vertical			= new PHPExcel_Style_Border(TRUE);
+			$this->_horizontal			= new PHPExcel_Style_Border(TRUE);
 
 			// bind parent if we are a supervisor
 			$this->_left->bindParent($this, '_left');

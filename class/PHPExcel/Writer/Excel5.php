@@ -138,7 +138,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 	 * @param	PHPExcel	$phpExcel	PHPExcel object
 	 */
 	public function __construct(PHPExcel $phpExcel) {
-		$this->_preCalculateFormulas = true;
+		$this->_preCalculateFormulas = TRUE;
 		$this->_phpExcel		= $phpExcel;
 		$this->_BIFF_version	= 0x0600;
 		$this->_tempDir			= PHPExcel_Shared_File::sys_get_temp_dir();
@@ -194,7 +194,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 		// for now, we use the first cellXf instead of cellStyleXf
 		$cellXfCollection = $this->_phpExcel->getCellXfCollection();
 		for ($i = 0; $i < 15; ++$i) {
-			$this->_writerWorkbook->addXfWriter($cellXfCollection[0], true);
+			$this->_writerWorkbook->addXfWriter($cellXfCollection[0], TRUE);
 		}
 
 		// add all the cell Xfs
@@ -284,7 +284,7 @@ class PHPExcel_Writer_Excel5 implements PHPExcel_Writer_IWriter
 	 *
 	 * @param boolean $pValue	Pre-Calculate Formulas?
 	 */
-	public function setPreCalculateFormulas($pValue = true) {
+	public function setPreCalculateFormulas($pValue = TRUE) {
 		$this->_preCalculateFormulas = $pValue;
 	}
 

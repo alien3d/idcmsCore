@@ -153,7 +153,7 @@ class SMTP {
 			echo "SMTP -> FROM SERVER:" . $announce . $this->CRLF . '<br />';
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -194,16 +194,16 @@ class SMTP {
 		}
 
 		// Begin encrypted connection
-		if(!stream_socket_enable_crypto($this->smtp_conn, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
+		if(!stream_socket_enable_crypto($this->smtp_conn, TRUE, STREAM_CRYPTO_METHOD_TLS_CLIENT)) {
 			return false;
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * Performs SMTP authentication.  Must be run after running the
-	 * Hello() method.  Returns true if successfully authenticated.
+	 * Hello() method.  Returns TRUE if successfully authenticated.
 	 * @access public
 	 * @return bool
 	 */
@@ -259,11 +259,11 @@ class SMTP {
 			return false;
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
-	 * Returns true if connected to a server otherwise false
+	 * Returns TRUE if connected to a server otherwise false
 	 * @access public
 	 * @return bool
 	 */
@@ -278,7 +278,7 @@ class SMTP {
 				$this->Close();
 				return false;
 			}
-			return true; // everything looks good
+			return TRUE; // everything looks good
 		}
 		return false;
 	}
@@ -380,7 +380,7 @@ class SMTP {
 		$field = substr($lines[0],0,strpos($lines[0],":"));
 		$in_headers = false;
 		if(!empty($field) && !strstr($field," ")) {
-			$in_headers = true;
+			$in_headers = TRUE;
 		}
 
 		$max_line_length = 998; // used below; set here for ease in change
@@ -445,7 +445,7 @@ class SMTP {
 			}
 			return false;
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -482,7 +482,7 @@ class SMTP {
 			}
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
@@ -513,12 +513,12 @@ class SMTP {
 
 		$this->helo_rply = $rply;
 
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * Starts a mail transaction from the email address specified in
-	 * $from. Returns true if successful or false otherwise. If True
+	 * $from. Returns TRUE if successful or false otherwise. If TRUE
 	 * the mail transaction is started and then one or more Recipient
 	 * commands may be called followed by a Data command.
 	 *
@@ -559,12 +559,12 @@ class SMTP {
 			}
 			return false;
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * Sends the quit command to the server and then closes the socket
-	 * if there is no error or the $close_on_error argument is true.
+	 * if there is no error or the $close_on_error argument is TRUE.
 	 *
 	 * Implements from rfc 821: QUIT <CRLF>
 	 *
@@ -573,7 +573,7 @@ class SMTP {
 	 * @access public
 	 * @return bool
 	 */
-	public function Quit($close_on_error = true) {
+	public function Quit($close_on_error = TRUE) {
 		$this->error = null; // so there is no confusion
 
 		if(!$this->connected()) {
@@ -592,7 +592,7 @@ class SMTP {
 			echo "SMTP -> FROM SERVER:" . $byemsg . $this->CRLF . '<br />';
 		}
 
-		$rval = true;
+		$rval = TRUE;
 		$e = null;
 
 		$code = substr($byemsg,0,3);
@@ -616,7 +616,7 @@ class SMTP {
 
 	/**
 	 * Sends the command RCPT to the SMTP server with the TO: argument of $to.
-	 * Returns true if the recipient was accepted false if it was rejected.
+	 * Returns TRUE if the recipient was accepted false if it was rejected.
 	 *
 	 * Implements from rfc 821: RCPT <SP> TO:<forward-path> <CRLF>
 	 *
@@ -654,12 +654,12 @@ class SMTP {
 			}
 			return false;
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * Sends the RSET command to abort and transaction that is
-	 * currently in progress. Returns true if successful false
+	 * currently in progress. Returns TRUE if successful false
 	 * otherwise.
 	 *
 	 * Implements rfc 821: RSET <CRLF>
@@ -698,12 +698,12 @@ class SMTP {
 			return false;
 		}
 
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * Starts a mail transaction from the email address specified in
-	 * $from. Returns true if successful or false otherwise. If True
+	 * $from. Returns TRUE if successful or false otherwise. If TRUE
 	 * the mail transaction is started and then one or more Recipient
 	 * commands may be called followed by a Data command. This command
 	 * will send the message to the users terminal if they are logged
@@ -745,7 +745,7 @@ class SMTP {
 			}
 			return false;
 		}
-		return true;
+		return TRUE;
 	}
 
 	/**

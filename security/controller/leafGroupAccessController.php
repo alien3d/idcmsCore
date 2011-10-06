@@ -360,7 +360,7 @@ class LeafGroupAccessClass extends ConfigClass
             array("success" => false, "message" => $this->q->responce));
             exit();
         }
-        while ($row = $this->q->fetchAssoc()) {
+        while (($row = $this->q->fetchAssoc()) == TRUE) {
             // select module access
             $items[] = $row;
              // select module access
@@ -497,7 +497,7 @@ if (isset($_POST['method'])) {
     /*
 	 *  Load the dynamic value
 	 */
-    $leafGroupAccess_obj->execute();
+    $leafGroupAccessObject->execute();
     /*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */

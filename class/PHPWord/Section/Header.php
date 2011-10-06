@@ -176,7 +176,7 @@ class PHPWord_Section_Header {
 	 * @return PHPWord_Section_Image
 	 */
 	public function addWatermark($src, $style = null) {
-		$image = new PHPWord_Section_Image($src, $style, true);
+		$image = new PHPWord_Section_Image($src, $style, TRUE);
 
 		if(!is_null($image->getSource())) {
 			$rID = PHPWord_Media::addHeaderMediaElement($this->_headerCount, $src);
