@@ -4,7 +4,7 @@ session_start();
 require_once ("../../class/classAbstract.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
-require_once ("../model/crewModel.php");
+require_once ("../model/teamModel.php");
 /**
  * this is main setting files
  * @name IDCMS
@@ -15,7 +15,7 @@ require_once ("../model/crewModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class CrewClass extends ConfigClass
+class TeamClass extends ConfigClass
 {
 	/**
 	 * Connection to the database
@@ -80,7 +80,7 @@ class CrewClass extends ConfigClass
 		$this->audit = 0; // By Default 0 - Off  1 - On
 		$this->log = 1; // By Default 0 - Off  1 - On
 		$this->q->log = $this->log;
-		$this->model = new CrewModel();
+		$this->model = new TeamModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 		$this->documentTrail = new DocumentTrailClass();
@@ -105,10 +105,10 @@ class CrewClass extends ConfigClass
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			INSERT INTO `crew`
+			INSERT INTO `team`
 					(
-						`crewSequence`,				`crewCode`,
-						`crewNote`,					`isDefault`,
+						`teamSequence`,				`teamCode`,
+						`teamNote`,					`isDefault`,
 						`isNew`,					`isDraft`,
 						`isUpdate`,					`isDelete`,
 						`isActive`,					`isApproved`,
@@ -118,11 +118,11 @@ class CrewClass extends ConfigClass
 			VALUES
 					(
 						\"" .
-			$this->model->getCrewSequence() . "\",					\"" .
-			$this->model->getCrewCode() .
+			$this->model->getTeamSequence() . "\",					\"" .
+			$this->model->getTeamCode() .
              "\",
 						\"" .
-			$this->model->getCrewNote() . "\",						\"" .
+			$this->model->getTeamNote() . "\",						\"" .
 			$this->model->getIsDefault(0, 'single') .
              "\",
 						\"" .
@@ -144,10 +144,10 @@ class CrewClass extends ConfigClass
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [crew]
+			INSERT INTO [team]
 					(
-						[crewSequence],				[crewCode],
-						[crewNote],					[isDefault],
+						[teamSequence],				[teamCode],
+						[teamNote],					[isDefault],
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
 						[isActive],							[isApproved],
@@ -157,11 +157,11 @@ class CrewClass extends ConfigClass
 			VALUES
 					(
 						'" .
-			$this->model->getCrewSequence() . "',			'" .
-			$this->model->getCrewCode() .
+			$this->model->getTeamSequence() . "',			'" .
+			$this->model->getTeamCode() .
                  "',
 						'" .
-			$this->model->getCrewNote() . "',				'" .
+			$this->model->getTeamNote() . "',				'" .
 			$this->model->getIsDefault(0, 'single') .
                  "',
 						'" .
@@ -195,11 +195,11 @@ class CrewClass extends ConfigClass
 			VALUES
 					(
 						'" .
-			$this->model->getCrewSequence() . "',			'" .
-			$this->model->getCrewCode() .
+			$this->model->getTeamSequence() . "',			'" .
+			$this->model->getTeamCode() .
                      "',
 						'" .
-			$this->model->getCrewNote() . "',				'" .
+			$this->model->getTeamNote() . "',				'" .
 			$this->model->getIsDefault(0, 'single') .
                      "',
 						'" .
@@ -276,7 +276,7 @@ class CrewClass extends ConfigClass
 				(
 									`moduleId`,
 									`moduleAccessValue`,
-									`crewId`
+									`teamId`
 				)
 				VALUES ";
 		} else
@@ -285,7 +285,7 @@ class CrewClass extends ConfigClass
 				(
 									[moduleId],
 									[moduleAccessValue],
-									[crewId]
+									[teamId]
 				)
 				VALUES ";
 		} else
@@ -360,7 +360,7 @@ class CrewClass extends ConfigClass
 								(
 									`folderId`,
 									`folderAccessValue`,
-									`crewId`
+									`teamId`
 								)
 					VALUES";
 		} else
@@ -370,7 +370,7 @@ class CrewClass extends ConfigClass
 								(
 									[folderId],
 									[folderAccessValue],
-									[crewId]
+									[teamId]
 								)
 					";
 		} else
@@ -453,7 +453,7 @@ class CrewClass extends ConfigClass
 									`leafAccessDeleteValue`,
 									`leafAccessPrintValue`,
 									`leafAccessPostValue`,
-									`crewId`
+									`teamId`
 								)
 					VALUES";
 		} else
@@ -467,7 +467,7 @@ class CrewClass extends ConfigClass
 									[leafAccessDeleteValue],
 									[leafAccessPrintValue],
 									[leafAccessPostValue],
-									[crewId]
+									[teamId]
 								)
 					VALUES";
 		} else
@@ -507,10 +507,10 @@ class CrewClass extends ConfigClass
 		header('Content-Type', 'application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor() == self::MYSQL) {
-				$this->auditFilter = "	`crew`.`isActive`		=	1	";
+				$this->auditFilter = "	`team`.`isActive`		=	1	";
 			} else
 			if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	[crew].[isActive]		=	1	";
+				$this->auditFilter = "	[team].[isActive]		=	1	";
 			} else
 			if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	GROUP_.ISACTIVE	=	1	";
@@ -535,62 +535,62 @@ class CrewClass extends ConfigClass
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-					SELECT	`crew`.`crewId`,
-							`crew`.`crewSequence`,
-							`crew`.`crewCode`,
-							`crew`.`crewNote`,
-							`crew`.`isDefault`,
-							`crew`.`isNew`,
-							`crew`.`isDraft`,
-							`crew`.`isUpdate`,
-							`crew`.`isDelete`,
-							`crew`.`isActive`,
-							`crew`.`isApproved`,
-							`crew`.`executeBy`,
-							`crew`.`executeTime`,
+					SELECT	`team`.`teamId`,
+							`team`.`teamSequence`,
+							`team`.`teamCode`,
+							`team`.`teamNote`,
+							`team`.`isDefault`,
+							`team`.`isNew`,
+							`team`.`isDraft`,
+							`team`.`isUpdate`,
+							`team`.`isDelete`,
+							`team`.`isActive`,
+							`team`.`isApproved`,
+							`team`.`executeBy`,
+							`team`.`executeTime`,
 							`staff`.`staffName`
- 					FROM 	`crew`
+ 					FROM 	`team`
 					JOIN	`staff`
-					ON		`crew`.`executeBy` = `staff`.`staffId`
+					ON		`team`.`executeBy` = `staff`.`staffId`
 					WHERE 	" . $this->auditFilter;
-			if ($this->model->getCrewId(0, 'single')) {
+			if ($this->model->getTeamId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`." .
 				$this->model->getPrimaryKeyName() . "`=\"" .
-				$this->model->getCrewId(0, 'single') . "\"";
+				$this->model->getTeamId(0, 'single') . "\"";
 			}
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-					SELECT	[crew].[crewId],
-							[crew].[crewSequence],
-							[crew].[crewCode],
-							[crew].[crewNote],
-							[crew].[isDefault],
-							[crew].[isNew],
-							[crew].[isDraft],
-							[crew].[isUpdate],
-							[crew].[isDelete],
-							[crew].[isActive],
-							[crew].[isApproved],
-							[crew].[executeBy],
-							[crew].[executeTime],
+					SELECT	[team].[teamId],
+							[team].[teamSequence],
+							[team].[teamCode],
+							[team].[teamNote],
+							[team].[isDefault],
+							[team].[isNew],
+							[team].[isDraft],
+							[team].[isUpdate],
+							[team].[isDelete],
+							[team].[isActive],
+							[team].[isApproved],
+							[team].[executeBy],
+							[team].[executeTime],
 							[staff].[staffName]
-					FROM 	[crew]
+					FROM 	[team]
 					JOIN	[staff]
-					ON		[crew].[executeBy] = [staff].[staffId]
-					WHERE 	[crew].[isActive] ='1'	";
-			if ($this->model->getCrewId(0, 'single')) {
+					ON		[team].[executeBy] = [staff].[staffId]
+					WHERE 	[team].[isActive] ='1'	";
+			if ($this->model->getTeamId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" .
 				$this->model->getPrimaryKeyName() . "]='" .
-				$this->model->getCrewId(0, 'single') . "'";
+				$this->model->getTeamId(0, 'single') . "'";
 			}
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-					SELECT	GROUP_.GROUPID  		AS	\"crewId\",
-							GROUP_.GROUPCODE 		AS 	\"crewCode\",
-							GROUP_.GROUPSEQUENCE	AS 	\"crewSequence\",
-							GROUP_.GROUPNOTE 		AS 	\"crewNote\",
+					SELECT	GROUP_.GROUPID  		AS	\"teamId\",
+							GROUP_.GROUPCODE 		AS 	\"teamCode\",
+							GROUP_.GROUPSEQUENCE	AS 	\"teamSequence\",
+							GROUP_.GROUPNOTE 		AS 	\"teamNote\",
 							GROUP_.ISDEFAULT 		AS 	\"isDefault\",
 							GROUP_.ISNEW 			AS 	\"isNew\",
 							GROUP_.ISDRAFT 			AS 	\"isDraft\",
@@ -605,11 +605,11 @@ class CrewClass extends ConfigClass
 					JOIN	STAFF
 					ON		GROUP_.EXECUTEBY = STAFF.STAFFID
 					WHERE 	ISACTIVE='1'	";
-			if ($this->model->getcrewId(0, 'single')) {
+			if ($this->model->getTeamId(0, 'single')) {
 				$sql .= " AND '" .
 				strtoupper($this->model->getTableName()) . "'.'" .
 				strtoupper($this->model->getPrimaryKeyName()) . "'='" .
-				$this->model->getCrewId(0, 'single') . "'";
+				$this->model->getTeamId(0, 'single') . "'";
 			}
 		} else {
 			echo json_encode(
@@ -623,13 +623,13 @@ class CrewClass extends ConfigClass
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('crewId');
+		$filterArray = array('teamId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('crew');
+		$tableArray = array('team');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -693,7 +693,7 @@ class CrewClass extends ConfigClass
 		$_SESSION['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION['start'] = $this->getStart();
 		$_SESSION['limit'] = $this->getLimit();
-		if (empty($this->filter)) {
+		if (empty($this->model->getTeamId($key, $type))) {
 			if ($this->getLimit()) {
 				// only mysql have limit
 				if ($this->getVendor() == self::MYSQL) {
@@ -706,28 +706,28 @@ class CrewClass extends ConfigClass
 					 * Parameterize Query We don't support
 					 */
 					$sql = "
-							WITH [crewDerived] AS
+							WITH [teamDerived] AS
 							(
 								SELECT *,
-								ROW_NUMBER() OVER (ORDER BY [crewId]) AS 'RowNumber'
-								FROM [crew]
+								ROW_NUMBER() OVER (ORDER BY [teamId]) AS 'RowNumber'
+								FROM [team]
 								WHERE [isActive] =1   " . $tempSql .
 					$tempSql2 . "
 							)
-							SELECT		[crew].[crewId],
-										[crew].[crewSequence],
-										[crew].[crewCode],
-										[crew].[crewNote],
-										[crew].[isDefault],
-										[crew].[isNew],
-										[crew].[isDraft],
-										[crew].[isUpdate],
-										[crew].[isDelete],
-										[crew].[isApproved],
-										[crew].[executeBy],
-										[crew].[executeTime],
+							SELECT		[team].[teamId],
+										[team].[teamSequence],
+										[team].[teamCode],
+										[team].[teamNote],
+										[team].[isDefault],
+										[team].[isNew],
+										[team].[isDraft],
+										[team].[isUpdate],
+										[team].[isDelete],
+										[team].[isApproved],
+										[team].[executeBy],
+										[team].[executeTime],
 										[staff].[staffName]
-							FROM 		[crewDerived]
+							FROM 		[teamDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart() . "
 							AND 			" .
@@ -742,10 +742,10 @@ class CrewClass extends ConfigClass
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT GROUP_.GROUPID  		AS	\"crewId\",
-							GROUP_.GROUPCODE 		AS 	\"crewCode\",
-							GROUP_.GROUPSEQUENCE	AS 	\"crewSequence\",
-							GROUP_.GROUPNOTE 		AS 	\"crewNote\",
+									SELECT GROUP_.GROUPID  		AS	\"teamId\",
+							GROUP_.GROUPCODE 		AS 	\"teamCode\",
+							GROUP_.GROUPSEQUENCE	AS 	\"teamSequence\",
+							GROUP_.GROUPNOTE 		AS 	\"teamNote\",
 							GROUP_.ISDEFAULT 		AS 	\"isDefault\",
 							GROUP_.ISNEW 			AS 	\"isNew\",
 							GROUP_.ISDRAFT 			AS 	\"isDraft\",
@@ -771,7 +771,7 @@ class CrewClass extends ConfigClass
 		/*
 		 *  Only Execute One Query
 		 */
-		if (! ($this->model->getcrewId(0, 'single'))) {
+		if (! ($this->model->getTeamId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(
@@ -783,7 +783,7 @@ class CrewClass extends ConfigClass
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items[] = $row;
 		}
-		if ($this->model->getCrewId(0, 'single')) {
+		if ($this->model->getTeamId(0, 'single')) {
 			$json_encode = json_encode(
 			array('success' => true, 'total' => $total,
             'message' => 'Data Loaded', 'data' => $items));
@@ -815,13 +815,13 @@ class CrewClass extends ConfigClass
 		$this->model->update();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE 	`crew`
-			SET 	`crewSequence` =   '" .
-			$this->model->getCrewSequence() . "',
-					`crewCode`		=	'" .
-			$this->model->getCrewCode() . "',
-					`crewNote`		=	'" .
-			$this->model->getCrewNote() . "',
+			UPDATE 	`team`
+			SET 	`teamSequence` =   '" .
+			$this->model->getTeamSequence() . "',
+					`teamCode`		=	'" .
+			$this->model->getTeamCode() . "',
+					`teamNote`		=	'" .
+			$this->model->getTeamNote() . "',
 					`isDefault`		=	'" .
 			$this->model->getIsDefault(0, 'single') . "',
 					`isNew`			=	'" .
@@ -840,18 +840,18 @@ class CrewClass extends ConfigClass
 			$this->model->getExecuteBy() . "',
 					`executeTime`	=	" .
 			$this->model->getExecuteTime() . "
-			WHERE 	`crewId`		=	'" .
-			$this->model->getCrewId(0, 'single') . "'";
+			WHERE 	`teamId`		=	'" .
+			$this->model->getTeamId(0, 'single') . "'";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[crew]
-			SET 	[crewSequence] =   '" .
-			$this->model->getCrewSequence() . "',
-					[crewCode]		=	'" .
-			$this->model->getCrewCode() . "',
-					[crewNote]		=	'" .
-			$this->model->getCrewNote() . "',
+			UPDATE 	[team]
+			SET 	[teamSequence] =   '" .
+			$this->model->getTeamSequence() . "',
+					[teamCode]		=	'" .
+			$this->model->getTeamCode() . "',
+					[teamNote]		=	'" .
+			$this->model->getTeamNote() . "',
 					[isDefault]		=	'" .
 			$this->model->getIsDefault(0, 'single') . "',
 					[isNew]			=	'" .
@@ -870,18 +870,18 @@ class CrewClass extends ConfigClass
 			$this->model->getExecuteBy() . "',
 					[executeTime]	=	" .
 			$this->model->getExecuteTime() . "
-			WHERE 	[crewId]		=	'" .
-			$this->model->getCrewId(0, 'single') . "'";
+			WHERE 	[teamId]		=	'" .
+			$this->model->getTeamId(0, 'single') . "'";
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			UPDATE 	GROUP_
 			SET 	GROUPSEQUENCE	=   '" .
-			$this->model->getCrewSequence() . "',
+			$this->model->getTeamSequence() . "',
 					GROUPCODE		=	'" .
-			$this->model->getCrewCode() . "',
+			$this->model->getTeamCode() . "',
 					GROUPNOTE		=	'" .
-			$this->model->getCrewNote() . "',
+			$this->model->getTeamNote() . "',
 					ISACTIVE		=	'" .
 			$this->model->getIsActive(0, 'single') . "',
 					ISNEW			=	'" .
@@ -899,7 +899,7 @@ class CrewClass extends ConfigClass
 					EXECUTETIME		=	" .
 			$this->model->getExecuteTime() . "
 			WHERE 	GROUPID			=	'" .
-			$this->model->getCrewCode(0, 'single') . "'";
+			$this->model->getTeamCode(0, 'single') . "'";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -926,7 +926,7 @@ class CrewClass extends ConfigClass
 		$this->model->delete();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE 	`crew`
+			UPDATE 	`team`
 			SET 	`isDefault`			=	\"" .
 			$this->model->getIsDefault(0, 'single') . "\",
 					`isNew`				=	\"" .
@@ -945,12 +945,12 @@ class CrewClass extends ConfigClass
 			$this->model->getExecuteBy() . "\",
 					`executeTime`				=	" .
 			$this->model->getExecuteTime() . "
-			WHERE 	`crewId`		=	\"" .
-			$this->model->getCrewId(0, 'single') . "\"";
+			WHERE 	`teamId`		=	\"" .
+			$this->model->getTeamId(0, 'single') . "\"";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[crew]
+			UPDATE 	[team]
 			SET 	[isDefault]			=	'" .
 			$this->model->getIsDefault(0, 'single') . "',
 					[isNew]				=	'" .
@@ -969,14 +969,14 @@ class CrewClass extends ConfigClass
 			$this->model->getExecuteBy() . "',
 					[executeTime]		=	" .
 			$this->model->getExecuteTime() . "
-			WHERE 	[crewId]			=	'" .
-			$this->model->getCrewId . "\"";
+			WHERE 	[teamId]			=	'" .
+			$this->model->getTeamId . "\"";
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			UPDATE 	GROUP_
 			SET 	GROUPDESC		=	'" .
-			$this->model->getCrewDesc(0, 'single') . "',
+			$this->model->getTeamDesc(0, 'single') . "',
 					ISDEFAULT		=	'" .
 			$this->model->getIsDefault(0, 'single') . "',
 					ISNEW			=	'" .
@@ -996,12 +996,12 @@ class CrewClass extends ConfigClass
 					EXECUTETIME		=	" .
 			$this->model->getExecuteTime() . "
 			WHERE 	GROUPID			=	'" .
-			$this->model->getCrewId() . "\"";
+			$this->model->getTeamId() . "\"";
 		}
 		// advance logging future
 		$this->q->tableName = $this->model->getTableName();
 		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-		$this->q->primaryKeyValue = $this->model->getCrewId();
+		$this->q->primaryKeyValue = $this->model->getTeamId();
 		$this->q->audit = $this->audit;
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -1041,7 +1041,7 @@ class CrewClass extends ConfigClass
 			UPDATE  " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		}
-		//	echo "arnab[".$this->model->getCrewId(0,'array')."]";
+		//	echo "arnab[".$this->model->getTeamId(0,'array')."]";
 		/**
 		 * System Validation Checking
 		 * @var $access
@@ -1066,7 +1066,7 @@ class CrewClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getCrewId($i, 'array') . "'
+						$this->model->getTeamId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsDefault($i, 'array') . "'";
 					}
@@ -1075,7 +1075,7 @@ class CrewClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getCrewId($i, 'array') . "'
+						$this->model->getTeamId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsNew($i, 'array') . "'";
 					}
@@ -1084,7 +1084,7 @@ class CrewClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getCrewId($i, 'array') . "'
+						$this->model->getTeamId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsDraft($i, 'array') . "'";
 					}
@@ -1093,7 +1093,7 @@ class CrewClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getCrewId($i, 'array') . "'
+						$this->model->getTeamId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsUpdate($i, 'array') . "'";
 					}
@@ -1102,7 +1102,7 @@ class CrewClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getCrewId($i, 'array') . "'
+						$this->model->getTeamId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsDelete($i, 'array') . "'";
 					}
@@ -1111,7 +1111,7 @@ class CrewClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getCrewId($i, 'array') . "'
+						$this->model->getTeamId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsActive($i, 'array') . "'";
 					}
@@ -1120,7 +1120,7 @@ class CrewClass extends ConfigClass
 					for ($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
 							WHEN '" .
-						$this->model->getCrewId($i, 'array') . "'
+						$this->model->getTeamId($i, 'array') . "'
 							THEN '" .
 						$this->model->getIsApproved($i, 'array') . "'";
 					}
@@ -1128,14 +1128,14 @@ class CrewClass extends ConfigClass
 				case 'isReview' :
 					for($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
-                            WHEN '" . $this->model->getCrewId ( $i, 'array' ) . "'
+                            WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
                             THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
 					}
 					break;
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
-                                WHEN '" . $this->model->getCrewId ( $i, 'array' ) . "'
+                                WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
                                 THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
 					}
 					break;
@@ -1147,19 +1147,19 @@ class CrewClass extends ConfigClass
 			$sql .= "
 			WHERE `" .
 			$this->model->getPrimaryKeyName() . "` IN (" .
-			$this->model->getCrewIdAll() . ")";
+			$this->model->getTeamIdAll() . ")";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql .= "
 			WHERE [" .
 			$this->model->getPrimaryKeyName() . "] IN (" .
-			$this->model->getCrewIdAll() . ")";
+			$this->model->getTeamIdAll() . ")";
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql .= "
 			WHERE \"" .
 			$this->model->getPrimaryKeyName() . "\" IN (" .
-			$this->model->getCrewIdAll() . ")";
+			$this->model->getTeamIdAll() . ")";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -1186,17 +1186,17 @@ class CrewClass extends ConfigClass
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	`crew`
-			WHERE 	`crewCode` 	= 	\"" .
-			$this->model->getCrewCode() . "\"
+			FROM 	`team`
+			WHERE 	`teamCode` 	= 	\"" .
+			$this->model->getTeamCode() . "\"
 			AND		`isActive`		=	1";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	[crew]
-			WHERE 	[crewCode] 	= 	'" .
-			$this->model->getCrewCode() . "'
+			FROM 	[team]
+			WHERE 	[teamCode] 	= 	'" .
+			$this->model->getTeamCode() . "'
 			AND		[isActive]		=	1";
 		} else
 		if ($this->getVendor() == self::ORACLE) {
@@ -1204,7 +1204,7 @@ class CrewClass extends ConfigClass
 			SELECT	*
 			FROM 	CREW_
 			WHERE 	CREWCODE 		= 	'" .
-			$this->model->getCrewCode() . "'
+			$this->model->getTeamCode() . "'
 			AND		ISACTIVE		=	1";
 		}
 		$this->q->read($sql);
@@ -1217,12 +1217,12 @@ class CrewClass extends ConfigClass
 		} else {
 			$row = $this->q->fetchArray();
 			if ($this->duplicateTest == 1) {
-				return $total . "|" . $row['crewCode'];
+				return $total . "|" . $row['teamCode'];
 			} else {
 				echo json_encode(
 				array("success" => "true", "total" => $total,
                 "message" => "Duplicate Record", 
-                "crewCode" => $row['crewCode']));
+                "teamCode" => $row['teamCode']));
 				exit();
 			}
 		}
@@ -1233,7 +1233,7 @@ class CrewClass extends ConfigClass
 	function excel ()
 	{}
 }
-$crewObject = new CrewClass();
+$teamObject = new TeamClass();
 /**
  * crud -create,read,update,delete
  **/
@@ -1245,41 +1245,41 @@ if (isset($_POST['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_POST['leafId'])) {
-		$crewObject->setLeafId($_POST['leafId']);
+		$teamObject->setLeafId($_POST['leafId']);
 	}
 	if (isset($_POST['query'])) {
-		$crewObject->setFieldQuery($_POST['query']);
+		$teamObject->setFieldQuery($_POST['query']);
 	}
 	if (isset($_POST['filter'])) {
-		$crewObject->setGridQuery($_POST['filter']);
+		$teamObject->setGridQuery($_POST['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST['order'])) {
-		$crewObject->setOrder($_POST['order']);
+		$teamObject->setOrder($_POST['order']);
 	}
 	if (isset($_POST['sortField'])) {
-		$crewObject->setSortField($_POST['sortField']);
+		$teamObject->setSortField($_POST['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$crewObject->execute();
+	$teamObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST['method'] == 'create') {
-		$crewObject->create();
+		$teamObject->create();
 	}
 	if ($_POST['method'] == 'read') {
-		$crewObject->read();
+		$teamObject->read();
 	}
 	if ($_POST['method'] == 'save') {
-		$crewObject->update();
+		$teamObject->update();
 	}
 	if ($_POST['method'] == 'delete') {
-		$crewObject->delete();
+		$teamObject->delete();
 	}
 }
 if (isset($_GET['method'])) {
@@ -1290,35 +1290,35 @@ if (isset($_GET['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_GET['leafId'])) {
-		$crewObject->setLeafId($_GET['leafId']);
+		$teamObject->setLeafId($_GET['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET['isAdmin'])) {
-		$crewObject->setIsAdmin($_GET['isAdmin']);
+		$teamObject->setIsAdmin($_GET['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$crewObject->execute();
+	$teamObject->execute();
 	if (isset($_GET['field'])) {
 		if ($_GET['field'] == 'staffId') {
-			$crewObject->staff();
+			$teamObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET['method'] == 'updateStatus') {
-		$crewObject->updateStatus();
+		$teamObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET['crewCode'])) {
-		if (strlen($_GET['crewCode']) > 0) {
-			$crewObject->duplicate();
+	if (isset($_GET['teamCode'])) {
+		if (strlen($_GET['teamCode']) > 0) {
+			$teamObject->duplicate();
 		}
 	}
 	/*
@@ -1326,7 +1326,7 @@ if (isset($_GET['method'])) {
 	 */
 	if (isset($_GET['mode'])) {
 		if ($_GET['mode'] == 'excel') {
-			$crewObject->excel();
+			$teamObject->excel();
 		}
 	}
 }

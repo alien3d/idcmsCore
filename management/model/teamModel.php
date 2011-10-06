@@ -2,61 +2,61 @@
 
 require_once ("../../class/classValidation.php");
 /**
- * this is Crew model file.
+ * this is team model file.
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
  * @package management
- * @subpackage crew
+ * @subpackage team
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class CrewModel extends ValidationClass
+class TeamModel extends ValidationClass
 {
     /**
-     * crew Identification
+     * team Identification
      * @var int
      */
-    private $crewId;
+    private $teamId;
     /**
-     * crew Sequence
+     * team Sequence
      * @var int
      */
-    private $crewSequence;
+    private $teamSequence;
     /**
-     * crew Code
+     * team Code
      * @var string
      */
-    private $crewCode;
+    private $teamCode;
     /**
-     * crew Note
+     * team Note
      * @var string
      */
-    private $crewNote;
+    private $teamNote;
     function execute ()
     {
         /**
          * Basic Information Table
          */
-        $this->setTableName('crew');
-        $this->setPrimaryKeyName('crewId');
+        $this->setTableName('team');
+        $this->setPrimaryKeyName('teamId');
         /**
          * All the $_POST enviroment.
          */
         if (isset($_POST['Id'])) {
-            $this->setcrewId($this->strict($_POST['crewId'], 'numeric'), 0, 
+            $this->setTeamId($this->strict($_POST['teamId'], 'numeric'), 0, 
             'single');
         }
-        if (isset($_POST['crewSequence'])) {
-            $this->setcrewSequence(
-            $this->strict($_POST['crewSequence'], 'memo'));
+        if (isset($_POST['teamSequence'])) {
+            $this->setTeamSequence(
+            $this->strict($_POST['teamSequence'], 'memo'));
         }
-        if (isset($_POST['crewCode'])) {
-            $this->setcrewCode($this->strict($_POST['crewCode'], 'memo'));
+        if (isset($_POST['teamCode'])) {
+            $this->setTeamCode($this->strict($_POST['teamCode'], 'memo'));
         }
-        if (isset($_POST['crewNote'])) {
-            $this->setcrewNote($this->strict($_POST['crewNote'], 'memo'));
+        if (isset($_POST['teamNote'])) {
+            $this->setTeamNote($this->strict($_POST['teamNote'], 'memo'));
         }
         if (isset($_SESSION['staffId'])) {
             $this->setExecuteBy($_SESSION['staffId']);
@@ -72,12 +72,12 @@ class CrewModel extends ValidationClass
                     "to_date('" . date("Y-m-d H:i:s") .
                      "','YYYY-MM-DD HH24:MI:SS')");
                 }
-        $this->setTotal(count($_GET['crewId']));
+        $this->setTotal(count($_GET['teamId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
         "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
-        if (is_array($_GET['crewId'])) {
-            $this->crewId = array();
+        if (is_array($_GET['teamId'])) {
+            $this->teamId = array();
         }
         if (is_array($_GET['isDefault'])) {
             $this->isDefault = array();
@@ -101,7 +101,7 @@ class CrewModel extends ValidationClass
             $this->isApproved = array();
         }
         for ($i = 0; $i < $this->getTotal(); $i ++) {
-            $this->setcrewId($this->strict($_GET['crewId'][$i], 'numeric'), 
+            $this->setTeamId($this->strict($_GET['teamId'][$i], 'numeric'), 
             $i, 'array');
             if ($_GET['isDefault'][$i] == 'true') {
                 $this->setIsDefault(1, $i, 'array');
@@ -271,92 +271,92 @@ class CrewModel extends ValidationClass
         }
     }
     /**
-     * Set crew Identification  Value
+     * Set team Identification  Value
      * @param array[int] $value
      * @param array[int]int $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      */
-    public function setCrewId ($value, $key, $type)
+    public function setTeamId ($value, $key, $type)
     {
         if ($type == 'single') {
-            $this->crewId = $value;
+            $this->teamId = $value;
         } else 
             if ($type == 'array') {
-                $this->crewId[$key] = $value;
+                $this->teamId[$key] = $value;
             } else {
                 echo json_encode(
                 array("success" => false, 
-                "message" => "Cannot Identifiy Type String Or Array:setCrewId ?"));
+                "message" => "Cannot Identifiy Type String Or Array:setTeamId ?"));
                 exit();
             }
     }
     /**
-     * Return crew Identification  Value
+     * Return team Identification  Value
      * @param array[int]int $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      * @return bool|array
      */
-    public function getCrewId ($key, $type)
+    public function getTeamId ($key, $type)
     {
         if ($type == 'single') {
-            return $this->crewId;
+            return $this->teamId;
         } else 
             if ($type == 'array') {
-                return $this->crewId[$key];
+                return $this->teamId[$key];
             } else {
                 echo json_encode(
                 array("success" => false, 
-                "message" => "Cannot Identifiy Type String Or Array:getcrewId ?"));
+                "message" => "Cannot Identifiy Type String Or Array:getTeamId ?"));
                 exit();
             }
     }
     /**
-     * Set  crew Sequence (english)
+     * Set  team Sequence (english)
      * @param int $value
      */
-    public function setCrewSequence ($value)
+    public function setTeamSequence ($value)
     {
-        $this->crewSequence = $value;
+        $this->teamSequence = $value;
     }
     /**
-     * Return crew  Sequence
+     * Return team  Sequence
      * @return  int
      */
-    public function getCrewSequence ()
+    public function getTeamSequence ()
     {
-        return $this->CrewSequence;
+        return $this->teamSequence;
     }
     /**
-     * Set  crew  Code (english)
+     * Set  team  Code (english)
      * @param string $value
      */
-    public function setCrewCode ($value)
+    public function setTeamCode ($value)
     {
-        $this->crewCode = $value;
+        $this->teamCode = $value;
     }
     /**
-     * Return crew  Code
+     * Return team  Code
      * @return  string
      */
-    public function getCrewCode ()
+    public function getTeamCode ()
     {
-        return $this->crewCode;
+        return $this->teamCode;
     }
     /**
-     * Set  crew Translation (english)
+     * Set  team Translation (english)
      * @param string $value
      */
-    public function setCrewNote ($value)
+    public function setTeamNote ($value)
     {
-        $this->crewNote = $value;
+        $this->teamNote = $value;
     }
     /**
-     * Return crew  Description (english)
+     * Return team  Description (english)
      * @return  string
      */
-    public function getCrewNote ()
+    public function getTeamNote ()
     {
-        return $this->crewNote;
+        return $this->teamNote;
     }
 }
 ?>

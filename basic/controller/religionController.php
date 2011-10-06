@@ -139,6 +139,7 @@ class ReligionClass extends ConfigClass {
 						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::ORACLE) {
+		
 			$sql = "
 			INSERT INTO	RELIGION
 					(
