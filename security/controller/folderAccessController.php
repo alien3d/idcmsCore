@@ -115,8 +115,8 @@ class FolderAccessClass extends ConfigClass
 						`module`.`moduleId`,
 						`folder`.`folderId`,
 						`folder`.`folderNote`,
-						`theme`.`TEAMID`,
-						`theme`.`groupNote`,
+						`team`.`TEAMID`,
+						`team`.`groupNote`,
 						`folderAccess`.`folderAccessId`,
 						(CASE `folderAccess`.`folderAccessValue`
 							WHEN '1' THEN
@@ -127,15 +127,15 @@ class FolderAccessClass extends ConfigClass
 				FROM 	`folderAccess`
 				JOIN	`folder`
 				USING 	(`folderId`)
-				JOIN 	`theme`
+				JOIN 	`team`
 				USING 	(`TEAMID`)
 				JOIN 	`module`
 				USING	(`moduleId`)
 				WHERE 	`module`.`isActive` =1
 				AND		`folder`.`isActive`=1
-				AND		`theme`.`isActive` =1";
+				AND		`team`.`isActive` =1";
             if ($this->model->getTEAMID()) {
-                $sql .= " AND `theme`.`TEAMID`='" . $this->model->getTEAMID() .
+                $sql .= " AND `team`.`TEAMID`='" . $this->model->getTEAMID() .
                  "'";
             }
             if ($this->model->getModuleId()) {

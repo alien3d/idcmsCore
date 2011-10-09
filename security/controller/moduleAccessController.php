@@ -72,24 +72,24 @@ class ModuleAccessClass extends ConfigClass {
 	function execute() {
 		parent::__construct ();
 		// audit property
-		$this->audit = 0;
-		$this->log = 1;
+		$this->audit 			= 	0;
+		$this->log 				= 	1;
 		
-		$this->q = new Vendor ();
-		$this->q->vendor = $this->getVendor ();
-		$this->q->leafId = $this->getLeafId ();
-		$this->q->staffId = $this->getStaffId ();
-		$this->q->fieldQuery = $this->getFieldQuery ();
-		$this->q->gridQuery = $this->getGridQuery ();
-		$this->q->log = $this->log;
-		$this->q->audit = $this->audit;
+		$this->q 				=	new Vendor ();
+		$this->q->vendor 		= 	$this->getVendor ();
+		$this->q->leafId 		= 	$this->getLeafId ();
+		$this->q->staffId 		= 	$this->getStaffId ();
+		$this->q->fieldQuery	= 	$this->getFieldQuery ();
+		$this->q->gridQuery 	= 	$this->getGridQuery ();
+		$this->q->log 			= 	$this->log;
+		$this->q->audit 		= 	$this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 		
-		$this->security = new Security ();
+		$this->security 		= 	new Security ();
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->execute ();
 		
-		$this->model = new ModuleAccessModel ();
+		$this->model 			= 	new ModuleAccessModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
@@ -116,8 +116,8 @@ class ModuleAccessClass extends ConfigClass {
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
 						`module`.`moduleNote`,
-						`theme`.`TEAMID`,
-						`theme`.`groupNote`,
+						`team`.`teamId`,
+						`team`.`teamNote`,
 						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
@@ -127,20 +127,20 @@ class ModuleAccessClass extends ConfigClass {
 				FROM 	`moduleAccess`
 				JOIN	`module`
 				USING 	(`moduleId`)
-				JOIN 	`theme`
-				USING 	(`TEAMID`)
+				JOIN 	`team`
+				USING 	(`teamId`)
 				WHERE 	`module`.`isActive` 	=	1
-				AND		`theme`.`isActive`		=	1";
-			if ($this->model->getTEAMID ()) {
-				$sql .= " AND `theme`.`TEAMID`='" . $this->model->getTEAMID () . "'";
+				AND		`team`.`isActive`		=	1";
+			if ($this->model->getTeamId ()) {
+				$sql .= " AND `team`.`teamId`='" . $this->model->getTeamId () . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
 						`module`.`moduleNote`,
-						`theme`.`TEAMID`,
-						`theme`.`groupNote`,
+						`team`.`teamId`,
+						`team`.`teamNote`,
 						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
@@ -150,20 +150,20 @@ class ModuleAccessClass extends ConfigClass {
 				FROM 	`moduleAccess`
 				JOIN	`module`
 				USING 	(`moduleId`)
-				JOIN 	`theme`
-				USING 	(`TEAMID`)
+				JOIN 	`team`
+				USING 	(`teamId`)
 				WHERE 	`module`.`isActive` 	=	1
-				AND		`theme`.`isActive`		=	1";
+				AND		`team`.`isActive`		=	1";
 			if ($this->model->getTEAMID ()) {
-				$sql .= " AND `theme`.`TEAMID`='" . $this->model->getTEAMID () . "'";
+				$sql .= " AND `team`.`TEAMID`='" . $this->model->getTEAMID () . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
 						`module`.`moduleNote`,
-						`theme`.`TEAMID`,
-						`theme`.`groupNote`,
+						`team`.`TEAMID`,
+						`team`.`groupNote`,
 						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
@@ -173,12 +173,12 @@ class ModuleAccessClass extends ConfigClass {
 				FROM 	`moduleAccess`
 				JOIN	`module`
 				USING 	(`moduleId`)
-				JOIN 	`theme`
+				JOIN 	`team`
 				USING 	(`TEAMID`)
 				WHERE 	`module`.`isActive` 	=	1
-				AND		`theme`.`isActive`		=	1";
+				AND		`team`.`isActive`		=	1";
 			if ($this->model->getTEAMID ()) {
-				$sql .= " AND `theme`.`TEAMID`='" . $this->model->getTEAMID () . "'";
+				$sql .= " AND `team`.`TEAMID`='" . $this->model->getTEAMID () . "'";
 			}
 		}
 		//echo $sql;
