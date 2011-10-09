@@ -199,20 +199,20 @@ class ModuleAccessModel extends ValidationClass
         return $this->moduleId;
     }
     /**
-     * Set Group Identification Value
+     * Set Team Identification Value
      * @param  int $value
      */
-    public function setCrewId ($value)
+    public function setTeamId ($value)
     {
         $this->crewId = $value;
     }
     /**
-     * Return Group Identification Value
+     * Return Team Identification Value
      * @return int
      */
-    public function getCrewId ()
+    public function getTeamId ()
     {
-        return $this->crewId;
+        return $this->teamId;
     }
     /**
      * Set Module Access Value

@@ -73,8 +73,8 @@ class DepartmentClass extends ConfigClass
 	{
 		parent::__construct();
 		//default property
-		$this->audit = 0;
-		$this->log = 1;
+		$this->audit 			= 	0;
+		$this->log 				= 	1;
 		
 		$this->q 				=	new Vendor();
 		$this->q->vendor 		= 	$this->getVendor();
@@ -87,18 +87,18 @@ class DepartmentClass extends ConfigClass
 		$this->q->connect($this->getConnection(), $this->getUsername(),
 		$this->getDatabase(), $this->getPassword());
 				
-		$this->model = new DepartmentModel();
+		$this->model 			= 	new DepartmentModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 		
-		$this->documentTrail = new DocumentTrailClass();
+		$this->documentTrail 	= 	new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());
 		$this->documentTrail->setLanguageId($this->getLanguageId());
 		$this->documentTrail->setLeafId($this->getLeafId());
 		$this->documentTrail->execute();
 	
-		$this->excel = new PHPExcel();
+		$this->excel 			= 	new PHPExcel();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()

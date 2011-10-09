@@ -296,20 +296,20 @@ class LeafAccessModel extends ValidationClass
         return $this->leafTempId;
     }
     /**
-     * Set Group Identification Value
+     * Set Team Identification Value
      * @param  int $value
      */
-    public function setTEAMID ($value)
+    public function setTeamId ($value)
     {
-        $this->TEAMID = $value;
+        $this->teamId = $value;
     }
     /**
-     * Return Group Identiification Value
+     * Return Team Identiification Value
      * @return int
      */
-    public function getTEAMID ()
+    public function getTeamId()
     {
-        return $this->TEAMID;
+        return $this->teamId;
     }
     /**
      * Set Module Identification Value

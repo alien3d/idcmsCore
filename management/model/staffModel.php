@@ -228,6 +228,8 @@ class StaffModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview(0, 0, 'single');
+		$this->setIsPost(0, 0, 'single');
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -240,6 +242,8 @@ class StaffModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview(0, 0, 'single');
+		$this->setIsPost(0, 0, 'single');
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -252,6 +256,8 @@ class StaffModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 1, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview(0, 0, 'single');
+		$this->setIsPost(0, 0, 'single');
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -264,6 +270,8 @@ class StaffModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview(0, 0, 'single');
+		$this->setIsPost(0, 0, 'single');
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -276,6 +284,8 @@ class StaffModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 1, 0, 'single' );
+		$this->setIsReview(0, 0, 'single');
+		$this->setIsPost(0, 0, 'single');
 	}
 	/* (non-PHPdoc)
      * @see ValidationClass::review()
@@ -369,18 +379,18 @@ class StaffModel extends ValidationClass {
 		}
 	}
 	/**
-	 * Set  Group Identification (english)
+	 * Set  Team Identification (english)
 	 * @param  int $value
 	 */
-	public function setTEAMID($value) {
-		$this->TEAMID = $value;
+	public function setTeamId($value) {
+		$this->teamId = $value;
 	}
 	/**
-	 * Return Group  Description (english)
+	 * Return Team  Description (english)
 	 * @return  int
 	 */
-	public function getTEAMID() {
-		return $this->TEAMID;
+	public function getTeamId() {
+		return $this->TeamId;
 	}
 	/**
 	 * Set  Department Identification

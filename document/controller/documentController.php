@@ -105,7 +105,7 @@ class DocumentClass extends ConfigClass
 		$this->q->connect($this->getConnection(), $this->getUsername(),
 		$this->getDatabase(), $this->getPassword());
 		
-		$this->model = new DocumentModel();
+		$this->model 			=	new DocumentModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 		
@@ -116,7 +116,7 @@ class DocumentClass extends ConfigClass
 		$this->documentTrail->setLeafId($this->getLeafId());
 		$this->documentTrail->execute();
 		
-		$this->excel = new PHPExcel();
+		$this->excel 			= 	new PHPExcel();
 		
 	}
 	/* (non-PHPdoc)

@@ -167,6 +167,8 @@ class ModuleModel extends ValidationClass
         $this->setIsActive(1, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -180,6 +182,8 @@ class ModuleModel extends ValidationClass
         $this->setIsActive(1, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -193,6 +197,8 @@ class ModuleModel extends ValidationClass
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(1, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -206,6 +212,8 @@ class ModuleModel extends ValidationClass
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -219,6 +227,8 @@ class ModuleModel extends ValidationClass
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(1, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::review()

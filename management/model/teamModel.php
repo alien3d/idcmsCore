@@ -156,6 +156,8 @@ class TeamModel extends ValidationClass
         $this->setIsActive(1, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -169,6 +171,8 @@ class TeamModel extends ValidationClass
         $this->setIsActive(1, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -182,6 +186,8 @@ class TeamModel extends ValidationClass
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(1, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -195,6 +201,8 @@ class TeamModel extends ValidationClass
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -207,6 +215,8 @@ class TeamModel extends ValidationClass
         $this->setIsUpdate(0, 0, 'single');
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::review()

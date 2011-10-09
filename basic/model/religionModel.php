@@ -201,6 +201,8 @@ class ReligionModel extends ValidationClass
         $this->setIsActive(1, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
         $this->setIsApproved(0, 0, 'single');
+        $this->setIsReview(0, 0, 'single');
+        $this->setIsPost(0, 0, 'single');
     }
     /* (non-PHPdoc)
 	 * @see ValidationClass::update()
