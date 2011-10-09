@@ -65,21 +65,34 @@ class LogClass extends ConfigClass {
 	 */
 	public function execute() {
 		parent::__construct ();
-		$this->q = new Vendor ();
-		$this->q->vendor = $this->vendor;
-		$this->q->leafId = $this->leafId;
-		$this->q->staffId = $this->staffId;
-		$this->q->filter = $this->filter;
-		$this->q->quickFilter = $this->quickFilter;
-		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		$this->excel = new PHPExcel ();
+		// audit property
 		$this->audit = 0;
 		$this->log = 0;
+		
+		$this->q = new Vendor ();
+		$this->q->vendor = $this->getVendor ();
+		$this->q->leafId = $this->getLeafId ();
+		$this->q->staffId = $this->getStaffId ();
+		$this->q->fieldQuery = $this->getFieldQuery ();
+		$this->q->gridQuery = $this->getGridQuery ();
 		$this->q->log = $this->log;
-		$this->model = new logModel ();
-		$this->model->vendor = $this->vendor;
+		$this->q->audit = $this->audit;
+		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
+		
+		$this->security = new Security ();
+		$this->security->setVendor ( $this->getVendor () );
+		$this->security->setLeafId ( $this->getLeafId () );
+		$this->security->execute ();
+		
+		$this->model = new LogModel ();
+		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
+		
 		$this->documentTrail = new DocumentTrailClass ();
+		$this->documentTrail->setVendor ( $this->getVendor () );
+		$this->documentTrail->execute ();
+		
+		$this->excel = new PHPExcel ();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -185,7 +198,7 @@ class LogClass extends ConfigClass {
 		}
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
-		$_SESSION ['limit'] = $_POST ['limit'];
+		$_SESSION ['limit'] = $this->getLimit ();
 		$this->q->read ( $sql );
 		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
 			$items [] = $row;

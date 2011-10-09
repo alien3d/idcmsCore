@@ -73,29 +73,35 @@ class FolderClass extends ConfigClass
     function execute ()
     {
         parent::__construct();
-        $this->q = new Vendor();
-        $this->q->vendor = $this->getVendor();
-        $this->q->leafId = $this->getLeafId();
-        $this->q->staffId = $this->getStaffId();
-        $this->q->fieldQuery = $this->getFieldQuery();
-        $this->q->gridQuery = $this->getGridQuery();
+        // audit property
+        $this->audit 			=	0;
+        $this->log 				= 	0;
+        
+        $this->q 				=	new Vendor();
+        $this->q->vendor 		= 	$this->getVendor();
+        $this->q->leafId 		= 	$this->getLeafId();
+        $this->q->staffId 		= 	$this->getStaffId();
+        $this->q->fieldQuery 	= 	$this->getFieldQuery();
+        $this->q->gridQuery 	= 	$this->getGridQuery();
+        $this->q->log 			= 	$this->log;
+        $this->q->audit 		= 	$this->audit;
         $this->q->connect($this->getConnection(), $this->getUsername(), 
         $this->getDatabase(), $this->getPassword());
-        $this->excel = new PHPExcel();
-        $this->audit = 0;
-        $this->log = 0;
-        $this->q->log = $this->log;
-        $this->defaultLanguageId = 21;
-        $this->security = new Security();
+        
+        $this->security 		= 	new Security();
         $this->security->setVendor($this->getVendor());
         $this->security->setLeafId($this->getLeafId());
         $this->security->execute();
-        $this->model = new FolderModel();
+        
+        $this->model 			= 	new FolderModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
-        $this->documentTrail = new DocumentTrailClass();
+        
+        $this->documentTrail 	= 	new DocumentTrailClass();
         $this->documentTrail->setVendor($this->getVendor());
         $this->documentTrail->execute();
+        
+        $this->excel = new PHPExcel();
     }
     /* (non-PHPdoc)
 	 * @see config::create()

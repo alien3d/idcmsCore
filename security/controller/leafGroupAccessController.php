@@ -67,25 +67,30 @@ class LeafGroupAccessClass extends ConfigClass
      */
     function execute ()
     {
-        parent::__construct();
-        $this->q = new Vendor();
-        $this->q->vendor = $this->vendor;
-        $this->q->leafId = $this->leafId;
-        $this->q->staffId = $this->staffId;
-        $this->q->fieldQuery = $this->fieldQuery;
-        $this->q->gridQuery = $this->gridQuery;
-        $this->q->quickFilter = $this->quickFilter;
-        $this->q->connect($this->getConnection(), $this->getUsername(), 
-        $this->getDatabase(), $this->getPassword());
-        $this->excel = new PHPExcel();
-        $this->audit = 0;
-        $this->security = new Security();
-        $this->security->vendor = $this->vendor;
-        $this->security->execute();
-        $this->model = new LeafGroupAccessModel();
-        $this->model->vendor = $this->vendor;
-        $this->model->execute();
-        $this->documentTrail = new DocumentTrailClass();
+    	// audit property
+    	$this->audit 			=	0;
+    	$this->log 				= 	1;
+    	
+    	$this->q 				= 	new Vendor();
+    	$this->q->vendor 		= 	$this->getVendor();
+    	$this->q->leafId 		= 	$this->getLeafId();
+    	$this->q->staffId	 	= 	$this->getStaffId();
+    	$this->q->fieldQuery 	= 	$this->getFieldQuery();
+    	$this->q->gridQuery 	= 	$this->getGridQuery();
+    	$this->q->log 			= 	$this->log;
+    	$this->q->audit 		=	$this->audit;
+    	$this->q->connect($this->getConnection(), $this->getUsername(),
+    			$this->getDatabase(), $this->getPassword());
+    	
+    	$this->security 		= 	new Security();
+    	$this->security->setVendor($this->getVendor());
+    	$this->security->execute();
+    	
+    	$this->model 			= 	new LeafGroupAccessModel();
+    	$this->model->setVendor($this->getVendor());
+    	$this->model->execute();
+    	
+    	$this->excel 			= 	new PHPExcel();
     }
     /* (non-PHPdoc)
 	 * @see config::create()

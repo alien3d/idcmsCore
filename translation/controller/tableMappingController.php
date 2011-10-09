@@ -728,7 +728,7 @@ class TableMappingClass extends  ConfigClass {
 
 }
 
-$tableMappingObject  	= 	new tableMappingClass();
+$tableMappingObject  	= 	new TableMappingClass();
 
 /**
  *	crud -create,read,update,delete
@@ -822,9 +822,6 @@ if(isset($_GET['method'])) {
 		if($_GET['field']=='staffId') {
 
 			$tableMappingObject->staff();
-		}
-		if($_GET['field']=='moduleId'){
-			$tableMappingObject->module();
 		}
 
 	}

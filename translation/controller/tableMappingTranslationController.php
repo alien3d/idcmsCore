@@ -17,7 +17,7 @@ require_once ("../model/tableMappingTranslationModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class TableMappingTranslationClass extends ConfigClass {
+class TableMappingTranslateClass extends ConfigClass {
 	/**
 	 * Connection to the database
 	 * @var string
@@ -62,58 +62,48 @@ class TableMappingTranslationClass extends ConfigClass {
 	 * Duplicate Testing either the key of table same or have been created.
 	 * @var boolean $duplicateTest;
 	 */
-	public $duplicateTest;
-	
+	public $duplicateTest;	
 	/**
 	 * Common class function for security menu
 	 * @var  string $security
 	 */
 	private $security;
-	/**
-	 * tableMappingTranslationTranslation Translation Identification
-	 * @var  numeric $tableMappingTranslationTranslationTranslateId
-	 */
-	public $tableMappingTranslationTranslationTranslateId;
-	/**
-	 * Translation update
-	 * @var string $tableMappingTranslationTranslationTranslate
-	 */
-	public $tableMappingTranslationTranslationTranslate;
+
 	/**
 	 * Class Loader
 	 */
 	function execute() {
 		parent::__construct ();
 		// audit property
-		$this->audit = 0;
-		$this->log = 0;
+		$this->audit 				=	0;
+		$this->log 					= 	0;
 		//default translation property
-		$this->defaultLanguageId = 21;
+		$this->defaultLanguageId 	= 	21;
 		
-		$this->q = new Vendor ();
-		$this->q->vendor 		=	$this->getVendor ();
-		$this->q->leafId 		= 	$this->getLeafId ();
-		$this->q->staffId 		= 	$this->getStaffId ();
-		$this->q->fieldQuery 	= 	$this->getFieldQuery ();
-		$this->q->gridQuery 	= 	$this->getGridQuery ();
-		$this->q->log 			= 	$this->log;
-		$this->q->audit 		= 	$this->log;
+		$this->q 					= 	new Vendor ();
+		$this->q->vendor 			=	$this->getVendor ();
+		$this->q->leafId 			= 	$this->getLeafId ();
+		$this->q->staffId 			= 	$this->getStaffId ();
+		$this->q->fieldQuery 		= 	$this->getFieldQuery ();
+		$this->q->gridQuery 		= 	$this->getGridQuery ();
+		$this->q->log 				= 	$this->log;
+		$this->q->audit 			= 	$this->log;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 		
-		$this->security 		=	new Security ();
+		$this->security 			=	new Security ();
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
 		
-		$this->model 			=	new TableMappingTranslateModel ();
+		$this->model 				=	new TableMappingTranslateModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
-		$this->documentTrail 	= 	new DocumentTrailClass ();
+		$this->documentTrail 		= 	new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->execute ();
 	
-		$this->excel 			= 	new PHPExcel ();
+		$this->excel 				= 	new PHPExcel ();
 	}
 	
 	/* (non-PHPdoc)
@@ -131,7 +121,7 @@ class TableMappingTranslationClass extends ConfigClass {
 		$this->model->create ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-			INSERT INTO `tableMappingTranslationTranslation`
+			INSERT INTO `tableMappingTranslate`
 					(
 						`defautlLabel`,							`tableMappingTranslationTranslationEnglish`
 						`isDefault`,							`isNew`,
@@ -142,7 +132,7 @@ class TableMappingTranslationClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->gettableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "'
+						'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "'
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -151,7 +141,7 @@ class TableMappingTranslationClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-			INSERT INTO [tableMappingTranslationTranslation]
+			INSERT INTO [tableMappingTranslate]
 					(
 						[tableMappingTranslationTranslation],							[tableMappingTranslationTranslationEnglish]
 						[isDefault],
@@ -162,7 +152,7 @@ class TableMappingTranslationClass extends ConfigClass {
 				)
 			VALUES
 				(
-						'" . $this->model->gettableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
+						'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -171,16 +161,16 @@ class TableMappingTranslationClass extends ConfigClass {
 			);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-			INSERT INTO 	TABLEMAPPINGTRANSLATION
+			INSERT INTO 	TABLEMAPPINGTRANSLATE
 						(
-							TABLEMAPPINGTRANSLATION,							TABLEMAPPINGTRANSLATIONENGLISH,
+							TABLEMAPPINGTRANSLATE,							TABLEMAPPINGTRANSLATIONENGLISH,
 							ISDEFAULT,								ISNEW,
 							ISDRAFT,								ISUPDATE,
 							ISDELETE,								ISACTIVE,
 							ISAPPROVED,								EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							'" . $this->model->gettableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
+							'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
 							'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -299,7 +289,7 @@ class TableMappingTranslationClass extends ConfigClass {
 		}
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
-		$_SESSION ['limit'] = $_POST ['limit'];
+		$_SESSION ['limit'] = $this->getLimit();
 		
 		if (empty ( $_POST ['filter'] )) {
 			
@@ -308,7 +298,7 @@ class TableMappingTranslationClass extends ConfigClass {
 				
 
 				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $_POST ['limit'] . " ";
+					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit(). " ";
 					$sqlLimit = $sql;
 				} else if ($this->getVendor () == self::MSSQL) {
 					/**
@@ -401,51 +391,51 @@ class TableMappingTranslationClass extends ConfigClass {
 		$this->model->update ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-					UPDATE 	`tableMappingTranslationTranslation`
-					SET 	`tableMappingTranslationTranslationNote`		=	'" . $this->model->gettableMappingTranslationTranslationNote () . "',
+					UPDATE 	`tableMappingTranslate`
+					SET 	`tableMappingTranslationTranslationNote`	=	'" . $this->model->gettableMappingTranslationTranslationNote () . "',
 							`tableMappingTranslationTranslationEnglish`	=	'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
-							`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-							`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-							`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-							`isDraft`		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-							`isUpdate`		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-							`isDelete`		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-							`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
-							`executeTime`			=	" . $this->model->getExecuteTime () . "
-					WHERE 	`tableMappingTranslationTranslationId`			=	'" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
+							`isDefault`									=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							`isActive`									=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isNew`										=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							`isDraft`									=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							`isUpdate`									=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isDelete`									=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							`isApproved`								=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`executeBy`									=	'" . $this->model->getExecuteBy () . "',
+							`executeTime`								=	" . $this->model->getExecuteTime () . "
+					WHERE 	`tableMappingTranslationTranslationId`		=	'" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-					UPDATE 	[tableMappingTranslationTranslation]
-					SET 	[tableMappingTranslationTranslationNote]		=	'" . $this->model->gettableMappingTranslationTranslationNote () . "',
+					UPDATE 	[tableMappingTranslate]
+					SET 	[tableMappingTranslationTranslationNote]	=	'" . $this->model->gettableMappingTranslationTranslationNote () . "',
 							[tableMappingTranslationTranslationEnglish]	=	'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
-							[isDefault]		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-							[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-							[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-							[isDraft]		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-							[isUpdate]		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-							[isDelete]		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-							[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
-							[executeTime]			=	" . $this->model->getExecuteTime () . "
-					WHERE 	[tableMappingTranslationTranslationId]			=	'" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
+							[isDefault]									=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							[isActive]									=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							[isNew]										=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							[isDraft]									=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							[isUpdate]									=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							[isDelete]									=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							[isApproved]								=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							[executeBy]									=	'" . $this->model->getExecuteBy () . "',
+							[executeTime]								=	" . $this->model->getExecuteTime () . "
+					WHERE 	[tableMappingTranslationTranslationId]		=	'" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					UPDATE 	TABLEMAPPINGTRANSLATION
-					SET 	\"tableMappingTranslationTranslationNote\"		=	'" . $this->model->gettableMappingTranslationTranslationNote () . "',
-							TABLEMAPPINGTRANSLATIONENGLISH	=	'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
-							ISDEFAULT	=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-							ISACTIVE	=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-							ISNEW		=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-							ISDRAFT		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-							ISUPDATE	=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-							ISDELETE	=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-							ISAPPROVED	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-							ISREVIEW		=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
-							ISPOST			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
-							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
-							EXECUTETIME		=	" . $this->model->getExecuteTime () . "
-					WHERE 	\"tableMappingTranslationTranslationId\"		=	'" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
+					UPDATE 	TABLEMAPPINGTRANSLATE
+					SET 	TABLEMAPPINGTRANSLATENOTE					=	'" . $this->model->gettableMappingTranslationTranslationNote () . "',
+							TABLEMAPPINGTRANSLATIONENGLISH				=	'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
+							ISDEFAULT									=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							ISACTIVE									=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							ISNEW										=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							ISDRAFT										=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							ISUPDATE									=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							ISDELETE									=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							ISAPPROVED									=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							ISREVIEW									=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							ISPOST										=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							EXECUTEBY									=	'" . $this->model->getExecuteBy () . "',
+							EXECUTETIME									=	" . $this->model->getExecuteTime () . "
+					WHERE 	TABLEMAPPINGTRANSLATE						=	'" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -712,7 +702,7 @@ class TableMappingTranslationClass extends ConfigClass {
 
 }
 
-$tableMappingTranslationTranslationObject = new TableMappingTranslationClass ();
+$tableMappingTranslateObject = new TableMappingTranslateClass ();
 
 /**
  * crud -create,read,update,delete
@@ -726,13 +716,13 @@ if (isset ( $_POST ['method'] )) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset ( $_POST ['leafId'] )) {
-		$tableMappingTranslationTranslationObject->setLeafId ( $_POST ['leafId'] );
+		$tableMappingTranslateObject->setLeafId ( $_POST ['leafId'] );
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset ( $_POST ['isAdmin'] )) {
-		$tableMappingTranslationTranslationObject->setIsAdmin ( $_POST ['isAdmin'] );
+		$tableMappingTranslateObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
 	
 	/*
@@ -740,44 +730,44 @@ if (isset ( $_POST ['method'] )) {
 	 */
 	
 	if (isset ( $_POST ['query'] )) {
-		$tableMappingTranslationTranslationObject->setFieldQuery ( $_POST ['query'] );
+		$tableMappingTranslateObject->setFieldQuery ( $_POST ['query'] );
 	}
 	if (isset ( $_POST ['filter'] )) {
-		$tableMappingTranslationTranslationObject->setGridQuery ( $_POST ['filter'] );
+		$tableMappingTranslateObject->setGridQuery ( $_POST ['filter'] );
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset ( $_POST ['order'] )) {
-		$tableMappingTranslationTranslationObject->setOrder ( $_POST ['order'] );
+		$tableMappingTranslateObject->setOrder ( $_POST ['order'] );
 	}
 	if (isset ( $_POST ['sortField'] )) {
-		$tableMappingTranslationTranslationObject->setSortField ( $_POST ['sortField'] );
+		$tableMappingTranslateObject->setSortField ( $_POST ['sortField'] );
 	}
 	
 	/*
 	 *  Load the dynamic value
 	 */
-	$tableMappingTranslationTranslationObject->execute ();
+	$tableMappingTranslateObject->execute ();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$tableMappingTranslationTranslationObject->create ();
+		$tableMappingTranslateObject->create ();
 	}
 	if ($_POST ['method'] == 'read') {
 		
-		$tableMappingTranslationTranslationObject->read ();
+		$tableMappingTranslateObject->read ();
 	
 	}
 	
 	if ($_POST ['method'] == 'save') {
 		
-		$tableMappingTranslationTranslationObject->update ();
+		$tableMappingTranslateObject->update ();
 	
 	}
 	if ($_POST ['method'] == 'delete') {
-		$tableMappingTranslationTranslationObject->delete ();
+		$tableMappingTranslateObject->delete ();
 	}
 
 }
@@ -790,40 +780,37 @@ if (isset ( $_GET ['method'] )) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset ( $_GET ['leafId'] )) {
-		$tableMappingTranslationTranslationObject->setLeafId ( $_GET ['leafId'] );
+		$tableMappingTranslateObject->setLeafId ( $_GET ['leafId'] );
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset ( $_GET ['isAdmin'] )) {
-		$tableMappingTranslationTranslationObject->setIsAdmin ( $_GET ['isAdmin'] );
+		$tableMappingTranslateObject->setIsAdmin ( $_GET ['isAdmin'] );
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$tableMappingTranslationTranslationObject->execute ();
+	$tableMappingTranslateObject->execute ();
 	if (isset ( $_GET ['field'] )) {
 		if ($_GET ['field'] == 'staffId') {
 			
-			$tableMappingTranslationTranslationObject->staff ();
+			$tableMappingTranslateObject->staff ();
 		}
-		if ($_GET ['field'] == 'tabId') {
-			$tableMappingTranslationTranslationObject->tab ();
-		}
-	
+		
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$tableMappingTranslationTranslationObject->updateStatus ();
+		$tableMappingTranslateObject->updateStatus ();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset ( $_GET ['tableMappingTranslationTranslationCode'] )) {
-		if (strlen ( $_GET ['tableMappingTranslationTranslationCode'] ) > 0) {
-			$tableMappingTranslationTranslationObject->duplicate ();
+	if (isset ( $_GET ['tableMappingTranslateCode'] )) {
+		if (strlen ( $_GET ['tableMappingTranslateCode'] ) > 0) {
+			$tableMappingTranslateObject->duplicate ();
 		}
 	}
 	/*
@@ -831,7 +818,7 @@ if (isset ( $_GET ['method'] )) {
 	 */
 	if (isset ( $_GET ['mode'] )) {
 		if ($_GET ['mode'] == 'excel') {
-			$tableMappingTranslationTranslationObject->excel ();
+			$tableMappingTranslateObject->excel ();
 		}
 	}
 

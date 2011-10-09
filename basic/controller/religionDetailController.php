@@ -623,7 +623,7 @@ class ReligionDetailClass extends ConfigClass {
 			SET 	";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-			UPDATE '" . strtoupper ( $this->model->getTableName () ) . "'
+			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
 		}
 		//	echo "arnab[".$this->model->getReligionDetailId(0,'array')."]";
@@ -638,42 +638,57 @@ class ReligionDetailClass extends ConfigClass {
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
 			} else if ($this->getVendor () == self::ORACLE) {
-				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE '" . strtoupper ( $this->model->getPrimaryKeyName () ) . "'";
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
 			}
 			switch ($systemCheck) {
 				case 'isDefault' :
 					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsDefault ( $i, 'array' )) {
+						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDefault ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsDefault ( $i, 'array' )) {
+						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsDefault ( $i, 'array' )) {
+						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDraft ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsDefault ( $i, 'array' )) {
+						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsDefault ( $i, 'array' )) {
+						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isActive' :
@@ -685,23 +700,32 @@ class ReligionDetailClass extends ConfigClass {
 					break;
 				case 'isApproved' :
 					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsDefault ( $i, 'array' )) {
+						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsApproved ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isReview' :
 					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsDefault ( $i, 'array' )) {
+						
 						$sqlLooping .= "
                             WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
                             THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsDefault ( $i, 'array' )) {
+						
 						$sqlLooping .= "
                                 WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
                                 THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 			}
