@@ -93,7 +93,7 @@ $total = mysql_query("SELECT COUNT(id) FROM demo WHERE ".$where);
 $total = mysql_result($total, 0, 0);
 
 $arr = array();
-while($obj = mysql_fetch_object($rs)) {
+while(($obj = mysql_fetch_object($rs)) == TRUE) {
     $arr[] = $obj;
 }
 

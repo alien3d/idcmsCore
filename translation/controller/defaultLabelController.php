@@ -74,29 +74,40 @@ class DefaultLabelClass extends ConfigClass
 	function execute ()
 	{
 		parent::__construct();
-		$this->q = new Vendor();
-		$this->q->vendor = $this->getVendor();
-		$this->q->leafId = $this->getLeafId();
-		$this->q->staffId = $this->getStaffId();
-		$this->q->fieldQuery = $this->getFieldQuery();
-		$this->q->gridQuery = $this->getGridQuery();
-		$this->q->connect($this->getConnection(), $this->getUsername(),
-		$this->getDatabase(), $this->getPassword());
-		$this->excel = new PHPExcel();
+		
+		//audit property
 		$this->audit = 0;
 		$this->log = 0;
-		$this->q->log = $this->log;
+		
+		//default translation property
 		$this->defaultLanguageId = 21;
+		
+		$this->q 				=	new Vendor();
+		$this->q->vendor 		= 	$this->getVendor();
+		$this->q->leafId 		=	$this->getLeafId();
+		$this->q->staffId 		= 	$this->getStaffId();
+		$this->q->fieldQuery	= 	$this->getFieldQuery();
+		$this->q->gridQuery 	= 	$this->getGridQuery();
+		$this->q->log 			= 	$this->log;
+		$this->q->audit 		= 	$this->audit;
+		$this->q->connect($this->getConnection(), $this->getUsername(),
+		$this->getDatabase(), $this->getPassword());
+		
+		
 		$this->security = new Security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
+		
 		$this->model = new DefaultLabelModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
+		
 		$this->documentTrail = new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
+	
+		$this->excel = new PHPExcel();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -125,21 +136,21 @@ class DefaultLabelClass extends ConfigClass
 					)
 			VALUES
 					(
-						\"" .
-			$this->model->getDefaultLabel() . "\",						\"" .
-			$this->model->getDefaultLabelEnglish() . "\"
-						\"" .
-			$this->model->getIsDefault(0, 'single') . "\",				\"" .
-			$this->model->getIsNew(0, 'single') . "\",
-						\"" .
-			$this->model->getIsDraft(0, 'single') . "\",				\"" .
-			$this->model->getIsUpdate(0, 'single') . "\",
-						\"" .
-			$this->model->getIsDelete(0, 'single') . "\",				\"" .
-			$this->model->getIsActive(0, 'single') . "\",
-						\"" .
-			$this->model->getIsApproved(0, 'single') . "\",			\"" .
-			$this->model->getExecuteBy() . "\",
+						'" .
+			$this->model->getDefaultLabel() . "',						'" .
+			$this->model->getDefaultLabelEnglish() . "'
+						'" .
+			$this->model->getIsDefault(0, 'single') . "',				'" .
+			$this->model->getIsNew(0, 'single') . "',
+						'" .
+			$this->model->getIsDraft(0, 'single') . "',				'" .
+			$this->model->getIsUpdate(0, 'single') . "',
+						'" .
+			$this->model->getIsDelete(0, 'single') . "',				'" .
+			$this->model->getIsActive(0, 'single') . "',
+						'" .
+			$this->model->getIsApproved(0, 'single') . "',			'" .
+			$this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 					);";
 		} else
@@ -237,8 +248,8 @@ class DefaultLabelClass extends ConfigClass
 			WHERE 1 ";
 			if ($this->model->getDefaultLabelId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" .
-				$this->model->getPrimaryKeyName() . "`=\"" .
-				$this->model->getDefaultLabelId(0, 'single') . "\"";
+				$this->model->getPrimaryKeyName() . "`='" .
+				$this->model->getDefaultLabelId(0, 'single') . "'";
 			}
 		} else
 		if ($this->getVendor() == self::MSSQL) {
@@ -426,31 +437,31 @@ class DefaultLabelClass extends ConfigClass
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					UPDATE 	`defaultLabel`
-					SET 	`defaultLabelNote`		=	\"" .
+					SET 	`defaultLabelNote`		=	'" .
 			$this->model->getDefaultLabelNote() .
-             "\",
-							`defaultLabelEnglish`	=	\"" .
-			$this->model->getDefaultLabelEnglish() . "\",
-							`isDefault`		=	\"" .
-			$this->model->getIsDefault(0, 'single') . "\",
-							`isActive`		=	\"" .
-			$this->model->getIsActive(0, 'single') . "\",
-							`isNew`			=	\"" .
-			$this->model->getIsNew(0, 'single') . "\",
-							`isDraft`		=	\"" .
-			$this->model->getIsDraft(0, 'single') . "\",
-							`isUpdate`		=	\"" .
-			$this->model->getIsUpdate(0, 'single') . "\",
-							`isDelete`		=	\"" .
-			$this->model->getIsDelete(0, 'single') . "\",
-							`isApproved`	=	\"" .
-			$this->model->getIsApproved(0, 'single') . "\",
-							`executeBy`			=	\"" .
-			$this->model->getExecuteBy() . "\",
+             "',
+							`defaultLabelEnglish`	=	'" .
+			$this->model->getDefaultLabelEnglish() . "',
+							`isDefault`		=	'" .
+			$this->model->getIsDefault(0, 'single') . "',
+							`isActive`		=	'" .
+			$this->model->getIsActive(0, 'single') . "',
+							`isNew`			=	'" .
+			$this->model->getIsNew(0, 'single') . "',
+							`isDraft`		=	'" .
+			$this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`		=	'" .
+			$this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`		=	'" .
+			$this->model->getIsDelete(0, 'single') . "',
+							`isApproved`	=	'" .
+			$this->model->getIsApproved(0, 'single') . "',
+							`executeBy`			=	'" .
+			$this->model->getExecuteBy() . "',
 							`executeTime`			=	" .
 			$this->model->getExecuteTime() . "
-					WHERE 	`defaultLabelId`			=	\"" .
-			$this->model->getDefaultLabelId(0, 'single') . "\"";
+					WHERE 	`defaultLabelId`			=	'" .
+			$this->model->getDefaultLabelId(0, 'single') . "'";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -478,8 +489,8 @@ class DefaultLabelClass extends ConfigClass
 			$this->model->getExecuteBy() . "',
 							[executeTime]			=	" .
 			$this->model->getExecuteTime() . "
-					WHERE 	[defaultLabelId]			=	\"" .
-			$this->model->getDefaultLabelId(0, 'single') . "\"";
+					WHERE 	[defaultLabelId]			=	'" .
+			$this->model->getDefaultLabelId(0, 'single') . "'";
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -535,26 +546,26 @@ class DefaultLabelClass extends ConfigClass
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					UPDATE	`defaultLabel`
-					SET		`isDefault`		=	\"" .
-			$this->model->getIsDefault(0, 'single') . "\",
-							`isActive`		=	\"" .
-			$this->model->getIsActive(0, 'single') . "\",
-							`isNew`			=	\"" .
-			$this->model->getIsNew(0, 'single') . "\",
-							`isDraft`		=	\"" .
-			$this->model->getIsDraft(0, 'single') . "\",
-							`isUpdate`		=	\"" .
-			$this->model->getIsUpdate(0, 'single') . "\",
-							`isDelete`		=	\"" .
-			$this->model->getIsDelete(0, 'single') . "\",
-							`isApproved`	=	\"" .
-			$this->model->getIsApproved(0, 'single') . "\",
-							`executeBy`			=	\"" .
-			$this->model->getExecuteBy() . "\",
+					SET		`isDefault`		=	'" .
+			$this->model->getIsDefault(0, 'single') . "',
+							`isActive`		=	'" .
+			$this->model->getIsActive(0, 'single') . "',
+							`isNew`			=	'" .
+			$this->model->getIsNew(0, 'single') . "',
+							`isDraft`		=	'" .
+			$this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`		=	'" .
+			$this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`		=	'" .
+			$this->model->getIsDelete(0, 'single') . "',
+							`isApproved`	=	'" .
+			$this->model->getIsApproved(0, 'single') . "',
+							`executeBy`			=	'" .
+			$this->model->getExecuteBy() . "',
 							`executeTime`			=	" .
 			$this->model->getExecuteTime() . "
-					WHERE 	`defaultLabelId`		=	\"" .
-			$this->model->getDefaultLabelId() . "\"";
+					WHERE 	`defaultLabelId`		=	'" .
+			$this->model->getDefaultLabelId() . "'";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "

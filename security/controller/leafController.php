@@ -121,27 +121,27 @@ class LeafClass extends ConfigClass
 					)
 			VALUES
 					(
-						\"" .
-             $this->model->getModuleId() . "\",			\"" .
-             $this->model->getFolderId() . "\",
-						\"" .
-             $this->model->getLeafNote() . "\",					\"" .
-             $this->model->getLeafSequence() . "\",
-						\"" .
-             $this->model->getLeafCode() . "\",					\"" .
-             $this->model->getLeafFilename() . "\",
-						\"" .
-             $this->model->getIconId() . "\",						\"" .
-             $this->model->getIsNew(0, 'single') . "\",
-						\"" .
-             $this->model->getIsDraft(0, 'single') . "\",			\"" .
-             $this->model->getIsUpdate(0, 'single') . "\",
-						\"" .
-             $this->model->getIsDelete(0, 'single') . "\",		\"" .
-             $this->model->getIsActive(0, 'single') . "\",
-						\"" .
-             $this->model->getIsApproved(0, 'single') . "\",		\"" .
-             $this->model->getExecuteBy() . "\",
+						'" .
+             $this->model->getModuleId() . "',			'" .
+             $this->model->getFolderId() . "',
+						'" .
+             $this->model->getLeafNote() . "',					'" .
+             $this->model->getLeafSequence() . "',
+						'" .
+             $this->model->getLeafCode() . "',					'" .
+             $this->model->getLeafFilename() . "',
+						'" .
+             $this->model->getIconId() . "',						'" .
+             $this->model->getIsNew(0, 'single') . "',
+						'" .
+             $this->model->getIsDraft(0, 'single') . "',			'" .
+             $this->model->getIsUpdate(0, 'single') . "',
+						'" .
+             $this->model->getIsDelete(0, 'single') . "',		'" .
+             $this->model->getIsActive(0, 'single') . "',
+						'" .
+             $this->model->getIsApproved(0, 'single') . "',		'" .
+             $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 					) ";
         } else 
@@ -178,7 +178,7 @@ class LeafClass extends ConfigClass
                  $this->model->getIsActive(0, 'single') . "',				'" .
                  $this->model->getIsApproved(0, 'single') . "',
 						'" .
-                 $this->model->getExecuteBy() . "\",								" .
+                 $this->model->getExecuteBy() . "',								" .
                  $this->model->getExecuteTime() . "
 					)";
             } else 
@@ -216,7 +216,7 @@ class LeafClass extends ConfigClass
                      $this->model->getIsActive(0, 'single') . "',				'" .
                      $this->model->getIsApproved(0, 'single') . "',
 						'" .
-                     $this->model->getExecuteBy() . "\",								" .
+                     $this->model->getExecuteBy() . "',								" .
                      $this->model->getExecuteTime() . "
 					);";
                 }
@@ -252,8 +252,8 @@ class LeafClass extends ConfigClass
             // by default no access
             $sqlLooping .= "
 				(
-					\"" . $lastId .
-             "\",				\"" . $row['staffId'] . "\",
+					'" . $lastId .
+             "',				'" . $row['staffId'] . "',
 					\"0\",						\"0\",
 					\"0\",						\"0\",
 					\"0\",						\"0\",
@@ -361,8 +361,8 @@ class LeafClass extends ConfigClass
 			AND			`module`.`isActive`	= 1 ";
             if ($this->model->getLeafId(0, 'single')) {
                 $sql .= " AND `" . $this->model->getModuleName() . "`.`" .
-                 $this->model->getPrimaryKeyName() . "`=\"" .
-                 $this->model->getLeafId(0, 'single') . "\"";
+                 $this->model->getPrimaryKeyName() . "`='" .
+                 $this->model->getLeafId(0, 'single') . "'";
             }
         } else 
             if ($this->getVendor() == self::MSSQL) {
@@ -435,21 +435,21 @@ class LeafClass extends ConfigClass
         $filterArray = array("`leaf`.`leafFilename`");
         /**
          * filter modulele
-         * @variables $moduleleArray
+         * @variables $tableArray
          */
-        $moduleleArray = array('module', 'moduleTranslate', 'folder', 
+        $tableArray = array('module', 'moduleTranslate', 'folder', 
         'folderTranslate', 'leaf', 'leafTranslate');
         if ($this->getfieldQuery()) {
             if ($this->getVendor() == self::MYSQL) {
-                $sql .= $this->q->quickSearch($moduleleArray, $filterArray);
+                $sql .= $this->q->quickSearch($tableArray, $filterArray);
             } else 
                 if ($this->getVendor() == self::MSSQL) {
-                    $tempSql = $this->q->quickSearch($moduleleArray, 
+                    $tempSql = $this->q->quickSearch($tableArray, 
                     $filterArray);
                     $sql .= $tempSql;
                 } else 
                     if ($this->getVendor() == self::ORACLE) {
-                        $tempSql = $this->q->quickSearch($moduleleArray, 
+                        $tempSql = $this->q->quickSearch($tableArray, 
                         $filterArray);
                         $sql .= $tempSql;
                     }
@@ -651,26 +651,26 @@ class LeafClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE	`leaf`
-			SET		`isDefault`				=	\"" .
-             $this->model->getIsDefault(0, 'single') . "\",
-					`isActive`				=	\"" .
-             $this->model->getIsActive(0, 'single') . "\",
-					`isNew`					=	\"" .
-             $this->model->getIsNew(0, 'single') . "\",
-					`isDraft`				=	\"" .
-             $this->model->getIsDraft(0, 'single') . "\",
-					`isUpdate`				=	\"" .
-             $this->model->getIsUpdate(0, 'single') . "\",
-					`isDelete`				=	\"" .
-             $this->model->getIsDelete(0, 'single') . "\",
-					`isApproved`			=	\"" .
-             $this->model->getIsApproved(0, 'single') . "\",
-					`executeBy`				=	\"" .
-             $this->model->getExecuteBy() . "\",
+			SET		`isDefault`				=	'" .
+             $this->model->getIsDefault(0, 'single') . "',
+					`isActive`				=	'" .
+             $this->model->getIsActive(0, 'single') . "',
+					`isNew`					=	'" .
+             $this->model->getIsNew(0, 'single') . "',
+					`isDraft`				=	'" .
+             $this->model->getIsDraft(0, 'single') . "',
+					`isUpdate`				=	'" .
+             $this->model->getIsUpdate(0, 'single') . "',
+					`isDelete`				=	'" .
+             $this->model->getIsDelete(0, 'single') . "',
+					`isApproved`			=	'" .
+             $this->model->getIsApproved(0, 'single') . "',
+					`executeBy`				=	'" .
+             $this->model->getExecuteBy() . "',
 					`executeTime`			=	" .
              $this->model->getExecuteTime() . "
-			WHERE 	`leafId`				=	\"" .
-             $this->getLeafId(0, 'single') . "\"";
+			WHERE 	`leafId`				=	'" .
+             $this->getLeafId(0, 'single') . "'";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "
@@ -738,21 +738,21 @@ class LeafClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE	`leaf`
-			SET		`isActive`	=	\"" .
-             $this->model->getIsActive . "\",
-					`isNew`		=	\"" . $this->model->getIsNew . "\",
-					`isDraft`	=	\"" . $this->model->getIsDraft . "\",
-					`isUpdate`	=	\"" .
-             $this->model->getIsUpdate . "\",
-					`isDelete`	=	\"" .
-             $this->model->getIsDelete . "\",
-					`isApproved`=	\"" .
-             $this->model->getIsApproved . "\",
-					`executeBy`		=	\"" .
-             $this->model->getExecuteBy() . "\",
+			SET		`isActive`	=	'" .
+             $this->model->getIsActive . "',
+					`isNew`		=	'" . $this->model->getIsNew . "',
+					`isDraft`	=	'" . $this->model->getIsDraft . "',
+					`isUpdate`	=	'" .
+             $this->model->getIsUpdate . "',
+					`isDelete`	=	'" .
+             $this->model->getIsDelete . "',
+					`isApproved`=	'" .
+             $this->model->getIsApproved . "',
+					`executeBy`		=	'" .
+             $this->model->getExecuteBy() . "',
 					`Time		=	" . $this->model->getTime . "
-			WHERE 	`leafId`	=	\"" .
-             $this->model->getLeafId(0, 'single') . "\"";
+			WHERE 	`leafId`	=	'" .
+             $this->model->getLeafId(0, 'single') . "'";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "

@@ -68,27 +68,33 @@ class TeamClass extends ConfigClass
 	function execute ()
 	{
 		parent::__construct();
-		$this->q = new Vendor();
-		$this->q->vendor = $this->getVendor();
-		$this->q->leafId = $this->getLeafId();
-		$this->q->staffId = $this->getStaffId();
-		$this->q->fieldQuery = $this->getFieldQuery();
-		$this->q->gridQuery = $this->getGridQuery();
+		//audit property
+		$this->audit 			= 	0; // By Default 0 - Off  1 - On
+		$this->log 				= 	1; // By Default 0 - Off  1 - On
+		
+		$this->q 				= 	new Vendor();
+		$this->q->vendor 		= 	$this->getVendor();
+		$this->q->leafId 		= 	$this->getLeafId();
+		$this->q->staffId 		= 	$this->getStaffId();
+		$this->q->fieldQuery 	= 	$this->getFieldQuery();
+		$this->q->gridQuery 	= 	$this->getGridQuery();
+		$this->q->log 			= 	$this->log;
+		$this->q->audit 		=	$this->log;
 		$this->q->connect($this->getConnection(), $this->getUsername(),
 		$this->getDatabase(), $this->getPassword());
-		$this->excel = new PHPExcel();
-		$this->audit = 0; // By Default 0 - Off  1 - On
-		$this->log = 1; // By Default 0 - Off  1 - On
-		$this->q->log = $this->log;
-		$this->model = new TeamModel();
+		
+		$this->model 			=	new TeamModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		$this->documentTrail = new DocumentTrailClass();
+		
+		$this->documentTrail 	=	new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());
 		$this->documentTrail->setLanguageId($this->getLanguageId());
 		$this->documentTrail->setLeafId($this->getLeafId());
 		$this->documentTrail->execute();
+		
+		$this->excel 			=	new PHPExcel();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -117,28 +123,28 @@ class TeamClass extends ConfigClass
 					)
 			VALUES
 					(
-						\"" .
-			$this->model->getTeamSequence() . "\",					\"" .
+						'" .
+			$this->model->getTeamSequence() . "',					'" .
 			$this->model->getTeamCode() .
-             "\",
-						\"" .
-			$this->model->getTeamNote() . "\",						\"" .
+             "',
+						'" .
+			$this->model->getTeamNote() . "',						'" .
 			$this->model->getIsDefault(0, 'single') .
-             "\",
-						\"" .
-			$this->model->getIsNew(0, 'single') . "\",					\"" .
+             "',
+						'" .
+			$this->model->getIsNew(0, 'single') . "',					'" .
 			$this->model->getIsDraft(0, 'single') .
-             "\",
-						\"" .
-			$this->model->getIsUpdate(0, 'single') . "\",				\"" .
+             "',
+						'" .
+			$this->model->getIsUpdate(0, 'single') . "',				'" .
 			$this->model->getIsDelete(0, 'single') .
-             "\",
-						\"" .
-			$this->model->getIsActive(0, 'single') . "\",				\"" .
+             "',
+						'" .
+			$this->model->getIsActive(0, 'single') . "',				'" .
 			$this->model->getIsApproved(0, 'single') .
-             "\",
-						\"" .
-			$this->model->getExecuteBy() . "\",								" .
+             "',
+						'" .
+			$this->model->getExecuteBy() . "',								" .
 			$this->model->getExecuteTime() . "
 					);";
 		} else
@@ -183,7 +189,7 @@ class TeamClass extends ConfigClass
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			INSERT INTO GROUP_
+			INSERT INTO TEAM
 					(
 						GROUPSEQUENCE,				GROUPCODE,
 						GROUPNOTE,					ISDEFAULT,
@@ -255,9 +261,9 @@ class TeamClass extends ConfigClass
 				if ($this->getVendor() == self::MYSQL) {
 					$sqlLooping .= "
 					(
-									\"" . $row['tabId'] . "\",
+									'" . $row['tabId'] . "',
 									0,
-									\"" . $lastInsertId . "\"
+									'" . $lastInsertId . "'
 					),";
 				} else
 				if ($this->getVendor() == self::MSSQL ||
@@ -294,7 +300,7 @@ class TeamClass extends ConfigClass
 				(
 									MODULEID,
 									MODULEACCESSVALUE,
-									GROUPID
+									TEAMID
 				)
 				VALUES ";
 		}
@@ -338,9 +344,9 @@ class TeamClass extends ConfigClass
 				if ($this->getVendor() == self::MYSQL) {
 					$sqlLooping .= "
 					(
-						\"" . $row['folderId'] . "\",
+						'" . $row['folderId'] . "',
 						0,
-						\"" . $lastInsertId . "\"
+						'" . $lastInsertId . "'
 					),";
 				} else
 				if ($this->getVendor() == self::MSSQL ||
@@ -380,7 +386,7 @@ class TeamClass extends ConfigClass
 								(
 									FOLDERID,
 									FOLDERACCESSVALUE,
-									GROUPID
+									TEAMID
 								)
 					VALUES ";
 		}
@@ -416,14 +422,14 @@ class TeamClass extends ConfigClass
 				if ($this->getVendor() == self::MYSQL) {
 					$sqlLooping .= "
 					(
-						\"" . $row['leafId'] . "\",
+						'" . $row['leafId'] . "',
 						0,
 						0,
 						0,
 						0,
 						0,
 						0,
-						\"" . $lastInsertId . "\"
+						'" . $lastInsertId . "'
 					),";
 				} else
 				if ($this->getVendor() == self::MSSQL ||
@@ -482,7 +488,7 @@ class TeamClass extends ConfigClass
 									leafAccessDeleteValue,
 									leafAccessPrintValue,
 									leafAccessPostValue,
-									GROUPID
+									TEAMID
 								)
 					VALUES ";
 		}
@@ -513,7 +519,7 @@ class TeamClass extends ConfigClass
 				$this->auditFilter = "	[team].[isActive]		=	1	";
 			} else
 			if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	GROUP_.ISACTIVE	=	1	";
+				$this->auditFilter = "	TEAM.ISACTIVE	=	1	";
 			}
 		} else
 		if ($this->isAdmin == 1) {
@@ -555,8 +561,8 @@ class TeamClass extends ConfigClass
 					WHERE 	" . $this->auditFilter;
 			if ($this->model->getTeamId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`." .
-				$this->model->getPrimaryKeyName() . "`=\"" .
-				$this->model->getTeamId(0, 'single') . "\"";
+				$this->model->getPrimaryKeyName() . "`='" .
+				$this->model->getTeamId(0, 'single') . "'";
 			}
 		} else
 		if ($this->getVendor() == self::MSSQL) {
@@ -587,23 +593,23 @@ class TeamClass extends ConfigClass
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-					SELECT	GROUP_.GROUPID  		AS	\"teamId\",
-							GROUP_.GROUPCODE 		AS 	\"teamCode\",
-							GROUP_.GROUPSEQUENCE	AS 	\"teamSequence\",
-							GROUP_.GROUPNOTE 		AS 	\"teamNote\",
-							GROUP_.ISDEFAULT 		AS 	\"isDefault\",
-							GROUP_.ISNEW 			AS 	\"isNew\",
-							GROUP_.ISDRAFT 			AS 	\"isDraft\",
-							GROUP_.ISUPDATE 		AS 	\"isUpdate\",
-							GROUP_.ISDELETE 		AS 	\"isDelete\",
-							GROUP_.ISACTIVE 		AS 	\"isActive\",
-							GROUP_.ISAPPROVED 		AS 	\"isApproved\",
-							GROUP_.EXECUTEBY 		AS 	\"executeBy\",
-							GROUP_.EXECUTETIME 		AS 	\"executeTime\",
+					SELECT	TEAM.TEAMID  		AS	\"teamId\",
+							TEAM.GROUPCODE 		AS 	\"teamCode\",
+							TEAM.GROUPSEQUENCE	AS 	\"teamSequence\",
+							TEAM.GROUPNOTE 		AS 	\"teamNote\",
+							TEAM.ISDEFAULT 		AS 	\"isDefault\",
+							TEAM.ISNEW 			AS 	\"isNew\",
+							TEAM.ISDRAFT 			AS 	\"isDraft\",
+							TEAM.ISUPDATE 		AS 	\"isUpdate\",
+							TEAM.ISDELETE 		AS 	\"isDelete\",
+							TEAM.ISACTIVE 		AS 	\"isActive\",
+							TEAM.ISAPPROVED 		AS 	\"isApproved\",
+							TEAM.EXECUTEBY 		AS 	\"executeBy\",
+							TEAM.EXECUTETIME 		AS 	\"executeTime\",
 							STAFF.STAFFNAME 		AS 	\"staffName\"
-					FROM 	GROUP_
+					FROM 	TEAM
 					JOIN	STAFF
-					ON		GROUP_.EXECUTEBY = STAFF.STAFFID
+					ON		TEAM.EXECUTEBY = STAFF.STAFFID
 					WHERE 	ISACTIVE='1'	";
 			if ($this->model->getTeamId(0, 'single')) {
 				$sql .= " AND '" .
@@ -742,26 +748,26 @@ class TeamClass extends ConfigClass
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT GROUP_.GROUPID  		AS	\"teamId\",
-							GROUP_.GROUPCODE 		AS 	\"teamCode\",
-							GROUP_.GROUPSEQUENCE	AS 	\"teamSequence\",
-							GROUP_.GROUPNOTE 		AS 	\"teamNote\",
-							GROUP_.ISDEFAULT 		AS 	\"isDefault\",
-							GROUP_.ISNEW 			AS 	\"isNew\",
-							GROUP_.ISDRAFT 			AS 	\"isDraft\",
-							GROUP_.ISUPDATE 		AS 	\"isUpdate\",
-							GROUP_.ISDELETE 		AS 	\"isDelete\",
-							GROUP_.ISACTIVE 		AS 	\"isActive\",
-							GROUP_.ISAPPROVED 		AS 	\"isApproved\",
-							GROUP_.EXECUTEBY 		AS 	\"executeBy\",
-							GROUP_.EXECUTETIME 		AS 	\"executeTime\",
+									SELECT TEAM.TEAMID  		AS	\"teamId\",
+							TEAM.GROUPCODE 		AS 	\"teamCode\",
+							TEAM.GROUPSEQUENCE	AS 	\"teamSequence\",
+							TEAM.GROUPNOTE 		AS 	\"teamNote\",
+							TEAM.ISDEFAULT 		AS 	\"isDefault\",
+							TEAM.ISNEW 			AS 	\"isNew\",
+							TEAM.ISDRAFT 			AS 	\"isDraft\",
+							TEAM.ISUPDATE 		AS 	\"isUpdate\",
+							TEAM.ISDELETE 		AS 	\"isDelete\",
+							TEAM.ISACTIVE 		AS 	\"isActive\",
+							TEAM.ISAPPROVED 		AS 	\"isApproved\",
+							TEAM.EXECUTEBY 		AS 	\"executeBy\",
+							TEAM.EXECUTETIME 		AS 	\"executeTime\",
 							STAFF.STAFFNAME 		AS 	\"staffName\"
-									FROM 	GROUP_
+									FROM 	TEAM
 									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . "
 								 ) a
-						where rownum <= \"" .
-					($this->getStart() + $this->getLimit() - 1) . "\" )
-						where r >=  \"" . $this->getStart() . "\"";
+						where rownum <= '" .
+					($this->getStart() + $this->getLimit() - 1) . "' )
+						where r >=  '" . $this->getStart() . "'";
 				} else {
 					echo "undefine vendor";
 					exit();
@@ -875,7 +881,7 @@ class TeamClass extends ConfigClass
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			UPDATE 	GROUP_
+			UPDATE 	TEAM
 			SET 	GROUPSEQUENCE	=   '" .
 			$this->model->getTeamSequence() . "',
 					GROUPCODE		=	'" .
@@ -898,7 +904,7 @@ class TeamClass extends ConfigClass
 			$this->model->getExecuteBy() . "',
 					EXECUTETIME		=	" .
 			$this->model->getExecuteTime() . "
-			WHERE 	GROUPID			=	'" .
+			WHERE 	TEAMID			=	'" .
 			$this->model->getTeamCode(0, 'single') . "'";
 		}
 		$this->q->update($sql);
@@ -927,26 +933,26 @@ class TeamClass extends ConfigClass
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			UPDATE 	`team`
-			SET 	`isDefault`			=	\"" .
-			$this->model->getIsDefault(0, 'single') . "\",
-					`isNew`				=	\"" .
-			$this->model->getIsNew(0, 'single') . "\",
-					`isDraft`			=	\"" .
-			$this->model->getIsDraft(0, 'single') . "\",
-					`isUpdate`			=	\"" .
-			$this->model->getIsUpdate(0, 'single') . "\",
-					`isDelete`			=	\"" .
-			$this->model->getIsDelete(0, 'single') . "\",
-					`isActive`			=	\"" .
-			$this->model->getIsActive(0, 'single') . "\",
-					`isApproved`		=	\"" .
-			$this->model->getIsApproved(0, 'single') . "\",
-					`executeBy`				=	\"" .
-			$this->model->getExecuteBy() . "\",
+			SET 	`isDefault`			=	'" .
+			$this->model->getIsDefault(0, 'single') . "',
+					`isNew`				=	'" .
+			$this->model->getIsNew(0, 'single') . "',
+					`isDraft`			=	'" .
+			$this->model->getIsDraft(0, 'single') . "',
+					`isUpdate`			=	'" .
+			$this->model->getIsUpdate(0, 'single') . "',
+					`isDelete`			=	'" .
+			$this->model->getIsDelete(0, 'single') . "',
+					`isActive`			=	'" .
+			$this->model->getIsActive(0, 'single') . "',
+					`isApproved`		=	'" .
+			$this->model->getIsApproved(0, 'single') . "',
+					`executeBy`				=	'" .
+			$this->model->getExecuteBy() . "',
 					`executeTime`				=	" .
 			$this->model->getExecuteTime() . "
-			WHERE 	`teamId`		=	\"" .
-			$this->model->getTeamId(0, 'single') . "\"";
+			WHERE 	`teamId`		=	'" .
+			$this->model->getTeamId(0, 'single') . "'";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -970,11 +976,11 @@ class TeamClass extends ConfigClass
 					[executeTime]		=	" .
 			$this->model->getExecuteTime() . "
 			WHERE 	[teamId]			=	'" .
-			$this->model->getTeamId . "\"";
+			$this->model->getTeamId . "'";
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			UPDATE 	GROUP_
+			UPDATE 	TEAM
 			SET 	GROUPDESC		=	'" .
 			$this->model->getTeamDesc(0, 'single') . "',
 					ISDEFAULT		=	'" .
@@ -995,8 +1001,8 @@ class TeamClass extends ConfigClass
 			$this->model->getExecuteBy() . "',
 					EXECUTETIME		=	" .
 			$this->model->getExecuteTime() . "
-			WHERE 	GROUPID			=	'" .
-			$this->model->getTeamId() . "\"";
+			WHERE 	TEAMID			=	'" .
+			$this->model->getTeamId() . "'";
 		}
 		// advance logging future
 		$this->q->tableName = $this->model->getTableName();
@@ -1157,8 +1163,8 @@ class TeamClass extends ConfigClass
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql .= "
-			WHERE \"" .
-			$this->model->getPrimaryKeyName() . "\" IN (" .
+			WHERE '" .
+			$this->model->getPrimaryKeyName() . "' IN (" .
 			$this->model->getTeamIdAll() . ")";
 		}
 		$this->q->update($sql);
@@ -1187,8 +1193,8 @@ class TeamClass extends ConfigClass
 			$sql = "
 			SELECT	*
 			FROM 	`team`
-			WHERE 	`teamCode` 	= 	\"" .
-			$this->model->getTeamCode() . "\"
+			WHERE 	`teamCode` 	= 	'" .
+			$this->model->getTeamCode() . "'
 			AND		`isActive`		=	1";
 		} else
 		if ($this->getVendor() == self::MSSQL) {

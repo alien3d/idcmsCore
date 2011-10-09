@@ -4,7 +4,7 @@ $theme ='theme';
 if (strlen($_SESSION[$staffId])==0) {
 	// check if the any session equal to zero redirect to index.php
 	$page="../index.php?message=Masa tamat";
-	print"<script>parent.location.replace(\"".$page."\")</script>";
+	print"<script>parent.location.replace('".$page."')</script>";
 }
 include('../../Connections/main.php');	?>
 <html>
@@ -24,7 +24,7 @@ include('../../Connections/main.php');	?>
 <link rel="stylesheet" type="text/css"
 	href="../../javascript/examples/ux/css/RowEditor.css">
 <?php // only execute when exist
-if($_SESSION[$theme]) { ?>
+if(isset($_SESSION['theme'])) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
 
 <?php }  ?>

@@ -165,23 +165,23 @@ class Security extends ConfigClass
         }
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			SELECT 	`group`.`groupId`,
-					`group`.`groupNote`
-			FROM   	`group`
-			WHERE 	`group`.`isActive`=1";
+			SELECT 	`theme`.`TEAMID`,
+					`theme`.`groupNote`
+			FROM   	`theme`
+			WHERE 	`theme`.`isActive`=1";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "
-			SELECT 	[group].[groupId],
-					[group].[groupNote]
-			FROM   	[group]
-			WHERE   [group].[isActive]=1";
+			SELECT 	[team].[teamId],
+					[team].[groupNote]
+			FROM   	[team]
+			WHERE   [team].[isActive]=1";
             } else 
                 if ($this->getVendor() == self::ORACLE) {
                     $sql = "
-			SELECT 	GROUP_.GROUPID,
-					GROUP_.GROUPNOTE
-			FROM   	GROUP_
+			SELECT 	TEAM.TEAMID,
+					TEAM.GROUPNOTE
+			FROM   	TEAM
 			WHERE   ISACTIVE=1";
                 }
         $result = $this->q->fast($sql);
@@ -297,15 +297,15 @@ class Security extends ConfigClass
                     $sql = "
 				SELECT 	`moduleAccess`.`moduleId`,
 						`module`.`moduleNote`,
-						`moduleAccess`.`groupId`,
+						`moduleAccess`.`TEAMID`,
 						`moduleAccess`.`moduleAccessValue`
 				FROM   	`moduleAccess`
 				JOIN	`module`
 				USING	(`moduleId`)
 				WHERE   `module`.`isActive`=1";
-                    if (isset($_GET['groupId'])) {
-                        $sql .= " AND `moduleAccess`.`groupId`=\"" .
-                         $this->strict($_GET['groupId'], 'numeric') . "\"";
+                    if (isset($_GET['TEAMID'])) {
+                        $sql .= " AND `moduleAccess`.`TEAMID`='" .
+                         $this->strict($_GET['TEAMID'], 'numeric') . "'";
                     }
                 }
         } else 
@@ -321,15 +321,15 @@ class Security extends ConfigClass
                         $sql = "
 			SELECT 	[moduleAccess].[moduleId],
 					[module].[moduleNote],
-					[moduleAccess].[groupId],
+					[moduleAccess].\"teamId\",
 					[moduleAccess].[moduleAccessValue]
 			FROM   	[moduleAccess]
 			JOIN	[module]
 			ON		[module].[moduleId]=[moduleAccess].[moduleId]
 			WHERE   [module].[isActive]=1";
-                        if (isset($_GET['groupId'])) {
-                            $sql .= " AND [moduleAccess].[groupId]=\"" .
-                             $this->strict($_GET['groupId'], 'numeric') . "\"";
+                        if (isset($_GET['TEAMID'])) {
+                            $sql .= " AND [moduleAccess].\"teamId\"='" .
+                             $this->strict($_GET['TEAMID'], 'numeric') . "'";
                         }
                     }
             } else 
@@ -345,16 +345,16 @@ class Security extends ConfigClass
                             $sql = "
 			SELECT 	MODULEACCESS.MODULEID,
 					MODULEACCESS.MODULENOTE,
-					MODULEACCESS.GROUPID,
+					MODULEACCESS.TEAMID,
 					MODULEACCESS.MODULEACCESSVALUE
 			FROM   	MODULEACCESS
 			JOIN	MODULE
 			USING	(MODULEID)
 			WHERE   MODULE.ISACTIVE=1";
-                            if (isset($_GET['groupId'])) {
-                                $sql .= " AND MODULEACCESS.GROUPID=\"" .
-                                 $this->strict($_GET['groupId'], 'numeric') .
-                                 "\"";
+                            if (isset($_GET['TEAMID'])) {
+                                $sql .= " AND MODULEACCESS.TEAMID='" .
+                                 $this->strict($_GET['TEAMID'], 'numeric') .
+                                 "'";
                             }
                         }
                 } else {
@@ -415,20 +415,20 @@ class Security extends ConfigClass
             } else {
                 $sql = "
 			SELECT 	`folderAccess`.`moduleId`,
-					`folderAccess`.`groupId`,
+					`folderAccess`.`TEAMID`,
 					`folderAccess`.`moduleAccessValue`,
 			FROM   	`folderAccess`
 			JOIN	`folder`
 			USING	(`folderId`)
 			WHERE   `folder`.`isActive`	=	1	";
             }
-            if (isset($_GET['groupId'])) {
-                $sql .= " AND `folder`.`groupId`=\"" .
-                 $this->strict($_GET['groupId'], 'numeric') . "\"";
+            if (isset($_GET['TEAMID'])) {
+                $sql .= " AND `folder`.`TEAMID`='" .
+                 $this->strict($_GET['TEAMID'], 'numeric') . "'";
             }
             if (isset($_GET['moduleId'])) {
-                $sql .= " AND `folder`.`moduleId`	=	\"" .
-                 $this->strict($_GET['moduleId'], 'numeric') . "\"";
+                $sql .= " AND `folder`.`moduleId`	=	'" .
+                 $this->strict($_GET['moduleId'], 'numeric') . "'";
             }
         } else 
             if ($this->getVendor() == self::MSSQL) {
@@ -441,20 +441,20 @@ class Security extends ConfigClass
                 } else {
                     $sql = "
 			SELECT 	[folderAccess].[moduleId],
-					[folderAccess].[groupId],
+					[folderAccess].\"teamId\",
 					[folderAccess].[moduleAccessValue],
 			FROM   	[folderAccess]
 			JOIN	[folder]
 			ON		[folder].[folderId] = [folderAccess].[folderId]
 			WHERE   [folder].[isActive]=1";
                 }
-                if (isset($_GET['groupId'])) {
-                    $sql .= " AND [folder].[groupId]=\"" .
-                     $this->strict($_GET['groupId'], 'numeric') . "\"";
+                if (isset($_GET['TEAMID'])) {
+                    $sql .= " AND [folder].\"teamId\"='" .
+                     $this->strict($_GET['TEAMID'], 'numeric') . "'";
                 }
                 if (isset($_GET['moduleId'])) {
-                    $sql .= " AND [folder].[moduleId]=\"" .
-                     $this->strict($_GET['moduleId'], 'numeric') . "\"";
+                    $sql .= " AND [folder].[moduleId]='" .
+                     $this->strict($_GET['moduleId'], 'numeric') . "'";
                 }
             } else 
                 if ($this->getVendor() == self::ORACLE) {
@@ -467,20 +467,20 @@ class Security extends ConfigClass
                     } else {
                         $sql = "
 			SELECT 	FOLDERACCESS.MODULEID,
-					FOLDERACCESS.GROUPID,
+					FOLDERACCESS.TEAMID,
 					FOLDERACCESS.MODULEACCESSVALUE,
 			FROM   	FOLDERACCESS
 			JOIN	FOLDER
 			USING	(FOLDERID)
 			WHERE   FOLDER.ISACTIVE=1";
                     }
-                    if (isset($_GET['groupId'])) {
-                        $sql .= " AND FOLDER.GROUPID=\"" .
-                         $this->strict($_GET['groupId'], 'numeric') . "\"";
+                    if (isset($_GET['TEAMID'])) {
+                        $sql .= " AND FOLDER.TEAMID='" .
+                         $this->strict($_GET['TEAMID'], 'numeric') . "'";
                     }
                     if (isset($_GET['moduleId'])) {
-                        $sql .= " AND FOLDER.MODULEID=\"" .
-                         $this->strict($_GET['moduleId'], 'numeric') . "\"";
+                        $sql .= " AND FOLDER.MODULEID='" .
+                         $this->strict($_GET['moduleId'], 'numeric') . "'";
                     }
                 }
         $result = $this->q->fast($sql);
@@ -538,21 +538,21 @@ class Security extends ConfigClass
             } else 
                 if ($this->getVendor() == self::ORACLE) {
                     $sql = "
-			SELECT 	(MAX(\"" . $table . "Sequence\")+1) AS \"nextSequence\"
-			FROM 	\"" . $table . "\"
+			SELECT 	(MAX('" . $table . "Sequence\")+1) AS \"nextSequence\"
+			FROM 	'" . $table . "'
 			WHERE	ISACTIVE=1";
                 }
         if ($table == 'folder') {
             if (isset($_GET['moduleId'])) {
-                $sql .= " AND `moduleId`=\"" . $_GET['moduleId'] . "\"";
+                $sql .= " AND `moduleId`='" . $_GET['moduleId'] . "'";
             }
         }
         if ($table == 'leaf') {
             if (isset($_GET['moduleId'])) {
-                $sql .= " AND `moduleId`=\"" . $_GET['moduleId'] . "\"";
+                $sql .= " AND `moduleId`='" . $_GET['moduleId'] . "'";
             }
             if (isset($_GET['folderId'])) {
-                $sql .= " AND `folderId`=\"" . $_GET['folderId'] . "\"";
+                $sql .= " AND `folderId`='" . $_GET['folderId'] . "'";
             }
         }
         $result = $this->q->fast($sql);
@@ -580,7 +580,7 @@ class Security extends ConfigClass
          "&callback=handleResponse&prettyprint=TRUE", "rb");
         $contents = stream_get_contents($handle);
         $a = explode(":", $contents);
-        $x = explode("\"", $a[3]);
+        $x = explode("'", $a[3]);
         fclose($handle);
         if (strlen($x[1]) == 0) {
             $x[1] = 'undefined';

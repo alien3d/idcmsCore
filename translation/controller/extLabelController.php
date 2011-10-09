@@ -74,29 +74,38 @@ class ExtLabelClass extends ConfigClass
     function execute ()
     {
         parent::__construct();
-        $this->q = new Vendor();
-        $this->q->vendor = $this->getVendor();
-        $this->q->leafId = $this->getLeafId();
-        $this->q->staffId = $this->getStaffId();
-        $this->q->fieldQuery = $this->getFieldQuery();
-        $this->q->gridQuery = $this->getGridQuery();
-        $this->q->connect($this->getConnection(), $this->getUsername(), 
-        $this->getDatabase(), $this->getPassword());
-        $this->excel = new PHPExcel();
+        //audit property
         $this->audit = 0;
         $this->log = 0;
-        $this->q->log = $this->log;
+        
+        //default translation property
         $this->defaultLanguageId = 21;
-        $this->security = new Security();
+        
+        $this->q = new Vendor();
+        $this->q->vendor 		=	$this->getVendor();
+        $this->q->leafId 		= 	$this->getLeafId();
+        $this->q->staffId 		= 	$this->getStaffId();
+        $this->q->fieldQuery	= 	$this->getFieldQuery();
+        $this->q->gridQuery 	= 	$this->getGridQuery();
+        $this->q->log 			=	$this->log;
+        $this->q->audit 		=	$this->audit;
+        $this->q->connect($this->getConnection(), $this->getUsername(), 
+        $this->getDatabase(), $this->getPassword());
+       
+        $this->security 		= 	new Security();
         $this->security->setVendor($this->getVendor());
         $this->security->setLeafId($this->getLeafId());
         $this->security->execute();
-        $this->model = new ExtLabelModel();
+        
+        $this->model 			= 	new ExtLabelModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
-        $this->documentTrail = new DocumentTrailClass();
+        
+        $this->documentTrail 	= 	new DocumentTrailClass();
         $this->documentTrail->setVendor($this->getVendor());
         $this->documentTrail->execute();
+    
+        $this->excel 			= 	new PHPExcel();
     }
     /* (non-PHPdoc)
 	 * @see config::create()
@@ -123,24 +132,24 @@ class ExtLabelClass extends ConfigClass
 					)
 			VALUES
 					(
-						\"" .
-             $this->model->getextLabelNote() . "\",				\"" .
+						'" .
+             $this->model->getextLabelNote() . "',				'" .
              $this->model->getIsDefault(0, 'single') .
-             "\",
-						\"" .
-             $this->model->getIsNew(0, 'single') . "\",		\"" .
+             "',
+						'" .
+             $this->model->getIsNew(0, 'single') . "',		'" .
              $this->model->getIsDraft(0, 'single') .
-             "\",
-						\"" .
-             $this->model->getIsUpdate(0, 'single') . "\",		\"" .
+             "',
+						'" .
+             $this->model->getIsUpdate(0, 'single') . "',		'" .
              $this->model->getIsDelete(0, 'single') .
-             "\",
-						\"" .
-             $this->model->getIsActive(0, 'single') . "\",		\"" .
+             "',
+						'" .
+             $this->model->getIsActive(0, 'single') . "',		'" .
              $this->model->getIsApproved(0, 'single') .
-             "\",
-						\"" .
-             $this->model->getExecuteBy() . "\",						" .
+             "',
+						'" .
+             $this->model->getExecuteBy() . "',						" .
              $this->model->getExecuteTime() . "
 
 
@@ -270,8 +279,8 @@ class ExtLabelClass extends ConfigClass
 			WHERE		`extLabel`.`isActive`		=	1";
             if ($this->model->getextLabelId(0, 'single')) {
                 $sql .= " AND `" . $this->model->getTableName() . "`.`" .
-                 $this->model->getPrimaryKeyName() . "`=\"" .
-                 $this->model->getextLabelId(0, 'single') . "\"";
+                 $this->model->getPrimaryKeyName() . "`='" .
+                 $this->model->getextLabelId(0, 'single') . "'";
             }
         } else 
             if ($this->getVendor() == self::MSSQL) {
@@ -462,28 +471,28 @@ class ExtLabelClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 					UPDATE 	`extLabel`
-					SET 	`extLabelNote`		=	\"" .
-             $this->model->getextLabelNote() . "\",
-							`isDefault`			=	\"" .
-             $this->model->getIsDefault(0, 'single') . "\",
-							`isNew`				=	\"" .
-             $this->model->getIsNew(0, 'single') . "\",
-							`isDraft`			=	\"" .
-             $this->model->getIsDraft(0, 'single') . "\",
-							`isUpdate`			=	\"" .
-             $this->model->getIsUpdate(0, 'single') . "\",
-							`isDelete`			=	\"" .
-             $this->model->getIsDelete(0, 'single') . "\",
-							`isActive`			=	\"" .
-             $this->model->getIsActive(0, 'single') . "\",
-							`isApproved`		=	\"" .
-             $this->model->getIsApproved(0, 'single') . "\",
-							`executeBy`			=	\"" .
-             $this->model->getExecuteBy() . "\",
+					SET 	`extLabelNote`		=	'" .
+             $this->model->getextLabelNote() . "',
+							`isDefault`			=	'" .
+             $this->model->getIsDefault(0, 'single') . "',
+							`isNew`				=	'" .
+             $this->model->getIsNew(0, 'single') . "',
+							`isDraft`			=	'" .
+             $this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`			=	'" .
+             $this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`			=	'" .
+             $this->model->getIsDelete(0, 'single') . "',
+							`isActive`			=	'" .
+             $this->model->getIsActive(0, 'single') . "',
+							`isApproved`		=	'" .
+             $this->model->getIsApproved(0, 'single') . "',
+							`executeBy`			=	'" .
+             $this->model->getExecuteBy() . "',
 							`executeTime`		=	" .
              $this->model->getExecuteTime() . "
-					WHERE 	`extLabelId`		=	\"" .
-             $this->model->getextLabelId(0, 'single') . "\"";
+					WHERE 	`extLabelId`		=	'" .
+             $this->model->getextLabelId(0, 'single') . "'";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "

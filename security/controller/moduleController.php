@@ -124,29 +124,29 @@ class ModuleClass extends ConfigClass
 					)
 			VALUES
 					(
-						\"" .
-             $this->model->getIconId() . "\",					\"" .
+						'" .
+             $this->model->getIconId() . "',					'" .
              $this->model->getmoduleSequence() .
-             "\",
-						\"" .
-             $this->model->getmoduleCode() . "\",					\"" .
+             "',
+						'" .
+             $this->model->getmoduleCode() . "',					'" .
              $this->model->getmoduleNote() .
-             "\",
-						\"" .
-             $this->model->getIsDefault(0, 'single') . "\",		\"" .
+             "',
+						'" .
+             $this->model->getIsDefault(0, 'single') . "',		'" .
              $this->model->getIsNew(0, 'single') .
-             "\",
-						\"" .
-             $this->model->getIsDraft(0, 'single') . "\",		\"" .
+             "',
+						'" .
+             $this->model->getIsDraft(0, 'single') . "',		'" .
              $this->model->getIsUpdate(0, 'single') .
-             "\",
-						\"" .
-             $this->model->getIsDelete(0, 'single') . "\",		\"" .
+             "',
+						'" .
+             $this->model->getIsDelete(0, 'single') . "',		'" .
              $this->model->getIsActive(0, 'single') .
-             "\",
-						\"" .
-             $this->model->getIsApproved(0, 'single') . "\",	\"" .
-             $this->model->getExecuteBy() . "\",
+             "',
+						'" .
+             $this->model->getIsApproved(0, 'single') . "',	'" .
+             $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 					);";
         } else 
@@ -242,19 +242,19 @@ class ModuleClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	*
-			FROM 	`group`
+			FROM 	`theme`
 			WHERE 	`isActive`	=	1 ";
         } else 
             if ($this->q->vendor == self::MSSQL) {
                 $sql = "
 			SELECT 	*
-			FROM 	[group]
+			FROM 	[team]
 			WHERE 	[isActive]	=	1 ";
             } else 
                 if ($this->q->vendor == self::ORACLE) {
                     $sql = "
 			SELECT 	*
-			FROM 	GROUP_
+			FROM 	TEAM
 			WHERE 	`ISACTIVE	=	1 ";
                 }
         $this->q->read($sql);
@@ -269,8 +269,8 @@ class ModuleClass extends ConfigClass
              * By Default  No Access
              **/
             echo $sqlLooping .= "(
-							\"" . $lastId . "\",
-							 \"" . $row['groupId'] . "\",
+							'" . $lastId . "',
+							 '" . $row['TEAMID'] . "',
 							 \"0\"
 						),";
         }
@@ -279,7 +279,7 @@ class ModuleClass extends ConfigClass
 				INSERT INTO	`moduleAccess`
 						(
 							`moduleId`,
-							`groupId`,
+							`TEAMID`,
 							`moduleAccessValue`
 						) VALUES";
         } else 
@@ -288,7 +288,7 @@ class ModuleClass extends ConfigClass
 				INSERT INTO	[moduleAccess]
 						(
 							[moduleId],
-							[groupId],
+							\"teamId\",
 							[moduleAccessValue]
 					) VALUES";
             } else 
@@ -297,7 +297,7 @@ class ModuleClass extends ConfigClass
 				INSERT INTO	MODULEACCESS
 						(
 							MODULEID,
-							GROUPID,
+							TEAMID,
 							MODULEACCESSVALUE
 					) VALUES";
                 }
@@ -323,9 +323,9 @@ class ModuleClass extends ConfigClass
 				 	`languageId`,
 					`moduleTranslate`
 				) VALUES (
-					\"" . $lastId . "\",
+					'" . $lastId . "',
 					21,
-					\"" . $this->model->getmoduleNote() . "\"
+					'" . $this->model->getmoduleNote() . "'
 				);";
         } else 
             if ($this->getVendor() == self::MSSQL) {
@@ -428,8 +428,8 @@ class ModuleClass extends ConfigClass
 					WHERE 	" . $this->auditFilter;
             if ($this->model->getModuleId(0, 'single')) {
                 $sql .= " AND `" . $this->model->getmoduleleName() . "`.`" .
-                 $this->model->getPrimaryKeyName() . "`=\"" .
-                 $this->model->getModuleId(0, 'single') . "\"";
+                 $this->model->getPrimaryKeyName() . "`='" .
+                 $this->model->getModuleId(0, 'single') . "'";
             }
         } else 
             if ($this->getVendor() == self::MSSQL) {
@@ -506,21 +506,21 @@ class ModuleClass extends ConfigClass
         $filterArray = array('moduleId');
         /**
          * filter modulele
-         * @variables $moduleleArray
+         * @variables $tableArray
          */
-        $moduleleArray = null;
-        $moduleleArray = array('module');
+        $tableArray = null;
+        $tableArray = array('module');
         if ($this->getFieldQuery()) {
             if ($this->getVendor() == self::MYSQL) {
-                $sql .= $this->q->quickSearch($moduleleArray, $filterArray);
+                $sql .= $this->q->quickSearch($tableArray, $filterArray);
             } else 
                 if ($this->getVendor() == self::MSSQL) {
-                    $tempSql = $this->q->quickSearch($moduleleArray, 
+                    $tempSql = $this->q->quickSearch($tableArray, 
                     $filterArray);
                     $sql .= $tempSql;
                 } else 
                     if ($this->getVendor() == self::ORACLE) {
-                        $tempSql = $this->q->quickSearch($moduleleArray, 
+                        $tempSql = $this->q->quickSearch($tableArray, 
                         $filterArray);
                         $sql .= $tempSql;
                     }
@@ -699,30 +699,30 @@ class ModuleClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE 	`module`
-			SET 	`moduleSequence`	= 	\"" .
-             $this->model->getmoduleSequence() . "\",
-					`moduleNote`		=	\"" .
-             $this->model->getmoduleNote() . "\",
-					`iconId`			=	\"" .
-             $this->model->getIconId() . "\",
-					`isActive`			=	\"" .
-             $this->model->getIsActive(0, 'single') . "\",
-					`isNew`				=	\"" .
-             $this->model->getIsNew(0, 'single') . "\",
-					`isDraft`			=	\"" .
-             $this->model->getIsDraft(0, 'single') . "\",
-					`isUpdate`			=	\"" .
-             $this->model->getIsUpdate(0, 'single') . "\",
-					`isDelete`			=	\"" .
-             $this->model->getIsDelete(0, 'single') . "\",
-					`isApproved`		=	\"" .
-             $this->model->getIsApproved(0, 'single') . "\",
-					`executeBy`				=	\"" .
-             $this->model->getExecuteBy() . "\",
+			SET 	`moduleSequence`	= 	'" .
+             $this->model->getmoduleSequence() . "',
+					`moduleNote`		=	'" .
+             $this->model->getmoduleNote() . "',
+					`iconId`			=	'" .
+             $this->model->getIconId() . "',
+					`isActive`			=	'" .
+             $this->model->getIsActive(0, 'single') . "',
+					`isNew`				=	'" .
+             $this->model->getIsNew(0, 'single') . "',
+					`isDraft`			=	'" .
+             $this->model->getIsDraft(0, 'single') . "',
+					`isUpdate`			=	'" .
+             $this->model->getIsUpdate(0, 'single') . "',
+					`isDelete`			=	'" .
+             $this->model->getIsDelete(0, 'single') . "',
+					`isApproved`		=	'" .
+             $this->model->getIsApproved(0, 'single') . "',
+					`executeBy`				=	'" .
+             $this->model->getExecuteBy() . "',
 					`executeTime`				=	" .
              $this->model->getExecuteTime() . "
-			WHERE 	`moduleId`			=	\"" .
-             $this->model->getModuleId(0, 'single') . "\"";
+			WHERE 	`moduleId`			=	'" .
+             $this->model->getModuleId(0, 'single') . "'";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "
@@ -808,26 +808,26 @@ class ModuleClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE 	`module`
-			SET 	`isDefault`		=	\"" .
-             $this->model->getIsDefault(0, 'single') . "\",
-					`isActive`		=	\"" .
-             $this->model->getIsActive(0, 'single') . "\",
-					`isNew`			=	\"" .
-             $this->model->getIsNew(0, 'single') . "\",
-					`isDraft`		=	\"" .
-             $this->model->getIsDraft(0, 'single') . "\",
-					`isUpdate`		=	\"" .
-             $this->model->getIsUpdate(0, 'single') . "\",
-					`isDelete`		=	\"" .
-             $this->model->getIsDelete(0, 'single') . "\",
-					`isApproved`	=	\"" .
-             $this->model->getIsApproved(0, 'single') . "\",
-					`executeBy`			=	\"" .
-             $this->model->getBy(0, 'single') . "\",
+			SET 	`isDefault`		=	'" .
+             $this->model->getIsDefault(0, 'single') . "',
+					`isActive`		=	'" .
+             $this->model->getIsActive(0, 'single') . "',
+					`isNew`			=	'" .
+             $this->model->getIsNew(0, 'single') . "',
+					`isDraft`		=	'" .
+             $this->model->getIsDraft(0, 'single') . "',
+					`isUpdate`		=	'" .
+             $this->model->getIsUpdate(0, 'single') . "',
+					`isDelete`		=	'" .
+             $this->model->getIsDelete(0, 'single') . "',
+					`isApproved`	=	'" .
+             $this->model->getIsApproved(0, 'single') . "',
+					`executeBy`			=	'" .
+             $this->model->getBy(0, 'single') . "',
 					`Time			=	" .
              $this->model->getExecuteTime() . "
-			WHERE 	`moduleId`		=	\"" .
-             $this->model->moduleId . "\"";
+			WHERE 	`moduleId`		=	'" .
+             $this->model->moduleId . "'";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "
@@ -871,7 +871,7 @@ class ModuleClass extends ConfigClass
 					ISAPPROVED		=	'" .
                      $this->model->getIsApproved(0, 'single') . "',
 					EXECUTEBY				=	'" .
-                     $this->model->getBy(0, 'single') . "\",
+                     $this->model->getBy(0, 'single') . "',
 					EXECUTETIME			=	" .
                      $this->model->getExecuteTime() . "
 			WHERE 	MODULEID			=	'" .

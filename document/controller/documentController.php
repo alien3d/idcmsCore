@@ -82,34 +82,42 @@ class DocumentClass extends ConfigClass
 	function execute ()
 	{
 		parent::__construct();
-		$this->q = new Vendor();
-		$this->q->vendor = $this->getVendor();
-		$this->q->leafId = $this->getLeafId();
-		$this->q->staffId = $this->getStaffId();
-		$this->q->fieldQuery = $this->getFieldQuery();
-		$this->q->gridQuery = $this->getGridQuery();
+		//audit property
+		$this->audit 			=	0;
+		$this->log 				= 	1;
+		
+		/*
+		 * Upload Setting
+		*/
+		$this->maximumFileSize = 100 * 1024 * 1024; // eq to 100 mb
+		$this->validFileType = "/^\\.(jpg|jpeg|gif|png|doc|docx|txt|rtf|pdf|xls|xlsx|ppt|pptx){1}$/i";
+		$this->path = $_SERVER["DOCUMENT_ROOT"] .
+		"idcmsCore/document/document/user/" . $this->getStaffId() . "/";
+		
+		$this->q 				= 	new Vendor();
+		$this->q->vendor 		=	$this->getVendor();
+		$this->q->leafId 		= 	$this->getLeafId();
+		$this->q->staffId 		=	$this->getStaffId();
+		$this->q->fieldQuery 	= 	$this->getFieldQuery();
+		$this->q->gridQuery 	= 	$this->getGridQuery();
+		$this->q->log 			= 	$this->log;
+		$this->q->audit 		= 	$this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(),
 		$this->getDatabase(), $this->getPassword());
-		$this->excel = new PHPExcel();
-		$this->audit = 0;
-		$this->log = 1;
-		$this->q->log = $this->log;
+		
 		$this->model = new DocumentModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
+		
 		$this->documentTrail = new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());
 		$this->documentTrail->setLanguageId($this->getLanguageId());
 		$this->documentTrail->setLeafId($this->getLeafId());
 		$this->documentTrail->execute();
-		/*
-		 * Upload Setting
-		 */
-		$this->maximumFileSize = 100 * 1024 * 1024; // eq to 100 mb
-		$this->validFileType = "/^\\.(jpg|jpeg|gif|png|doc|docx|txt|rtf|pdf|xls|xlsx|ppt|pptx){1}$/i";
-		$this->path = $_SERVER["DOCUMENT_ROOT"] .
-         "idcmsCore/document/document/user/" . $_SESSION['staffId'] . "/";
+		
+		$this->excel = new PHPExcel();
+		
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -128,7 +136,7 @@ class DocumentClass extends ConfigClass
 		$this->model->create();
 		$isFile = is_uploaded_file($_FILES['documentFilename']['tmp_name']);
 		if ($isFile) {
-			$safeFilename = preg_replace(array("/\\s+/", "/[^-\.\w]+/"),
+			$safeFilename = preg_replace(array("/\\s+/", "/[^-\\.\\w]+/"),
 			array("_", ""), trim($_FILES['documentFilename']['name']));
 			$fileSize = $_FILES['documentFilename']['size'];
 			$maxSize = $this->maximumFileSize;
@@ -229,26 +237,26 @@ class DocumentClass extends ConfigClass
 			VALUES
 				(
 							
-						\"" . $this->model->getDocumentCategoryId() . "\",				\"" .
-			$this->model->getLeafId() . "\",
-						\"" . $this->model->getDocumentSequence() . "\",					\"" .
-			$this->model->getDocumentCode() . "\",
-						\"" . $this->model->getDocumentNote() . "\",						\"" .
-			$this->model->getDocumentTitle() . "\",
-						\"" . $this->model->getDocumentDesc() . "\",						\"" .
-			$this->model->getDocumentPath() . "\",
-						\"" . $this->model->getDocumentOriginalFilename() . "\",			\"" .
-			$this->model->getDocumentDownloadFilename() . "\",
-						\"" . $this->model->getDocumentExtension() . "\",				\"" .
-			$this->model->getDocumentVersion() . "\",
-						\"" . $this->model->getIsDefault(0, 'single') . "\"				,\"" .
-			$this->model->getIsNew(0, 'single') . "\",
-						\"" . $this->model->getIsDraft(0, 'single') . "\",				\"" .
-			$this->model->getIsUpdate(0, 'single') . "\",
-						\"" . $this->model->getIsDelete(0, 'single') . "\",				\"" .
-			$this->model->getIsActive(0, 'single') . "\",
-						\"" . $this->model->getIsApproved(0, 'single') . "\",				\"" .
-			$this->model->getExecuteBy() . "\",
+						'" . $this->model->getDocumentCategoryId() . "',				'" .
+			$this->model->getLeafId() . "',
+						'" . $this->model->getDocumentSequence() . "',					'" .
+			$this->model->getDocumentCode() . "',
+						'" . $this->model->getDocumentNote() . "',						'" .
+			$this->model->getDocumentTitle() . "',
+						'" . $this->model->getDocumentDesc() . "',						'" .
+			$this->model->getDocumentPath() . "',
+						'" . $this->model->getDocumentOriginalFilename() . "',			'" .
+			$this->model->getDocumentDownloadFilename() . "',
+						'" . $this->model->getDocumentExtension() . "',				'" .
+			$this->model->getDocumentVersion() . "',
+						'" . $this->model->getIsDefault(0, 'single') . "'				,'" .
+			$this->model->getIsNew(0, 'single') . "',
+						'" . $this->model->getIsDraft(0, 'single') . "',				'" .
+			$this->model->getIsUpdate(0, 'single') . "',
+						'" . $this->model->getIsDelete(0, 'single') . "',				'" .
+			$this->model->getIsActive(0, 'single') . "',
+						'" . $this->model->getIsApproved(0, 'single') . "',				'" .
+			$this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 				);";
 		} else
@@ -410,8 +418,8 @@ class DocumentClass extends ConfigClass
 					WHERE 	" . $this->auditFilter;
 			if ($this->model->getDocumentId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" .
-				$this->model->getPrimaryKeyName() . "`=\"" .
-				$this->model->getDocumentId(0, 'single') . "\"";
+				$this->model->getPrimaryKeyName() . "`='" .
+				$this->model->getDocumentId(0, 'single') . "'";
 			}
 		} else
 		if ($this->getVendor() == self::MSSQL) {
@@ -764,28 +772,28 @@ class DocumentClass extends ConfigClass
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 		UPDATE 	`document`
-		SET 	`documentCategoryId` 		=	\"" . $this->model->getDocumentCategoryId() . "\",
-				`leafId`	        		=	\"" . $this->model->getLeafId() . "\",
-				`documentCode`				=	\"" . $this->model->getDocumentCode() . "\",
-				`documentSequence`			=	\"" . $this->model->getDocumentSequence() . "\",
-				`documentNote`				=	\"" . $this->model->getDocumentNote() . "\",
-				`documentTitle`	        	=	\"" . $this->model->getDocumentTitle() . "\",
-				`documentDesc`	        	=	\"" . $this->model->getDocumentDesc() . "\",
-				`documentPath`	        	=	\"" . $this->model->getDocumentPath() . "\",
-				`documentFilename`	    	=	\"" . $this->model->getDocumentFilename() . "\",
-				`documentExtension`	    	=	\"" . $this->model->getDocumentExtension() . "\",
-				`documentVersion`	    	=	\"" . $this->model->getDocumentVersion() . "\",				
-				`isDefault`					=	\"" . $this->model->getIsDefault(0, 'single') . "\",
-				`isActive`					=	\"" . $this->model->getIsActive(0, 'single') . "\",
-				`isNew`						=	\"" . $this->model->getIsNew(0, 'single') . "\",
-				`isDraft`					=	\"" . $this->model->getIsDraft(0, 'single') . "\",
-				`isUpdate`					=	\"" . $this->model->getIsUpdate(0, 'single') . "\",
-				`isDelete`					=	\"" . $this->model->getIsDelete(0, 'single') . "\",
-				`isApproved`				=	\"" . $this->model->getIsApproved(0, 'single') . "\",
-				`executeBy`					=	\"" . $this->model->getExecuteBy() . "\",
+		SET 	`documentCategoryId` 		=	'" . $this->model->getDocumentCategoryId() . "',
+				`leafId`	        		=	'" . $this->model->getLeafId() . "',
+				`documentCode`				=	'" . $this->model->getDocumentCode() . "',
+				`documentSequence`			=	'" . $this->model->getDocumentSequence() . "',
+				`documentNote`				=	'" . $this->model->getDocumentNote() . "',
+				`documentTitle`	        	=	'" . $this->model->getDocumentTitle() . "',
+				`documentDesc`	        	=	'" . $this->model->getDocumentDesc() . "',
+				`documentPath`	        	=	'" . $this->model->getDocumentPath() . "',
+				`documentFilename`	    	=	'" . $this->model->getDocumentFilename() . "',
+				`documentExtension`	    	=	'" . $this->model->getDocumentExtension() . "',
+				`documentVersion`	    	=	'" . $this->model->getDocumentVersion() . "',				
+				`isDefault`					=	'" . $this->model->getIsDefault(0, 'single') . "',
+				`isActive`					=	'" . $this->model->getIsActive(0, 'single') . "',
+				`isNew`						=	'" . $this->model->getIsNew(0, 'single') . "',
+				`isDraft`					=	'" . $this->model->getIsDraft(0, 'single') . "',
+				`isUpdate`					=	'" . $this->model->getIsUpdate(0, 'single') . "',
+				`isDelete`					=	'" . $this->model->getIsDelete(0, 'single') . "',
+				`isApproved`				=	'" . $this->model->getIsApproved(0, 'single') . "',
+				`executeBy`					=	'" . $this->model->getExecuteBy() . "',
 				`executeTime`				=	" . $this->model->getExecuteTime() . "
-		WHERE 	`documentId`				=	\"" . $this->model->getDocumentId(0, 'single') .
-             "\"";
+		WHERE 	`documentId`				=	'" . $this->model->getDocumentId(0, 'single') .
+             "'";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -809,7 +817,7 @@ class DocumentClass extends ConfigClass
 				[isApproved]				=	'" . $this->model->getIsApproved(0, 'single') . "',
 				[executeBy]					=	'" . $this->model->getExecuteBy() . "',
 				[executeTime]				=	" . $this->model->getExecuteTime() . "
-		WHERE 	[documentId]				=	\"" . $this->model->getDocumentId(0, 'single') .
+		WHERE 	[documentId]				=	'" . $this->model->getDocumentId(0, 'single') .
                  "'";
 		} else
 		if ($this->getVendor() == self::ORACLE) {
@@ -854,17 +862,17 @@ class DocumentClass extends ConfigClass
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				UPDATE 	`document`
-				SET 	`isDefault`		=	\"" . $this->model->getIsDefault(0, 'single') . "\",
-						`isActive`		=	\"" . $this->model->getIsActive(0, 'single') . "\",
-						`isNew`			=	\"" . $this->model->getIsNew(0, 'single') . "\",
-						`isDraft`		=	\"" . $this->model->getIsDraft(0, 'single') . "\",
-						`isUpdate`		=	\"" . $this->model->getIsUpdate(0, 'single') . "\",
-						`isDelete`		=	\"" . $this->model->getIsDelete(0, 'single') . "\",
-						`isApproved`	=	\"" . $this->model->getIsApproved(0, 'single') . "\",
-						`executeBy`		=	\"" . $this->model->getBy(0, 'single') . "\",
+				SET 	`isDefault`		=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`isActive`		=	'" . $this->model->getIsActive(0, 'single') . "',
+						`isNew`			=	'" . $this->model->getIsNew(0, 'single') . "',
+						`isDraft`		=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`isUpdate`		=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`isDelete`		=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`isApproved`	=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`executeBy`		=	'" . $this->model->getBy(0, 'single') . "',
 						`Time			=	" . $this->model->getExecuteTime() . "
-				WHERE 	`documentId`	=	\"" . $this->model->getDepartrmentId(0, 'single') .
-             "\"";
+				WHERE 	`documentId`	=	'" . $this->model->getDepartrmentId(0, 'single') .
+             "'";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -1133,7 +1141,7 @@ class DocumentClass extends ConfigClass
 			exit();
 		} else {
 			echo json_encode(
-			array("success" => 'false', "message" => "File not generated"));
+			array("success" => 'FALSE', "message" => "File not generated"));
 			exit();
 		}
 	}

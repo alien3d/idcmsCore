@@ -49,7 +49,7 @@ class PHPWord_Writer_Word2007_DocProps extends PHPWord_Writer_Word2007_WriterPar
 		$objWriter->writeElement('Application', 	'Microsoft Office Word');
 
 		// ScaleCrop
-		$objWriter->writeElement('ScaleCrop', 		'false');
+		$objWriter->writeElement('ScaleCrop', 		'FALSE');
 
 		// HeadingPairs
 		$objWriter->startElement('HeadingPairs');
@@ -101,13 +101,13 @@ class PHPWord_Writer_Word2007_DocProps extends PHPWord_Writer_Word2007_WriterPar
 		$objWriter->writeElement('Company', 			$pPHPWord->getProperties()->getCompany());
 
 		// LinksUpToDate
-		$objWriter->writeElement('LinksUpToDate', 		'false');
+		$objWriter->writeElement('LinksUpToDate', 		'FALSE');
 
 		// SharedDoc
-		$objWriter->writeElement('SharedDoc', 			'false');
+		$objWriter->writeElement('SharedDoc', 			'FALSE');
 
 		// HyperlinksChanged
-		$objWriter->writeElement('HyperlinksChanged', 	'false');
+		$objWriter->writeElement('HyperlinksChanged', 	'FALSE');
 
 		// AppVersion
 		$objWriter->writeElement('AppVersion', 			'12.0000');

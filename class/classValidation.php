@@ -32,17 +32,17 @@ abstract class ValidationClass
 	 * Mysql Database
 	 * @var const string
 	 */
-    const mysql = 'mysql';
+    const MYSQL = 'mysql';
     /**
      * Microsoft Sql Server Database
      * @var const string
      */
-    const mssql = 'microsoft';
+    const MSSQL = 'microsoft';
     /**
      * Oracle Database
      * @var const string
      */
-    const oracle = 'oracle';
+    const ORACLE = 'oracle';
     /**
      * Class Loader
      */

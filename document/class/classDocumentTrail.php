@@ -34,12 +34,14 @@ class DocumentTrailClass extends ConfigClass
     function execute ()
     {
         parent::__construct();
+        
         $this->q = new Vendor();
         $this->q->vendor = $this->getVendor();
         $this->q->leafId = $this->getLeafId();
         $this->q->staffId = $this->getStaffId();
         $this->q->connect($this->getConnection(), $this->getUsername(), 
         $this->getDatabase(), $this->getPassword());
+        
         $this->model = new documentModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
@@ -71,32 +73,32 @@ class DocumentTrailClass extends ConfigClass
 						`isApproved`,					`executeBy`,
 						`executeTime`
 			)	VALUES	(
-						\"" .
-             $this->model->getDocumentCategoryId() . "\",
-						\"" . $this->model->getLeafId() . "\",
-						\"" .
-             $this->model->getDocumentTitle() . "\",
-						\"" .
-             $this->model->getDocumentDesc() . "\",
-						\"" .
-             $this->model->getDocumentPath() . "\",
-						\"" .
-             $this->model->getDocumentFilename() . "\",
-						\"" .
-             $this->model->getIsDefault(0, 'single') . "\",
-						\"" .
-             $this->model->getIsNew('', 'sring') . "\",
-						\"" .
-             $this->model->getIsDraft(0, 'single') . "\",
-						\"" .
-             $this->model->getIsUpdate(0, 'single') . "\",
-						\"" .
-             $this->model->getIsDelete('', 'sring') . "\",
-						\"" .
-             $this->model->getIsActive(0, 'single') . "\",
-						\"" .
-             $this->model->getIsApproved(0, 'single') . "\",
-						\"" . $this->model->getExecuteBy() . "\",
+						'" .
+             $this->model->getDocumentCategoryId() . "',
+						'" . $this->model->getLeafId() . "',
+						'" .
+             $this->model->getDocumentTitle() . "',
+						'" .
+             $this->model->getDocumentDesc() . "',
+						'" .
+             $this->model->getDocumentPath() . "',
+						'" .
+             $this->model->getDocumentFilename() . "',
+						'" .
+             $this->model->getIsDefault(0, 'single') . "',
+						'" .
+             $this->model->getIsNew('', 'sring') . "',
+						'" .
+             $this->model->getIsDraft(0, 'single') . "',
+						'" .
+             $this->model->getIsUpdate(0, 'single') . "',
+						'" .
+             $this->model->getIsDelete('', 'sring') . "',
+						'" .
+             $this->model->getIsActive(0, 'single') . "',
+						'" .
+             $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',
 						 " . $this->model->getExecuteTime() . "
 			); ";
         } else 
@@ -112,30 +114,30 @@ class DocumentTrailClass extends ConfigClass
 						[isApproved],					[executeBy],
 						[executeTime]
 			)	VALUES	(
-						\"" .
-                 $this->model->getDocumentCategoryId() . "\",
-						\"" . $this->model->getLeafId() . "\",
-						\"" .
-                 $this->model->getDocumentTitle() . "\",
-						\"" .
-                 $this->model->getDocumentDesc() . "\",
-						\"" . $this->model->getPath() . "\",
-						\"" . $this->model->getFilename() . "\",
-						\"" .
-                 $this->model->getIsDefault(0, 'single') . "\",
-						\"" .
-                 $this->model->getIsNew('', 'sring') . "\",
-						\"" .
-                 $this->model->getIsDraft(0, 'single') . "\",
-						\"" .
-                 $this->model->getIsUpdate(0, 'single') . "\",
-						\"" .
-                 $this->model->getIsDelete('', 'sring') . "\",
-						\"" .
-                 $this->model->getIsActive(0, 'single') . "\",
-						\"" .
-                 $this->model->getIsApproved(0, 'single') . "\",
-						\"" . $this->model->getExecuteBy() . "\",
+						'" .
+                 $this->model->getDocumentCategoryId() . "',
+						'" . $this->model->getLeafId() . "',
+						'" .
+                 $this->model->getDocumentTitle() . "',
+						'" .
+                 $this->model->getDocumentDesc() . "',
+						'" . $this->model->getPath() . "',
+						'" . $this->model->getFilename() . "',
+						'" .
+                 $this->model->getIsDefault(0, 'single') . "',
+						'" .
+                 $this->model->getIsNew('', 'sring') . "',
+						'" .
+                 $this->model->getIsDraft(0, 'single') . "',
+						'" .
+                 $this->model->getIsUpdate(0, 'single') . "',
+						'" .
+                 $this->model->getIsDelete('', 'sring') . "',
+						'" .
+                 $this->model->getIsActive(0, 'single') . "',
+						'" .
+                 $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',
 						 " . $this->model->getExecuteTime() . "
 			); ";
             } else 
@@ -151,30 +153,30 @@ class DocumentTrailClass extends ConfigClass
 						ISAPPROVED,					EXECUTEBY,
 						EXECUTETIME
 			)	VALUES	(
-						\"" .
-                     $this->model->getDocumentCategoryId() . "\",
-						\"" . $this->model->getLeafId() . "\",
-						\"" .
-                     $this->model->getDocumentTitle() . "\",
-						\"" .
-                     $this->model->getDocumentDesc() . "\",
-						\"" . $this->model->getPath() . "\",
-						\"" . $this->model->getFilename() . "\",
-						\"" .
-                     $this->model->getIsDefault(0, 'single') . "\",
-						\"" .
-                     $this->model->getIsNew('', 'sring') . "\",
-						\"" .
-                     $this->model->getIsDraft(0, 'single') . "\",
-						\"" .
-                     $this->model->getIsUpdate(0, 'single') . "\",
-						\"" .
-                     $this->model->getIsDelete('', 'sring') . "\",
-						\"" .
-                     $this->model->getIsActive(0, 'single') . "\",
-						\"" .
-                     $this->model->getIsApproved(0, 'single') . "\"\",
-						\"" . $this->model->getExecuteBy() . "\",
+						'" .
+                     $this->model->getDocumentCategoryId() . "',
+						'" . $this->model->getLeafId() . "',
+						'" .
+                     $this->model->getDocumentTitle() . "',
+						'" .
+                     $this->model->getDocumentDesc() . "',
+						'" . $this->model->getPath() . "',
+						'" . $this->model->getFilename() . "',
+						'" .
+                     $this->model->getIsDefault(0, 'single') . "',
+						'" .
+                     $this->model->getIsNew('', 'sring') . "',
+						'" .
+                     $this->model->getIsDraft(0, 'single') . "',
+						'" .
+                     $this->model->getIsUpdate(0, 'single') . "',
+						'" .
+                     $this->model->getIsDelete('', 'sring') . "',
+						'" .
+                     $this->model->getIsActive(0, 'single') . "',
+						'" .
+                     $this->model->getIsApproved(0, 'single') . "'\",
+						'" . $this->model->getExecuteBy() . "',
 						 " . $this->model->getExecuteTime() . "
 			); ";
                 }

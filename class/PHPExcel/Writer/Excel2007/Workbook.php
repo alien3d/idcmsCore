@@ -193,9 +193,9 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	{
 		if ($pPHPExcel->getSecurity()->isSecurityEnabled()) {
 			$objWriter->startElement('workbookProtection');
-			$objWriter->writeAttribute('lockRevision',		($pPHPExcel->getSecurity()->getLockRevision() ? 'TRUE' : 'false'));
-			$objWriter->writeAttribute('lockStructure', 	($pPHPExcel->getSecurity()->getLockStructure() ? 'TRUE' : 'false'));
-			$objWriter->writeAttribute('lockWindows', 		($pPHPExcel->getSecurity()->getLockWindows() ? 'TRUE' : 'false'));
+			$objWriter->writeAttribute('lockRevision',		($pPHPExcel->getSecurity()->getLockRevision() ? 'TRUE' : 'FALSE'));
+			$objWriter->writeAttribute('lockStructure', 	($pPHPExcel->getSecurity()->getLockStructure() ? 'TRUE' : 'FALSE'));
+			$objWriter->writeAttribute('lockWindows', 		($pPHPExcel->getSecurity()->getLockWindows() ? 'TRUE' : 'FALSE'));
 
 			if ($pPHPExcel->getSecurity()->getRevisionsPassword() != '') {
 				$objWriter->writeAttribute('revisionsPassword',	$pPHPExcel->getSecurity()->getRevisionsPassword());

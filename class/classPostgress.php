@@ -209,12 +209,12 @@ class Vendor
 					)
 			values
 					(
-							\"" . $this->leafId . "\",
-							\"" . trim(addslashes($this->operation)) . "\",
-							\"" . trim(addslashes($this->sql)) . "\",
-							\"" . date("Y-m-d H:i:s") . "\",
-							\"" . $this->staffId . "\",
-							\"" . trim($this->realEscapeString($sql)) . "\"
+							'" . $this->leafId . "',
+							'" . trim(addslashes($this->operation)) . "',
+							'" . trim(addslashes($this->sql)) . "',
+							'" . date("Y-m-d H:i:s") . "',
+							'" . $this->staffId . "',
+							'" . trim($this->realEscapeString($sql)) . "'
 					)";
 			$result_row = pg_query($this->link, $sql_log);
 			if (!$result_row) {
@@ -239,12 +239,12 @@ class Vendor
 		$sql             = "
 		SELECT 	*
 		FROM 	`leafAccess`
-		WHERE  	`leafAccess`.`leafId`			=	\"". $this->leafId . "\"
+		WHERE  	`leafAccess`.`leafId`			=	'". $this->leafId . "'
 		AND   	`leafAccess`.`" . $operation . "`	=	'1'
-		AND   	`leafAccess`.`staffId`		=	\"". $this->staffId . "\"";
+		AND   	`leafAccess`.`staffId`		=	'". $this->staffId . "'";
 		$result          = pg_query($this->link, $sql);
 		if (!$result) {
-			$this->execute     = 'false';
+			$this->execute     = 'FALSE';
 			$this->responce = $sql . pg_last_error($this->link);
 			$result_row        = 0;
 		} else {
@@ -270,10 +270,10 @@ class Vendor
 					)
 			values
 					(
-						\"" . $this->leafId . "\",								\"" . $operation . "\",
-						\"" . trim($this->realEscapeString($this->sql)) . "\",		\"" . date("Y-m-d H:i:s") . "\",
-						\"" . $_SESSION['staffId'] . "\",						\"" . $access . "\",
-						\"" . $logError . "\"
+						'" . $this->leafId . "',								'" . $operation . "',
+						'" . trim($this->realEscapeString($this->sql)) . "',		'" . date("Y-m-d H:i:s") . "',
+						'" . $_SESSION['staffId'] . "',						'" . $access . "',
+						'" . $logError . "'
 					)";
 			$test1   = pg_query($this->link, $sql_log);
 			if (!$test1) {
@@ -342,7 +342,7 @@ class Vendor
 					$sqlPrevious    = "
 					SELECT 	*
 					FROM 	`" . $this->tableName . "`
-					WHERE 	`" . $this->primaryKeyName . "` = \"". $this->lastInsertId() . "\"";
+					WHERE 	`" . $this->primaryKeyName . "` = '". $this->lastInsertId() . "'";
 					$resultPrevious = pg_query($this->link, $sqlPrevious);
 					if (!$resultPrevious) {
 						$this->execute     = 'fail';
@@ -351,7 +351,7 @@ class Vendor
 
 						while (($rowPrevious = pg_fetch_array($resultPrevious)) == TRUE) {
 							foreach ($fieldValue as $field) {
-								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
+								$text .= "'" . $field . "':'" . $rowPrevious[$field] . "',";
 								$previous[$field] = $rowPrevious[$field];
 							}
 						}
@@ -370,12 +370,12 @@ class Vendor
 							)
 					VALUES
 							(
-								\"" . $this->realEscapeString($text) . "\",
-								\"" . $logAdvanceType . "\",
-								\"" . $this->tableName . "\",
-								\"" . $this->leafId . "\",
-								\"".$this->staffId."\",
-								\"".date("Y-m-d H:i:s")."\"
+								'" . $this->realEscapeString($text) . "',
+								'" . $logAdvanceType . "',
+								'" . $this->tableName . "',
+								'" . $this->leafId . "',
+								'".$this->staffId."',
+								'".date("Y-m-d H:i:s")."'
 							)";
 					$resultLogAdvance = pg_query($this->link, $sqlLogAdvance);
 					if (!$resultLogAdvance) {
@@ -431,7 +431,7 @@ class Vendor
 					$sqlPrevious    = "
 					SELECT 	*
 					FROM 	`" . $this->tableName . "`
-					WHERE 	`" . $this->primaryKeyName . "` = \"". $this->primaryKeyValue . "\"";
+					WHERE 	`" . $this->primaryKeyName . "` = '". $this->primaryKeyValue . "'";
 					$resultPrevious = pg_query($this->link, $sqlPrevious);
 					if (!$resultPrevious) {
 						$this->execute     = 'fail';
@@ -441,7 +441,7 @@ class Vendor
 						//	echo "Jumlah Rekod ".pg_num_rows($resultPrevious);
 						while (($rowPrevious = pg_fetch_array($resultPrevious)) == TRUE) {
 							foreach ($fieldValue as $field) {
-								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
+								$text .= "'" . $field . "':'" . $rowPrevious[$field] . "',";
 								$previous[$field] = $rowPrevious[$field];
 							}
 						}
@@ -458,10 +458,10 @@ class Vendor
 							)
 					VALUES
 							(
-								\"" . $this->realEscapeString($text) . "\",
-								\"" . $logAdvanceType . "\",
-								\"" . $this->tableName . "\",
-								\"" . $this->leafId . "\"
+								'" . $this->realEscapeString($text) . "',
+								'" . $logAdvanceType . "',
+								'" . $this->tableName . "',
+								'" . $this->leafId . "'
 					)";
 					$resultLogAdvance = pg_query($this->link, $sqlLogAdvance);
 					if ($resultLogAdvance) {
@@ -479,7 +479,7 @@ class Vendor
 					$sqlCurrent    = "
 					SELECT 	*
 					FROM 	`" . $this->tableName . "`
-					WHERE 	`" . $this->primaryKeyName . "`=\"". $this->primaryKeyValue . "\"";
+					WHERE 	`" . $this->primaryKeyName . "`='". $this->primaryKeyValue . "'";
 					$resultCurrent = pg_query($this->link, $sqlCurrent);
 					if ($resultCurrent) {
 						while (($rowCurrent = pg_fetch_array($resultCurrent)) == TRUE) {
@@ -490,14 +490,14 @@ class Vendor
 						$this->responce = "Error Query on advance select" . $sqlCurrent;
 					}
 					$textComparison = substr($textComparison, 0, -1); // remove last coma
-					$textComparison = "{ \"tablename\":\"" . $this->tableName . "\",\"refId\":\"" . $this->primaryKeyValue . "\"," . $textComparison . "}"; // json format
+					$textComparison = "{ \"tablename\":'" . $this->tableName . "',\"refId\":'" . $this->primaryKeyValue . "'," . $textComparison . "}"; // json format
 					// update back comparision the previous record
 					$sql             = "
 					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparison`	=	\"" . $this->realEscapeString($textComparison) . "\",
-							`executeBy`					=   \"".$this->staffId."\",
-							`executeTime`					=	\"".date("Y-m-d H:i:s")."\"
-					WHERE 	`logAdvanceId`			=	\"" . $logAdvanceId . "\"";
+					SET 	`logAdvanceComparison`	=	'" . $this->realEscapeString($textComparison) . "',
+							`executeBy`					=   '".$this->staffId."',
+							`executeTime`					=	'".date("Y-m-d H:i:s")."'
+					WHERE 	`logAdvanceId`			=	'" . $logAdvanceId . "'";
 
 					$result          = pg_query($this->link, $sql);
 					if (!$result) {
@@ -618,7 +618,7 @@ class Vendor
 	 */
 	public function lastInsertId($sql)
 	{
-		$regExp = preg_match_all("/nextval\('([a-zA-Z0-9_]+)'\)/",$query,$array);
+		$regExp = preg_match_all("/nextval\\('([a-zA-Z0-9_]+)'\\)/",$sql,$array);
 		$sequence = $array[1][0];
 		$select = "SELECT currval('$sequence')";
 		$load = pg_query($this->link,$select);
@@ -790,10 +790,10 @@ class Vendor
 					break;
 			}
 			// json format ?
-			$textComparison .= "\"" . $field . "\":[{ \"prev\":\"" . $prev_value[$field] . "\"},
-														{ \"curr\":\"" . $curr_value[$field] . "\"},
-														{ \"type\":\"" . $type . "\"},
-														{ \"diff\":\"" . $diff . "\"}],";
+			$textComparison .= "'" . $field . "':[{ \"prev\":'" . $prev_value[$field] . "'},
+														{ \"curr\":'" . $curr_value[$field] . "'},
+														{ \"type\":'" . $type . "'},
+														{ \"diff\":'" . $diff . "'}],";
 		}
 		return $textComparison;
 	}
@@ -850,7 +850,7 @@ class Vendor
 					case 'list':
 						$split = explode(",", $filter[$i]['data']['value']);
 						foreach ($split as $split_a) {
-							$str .= "\"". $split_a . "\",";
+							$str .= "'". $split_a . "',";
 						}
 						$str = $this->removeComa($str);
 						if (count($split) > 0 && strlen($filter[$i]['data']['value']) > 0) {
@@ -879,16 +879,16 @@ class Vendor
 					case 'date':
 						switch ($filter[$i]['data']['comparison']) {
 							case 'ne':
-								$qs .= " AND `". $filter[$i]['table'] ."`.`". $filter[$i]['column'] ."` != \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
+								$qs .= " AND `". $filter[$i]['table'] ."`.`". $filter[$i]['column'] ."` != '". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
 								break;
 							case 'eq':
-								$qs .= " AND `". $filter[$i]['table'] ."`.`". $filter[$i]['column'] ."` = \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
+								$qs .= " AND `". $filter[$i]['table'] ."`.`". $filter[$i]['column'] ."` = '". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
 								break;
 							case 'lt':
-								$qs .= " AND `". $filter[$i]['table'] ."`.`". $filter[$i]['column'] ."` < \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
+								$qs .= " AND `". $filter[$i]['table'] ."`.`". $filter[$i]['column'] ."` < '". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
 								break;
 							case 'gt':
-								$qs .= " AND `". $filter[$i]['table'] ."`.`". $filter[$i]['column'] ."` > \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
+								$qs .= " AND `". $filter[$i]['table'] ."`.`". $filter[$i]['column'] ."` > '". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
 								break;
 						}
 						break;

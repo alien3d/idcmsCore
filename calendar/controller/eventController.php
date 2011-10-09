@@ -67,6 +67,10 @@ class EventClass extends ConfigClass
     function execute ()
     {
         parent::__construct();
+        //audit property
+        $this->audit = 0;
+        $this->log = 1;
+        
         $this->q = new Vendor();
         $this->q->vendor = $this->getVendor();
         $this->q->leafId = $this->getLeafId();
@@ -75,16 +79,18 @@ class EventClass extends ConfigClass
         $this->q->gridQuery = $this->getGridQuery();
         $this->q->connect($this->getConnection(), $this->getUsername(), 
         $this->getDatabase(), $this->getPassword());
-        $this->excel = new PHPExcel();
-        $this->audit = 0;
-        $this->log = 1;
-        $this->q->log = $this->log;
-        $this->model = new EventModel();
+		$this->q->log = $this->log;
+        $this->q->audit = $this->audit;
+        
+		$this->model = new EventModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
+        
         $this->documentTrail = new DocumentTrailClass();
         $this->documentTrail->setVendor($this->getVendor());
         $this->documentTrail->execute();
+    
+        $this->excel = new PHPExcel();
     }
     /* (non-PHPdoc)
 	 * @see ConfigClass::create()
@@ -205,7 +211,7 @@ class EventClass extends ConfigClass
 			USING	(`calendarId`,`staffId`)
 			JOIN	`calendarColor`
 			USING   (`calendarColorId`)
-			WHERE 	`calendar`.`staffId` = \"" . $this->model->getExecuteBy() . "\"";
+			WHERE 	`calendar`.`staffId` = '" . $this->model->getExecuteBy() . "'";
             if ($this->model->getEventStart() && $this->model->getEventEnd()) {
                 $sql .= "
 				AND	`event`.`eventStart`	>= 	'" . $this->model->getEventStart() . "'
@@ -288,17 +294,17 @@ class EventClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			UPDATE	`event`
-			SET		`calendarId`		=	\"" . $this->model->getCalendarId() . "\",
-					`eventTitle`		=	\"" . $this->model->getEventTitle() . "\",
-					`eventStart`		=	\"" . $this->model->getEventStart() . "\",
-					`eventEnd`			=	\"" . $this->model->getEventEnd() . "\",
-					`eventIsAllDay`  	= 	\"" . $this->model->geteventIsAllDay() . "\",
-					`eventNotes` 		= 	\"" . $this->model->getEventNotes() . "\",
-					`eventReminder`		=	\"" . $this->model->getEventReminder() . "\",
-					`eventUrl`			=	\"" . $this->model->getEventUrl() . "\",
-					`eventLocation`		=	\"" . $this->model->getEventLocation() . "\",
-					`eventIsNew`		=	\"" . $this->model->getEventIsNew() . "\"
-			WHERE 	`eventId`			=	\"" . $this->model->getEventId(0, 'single') . "\"";
+			SET		`calendarId`		=	'" . $this->model->getCalendarId() . "',
+					`eventTitle`		=	'" . $this->model->getEventTitle() . "',
+					`eventStart`		=	'" . $this->model->getEventStart() . "',
+					`eventEnd`			=	'" . $this->model->getEventEnd() . "',
+					`eventIsAllDay`  	= 	'" . $this->model->geteventIsAllDay() . "',
+					`eventNotes` 		= 	'" . $this->model->getEventNotes() . "',
+					`eventReminder`		=	'" . $this->model->getEventReminder() . "',
+					`eventUrl`			=	'" . $this->model->getEventUrl() . "',
+					`eventLocation`		=	'" . $this->model->getEventLocation() . "',
+					`eventIsNew`		=	'" . $this->model->getEventIsNew() . "'
+			WHERE 	`eventId`			=	'" . $this->model->getEventId(0, 'single') . "'";
         } else 
             if ($this->q->vendor == self::MSSQL) {
                 $sql = "
@@ -357,7 +363,7 @@ class EventClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			DELETE 	FROM	`event`
-			WHERE 			`eventId`		=	\"" . $this->model->getEventId(0, 'single') . "\"";
+			WHERE 			`eventId`		=	'" . $this->model->getEventId(0, 'single') . "'";
         } else 
             if ($this->q->vendor == self::MSSQL) {
                 $sql = "

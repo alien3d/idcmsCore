@@ -5995,7 +5995,7 @@ if (!class_exists('TCPDF', false)) {
 						switch (strtolower($pl['opt']['subtype'])) {
 							case 'text': {
 								if (isset($pl['opt']['open'])) {
-									$annots .= ' /Open '. (strtolower($pl['opt']['open']) == 'true' ? 'true' : 'false');
+									$annots .= ' /Open '. (strtolower($pl['opt']['open']) == 'true' ? 'true' : 'FALSE');
 								}
 								$iconsapp = array('Comment', 'Help', 'Insert', 'Key', 'NewParagraph', 'Note', 'Paragraph');
 								if (isset($pl['opt']['name']) AND in_array($pl['opt']['name'], $iconsapp)) {
@@ -7037,7 +7037,7 @@ if (!class_exists('TCPDF', false)) {
 					}
 				}
 				$this->_out('/Fields ['.$objrefs.']');
-				$this->_out('/NeedAppearances '.(empty($this->form_obj_id)?'false':'true'));
+				$this->_out('/NeedAppearances '.(empty($this->form_obj_id)?'FALSE':'true'));
 				if ($this->sign AND isset($this->signature_data['cert_type'])) {
 					$this->_out('/SigFlags 3');
 				}
@@ -7401,7 +7401,7 @@ if (!class_exists('TCPDF', false)) {
 		}
 		
 		/**
-		* Add "\" before "\", "(" and ")"
+		* Add "' before "', "(" and ")"
 		* @param string $s string to escape.
 		* @return string escaped string.
 		* @access protected
@@ -12781,8 +12781,8 @@ if (!class_exists('TCPDF', false)) {
 				$html = $html_a.$html_b.substr($html, $pos + 9);
 				$offset = strlen($html_a.$html_b);
 			}
-			$html = preg_replace("'<select([^\>]*)>'si", "<select\\1 opt=\"", $html);
-			$html = preg_replace("'([\s]+)</select>'si", "\" />", $html);
+			$html = preg_replace("'<select([^\>]*)>'si", "<select\\1 opt='", $html);
+			$html = preg_replace("'([\s]+)</select>'si", "' />", $html);
 			$html = str_replace("\n", ' ', $html);
 			// restore textarea newlines
 			$html = str_replace('<TBR>', "\n", $html);

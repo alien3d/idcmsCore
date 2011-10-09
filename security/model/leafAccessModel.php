@@ -95,8 +95,8 @@ class LeafAccessModel extends ValidationClass
         /*
 		 *  All the $_POST enviroment.
 		 */
-        if (isset($_POST['groupId'])) {
-            $this->setGroupId($this->strict($_POST['groupId'], 'numeric'));
+        if (isset($_POST['TEAMID'])) {
+            $this->setTEAMID($this->strict($_POST['TEAMID'], 'numeric'));
         }
         if (isset($_POST['moduleId'])) {
             $this->setModuleId($this->strict($_POST['moduleId'], 'numeric'));
@@ -114,7 +114,7 @@ class LeafAccessModel extends ValidationClass
             $this->setExecuteBy($_SESSION['staffId']);
         }
         if ($this->getVendor() == self::MYSQL) {
-            $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+            $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
@@ -299,17 +299,17 @@ class LeafAccessModel extends ValidationClass
      * Set Group Identification Value
      * @param  int $value
      */
-    public function setGroupId ($value)
+    public function setTEAMID ($value)
     {
-        $this->groupId = $value;
+        $this->TEAMID = $value;
     }
     /**
      * Return Group Identiification Value
      * @return int
      */
-    public function getGroupId ()
+    public function getTEAMID ()
     {
-        return $this->groupId;
+        return $this->TEAMID;
     }
     /**
      * Set Module Identification Value

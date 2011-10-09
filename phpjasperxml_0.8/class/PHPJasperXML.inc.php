@@ -9,7 +9,7 @@ class PHPJasperXML {
     public $debugsql=false;
     private $myconn;
     private $con;
-    private $group_name;
+    private $TEAMname;
     public $newPageGroup = false;
     private $curgroup=0;
     private $groupno=0;
@@ -119,7 +119,7 @@ class PHPJasperXML {
                     $this->variable_handler($out);
                     break;
                 case "group":
-                    $this->group_handler($out);
+                    $this->TEAMhandler($out);
                     break;
                 case "subDataset":
                        $this->subDataset_handler($out);
@@ -195,7 +195,7 @@ class PHPJasperXML {
 
     }
 
-    public function group_handler($xml_path) {
+    public function TEAMhandler($xml_path) {
 
 //        $this->arraygroup=$xml_path;
 
@@ -518,8 +518,8 @@ class PHPJasperXML {
                 $this->pointer[]=array("type"=>"MultiCell","width"=>$data->reportElement["width"],"height"=>$height,"txt"=>&$this->report_count,"border"=>$border,"align"=>$align,"fill"=>$fill,"hidden_type"=>"report_count","soverflow"=>$stretchoverflow,"poverflow"=>$printoverflow,"link"=>substr($data->hyperlinkReferenceExpression,1,-1),"pattern"=>$data["pattern"]);
                 break;
             case '$V{'.$this->arrayband[0]["gname"].'_COUNT}':
-                $this->group_count=0;
-                $this->pointer[]=array("type"=>"MultiCell","width"=>$data->reportElement["width"],"height"=>$height,"txt"=>&$this->group_count,"border"=>$border,"align"=>$align,"fill"=>$fill,"hidden_type"=>"group_count","soverflow"=>$stretchoverflow,"poverflow"=>$printoverflow,"link"=>substr($data->hyperlinkReferenceExpression,1,-1),"pattern"=>$data["pattern"]);
+                $this->TEAMcount=0;
+                $this->pointer[]=array("type"=>"MultiCell","width"=>$data->reportElement["width"],"height"=>$height,"txt"=>&$this->TEAMcount,"border"=>$border,"align"=>$align,"fill"=>$fill,"hidden_type"=>"TEAMcount","soverflow"=>$stretchoverflow,"poverflow"=>$printoverflow,"link"=>substr($data->hyperlinkReferenceExpression,1,-1),"pattern"=>$data["pattern"]);
                 break;
             default:
                 $writeHTML=false;
@@ -704,7 +704,7 @@ class PHPJasperXML {
 
 
       public function variable_calculation($rowno) {
-//   $this->variable_calculation($rownum, $this->arraysqltable[$this->global_pointer][$this->group_pointer]);
+//   $this->variable_calculation($rownum, $this->arraysqltable[$this->global_pointer][$this->TEAMpointer]);
      //   print_r($this->arraysqltable);
 
 
@@ -735,9 +735,9 @@ class PHPJasperXML {
                             }
                     }// finisish resettype=''
                     else //reset type='group'
-                    {if( $this->arraysqltable[$this->global_pointer][$this->group_pointer]!=$this->arraysqltable[$this->global_pointer-1][$this->group_pointer])
+                    {if( $this->arraysqltable[$this->global_pointer][$this->TEAMpointer]!=$this->arraysqltable[$this->global_pointer-1][$this->TEAMpointer])
                              $value=0;
-                      //    echo $this->global_pointer.",".$this->group_pointer.",".$this->arraysqltable[$this->global_pointer][$this->group_pointer].",".$this->arraysqltable[$this->global_pointer-1][$this->group_pointer].",".$this->arraysqltable[$rowno]["$out[target]"];
+                      //    echo $this->global_pointer.",".$this->TEAMpointer.",".$this->arraysqltable[$this->global_pointer][$this->TEAMpointer].",".$this->arraysqltable[$this->global_pointer-1][$this->TEAMpointer].",".$this->arraysqltable[$rowno]["$out[target]"];
                                  if(isset($this->arrayVariable[$k]['class'])&&$this->arrayVariable[$k]['class']=="java.sql.Time") {
                                       $value+=$this->time_to_sec($this->arraysqltable[$rowno]["$out[target]"]);
                                 //$sum= floor($sum / 3600).":".floor($sum%3600 / 60);
@@ -884,8 +884,8 @@ class PHPJasperXML {
 
                 case "group":
 
-                    $this->group_pointer=$band["groupExpression"];
-                    $this->group_name=$band["gname"];
+                    $this->TEAMpointer=$band["groupExpression"];
+                    $this->TEAMname=$band["gname"];
 
                     break;
 
@@ -2273,7 +2273,7 @@ foreach($this->arrayVariable as $name=>$value){
 
                 switch($name) {
                     case "groupHeader":
-                        $this->group_count=0;
+                        $this->TEAMcount=0;
                         foreach($out as $path) { //print_r($out);
                             switch($path["hidden_type"]) {
                                 case "field":
@@ -2452,10 +2452,10 @@ foreach($this->arrayVariable as $name=>$value){
 
 if(isset($this->arrayVariable))	//if self define variable existing, go to do the calculation
                 {
-                    $this->variable_calculation($rownum, $this->arraysqltable[$this->global_pointer][$this->group_pointer]);
+                    $this->variable_calculation($rownum, $this->arraysqltable[$this->global_pointer][$this->TEAMpointer]);
                 }
              if(isset($this->arraygroup)&&($this->global_pointer>0)&&
-                        ($this->arraysqltable[$this->global_pointer][$this->group_pointer]!=$this->arraysqltable[$this->global_pointer-1][$this->group_pointer]))	//check the group's groupExpression existed and same or not
+                        ($this->arraysqltable[$this->global_pointer][$this->TEAMpointer]!=$this->arraysqltable[$this->global_pointer-1][$this->TEAMpointer]))	//check the group's groupExpression existed and same or not
                 {
                     if($this->footershowed==false)
                     $ghfoot= $this->showGroupFooter($compare["height"]+$this->pdf->getY());
@@ -2465,7 +2465,7 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                     $checkpoint=$headerY;//+40;
                     $biggestY = $headerY;//+40;
                     $tempY=$this->arraydetail[0]["y_axis"];
-                     $this->group_count=0;
+                     $this->TEAMcount=0;
 
                     if($this->arrayPageSetting["pageHeight"]< (($this->pdf->getY()) + ($this->arraygroupfootheight)+($this->arrayPageSetting["bottomMargin"])+($this->arraypageFooter[0]["height"])+($ghfoot)+($ghhead))){
                       //echo "aaa";
@@ -2476,7 +2476,7 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                           $checkpoint=$headerY;
                           $biggestY=$this->arrayPageSetting["topMargin"]+$this->arraypageHeader[0]["height"];
                           $tempY=$headerY;
-                          $this->group_count=0;
+                          $this->TEAMcount=0;
                     }
 
                     $ghheight=$this->showGroupHeader($this->pdf->getY()+$ghfoot);
@@ -2490,7 +2490,7 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                         case "field":
                             $txt=$this->analyse_expression($row[$compare["txt"]]);
 
-                            if(isset($this->arraygroup[$this->group_name]["groupFooter"])&&(($checkpoint+($compare["height"]*$txt))>($this->arrayPageSetting["pageHeight"]-$this->arraygroupfootheight-$this->arrayPageSetting["bottomMargin"])))//check group footer existed or not
+                            if(isset($this->arraygroup[$this->TEAMname]["groupFooter"])&&(($checkpoint+($compare["height"]*$txt))>($this->arrayPageSetting["pageHeight"]-$this->arraygroupfootheight-$this->arrayPageSetting["bottomMargin"])))//check group footer existed or not
                             {
                                  $this->pageFooter();
                                 $checkpoint=$this->arraydetail[0]["y_axis"];
@@ -2529,8 +2529,8 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                             $this->report_count++;
 
                             break;
-                        case "group_count":
-                            $this->group_count++;
+                        case "TEAMcount":
+                            $this->TEAMcount++;
 
                             break;
                         default:
@@ -2590,7 +2590,7 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                 }
                 //Remove $this->global_pointer>0 , becouse when only one row data will cause group footer no show.
         if(isset($this->arraygroup)&&
-                        ($this->arraysqltable[$this->global_pointer][$this->group_pointer]!=$this->arraysqltable[$this->global_pointer+1][$this->group_pointer])){
+                        ($this->arraysqltable[$this->global_pointer][$this->TEAMpointer]!=$this->arraysqltable[$this->global_pointer+1][$this->TEAMpointer])){
                          $a= $this->showGroupFooter($compare["height"]+$biggestY);
                                 $checkpoint=$this->pdf->getY()+$a;
                                 //$ghfoot
@@ -2644,17 +2644,17 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
 
                 //check the group's groupExpression existed and same or not
 
-                if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$this->global_pointer][$this->group_pointer]!=$this->arraysqltable[$this->global_pointer-1][$this->group_pointer])) {
+                if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$this->global_pointer][$this->TEAMpointer]!=$this->arraysqltable[$this->global_pointer-1][$this->TEAMpointer])) {
                 if(isset($this->arrayVariable))	//if self define variable existing, go to do the calculation
                 {
-                    $this->variable_calculation($rownum, $this->arraysqltable[$this->global_pointer][$this->group_pointer]);
+                    $this->variable_calculation($rownum, $this->arraysqltable[$this->global_pointer][$this->TEAMpointer]);
                 }
                     $this->pageFooter();
                     $this->pageHeaderNewPage();
                     $checkpoint=$this->arraydetail[0]["y_axis"];
                     $biggestY = 0;
                     $tempY=$this->arraydetail[0]["y_axis"];
-                     $this->group_count=0;
+                     $this->TEAMcount=0;
                 }
 
                 foreach($this->arraydetail as $compare)	//this loop is to count possible biggest Y of the coming row
@@ -2664,7 +2664,7 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                             $txt=$this->analyse_expression($row["$compare[txt]"]);
                             //check group footer existed or not
 
-                            if(isset($this->arraygroup[$this->group_name]["groupFooter"])&&(($checkpoint+($compare["height"]*$txt))>($this->arrayPageSetting[pageHeight]-$this->arraygroup["$this->group_name"][groupFooter][0]["height"]-$this->arrayPageSetting["bottomMargin"]))) {
+                            if(isset($this->arraygroup[$this->TEAMname]["groupFooter"])&&(($checkpoint+($compare["height"]*$txt))>($this->arrayPageSetting[pageHeight]-$this->arraygroup["$this->TEAMname"][groupFooter][0]["height"]-$this->arrayPageSetting["bottomMargin"]))) {
                              //   $this->showGroupHeader();
                                 $this->showGroupFooter();
                                 $this->pageFooter();
@@ -2714,8 +2714,8 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                         case "report_count":
                             $this->report_count++;
                             break;
-                               case "group_count":
-                            $this->group_count++;
+                               case "TEAMcount":
+                            $this->TEAMcount++;
 
                             break;
                         default:
@@ -2776,7 +2776,7 @@ if(isset($this->arrayVariable))	//if self define variable existing, go to do the
                 else {
                     $checkpoint=$biggestY;
                 }
-if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$this->global_pointer][$this->group_pointer]!=$this->arraysqltable[$this->global_pointer+1][$this->group_pointer]))
+if(isset($this->arraygroup)&&($this->global_pointer>0)&&($this->arraysqltable[$this->global_pointer][$this->TEAMpointer]!=$this->arraysqltable[$this->global_pointer+1][$this->TEAMpointer]))
       $this->showGroupFooter($tempY);
                 //if(isset($this->arraygroup)){$this->global_pointer++;}
                 $this->global_pointer++;

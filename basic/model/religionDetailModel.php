@@ -68,15 +68,15 @@ class ReligionDetailModel extends ValidationClass
             $this->setExecuteBy($_SESSION['staffId']);
         }
         if ($this->getVendor() == self::MYSQL) {
-            $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+            $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $this->setExecuteTime("'" . date("Y-m-d H:i:s.u") . "'");
             } else 
                 if ($this->getVendor() == self::ORACLE) {
                     $this->setExecuteTime(
-                    "to_date(\"" . date("Y-m-d H:i:s") .
-                     "\",'YYYY-MM-DD HH24:MI:SS')");
+                    "to_date('" . date("Y-m-d H:i:s") .
+                     "','YYYY-MM-DD HH24:MI:SS')");
                 }
         if (isset($_GET['religionDetailId'])) {
             $this->setTotal(count($_GET['religionDetailId']));
@@ -115,7 +115,7 @@ class ReligionDetailModel extends ValidationClass
                 if ($_GET['isDefault'][$i] == 'TRUE') {
                     $this->setIsDefault(1, $i, 'array');
                 } else 
-                    if ($_GET['default'] == 'false') {
+                    if ($_GET['default'] == 'FALSE') {
                         $this->setIsDefault(0, $i, 'array');
                     }
             }
@@ -144,7 +144,7 @@ class ReligionDetailModel extends ValidationClass
                 if ($_GET['isDelete'][$i] == 'TRUE') {
                     $this->setIsDelete(1, $i, 'array');
                 } else 
-                    if ($_GET['isDelete'][$i] == 'false') {
+                    if ($_GET['isDelete'][$i] == 'FALSE') {
                         $this->setIsDelete(0, $i, 'array');
                     }
             }
@@ -159,7 +159,7 @@ class ReligionDetailModel extends ValidationClass
                 if ($_GET['isApproved'][$i] == 'TRUE') {
                     $this->setIsApproved(1, $i, 'array');
                 } else 
-                    if ($_GET['isApproved'][$i] == 'false') {
+                    if ($_GET['isApproved'][$i] == 'FALSE') {
                         $this->setIsApproved(0, $i, 'array');
                     }
             }
@@ -167,7 +167,7 @@ class ReligionDetailModel extends ValidationClass
                 if ($_GET['isReview'][$i] == 'TRUE') {
                     $this->setIsReview(1, $i, 'array');
                 } else 
-                    if ($_GET['isReview'][$i] == 'false') {
+                    if ($_GET['isReview'][$i] == 'FALSE') {
                         $this->setIsReview(0, $i, 'array');
                     }
             }
@@ -175,7 +175,7 @@ class ReligionDetailModel extends ValidationClass
                 if ($_GET['isPost'][$i] == 'TRUE') {
                     $this->setIsPost(1, $i, 'array');
                 } else 
-                    if ($_GET['isPost'][$i] == 'false') {
+                    if ($_GET['isPost'][$i] == 'FALSE') {
                         $this->setIsPost(0, $i, 'array');
                     }
             }

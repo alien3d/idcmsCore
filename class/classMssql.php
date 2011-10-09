@@ -242,7 +242,7 @@ class Vendor
         $result = sqlsrv_query($this->link, $sql, array(), 
         array("Scrollable" => SQLSRV_CURSOR_KEYSET));
         if (! $result) {
-            $this->execute = 'false';
+            $this->execute = 'FALSE';
             $errorArray = array();
             $errorArray = sqlsrv_errors();
             $error .= " MS Sql State : " . $errorArray[0]['SQLSTATE'];
@@ -419,8 +419,8 @@ class Vendor
                             while ($rowPrevious = mysql_fetch_array(
                             $resultPrevious)) {
                                 foreach ($fieldValue as $field) {
-                                    $text .= "\"" . $field . "\":\"" .
-                                     $rowPrevious[$field] . "\",";
+                                    $text .= "'" . $field . "':'" .
+                                     $rowPrevious[$field] . "',";
                                     $previous[$field] = $rowPrevious[$field];
                                 }
                             }
@@ -439,8 +439,8 @@ class Vendor
                                 while ($rowPrevious = mysqli_fetch_array(
                                 $resultPrevious)) {
                                     foreach ($fieldValue as $field) {
-                                        $text .= "\"" . $field . "\":\"" .
-                                         $rowPrevious[$field] . "\",";
+                                        $text .= "'" . $field . "':'" .
+                                         $rowPrevious[$field] . "',";
                                         $previous[$field] = $rowPrevious[$field];
                                     }
                                 }
@@ -490,8 +490,8 @@ class Vendor
                     $sqlCurrent = "
 					SELECT 	*
 					FROM 	`" . $this->tableName . "`
-					WHERE 	`" . $this->primaryKeyName . "`=\"" . $this->primaryKeyValue .
-                     "\"";
+					WHERE 	`" . $this->primaryKeyName . "`='" . $this->primaryKeyValue .
+                     "'";
                     if ($this->vendor == 'normal') {
                         $resultCurrent = mysql_query($sqlCurrent, $this->link);
                         if ($resultCurrent) {
@@ -521,14 +521,14 @@ class Vendor
                             }
                         }
                     $textComparison = substr($textComparison, 0, - 1); // remove last coma
-                    $textComparison = "{ \"tablename\":\"" .
-                     $this->tableName . "\",\"ref_uniqueId\":\"" .
-                     $this->primaryKeyValue . "\"," . $textComparison . "}"; // json format
+                    $textComparison = "{ \"tablename\":'" .
+                     $this->tableName . "',\"ref_uniqueId\":'" .
+                     $this->primaryKeyValue . "'," . $textComparison . "}"; // json format
                     // update back comparision the previous record
                     $sql = "
 					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparison`=\"" . addslashes($textComparison) . "\"
-					WHERE 	`logAdvanceId`=\"" . $logAdvanceId . "\"";
+					SET 	`logAdvanceComparison`='" . addslashes($textComparison) . "'
+					WHERE 	`logAdvanceId`='" . $logAdvanceId . "'";
                     if ($this->vendor == 'normal') {
                         $result = mysql_query($sql, $this->link);
                         if (! $result) {
@@ -835,11 +835,11 @@ class Vendor
                     break;
             }
             // json format ?
-            $textComparison .= "\"" . $field . "\":[{ \"prev\":\"" .
-             $prev_value[$field] . "\"},
-														{ \"curr\":\"" . $curr_value[$field] . "\"},
-														{ \"type\":\"" . $type . "\"},
-														{ \"diff\":\"" . $diff . "\"}],";
+            $textComparison .= "'" . $field . "':[{ \"prev\":'" .
+             $prev_value[$field] . "'},
+														{ \"curr\":'" . $curr_value[$field] . "'},
+														{ \"type\":'" . $type . "'},
+														{ \"diff\":'" . $diff . "'}],";
         }
         return $textComparison;
     }
@@ -975,27 +975,27 @@ class Vendor
                         switch ($filter[$i]['data']['comparison']) {
                             case 'ne':
                                 $qs .= " AND [" . $filter[$i]['table'] . "].[" .
-                                 $filter[$i]['column'] . "] != \"" .
+                                 $filter[$i]['column'] . "] != '" .
                                  date('Y-m-d', 
-                                strtotime($filter[$i]['data']['value'])) . "\"";
+                                strtotime($filter[$i]['data']['value'])) . "'";
                                 break;
                             case 'eq':
                                 $qs .= " AND [" . $filter[$i]['table'] . "].[" .
-                                 $filter[$i]['column'] . "] = \"" .
+                                 $filter[$i]['column'] . "] = '" .
                                  date('Y-m-d', 
-                                strtotime($filter[$i]['data']['value'])) . "\"";
+                                strtotime($filter[$i]['data']['value'])) . "'";
                                 break;
                             case 'lt':
                                 $qs .= " AND [" . $filter[$i]['table'] . "].[" .
-                                 $filter[$i]['column'] . "] < \"" .
+                                 $filter[$i]['column'] . "] < '" .
                                  date('Y-m-d', 
-                                strtotime($filter[$i]['data']['value'])) . "\"";
+                                strtotime($filter[$i]['data']['value'])) . "'";
                                 break;
                             case 'gt':
                                 $qs .= " AND [" . $filter[$i]['table'] . "].[" .
-                                 $filter[$i]['column'] . "] > \"" .
+                                 $filter[$i]['column'] . "] > '" .
                                  date('Y-m-d', 
-                                strtotime($filter[$i]['data']['value'])) . "\"";
+                                strtotime($filter[$i]['data']['value'])) . "'";
                                 break;
                         }
                         break;

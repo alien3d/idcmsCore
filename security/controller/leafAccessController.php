@@ -119,7 +119,7 @@ class LeafAccessClass extends  ConfigClass {
 						`leaf`.`leafNote`,
 						`module`.`moduleNote`,
 						`staff`.`staffName`,
-						`group`.`groupNote`,
+						`theme`.`groupNote`,
 						`leafAccess`.`leafId`,
 						`leafAccess`.`staffId`,
 						`leafAccess`.`leafAccessId`,
@@ -174,19 +174,19 @@ class LeafAccessClass extends  ConfigClass {
 				USING	(`folderId`,`languageId`)
 				JOIN	`staff`
 				USING	(`staffId`,`languageId`)
-				JOIN	`group`
-				USING	(`groupId`,`languageId`)
+				JOIN	`theme`
+				USING	(`TEAMID`,`languageId`)
 				WHERE 	`module`.`isActive` 	=	1
 				AND		`folder`.`isActive` 	=	1
 				AND		`leaf`.`isActive`		=	1 ";
 			if($this->model->getModuleId()) {
-				$sql.=" AND `leaf`.`moduleId`		=	\"".$this->model->getModuleId()."\"";
+				$sql.=" AND `leaf`.`moduleId`		=	'".$this->model->getModuleId()."'";
 			}
 			if($this->model->getFolderId()) {
-				$sql.=" AND `leaf`.`folderId`		=	\"".$this->model->getFolderId()."\"";
+				$sql.=" AND `leaf`.`folderId`		=	'".$this->model->getFolderId()."'";
 			}
 			if($this->model->getStaffId()) {
-				$sql.=" AND `leafAccess`.`staffId`	=	\"".$this->model->getStaffId()."\"";
+				$sql.=" AND `leafAccess`.`staffId`	=	'".$this->model->getStaffId()."'";
 			}
 		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="
@@ -196,7 +196,7 @@ class LeafAccessClass extends  ConfigClass {
 						[leaf].[leafNote],
 						[module].[moduleNote],
 						[staff].[staffName],
-						[group].[groupNote],
+						[team].[groupNote],
 						[leafAccess].[leafId],
 						[leafAccess].[staffId],
 						[leafAccess].[leafAccessId],
@@ -251,8 +251,8 @@ class LeafAccessClass extends  ConfigClass {
 				ON		[folder].[folderId]=[leaf].[folderId]
 				JOIN	[staff]
 				ON		[leaf].[staffId]=[staff].[staffId]
-				JOIN	[group]
-				USING	[group].[groupId]=[leafAccess].[groupId]
+				JOIN	[team]
+				USING	[team].[teamId]=[leafAccess].\"teamId\"
 				WHERE 	[module].[isActive] 	=	1
 				AND		[folder].[isActive] 	=	1
 				AND		[leaf].[isActive]		=	1  ";
@@ -273,7 +273,7 @@ class LeafAccessClass extends  ConfigClass {
 						LEAF.LEAFNOTE,
 						MODULE.MODULENOTE,
 						STAFF.STAFFNAME,
-						GROUP_.GROUPNOTE,
+						TEAM.GROUPNOTE,
 						LEAFACCESS.LEAFID,
 						LEAFACCESS.STAFFID,
 						LEAFACCESS.LEAFACCESSID,
@@ -328,8 +328,8 @@ class LeafAccessClass extends  ConfigClass {
 				USING	(FOLDERID,LANGUAGEID)
 				JOIN	STAFF
 				USING	(STAFFID,LANGUAGEID)
-				JOIN	GROUP_
-				USING	(GROUPID,LANGUAGEID)
+				JOIN	TEAM
+				USING	(TEAMID,LANGUAGEID)
 				WHERE 	LEAF.ISACTIVE=1
 				AND		FOLDER.ISACTIVE=1
 				AND		MODULE.ISACTIVE=1
@@ -350,7 +350,7 @@ class LeafAccessClass extends  ConfigClass {
 
 		$record_all 	= $this->q->read($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 
@@ -365,7 +365,7 @@ class LeafAccessClass extends  ConfigClass {
 
 		$this->q->read($sql);
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 
@@ -432,14 +432,14 @@ class LeafAccessClass extends  ConfigClass {
 			if($this->getVendor() == self::MYSQL) {
 				$sql="
 					UPDATE 	`leafAccess`
-					SET 	`leafAccessCreateValue`	=	\"".$this->strict($_GET['leafAccessCreateValue'][$i],'numeric')."\",
-							`leafAccessReadValue`	=	\"".$this->strict($_GET['leafAccessReadValue'][$i],'numeric')."\",
-							`leafAccessUpdateValue`	=	\"".$this->strict($_GET['leafAccessUpdateValue'][$i],'numeric')."\",
-							`leafAccessDeleteValue`	=	\"".$this->strict($_GET['leafAccessDeleteValue'][$i],'numeric')."\",
-							`leafAccessDraftValue`	=	\"".$this->strict($_GET['leafAccessDraftValue'][$i],'numeric')."\",
-							`leafAccessPrintValue`	=	\"".$this->strict($_GET['leafAccessPrintValue'][$i],'numeric')."\",
-							`leafAccessPostValue`	=	\"".$this->strict($_GET['leafAccessPostValue'][$i],'numeric')."\"
-					WHERE 	`leafAccessId`			=	\"".$this->strict($_GET['leafAccessId'][$i],'numeric')."\"";
+					SET 	`leafAccessCreateValue`	=	'".$this->strict($_GET['leafAccessCreateValue'][$i],'numeric')."',
+							`leafAccessReadValue`	=	'".$this->strict($_GET['leafAccessReadValue'][$i],'numeric')."',
+							`leafAccessUpdateValue`	=	'".$this->strict($_GET['leafAccessUpdateValue'][$i],'numeric')."',
+							`leafAccessDeleteValue`	=	'".$this->strict($_GET['leafAccessDeleteValue'][$i],'numeric')."',
+							`leafAccessDraftValue`	=	'".$this->strict($_GET['leafAccessDraftValue'][$i],'numeric')."',
+							`leafAccessPrintValue`	=	'".$this->strict($_GET['leafAccessPrintValue'][$i],'numeric')."',
+							`leafAccessPostValue`	=	'".$this->strict($_GET['leafAccessPostValue'][$i],'numeric')."'
+					WHERE 	`leafAccessId`			=	'".$this->strict($_GET['leafAccessId'][$i],'numeric')."'";
 			} else if ($this->getVendor()==self::MSSQL) {
 				$sql="
 					UPDATE 	[leafAccess]
@@ -558,7 +558,7 @@ if(isset($_GET['method'])) {
 		if($_GET['field']=='staffId'){
 			$leafAccessObject ->staffId;
 		}
-		if($_GET['field']=='groupId'){
+		if($_GET['field']=='TEAMID'){
 			$leafAccessObject -> group;
 		}
 		if($_GET['field']=='moduleId'){

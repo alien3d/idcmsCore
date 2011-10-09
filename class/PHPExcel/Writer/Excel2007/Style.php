@@ -390,10 +390,10 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		switch ($pBorders->getDiagonalDirection()) {
 			case PHPExcel_Style_Borders::DIAGONAL_UP:
 				$objWriter->writeAttribute('diagonalUp', 	'TRUE');
-				$objWriter->writeAttribute('diagonalDown', 	'false');
+				$objWriter->writeAttribute('diagonalDown', 	'FALSE');
 				break;
 			case PHPExcel_Style_Borders::DIAGONAL_DOWN:
-				$objWriter->writeAttribute('diagonalUp', 	'false');
+				$objWriter->writeAttribute('diagonalUp', 	'FALSE');
 				$objWriter->writeAttribute('diagonalDown', 	'TRUE');
 				break;
 			case PHPExcel_Style_Borders::DIAGONAL_BOTH:
@@ -458,8 +458,8 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		}
 
 		$objWriter->writeAttribute('textRotation', 	$textRotation);
-		$objWriter->writeAttribute('wrapText', 		($pStyle->getAlignment()->getWrapText() ? 'TRUE' : 'false'));
-		$objWriter->writeAttribute('shrinkToFit', 	($pStyle->getAlignment()->getShrinkToFit() ? 'TRUE' : 'false'));
+		$objWriter->writeAttribute('wrapText', 		($pStyle->getAlignment()->getWrapText() ? 'TRUE' : 'FALSE'));
+		$objWriter->writeAttribute('shrinkToFit', 	($pStyle->getAlignment()->getShrinkToFit() ? 'TRUE' : 'FALSE'));
 
 		if ($pStyle->getAlignment()->getIndent() > 0) {
 			$objWriter->writeAttribute('indent', 	$pStyle->getAlignment()->getIndent());
@@ -470,10 +470,10 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		if ($pStyle->getProtection()->getLocked() != PHPExcel_Style_Protection::PROTECTION_INHERIT || $pStyle->getProtection()->getHidden() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
 			$objWriter->startElement('protection');
 			if ($pStyle->getProtection()->getLocked() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
-				$objWriter->writeAttribute('locked', 		($pStyle->getProtection()->getLocked() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'false'));
+				$objWriter->writeAttribute('locked', 		($pStyle->getProtection()->getLocked() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'FALSE'));
 			}
 			if ($pStyle->getProtection()->getHidden() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
-				$objWriter->writeAttribute('hidden', 		($pStyle->getProtection()->getHidden() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'false'));
+				$objWriter->writeAttribute('hidden', 		($pStyle->getProtection()->getHidden() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'FALSE'));
 			}
 			$objWriter->endElement();
 		}
@@ -524,10 +524,10 @@ class PHPExcel_Writer_Excel2007_Style extends PHPExcel_Writer_Excel2007_WriterPa
 		if ($pStyle->getProtection()->getLocked() != PHPExcel_Style_Protection::PROTECTION_INHERIT || $pStyle->getProtection()->getHidden() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
 			$objWriter->startElement('protection');
 			if ($pStyle->getProtection()->getLocked() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
-				$objWriter->writeAttribute('locked', 		($pStyle->getProtection()->getLocked() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'false'));
+				$objWriter->writeAttribute('locked', 		($pStyle->getProtection()->getLocked() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'FALSE'));
 			}
 			if ($pStyle->getProtection()->getHidden() != PHPExcel_Style_Protection::PROTECTION_INHERIT) {
-				$objWriter->writeAttribute('hidden', 		($pStyle->getProtection()->getHidden() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'false'));
+				$objWriter->writeAttribute('hidden', 		($pStyle->getProtection()->getHidden() == PHPExcel_Style_Protection::PROTECTION_PROTECTED ? 'TRUE' : 'FALSE'));
 			}
 			$objWriter->endElement();
 		}

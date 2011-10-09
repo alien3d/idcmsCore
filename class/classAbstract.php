@@ -182,10 +182,11 @@ abstract class ConfigClass
             $this->setApplication('idcmsCore');
         } elseif ($this->getVendor() == self::DB2) {
             require_once ('classDb2.php');
-            $this->setConnection('ADMIN-PC\X2');
-            $this->setUsername('root');
-            $this->setpassword("pa\$\$word4SPH");
-            $this->setApplication('idcmsCore');
+            //$this->setConnection('ADMIN-PC\X2');  // not required
+            $this->setUsername('db2admin');
+            $this->setpassword("123456");
+            $this->setApplication('Core'); 
+            
         } elseif ($this->getVendor() == self::POSTGRESS) {
             require_once ('classPostgress.php');
             $this->setConnection('localhost');

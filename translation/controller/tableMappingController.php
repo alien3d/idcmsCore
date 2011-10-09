@@ -73,45 +73,37 @@ class TableMappingClass extends  ConfigClass {
 	 */
 	function execute() {
 		parent :: __construct();
-
-		$this->q 					=	new Vendor();
-
-		$this->q->vendor			=	$this->getVendor();
-
-		$this->q->leafId			=	$this->getLeafId();
-
-		$this->q->staffId			=	$this->getStaffId();
-
-		$this->q->fieldQuery 		= 	$this->getFieldQuery();
-
-		$this->q->gridQuery			=	$this->getGridQuery();
-
-		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-
-		$this->excel				=	new  PHPExcel();
-
+		//audit property
 		$this->audit 				=	0;
-
 		$this->log					=   0;
-
-		$this->q->log 				= $this->log;
-
+		
+		// default translation property
 		$this->defaultLanguageId  	= 21;
-
-		$this->security 	= 	new Security();
+		
+		$this->q 					=	new Vendor();
+		$this->q->vendor			=	$this->getVendor();
+		$this->q->leafId			=	$this->getLeafId();
+		$this->q->staffId			=	$this->getStaffId();
+		$this->q->fieldQuery 		= 	$this->getFieldQuery();
+		$this->q->gridQuery			=	$this->getGridQuery();
+		$this->q->log 				= 	$this->log;
+		$this->q->audit				= 	$this->audit;
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		
+		$this->security 			= 	new Security();
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
 
-		$this->model = new TableMappingModel();
+		$this->model 				= 	new TableMappingModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
-		$this->documentTrail = new DocumentTrailClass();
+		$this->documentTrail 		= 	new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
 
-
+		$this->excel 				= 	new PHPExcel ();
 
 	}
 
@@ -143,13 +135,13 @@ class TableMappingClass extends  ConfigClass {
 					)
 			VALUES
 					(
-						\"".$this->model->getModuleId()."\",						\"".$this->model->getIconId()."\",
-						\"".$this->model->gettableMappingSequence()."\", 				\"".$this->model->gettableMappingCode()."\",
-						\"".$this->model->gettableMappingPath()."\"	,				\"".$this->model->gettableMappingNote()."\",
-						\"".$this->model->getIsDefault(0,'single')."\",		\"" . $this->model->getIsNew(0,'single') . "\",
-						\"" . $this->model->getIsDraft(0,'single') . "\",		\"" . $this->model->getIsUpdate(0,'single') . "\",
-						\"" . $this->model->getIsDelete(0,'single') . "\",		\"" . $this->model->getIsActive(0,'single') . "\",
-						\"" . $this->model->getIsApproved(0,'single') . "\",	\"" . $this->model->getExecuteBy() . "\",
+						'".$this->model->getModuleId()."',						'".$this->model->getIconId()."',
+						'".$this->model->gettableMappingSequence()."', 				'".$this->model->gettableMappingCode()."',
+						'".$this->model->gettableMappingPath()."'	,				'".$this->model->gettableMappingNote()."',
+						'".$this->model->getIsDefault(0,'single')."',		'" . $this->model->getIsNew(0,'single') . "',
+						'" . $this->model->getIsDraft(0,'single') . "',		'" . $this->model->getIsUpdate(0,'single') . "',
+						'" . $this->model->getIsDelete(0,'single') . "',		'" . $this->model->getIsActive(0,'single') . "',
+						'" . $this->model->getIsApproved(0,'single') . "',	'" . $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 
 
@@ -229,9 +221,9 @@ class TableMappingClass extends  ConfigClass {
 						 	`languageId`,
 							`tableMappingTranslate`
 						) VALUES (
-							\"" . $lastId . "\",
+							'" . $lastId . "',
 							21,
-							\"" . $this->model->gettableMappingNote() . "\"
+							'" . $this->model->gettableMappingNote() . "'
 						);";
 		} else if ($this->getVendor() ==  self::MSSQL) {
 			$sql = "
@@ -307,7 +299,7 @@ class TableMappingClass extends  ConfigClass {
 			FROM 		`tableMapping`
 			WHERE		`tableMapping`.`isActive`		=	1";
 			if($this->model->gettableMappingId(0,'single')) {
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"".$this->model->gettableMappingId(0,'single')."\"";
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`='".$this->model->gettableMappingId(0,'single')."'";
 			}
 		} else if ($this->getVendor()==self::MSSQL) {
 			$sql	=	"
@@ -367,7 +359,7 @@ class TableMappingClass extends  ConfigClass {
 		//echo $sql;
 		$this->q->read($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 		$total	= $this->q->numberRows();
@@ -526,22 +518,22 @@ class TableMappingClass extends  ConfigClass {
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
 					UPDATE 	`tableMapping`
-					SET 	`moduleId`				=	\"".$this->model->getmoduleId()."\",
-							`tableMappingNote`		=	\"".$this->model->gettableMappingNote()."\",
-							`tableMappingSequence`	=	\"".$this->model->gettableMappingSequence()."\",
-							`tableMappingCode`		=	\"".$this->model->gettableMappingCode()."\",
-							`tableMappingPath`		=	\"".$this->model->gettableMappingPath()."\",
-							`iconId`			=	\"".$this->model->getIconId()."\",
-							`isDefault`			=	\"".$this->model->getIsDefault(0,'single')."\",
-							`isActive`			=	\"".$this->model->getIsActive(0,'single')."\",
-							`isNew`				=	\"".$this->model->getIsNew(0,'single')."\",
-							`isDraft`			=	\"".$this->model->getIsDraft(0,'single')."\",
-							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'single')."\",
-							`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
-							`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
-							`executeBy`				=	\"".$this->model->getExecuteBy()."\",
+					SET 	`moduleId`				=	'".$this->model->getmoduleId()."',
+							`tableMappingNote`		=	'".$this->model->gettableMappingNote()."',
+							`tableMappingSequence`	=	'".$this->model->gettableMappingSequence()."',
+							`tableMappingCode`		=	'".$this->model->gettableMappingCode()."',
+							`tableMappingPath`		=	'".$this->model->gettableMappingPath()."',
+							`iconId`			=	'".$this->model->getIconId()."',
+							`isDefault`			=	'".$this->model->getIsDefault(0,'single')."',
+							`isActive`			=	'".$this->model->getIsActive(0,'single')."',
+							`isNew`				=	'".$this->model->getIsNew(0,'single')."',
+							`isDraft`			=	'".$this->model->getIsDraft(0,'single')."',
+							`isUpdate`			=	'".$this->model->getIsUpdate(0,'single')."',
+							`isDelete`			=	'".$this->model->getIsDelete(0,'single')."',
+							`isApproved`		=	'".$this->model->getIsApproved(0,'single')."',
+							`executeBy`				=	'".$this->model->getExecuteBy()."',
 							`executeTime`				=	".$this->model->getExecuteTime()."
-					WHERE 	`tableMappingId`			=	\"".$this->model->gettableMappingId(0,'single')."\"";
+					WHERE 	`tableMappingId`			=	'".$this->model->gettableMappingId(0,'single')."'";
 		}  else if ( $this->getVendor()==self::MSSQL) {
 			$sql="
 					UPDATE 	[tableMapping]
@@ -581,7 +573,7 @@ class TableMappingClass extends  ConfigClass {
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
@@ -606,16 +598,16 @@ class TableMappingClass extends  ConfigClass {
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
 					UPDATE	`tableMapping`
-					SET		`isDefault`			=	\"".$this->model->getIsDefault(0,'single')."\",
-							`isActive`			=	\"".$this->model->getIsActive(0,'single')."\",
-							`isNew`				=	\"".$this->model->getIsNew(0,'single')."\",
-							`isDraft`			=	\"".$this->model->getIsDraft(0,'single')."\",
-							`isUpdate`			=	\"".$this->model->getIsUpdate(0,'single')."\",
-							`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
-							`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
-							`executeBy`			=	\"".$this->model->getExecuteBy()."\",
+					SET		`isDefault`			=	'".$this->model->getIsDefault(0,'single')."',
+							`isActive`			=	'".$this->model->getIsActive(0,'single')."',
+							`isNew`				=	'".$this->model->getIsNew(0,'single')."',
+							`isDraft`			=	'".$this->model->getIsDraft(0,'single')."',
+							`isUpdate`			=	'".$this->model->getIsUpdate(0,'single')."',
+							`isDelete`			=	'".$this->model->getIsDelete(0,'single')."',
+							`isApproved`		=	'".$this->model->getIsApproved(0,'single')."',
+							`executeBy`			=	'".$this->model->getExecuteBy()."',
 							`executeTime`		=	".$this->model->getExecuteTime()."
-					WHERE 	`tableMappingId`	=	\"".$this->model->gettableMappingId()."\"";
+					WHERE 	`tableMappingId`	=	'".$this->model->gettableMappingId()."'";
 
 		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="

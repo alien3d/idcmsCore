@@ -135,7 +135,7 @@ class Vendor
 			$error.=	"Position: " . $errorArray["offset"] . "<br>";
 			$error.=	"Statement: " . $errorArray["sqltext"] . "<br>".$this->password;
 			$this->responce	=	$error;
-			echo json_encode(array("success"=>false,"message"=>'Fail To Connect Database : '.$this->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>'Fail To Connect Database : '.$this->responce));
 			exit();
 		} else {
 
@@ -178,7 +178,7 @@ class Vendor
 				$error.=		"Position: " . $errorArray["offset"] . "<br>";
 				$error.=		"Statement: " . addslashes($errorArray["sqltext"]) . "<br>";
 				$this->responce	=	$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
+				echo json_encode(array("success"=>FALSE,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
 				exit();
 			}
 		} else {
@@ -189,7 +189,7 @@ class Vendor
 			$error.=	"Position: " . $errorArray["offset"] . "<br>";
 			$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
 			$this->responce=$error;
-			echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>'Fail To Parse Query : '.$this->responce));
 			exit();
 		}
 		if ($error == 1) {
@@ -227,7 +227,7 @@ class Vendor
 					$error.=		"Position: " . $errorArray["offset"] . "<br>";
 					$error.=		"Statement: " . addslashes($errorArray["sqltext"]) . "<br>";
 					$this->responce	=	$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
+					echo json_encode(array("success"=>FALSE,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
 					exit();
 				}
 			} else {
@@ -238,7 +238,7 @@ class Vendor
 				$error.=	"Position: " . $errorArray["offset"] . "<br>";
 				$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
 				$this->responce=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+				echo json_encode(array("success"=>FALSE,"message"=>'Fail To Parse Query : '.$this->responce));
 				exit();
 			}
 		}
@@ -280,7 +280,7 @@ class Vendor
 				$error.="Position: " . $errorArray["offset"] . "<br>";
 				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
 				$this->responce=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
+				echo json_encode(array("success"=>FALSE,"message"=>'Fail To Execute Query X : '.$this->responce));
 				exit();
 			}
 		} else {
@@ -291,7 +291,7 @@ class Vendor
 			$error.="Position: " . $errorArray["offset"] . "<br>";
 			$error.="Statement: " . $errorArray["sqltext"] . "<br>";
 			$this->responce=$error;
-			echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>'Fail To Parse Query : '.$this->responce));
 			exit();
 		}
 		if ($resultRow == 1) {
@@ -338,7 +338,7 @@ class Vendor
 					$error.=		"Position: " . $errorArray["offset"] . "<br>";
 					$error.=		"Statement: " . addslashes($errorArray["sqltext"]) . "<br>";
 					$this->responce	=	$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
+					echo json_encode(array("success"=>FALSE,"message"=>'Fail To PUT EXECUTE LOG: '.$this->responce));
 					exit();
 				}
 			} else {
@@ -349,7 +349,7 @@ class Vendor
 				$error.=	"Position: " . $errorArray["offset"] . "<br>";
 				$error.=	"Statement: " . $errorArray["sqltext"] . "<br>";
 				$this->responce=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+				echo json_encode(array("success"=>FALSE,"message"=>'Fail To Parse Query : '.$this->responce));
 				exit();
 			}
 		}
@@ -417,7 +417,7 @@ class Vendor
 			if ($this->module('leafAccessUpdateValue') == 1) {
 				if ($this->audit == 1) {
 					$logAdvanceType = 'U'; // aka update
-					$sqlColumn       = "SHOW COLUMNS FROM \"" . strtoupper($this->tableName) . "\"";
+					$sqlColumn       = "SHOW COLUMNS FROM '" . strtoupper($this->tableName) . "'";
 					$resultColumn    = mysqli_query($this->link, $sqlColumn);
 					if (!$resultColumn) {
 						$this->execute     = 'fail';
@@ -447,7 +447,7 @@ class Vendor
 						//	echo "Jumlah Rekod ".mysqli_num_rows($resultPrevious);
 						while ($rowPrevious = mysqli_fetch_array($resultPrevious)) {
 							foreach ($fieldValue as $field) {
-								$text .= "\"" . $field . "\":\"" . $rowPrevious[$field] . "\",";
+								$text .= "'" . $field . "':'" . $rowPrevious[$field] . "',";
 								$previous[$field] = $rowPrevious[$field];
 							}
 						}
@@ -482,8 +482,8 @@ class Vendor
 					// select the current update file
 					$sqlCurrent    = "
 					SELECT 	*
-					FROM 	\"" . strtoupper($this->tableName) . "\" 
-					WHERE 	\"" . strtoupper($this->primaryKeyName) . "\" ='". $this->primaryKeyValue . "'";
+					FROM 	'" . strtoupper($this->tableName) . "' 
+					WHERE 	'" . strtoupper($this->primaryKeyName) . "' ='". $this->primaryKeyValue . "'";
 					$resultCurrent = mysqli_query($this->link, $sqlCurrent);
 					if ($resultCurrent) {
 						while ($rowCurrent = mysqli_fetch_array($resultCurrent)) {
@@ -494,7 +494,7 @@ class Vendor
 						$this->responce = "Error Query on advance select" . $sqlCurrent;
 					}
 					$textComparison = substr($textComparison, 0, -1); // remove last coma
-					$textComparison = "{ \"tablename\":\"" . strtoupper($this->tableName) . "\",\"ref_uniqueId\":\"" . $this->primaryKeyValue . "\"," . $textComparison . "}"; // json format
+					$textComparison = "{ \"tablename\":'" . strtoupper($this->tableName) . "',\"ref_uniqueId\":'" . $this->primaryKeyValue . "'," . $textComparison . "}"; // json format
 					// update back comparision the previous record
 					$sql             = "
 					UPDATE	LOGADVANCE
@@ -575,7 +575,7 @@ class Vendor
 					$error.="Position: " . $errorArray["offset"] . "<br>";
 					$error.="Statement: " . $errorArray["sqltext"] . "<br>";
 					$this->responce=$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
+					echo json_encode(array("success"=>FALSE,"message"=>'Fail To Execute Query X : '.$this->responce));
 					exit();
 				}
 			} else {
@@ -586,7 +586,7 @@ class Vendor
 				$error.="Position: " . $errorArray["offset"] . "<br>";
 				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
 				$this->responce=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+				echo json_encode(array("success"=>FALSE,"message"=>'Fail To Parse Query : '.$this->responce));
 				exit();
 			}
 
@@ -624,7 +624,7 @@ class Vendor
 					$error.="Position: " . $errorArray["offset"] . "<br>";
 					$error.="Statement: " . $errorArray["sqltext"] . "<br>";
 					$this->responce=$error;
-					echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
+					echo json_encode(array("success"=>FALSE,"message"=>'Fail To Execute Query X : '.$this->responce));
 					exit();
 				}
 			} else {
@@ -635,7 +635,7 @@ class Vendor
 				$error.="Position: " . $errorArray["offset"] . "<br>";
 				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
 				$this->responce=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+				echo json_encode(array("success"=>FALSE,"message"=>'Fail To Parse Query : '.$this->responce));
 				exit();
 			}
 
@@ -672,7 +672,7 @@ class Vendor
 				$error.="Position: " . $errorArray["offset"] . "<br>";
 				$error.="Statement: " . $errorArray["sqltext"] . "<br>";
 				$this->responce=$error;
-				echo json_encode(array("success"=>false,"message"=>'Fail To Execute Query X : '.$this->responce));
+				echo json_encode(array("success"=>FALSE,"message"=>'Fail To Execute Query X : '.$this->responce));
 				exit();
 			}
 		} else {
@@ -683,7 +683,7 @@ class Vendor
 			$error.="Position: " . $errorArray["offset"] . "<br>";
 			$error.="Statement: " . $errorArray["sqltext"] . "<br>";
 			$this->responce=$error;
-			echo json_encode(array("success"=>false,"message"=>'Fail To Parse Query : '.$this->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>'Fail To Parse Query : '.$this->responce));
 			exit();
 		}
 		return ($this->countRecord);
@@ -694,7 +694,7 @@ class Vendor
 	 */
 	public function lastInsertId($sequence)
 	{
-		$resultId = oci_parse($this->link,"SELECT \"".$sequence.".CURRVAL FROM DUAL");
+		$resultId = oci_parse($this->link,"SELECT '".$sequence.".CURRVAL FROM DUAL");
 		oci_execute($resultId);
 		/**
 		 * optional constant OCI_BOTH,OCI_ASSOC,OCI_NUM,OCI_RETURN_NULLS,OCI_RETURN_LOBS
@@ -865,10 +865,10 @@ class Vendor
 					break;
 			}
 			// json format ?
-			$textComparison .= "\"" . $field . "\":[{ \"prev\":\"" . $prev_value[$field] . "\"},
-														{ \"curr\":\"" . $curr_value[$field] . "\"},
-														{ \"type\":\"" . $type . "\"},
-														{ \"diff\":\"" . $diff . "\"}],";
+			$textComparison .= "'" . $field . "':[{ \"prev\":'" . $prev_value[$field] . "'},
+														{ \"curr\":'" . $curr_value[$field] . "'},
+														{ \"type\":'" . $type . "'},
+														{ \"diff\":'" . $diff . "'}],";
 		}
 		return $textComparison;
 	}
@@ -892,7 +892,7 @@ class Vendor
 			$this->query_view($sql);
 			if ($this->num_rows() > 0) {
 				while (($row = $this->fetch_array()) == TRUE) {
-					$strField = "\"" . $tableSearch . "\".\"" . $row['Name'] . "\"";
+					$strField = "'" . $tableSearch . "'.'" . $row['Name'] . "'";
 					$key      = array_search($strField, $filterArray, TRUE);
 					if ($i > 0 && strlen($key) == 0) {
 						$strSearch .= " OR  ";
@@ -920,50 +920,50 @@ class Vendor
 			for ($i = 0; $i < count($filter); $i++) {
 				switch ($filter[$i]['data']['type']) {
 					case 'string':
-						$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" LIKE '%" . $this->realEscapeString($filter[$i]['data']['value']) . "%'";
+						$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."' LIKE '%" . $this->realEscapeString($filter[$i]['data']['value']) . "%'";
 						break;
 					case 'list':
 						$split = explode(",", $filter[$i]['data']['value']);
 						foreach ($split as $split_a) {
-							$str .= "\"". $split_a . "\",";
+							$str .= "'". $split_a . "',";
 						}
 						$str = $this->removeComa($str);
 						if (count($split) > 0 && strlen($filter[$i]['data']['value']) > 0) {
-							$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\"  IN ($str)";
+							$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."'  IN ($str)";
 						}
 						break;
 					case 'boolean':
-						$qs .= " AND \"". $filter[$i]['column'] ."\" = " . $this->realEscapeString($filter[$i]['data']['value']);
+						$qs .= " AND '". $filter[$i]['column'] ."' = " . $this->realEscapeString($filter[$i]['data']['value']);
 						break;
 					case 'numeric':
 						switch ($filter[$i]['data']['comparison']) {
 							case 'ne':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" != " . $this->realEscapeString($filter[$i]['data']['value']);
+								$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."' != " . $this->realEscapeString($filter[$i]['data']['value']);
 								break;
 							case 'eq':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" = " . $this->realEscapeString($filter[$i]['data']['value']);
+								$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."' = " . $this->realEscapeString($filter[$i]['data']['value']);
 								break;
 							case 'lt':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" < " . $this->realEscapeString($filter[$i]['data']['value']);
+								$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."' < " . $this->realEscapeString($filter[$i]['data']['value']);
 								break;
 							case 'gt':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" > " . $this->realEscapeString($filter[$i]['data']['value']);
+								$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."' > " . $this->realEscapeString($filter[$i]['data']['value']);
 								break;
 						}
 						break;
 					case 'date':
 						switch ($filter[$i]['data']['comparison']) {
 							case 'ne':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" != \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
+								$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."' != '". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
 								break;
 							case 'eq':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" = \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
+								$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."' = '". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
 								break;
 							case 'lt':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" < \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
+								$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."' < '". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
 								break;
 							case 'gt':
-								$qs .= " AND \"". $filter[$i]['table'] ."\".\"". $filter[$i]['column'] ."\" > \"". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "\"";
+								$qs .= " AND '". $filter[$i]['table'] ."'.'". $filter[$i]['column'] ."' > '". date('Y-m-d', strtotime($filter[$i]['data']['value'])) . "'";
 								break;
 						}
 						break;
@@ -982,12 +982,14 @@ class Vendor
 	 */
 	public function isDatetime($dateTime)
 	{
+		/*
 		if (preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/", $dateTime, $matches)) {
 			if (checkdate($matches[2], $matches[3], $matches[1])) {
 				return TRUE;
 			}
 		}
 		return false;
+		*/
 	}
 	/**
 	 * // this is for extjs .remove coma trail

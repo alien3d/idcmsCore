@@ -109,8 +109,8 @@ class FolderAccessClass extends ConfigClass
 						`module`.`moduleId`,
 						`folder`.`folderId`,
 						`folder`.`folderNote`,
-						`group`.`groupId`,
-						`group`.`groupNote`,
+						`theme`.`TEAMID`,
+						`theme`.`groupNote`,
 						`folderAccess`.`folderAccessId`,
 						(CASE `folderAccess`.`folderAccessValue`
 							WHEN '1' THEN
@@ -121,20 +121,20 @@ class FolderAccessClass extends ConfigClass
 				FROM 	`folderAccess`
 				JOIN	`folder`
 				USING 	(`folderId`)
-				JOIN 	`group`
-				USING 	(`groupId`)
+				JOIN 	`theme`
+				USING 	(`TEAMID`)
 				JOIN 	`module`
 				USING	(`moduleId`)
 				WHERE 	`module`.`isActive` =1
 				AND		`folder`.`isActive`=1
-				AND		`group`.`isActive` =1";
-            if ($this->model->getGroupId()) {
-                $sql .= " AND `group`.`groupId`=\"" . $this->model->getGroupId() .
-                 "\"";
+				AND		`theme`.`isActive` =1";
+            if ($this->model->getTEAMID()) {
+                $sql .= " AND `theme`.`TEAMID`='" . $this->model->getTEAMID() .
+                 "'";
             }
             if ($this->model->getModuleId()) {
-                $sql .= " AND `folder`.`moduleId`=\"" .
-                 $this->model->getModuleId() . "\"";
+                $sql .= " AND `folder`.`moduleId`='" .
+                 $this->model->getModuleId() . "'";
             }
         } else 
             if ($this->getVendor() == self::MSSQL) {
@@ -143,8 +143,8 @@ class FolderAccessClass extends ConfigClass
 						[module].[moduleId],
 						[folder].[folderId],
 						[folder].[folderNote],
-						[group].[groupId],
-						[group].[groupNote],
+						[team].[teamId],
+						[team].[groupNote],
 						[folderAccess].[folderAccessId],
 						(CASE [folderAccess].[folderAccessValue]
 							WHEN '1' THEN
@@ -155,20 +155,20 @@ class FolderAccessClass extends ConfigClass
 				FROM 	[folderAccess]
 				JOIN	[folder]
 				ON 		[folder].[folderId]=[folderAccess].[folderId]
-				JOIN 	[group]
-				ON 		[group].[groupId]=[folderAccess].[groupId]
+				JOIN 	[team]
+				ON 		[team].[teamId]=[folderAccess].\"teamId\"
 				JOIN 	[module]
 				ON		[folder].[moduleId]=[module].[moduleId]
 				WHERE 	[folder].[isActive]=1
-				AND		[group].[isActive]=1
+				AND		[team].[isActive]=1
 				AND		[module].[moduleId]=1";
-                if ($this->model->getGroupId()) {
-                    $sql .= " AND [group].[groupId]=\"" .
-                     $this->model->getGroupId() . "\"";
+                if ($this->model->getTEAMID()) {
+                    $sql .= " AND [team].[teamId]='" .
+                     $this->model->getTEAMID() . "'";
                 }
                 if ($this->model->getModuleId()) {
-                    $sql .= " AND [folder].[moduleId]=\"" .
-                     $this->model->getModuleId() . "\"";
+                    $sql .= " AND [folder].[moduleId]='" .
+                     $this->model->getModuleId() . "'";
                 }
             } else 
                 if ($this->getVendor() == self::ORACLE) {
@@ -177,8 +177,8 @@ class FolderAccessClass extends ConfigClass
 						MODULE.MODULEID 	AS 	\"moduleId\",
 						FOLDER.FOLDERID 	AS 	\"folderId\",
 						FOLDER.FOLDERNOTE 	AS 	\"folderNote\",
-						GROUP_.GROUPID 		AS 	\"groupId\",
-						GROUP_.GROUPNOTE 	AS 	\"groupNote\",
+						TEAM.TEAMID 		AS 	\"teamId\",
+						TEAM.GROUPNOTE 	AS 	\"groupNote\",
 						FOLDERACCESS.FOLDERACCESSID AS \"folderAccessId\",
 						(CASE	FOLDERACCESS.FOLDERACCESSVALUE
 							WHEN '1' THEN
@@ -189,20 +189,20 @@ class FolderAccessClass extends ConfigClass
 				FROM 	FOLDERACCESS
 				JOIN	FOLDER
 				ON		FOLDER.FOLDERID		=	FOLDERACCESS.FOLDERID
-				JOIN 	GROUP_
-				ON		GROUP_.GROUPID		=	FOLDERACCESS.GROUPID
+				JOIN 	TEAM
+				ON		TEAM.TEAMID		=	FOLDERACCESS.TEAMID
 				JOIN 	MODULE
 				ON		MODULE.MODULEID		=	FOLDER.MODULEID
 				WHERE 	FOLDER.ISACTIVE		=	1
 				AND		MODULE.ISACTIVE		=	1
-				AND		GROUP_.ISACTIVE		=	1";
-                    if ($this->model->getGroupId()) {
-                        $sql .= " AND GROUP_.GROUPID=\"" .
-                         $this->model->getGroupId() . "\"";
+				AND		TEAM.ISACTIVE		=	1";
+                    if ($this->model->getTEAMID()) {
+                        $sql .= " AND TEAM.TEAMID='" .
+                         $this->model->getTEAMID() . "'";
                     }
                     if ($this->model->getModuleId()) {
-                        $sql .= " AND FOLDER.MODULEID=\"" .
-                         $this->model->getModuleId() . "\"";
+                        $sql .= " AND FOLDER.MODULEID='" .
+                         $this->model->getModuleId() . "'";
                     }
                 }
         //echo $sql;
@@ -266,10 +266,10 @@ class FolderAccessClass extends ConfigClass
              $this->model->getPrimaryKeyName() . "` ";
             for ($i = 0; $i < $loop; $i ++) {
                 $sql .= "
-				WHEN \"" .
-                 $this->model->getFolderAccessId($i, 'array') . "\"
-				THEN \"" .
-                 $this->model->getFolderAccessValue($i, 'array') . "\"";
+				WHEN '" .
+                 $this->model->getFolderAccessId($i, 'array') . "'
+				THEN '" .
+                 $this->model->getFolderAccessValue($i, 'array') . "'";
             }
             $sql .= "	END ";
             $sql .= " WHERE 	`" . $this->model->getPrimaryKeyName() . "`		IN	(" .
@@ -393,7 +393,7 @@ if (isset($_GET['method'])) {
         $folderAccessObject->update();
     }
     if (isset($_GET['field'])) {
-        if ($_GET['field'] == 'groupId') {
+        if ($_GET['field'] == 'TEAMID') {
             $folderAccessObject->group();
         }
         if ($_GET['field'] == 'moduleId') {

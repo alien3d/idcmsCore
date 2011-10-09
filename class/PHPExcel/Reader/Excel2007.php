@@ -928,13 +928,13 @@ class PHPExcel_Reader_Excel2007 implements PHPExcel_Reader_IReader
 									$docHeaderFooter->setDifferentFirst(false);
 								}
 								if (isset($xmlSheet->headerFooter["scaleWithDoc"]) &&
-								((string)$xmlSheet->headerFooter["scaleWithDoc"] == 'false' || (string)$xmlSheet->headerFooter["scaleWithDoc"] == '0')) {
+								((string)$xmlSheet->headerFooter["scaleWithDoc"] == 'FALSE' || (string)$xmlSheet->headerFooter["scaleWithDoc"] == '0')) {
 									$docHeaderFooter->setScaleWithDocument(false);
 								} else {
 									$docHeaderFooter->setScaleWithDocument(TRUE);
 								}
 								if (isset($xmlSheet->headerFooter["alignWithMargins"]) &&
-								((string)$xmlSheet->headerFooter["alignWithMargins"] == 'false' || (string)$xmlSheet->headerFooter["alignWithMargins"] == '0')) {
+								((string)$xmlSheet->headerFooter["alignWithMargins"] == 'FALSE' || (string)$xmlSheet->headerFooter["alignWithMargins"] == '0')) {
 									$docHeaderFooter->setAlignWithMargins(false);
 								} else {
 									$docHeaderFooter->setAlignWithMargins(TRUE);

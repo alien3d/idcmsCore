@@ -117,8 +117,8 @@ class ModuleAccessClass extends ConfigClass
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
 						`module`.`moduleNote`,
-						`group`.`groupId`,
-						`group`.`groupNote`,
+						`theme`.`TEAMID`,
+						`theme`.`groupNote`,
 						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
@@ -128,13 +128,13 @@ class ModuleAccessClass extends ConfigClass
 				FROM 	`moduleAccess`
 				JOIN	`module`
 				USING 	(`moduleId`)
-				JOIN 	`group`
-				USING 	(`groupId`)
+				JOIN 	`theme`
+				USING 	(`TEAMID`)
 				WHERE 	`module`.`isActive` 	=	1
-				AND		`group`.`isActive`		=	1";
-            if ($this->model->getGroupId()) {
-                $sql .= " AND `group`.`groupId`=\"" . $this->model->getGroupId() .
-                 "\"";
+				AND		`theme`.`isActive`		=	1";
+            if ($this->model->getTEAMID()) {
+                $sql .= " AND `theme`.`TEAMID`='" . $this->model->getTEAMID() .
+                 "'";
             }
         } else 
             if ($this->getVendor() == self::MSSQL) {
@@ -142,8 +142,8 @@ class ModuleAccessClass extends ConfigClass
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
 						`module`.`moduleNote`,
-						`group`.`groupId`,
-						`group`.`groupNote`,
+						`theme`.`TEAMID`,
+						`theme`.`groupNote`,
 						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
@@ -153,13 +153,13 @@ class ModuleAccessClass extends ConfigClass
 				FROM 	`moduleAccess`
 				JOIN	`module`
 				USING 	(`moduleId`)
-				JOIN 	`group`
-				USING 	(`groupId`)
+				JOIN 	`theme`
+				USING 	(`TEAMID`)
 				WHERE 	`module`.`isActive` 	=	1
-				AND		`group`.`isActive`		=	1";
-                if ($this->model->getGroupId()) {
-                    $sql .= " AND `group`.`groupId`=\"" .
-                     $this->model->getGroupId() . "\"";
+				AND		`theme`.`isActive`		=	1";
+                if ($this->model->getTEAMID()) {
+                    $sql .= " AND `theme`.`TEAMID`='" .
+                     $this->model->getTEAMID() . "'";
                 }
             } else 
                 if ($this->getVendor() == self::ORACLE) {
@@ -167,8 +167,8 @@ class ModuleAccessClass extends ConfigClass
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
 						`module`.`moduleNote`,
-						`group`.`groupId`,
-						`group`.`groupNote`,
+						`theme`.`TEAMID`,
+						`theme`.`groupNote`,
 						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
@@ -178,13 +178,13 @@ class ModuleAccessClass extends ConfigClass
 				FROM 	`moduleAccess`
 				JOIN	`module`
 				USING 	(`moduleId`)
-				JOIN 	`group`
-				USING 	(`groupId`)
+				JOIN 	`theme`
+				USING 	(`TEAMID`)
 				WHERE 	`module`.`isActive` 	=	1
-				AND		`group`.`isActive`		=	1";
-                    if ($this->model->getGroupId()) {
-                        $sql .= " AND `group`.`groupId`=\"" .
-                         $this->model->getGroupId() . "\"";
+				AND		`theme`.`isActive`		=	1";
+                    if ($this->model->getTEAMID()) {
+                        $sql .= " AND `theme`.`TEAMID`='" .
+                         $this->model->getTEAMID() . "'";
                     }
                 }
         //echo $sql;
@@ -208,7 +208,7 @@ class ModuleAccessClass extends ConfigClass
             exit();
         }
         $items = array();
-        while ($row = $this->q->fetchAssoc()) {
+        while (($row = $this->q->fetchAssoc()) == TRUE) {
             $items[] = $row;
         }
         if ($total == 1) {
@@ -248,10 +248,10 @@ class ModuleAccessClass extends ConfigClass
              $this->model->getPrimaryKeyName() . "` ";
             for ($i = 0; $i < $loop; $i ++) {
                 $sql .= "
-				WHEN \"" .
-                 $this->model->getModuleAccessId($i, 'array') . "\"
-				THEN \"" .
-                 $this->model->getModuleAccessValue($i, 'array') . "\"";
+				WHEN '" .
+                 $this->model->getModuleAccessId($i, 'array') . "'
+				THEN '" .
+                 $this->model->getModuleAccessValue($i, 'array') . "'";
             }
             $sql .= "	END ";
             $sql .= " WHERE 	`" . $this->model->getPrimaryKeyName() . "`		IN	(" .
@@ -333,7 +333,7 @@ if (isset($_GET['method'])) {
         $moduleAccessObject->update();
     }
     if (isset($_GET['field'])) {
-        if ($_GET['method'] == 'read' && $_GET['field'] == 'groupId') {
+        if ($_GET['method'] == 'read' && $_GET['field'] == 'TEAMID') {
             $moduleAccessObject->group();
         }
     }

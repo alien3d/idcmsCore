@@ -113,9 +113,9 @@ class LeafGroupAccessClass extends ConfigClass
 						`folder`.`folderNote`,
 						`leaf`.`leafNote`,
 						`module`.`moduleNote`,
-						`group`.`groupNote`,
+						`theme`.`groupNote`,
 						`leafGroupAccess`.`leafId`,
-						`leafGroupAccess`.`groupId`,
+						`leafGroupAccess`.`TEAMID`,
 						`leafGroupAccess`.`leafGroupAccessId`,
 						(CASE `leafGroupAccess`.`leafAccessCreateValue`
 							WHEN '1' THEN
@@ -166,23 +166,23 @@ class LeafGroupAccessClass extends ConfigClass
 				USING	(`moduleId`)
 				JOIN	(`folder`)
 				USING	(`folderId`)
-				JOIN	`group`
-				USING	(`groupId`)
+				JOIN	`theme`
+				USING	(`TEAMID`)
 				WHERE 	`leaf`.`isActive`		=	1
 				AND		`folder`.`isActive`		=	1
 				AND		`module`.`isActive`	=	1
-				AND		`group`.`isActive`		=	1";
-            if ($this->groupId) {
-                $sql .= " AND `leafGroupAccess`.`groupId`=\"" .
-                 $this->strict($this->groupId, 'numeric') . "\"";
+				AND		`theme`.`isActive`		=	1";
+            if ($this->TEAMID) {
+                $sql .= " AND `leafGroupAccess`.`TEAMID`='" .
+                 $this->strict($this->TEAMID, 'numeric') . "'";
             }
             if ($this->moduleId) {
-                $sql .= " AND `leaf`.`moduleId`=\"" .
-                 $this->strict($this->moduleId, 'numeric') . "\"";
+                $sql .= " AND `leaf`.`moduleId`='" .
+                 $this->strict($this->moduleId, 'numeric') . "'";
             }
             if ($this->folderId) {
-                $sql .= " AND `leaf`.`folderId`=\"" .
-                 $this->strict($this->folderId, 'numeric') . "\"";
+                $sql .= " AND `leaf`.`folderId`='" .
+                 $this->strict($this->folderId, 'numeric') . "'";
             }
         } else 
             if ($this->getVendor() == self::MSSQL) {
@@ -192,9 +192,9 @@ class LeafGroupAccessClass extends ConfigClass
 						[folder].[folderNote],
 						[leaf].[leafNote],
 						[module].[moduleNote],
-						[group].[groupNote],
+						[team].[groupNote],
 						[leafGroupAccess].[leafId],
-						[leafGroupAccess].[groupId],
+						[leafGroupAccess].\"teamId\",
 						[leafGroupAccess].[leafGroupAccessId],
 						(CASE [leafGroupAccess].[leafAccessCreateValue`
 							WHEN '1' THEN
@@ -245,23 +245,23 @@ class LeafGroupAccessClass extends ConfigClass
 				ON		[leaf].[moduleId]=[module].[moduleId]
 				JOIN	[folder]
 				ON		[leaf].[folderId] = [folder].[folderId]
-				JOIN	[group]
-				ON		[leafGroupAccess].[groupId]= [group].[groupId]
+				JOIN	[team]
+				ON		[leafGroupAccess].\"teamId\"= [team].[teamId]
 				WHERE 	[leaf].[isActive]		=	1
 				AND		[folder].[isActive]		=	1
 				AND		[module].[isActive]	=	1
-				AND		[group].[isActive]		=	1";
-                if ($this->groupId) {
-                    $sql .= " AND [leafGroupAccess].[groupId]=\"" .
-                     $this->strict($this->groupId, 'numeric') . "\"";
+				AND		[team].[isActive]		=	1";
+                if ($this->TEAMID) {
+                    $sql .= " AND [leafGroupAccess].\"teamId\"='" .
+                     $this->strict($this->TEAMID, 'numeric') . "'";
                 }
                 if ($this->moduleId) {
-                    $sql .= " AND [leaf].[moduleId]=\"" .
-                     $this->strict($this->moduleId, 'numeric') . "\"";
+                    $sql .= " AND [leaf].[moduleId]='" .
+                     $this->strict($this->moduleId, 'numeric') . "'";
                 }
                 if ($this->folderId) {
-                    $sql .= " AND [leaf].[folderId]=\"" .
-                     $this->strict($this->folderId, 'numeric') . "\"";
+                    $sql .= " AND [leaf].[folderId]='" .
+                     $this->strict($this->folderId, 'numeric') . "'";
                 }
             } else 
                 if ($this->getVendor() == self::ORACLE) {
@@ -271,9 +271,9 @@ class LeafGroupAccessClass extends ConfigClass
 						FOLDER.FOLDERNOTE,
 						LEAF.LEAFNOTE,
 						MODULE.MODULENOTE,
-						GROUP_.GROUPNOTE,
+						TEAM.GROUPNOTE,
 						LEAFGROUPACCESS.LEAFID,
-						LEAFGROUPACCESS.GROUPID,
+						LEAFGROUPACCESS.TEAMID,
 						LEAFGROUPACCESS.LEAFGROUPACCESSID,
 						(CASE LEAFGROUPACCESS.leafAccessCreateValue
 							WHEN '1' THEN
@@ -324,23 +324,23 @@ class LeafGroupAccessClass extends ConfigClass
 				USING	(MODULEID)
 				JOIN	(FOLDER)
 				USING	(FOLDERID)
-				JOIN	GROUP_
-				USING	(GROUPID)
+				JOIN	TEAM
+				USING	(TEAMID)
 				WHERE 	LEAF.ISACTIVE		=	1
 				AND		FOLDER.ISACTIVE		=	1
 				AND		MODULE.ISACTIVE	=	1
-				AND		GROUP_.ISACTIVE		=	1";
-                    if ($this->groupId) {
-                        $sql .= " AND LEAFGROUPACCESS.GROUPID=\"" .
-                         $this->strict($this->groupId, 'numeric') . "\"";
+				AND		TEAM.ISACTIVE		=	1";
+                    if ($this->TEAMID) {
+                        $sql .= " AND LEAFGROUPACCESS.TEAMID='" .
+                         $this->strict($this->TEAMID, 'numeric') . "'";
                     }
                     if ($this->moduleId) {
-                        $sql .= " AND LEAF.MODULEID=\"" .
-                         $this->strict($this->moduleId, 'numeric') . "\"";
+                        $sql .= " AND LEAF.MODULEID='" .
+                         $this->strict($this->moduleId, 'numeric') . "'";
                     }
                     if ($this->folderId) {
-                        $sql .= " AND LEAF.FOLDERID=\"" .
-                         $this->strict($this->folderId, 'numeric') . "\"";
+                        $sql .= " AND LEAF.FOLDERID='" .
+                         $this->strict($this->folderId, 'numeric') . "'";
                     }
                 }
         //echo $sql;
@@ -390,70 +390,70 @@ class LeafGroupAccessClass extends ConfigClass
             if ($this->getVendor() == self::MYSQL) {
                 $sql = "
 					UPDATE 	`leafGroupAccess`
-					SET 	`leafAccessCreateValue`	=	\"" .
+					SET 	`leafAccessCreateValue`	=	'" .
                  $this->strict($data_array[2], 'boolean') .
-                 "\",
-							`leafAccessReadValue`	=	\"" .
+                 "',
+							`leafAccessReadValue`	=	'" .
                  $this->strict($data_array[2], 'boolean') .
-                 "\",
-							`leafAccessUpdateValue`	=	\"" .
+                 "',
+							`leafAccessUpdateValue`	=	'" .
                  $this->strict($data_array[3], 'boolean') .
-                 "\",
-							`leafAccessDeleteValue`	=	\"" .
+                 "',
+							`leafAccessDeleteValue`	=	'" .
                  $this->strict($data_array[4], 'boolean') .
-                 "\",
-							`leafAccessPrintValue`	=	\"" .
-                 $this->strict($data_array[5], 'boolean') . "\",
-							`leafAccessPostValue`	=	\"" .
+                 "',
+							`leafAccessPrintValue`	=	'" .
+                 $this->strict($data_array[5], 'boolean') . "',
+							`leafAccessPostValue`	=	'" .
                  $this->strict($data_array[6], 'boolean') .
-                 "\"
-					WHERE 	`leafGroupAccessId`	=	\"" .
-                 $this->strict($data_array[0], 'numeric') . "\"";
+                 "'
+					WHERE 	`leafGroupAccessId`	=	'" .
+                 $this->strict($data_array[0], 'numeric') . "'";
                  //echo $sql."<br>";
             } else 
                 if ($this->getVendor() == self::MSSQL) {
                     $sql = "
 					UPDATE 	[leafGroupAccess]
-					SET 	[leafAccessCreateValue]	=	\"" .
+					SET 	[leafAccessCreateValue]	=	'" .
                      $this->strict($data_array[2], 'boolean') .
-                     "\",
-							[leafAccessReadValue]	=	\"" .
+                     "',
+							[leafAccessReadValue]	=	'" .
                      $this->strict($data_array[2], 'boolean') .
-                     "\",
-							[leafAccessUpdateValue]	=	\"" .
+                     "',
+							[leafAccessUpdateValue]	=	'" .
                      $this->strict($data_array[3], 'boolean') .
-                     "\",
-							[leafAccessDeleteValue]	=	\"" .
+                     "',
+							[leafAccessDeleteValue]	=	'" .
                      $this->strict($data_array[4], 'boolean') .
-                     "\",
-							[leafAccessPrintValue]	=	\"" .
-                     $this->strict($data_array[5], 'boolean') . "\",
-							[leafAccessPostValue]	=	\"" .
+                     "',
+							[leafAccessPrintValue]	=	'" .
+                     $this->strict($data_array[5], 'boolean') . "',
+							[leafAccessPostValue]	=	'" .
                      $this->strict($data_array[6], 'boolean') .
-                     "\"
-					WHERE 	[leafGroupAccessId]	=	\"" .
-                     $this->strict($data_array[0], 'numeric') . "\"";
+                     "'
+					WHERE 	[leafGroupAccessId]	=	'" .
+                     $this->strict($data_array[0], 'numeric') . "'";
                 } else 
                     if ($this->getVendor() == self::ORACLE) {
                         $sql = "
 					UPDATE 	LEAFGROUPACCESS
-					SET 	leafAccessCreateValue	=	\"" .
-                         $this->strict($data_array[2], 'boolean') . "\",
-							leafAccessReadValue		=	\"" .
+					SET 	leafAccessCreateValue	=	'" .
+                         $this->strict($data_array[2], 'boolean') . "',
+							leafAccessReadValue		=	'" .
                          $this->strict($data_array[2], 'boolean') .
-                         "\",
-							leafAccessUpdateValue	=	\"" .
+                         "',
+							leafAccessUpdateValue	=	'" .
                          $this->strict($data_array[3], 'boolean') .
-                         "\",
-							leafAccessDeleteValue	=	\"" .
-                         $this->strict($data_array[4], 'boolean') . "\",
-							leafAccessPrintValue	=	\"" .
-                         $this->strict($data_array[5], 'boolean') . "\",
-							leafAccessPostValue		=	\"" .
+                         "',
+							leafAccessDeleteValue	=	'" .
+                         $this->strict($data_array[4], 'boolean') . "',
+							leafAccessPrintValue	=	'" .
+                         $this->strict($data_array[5], 'boolean') . "',
+							leafAccessPostValue		=	'" .
                          $this->strict($data_array[6], 'boolean') .
-                         "\"
-					WHERE 	LEAFGROUPACCESSID		=	\"" .
-                         $this->strict($data_array[0], 'numeric') . "\"";
+                         "'
+					WHERE 	LEAFGROUPACCESSID		=	'" .
+                         $this->strict($data_array[0], 'numeric') . "'";
                     }
             $this->q->update($sql);
             if ($this->q->execute == 'fail') {
@@ -536,7 +536,7 @@ if (isset($_GET['method'])) {
         if ($_GET['field'] == 'staffId') {
             $leafGroupAccessObject->staffId();
         }
-        if ($_GET['field'] == 'groupId') {
+        if ($_GET['field'] == 'TEAMID') {
             $leafGroupAccessObject->group;
         }
         if ($_GET['field'] == 'moduleId') {

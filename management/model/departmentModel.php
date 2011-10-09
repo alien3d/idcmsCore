@@ -63,10 +63,10 @@ class DepartmentModel extends ValidationClass
             $this->setExecuteBy($_SESSION['staffId']);
         }
         if ($this->getVendor() == self::MYSQL) {
-            $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+            $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
         } else 
             if ($this->getVendor() == self::MSSQL) {
-                $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+                $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
             } else 
                 if ($this->getVendor() == self::ORACLE) {
                     $this->setExecuteTime(
@@ -107,7 +107,7 @@ class DepartmentModel extends ValidationClass
             if ($_GET['isDefault'][$i] == 'TRUE') {
                 $this->setIsDefault(1, $i, 'array');
             } else 
-                if ($_GET['default'] == 'false') {
+                if ($_GET['default'] == 'FALSE') {
                     $this->setIsDefault(0, $i, 'array');
                 }
             if ($_GET['isNew'][$i] == 'TRUE') {
@@ -128,7 +128,7 @@ class DepartmentModel extends ValidationClass
             if ($_GET['isDelete'][$i] == 'TRUE') {
                 $this->setIsDelete(1, $i, 'array');
             } else 
-                if ($_GET['isDelete'][$i] == 'false') {
+                if ($_GET['isDelete'][$i] == 'FALSE') {
                     $this->setIsDelete(0, $i, 'array');
                 }
             if ($_GET['isActive'][$i] == 'TRUE') {

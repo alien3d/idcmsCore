@@ -4,7 +4,7 @@ $theme ='theme';
 		if (strlen($_SESSION['staffId'])==0) {
 			// check if the any session equal to zero redirect to index.php
 			$page="../index.php?message=Masa tamat";
-			print"<script>parent.location.replace(\"".$page."\")</script>";
+			print"<script>parent.location.replace('".$page."')</script>";
 		}
 		include('../../Connections/main.php');
 			?>

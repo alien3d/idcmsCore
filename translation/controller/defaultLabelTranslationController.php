@@ -73,29 +73,38 @@ class DefaultLabelTranslationClass extends ConfigClass
     function execute ()
     {
         parent::__construct();
+        //audit property
+        $this->audit 				= 	0;
+        $this->log 					=	0;
+        
+        //default translation property
+        $this->defaultLanguageId 	= 21;
+        
         $this->q = new Vendor();
-        $this->q->vendor = $this->getVendor();
-        $this->q->leafId = $this->getLeafId();
-        $this->q->staffId = $this->getStaffId();
-        $this->q->fieldQuery = $this->getFieldQuery();
-        $this->q->gridQuery = $this->getGridQuery();
+        $this->q->vendor 			=	$this->getVendor();
+        $this->q->leafId 			= 	$this->getLeafId();
+        $this->q->staffId 			= 	$this->getStaffId();
+        $this->q->fieldQuery 		= 	$this->getFieldQuery();
+        $this->q->gridQuery 		= 	$this->getGridQuery();
+        $this->q->log 				= 	$this->log;
+        $this->q->audit 			= 	$this->audit; 
         $this->q->connect($this->getConnection(), $this->getUsername(), 
         $this->getDatabase(), $this->getPassword());
-        $this->excel = new PHPExcel();
-        $this->audit = 0;
-        $this->log = 0;
-        $this->q->log = $this->log;
-        $this->defaultLanguageId = 21;
-        $this->security = new Security();
+       
+        $this->security 			= 	new Security();
         $this->security->setVendor($this->getVendor());
         $this->security->setLeafId($this->getLeafId());
         $this->security->execute();
-        $this->model = new DefaultLabelTranslateModel();
+        
+        $this->model 				= 	new DefaultLabelTranslateModel();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
-        $this->documentTrail = new DocumentTrailClass();
+        
+        $this->documentTrail 		=	new DocumentTrailClass();
         $this->documentTrail->setVendor($this->getVendor());
         $this->documentTrail->execute();
+        
+        $this->excel				=	new PHPExcel();
     }
     /* (non-PHPdoc)
 	 * @see config::create()
@@ -123,17 +132,17 @@ class DefaultLabelTranslationClass extends ConfigClass
 					)
 			VALUES
 					(
-						\"" . $this->model->getdefaultLabelTranslation() . "\",						\"" .
-             $this->model->getdefaultLabelTranslationEnglish() . "\"
-						\"" . $this->model->getIsDefault(0, 'single') . "\",				\"" .
-             $this->model->getIsNew(0, 'single') . "\",
-						\"" . $this->model->getIsDraft(0, 'single') . "\",				\"" .
-             $this->model->getIsUpdate(0, 'single') . "\",
-						\"" . $this->model->getIsDelete(0, 'single') . "\",				\"" .
-             $this->model->getIsActive(0, 'single') . "\",
-						\"" .
-             $this->model->getIsApproved(0, 'single') . "\",			\"" .
-             $this->model->getExecuteBy() . "\",
+						'" . $this->model->getdefaultLabelTranslation() . "',						'" .
+             $this->model->getdefaultLabelTranslationEnglish() . "'
+						'" . $this->model->getIsDefault(0, 'single') . "',				'" .
+             $this->model->getIsNew(0, 'single') . "',
+						'" . $this->model->getIsDraft(0, 'single') . "',				'" .
+             $this->model->getIsUpdate(0, 'single') . "',
+						'" . $this->model->getIsDelete(0, 'single') . "',				'" .
+             $this->model->getIsActive(0, 'single') . "',
+						'" .
+             $this->model->getIsApproved(0, 'single') . "',			'" .
+             $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
 					);";
         } else 
@@ -151,7 +160,7 @@ class DefaultLabelTranslationClass extends ConfigClass
 			VALUES
 				(
 						'" . $this->model->getdefaultLabelTranslation() . "',		    '" .
-                 $this->model->getdefaultLabelTranslationEnglish() . "\"
+                 $this->model->getdefaultLabelTranslationEnglish() . "'
 						'" . $this->model->getIsDefault(0, 'single') . "',			'" .
                  $this->model->getIsNew(0, 'single') . "',
 						'" . $this->model->getIsDraft(0, 'single') . "',				'" .
@@ -221,8 +230,8 @@ class DefaultLabelTranslationClass extends ConfigClass
 			WHERE 1 ";
             if ($this->model->getdefaultLabelTranslationId(0, 'single')) {
                 $sql .= " AND `" . $this->model->getTableName() . "`.`" .
-                 $this->model->getPrimaryKeyName() . "`=\"" .
-                 $this->model->getdefaultLabelTranslationId(0, 'single') . "\"";
+                 $this->model->getPrimaryKeyName() . "`='" .
+                 $this->model->getdefaultLabelTranslationId(0, 'single') . "'";
             }
         } else 
             if ($this->getVendor() == self::MSSQL) {
@@ -412,21 +421,21 @@ class DefaultLabelTranslationClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 					UPDATE 	`defaultLabelTranslation`
-					SET 	`defaultLabelTranslationNote`		=	\"" .
-             $this->model->getdefaultLabelTranslationNote() . "\",
-							`defaultLabelTranslationEnglish`	=	\"" .
-             $this->model->getdefaultLabelTranslationEnglish() . "\",
-							`isDefault`		=	\"" . $this->model->getIsDefault(0, 'single') . "\",
-							`isActive`		=	\"" . $this->model->getIsActive(0, 'single') . "\",
-							`isNew`			=	\"" . $this->model->getIsNew(0, 'single') . "\",
-							`isDraft`		=	\"" . $this->model->getIsDraft(0, 'single') . "\",
-							`isUpdate`		=	\"" . $this->model->getIsUpdate(0, 'single') . "\",
-							`isDelete`		=	\"" . $this->model->getIsDelete(0, 'single') . "\",
-							`isApproved`	=	\"" . $this->model->getIsApproved(0, 'single') . "\",
-							`executeBy`			=	\"" . $this->model->getExecuteBy() . "\",
+					SET 	`defaultLabelTranslationNote`		=	'" .
+             $this->model->getdefaultLabelTranslationNote() . "',
+							`defaultLabelTranslationEnglish`	=	'" .
+             $this->model->getdefaultLabelTranslationEnglish() . "',
+							`isDefault`		=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`isActive`		=	'" . $this->model->getIsActive(0, 'single') . "',
+							`isNew`			=	'" . $this->model->getIsNew(0, 'single') . "',
+							`isDraft`		=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`		=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`		=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`isApproved`	=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`			=	" . $this->model->getExecuteTime() . "
-					WHERE 	`defaultLabelTranslationId`			=	\"" .
-             $this->model->getdefaultLabelTranslationId(0, 'single') . "\"";
+					WHERE 	`defaultLabelTranslationId`			=	'" .
+             $this->model->getdefaultLabelTranslationId(0, 'single') . "'";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "
@@ -493,17 +502,17 @@ class DefaultLabelTranslationClass extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 					UPDATE	`defaultLabelTranslation`
-					SET		`isDefault`		=	\"" . $this->model->getIsDefault(0, 'single') . "\",
-							`isActive`		=	\"" . $this->model->getIsActive(0, 'single') . "\",
-							`isNew`			=	\"" . $this->model->getIsNew(0, 'single') . "\",
-							`isDraft`		=	\"" . $this->model->getIsDraft(0, 'single') . "\",
-							`isUpdate`		=	\"" . $this->model->getIsUpdate(0, 'single') . "\",
-							`isDelete`		=	\"" . $this->model->getIsDelete(0, 'single') . "\",
-							`isApproved`	=	\"" . $this->model->getIsApproved(0, 'single') . "\",
-							`executeBy`			=	\"" . $this->model->getExecuteBy() . "\",
+					SET		`isDefault`		=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`isActive`		=	'" . $this->model->getIsActive(0, 'single') . "',
+							`isNew`			=	'" . $this->model->getIsNew(0, 'single') . "',
+							`isDraft`		=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`		=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`		=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`isApproved`	=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`			=	" . $this->model->getExecuteTime() . "
-					WHERE 	`defaultLabelTranslationId`		=	\"" .
-             $this->model->getdefaultLabelTranslationId() . "\"";
+					WHERE 	`defaultLabelTranslationId`		=	'" .
+             $this->model->getdefaultLabelTranslationId() . "'";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "

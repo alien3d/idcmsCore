@@ -65,26 +65,34 @@ class ReligionDetailClass extends ConfigClass {
 	 */
 	function execute() {
 		parent::__construct ();
-		$this->q = new Vendor ();
-		$this->q->vendor = $this->getVendor ();
-		$this->q->leafId = $this->getLeafId ();
-		$this->q->staffId = $this->getStaffId ();
-		$this->q->fieldQuery = $this->getFieldQuery ();
-		$this->q->gridQuery = $this->getGridQuery ();
-		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		$this->excel = new PHPExcel ();
-		$this->audit = 0;
-		$this->log = 1;
-		$this->q->log = $this->log;
+		
+		// audit property
+		$this->audit 			= 	0;
+		$this->log 				= 	1;	
+		$this->q 				= 	new Vendor ();
+		$this->q->vendor 		= 	$this->getVendor ();
+		$this->q->leafId 		=	$this->getLeafId ();
+		$this->q->staffId 		= 	$this->getStaffId ();
+		$this->q->fieldQuery 	= 	$this->getFieldQuery ();
+		$this->q->gridQuery 	= 	$this->getGridQuery ();
+		$this->q->log 			= 	$this->log;
+		$this->q->audit			=	$this->audit;
+		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );			
+		
+
 		$this->model = new ReligionDetailModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
+		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->setStaffId ( $this->getStaffId () );
 		$this->documentTrail->setLanguageId ( $this->getLanguageId () );
 		$this->documentTrail->setLeafId ( $this->getLeafId () );
 		$this->documentTrail->execute ();
+		
+		$this->excel = new PHPExcel ();
+		
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -111,12 +119,12 @@ class ReligionDetailClass extends ConfigClass {
 					)
 			VALUES
 					(
-						\"" . $this->model->getReligionId () . "\",			\"" . $this->model->getReligionDetailTitle () . "\",					
-						\"" . $this->model->getReligionDetailDesc () . "\",	\"" . $this->model->getIsDefault ( 0, 'single' ) . "\",
-						\"" . $this->model->getIsNew ( 0, 'single' ) . "\",			\"" . $this->model->getIsDraft ( 0, 'single' ) . "\",
-						\"" . $this->model->getIsUpdate ( 0, 'single' ) . "\",		\"" . $this->model->getIsDelete ( 0, 'single' ) . "\",
-						\"" . $this->model->getIsActive ( 0, 'single' ) . "\",		\"" . $this->model->getIsApproved ( 0, 'single' ) . "\",
-						\"" . $this->model->getExecuteBy () . "\",				" . $this->model->getExecuteTime () . "
+						'" . $this->model->getReligionId () . "',			'" . $this->model->getReligionDetailTitle () . "',					
+						'" . $this->model->getReligionDetailDesc () . "',	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',				" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -227,10 +235,10 @@ class ReligionDetailClass extends ConfigClass {
 					ON		`religionDetail`.`executeBy` = `staff`.`staffId`
 					WHERE 	 " . $this->auditFilter;
 			if ($this->model->getReligionDetailId ( 0, 'single' )) {
-				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`=\"" . $this->model->getReligionDetailId ( 0, 'single' ) . "\"";
+				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
 			}
 			if ($this->model->getReligionId ()) {
-				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getMasterForeignKeyName () . "`=\"" . $this->model->getReligionId () . "\"";
+				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getMasterForeignKeyName () . "`='" . $this->model->getReligionId () . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -466,17 +474,17 @@ class ReligionDetailClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			UPDATE 	`religionDetail`
-			SET 	`religionDetailDesc`	=	\"" . $this->model->getReligionDetailDesc () . "\",
-					`isDefault`				=	\"" . $this->model->getIsDefault ( 0, 'single' ) . "\",
-					`isNew`					=	\"" . $this->model->getIsNew ( 0, 'single' ) . "\",
-					`isDraft`				=	\"" . $this->model->getIsDraft ( 0, 'single' ) . "\",
-					`isUpdate`				=	\"" . $this->model->getIsUpdate ( 0, 'single' ) . "\",
-					`isDelete`				=	\"" . $this->model->getIsDelete ( 0, 'single' ) . "\",
-					`isActive`				=	\"" . $this->model->getIsActive ( 0, 'single' ) . "\",
-					`isApproved`			=	\"" . $this->model->getIsApproved ( 0, 'single' ) . "\",
-					`executeBy`				=	\"" . $this->model->getExecuteBy () . "\",
+			SET 	`religionDetailDesc`	=	'" . $this->model->getReligionDetailDesc () . "',
+					`isDefault`				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+					`isNew`					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					`isDraft`				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					`isUpdate`				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					`isDelete`				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					`isActive`				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					`isApproved`			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					`executeBy`				=	'" . $this->model->getExecuteBy () . "',
 					`executeTime`			=	" . $this->model->getExecuteTime () . "
-			WHERE 	`religionDetailId`		=	\"" . $this->model->getReligionDetailId ( 0, 'single' ) . "\"";
+			WHERE 	`religionDetailId`		=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			UPDATE 	[religionDetail]
@@ -540,16 +548,16 @@ class ReligionDetailClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			UPDATE 	`religionDetail`
-			SET 	`isDefault`			=	\"" . $this->model->getIsDefault ( 0, 'single' ) . "\",
-					`isNew`				=	\"" . $this->model->getIsNew ( 0, 'single' ) . "\",
-					`isDraft`			=	\"" . $this->model->getIsDraft ( 0, 'single' ) . "\",
-					`isUpdate`			=	\"" . $this->model->getIsUpdate ( 0, 'single' ) . "\",
-					`isDelete`			=	\"" . $this->model->getIsDelete ( 0, 'single' ) . "\",
-					`isActive`			=	\"" . $this->model->getIsActive ( 0, 'single' ) . "\",
-					`isApproved`		=	\"" . $this->model->getIsApproved ( 0, 'single' ) . "\",
-					`executeBy`			=	\"" . $this->model->getExecuteBy () . "\",
+			SET 	`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+					`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					`isDraft`			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 					`executeTime`		=	" . $this->model->getExecuteTime () . "
-			WHERE 	`religionDetailId`	=	\"" . $this->model->getReligionDetailId ( 0, 'single' ) . "\"";
+			WHERE 	`religionDetailId`	=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			UPDATE 	[religionDetail]
@@ -630,7 +638,7 @@ class ReligionDetailClass extends ConfigClass {
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
 			} else if ($this->getVendor () == self::ORACLE) {
-				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE \"" . strtoupper ( $this->model->getPrimaryKeyName () ) . "\"";
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE '" . strtoupper ( $this->model->getPrimaryKeyName () ) . "'";
 			}
 			switch ($systemCheck) {
 				case 'isDefault' :
@@ -708,7 +716,7 @@ class ReligionDetailClass extends ConfigClass {
 			WHERE [" . $this->model->getPrimaryKeyName () . "] IN (" . $this->model->getReligionDetailIdAll () . ")";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
-			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "\" IN (" . $this->model->getReligionDetailIdAll () . ")";
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "' IN (" . $this->model->getReligionDetailIdAll () . ")";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -733,7 +741,7 @@ class ReligionDetailClass extends ConfigClass {
 			$sql = "
 			SELECT	`religionDetail`
 			FROM 	`religionDetail`
-			WHERE 	`religionDetailDesc` 	= 	\"" . $this->model->getReligionDetailDesc () . "\"
+			WHERE 	`religionDetailDesc` 	= 	'" . $this->model->getReligionDetailDesc () . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -824,7 +832,7 @@ class ReligionDetailClass extends ConfigClass {
 			echo json_encode ( array ("success" => 'TRUE', "message" => "File generated", "filename" => $filename ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => 'false', "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => 'FALSE', "message" => "File not generated" ) );
 			exit ();
 		}
 	}

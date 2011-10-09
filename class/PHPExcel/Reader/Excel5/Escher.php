@@ -695,7 +695,7 @@ class PHPExcel_Reader_Excel5_Escher
 		//	(ord($data[$pos + 2]) << 16) | (ord($data[$pos + 3]) << 24);
 
 		// FIX: represent numbers correctly on 64-bit system
-		// http://sourceforge.net/tracker/index.php?func=detail&aid=1487372&group_id=99160&atid=623334
+		// http://sourceforge.net/tracker/index.php?func=detail&aid=1487372&TEAMid=99160&atid=623334
 		$_or_24 = ord($data[$pos + 3]);
 		if ($_or_24 >= 128) {
 			// negative number

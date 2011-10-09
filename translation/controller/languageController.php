@@ -65,31 +65,36 @@ class LanguageClass  extends ConfigClass {
 	 */
 	function execute() {
 		parent::__construct();
-
-		$this->q              	= new Vendor();
-		$this->q->vendor      	= $this->getVendor();
-		$this->q->leafId      	= $this->getLeafId();
-		$this->q->staffId     	= $this->getStaffId();
-		$this->q->fieldQuery	= $this->getFieldQuery();
-		$this->q->gridQuery   = $this->getGridQuery();
-
-		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		$this->excel         = new PHPExcel();
+		//audit property
 		$this->audit         = 0;
 		$this->log           = 1;
-		$this->q->log        = $this->log;
-
-		$this->model         = new LanguageModel();
+		
+		// default translation property
+		$this->defaultLanguageId  	= 21;
+		
+		$this->q              	= 	new Vendor();
+		$this->q->vendor      	=	$this->getVendor();
+		$this->q->leafId      	= 	$this->getLeafId();
+		$this->q->staffId     	= 	$this->getStaffId();
+		$this->q->fieldQuery	= 	$this->getFieldQuery();
+		$this->q->gridQuery		= 	$this->getGridQuery();
+		$this->q->log        	= 	$this->log;
+		$this->q->audit		 	=	$this->audit;
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		
+		$this->model         	= 	new LanguageModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
-		$this->documentTrail = new DocumentTrailClass();
+		$this->documentTrail 	= 	new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());
 		$this->documentTrail->setLanguageId($this->getLanguageId());
 		$this->documentTrail->setLeafId($this->getLeafId());
 		$this->documentTrail->execute();
-
+		
+		$this->excel         	=	new PHPExcel();
+		
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -118,12 +123,12 @@ class LanguageClass  extends ConfigClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getLanguageCode() . "\",
-						\"". $this->model->getLanguageDesc() . "\",		\"". $this->model->getIsDefault(0,'single') . "\",
-						\"". $this->model->getIsNew(0,'single') . "\",					\"". $this->model->getIsDraft(0,'single') . "\",
-						\"". $this->model->getIsUpdate(0,'single') . "\",				\"". $this->model->getIsDelete(0,'single') . "\",
-						\"". $this->model->getIsActive(0,'single') . "\",				\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getExecuteBy() . "\",								" . $this->model->getExecuteTime() . "
+						'". $this->model->getLanguageCode() . "',
+						'". $this->model->getLanguageDesc() . "',		'". $this->model->getIsDefault(0,'single') . "',
+						'". $this->model->getIsNew(0,'single') . "',					'". $this->model->getIsDraft(0,'single') . "',
+						'". $this->model->getIsUpdate(0,'single') . "',				'". $this->model->getIsDelete(0,'single') . "',
+						'". $this->model->getIsActive(0,'single') . "',				'". $this->model->getIsApproved(0,'single') . "',
+						'". $this->model->getExecuteBy() . "',								" . $this->model->getExecuteTime() . "
 					);";
 		}  else if ( $this->getVendor()==self::MSSQL) {
 			$sql="
@@ -158,19 +163,19 @@ class LanguageClass  extends ConfigClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getLanguageSequence() . "\",	\"". $this->model->getLanguageSequence() . "\",
-						\"". $this->model->getLanguageDesc(0,'single') . "\",		\"". $this->model->getIsDefault(0,'single') . "\",
-						\"". $this->model->getIsNew(0,'single') . "\",					\"". $this->model->getIsDraft(0,'single') . "\",
-						\"". $this->model->getIsUpdate(0,'single') . "\",				\"". $this->model->getIsDelete(0,'single') . "\",
-						\"". $this->model->getIsActive(0,'single') . "\",				\"". $this->model->getIsApproved(0,'single') . "\",
-						\"". $this->model->getExecuteBy() . "\",								" . $this->model->getExecuteTime() . "
+						'". $this->model->getLanguageSequence() . "',	'". $this->model->getLanguageSequence() . "',
+						'". $this->model->getLanguageDesc(0,'single') . "',		'". $this->model->getIsDefault(0,'single') . "',
+						'". $this->model->getIsNew(0,'single') . "',					'". $this->model->getIsDraft(0,'single') . "',
+						'". $this->model->getIsUpdate(0,'single') . "',				'". $this->model->getIsDelete(0,'single') . "',
+						'". $this->model->getIsActive(0,'single') . "',				'". $this->model->getIsApproved(0,'single') . "',
+						'". $this->model->getExecuteBy() . "',								" . $this->model->getExecuteTime() . "
 					);";
 
 		}
 		$this->q->create($sql);
 
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 
@@ -230,7 +235,7 @@ class LanguageClass  extends ConfigClass {
 					ON		`language`.`executeBy` = `staff`.`staffId`
 					WHERE 	".$this->auditFilter;
 			if ($this->model->getLanguageId(0,'single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getLanguageId(0,'single') . "\"";
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`='". $this->model->getLanguageId(0,'single') . "'";
 
 			}
 
@@ -488,18 +493,18 @@ class LanguageClass  extends ConfigClass {
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
 				UPDATE 	`language`
-				SET		`languageCode`		=	\"".$this->model->getLanguageCode()."\",
-						`languageDesc` 		= 	\"".$this->model->getLanguageDesc()."\",
-						`isDefault`			=	\"".$this->model->getIsDefault(0,'single')."\",
-						`isActive`			=	\"".$this->model->getIsActive(0,'single')."\",
-						`isNew`				=	\"".$this->model->getIsNew(0,'single')."\",
-						`isDraft`			=	\"".$this->model->getIsDraft(0,'single')."\",
-						`isUpdate`			=	\"".$this->model->getIsUpdate(0,'single')."\",
-						`isDelete`			=	\"".$this->model->getIsDelete(0,'single')."\",
-						`isApproved`		=	\"".$this->model->getIsApproved(0,'single')."\",
-						`executeBy`			=	\"".$this->model->getExecuteBy()."\",
+				SET		`languageCode`		=	'".$this->model->getLanguageCode()."',
+						`languageDesc` 		= 	'".$this->model->getLanguageDesc()."',
+						`isDefault`			=	'".$this->model->getIsDefault(0,'single')."',
+						`isActive`			=	'".$this->model->getIsActive(0,'single')."',
+						`isNew`				=	'".$this->model->getIsNew(0,'single')."',
+						`isDraft`			=	'".$this->model->getIsDraft(0,'single')."',
+						`isUpdate`			=	'".$this->model->getIsUpdate(0,'single')."',
+						`isDelete`			=	'".$this->model->getIsDelete(0,'single')."',
+						`isApproved`		=	'".$this->model->getIsApproved(0,'single')."',
+						`executeBy`			=	'".$this->model->getExecuteBy()."',
 						`executeTime`		=	".$this->model->getExecuteTime()."
-				WHERE 	`languageId`		=	\"".$this->model->getLanguageId(0,'single')."\"";
+				WHERE 	`languageId`		=	'".$this->model->getLanguageId(0,'single')."'";
 		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="
 				UPDATE 	[language]
@@ -537,7 +542,7 @@ class LanguageClass  extends ConfigClass {
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
@@ -560,16 +565,16 @@ class LanguageClass  extends ConfigClass {
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
 				UPDATE 	`language`
-				SET 	`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
-						`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
-						`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
-						`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
-						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
-						`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
-						`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-						`executeBy`		=	\"".$this->model->getBy(0,'single')."\",
+				SET 	`isDefault`		=	'".$this->model->getIsDefault(0,'single')."',
+						`isActive`		=	'".$this->model->getIsActive(0,'single')."',
+						`isNew`			=	'".$this->model->getIsNew(0,'single')."',
+						`isDraft`		=	'".$this->model->getIsDraft(0,'single')."',
+						`isUpdate`		=	'".$this->model->getIsUpdate(0,'single')."',
+						`isDelete`		=	'".$this->model->getIsDelete(0,'single')."',
+						`isApproved`	=	'".$this->model->getIsApproved(0,'single')."',
+						`executeBy`		=	'".$this->model->getBy(0,'single')."',
 						`executeTime`	=	".$this->model->getExecuteTime()."
-				WHERE 	`languageId`	=	\"".$this->model->getDepartrmentId(0,'single')."\"";
+				WHERE 	`languageId`	=	'".$this->model->getDepartrmentId(0,'single')."'";
 		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="
 				UPDATE 	[language]
@@ -603,7 +608,7 @@ class LanguageClass  extends ConfigClass {
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
@@ -759,7 +764,7 @@ class LanguageClass  extends ConfigClass {
 			$sql = "
 			SELECT	*
 			FROM 	`language`
-			WHERE 	`languageCode` 	= 	\"". $this->model->getLanguageCode(). "\"
+			WHERE 	`languageCode` 	= 	'". $this->model->getLanguageCode(). "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() ==  self::MSSQL) {
 			$sql = "

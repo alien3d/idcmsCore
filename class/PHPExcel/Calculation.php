@@ -2714,7 +2714,7 @@ class PHPExcel_Calculation {
 									 				} else {
 									 					$cellRef = $matches[6].$matches[7].':'.$matches[9].$matches[10];
 									 					if ($matches[2] > '') {
-									 						$matches[2] = trim($matches[2],"\"'");
+									 						$matches[2] = trim($matches[2],"''");
 									 						//							echo '$cellRef='.$cellRef.' in worksheet '.$matches[2].'<br />';
 									 						$this->_writeDebug('Evaluating Cell Range '.$cellRef.' in worksheet '.$matches[2]);
 									 						$cellValue = $this->extractCellRange($cellRef, $pCell->getParent()->getParent()->getSheetByName($matches[2]), false);
@@ -2734,7 +2734,7 @@ class PHPExcel_Calculation {
 									 				} else {
 									 					$cellRef = $matches[6].$matches[7];
 									 					if ($matches[2] > '') {
-									 						$matches[2] = trim($matches[2],"\"'");
+									 						$matches[2] = trim($matches[2],"''");
 									 						//							echo '$cellRef='.$cellRef.' in worksheet '.$matches[2].'<br />';
 									 						$this->_writeDebug('Evaluating Cell '.$cellRef.' in worksheet '.$matches[2]);
 									 						if ($pCell->getParent()->getParent()->getSheetByName($matches[2])->cellExists($cellRef)) {

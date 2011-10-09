@@ -70,7 +70,7 @@ class TableMappingModel extends ValidationClass
             $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
         } else 
             if ($this->getVendor() == self::MSSQL) {
-                $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+                $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
             } else 
                 if ($this->getVendor() == self::ORACLE) {
                     $this->setExecuteTime(
@@ -111,7 +111,7 @@ class TableMappingModel extends ValidationClass
             if ($_GET['isDefault'][$i] == 'true') {
                 $this->setIsDefault(1, $i, 'array');
             } else 
-                if ($_GET['default'] == 'false') {
+                if ($_GET['default'] == 'FALSE') {
                     $this->setIsDefault(0, $i, 'array');
                 }
             if ($_GET['isNew'][$i] == 'true') {
@@ -132,7 +132,7 @@ class TableMappingModel extends ValidationClass
             if ($_GET['isDelete'][$i] == 'true') {
                 $this->setIsDelete(1, $i, 'array');
             } else 
-                if ($_GET['isDelete'][$i] == 'false') {
+                if ($_GET['isDelete'][$i] == 'FALSE') {
                     $this->setIsDelete(0, $i, 'array');
                 }
             if ($_GET['isActive'][$i] == 'true') {

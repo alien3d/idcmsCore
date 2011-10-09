@@ -106,7 +106,7 @@ class TeamModel extends ValidationClass
             if ($_GET['isDefault'][$i] == 'TRUE') {
                 $this->setIsDefault(1, $i, 'array');
             } else 
-                if ($_GET['default'] == 'false') {
+                if ($_GET['default'] == 'FALSE') {
                     $this->setIsDefault(0, $i, 'array');
                 }
             if ($_GET['isNew'][$i] == 'TRUE') {
@@ -127,7 +127,7 @@ class TeamModel extends ValidationClass
             if ($_GET['isDelete'][$i] == 'TRUE') {
                 $this->setIsDelete(1, $i, 'array');
             } else 
-                if ($_GET['isDelete'][$i] == 'false') {
+                if ($_GET['isDelete'][$i] == 'FALSE') {
                     $this->setIsDelete(0, $i, 'array');
                 }
             if ($_GET['isActive'][$i] == 'TRUE') {

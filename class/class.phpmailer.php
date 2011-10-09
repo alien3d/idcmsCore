@@ -1158,7 +1158,7 @@ class PHPMailer {
 		switch($this->message_type) {
 			case 'plain':
 				$result .= $this->HeaderLine('Content-Transfer-Encoding', $this->Encoding);
-				$result .= sprintf("Content-Type: %s; charset=\"%s\"", $this->ContentType, $this->CharSet);
+				$result .= sprintf("Content-Type: %s; charset=\"%s'", $this->ContentType, $this->CharSet);
 				break;
 			case 'attachments':
 			case 'alt_attachments':
@@ -1166,12 +1166,12 @@ class PHPMailer {
 					$result .= sprintf("Content-Type: %s;%s\ttype=\"text/html\";%s\tboundary=\"%s\"%s", 'multipart/related', $this->LE, $this->LE, $this->boundary[1], $this->LE);
 				} else {
 					$result .= $this->HeaderLine('Content-Type', 'multipart/mixed;');
-					$result .= $this->TextLine("\tboundary=\"" . $this->boundary[1] . '"');
+					$result .= $this->TextLine("\tboundary='" . $this->boundary[1] . '"');
 				}
 				break;
 			case 'alt':
 				$result .= $this->HeaderLine('Content-Type', 'multipart/alternative;');
-				$result .= $this->TextLine("\tboundary=\"" . $this->boundary[1] . '"');
+				$result .= $this->TextLine("\tboundary='" . $this->boundary[1] . '"');
 				break;
 		}
 
@@ -1272,7 +1272,7 @@ class PHPMailer {
 			$encoding = $this->Encoding;
 		}
 		$result .= $this->TextLine('--' . $boundary);
-		$result .= sprintf("Content-Type: %s; charset = \"%s\"", $contentType, $charSet);
+		$result .= sprintf("Content-Type: %s; charset = \"%s'", $contentType, $charSet);
 		$result .= $this->LE;
 		$result .= $this->HeaderLine('Content-Transfer-Encoding', $encoding);
 		$result .= $this->LE;
@@ -1526,11 +1526,11 @@ class PHPMailer {
 			case 'phrase':
 				if (!preg_match('/[\200-\377]/', $str)) {
 					// Can't use addslashes as we don't know what value has magic_quotes_sybase
-					$encoded = addcslashes($str, "\0..\37\177\\\"");
+					$encoded = addcslashes($str, "\0..\37\177\\'");
 					if (($str == $encoded) && !preg_match('/[^A-Za-z0-9!#$%&\'*+\/=?^_`{|}~ -]/', $str)) {
 						return ($encoded);
 					} else {
-						return ("\"$encoded\"");
+						return ("'$encoded'");
 					}
 				}
 				$x = preg_match_all('/[^\040\041\043-\133\135-\176]/', $str, $matches);
@@ -1724,7 +1724,7 @@ class PHPMailer {
 
 		switch (strtolower($position)) {
 			case 'phrase':
-				$encoded = preg_replace("/([^A-Za-z0-9!*+\/ -])/e", "'='.sprintf('%02X', ord('\\1'))", $encoded);
+				$encoded = preg_replace("/([^A-Za-z0-9!*+\\/ -])/e", "'='.sprintf('%02X', ord('\\1'))", $encoded);
 				break;
 			case 'comment':
 				$encoded = preg_replace("/([\(\)\"])/e", "'='.sprintf('%02X', ord('\\1'))", $encoded);
@@ -2015,7 +2015,7 @@ class PHPMailer {
 					if ( strlen($basedir) > 1 && substr($basedir,-1) != '/') { $basedir .= '/'; }
 					if ( strlen($directory) > 1 && substr($directory,-1) != '/') { $directory .= '/'; }
 					if ( $this->AddEmbeddedImage($basedir.$directory.$filename, md5($filename), $filename, 'base64',$mimeType) ) {
-						$message = preg_replace("/".$images[1][$i]."=\"".preg_quote($url, '/')."\"/Ui", $images[1][$i]."=\"".$cid."\"", $message);
+						$message = preg_replace("/".$images[1][$i]."='".preg_quote($url, '/')."'/Ui", $images[1][$i]."='".$cid."'", $message);
 					}
 				}
 			}

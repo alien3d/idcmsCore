@@ -106,7 +106,7 @@ class LogClass extends ConfigClass {
 			USING	(`staffId`)
 			WHERE ";
 			if ($_POST ['logId']) {
-				$sql .= " AND `log`.`logId`=\"" . $this->strict ( $_POST ['logId'], 'n' ) . "\"";
+				$sql .= " AND `log`.`logId`='" . $this->strict ( $_POST ['logId'], 'n' ) . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -118,7 +118,7 @@ class LogClass extends ConfigClass {
 			ON		[log].[staffId]= [staff].[staffId]
 			WHERE ";
 			if ($_POST ['logId']) {
-				$sql .= " AND `log`.`logId`=\"" . $this->strict ( $_POST ['logId'], 'n' ) . "\"";
+				$sql .= " AND `log`.`logId`='" . $this->strict ( $_POST ['logId'], 'n' ) . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -130,7 +130,7 @@ class LogClass extends ConfigClass {
 			ON		STAFF.STAFFID= LOG.STAFFID
 			WHERE ";
 			if ($_POST ['logId']) {
-				$sql .= " AND `log`.`logId`=\"" . $this->strict ( $_POST ['logId'], 'n' ) . "\"";
+				$sql .= " AND `log`.`logId`='" . $this->strict ( $_POST ['logId'], 'n' ) . "'";
 			}
 		}
 		/**

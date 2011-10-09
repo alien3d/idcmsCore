@@ -65,31 +65,33 @@ class ThemeClass  extends ConfigClass {
 	 */
 	function execute() {
 		parent::__construct();
-
-		$this->q              	= new Vendor();
-		$this->q->vendor      	= $this->getVendor();
-		$this->q->leafId      	= $this->getLeafId();
-		$this->q->staffId     	= $this->getStaffId();
-		$this->q->fieldQuery	= $this->getFieldQuery();
-		$this->q->gridQuery   = $this->getGridQuery();
-
+		// audit property
+		$this->audit         	= 0;
+		$this->log           	= 1;
+		
+		$this->q              	= 	new Vendor();
+		$this->q->vendor      	= 	$this->getVendor();
+		$this->q->leafId      	= 	$this->getLeafId();
+		$this->q->staffId     	= 	$this->getStaffId();
+		$this->q->fieldQuery	= 	$this->getFieldQuery();
+		$this->q->gridQuery   	= 	$this->getGridQuery();
+		$this->q->log        	= 	$this->log;	
+		$this->q->audit        	=	$this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		$this->excel         = new PHPExcel();
-		$this->audit         = 0;
-		$this->log           = 1;
-		$this->q->log        = $this->log;
-
-		$this->model         = new ThemeModel();
+		
+		$this->model         	= 	new ThemeModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
-		$this->documentTrail = new DocumentTrailClass();
+		$this->documentTrail 	= new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());
 		$this->documentTrail->setLanguageId($this->getLanguageId());
 		$this->documentTrail->setLeafId($this->getLeafId());
 		$this->documentTrail->execute();
 
+		$this->excel         = 	new PHPExcel();
+		
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -119,12 +121,12 @@ class ThemeClass  extends ConfigClass {
 					)
 			VALUES
 					(
-						\"". $this->model->getThemeSequence() . "\",				\"". $this->model->getThemeCode() . "\",
-						\"". $this->model->getThemeNote() . "\",					\"". $this->model->getThemeNote() . "\",
-						\"". $this->model->getIsDefault(0,'single') . "\",			\"". $this->model->getIsNew(0,'single') . "\",					
-						\"". $this->model->getIsDraft(0,'single') . "\",			\"". $this->model->getIsUpdate(0,'single') . "\",				
-						\"". $this->model->getIsDelete(0,'single') . "\",			\"". $this->model->getIsActive(0,'single') . "\",				
-						\"". $this->model->getIsApproved(0,'single') . "\",			\"". $this->model->getExecuteBy() . "\",								
+						'". $this->model->getThemeSequence() . "',				'". $this->model->getThemeCode() . "',
+						'". $this->model->getThemeNote() . "',					'". $this->model->getThemeNote() . "',
+						'". $this->model->getIsDefault(0,'single') . "',			'". $this->model->getIsNew(0,'single') . "',					
+						'". $this->model->getIsDraft(0,'single') . "',			'". $this->model->getIsUpdate(0,'single') . "',				
+						'". $this->model->getIsDelete(0,'single') . "',			'". $this->model->getIsActive(0,'single') . "',				
+						'". $this->model->getIsApproved(0,'single') . "',			'". $this->model->getExecuteBy() . "',								
 						" . $this->model->getExecuteTime() . "
 					);";
 		}  else if ( $this->getVendor()==self::MSSQL) {
@@ -182,7 +184,7 @@ class ThemeClass  extends ConfigClass {
 		$this->q->create($sql);
 
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 
@@ -252,7 +254,7 @@ class ThemeClass  extends ConfigClass {
 					ON		`theme`.`executeBy` = `staff`.`staffId`
 					WHERE 	".$this->auditFilter;
 			if ($this->model->getThemeId(0,'single')) {
-				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`=\"". $this->model->getThemeId(0,'single') . "\"";
+				$sql .= " AND `".$this->model->getTableName()."`.`".$this->model->getPrimaryKeyName()."`='". $this->model->getThemeId(0,'single') . "'";
 
 			}
 
@@ -515,19 +517,19 @@ class ThemeClass  extends ConfigClass {
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
 				UPDATE 	`theme`
-				SET		`themeSequence`	=	\"".$this->model->getThemeSequence()."\",
-						`themeCode`		=	\"".$this->model->getThemeCode()."\",
-						`themeNote` 	= 	\"".$this->model->getThemeNote()."\",
-						`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
-						`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
-						`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
-						`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
-						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
-						`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
-						`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-						`executeBy`		=	\"".$this->model->getExecuteBy()."\",
+				SET		`themeSequence`	=	'".$this->model->getThemeSequence()."',
+						`themeCode`		=	'".$this->model->getThemeCode()."',
+						`themeNote` 	= 	'".$this->model->getThemeNote()."',
+						`isDefault`		=	'".$this->model->getIsDefault(0,'single')."',
+						`isActive`		=	'".$this->model->getIsActive(0,'single')."',
+						`isNew`			=	'".$this->model->getIsNew(0,'single')."',
+						`isDraft`		=	'".$this->model->getIsDraft(0,'single')."',
+						`isUpdate`		=	'".$this->model->getIsUpdate(0,'single')."',
+						`isDelete`		=	'".$this->model->getIsDelete(0,'single')."',
+						`isApproved`	=	'".$this->model->getIsApproved(0,'single')."',
+						`executeBy`		=	'".$this->model->getExecuteBy()."',
 						`executeTime`	=	".$this->model->getExecuteTime()."
-				WHERE 	`themeId`		=	\"".$this->model->getThemeId(0,'single')."\"";
+				WHERE 	`themeId`		=	'".$this->model->getThemeId(0,'single')."'";
 		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="
 				UPDATE 	[theme]
@@ -565,7 +567,7 @@ class ThemeClass  extends ConfigClass {
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
@@ -588,16 +590,16 @@ class ThemeClass  extends ConfigClass {
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
 				UPDATE 	`theme`
-				SET 	`isDefault`		=	\"".$this->model->getIsDefault(0,'single')."\",
-						`isActive`		=	\"".$this->model->getIsActive(0,'single')."\",
-						`isNew`			=	\"".$this->model->getIsNew(0,'single')."\",
-						`isDraft`		=	\"".$this->model->getIsDraft(0,'single')."\",
-						`isUpdate`		=	\"".$this->model->getIsUpdate(0,'single')."\",
-						`isDelete`		=	\"".$this->model->getIsDelete(0,'single')."\",
-						`isApproved`	=	\"".$this->model->getIsApproved(0,'single')."\",
-						`executeBy`		=	\"".$this->model->getBy(0,'single')."\",
+				SET 	`isDefault`		=	'".$this->model->getIsDefault(0,'single')."',
+						`isActive`		=	'".$this->model->getIsActive(0,'single')."',
+						`isNew`			=	'".$this->model->getIsNew(0,'single')."',
+						`isDraft`		=	'".$this->model->getIsDraft(0,'single')."',
+						`isUpdate`		=	'".$this->model->getIsUpdate(0,'single')."',
+						`isDelete`		=	'".$this->model->getIsDelete(0,'single')."',
+						`isApproved`	=	'".$this->model->getIsApproved(0,'single')."',
+						`executeBy`		=	'".$this->model->getBy(0,'single')."',
 						`executeTime	=	".$this->model->getExecuteTime()."
-				WHERE 	`themeId`		=	\"".$this->model->getDepartrmentId(0,'single')."\"";
+				WHERE 	`themeId`		=	'".$this->model->getDepartrmentId(0,'single')."'";
 		} else if ($this->getVendor()==self::MSSQL) {
 			$sql="
 				UPDATE 	[theme]
@@ -629,7 +631,7 @@ class ThemeClass  extends ConfigClass {
 		}
 		$this->q->update($sql);
 		if($this->q->execute=='fail') {
-			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
 			exit();
 		}
 		$this->q->commit();
@@ -785,7 +787,7 @@ class ThemeClass  extends ConfigClass {
 			$sql = "
 			SELECT	*
 			FROM 	`theme`
-			WHERE 	`themeCode` 	= 	\"". $this->model->getThemeCode(). "\"
+			WHERE 	`themeCode` 	= 	'". $this->model->getThemeCode(). "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() ==  self::MSSQL) {
 			$sql = "

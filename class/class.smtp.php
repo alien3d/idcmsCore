@@ -796,12 +796,12 @@ class SMTP {
 		$data = "";
 		while($str = @fgets($this->smtp_conn,515)) {
 			if($this->do_debug >= 4) {
-				echo "SMTP -> get_lines(): \$data was \"$data\"" . $this->CRLF . '<br />';
-				echo "SMTP -> get_lines(): \$str is \"$str\"" . $this->CRLF . '<br />';
+				echo "SMTP -> get_lines(): \$data was \"$data'" . $this->CRLF . '<br />';
+				echo "SMTP -> get_lines(): \$str is \"$str'" . $this->CRLF . '<br />';
 			}
 			$data .= $str;
 			if($this->do_debug >= 4) {
-				echo "SMTP -> get_lines(): \$data is \"$data\"" . $this->CRLF . '<br />';
+				echo "SMTP -> get_lines(): \$data is \"$data'" . $this->CRLF . '<br />';
 			}
 			// if 4th character is a space, we are done reading, break the loop
 			if(substr($str,3,1) == " ") { break; }

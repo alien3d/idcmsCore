@@ -61,7 +61,7 @@ class LogAdvanceModel extends ValidationClass
             $this->strict($_POST['logAdvanceId'], 'numeric');
         }
         if ($this->getVendor() == self::MYSQL) {
-            $this->setExecuteTime("\"" . date("Y-m-d H:i:s") . "\"");
+            $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");

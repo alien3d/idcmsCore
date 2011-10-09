@@ -67,24 +67,31 @@ class CalendarClass extends ConfigClass
 	function execute ()
 	{
 		parent::__construct();
-		$this->q = new Vendor();
-		$this->q->vendor = $this->getVendor();
-		$this->q->leafId = $this->getLeafId();
-		$this->q->staffId = $this->getStaffId();
-		$this->q->fieldQuery = $this->getFieldQuery();
-		$this->q->gridQuery = $this->getGridQuery();
+		
+		//audit property
+		$this->audit 			=	0;
+		$this->log 				= 	0;
+		
+		$this->q 				= 	new Vendor();
+		$this->q->vendor 		= 	$this->getVendor();
+		$this->q->leafId 		= 	$this->getLeafId();
+		$this->q->staffId 		= 	$this->getStaffId();
+		$this->q->fieldQuery 	= 	$this->getFieldQuery();
+		$this->q->gridQuery 	= 	$this->getGridQuery();
+		$this->q->log 			= 	$this->log;
+		$this->q->audit 		=	$this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(),
 		$this->getDatabase(), $this->getPassword());
-		$this->excel = new PHPExcel();
-		$this->audit = 0;
-		$this->log = 0;
-		$this->q->log = $this->log;
+		
 		$this->model = new CalendarModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
+		
 		$this->documentTrail = new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
+	
+		$this->excel = new PHPExcel();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -116,7 +123,7 @@ class CalendarClass extends ConfigClass
 		JOIN    `calendar`
 		USING   (`calendarColorId`)
 		
-		WHERE 	`staffId` = \"" . $this->model->getExecuteBy() . "\" ";
+		WHERE 	`staffId` = '" . $this->model->getExecuteBy() . "' ";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -181,16 +188,16 @@ class CalendarClass extends ConfigClass
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 					UPDATE 	`calendar`
-					SET 	`calendarTitle`	=	\"" . $this->strict($_POST['cal_title'], 's') . "\"
-					WHERE 	`calendarId`		=	\"" .
-			$this->strict($_POST['cal_own_uniqueId'], 'n') . "\"";
+					SET 	`calendarTitle`	=	'" . $this->strict($_POST['cal_title'], 's') . "'
+					WHERE 	`calendarId`		=	'" .
+			$this->strict($_POST['cal_own_uniqueId'], 'n') . "'";
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					UPDATE 	[calendar]
-					SET 	[calendarTitle]	=	\"" . $this->strict($_POST['cal_title'], 's') . "\"
-					WHERE 	[calendarId]		=	\"" . $this->strict($_POST['calendarId'], 'n') .
-                 "\"";
+					SET 	[calendarTitle]	=	'" . $this->strict($_POST['cal_title'], 's') . "'
+					WHERE 	[calendarId]		=	'" . $this->strict($_POST['calendarId'], 'n') .
+                 "'";
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
