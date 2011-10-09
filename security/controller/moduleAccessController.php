@@ -163,7 +163,7 @@ class ModuleAccessClass extends ConfigClass {
 						`module`.`moduleId`,
 						`module`.`moduleNote`,
 						`team`.`TEAMID`,
-						`team`.`groupNote`,
+						`team`.`teamNote`,
 						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'

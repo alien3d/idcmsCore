@@ -146,7 +146,7 @@ class ReligionClass extends ConfigClass {
 						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
 						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					);";
-		} else if ($this->getVendor () == self::ORACLE) {
+		} else if ($this->getVendor () == self::ORACLE ) {
 			
 			$sql = "
 			INSERT INTO	RELIGION

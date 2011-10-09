@@ -120,6 +120,14 @@ Ext.onReady(function() {
             type: "boolean"
         },
         {
+            name: "isReview",
+            type: "boolean"
+        },
+        {
+            name: "isPost",
+            type: "boolean"
+        },
+        {
         	name :"By",
         	type :"int"
 		},

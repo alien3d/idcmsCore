@@ -88,7 +88,7 @@ Ext
 				}, {
 					name : "departmentNote",
 					type : "string"
-				},{
+				}, {
 					name : "staffName",
 					type : "string"
 				}, {
@@ -113,11 +113,17 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "By",
+					name : "isReview",
+					type : "boolean"
+				}, {
+					name : "isPost",
+					type : "boolean"
+				}, {
+					name : "executeBy",
 					type : "int"
 
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -312,9 +318,10 @@ Ext
 					isUpdateGrid,
 					isDeleteGrid,
 					isActiveGrid,
-					isApprovedGrid,
+					isReviewGrid,
+					isPostGrid,
 					{
-						dataIndex : "By",
+						dataIndex : "executeBy",
 						header : byLabel,
 						sortable : true,
 						hidden : false,
@@ -324,7 +331,7 @@ Ext
 						}
 					},
 					{
-						dataIndex : "Time",
+						dataIndex : "executeTime",
 						header : timeLabel,
 						sortable : true,
 						hidden : false,
@@ -334,7 +341,7 @@ Ext
 						}
 					} ];
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-					'isDelete', 'isActive', 'isApproved' ];
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var departmentEditor = new Ext.ux.grid.RowEditor(
 					{
 						saveText : 'Save',
@@ -410,7 +417,7 @@ Ext
 				name : "departmentNote",
 				type : "string"
 			}, {
-				name : "By",
+				name : "executeBy",
 				type : "int"
 			}, {
 				name : "staffName",
@@ -437,7 +444,13 @@ Ext
 				name : "isApproved",
 				type : "boolean"
 			}, {
-				name : "Time",
+				name : "isReview",
+				type : "boolean"
+			}, {
+				name : "isPost",
+				type : "boolean"
+			}, {
+				name : "executeTime",
 				type : "date",
 				dateFormat : "Y-m-d H:i:s"
 			} ]);
@@ -469,7 +482,7 @@ Ext
 												departmentSequence : '',
 												departmentCode : '',
 												departmentNote : '',
-												By : '',
+												executeBy : '',
 												staffName : '',
 												isDefault : '',
 												isNew : '',
@@ -478,7 +491,9 @@ Ext
 												isDelete : '',
 												isActive : '',
 												isApproved : '',
-												Time : ''
+												isReview : '',
+												isPost : '',
+												executeTime : ''
 											});
 											departmentEditor.stopEditing();
 											departmentStore.insert(0, e);
@@ -493,8 +508,6 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = departmentStore
-														.getCount();
 												departmentStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -529,9 +542,6 @@ Ext
 										iconCls : 'bullet_disk',
 										listeners : {
 											'click' : function(c) {
-												var url;
-												var count = departmentStore
-														.getCount();
 												url = '../controller/departmentController.php?';
 												var sub_url;
 												sub_url = '';
@@ -548,7 +558,7 @@ Ext
 																+ '&departmentId[]='
 																+ record
 																		.get('departmentId');
-													} 
+													}
 													if (isAdmin == 1) {
 														sub_url = sub_url
 																+ '&isDefault[]='
@@ -581,11 +591,19 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
-																		// and
-																		// ajax
+												// and
+												// ajax
 
 												Ext.Ajax
 														.request({
@@ -608,10 +626,10 @@ Ext
 																					jsonResponse.message);
 																	departmentStore
 																			.removeAll(); // force
-																							// to
-																							// remove
-																							// all
-																							// data
+																	// to
+																	// remove
+																	// all
+																	// data
 																	departmentStore
 																			.reload();
 																} else if (jsonResponse.success == false) {
@@ -641,70 +659,7 @@ Ext
 							pageSize : perPage
 						})
 					});
-			var toolbarPanel = new Ext.Toolbar(
-					{
-						items : [
-								{
-									text : reloadToolbarLabel,
-									iconCls : "database_refresh",
-									id : "pageReload",
-									disabled : pageReload,
-									handler : function() {
-										departmentStore.reload();
-									}
-								},
-								'-',
-								{
-									text : addToolbarLabel,
-									iconCls : "add",
-									id : "pageCreate",
-									disabled : pageCreate,
-									handler : function() {
-										viewPort.items.get(1).expand();
-									}
-								},
-								'-',
-								{
-									text : excelToolbarLabel,
-									iconCls : "page_excel",
-									id : "page_excel",
-									disabled : pagePrint,
-									handler : function() {
-										Ext.Ajax
-												.request({
-													url : "../controller/departmentController.php?method=report&mode=excel&limit="
-															+ perPage
-															+ "&leafId="
-															+ leafId,
-													method : "GET",
-													success : function(
-															response, options) {
-														jsonResponse = Ext
-																.decode(response.responseText);
-														if (jsonResponse.success == true) {
-															window
-																	.open("../../setting/document/excel/"
-																			+ jsonResponse.filename);
-														} else {
-															Ext.MessageBox
-																	.alert(
-																			successLabel,
-																			jsonResponse.message);
-														}
-													},
-													failure : function(
-															response, options) {
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		escape(response.status)
-																				+ ":"
-																				+ escape(response.statusText));
-													}
-												});
-									}
-								} ]
-					});
+		
 			var gridPanel = new Ext.Panel(
 					{
 						title : leafNote,
@@ -770,10 +725,7 @@ Ext
 								}) ],
 						items : [ departmentGrid ]
 					});
-			var departmentDescTemp = new Ext.form.Hidden({
-				name : "departmentCodeTemp",
-				id : "departmentCodeTemp"
-			});
+			
 
 			var viewPort = new Ext.Viewport({
 				id : "viewport",

@@ -112,6 +112,12 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
+					name : "isReview",
+					type : "boolean"
+				}, {
+					name : "isPost",
+					type : "boolean"
+				}, {
 					name : "By",
 					type : "int"
 				}, {
@@ -248,7 +254,7 @@ Ext
 			}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
 					isDeleteGrid, isActiveGrid, isApprovedGrid ];
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-					'isDelete', 'isActive', 'isApproved' ];
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var religionEditor = new Ext.ux.grid.RowEditor(
 					{
 						saveText : 'Save',
@@ -314,7 +320,7 @@ Ext
 				name : "religionDesc",
 				type : "string"
 			}, {
-				name : "By",
+				name : "executeBy",
 				type : "int"
 			}, {
 				name : "staffName",
@@ -340,8 +346,14 @@ Ext
 			}, {
 				name : "isApproved",
 				type : "boolean"
+			}, , {
+				name : "isReview",
+				type : "boolean"
 			}, {
-				name : "Time",
+				name : "isPost",
+				type : "boolean"
+			}, {
+				name : "executeTime",
 				type : "date",
 				dateFormat : "Y-m-d H:i:s"
 			} ]);
@@ -381,6 +393,8 @@ Ext
 												isDelete : '',
 												isActive : '',
 												isApproved : '',
+												isReview : '',
+												isPost : '',
 												Time : ''
 											});
 											religionEditor.stopEditing();
@@ -481,11 +495,19 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
-																		// and
-																		// ajax
+												// and
+												// ajax
 
 												Ext.Ajax
 														.request({
@@ -507,11 +529,7 @@ Ext
 																					systemLabel,
 																					jsonResponse.message);
 																	religionStore
-																			.removeAll(); // force
-																							// to
-																							// remove
-																							// all
-																							// data
+																			.removeAll(); 
 																	religionStore
 																			.reload();
 																} else if (jsonResponse.success == false) {

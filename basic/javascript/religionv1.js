@@ -111,6 +111,12 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
+					name : "isReview",
+					type : "boolean"
+				}, {
+					name : "isPost",
+					type : "boolean"
+				}, {
 					name : "By",
 					type : "int"
 				}, {
@@ -203,7 +209,7 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { 
+					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
 						// uncomment for testing purpose
 					} else {
@@ -794,7 +800,7 @@ Ext
 					pageSize : perPage
 				})
 			});
-			
+
 			var toolbarPanelList = new Ext.Toolbar(
 					{
 						items : [
@@ -1026,7 +1032,6 @@ Ext
 				id : "religionId"
 			});
 
-			
 			var formPanel = new Ext.form.FormPanel(
 					{
 						url : "../controller/religionController.php",
@@ -1151,7 +1156,7 @@ Ext
 								{
 									text : newButtonLabel,
 									name : 'newButton',
-									id	 : 'newButton',
+									id : 'newButton',
 									type : 'button',
 									iconCls : 'new',
 									handler : function() {
@@ -1161,7 +1166,7 @@ Ext
 								{
 									text : draftButtonLabel,
 									name : 'draftButton',
-									id	 : 'draftButton',
+									id : 'draftButton',
 									type : 'button',
 									iconCls : 'draft',
 									handler : function() {
@@ -1172,7 +1177,7 @@ Ext
 									text : cancelButtonLabel,
 									type : 'button',
 									name : 'cancelButton',
-									id	 : 'cancelButton',
+									id : 'cancelButton',
 									iconCls : 'cancel',
 									handler : function() {
 										formPanel.getForm().reset();
@@ -1182,7 +1187,7 @@ Ext
 									text : deleteButtonLabel,
 									type : 'button',
 									name : 'deleteButton',
-									id	 : 'deleteButton',
+									id : 'deleteButton',
 									iconCls : 'trash',
 									handler : function() {
 										formPanel.getForm().reset();
@@ -1192,7 +1197,7 @@ Ext
 									text : resetButtonLabel,
 									type : 'reset',
 									name : 'resetButton',
-									id	 : 'resetButton',
+									id : 'resetButton',
 									iconCls : 'reset',
 									handler : function() {
 										formPanel.getForm().reset();
@@ -1202,7 +1207,7 @@ Ext
 									text : gridButtonLabel,
 									type : 'button',
 									name : 'gridButton',
-									id	 : 'gridButton',
+									id : 'gridButton',
 									iconCls : 'table',
 									handler : function() {
 										formPanel.getForm().reset();
@@ -1216,40 +1221,47 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_first',
 									handler : function() {
-										if(Ext.getCmp('firstRecord').getValue() == ''){
+										if (Ext.getCmp('firstRecord')
+												.getValue() == '') {
 											Ext.Ajax
-											.request({
-												url : "../controller/religionController.php",
-												method : "GET",
-												params : {
-													method : "dataNavigationRequest",
-													leafId : leafId,
-													dataNavigation: 'firstRecord'
-												},
-												success : function(response,
-														options) {
-														
-													jsonResponse = Ext
-															.decode(response.responseText);
-													if(jsonReponse.success==true){
-														Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
-													} else {
-														Ext.MessageBox
-																.alert(
-																		systemLabel,
-																		jsonResponse.message);
-													}
-												},
-												failure : function(response,
-														options) {
-													Ext.MessageBox
-															.alert(
-																	systemErrorLabel,
-																	escape(response.status)
-																			+ ":"
-																			+ escape(response.statusText));
-												}
-											});
+													.request({
+														url : "../controller/religionController.php",
+														method : "GET",
+														params : {
+															method : "dataNavigationRequest",
+															leafId : leafId,
+															dataNavigation : 'firstRecord'
+														},
+														success : function(
+																response,
+																options) {
+
+															jsonResponse = Ext
+																	.decode(response.responseText);
+															if (jsonReponse.success == true) {
+																Ext
+																		.getCmp(
+																				'firstRecord')
+																		.setValue(
+																				jsonResponse.firstRecord);
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemLabel,
+																				jsonResponse.message);
+															}
+														},
+														failure : function(
+																response,
+																options) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			escape(response.status)
+																					+ ":"
+																					+ escape(response.statusText));
+														}
+													});
 										}
 										formPanel.form
 												.load({
@@ -1260,8 +1272,9 @@ Ext
 													params : {
 														method : "read",
 
-														religionId : Ext.getCmp(
-																'firstRecord')
+														religionId : Ext
+																.getCmp(
+																		'firstRecord')
 																.getValue(),
 														leafId : leafId,
 														isAdmin : isAdmin
@@ -1290,10 +1303,13 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_previous',
 									handler : function() {
-										if(Ext.getCmp('previousRecord').getValue() == ''){
-											Ext.MessageBox.Alert("Please Pick A Record First Ya");
+										if (Ext.getCmp('previousRecord')
+												.getValue() == '') {
+											Ext.MessageBox
+													.Alert("Please Pick A Record First Ya");
 										}
-										if (Ext.getCmp('firstRecord').getValue() >= 1) {
+										if (Ext.getCmp('firstRecord')
+												.getValue() >= 1) {
 											formPanel.form
 													.load({
 														url : "../controller/religionController.php",
@@ -1339,8 +1355,9 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_next',
 									handler : function() {
-										if(Ext.getCmp('nextRecord').getValue() == ''){
-											Ext.MessageBox.Alert("Please Pick A Record First Ya");
+										if (Ext.getCmp('nextRecord').getValue() == '') {
+											Ext.MessageBox
+													.Alert("Please Pick A Record First Ya");
 										}
 										if (Ext.getCmp('nextRecord').getValue() <= Ext
 												.getCmp('lastRecord')
@@ -1391,40 +1408,46 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_last',
 									handler : function() {
-										if(Ext.getCmp('lastRecord').getValue() == ''){
+										if (Ext.getCmp('lastRecord').getValue() == '') {
 											Ext.Ajax
-											.request({
-												url : "../controller/religionController.php",
-												method : "GET",
-												params : {
-													method : "dataNavigationRequest",
-													leafId : leafId,
-													dataNavigation: 'lastRecord'
-												},
-												success : function(response,
-														options) {
-														
-													jsonResponse = Ext
-															.decode(response.responseText);
-													if(jsonReponse.success==true){
-														Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
-													} else {
-														Ext.MessageBox
-																.alert(
-																		systemLabel,
-																		jsonResponse.message);
-													}
-												},
-												failure : function(response,
-														options) {
-													Ext.MessageBox
-															.alert(
-																	systemErrorLabel,
-																	escape(response.status)
-																			+ ":"
-																			+ escape(response.statusText));
-												}
-											});
+													.request({
+														url : "../controller/religionController.php",
+														method : "GET",
+														params : {
+															method : "dataNavigationRequest",
+															leafId : leafId,
+															dataNavigation : 'lastRecord'
+														},
+														success : function(
+																response,
+																options) {
+
+															jsonResponse = Ext
+																	.decode(response.responseText);
+															if (jsonReponse.success == true) {
+																Ext
+																		.getCmp(
+																				'lastRecord')
+																		.setValue(
+																				jsonResponse.lastRecord);
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemLabel,
+																				jsonResponse.message);
+															}
+														},
+														failure : function(
+																response,
+																options) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			escape(response.status)
+																					+ ":"
+																					+ escape(response.statusText));
+														}
+													});
 										}
 										if (Ext.getCmp('endRecord').getValue() <= Ext
 												.getCmp('lastRecord')

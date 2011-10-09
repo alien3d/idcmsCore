@@ -113,10 +113,22 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "By",
+					name : "isActive",
+					type : "boolean"
+				}, {
+					name : "isApproved",
+					type : "boolean"
+				}, {
+					name : "isReview",
+					type : "boolean"
+				}, {
+					name : "isPost",
+					type : "boolean"
+				}, {
+					name : "executeBy",
 					type : "int"
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -179,9 +191,6 @@ Ext
 					name : "religionDetailDesc",
 					type : "string"
 				}, {
-					name : "By",
-					type : "int"
-				}, {
 					name : "staffName",
 					type : "string"
 				}, {
@@ -206,10 +215,16 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "By",
+					name : "isReview",
+					type : "boolean"
+				}, {
+					name : "isPost",
+					type : "boolean"
+				}, {
+					name : "executeBy",
 					type : "int"
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -325,6 +340,17 @@ Ext
 				hidden : isApprovedHidden
 			});
 
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Review',
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
+			});
+			var isPostGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Post',
+				dataIndex : 'isPost',
+				hidden : isPostHidden
+			});
+
 			var isDefaultGridDetail = new Ext.ux.grid.CheckColumn({
 				header : 'Default',
 				dataIndex : 'isDefault',
@@ -359,6 +385,17 @@ Ext
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
+
+			var isReviewGridDetail = new Ext.ux.grid.CheckColumn({
+				header : 'Review',
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
+			});
+			var isPostGridDetail = new Ext.ux.grid.CheckColumn({
+				header : 'Post',
+				dataIndex : 'isPost',
+				hidden : isPostHidden
+			});
 			var religionColumnModel = [ new Ext.grid.RowNumberer(),
 
 			{
@@ -367,7 +404,8 @@ Ext
 				hidden : false,
 				width : 100
 			}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid, {
+					isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid,
+					isPostGrid, {
 						dataIndex : 'executeBy',
 						header : createByLabel,
 						hidden : true,
@@ -404,7 +442,8 @@ Ext
 				}
 			}, isDefaultGridDetail, isNewGridDetail, isDraftGridDetail,
 					isUpdateGridDetail, isDeleteGridDetail, isActiveGridDetail,
-					isApprovedGridDetail, {
+					isApprovedGridDetail, isReviewGridDetail, isPostGridDetail,
+					{
 						dataIndex : 'executeBy',
 						header : createByLabel,
 						hidden : true,
@@ -418,9 +457,10 @@ Ext
 					} ];
 
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-					'isDelete', 'isActive', 'isApproved' ];
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var accessDetailArray = [ 'isDefault', 'isNew', 'isDraft',
-					'isUpdate', 'isDelete', 'isActive', 'isApproved' ];
+					'isUpdate', 'isDelete', 'isActive', 'isApproved',
+					'isReview', 'isPost' ];
 			var religionGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
@@ -522,7 +562,7 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												
+
 												religionStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -784,6 +824,12 @@ Ext
 				name : "isApproved",
 				type : "boolean"
 			}, {
+				name : "isReview",
+				type : "boolean"
+			}, {
+				name : "isPost",
+				type : "boolean"
+			}, {
 				name : "Time",
 				type : "date",
 				dateFormat : "Y-m-d H:i:s"
@@ -829,6 +875,8 @@ Ext
 												isNew : '',
 												isDraft : '',
 												isUpdate : '',
+												isReview : '',
+												isPost : '',
 												isDelete : '',
 												isActive : '',
 												isApproved : '',
@@ -836,7 +884,7 @@ Ext
 											});
 											religionDetailEditor.stopEditing();
 											religionDetailStore.insert(0, e);
-											 religionDetailGrid
+											religionDetailGrid
 													.getSelectionModel()
 													.getSelections();
 											religionDetailEditor
@@ -885,7 +933,7 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												
+
 												url = '../controller/religionDetailController.php?';
 												var sub_url;
 												sub_url = '';
@@ -925,7 +973,16 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
+
 												}
 												url = url + sub_url; // reques
 												// and
@@ -1134,7 +1191,7 @@ Ext
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
 						buttons : [
-								
+
 								{
 									text : newButtonLabel,
 									type : 'button',
@@ -1174,10 +1231,10 @@ Ext
 																				'religionDetailGrid')
 																		.enable();
 																Ext
-																.getCmp(
-																		'deleteButton')
-																.enable();
-																
+																		.getCmp(
+																				'deleteButton')
+																		.enable();
+
 																religionStore
 																		.reload({
 																			params : {
@@ -1220,7 +1277,7 @@ Ext
 								{
 									text : saveButtonLabel,
 									iconCls : 'bullet_disk',
-									disabled:true,
+									disabled : true,
 									handler : function() {
 										var id = 0;
 										var id = Ext.getCmp('religionId')
@@ -1256,10 +1313,10 @@ Ext
 																				'religionDetailGrid')
 																		.enable();
 																Ext
-																.getCmp(
-																		'deleteButton')
-																.enable();
-																
+																		.getCmp(
+																				'deleteButton')
+																		.enable();
+
 																religionStore
 																		.reload({
 																			params : {
@@ -1303,7 +1360,7 @@ Ext
 									text : deleteButtonLabel,
 									type : 'button',
 									iconCls : 'trash',
-									disabled:true,
+									disabled : true,
 									handler : function() {
 										formPanel.getForm().reset();
 									}

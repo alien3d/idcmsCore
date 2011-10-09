@@ -116,7 +116,7 @@ class FolderAccessClass extends ConfigClass
 						`folder`.`folderId`,
 						`folder`.`folderNote`,
 						`team`.`TEAMID`,
-						`team`.`groupNote`,
+						`team`.`teamNote`,
 						`folderAccess`.`folderAccessId`,
 						(CASE `folderAccess`.`folderAccessValue`
 							WHEN '1' THEN
@@ -150,7 +150,7 @@ class FolderAccessClass extends ConfigClass
 						[folder].[folderId],
 						[folder].[folderNote],
 						[team].[teamId],
-						[team].[groupNote],
+						[team].[teamNote],
 						[folderAccess].[folderAccessId],
 						(CASE [folderAccess].[folderAccessValue]
 							WHEN '1' THEN
@@ -184,7 +184,7 @@ class FolderAccessClass extends ConfigClass
 						FOLDER.FOLDERID 	AS 	\"folderId\",
 						FOLDER.FOLDERNOTE 	AS 	\"folderNote\",
 						TEAM.TEAMID 		AS 	\"teamId\",
-						TEAM.GROUPNOTE 	AS 	\"groupNote\",
+						TEAM.GROUPNOTE 	AS 	\"teamNote\",
 						FOLDERACCESS.FOLDERACCESSID AS \"folderAccessId\",
 						(CASE	FOLDERACCESS.FOLDERACCESSVALUE
 							WHEN '1' THEN

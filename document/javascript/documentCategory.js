@@ -118,12 +118,19 @@ Ext
 				}, {
 					name : "isApproved",
 					type : "boolean"
-				}, {
-					name : "By",
+				},  {
+		            name: "isReview",
+		            type: "boolean"
+		        },
+		        {
+		            name: "isPost",
+		            type: "boolean"
+		        }, {
+					name : "executeBy",
 					type : "int"
 
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]

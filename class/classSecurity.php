@@ -155,7 +155,7 @@ class Security extends ConfigClass
 	 */
     public function excel ()
     {}
-    public function group ()
+    public function team ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
@@ -165,15 +165,15 @@ class Security extends ConfigClass
         }
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			SELECT 	`theme`.`TEAMID`,
-					`theme`.`groupNote`
-			FROM   	`theme`
-			WHERE 	`theme`.`isActive`=1";
+			SELECT 	`team`.`teamId`,
+					`team`.`teamNote`
+			FROM   	`team`
+			WHERE 	`team`.`isActive`=1";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT 	[team].[teamId],
-					[team].[groupNote]
+					[team].[teamNote]
 			FROM   	[team]
 			WHERE   [team].[isActive]=1";
             } else 

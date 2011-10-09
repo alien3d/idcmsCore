@@ -117,10 +117,16 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "By",
+					name : "isReview",
+					type : "int"
+				},{
+					name : "isPost",
+					type : "boolean"
+				}, {
+					name : "executeBy",
 					type : "int"
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -560,8 +566,6 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = staffStore
-														.getCount();
 												staffStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -597,8 +601,6 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = staffStore
-														.getCount();
 												url = '../controller/staffController.php?';
 												var sub_url;
 												sub_url = '';
@@ -711,80 +713,7 @@ Ext
 						})
 					});
 
-			var toolbarPanel = new Ext.Toolbar(
-					{
-						items : [
-								{
-									text : reloadToolbarLabel,
-									iconCls : 'database_refresh',
-									id : 'pageReload',
-									disabled : pageReload,
-									handler : function() {
-										store.reload();
-									}
-								},
-								{
-									text : addToolbarLabel,
-									iconCls : 'add',
-									id : 'pageCreate',
-									disabled : pageCreate,
-									handler : function() {
-										viewPort.items.get(1).expand();
-									}
-								},
-								{
-									text : printerToolbarLabel,
-									iconCls : 'printer',
-									id : 'pagePrinter',
-									disabled : pagePrint,
-									handler : function() {
-										Ext.ux.GridPrinter.print(grid);
-									}
-								},
-								{
-									text : excelToolbarLabel,
-									iconCls : 'page_excel',
-									id : 'page_excel',
-									disabled : pagePrint,
-									handler : function() {
-										Ext.Ajax
-												.request({
-													url : '../controller/staffController.php?method=report&mode=excel&limit='
-															+ perPage
-															+ '&leafId='
-															+ leafId,
-													method : 'GET',
-													success : function(
-															response, options) {
-														jsonResponse = Ext.decode(response.responseText);
-														if (jsonResponse == true) {
-
-															window
-																	.open("../pentabiran/document/excel/staff.xlsx");
-														} else {
-															Ext.MessageBox
-																	.alert(
-																			systemErrorLabel,
-																			jsonResponse.message);
-														}
-
-													},
-													failure : function(
-															response, options) {
-														status_code = response.status;
-														status_message = response.statusText;
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		escape(status_code)
-																				+ ":"
-																				+ status_message);
-													}
-
-												});
-									}
-								} ]
-					});
+			
 
 			var gridPanel = new Ext.Panel(
 					{

@@ -1431,7 +1431,7 @@ class StaffClass extends ConfigClass {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
 			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['staffName'] );
-			$this->excel->getActiveSheet ()->setCellValue ( 'D' . $loopRow, $row ['groupNote'] );
+			$this->excel->getActiveSheet ()->setCellValue ( 'D' . $loopRow, $row ['teamNote'] );
 			$loopRow ++;
 			$lastRow = 'D' . $loopRow;
 		}
