@@ -512,8 +512,7 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = tableMappingStore
-														.getCount();
+												
 												tableMappingStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -549,12 +548,13 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = tableMappingStore
-														.getCount();
+												
 												url = '../controller/tableMappingController.php?';
 												var sub_url;
 												sub_url = '';
-												for (i = count - 1; i >= 0; i--) {
+												var modified = tableMappingStore
+												.getModifiedRecords();
+										for ( var i = 0; i < modified.length; i++) {
 													var record = tableMappingStore
 															.getAt(i);
 													sub_url = sub_url
@@ -654,9 +654,8 @@ Ext
 									rowIndex) {
 
 								this.save = true;
-								// update record manually
-								var curr_store = this.grid.getStore().getAt(
-										rowIndex);
+								// @todo  errk what this update record manually
+								//var curr_store = this.grid.getStore().getAt(rowIndex);
 
 								Ext.Ajax.request({
 									url : '../controller/tableMappingController.php',

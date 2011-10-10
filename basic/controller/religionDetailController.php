@@ -631,9 +631,10 @@ class ReligionDetailClass extends ConfigClass {
 		 * System Validation Checking
 		 * @var $access
 		 */
-		$access = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved" );
+		$access = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved","isReview","isPost" );
 		foreach ( $access as $systemCheck ) {
 			if ($this->getVendor () == self::MYSQL) {
+				
 				$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName () . "`";
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
@@ -653,7 +654,7 @@ class ReligionDetailClass extends ConfigClass {
 					break;
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsNew ( $i, 'array' )) {
 						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
@@ -663,7 +664,7 @@ class ReligionDetailClass extends ConfigClass {
 					break;
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsDraft ( $i, 'array' )) {
 						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
@@ -673,7 +674,7 @@ class ReligionDetailClass extends ConfigClass {
 					break;
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsUpdate ( $i, 'array' )) {
 						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
@@ -683,7 +684,7 @@ class ReligionDetailClass extends ConfigClass {
 					break;
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsDelete ( $i, 'array' )) {
 						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
@@ -693,14 +694,15 @@ class ReligionDetailClass extends ConfigClass {
 					break;
 				case 'isActive' :
 					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsActive ( $i, 'array' )) {
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsActive ( $i, 'array' ) . "'";
-					}
+					} } 
 					break;
 				case 'isApproved' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsApproved ( $i, 'array' )) {
 						
 						$sqlLooping .= "
 							WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
@@ -710,7 +712,7 @@ class ReligionDetailClass extends ConfigClass {
 					break;
 				case 'isReview' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsReview ( $i, 'array' )) {
 						
 						$sqlLooping .= "
                             WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'
@@ -720,7 +722,7 @@ class ReligionDetailClass extends ConfigClass {
 					break;
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsPost ( $i, 'array' )) {
 						
 						$sqlLooping .= "
                                 WHEN '" . $this->model->getReligionDetailId ( $i, 'array' ) . "'

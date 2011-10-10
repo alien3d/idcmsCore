@@ -521,8 +521,7 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = defaultLabelStore
-														.getCount();
+												
 												defaultLabelStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -563,7 +562,8 @@ Ext
 												url = '../controller/defaultLabelController.php?';
 												var sub_url;
 												sub_url = '';
-												for (i = count - 1; i >= 0; i--) {
+												   var modified = defaultLabelStore.getModifiedRecords();
+							                        for(var i = 0; i < modified.length; i++) {
 													var record = defaultLabelStore
 															.getAt(i);
 													sub_url = sub_url
@@ -663,9 +663,8 @@ Ext
 									rowIndex) {
 
 								this.save = true;
-								// update record manually
-								var curr_store = this.grid.getStore().getAt(
-										rowIndex);
+								// @todo update record manually
+								//var curr_store = this.grid.getStore().getAt(rowIndex);
 
 								Ext.Ajax.request({
 									url : '../controller/defaultLabelController.php',

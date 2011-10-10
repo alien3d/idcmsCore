@@ -292,7 +292,7 @@ class ExtLabelTranslationClass extends ConfigClass {
 		}
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
-		$_SESSION ['limit'] = $this->getLimit();
+		$_SESSION ['limit'] = $this->getLimit ();
 		
 		if (empty ( $_POST ['filter'] )) {
 			
@@ -301,7 +301,7 @@ class ExtLabelTranslationClass extends ConfigClass {
 				
 
 				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit(). " ";
+					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
 					$sqlLimit = $sql;
 				} else if ($this->getVendor () == self::MSSQL) {
 					/**
@@ -561,66 +561,93 @@ class ExtLabelTranslationClass extends ConfigClass {
 			switch ($systemCheck) {
 				case 'isDefault' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsDefault ( $i, 'array' )) {
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDefault ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsNew ( $i, 'array' )) {
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
-					
+						
+						}
 					}
 					break;
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsDraft ( $i, 'array' )) {
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDraft ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsUpdate ( $i, 'array' )) {
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsDelete ( $i, 'array' )) {
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isActive' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsActive ( $i, 'array' )) {
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsActive ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isApproved' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsApproved ( $i, 'array' )) {
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsApproved ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isReview' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsReview ( $i, 'array' )) {
+							
+							$sqlLooping .= "
                             WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
                             THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsPost ( $i, 'array' )) {
+							
+							$sqlLooping .= "
                                 WHEN '" . $this->model->getExtLabelTranslateId ( $i, 'array' ) . "'
                                 THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
+						}
 					}
 					break;
 			}

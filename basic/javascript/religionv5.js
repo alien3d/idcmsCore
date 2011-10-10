@@ -712,8 +712,7 @@ Ext
 								this.save = true; // update record manually
 								var record = this.grid.getStore().getAt(
 										rowIndex);
-								alert("testing value or detail id :["
-										+ record.get('religionDetailId') + "]");
+								
 								if (parseInt(record.get('religionDetailId')) == 'NaN') {
 									method = 'create';
 								} else if (record.get('religionDetailId') == '') {
@@ -830,7 +829,7 @@ Ext
 				name : "isPost",
 				type : "boolean"
 			}, {
-				name : "Time",
+				name : "executeTime",
 				type : "date",
 				dateFormat : "Y-m-d H:i:s"
 			} ]);

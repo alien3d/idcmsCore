@@ -436,7 +436,7 @@ Ext.onReady(function() {
                     });
                     languageEditor.stopEditing();
                     languageStore.insert(0, e);
-                    var s = languageGrid.getSelectionModel().getSelections();
+                    languageGrid.getSelectionModel().getSelections();
                     languageEditor.startEditing(0);
                 }
             },
@@ -445,7 +445,6 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function() {
-                        var count = languageStore.getCount();
                         languageStore.each(function(rec) {
                             for (var access in accessArray) { // alert(access);
                                 rec.set(accessArray[access], true);
@@ -473,7 +472,6 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(c) {
                         var url;
-                        var count = languageStore.getCount();
                         url = '../controller/languageController.php?';
                         var sub_url;
                         sub_url = '';
@@ -532,49 +530,7 @@ Ext.onReady(function() {
             pageSize: perPage
         })
     });
-    var toolbarPanel = new Ext.Toolbar({
-        items: [{
-            text: reloadToolbarLabel,
-            iconCls: "database_refresh",
-            id: "pageReload",
-            disabled: pageReload,
-            handler: function() {
-                languageStore.reload();
-            }
-        },
-        '-', {
-            text: addToolbarLabel,
-            iconCls: "add",
-            id: "pageCreate",
-            disabled: pageCreate,
-            handler: function() {
-                viewPort.items.get(1).expand();
-            }
-        },
-        '-', {
-            text: excelToolbarLabel,
-            iconCls: "page_excel",
-            id: "page_excel",
-            disabled: pagePrint,
-            handler: function() {
-                Ext.Ajax.request({
-                    url: "../controller/languageController.php?method=report&mode=excel&limit=" + perPage + "&leafId=" + leafId,
-                    method: "GET",
-                    success: function(response, options) {
-                        jsonResponse = Ext.decode(response.responseText);
-                        if (jsonResponse.success == true) {
-                            window.open("../../setting/document/excel/" + jsonResponse.filename);
-                        } else {
-                            Ext.MessageBox.alert(successLabel, jsonResponse.message);
-                        }
-                    },
-                    failure: function(response, options) {
-                        Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
-                    }
-                });
-            }
-        }]
-    });
+    
     var gridPanel = new Ext.Panel({
         title: leafNote,
         iconCls: "application_view_detail",
@@ -624,10 +580,7 @@ Ext.onReady(function() {
         })],
         items: [languageGrid]
     });
-    var languageDescTemp = new Ext.form.Hidden({
-        name: "languageCodeTemp",
-        id: "languageCodeTemp"
-    });
+    
 	
 	
     var viewPort = new Ext.Viewport({

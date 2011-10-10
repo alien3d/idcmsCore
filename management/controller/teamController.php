@@ -873,7 +873,7 @@ class TeamClass extends ConfigClass {
 					break;
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsNew ( $i, 'array' )) {
 							
 							$sqlLooping .= "
 							WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
@@ -883,7 +883,7 @@ class TeamClass extends ConfigClass {
 					break;
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsDraft ( $i, 'array' )) {
 							
 							$sqlLooping .= "
 							WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
@@ -893,7 +893,7 @@ class TeamClass extends ConfigClass {
 					break;
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsUpdate ( $i, 'array' )) {
 							
 							$sqlLooping .= "
 							WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
@@ -903,14 +903,17 @@ class TeamClass extends ConfigClass {
 					break;
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
-						$sqlLooping .= "
+						if ($this->model->getIsDelete ( $i, 'array' )) {
+							$sqlLooping .= "
 							WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
+						
+						}
 					}
 					break;
 				case 'isActive' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsActive ( $i, 'array' )) {
 							
 							$sqlLooping .= "
 							WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
@@ -920,7 +923,7 @@ class TeamClass extends ConfigClass {
 					break;
 				case 'isApproved' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsApproved ( $i, 'array' )) {
 							
 							$sqlLooping .= "
 							WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
@@ -930,7 +933,7 @@ class TeamClass extends ConfigClass {
 					break;
 				case 'isReview' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsReview ( $i, 'array' )) {
 							
 							$sqlLooping .= "
                             WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
@@ -940,7 +943,7 @@ class TeamClass extends ConfigClass {
 					break;
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+						if ($this->model->getIsPost ( $i, 'array' )) {
 							
 							$sqlLooping .= "
                                 WHEN '" . $this->model->getTeamId ( $i, 'array' ) . "'
@@ -960,7 +963,7 @@ class TeamClass extends ConfigClass {
 			WHERE [" . $this->model->getPrimaryKeyName () . "] IN (" . $this->model->getTeamIdAll () . ")";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
-			WHERE " . strtoupper($this->model->getPrimaryKeyName ()) . " IN (" . $this->model->getTeamIdAll () . ")";
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getTeamIdAll () . ")";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -996,8 +999,8 @@ class TeamClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT	*
-			FROM 	CREW_
-			WHERE 	CREWCODE 		= 	'" . $this->model->getTeamCode () . "'
+			FROM 	TEAM
+			WHERE 	TEAMCODE 		= 	'" . $this->model->getTeamCode () . "'
 			AND		ISACTIVE		=	1";
 		}
 		$this->q->read ( $sql );
@@ -1011,7 +1014,7 @@ class TeamClass extends ConfigClass {
 			if ($this->duplicateTest == 1) {
 				return $total . "|" . $row ['teamCode'];
 			} else {
-				echo json_encode ( array ("success" => "TRUE", "total" => $total, "message" => "Duplicate Record", "teamCode" => $row ['teamCode'] ) );
+				echo json_encode ( array ("success" => TRUE, "total" => $total, "message" => "Duplicate Record", "teamCode" => $row ['teamCode'] ) );
 				exit ();
 			}
 		}
