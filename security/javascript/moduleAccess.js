@@ -53,6 +53,8 @@ Ext
 			});
 
 			var moduleAccessStore = new Ext.data.JsonStore({
+				proxy :moduleAccessProxy,
+				reader : moduleAccessReader,
 				autoDestroy : true,
 				url : '../controller/moduleAccessController.php',
 				remoteSort : true,
@@ -74,10 +76,10 @@ Ext
 					name : 'moduleNote',
 					type : 'string'
 				}, {
-					name : 'groupId',
+					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'groupNote',
+					name : 'teamNote',
 					type : 'string'
 				}, {
 					name : 'moduleAccessValue',
@@ -85,7 +87,7 @@ Ext
 				} ]
 			});
 
-			var groupProxy = new Ext.data.HttpProxy({
+			var teamProxy = new Ext.data.HttpProxy({
 				url : "../controller/moduleAccessController.php",
 				method : 'GET',
 
@@ -106,29 +108,29 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			var groupReader = new Ext.data.JsonReader({
+			var teamReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
-				idProperty : "groupId"
+				idProperty : "teamId"
 			});
 
-			var groupStore = new Ext.data.JsonStore({
-				proxy : groupProxy,
-				reader : groupReader,
+			var teamStore = new Ext.data.JsonStore({
+				proxy : teamProxy,
+				reader : teamReader,
 				autoLoad : true,
 				autoDestroy : true,
 				baseParams : {
 					method : "read",
 					leafId : leafId,
-					field : "groupId"
+					field : "teamId"
 				},
-				root : 'group',
+				root : 'team',
 				fields : [ {
-					name : 'groupId',
+					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'groupNote',
+					name : 'teamNote',
 					type : 'string'
 				} ]
 
@@ -142,31 +144,31 @@ Ext
 			// information
 			var columnModel = new Ext.grid.ColumnModel({
 				columns : [ {
-					header : moduleNameLabel,
-					dataIndex : 'moduleNote'
+					header : teamNameLabel,
+					dataIndex : 'teamNote'
 				}, {
 					header : moduleIdLabel,
-					dataIndex : 'moduleId'
+					dataIndex : 'teamId'
 				}, {
-					header : groupNameLabel,
-					dataIndex : 'groupNote'
+					header : teamNameLabel,
+					dataIndex : 'teamNote'
 				}, {
-					header : groupIdLabel,
-					dataIndex : 'groupId'
+					header : teamIdLabel,
+					dataIndex : 'teamId'
 				}, moduleAccessValue ]
 			});
 
-			var groupId = new Ext.ux.form.ComboBoxMatch({
+			var teamId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
-				fieldLabel : groupIdLabel,
-				name : 'groupId',
-				hiddenName : 'groupId',
-				valueField : 'groupId',
-				id : 'group_fake',
-				displayField : 'groupNote',
+				fieldLabel : teamIdLabel,
+				name : 'teamId',
+				hiddenName : 'teamId',
+				valueField : 'teamId',
+				id : 'team_fake',
+				displayField : 'teamNote',
 				typeAhead : false,
 				triggerAction : 'all',
-				store : groupStore,
+				store : teamStore,
 				anchor : '95%',
 				selectOnFocus : true,
 				mode : 'local',
@@ -192,7 +194,7 @@ Ext
 						moduleAccessStore.load({
 							params:{
 								leafId : leafId,
-								groupId : this.value
+								teamId : this.value
 							}
 						});
 
@@ -207,7 +209,7 @@ Ext
 				frame : true,
 				title : 'Accordian Access Form',
 				iconCls : 'application_form',
-				items : [ groupId ]
+				items : [ teamId ]
 			});
 
 			var access_array = [ 'moduleAccessValue' ];
@@ -236,8 +238,7 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = moduleAccessStore
-														.getCount();
+												
 												moduleAccessStore
 														.each(function(rec) {
 															for ( var access in access_array) {
@@ -274,14 +275,14 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = moduleAccessStore
-														.getCount();
 
 												url = '../controller/moduleAccessController.php?method=update&leafId='
 														+ leafId;
 												var sub_url;
 												sub_url = '';
-												for (i = count - 1; i >= 0; i--) {
+												fvar modified = moduleAccessStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
 													var record = moduleAccessStore
 															.getAt(i);
 													sub_url = sub_url
@@ -306,7 +307,7 @@ Ext
 																// store
 																moduleAccessStore.proxy = new Ext.data.HttpProxy(
 																		{
-																			url : '../controller/moduleAccessController.php?method=read&groupId='
+																			url : '../controller/moduleAccessController.php?method=read&teamId='
 																					+ Ext
 																							.getCmp('group_fake').value,
 																			method : 'POST'

@@ -89,8 +89,7 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message); //uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message); //uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -176,7 +175,7 @@ Ext
 					column : 'createBy',
 					table : 'log_advance',
 					labelField : 'staffName',
-					store : staff_store,
+					store : staffStore,
 					phpMode : true
 				},
 

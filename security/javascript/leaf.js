@@ -119,7 +119,13 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "Time",
+					name : "isReview",
+					type : "boolean"
+				}, {
+					name : "isPost",
+					type : "boolean"
+				}, {
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -133,7 +139,8 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 
-						// Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+						// Ext.MessageBox.alert(systemLabel,
+						// jsonResponse.message);
 					}
 				},
 				failure : function(response, options) {
@@ -323,7 +330,7 @@ Ext
 				} ]
 			});
 
-			var filters = new Ext.ux.grid.GridFilters({
+			var leafFilters = new Ext.ux.grid.GridFilters({
 
 				encode : encode,
 				local : local,
@@ -415,6 +422,16 @@ Ext
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Review',
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
+			});
+			var isPostGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Post',
+				dataIndex : 'isPost',
+				hidden : isPostHidden
+			});
 
 			var leafColumnModel = [
 					new Ext.grid.RowNumberer(),
@@ -454,14 +471,15 @@ Ext
 									+ value;
 						}
 					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid, {
-						dataIndex : 'By',
+					isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid,
+					isPostGrid, {
+						dataIndex : 'executeBy',
 						header : createByLabel,
 						sortable : true,
 						hidden : true,
 						width : 100
 					}, {
-						dataIndex : 'Time',
+						dataIndex : 'executeTime',
 						header : createTimeLabel,
 						type : 'date',
 						sortable : true,
@@ -500,9 +518,10 @@ Ext
 				}
 
 			} ];
-			
-			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
-			 
+
+			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
+
 			var leafGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
@@ -551,8 +570,6 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = leafStore
-														.getCount();
 												leafStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -588,8 +605,6 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = leafStore
-														.getCount();
 												url = '../controller/leafController.php?';
 												var sub_url;
 												sub_url = '';
@@ -629,6 +644,14 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
@@ -751,7 +774,8 @@ Ext
 				if (btn == 'yes') {
 					var selections = approved.selModel.getSelections();
 					var prez = [];
-					for (i = 0; i < approved.selModel.getCount(); i++) {
+					var i =0;
+					for (i ; i < approved.selModel.getCount(); i++) {
 						prez.push(selections[i].json.tabTranslateId);
 					}
 					var encoded_array = Ext.encode(prez);
@@ -919,7 +943,7 @@ Ext
 													+ this.value
 													+ '&leafIdTemp='
 													+ leafIdTemp,
-											method :"GET",		
+											method : "GET",
 											success : function(response,
 													options) {
 												jsonResponse = Ext
@@ -934,7 +958,8 @@ Ext
 												if (jsonResponse.success == true) {
 													/*
 													 * Ext.MessageBox .alert(
-													 * systemLabel, jsonResponse.message);
+													 * systemLabel,
+													 * jsonResponse.message);
 													 * 
 													 * leafTranslateStore
 													 * .reload();
@@ -1044,7 +1069,7 @@ Ext
 				name : 'leafCode',
 				anchor : '95%'
 			});
-			
+
 			var leafNote = new Ext.form.TextField({
 				labelAlign : 'left',
 				fieldLabel : leafNoteLabel,
@@ -1197,7 +1222,7 @@ Ext
 				name : 'leafId',
 				id : 'leafId'
 			});
-			
+
 			var firstRecord = new Ext.form.Hidden({
 				name : 'firstRecord',
 				id : 'firstRecord'
@@ -1332,7 +1357,7 @@ Ext
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-										
+
 										Ext.Ajax
 												.request({
 
