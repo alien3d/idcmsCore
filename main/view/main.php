@@ -41,7 +41,7 @@ if(isset($_SESSION['theme'])) { ?>
 <script type="text/javascript"
 	src="../../javascript/examples/ux/TabScrollerMenu.js"></script>
 <?php require_once("../../shared/setting.php"); ?>
-<script type="text/javascript" src="../javascript/main.js"></script>
+<script type="text/javascript" src="../javascript/original/main.js"></script>
 </html>
 
 

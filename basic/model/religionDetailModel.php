@@ -84,27 +84,52 @@ class ReligionDetailModel extends ValidationClass
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
         "isDelete", "isActive", "isApproved", "isReview", "isPost");
         // auto assign as array if TRUE
-        if (is_array($_GET['isDefault'])) {
-            $this->isDefault = array();
-        }
-        if (is_array($_GET['isNew'])) {
-            $this->isNew = array();
-        }
-        if (is_array($_GET['isDraft'])) {
-            $this->isDraft = array();
-        }
-        if (is_array($_GET['isUpdate'])) {
-            $this->isUpdate = array();
-        }
-        if (is_array($_GET['isDelete'])) {
-            $this->isDelete = array();
-        }
-        if (is_array($_GET['isActive'])) {
-            $this->isActive = array();
-        }
-        if (is_array($_GET['isApproved'])) {
-            $this->isApproved = array();
-        }
+    if (isset ( $_GET ['isDefault'] )) {
+			if (is_array ( $_GET ['isDefault'] )) {
+				$this->isDefault = array ();
+			}
+		}
+		if (isset ( $_GET ['isNew'] )) {
+			if (is_array ( $_GET ['isNew'] )) {
+				$this->isNew = array ();
+			}
+		}
+		if (isset ( $_GET ['isDraft'] )) {
+			if (is_array ( $_GET ['isDraft'] )) {
+				$this->isDraft = array ();
+			}
+		}
+		if (isset ( $_GET ['isUpdate'] )) {
+			if (is_array ( $_GET ['isUpdate'] )) {
+				$this->isUpdate = array ();
+			}
+		}
+		if (isset ( $_GET ['isDelete'] )) {
+			if (is_array ( $_GET ['isDelete'] )) {
+				$this->isDelete = array ();
+			}
+		}
+		if (isset ( $_GET ['isActive'] )) {
+			if (is_array ( $_GET ['isActive'] )) {
+				$this->isActive = array ();
+			}
+		}
+		if (isset ( $_GET ['isApproved'] )) {
+			if (is_array ( $_GET ['isApproved'] )) {
+				$this->isApproved = array ();
+			}
+		}
+		if (isset ( $_GET ['isReview'] )) {
+			if (is_array ( $_GET ['isReview'] )) {
+				$this->isReview = array ();
+			}
+		}
+		if (isset ( $_GET ['isPost'] )) {
+			if (is_array ( $_GET ['isPost'] )) {
+				$this->isPost = array ();
+			}
+		}
+		$primaryKeyAll = '';
         for ($i = 0; $i < $this->getTotal(); $i ++) {
             if (isset($_GET['religionDetailId'])) {
                 $this->setReligionDetailId(

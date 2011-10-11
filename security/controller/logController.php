@@ -229,17 +229,17 @@ class LogClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		if (empty ( $this->filter )) {
-			if ($this->getLimit ()) {
-				// only mysql have limit
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sql = "
+		
+		if ($this->getLimit ()) {
+			// only mysql have limit
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sql = "
 					WITH [logDerived] AS
 					(
 						SELECT	*
@@ -255,11 +255,11 @@ class LogClass extends ConfigClass {
 						 WHERE 		[RowNumber]
 						 BETWEEN	" . ($this->getStart () + 1) . "
 						 AND 			" . ($this->getStart () + $this->getLimit ()) . ";";
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
+				$sql = "
 					SELECT *
 					FROM ( SELECT	a.*,
 					rownum r
@@ -274,16 +274,16 @@ class LogClass extends ConfigClass {
 						) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit ()) . "' )
 						where r >=  '" . ($this->getStart () + 1) . "'";
-				} else if ($this->getVendor () == self::DB2) {
+			} else if ($this->getVendor () == self::DB2) {
+			
+			} else if ($this->getVendor () == self::POSTGRESS) {
+			} else {
 				
-				} else if ($this->getVendor () == self::POSTGRESS) {
-				} else {
-					
-					echo "undefine vendor";
-					exit ();
-				}
+				echo "undefine vendor";
+				exit ();
 			}
 		}
+		
 		/*
 					*  Only Execute One Query
 						*/
@@ -399,24 +399,49 @@ $logObject = new LogClass ();
 if (isset ( $_POST ['method'] )) {
 	/*
 	 *  Initilize Value before load in the loader
-	 */
-	/*
-	 *  Leaf / Application Identification
-	 */
+	*/
 	if (isset ( $_POST ['leafId'] )) {
 		$logObject->setLeafId ( $_POST ['leafId'] );
 	}
 	/*
 	 * Admin Only
-	 */
+	*/
 	if (isset ( $_POST ['isAdmin'] )) {
 		$logObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
 	/*
+	 *  Paging
+	*/
+	if (isset ( $_POST ['start'] )) {
+		$logObject->setStart ( $_POST ['start'] );
+	}
+	if (isset ( $_POST ['perPage'] )) {
+		$logObject->setLimit ( $_POST ['perPage'] );
+	}
+	/*
+	 *  Filtering
+	*/
+	if (isset ( $_POST ['query'] )) {
+		$logObject->setFieldQuery ( $_POST ['query'] );
+	}
+	if (isset ( $_POST ['filter'] )) {
+		$logObject->setGridQuery ( $_POST ['filter'] );
+	}
+	/*
+	 * Ordering
+	*/
+	if (isset ( $_POST ['order'] )) {
+		$logObject->setOrder ( $_POST ['order'] );
+	}
+	if (isset ( $_POST ['sortField'] )) {
+		$logObject->setSortField ( $_POST ['sortField'] );
+	}
+	/*
 	 *  Load the dynamic value
-	 */
+	*/
 	$logObject->execute ();
 	if ($_POST ['method'] == 'read') {
+		
 		$logObject->read ();
 	}
 }

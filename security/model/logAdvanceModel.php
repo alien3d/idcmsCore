@@ -32,7 +32,7 @@ class LogAdvanceModel extends ValidationClass {
 	 * Log Advance Comparision. Containing Before and After  Sql Statement on each column
 	 * @var int
 	 */
-	private $logAdvanceComparison;
+	private $logAdvanceComparision;
 	/**
 	 * Reference Table Name
 	 * @var int
@@ -58,6 +58,15 @@ class LogAdvanceModel extends ValidationClass {
 		 */
 		if (isset ( $_POST ['logAdvanceId'] )) {
 			$this->setLogAdvanceId ( $this->strict ( $_POST ['logAdvanceId'], 'numeric' ) );
+		}
+		if (isset ( $_POST ['logAdvanceText'] )) {
+			$this->setLogAdvanceText ( $this->strict ( $_POST ['logAdvanceText'], 'numeric' ) );
+		}
+		if (isset ( $_POST ['logAdvanceType'] )) {
+			$this->setLogAdvanceType ( $this->strict ( $_POST ['logAdvanceType'], 'numeric' ) );
+		}
+		if (isset ( $_POST ['logAdvanceComparision'] )) {
+			$this->setComparision ( $this->strict ( $_POST ['logAdvanceComparision'], 'numeric' ) );
 		}
 		/*
 		 * All the $_GET enviroment 
@@ -217,10 +226,10 @@ class LogAdvanceModel extends ValidationClass {
 	}
 	
 	/**
-	 * @return the $logAdvanceComparison
+	 * @return the $logAdvanceComparision
 	 */
-	public function getLogAdvanceComparison() {
-		return $this->logAdvanceComparison;
+	public function getLogAdvanceComparision() {
+		return $this->logAdvanceComparision;
 	}
 	
 	/**
@@ -236,7 +245,7 @@ class LogAdvanceModel extends ValidationClass {
 	public function getLeafId() {
 		return $this->leafId;
 	}
-		
+	
 	/**
 	 * @param number $logAdvanceText
 	 */
@@ -254,8 +263,8 @@ class LogAdvanceModel extends ValidationClass {
 	/**
 	 * @param number $logAdvanceComparison
 	 */
-	public function setLogAdvanceComparison($logAdvanceComparison) {
-		$this->logAdvanceComparison = $logAdvanceComparison;
+	public function setLogAdvanceComparision($logAdvanceComparision) {
+		$this->logAdvanceComparision = $logAdvanceComparision;
 	}
 	
 	/**

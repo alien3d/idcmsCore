@@ -67,19 +67,18 @@ class ReligionClass extends ConfigClass {
 		parent::__construct ();
 		
 		// audit property
-		$this->audit 			=	0;
-		$this->log 				= 	1;
+		$this->audit = 0;
+		$this->log = 1;
 		
-		$this->q 				= 	new Vendor ();
-		$this->q->vendor 		=	$this->getVendor ();
-		$this->q->leafId 		= 	$this->getLeafId ();
-		$this->q->staffId 		= 	$this->getStaffId ();
-		$this->q->fieldQuery 	= 	$this->getFieldQuery ();
-		$this->q->gridQuery 	= 	$this->getGridQuery ();
-		$this->q->log 			= 	$this->log;
-		$this->q->audit 		= 	$this->audit;
-		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );		
-		
+		$this->q = new Vendor ();
+		$this->q->vendor = $this->getVendor ();
+		$this->q->leafId = $this->getLeafId ();
+		$this->q->staffId = $this->getStaffId ();
+		$this->q->fieldQuery = $this->getFieldQuery ();
+		$this->q->gridQuery = $this->getGridQuery ();
+		$this->q->log = $this->log;
+		$this->q->audit = $this->audit;
+		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 		
 		$this->model = new ReligionModel ();
 		$this->model->setVendor ( $this->getVendor () );
@@ -91,7 +90,7 @@ class ReligionClass extends ConfigClass {
 		$this->documentTrail->setLanguageId ( $this->getLanguageId () );
 		$this->documentTrail->setLeafId ( $this->getLeafId () );
 		$this->documentTrail->execute ();
-	
+		
 		$this->excel = new PHPExcel ();
 	}
 	/* (non-PHPdoc)
@@ -146,7 +145,7 @@ class ReligionClass extends ConfigClass {
 						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
 						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					);";
-		} else if ($this->getVendor () == self::ORACLE ) {
+		} else if ($this->getVendor () == self::ORACLE) {
 			
 			$sql = "
 			INSERT INTO	RELIGION
@@ -337,10 +336,10 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->getVendor () == self::ORACLE) {
 				$tempSql2 = $this->q->searching ();
 				$sql .= $tempSql2;
-			} else if ($this->getVendor() == self ::DB2){
-				
-			} else if ($this->getVendor()==self::POSTGRESS){
-				
+			} else if ($this->getVendor () == self::DB2) {
+			
+			} else if ($this->getVendor () == self::POSTGRESS) {
+			
 			}
 		}
 		// optional debugger.uncomment if wanted to used
@@ -371,20 +370,20 @@ class ReligionClass extends ConfigClass {
 			
 			}
 		}
-		$_SESSION ['sql'] 	= $sql; // push to session so can make report via excel and pdf
+		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		if (empty ( $this->filter )) {
-			if ($this->getLimit ()) {
-				// only mysql have limit
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sql = "
+		
+		if ($this->getLimit ()) {
+			// only mysql have limit
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sql = "
 							WITH [religionDerived] AS
 							(
 								SELECT [religion].[religionId],
@@ -411,11 +410,11 @@ class ReligionClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart () + 1) . "
 							AND 			" . ($this->getStart () + $this->getLimit ()) . ";";
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -441,16 +440,16 @@ class ReligionClass extends ConfigClass {
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit ()) . "' )
 						where r >=  '" . ($this->getStart () + 1) . "'";
-				} else if ($this->getVendor () == self::DB2) {
+			} else if ($this->getVendor () == self::DB2) {
+			
+			} else if ($this->getVendor () == self::POSTGRESS) {
+			} else {
 				
-				} else if ($this->getVendor () == self::POSTGRESS) {
-				} else {
-					
-					echo "undefine vendor";
-					exit ();
-				}
+				echo "undefine vendor";
+				exit ();
 			}
 		}
+		
 		/*
              *  Only Execute One Query
              */
@@ -562,7 +561,7 @@ class ReligionClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" =>true, "message" => "Updated" ) );
+		echo json_encode ( array ("success" => true, "message" => "Updated" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -622,10 +621,10 @@ class ReligionClass extends ConfigClass {
 					EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
 					EXECUTETIME		=	" . $this->model->getExecuteTime () . "
 			WHERE 	RELIGIONID		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor()==self::DB2){
-			
-		} else if ($this->getVendor()==self::POSTGRESS){
-			
+		} else if ($this->getVendor () == self::DB2) {
+		
+		} else if ($this->getVendor () == self::POSTGRESS) {
+		
 		}
 		// advance logging future
 		$this->q->tableName = $this->model->getTableName ();
@@ -664,10 +663,10 @@ class ReligionClass extends ConfigClass {
 			$sql = "
 			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
-		} else if ($this->getVendor()==self::DB2){
-			
-		} else if ($this->getVendor()==self::POSTGRESS){
-			
+		} else if ($this->getVendor () == self::DB2) {
+		
+		} else if ($this->getVendor () == self::POSTGRESS) {
+		
 		}
 		/**
 		 * System Validation Checking
@@ -681,17 +680,17 @@ class ReligionClass extends ConfigClass {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
-			} else if ($this->getVendor() == self ::DB2){
-				
-			} else if ($this->getVendor()==self::POSTGRESS){
-				
+			} else if ($this->getVendor () == self::DB2) {
+			
+			} else if ($this->getVendor () == self::POSTGRESS) {
+			
 			}
 			switch ($systemCheck) {
 				case 'isDefault' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDefault ( $i, 'array' )) {
-						
-						$sqlLooping .= "
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getReligionId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDefault ( $i, 'array' ) . "'";
 						}
@@ -700,8 +699,8 @@ class ReligionClass extends ConfigClass {
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsNew ( $i, 'array' )) {
-						
-						$sqlLooping .= "
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getReligionId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
 						}
@@ -710,8 +709,8 @@ class ReligionClass extends ConfigClass {
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDraft ( $i, 'array' )) {
-						
-						$sqlLooping .= "
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getReligionId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDraft ( $i, 'array' ) . "'";
 						}
@@ -720,8 +719,8 @@ class ReligionClass extends ConfigClass {
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsUpdate ( $i, 'array' )) {
-						
-						$sqlLooping .= "
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getReligionId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
 						}
@@ -730,8 +729,8 @@ class ReligionClass extends ConfigClass {
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDelete ( $i, 'array' )) {
-						
-						$sqlLooping .= "
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getReligionId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
 						}
@@ -740,8 +739,8 @@ class ReligionClass extends ConfigClass {
 				case 'isActive' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsActive ( $i, 'array' )) {
-						
-						$sqlLooping .= "
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getReligionId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsActive ( $i, 'array' ) . "'";
 						}
@@ -750,8 +749,8 @@ class ReligionClass extends ConfigClass {
 				case 'isApproved' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsApproved ( $i, 'array' )) {
-						
-						$sqlLooping .= "
+							
+							$sqlLooping .= "
 							WHEN '" . $this->model->getReligionId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsApproved ( $i, 'array' ) . "'";
 						}
@@ -760,8 +759,8 @@ class ReligionClass extends ConfigClass {
 				case 'isReview' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsReview ( $i, 'array' )) {
-						
-						$sqlLooping .= "
+							
+							$sqlLooping .= "
                             WHEN '" . $this->model->getReligionId ( $i, 'array' ) . "'
                             THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
 						}
@@ -770,8 +769,8 @@ class ReligionClass extends ConfigClass {
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsPost ( $i, 'array' )) {
-						
-						$sqlLooping .= "
+							
+							$sqlLooping .= "
                                 WHEN '" . $this->model->getReligionId ( $i, 'array' ) . "'
                                 THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
 						}
@@ -790,10 +789,10 @@ class ReligionClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
-		} else if ($this->getVendor()==self ::DB2){
-			
-		} else if ($this->getVendor()==self::POSTGRESS){
-			
+		} else if ($this->getVendor () == self::DB2) {
+		
+		} else if ($this->getVendor () == self::POSTGRESS) {
+		
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -832,10 +831,10 @@ class ReligionClass extends ConfigClass {
 			FROM 	RELIGION
 			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc () . "'
 			AND		ISACTIVE		=	1";
-		} else if ($this->getVendor()==self::DB2){
-			
-		}else if ($this->getVendor()==self::POSTGRESS){
-			
+		} else if ($this->getVendor () == self::DB2) {
+		
+		} else if ($this->getVendor () == self::POSTGRESS) {
+		
 		}
 		$this->q->read ( $sql );
 		$total = 0;

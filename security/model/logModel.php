@@ -68,6 +68,24 @@ class LogModel extends ValidationClass {
 		if (isset ( $_SESSION ['staffId'] )) {
 			$this->setExecuteBy ( $_SESSION ['staffId'] );
 		}
+		if (isset ( $_POST ['leafId'] )) {
+			$this->setLeafId ( $this->strict ( $_POST ['leafId'], 'numeric' ) );
+		}
+		if (isset ( $_POST ['operation'] )) {
+			$this->setOperation ( $this->strict ( $_POST ['operation'], 'numeric' ) );
+		}
+		if (isset ( $_POST ['sql'] )) {
+			$this->setSql ( $this->strict ( $_POST ['sql'], 'numeric' ) );
+		}
+		if (isset ( $_POST ['date'] )) {
+			$this->setDate ( $this->strict ( $_POST ['date'], 'numeric' ) );
+		}
+		if (isset ( $_POST ['access'] )) {
+			$this->setAccess ( $this->strict ( $_POST ['access'], 'numeric' ) );
+		}
+		if (isset ( $_POST ['logError'] )) {
+			$this->setLogError ( $this->strict ( $_POST ['logError'], 'numeric' ) );
+		}
 		/*.
 		 * All the $_GET enviroment .
 		 */

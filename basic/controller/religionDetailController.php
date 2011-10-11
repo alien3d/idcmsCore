@@ -295,7 +295,7 @@ class ReligionDetailClass extends ConfigClass {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
 			}
 			if ($this->model->getReligionId ()) {
-				$sql .= " AND 	" . strtoupper($this->model->getTableName ()) . "." . strtoupper($this->model->getMasterForeignKeyName ()) . "	=	'" . $this->model->getReligionId () . "'";
+				$sql .= " AND 	" . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getMasterForeignKeyName () ) . "	=	'" . $this->model->getReligionId () . "'";
 			}
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Undefine Database Vendor" ) );
@@ -314,7 +314,13 @@ class ReligionDetailClass extends ConfigClass {
 		 */
 		$tableArray = null;
 		$tableArray = array ('religionDetail' );
-		if ($this->quickFilter) {
+		/**
+		 * filter table
+		 * @variables $tableArray
+		 */
+		$tableArray = null;
+		$tableArray = array ('religion' );
+		if ($this->getFieldQuery ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );
 			} else if ($this->getVendor () == self::MSSQL) {
@@ -328,7 +334,7 @@ class ReligionDetailClass extends ConfigClass {
 		/**
 		 * Extjs filtering mode
 		 */
-		if ($this->filter) {
+		if ($this->getGridQuery ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->searching ();
 			} else if ($this->getVendor () == self::MSSQL) {
@@ -337,6 +343,10 @@ class ReligionDetailClass extends ConfigClass {
 			} else if ($this->getVendor () == self::ORACLE) {
 				$tempSql2 = $this->q->searching ();
 				$sql .= $tempSql2;
+			} else if ($this->getVendor () == self::DB2) {
+			
+			} else if ($this->getVendor () == self::POSTGRESS) {
+			
 			}
 		}
 		// optional debugger.uncomment if wanted to used
@@ -533,10 +543,10 @@ class ReligionDetailClass extends ConfigClass {
 					EXECUTEBY				=	'" . $this->model->getExecuteBy () . "',
 					EXECUTETIME				=	" . $this->model->getExecuteTime () . "
 			WHERE 	RELIGIONDETAILID		=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor() ==self::DB2){
-			
-		} else if ($this->getVendor()==self:: POSTGRESS){
-			
+		} else if ($this->getVendor () == self::DB2) {
+		
+		} else if ($this->getVendor () == self::POSTGRESS) {
+		
 		}
 		/*
 		 *  require three variable below to track  table audit

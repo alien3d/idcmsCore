@@ -400,9 +400,6 @@ if (isset ( $_POST ['method'] )) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-	/*
-	 *  Leaf / Application Identification
-	 */
 	if (isset ( $_POST ['leafId'] )) {
 		$logAdvanceObject->setLeafId ( $_POST ['leafId'] );
 	}
@@ -411,6 +408,33 @@ if (isset ( $_POST ['method'] )) {
 	 */
 	if (isset ( $_POST ['isAdmin'] )) {
 		$logAdvanceObject->setIsAdmin ( $_POST ['isAdmin'] );
+	}
+	/*
+	 *  Paging
+	 */
+	if (isset ( $_POST ['start'] )) {
+		$logAdvanceObject->setStart ( $_POST ['start'] );
+	}
+	if (isset ( $_POST ['perPage'] )) {
+		$logAdvanceObject->setLimit ( $_POST ['perPage'] );
+	}
+	/*
+	 *  Filtering
+	 */
+	if (isset ( $_POST ['query'] )) {
+		$logAdvanceObject->setFieldQuery ( $_POST ['query'] );
+	}
+	if (isset ( $_POST ['filter'] )) {
+		$logAdvanceObject->setGridQuery ( $_POST ['filter'] );
+	}
+	/*
+	 * Ordering
+	 */
+	if (isset ( $_POST ['order'] )) {
+		$logAdvanceObject->setOrder ( $_POST ['order'] );
+	}
+	if (isset ( $_POST ['sortField'] )) {
+		$logAdvanceObject->setSortField ( $_POST ['sortField'] );
 	}
 	/*
 	 *  Load the dynamic value

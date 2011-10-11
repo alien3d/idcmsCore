@@ -522,7 +522,7 @@ abstract class ConfigClass
             $row = $this->q->fetchAssoc($result);
             $previousRecord = $row['previousRecord'];
         } else {
-            $previous = 0;
+            $previousRecord = 0;
         }
         if ($value == 'value') {
             return intval($previousRecord);
