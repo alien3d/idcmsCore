@@ -12,160 +12,263 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class LogAdvanceModel extends ValidationClass
-{
-    /**
-     * Log Advance Identification
-     * @var int
-     */
-    private $logAdvanceId;
-    /**
-     * Log Advance Text.Containing json   on create,update,delete
-     * @var int
-     */
-    private $logAdvanceText;
-    /**
-     * Log Advance Type - create ,update,delete
-     * @var int
-     */
-    private $logAdvanceType;
-    /**
-     * Log Advance Comparision. Containing Before and After  Sql Statement on each column
-     * @var int
-     */
-    private $logAdvanceComparison;
-    /**
-     * Reference Table Name
-     * @var int
-     */
-    private $refTableName;
-    /**
-     * Reference Identification equivilant to Reference Table Name Primary Key
-     * @var int
-     */
-    private $refId;
-    /**
-     * Class Loader to load outside variable and test it suppose variable type
-     */
-    function execute ()
-    {
-        /*
+class LogAdvanceModel extends ValidationClass {
+	/**
+	 * Log Advance Identification
+	 * @var int
+	 */
+	private $logAdvanceId;
+	/**
+	 * Log Advance Text.Containing json   on create,update,delete
+	 * @var int
+	 */
+	private $logAdvanceText;
+	/**
+	 * Log Advance Type - create ,update,delete
+	 * @var int
+	 */
+	private $logAdvanceType;
+	/**
+	 * Log Advance Comparision. Containing Before and After  Sql Statement on each column
+	 * @var int
+	 */
+	private $logAdvanceComparison;
+	/**
+	 * Reference Table Name
+	 * @var int
+	 */
+	private $refTableName;
+	/**
+	 * Reference Identification equivilant to Reference Table Name Primary Key
+	 * @var int
+	 */
+	private $leafId;
+	
+	/**
+	 * Class Loader to load outside variable and test it suppose variable type
+	 */
+	function execute() {
+		/*
 		 *  Basic Information Table
 		 */
-        $this->settableName('logAdvance');
-        $this->setPrimaryKeyName('logAdvanceId');
-        /*
+		$this->settableName ( 'logAdvance' );
+		$this->setPrimaryKeyName ( 'logAdvanceId' );
+		/*
 		 *  All the $_POST enviroment.
 		 */
-        if (isset($_POST['logAdvanceId'])) {
-            $this->strict($_POST['logAdvanceId'], 'numeric');
-        }
-        if ($this->getVendor() == self::MYSQL) {
-            $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
-        } else 
-            if ($this->getVendor() == self::MSSQL) {
-                $this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
-            } else 
-                if ($this->getVendor() == self::ORACLE) {
-                    $this->setExecuteTime(
-                    "to_date('" . date("Y-m-d H:i:s") .
-                     "','YYYY-MM-DD HH24:MI:SS')");
-                }
-    }
-    /* (non-PHPdoc)
-	 * @see ValidationClass::create()
-	 */
-    function create ()
-    {
-        $this->isDefaut = 0;
-        $this->isNew = 1;
-        $this->isDraft = 0;
-        $this->isUpdate = 0;
-        $this->isActive = 0;
-        $this->isDelete = 0;
-        $this->isApproved = 0;
-    }
-    /* (non-PHPdoc)
-	 * @see ValidationClass::update()
-	 */
-    function update ()
-    {
-        $this->isDefaut = 0;
-        $this->isNew = 0;
-        $this->isDraft = 0;
-        $this->isUpdate = 1;
-        $this->isActive = 1;
-        $this->isDelete = 0;
-        $this->isApproved = 0;
-    }
-    /* (non-PHPdoc)
-	 * @see ValidationClass::delete()
-	 */
-    function delete ()
-    {
-        $this->isDefaut = 0;
-        $this->isNew = 0;
-        $this->isDraft = 0;
-        $this->isUpdate = 0;
-        $this->isActive = 0;
-        $this->isDelete = 1;
-        $this->isApproved = 0;
-    }
-    /* (non-PHPdoc)
-	 * @see ValidationClass::draft()
-	 */
-    public function draft ()
-    {
-        $this->setIsDefault(0, 0, 'single');
-        $this->setIsNew(1, 0, 'single');
-        $this->setIsDraft(1, 0, 'single');
-        $this->setIsUpdate(0, 0, 'single');
-        $this->setIsActive(0, 0, 'single');
-        $this->setIsDelete(0, 0, 'single');
-        $this->setIsApproved(0, 0, 'single');
-    }
-    /* (non-PHPdoc)
-	 * @see ValidationClass::draft()
-	 */
-    public function approved ()
-    {
-        $this->setIsDefault(0, 0, 'single');
-        $this->setIsNew(1, 0, 'single');
-        $this->setIsDraft(0, 0, 'single');
-        $this->setIsUpdate(0, 0, 'single');
-        $this->setIsActive(0, 0, 'single');
-        $this->setIsDelete(0, 0, 'single');
-        $this->setIsApproved(1, 0, 'single');
-    }
-    /* (non-PHPdoc)
-	 * @see ValidationClass::review()
+		if (isset ( $_POST ['logAdvanceId'] )) {
+			$this->setLogAdvanceId ( $this->strict ( $_POST ['logAdvanceId'], 'numeric' ) );
+		}
+		/*
+		 * All the $_GET enviroment 
+		 */
+		if (isset ( $_GET ['leafId'] )) {
+			
+			$this->setLeafId ( $this->strict ( $_GET ['leafId'], 'numeric' ) );
+		}
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
+	}
+	public function create() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 1, 0, 'single' );
+		$this->setIsDraft ( 0, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 1, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
+	}
+	/* (non-PHPdoc)
+		 * @see ValidationClass::update()
+		 */
+	public function update() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 0, 0, 'single' );
+		$this->setIsDraft ( 0, 0, 'single' );
+		$this->setIsUpdate ( 1, '', 'single' );
+		$this->setIsActive ( 1, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
+	}
+	/* (non-PHPdoc)
+	* @see ValidationClass::delete()
 	*/
-    public function review ()
-    {
-        $this->setIsDefault(0, 0, 'single');
-        $this->setIsNew(1, 0, 'single');
-        $this->setIsDraft(0, 0, 'single');
-        $this->setIsUpdate(0, 0, 'single');
-        $this->setIsActive(0, 0, 'single');
-        $this->setIsDelete(0, 0, 'single');
-        $this->setIsApproved(0, 0, 'single');
-        $this->setIsReview(1, 0, 'single');
-        $this->setIsPost(0, 0, 'single');
-    }
-    /* (non-PHPdoc)
-	* @see ValidationClass::post()
+	public function delete() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 0, 0, 'single' );
+		$this->setIsDraft ( 0, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 0, '', 'string' );
+		$this->setIsDelete ( 1, '', 'string' );
+		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
+	}
+	/* (non-PHPdoc)
+	* @see ValidationClass::draft()
 	*/
-    public function post ()
-    {
-        $this->setIsDefault(0, 0, 'single');
-        $this->setIsNew(1, 0, 'single');
-        $this->setIsDraft(0, 0, 'single');
-        $this->setIsUpdate(0, 0, 'single');
-        $this->setIsActive(0, 0, 'single');
-        $this->setIsDelete(0, 0, 'single');
-        $this->setIsApproved(1, 0, 'single');
-        $this->setIsReview(0, 0, 'single');
-        $this->setIsPost(1, 0, 'single');
-    }
+	public function draft() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 1, 0, 'single' );
+		$this->setIsDraft ( 1, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 0, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
+	}
+	/* (non-PHPdoc)
+	* @see ValidationClass::approved()
+	*/
+	public function approved() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 1, 0, 'single' );
+		$this->setIsDraft ( 0, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 0, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 1, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
+	}
+	/* (non-PHPdoc)
+		* @see ValidationClass::review()
+		*/
+	public function review() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 1, 0, 'single' );
+		$this->setIsDraft ( 0, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 0, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 1, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
+	}
+	/* (non-PHPdoc)
+		* @see ValidationClass::post()
+		*/
+	public function post() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 1, 0, 'single' );
+		$this->setIsDraft ( 0, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 0, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 1, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 1, 0, 'single' );
+	}
+	/**
+	 * Set Log Advance Identification  Value
+	 * @param int|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLogAdvanceId($value, $key, $type) {
+		if ($type == 'single') {
+			$this->logAdvanceId = $value;
+		} else if ($type == 'array') {
+			$this->logAdvanceId [$key] = $value;
+		} else {
+			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type String Or Array:setLogAdvanceId ?" ) );
+			exit ();
+		}
+	}
+	/**
+	 * Return LogAdvance Identification  Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLogAdvanceId($key, $type) {
+		if ($type == 'single') {
+			return $this->logAdvanceId;
+		} else if ($type == 'array') {
+			return $this->logAdvanceId [$key];
+		} else {
+			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type String Or Array:getLogAdvanceId ?" ) );
+			exit ();
+		}
+	}
+	
+	/**
+	 * @return the $logAdvanceText
+	 */
+	public function getLogAdvanceText() {
+		return $this->logAdvanceText;
+	}
+	
+	/**
+	 * @return the $logAdvanceType
+	 */
+	public function getLogAdvanceType() {
+		return $this->logAdvanceType;
+	}
+	
+	/**
+	 * @return the $logAdvanceComparison
+	 */
+	public function getLogAdvanceComparison() {
+		return $this->logAdvanceComparison;
+	}
+	
+	/**
+	 * @return the $refTableName
+	 */
+	public function getRefTableName() {
+		return $this->refTableName;
+	}
+	
+	/**
+	 * @return the $leafId
+	 */
+	public function getLeafId() {
+		return $this->leafId;
+	}
+		
+	/**
+	 * @param number $logAdvanceText
+	 */
+	public function setLogAdvanceText($logAdvanceText) {
+		$this->logAdvanceText = $logAdvanceText;
+	}
+	
+	/**
+	 * @param number $logAdvanceType
+	 */
+	public function setLogAdvanceType($logAdvanceType) {
+		$this->logAdvanceType = $logAdvanceType;
+	}
+	
+	/**
+	 * @param number $logAdvanceComparison
+	 */
+	public function setLogAdvanceComparison($logAdvanceComparison) {
+		$this->logAdvanceComparison = $logAdvanceComparison;
+	}
+	
+	/**
+	 * @param number $refTableName
+	 */
+	public function setRefTableName($refTableName) {
+		$this->refTableName = $refTableName;
+	}
+	/**
+	 * @param number $leafId
+	 */
+	public function setLeafId($leafId) {
+		$this->leafId = $leafId;
+	}
 }
 ?>

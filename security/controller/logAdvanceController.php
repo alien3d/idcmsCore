@@ -3,18 +3,18 @@ session_start ();
 require_once ("../../class/classAbstract.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
-require_once ("../model/logModel.php");
+require_once ("../model/logAdvanceModel.php");
 /**
- * this is  log file
+ * this is  logAdvance file
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package Security
- * @subpackage log
+ * @subpackage logAdvance
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class LogClass extends ConfigClass {
+class LogAdvanceClass extends ConfigClass {
 	/**
 	 * Connection to the database
 	 * @var string
@@ -39,7 +39,7 @@ class LogClass extends ConfigClass {
 	 * Log Sql Statement True or False
 	 * @var string
 	 */
-	private $log;
+	private $logAdvance;
 	/**
 	 * Model
 	 * @var string 
@@ -67,7 +67,7 @@ class LogClass extends ConfigClass {
 		parent::__construct ();
 		// audit property
 		$this->audit = 0;
-		$this->log = 0;
+		$this->logAdvance = 0;
 		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
@@ -75,11 +75,11 @@ class LogClass extends ConfigClass {
 		$this->q->staffId = $this->getStaffId ();
 		$this->q->fieldQuery = $this->getFieldQuery ();
 		$this->q->gridQuery = $this->getGridQuery ();
-		$this->q->log = $this->log;
+		$this->q->logAdvance = $this->logAdvance;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 		
-		$this->model = new LogModel ();
+		$this->model = new LogAdvanceModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
@@ -107,32 +107,32 @@ class LogClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	`log`
+			FROM 	`logAdvance`
 			JOIN	`leaf`
 			USING	(`leafId`)
 			JOIN	`staff`
-			USING	(`staffId`)
+			ON		`staff`.`staffId` = `logAdvance`.`executeBy`
 			WHERE  1 ";
-			if ($this->model->getLogId ( 0, 'single' )) {
+			if ($this->model->getLogAdvanceId ( 0, 'single' )) {
 				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getLogId ( 0, 'single' ) . "'";
 			}
 			if ($this->model->getLeafId ()) {
-				$sql .= " AND `log`.`leafId`='" . $this->model->getLeafId () . "'";
+				$sql .= " AND `logAdvance`.`leafId`='" . $this->model->getLeafId () . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	[log]
+			FROM 	[logAdvance]
 			JOIN	[leaf]
-			ON		[log].[leafId] = [leaf].[leafId]
+			ON		[logAdvance].[leafId] = [leaf].[leafId]
 			JOIN	[staff]
-			ON		[log].[staffId]= [staff].[staffId]
+			ON		[logAdvance].[staffId]= [staff].[staffId]
 			WHERE ";
-			if ($this->model->getLogId ( 0, 'single' )) {
+			if ($this->model->getLogAdvanceId ( 0, 'single' )) {
 				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getLogId ( 0, 'single' ) . "'";
 			}
 			if ($this->model->getLeafId ()) {
-				$sql .= " AND [log].[leafId]='" . $this->model->getLeafId () . "'";
+				$sql .= " AND [logAdvance].[refId]='" . $this->model->getLeafId () . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -143,7 +143,7 @@ class LogClass extends ConfigClass {
 			JOIN	STAFF
 			ON		STAFF.STAFFID= LOG.STAFFID
 			WHERE ";
-			if ($this->model->getLogId ( 0, 'single' )) {
+			if ($this->model->getLogAdvanceId ( 0, 'single' )) {
 				$sql .= " AND `" . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getLogId ( 0, 'single' ) . "'";
 			}
 			if ($this->model->getLeafId ()) {
@@ -156,13 +156,13 @@ class LogClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array ('logId' );
+		$filterArray = array ('logAdvanceId' );
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array ('staff', 'log' );
+		$tableArray = array ('staff', 'logAdvance' );
 		if ($this->getFieldQuery ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );
@@ -240,18 +240,18 @@ class LogClass extends ConfigClass {
 					 * Parameterize Query We don't support
 					 */
 					$sql = "
-					WITH [logDerived] AS
+					WITH [religionDerived] AS
 					(
 						SELECT	*
-			FROM 	[log]
+			FROM 	[logAdvance]
 			JOIN	[leaf]
-			ON		[log].[leafId] = [leaf].[leafId]
+			ON		[logAdvance].[leafId] = [leaf].[leafId]
 			JOIN	[staff]
-			ON		[log].[staffId]= [staff].[staffId]
+			ON		[logAdvance].[staffId]= [staff].[staffId]
 			WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 						 )
 						 SELECT		*
-						 FROM 		[logDerived]
+						 FROM 		[religionDerived]
 						 WHERE 		[RowNumber]
 						 BETWEEN	" . ($this->getStart () + 1) . "
 						 AND 			" . ($this->getStart () + $this->getLimit ()) . ";";
@@ -287,7 +287,7 @@ class LogClass extends ConfigClass {
 		/*
 					*  Only Execute One Query
 						*/
-		if (! ($this->model->getLogId ( 0, 'single' ))) {
+		if (! ($this->model->getLogAdvanceId ( 0, 'single' ))) {
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
 				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -298,8 +298,8 @@ class LogClass extends ConfigClass {
 		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
 			$items [] = $row;
 		}
-		if ($this->model->getLogId ( 0, 'single' )) {
-			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->firstRecord ( 'value' ), 'previousRecord' => $this->previousRecord ( 'value', $this->model->getReligionId ( 0, 'single' ) ), 'nextRecord' => $this->nextRecord ( 'value', $this->model->getReligionId ( 0, 'single' ) ), 'lastRecord' => $this->lastRecord ( 'value' ) ) );
+		if ($this->model->getLogAdvanceId ( 0, 'single' )) {
+			$json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->firstRecord ( 'value' ), 'previousRecord' => $this->previousRecord ( 'value', $this->model->getReligionId ( 0, 'single' ) ), 'nextRecord' => $this->nextRecord ( 'value', $this->model->getReligionId ( 0, 'single' ) ), 'lastRecord' => $this->lastRecord ( 'value' ) ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -346,14 +346,14 @@ class LogClass extends ConfigClass {
 		$this->excel->getActiveSheet ()->setCellValue ( 'J2', '' );
 		$this->excel->getActiveSheet ()->mergeCells ( 'B2:J2' );
 		$this->excel->getActiveSheet ()->setCellValue ( 'B3', 'No' );
-		$this->excel->getActiveSheet ()->setCellValue ( 'C3', 'logId' );
+		$this->excel->getActiveSheet ()->setCellValue ( 'C3', 'logAdvanceId' );
 		$this->excel->getActiveSheet ()->setCellValue ( 'D3', 'leafId' );
 		$this->excel->getActiveSheet ()->setCellValue ( 'E3', 'operation' );
 		$this->excel->getActiveSheet ()->setCellValue ( 'F3', 'sql' );
 		$this->excel->getActiveSheet ()->setCellValue ( 'G3', 'date' );
 		$this->excel->getActiveSheet ()->setCellValue ( 'H3', 'staffId' );
 		$this->excel->getActiveSheet ()->setCellValue ( 'I3', 'access' );
-		$this->excel->getActiveSheet ()->setCellValue ( 'J3', 'log_error' );
+		$this->excel->getActiveSheet ()->setCellValue ( 'J3', 'logAdvance_error' );
 		$this->excel->getActiveSheet ()->getStyle ( 'B2:J2' )->getFill ()->setFillType ( PHPExcel_Style_Fill::FILL_SOLID );
 		$this->excel->getActiveSheet ()->getStyle ( 'B2:J2' )->getFill ()->getStartColor ()->setARGB ( '66BBFF' );
 		$this->excel->getActiveSheet ()->getStyle ( 'B3:J3' )->getFill ()->setFillType ( PHPExcel_Style_Fill::FILL_SOLID );
@@ -364,14 +364,14 @@ class LogClass extends ConfigClass {
 		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
-			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['logId'] );
+			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['logAdvanceId'] );
 			$this->excel->getActiveSheet ()->setCellValue ( 'D' . $loopRow, $row ['leafId'] );
 			$this->excel->getActiveSheet ()->setCellValue ( 'E' . $loopRow, $row ['operation'] );
 			$this->excel->getActiveSheet ()->setCellValue ( 'F' . $loopRow, $row ['sql'] );
 			$this->excel->getActiveSheet ()->setCellValue ( 'G' . $loopRow, $row ['date'] );
 			$this->excel->getActiveSheet ()->setCellValue ( 'H' . $loopRow, $row ['staffId'] );
 			$this->excel->getActiveSheet ()->setCellValue ( 'I' . $loopRow, $row ['access'] );
-			$this->excel->getActiveSheet ()->setCellValue ( 'J' . $loopRow, $row ['log_error'] );
+			$this->excel->getActiveSheet ()->setCellValue ( 'J' . $loopRow, $row ['logAdvance_error'] );
 			$loopRow ++;
 			$lastRow = 'J' . $loopRow;
 		}
@@ -380,7 +380,7 @@ class LogClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet ()->getStyle ( $formula )->applyFromArray ( $styleThinBlackBorderOutline );
 		$objWriter = PHPExcel_IOFactory::createWriter ( $this->excel, 'Excel2007' );
-		$filename = "log" . rand ( 0, 10000000 ) . ".xlsx";
+		$filename = "logAdvance" . rand ( 0, 10000000 ) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$objWriter->save ( $path );
 		$this->create_trail ( $this->leafId, $path, $filename );
@@ -394,7 +394,7 @@ class LogClass extends ConfigClass {
 		}
 	}
 }
-$logObject = new LogClass ();
+$logAdvanceObject = new LogAdvanceClass ();
 // crud -create,read,update,delete
 if (isset ( $_POST ['method'] )) {
 	/*
@@ -404,20 +404,20 @@ if (isset ( $_POST ['method'] )) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset ( $_POST ['leafId'] )) {
-		$logObject->setLeafId ( $_POST ['leafId'] );
+		$logAdvanceObject->setLeafId ( $_POST ['leafId'] );
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset ( $_POST ['isAdmin'] )) {
-		$logObject->setIsAdmin ( $_POST ['isAdmin'] );
+		$logAdvanceObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$logObject->execute ();
+	$logAdvanceObject->execute ();
 	if ($_POST ['method'] == 'read') {
-		$logObject->read ();
+		$logAdvanceObject->read ();
 	}
 }
 if (isset ( $_GET ['method'] )) {
@@ -428,24 +428,24 @@ if (isset ( $_GET ['method'] )) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset ( $_GET ['leafId'] )) {
-		$logObject->setLeafId ( $_GET ['leafId'] );
+		$logAdvanceObject->setLeafId ( $_GET ['leafId'] );
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset ( $_GET ['isAdmin'] )) {
-		$logObject->setIsAdmin ( $_GET ['isAdmin'] );
+		$logAdvanceObject->setIsAdmin ( $_GET ['isAdmin'] );
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$logObject->execute ();
+	$logAdvanceObject->execute ();
 	/*
 	 * Reporting Only
 	 */
 	if (isset ( $_GET ['mode'] )) {
-		if ($_GET ['mode'] == 'excel') {
-			$logObject->excel ();
+		if ($_GET ['mode'] == 'report') {
+			$logAdvanceObject->excel ();
 		}
 	}
 }

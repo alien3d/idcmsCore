@@ -208,6 +208,10 @@ var isAdmin;
         isDeleteHidden      = false;
         isActiveHidden		= false;
         isApprovedHidden	= false;
+        isReviewHidden		= false;
+        isPostHidden    = false;
+        auditButtonLabelDisabled = false;
+        
     } else {
         isDefaultHidden 	= true;
         isNewHidden   		= true;
@@ -216,6 +220,9 @@ var isAdmin;
         isDeleteHidden      = true;
         isActiveHidden		= true;
         isApprovedHidden	= true;
+        isReviewHidden		= true;
+        isPostHidden    	= true;
+        auditButtonLabelDisabled = true;
     }
     var isDefaultLabel		= 'Default Value';
     var isNewLabel	 		= 'New';
@@ -224,5 +231,5 @@ var isAdmin;
     var isDeleteLabel		= 'Delete';
     var isActive 			= 'Active';
     var isApprovedLabel		= 'Approved';
-
+	var auditButtonLabel 	= 'Audit';
 </script>

@@ -120,7 +120,7 @@ Ext
 				} ]
 			});
 
-			var filters = new Ext.ux.grid.GridFilters({
+			var logFilters = new Ext.ux.grid.GridFilters({
 				encode : encode,
 				local : false,
 				filters : [
@@ -182,68 +182,7 @@ Ext
 				} ]
 			});
 
-			var filtersList = new Ext.ux.grid.GridFilters({
-				encode : encode,
-				local : false,
-				filters : [
-
-				{
-					type : 'numeric',
-					dataIndex : 'logId',
-					column : 'logId',
-					table : 'log'
-				},
-
-				{
-					type : 'numeric',
-					dataIndex : 'leafId',
-					column : 'leafId',
-					table : 'log'
-				},
-
-				{
-					type : 'string',
-					dataIndex : 'operation',
-					column : 'operation',
-					table : 'log'
-				},
-
-				{
-					type : 'string',
-					dataIndex : 'sql',
-					column : 'sql',
-					table : 'log'
-				},
-
-				{
-					type : 'date',
-					dataIndex : 'date',
-					column : 'date',
-					table : 'log'
-				},
-
-				{
-					type : 'numeric',
-					dataIndex : 'staffId',
-					column : 'staffId',
-					table : 'log'
-				},
-
-				{
-					type : 'string',
-					dataIndex : 'access',
-					column : 'access',
-					table : 'log'
-				},
-
-				{
-					type : 'string',
-					dataIndex : 'log_error',
-					column : 'log_error',
-					table : 'log'
-				} ]
-			});
-
+			
 			this.action = new Ext.ux.grid.RowActions({
 				header : actionLabel,
 				bodyStyle : 'padding:5px',
@@ -276,38 +215,7 @@ Ext
 				} ]
 			});
 
-			this.actionList = new Ext.ux.grid.RowActions({
-				header : actionLabel,
-				bodyStyle : 'padding:5px',
-				dataIndex : 'logId',
-				actions : [ {
-					iconCls : 'application_edit',
-					tooltip : updateRecordToolTipLabel,
-					callback : function(grid, record, action, row, col) {
-
-						formPanel.getForm().reset();
-						formPanel.form.load({
-							url : 'logData.php',
-							method : 'POST',
-							waitMsg : waitMessageLabel,
-							params : {
-								method : 'read',
-								mode : 'update',
-								logId : record.data.logId,
-								leafId : leafId
-							},
-							success : function(form, action) {
-								viewPort.items.get(1).expand();
-							},
-							failure : function(action) {
-								Ext.MessageBox.alert('Message',
-										'Load failed.grid');
-							}
-						});
-						win.hide();
-					}
-				} ]
-			});
+			
 
 			var columnModel = [ new Ext.grid.RowNumberer(), this.action, {
 				dataIndex : 'logId',
@@ -459,42 +367,7 @@ Ext
 				})
 			});
 
-			var gridList = new Ext.grid.GridPanel({
-				border : false,
-				store : storeList,
-				autoHeight : false,
-				columns : columnModelList,
-				loadMask : true,
-				plugins : [ this.actionList, filtersList ],
-				sm : new Ext.grid.RowSelectionModel({
-					singleSelect : true
-				}),
-				viewConfig : {
-					forceFit : true,
-					emptyText : emptyRowLabel
-				},
-				iconCls : 'application_view_detail',
-				listeners : {
-					render : {
-						fn : function() {
-							storeList.load({
-								params : {
-									start : 0,
-									limit : perPage,
-									method : 'read',
-									mode : 'view',
-									plugin : [ filtersList ]
-								}
-							});
-						}
-					}
-				},
-				bbar : new Ext.PagingToolbar({
-					store : storeList,
-					pageSize : perPage,
-					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
-				})
-			});
+			
 
 			var toolbarPanel = new Ext.Toolbar(
 					{
@@ -560,69 +433,7 @@ Ext
 								} ]
 					});
 
-			var toolbarPanelList = new Ext.Toolbar(
-					{
-						items : [
-								{
-									text : reloadToolbarLabel,
-									iconCls : 'database_refresh',
-									id : 'pageReloadList',
-									disabled : pageReloadList,
-									handler : function() {
-										storeList.reload();
-									}
-								},
-								{
-									text : printerToolbarLabel,
-									iconCls : 'printer',
-									id : 'printerList',
-									disabled : pagePrintList,
-									handler : function() {
-										Ext.ux.GridPrinter.print(grid);
-									}
-								},
-								{
-									text : excelToolbarLabel,
-									iconCls : 'page_excel',
-									id : 'page_excelList',
-									disabled : pagePrintList,
-									handler : function() {
-										Ext.Ajax
-												.request({
-													url : 'logData.php?method=report&mode=excel&limit='
-															+ perPage
-															+ '&leafId='
-															+ leafId,
-													method : 'GET',
-													success : function(
-															response, options) {
-														jsonResponse = Ext.decode(response.responseText);
-														if (jsonResponse == true) {
-															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-															window
-																	.open("../security/document/excel/log.xlsx");
-														} else {
-															Ext.MessageBox
-																	.alert(
-																			systemLabel,
-																			jsonResponse.message);
-														}
-
-													},
-													failure : function(
-															response, options) {
-														status_code = response.status;
-														status_message = response.statusText;
-														Ext.MessageBox.alert(systemLabel,
-																		escape(status_code)
-																				+ ":"
-																				+ status_message);
-													}
-
-												});
-									}
-								} ]
-					});
+			
 
 			var gridPanel = new Ext.Panel({
 				title : leafNote,

@@ -337,6 +337,10 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->getVendor () == self::ORACLE) {
 				$tempSql2 = $this->q->searching ();
 				$sql .= $tempSql2;
+			} else if ($this->getVendor() == self ::DB2){
+				
+			} else if ($this->getVendor()==self::POSTGRESS){
+				
 			}
 		}
 		// optional debugger.uncomment if wanted to used
@@ -439,7 +443,7 @@ class ReligionClass extends ConfigClass {
 						where r >=  '" . ($this->getStart () + 1) . "'";
 				} else if ($this->getVendor () == self::DB2) {
 				
-				} else if ($this->getVendor () == self::ORACLE) {
+				} else if ($this->getVendor () == self::POSTGRESS) {
 				} else {
 					
 					echo "undefine vendor";
@@ -470,7 +474,7 @@ class ReligionClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
+			echo json_encode ( array ('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
 			exit ();
 		}
 	}
@@ -558,7 +562,7 @@ class ReligionClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "TRUE", "message" => "Updated" ) );
+		echo json_encode ( array ("success" =>true, "message" => "Updated" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -618,6 +622,10 @@ class ReligionClass extends ConfigClass {
 					EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
 					EXECUTETIME		=	" . $this->model->getExecuteTime () . "
 			WHERE 	RELIGIONID		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
+		} else if ($this->getVendor()==self::DB2){
+			
+		} else if ($this->getVendor()==self::POSTGRESS){
+			
 		}
 		// advance logging future
 		$this->q->tableName = $this->model->getTableName ();
@@ -630,7 +638,7 @@ class ReligionClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -656,8 +664,11 @@ class ReligionClass extends ConfigClass {
 			$sql = "
 			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
+		} else if ($this->getVendor()==self::DB2){
+			
+		} else if ($this->getVendor()==self::POSTGRESS){
+			
 		}
-		//	echo "arnab[".$this->model->getReligionId(0,'array')."]";
 		/**
 		 * System Validation Checking
 		 * @var $access
@@ -670,6 +681,10 @@ class ReligionClass extends ConfigClass {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
+			} else if ($this->getVendor() == self ::DB2){
+				
+			} else if ($this->getVendor()==self::POSTGRESS){
+				
 			}
 			switch ($systemCheck) {
 				case 'isDefault' :
@@ -775,6 +790,10 @@ class ReligionClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
+		} else if ($this->getVendor()==self ::DB2){
+			
+		} else if ($this->getVendor()==self::POSTGRESS){
+			
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -782,7 +801,7 @@ class ReligionClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -813,6 +832,10 @@ class ReligionClass extends ConfigClass {
 			FROM 	RELIGION
 			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc () . "'
 			AND		ISACTIVE		=	1";
+		} else if ($this->getVendor()==self::DB2){
+			
+		}else if ($this->getVendor()==self::POSTGRESS){
+			
 		}
 		$this->q->read ( $sql );
 		$total = 0;
@@ -823,10 +846,10 @@ class ReligionClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray ();
-			echo json_encode ( array ("success" => "TRUE", "total" => $total, "message" => "Duplicate Record", "religionDesc" => $row ['religionDesc'] ) );
+			echo json_encode ( array ("success" => true, "total" => $total, "message" => "Duplicate Record", "religionDesc" => $row ['religionDesc'] ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => "TRUE", "total" => $total, "message" => "Duplicate Non" ) );
+			echo json_encode ( array ("success" => true, "total" => $total, "message" => "Duplicate Non" ) );
 			exit ();
 		}
 	}

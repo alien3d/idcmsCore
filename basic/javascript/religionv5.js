@@ -15,7 +15,7 @@ Ext
 			var local = false;
 			var jsonResponse;
 			var duplicate = 0;
-			var auditButtonlabel ='audit';
+			var auditButtonlabel = 'audit';
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
 				pageCreateList = false;
@@ -87,7 +87,7 @@ Ext
 					name : "religionDesc",
 					type : "string"
 				}, {
-					name : "By",
+					name : "executeBy",
 					type : "int"
 				}, {
 					name : "staffName",
@@ -276,7 +276,125 @@ Ext
 					type : "string"
 				} ]
 			});
-			var filters = new Ext.ux.grid.GridFilters({ // encode and local
+
+			var logProxy = new Ext.data.HttpProxy({
+				url : "../../security/controller/logController.php?",
+				method : "POST",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message); //uncommen for testing purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var logReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "logId"
+			});
+			var logStore = new Ext.data.JsonStore({
+				proxy : logProxy,
+				reader : logReader,
+				autoLoad : true,
+				autoDestroy : true,
+				baseParams : {
+					method : 'read',
+					field : 'staffId',
+					leafId : leafId
+				},
+				root : 'data',
+				fields : [ {
+					name : 'logId',
+					type : 'int'
+				}, {
+					name : 'leafId',
+					type : 'int'
+				}, {
+					name : 'operation',
+					type : 'string'
+				}, {
+					name : 'sql',
+					type : 'string'
+				}, {
+					name : 'date',
+					type : 'date',
+					dateFormat : 'Y-m-d'
+				}, {
+					name : 'staffId',
+					type : 'int'
+				}, {
+					name : 'access',
+					type : 'string'
+				}, {
+					name : 'log_error',
+					type : 'string'
+				} ]
+			});
+
+			var logAdvanceProxy = new Ext.data.HttpProxy({
+				url : "../../security/controller/logAdvanceController.php?",
+				method : "POST",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);// uncommen for testing purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var logAdvanceReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "logAdvanceId"
+			});
+			var logAdvanceStore = new Ext.data.JsonStore({
+				proxy : logAdvanceProxy,
+				reader : logAdvanceReader,
+				autoLoad : true,
+				autoDestroy : true,
+				pruneModifiedRecords : true,
+				method : 'POST',
+				baseParams : {
+					method : 'read',
+					mode : 'view',
+					leafId : leafId
+				},
+				root : 'data',
+				fields : [ {
+					name : 'logAdvanceId',
+					type : 'int'
+				}, {
+					name : 'logAdvanceText',
+					type : 'string'
+				}, {
+					name : '',
+					type : 'string'
+				}, {
+					name : 'logAdvanceComparison',
+					type : 'string'
+				}, {
+					name : 'refId',
+					type : 'int'
+				} ]
+			});
+			var religionFilters = new Ext.ux.grid.GridFilters({ // encode and local
 				// configuration options
 				// defined previously
 				// for
@@ -469,7 +587,7 @@ Ext
 						autoHeight : false,
 						columns : religionColumnModel,
 						loadMask : true,
-						plugins : [ filters ],
+						plugins : [ religionFilters ],
 						autoScroll : true,
 
 						sm : new Ext.grid.RowSelectionModel({
@@ -599,8 +717,6 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = religionStore
-														.getCount();
 												url = '../controller/religionController.php?';
 												var sub_url;
 												sub_url = '';
@@ -713,7 +829,7 @@ Ext
 								this.save = true; // update record manually
 								var record = this.grid.getStore().getAt(
 										rowIndex);
-								
+
 								if (parseInt(record.get('religionDetailId')) == 'NaN') {
 									method = 'create';
 								} else if (record.get('religionDetailId') == '') {
@@ -896,8 +1012,6 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = religionDetailStore
-														.getCount();
 												religionDetailStore
 														.each(function(rec) {
 															for ( var access in accessDetailArray) { // alert(access);
@@ -1116,6 +1230,315 @@ Ext
 						items : [ religionGrid ]
 					}); // viewport just save information,items will do separate
 
+			// audit grid
+			
+			var logFilters = new Ext.ux.grid.GridFilters({
+				encode : encode,
+				local : false,
+				filters : [
+
+				{
+					type : 'numeric',
+					dataIndex : 'logId',
+					column : 'logId',
+					table : 'log'
+				},
+
+				{
+					type : 'numeric',
+					dataIndex : 'leafId',
+					column : 'leafId',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'operation',
+					column : 'operation',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'sql',
+					column : 'sql',
+					table : 'log'
+				},
+
+				{
+					type : 'date',
+					dataIndex : 'date',
+					column : 'date',
+					table : 'log'
+				},
+
+				{
+					type : 'numeric',
+					dataIndex : 'staffId',
+					column : 'staffId',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'access',
+					column : 'access',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'log_error',
+					column : 'log_error',
+					table : 'log'
+				} ]
+			});
+			
+			var logColumnModel = [ new Ext.grid.RowNumberer(),  {
+				dataIndex : 'logId',
+				header : logIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'leafId',
+				header : leafIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'operation',
+				header : operationLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'sql',
+				header : sqlLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'date',
+				header : dateLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'staffId',
+				header : staffIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'access',
+				header : accessLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'log_error',
+				header : log_errorLabel,
+				sortable : true,
+				hidden : false
+			} ];
+
+			var logGrid = new Ext.grid.GridPanel({
+				border : false,
+				store : logStore,
+				autoHeight : false,
+				height : 400,
+				columns : logColumnModel,
+				loadMask : true,
+				plugins : [ logFilters ],
+				sm : new Ext.grid.RowSelectionModel({
+					singleSelect : true
+				}),
+				viewConfig : {
+					forceFit : true,
+					emptyText : emptyRowLabel
+				},
+				iconCls : 'application_view_detail',
+				listeners : {
+					render : {
+						fn : function() {
+							logStore.load({
+								params : {
+									start : 0,
+									limit : perPage,
+									method : 'read',
+									mode : 'view',
+									plugin : [ logFilters ]
+								}
+							});
+						}
+					}
+				},
+				bbar : new Ext.PagingToolbar({
+					store : logStore,
+					pageSize : perPage,
+					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
+				})
+			});
+			// audit advance grid
+			var logAdvancefilters = new Ext.ux.grid.GridFilters({
+				encode : encode,
+				local : false,
+				filters : [
+
+				{
+					type : 'numeric',
+					dataIndex : 'logAdvanceId',
+					column : 'logAdvanceId',
+					table : 'log_advance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logAdvanceText',
+					column : 'logAdvanceText',
+					table : 'log_advance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logAdvanceType',
+					column : 'logAdvanceType',
+					table : 'log_advance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logAdvanceComparison',
+					column : 'logAdvanceComparison',
+					table : 'log_advance'
+				},
+
+				{
+					type : 'numeric',
+					dataIndex : 'refId',
+					column : 'refId',
+					table : 'log_advance'
+				},
+
+				{
+					type : 'list',
+					dataIndex : 'createBy',
+					column : 'createBy',
+					table : 'log_advance',
+					labelField : 'staffName',
+					store : staffByStore,
+					phpMode : true
+				},
+
+				{
+					type : 'date',
+					dataIndex : 'createTime',
+					column : 'createTime',
+					table : 'log_advance'
+				},
+
+				{
+					type : 'list',
+					dataIndex : 'updatedBy',
+					column : 'updatedBy',
+					table : 'log_advance',
+					labelField : 'staffName',
+					store : staffByStore,
+					phpMode : true
+				},
+
+				{
+					type : 'date',
+					dataIndex : 'updatedTime',
+					column : 'updatedTime',
+					table : 'log_advance'
+				} ]
+			});
+
+			
+
+			var logAdvanceColumnModel = [ new Ext.grid.RowNumberer(), {
+				dataIndex : 'logAdvanceId',
+				header : logAdvanceIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logAdvanceText',
+				header : logAdvanceTextLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logAdvanceType',
+				header : logAdvanceTypeLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logAdvanceComparision',
+				header : logAdvanceComparisionLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'refId',
+				header : refIdLabel,
+				sortable : true,
+				hidden : false
+			} ];
+
+			var logAdvanceGrid = new Ext.grid.GridPanel({
+				border : false,
+				store : logAdvanceStore,
+				autoHeight : false,
+				height : 400,
+				columns : logAdvanceColumnModel,
+				loadMask : true,
+				plugins : [  logAdvancefilters ],
+				sm : new Ext.grid.RowSelectionModel({
+					singleSelect : true
+				}),
+				viewConfig : {
+					forceFit : true,
+					emptyText : 'No rows to display'
+				},
+				iconCls : 'application_view_detail',
+				listeners : {
+					render : {
+						fn : function() {
+							logAdvanceStore.load({
+								params : {
+									start : 0,
+									limit : perPage,
+									method : 'read',
+									mode : 'view',
+									plugin : [ logAdvancefilters ]
+								}
+							});
+						}
+					}
+				},
+				bbar : new Ext.PagingToolbar({
+					store : logAdvanceStore,
+					pageSize : perPage,
+					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
+				})
+			});
+
+			// starting form entry
 			var religionDesc_temp = new Ext.form.Hidden({
 				name : "religionDesc_temp",
 				id : "religionDesc_temp"
@@ -1191,17 +1614,20 @@ Ext
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
 						buttons : [
-						           {
-						        	 text : auditButtonLabel,
-						        	 name : 'auditButtonLabel',
-						        	 id :'auditButtonLabel',
-						        	 type:'button',
-						        	 iconCls : 'key',
-						        	 disabled : true,
-						        	 handler : function() {
-						        		 // open popup grid lastest sql statemet.. fuh fuh fuh..
-						        	 }
-						           },
+								{
+									text : auditButtonLabel,
+									name : 'auditButtonLabel',
+									id : 'auditButtonLabel',
+									type : 'button',
+									iconCls : 'key',
+									disabled : auditButtonLabelDisabled,
+									handler : function() {
+
+										if (auditWindow) {
+											auditWindow.show().center();
+										}
+									}
+								},
 
 								{
 									text : newButtonLabel,
@@ -1878,6 +2304,30 @@ Ext
 									}
 								} ]
 					});
+
+			var auditWindow = new Ext.Window({
+				items :  {
+					xtype:'tabpanel',
+					activeTab : 0 ,
+					items : [{
+					         	xtype:'panel',
+					            title : 'Log Sql Statement',
+					         	items: [logGrid]
+							},{
+								xtype:'panel',
+								title : 'Log Sql Statement',
+								items:[logAdvanceGrid]
+							}]
+							
+			
+				},
+				title : 'Sql Statement audit',
+				closeAction : "hide",
+				maximizable : true,
+				layout : "fit",
+				width : 500,
+				autoScroll : true
+			});
 			var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',

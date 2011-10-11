@@ -216,6 +216,8 @@ if (isAdmin  == 1 ) {
 	isDeleteHidden      = false;
 	isActiveHidden		= false;
 	isApprovedHidden	= false;
+	isReviewHidden		= false;
+    isPostHidden    	= false;
 } else {
 	isDefaultHidden 	= true;
 	isNewHidden   		= true;
@@ -224,6 +226,8 @@ if (isAdmin  == 1 ) {
 	isDeleteHidden      = true;
 	isActiveHidden		= true;
 	isApprovedHidden	= true;
+	isReviewHidden		= true;
+    isPostHidden    	= true;
 }
 var isDefaultLabel		= 'Default Value';
 var isNewLabel	 		= 'New';

@@ -777,6 +777,7 @@ if (isset ( $_POST ['method'] )) {
 		$leafObject->setSortField ( $_POST ['sortField'] );
 	}
 	/*
+	 * 
 	 * Translation
 	 */
 	if (isset ( $_POST ['leafTranslate'] )) {
