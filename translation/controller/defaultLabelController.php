@@ -132,10 +132,14 @@ class DefaultLabelClass extends ConfigClass {
 			VALUES
 					(
 						'" . $this->model->getDefaultLabel () . "',						'" . $this->model->getDefaultLabelEnglish () . "'
-						'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getExecuteBy () . "',
+						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',				'" . $this->model->getExecuteBy () . "',						
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',			
+						
+																		
 						" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
@@ -155,27 +159,29 @@ class DefaultLabelClass extends ConfigClass {
 						'" . $this->model->getDefaultLabel () . "',						'" . $this->model->getDefaultLabelEnglish () . "'
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getExecuteBy () . "',
+						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',				'" . $this->model->getExecuteBy () . "',
 						" . $this->model->getExecuteTime () . "
 			);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			INSERT INTO 	DEFAULTLABEL
 						(
-							DEFAULTLABEL,							DEFAULTLABELENGLISH,
-							ISDEFAULT,								ISNEW,
-							ISDRAFT,								ISUPDATE,
-							ISDELETE,								ISACTIVE,
-							ISAPPROVED,								ISREVIEW,
-							ISPOST									EXECUTEBY,
+							DEFAULTLABEL,													DEFAULTLABELENGLISH,
+							ISDEFAULT,														ISNEW,
+							ISDRAFT,														ISUPDATE,
+							ISDELETE,														ISACTIVE,
+							ISAPPROVED,														ISREVIEW,
+							ISPOST															EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
 							'" . $this->model->getDefaultLabel () . "',						'" . $this->model->getDefaultLabelEnglish () . "'
 							'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-							'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
-							'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getExecuteBy () . "',
+							'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							'" . $this->model->getIsPost ( 0, 'single' ) . "',				'" . $this->model->getExecuteBy () . "',
 							" . $this->model->getExecuteTime () . "
 			)";
 		}

@@ -132,11 +132,12 @@ class TableMappingTranslateClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "'
-						'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						'" . $this->model->getDefaultLabelText() . "',					'" . $this->model->getTableMappingTranslationTranslationEnglish () . "'
+						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getExecuteBy () . "',
+						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',				'" . $this->model->getExecuteBy () . "',
 						" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
@@ -173,8 +174,9 @@ class TableMappingTranslateClass extends ConfigClass {
 							'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
 							'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-							'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
-							'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getExecuteBy () . "',
+							'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',					'" . $this->model->getExecuteBy () . "',
 							" . $this->model->getExecuteTime () . "
 			)";
 		}

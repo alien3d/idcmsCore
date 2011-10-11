@@ -110,36 +110,36 @@ class ReligionClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `religion`
 					(
-						`religionDesc`,						`isDefault`,
-						`isNew`,							`isDraft`,
-						`isUpdate`,							`isDelete`,
-						`isActive`,							`isApproved`,
-						`isReview`,                         `isPost`,
-						`executeBy`,						`executeTime`
+						`religionDesc`,												`isDefault`,
+						`isNew`,													`isDraft`,
+						`isUpdate`,													`isDelete`,
+						`isActive`,													`isApproved`,
+						`isReview`,                      		  	 				`isPost`,
+						`executeBy`,												`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getReligionDesc () . "',	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getReligionDesc () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-             '" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
-						'" . $this->model->getExecuteBy () . "',				" . $this->model->getExecuteTime () . "
+             			'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			INSERT INTO [religion]
 					(
-						[religionDesc],						[isDefault],
-						[isNew],							[isDraft],
-						[isUpdate],							[isDelete],
-						[isActive],							[isApproved],
-						[isReview],							[isPost],
-						[executeBy],						[executeTime]
+						[religionDesc],												[isDefault],
+						[isNew],													[isDraft],
+						[isUpdate],													[isDelete],
+						[isActive],													[isApproved],
+						[isReview],													[isPost],
+						[executeBy],												[executeTime]
 					)
 			VALUES
 					(
-						'" . $this->model->getReligionDesc () . "',				'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getReligionDesc () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
@@ -151,21 +151,21 @@ class ReligionClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	RELIGION
 					(
-						RELIGIONDESC,					ISDEFAULT,
-						ISNEW,							ISDRAFT,
-						ISUPDATE,						ISDELETE,
-						ISACTIVE,						ISAPPROVED,
-						ISREVIEW,						ISPOST,
-						EXECUTEBY,						EXECUTETIME
+						RELIGIONDESC,												ISDEFAULT,
+						ISNEW,														ISDRAFT,
+						ISUPDATE,													ISDELETE,
+						ISACTIVE,													ISAPPROVED,
+						ISREVIEW,													ISPOST,
+						EXECUTEBY,													EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getReligionDesc () . "',			'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						'" . $this->model->getIsNew ( 0, 'single' ) . "',		'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						'" . $this->model->getIsActive ( 0, 'single' ) . "',	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						'" . $this->model->getReligionDesc () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',						
-						'" . $this->model->getExecuteBy () . "',				" . $this->model->getExecuteTime () . "
+						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					)";
 		} else if ($this->getVendor () == self::DB2) {
 		
@@ -367,7 +367,7 @@ class ReligionClass extends ConfigClass {
 			
 			}
 		}
-		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
+		$_SESSION ['sql'] 	= $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
 		if (empty ( $this->filter )) {
@@ -391,6 +391,8 @@ class ReligionClass extends ConfigClass {
 										[religion].[isUpdate],
 										[religion].[isDelete],
 										[religion].[isApproved],
+										[religion].[isReview],
+										[religion].[isPost],
 										[religion].[executeBy],
 										[religion].[executeTime],
 										[staff].[staffName],
@@ -423,6 +425,8 @@ class ReligionClass extends ConfigClass {
 										RELIGION.ISDELETE	  AS	\"isDelete\",
 										RELIGION.ISACTIVE	  AS	\"isActive\",
 										RELIGION.ISAPPROVED   AS	\"isApproved\",
+										RELIGION.ISREVIEW	  AS 	\"isReview\",
+										RELIGION.ISPOST		  AS	\"isPost\",
 										RELIGION.EXECUTEBY    AS	\"executeBy\",
 										RELIGION.EXECUTETIME  AS	\"executeTime\",
 										STAFF.STAFFNAME		  AS	\"staffName\"	
@@ -579,6 +583,8 @@ class ReligionClass extends ConfigClass {
 					`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 					`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 					`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					`isReview`			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					`isPost`			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
 					`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 					`executeTime`		=	" . $this->model->getExecuteTime () . "
 			WHERE 	`religionId`		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
@@ -592,6 +598,8 @@ class ReligionClass extends ConfigClass {
 					[isDelete]			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 					[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 					[isApproved]		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					[isReview]			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					[isPost]			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
 					[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 					[executeTime]		=	" . $this->model->getExecuteTime () . "
 			WHERE 	[religionId]		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";

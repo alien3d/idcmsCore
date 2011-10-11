@@ -15,6 +15,7 @@ Ext
 			var local = false;
 			var jsonResponse;
 			var duplicate = 0;
+			var auditButtonlabel ='audit';
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
 				pageCreateList = false;
@@ -1190,6 +1191,17 @@ Ext
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
 						buttons : [
+						           {
+						        	 text : auditButtonLabel,
+						        	 name : 'auditButtonLabel',
+						        	 id :'auditButtonLabel',
+						        	 type:'button',
+						        	 iconCls : 'key',
+						        	 disabled : true,
+						        	 handler : function() {
+						        		 // open popup grid lastest sql statemet.. fuh fuh fuh..
+						        	 }
+						           },
 
 								{
 									text : newButtonLabel,

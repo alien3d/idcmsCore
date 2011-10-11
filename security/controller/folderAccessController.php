@@ -399,8 +399,8 @@ if (isset($_GET['method'])) {
         $folderAccessObject->update();
     }
     if (isset($_GET['field'])) {
-        if ($_GET['field'] == 'TEAMID') {
-            $folderAccessObject->group();
+        if ($_GET['field'] == 'teamId') {
+            $folderAccessObject->team();
         }
         if ($_GET['field'] == 'moduleId') {
             $folderAccessObject->module();

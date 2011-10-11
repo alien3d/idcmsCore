@@ -382,20 +382,20 @@ class LeafAccessClass extends ConfigClass {
 	/**
 	 * Enter description here ...
 	 */
-	function teamId() {
-		return $this->security->teamId ();
+	function team() {
+		return $this->security->team ();
 	}
 	/**
 	 * Enter description here ...
 	 */
 	function moduleId() {
-		return $this->security->moduleId ();
+		return $this->security->module ();
 	}
 	/**
 	 * Enter description here ...
 	 */
-	function folderId() {
-		return $this->security->folderId ();
+	function folder() {
+		return $this->security->folder();
 	}
 	/* (non-PHPdoc)
 	 * @see config::update()
@@ -543,8 +543,8 @@ if (isset ( $_GET ['method'] )) {
 		if ($_GET ['field'] == 'staffId') {
 			$leafAccessObject->staffId;
 		}
-		if ($_GET ['field'] == 'TEAMID') {
-			$leafAccessObject->group;
+		if ($_GET ['field'] == 'teamId') {
+			$leafAccessObject->team();
 		}
 		if ($_GET ['field'] == 'moduleId') {
 			$leafAccessObject->module ();
