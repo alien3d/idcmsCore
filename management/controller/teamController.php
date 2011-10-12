@@ -120,63 +120,67 @@ class TeamClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `team`
 					(
-						`teamSequence`,				`teamCode`,
-						`teamNote`,					`isDefault`,
-						`isNew`,					`isDraft`,
-						`isUpdate`,					`isDelete`,
-						`isActive`,					`isApproved`,
-						`isReview`,					`isPost`,
-						`executeBy`,				`executeTime`
+						`teamSequence`,													`teamCode`,
+						`teamNote`,															`isDefault`,
+						`isNew`,																`isDraft`,
+						`isUpdate`,															`isDelete`,
+						`isActive`,															`isApproved`,
+						`isReview`,															`isPost`,
+						`executeBy`,														`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getTeamSequence () . "',					'" . $this->model->getTeamCode () . "',
+						'" . $this->model->getTeamSequence () . "',				'" . $this->model->getTeamCode () . "',
 						'" . $this->model->getTeamNote () . "',						'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						'" . $this->model->getIsNew ( 0, 'single' ) . "',					'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',				'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						'" . $this->model->getIsActive ( 0, 'single' ) . "',				'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getExecuteBy () . "',								" . $this->model->getExecuteTime () . "
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',				'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						'" . $this->model->getIsActive ( 0, 'single' ) . "',			'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',			'" . $this->model->getIsPost( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',						" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			INSERT INTO [team]
 					(
-						[teamSequence],				[teamCode],
-						[teamNote],					[isDefault],
-						[isNew],							[isDraft],
-						[isUpdate],							[isDelete],
-						[isActive],							[isApproved],
-						
-						[executeBy],								[executeTime]
+						[teamSequence],													[teamCode],
+						[teamNote],															[isDefault],
+						[isNew],																[isDraft],
+						[isUpdate],															[isDelete],
+						[isActive],																[isApproved],
+						[isReview],															[isPost],
+						[executeBy],															[executeTime]
 					)
 			VALUES
 					(
 						'" . $this->model->getTeamSequence () . "',			'" . $this->model->getTeamCode () . "',
-						'" . $this->model->getTeamNote () . "',				'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						'" . $this->model->getIsNew ( 0, 'single' ) . "',		'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						'" . $this->model->getTeamNote () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getExecuteBy () . "',				" . $this->model->getExecuteTime () . "
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			INSERT INTO TEAM
 					(
-						GROUPSEQUENCE,				GROUPCODE,
-						GROUPNOTE,					ISDEFAULT,
-						ISNEW,							ISDRAFT,
-						ISUPDATE,						ISDELETE,
-						ISACTIVE,						ISAPPROVED,
-						EXECUTEBY,								EXECUTETIME
+						TEAMSEQUENCE,													TEAMCODE,
+						TEAMNOTE,															ISDEFAULT,
+						ISNEW,																	ISDRAFT,
+						ISUPDATE,															ISDELETE,
+						ISACTIVE,																ISAPPROVED,
+						ISREVIEW,															ISPOST,
+						EXECUTEBY,															EXECUTETIME
 					)
 			VALUES
 					(
 						'" . $this->model->getTeamSequence () . "',			'" . $this->model->getTeamCode () . "',
-						'" . $this->model->getTeamNote () . "',				'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						'" . $this->model->getIsNew ( 0, 'single' ) . "',		'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						'" . $this->model->getTeamNote () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getExecuteBy () . "',				" . $this->model->getExecuteTime () . "
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					);";
 		}
 		$this->q->create ( $sql );
@@ -209,21 +213,14 @@ class TeamClass extends ConfigClass {
 		$sqlLooping = null;
 		if ($this->q->numberRows () > 0) {
 			foreach ( $data as $row ) {
-				if ($this->getVendor () == self::MYSQL) {
+				
 					$sqlLooping .= "
 					(
-									'" . $row ['tabId'] . "',
+									'" . $row ['moduleId'] . "',
 									0,
 									'" . $lastInsertId . "'
 					),";
-				} else if ($this->getVendor () == self::MSSQL || $this->getVendor () == self::ORACLE) {
-					$sqlLooping .= "
-					(
-									'" . $row ['tabId'] . "',
-									0,
-									'" . $lastInsertId . "'
-					),";
-				}
+				
 			}
 		}
 		if ($this->getVendor () == self::MYSQL) {
@@ -243,7 +240,7 @@ class TeamClass extends ConfigClass {
 				)
 				VALUES ";
 		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "	INSERT INTO	TABACCESS
+			$sql = "	INSERT INTO	MODULEACCESS
 				(
 									MODULEID,
 									MODULEACCESSVALUE,
@@ -284,21 +281,14 @@ class TeamClass extends ConfigClass {
 		if ($this->q->numberRows () > 0) {
 			$data = $this->q->activeRecord ();
 			foreach ( $data as $row ) {
-				if ($this->getVendor () == self::MYSQL) {
+				
 					$sqlLooping .= "
 					(
 						'" . $row ['folderId'] . "',
 						0,
 						'" . $lastInsertId . "'
 					),";
-				} else if ($this->getVendor () == self::MSSQL || $this->getVendor () == self::ORACLE) {
-					$sqlLooping .= "
-					(
-						'" . $row ['folderId'] . "',
-						0,
-						'" . $lastInsertId . "'
-					),";
-				}
+				
 			}
 		}
 		if ($this->getVendor () == self::MYSQL) {
@@ -354,7 +344,7 @@ class TeamClass extends ConfigClass {
 		if ($total > 0) {
 			$data = $this->q->activeRecord ();
 			foreach ( $data as $row ) {
-				if ($this->getVendor () == self::MYSQL) {
+				
 					$sqlLooping .= "
 					(
 						'" . $row ['leafId'] . "',
@@ -366,59 +356,47 @@ class TeamClass extends ConfigClass {
 						0,
 						'" . $lastInsertId . "'
 					),";
-				} else if ($this->getVendor () == self::MSSQL || $this->getVendor () = self::ORACLE) {
-					$sqlLooping .= "
-					(
-						'" . $row ['leafId'] . "',
-						0,
-						0,
-						0,
-						0,
-						0,
-						0,
-						'" . $lastInsertId . "'
-					),";
-				}
+				
 			}
 		}
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-					INSERT INTO 	`leafCrewAccess`
+					INSERT INTO 	`leafTeamAccess`
 								(
 									`leafId`,
-									`leafAccessReadValue`,
-									`leafAccessCreateValue`,
-									`leafAccessUpdateValue`,
-									`leafAccessDeleteValue`,
-									`leafAccessPrintValue`,
-									`leafAccessPostValue`,
+									`leafTeamAccessReadValue`,
+									`leafTeamAccessCreateValue`,
+									`leafTeamAccessUpdateValue`,
+									`leafTeamAccessDeleteValue`,
+									`leafTeamAccessPrintValue`,
+									`leafTeamAccessPostValue`,
 									`teamId`
 								)
 					VALUES";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-					INSERT INTO 	[leafCrewAccess]
+					INSERT INTO 	[leafTeamAccess]
 								(	[leafId],
-									[leafAccessReadValue],
-									[leafAccessCreateValue],
-									[leafAccessUpdateValue],
-									[leafAccessDeleteValue],
-									[leafAccessPrintValue],
-									[leafAccessPostValue],
+									[leafTeamAccessReadValue],
+									[leafTeamAccessCreateValue],
+									[leafTeamAccessUpdateValue],
+									[leafTeamAccessDeleteValue],
+									[leafTeamAccessPrintValue],
+									[leafTeamAccessPostValue],
 									[teamId]
 								)
 					VALUES";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					INSERT INTO 	LEAFGROUPACCESS
+					INSERT INTO 	LEAFTEAMACCESS
 								(
 									LEAFID,
-									leafAccessReadValue,
-									leafAccessCreateValue,
-									leafAccessUpdateValue,
-									leafAccessDeleteValue,
-									leafAccessPrintValue,
-									leafAccessPostValue,
+									LEAFTEAMACCESSREADVALUE,
+									LEAFTEAMACCESSCREATEVALUE,
+									LEAFTEAMACCESSUPDATEVALUE,
+									LEAFTEAMACCESSDELETEVALUE,
+									LEAFTEAMACCESSPRINTVALUE,
+									LEAFTEAMACCESSPOSTVALUE,
 									TEAMID
 								)
 					VALUES ";
@@ -431,7 +409,7 @@ class TeamClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "TRUE", "message" => "Record Created" ) );
+		echo json_encode ( array ("success" => true, "message" => "Record Created" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -464,70 +442,76 @@ class TeamClass extends ConfigClass {
 		}
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-					SELECT	`team`.`teamId`,
-							`team`.`teamSequence`,
-							`team`.`teamCode`,
-							`team`.`teamNote`,
-							`team`.`isDefault`,
-							`team`.`isNew`,
-							`team`.`isDraft`,
-							`team`.`isUpdate`,
-							`team`.`isDelete`,
-							`team`.`isActive`,
-							`team`.`isApproved`,
-							`team`.`executeBy`,
-							`team`.`executeTime`,
-							`staff`.`staffName`
- 					FROM 	`team`
-					JOIN	`staff`
-					ON		`team`.`executeBy` = `staff`.`staffId`
-					WHERE 	" . $this->auditFilter;
+			SELECT	`team`.`teamId`,
+						`team`.`teamSequence`,
+						`team`.`teamCode`,
+						`team`.`teamNote`,
+						`team`.`isDefault`,
+						`team`.`isNew`,
+						`team`.`isDraft`,
+						`team`.`isUpdate`,
+						`team`.`isDelete`,
+						`team`.`isActive`,
+						`team`.`isApproved`,
+						`team`.`isReview`,
+						`team`.`isPost`,
+						`team`.`executeBy`,
+						`team`.`executeTime`,
+						`staff`.`staffName`
+			FROM 	`team`
+			JOIN		`staff`
+			ON		`team`.`executeBy` = `staff`.`staffId`
+			WHERE 	" . $this->auditFilter;
 			if ($this->model->getTeamId ( 0, 'single' )) {
 				$sql .= " AND `" . $this->model->getTableName () . "`." . $this->model->getPrimaryKeyName () . "`='" . $this->model->getTeamId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-					SELECT	[team].[teamId],
-							[team].[teamSequence],
-							[team].[teamCode],
-							[team].[teamNote],
-							[team].[isDefault],
-							[team].[isNew],
-							[team].[isDraft],
-							[team].[isUpdate],
-							[team].[isDelete],
-							[team].[isActive],
-							[team].[isApproved],
-							[team].[executeBy],
-							[team].[executeTime],
-							[staff].[staffName]
-					FROM 	[team]
-					JOIN	[staff]
-					ON		[team].[executeBy] = [staff].[staffId]
-					WHERE 	[team].[isActive] ='1'	";
+			SELECT	[team].[teamId],
+						[team].[teamSequence],
+						[team].[teamCode],
+						[team].[teamNote],
+						[team].[isDefault],
+						[team].[isNew],
+						[team].[isDraft],
+						[team].[isUpdate],
+						[team].[isDelete],
+						[team].[isActive],
+						[team].[isReview],
+						[team].[isPost],
+						[team].[isApproved],
+						[team].[executeBy],
+						[team].[executeTime],
+						[staff].[staffName]
+			FROM 	[team]
+			JOIN		[staff]
+			ON		[team].[executeBy] = [staff].[staffId]
+			WHERE " . $this->auditFilter;
 			if ($this->model->getTeamId ( 0, 'single' )) {
 				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getTeamId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					SELECT	TEAM.TEAMID  		AS	\"teamId\",
-							TEAM.GROUPCODE 		AS 	\"teamCode\",
-							TEAM.GROUPSEQUENCE	AS 	\"teamSequence\",
-							TEAM.GROUPNOTE 		AS 	\"teamNote\",
-							TEAM.ISDEFAULT 		AS 	\"isDefault\",
-							TEAM.ISNEW 			AS 	\"isNew\",
-							TEAM.ISDRAFT 			AS 	\"isDraft\",
-							TEAM.ISUPDATE 		AS 	\"isUpdate\",
-							TEAM.ISDELETE 		AS 	\"isDelete\",
-							TEAM.ISACTIVE 		AS 	\"isActive\",
-							TEAM.ISAPPROVED 		AS 	\"isApproved\",
-							TEAM.EXECUTEBY 		AS 	\"executeBy\",
-							TEAM.EXECUTETIME 		AS 	\"executeTime\",
-							STAFF.STAFFNAME 		AS 	\"staffName\"
-					FROM 	TEAM
-					JOIN	STAFF
-					ON		TEAM.EXECUTEBY = STAFF.STAFFID
-					WHERE 	ISACTIVE='1'	";
+			SELECT	TEAM.TEAMID  				AS	\"teamId\",
+						TEAM.GROUPCODE 		AS 	\"teamCode\",
+						TEAM.GROUPSEQUENCE	AS 	\"teamSequence\",
+						TEAM.GROUPNOTE 		AS 	\"teamNote\",
+						TEAM.ISDEFAULT 			AS 	\"isDefault\",
+						TEAM.ISNEW 				AS 	\"isNew\",
+						TEAM.ISDRAFT 				AS 	\"isDraft\",
+						TEAM.ISUPDATE 			AS 	\"isUpdate\",
+						TEAM.ISDELETE 			AS 	\"isDelete\",
+						TEAM.ISACTIVE 			AS 	\"isActive\",
+						TEAM.ISAPPROVED 		AS 	\"isApproved\",
+						TEAM.ISREVIEW 			AS 	\"isReview\",
+						TEAM.ISPOST		 		AS 	\"isPost\",
+						TEAM.EXECUTEBY 			AS 	\"executeBy\",
+						TEAM.EXECUTETIME 		AS 	\"executeTime\",
+						STAFF.STAFFNAME 		AS 	\"staffName\"
+			FROM 	TEAM
+			JOIN		STAFF
+			ON		TEAM.EXECUTEBY = STAFF.STAFFID
+			WHERE 	" . $this->auditFilter;
 			if ($this->model->getTeamId ( 0, 'single' )) {
 				$sql .= " AND '" . strtoupper ( $this->model->getTableName () ) . "'.'" . strtoupper ( $this->model->getPrimaryKeyName () ) . "'='" . $this->model->getTeamId ( 0, 'single' ) . "'";
 			}
@@ -613,26 +597,34 @@ class TeamClass extends ConfigClass {
 					$sql = "
 							WITH [teamDerived] AS
 							(
-								SELECT *,
-								ROW_NUMBER() OVER (ORDER BY [teamId]) AS 'RowNumber'
-								FROM [team]
-								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
+								
+								SELECT	[team].[teamId],
+											[team].[teamSequence],
+											[team].[teamCode],
+											[team].[teamNote],
+											[team].[isDefault],
+											[team].[isNew],
+											[team].[isDraft],
+											[team].[isUpdate],
+											[team].[isDelete],
+											[team].[isActive],
+											[team].[isReview],
+											[team].[isPost],
+											[team].[isApproved],
+											[team].[executeBy],
+											[team].[executeTime],
+											[staff].[staffName],
+											ROW_NUMBER() OVER (ORDER BY [teamId]) AS 'RowNumber'
+								FROM 	[team]
+								JOIN		[staff]
+								ON		[team].[executeBy] = [staff].[staffId]
+								WHERE " . $this->auditFilter.$tempSql . $tempSql2 . "
 							)
-							SELECT		[team].[teamId],
-										[team].[teamSequence],
-										[team].[teamCode],
-										[team].[teamNote],
-										[team].[isDefault],
-										[team].[isNew],
-										[team].[isDraft],
-										[team].[isUpdate],
-										[team].[isDelete],
-										[team].[isApproved],
-										[team].[executeBy],
-										[team].[executeTime],
-										[staff].[staffName]
-							FROM 		[teamDerived]
-							WHERE 		[RowNumber]
+							SELECT * 
+							FROM 	[teamDerived]
+							JOIN		[staff]
+							ON		[team].[executeBy] = [staff].[staffId]
+							WHERE " . $this->auditFilter."	[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $this->getLimit () - 1) . ";";
 				} else if ($this->getVendor () == self::ORACLE) {
@@ -644,22 +636,26 @@ class TeamClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT TEAM.TEAMID  		AS	\"teamId\",
-							TEAM.GROUPCODE 		AS 	\"teamCode\",
-							TEAM.GROUPSEQUENCE	AS 	\"teamSequence\",
-							TEAM.GROUPNOTE 		AS 	\"teamNote\",
-							TEAM.ISDEFAULT 		AS 	\"isDefault\",
-							TEAM.ISNEW 			AS 	\"isNew\",
-							TEAM.ISDRAFT 			AS 	\"isDraft\",
-							TEAM.ISUPDATE 		AS 	\"isUpdate\",
-							TEAM.ISDELETE 		AS 	\"isDelete\",
-							TEAM.ISACTIVE 		AS 	\"isActive\",
-							TEAM.ISAPPROVED 		AS 	\"isApproved\",
-							TEAM.EXECUTEBY 		AS 	\"executeBy\",
-							TEAM.EXECUTETIME 		AS 	\"executeTime\",
-							STAFF.STAFFNAME 		AS 	\"staffName\"
+									SELECT	TEAM.TEAMID  				AS	\"teamId\",
+												TEAM.GROUPCODE 		AS 	\"teamCode\",
+												TEAM.GROUPSEQUENCE	AS 	\"teamSequence\",
+												TEAM.GROUPNOTE 		AS 	\"teamNote\",
+												TEAM.ISDEFAULT 			AS 	\"isDefault\",
+												TEAM.ISNEW 				AS 	\"isNew\",
+												TEAM.ISDRAFT 				AS 	\"isDraft\",
+												TEAM.ISUPDATE 			AS 	\"isUpdate\",
+												TEAM.ISDELETE 			AS 	\"isDelete\",
+												TEAM.ISACTIVE 			AS 	\"isActive\",
+												TEAM.ISAPPROVED 		AS 	\"isApproved\",
+												TEAM.ISREVIEW 			AS 	\"isReview\",
+												TEAM.ISPOST		 		AS 	\"isPost\",
+												TEAM.EXECUTEBY 			AS 	\"executeBy\",
+												TEAM.EXECUTETIME 		AS 	\"executeTime\",
+												STAFF.STAFFNAME 		AS 	\"staffName\"
 									FROM 	TEAM
-									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . "
+									JOIN		STAFF
+									ON		TEAM.EXECUTEBY = STAFF.STAFFID
+									WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
@@ -684,7 +680,7 @@ class TeamClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getTeamId ( 0, 'single' )) {
-			$json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items ) );
+			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -692,7 +688,7 @@ class TeamClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
+			echo json_encode ( array ('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
 			exit ();
 		}
 	}
@@ -711,50 +707,50 @@ class TeamClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			UPDATE 	`team`
-			SET 	`teamSequence` =   '" . $this->model->getTeamSequence () . "',
-					`teamCode`		=	'" . $this->model->getTeamCode () . "',
-					`teamNote`		=	'" . $this->model->getTeamNote () . "',
-					`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					`isDraft`		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					`isUpdate`		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					`isDelete`		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					`executeBy`		=	'" . $this->model->getExecuteBy () . "',
-					`executeTime`	=	" . $this->model->getExecuteTime () . "
-			WHERE 	`teamId`		=	'" . $this->model->getTeamId ( 0, 'single' ) . "'";
+			SET 			`teamSequence`	=   '" . $this->model->getTeamSequence () . "',
+							`teamCode`			=	'" . $this->model->getTeamCode () . "',
+							`teamNote`			=	'" . $this->model->getTeamNote () . "',
+							`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							`isDraft`				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isDelete`				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							`isActive`				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
+							`executeTime`		=	" . $this->model->getExecuteTime () . "
+			WHERE 		`teamId`				=	'" . $this->model->getTeamId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			UPDATE 	[team]
-			SET 	[teamSequence] =   '" . $this->model->getTeamSequence () . "',
-					[teamCode]		=	'" . $this->model->getTeamCode () . "',
-					[teamNote]		=	'" . $this->model->getTeamNote () . "',
-					[isDefault]		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					[isDraft]		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					[isUpdate]		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					[isDelete]		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					[executeBy]		=	'" . $this->model->getExecuteBy () . "',
-					[executeTime]	=	" . $this->model->getExecuteTime () . "
-			WHERE 	[teamId]		=	'" . $this->model->getTeamId ( 0, 'single' ) . "'";
+			SET 			[teamSequence] 	=   '" . $this->model->getTeamSequence () . "',
+							[teamCode]			=	'" . $this->model->getTeamCode () . "',
+							[teamNote]			=	'" . $this->model->getTeamNote () . "',
+							[isDefault]				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							[isNew]					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							[isDraft]				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							[isUpdate]				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							[isDelete]				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							[isActive]				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							[isApproved]			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
+							[executeTime]		=	" . $this->model->getExecuteTime () . "
+			WHERE 		[teamId]				=	'" . $this->model->getTeamId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			UPDATE 	TEAM
-			SET 	GROUPSEQUENCE	=   '" . $this->model->getTeamSequence () . "',
-					GROUPCODE		=	'" . $this->model->getTeamCode () . "',
-					GROUPNOTE		=	'" . $this->model->getTeamNote () . "',
-					ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
-					EXECUTETIME		=	" . $this->model->getExecuteTime () . "
-			WHERE 	TEAMID			=	'" . $this->model->getTeamCode ( 0, 'single' ) . "'";
+			SET 			TEAMSEQUENCE	=   '" . $this->model->getTeamSequence () . "',
+							TEAMCODE			=	'" . $this->model->getTeamCode () . "',
+							TEAMNOTE			=	'" . $this->model->getTeamNote () . "',
+							ISACTIVE				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							ISNEW					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							ISUPDATE				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							ISDELETE				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
+							EXECUTETIME		=	" . $this->model->getExecuteTime () . "
+			WHERE 		TEAMID					=	'" . $this->model->getTeamCode ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -780,43 +776,43 @@ class TeamClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			UPDATE 	`team`
-			SET 	`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					`isDraft`			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					`executeBy`				=	'" . $this->model->getExecuteBy () . "',
-					`executeTime`				=	" . $this->model->getExecuteTime () . "
-			WHERE 	`teamId`		=	'" . $this->model->getTeamId ( 0, 'single' ) . "'";
+			SET 			`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							`isDraft`				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isDelete`				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							`isActive`				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
+							`executeTime`		=	" . $this->model->getExecuteTime () . "
+			WHERE 		`teamId`				=	'" . $this->model->getTeamId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			UPDATE 	[team]
-			SET 	[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					[isNew]				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					[isDraft]			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					[isUpdate]			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					[isDelete]			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					[isApproved]		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					[executeBy]			=	'" . $this->model->getExecuteBy () . "',
-					[executeTime]		=	" . $this->model->getExecuteTime () . "
-			WHERE 	[teamId]			=	'" . $this->model->getTeamId . "'";
+			SET 			[isDefault]				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							[isNew]					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							[isDraft]				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							[isUpdate]				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							[isDelete]				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							[isActive]				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							[isApproved]			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
+							[executeTime]		=	" . $this->model->getExecuteTime () . "
+			WHERE 		[teamId]				=	'" . $this->model->getTeamId . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			UPDATE 	TEAM
-			SET 	GROUPDESC		=	'" . $this->model->getTeamDesc ( 0, 'single' ) . "',
-					ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
-					EXECUTETIME		=	" . $this->model->getExecuteTime () . "
-			WHERE 	TEAMID			=	'" . $this->model->getTeamId () . "'";
+			SET 			TEAMDESC			=	'" . $this->model->getTeamDesc ( 0, 'single' ) . "',
+							ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							ISNEW					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							ISUPDATE				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							ISDELETE				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							ISACTIVE				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
+							EXECUTETIME		=	" . $this->model->getExecuteTime () . "
+			WHERE 		TEAMID					=	'" . $this->model->getTeamId () . "'";
 		}
 		// advance logging future
 		$this->q->tableName = $this->model->getTableName ();
@@ -825,11 +821,11 @@ class TeamClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -855,6 +851,14 @@ class TeamClass extends ConfigClass {
 			$sql = "
 			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
+		}else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
+			SET    ";
+		}	else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
+			SET    ";
 		}
 		//	echo "arnab[".$this->model->getTeamId(0,'array')."]";
 		/**
@@ -869,7 +873,12 @@ class TeamClass extends ConfigClass {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . $this->model->getPrimaryKeyName () . " ";
+			} else if ($this->getVendor () == self::DB2) {
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . $this->model->getPrimaryKeyName () . " ";
+			} else if ($this->getVendor () == self::POSTGRESS) {
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . $this->model->getPrimaryKeyName () . " ";
 			}
+			
 			switch ($systemCheck) {
 				case 'isDefault' :
 					for($i = 0; $i < $loop; $i ++) {
@@ -981,7 +990,7 @@ class TeamClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -1012,6 +1021,18 @@ class TeamClass extends ConfigClass {
 			FROM 	TEAM
 			WHERE 	TEAMCODE 		= 	'" . $this->model->getTeamCode () . "'
 			AND		ISACTIVE		=	1";
+		}else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			SELECT	*
+			FROM 	TEAM
+			WHERE 	TEAMCODE 		= 	'" . $this->model->getTeamCode () . "'
+			AND		ISACTIVE		=	1";
+		}else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	*
+			FROM 	TEAM
+			WHERE 	TEAMCODE 		= 	'" . $this->model->getTeamCode () . "'
+			AND		ISACTIVE		=	1";
 		}
 		$this->q->read ( $sql );
 		$total = 0;
@@ -1024,7 +1045,7 @@ class TeamClass extends ConfigClass {
 			if ($this->duplicateTest == 1) {
 				return $total . "|" . $row ['teamCode'];
 			} else {
-				echo json_encode ( array ("success" => TRUE, "total" => $total, "message" => "Duplicate Record", "teamCode" => $row ['teamCode'] ) );
+				echo json_encode ( array ("success" => true, "total" => $total, "message" => "Duplicate Record", "teamCode" => $row ['teamCode'] ) );
 				exit ();
 			}
 		}

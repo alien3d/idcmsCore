@@ -179,23 +179,23 @@ class StaffClass extends ConfigClass {
 		} else if ($this->q->vendor == self::ORACLE) {
 			$sql = "
 				INSERT INTO STAFF 	(
-							STAFFNAME,													STAFFNO,
-							STAFFPASSWORD,											STAFFIC,
-							TEAMID,														DEPARTMENTID
-							ISDEFAULT,													ISNEW,																			
-							ISDRAFT,														ISUPDATE,																	
-							ISDELETE,														ISACTIVE,																		
-							ISAPPROVED,												ISREVIEW,																	
-							ISPOST,														EXECUTEBY,
+							STAFFNAME,														STAFFNO,
+							STAFFPASSWORD,												STAFFIC,
+							TEAMID,															DEPARTMENTID
+							ISDEFAULT,														ISNEW,																			
+							ISDRAFT,															ISUPDATE,																	
+							ISDELETE,															ISACTIVE,																		
+							ISAPPROVED,													ISREVIEW,																	
+							ISPOST,															EXECUTEBY,
 							EXECUTETIME
 				)  VALUES	(
-					'" . $this->model->getStaffName () . "',					'" . $this->model->getStaffNo () . "',
-					'" . md5 ( $this->model->getStaffPassword () ) . "',	'" . $this->model->getStaffIc () . "',
-					'" . $this->model->getTeamId() . "',						'" . $this->model->getDepartmentId () . "',
-					'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					'" . $this->model->getIsApproved ( 0, 'single' ) . "',	'" . $this->model->getExecuteBy () . "',
+					'" . $this->model->getStaffName () . "',						'" . $this->model->getStaffNo () . "',
+					'" . md5 ( $this->model->getStaffPassword () ) . "',		'" . $this->model->getStaffIc () . "',
+					'" . $this->model->getTeamId() . "',							'" . $this->model->getDepartmentId () . "',
+					'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getExecuteBy () . "',
 					" . $this->model->getExecuteTime () . "	
 				);";
 		}
@@ -259,9 +259,11 @@ class StaffClass extends ConfigClass {
 					// record don't exist create new
 					if ($this->q->vendor == self::MYSQL) {
 						$sql = "
-						INSERT INTO `moduleAccess`	(
-											`moduleId`,				`teamId`,
-											`moduleAccessValue`
+						INSERT INTO `moduleAccess`	
+						(
+							`moduleId`,				
+							`teamId`,
+							`moduleAccessValue`
 						)	VALUES(
 							'" . $rowModule ['moduleId'] . "',
 							'" . $this->model->getTeamId() . "',
@@ -269,18 +271,23 @@ class StaffClass extends ConfigClass {
 						)	";
 					} else if ($this->q->vendor == self::MSSQL) {
 						$sql = "
-						INSERT INTO [moduleAccess]	(
-									[moduleId],				[teamId],
-									[moduleAccessValue]
+						INSERT INTO [moduleAccess]	
+						(
+							[moduleId],				
+							[teamId],
+							[moduleAccessValue]
 						)	VALUES(
 							'" . $rowModule ['moduleId'] . "',
 							'" . $this->model->getTeamId() . "',
-							0					)	";
+							0					
+						)	";
 					} else if ($this->getVendor () == self::ORACLE) {
 						$sql = "
-						INSERT INTO MODULEACCESS	(
-									MODULEID,				TEAMID,
-									MODULEACCESSVALUE
+						INSERT INTO MODULEACCESS	
+						(
+							MODULEID,				
+							TEAMID,
+							MODULEACCESSVALUE
 						)	VALUES(
 							'" . $rowModule ['moduleId'] . "',
 							'" . $this->model->getTeamId() . "',
@@ -325,13 +332,13 @@ class StaffClass extends ConfigClass {
 					$sql = "
 					SELECT *
 					FROM 	`folderAccess`
-					WHERE 	`TEAMID`		=	'" . $this->model->getTeamId() . "'
+					WHERE 	`teamId`		=	'" . $this->model->getTeamId() . "'
 					AND		`folderId`		=	'" . $rowFolder ['folderId'] . "'";
 				} else if ($this->getVendor () == self::MSSQL) {
 					$sql = "
 					SELECT *
 					FROM 	[folderAccess]
-					WHERE 	\"teamId\"		=	'" . $this->model->getTeamId() . "'
+					WHERE 	[teamId]		=	'" . $this->model->getTeamId() . "'
 					AND		[folderId]		=	'" . $rowFolder ['folderId'] . "'";
 				} else if ($this->getVendor () == self::ORACLE) {
 					$sql = "
@@ -476,12 +483,12 @@ class StaffClass extends ConfigClass {
 					(
 							LEAFID,
 							STAFFID,
-							leafAccessCreateValue,
-							leafAccessReadValue,
-							leafAccessUpdateValue,
-							leafAccessDeleteValue,
-							leafAccessPrintValue,
-							leafAccessPostValue
+							LEAFACCESSCREATEVALUE,
+							LEAFACCESSREADVALUE,
+							LEAFACCESSUPDATEVALUE,
+							LEAFACCESSDELETEVALUE,
+							LEAFACCESSPRINTVALUE,
+							LEAFACCESSPOSTVALUE
 					)
 				VALUES
 					(
@@ -550,7 +557,7 @@ class StaffClass extends ConfigClass {
 			}
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "TRUE", "message" => "Record Created" ) );
+		echo json_encode ( array ("success" =>true, "message" => "Record Created" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -584,7 +591,7 @@ class StaffClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			SELECT		`staff`.`staffId`,
-							`staff`.`TEAMID`,
+							`staff`.`teamId`,
 							`staff`.`departmentId`,
 							`staff`.`languageId`,
 							`staff`.`staffPassword`,
@@ -616,8 +623,8 @@ class StaffClass extends ConfigClass {
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-					SELECT	[staff].[staffId],
-							[staff].\"teamId\",
+			SELECT		[staff].[staffId],
+							[staff].[teamId],
 							[staff].[departmentId],
 							[staff].[languageId],
 							[staff].[staffPassword],
@@ -636,45 +643,47 @@ class StaffClass extends ConfigClass {
 							[staff].[executeBy],
 							[staff].[executeTime],
 							[staff].[staffName]
-					FROM 	[staff]
-					JOIN	[department]
-					ON		[department].[departmentId]=[staff].[staffId]
-					JOIN	[team]
-					ON		[team].[teamId]=[staff].\"teamId\"
-					WHERE 	[staff].[isActive]='1'
-					AND		[team].[isActive] ='1'
-					AND		[department].[isActive]='1'";
+			FROM 		[staff]
+			JOIN			[department]
+			ON			[department].[departmentId]=[staff].[staffId]
+			JOIN			[team]
+			ON			[team].[teamId]=[staff].[teamId]
+			WHERE 		" . $this->auditFilter . "
+			AND			[team].[isActive] ='1'
+			AND			[department].[isActive]='1'";
 			if ($this->model->getStaffId ( 0, 'single' )) {
 				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getStaffId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					SELECT	STAFF.STAFFID 		AS 	\"staffId\",
-							STAFF.TEAMID 		AS 	\"teamId\",
-							STAFF.DEPARTMENTID 	AS 	\"departmentId\",
-							STAFF.LANGUAGEID 	AS 	\"languageId\",
-							STAFF.STAFFPASSWORD AS 	\"staffPassword\",
-							STAFF.STAFFNAME 	AS 	\"staffName\",
-							STAFF.STAFFNO 		AS 	\"staffNo\",
-							STAFF.STAFFIC 		AS 	\"staffIc\",
-							STAFF.ISDEFAULT 	AS 	\"isDefault\",
-							STAFF.ISNEW 		AS 	\"isNew\",
-							STAFF.ISDRAFT 		AS 	\"isDraft\",
-							STAFF.ISUPDATE 		AS 	\"isUpdate\",
-							STAFF.ISDELETE 		AS 	\"isDelete\",
-							STAFF.ISACTIVE 		AS 	\"isActive\",
-							STAFF.ISAPPROVED 	AS 	\"isApproved\",
-							STAFF.EXECUTEBY 	AS 	\"executeBy\",
-							STAFF.EXECUTETIME 	AS 	\"executeTime\",
-							STAFF.STAFFNAME 	AS	\"staffName\"
-					FROM 	STAFF
-					JOIN	TEAM
- 					ON		TEAM.TEAMID				=	STAFF.TEAMID
- 					JOIN	DEPARTMENT
- 					ON		DEPARTMENT.DEPARTMENTID		=	STAFF.DEPARTMENTID
-					WHERE 	STAFF.ISACTIVE				=	'1'
-					AND		TEAM.ISACTIVE 			=	'1'
-					AND		DEPARTMENT.ISACTIVE			=	'1' ";
+			SELECT		STAFF.STAFFID 					AS 	\"staffId\",
+							STAFF.TEAMID 					AS 	\"teamId\",
+							STAFF.DEPARTMENTID 		AS 	\"departmentId\",
+							STAFF.LANGUAGEID 			AS 	\"languageId\",
+							STAFF.STAFFPASSWORD	AS 	\"staffPassword\",
+							STAFF.STAFFNAME 			AS 	\"staffName\",
+							STAFF.STAFFNO 				AS 	\"staffNo\",
+							STAFF.STAFFIC 					AS 	\"staffIc\",
+							STAFF.ISDEFAULT 				AS 	\"isDefault\",
+							STAFF.ISNEW 					AS 	\"isNew\",
+							STAFF.ISDRAFT 				AS 	\"isDraft\",
+							STAFF.ISUPDATE 				AS 	\"isUpdate\",
+							STAFF.ISDELETE 				AS 	\"isDelete\",
+							STAFF.ISACTIVE 				AS 	\"isActive\",
+							STAFF.ISAPPROVED 			AS 	\"isApproved\",
+							STAFF.ISREVIEW 				AS 	\"isReview\",
+							STAFF.ISPOST 					AS 	\"isPost\",
+							STAFF.EXECUTEBY 			AS 	\"executeBy\",
+							STAFF.EXECUTETIME 			AS 	\"executeTime\",
+							STAFF.STAFFNAME 			AS	\"staffName\"
+			FROM 		STAFF
+			JOIN			TEAM
+			ON			TEAM.TEAMID							=	STAFF.TEAMID
+			JOIN			DEPARTMENT
+			ON			DEPARTMENT.DEPARTMENTID		=	STAFF.DEPARTMENTID
+			WHERE 		" . $this->auditFilter . "
+			AND			TEAM.ISACTIVE 						=	'1'
+			AND			DEPARTMENT.ISACTIVE				=	'1' ";
 			if ($this->model->getStaffId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getStaffId ( 0, 'single' ) . "'";
 			}
@@ -748,8 +757,8 @@ class StaffClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		if (empty ( $this->filter )) {
-			if ($this->getLimit ()) {
+		
+			if ($this->getStart() && $this->getLimit ()) {
 				// only mysql have limit
 				if ($this->getVendor () == self::MYSQL) {
 					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
@@ -767,18 +776,24 @@ class StaffClass extends ConfigClass {
 								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
 							)
 							SELECT		[staff].[staffId],
-										[staff].[staffSequence],
-										[staff].[staffCode],
-										[staff].[staffNote],
-										[staff].[isDefault],
-										[staff].[isNew],
-										[staff].[isDraft],
-										[staff].[isUpdate],
-										[staff].[isDelete],
-										[staff].[isApproved],
-										[staff].[executeBy],
-										[staff].[executeTime],
-										[staff].[staffName]
+											[staff].[teamId],
+											[staff].[departmentId],
+											[staff].[languageId],
+											[staff].[staffPassword],
+											[staff].[staffName],
+											[staff].[staffNo],
+											[staff].[staffIc],
+											[staff].[isDefault],
+											[staff].[isNew],
+											[staff].[isDraft],
+											[staff].[isUpdate],
+											[staff].[isDelete],
+											[staff].[isActive],
+											[staff].[isReview],
+											[staff].[isPost],
+											[staff].[isApproved],
+											[staff].[executeBy],
+											[staff].[executeTime]
 							FROM 		[staffDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
@@ -792,33 +807,34 @@ class StaffClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT  STAFF.STAFFID,
-									SELECT	STAFF.STAFFID 		AS 	\"staffId\",
-							STAFF.TEAMID 		AS 	\"teamId\",
-							STAFF.DEPARTMENTID 	AS 	\"departmentId\",
-							STAFF.LANGUAGEID 	AS 	\"languageId\",
-							STAFF.STAFFPASSWORD AS 	\"staffPassword\",
-							STAFF.STAFFNAME 	AS 	\"staffName\",
-							STAFF.STAFFNO 		AS 	\"staffNo\",
-							STAFF.STAFFIC 		AS 	\"staffIc\",
-							STAFF.ISDEFAULT 	AS 	\"isDefault\",
-							STAFF.ISNEW 		AS 	\"isNew\",
-							STAFF.ISDRAFT 		AS 	\"isDraft\",
-							STAFF.ISUPDATE 		AS 	\"isUpdate\",
-							STAFF.ISDELETE 		AS 	\"isDelete\",
-							STAFF.ISACTIVE 		AS 	\"isActive\",
-							STAFF.ISAPPROVED 	AS 	\"isApproved\",
-							STAFF.EXECUTEBY 	AS 	\"executeBy\",
-							STAFF.EXECUTETIME 	AS 	\"executeTime\",
-							STAFF.STAFFNAME 	AS	\"staffName\"
-					FROM 	STAFF
-					JOIN	TEAM
- 					ON		TEAM.TEAMID				=	STAFF.TEAMID
- 					JOIN	DEPARTMENT
- 					ON		DEPARTMENT.DEPARTMENTID		=	STAFF.DEPARTMENTID
-					WHERE 	STAFF.ISACTIVE				=	'1'
-					AND		TEAM.ISACTIVE 			=	'1'
-					AND		DEPARTMENT.ISACTIVE			=	'1'  " . $tempSql . $tempSql2 . "
+									SELECT		STAFF.STAFFID 					AS 	\"staffId\",
+													STAFF.TEAMID 					AS 	\"teamId\",
+													STAFF.DEPARTMENTID 		AS 	\"departmentId\",
+													STAFF.LANGUAGEID 			AS 	\"languageId\",
+													STAFF.STAFFPASSWORD	AS 	\"staffPassword\",
+													STAFF.STAFFNAME 			AS 	\"staffName\",
+													STAFF.STAFFNO 				AS 	\"staffNo\",
+													STAFF.STAFFIC 					AS 	\"staffIc\",
+													STAFF.ISDEFAULT 				AS 	\"isDefault\",
+													STAFF.ISNEW 					AS 	\"isNew\",
+													STAFF.ISDRAFT 				AS 	\"isDraft\",
+													STAFF.ISUPDATE 				AS 	\"isUpdate\",
+													STAFF.ISDELETE 				AS 	\"isDelete\",
+													STAFF.ISACTIVE 				AS 	\"isActive\",
+													STAFF.ISAPPROVED 			AS 	\"isApproved\",
+													STAFF.ISREVIEW 				AS 	\"isReview\",
+													STAFF.ISPOST 					AS 	\"isPost\",
+													STAFF.EXECUTEBY 			AS 	\"executeBy\",
+													STAFF.EXECUTETIME 			AS 	\"executeTime\",
+													STAFF.STAFFNAME 			AS	\"staffName\"
+									FROM 	STAFF
+									JOIN		TEAM
+									ON		TEAM.TEAMID							=	STAFF.TEAMID
+									JOIN		DEPARTMENT
+									ON		DEPARTMENT.DEPARTMENTID		=	STAFF.DEPARTMENTID
+									WHERE 	" . $this->auditFilter . "
+									AND		TEAM.ISACTIVE 						=	'1'
+									AND		DEPARTMENT.ISACTIVE				=	'1'  " . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
@@ -827,7 +843,7 @@ class StaffClass extends ConfigClass {
 					exit ();
 				}
 			}
-		}
+		
 		/*
              *  Only Execute One Query
              */
@@ -843,7 +859,14 @@ class StaffClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getStaffId ( 0, 'single' )) {
-			$json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'firstRecord' => $this->firstRecord (), 'nextRecord' => $this->nextRecord ( $this->model->getStaffId ( 0, 'single' ) ), 'previousRecord' => $this->previousRecord ( $this->model->getStaffId ( 0, 'single' ) ), 'lastRecord' => $this->lastRecord (), 'data' => $items ) );
+			$json_encode = json_encode ( array ('success' =>true, 
+																	'total' => $total, 
+																	'message' => 'Data Loaded', 
+																	'firstRecord' => $this->recordSet->firstRecord (), 
+																	'nextRecord' => $this->recordSet->nextRecord ( $this->model->getStaffId ( 0, 'single' ) ), 
+																	'previousRecord' => $this->recordSet->previousRecord ( $this->model->getStaffId ( 0, 'single' ) ), 
+																	'lastRecord' => $this->recordSet->lastRecord (), 
+																	'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -851,7 +874,7 @@ class StaffClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
+			echo json_encode ( array ('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
 			exit ();
 		}
 	}
@@ -870,22 +893,22 @@ class StaffClass extends ConfigClass {
 		//  original group
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-			SELECT	`TEAMID`,
-					`staffPassword`
-			FROM 	`staff`
-			WHERE 	`staffId`	=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
+			SELECT		`teamId`,
+							`staffPassword`
+			FROM 		`staff`
+			WHERE 		`staffId`	=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-			SELECT 	\"teamId\",
-					[staffPassword]
-			FROM 	[staff]
-			WHERE 	[staffId]	=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
+			SELECT 	[teamId],
+							[staffPassword]
+			FROM 		[staff]
+			WHERE 		[staffId]	=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-			SELECT 	TEAMID 		AS 	\"teamId\",
-					STAFFPASSWORD	AS	\"staffPassword\"
-			FROM 	STAFF
-			WHERE 	STAFFID	=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
+			SELECT 	TEAMID 				AS 	\"teamId\",
+							STAFFPASSWORD	AS	\"staffPassword\"
+			FROM 		STAFF
+			WHERE 		STAFFID	=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
 		}
 		$this->q->read ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -898,66 +921,72 @@ class StaffClass extends ConfigClass {
 		} else {
 			$staffPassword = $this->model->getStaffPassword ();
 		}
-		$teamId = $data ['TEAMID'];
+		$teamId = $data ['teamId'];
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-				UPDATE 	`staff`
-				SET 	`staffIc`		=	'" . $this->model->getStaffIc () . "',
-						`staffName`		=	'" . $this->model->getStaffName () . "',
-						`staffNo`		=	'" . $this->model->getStaffNo () . "',
-						`staffPassword`	=	'" . md5 ( $this->model->getStaffPassword () ) . "',
-						`TEAMID`		=	'" . $this->model->getTeamId() . "',
-						`departmentId`	=	'" . $this->model->getDepartmentId () . "',
-						`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						`isDraft`		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						`isUpdate`		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						`isDelete`		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						`executeBy`			=	'" . $this->model->getExecuteBy () . "',
-						`Time			=	" . $this->model->getExecuteTime () . "
-				WHERE 	`staffId`		=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
+			UPDATE 	`staff`
+			SET 			`staffIc`				=	'" . $this->model->getStaffIc () . "',
+							`staffName`			=	'" . $this->model->getStaffName () . "',
+							`staffNo`				=	'" . $this->model->getStaffNo () . "',
+							`staffPassword`		=	'" . md5 ( $this->model->getStaffPassword () ) . "',
+							`teamId`				=	'" . $this->model->getTeamId() . "',
+							`departmentId`		=	'" . $this->model->getDepartmentId () . "',
+							`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							`isDraft`				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isDelete`				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							`isActive`				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`isReview`			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							`isPost`				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
+							`executeTime		=	" . $this->model->getExecuteTime () . "
+			WHERE 		`staffId`				=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-				UPDATE 	[staff]
-				SET 	[staffIc]		=	'" . $this->model->getStaffIc () . "',
-						[staffName]		=	'" . $this->model->getStaffName () . "',
-						[staffNo]		=	'" . $this->model->getStaffNo () . "',
-						[staffPassword]	=	'" . md5 ( $this->model->getStaffPassword () ) . "',
-						[staffName]		=	'" . $this->model->getStaffName () . "',
-						\"teamId\"		=	'" . $this->model->getTeamId() . "',
-						[departmentId]	=	'" . $this->model->getDepartmentId () . "',
-						[isDraft]		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						[isDraft]		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						[isUpdate]		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						[isDelete]		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						[executeBy]		=	'" . $this->model->getExecuteBy () . "',
-						[executeTime]	=	" . $this->model->getExecuteTime () . "
-				WHERE 	[staffId]		=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
+			UPDATE	[staff]
+			SET 			[staffIc]				=	'" . $this->model->getStaffIc () . "',
+							[staffName]			=	'" . $this->model->getStaffName () . "',
+							[staffNo]				=	'" . $this->model->getStaffNo () . "',
+							[staffPassword]		=	'" . md5 ( $this->model->getStaffPassword () ) . "',
+							[staffName]			=	'" . $this->model->getStaffName () . "',
+							[teamId]				=	'" . $this->model->getTeamId() . "',
+							[departmentId]		=	'" . $this->model->getDepartmentId () . "',
+							[isDraft]				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							[isNew]					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							[isDraft]				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							[isUpdate]				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							[isDelete]				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							[isActive]				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							[isApproved]			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							[isReview]				=	'" . $this->model->getIsReview( 0, 'single' ) . "',
+							[isPost]					=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
+							[executeTime]		=	" . $this->model->getExecuteTime () . "
+			WHERE 		[staffId]				=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-				UPDATE 	STAFF
-				SET 	STAFFIC			=	'" . $this->model->getStaffIc () . "',
-						STAFFNAME		=	'" . $this->model->getStaffName () . "',
-						STAFFNO			=	'" . $this->model->getStaffNo () . "',
-						STAFFPASSWORD	=	'" . md5 ( $this->model->getStaffPassword () ) . "',
-						STAFFNAME		=	'" . $this->model->getStaffName () . "',
-						TEAMID			=	'" . $this->model->getTeamId() . "',
-						DEPARTMENTID	=	'" . $this->model->getDepartmentId () . "',
-						ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
-						EXECUTETIME		=	" . $this->model->getExecuteTime () . "
-				WHERE 	STAFFID			=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
+			UPDATE 	STAFF
+			SET 			STAFFIC				=	'" . $this->model->getStaffIc () . "',
+							STAFFNAME			=	'" . $this->model->getStaffName () . "',
+							STAFFNO				=	'" . $this->model->getStaffNo () . "',
+							STAFFPASSWORD	=	'" . md5 ( $this->model->getStaffPassword () ) . "',
+							STAFFNAME			=	'" . $this->model->getStaffName () . "',
+							TEAMID					=	'" . $this->model->getTeamId() . "',
+							DEPARTMENTID		=	'" . $this->model->getDepartmentId () . "',
+							ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							ISNEW					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							ISUPDATE				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							ISDELETE				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							ISACTIVE				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							ISREVIEW				=	'" . $this->model->getIsReview( 0, 'single' ) . "',
+							ISPOST					=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
+							EXECUTETIME		=	" . $this->model->getExecuteTime () . "
+			WHERE 		STAFFID				=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -973,12 +1002,12 @@ class StaffClass extends ConfigClass {
 				$sql = "
 					SELECT	`leafId`
 					FROM 	`leafGroupAccess`
-					WHERE 	`TEAMID`			=	'" . $this->model->getTeamId() . "' ";
+					WHERE 	`teamId`			=	'" . $this->model->getTeamId() . "' ";
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sql = "
 					SELECT	[leafId]
 					FROM 	[leafGroupAccess]
-					WHERE 	\"teamId\"			=	'" . $this->model->getTeamId() . "'";
+					WHERE 	[teamId]			=	'" . $this->model->getTeamId() . "'";
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sql = "
 					SELECT	LEAFID		AS 	\"leafId\"
@@ -1007,12 +1036,34 @@ class StaffClass extends ConfigClass {
 					AND		[leafId]			=	'" . $rowLeafGroupAccess ['leafId'] . "' ";
 				} else if ($this->getVendor () == self::ORACLE) {
 					$sql = "
-					SELECT	leafAccessCreateValue	AS	\"leafAccessCreateValue\",
-							leafAccessDeleteValue	AS  \"leafAccessDeleteValue\",
-							leafAccessPostValue 	AS	\"leafAccessPostValue\",
-							leafAccessPrintValue 	AS	\"leafAccessPrintValue\",
-							leafAccessReadValue 	AS	\"leafAccessReadValue\",
-							leafAccessUpdateValue 	AS	\"leafAccessUpdateValue\"
+					SELECT	LEAFACCESSCREATEVALUE	AS	\"leafAccessCreateValue\",
+								LEAFACCESSREADVALUE		AS  	\"leafAccessDeleteValue\",
+								LEAFACCESSPOSTVALUE 		AS	\"leafAccessPostValue\",
+								LEAFACCESSPRINTVALUE 		AS	\"leafAccessPrintValue\",
+								lLEAFACCESSREADVALUE 		AS	\"leafAccessReadValue\",
+								LEAFACCESSUPDATEVALUE	AS	\"leafAccessUpdateValue\"
+					FROM 	LEAFACCESS
+					WHERE 	STAFFID			=	'" . $this->model->getStaffId ( 0, 'single' ) . "'
+					AND		LEAFID			=	'" . $rowLeafGroupAccess ['leafId'] . "' ";
+				}else if ($this->getVendor () == self::DB2) {
+					$sql = "
+					SELECT	LEAFACCESSCREATEVALUE	AS	\"leafAccessCreateValue\",
+								LEAFACCESSREADVALUE		AS  	\"leafAccessDeleteValue\",
+								LEAFACCESSPOSTVALUE 		AS	\"leafAccessPostValue\",
+								LEAFACCESSPRINTVALUE 		AS	\"leafAccessPrintValue\",
+								lLEAFACCESSREADVALUE 		AS	\"leafAccessReadValue\",
+								LEAFACCESSUPDATEVALUE	AS	\"leafAccessUpdateValue\"
+					FROM 	LEAFACCESS
+					WHERE 	STAFFID			=	'" . $this->model->getStaffId ( 0, 'single' ) . "'
+					AND		LEAFID			=	'" . $rowLeafGroupAccess ['leafId'] . "' ";
+				}else if ($this->getVendor () == self::POSTGRESS) {
+					$sql = "
+					SELECT	LEAFACCESSCREATEVALUE	AS	\"leafAccessCreateValue\",
+								LEAFACCESSREADVALUE		AS  	\"leafAccessDeleteValue\",
+								LEAFACCESSPOSTVALUE 		AS	\"leafAccessPostValue\",
+								LEAFACCESSPRINTVALUE 		AS	\"leafAccessPrintValue\",
+								lLEAFACCESSREADVALUE 		AS	\"leafAccessReadValue\",
+								LEAFACCESSUPDATEVALUE	AS	\"leafAccessUpdateValue\"
 					FROM 	LEAFACCESS
 					WHERE 	STAFFID			=	'" . $this->model->getStaffId ( 0, 'single' ) . "'
 					AND		LEAFID			=	'" . $rowLeafGroupAccess ['leafId'] . "' ";
@@ -1022,36 +1073,36 @@ class StaffClass extends ConfigClass {
 					if ($this->getVendor () == self::MYSQL) {
 						$sql = "
 						UPDATE 	`leafAccess`
-						SET 	`leafAccessCreateValue`			=	'" . $rowLeafGroupAccess ['leafAccessCreateValue'] . "',
-								`leafAccessDeleteValue`			=	'" . $rowLeafGroupAccess ['leafAccessReadValue'] . "',
-								`leafAccessPostValue`			=	'" . $rowLeafGroupAccess ['leafAccessUpdateValue'] . "',
-								`leafAccessPrintValue`			=	'" . $rowLeafGroupAccess ['leafAccessDeleteValue'] . "',
-								`leafAccessReadValue`			=	'" . $rowLeafGroupAccess ['leafAccessPrintValue'] . "',
-								`leafAccessUpdateValue`			=	'" . $rowLeafGroupAccess ['leafAccessPostValue'] . "'
-						WHERE 	`staffId`						=	'" . $this->model->getStaffId ( 0, 'single' ) . "'
-						AND		`leafId`						=	'" . $rowLeafGroupAccess ['leafId'] . "'";
+						SET 			`leafAccessCreateValue`		=	'" . $rowLeafGroupAccess ['leafAccessCreateValue'] . "',
+										`leafAccessDeleteValue`		=	'" . $rowLeafGroupAccess ['leafAccessReadValue'] . "',
+										`leafAccessPostValue`			=	'" . $rowLeafGroupAccess ['leafAccessUpdateValue'] . "',
+										`leafAccessPrintValue`			=	'" . $rowLeafGroupAccess ['leafAccessDeleteValue'] . "',
+										`leafAccessReadValue`			=	'" . $rowLeafGroupAccess ['leafAccessPrintValue'] . "',
+										`leafAccessUpdateValue`		=	'" . $rowLeafGroupAccess ['leafAccessPostValue'] . "'
+						WHERE 		`staffId`								=	'" . $this->model->getStaffId ( 0, 'single' ) . "'
+						AND			`leafId`								=	'" . $rowLeafGroupAccess ['leafId'] . "'";
 					} else if ($this->getVendor () == self::MSSQL) {
 						$sql = "
 						UPDATE 	[leafAccess]
-						SET 	[leafAccessCreateValue]			=	'" . $rowLeafGroupAccess ['leafAccessCreateValue'] . "',
-								[leafAccessDeleteValue]			=	'" . $rowLeafGroupAccess ['leafAccessReadValue'] . "',
-								[leafAccessPostValue]			=	'" . $rowLeafGroupAccess ['leafAccessUpdateValue'] . "',
-								[leafAccessPrintValue]			=	'" . $rowLeafGroupAccess ['leafAccessDeleteValue'] . "',
-								[leafAccessReadValue]			=	'" . $rowLeafGroupAccess ['leafAccessPrintValue'] . "',
-								[leafAccessUpdateValue]			=	'" . $rowLeafGroupAccess ['leafAccessPostValue'] . "'
-						WHERE 	[staffId]						=	'" . $this->model->getStaffId ( 0, 'single' ) . "'
-						AND		[leafId]						=	'" . $rowLeafGroupAccess ['leafId'] . "'";
+						SET 			[leafAccessCreateValue]			=	'" . $rowLeafGroupAccess ['leafAccessCreateValue'] . "',
+										[leafAccessDeleteValue]			=	'" . $rowLeafGroupAccess ['leafAccessReadValue'] . "',
+										[leafAccessPostValue]			=	'" . $rowLeafGroupAccess ['leafAccessUpdateValue'] . "',
+										[leafAccessPrintValue]			=	'" . $rowLeafGroupAccess ['leafAccessDeleteValue'] . "',
+										[leafAccessReadValue]			=	'" . $rowLeafGroupAccess ['leafAccessPrintValue'] . "',
+										[leafAccessUpdateValue]		=	'" . $rowLeafGroupAccess ['leafAccessPostValue'] . "'
+						WHERE 		[staffId]								=	'" . $this->model->getStaffId ( 0, 'single' ) . "'
+						AND			[leafId]									=	'" . $rowLeafGroupAccess ['leafId'] . "'";
 					} else if ($this->getVendor () == self::ORACLE) {
 						$sql = "
-								UPDATE 	LEAFACCESS
-						SET 	leafAccessCreateValue		=	'" . $rowLeafGroupAccess ['leafAccessCreateValue'] . "',
-								leafAccessDeleteValue		=	'" . $rowLeafGroupAccess ['leafAccessReadValue'] . "',
-								leafAccessPostValue			=	'" . $rowLeafGroupAccess ['leafAccessUpdateValue'] . "',
-								leafAccessPrintValue		=	'" . $rowLeafGroupAccess ['leafAccessDeleteValue'] . "',
-								leafAccessReadValue			=	'" . $rowLeafGroupAccess ['leafAccessPrintValue'] . "',
-								leafAccessUpdateValue		=	'" . $rowLeafGroupAccess ['leafAccessPostValue'] . "'
-						WHERE 	STAFFID						=	'" . $this->model->getStaffId ( 0, 'single' ) . "'
-						AND		LEAFID						=	'" . $rowLeafGroupAccess ['leafId'] . "'";
+						UPDATE 	LEAFACCESS
+						SET 			LEAFACCESSCREATEVALUE		=	'" . $rowLeafGroupAccess ['leafAccessCreateValue'] . "',
+										LEAFACCESSREADVALUE			=	'" . $rowLeafGroupAccess ['leafAccessReadValue'] . "',
+										LEAFACCESSUPDATEVALUE		=	'" . $rowLeafGroupAccess ['leafAccessUpdateValue'] . "',
+										LEAFACCESSDELETEVALUE			=	'" . $rowLeafGroupAccess ['leafAccessDeleteValue'] . "',
+										LEAFACCESSPRINTVALUE			=	'" . $rowLeafGroupAccess ['leafAccessPrintValue'] . "',
+										LEAFACCESSPOSTVALUE			=	'" . $rowLeafGroupAccess ['leafAccessPostValue'] . "'
+						WHERE 		STAFFID									=	'" . $this->model->getStaffId ( 0, 'single' ) . "'
+						AND			LEAFID										=	'" . $rowLeafGroupAccess ['leafId'] . "'";
 					}
 					$this->q->update ( $sql );
 					if ($this->q->execute == 'fail') {
@@ -1109,11 +1160,11 @@ class StaffClass extends ConfigClass {
 								(
 										LEAFID,
 										STAFFID,
-										leafAccessReadValue,
-										leafAccessUpdateValue,
-										leafAccessDeleteValue,
-										leafAccessPrintValue,
-										leafAccessPostValue
+										LEAFACCESSCREATEVALUE,
+										LEAFACCESSREADVALUE,
+										LEAFACCESSDELETEVALUE,
+										LEAFACCESSPRINTVALUE,
+										LEAFACCESSPOSTVALUE
 								)
 							VALUES
 								(
@@ -1137,7 +1188,7 @@ class StaffClass extends ConfigClass {
 		// if change group .All access  before will deactivated
 		// update leaf access to null
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "success", "message" => "update success" ) );
+		echo json_encode ( array ("success" =>true, "message" => "update success" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -1154,51 +1205,57 @@ class StaffClass extends ConfigClass {
 		$this->model->delete ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-				UPDATE	`staff`
-				SET		`isDefault`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						`isDraft`			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						`executeBy`			=	'" . $this->model->getExecuteBy () . "',
-						`Time				=	" . $this->model->getExecuteTime () . "
-				WHERE 	`staffId`			=	'" . $this->model->staffId . "'";
+			UPDATE	`staff`
+			SET			`isDefault`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							`isDraft`			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							`isUpdate`		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`isReview`		=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							`isPost`			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							`executeBy`		=	'" . $this->model->getExecuteBy () . "',
+							`executeTime	=	" . $this->model->getExecuteTime () . "
+			WHERE 		`staffId`			=	'" . $this->model->getStaffId ( 0, 'single' )  . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-				UPDATE	[staff]
-				SET		[isDefault]		= 	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						[isDraft]		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						[isUpdate]		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						[isDelete]		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						[executeBy]		=	'" . $this->model->getExecuteBy () . "',
-						[executeTime]	=	" . $this->model->getExecuteTime () . "
-				WHERE 	[staffId]		=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
+			UPDATE	[staff]
+			SET			[isDefault]			= 	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							[isNew]				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							[isDraft]			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							[isUpdate]			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							[isDelete]			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							[isApproved]		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							[isReview]			=	'" . $this->model->getIsReview( 0, 'single' ) . "',
+							[isPost]				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							[executeBy]		=	'" . $this->model->getExecuteBy () . "',
+							[executeTime]	=	" . $this->model->getExecuteTime () . "
+			WHERE 		[staffId]			=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-				UPDATE	STAFF
-				SET		ISDEFAULT 		=   '" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						ISAPPROVED		=   '" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
-						EXECUTETIME		=	" . $this->model->getExecuteTime () . "
-				WHERE 	STAFFID			=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
+			UPDATE	STAFF
+			SET			ISDEFAULT 		=  '" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							ISUPDATE			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							ISAPPROVED		=  '" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							ISREVIEW			=	'" . $this->model->getIsReview( 0, 'single' ) . "',
+							ISPOST				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
+							EXECUTETIME	=	" . $this->model->getExecuteTime () . "
+			WHERE		STAFFID			=	'" . $this->model->getStaffId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "success", "message" => "Removed Success" ) );
+		echo json_encode ( array ("success" => true, "message" => "Removed Success" ) );
 		exit ();
 	}
 	
@@ -1226,7 +1283,17 @@ class StaffClass extends ConfigClass {
 			$sql = "
 			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
+			SET    ";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
+			SET    ";
 		}
+
+
 		//	echo "arnab[".$this->model->getDepartmentId(0,'array')."]";
 		
 
@@ -1241,6 +1308,10 @@ class StaffClass extends ConfigClass {
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
 			} else if ($this->getVendor () == self::ORACLE) {
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
+			}else if ($this->getVendor () == self::DB2) {
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
+			}else if ($this->getVendor () == self::POSTGRESS) {
 				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
 			}
 			switch ($systemCheck) {
@@ -1347,6 +1418,12 @@ class StaffClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getStaffIdAll () . ")";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getStaffIdAll () . ")";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getStaffIdAll () . ")";
 		}
 		
 		$this->q->update ( $sql );
@@ -1355,7 +1432,7 @@ class StaffClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -1386,6 +1463,18 @@ class StaffClass extends ConfigClass {
 			FROM 	STAFF
 			WHERE 	STAFFNO 		=	 '" . $this->model->getStaffNo () . "'
 			AND		ISACTIVE		=	1";
+		}else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			SELECT	*
+			FROM 	STAFF
+			WHERE 	STAFFNO 		=	 '" . $this->model->getStaffNo () . "'
+			AND		ISACTIVE		=	1";
+		}else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	*
+			FROM 	STAFF
+			WHERE 	STAFFNO 		=	 '" . $this->model->getStaffNo () . "'
+			AND		ISACTIVE		=	1";
 		}
 		$this->q->read ( $sql );
 		$total = 0;
@@ -1398,7 +1487,7 @@ class StaffClass extends ConfigClass {
 			if ($this->duplicateTest == 1) {
 				return $total . "|" . $row ['staffNo'];
 			} else {
-				echo json_encode ( array ("success" => "TRUE", "total" => $total, "message" => "Duplicate Record", "staffNo" => $row ['staffNo'] ) );
+				echo json_encode ( array ("success" => true, "total" => $total, "message" => "Duplicate Record", "staffNo" => $row ['staffNo'] ) );
 				exit ();
 			}
 		}
@@ -1471,9 +1560,9 @@ class StaffClass extends ConfigClass {
 		$objWriter->save ( $_SERVER ['document_root'] . "/idcmsCore/management/document/excel/" . $filename );
 		$file = fopen ( $_SERVER ['document_root'] . "/idcmsCore/management/document/excel/" . $filename, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => "TRUE", "message" => "File generated" ) );
+			echo json_encode ( array ("success" => true, "message" => "File generated" ) );
 		} else {
-			echo json_encode ( array ("success" => "false", "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
 		}
 	}
 }
