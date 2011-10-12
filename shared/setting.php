@@ -54,9 +54,9 @@ if ($q->vendor == sharedx::MYSQL) {
                                 TABLEMAPPING.TABLEMAPPINGNATIVELABEL AS \"tableMappingNativeLabel\"
                 FROM 			TABLEMAPPING
                 WHERE 			TABLEMAPPING.LANGUAGEID='" . $_SESSION ['languageId'] . "'";
-} else {
-
-}
+} else if ($q->vendor ==sharedx::DB2) {
+} else if ($q->vendor ==sharedx::POSTGRESS) {
+}	
 
 $result = $q->fast ( $sql );
 
@@ -88,7 +88,9 @@ if ($q->vendor == sharedx::MYSQL) {
                 JOIN 	DEFAULTLABELTRANSLATE
                 ON		DEFAULTLABEL.DEFAULTLABELID 			= 	DEFAULTLABELTRANSLATE.DEFAULTLABELID
                 WHERE 	DEFAULTLABELTRANSLATE.LANGUAGEID		=	'" . $_SESSION ['languageId'] . "'";
-}
+}else if ($q->vendor ==sharedx::DB2) {
+} else if ($q->vendor ==sharedx::POSTGRESS) {
+}	
 $result = $q->fast ( $sql );
 while ( $row = $q->fetchAssoc ( $result ) ) {
 	echo "var " . $row ['defaultLabel'] . " = '" . $row ['defaultLabelText'] . "';\n";
@@ -103,7 +105,7 @@ $phpself = 'PHP_SELF';
 echo "var filename = '" . basename ( $_SERVER ['PHP_SELF'] ) . "';";
 
 if ($q->vendor == sharedx::MYSQL) {
-	$sql = "	SELECT	*
+		$sql = "	SELECT	*
         FROM	`leaf`
         JOIN	`leafAccess`
         USING 	(`leafId`)
@@ -139,7 +141,9 @@ if ($q->vendor == sharedx::MYSQL) {
         WHERE  	LEAF.LEAFFILENAME			=	'" . basename ( $_SERVER ['PHP_SELF'] ) . "'
         AND  	LEAFACCESS.STAFFID			=	'" . $_SESSION ['staffId'] . "'
         AND		LEAFTRANSLATE.LANGUAGEID	=	'" . $_SESSION ['languageId'] . "'";
-}
+} else if ($q->vendor ==sharedx::DB2) {
+} else if ($q->vendor ==sharedx::POSTGRESS) {
+}		
 
 $result = $q->fast ( $sql );
 
@@ -160,7 +164,7 @@ if ($q->vendor == sharedx::MYSQL) {
                         JOIN	`team`
                         USING	(`teamId`)
                         WHERE 	`staff`.`staffId`	=	'" . $_SESSION ['staffId'] . "'
-                        AND		`team`.`TEAMID`	=	'" . $_SESSION ['teamId'] . "'
+                        AND		`team`.`teamId`	=	'" . $_SESSION ['teamId'] . "'
                         AND		`staff`.`isActive`	=	1
                         AND		`team`.`isActive`	=	1";
 } else if ($q->vendor == sharedx::MSSQL) {
@@ -168,9 +172,9 @@ if ($q->vendor == sharedx::MYSQL) {
                         SELECT	[team].[isAdmin]
                         FROM 	[staff]
                         JOIN	[team]
-                        ON		[staff].\"teamId\"  	= 	[team].[teamId]
+                        ON		[staff].[teamId]  	= 	[team].[teamId]
                         WHERE 	[staff].[staffId]	=	'" . $_SESSION ['staffId'] . "'
-                        AND		[team].\"teamId\"	=	'" . $_SESSION ['teamId'] . "'
+                        AND		[team].[teamId]	=	'" . $_SESSION ['teamId'] . "'
                         AND		[staff].[isActive]	=	1
                         AND		[team].[isActive]	=	1";
 } else if ($q->vendor == sharedx::ORACLE) {
@@ -183,7 +187,9 @@ if ($q->vendor == sharedx::MYSQL) {
                         AND		TEAM.TEAMID	=	'" . $_SESSION ['TEAMID'] . "'
                         AND		STAFF.ISACTIVE	=	1
                         AND		TEAM.ISACTIVE	=	1";
-} else {
+} else if ($q->vendor ==sharedx::DB2) {
+} else if ($q->vendor ==sharedx::POSTGRESS) {
+}	else {
 	echo json_encode ( array ("success" => false, "message" => "cannot identify vendor db[" . $q->vendor . "]" ) );
 	exit ();
 }

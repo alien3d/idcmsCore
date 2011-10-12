@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
-require_once("../../class/classRecordSet.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../model/teamModel.php");
@@ -27,7 +27,7 @@ class TeamClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
-	 *  Record Pagination
+	 * Record Pagination
 	 * @var string
 	 */
 	private $recordSet;
@@ -90,10 +90,10 @@ class TeamClass extends ConfigClass {
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
-		$this->recordSet =  new RecordSet();
-		$this->recordSet->setTableName($this->model->getTableName());
-		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
-		$this->recordSet->execute();
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName ( $this->model->getTableName () );
+		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
+		$this->recordSet->execute ();
 		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
@@ -135,7 +135,7 @@ class TeamClass extends ConfigClass {
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',				'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',			'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getIsReview ( 0, 'single' ) . "',			'" . $this->model->getIsPost( 0, 'single' ) . "',
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',			'" . $this->model->getIsPost ( 0, 'single' ) . "',
 						'" . $this->model->getExecuteBy () . "',						" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
@@ -157,7 +157,7 @@ class TeamClass extends ConfigClass {
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost( 0, 'single' ) . "',
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
 						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::ORACLE) {
@@ -179,7 +179,7 @@ class TeamClass extends ConfigClass {
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost( 0, 'single' ) . "',
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
 						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					);";
 		}
@@ -214,13 +214,13 @@ class TeamClass extends ConfigClass {
 		if ($this->q->numberRows () > 0) {
 			foreach ( $data as $row ) {
 				
-					$sqlLooping .= "
+				$sqlLooping .= "
 					(
 									'" . $row ['moduleId'] . "',
 									0,
 									'" . $lastInsertId . "'
 					),";
-				
+			
 			}
 		}
 		if ($this->getVendor () == self::MYSQL) {
@@ -282,13 +282,13 @@ class TeamClass extends ConfigClass {
 			$data = $this->q->activeRecord ();
 			foreach ( $data as $row ) {
 				
-					$sqlLooping .= "
+				$sqlLooping .= "
 					(
 						'" . $row ['folderId'] . "',
 						0,
 						'" . $lastInsertId . "'
 					),";
-				
+			
 			}
 		}
 		if ($this->getVendor () == self::MYSQL) {
@@ -345,7 +345,7 @@ class TeamClass extends ConfigClass {
 			$data = $this->q->activeRecord ();
 			foreach ( $data as $row ) {
 				
-					$sqlLooping .= "
+				$sqlLooping .= "
 					(
 						'" . $row ['leafId'] . "',
 						0,
@@ -356,7 +356,7 @@ class TeamClass extends ConfigClass {
 						0,
 						'" . $lastInsertId . "'
 					),";
-				
+			
 			}
 		}
 		if ($this->getVendor () == self::MYSQL) {
@@ -584,17 +584,16 @@ class TeamClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		if (empty ( $this->model->getTeamId ( $key, $type ) )) {
-			if ($this->getLimit ()) {
-				// only mysql have limit
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sql = "
+		if ($this->getLimit ()) {
+			// only mysql have limit
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sql = "
 							WITH [teamDerived] AS
 							(
 								
@@ -618,20 +617,20 @@ class TeamClass extends ConfigClass {
 								FROM 	[team]
 								JOIN		[staff]
 								ON		[team].[executeBy] = [staff].[staffId]
-								WHERE " . $this->auditFilter.$tempSql . $tempSql2 . "
+								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT * 
 							FROM 	[teamDerived]
 							JOIN		[staff]
 							ON		[team].[executeBy] = [staff].[staffId]
-							WHERE " . $this->auditFilter."	[RowNumber]
+							WHERE " . $this->auditFilter . "	[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $this->getLimit () - 1) . ";";
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -659,12 +658,12 @@ class TeamClass extends ConfigClass {
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
-				} else {
-					echo "undefine vendor";
-					exit ();
-				}
+			} else {
+				echo "undefine vendor";
+				exit ();
 			}
 		}
+		
 		/*
 		 *  Only Execute One Query
 		 */
@@ -851,11 +850,11 @@ class TeamClass extends ConfigClass {
 			$sql = "
 			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
-		}else if ($this->getVendor () == self::DB2) {
+		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
 			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
-		}	else if ($this->getVendor () == self::POSTGRESS) {
+		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
@@ -983,6 +982,12 @@ class TeamClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getTeamIdAll () . ")";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getTeamIdAll () . ")";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getTeamIdAll () . ")";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -1021,13 +1026,13 @@ class TeamClass extends ConfigClass {
 			FROM 	TEAM
 			WHERE 	TEAMCODE 		= 	'" . $this->model->getTeamCode () . "'
 			AND		ISACTIVE		=	1";
-		}else if ($this->getVendor () == self::DB2) {
+		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
 			SELECT	*
 			FROM 	TEAM
 			WHERE 	TEAMCODE 		= 	'" . $this->model->getTeamCode () . "'
 			AND		ISACTIVE		=	1";
-		}else if ($this->getVendor () == self::POSTGRESS) {
+		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			SELECT	*
 			FROM 	TEAM

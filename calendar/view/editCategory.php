@@ -17,7 +17,7 @@ include('../../Connections/main.php');	?>
     <link rel="stylesheet" type="text/css"
 	href="../../javascript/resources/css/empty.css">
 <?php // only execute when exist
-if($_SESSION[$theme]) { ?>
+if(isset($_SESSION[$theme])) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
 <?php } ?>
 </head>

@@ -15,7 +15,7 @@ $theme ='theme';
 <link rel="stylesheet" type="text/css" href="../../javascript/resources/css/ext-all.css"/>
 
 <?php // only execute when exist
-if($_SESSION[$theme]) { ?>
+if(isset($_SESSION[$theme])) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
 
 <?php } ?>

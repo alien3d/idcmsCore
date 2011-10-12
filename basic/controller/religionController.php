@@ -339,7 +339,7 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->getVendor () == self::ORACLE) {
 				$tempSql = $this->q->quickSearch ( $tableArray, $filterArray );
 				$sql .= $tempSql;
-			} else if($this->getVendor() == self :DB2) {
+			} else if($this->getVendor() == self ::DB2) {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );

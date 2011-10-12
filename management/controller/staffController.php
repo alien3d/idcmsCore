@@ -1648,8 +1648,8 @@ if (isset ( $_GET ['method'] )) {
 		if ($_GET ['field'] == 'staffId') {
 			$staffObject->staff ();
 		}
-		if ($_GET ['field'] == 'group') {
-			$staffObject->group ();
+		if ($_GET ['field'] == 'team') {
+			$staffObject->team ();
 		}
 		if ($_GET ['field'] == 'department') {
 			$staffObject->department ();
