@@ -1,5 +1,4 @@
 <?php
-
 require_once ("../../class/classValidation.php");
 /**
  * this is module model file.
@@ -75,69 +74,126 @@ class ModuleModel extends ValidationClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
 		}
-		$this->setTotal ( count ( $_GET ['tabId'] ) );
+		if (isset ( $_GET ['moduleId'] )) {
+			$this->setTotal ( count ( $_GET ['moduleId'] ) );
+		}
 		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
 		// auto assign as array if true
-		if (is_array ( $_GET ['moduleId'] )) {
-			$this->moduleId = array ();
+		if (isset ( $_GET ['moduleId'] )) {
+			if (is_array ( $_GET ['moduleId'] )) {
+				$this->moduleId = array ();
+			}
 		}
-		if (is_array ( $_GET ['isDefault'] )) {
-			$this->isDefault = array ();
+		if (isset ( $_GET ['isDefault'] )) {
+			if (is_array ( $_GET ['isDefault'] )) {
+				$this->isDefault = array ();
+			}
 		}
-		if (is_array ( $_GET ['isNew'] )) {
-			$this->isNew = array ();
+		if (isset ( $_GET ['isNew'] )) {
+			if (is_array ( $_GET ['isNew'] )) {
+				$this->isNew = array ();
+			}
 		}
-		if (is_array ( $_GET ['isDraft'] )) {
-			$this->isDraft = array ();
+		if (isset ( $_GET ['isDraft'] )) {
+			if (is_array ( $_GET ['isDraft'] )) {
+				$this->isDraft = array ();
+			}
 		}
-		if (is_array ( $_GET ['isUpdate'] )) {
-			$this->isUpdate = array ();
+		if (isset ( $_GET ['isUpdate'] )) {
+			if (is_array ( $_GET ['isUpdate'] )) {
+				$this->isUpdate = array ();
+			}
 		}
-		if (is_array ( $_GET ['isDelete'] )) {
-			$this->isDelete = array ();
+		if (isset ( $_GET ['isDelete'] )) {
+			if (is_array ( $_GET ['isDelete'] )) {
+				$this->isDelete = array ();
+			}
 		}
-		if (is_array ( $_GET ['isActive'] )) {
-			$this->isActive = array ();
+		if (isset ( $_GET ['isActive'] )) {
+			if (is_array ( $_GET ['isActive'] )) {
+				$this->isActive = array ();
+			}
 		}
-		if (is_array ( $_GET ['isApproved'] )) {
-			$this->isApproved = array ();
+		if (isset ( $_GET ['isApproved'] )) {
+			if (is_array ( $_GET ['isApproved'] )) {
+				$this->isApproved = array ();
+			}
 		}
+		if (isset ( $_GET ['isReview'] )) {
+			if (is_array ( $_GET ['isReview'] )) {
+				$this->isReview = array ();
+			}
+		}
+		if (isset ( $_GET ['isPost'] )) {
+			if (is_array ( $_GET ['isPost'] )) {
+				$this->isPost = array ();
+			}
+		}
+		$primaryKeyAll = '';
 		for($i = 0; $i < $this->getTotal (); $i ++) {
 			$this->setModuleId ( $this->strict ( $_GET ['moduleId'] [$i], 'numeric' ), $i, 'array' );
-			if ($_GET ['isDefault'] [$i] == 'true') {
-				$this->setIsDefault ( 1, $i, 'array' );
-			} else if ($_GET ['default'] == 'FALSE') {
-				$this->setIsDefault ( 0, $i, 'array' );
+			if (isset ( $_GET ['isDefault'] )) {
+				if ($_GET ['isDefault'] [$i] == 'TRUE') {
+					$this->setIsDefault ( 1, $i, 'array' );
+				} else if ($_GET ['default'] == 'FALSE') {
+					$this->setIsDefault ( 0, $i, 'array' );
+				}
 			}
-			if ($_GET ['isNew'] [$i] == 'true') {
-				$this->setIsNew ( 1, $i, 'array' );
-			} else {
-				$this->setIsNew ( 0, $i, 'array' );
+			if (isset ( $_GET ['isNew'] )) {
+				if ($_GET ['isNew'] [$i] == 'TRUE') {
+					$this->setIsNew ( 1, $i, 'array' );
+				} else {
+					$this->setIsNew ( 0, $i, 'array' );
+				}
 			}
-			if ($_GET ['isDraft'] [$i] == 'true') {
-				$this->setIsDraft ( 1, $i, 'array' );
-			} else {
-				$this->setIsDraft ( 0, $i, 'array' );
+			if (isset ( $_GET ['isDraft'] )) {
+				if ($_GET ['isDraft'] [$i] == 'TRUE') {
+					$this->setIsDraft ( 1, $i, 'array' );
+				} else {
+					$this->setIsDraft ( 0, $i, 'array' );
+				}
 			}
-			if ($_GET ['isUpdate'] [$i] == 'true') {
-				$this->setIsUpdate ( 1, $i, 'array' );
-			} else {
-				$this->setIsUpdate ( 0, $i, 'array' );
+			if (isset ( $_GET ['isUpdate'] )) {
+				if ($_GET ['isUpdate'] [$i] == 'TRUE') {
+					$this->setIsUpdate ( 1, $i, 'array' );
+				} else {
+					$this->setIsUpdate ( 0, $i, 'array' );
+				}
 			}
-			if ($_GET ['isDelete'] [$i] == 'true') {
-				$this->setIsDelete ( 1, $i, 'array' );
-			} else if ($_GET ['isDelete'] [$i] == 'FALSE') {
-				$this->setIsDelete ( 0, $i, 'array' );
+			if (isset ( $_GET ['isDelete'] )) {
+				if ($_GET ['isDelete'] [$i] == 'TRUE') {
+					$this->setIsDelete ( 1, $i, 'array' );
+				} else if ($_GET ['isDelete'] [$i] == 'FALSE') {
+					$this->setIsDelete ( 0, $i, 'array' );
+				}
 			}
-			if ($_GET ['isActive'] [$i] == 'true') {
-				$this->setIsActive ( 1, $i, 'array' );
-			} else {
-				$this->setIsActive ( 0, $i, 'array' );
+			if (isset ( $_GET ['isActive'] )) {
+				if ($_GET ['isActive'] [$i] == 'TRUE') {
+					$this->setIsActive ( 1, $i, 'array' );
+				} else {
+					$this->setIsActive ( 0, $i, 'array' );
+				}
 			}
-			if ($_GET ['isApproved'] [$i] == 'true') {
-				$this->setIsApproved ( 1, $i, 'array' );
-			} else {
-				$this->setIsApproved ( 0, $i, 'array' );
+			if (isset ( $_GET ['isApproved'] )) {
+				if ($_GET ['isApproved'] [$i] == 'TRUE') {
+					$this->setIsApproved ( 1, $i, 'array' );
+				} else if ($_GET ['isApproved'] [$i] == 'FALSE') {
+					$this->setIsApproved ( 0, $i, 'array' );
+				}
+			}
+			if (isset ( $_GET ['isReview'] )) {
+				if ($_GET ['isReview'] [$i] == 'TRUE') {
+					$this->setIsReview ( 1, $i, 'array' );
+				} else if ($_GET ['isReview'] [$i] == 'FALSE') {
+					$this->setIsReview ( 0, $i, 'array' );
+				}
+			}
+			if (isset ( $_GET ['isPost'] )) {
+				if ($_GET ['isPost'] [$i] == 'TRUE') {
+					$this->setIsPost ( 1, $i, 'array' );
+				} else if ($_GET ['isPost'] [$i] == 'FALSE') {
+					$this->setIsPost ( 0, $i, 'array' );
+				}
 			}
 			$primaryKeyAll .= $this->getTabId ( $i, 'array' ) . ",";
 		}

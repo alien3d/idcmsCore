@@ -166,23 +166,22 @@ var leafNote			= '<?php echo $row_leafAccess['leafTranslate'];   ?>';
 var leafAccessCreateValue	= '<?php echo $row_leafAccess['leafAccessCreateValue'];   ?>';
 var leafAccessReadValue		= '<?php echo $row_leafAccess['leafAccessReadValue'];   ?>';
 var leafAccessPrintValue	= '<?php echo $row_leafAccess['leafAccessPrintValue'];   ?>';
-var leafAccessPostValue	= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>';
-
+var leafAccessPostValue	= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>'
 <?php
 		if( $q->vendor==sharedx::MYSQL) {
 			$sql	=	"
 			SELECT	`theme`.`isAdmin`
 			FROM 	`staff`
-			JOIN	`theme`
-			USING	(`TEAMID`)
+			JOIN	`team`
+			USING	(`teamId`)
 			WHERE 	`staff`.`staffId`	=	'".$_SESSION['staffId']."'
-			AND		`theme`.`TEAMID`	=	'".$_SESSION['teamId']."'";
+			AND		`team`.`teamId`	=	'".$_SESSION['teamId']."'";
 		} else if ($q->vendor==sharedx::MSSQL) {
 			$sql	=	"
 			SELECT	[team].[isAdmin]
 			FROM 	[staff]
 			JOIN	[team]
-			ON		[staff].\"teamId\"  	= 	[team].[teamId]
+			ON		[staff].[teamId]  	= 	[team].[teamId]
 			WHERE 	[staff].[staffId]	=	'".$_SESSION['staffId']."'
 			AND		[team].[teamId]	=	'".$_SESSION['teamId']."'";
 		} else if ($q->vendor==sharedx::ORACLE) {
@@ -194,20 +193,22 @@ var leafAccessPostValue	= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>
 			WHERE 	STAFF.STAFFID	=	'".$_SESSION['staffId']."'
 			AND		TEAM.TEAMID	=	'".$_SESSION['teamId']."'";
 		} else {
-			echo json_encode(array("success"=>FALSE,"message"=>"cannot identify vendor db[".$q->vendor."]"));
+			echo json_encode(array("success"=>false,"message"=>"cannot identify vendor db[".$q->vendor."]"));
 			exit();
 		}
 
 		//echo $sql;
-		$resultAdmin=$q->fast($sql);
-
-		if($q->numberRows($resultAdmin) > 0 ) {
-
-			$rowAdmin = $q->fetchAssoc($resultAdmin);
-
-		}
-?>
-var isAdmin = <?php echo $rowAdmin['isAdmin']; ?>;
+		$resultAdmin = $q->fast ( $sql );
+		
+		if ($q->numberRows ( $resultAdmin ) > 0) {
+			$rowAdmin = $q->fetchAssoc ( $resultAdmin );
+			?>
+		var isAdmin = <?php echo $rowAdmin['isAdmin']; ?>;
+		
+		<?php } else { 
+		?>
+		var isAdmin;
+		<?php } ?>
 if (isAdmin  == 1 ) {
 	isDefaultHidden 	= false;
 	isNewHidden   		= false;
