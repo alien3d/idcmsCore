@@ -13,23 +13,23 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class TableMappingTranslateModel extends ValidationClass
+class ExtLabelTranslateModel extends ValidationClass
 {
     /**
      * ExtJS / Sencha Label Identification
      * @var int
      */
-    private $tableMappingTranslateId;
+    private $extLabelTranslateId;
     /**
      * ExtJS / Sencha Label Identification
      * @var int
      */
-    private $tableMappingId;
+    private $extLabelId;
     /**
      * ExtJS / Sencha Label Identification
      * @var int
      */
-    private $tableMappingTranslationNativeLabel;
+    private $extLabelTranslationNativeLabel;
     /**
      * ExtJS / Sencha Label Identification
      * @var int
@@ -43,26 +43,26 @@ class TableMappingTranslateModel extends ValidationClass
         /*
 		 *  Basic Information Table
 		 */
-        $this->setTableName('tableMapping');
-        $this->setPrimaryKeyName('tableMappingId');
+        $this->setTableName('extLabel');
+        $this->setPrimaryKeyName('extLabelId');
         /*
 		 *  All the $_POST enviroment.
 		 */
-        if (isset($_POST['tableMappingId'])) {
-            $this->settableMappingId(
-            $this->strict($_POST['tableMappingId'], 'numeric'), 0, 'single');
+        if (isset($_POST['extLabelId'])) {
+            $this->setextLabelId(
+            $this->strict($_POST['extLabelId'], 'numeric'), 0, 'single');
         }
-        if (isset($_POST['tableMappingSequence'])) {
-            $this->settableMappingSequence(
-            $this->strict($_POST['tableMappingSequence'], 'memo'));
+        if (isset($_POST['extLabelSequence'])) {
+            $this->setextLabelSequence(
+            $this->strict($_POST['extLabelSequence'], 'memo'));
         }
-        if (isset($_POST['tableMappingCode'])) {
-            $this->settableMappingCode(
-            $this->strict($_POST['tableMappingCode'], 'memo'));
+        if (isset($_POST['extLabelCode'])) {
+            $this->setextLabelCode(
+            $this->strict($_POST['extLabelCode'], 'memo'));
         }
-        if (isset($_POST['tableMappingNote'])) {
-            $this->settableMappingNote(
-            $this->strict($_POST['tableMappingNote'], 'memo'));
+        if (isset($_POST['extLabelNote'])) {
+            $this->setextLabelNote(
+            $this->strict($_POST['extLabelNote'], 'memo'));
         }
         if (isset($_SESSION['staffId'])) {
             $this->setExecuteBy($_SESSION['staffId']);
@@ -78,12 +78,12 @@ class TableMappingTranslateModel extends ValidationClass
                     "to_date('" . date("Y-m-d H:i:s") .
                      "','YYYY-MM-DD HH24:MI:SS')");
                 }
-        $this->setTotal(count($_GET['tableMappingId']));
+        $this->setTotal(count($_GET['extLabelId']));
         $accessArray = array("isDefault", "isNew", "isDraft", "isUpdate", 
         "isDelete", "isActive", "isApproved","isReview","isPost");
         // auto assign as array if true
-        if (is_array($_GET['tableMappingId'])) {
-            $this->tableMappingId = array();
+        if (is_array($_GET['extLabelId'])) {
+            $this->extLabelId = array();
         }
         if (is_array($_GET['isDefault'])) {
             $this->isDefault = array();
@@ -107,8 +107,8 @@ class TableMappingTranslateModel extends ValidationClass
             $this->isApproved = array();
         }
         for ($i = 0; $i < $this->getTotal(); $i ++) {
-            $this->seTtableMappingId(
-            $this->strict($_GET['tableMappingId'][$i], 'numeric'), $i, 'array');
+            $this->seTextLabelId(
+            $this->strict($_GET['extLabelId'][$i], 'numeric'), $i, 'array');
             if ($_GET['isDefault'][$i] == 'true') {
                 $this->setIsDefault(1, $i, 'array');
             } else 
@@ -253,10 +253,10 @@ class TableMappingTranslateModel extends ValidationClass
     public function setTableMappingTranslateId ($value, $key, $type)
     {
         if ($type == 'single') {
-            $this->tableMappingTranslateId = $value;
+            $this->extLabelTranslateId = $value;
         } else 
             if ($type == 'array') {
-                $this->tableMappingTranslateId[$key] = $value;
+                $this->extLabelTranslateId[$key] = $value;
             } else {
                 echo json_encode(
                 array("success" => false, 
@@ -270,13 +270,13 @@ class TableMappingTranslateModel extends ValidationClass
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      * @return int|array
      */
-    public function gettableMappingTranslateId ($key, $type)
+    public function getextLabelTranslateId ($key, $type)
     {
         if ($type == 'single') {
-            return $this->tableMappingTranslateId;
+            return $this->extLabelTranslateId;
         } else 
             if ($type == 'array') {
-                return $this->tableMappingTranslateId[$key];
+                return $this->extLabelTranslateId[$key];
             } else {
                 echo json_encode(
                 array("success" => false, 
@@ -306,7 +306,7 @@ class TableMappingTranslateModel extends ValidationClass
      */
     public function getTableMappingTranslationNativeLabel ()
     {
-        return $this->tableMappingTranslationNativeLabel;
+        return $this->extLabelTranslationNativeLabel;
     }
     /**
      * Set Language Identification

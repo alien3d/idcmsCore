@@ -155,6 +155,9 @@ class Security extends ConfigClass
 	 */
     public function excel ()
     {}
+    /**
+     *  Give output Team/Department
+     */
     public function team ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
@@ -211,6 +214,9 @@ class Security extends ConfigClass
             exit();
         }
     }
+    /**
+     * Give Ouput Department
+     */
     public function department ()
     {
         header('Content-Type', 'application/json; charset=utf-8');
@@ -267,7 +273,7 @@ class Security extends ConfigClass
         }
     }
     /**
-     * Give Output tab
+     * Give Output Module
      * @version  0.1 remove the session  language
      */
     function module ()

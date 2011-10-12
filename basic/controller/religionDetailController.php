@@ -1,6 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
+require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../model/religionDetailModel.php");
@@ -376,17 +377,16 @@ class ReligionDetailClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		if (empty ( $this->filter )) {
-			if ($this->getLimit ()) {
-				// only mysql have limit
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sql = "
+		if ($this->getStart () && $this->getLimit ()) {
+			// only mysql have limit
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sql = "
 							WITH [religionDetailDerived] AS
 							(
 								SELECT [religionDetail].[religionDetailId],
@@ -414,11 +414,11 @@ class ReligionDetailClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart () + 1) . "
 							AND 			" . ($this->getStart () + $this->getLimit ()) . ";";
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -445,12 +445,12 @@ class ReligionDetailClass extends ConfigClass {
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit ()) . "' )
 						where r >=  '" . ($this->getStart () + 1) . "'";
-				} else {
-					echo "undefine vendor";
-					exit ();
-				}
+			} else {
+				echo "undefine vendor";
+				exit ();
 			}
 		}
+		
 		/*
              *  Only Execute One Query
              */

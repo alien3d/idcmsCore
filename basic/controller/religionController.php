@@ -1,6 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
+require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../model/religionModel.php");
@@ -25,6 +26,7 @@ class ReligionClass extends ConfigClass {
 	 * @var string
 	 */
 	private $excel;
+	private $recordSet;
 	/**
 	 * Document Trail Audit.
 	 * @var string
@@ -60,6 +62,7 @@ class ReligionClass extends ConfigClass {
 	 * @var bool
 	 */
 	public $duplicateTest;
+
 	/**
 	 * Class Loader
 	 */
@@ -84,10 +87,14 @@ class ReligionClass extends ConfigClass {
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
+		$this->recordSet =  new RecordSet();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
+		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->setStaffId ( $this->getStaffId () );
-		$this->documentTrail->setLanguageId ( $this->getLanguageId () );
 		$this->documentTrail->setLeafId ( $this->getLeafId () );
 		$this->documentTrail->execute ();
 		
@@ -374,7 +381,7 @@ class ReligionClass extends ConfigClass {
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
 		
-		if ($this->getLimit ()) {
+		if ($this->getStart() && $this->getLimit ()) {
 			// only mysql have limit
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
@@ -465,7 +472,16 @@ class ReligionClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getReligionId ( 0, 'single' )) {
-			$json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->firstRecord ( 'value' ), 'previousRecord' => $this->previousRecord ( 'value', $this->model->getReligionId ( 0, 'single' ) ), 'nextRecord' => $this->nextRecord ( 'value', $this->model->getReligionId ( 0, 'single' ) ), 'lastRecord' => $this->lastRecord ( 'value' ) ) );
+			$json_encode = json_encode ( 
+					array (	'success' => TRUE, 
+							'total' => $total, 
+							'message' => 'Data Loaded', 
+							'data' => $items, 
+							'firstRecord' => $this->recordSet->firstRecord ( 'value' ), 
+							'previousRecord' => $this->recordSet->previousRecord ( 'value', $this->model->getReligionId ( 0, 'single' ) ), 
+							'nextRecord' => $this->recordSet->nextRecord ( 'value', $this->model->getReligionId ( 0, 'single' ) ), 
+							'lastRecord' => $this->recordSet->lastRecord ( 'value' ) 
+						) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -851,6 +867,18 @@ class ReligionClass extends ConfigClass {
 			echo json_encode ( array ("success" => true, "total" => $total, "message" => "Duplicate Non" ) );
 			exit ();
 		}
+	}
+	function firstRecord($value) {
+		$this->recordSet-> firstRecord($value);
+	}
+	function nextRecord($value,$primaryKeyValue) {
+		$this->recordSet->nextRecord($value, $primaryKeyValue);
+	}
+	function previousRecord($value,$primaryKeyValue) {
+		$this->recordSet->previousRecord($value, $primaryKeyValue);
+	}
+	function lastRecord($value) {
+		$this->recordSet->lastRecord($value);
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()

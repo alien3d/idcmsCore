@@ -1,6 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
+require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../model/documentCategoryModel.php");
@@ -83,10 +84,14 @@ class DocumentCategoryClass extends ConfigClass {
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
+		$this->recordSet =  new RecordSet();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
+		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->setStaffId ( $this->getStaffId () );
-		$this->documentTrail->setLanguageId ( $this->getLanguageId () );
 		$this->documentTrail->setLeafId ( $this->getLeafId () );
 		$this->documentTrail->execute ();
 		

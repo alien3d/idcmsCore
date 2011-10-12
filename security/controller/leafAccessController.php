@@ -1,7 +1,7 @@
 <?php
-
 session_start ();
 require_once ("../../class/classAbstract.php");
+require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../model/leafAccessModel.php");

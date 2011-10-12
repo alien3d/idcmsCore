@@ -69,5 +69,5 @@ x-grid3-row-alt {
 <script type="text/javascript"
 	src="../../javascript/examples/ux/RowEditor.js"></script>
 <script  type="text/javascript"
-	src="../javascript/extLabel.js?<?php echo time(); ?>"></script>
+	src="../javascript/original/extLabel.js?<?php echo time(); ?>"></script>
 </html>

@@ -48,7 +48,7 @@ if($_SESSION[$theme]) { ?>
 <?php require_once("../../shared/setting.php"); ?>    
 <!-- App -->
 <link rel="stylesheet" type="text/css" href="../../javascript/examples/calendar/resources/css/examples.css" />
-<script type="text/javascript" src="../javascript/event.js?<?php echo time(); ?>"></script>
+<script type="text/javascript" src="../javascript/original/event.js?<?php echo time(); ?>"></script>
 </head>
 <body>
   <div style="display:none;">

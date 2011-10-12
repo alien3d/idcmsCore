@@ -1,6 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
+require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
@@ -93,6 +94,11 @@ class StaffClass extends ConfigClass {
 		$this->model = new StaffModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
+		
+		$this->recordSet =  new RecordSet();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
 		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
