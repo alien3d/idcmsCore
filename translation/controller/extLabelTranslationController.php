@@ -28,6 +28,11 @@ class ExtLabelTranslationClass extends ConfigClass {
 	 * @var string
 	 */
 	private $excel;
+		/**
+	 *  Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
 	/**
 	 * Document Trail Audit.
 	 * @var string

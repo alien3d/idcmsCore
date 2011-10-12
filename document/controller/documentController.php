@@ -27,6 +27,11 @@ class DocumentClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
+	 *  Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
+	/**
 	 * Document Trail Audit.
 	 * @var string
 	 */
@@ -336,82 +341,88 @@ class DocumentClass extends ConfigClass {
 		}
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-					SELECT	`document`.`documentId`,
-							`document`.`documentTitle`,
-							`document`.`documentDesc`,
-							`document`.`documentSequence`,
-							`document`.`documentCode`,
-							`document`.`documentNote`,
-							`document`.`isDefault`,
-							`document`.`isNew`,
-							`document`.`isDraft`,
-							`document`.`isUpdate`,
-							`document`.`isDelete`,
-							`document`.`isActive`,
-							`document`.`isApproved`,
-							`document`.`executeBy`,
-							`document`.`executeTime`,
-							`staff`.`staffName`
- 					FROM 	`document`
-					JOIN	`staff`
-					ON		`document`.`executeBy` = `staff`.`staffId`
-					JOIN	`documentCategory`
-					USING	(`documentCategoryId`)
-					WHERE 	" . $this->auditFilter;
+			SELECT	`document`.`documentId`,
+						`document`.`documentTitle`,
+						`document`.`documentDesc`,
+						`document`.`documentSequence`,
+						`document`.`documentCode`,
+						`document`.`documentNote`,
+						`document`.`isDefault`,
+						`document`.`isNew`,
+						`document`.`isDraft`,
+						`document`.`isUpdate`,
+						`document`.`isDelete`,
+						`document`.`isActive`,
+						`document`.`isApproved`,
+						`document`.`isReview`,
+						`document`.`isPost`,
+						`document`.`executeBy`,
+						`document`.`executeTime`,
+						`staff`.`staffName`
+			FROM 	`document`
+			JOIN		`staff`
+			ON		`document`.`executeBy` = `staff`.`staffId`
+			JOIN		`documentCategory`
+			USING	(`documentCategoryId`)
+			WHERE 	" . $this->auditFilter;
 			if ($this->model->getDocumentId ( 0, 'single' )) {
 				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getDocumentId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-					SELECT	[document].[documentId],
-							[document].[documentTitle],
-							[document].[documentDesc],
-							[document].[documentSequence],
-							[document].[documentCode],
-							[document].[documentNote],
-							[document].[isDefault],
-							[document].[isNew],
-							[document].[isDraft],
-							[document].[isUpdate],
-							[document].[isDelete],
-							[document].[isActive],
-							[document].[isApproved],
-							[document].[executeBy],
-							[document].[executeTime],
-							[staff].[staffName]
-					FROM 	[document]
-					JOIN	[staff]
-					ON		[document].[executeBy] = [staff].[staffId]
-					JOIN	[documentCategory]
-					ON		[document].[documentCategoryId]=[documentCategory].[documentCategoryId]
-					WHERE 	[document].[isActive] ='1'	";
+			SELECT	[document].[documentId],
+						[document].[documentTitle],
+						[document].[documentDesc],
+						[document].[documentSequence],
+						[document].[documentCode],
+						[document].[documentNote],
+						[document].[isDefault],
+						[document].[isNew],
+						[document].[isDraft],
+						[document].[isUpdate],
+						[document].[isDelete],
+						[document].[isActive],
+						[document].[isApproved],
+						[document].[isReview],
+						[document].[isPost],
+						[document].[executeBy],
+						[document].[executeTime],
+						[staff].[staffName]
+			FROM 	[document]
+			JOIN		[staff]
+			ON		[document].[executeBy] = [staff].[staffId]
+			JOIN		[documentCategory]
+			ON		[document].[documentCategoryId]=[documentCategory].[documentCategoryId]
+			WHERE 		" . $this->auditFilter;
 			if ($this->model->getDocumentId ( 0, 'single' )) {
 				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getDocumentId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					SELECT	DOCUMENT.DOCUMENTID 		AS 	DOCUMENTID,
-							DOCUMENT.DOCUMENTTITLE		AS	\"documentTitle\",
-							DOCUMENT.DOCUMENTDESC   	AS  \"documentDesc\",
-							DOCUMENT.DOCUMENTCODE   	AS  \"documentCode\",
-							DOCUMENT.DOCUMENTSEQUENCE	AS  \"documentSequence\",
-							DOCUMENT.DOCUMENTNOTE 		AS 	\"documentNote\",
-							DOCUMENT.ISDEFAULT	 		AS	\"isDefault\",
-							DOCUMENT.ISNEW 				AS 	\"isNew\",
-							DOCUMENT.ISDRAFT  			AS 	\"isDraft\",
-							DOCUMENT.ISUPDATE 			AS 	\"isUpdate\",
-							DOCUMENT.ISDELETE 			AS 	\"isDelete\",
-							DOCUMENT.ISACTIVE 			AS 	\"isActive\",
-							DOCUMENT.ISAPPROVED	 		AS	\"isApproved\",
-							DOCUMENT.EXECUTEBY 			AS 	\"executeBy\",
-							DOCUMENT.EXECUTETIME 		AS 	\"executeTime\",
-							STAFF.STAFFNAME 			AS 	\"staffName\"
-					FROM 	DOCUMENT
-					JOIN	STAFF
-					ON		DOCUMENT.EXECUTEBY = STAFF.STAFFID
-					JOIN	DOCUMENTCATEGORY
-					ON		DOCUMENTCATEGORY.DOCUMENTCATEGORYID = DOCUMENT.DOCUMENTCATEGORYID
-					WHERE 		";
+			SELECT	DOCUMENT.DOCUMENTID 				AS 	\"documentId\",
+						DOCUMENT.DOCUMENTTITLE			AS	\"documentTitle\",
+						DOCUMENT.DOCUMENTDESC   		AS  	\"documentDesc\",
+						DOCUMENT.DOCUMENTCODE   		AS  	\"documentCode\",
+						DOCUMENT.DOCUMENTSEQUENCE	AS  	\"documentSequence\",
+						DOCUMENT.DOCUMENTNOTE 			AS 	\"documentNote\",
+						DOCUMENT.ISDEFAULT	 				AS	\"isDefault\",
+						DOCUMENT.ISNEW 						AS 	\"isNew\",
+						DOCUMENT.ISDRAFT  					AS 	\"isDraft\",
+						DOCUMENT.ISUPDATE 					AS 	\"isUpdate\",
+						DOCUMENT.ISDELETE 					AS 	\"isDelete\",
+						DOCUMENT.ISACTIVE 					AS 	\"isActive\",
+						DOCUMENT.ISAPPROVED	 			AS	\"isApproved\",
+						DOCUMENT.ISREVIEW 					AS 	\"isReview\",
+						DOCUMENT.ISPOST			 			AS	\"isPost\",
+						DOCUMENT.EXECUTEBY 				AS 	\"executeBy\",
+						DOCUMENT.EXECUTETIME 				AS 	\"executeTime\",
+						STAFF.STAFFNAME 						AS 	\"staffName\"
+			FROM 	DOCUMENT
+			JOIN		STAFF
+			ON		DOCUMENT.EXECUTEBY = STAFF.STAFFID
+			JOIN		DOCUMENTCATEGORY
+			ON		DOCUMENTCATEGORY.DOCUMENTCATEGORYID = DOCUMENT.DOCUMENTCATEGORYID
+			WHERE 	 	" . $this->auditFilter;
 			if ($this->model->getDocumentId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "s='" . $this->model->getDocumentId ( 0, 'single' ) . "'";
 			}
@@ -503,20 +514,22 @@ class DocumentClass extends ConfigClass {
 								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
 							)
 							SELECT		[document].[documentId],
-										[document].[documentTitle],
-										[document].[documentDesc],	
-										[document].[documentSequence],
-										[document].[documentCode],
-										[document].[documentNote],
-										[document].[isDefault],
-										[document].[isNew],
-										[document].[isDraft],
-										[document].[isUpdate],
-										[document].[isDelete],
-										[document].[isApproved],
-										[document].[executeBy],
-										[document].[executeTime],
-										[staff].[staffName]
+											[document].[documentTitle],
+											[document].[documentDesc],	
+											[document].[documentSequence],
+											[document].[documentCode],
+											[document].[documentNote],
+											[document].[isDefault],
+											[document].[isNew],
+											[document].[isDraft],
+											[document].[isUpdate],
+											[document].[isDelete],
+											[document].[isApproved],
+											[document].[isReview],
+											[document].[isPost],
+											[document].[executeBy],
+											[document].[executeTime],
+											[staff].[staffName]
 							FROM 		[documentDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
@@ -530,28 +543,32 @@ class DocumentClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT	DOCUMENT.DOCUMENTID 		AS 	DOCUMENTID,
-							DOCUMENT.DOCUMENTTITLE		AS	\"documentTitle\",
-							DOCUMENT.DOCUMENTDESC   	AS  \"documentDesc\",
-							DOCUMENT.DOCUMENTCODE   	AS  \"documentCode\",
-							DOCUMENT.DOCUMENTSEQUENCE	AS  \"documentSequence\",
-							DOCUMENT.DOCUMENTNOTE 		AS 	\"documentNote\",
-							DOCUMENT.ISDEFAULT	 		AS	\"isDefault\",
-							DOCUMENT.ISNEW 				AS 	\"isNew\",
-							DOCUMENT.ISDRAFT  			AS 	\"isDraft\",
-							DOCUMENT.ISUPDATE 			AS 	\"isUpdate\",
-							DOCUMENT.ISDELETE 			AS 	\"isDelete\",
-							DOCUMENT.ISACTIVE 			AS 	\"isActive\",
-							DOCUMENT.ISAPPROVED	 		AS	\"isApproved\",
-							DOCUMENT.EXECUTEBY 			AS 	\"executeBy\",
-							DOCUMENT.EXECUTETIME 		AS 	\"executeTime\",
-							STAFF.STAFFNAME 			AS 	\"staffName\"
-					FROM 	DOCUMENT
-					JOIN	STAFF
-					ON		DOCUMENT.EXECUTEBY = STAFF.STAFFID
-					JOIN	DOCUMENTCATEGORY
-					ON		DOCUMENTCATEGORY.DOCUMENTCATEGORYID = DOCUMENT.DOCUMENTCATEGORYID
-					WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . "
+									SELECT	DOCUMENT.DOCUMENTID 				AS 	\"DOCUMENTID\",
+												DOCUMENT.DOCUMENTTITLE			AS	\"documentTitle\",
+												DOCUMENT.DOCUMENTDESC   		AS  	\"documentDesc\",
+												DOCUMENT.DOCUMENTCODE   		AS  	\"documentCode\",
+												DOCUMENT.DOCUMENTSEQUENCE	AS  	\"documentSequence\",
+												DOCUMENT.DOCUMENTNOTE 			AS 	\"documentNote\",
+												DOCUMENT.ISDEFAULT	 				AS	\"isDefault\",
+												DOCUMENT.ISNEW 						AS 	\"isNew\",
+												DOCUMENT.ISDRAFT  					AS 	\"isDraft\",
+												DOCUMENT.ISUPDATE 					AS 	\"isUpdate\",
+												DOCUMENT.ISDELETE 					AS 	\"isDelete\",
+												DOCUMENT.ISACTIVE 					AS 	\"isActive\",
+												DOCUMENT.ISAPPROVED	 			AS	\"isApproved\",
+												DOCUMENT.ISACTIVE 					AS 	\"isActive\",
+												DOCUMENT.ISREVIEW	 				AS	\"isReview\",
+												DOCUMENT.ISPOST 						AS 	\"isPost\",
+												DOCUMENT.ISAPPROVED	 			AS	\"isApproved\",
+												DOCUMENT.EXECUTEBY 				AS 	\"executeBy\",
+												DOCUMENT.EXECUTETIME 				AS 	\"executeTime\",
+												STAFF.STAFFNAME 						AS 	\"staffName\"
+									FROM 	DOCUMENT
+									JOIN		STAFF
+									ON		DOCUMENT.EXECUTEBY = STAFF.STAFFID
+									JOIN		DOCUMENTCATEGORY
+									ON		DOCUMENTCATEGORY.DOCUMENTCATEGORYID = DOCUMENT.DOCUMENTCATEGORYID
+									WHERE ISACTIVE=1  " . $tempSql . $tempSql2 . "
 								 ) a
 						WHERE rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						WHERE r >=  '" . $this->getStart () . "'";
@@ -654,6 +671,18 @@ class DocumentClass extends ConfigClass {
 			FROM 	DOCUMENT 
 			WHERE 	DOCUMENTORIGINALFILENAME	=	'" . $this->model->getDocumentOriginalFilename () . "'
 			AND		EXECUTEBY					=   '" . $this->model->getExecuteBy () . "'";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			SELECT 	COUNT(*) 
+			FROM 	DOCUMENT 
+			WHERE 	DOCUMENTORIGINALFILENAME	=	'" . $this->model->getDocumentOriginalFilename () . "'
+			AND		EXECUTEBY					=   '" . $this->model->getExecuteBy () . "'";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT 	COUNT(*) 
+			FROM 	DOCUMENT 
+			WHERE 	DOCUMENTORIGINALFILENAME	=	'" . $this->model->getDocumentOriginalFilename () . "'
+			AND		EXECUTEBY					=   '" . $this->model->getExecuteBy () . "'";
 		}
 		$this->q->read ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -666,9 +695,9 @@ class DocumentClass extends ConfigClass {
 			$sql = "
 		UPDATE 	`document`
 		SET 	`documentCategoryId` 		=	'" . $this->model->getDocumentCategoryId () . "',
-				`leafId`	        		=	'" . $this->model->getLeafId () . "',
+				`leafId`	        				=	'" . $this->model->getLeafId () . "',
 				`documentCode`				=	'" . $this->model->getDocumentCode () . "',
-				`documentSequence`			=	'" . $this->model->getDocumentSequence () . "',
+				`documentSequence`		=	'" . $this->model->getDocumentSequence () . "',
 				`documentNote`				=	'" . $this->model->getDocumentNote () . "',
 				`documentTitle`	        	=	'" . $this->model->getDocumentTitle () . "',
 				`documentDesc`	        	=	'" . $this->model->getDocumentDesc () . "',
@@ -676,61 +705,67 @@ class DocumentClass extends ConfigClass {
 				`documentFilename`	    	=	'" . $this->model->getDocumentFilename () . "',
 				`documentExtension`	    	=	'" . $this->model->getDocumentExtension () . "',
 				`documentVersion`	    	=	'" . $this->model->getDocumentVersion () . "',				
-				`isDefault`					=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-				`isActive`					=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-				`isNew`						=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-				`isDraft`					=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-				`isUpdate`					=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-				`isDelete`					=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-				`isApproved`				=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-				`executeBy`					=	'" . $this->model->getExecuteBy () . "',
-				`executeTime`				=	" . $this->model->getExecuteTime () . "
+				`isDefault`						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+				`isActive`							=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+				`isNew`							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+				`isDraft`							=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+				`isUpdate`						=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+				`isDelete`							=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+				`isApproved`					=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+				`isReview`						=  '" . $this->model->getIsReview ( 0, 'single' ) . "',
+				`isPost`							=  '" . $this->model->getIsPost( 0, 'single' ) . "',
+				`executeBy`						=	'" . $this->model->getExecuteBy () . "',
+				`executeTime`					=	" . $this->model->getExecuteTime () . "
 		WHERE 	`documentId`				=	'" . $this->model->getDocumentId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 		UPDATE 	[document]
 		SET 	[documentCategoryId] 		=	'" . $this->model->getDocumentCategoryId () . "',
-				[leafId]	        		=	'" . $this->model->getLeafId () . "',
+				[leafId]	        					=	'" . $this->model->getLeafId () . "',
 				[documentCode]	        	=	'" . $this->model->getDocumentCode () . "',
 				[documentSequence]	        =	'" . $this->model->getDocumentSequence () . "',
-				[documentNote]	        	=	'" . $this->model->getDocumentNote () . "',
-				[documentTitle]	        	=	'" . $this->model->getDocumentTitle () . "',
+				[documentNote]	        		=	'" . $this->model->getDocumentNote () . "',
+				[documentTitle]	        		=	'" . $this->model->getDocumentTitle () . "',
 				[documentDesc]	        	=	'" . $this->model->getDocumentDesc () . "',
-				[documentPath]	        	=	'" . $this->model->getDocumentPath () . "',
+				[documentPath]	        		=	'" . $this->model->getDocumentPath () . "',
 				[documentFilename]	    	=	'" . $this->model->getDocumentFilename () . "',
 				[documentExtension]	    	=	'" . $this->model->getDocumentExtension () . "',
-				[isDefault]					=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-				[isActive]					=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-				[isNew]						=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-				[isDraft]					=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-				[isUpdate]					=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-				[isDelete]					=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-				[isApproved]				=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-				[executeBy]					=	'" . $this->model->getExecuteBy () . "',
-				[executeTime]				=	" . $this->model->getExecuteTime () . "
+				[isDefault]							=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+				[isActive]							=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+				[isNew]								=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+				[isDraft]							=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+				[isUpdate]							=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+				[isDelete]							=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+				[isApproved]						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+				[isReview]							=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+				[isPost]								=	'" . $this->model->getIsPost( 0, 'single' ) . "',
+				[executeBy]						=	'" . $this->model->getExecuteBy () . "',
+				[executeTime]					=	" . $this->model->getExecuteTime () . "
 		WHERE 	[documentId]				=	'" . $this->model->getDocumentId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 		UPDATE 	DOCUMENT
-		SET 	DOCUMENTCATEGORYID 		=	'" . $this->model->getDocumentCategoryId () . "',
-				LEAFID	        		=	'" . $this->model->getLeafId () . "',
-				DOCUMENTCODE	        =	'" . $this->model->getDocumentCode () . "',
+		SET 	DOCUMENTCATEGORYID 	=	'" . $this->model->getDocumentCategoryId () . "',
+				LEAFID	        					=	'" . $this->model->getLeafId () . "',
+				DOCUMENTCODE	        	=	'" . $this->model->getDocumentCode () . "',
 				DOCUMENTSEQUENCE	    =	'" . $this->model->getDocumentSequence () . "',
-				DOCUMENTNOTE	        =	'" . $this->model->getDocumentNote () . "',
-				DOCUMENTTITLE	        =	'" . $this->model->getDocumentTitle () . "',
-				DOCUMENTDESC	        =	'" . $this->model->getDocumentDesc () . "',
-				DOCUMENTPATH	        =	'" . $this->model->getDocumentPath () . "',
-				DOCUMENTFILENAME		=	'" . $this->model->getDocumentFilename () . "',
-				DOCUMENTEXTENSION	    =	'" . $this->model->getDocumentExtension () . "',
-				ISDEFAULT				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-				ISACTIVE				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-				ISNEW					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-				ISDRAFT					=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-				ISUPDATE				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-				ISDELETE				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-				ISAPPROVED				=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-				EXECUTEBY				=	'" . $this->model->getExecuteBy () . "',
-				EXECUTETIME				=	" . $this->model->getExecuteTime () . "
+				DOCUMENTNOTE	        	=	'" . $this->model->getDocumentNote () . "',
+				DOCUMENTTITLE	        	=	'" . $this->model->getDocumentTitle () . "',
+				DOCUMENTDESC	        	=	'" . $this->model->getDocumentDesc () . "',
+				DOCUMENTPATH	        	=	'" . $this->model->getDocumentPath () . "',
+				DOCUMENTFILENAME			=	'" . $this->model->getDocumentFilename () . "',
+				DOCUMENTEXTENSION		=	'" . $this->model->getDocumentExtension () . "',
+				ISDEFAULT						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+				ISACTIVE							=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+				ISNEW								=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+				ISDRAFT							=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+				ISUPDATE							=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+				ISDELETE							=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+				ISAPPROVED						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+				ISREVIEW							=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+				ISPOST								=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+				EXECUTEBY						=	'" . $this->model->getExecuteBy () . "',
+				EXECUTETIME					=	" . $this->model->getExecuteTime () . "
 		WHERE 	DOCUMENTID				=	'" . $this->model->getDocumentId ( 0, 'single' ) . "'";
 		}
 		$this->q->create ( $sql );
@@ -749,43 +784,49 @@ class DocumentClass extends ConfigClass {
 		$this->model->delete ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-				UPDATE 	`document`
-				SET 	`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						`isDraft`		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						`isUpdate`		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						`isDelete`		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						`executeBy`		=	'" . $this->model->getBy ( 0, 'single' ) . "',
-						`Time			=	" . $this->model->getExecuteTime () . "
-				WHERE 	`documentId`	=	'" . $this->model->getDepartrmentId ( 0, 'single' ) . "'";
+			UPDATE	`document`
+			SET 			`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							`isActive`				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							`isDraft`				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isDelete`				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`isReview`			=  '" . $this->model->getIsReview ( 0, 'single' ) . "',
+							`isPost`				=  '" . $this->model->getIsPost( 0, 'single' ) . "',
+							`executeBy`			=	'" . $this->model->getBy ( 0, 'single' ) . "',
+							`Time					=	" . $this->model->getExecuteTime () . "
+				WHERE 	`documentId`		=	'" . $this->model->getDepartrmentId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 				UPDATE 	[document]
-				SET 	[isDefault]		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						[isDraft]		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						[isUpdate]		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						[isDelete]		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						[executeBy]		=	'" . $this->model->getExecuteBy () . "',
-						[executeTime]	=	" . $this->model->getExecuteTime () . "
-				WHERE 	[documentId]	=	'" . $this->model->getDocumentId ( 0, 'single' ) . "'";
+				SET 			[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+								[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+								[isNew]				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+								[isDraft]			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+								[isUpdate]			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+								[isDelete]			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+								[isApproved]		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+								[isReview]			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+								[isPost]				=	'" . $this->model->getIsPost( 0, 'single' ) . "',
+								[executeBy]		=	'" . $this->model->getExecuteBy () . "',
+								[executeTime]	=	" . $this->model->getExecuteTime () . "
+				WHERE 		[documentId]	=	'" . $this->model->getDocumentId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-				UPDATE 	DOCUMENT
-				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
-						EXECUTETIME		=	" . $this->model->getExecuteTime () . "
-				WHERE 	DOCUMENTID		=	'" . $this->model->getDocumentId ( 0, 'single' ) . "'";
+			UPDATE	DOCUMENT
+			SET 			ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							ISACTIVE				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							ISNEW					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							ISUPDATE				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							ISDELETE				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							ISREVIEW				=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							ISPOST					=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
+							EXECUTETIME		=	" . $this->model->getExecuteTime () . "
+			WHERE 		DOCUMENTID		=	'" . $this->model->getDocumentId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -793,7 +834,7 @@ class DocumentClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Record Remove" ) );
+		echo json_encode ( array ("success" => true, "message" => "Record Remove" ) );
 		exit ();
 	}
 	/**
@@ -816,11 +857,20 @@ class DocumentClass extends ConfigClass {
 			$sql = "
 			UPDATE 	[" . $this->model->getTableName () . "]
 			SET 	";
-		} else if ($this->getVendor () == self::ORACLE) {
+		}else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
+			SET    ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
+			SET    ";
+		}else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
 		}
+		
 		//	echo "arnab[".$this->model->getDocumentId(0,'array')."]";
 		/**
 		 * System Validation Checking
@@ -833,6 +883,10 @@ class DocumentClass extends ConfigClass {
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
 			} else if ($this->getVendor () == self::ORACLE) {
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
+			}else if ($this->getVendor () == self::DB2) {
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
+			}else if ($this->getVendor () == self::POSTGESS) {
 				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
 			}
 			switch ($systemCheck) {
@@ -943,6 +997,12 @@ class DocumentClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
 			WHERE 	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
+		}else if ($this->getVendor () == self::DB2) {
+			$sql .= "
+			WHERE 	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
+		}else if ($this->getVendor () == self::POSTGRESS) {
+			$sql .= "
+			WHERE 	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
 		}
 		
 		$this->q->update ( $sql );
@@ -951,7 +1011,7 @@ class DocumentClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -1011,10 +1071,10 @@ class DocumentClass extends ConfigClass {
 		$objWriter->save ( "/kospek/document/document/excel/" . $filename );
 		$file = fopen ( "/kospek/document/document/excel/" . $filename, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => 'TRUE', "message" => "File generated" ) );
+			echo json_encode ( array ("success" => true, "message" => "File generated" ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => 'FALSE', "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
 			exit ();
 		}
 	}
@@ -1025,31 +1085,32 @@ class DocumentClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
+		
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-		SELECT	*
-		FROM   `documentCategory`
-		WHERE  `isActive`	=1 ";
+			SELECT	*
+			FROM   `documentCategory`
+			WHERE  `isActive`	=1 ";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-		SELECT	*
-		FROM   [documentCategory]
-		WHERE  [isActive]	=1 ";
+			SELECT	*
+			FROM   [documentCategory]
+			WHERE  [isActive]	=1 ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-		SELECT	*
-		FROM   `documentCategory`
-		WHERE  `isActive`	=1 ";
+			SELECT	*
+			FROM   	DOCUMENTCATEGORY
+			WHERE 	ISACTIVE	=1 ";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
-		SELECT	*
-		FROM   `documentCategory`
-		WHERE  `isActive`	=1 ";
+			SELECT	*
+			FROM   	DOCUMENTCATEGORY
+			WHERE 	ISACTIVE	=1 ";
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
-		SELECT	*
-		FROM   `documentCategory`
-		WHERE  `isActive`	=1 ";
+			SELECT	*
+			FROM   	DOCUMENTCATEGORY
+			WHERE 	ISACTIVE	=1 ";
 		}
 		$this->q->read ( $sql );
 		if ($this->q->execute == 'fail') {

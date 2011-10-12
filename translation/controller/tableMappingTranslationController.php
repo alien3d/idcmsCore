@@ -29,6 +29,11 @@ class TableMappingTranslateClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
+	 *  Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
+	/**
 	 * Document Trail Audit.
 	 * @var string $documentTrail;
 	 */
@@ -90,7 +95,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->audit 			= 	$this->log;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 		
-		$this->security 			=	new Security ();
+		$this->security 				=	new Security ();
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
@@ -99,16 +104,16 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
-		$this->recordSet =  new RecordSet();
+		$this->recordSet 			=  new RecordSet();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
 		$this->recordSet->execute();
 		
-		$this->documentTrail 		= 	new DocumentTrailClass ();
+		$this->documentTrail 	= 	new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->execute ();
 	
-		$this->excel 				= 	new PHPExcel ();
+		$this->excel 					=	new PHPExcel ();
 	}
 	
 	/* (non-PHPdoc)
@@ -128,20 +133,20 @@ class TableMappingTranslateClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `tableMappingTranslate`
 					(
-						`defautlLabel`,							`tableMappingTranslationTranslationEnglish`
-						`isDefault`,							`isNew`,
-						`isDraft`,								`isUpdate`,
-						`isDelete`,								`isActive`,
-						`isApproved`,							`executeBy`,
+						`defautlLabel`,														`tableMappingTranslationTranslationEnglish`
+						`isDefault`,															`isNew`,
+						`isDraft`,																`isUpdate`,
+						`isDelete`,															`isActive`,
+						`isApproved`,														`executeBy`,
 						`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getDefaultLabelText() . "',					'" . $this->model->getTableMappingTranslationTranslationEnglish () . "'
+						'" . $this->model->getDefaultLabelText() . "',				'" . $this->model->getTableMappingTranslationTranslationEnglish () . "'
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getIsReview ( 0, 'single' ) . "',
 						'" . $this->model->getIsPost ( 0, 'single' ) . "',				'" . $this->model->getExecuteBy () . "',
 						" . $this->model->getExecuteTime () . "
 					);";

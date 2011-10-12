@@ -27,6 +27,11 @@ class ReligionDetailClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
+	 *  Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
+	/**
 	 * Document Trail Audit.
 	 * @var string
 	 */
@@ -273,25 +278,25 @@ class ReligionDetailClass extends ConfigClass {
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-			SELECT	RELIGIONDETAIL.RELIGIONDETAILID   		  	AS 	\"religionDetailId\",
-						RELIGIONDETAIL.RELIGIONDETAILTITLE 		AS 	\"religionDetailTitle\",
-							RELIGIONDETAIL.RELIGIONDETAILDESC 	AS 	\"religionDetailDesc\",
-							RELIGIONDETAIL.ISDEFAULT    		AS	\"isDefault\",
-							RELIGIONDETAIL.ISNEW		  		AS	\"isNew\",
-							RELIGIONDETAIL.ISDRAFT	  			AS	\"isDraft\",
-							RELIGIONDETAIL.ISUPDATE     		AS	\"isUpdate\",
-							RELIGIONDETAIL.ISDELETE	  			AS	\"isDelete\",
-							RELIGIONDETAIL.ISACTIVE	  			AS	\"isActive\",
-							RELIGIONDETAIL.ISAPPROVED   		AS	\"isApproved\",
-							RELIGIONDETAIL.ISREVIEW	  			AS	\"isReview\",
-							RELIGIONDETAIL.ISPOST   			AS	\"isPost\",
-							RELIGIONDETAIL.EXECUTEBY    		AS	\"executeBy\",
-							RELIGIONDETAIL.EXECUTETIME  		AS	\"executeTime\",
-							STAFF.STAFFNAME		  				AS	\"staffName\"	
-					FROM 	RELIGIONDETAIL
-					JOIN	STAFF
-					ON		RELIGIONDETAIL.EXECUTEBY 	  	=	STAFF.STAFFID
-					WHERE 	" . $this->auditFilter;
+			SELECT	RELIGIONDETAIL.RELIGIONDETAILID   		AS 	\"religionDetailId\",
+						RELIGIONDETAIL.RELIGIONDETAILTITLE 	AS 	\"religionDetailTitle\",
+						RELIGIONDETAIL.RELIGIONDETAILDESC 	AS 	\"religionDetailDesc\",
+						RELIGIONDETAIL.ISDEFAULT    					AS	\"isDefault\",
+						RELIGIONDETAIL.ISNEW		  					AS	\"isNew\",
+						RELIGIONDETAIL.ISDRAFT	  						AS	\"isDraft\",
+						RELIGIONDETAIL.ISUPDATE     					AS	\"isUpdate\",
+						RELIGIONDETAIL.ISDELETE	  					AS	\"isDelete\",
+						RELIGIONDETAIL.ISACTIVE	  					AS	\"isActive\",
+						RELIGIONDETAIL.ISAPPROVED   				AS	\"isApproved\",
+						RELIGIONDETAIL.ISREVIEW	  					AS	\"isReview\",
+						RELIGIONDETAIL.ISPOST   						AS	\"isPost\",
+						RELIGIONDETAIL.EXECUTEBY    					AS	\"executeBy\",
+						RELIGIONDETAIL.EXECUTETIME  				AS	\"executeTime\",
+						STAFF.STAFFNAME		  								AS	\"staffName\"	
+			FROM 	RELIGIONDETAIL
+			JOIN		STAFF
+			ON		RELIGIONDETAIL.EXECUTEBY 	  	=	STAFF.STAFFID
+			WHERE 	" . $this->auditFilter;
 			if ($this->model->getReligionDetailId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
 			}
@@ -315,12 +320,6 @@ class ReligionDetailClass extends ConfigClass {
 		 */
 		$tableArray = null;
 		$tableArray = array ('religionDetail' );
-		/**
-		 * filter table
-		 * @variables $tableArray
-		 */
-		$tableArray = null;
-		$tableArray = array ('religion' );
 		if ($this->getFieldQuery ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );

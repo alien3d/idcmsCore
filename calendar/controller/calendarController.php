@@ -26,6 +26,11 @@ class CalendarClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
+	 *  Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
+	/**
 	 * Document Trail Audit.
 	 * @var string
 	 */
@@ -114,24 +119,23 @@ class CalendarClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 		SELECT	*
-		FROM 	`calendarColor`
-		JOIN    `calendar`
-		USING   (`calendarColorId`)
+		FROM 		`calendarColor`
+		JOIN    		`calendar`
+		USING   	(`calendarColorId`)
 		
 		WHERE 	`staffId` = '" . $this->model->getExecuteBy () . "' ";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 		SELECT	*
-		FROM 	[calendarColor]
-		JOIN    [calendar]
-		USING   [calendar].[calendarColorId] = [calendarColor].[colorColorId]
-		WHERE 	`staffId` = '" . $this->model->getExecuteBy () . "' ";
+		FROM 		[calendarColor]
+		JOIN    		[calendar]
+		USING   	[calendar].[calendarColorId] = [calendarColor].[colorColorId]
+		WHERE 		[staffId] = '" . $this->model->getExecuteBy () . "' ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 		SELECT	*
 		FROM 	CALENDARCOLOR
-		JOIN    CALENDAR
-		
+		JOIN   	CALENDAR
 		WHERE 	STAFFID = '" . $this->model->getExecuteBy () . "'";
 		}
 		/**
@@ -139,20 +143,13 @@ class CalendarClass extends ConfigClass {
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
 		 * @variables $filterArray;
 		 */
-		$filterArray = null;
-		$filterArray = array ('religionDetailId' );
+
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array ('religionDetail' );
-		/**
-		 * filter table
-		 * @variables $tableArray
-		 */
-		$tableArray = null;
-		$tableArray = array ('religion' );
+		$tableArray = array ('calendar' );
 		if ($this->getFieldQuery ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );
@@ -203,6 +200,10 @@ class CalendarClass extends ConfigClass {
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sql .= "	ORDER BY [" . $this->getSortField () . "] " . $this->getOrder () . " ";
 			} else if ($this->getVendor () == self::ORACLE) {
+				$sql .= "	ORDER BY " . strtoupper ( $this->getSortField () ) . " " . strtoupper ( $this->getOrder () ) . " ";
+			}else if ($this->getVendor () == self::DB2) {
+				$sql .= "	ORDER BY " . strtoupper ( $this->getSortField () ) . " " . strtoupper ( $this->getOrder () ) . " ";
+			}else if ($this->getVendor () == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper ( $this->getSortField () ) . " " . strtoupper ( $this->getOrder () ) . " ";
 			}
 		}
@@ -324,18 +325,18 @@ class CalendarClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 					UPDATE 	`calendar`
-					SET 	`calendarTitle`	=	'" . $this->strict ( $_POST ['cal_title'], 's' ) . "'
-					WHERE 	`calendarId`		=	'" . $this->strict ( $_POST ['cal_own_uniqueId'], 'n' ) . "'";
+					SET 			`calendarTitle`		=	'" . $this->strict ( $_POST ['cal_title'], 's' ) . "'
+					WHERE 		`calendarId`			=	'" . $this->strict ( $_POST ['cal_own_uniqueId'], 'n' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 					UPDATE 	[calendar]
-					SET 	[calendarTitle]	=	'" . $this->strict ( $_POST ['cal_title'], 's' ) . "'
-					WHERE 	[calendarId]		=	'" . $this->strict ( $_POST ['calendarId'], 'n' ) . "'";
+					SET 			[calendarTitle]		=	'" . $this->strict ( $_POST ['cal_title'], 's' ) . "'
+					WHERE 		[calendarId]			=	'" . $this->strict ( $_POST ['calendarId'], 'n' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 					UPDATE 	CALENDAR
-					SET 	CALENDARTITLE	=	'" . $this->strict ( $_POST ['cal_title'], 's' ) . "'
-					WHERE 	CALENDARID	=	'" . $this->strict ( $_POST ['calendarId'], 'n' ) . "'";
+					SET 			CALENDARTITLE	=	'" . $this->strict ( $_POST ['cal_title'], 's' ) . "'
+					WHERE 		CALENDARID			=	'" . $this->strict ( $_POST ['calendarId'], 'n' ) . "'";
 		}
 		$this->q->update ( $sql );
 		$this->q->commit ();
@@ -343,7 +344,7 @@ class CalendarClass extends ConfigClass {
 			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => TRUE, "message" => "update success" ) );
+			echo json_encode ( array ("success" => true, "message" => "update success" ) );
 			exit ();
 		}
 	}

@@ -27,6 +27,11 @@ class DepartmentClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
+	 *  Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
+	/**
 	 * Document Trail Audit.
 	 * @var string
 	 */
@@ -119,61 +124,67 @@ class DepartmentClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `department`
 					(
-						`departmentSequence`,				`departmentCode`,
-						`departmentNote`,					`isDefault`,
-						`isNew`,							`isDraft`,
-						`isUpdate`,							`isDelete`,
-						`isActive`,							`isApproved`,
-						`executeBy`,						`executeTime`
+						`departmentSequence`,													`departmentCode`,
+						`departmentNote`,														`isDefault`,
+						`isNew`,																		`isDraft`,
+						`isUpdate`,																	`isDelete`,
+						`isActive`,																	`isApproved`,
+						`isReview`,																	`isPost`,
+						`executeBy`,																`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getDepartmentSequence () . "',				'" . $this->model->getDepartmentCode () . "',
+						'" . $this->model->getDepartmentSequence () . "',			'" . $this->model->getDepartmentCode () . "',
 						'" . $this->model->getDepartmentNote () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',					'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',				'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',				'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getExecuteBy () . "',						" . $this->model->getExecuteTime () . "
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',				'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',							" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			INSERT INTO [department]
 					(
-						[departmentSequence],				[departmentCode],
-						[departmentNote],					[isDefault],
-						[isNew],							[isDraft],
-						[isUpdate],							[isDelete],
-						[isActive],							[isApproved],
-						[executeBy],						[executeTime]
+						[departmentSequence],													[departmentCode],
+						[departmentNote],															[isDefault],
+						[isNew],																		[isDraft],
+						[isUpdate],																	[isDelete],
+						[isActive],																		[isApproved],
+						[isReview],																	[isPost],
+						[executeBy],																	[executeTime]
 					)
 			VALUES
 					(
-						'" . $this->model->getDepartmentSequence () . "',		'" . $this->model->getDepartmentSequence () . "',
-						'" . $this->model->getDepartmentNote () . "',			'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						'" . $this->model->getIsNew ( 0, 'single' ) . "',		'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getExecuteBy () . "',				" . $this->model->getExecuteTime () . "
+						'" . $this->model->getDepartmentSequence () . "',			'" . $this->model->getDepartmentSequence () . "',
+						'" . $this->model->getDepartmentNote () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',					'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',				'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						'" . $this->model->getIsActive ( 0, 'single' ) . "',				'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',				'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',							" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			INSERT INTO DEPARTMENT
 					(
-						DEPARTMENTSEQUENCE,				DEPARTMENTCODE,
-						DEPARTMENTNOTE,					ISDEFAULT,
-						ISNEW,							ISDRAFT,
-						ISUPDATE,						ISDELETE,
-						ISACTIVE,						ISAPPROVED,
-						EXECUTEBY,						EXECUTETIME
+						DEPARTMENTSEQUENCE,												DEPARTMENTCODE,
+						DEPARTMENTNOTE,														ISDEFAULT,
+						ISNEW,																			ISDRAFT,
+						ISUPDATE,																	ISDELETE,
+						ISACTIVE,																		ISAPPROVED,
+						ISREVIEW,																	ISPOST,
+						EXECUTEBY,																	EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getDepartmentSequence () . "',		'" . $this->model->getDepartmentSequence () . "',
-						'" . $this->model->getDepartmentNote () . "',			'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						'" . $this->model->getIsNew ( 0, 'single' ) . "',		'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getExecuteBy () . "',				" . $this->model->getExecuteTime () . "
+						'" . $this->model->getDepartmentSequence () . "',			'" . $this->model->getDepartmentSequence () . "',
+						'" . $this->model->getDepartmentNote () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',					'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',				'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						'" . $this->model->getIsActive ( 0, 'single' ) . "',				'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',				'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',							" . $this->model->getExecuteTime () . "
 					);";
 		}
 		$this->q->create ( $sql );
@@ -182,7 +193,7 @@ class DepartmentClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "TRUE", "message" => "Record Created" ) );
+		echo json_encode ( array ("success" => true, "message" => "Record Created" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -226,6 +237,8 @@ class DepartmentClass extends ConfigClass {
 							`department`.`isDelete`,
 							`department`.`isActive`,
 							`department`.`isApproved`,
+							`department`.`isReview`,
+							`department`.`isPost`,
 							`department`.`executeBy`,
 							`department`.`executeTime`,
 							`staff`.`staffName`
@@ -249,6 +262,8 @@ class DepartmentClass extends ConfigClass {
 							[department].[isDelete],
 							[department].[isActive],
 							[department].[isApproved],
+							[department].[isReview],
+							[department].[isPost],
 							[department].[executeBy],
 							[department].[executeTime],
 							[staff].[staffName]
@@ -261,20 +276,22 @@ class DepartmentClass extends ConfigClass {
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					SELECT	DEPARTMENT.DEPARTMENT	 		AS 	\"departmentId\",
-							DEPARTMENT.DEPARTMENTCODE 		AS 	\"departmentCode\",
+					SELECT	DEPARTMENT.DEPARTMENT	 			AS 	\"departmentId\",
+							DEPARTMENT.DEPARTMENTCODE 			AS 	\"departmentCode\",
 							DEPARTMENT.DEPARTMENTSEQUENCE 	AS 	\"departmentSequence\",
-							DEPARTMENT.DEPARTMENTNOTE 		AS	\"departmentNote\",
-							DEPARTMENT.ISDEFAULT 			AS 	\"isDefault\",
-							DEPARTMENT.ISNEW 				AS 	\"isNew\",
-							DEPARTMENT.ISDRAFT 				AS 	\"isDraft\",
-							DEPARTMENT.ISUPDATE 			AS	\"isUpdate\",
-							DEPARTMENT.ISDELETE 			AS 	\"isDelete\",
-							DEPARTMENT.ISACTIVE 			AS 	\"isActive\",
-							DEPARTMENT.ISAPPROVED 			AS 	\"isApproved\",
-							DEPARTMENT.EXECUTEBY 			AS 	\"executeBy\",
-							DEPARTMENT.EXECUTETIME 			AS 	\"executeTime\",
-							STAFF.STAFFNAME 				AS 	\"staffName\"
+							DEPARTMENT.DEPARTMENTNOTE 			AS	\"departmentNote\",
+							DEPARTMENT.ISDEFAULT 						AS 	\"isDefault\",
+							DEPARTMENT.ISNEW 								AS 	\"isNew\",
+							DEPARTMENT.ISDRAFT 							AS 	\"isDraft\",
+							DEPARTMENT.ISUPDATE 						AS	\"isUpdate\",
+							DEPARTMENT.ISDELETE 							AS 	\"isDelete\",
+							DEPARTMENT.ISACTIVE 						AS 	\"isActive\",
+							DEPARTMENT.ISAPPROVED 					AS 	\"isApproved\",
+							DEPARTMENT.ISREVIEW							AS 	\"isReview\",
+							DEPARTMENT.ISPOST 							AS 	\"isPost\",
+							DEPARTMENT.EXECUTEBY 						AS 	\"executeBy\",
+							DEPARTMENT.EXECUTETIME 					AS 	\"executeTime\",
+							STAFF.STAFFNAME 								AS 	\"staffName\"
 					FROM 	DEPARTMENT
 					JOIN	STAFF
 					ON		DEPARTMENT.EXECUTEBY = STAFF.STAFFID
@@ -351,7 +368,7 @@ class DepartmentClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		if (! ($this->getGridQuery ())) {
+	
 			if ($this->getLimit ()) {
 				// only mysql have limit
 				if ($this->getVendor () == self::MYSQL) {
@@ -362,30 +379,32 @@ class DepartmentClass extends ConfigClass {
 					 * Parameterize Query We don't support
 					 */
 					$sql = "
-							WITH [departmentDerived] AS
-							(
-								SELECT *,
-								ROW_NUMBER() OVER (ORDER BY [departmentId]) AS 'RowNumber'
-								FROM [department]
-								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
-							)
-							SELECT		[department].[departmentId],
-										[department].[departmentSequence],
-										[department].[departmentCode],
-										[department].[departmentNote],
-										[department].[isDefault],
-										[department].[isNew],
-										[department].[isDraft],
-										[department].[isUpdate],
-										[department].[isDelete],
-										[department].[isApproved],
-										[department].[executeBy],
-										[department].[executeTime],
-										[staff].[staffName]
-							FROM 		[departmentDerived]
-							WHERE 		[RowNumber]
-							BETWEEN	" . $this->getStart () . "
-							AND 			" . ($this->getStart () + $this->getLimit () - 1) . ";";
+					WITH [departmentDerived] AS
+					(
+						SELECT *,
+						ROW_NUMBER() OVER (ORDER BY [departmentId]) AS 'RowNumber'
+						FROM [department]
+						WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
+					)
+					SELECT		[department].[departmentId],
+									[department].[departmentSequence],
+									[department].[departmentCode],
+									[department].[departmentNote],
+									[department].[isDefault],
+									[department].[isNew],
+									[department].[isDraft],
+									[department].[isUpdate],
+									[department].[isDelete],
+									[department].[isApproved],
+									[department].[isReview],
+									[department].[isPost],
+									[department].[executeBy],
+									[department].[executeTime],
+									[staff].[staffName]
+					FROM 		[departmentDerived]
+					WHERE 		[RowNumber]
+					BETWEEN	" . $this->getStart () . "
+					AND 			" . ($this->getStart () + $this->getLimit () - 1) . ";";
 				} else if ($this->getVendor () == self::ORACLE) {
 					/**
 					 * Oracle using derived table also
@@ -395,24 +414,26 @@ class DepartmentClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	DEPARTMENT.DEPARTMENT	 		AS 	DEPARTMENTID,
-										DEPARTMENT.DEPARTMENTCODE 		AS 	\"departmentCode\",
-										DEPARTMENT.DEPARTMENTSEQUENCE 	AS 	\"departmentSequence\",
-										DEPARTMENT.DEPARTMENTNOTE 		AS	\"departmentNote\",
-										DEPARTMENT.ISDEFAULT 			AS 	\"isDefault\",
-										DEPARTMENT.ISNEW 				AS 	\"isNew\",
-										DEPARTMENT.ISDRAFT 				AS 	\"isDraft\",
-										DEPARTMENT.ISUPDATE 			AS	\"isUpdate\",
-										DEPARTMENT.ISDELETE 			AS 	\"isDelete\",
-										DEPARTMENT.ISACTIVE 			AS 	\"isActive\",
-										DEPARTMENT.ISAPPROVED 			AS 	\"isApproved\",
-										DEPARTMENT.EXECUTEBY 			AS 	\"executeBy\",
-										DEPARTMENT.EXECUTETIME 			AS 	\"executeTime\",
-										STAFF.STAFFNAME 				AS 	\"staffName\"
-								FROM 	DEPARTMENT
-								JOIN	STAFF
-								ON		DEPARTMENT.EXECUTEBY = STAFF.STAFFID
-								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
+									SELECT	DEPARTMENT.DEPARTMENT	 				AS 	\"departmentId\",
+												DEPARTMENT.DEPARTMENTCODE 			AS 	\"departmentCode\",
+												DEPARTMENT.DEPARTMENTSEQUENCE 	AS 	\"departmentSequence\",
+												DEPARTMENT.DEPARTMENTNOTE 			AS	\"departmentNote\",
+												DEPARTMENT.ISDEFAULT 						AS 	\"isDefault\",
+												DEPARTMENT.ISNEW 								AS 	\"isNew\",
+												DEPARTMENT.ISDRAFT 							AS 	\"isDraft\",
+												DEPARTMENT.ISUPDATE 						AS	\"isUpdate\",
+												DEPARTMENT.ISDELETE 							AS 	\"isDelete\",
+												DEPARTMENT.ISACTIVE 						AS 	\"isActive\",
+												DEPARTMENT.ISAPPROVED 					AS 	\"isApproved\",
+												DEPARTMENT.ISAPPROVED 					AS 	\"isApproved\",
+												DEPARTMENT.ISREVIEW							AS 	\"isReview\",
+												DEPARTMENT.EXECUTEBY 						AS 	\"executeBy\",
+												DEPARTMENT.EXECUTETIME 					AS 	\"executeTime\",
+												STAFF.STAFFNAME 								AS 	\"staffName\"
+									FROM 	DEPARTMENT
+									JOIN	STAFF
+									ON		DEPARTMENT.EXECUTEBY = STAFF.STAFFID
+									WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
@@ -421,7 +442,7 @@ class DepartmentClass extends ConfigClass {
 					exit ();
 				}
 			}
-		}
+		
 		/*
 		 *  Only Execute One Query
 		 */
@@ -445,7 +466,7 @@ class DepartmentClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
+			echo json_encode ( array ('success' =>true, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
 			exit ();
 		}
 	}
@@ -463,52 +484,58 @@ class DepartmentClass extends ConfigClass {
 		$this->model->update ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-				UPDATE 	`department`
-				SET		`departmentSequence`	=	'" . $this->model->getDepartmentSequence () . "',
-						`departmentCode`		=	'" . $this->model->getDepartmentCode () . "',
-						`departmentNote` 		= 	'" . $this->model->getDepartmentNote () . "',
-						`isDefault`				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						`isActive`				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						`isNew`					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						`isDraft`				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						`isUpdate`				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						`isDelete`				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						`isApproved`			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						`executeBy`				=	'" . $this->model->getExecuteBy () . "',
-						`executeTime`			=	" . $this->model->getExecuteTime () . "
-				WHERE 	`departmentId`			=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
+			UPDATE	`department`
+			SET			`departmentSequence`		=	'" . $this->model->getDepartmentSequence () . "',
+							`departmentCode`			=	'" . $this->model->getDepartmentCode () . "',
+							`departmentNote` 			= 	'" . $this->model->getDepartmentNote () . "',
+							`isDefault`						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							`isActive`							=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isNew`							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							`isDraft`							=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							`isUpdate`						=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isDelete`							=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							`isApproved`					=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`isReview`						=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							`isPost`							=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							`executeBy`						=	'" . $this->model->getExecuteBy () . "',
+							`executeTime`					=	" . $this->model->getExecuteTime () . "
+			WHERE 		`departmentId`					=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-				UPDATE 	[department]
-				SET 	[departmentSequence]	=	'" . $this->model->getDepartmentSequence () . "',
-						[departmentCode]		=	'" . $this->model->getDepartmentCode () . "',
-						[departmentNote] 		= 	'" . $this->model->getDepartmentNote () . "',
-						[isDefault]				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						[isActive]				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						[isNew]					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						[isDraft]				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						[isUpdate]				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						[isDelete]				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						[isApproved]			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						[executeBy]				=	'" . $this->model->getExecuteBy () . "',
-						[executeTime]			=	" . $this->model->getExecuteTime () . "
-				WHERE 	[departmentId]			=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
+			UPDATE	[department]
+			SET 			[departmentSequence]		=	'" . $this->model->getDepartmentSequence () . "',
+							[departmentCode]				=	'" . $this->model->getDepartmentCode () . "',
+							[departmentNote] 				= 	'" . $this->model->getDepartmentNote () . "',
+							[isDefault]							=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							[isActive]							=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							[isNew]								=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							[isDraft]							=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							[isUpdate]							=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							[isDelete]							=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							[isApproved]						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							[isReview]							=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							[isPost]								=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							[executeBy]						=	'" . $this->model->getExecuteBy () . "',
+							[executeTime]					=	" . $this->model->getExecuteTime () . "
+			WHERE 		[departmentId]					=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-				UPDATE 	DEPARTMENT
-				SET 	DEPARTMENTSEQUENCE	=	'" . $this->model->getDepartmentSequence () . "',
-						DEPARTMENTCODE		=	'" . $this->model->getDepartmentCode () . "',
-						DEPARTMENTNOTE 		= 	'" . $this->model->getDepartmentNote () . "',
-						ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						ISUPDATE			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
-						EXECUTETIME			=	" . $this->model->getExecuteTime () . "
-				WHERE 	DEPARTMENTID		=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
+			UPDATE 	DEPARTMENT
+			SET 			DEPARTMENTSEQUENCE	=	'" . $this->model->getDepartmentSequence () . "',
+							DEPARTMENTCODE		=	'" . $this->model->getDepartmentCode () . "',
+							DEPARTMENTNOTE 		= 	'" . $this->model->getDepartmentNote () . "',
+							ISDEFAULT					=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							ISACTIVE						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							ISNEW							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							ISDRAFT						=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							ISUPDATE						=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							ISDELETE						=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							ISAPPROVED					=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							ISREVIEW						=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							ISPOST							= '" . $this->model->getIsPost ( 0, 'single' ) . "',
+							EXECUTEBY					=	'" . $this->model->getExecuteBy () . "',
+							EXECUTETIME				=	" . $this->model->getExecuteTime () . "
+			WHERE 		DEPARTMENTID				=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -533,43 +560,50 @@ class DepartmentClass extends ConfigClass {
 		$this->model->delete ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-				UPDATE 	`department`
-				SET 	`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						`isDraft`		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						`isUpdate`		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						`isDelete`		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						`executeBy`		=	'" . $this->model->getBy ( 0, 'single' ) . "',
-						`Time			=	" . $this->model->getExecuteTime () . "
-				WHERE 	`departmentId`	=	'" . $this->model->getDepartrmentId ( 0, 'single' ) . "'";
+			UPDATE 	`department`
+			SET 			`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							`isActive`				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							`isDraft`				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isDelete`				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`isReview`			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							`isPost`				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							`executeBy`			=	'" . $this->model->getBy ( 0, 'single' ) . "',
+							`executeTime		=	" . $this->model->getExecuteTime () . "
+			WHERE 		`departmentId`		=	'" . $this->model->getDepartrmentId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-				UPDATE 	[department]
-				SET 	[isDefault]		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						[isDraft]		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						[isUpdate]		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						[isDelete]		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						[executeBy]		=	'" . $this->model->getExecuteBy () . "',
-						[executeTime]	=	" . $this->model->getExecuteTime () . "
-				WHERE 	[departmentId]	=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
+			UPDATE 	[department]
+			SET 			[isDefault]				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							[isActive]				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							[isNew]					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							[isDraft]				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							[isUpdate]				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							[isDelete]				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							[isApproved]			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							[isApproved]			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							[isReview]				=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							[isPost]					=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
+							[executeTime]		=	" . $this->model->getExecuteTime () . "
+			WHERE 		[departmentId]		=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-				UPDATE 	DEPARTMENT
-				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
-						EXECUTETIME		=	" . $this->model->getExecuteTime () . "
-				WHERE 	DEPARTMENTID	=	'" . $this->model->getdepartmentId ( 0, 'single' ) . "'";
+			UPDATE 	DEPARTMENT
+			SET 			ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							ISACTIVE				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							ISNEW					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							ISUPDATE				=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							ISDELETE				=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							ISREVIEW				=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							ISPOST					= 	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
+							EXECUTETIME		=	" . $this->model->getExecuteTime () . "
+			WHERE 		DEPARTMENTID		=	'" . $this->model->getdepartmentId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -722,6 +756,12 @@ class DepartmentClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
+		}else if ($this->getVendor () == self::DB2) {
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
+		}else if ($this->getVendor () == self::POSTGRESS) {
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -729,7 +769,7 @@ class DepartmentClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -760,6 +800,18 @@ class DepartmentClass extends ConfigClass {
 			FROM 	DEPARTMENT
 			WHERE 	DEPARTMENTCODE 	= 	'" . $this->model->getDepartmentCode () . "'
 			AND		ISACTIVE		=	1";
+		}else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			SELECT	*
+			FROM 	DEPARTMENT
+			WHERE 	DEPARTMENTCODE 	= 	'" . $this->model->getDepartmentCode () . "'
+			AND		ISACTIVE		=	1";
+		}else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	*
+			FROM 	DEPARTMENT
+			WHERE 	DEPARTMENTCODE 	= 	'" . $this->model->getDepartmentCode () . "'
+			AND		ISACTIVE		=	1";
 		}
 		$this->q->read ( $sql );
 		$total = 0;
@@ -772,7 +824,7 @@ class DepartmentClass extends ConfigClass {
 			if ($this->duplicateTest == 1) {
 				return $total . "|" . $row ['departmentCode'];
 			} else {
-				echo json_encode ( array ("success" => "TRUE", "total" => $total, "message" => "Duplicate Record", "departmentCode" => $row ['departmentCode'] ) );
+				echo json_encode ( array ("success" => true, "total" => $total, "message" => "Duplicate Record", "departmentCode" => $row ['departmentCode'] ) );
 				exit ();
 			}
 		}
@@ -904,7 +956,7 @@ class DepartmentClass extends ConfigClass {
 		$objWriter->save ( $path );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => TRUE, "message" => "File generated", "filename" => $filename ) );
+			echo json_encode ( array ("success" => true, "message" => "File generated", "filename" => $filename ) );
 			exit ();
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
