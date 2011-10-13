@@ -4,17 +4,17 @@ Ext
 			var pageCreate;
 			var pageReload;
 			var pagePrint;
-			if (leafAccessCreateValue == 1) {
+			if (leafTeamAccessCreateValue == 1) {
 				var pageCreate = false;
 			} else {
 				var pageCreate = true;
 			}
-			if (leafAccessReadValue == 1) {
+			if (leafTeamAccessReadValue == 1) {
 				var pageReload = false;
 			} else {
 				var pageReload = true;
 			}
-			if (leafAccessPrintValue == 1) {
+			if (leafTeamAccessPrintValue == 1) {
 				var pagePrint = false;
 			} else {
 				var pagePrint = true;
@@ -25,7 +25,7 @@ Ext
 			var perPage = 10;
 			var encode = false;
 			var local = false;
-			var leafGroupAccessProxy = new Ext.data.HttpProxy({
+			var leafTeamAccessProxy = new Ext.data.HttpProxy({
 				url : "../controller/leaf/leafTeamAccessController.php",
 				method : 'POST',
 				baseParams : {
@@ -34,13 +34,15 @@ Ext
 					leafId : leafId
 				},
 				success : function(response, options) {
-					var jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse == "true") {
-						title = successLabel;
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+						// uncomment it for debugging purpose
 					} else {
-						title = failureLabel;
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+
 					}
-					Ext.MessageBox.alert(systemLabel, jsonResponse.message);
 				},
 				failure : function(response, options) {
 
@@ -49,16 +51,22 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			var leafGroupAccessReader = new Ext.data.JsonReader({
+			var leafTeamAccessReader = new Ext.data.JsonReader({
 				root : "data",
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
+				idProperty : "leafTeamAccessReaderId"
+			});
+			var leafTeamAccessStore = new Ext.data.JsonStore({
+				autoDestroy : true,
+				proxy : leafTeamAccessProxy,
+				reader : leafTeamAccessReader,
 				fields : [ {
 					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'leafGroupAccessId',
+					name : 'leafTeamAccessId',
 					type : 'int'
 				}, {
 					name : 'moduleNote',
@@ -88,43 +96,39 @@ Ext
 					name : 'staffId',
 					type : 'int'
 				}, {
-					name : 'leafAccessCreateValue',
+					name : 'leafTeamAccessCreateValue',
 					type : 'boolean'
 				}, {
-					name : 'leafAccessReadValue',
+					name : 'leafTeamAccessReadValue',
 					type : 'boolean'
 				}, {
-					name : 'leafAccessUpdateValue',
+					name : 'leafTeamAccessUpdateValue',
 					type : 'boolean'
 				}, {
-					name : 'leafAccessDeleteValue',
+					name : 'leafTeamAccessDeleteValue',
 					type : 'boolean'
 				}, {
-					name : 'leafAccessPrintValue',
+					name : 'leafTeamAccessPrintValue',
 					type : 'boolean'
 				}, {
-					name : 'leafAccessPostValue',
+					name : 'leafTeamAccessPostValue',
 					type : 'boolean'
 				} ]
 			});
-			var leafTeamAccessStore = new Ext.data.JsonStore({
-				autoDestroy : true,
-				proxy : leafGroupAccessProxy,
-				reader : leafGroupAccessReader
-			});
 
-			var groupProxy = new Ext.data.HttpProxy({
+			var teamProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderAccessController.php",
 				method : 'GET',
 
 				success : function(response, options) {
-					var jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse == "true") {
-						title = successLabel;
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+						// uncomment it for debugging purpose
 					} else {
-
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
+
 					}
 
 				},
@@ -135,7 +139,7 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			var groupReader = new Ext.data.JsonReader({
+			var teamReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
@@ -145,14 +149,14 @@ Ext
 			var teamStore = new Ext.data.JsonStore({
 				autoLoad : true,
 				autoDestroy : true,
-				proxy : groupProxy,
-				reader : groupReader,
+				proxy : teamProxy,
+				reader : teamReader,
 				baseParams : {
 					method : "read",
 					leafId : leafId,
 					field : "teamId"
 				},
-				root : 'group',
+				root : 'team',
 				fields : [ {
 					name : 'teamId',
 					type : 'int'
@@ -164,17 +168,18 @@ Ext
 			});
 
 			var moduleProxy = new Ext.data.HttpProxy({
-				url : "../controller/folderAccessController.php",
+				url : "../controller/leafTeamAccessController.php",
 				method : 'GET',
 
 				success : function(response, options) {
-					var jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse == "true") {
-						title = successLabel;
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+						// uncomment it for debugging purpose
 					} else {
-
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
+
 					}
 
 				},
@@ -213,19 +218,19 @@ Ext
 			});
 
 			var folderProxy = new Ext.data.HttpProxy({
-				url : "../controller/folderAccessController.php",
+				url : "../controller/leafTeamAccessController.php",
 				method : 'GET',
 
 				success : function(response, options) {
-					var jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse == "true") {
-						title = successLabel;
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+						// uncomment it for debugging purpose
 					} else {
-
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
-					}
 
+					}
 				},
 				failure : function(response, options) {
 
@@ -261,45 +266,45 @@ Ext
 
 			});
 
-			var leafAccessCreateValue = new Ext.grid.CheckColumn({
-				header : leafAccessCreateValueLabel,
-				dataIndex : 'leafAccessCreateValue',
-				id : 'leafAccessCreateValue',
+			var leafTeamAccessCreateValue = new Ext.grid.CheckColumn({
+				header : leafTeamAccessCreateValueLabel,
+				dataIndex : 'leafTeamAccessCreateValue',
+				id : 'leafTeamAccessCreateValue',
 				width : 55
 			});
 
-			var leafAccessReadValue = new Ext.grid.CheckColumn({
-				header : leafAccessReadValueLabel,
-				dataIndex : 'leafAccessReadValue',
-				id : 'leafAccessReadValue',
+			var leafTeamAccessReadValue = new Ext.grid.CheckColumn({
+				header : leafTeamAccessReadValueLabel,
+				dataIndex : 'leafTeamAccessReadValue',
+				id : 'leafTeamAccessReadValue',
 				width : 55
 			});
 
-			var leafAccessUpdateValue = new Ext.grid.CheckColumn({
-				header : leafAccessUpdateValueLabel,
-				dataIndex : 'leafAccessUpdateValue',
-				id : 'leafAccessUpdateValue',
+			var leafTeamAccessUpdateValue = new Ext.grid.CheckColumn({
+				header : leafTeamAccessUpdateValueLabel,
+				dataIndex : 'leafTeamAccessUpdateValue',
+				id : 'leafTeamAccessUpdateValue',
 				width : 55
 			});
 
-			var leafAccessDeleteValue = new Ext.grid.CheckColumn({
-				header : leafAccessDeleteValueLabel,
-				dataIndex : 'leafAccessDeleteValue',
-				id : 'leafAccessDeleteValue',
+			var leafTeamAccessDeleteValue = new Ext.grid.CheckColumn({
+				header : leafTeamAccessDeleteValueLabel,
+				dataIndex : 'leafTeamAccessDeleteValue',
+				id : 'leafTeamAccessDeleteValue',
 				width : 55
 			});
 
-			var leafAccessPrintValue = new Ext.grid.CheckColumn({
-				header : leafAccessPrintValueLabel,
-				dataIndex : 'leafAccessPrintValue',
-				id : 'leafAccessPrintValue',
+			var leafTeamAccessPrintValue = new Ext.grid.CheckColumn({
+				header : leafTeamAccessPrintValueLabel,
+				dataIndex : 'leafTeamAccessPrintValue',
+				id : 'leafTeamAccessPrintValue',
 				width : 55
 			});
 
-			var leafAccessPostValue = new Ext.grid.CheckColumn({
-				header : leafAccessPostValueLabel,
-				dataIndex : 'leafAccessPostValue',
-				id : 'leafAccessPostValue',
+			var leafTeamAccessPostValue = new Ext.grid.CheckColumn({
+				header : leafTeamAccessPostValueLabel,
+				dataIndex : 'leafTeamAccessPostValue',
+				id : 'leafTeamAccessPostValue',
 				width : 55
 			});
 
@@ -310,7 +315,7 @@ Ext
 					header : moduleNameLabel,
 					dataIndex : 'moduleNote'
 				}, {
-					header : groupNameLabel,
+					header : teamNameLabel,
 					dataIndex : 'teamNote'
 				}, {
 					header : folderNameLabel,
@@ -321,9 +326,9 @@ Ext
 				}, {
 					header : staffNameLabel,
 					dataIndex : 'staffName'
-				}, leafAccessCreateValue, leafAccessReadValue,
-						leafAccessUpdateValue, leafAccessDeleteValue,
-						leafAccessPrintValue, leafAccessPostValue ]
+				}, leafTeamAccessCreateValue, leafTeamAccessReadValue,
+						leafTeamAccessUpdateValue, leafTeamAccessDeleteValue,
+						leafTeamAccessPrintValue, leafTeamAccessPostValue ]
 			});
 
 			var teamId = new Ext.ux.form.ComboBoxMatch(
@@ -357,7 +362,7 @@ Ext
 								Ext.getCmp('moduleId').reset();
 								module_store.proxy = new Ext.data.HttpProxy(
 										{
-											url : '../controller/leafGroupAccessController.php?method=read&field=moduleId&teamId='
+											url : '../controller/leafTeamAccessController.php?method=read&field=moduleId&teamId='
 													+ Ext.getCmp('teamId')
 															.getValue()
 													+ '&leafId=' + leafId,
@@ -369,7 +374,7 @@ Ext
 								Ext.getCmp('gridPanel').enable();
 								leafTeamAccessStore.proxy = new Ext.data.HttpProxy(
 										{
-											url : '../controller/leafGroupAccessController.php?teamId='
+											url : '../controller/leafTeamAccessController.php?teamId='
 													+ Ext.getCmp('teamId')
 															.getValue()
 													+ '&leafId=' + leafId,
@@ -412,7 +417,7 @@ Ext
 								Ext.getCmp('folderId').reset();
 								folder_store.proxy = new Ext.data.HttpProxy(
 										{
-											url : '../controller/leafGroupAccessController.php?method=read&field=folderId&teamId='
+											url : '../controller/leafTeamAccessController.php?method=read&field=folderId&teamId='
 													+ Ext.getCmp('teamId')
 															.getValue()
 													+ '&moduleId='
@@ -427,7 +432,7 @@ Ext
 								Ext.getCmp('gridPanel').enable();
 								leafTeamAccessStore.proxy = new Ext.data.HttpProxy(
 										{
-											url : '../controller/leafGroupAccessController.php?teamId='
+											url : '../controller/leafTeamAccessController.php?teamId='
 													+ Ext.getCmp('teamId')
 															.getValue()
 													+ '&moduleId='
@@ -477,7 +482,7 @@ Ext
 								}
 								leafTeamAccessStore.proxy = new Ext.data.HttpProxy(
 										{
-											url : '../controller/leafGroupAccessController.php?teamId='
+											url : '../controller/leafTeamAccessController.php?teamId='
 													+ Ext.getCmp('teamId')
 															.getValue()
 													+ '&moduleId='
@@ -505,10 +510,10 @@ Ext
 				autoScroll : true,
 				items : [ teamId, moduleId, folderId ]
 			});
-			var access_array = [ 'leafAccessCreateValue',
-					'leafAccessReadValue', 'leafAccessUpdateValue',
-					'leafAccessDeleteValue', 'leafAccessPrintValue',
-					'leafAccessPostValue' ];
+			var access_array = [ 'leafTeamAccessCreateValue',
+					'leafTeamAccessReadValue', 'leafTeamAccessUpdateValue',
+					'leafTeamAccessDeleteValue', 'leafTeamAccessPrintValue',
+					'leafTeamAccessPostValue' ];
 			var grid = new Ext.grid.GridPanel(
 					{
 						region : 'west',
@@ -526,9 +531,9 @@ Ext
 						autoScroll : true,
 						autoHeight : false,
 						height : 400,
-						plugins : [ leafAccessCreateValue, leafAccessReadValue,
-								leafAccessUpdateValue, leafAccessDeleteValue,
-								leafAccessPrintValue, leafAccessPostValue ],
+						plugins : [ leafTeamAccessCreateValue, leafTeamAccessReadValue,
+								leafTeamAccessUpdateValue, leafTeamAccessDeleteValue,
+								leafTeamAccessPrintValue, leafTeamAccessPostValue ],
 						tbar : {
 							items : [
 									{
@@ -577,7 +582,7 @@ Ext
 												var count = leafTeamAccessStore
 														.getCount();
 
-												url = '../controller/leafGroupAccessController.php?method=update&leafId='
+												url = '../controller/leafTeamAccessController.php?method=update&leafId='
 														+ leafId;
 												var sub_url;
 												sub_url = '';
@@ -586,38 +591,32 @@ Ext
 															.getAt(i);
 													sub_url = sub_url
 															+ record
-																	.get('leafGroupAccessId')
+																	.get('leafTeamAccessId')
 															+ ',';
 													sub_url = sub_url
 															+ record
-																	.get('leafAccessCreateValue')
+																	.get('leafTeamAccessCreateValue')
 															+ ',';
 													sub_url = sub_url
 															+ record
-																	.get('leafAccessReadValue')
+																	.get('leafTeamAccessReadValue')
 															+ ',';
 													sub_url = sub_url
 															+ record
-																	.get('leafAccessUpdateValue')
+																	.get('leafTeamAccessUpdateValue')
 															+ ',';
 													sub_url = sub_url
 															+ record
-																	.get('leafAccessDeleteValue')
+																	.get('leafTeamAccessDeleteValue')
 															+ ',';
 													sub_url = sub_url
 															+ record
-																	.get('leafAccessPrintValue')
+																	.get('leafTeamAccessPrintValue')
 															+ ',';
 													sub_url = sub_url
 															+ record
-																	.get('leafAccessPostValue');
-													sub_url = sub_url + '|'; // this
-																				// is
-																				// to
-																				// diffirenciate
-																				// the
-																				// array
-																				// field
+																	.get('leafTeamAccessPostValue');
+													sub_url = sub_url + '|'; 
 												}
 												// url = url+sub_url;
 												// using post method because
