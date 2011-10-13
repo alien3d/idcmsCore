@@ -343,7 +343,7 @@ if (isset($_POST['method'])) {
     /*
 	 *  Paging
 	 */
-    if (isset($this->getStart())) {
+    if (isset($_POST['start'])) {
         $folderAccessObject->setStart($_POST['start']);
     }
     if (isset($_POST['limit'])) {

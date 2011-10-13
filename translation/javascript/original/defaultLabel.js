@@ -6,7 +6,7 @@ Ext
 			var pageCreate;
 			var pageReload;
 			var pagePrint;
-			if (leafCreateAccessValue == 1) {
+			if (leafAccessCreateValue == 1) {
 				var pageCreate = false;
 			} else {
 				var pageCreate = true;

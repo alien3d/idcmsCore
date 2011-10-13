@@ -4,7 +4,7 @@ Ext
 			var pageCreate;
 			var pageReload;
 			var pagePrint;
-			if (leafCreateAccessValue == 1) {
+			if (leafAccessCreateValue == 1) {
 				var pageCreate = false;
 			} else {
 				var pageCreate = true;
@@ -88,7 +88,7 @@ Ext
 					name : 'staffId',
 					type : 'int'
 				}, {
-					name : 'leafCreateAccessValue',
+					name : 'leafAccessCreateValue',
 					type : 'boolean'
 				}, {
 					name : 'leafAccessReadValue',
@@ -261,10 +261,10 @@ Ext
 
 			});
 
-			var leafCreateAccessValue = new Ext.grid.CheckColumn({
-				header : leafCreateAccessValueLabel,
-				dataIndex : 'leafCreateAccessValue',
-				id : 'leafCreateAccessValue',
+			var leafAccessCreateValue = new Ext.grid.CheckColumn({
+				header : leafAccessCreateValueLabel,
+				dataIndex : 'leafAccessCreateValue',
+				id : 'leafAccessCreateValue',
 				width : 55
 			});
 
@@ -321,7 +321,7 @@ Ext
 				}, {
 					header : staffNameLabel,
 					dataIndex : 'staffName'
-				}, leafCreateAccessValue, leafAccessReadValue,
+				}, leafAccessCreateValue, leafAccessReadValue,
 						leafAccessUpdateValue, leafAccessDeleteValue,
 						leafAccessPrintValue, leafAccessPostValue ]
 			});
@@ -505,7 +505,7 @@ Ext
 				autoScroll : true,
 				items : [ teamId, moduleId, folderId ]
 			});
-			var access_array = [ 'leafCreateAccessValue',
+			var access_array = [ 'leafAccessCreateValue',
 					'leafAccessReadValue', 'leafAccessUpdateValue',
 					'leafAccessDeleteValue', 'leafAccessPrintValue',
 					'leafAccessPostValue' ];
@@ -526,7 +526,7 @@ Ext
 						autoScroll : true,
 						autoHeight : false,
 						height : 400,
-						plugins : [ leafCreateAccessValue, leafAccessReadValue,
+						plugins : [ leafAccessCreateValue, leafAccessReadValue,
 								leafAccessUpdateValue, leafAccessDeleteValue,
 								leafAccessPrintValue, leafAccessPostValue ],
 						tbar : {
@@ -590,7 +590,7 @@ Ext
 															+ ',';
 													sub_url = sub_url
 															+ record
-																	.get('leafCreateAccessValue')
+																	.get('leafAccessCreateValue')
 															+ ',';
 													sub_url = sub_url
 															+ record

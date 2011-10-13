@@ -15,7 +15,7 @@ require_once ("../model/leafTeamAccessModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class LeafGroupAccessClass extends ConfigClass
+class LeafTeamAccessClass extends ConfigClass
 {
     /**
      * Connection to the database
@@ -486,7 +486,7 @@ class LeafGroupAccessClass extends ConfigClass
     function excel ()
     {}
 }
-$leafGroupAccessObject = new LeafGroupAccessClass();
+$leafTeamAccessObject = new LeafGroupAccessClass();
 // crud -create,read,update,delete.
 if (isset($_POST['method'])) {
     /*
@@ -496,23 +496,23 @@ if (isset($_POST['method'])) {
 	 *  Leaf / Application Identification
 	 */
     if (isset($_POST['leafId'])) {
-        $leafGroupAccessObject->setleafId($_POST['leafId']);
+        $leafTeamAccessObject->setleafId($_POST['leafId']);
     }
     /*
 	 * Admin Only
 	 */
     if (isset($_POST['isAdmin'])) {
-        $leafGroupAccessObject->setIsAdmin($_POST['isAdmin']);
+        $leafTeamAccessObject->setIsAdmin($_POST['isAdmin']);
     }
     /*
 	 *  Load the dynamic value
 	 */
-    $leafGroupAccessObject->execute();
+    $leafTeamAccessObject->execute();
     /*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
     if ($_POST['method'] == 'read') {
-        $leafGroupAccessObject->read();
+        $leafTeamAccessObject->read();
     }
 }
 if (isset($_GET['method'])) {
@@ -523,37 +523,37 @@ if (isset($_GET['method'])) {
 	 *  Leaf / Application Identification
 	 */
     if (isset($_GET['leafId'])) {
-        $leafGroupAccessObject->setLeafId($_GET['leafId']);
+        $leafTeamAccessObject->setLeafId($_GET['leafId']);
     }
     /*
 	 * Admin Only
 	 */
     if (isset($_GET['isAdmin'])) {
-        $leafGroupAccessObject->setIsAdmin($_GET['isAdmin']);
+        $leafTeamAccessObject->setIsAdmin($_GET['isAdmin']);
     }
     /*
 	 *
 	 *  Load the dynamic value
 	 */
-    $leafGroupAccessObject->execute();
+    $leafTeamAccessObject->execute();
     /*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
     if ($_GET['method'] == 'update') {
-        $leafGroupAccessObject->update();
+        $leafTeamAccessObject->update();
     }
     if (isset($_GET['field'])) {
         if ($_GET['field'] == 'staffId') {
-            $leafGroupAccessObject->staffId();
+            $leafTeamAccessObject->staffId();
         }
-        if ($_GET['field'] == 'TEAMID') {
-            $leafGroupAccessObject->group;
+        if ($_GET['field'] == 'teamId') {
+            $leafTeamAccessObject->team();
         }
         if ($_GET['field'] == 'moduleId') {
-            $leafGroupAccessObject->module();
+            $leafTeamAccessObject->module();
         }
         if ($_GET['field'] == 'folderId') {
-            $leafGroupAccessObject->folder();
+            $leafTeamAccessObject->folder();
         }
     }
 }

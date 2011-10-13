@@ -142,49 +142,49 @@ class ModuleAccessClass extends ConfigClass {
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-				SELECT	`moduleAccess`.`moduleAccessId`,
-						`module`.`moduleId`,
-						`module`.`moduleNote`,
-						`team`.`teamId`,
-						`team`.`teamNote`,
-						(CASE `moduleAccess`.`moduleAccessValue`
+				SELECT	[moduleAccess].[moduleAccessId],
+						[module].[moduleId],
+						[module].[moduleNote],
+						[team].[teamId],
+						[team].[teamNote],
+						(CASE [moduleAccess].[moduleAccessValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `moduleAccessValue`
-				FROM 	`moduleAccess`
-				JOIN	`module`
-				USING 	(`moduleId`)
-				JOIN 	`team`
-				USING 	(`teamId`)
-				WHERE 	`module`.`isActive` 	=	1
-				AND		`team`.`isActive`		=	1";
-			if ($this->model->getTEAMID ()) {
-				$sql .= " AND `team`.`TEAMID`='" . $this->model->getTEAMID () . "'";
+						END) AS [moduleAccessValue]
+				FROM 	[moduleAccess]
+				JOIN	[module]
+				ON		[moduleAccess].[moduleId] 	= 	[module].[moduleId]
+				JOIN 	[team]
+				on		[team].[teamId]  			= 	[moduleAccess].[teamId]
+				WHERE 	[module].[isActive] 		=	1
+				AND		[team].[isActive]			=	1";
+			if ($this->model->getTeamId()) {
+				$sql .= " AND [team].[teamId]		=	'" . $this->model->getTeamId() . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-				SELECT	`moduleAccess`.`moduleAccessId`,
-						`module`.`moduleId`,
-						`module`.`moduleNote`,
-						`team`.`TEAMID`,
-						`team`.`teamNote`,
-						(CASE `moduleAccess`.`moduleAccessValue`
+				SELECT	MODULEACCESS.MODULEACCESSID,
+						MODULE.MODULEID,
+						MODULE.MODULENOTE,
+						TEAM.TEAMID,
+						TEAM.TEAMNOTE,
+						(CASE MODULEACCESS.MODULEACCESSVALUE
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `moduleAccessValue`
-				FROM 	`moduleAccess`
-				JOIN	`module`
-				USING 	(`moduleId`)
-				JOIN 	`team`
-				USING 	(`TEAMID`)
-				WHERE 	`module`.`isActive` 	=	1
-				AND		`team`.`isActive`		=	1";
-			if ($this->model->getTEAMID ()) {
-				$sql .= " AND `team`.`TEAMID`='" . $this->model->getTEAMID () . "'";
+						END) AS \"moduleAccessValue\"
+				FROM 	MODULEACCESS
+				JOIN	MODULE
+				ON		MODULEACCESS.MODULEID 	= 	MODULE.MODULEID
+				JOIN 	TEAM
+				ON		MODULEACCESS.TEAMID 	= 	TEAM.TEAMID
+				WHERE 	MODULE.ISACTIVE 		=	1
+				AND		TEAM.ISACTIVE			=	1";
+			if ($this->model->getTeamId ()) {
+				$sql .= " AND `team`.`teamId`	=	'" . $this->model->getTeamId() . "'";
 			}
 		}
 		//echo $sql;
@@ -197,14 +197,26 @@ class ModuleAccessClass extends ConfigClass {
 		}
 		$total = $this->q->numberRows ();
 		//paging
-		if (isset ( $this->getStart () ) && isset ( $_POST ['limit'] )) {
-			$sql .= " LIMIT  " . $this->getStart () . "," . $_POST ['limit'] . " ";
-		}
-		$this->q->read ( $sql );
-		if ($this->q->execute == 'fail') {
+		if ($this->getStart ()  && $this->getLimit()) {
+			if($this->getVendor()==self::MYSQL) {
+			$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit() . " ";
+			} else if ($this->getVendor()==self::MSSQL){
+				
+			} else if ($this->getVendor()==self::ORACLE){
+				
+			} else if ($this->getVendor()==self::DB2){
+				
+			} else if ($this->getVendor()==self::POSTGRESS){
+				
+			}
+		
+			$this->q->read ( $sql );
+			if ($this->q->execute == 'fail') {
 			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
-		}
+			}
+		} 
+		
 		$items = array ();
 		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
 			$items [] = $row;
@@ -258,10 +270,10 @@ class ModuleAccessClass extends ConfigClass {
 		exit ();
 	}
 	/**
-	 * Return Group Identification
+	 * Return Team Identification
 	 */
-	function group() {
-		return $this->security->group ();
+	function team() {
+		return $this->security->team ();
 	}
 	/* (non-PHPdoc)
 	 * @see config::delete()
@@ -321,8 +333,8 @@ if (isset ( $_GET ['method'] )) {
 		$moduleAccessObject->update ();
 	}
 	if (isset ( $_GET ['field'] )) {
-		if ($_GET ['method'] == 'read' && $_GET ['field'] == 'TEAMID') {
-			$moduleAccessObject->group ();
+		if ($_GET ['field'] == 'teamId') {
+			$moduleAccessObject->team ();
 		}
 	}
 }

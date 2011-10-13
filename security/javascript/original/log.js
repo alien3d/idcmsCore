@@ -8,7 +8,7 @@ Ext
 			var pageReloadList;
 			var pagePrint;
 			var pagePrintList;
-			if (leafCreateAccessValue == 1) {
+			if (leafAccessCreateValue == 1) {
 				pageCreate = false;
 				pageCreateList = false;
 			} else {

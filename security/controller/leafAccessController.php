@@ -4,6 +4,7 @@ require_once ("../../class/classAbstract.php");
 require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
+require_once ("../../class/classSecurity.php");
 require_once ("../model/leafAccessModel.php");
 /**
  * this is  leaf security access
@@ -122,7 +123,7 @@ class LeafAccessClass extends ConfigClass {
 						`leaf`.`leafNote`,
 						`module`.`moduleNote`,
 						`staff`.`staffName`,
-						`theme`.`teamNote`,
+						`team`.`teamNote`,
 						`leafAccess`.`leafId`,
 						`leafAccess`.`staffId`,
 						`leafAccess`.`leafAccessId`,
@@ -172,16 +173,17 @@ class LeafAccessClass extends ConfigClass {
 				JOIN	`leaf`
 				USING	(`leafId`)
 				JOIN	(`module`)
-				USING	(`moduleId`,`languageId`)
+				USING	(`moduleId`)
 				JOIN	(`folder`)
-				USING	(`folderId`,`languageId`)
+				USING	(`folderId`)
 				JOIN	`staff`
-				USING	(`staffId`,`languageId`)
-				JOIN	`theme`
-				USING	(`TEAMID`,`languageId`)
+				USING	(`staffId`)
+				JOIN	`team`
+				USING	(`teamId`)
 				WHERE 	`module`.`isActive` 	=	1
 				AND		`folder`.`isActive` 	=	1
-				AND		`leaf`.`isActive`		=	1 ";
+				AND		`leaf`.`isActive`		=	1 
+				AND		`team`.`isActive`		=	1";
 			if ($this->model->getModuleId ()) {
 				$sql .= " AND `leaf`.`moduleId`		=	'" . $this->model->getModuleId () . "'";
 			}
@@ -255,7 +257,7 @@ class LeafAccessClass extends ConfigClass {
 				JOIN	[staff]
 				ON		[leaf].[staffId]=[staff].[staffId]
 				JOIN	[team]
-				USING	[team].[teamId]=[leafAccess].\"teamId\"
+				USING	[team].[teamId]=[leafAccess].[teamId]
 				WHERE 	[module].[isActive] 	=	1
 				AND		[folder].[isActive] 	=	1
 				AND		[leaf].[isActive]		=	1  ";
@@ -361,8 +363,19 @@ class LeafAccessClass extends ConfigClass {
 		//paging
 		
 
-		if (isset ( $this->getStart () ) && isset ( $_POST ['limit'] )) {
-			$sql .= " LIMIT  " . $this->getStart () . "," . $_POST ['limit'] . " ";
+		if ($this->getStart ()  && $this->getLimit()) {
+			if($this->getVendor()==self::MYSQL){
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit() . " ";
+			} else if ($this->getVendor()==self::MSSQL){
+				
+			} else if ($this->getVendor()==self::ORACLE){
+				
+			} else if ($this->getVendor()==self::DB2){
+				
+			} else if ($this->getVendor()==self::POSTGRESS){
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit() . " ";
+				
+			}
 		}
 		
 		$this->q->read ( $sql );
@@ -538,15 +551,13 @@ if (isset ( $_GET ['method'] )) {
 	 *  Load the dynamic value
 	 */
 	$leafAccessObject->execute ();
-	if ($_GET ['method'] == 'read') {
-		$leafAccessObject->read ();
-	}
+	
 	if ($_GET ['method'] == 'update') {
 		$leafAccessObject->update ();
 	}
 	if (isset ( $_GET ['field'] )) {
 		if ($_GET ['field'] == 'staffId') {
-			$leafAccessObject->staffId;
+			$leafAccessObject->staff();
 		}
 		if ($_GET ['field'] == 'teamId') {
 			$leafAccessObject->team();

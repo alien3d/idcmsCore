@@ -1,7 +1,7 @@
 Ext
 		.onReady(function() {
 
-			if (leafCreateAccessValue == 1) {
+			if (leafAccessCreateValue == 1) {
 				var pageCreate = false;
 			} else {
 				var pageCreate = true;
@@ -22,7 +22,7 @@ Ext
 			var perPage = 10;
 			var encode = false;
 			var local = false;
-			var moduleProxy = new Ext.data.HttpProxy(
+			var moduleAccessProxy = new Ext.data.HttpProxy(
 					{
 						url : "../controller/moduleAccessController.php",
 						method : 'POST',
@@ -31,9 +31,7 @@ Ext
 							;
 							if (jsonResponse.success == true) {
 								Ext.MessageBox.alert(systemLabel,
-										jsonResponse.message); // uncomment it
-																// for debugging
-																// purpose
+										jsonResponse.message); // uncomment it for debugging purpose
 							} else {
 								Ext.MessageBox.alert(systemErrorLabel,
 										jsonResponse.message);
@@ -45,7 +43,7 @@ Ext
 											+ escape(response.statusText));
 						}
 					});
-			var moduleReader = new Ext.data.JsonReader({
+			var moduleAccessReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
@@ -280,7 +278,7 @@ Ext
 														+ leafId;
 												var sub_url;
 												sub_url = '';
-												fvar modified = moduleAccessStore
+												var modified = moduleAccessStore
 														.getModifiedRecords();
 												for ( var i = 0; i < modified.length; i++) {
 													var record = moduleAccessStore
@@ -309,7 +307,7 @@ Ext
 																		{
 																			url : '../controller/moduleAccessController.php?method=read&teamId='
 																					+ Ext
-																							.getCmp('group_fake').value,
+																							.getCmp('team_fake').value,
 																			method : 'POST'
 																		});
 

@@ -1,7 +1,7 @@
 Ext
 		.onReady(function() {
 
-			if (leafCreateAccessValue == 1) {
+			if (leafAccessCreateValue == 1) {
 				var pageCreate = false;
 			} else {
 				var pageCreate = true;
@@ -71,10 +71,10 @@ Ext
 					name : 'moduleNote',
 					type : 'string'
 				}, {
-					name : 'groupId',
+					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'groupNote',
+					name : 'teamNote',
 					type : 'string'
 				}, {
 					name : 'folderId',
@@ -91,7 +91,7 @@ Ext
 				} ]
 			});
 
-			var groupProxy = new Ext.data.HttpProxy({
+			var teamProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderAccessController.php",
 				method : 'GET',
 				success : function(response, options) {
@@ -109,31 +109,31 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			var groupReader = new Ext.data.JsonReader({
+			var teamReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
 				messageProperty : "message",
-				idProperty : "groupId"
+				idProperty : "teamId"
 			});
 
-			var groupStore = new Ext.data.JsonStore({
-				proxy : groupProxy,
-				reader : groupReader,
+			var teamStore = new Ext.data.JsonStore({
+				proxy : teamProxy,
+				reader : teamReader,
 				autoLoad : true,
 				autoDestroy : true,
 				pruneModifiedRecords : true,
 
 				baseParams : {
 					method : "read",
-					field : "groupId",
+					field : "teamId",
 					leafId : leafId
 				},
-				root : 'group',
+				root : 'team',
 				fields : [ {
-					name : 'groupId',
+					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'groupNote',
+					name : 'teamNote',
 					type : 'string'
 				} ]
 
@@ -201,11 +201,11 @@ Ext
 					header : moduleIdLabel,
 					dataIndex : 'moduleId'
 				}, {
-					header : groupNameLabel,
-					dataIndex : 'groupNote'
+					header : teamNameLabel,
+					dataIndex : 'teamNote'
 				}, {
-					header : groupIdLabel,
-					dataIndex : 'groupId'
+					header : teamIdLabel,
+					dataIndex : 'teamId'
 				}, {
 					header : folderNameLabel,
 					dataIndex : 'folderNote'
@@ -215,18 +215,18 @@ Ext
 				}, folderAccessValue ]
 			});
 
-			var groupId = new Ext.ux.form.ComboBoxMatch(
+			var teamId = new Ext.ux.form.ComboBoxMatch(
 					{
 						labelAlign : 'left',
-						fieldLabel : groupIdLabel,
-						name : 'groupId',
-						hiddenName : 'groupId',
-						valueField : 'groupId',
-						id : 'group_fake',
-						displayField : 'groupNote',
+						fieldLabel : teamIdLabel,
+						name : 'teamId',
+						hiddenName : 'teamId',
+						valueField : 'teamId',
+						id : 'team_fake',
+						displayField : 'teamNote',
 						typeAhead : false,
 						triggerAction : 'all',
-						store : groupStore,
+						store : teamStore,
 						anchor : '95%',
 						selectOnFocus : true,
 						mode : 'local',
@@ -250,7 +250,7 @@ Ext
 										method:'read',
 										field:'moduleId',
 										leafId:leafId,
-										groupId:this.value,
+										teamId:this.value,
 										type:2
 									}
 								});
@@ -297,7 +297,7 @@ Ext
 							params : {
 								method:'read',
 								leafId : leafId,
-								groupId : Ext.getCmp('group_fake').getValue(),
+								teamId : Ext.getCmp('team_fake').getValue(),
 								moduleId : Ext.getCmp('module_fake').getValue()
 							}
 
@@ -312,7 +312,7 @@ Ext
 				frame : true,
 				title : 'Folder Form',
 				iconCls : 'application_form',
-				items : [ groupId, moduleId ]
+				items : [ teamId, moduleId ]
 			});
 			var access_array = [ 'folderAccessValue' ];
 
@@ -387,10 +387,10 @@ Ext
 													var record = folderAccessStore
 															.getAt(i);
 													sub_url = sub_url
-															+ '&groupId='
+															+ '&teamId='
 															+ Ext
 																	.getCmp(
-																			'group_fake')
+																			'team_fake')
 																	.getValue()
 															+ '&moduleId='
 															+ Ext
