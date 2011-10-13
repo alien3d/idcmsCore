@@ -304,12 +304,12 @@ class ExtLabelClass extends ConfigClass {
 		}
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
-		$_SESSION ['limit'] = $_POST ['limit'];
+		$_SESSION ['limit'] = $this->getLimit();
 		if (empty ( $_POST ['filter'] )) {
-			if (isset ( $this->getStart () ) && isset ( $_POST ['limit'] )) {
+			if ( $this->getStart ()  && $this->getLimit() ) {
 				// only mysql have limit
 				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $_POST ['limit'] . " ";
+					$sql .= " LIMIT  " . $this->getStart () . "," .$this->getLimit(). " ";
 					$sqlLimit = $sql;
 				} else if ($this->getVendor () == self::MSSQL) {
 					/**

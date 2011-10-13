@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
-require_once("../../class/classRecordSet.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
@@ -28,8 +28,8 @@ class ExtLabelTranslationClass extends ConfigClass {
 	 * @var string
 	 */
 	private $excel;
-		/**
-	 *  Record Pagination
+	/**
+	 * Record Pagination
 	 * @var string
 	 */
 	private $recordSet;
@@ -106,10 +106,10 @@ class ExtLabelTranslationClass extends ConfigClass {
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
-		$this->recordSet =  new RecordSet();
-		$this->recordSet->setTableName($this->model->getTableName());
-		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
-		$this->recordSet->execute();
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName ( $this->model->getTableName () );
+		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
+		$this->recordSet->execute ();
 		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
@@ -307,21 +307,19 @@ class ExtLabelTranslationClass extends ConfigClass {
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
 		
-		if (empty ( $_POST ['filter'] )) {
+		if ($this->getStart () && $this->getLimit ()) {
+			// only mysql have limit
 			
-			if (isset ( $this->getStart () ) && isset ( $_POST ['limit'] )) {
-				// only mysql have limit
-				
 
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-					$sqlLimit = $sql;
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sqlLimit = "
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+				$sqlLimit = $sql;
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sqlLimit = "
 							WITH [extLabelTranslationDerived] AS
 							(
 								SELECT	*,
@@ -336,13 +334,13 @@ class ExtLabelTranslationClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $_POST ['limit'] - 1) . ";";
+			
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
 				
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					
-					$sql = "
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -354,10 +352,9 @@ class ExtLabelTranslationClass extends ConfigClass {
 								 ) a
 						WHERE rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
-				
-				} else {
-					echo "undefine vendor";
-				}
+			
+			} else {
+				echo "undefine vendor";
 			}
 		}
 		

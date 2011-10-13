@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
-require_once("../../class/classRecordSet.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../model/languageModel.php");
@@ -26,8 +26,8 @@ class LanguageClass extends ConfigClass {
 	 * @var string
 	 */
 	private $excel;
-		/**
-	 *  Record Pagination
+	/**
+	 * Record Pagination
 	 * @var string
 	 */
 	private $recordSet;
@@ -92,10 +92,10 @@ class LanguageClass extends ConfigClass {
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
-		$this->recordSet =  new RecordSet();
-		$this->recordSet->setTableName($this->model->getTableName());
-		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
-		$this->recordSet->execute();
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName ( $this->model->getTableName () );
+		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
+		$this->recordSet->execute ();
 		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
@@ -362,17 +362,17 @@ class LanguageClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		if (! ($this->getGridQuery ())) {
-			if ($this->getLimit ()) {
-				// only mysql have limit
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sql = "
+		
+		if ($this->getStart () && $this->getLimit ()) {
+			// only mysql have limit
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sql = "
 							WITH [languageDerived] AS
 							(
 								SELECT *,
@@ -397,11 +397,11 @@ class LanguageClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $this->getLimit () - 1) . ";";
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -426,12 +426,12 @@ class LanguageClass extends ConfigClass {
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
-				} else {
-					echo "undefine vendor";
-					exit ();
-				}
+			} else {
+				echo "undefine vendor";
+				exit ();
 			}
 		}
+		
 		/*
              *  Only Execute One Query
              */
@@ -650,32 +650,35 @@ class LanguageClass extends ConfigClass {
 				case 'isDefault' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDefault ( $i, 'array' )) {
-						$sqlLooping .= "
+							$sqlLooping .= "
 							WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDefault ( $i, 'array' ) . "'";
-					} }
+						}
+					}
 					break;
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsNew ( $i, 'array' )) {
-						$sqlLooping .= "
+							$sqlLooping .= "
 							WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
-					
-					} }
+						
+						}
+					}
 					break;
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDraft ( $i, 'array' )) {
-						$sqlLooping .= "
+							$sqlLooping .= "
 							WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDraft ( $i, 'array' ) . "'";
-					} }
+						}
+					}
 					break;
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsUpdate ( $i, 'array' )) {
-						$sqlLooping .= "
+							$sqlLooping .= "
 							WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
 						}
@@ -683,46 +686,49 @@ class LanguageClass extends ConfigClass {
 					break;
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDelete( $i, 'array' )) {
-						$sqlLooping .= "
+						if ($this->model->getIsDelete ( $i, 'array' )) {
+							$sqlLooping .= "
 							WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
-					} }
+						}
+					}
 					break;
 				case 'isActive' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsUpdate ( $i, 'array' )) {
-						$sqlLooping .= "
+							$sqlLooping .= "
 							WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
-					} }
+						}
+					}
 					break;
 				case 'isApproved' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsApproved ( $i, 'array' )) {
-						$sqlLooping .= "
+							$sqlLooping .= "
 							WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsApproved ( $i, 'array' ) . "'";
-					} }
+						}
+					}
 					break;
-					case 'isReview' :
-						for($i = 0; $i < $loop; $i ++) {
-							if ($this->model->getIsReview ( $i, 'array' )) {
-								$sqlLooping .= "
+				case 'isReview' :
+					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsReview ( $i, 'array' )) {
+							$sqlLooping .= "
 								WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 								THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
-							}
 						}
-						break;
-					case 'isApproved' :
-						for($i = 0; $i < $loop; $i ++) {
-							if ($this->model->getIsPost ( $i, 'array' )) {
-								$sqlLooping .= "
+					}
+					break;
+				case 'isApproved' :
+					for($i = 0; $i < $loop; $i ++) {
+						if ($this->model->getIsPost ( $i, 'array' )) {
+							$sqlLooping .= "
 								WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 								THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
-							}
 						}
-						break;
+					}
+					break;
 			}
 			
 			$sqlLooping .= " END,";

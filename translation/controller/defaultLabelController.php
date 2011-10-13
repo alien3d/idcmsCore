@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
-require_once("../../class/classRecordSet.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
@@ -27,8 +27,8 @@ class DefaultLabelClass extends ConfigClass {
 	 * @var string
 	 */
 	private $excel;
-		/**
-	 *  Record Pagination
+	/**
+	 * Record Pagination
 	 * @var string
 	 */
 	private $recordSet;
@@ -105,10 +105,10 @@ class DefaultLabelClass extends ConfigClass {
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
-		$this->recordSet =  new RecordSet();
-		$this->recordSet->setTableName($this->model->getTableName());
-		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
-		$this->recordSet->execute();
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName ( $this->model->getTableName () );
+		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
+		$this->recordSet->execute ();
 		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
@@ -298,18 +298,17 @@ class DefaultLabelClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		if (empty ( $_POST ['filter'] )) {
-			if (isset ( $this->getStart () ) && isset ( $_POST ['limit'] )) {
-				// only mysql have limit
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-					$sqlLimit = $sql;
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sqlLimit = "
+		if ($this->getStart () &&  $this->getLimit()) {
+			// only mysql have limit
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+				$sqlLimit = $sql;
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sqlLimit = "
 							WITH [defaultLabelDerived] AS
 							(
 								SELECT	*,
@@ -324,11 +323,11 @@ class DefaultLabelClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $_POST ['limit'] - 1) . ";";
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -340,11 +339,13 @@ class DefaultLabelClass extends ConfigClass {
 								 ) a
 						WHERE rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						WHERE r >=  '" . $this->getStart () . "'";
-				} else {
-					echo "undefine vendor";
-				}
+			} else if ($this->getVendor () == self::DB2) {
+			} else if ($this->getVendor () == self::POSTGRESS) {
+			} else {
+				echo "undefine vendor";
 			}
 		}
+		
 		/*
 		 *  Only Execute One Query
 		 */

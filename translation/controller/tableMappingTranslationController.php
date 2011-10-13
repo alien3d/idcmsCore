@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
-require_once("../../class/classRecordSet.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
@@ -29,7 +29,7 @@ class TableMappingTranslateClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
-	 *  Record Pagination
+	 * Record Pagination
 	 * @var string
 	 */
 	private $recordSet;
@@ -67,53 +67,53 @@ class TableMappingTranslateClass extends ConfigClass {
 	 * Duplicate Testing either the key of table same or have been created.
 	 * @var boolean $duplicateTest;
 	 */
-	public $duplicateTest;	
+	public $duplicateTest;
 	/**
 	 * Common class function for security menu
 	 * @var  string $security
 	 */
 	private $security;
-
+	
 	/**
 	 * Class Loader
 	 */
 	function execute() {
 		parent::__construct ();
 		// audit property
-		$this->audit 				=	0;
-		$this->log 					= 	0;
+		$this->audit = 0;
+		$this->log = 0;
 		//default translation property
-		$this->defaultLanguageId 	= 	21;
+		$this->defaultLanguageId = 21;
 		
-		$this->q 					= 	new Vendor ();
-		$this->q->vendor 			=	$this->getVendor ();
-		$this->q->leafId 			= 	$this->getLeafId ();
-		$this->q->staffId 			= 	$this->getStaffId ();
-		$this->q->fieldQuery 		= 	$this->getFieldQuery ();
-		$this->q->gridQuery 		= 	$this->getGridQuery ();
-		$this->q->log 				= 	$this->log;
-		$this->q->audit 			= 	$this->log;
+		$this->q = new Vendor ();
+		$this->q->vendor = $this->getVendor ();
+		$this->q->leafId = $this->getLeafId ();
+		$this->q->staffId = $this->getStaffId ();
+		$this->q->fieldQuery = $this->getFieldQuery ();
+		$this->q->gridQuery = $this->getGridQuery ();
+		$this->q->log = $this->log;
+		$this->q->audit = $this->log;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 		
-		$this->security 				=	new Security ();
+		$this->security = new Security ();
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
 		
-		$this->model 				=	new TableMappingTranslateModel ();
+		$this->model = new TableMappingTranslateModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
-		$this->recordSet 			=  new RecordSet();
-		$this->recordSet->setTableName($this->model->getTableName());
-		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
-		$this->recordSet->execute();
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName ( $this->model->getTableName () );
+		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
+		$this->recordSet->execute ();
 		
-		$this->documentTrail 	= 	new DocumentTrailClass ();
+		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->execute ();
-	
-		$this->excel 					=	new PHPExcel ();
+		
+		$this->excel = new PHPExcel ();
 	}
 	
 	/* (non-PHPdoc)
@@ -142,7 +142,7 @@ class TableMappingTranslateClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDefaultLabelText() . "',				'" . $this->model->getTableMappingTranslationTranslationEnglish () . "'
+						'" . $this->model->getDefaultLabelText () . "',				'" . $this->model->getTableMappingTranslationTranslationEnglish () . "'
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -301,23 +301,21 @@ class TableMappingTranslateClass extends ConfigClass {
 		}
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
-		$_SESSION ['limit'] = $this->getLimit();
+		$_SESSION ['limit'] = $this->getLimit ();
 		
-		if (empty ( $_POST ['filter'] )) {
+		if ($this->getStart () && $this->getLimit ()) {
+			// only mysql have limit
 			
-			if (isset ( $this->getStart () ) && isset ( $_POST ['limit'] )) {
-				// only mysql have limit
-				
 
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit(). " ";
-					$sqlLimit = $sql;
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sqlLimit = "
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+				$sqlLimit = $sql;
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sqlLimit = "
 							WITH [tableMappingTranslationTranslationDerived] AS
 							(
 								SELECT	*,
@@ -332,13 +330,13 @@ class TableMappingTranslateClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $_POST ['limit'] - 1) . ";";
+			
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
 				
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					
-					$sql = "
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -350,16 +348,16 @@ class TableMappingTranslateClass extends ConfigClass {
 								 ) a
 						WHERE rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
-				
-				} else {
-					echo "undefine vendor";
-				}
+			
+			} else {
+				echo "undefine vendor";
 			}
 		}
 		
 		/*
 		 *  Only Execute One Query
 		 */
+		
 		if (! ($this->gettableMappingTranslationTranslationId ( 0, 'single' ))) {
 			
 			$this->q->read ( $sql );
@@ -809,7 +807,7 @@ if (isset ( $_GET ['method'] )) {
 			
 			$tableMappingTranslateObject->staff ();
 		}
-		
+	
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
