@@ -461,7 +461,7 @@ class TableMappingClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (! ($this->tableMappingId)) {
+		if (! ($this->model->getTableMappingId(0, 'single'))) {
 			
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
@@ -474,7 +474,7 @@ class TableMappingClass extends ConfigClass {
 			$items [] = $row;
 		}
 		
-		if ($this->tableMappingId) {
+		if ($this->model->getTableMappingId(0, 'single')) {
 			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );

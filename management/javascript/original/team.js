@@ -190,16 +190,16 @@ Ext
 					table : "team"
 				}, {
 					type : "list",
-					dataIndex : "By",
-					column : "By",
+					dataIndex : "executeBy",
+					column : "executeBy",
 					table : "team",
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
 				}, {
 					type : "date",
-					dataIndex : "Time",
-					column : "Time",
+					dataIndex : "executeTime",
+					column : "executeTime",
 					table : "team"
 				} ]
 			});
@@ -250,7 +250,7 @@ Ext
 			});
 
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Default',
+				header : isDefaultLabel,
 				dataIndex : 'isDefault',
 				hidden : isDefaultHidden
 			});
@@ -260,37 +260,37 @@ Ext
 				hidden : isNewHidden
 			});
 			var isDraftGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Draft',
+				header : isDraftLabel,
 				dataIndex : 'isDraft',
 				hidden : isDraftHidden
 			});
 			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Update',
+				header : isUpdateLabel,
 				dataIndex : 'isUpdate',
 				hidden : isUpdateHidden
 			});
 			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Delete',
+				header : isDeleteLabel,
 				dataIndex : 'isDelete'
 			});
 			var isActiveGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isActive',
 				hidden : isActiveHidden
 			});
 			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Approved',
+				header : isApprovedLabel,
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
 
 			var isReviewGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isReview',
 				hidden : isReviewHidden
 			});
 			var isPostGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Post',
+				header : isPostLabel,
 				dataIndex : 'isReview',
 				hidden : isApprovedHidden
 			});
@@ -332,7 +332,7 @@ Ext
 					isPostGrid,
 					{
 						dataIndex : "executeBy",
-						header : createByLabel,
+						header : executeByLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -342,7 +342,7 @@ Ext
 					},
 					{
 						dataIndex : "executeTime",
-						header : timeLabel,
+						header : executeTimeLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,

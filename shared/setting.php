@@ -15,45 +15,30 @@ if ($q->vendor == sharedx::MYSQL) {
 	// future
 	$sql = "
                 SELECT 			`tableMapping`.`tableMappingColumnName`,
-                                 `tableMappingTranslate`.`tableMappingNativeLabel`
+                                 `tableMappingTranslate`.`tableMappingNative`
                 FROM 			`tableMapping`
                 JOIN			`tableMappingTranslate`
                 USING			(`tableMappingId`)
                 WHERE 			`tableMappingTranslate`.`languageId`='" . $_SESSION ['languageId'] . "'";
-	// temp
-	$sql = "
-                SELECT 			`tableMapping`.`tableMappingColumnName`,
-                                `tableMapping`.`tableMappingNativeLabel`
-                FROM 			`tableMapping`
-                WHERE 			`tableMapping`.`languageId`='" . $_SESSION ['languageId'] . "'";
+	
 } else if ($q->vendor == sharedx::MSSQL) {
 	$sql = "
                 SELECT 			[tableMapping].[tableMappingColumnName],
-                                [tableMappingTranslate].[tableMappingNativeLabel]
+                                [tableMappingTranslate].[tableMappingNative]
                 FROM 			[tableMapping]
                 JOIN			[tableMappingTranslate]
                 USING			[tableMapping].[tableMappingId]=[tableMappingTranslate].[tableMappingId]
                 WHERE 			[tableMapping].[languageId]='" . $_SESSION ['languageId'] . "'";
-	// temp
-	$sql = "
-                SELECT 			[tableMapping].[tableMappingColumnName],
-                                                [tableMapping].[tableMappingNativeLabel]
-                FROM 			[tableMapping]
-                WHERE 			[tableMapping].[languageId]='" . $_SESSION ['languageId'] . "'";
+	
 } else if ($q->vendor == sharedx::ORACLE) {
 	$sql = "
                 SELECT DISTINCT TABLEMAPPING.TABLEMAPPINGCOLUMNNAME 			AS 	\"tableMappingColumnName\",
-                                TABLEMAPPINGTRANSLATE.TABLEMAPPINGNATIVELABEL	AS	\"tableMappingNativeLabel\"
+                                TABLEMAPPINGTRANSLATE.TABLEMAPPINGNATIVELABEL	AS	\"tableMappingNative\"
                 FROM 			TABLEMAPPING
                 JOIN			TABLEMAPPINGTRANSLATE
                 USING			(TABLEMAPPINGID)
                 WHERE 			TABLEMAPPING.LANGUAGEID='" . $_SESSION ['languageId'] . "'";
-	// temp
-	$sql = "
-                SELECT 			TABLEMAPPING.TABLEMAPPINGCOLUMNNAME AS  \"tableMappingColumnName\",
-                                TABLEMAPPING.TABLEMAPPINGNATIVELABEL AS \"tableMappingNativeLabel\"
-                FROM 			TABLEMAPPING
-                WHERE 			TABLEMAPPING.LANGUAGEID='" . $_SESSION ['languageId'] . "'";
+	
 } else if ($q->vendor ==sharedx::DB2) {
 } else if ($q->vendor ==sharedx::POSTGRESS) {
 }	
@@ -61,7 +46,7 @@ if ($q->vendor == sharedx::MYSQL) {
 $result = $q->fast ( $sql );
 
 while ( ($row = $q->fetchAssoc ( $result )) == TRUE ) {
-	echo "var " . $row ['tableMappingColumnName'] . "Label = '" . $row ['tableMappingNativeLabel'] . "';\n";
+	echo "var " . $row ['tableMappingColumnName'] . "Label = '" . $row ['tableMappingNative'] . "';\n";
 }
 /**
  * language pack javascript default
@@ -164,7 +149,7 @@ if ($q->vendor == sharedx::MYSQL) {
                         JOIN	`team`
                         USING	(`teamId`)
                         WHERE 	`staff`.`staffId`	=	'" . $_SESSION ['staffId'] . "'
-                        AND		`team`.`teamId`	=	'" . $_SESSION ['teamId'] . "'
+                        AND		`team`.`teamId`		=	'" . $_SESSION ['teamId'] . "'
                         AND		`staff`.`isActive`	=	1
                         AND		`team`.`isActive`	=	1";
 } else if ($q->vendor == sharedx::MSSQL) {
@@ -174,7 +159,7 @@ if ($q->vendor == sharedx::MYSQL) {
                         JOIN	[team]
                         ON		[staff].[teamId]  	= 	[team].[teamId]
                         WHERE 	[staff].[staffId]	=	'" . $_SESSION ['staffId'] . "'
-                        AND		[team].[teamId]	=	'" . $_SESSION ['teamId'] . "'
+                        AND		[team].[teamId]		=	'" . $_SESSION ['teamId'] . "'
                         AND		[staff].[isActive]	=	1
                         AND		[team].[isActive]	=	1";
 } else if ($q->vendor == sharedx::ORACLE) {
@@ -182,9 +167,9 @@ if ($q->vendor == sharedx::MYSQL) {
                         SELECT	TEAM.ISADMIN AS \"isAdmin\"
                         FROM 	STAFF
                         JOIN	TEAM
-                        ON		TEAM.TEAMID	= 	STAFF.TEAMID
+                        ON		TEAM.TEAMID		= 	STAFF.TEAMID
                         WHERE 	STAFF.STAFFID	=	'" . $_SESSION ['staffId'] . "'
-                        AND		TEAM.TEAMID	=	'" . $_SESSION ['TEAMID'] . "'
+                        AND		TEAM.TEAMID		=	'" . $_SESSION ['TEAMID'] . "'
                         AND		STAFF.ISACTIVE	=	1
                         AND		TEAM.ISACTIVE	=	1";
 } else if ($q->vendor ==sharedx::DB2) {

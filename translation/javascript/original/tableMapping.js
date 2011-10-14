@@ -68,25 +68,13 @@ Ext
 					name : 'tableMappingId',
 					type : 'int'
 				}, {
-					name : 'tableMappingSequence',
-					type : 'int'
-				}, {
-					name : 'tabId',
-					type : 'int'
-				}, {
-					name : 'tabNote',
+					name : 'tableMappingName',
 					type : 'string'
 				}, {
-					name : 'tableMappingNote',
+					name : 'tableMappingColumnName',
 					type : 'string'
 				}, {
-					name : 'tableMappingPath',
-					type : 'string'
-				}, {
-					name : 'iconId',
-					type : 'int'
-				}, {
-					name : 'iconName',
+					name : 'tableMappingEnglish',
 					type : 'string'
 				}, {
 					name : "isDefault",
@@ -109,8 +97,11 @@ Ext
 				}, {
 					name : "isApproved",
 					type : "boolean"
+				},{
+					name : 'executeBy',
+					type :'int',
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -141,10 +132,9 @@ Ext
 			        method: "GET",
 			        success: function(response, options) {
 			            jsonResponse = Ext.decode(response.responseText);
-			            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-			                // jsonResponse.message);
-			                // //uncommen for testing
-			                // purpose
+			            if (jsonResponse.success == true) { 
+			            	// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+			            	// uncomment  for testing purpose
 			            } else {
 			                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
 			            }
@@ -204,18 +194,12 @@ Ext
 					name : 'tableMappingId',
 					type : 'int'
 				}, {
-					name : 'languageId',
+					name : 'tableMappingNative',
 					type : 'int'
 				}, {
-					name : 'languageCode',
+					name : 'languageId',
 					type : 'string'
-				}, {
-					name : 'languageDesc',
-					type : 'string'
-				}, {
-					name : 'tableMappingTranslate',
-					type : 'string'
-				} ]
+				}]
 			});
 
 			
@@ -229,27 +213,27 @@ Ext
 				local : false, // defaults to false (remote filtering)
 				filters : [ {
 					type : 'numeric',
-					dataIndex : 'tableMappingSequence',
-					column : 'tableMappingSequence',
+					dataIndex : 'tableMappingName',
+					column : 'tableMappingName',
 					table : 'tableMapping'
 				}, {
 					type : 'string',
-					dataIndex : 'tableMappingNote',
-					column : 'tableMappingNote',
+					dataIndex : 'tableMappingColumnName',
+					column : 'tableMappingColumnName',
 					table : 'tableMapping'
 				}, {
 					type : 'string',
-					dataIndex : 'tableMappingPath',
-					column : 'tableMappingPath',
+					dataIndex : 'tableMappingEnglish',
+					column : 'tableMappingEnglish',
 					table : 'tableMapping'
 				}, {
 					type : 'string',
-					dataIndex : 'iconId',
-					column : 'iconId',
+					dataIndex : 'languageId',
+					column : 'languageId',
 					table : 'tableMapping'
 				}, {
 					type : 'list',
-					dataIndex : 'By',
+					dataIndex : 'executeBy',
 					column : 'staffId',
 					table : 'tableMapping',
 					labelField : 'staffName',
@@ -258,14 +242,14 @@ Ext
 				}, {
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
-					dataIndex : 'Time',
+					dataIndex : 'executeTime',
 					column : 'Time',
 					table : 'tableMapping'
 				} ]
 			});
 
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Default',
+				header : isDefaultLabel,
 				dataIndex : 'isDefault',
 				hidden : isDefaultHidden
 			});
@@ -275,28 +259,39 @@ Ext
 				hidden : isNewHidden
 			});
 			var isDraftGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Draft',
+				header : isDraftLabel,
 				dataIndex : 'isDraft',
 				hidden : isDraftHidden
 			});
 			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Update',
+				header : isUpdateLabel,
 				dataIndex : 'isUpdate',
 				hidden : isUpdateHidden
 			});
 			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Delete',
+				header : isDeleteLabel,
 				dataIndex : 'isDelete'
 			});
 			var isActiveGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isActive',
 				hidden : isActiveHidden
 			});
 			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Approved',
+				header : isApprovedLabel,
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
+			});
+			
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : isReviewLabel,
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
+			});
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : isReviewLabel,
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
 			});
 			var tableMappingColumnModel = [
 					new Ext.grid.RowNumberer(),
@@ -417,15 +412,15 @@ Ext
 						dataIndex : 'tableMappingTranslate',
 						header : tableMappingTranslateLabel
 					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid, {
-						dataIndex : 'By',
-						header : createByLabel,
+					isDeleteGrid, isActiveGrid, isApprovedGrid,isReviewGrid,isPostGrid, {
+						dataIndex : 'executeBy',
+						header : executeByLabel,
 						sortable : true,
 						hidden : true,
 						width : 100
 					}, {
 						dataIndex : 'Time',
-						header : createTimeLabel,
+						header : executeTimeLabel,
 						type : 'date',
 						sortable : true,
 						hidden : true,
@@ -435,20 +430,27 @@ Ext
 			
 			var tableMappingTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
 				dataIndex : "languageCode",
-				header : "languageCode",
+				header : languageCodeLabel,
 				sortable : true,
 				hidden : false,
 				width : 100
 			}, {
 				dataIndex : "languageDesc",
-				header : "languageDesc",
+				header : languageDescLabel,
+				sortable : true,
+				hidden : false,
+				width : 100
+
+			}, {
+				dataIndex : "tableMappingEnglish",
+				header : tableMappingEnglishLabel,
 				sortable : true,
 				hidden : false,
 				width : 100
 
 			}, {
 				dataIndex : "tableMappingTranslate",
-				header : "tableMappingTranslate",
+				header : tableMappingTranslateLabel,
 				sortable : true,
 				hidden : false,
 				width : 100,
@@ -460,7 +462,7 @@ Ext
 
 			} ];
 			
-			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
+			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved','isReview','isPost'];
 			 
 			var tableMappingGrid = new Ext.grid.GridPanel(
 					{
@@ -588,6 +590,14 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+														+ '&isReview[]='
+														+ record
+																.get('isReview');
+												sub_url = sub_url
+														+ '&isPost[]='
+														+ record
+																.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
@@ -797,30 +807,7 @@ Ext
 
 			
 
-			var tableMappingNote = new Ext.form.TextField({
-				labelAlign : 'left',
-				fieldLabel : tableMappingNoteLabel,
-				hiddenName : 'tableMappingNote',
-				name : 'tableMappingNote',
-				anchor : '95%'
-			});
-
-			var tableMappingSequence = new Ext.form.NumberField({
-				labelAlign : 'left',
-				fieldLabel : tableMappingSequenceLabel,
-				hiddenName : 'tableMappingSequence',
-				name : 'tableMappingSequence',
-				id : 'tableMappingSequence',
-				anchor : '95%'
-			});
-
-			var tableMappingPath = new Ext.form.TextField({
-				labelAlign : 'left',
-				fieldLabel : tableMappingPathLabel,
-				hiddenName : 'tableMappingPath',
-				name : 'tableMappingPath',
-				anchor : '95%'
-			});
+			
 
 			
 
@@ -829,6 +816,31 @@ Ext
 				name : 'tableMappingId',
 				id : 'tableMappingId'
 			});
+			
+			var tableMappingName = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : tableMappingNameLabel,
+				hiddenName : 'tableMappingName',
+				name : 'tableMappingName',
+				anchor : '95%'
+			});
+			var tableMappingColumnName = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : tableMappingColumnNameLabel,
+				hiddenName : 'tableMappingColumnName',
+				name : 'tableMappingColumnName',
+				anchor : '95%'
+			});
+
+			var tableMappingEnglish = new Ext.form.TextField({
+				labelAlign : 'left',
+				fieldLabel : tableMappingEnglishLabel,
+				hiddenName : 'tableMappingEnglish',
+				name : 'tableMappingEnglish',
+				anchor : '95%'
+			});
+
+				
 			
 			var firstRecord = new Ext.form.Hidden({
 				name : 'firstRecord',
@@ -863,12 +875,16 @@ Ext
 							title : leafNote,
 							bodyStyle : "padding:5px",
 							layout : 'form',
-							items : [ tableMappingId, tableMappingNote,
-
-							tableMappingSequence, tableMappingPath,  tableMappingId ]
+							items : [ 
+							          tableMappingId,
+							          tableMappingName,
+							          tableMappingColumnName, 
+							          tableMappingEnglish 
+							         ]
 						}, {
 							xtype : 'panel',
 							title : 'tableMapping Translation',
+
 							items : [ tableMappingTranslateGrid ]
 						} ],
 						buttonVAlign : 'top',

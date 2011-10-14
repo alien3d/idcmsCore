@@ -67,11 +67,15 @@ class TableMappingModel extends ValidationClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
 		}
-		$this->setTotal ( count ( $_GET ['tableMappingId'] ) );
+		if (isset ( $_GET ['tableMappingId'] )) {
+			$this->setTotal ( count ( $_GET ['tableMappingId'] ) );
+		}
 		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
 		// auto assign as array if true
-		if (is_array ( $_GET ['tableMappingId'] )) {
-			$this->tableMappingId = array ();
+		if (isset ( $_GET ['tableMappingId'] )) {
+			if (is_array ( $_GET ['tableMappingId'] )) {
+				$this->tableMappingId = array ();
+			}
 		}
 		if (isset ( $_GET ['isDefault'] )) {
 			if (is_array ( $_GET ['isDefault'] )) {

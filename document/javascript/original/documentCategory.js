@@ -118,14 +118,13 @@ Ext
 				}, {
 					name : "isApproved",
 					type : "boolean"
-				},  {
-		            name: "isReview",
-		            type: "boolean"
-		        },
-		        {
-		            name: "isPost",
-		            type: "boolean"
-		        }, {
+				}, {
+					name : "isReview",
+					type : "boolean"
+				}, {
+					name : "isPost",
+					type : "boolean"
+				}, {
 					name : "executeBy",
 					type : "int"
 
@@ -209,16 +208,16 @@ Ext
 					table : "documentCategory"
 				}, {
 					type : "list",
-					dataIndex : "By",
-					column : "By",
+					dataIndex : "executeBy",
+					column : "executeBy",
 					table : "documentCategory",
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
 				}, {
 					type : "date",
-					dataIndex : "Time",
-					column : "Time",
+					dataIndex : "executeTime",
+					column : "executeTime",
 					table : "documentCategory"
 				} ]
 			});
@@ -298,37 +297,48 @@ Ext
 			});
 
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Default',
+				header : isDefaultLabel,
 				dataIndex : 'isDefault',
 				hidden : isDefaultHidden
 			});
 			var isNewGrid = new Ext.ux.grid.CheckColumn({
-				header : 'New',
+				header : isNewLabel,
 				dataIndex : 'isNew',
 				hidden : isNewHidden
 			});
 			var isDraftGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Draft',
+				header : isDraftLabel,
 				dataIndex : 'isDraft',
 				hidden : isDraftHidden
 			});
 			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Update',
+				header : isUpdateLabel,
 				dataIndex : 'isUpdate',
 				hidden : isUpdateHidden
 			});
 			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Delete',
+				header : isDeleteLabel,
 				dataIndex : 'isDelete'
 			});
 			var isActiveGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isActive',
 				hidden : isActiveHidden
 			});
 			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Approved',
+				header : isApprovedLabel,
 				dataIndex : 'isApproved',
+				hidden : isApprovedHidden
+			});
+
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : isReviewLabel,
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
+			});
+			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
+				header : isPostLabel,
+				dataIndex : 'isPost',
 				hidden : isApprovedHidden
 			});
 			var documentCategoryColumnModelGrid = [
@@ -392,7 +402,7 @@ Ext
 					},
 					{
 						dataIndex : "Time",
-						header : timeLabel,
+						header : executeTimeLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -401,7 +411,7 @@ Ext
 						}
 					} ];
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-					'isDelete', 'isActive', 'isApproved' ];
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var documentCategoryEditor = new Ext.ux.grid.RowEditor(
 					{
 						saveText : 'Save',
@@ -481,7 +491,7 @@ Ext
 				name : "documentCategoryNote",
 				type : "string"
 			}, {
-				name : "By",
+				name : "executeBy",
 				type : "int"
 			}, {
 				name : "staffName",
@@ -506,6 +516,12 @@ Ext
 				type : "boolean"
 			}, {
 				name : "isApproved",
+				type : "boolean"
+			}, {
+				name : "isReview",
+				type : "boolean"
+			}, {
+				name : "isPost",
 				type : "boolean"
 			}, {
 				name : "executeTime",
@@ -555,7 +571,7 @@ Ext
 											documentCategoryEditor
 													.stopEditing();
 											documentCategoryStore.insert(0, e);
-											 documentCategoryGrid
+											documentCategoryGrid
 													.getSelectionModel()
 													.getSelections();
 											documentCategoryEditor
@@ -567,7 +583,7 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												
+
 												documentCategoryStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -619,7 +635,7 @@ Ext
 																+ '&documentCategoryId[]='
 																+ record
 																		.get('documentCategoryId');
-													} 
+													}
 													if (isAdmin == 1) {
 														sub_url = sub_url
 																+ '&isDefault[]='
@@ -652,6 +668,14 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
@@ -708,7 +732,7 @@ Ext
 							pageSize : perPage
 						})
 					});
-			
+
 			var gridPanel = new Ext.Panel(
 					{
 						title : leafNote,

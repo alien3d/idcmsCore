@@ -67,11 +67,15 @@ class DefaultLabelTranslateModel extends ValidationClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
 		}
-		$this->setTotal ( count ( $_GET ['defaultLabelId'] ) );
+		if (isset ( $_GET ['defaultLabelTranslateId'] )) {
+			$this->setTotal ( count ( $_GET ['defaultLabelTranslateId'] ) );
+		}
 		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
 		// auto assign as array if true
-		if (is_array ( $_GET ['defaultLabelId'] )) {
-			$this->defaultLabelId = array ();
+		if (isset ( $_GET ['defaultLabelTranslateId'] )) {
+			if (is_array ( $_GET ['defaultLabelTranslateId'] )) {
+				$this->defaultLabelTranslateId = array ();
+			}
 		}
 		if (isset ( $_GET ['isDefault'] )) {
 			if (is_array ( $_GET ['isDefault'] )) {
@@ -120,7 +124,9 @@ class DefaultLabelTranslateModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for($i = 0; $i < $this->getTotal (); $i ++) {
-			$this->setdefaultLabelId ( $this->strict ( $_GET ['defaultLabelId'] [$i], 'numeric' ), $i, 'array' );
+			if (isset ( $_GET ['defaultLabelTranslateId'] )) {
+				$this->setDefaultLabelTranslateId ( $this->strict ( $_GET ['defaultLabelTranslateId'] [$i], 'numeric' ), $i, 'array' );
+			}
 			if (isset ( $_GET ['isDefault'] )) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
 					$this->setIsDefault ( 1, $i, 'array' );

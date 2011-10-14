@@ -41,10 +41,8 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(systemLabel,
-						// jsonResponse.message);
-						// //uncomment it for debugging
-						// purpose
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+						// uncomment it for debugging purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -85,7 +83,7 @@ Ext
 					name : "religionDesc",
 					type : "string"
 				}, {
-					name : "By",
+					name : "executeBy",
 					type : "int"
 				}, {
 					name : "staffName",
@@ -118,10 +116,10 @@ Ext
 					name : "isPost",
 					type : "boolean"
 				}, {
-					name : "By",
+					name : "executeBy",
 					type : "int"
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -181,16 +179,16 @@ Ext
 					table : "religion"
 				}, {
 					type : "list",
-					dataIndex : "By",
-					column : "By",
+					dataIndex : "executeBy",
+					column : "executeBy",
 					table : "religion",
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
 				}, {
 					type : "date",
-					dataIndex : "Time",
-					column : "Time",
+					dataIndex : "executeTime",
+					column : "executeTime",
 					table : "religion"
 				} ]
 			});
@@ -211,7 +209,7 @@ Ext
 			});
 
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Default',
+				header : isDefaultLabel,
 				dataIndex : 'isDefault',
 				hidden : isDefaultHidden
 			});
@@ -221,28 +219,39 @@ Ext
 				hidden : isNewHidden
 			});
 			var isDraftGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Draft',
+				header : isDraftLabel,
 				dataIndex : 'isDraft',
 				hidden : isDraftHidden
 			});
 			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Update',
+				header : isUpdateLabel,
 				dataIndex : 'isUpdate',
 				hidden : isUpdateHidden
 			});
 			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Delete',
+				header : isDeleteLabel,
 				dataIndex : 'isDelete'
 			});
 			var isActiveGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isActive',
 				hidden : isActiveHidden
 			});
 			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Approved',
+				header : isApprovedLabel,
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
+			});
+			
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : isReviewLabel,
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
+			});
+			var isPostGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Post',
+				dataIndex : 'isPost',
+				hidden : isPostHidden
 			});
 			var religionColumnModelGrid = [ new Ext.grid.RowNumberer(), {
 				dataIndex : "religionDesc",
@@ -252,7 +261,7 @@ Ext
 				editor : religionDesc
 
 			}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid ];
+					isDeleteGrid, isActiveGrid, isApprovedGrid,isReview,isPost ];
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
 					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var religionEditor = new Ext.ux.grid.RowEditor(
@@ -384,7 +393,7 @@ Ext
 											var e = new religionEntity({
 												religionId : '',
 												religionDesc : '',
-												By : '',
+												executeBy : '',
 												staffName : '',
 												isDefault : '',
 												isNew : '',
@@ -395,7 +404,7 @@ Ext
 												isApproved : '',
 												isReview : '',
 												isPost : '',
-												Time : ''
+												executeTime : ''
 											});
 											religionEditor.stopEditing();
 											religionStore.insert(0, e);

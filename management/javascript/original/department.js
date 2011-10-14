@@ -133,10 +133,9 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
-						// //uncommen for testing
-						// purpose
+					if (jsonResponse.success == true) { 
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// uncomment for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -253,49 +252,49 @@ Ext
 			});
 
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Default',
+				header : isDefaultLabel,
 				dataIndex : 'isDefault',
 				hidden : isDefaultHidden
 			});
 			var isNewGrid = new Ext.ux.grid.CheckColumn({
-				header : 'New',
+				header : isNewLabel,
 				dataIndex : 'isNew',
 				hidden : isNewHidden
 			});
 			var isDraftGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Draft',
+				header : isDraftLabel,
 				dataIndex : 'isDraft',
 				hidden : isDraftHidden
 			});
 			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Update',
+				header : isUpdateLabel,
 				dataIndex : 'isUpdate',
 				hidden : isUpdateHidden
 			});
 			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Delete',
+				header : isDeleteLabel,
 				dataIndex : 'isDelete'
 			});
 			var isActiveGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isActive',
 				hidden : isActiveHidden
 			});
 			
 			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Approved',
+				header : isApprovedLabel,
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
 			
 			var isReviewGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Review',
+				header : isReviewLabel,
 				dataIndex : 'isReview',
 				hidden : isReviewHidden
 			});
 			
 			var isPostGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Post',
+				header : isPostLabel,
 				dataIndex : 'isPost',
 				hidden : isReviewHidden
 			});
@@ -346,7 +345,7 @@ Ext
 					},
 					{
 						dataIndex : "executeTime",
-						header : timeLabel,
+						header : executeTimeLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -639,11 +638,7 @@ Ext
 																					systemLabel,
 																					jsonResponse.message);
 																	departmentStore
-																			.removeAll(); // force
-																	// to
-																	// remove
-																	// all
-																	// data
+																			.removeAll(); 
 																	departmentStore
 																			.reload();
 																} else if (jsonResponse.success == false) {

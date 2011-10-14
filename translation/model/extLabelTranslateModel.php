@@ -71,8 +71,10 @@ class ExtLabelTranslateModel extends ValidationClass {
 		$this->setTotal ( count ( $_GET ['extLabelId'] ) );
 		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
 		// auto assign as array if true
-		if (is_array ( $_GET ['extLabelId'] )) {
-			$this->extLabelId = array ();
+		if (isset ( $_GET ['extLabelTranslateId'] )) {
+			if (is_array ( $_GET ['extLabelTranslateId'] )) {
+				$this->extLabelTranslateId = array ();
+			}
 		}
 		if (isset ( $_GET ['isDefault'] )) {
 			if (is_array ( $_GET ['isDefault'] )) {
@@ -121,7 +123,9 @@ class ExtLabelTranslateModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for($i = 0; $i < $this->getTotal (); $i ++) {
-			$this->setTextLabelId ( $this->strict ( $_GET ['extLabelId'] [$i], 'numeric' ), $i, 'array' );
+			if (isset ( $_GET ['extLabelTranslateId'] )) {
+				$this->setExtLabelTranslateId ( $this->strict ( $_GET ['extLabelTranslateId'] [$i], 'numeric' ), $i, 'array' );
+			}
 			if (isset ( $_GET ['isDefault'] )) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
 					$this->setIsDefault ( 1, $i, 'array' );

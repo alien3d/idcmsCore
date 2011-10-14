@@ -72,8 +72,10 @@ class TableMappingTranslateModel extends ValidationClass {
 		}
 		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
 		// auto assign as array if true
-		if (is_array ( $_GET ['tableMappingTranslateId'] )) {
-			$this->tableMappingTranslateId = array ();
+		if (isset ( $_GET ['tableMappingTranslateId'] )) {
+			if (is_array ( $_GET ['tableMappingTranslateId'] )) {
+				$this->tableMappingTranslateId = array ();
+			}
 		}
 		if (isset ( $_GET ['isDefault'] )) {
 			if (is_array ( $_GET ['isDefault'] )) {

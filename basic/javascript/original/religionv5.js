@@ -282,7 +282,8 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,jsonResponse.message); //uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// //uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -348,7 +349,8 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,jsonResponse.message);// uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);//
+						// uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -399,7 +401,8 @@ Ext
 					type : 'int'
 				} ]
 			});
-			var religionFilters = new Ext.ux.grid.GridFilters({ // encode and local
+			var religionFilters = new Ext.ux.grid.GridFilters({ // encode and
+																// local
 				// configuration options
 				// defined previously
 				// for
@@ -430,7 +433,7 @@ Ext
 				} ]
 			});
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Default',
+				header : isDefaultLabel,
 				dataIndex : 'isDefault',
 				hidden : isDefaultHidden
 			});
@@ -440,32 +443,32 @@ Ext
 				hidden : isNewHidden
 			});
 			var isDraftGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Draft',
+				header : isDraftLabel,
 				dataIndex : 'isDraft',
 				hidden : isDraftHidden
 			});
 			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Update',
+				header : isUpdateLabel,
 				dataIndex : 'isUpdate',
 				hidden : isUpdateHidden
 			});
 			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Delete',
+				header : isDeleteLabel,
 				dataIndex : 'isDelete'
 			});
 			var isActiveGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isActive',
 				hidden : isActiveHidden
 			});
 			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Approved',
+				header : isApprovedLabel,
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
 
 			var isReviewGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Review',
+				header : isReviewLabel,
 				dataIndex : 'isReview',
 				hidden : isReviewHidden
 			});
@@ -476,7 +479,7 @@ Ext
 			});
 
 			var isDefaultGridDetail = new Ext.ux.grid.CheckColumn({
-				header : 'Default',
+				header : isDefaultLabel,
 				dataIndex : 'isDefault',
 				hidden : isDefaultHidden
 			});
@@ -486,32 +489,32 @@ Ext
 				hidden : isNewHidden
 			});
 			var isDraftGridDetail = new Ext.ux.grid.CheckColumn({
-				header : 'Draft',
+				header : isDraftLabel,
 				dataIndex : 'isDraft',
 				hidden : isDraftHidden
 			});
 			var isUpdateGridDetail = new Ext.ux.grid.CheckColumn({
-				header : 'Update',
+				header : isUpdateLabel,
 				dataIndex : 'isUpdate',
 				hidden : isUpdateHidden
 			});
 			var isDeleteGridDetail = new Ext.ux.grid.CheckColumn({
-				header : 'Delete',
+				header : isDeleteLabel,
 				dataIndex : 'isDelete'
 			});
 			var isActiveGridDetail = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isActive',
 				hidden : isActiveHidden
 			});
 			var isApprovedGridDetail = new Ext.ux.grid.CheckColumn({
-				header : 'Approved',
+				header : isApprovedLabel,
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
 
 			var isReviewGridDetail = new Ext.ux.grid.CheckColumn({
-				header : 'Review',
+				header : isReviewLabel,
 				dataIndex : 'isReview',
 				hidden : isReviewHidden
 			});
@@ -531,7 +534,7 @@ Ext
 					isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid,
 					isPostGrid, {
 						dataIndex : 'executeBy',
-						header : createByLabel,
+						header : executeByLabel,
 						hidden : true,
 						width : 100
 					}, {
@@ -569,7 +572,7 @@ Ext
 					isApprovedGridDetail, isReviewGridDetail, isPostGridDetail,
 					{
 						dataIndex : 'executeBy',
-						header : createByLabel,
+						header : executeByLabel,
 						hidden : true,
 						width : 100
 					}, {
@@ -761,6 +764,15 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
@@ -1236,7 +1248,7 @@ Ext
 					}); // viewport just save information,items will do separate
 
 			// audit grid
-			
+
 			var logFilters = new Ext.ux.grid.GridFilters({
 				encode : encode,
 				local : false,
@@ -1298,14 +1310,13 @@ Ext
 					table : 'log'
 				} ]
 			});
-			
+
 			var expander = new Ext.ux.grid.RowExpander({
-		        tpl : new Ext.Template(
-		            '<br><p><b>Operation:</b> {operation}</p><br>',
-		            '<p><b>SQL STATEMENT:</b> {sql}</p><br>'
-		        )
-		    });
-			var logColumnModel = [ expander,new Ext.grid.RowNumberer(),  {
+				tpl : new Ext.Template(
+						'<br><p><b>Operation:</b> {operation}</p><br>',
+						'<p><b>SQL STATEMENT:</b> {sql}</p><br>')
+			});
+			var logColumnModel = [ expander, new Ext.grid.RowNumberer(), {
 				dataIndex : 'logId',
 				header : logIdLabel,
 				sortable : true,
@@ -1368,9 +1379,9 @@ Ext
 				height : 400,
 				columns : logColumnModel,
 				loadMask : true,
-				plugins : [ logFilters , expander ],
-				collapsible: true,
-		        animCollapse: false,
+				plugins : [ logFilters, expander ],
+				collapsible : true,
+				animCollapse : false,
 				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true
 				}),
@@ -1442,8 +1453,8 @@ Ext
 
 				{
 					type : 'list',
-					dataIndex : 'createBy',
-					column : 'createBy',
+					dataIndex : 'executeBy',
+					column : 'executeBy',
 					table : 'log_advance',
 					labelField : 'staffName',
 					store : staffByStore,
@@ -1452,30 +1463,11 @@ Ext
 
 				{
 					type : 'date',
-					dataIndex : 'createTime',
-					column : 'createTime',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
 					table : 'log_advance'
-				},
-
-				{
-					type : 'list',
-					dataIndex : 'updatedBy',
-					column : 'updatedBy',
-					table : 'log_advance',
-					labelField : 'staffName',
-					store : staffByStore,
-					phpMode : true
-				},
-
-				{
-					type : 'date',
-					dataIndex : 'updatedTime',
-					column : 'updatedTime',
-					table : 'log_advance'
-				} ]
+				}]
 			});
-
-			
 
 			var logAdvanceColumnModel = [ new Ext.grid.RowNumberer(), {
 				dataIndex : 'logAdvanceId',
@@ -1519,7 +1511,7 @@ Ext
 				height : 400,
 				columns : logAdvanceColumnModel,
 				loadMask : true,
-				plugins : [  logAdvancefilters ],
+				plugins : [ logAdvancefilters ],
 				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true
 				}),
@@ -2324,30 +2316,29 @@ Ext
 					});
 
 			var auditWindow = new Ext.Window({
-				layout:'fit',
-                width:500,
-                height:300,
-                closeAction:'hide',
-                plain: true,
-				items :  {
-					xtype:'tabpanel',
-					activeTab : 0 ,
-					items : [{
-					         	xtype:'panel',
-					         	layout : "fit",
-					            title : 'Log Sql Statement',
-					         	items: [logGrid]
-							},{
-								xtype:'panel',
-								layout : "fit",
-								title : 'Log Sql Statement',
-								items:[logAdvanceGrid]
-							}]
-							
-			
+				layout : 'fit',
+				width : 500,
+				height : 300,
+				closeAction : 'hide',
+				plain : true,
+				items : {
+					xtype : 'tabpanel',
+					activeTab : 0,
+					items : [ {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logGrid ]
+					}, {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logAdvanceGrid ]
+					} ]
+
 				},
 				title : 'Sql Statement audit',
-		
+
 				maximizable : true,
 				autoScroll : true
 			});

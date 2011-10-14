@@ -104,10 +104,10 @@ Ext
 					name : 'documentVersion',
 					type : 'string'
 				}, {
-					name : 'By',
+					name : 'executeBy',
 					type : 'int'
 				}, {
-					name : 'Time',
+					name : 'executeTime',
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s'
 				} ]
@@ -247,22 +247,22 @@ Ext
 					table : 'document'
 				}, {
 					type : 'list',
-					dataIndex : 'By',
-					column : 'By',
+					dataIndex : 'executeBy',
+					column : 'executeBy',
 					table : 'document',
 					labelField : 'staffName',
 					store : staffByStore,
 					phpMode : true
 				}, {
 					type : 'date',
-					dataIndex : 'Time',
-					column : 'Time',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
 					table : 'document'
 				} ]
 			});
 
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Default',
+				header : isDefaultLabel,
 				dataIndex : 'isDefault',
 				hidden : isDefaultHidden
 			});
@@ -272,28 +272,39 @@ Ext
 				hidden : isNewHidden
 			});
 			var isDraftGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Draft',
+				header : isDraftLabel,
 				dataIndex : 'isDraft',
 				hidden : isDraftHidden
 			});
 			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Update',
+				header : isUpdateLabel,
 				dataIndex : 'isUpdate',
 				hidden : isUpdateHidden
 			});
 			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Delete',
+				header : isDeleteLabel,
 				dataIndex : 'isDelete'
 			});
 			var isActiveGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isActive',
 				hidden : isActiveHidden
 			});
 			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Approved',
+				header : isApprovedLabel,
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
+			});
+
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : isReviewLabel,
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
+			});
+			var isPostGrid = new Ext.ux.grid.CheckColumn({
+				header : 'Post',
+				dataIndex : 'isPost',
+				hidden : isPostHidden
 			});
 
 			var documentColumnModel = [
@@ -467,9 +478,11 @@ Ext
 					isDeleteGrid,
 					isActiveGrid,
 					isApprovedGrid,
+					isReviewGrid,
+					isPostGrid,
 					{
-						dataIndex : "By",
-						header : createByLabel,
+						dataIndex : "executeBy",
+						header : executeByLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -478,8 +491,8 @@ Ext
 						}
 					},
 					{
-						dataIndex : "Time",
-						header : timeLabel,
+						dataIndex : "executeTime",
+						header : executeTimeLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -489,7 +502,7 @@ Ext
 					} ];
 
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-					'isDelete', 'isActive', 'isApproved' ];
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var documentGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
@@ -578,7 +591,7 @@ Ext
 																+ '&documentId[]='
 																+ record
 																		.get('documentId');
-													} 
+													}
 													if (isAdmin == 1) {
 														sub_url = sub_url
 																+ '&isDefault[]='
@@ -611,6 +624,14 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url;
@@ -731,7 +752,7 @@ Ext
 				valueField : 'documentCategoryId',
 				hiddenName : 'documentCategoryId',
 				id : 'documentCategoryId',
-				hiddenId  :'documentCategoryFake',
+				hiddenId : 'documentCategoryFake',
 				displayField : 'documentCategoryTitle',
 				typeAhead : false,
 				emptyText : emptyTextLabel,
@@ -942,63 +963,63 @@ Ext
 																							'firstButton')
 																					.disable();
 																		}
-																		
+
 																		if (action.result.nextRecord > 0) {
 																			Ext
-																			.getCmp(
-																					'nextButton')
-																			.enable();
+																					.getCmp(
+																							'nextButton')
+																					.enable();
 																			Ext
-																				.getCmp(
-																						'nextRecord')
-																				.setValue(
-																						action.result.nextRecord);
+																					.getCmp(
+																							'nextRecord')
+																					.setValue(
+																							action.result.nextRecord);
 																		} else {
-																		
+
 																			Ext
-																			.getCmp(
-																					'nextButton')
-																			.disable();
-																			
+																					.getCmp(
+																							'nextButton')
+																					.disable();
+
 																		}
 																		if (action.result.previousRecord > 0) {
 																			Ext
-																			.getCmp(
-																					'previousButton')
-																			.enable();
+																					.getCmp(
+																							'previousButton')
+																					.enable();
 																			Ext
-																				.getCmp(
-																						'previousRecord')
-																				.setValue(
-																						action.result.previousRecord);
-																		} else{
+																					.getCmp(
+																							'previousRecord')
+																					.setValue(
+																							action.result.previousRecord);
+																		} else {
 																			Ext
-																			.getCmp(
-																					'previousButton')
-																			.disable();
+																					.getCmp(
+																							'previousButton')
+																					.disable();
 																		}
 																		if (action.result.firstRecord > 0) {
 																			Ext
-																			.getCmp(
-																					'endButton')
-																			.enable();
+																					.getCmp(
+																							'endButton')
+																					.enable();
 																			Ext
-																				.getCmp(
-																						'lastRecord')
-																				.setValue(
-																						action.result.lastRecord);
-																		} else{
+																					.getCmp(
+																							'lastRecord')
+																					.setValue(
+																							action.result.lastRecord);
+																		} else {
 																			Ext
-																			.getCmp(
-																					'endButton')
-																			.disable();
-																		}	
+																					.getCmp(
+																							'endButton')
+																					.disable();
+																		}
 																		viewPort.items
 																				.get(
 																						0)
 																				.expand();
 																	} else {
-																		
+
 																		alert(action.result.message);
 																	}
 																},
@@ -1009,7 +1030,13 @@ Ext
 																	if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																		alert(loadFailureMessageLabel);
 																	} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																		// here will be error if duplicate code
+																		// here
+																		// will
+																		// be
+																		// error
+																		// if
+																		// duplicate
+																		// code
 																		alert(clientInvalidMessageLabel);
 																	} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																		Ext.Msg

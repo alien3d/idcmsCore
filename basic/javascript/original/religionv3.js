@@ -84,7 +84,7 @@ Ext.onReady(function() {
             type: "string"
         },
         {
-            name: "By",
+            name: "executeBy",
             type: "int"
         },
         {
@@ -128,11 +128,11 @@ Ext.onReady(function() {
             type: "boolean"
         },
         {
-        	name :"By",
+        	name :"executeBy",
         	type :"int"
 		},
         {
-            name: "Time",
+            name: "executeTime",
             type: "date",
             dateFormat: "Y-m-d H:i:s"
         }]
@@ -142,10 +142,9 @@ Ext.onReady(function() {
         method: "GET",
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
-            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-                // jsonResponse.message);
-                // //uncommen for testing
-                // purpose
+            if (jsonResponse.success == true) { 
+            	// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+                // uncomment for testing purpose
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
@@ -191,8 +190,8 @@ Ext.onReady(function() {
         },
         {
             type: "list",
-            dataIndex: "By",
-            column: "By",
+            dataIndex: "executeBy",
+            column: "execiteBy",
             table: "religion",
             labelField: "staffName",
             store: staffByStore,
@@ -200,8 +199,8 @@ Ext.onReady(function() {
         },
         {
             type: "date",
-            dataIndex: "Time",
-            column: "Time",
+            dataIndex: "executeTime",
+            column: "executeTime",
             table: "religion"
         }]
     });
@@ -253,6 +252,17 @@ Ext.onReady(function() {
         header: 'Approved',
         dataIndex: 'isApproved',
         hidden: isApprovedHidden
+    });
+    
+    var isReviewGrid = new Ext.ux.grid.CheckColumn({
+        header: 'Review',
+        dataIndex: 'isReview',
+        hidden: isReviewHidden
+    });
+    var isPostGrid = new Ext.ux.grid.CheckColumn({
+        header: 'Post',
+        dataIndex: 'isPost',
+        hidden: isPostHidden
     });
     var religionColumnModelGrid = [new Ext.grid.RowNumberer(), {
         dataIndex: "religionDesc",
@@ -313,7 +323,7 @@ Ext.onReady(function() {
         type: "string"
     },
     {
-        name: "By",
+        name: "executeBy",
         type: "int"
     },
     {
@@ -349,7 +359,7 @@ Ext.onReady(function() {
         type: "boolean"
     },
     {
-        name: "Time",
+        name: "executeTime",
         type: "date",
         dateFormat: "Y-m-d H:i:s"
     }]);
@@ -377,7 +387,7 @@ Ext.onReady(function() {
                     var e = new religionEntity({
                         religionId: '',
                         religionDesc: '',
-                        By: '',
+                        executeBy: '',
                         staffName: '',
                         isDefault: '',
                         isNew: '',
@@ -386,7 +396,7 @@ Ext.onReady(function() {
                         isDelete: '',
                         isActive: '',
                         isApproved: '',
-                        Time: ''
+                        executeTime: ''
                     });
                     religionEditor.stopEditing();
                     religionStore.insert(0, e);
@@ -450,6 +460,8 @@ Ext.onReady(function() {
                             if (isAdmin == 1) {
                                 sub_url = sub_url + '&isActive[]=' + record.get('isActive');
                                 sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                                sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                                sub_url = sub_url + '&isPost[]=' + record.get('isPost');
                             }
                         }
                         url = url + sub_url; // reques and ajax

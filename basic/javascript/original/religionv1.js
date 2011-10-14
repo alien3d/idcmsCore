@@ -84,7 +84,7 @@ Ext
 					name : "religionDesc",
 					type : "string"
 				}, {
-					name : "By",
+					name : "executeBy",
 					type : "int"
 				}, {
 					name : "staffName",
@@ -117,10 +117,10 @@ Ext
 					name : "isPost",
 					type : "boolean"
 				}, {
-					name : "By",
+					name : "executeBy",
 					type : "int"
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -163,6 +163,7 @@ Ext
 					isAdmin : isAdmin,
 					start : 0,
 					limit : perPage
+					
 				},
 				root : "data",
 				fields : [ {
@@ -172,7 +173,7 @@ Ext
 					name : "religionDesc",
 					type : "string"
 				}, {
-					name : "By",
+					name : "executeBy",
 					type : "int"
 				}, {
 					name : "staffName",
@@ -199,7 +200,7 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -258,16 +259,16 @@ Ext
 					table : "religion"
 				}, {
 					type : "list",
-					dataIndex : "By",
-					column : "By",
+					dataIndex : "executeBy",
+					column : "executeBy",
 					table : "religion",
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
 				}, {
 					type : "date",
-					dataIndex : "Time",
-					column : "Time",
+					dataIndex : "executeTime",
+					column : "executeTime",
 					table : "religion"
 				} ]
 			});
@@ -282,16 +283,16 @@ Ext
 					table : "religion"
 				}, {
 					type : "list",
-					dataIndex : "By",
-					column : "By",
+					dataIndex : "executeBy",
+					column : "executeBy",
 					table : "religion",
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
 				}, {
 					type : "date",
-					dataIndex : "Time",
-					column : "Time",
+					dataIndex : "executeTime",
+					column : "executeTime",
 					table : "religion"
 				} ]
 			});
@@ -509,10 +510,37 @@ Ext
 								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
 							}
 						}
+					},{
+						dataIndex : "isReview",
+						header : isReviewLabel,
+						sortable : true,
+						hidden : isReviewHidden,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							if (value == true) {
+								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
+							} else if (value == false) {
+								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
+							}
+						}
 					},
 					{
-						dataIndex : "By",
-						header : createByLabel,
+						dataIndex : "isPost",
+						header : isPostLabel,
+						sortable : true,
+						hidden : isPostHidden,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							if (value == true) {
+								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
+							} else if (value == false) {
+								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
+							}
+						}
+					},
+					{
+						dataIndex : "executeBy",
+						header : executeByLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -522,7 +550,7 @@ Ext
 					},
 					{
 						dataIndex : "Time",
-						header : timeLabel,
+						header : executeTimeLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -740,10 +768,37 @@ Ext
 								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
 							}
 						}
+					},{
+						dataIndex : "isReview",
+						header : isReviewLabel,
+						sortable : true,
+						hidden : isReviewHidden,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							if (value == true) {
+								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
+							} else if (value == false) {
+								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
+							}
+						}
 					},
 					{
-						dataIndex : "By",
-						header : createByLabel,
+						dataIndex : "isPost",
+						header : isPostLabel,
+						sortable : true,
+						hidden : isApprovedHidden,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							if (value == true) {
+								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
+							} else if (value == false) {
+								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
+							}
+						}
+					},
+					{
+						dataIndex : "executeBy",
+						header : executeByLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -752,8 +807,8 @@ Ext
 						}
 					},
 					{
-						dataIndex : "Time",
-						header : timeLabel,
+						dataIndex : "executeTime",
+						header : executeTimeLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,

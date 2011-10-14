@@ -42,7 +42,7 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// //uncomment it for debugging
+						// uncomment it for debugging
 
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
@@ -119,7 +119,7 @@ Ext
 				}, {
 					name : "isReview",
 					type : "int"
-				},{
+				}, {
 					name : "isPost",
 					type : "boolean"
 				}, {
@@ -319,22 +319,22 @@ Ext
 					table : 'staff'
 				}, {
 					type : 'list',
-					dataIndex : 'by',
-					column : 'by',
+					dataIndex : 'executeBy',
+					column : 'executeBy',
 					table : 'staff',
 					labelField : 'staffName',
 					store : staffByStore,
 					phpMode : true
 				}, {
 					type : 'date',
-					dataIndex : 'Time',
-					column : 'Time',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
 					table : 'staff'
 				} ]
 			});
 
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Default',
+				header : isDefaultLabel,
 				dataIndex : 'isDefault',
 				hidden : isDefaultHidden
 			});
@@ -344,26 +344,37 @@ Ext
 				hidden : isNewHidden
 			});
 			var isDraftGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Draft',
+				header : isDraftLabel,
 				dataIndex : 'isDraft',
 				hidden : isDraftHidden
 			});
 			var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Update',
+				header : isUpdateLabel,
 				dataIndex : 'isUpdate',
 				hidden : isUpdateHidden
 			});
 			var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Delete',
+				header : isDeleteLabel,
 				dataIndex : 'isDelete'
 			});
 			var isActiveGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Active',
+				header : isActiveLabel,
 				dataIndex : 'isActive',
 				hidden : isActiveHidden
 			});
 			var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-				header : 'Approved',
+				header : isApprovedLabel,
+				dataIndex : 'isApproved',
+				hidden : isApprovedHidden
+			});
+
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : isReviewLabel,
+				dataIndex : 'isActive',
+				hidden : isActiveHidden
+			});
+			var isPostGrid = new Ext.ux.grid.CheckColumn({
+				header : isApprovedLabel,
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
@@ -415,9 +426,11 @@ Ext
 					isDeleteGrid,
 					isActiveGrid,
 					isApprovedGrid,
+					isReviewGrid,
+					isPostGrid,
 					{
-						dataIndex : "By",
-						header : createByLabel,
+						dataIndex : "executeBy",
+						header : executeByLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -426,8 +439,8 @@ Ext
 						}
 					},
 					{
-						dataIndex : "Time",
-						header : timeLabel,
+						dataIndex : "executeTime",
+						header : executeTimeLabel,
 						sortable : true,
 						hidden : false,
 						renderer : function(value, metaData, record, rowIndex,
@@ -437,7 +450,7 @@ Ext
 					} ];
 
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-					'isDelete', 'isActive', 'isApproved' ];
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 
 			var staffGrid = new Ext.grid.GridPanel(
 					{
@@ -460,93 +473,83 @@ Ext
 							'rowclick' : function(object, rowIndex, e) {
 								var record = staffStore.getAt(rowIndex);
 								formPanel.getForm().reset();
-								formPanel.form.load({
-									url : "../controller/staffController.php",
-									method : "POST",
-									waitTitle : systemLabel,
-									waitMsg : waitMessageLabel,
-									params : {
-										method : "read",
+								formPanel.form
+										.load({
+											url : "../controller/staffController.php",
+											method : "POST",
+											waitTitle : systemLabel,
+											waitMsg : waitMessageLabel,
+											params : {
+												method : "read",
 
-										staffId : record.data.staffId,
-										leafId : leafId,
-										isAdmin : isAdmin
-									},
-									success : function(form, action) {
-										if (action.result.firstRecord > 0) {
-											Ext
-													.getCmp(
-															'firstButton')
-													.enable();
-											Ext
-													.getCmp(
-															'firstRecord')
-													.setValue(
-															action.result.firstRecord);
-										} else {
-											Ext
-													.getCmp(
-															'firstButton')
-													.disable();
-										}
-									//	alert("testing"+action.result.nextRecord);
-										if (action.result.nextRecord > 0) {
-											Ext
-											.getCmp(
-													'nextButton')
-											.enable();
-											Ext
-												.getCmp(
-														'nextRecord')
-												.setValue(
-														action.result.nextRecord);
-										} else {
-										
-											Ext
-											.getCmp(
-													'nextButton')
-											.disable();
-											
-										}
-										if (action.result.previousRecord > 0) {
-											Ext
-											.getCmp(
-													'previousButton')
-											.enable();
-											Ext
-												.getCmp(
-														'previousRecord')
-												.setValue(
-														action.result.previousRecord);
-										} else{
-											Ext
-											.getCmp(
-													'previousButton')
-											.disable();
-										}
-										if (action.result.firstRecord > 0) {
-											Ext
-											.getCmp(
-													'endButton')
-											.enable();
-											Ext
-												.getCmp(
-														'lastRecord')
-												.setValue(
-														action.result.lastRecord);
-										} else{
-											Ext
-											.getCmp(
-													'lastRecord')
-											.disable();
-										}	
-										viewPort.items.get(1).expand();
-									},
-									failure : function(form, action) {
-										Ext.MessageBox.alert(systemErrorLabel,
-												action.result.message);
-									}
-								});
+												staffId : record.data.staffId,
+												leafId : leafId,
+												isAdmin : isAdmin
+											},
+											success : function(form, action) {
+												if (action.result.firstRecord > 0) {
+													Ext.getCmp('firstButton')
+															.enable();
+													Ext
+															.getCmp(
+																	'firstRecord')
+															.setValue(
+																	action.result.firstRecord);
+												} else {
+													Ext.getCmp('firstButton')
+															.disable();
+												}
+												// alert("testing"+action.result.nextRecord);
+												if (action.result.nextRecord > 0) {
+													Ext.getCmp('nextButton')
+															.enable();
+													Ext
+															.getCmp(
+																	'nextRecord')
+															.setValue(
+																	action.result.nextRecord);
+												} else {
+
+													Ext.getCmp('nextButton')
+															.disable();
+
+												}
+												if (action.result.previousRecord > 0) {
+													Ext
+															.getCmp(
+																	'previousButton')
+															.enable();
+													Ext
+															.getCmp(
+																	'previousRecord')
+															.setValue(
+																	action.result.previousRecord);
+												} else {
+													Ext
+															.getCmp(
+																	'previousButton')
+															.disable();
+												}
+												if (action.result.firstRecord > 0) {
+													Ext.getCmp('endButton')
+															.enable();
+													Ext
+															.getCmp(
+																	'lastRecord')
+															.setValue(
+																	action.result.lastRecord);
+												} else {
+													Ext.getCmp('lastRecord')
+															.disable();
+												}
+												viewPort.items.get(1).expand();
+											},
+											failure : function(form, action) {
+												Ext.MessageBox.alert(
+														systemErrorLabel,
+														action.result.message);
+											}
+										});
 							}
 						},
 						tbar : {
@@ -652,6 +655,14 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
@@ -678,11 +689,8 @@ Ext
 																					systemLabel,
 																					jsonResponse.message);
 																	departmentStore
-																			.removeAll(); // force
-																	// to
-																	// remove
-																	// all
-																	// data
+																			.removeAll(); 
+																
 																	departmentStore
 																			.reload();
 																} else if (jsonResponse.success == false) {
@@ -712,8 +720,6 @@ Ext
 							pageSize : perPage
 						})
 					});
-
-			
 
 			var gridPanel = new Ext.Panel(
 					{
@@ -938,8 +944,8 @@ Ext
 
 										if (!(is_int(Ext.getCmp('team_fake')
 												.getValue()))) {
-											Ext.getCmp('team_fake').setValue(
-													'');
+											Ext.getCmp('team_fake')
+													.setValue('');
 										} else {
 											if (formPanel.getForm().isValid()) {
 												var id = 0;
@@ -997,63 +1003,63 @@ Ext
 																								'firstButton')
 																						.disable();
 																			}
-																			
+
 																			if (action.result.nextRecord > 0) {
 																				Ext
-																				.getCmp(
-																						'nextButton')
-																				.enable();
+																						.getCmp(
+																								'nextButton')
+																						.enable();
 																				Ext
-																					.getCmp(
-																							'nextRecord')
-																					.setValue(
-																							action.result.nextRecord);
+																						.getCmp(
+																								'nextRecord')
+																						.setValue(
+																								action.result.nextRecord);
 																			} else {
-																			
+
 																				Ext
-																				.getCmp(
-																						'nextButton')
-																				.disable();
-																				
+																						.getCmp(
+																								'nextButton')
+																						.disable();
+
 																			}
 																			if (action.result.previousRecord > 0) {
 																				Ext
-																				.getCmp(
-																						'previousButton')
-																				.enable();
+																						.getCmp(
+																								'previousButton')
+																						.enable();
 																				Ext
-																					.getCmp(
-																							'previousRecord')
-																					.setValue(
-																							action.result.previousRecord);
-																			} else{
+																						.getCmp(
+																								'previousRecord')
+																						.setValue(
+																								action.result.previousRecord);
+																			} else {
 																				Ext
-																				.getCmp(
-																						'previousButton')
-																				.disable();
+																						.getCmp(
+																								'previousButton')
+																						.disable();
 																			}
 																			if (action.result.firstRecord > 0) {
 																				Ext
-																				.getCmp(
-																						'endButton')
-																				.enable();
+																						.getCmp(
+																								'endButton')
+																						.enable();
 																				Ext
-																					.getCmp(
-																							'lastRecord')
-																					.setValue(
-																							action.result.lastRecord);
-																			} else{
+																						.getCmp(
+																								'lastRecord')
+																						.setValue(
+																								action.result.lastRecord);
+																			} else {
 																				Ext
-																				.getCmp(
-																						'endButton')
-																				.disable();
-																			}	
+																						.getCmp(
+																								'endButton')
+																						.disable();
+																			}
 																			viewPort.items
 																					.get(
 																							0)
 																					.expand();
 																		} else {
-																			
+
 																			alert(action.result.message);
 																		}
 																	},
@@ -1064,7 +1070,13 @@ Ext
 																		if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																			alert(loadFailureMessageLabel);
 																		} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																			// here will be error if duplicate code
+																			// here
+																			// will
+																			// be
+																			// error
+																			// if
+																			// duplicate
+																			// code
 																			alert(clientInvalidMessageLabel);
 																		} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																			Ext.Msg
@@ -1182,7 +1194,8 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_previous',
 									handler : function() {
-										if (Ext.getCmp('firstRecord').getValue() >= 1) {
+										if (Ext.getCmp('firstRecord')
+												.getValue() >= 1) {
 											formPanel.form
 													.load({
 														url : "../controller/staffController.php",

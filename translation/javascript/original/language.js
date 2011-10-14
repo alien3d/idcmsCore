@@ -86,7 +86,7 @@ Ext.onReady(function() {
             type: "string"
         },
         {
-            name: "By",
+            name: "executeBy",
             type: "int"
         },
         {
@@ -122,7 +122,15 @@ Ext.onReady(function() {
             type: "boolean"
         },
         {
-            name: "Time",
+            name: "isReview",
+            type: "boolean"
+        },
+        {
+            name: "isPost",
+            type: "boolean"
+        },
+        {
+            name: "executeTime",
             type: "date",
             dateFormat: "Y-m-d H:i:s"
         }]
@@ -132,10 +140,9 @@ Ext.onReady(function() {
         method: "GET",
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
-            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-                // jsonResponse.message);
-                // //uncommen for testing
-                // purpose
+            if (jsonResponse.success == true) { 
+            	// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+                // uncomment for testing purpose
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
@@ -186,8 +193,8 @@ Ext.onReady(function() {
         },
         {
             type: "list",
-            dataIndex: "By",
-            column: "By",
+            dataIndex: "executeBy",
+            column: "executeBy",
             table: "language",
             labelField: "staffName",
             store: staffByStore,
@@ -195,8 +202,8 @@ Ext.onReady(function() {
         },
         {
             type: "date",
-            dataIndex: "Time",
-            column: "Time",
+            dataIndex: "executeTime",
+            column: "excuteTime",
             table: "language"
         }]
     });
@@ -233,37 +240,48 @@ Ext.onReady(function() {
 	    });
 	 
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-        header: 'Default',
+        header: isDefaultLabel,
         dataIndex: 'isDefault',
         hidden: isDefaultHidden
     });
     var isNewGrid = new Ext.ux.grid.CheckColumn({
-        header: 'New',
+        header: isNewLabel,
         dataIndex: 'isNew',
         hidden: isNewHidden
     });
     var isDraftGrid = new Ext.ux.grid.CheckColumn({
-        header: 'Draft',
+        header: isDraftLabel,
         dataIndex: 'isDraft',
         hidden: isDraftHidden
     });
     var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-        header: 'Update',
+        header: isUpdateLabel,
         dataIndex: 'isUpdate',
         hidden: isUpdateHidden
     });
     var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-        header: 'Delete',
+        header: isDeleteLabel,
         dataIndex: 'isDelete'
     });
     var isActiveGrid = new Ext.ux.grid.CheckColumn({
-        header: 'Active',
+        header: IsActiveLabel,
         dataIndex: 'isActive',
         hidden: isActiveHidden
     });
     var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-        header: 'Approved',
+        header: IsApprovedLabel,
         dataIndex: 'isApproved',
+        hidden: isApprovedHidden
+    });
+    
+    var isReviewGrid = new Ext.ux.grid.CheckColumn({
+        header: isActiveLabel,
+        dataIndex: 'isActive',
+        hidden: isActiveHidden
+    });
+    var isPostGrid = new Ext.ux.grid.CheckColumn({
+        header: isPostLabel,
+        dataIndex: 'isPost',
         hidden: isApprovedHidden
     });
     var languageColumnModelGrid = [new Ext.grid.RowNumberer(),
@@ -282,9 +300,9 @@ Ext.onReady(function() {
 		editor : languageDesc
 					
     },
-    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid,{
-        dataIndex: "By",
-        header: createByLabel,
+    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid,isReviewGrid,isPostGrid,{
+        dataIndex: "executeBy",
+        header: executeByLabel,
         sortable: true,
         hidden: false,
         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
@@ -292,15 +310,15 @@ Ext.onReady(function() {
         }
     },
     {
-        dataIndex: "Time",
-        header: timeLabel,
+        dataIndex: "executeTime",
+        header: executeTimeLabel,
         sortable: true,
         hidden: false,
         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
+    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved','isReview','isPost'];
     var languageEditor = new Ext.ux.grid.RowEditor({
         saveText: 'Save',
         listeners: {
@@ -357,7 +375,7 @@ Ext.onReady(function() {
         type: "string"
     },
     {
-        name: "By",
+        name: "executeBy",
         type: "int"
     },
     {
@@ -393,7 +411,7 @@ Ext.onReady(function() {
         type: "boolean"
     },
     {
-        name: "Time",
+        name: "executeTime",
         type: "date",
         dateFormat: "Y-m-d H:i:s"
     }]);
@@ -423,7 +441,7 @@ Ext.onReady(function() {
                       
                         languageCode :'',
                         languageDesc: '',
-                        By: '',
+                        executeBy: '',
                         staffName: '',
                         isDefault: '',
                         isNew: '',
@@ -432,7 +450,7 @@ Ext.onReady(function() {
                         isDelete: '',
                         isActive: '',
                         isApproved: '',
-                        Time: ''
+                        executeTime: ''
                     });
                     languageEditor.stopEditing();
                     languageStore.insert(0, e);
@@ -494,6 +512,8 @@ Ext.onReady(function() {
                             if (isAdmin == 1) {
                                 sub_url = sub_url + '&isActive[]=' + record.get('isActive');
                                 sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                                sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                                sub_url = sub_url + '&isPost[]=' + record.get('isPost');
                             }
                         }
                         url = url + sub_url; // reques and ajax

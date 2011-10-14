@@ -632,6 +632,12 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
+		}else if ($this->getVendor () == self::DB2{
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
+		}else if ($this->getVendor () == self::POSTGRESS)
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
