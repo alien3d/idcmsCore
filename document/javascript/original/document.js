@@ -863,7 +863,7 @@ Ext
 						method : 'POST',
 						id : 'formPanel',
 						url : '../controller/documentController.php',
-						title : leafNote,
+						title : leafEnglish,
 						border : false,
 						width : 600,
 						fileUpload : true,

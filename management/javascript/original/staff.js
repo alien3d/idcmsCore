@@ -222,7 +222,7 @@ Ext
 					name : "teamId",
 					type : "int"
 				}, {
-					name : "teamNote",
+					name : "teamEnglish",
 					type : "string"
 				}, {
 					name : "teamTranslate",
@@ -291,7 +291,7 @@ Ext
 					dataIndex : 'teamId',
 					column : 'teamId',
 					table : 'staff',
-					labelField : 'teamNote',
+					labelField : 'teamEnglish',
 					store : teamStore,
 					phpMode : true
 				}, {
@@ -383,12 +383,12 @@ Ext
 					new Ext.grid.RowNumberer(),
 					{
 						dataIndex : 'teamId',
-						header : teamNoteLabel,
+						header : teamEnglishLabel,
 						hidden : false,
 						sortable : true,
 						renderer : function(value, metaData, record, rowIndex,
 								colIndex, store) {
-							return record.data.teamNote;
+							return record.data.teamEnglish;
 						}
 					},
 					{
@@ -723,7 +723,7 @@ Ext
 
 			var gridPanel = new Ext.Panel(
 					{
-						title : leafNote,
+						title : leafEnglish,
 						height : 50,
 						layout : 'fit',
 						iconCls : 'application_view_detail',
@@ -796,7 +796,7 @@ Ext
 				hiddenName : 'teamId',
 				valueField : 'teamId',
 				id : 'team_fake',
-				displayField : 'teamNote',
+				displayField : 'teamEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
 				store : teamStore,
@@ -918,7 +918,7 @@ Ext
 						url : '../controller/staffController.php',
 						method : 'post',
 						frame : true,
-						title : leafNote,
+						title : leafEnglish,
 						border : false,
 
 						width : 600,

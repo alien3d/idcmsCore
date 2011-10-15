@@ -205,7 +205,7 @@ class TreeClass extends ConfigClass {
 		      			MODULEACCESS.TEAMID 			AS \"teamId\",
 		      			MODULEACCESS.MODULEACCESSVALUE 	AS \"moduleAccessValue\",
 		      			MODULE.MODULEID 			 	AS \"moduleId\",
-		      			MODULETRANSLATE.MODULETRANSLATE AS \"moduleTranslate\",
+		      			MODULETRANSLATE.MODULENATIVE 	AS \"moduleNative\",
 		      			ICON.ICONNAME 					AS \"iconName\"
 		      FROM    	MODULEACCESS
 		      JOIN    	MODULE
@@ -227,13 +227,13 @@ class TreeClass extends ConfigClass {
 		if ($totalModule > 0) {
 			$counterModule = 0;
 			while ( ($rowModule = $this->q->fetchArray ( $resultModule )) == TRUE ) {
-				$moduleTranslate = $rowModule ['moduleTranslate'];
+				$moduleNative = $rowModule ['moduleNative'];
 				$iconName = $rowModule ['iconName'];
 				$moduleId = $rowModule ['moduleId'];
 				$counterModule ++;
 				$treeJsonString .= "{
 						\"leaf\"	:	false,
-						\"text\"	:	\"" . $moduleTranslate . "\",
+						\"text\"	:	\"" . $moduleNative . "\",
 					    \"iconCls\"	:	\"" . $iconName . "\",
 					    \"expanded\":	true,";
 				if ($this->getVendor () == self::MYSQL) {
@@ -249,7 +249,7 @@ class TreeClass extends ConfigClass {
 					      JOIN		`team`
 					      USING		(`teamId`)
 					      WHERE     `moduleId`							=	'" . $moduleId . "'
-					      AND     	`folderAccess`.`teamId`			=	'" . $_SESSION ['teamId'] . "'
+					      AND     	`folderAccess`.`teamId`				=	'" . $_SESSION ['teamId'] . "'
 					      AND   	`folderAccess`.`folderAccessValue`	=  	1
 					      AND    	`folderTranslate`.`languageId`		=	'" . $_SESSION ['languageId'] . "'
 					      AND		`team`.`isActive`					=	1	
@@ -279,7 +279,7 @@ class TreeClass extends ConfigClass {
 				      			FOLDERACCESS.FOLDERACCESSVALUE 	AS 	\"folderAccessValue\",
 				      			FOLDER.FOLDERID 				AS 	\"folderId\",
 				      			FOLDER.FOLDERPATH				AS	\"folderPath\",
-				      			FOLDERTRANSLATE.FOLDERTRANSLATE AS 	\"folderTranslate\",
+				      			FOLDERTRANSLATE.FOLDERNATIVE 	AS 	\"folderNative\",
 				      			ICON.ICONNAME 					AS 	\"iconName\"
 				      FROM     	FOLDERACCESS
 				      JOIN    	FOLDER
@@ -303,7 +303,7 @@ class TreeClass extends ConfigClass {
 				if ($totalFolder > 0) {
 					$treeJsonString .= "\"children\":[";
 					while ( ($rowFolder = $this->q->fetchArray ( $resultFolder )) == TRUE ) {
-						$folderTranslate = $rowFolder ['folderTranslate'];
+						$folderNative = $rowFolder ['folderNative'];
 						$iconName = $rowFolder ['iconName'];
 						$folderId = $rowFolder ['folderId'];
 						$folderPath = $rowFolder ['folderPath'];
@@ -311,7 +311,7 @@ class TreeClass extends ConfigClass {
 						$treeJsonString .= " {
               						\"leaf\"		:	false,
 									\"expanded\"  	: 	true, 
-              						\"text\" 	  	:	\"" . $folderTranslate . "\", 
+              						\"text\" 	  	:	\"" . $folderNative. "\", 
               						\"iconCls\"		:	\"" . $iconName . "\",";
 						$counter_leaf = 0;
 						if ($this->getVendor () == self::MYSQL) {
@@ -353,7 +353,7 @@ class TreeClass extends ConfigClass {
 						      			LEAFACCESS.leafAccessReadValue 	AS	\"leafAccessReadValue\",
 						      			LEAF.LEAFID 					AS 	\"leafId\",
 						      			LEAF.LEAFFILENAME				AS	\"leafFilename\",
-						      			LEAFTRANSLATE.LEAFTRANSLATE 	AS 	\"leafTranslate\",
+						      			LEAFTRANSLATE.LEAFNATIVE 		AS 	\"leafNative\",
 						      			ICON.ICONNAME 					AS	\"iconName\"
 					          FROM   	LEAFACCESS
 					          JOIN    	LEAF
@@ -377,13 +377,13 @@ class TreeClass extends ConfigClass {
 						if ($totalLeaf > 0) {
 							$treeJsonString .= "\"children\":[";
 							while ( ($rowLeaf = $this->q->fetchArray ( $resultLeaf )) == TRUE ) {
-								$leafTranslate = $rowLeaf ['leafTranslate'];
+								$leafNative = $rowLeaf ['leafNative'];
 								$iconName = $rowLeaf ['iconName'];
 								$leafFilename = $rowLeaf ['leafFilename'];
 								$counterLeaf ++;
 								$treeJsonString .= " {
 											
-											\"text\" 			: 	\"" . $leafTranslate . "\", 
+											\"text\" 			: 	\"" . $leafNative . "\", 
 							                \"folderPath\"		:	\"" . $folderPath . "\",
 							                \"leafFilename\"	:	\"" . $leafFilename . "\",
 											\"emptyLeaf\"		:	false,

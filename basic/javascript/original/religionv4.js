@@ -261,7 +261,7 @@ Ext
 				editor : religionDesc
 
 			}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid,isReview,isPost ];
+					isDeleteGrid, isActiveGrid, isApprovedGrid,isReviewGrid,isPostGrid ];
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
 					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var religionEditor = new Ext.ux.grid.RowEditor(
@@ -577,7 +577,7 @@ Ext
 
 			var gridPanel = new Ext.Panel(
 					{
-						title : leafNote,
+						title : leafEnglish,
 						iconCls : "application_view_detail",
 						layout : 'fit',
 						tbar : [

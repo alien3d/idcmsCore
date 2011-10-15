@@ -31,7 +31,7 @@ class TeamModel extends ValidationClass {
 	 * team Note
 	 * @var string
 	 */
-	private $teamNote;
+	private $teamEnglish;
 	function execute() {
 		/**
 		 * Basic Information Table
@@ -50,8 +50,8 @@ class TeamModel extends ValidationClass {
 		if (isset ( $_POST ['teamCode'] )) {
 			$this->setTeamCode ( $this->strict ( $_POST ['teamCode'], 'memo' ) );
 		}
-		if (isset ( $_POST ['teamNote'] )) {
-			$this->setTeamNote ( $this->strict ( $_POST ['teamNote'], 'memo' ) );
+		if (isset ( $_POST ['teamEnglish'] )) {
+			$this->setTeamNote ( $this->strict ( $_POST ['teamEnglish'], 'memo' ) );
 		}
 		if (isset ( $_SESSION ['staffId'] )) {
 			$this->setExecuteBy ( $_SESSION ['staffId'] );
@@ -385,14 +385,14 @@ class TeamModel extends ValidationClass {
 	 * @param string $value
 	 */
 	public function setTeamNote($value) {
-		$this->teamNote = $value;
+		$this->teamEnglish = $value;
 	}
 	/**
 	 * Return team  Description (english)
 	 * @return  string
 	 */
 	public function getTeamNote() {
-		return $this->teamNote;
+		return $this->teamEnglish;
 	}
 }
 ?>

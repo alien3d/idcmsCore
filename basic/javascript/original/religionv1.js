@@ -158,7 +158,6 @@ Ext
 				autoDestroy : true,
 				baseParams : {
 					method : "read",
-					grid : "master",
 					leafId : leafId,
 					isAdmin : isAdmin,
 					start : 0,
@@ -549,7 +548,7 @@ Ext
 						}
 					},
 					{
-						dataIndex : "Time",
+						dataIndex : "executeTime",
 						header : executeTimeLabel,
 						sortable : true,
 						hidden : false,
@@ -924,7 +923,7 @@ Ext
 					});
 			var gridPanel = new Ext.Panel(
 					{
-						title : leafNote,
+						title : leafEnglish,
 						height : 50,
 						layout : "fit",
 						iconCls : "application_view_detail",
@@ -1093,7 +1092,7 @@ Ext
 						id : "formPanel",
 						method : "post",
 						frame : true,
-						title : leafNote,
+						title : leafEnglish,
 						border : false,
 						bodyStyle : "padding:5px",
 						width : 600,
@@ -1549,7 +1548,7 @@ Ext
 			var win = new Ext.Window({
 				tbar : toolbarPanelList,
 				items : [ religionGridList ],
-				title : leafNote,
+				title : leafEnglish,
 				closeAction : "hide",
 				maximizable : true,
 				layout : "fit",

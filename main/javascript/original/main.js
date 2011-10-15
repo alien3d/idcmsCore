@@ -51,7 +51,7 @@ Ext
 					name : "leafId",
 					type : "int"
 				}, {
-					name : "leafTranslate",
+					name : "leafNative",
 					type : "string"
 				}, {
 					name : "folderPath",

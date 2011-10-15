@@ -5,23 +5,21 @@ Ext
 			var pageReload;
 			var pagePrint;
 			if (leafTeamAccessCreateValue == 1) {
-				var pageCreate = false;
+				pageCreate = false;
 			} else {
-				var pageCreate = true;
+				pageCreate = true;
 			}
 			if (leafTeamAccessReadValue == 1) {
-				var pageReload = false;
+				pageReload = false;
 			} else {
-				var pageReload = true;
+				pageReload = true;
 			}
 			if (leafTeamAccessPrintValue == 1) {
-				var pagePrint = false;
+				pagePrint = false;
 			} else {
-				var pagePrint = true;
+				pagePrint = true;
 			}
-			// form panel + grid.When choose the form then activated filter the
-			// grid.Grid will automatically update on demand
-			// first viewport
+
 			var perPage = 10;
 			var encode = false;
 			var local = false;
@@ -30,8 +28,8 @@ Ext
 				method : 'POST',
 				baseParams : {
 					method : "read",
-					page : "master",
-					leafId : leafId
+					leafId : leafId,
+					isAdmin : isAdmin
 				},
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
@@ -69,25 +67,25 @@ Ext
 					name : 'leafTeamAccessId',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				}, {
 					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'teamNote',
+					name : 'teamEnglish',
 					type : 'string'
 				}, {
 					name : 'folderId',
 					type : 'int'
 				}, {
-					name : 'folderNote',
+					name : 'folderEnglish',
 					type : 'string'
 				}, {
 					name : 'leafId',
 					type : 'int'
 				}, {
-					name : 'leafNote',
+					name : 'leafEnglish',
 					type : 'string'
 				}, {
 					name : 'staffName',
@@ -117,7 +115,7 @@ Ext
 			});
 
 			var teamProxy = new Ext.data.HttpProxy({
-				url : "../controller/folderAccessController.php",
+				url : "../controller/leafTeamAccessController.php",
 				method : 'GET',
 
 				success : function(response, options) {
@@ -161,7 +159,7 @@ Ext
 					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'teamNote',
+					name : 'teamEnglish',
 					type : 'string'
 				} ]
 
@@ -211,7 +209,7 @@ Ext
 					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				} ]
 
@@ -260,7 +258,7 @@ Ext
 					name : 'folderId',
 					type : 'int'
 				}, {
-					name : 'folderNote',
+					name : 'folderEnglish',
 					type : 'string'
 				} ]
 
@@ -310,19 +308,19 @@ Ext
 
 			// the id for administrator to see in any problem.User cannot see
 			// this page information
-			var columnModel = new Ext.grid.ColumnModel({
+			var leafTeamAccessColumnModel = new Ext.grid.ColumnModel({
 				columns : [ {
-					header : moduleNameLabel,
-					dataIndex : 'moduleNote'
+					header : moduleEnglishLabel,
+					dataIndex : 'moduleNative'
 				}, {
-					header : teamNameLabel,
-					dataIndex : 'teamNote'
+					header : teamEnglishLabel,
+					dataIndex : 'teamEnglish'
 				}, {
-					header : folderNameLabel,
-					dataIndex : 'folderNote'
+					header : folderEnglishLabel,
+					dataIndex : 'folderEnglish'
 				}, {
-					header : leafNoteLabel,
-					dataIndex : 'leafNote'
+					header : leafEnglishLabel,
+					dataIndex : 'leafEnglish'
 				}, {
 					header : staffNameLabel,
 					dataIndex : 'staffName'
@@ -338,8 +336,8 @@ Ext
 						name : 'teamId',
 						hiddenName : 'teamId',
 						valueField : 'teamId',
-						id : 'tam_fake',
-						displayField : 'teamNote',
+						id : 'team_fake',
+						displayField : 'teamEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
 						store : teamStore,
@@ -362,7 +360,7 @@ Ext
 								Ext.getCmp('moduleId').reset();
 								module_store.proxy = new Ext.data.HttpProxy(
 										{
-											url : '../controller/leafTeamAccessController.php?method=read&field=moduleId&teamId='
+											url : '../controller/leafTeamAccessController.php?field=moduleId&teamId='
 													+ Ext.getCmp('teamId')
 															.getValue()
 													+ '&leafId=' + leafId,
@@ -393,7 +391,7 @@ Ext
 						hiddenName : 'moduleId',
 						valueField : 'moduleId',
 						id : 'module_fake',
-						displayField : 'moduleNote',
+						displayField : 'moduleEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
 						store : moduleStore,
@@ -417,7 +415,7 @@ Ext
 								Ext.getCmp('folderId').reset();
 								folder_store.proxy = new Ext.data.HttpProxy(
 										{
-											url : '../controller/leafTeamAccessController.php?method=read&field=folderId&teamId='
+											url : '../controller/leafTeamAccessController.php?field=folderId&teamId='
 													+ Ext.getCmp('teamId')
 															.getValue()
 													+ '&moduleId='
@@ -449,12 +447,12 @@ Ext
 			var folderId = new Ext.ux.form.ComboBoxMatch(
 					{
 						labelAlign : 'left',
-						fieldLabel : moduleIdLabel,
+						fieldLabel : folderIdLabel,
 						name : 'folderId',
 						hiddenName : 'folderId',
 						valueField : 'folderId',
 						id : 'folder_fake',
-						displayField : 'folderNote',
+						displayField : 'folderEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
 						store : folderStore,
@@ -519,7 +517,7 @@ Ext
 						region : 'west',
 						id : 'gridPanel',
 						store : leafTeamAccessStore,
-						cm : columnModel,
+						cm : leafTeamAccessColumnModel,
 						frame : true,
 
 						title : 'leaf Access Grid',
@@ -531,9 +529,12 @@ Ext
 						autoScroll : true,
 						autoHeight : false,
 						height : 400,
-						plugins : [ leafTeamAccessCreateValue, leafTeamAccessReadValue,
-								leafTeamAccessUpdateValue, leafTeamAccessDeleteValue,
-								leafTeamAccessPrintValue, leafTeamAccessPostValue ],
+						plugins : [ leafTeamAccessCreateValue,
+								leafTeamAccessReadValue,
+								leafTeamAccessUpdateValue,
+								leafTeamAccessDeleteValue,
+								leafTeamAccessPrintValue,
+								leafTeamAccessPostValue ],
 						tbar : {
 							items : [
 									{
@@ -541,8 +542,7 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = leafTeamAccessStore
-														.getCount();
+
 												leafTeamAccessStore
 														.each(function(rec) {
 															for ( var access in access_array) {
@@ -579,14 +579,14 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = leafTeamAccessStore
-														.getCount();
-
+												
 												url = '../controller/leafTeamAccessController.php?method=update&leafId='
 														+ leafId;
 												var sub_url;
 												sub_url = '';
-												for (i = count - 1; i >= 0; i--) {
+												var modified = leafTeamAccessStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
 													var record = leafTeamAccessStore
 															.getAt(i);
 													sub_url = sub_url
@@ -616,7 +616,7 @@ Ext
 													sub_url = sub_url
 															+ record
 																	.get('leafTeamAccessPostValue');
-													sub_url = sub_url + '|'; 
+													sub_url = sub_url + '|';
 												}
 												// url = url+sub_url;
 												// using post method because
@@ -663,36 +663,7 @@ Ext
 																						+ ":"
 																						+ statusMessage);
 															}
-														/*
-														 * failure:function(response,options) {
-														 * var title='Message
-														 * Failure'; if
-														 * (action.failureType
-														 * ===
-														 * Ext.form.Action.LOAD_FAILURE){
-														 * alert("Client ada
-														 * Error 1 "); } else if
-														 * (action.failureType
-														 * ===
-														 * Ext.form.Action.CLIENT_INVALID){ //
-														 * here will be error if
-														 * duplicate code
-														 * alert("Client ada
-														 * Error 2"); } else if
-														 * (action.failureType
-														 * ===
-														 * Ext.form.Action.CONNECT_FAILURE){
-														 * Ext.Msg.alert('Failure',
-														 * 'Server
-														 * reported:'+form.response.status+'
-														 * '+form.response.statusText); }
-														 * else if
-														 * (action.failureType
-														 * ===
-														 * Ext.form.Action.SERVER_INVALID){
-														 * Ext.Msg.alert(title,
-														 * action.result.message); } }
-														 */
+														
 														});
 												// refresh the store
 											}

@@ -124,7 +124,7 @@ class FolderClass extends ConfigClass {
 					(
 						`moduleId`,							`iconId`,
 						`folderSequence`,					`folderCode`,					
-						`folderPath`,						`folderNote`,
+						`folderPath`,						`folderEnglish`,
 						`isDefault`,						`isNew`,
 						`isDraft`,							`isUpdate`,
 						`isDelete`,							`isActive`,
@@ -135,7 +135,7 @@ class FolderClass extends ConfigClass {
 					(
 						'" . $this->model->getModuleId () . "',						'" . $this->model->getIconId () . "',
 						'" . $this->model->getFolderSequence () . "', 				'" . $this->model->getFolderCode () . "',
-						'" . $this->model->getfolderPath () . "'	,				'" . $this->model->getfolderNote () . "',
+						'" . $this->model->getfolderPath () . "'	,				'" . $this->model->getfolderEnglish () . "',
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',		'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -150,7 +150,7 @@ class FolderClass extends ConfigClass {
 					(
 						[moduleId],							[iconId],
 						[folderSequence],					[folderCode],					
-						[folderPath],						[folderNote],
+						[folderPath],						[folderEnglish],
 						[isDefault],						[isNew],
 						[isDraft],							[isUpdate],
 						[isDelete],							[isActive],
@@ -161,7 +161,7 @@ class FolderClass extends ConfigClass {
 				(
 						'" . $this->model->getModuleId () . "',						'" . $this->model->getIconId () . "',
 						'" . $this->model->getFolderSequence () . "', 				'" . $this->model->getFolderCode () . "',
-						'" . $this->model->getfolderPath () . "'	,				'" . $this->model->getfolderNote () . "',
+						'" . $this->model->getfolderPath () . "'	,				'" . $this->model->getfolderEnglish () . "',
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',		'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -184,7 +184,7 @@ class FolderClass extends ConfigClass {
 				VALUES	(
 							'" . $this->model->getModuleId () . "',					'" . $this->model->getIconId () . "',
 							'" . $this->model->getFolderSequence () . "', 			'" . $this->model->getFolderCode () . "',
-							'" . $this->model->getfolderPath () . "'	,				'" . $this->model->getfolderNote () . "',
+							'" . $this->model->getfolderPath () . "'	,				'" . $this->model->getfolderEnglish () . "',
 							'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',		'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							'" . $this->model->getIsDelete ( 0, 'single' ) . "',	'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -558,7 +558,7 @@ class FolderClass extends ConfigClass {
 			$sql = "
 					UPDATE 	`folder`
 					SET 	`moduleId`				=	'" . $this->model->getModuleId () . "',
-							`folderNote`		=	'" . $this->model->getfolderNote () . "',
+							`folderEnglish`		=	'" . $this->model->getfolderEnglish () . "',
 							`folderSequence`	=	'" . $this->model->getfolderSequence () . "',
 							`folderCode`		=	'" . $this->model->getfolderCode () . "',
 							`folderPath`		=	'" . $this->model->getfolderPath () . "',
@@ -577,7 +577,7 @@ class FolderClass extends ConfigClass {
 			$sql = "
 					UPDATE 	[folder]
 					SET 	[moduleId]			=	'" . $this->model->getModuleId () . "',
-							[folderNote]		=	'" . $this->model->getfolderNote () . "',
+							[folderEnglish]		=	'" . $this->model->getfolderEnglish () . "',
 							[folderSequence]	=	'" . $this->model->getfolderSequence () . "',
 							[folderPath]		=	'" . $this->model->getfolderPath () . "',
 							[iconId]			=	'" . $this->strict ( $_POST ['iconId'], 'string' ) . "',
@@ -594,7 +594,7 @@ class FolderClass extends ConfigClass {
 			$sql = "
 					UPDATE 	FOLDER
 					SET 	MODULEID		=	'" . $this->model->getModuleId () . "',
-							FOLDERNOTE		=	'" . $this->model->getfolderNote () . "',
+							FOLDERNOTE		=	'" . $this->model->getfolderEnglish () . "',
 							FOLDERSEQUENCE	=	'" . $this->model->getfolderSequence () . "',
 							FOLDERPATH		=	'" . $this->model->getfolderPath () . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
@@ -717,7 +717,7 @@ class FolderClass extends ConfigClass {
 		$i = 0;
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
-			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['folderNote'] );
+			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['folderEnglish'] );
 			$loopRow ++;
 			$lastRow = 'D' . $loopRow;
 		}

@@ -71,13 +71,13 @@ Ext
 					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				}, {
 					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'teamNote',
+					name : 'teamEnglish',
 					type : 'string'
 				}, {
 					name : 'moduleAccessValue',
@@ -128,7 +128,7 @@ Ext
 					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'teamNote',
+					name : 'teamEnglish',
 					type : 'string'
 				} ]
 
@@ -143,13 +143,13 @@ Ext
 			var columnModel = new Ext.grid.ColumnModel({
 				columns : [ {
 					header : teamNameLabel,
-					dataIndex : 'teamNote'
+					dataIndex : 'teamEnglish'
 				}, {
 					header : moduleIdLabel,
 					dataIndex : 'teamId'
 				}, {
 					header : teamNameLabel,
-					dataIndex : 'teamNote'
+					dataIndex : 'teamEnglish'
 				}, {
 					header : teamIdLabel,
 					dataIndex : 'teamId'
@@ -163,7 +163,7 @@ Ext
 				hiddenName : 'teamId',
 				valueField : 'teamId',
 				id : 'team_fake',
-				displayField : 'teamNote',
+				displayField : 'teamEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
 				store : teamStore,

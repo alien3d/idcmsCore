@@ -552,7 +552,7 @@ Ext.onReady(function() {
     });
     
     var gridPanel = new Ext.Panel({
-        title: leafNote,
+        title: leafEnglish,
         iconCls: "application_view_detail",
         layout: 'fit',
         tbar: [{

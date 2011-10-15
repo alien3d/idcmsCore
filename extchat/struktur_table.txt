@@ -1,0 +1,55 @@
+-- Struktur dari tabel `chat`
+-- 
+
+CREATE TABLE `chat` (
+  `chat_id` int(11) NOT NULL auto_increment,
+  `posted_on` varchar(20) collate latin1_general_ci NOT NULL,
+  `user_name` varchar(255) collate latin1_general_ci NOT NULL,
+  `message` text collate latin1_general_ci NOT NULL,
+  `color` char(7) collate latin1_general_ci default '#000000',
+  PRIMARY KEY  (`chat_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+-- Struktur dari tabel `tuser_session`
+-- 
+
+CREATE TABLE `tuser_session` (
+  `session_id` varchar(70) collate latin1_general_ci NOT NULL,
+  `session_username` varchar(40) collate latin1_general_ci default NULL,
+  `session_usermode` varchar(5) collate latin1_general_ci default NULL,
+  `session_time` varchar(40) collate latin1_general_ci default NULL,
+  `session_visit` varchar(40) collate latin1_general_ci default NULL,
+  `session_ip` varchar(125) collate latin1_general_ci default NULL,
+  PRIMARY KEY  (`session_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+-- Struktur dari tabel `chat_priv`
+-- 
+
+
+CREATE TABLE `chat_priv` (
+  `chat_id` int(11) NOT NULL auto_increment,
+  `posted_on` varchar(20) collate latin1_general_ci NOT NULL,
+  `user_name` varchar(255) collate latin1_general_ci NOT NULL,
+  `message` text collate latin1_general_ci NOT NULL,
+  `color` char(7) collate latin1_general_ci default '#000000',
+  `target` varchar(255) collate latin1_general_ci NOT NULL,
+  PRIMARY KEY  (`chat_id`),
+  KEY `user_name` (`user_name`),
+  KEY `target` (`target`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+
+-- Struktur dari tabel `tpriv_session`
+-- 
+
+CREATE TABLE `tpriv_session` (
+  `session_id` varchar(70) collate latin1_general_ci NOT NULL,
+  `session_username` varchar(40) collate latin1_general_ci default NULL,
+  `session_usermode` varchar(5) collate latin1_general_ci default NULL,
+  `session_time` varchar(40) collate latin1_general_ci default NULL,
+  `session_visit` varchar(40) collate latin1_general_ci default NULL,
+  `session_ip` varchar(125) collate latin1_general_ci default NULL,
+  PRIMARY KEY  (`session_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;

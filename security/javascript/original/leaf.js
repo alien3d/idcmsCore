@@ -71,19 +71,19 @@ Ext
 					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				}, {
 					name : 'folderId',
 					type : 'int'
 				}, {
-					name : 'folderNote',
+					name : 'folderEnglish',
 					type : 'string'
 				}, {
-					name : 'leafNote',
+					name : 'leafEnglish',
 					type : 'string'
 				}, {
-					name : 'leafNote',
+					name : 'leafEnglish',
 					type : 'string'
 				}, {
 					name : 'leafSequence',
@@ -278,7 +278,7 @@ Ext
 					name : "moduleId",
 					type : "int"
 				}, {
-					name : "moduleNote",
+					name : "moduleEnglish",
 					type : "string"
 				} ]
 			});
@@ -325,7 +325,7 @@ Ext
 					name : "folderId",
 					type : "int"
 				}, {
-					name : "folderNote",
+					name : "folderEnglish",
 					type : "string"
 				} ]
 			});
@@ -353,9 +353,9 @@ Ext
 
 				}, {
 					type : 'string',
-					dataIndex : 'leafNote',
-					column : 'leafNote',
-					column : 'leafNote',
+					dataIndex : 'leafEnglish',
+					column : 'leafEnglish',
+					column : 'leafEnglish',
 					table : 'leaf'
 				}, {
 					type : 'numeric',
@@ -444,8 +444,8 @@ Ext
 						hidden : false
 					},
 					{
-						dataIndex : 'leafNote',
-						header : leafNoteLabel,
+						dataIndex : 'leafEnglish',
+						header : leafEnglishLabel,
 						type : 'string',
 						sortable : false,
 						hidden : false
@@ -487,8 +487,8 @@ Ext
 						width : 100
 					} ];
 			var leafTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
-				dataIndex : "leafNote",
-				header : "leafNote",
+				dataIndex : "leafEnglish",
+				header : "leafEnglish",
 				sortable : true,
 				hidden : true,
 				width : 50
@@ -916,7 +916,7 @@ Ext
 						hiddenName : 'moduleId',
 						valueField : 'moduleId',
 						id : 'module_fake',
-						displayField : 'moduleNote',
+						displayField : 'moduleEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
 						store : moduleStore,
@@ -1004,7 +1004,7 @@ Ext
 				hiddenName : 'folderId',
 				valueField : 'folderId',
 				id : 'folder_fake',
-				displayField : 'folderNote',
+				displayField : 'folderEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
 				store : folderStore,
@@ -1070,11 +1070,11 @@ Ext
 				anchor : '95%'
 			});
 
-			var leafNote = new Ext.form.TextField({
+			var leafEnglish = new Ext.form.TextField({
 				labelAlign : 'left',
-				fieldLabel : leafNoteLabel,
-				hiddenName : 'leafNote',
-				name : 'leafNote',
+				fieldLabel : leafEnglishLabel,
+				hiddenName : 'leafEnglish',
+				name : 'leafEnglish',
 				anchor : '95%'
 			});
 
@@ -1255,11 +1255,11 @@ Ext
 						items : [
 								{
 									xtype : 'panel',
-									title : leafNote,
+									title : leafEnglish,
 									bodyStyle : "padding:5px",
 									layout : 'form',
 									frame : true,
-									items : [ moduleId, folderId, leafNote,
+									items : [ moduleId, folderId, leafEnglish,
 											leafSequence, leafFilename, iconId,
 											leafId ]
 								}, {

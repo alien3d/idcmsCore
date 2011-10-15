@@ -4,6 +4,7 @@ require_once ("../../class/classAbstract.php");
 require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
+require_once ("../../class/classSecurity.php");
 require_once ("../model/leafTeamAccessModel.php");
 /**
  * this is  leaf security access
@@ -68,6 +69,11 @@ class LeafTeamAccessClass extends ConfigClass
      */
     public $duplicateTest;
     /**
+    * Common class function for security menu
+    * @var  string
+    */
+    private $security;
+    /**
      * Class Loader
      */
     function execute ()
@@ -120,10 +126,10 @@ class LeafTeamAccessClass extends ConfigClass
             $sql = "
 				SELECT	`leaf`.`moduleId`,
 						`leaf`.`folderId`,
-						`folder`.`folderNote`,
-						`leaf`.`leafNote`,
-						`module`.`moduleNote`,
-						`team`.`teamNote`,
+						`folder`.`folderEnglish`,
+						`leaf`.`leafEnglish`,
+						`module`.`moduleEnglish`,
+						`team`.`teamEnglish`,
 						`leafGroupAccess`.`leafId`,
 						`leafGroupAccess`.`TEAMID`,
 						`leafGroupAccess`.`leafGroupAccessId`,
@@ -199,10 +205,10 @@ class LeafTeamAccessClass extends ConfigClass
                 $sql = "
 				SELECT	[leaf].[moduleId],
 						[leaf].[folderId],
-						[folder].[folderNote],
-						[leaf].[leafNote],
-						[module].[moduleNote],
-						[team].[teamNote],
+						[folder].[folderEnglish],
+						[leaf].[leafEnglish],
+						[module].[moduleEnglish],
+						[team].[teamEnglish],
 						[leafGroupAccess].[leafId],
 						[leafGroupAccess].\"teamId\",
 						[leafGroupAccess].[leafGroupAccessId],
@@ -480,13 +486,34 @@ class LeafTeamAccessClass extends ConfigClass
 	 */
     function delete ()
     {}
+    /**
+     *  Team Information
+     */
+    function team ()
+    {
+    	$this->security->team();
+    }
+    /**
+     * Module Information
+     */
+    function module ()
+    {
+    	$this->security->module();
+    }
+    /**
+     * Folder Information
+     */
+    function folder ()
+    {
+    	$this->security->folder();
+    }
     /* (non-PHPdoc)
 	 * @see config::excel()
 	 */
     function excel ()
     {}
 }
-$leafTeamAccessObject = new LeafGroupAccessClass();
+$leafTeamAccessObject = new LeafTeamAccessClass();
 // crud -create,read,update,delete.
 if (isset($_POST['method'])) {
     /*

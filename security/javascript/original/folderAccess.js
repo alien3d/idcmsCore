@@ -68,13 +68,13 @@ Ext
 					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				}, {
 					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'teamNote',
+					name : 'teamEnglish',
 					type : 'string'
 				}, {
 					name : 'folderId',
@@ -83,7 +83,7 @@ Ext
 					name : 'folderAccessId',
 					type : 'int'
 				}, {
-					name : 'folderNote',
+					name : 'folderEnglish',
 					type : 'string'
 				}, {
 					name : 'folderAccessValue',
@@ -133,7 +133,7 @@ Ext
 					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'teamNote',
+					name : 'teamEnglish',
 					type : 'string'
 				} ]
 
@@ -179,7 +179,7 @@ Ext
 					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				} ]
 
@@ -196,19 +196,19 @@ Ext
 			var columnModel = new Ext.grid.ColumnModel({
 				columns : [ {
 					header : moduleNameLabel,
-					dataIndex : 'moduleNote'
+					dataIndex : 'moduleEnglish'
 				}, {
 					header : moduleIdLabel,
 					dataIndex : 'moduleId'
 				}, {
 					header : teamNameLabel,
-					dataIndex : 'teamNote'
+					dataIndex : 'teamEnglish'
 				}, {
 					header : teamIdLabel,
 					dataIndex : 'teamId'
 				}, {
 					header : folderNameLabel,
-					dataIndex : 'folderNote'
+					dataIndex : 'folderEnglish'
 				}, {
 					header : folderIdLabel,
 					dataIndex : 'folderId'
@@ -223,7 +223,7 @@ Ext
 						hiddenName : 'teamId',
 						valueField : 'teamId',
 						id : 'team_fake',
-						displayField : 'teamNote',
+						displayField : 'teamEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
 						store : teamStore,
@@ -266,7 +266,7 @@ Ext
 				hiddenName : 'moduleId',
 				valueField : 'moduleId',
 				id : 'module_fake',
-				displayField : 'moduleNote',
+				displayField : 'moduleEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
 				store : moduleStore,

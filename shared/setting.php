@@ -78,7 +78,7 @@ if ($q->vendor == sharedx::MYSQL) {
 }	
 $result = $q->fast ( $sql );
 while ( $row = $q->fetchAssoc ( $result ) ) {
-	echo "var " . $row ['defaultLabel'] . " = '" . $row ['defaultLabelText'] . "';\n";
+	echo "var " . $row ['defaultLabel'] . " = '" . $row ['defaultLabelNative'] . "';\n";
 }
 
 /**
@@ -114,7 +114,7 @@ if ($q->vendor == sharedx::MYSQL) {
 } else if ($q->vendor == sharedx::ORACLE) {
 	
 	$sql = "	SELECT	LEAF.LEAFID 						AS  \"leafId\",
-                        LEAFTRANSLATE.LEAFTRANSLATE 		AS	\"leafNote\",
+                        LEAFTRANSLATE.LEAFNATIVE 		AS	\"leafNative\",
                         LEAFACCESS.LEAFACCESSCREATEVALUE 	AS 	\"leafAccessCreateValue\",
                         LEAFACCESS.LEAFACCESSREADVALUE		AS  \"leafAccessReadValue\",
                         LEAFACCESS.LEAFACCESSPRINTVALUE 	AS 	\"leafAccessPrintValue\"
@@ -136,7 +136,7 @@ $row_leafAccess = $q->fetchAssoc ( $result );
 ?>
 
     var leafId					= '<?php echo $row_leafAccess['leafId']; ?>';
-    var leafNote				= '<?php echo $row_leafAccess['leafTranslate']; ?>';
+    var leafEnglish				= '<?php echo $row_leafAccess['leafNative']; ?>';
     var leafAccessCreateValue	= '<?php echo $row_leafAccess['leafAccessCreateValue']; ?>';
     var leafAccessReadValue		= '<?php echo $row_leafAccess['leafAccessReadValue']; ?>';
     var leafAccessPrintValue	= '<?php echo $row_leafAccess['leafAccessPrintValue']; ?>';

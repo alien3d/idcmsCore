@@ -73,6 +73,11 @@ class LeafClass extends ConfigClass {
 	 */
 	public $duplicateTest;
 	/**
+	* Common class function for security menu
+	* @var  string
+	*/
+	private $security;
+	/**
 	 * Class Loader
 	 */
 	public function execute() {
@@ -123,7 +128,7 @@ class LeafClass extends ConfigClass {
 			INSERT INTO `leaf`
 					(
 						`moduleId`,						`folderId`,
-						`leafNote`,							`leafSequence`,
+						`leafEnglish`,							`leafSequence`,
 						`leafcode`,							`leafFilename`,
 						`iconId`,							`isDefault`,
 						`isNew`,							`isDraft`,
@@ -147,7 +152,7 @@ class LeafClass extends ConfigClass {
 			INSERT INTO [leaf]
 					(
 						[moduleId],					[folderId],
-						[leafNote],						[leafSequence],
+						[leafEnglish],						[leafSequence],
 						[leafCode],						[leafFilename],
 						[iconId],						[isDefault],
 						[isNew],						[isDraft],
@@ -337,7 +342,7 @@ class LeafClass extends ConfigClass {
 			SELECT		LEAF.LEAFID 		AS	\"leafId\",
 						LEAF.LEAFCODE 		AS 	\"leafCode\",
 						LEAF.LEAFSEQUENCE 	AS 	\"leafSequence\",
-						LEAF.LEAFNOTE 		AS 	\"leafNote\",
+						LEAF.LEAFNOTE 		AS 	\"leafEnglish\",
 						LEAF.LEAFFILENAME 	AS 	\"leafFilename\",
 						LEAF.ISDEFAULT 		AS 	\"isDefault\",
 						LEAF.ISNEW 			AS	\"isNew\",
@@ -349,9 +354,9 @@ class LeafClass extends ConfigClass {
 						LEAF.EXECUTEBY 		AS 	\"executeBy\",
 						LEAF.EXECUTETIME 	AS  \"executeTime\",
 						FOLDER.FOLDERID		AS	\"folderId\",
-						FOLDER.FOLDERNOTE	AS	\"folderNote\",
+						FOLDER.FOLDERNOTE	AS	\"folderEnglish\",
 						MODULE.MODULEID		AS 	\"moduleId\",		
-						MODULE.MODULENOTE	AS  \"moduleNote\",
+						MODULE.MODULENOTE	AS  \"moduleEnglish\",
 						LEAF.LEAFCATEGORYID AS  \"leafCategoryId\",
 						STAFF.STAFFNAME 	AS 	\"staffName\"
 			FROM 		LEAF
@@ -477,7 +482,7 @@ class LeafClass extends ConfigClass {
 									SELECT		LEAF.LEAFID 		AS	\"leafId\",
 						LEAF.LEAFCODE 		AS 	\"leafCode\",
 						LEAF.LEAFSEQUENCE 	AS 	\"leafSequence\",
-						LEAF.LEAFNOTE 		AS 	\"leafNote\",
+						LEAF.LEAFNOTE 		AS 	\"leafEnglish\",
 						LEAF.LEAFFILENAME 	AS 	\"leafFilename\",
 						LEAF.ISDEFAULT 		AS 	\"isDefault\",
 						LEAF.ISNEW 			AS	\"isNew\",
@@ -489,9 +494,9 @@ class LeafClass extends ConfigClass {
 						LEAF.EXECUTEBY 		AS 	\"executeBy\",
 						LEAF.EXECUTETIME 	AS  \"executeTime\",
 						FOLDER.FOLDERID		AS	\"folderId\",
-						FOLDER.FOLDERNOTE	AS	\"folderNote\",
+						FOLDER.FOLDERNOTE	AS	\"folderEnglish\",
 						MODULE.MODULEID		AS 	\"moduleId\",		
-						MODULE.MODULENOTE	AS  \"moduleNote\",
+						MODULE.MODULENOTE	AS  \"moduleEnglish\",
 						LEAF.LEAFCATEGORYID AS  \"leafCategoryId\",
 						STAFF.STAFFNAME 	AS 	\"staffName\"
 			FROM 		LEAF
@@ -713,7 +718,7 @@ class LeafClass extends ConfigClass {
 		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
-			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['leafNote'] );
+			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['leafEnglish'] );
 			$this->excel->getActiveSheet ()->setCellValue ( 'D' . $loopRow, $row ['leafCode'] );
 			$loopRow ++;
 			$lastRow = 'D' . $loopRow;

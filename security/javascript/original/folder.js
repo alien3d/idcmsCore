@@ -74,10 +74,10 @@ Ext
 					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				}, {
-					name : 'folderNote',
+					name : 'folderEnglish',
 					type : 'string'
 				}, {
 					name : 'folderPath',
@@ -266,7 +266,7 @@ Ext
 					name : "moduleId",
 					type : "int"
 				}, {
-					name : "moduleNote",
+					name : "moduleEnglish",
 					type : "string"
 				} ]
 			});
@@ -278,10 +278,10 @@ Ext
 				local : false, // defaults to false (remote filtering)
 				filters : [ {
 					type : 'list',
-					dataIndex : 'moduleNote',
+					dataIndex : 'moduleEnglish',
 					column : 'moduleId',
 					table : 'module',
-					labelField : 'moduleNote',
+					labelField : 'moduleEnglish',
 					store : moduleStore,
 					phpMode : true
 				}, {
@@ -291,8 +291,8 @@ Ext
 					table : 'folder'
 				}, {
 					type : 'string',
-					dataIndex : 'folderNote',
-					column : 'folderNote',
+					dataIndex : 'folderEnglish',
+					column : 'folderEnglish',
 					table : 'folder'
 				}, {
 					type : 'string',
@@ -479,12 +479,12 @@ Ext
 						header : folderSequenceLabel
 					},
 					{
-						dataIndex : 'moduleNote',
-						header : moduleNoteLabel
+						dataIndex : 'moduleEnglish',
+						header : moduleEnglishLabel
 					},
 					{
-						dataIndex : 'folderNote',
-						header : folderNoteLabel
+						dataIndex : 'folderEnglish',
+						header : folderEnglishLabel
 					},
 					{
 						dataIndex : 'folderPath',
@@ -517,7 +517,7 @@ Ext
 					} ];
 
 			var folderTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
-				dataIndex : "folderNote",
+				dataIndex : "folderEnglish",
 				header : folderSequenceLabel,
 				sortable : true,
 				hidden : true,
@@ -895,7 +895,7 @@ Ext
 				hiddenName : 'moduleId',
 				valueField : 'moduleId',
 				id : 'module_fake',
-				displayField : 'moduleNote',
+				displayField : 'moduleEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
 				store : moduleStore,
@@ -953,11 +953,11 @@ Ext
 				}
 			});
 
-			var folderNote = new Ext.form.TextField({
+			var folderEnglish = new Ext.form.TextField({
 				labelAlign : 'left',
-				fieldLabel : folderNoteLabel,
-				hiddenName : 'folderNote',
-				name : 'folderNote',
+				fieldLabel : folderEnglishLabel,
+				hiddenName : 'folderEnglish',
+				name : 'folderEnglish',
 				anchor : '95%'
 			});
 
@@ -1136,10 +1136,10 @@ Ext
 						width : 600,
 						items : [ {
 							xtype : 'panel',
-							title : leafNote,
+							title : leafEnglish,
 							bodyStyle : "padding:5px",
 							layout : 'form',
-							items : [ folderId, moduleId, folderNote,
+							items : [ folderId, moduleId, folderEnglish,
 
 							folderSequence, folderPath, iconId, folderId ]
 						}, {

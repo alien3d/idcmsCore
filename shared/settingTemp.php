@@ -162,7 +162,7 @@ $row_leafAccess 		= 	$q->fetchAssoc($result);
 ?>
 
 var leafIdTemp			= '<?php echo $row_leafAccess['leafId'];   ?>';
-var leafNote			= '<?php echo $row_leafAccess['leafTranslate'];   ?>';
+var leafEnglish			= '<?php echo $row_leafAccess['leafTranslate'];   ?>';
 var leafAccessCreateValue	= '<?php echo $row_leafAccess['leafAccessCreateValue'];   ?>';
 var leafAccessReadValue		= '<?php echo $row_leafAccess['leafAccessReadValue'];   ?>';
 var leafAccessPrintValue	= '<?php echo $row_leafAccess['leafAccessPrintValue'];   ?>';

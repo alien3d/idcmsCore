@@ -36,7 +36,7 @@ class ModuleModel extends ValidationClass {
 	 * Module Note .English Only
 	 * @var string
 	 */
-	private $moduleNote;
+	private $moduleEnglish;
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -61,8 +61,8 @@ class ModuleModel extends ValidationClass {
 		if (isset ( $_POST ['moduleCode'] )) {
 			$this->setModuleCode ( $this->strict ( $_POST ['moduleCode'], 'numeric' ) );
 		}
-		if (isset ( $_POST ['moduleNote'] )) {
-			$this->setModuleNote ( $this->strict ( $_POST ['moduleNote'], 'memo' ) );
+		if (isset ( $_POST ['moduleEnglish'] )) {
+			$this->setModuleNote ( $this->strict ( $_POST ['moduleEnglish'], 'memo' ) );
 		}
 		if (isset ( $_SESSION ['staffId'] )) {
 			$this->setExecuteBy ( $_SESSION ['staffId'] );
@@ -402,14 +402,14 @@ class ModuleModel extends ValidationClass {
 	 * @param string $value
 	 */
 	public function setModuleNote($value) {
-		$this->moduleNote = $value;
+		$this->moduleEnglish = $value;
 	}
 	/**
 	 * Return module Note
 	 * @return string
 	 */
 	public function getModuleNote() {
-		return $this->moduleNote;
+		return $this->moduleEnglish;
 	}
 }
 ?>

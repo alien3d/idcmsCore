@@ -82,7 +82,7 @@ Ext
 					name : 'moduleSequence',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				}, {
 					name : 'iconId',
@@ -238,8 +238,8 @@ Ext
 					module : 'module'
 				}, {
 					type : 'string',
-					dataIndex : 'moduleNote',
-					column : 'moduleNote',
+					dataIndex : 'moduleEnglish',
+					column : 'moduleEnglish',
 					module : 'module'
 				}, {
 					type : 'string',
@@ -307,8 +307,8 @@ Ext
 						width : 50
 					},
 					{
-						dataIndex : "moduleNote",
-						header : moduleNoteLabel,
+						dataIndex : "moduleEnglish",
+						header : moduleEnglishLabel,
 						sormodule : true,
 						hidden : false,
 						width : 100
@@ -342,7 +342,7 @@ Ext
 						width : 100
 					} ];
 			var moduleTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
-				dataIndex : "moduleNote",
+				dataIndex : "moduleEnglish",
 				header : moduleSequenceLabel,
 				sormodule : true,
 				hidden : true,
@@ -607,7 +607,7 @@ Ext
 			});
 			var gridPanel = new Ext.Panel(
 					{
-						title : leafNote,
+						title : leafEnglish,
 						height : 50,
 						layout : 'fit',
 						iconCls : 'application_view_detail',
@@ -725,11 +725,11 @@ Ext
 				name : 'moduleCode',
 				anchor : '40%'
 			});
-			var moduleNote = new Ext.form.TextField({
+			var moduleEnglish = new Ext.form.TextField({
 				labelAlign : 'left',
-				fieldLabel : moduleNoteLabel,
-				hiddenName : 'moduleNote',
-				name : 'moduleNote',
+				fieldLabel : moduleEnglishLabel,
+				hiddenName : 'moduleEnglish',
+				name : 'moduleEnglish',
 				anchor : '40%'
 			});
 			var moduleSequence = new Ext.form.NumberField({
@@ -903,13 +903,13 @@ Ext
 									items : [ {
 										xtype : 'panel',
 										layout : 'form',
-										title : leafNote,
+										title : leafEnglish,
 										bodyStyle : "padding:5px",
 										border: true,
 										frame: true,
 										items : [ moduleId,
 										          moduleSequence,moduleCode,
-												moduleNote, iconId,
+												moduleEnglish, iconId,
 												moduleId ]
 									} ]
 								}, {

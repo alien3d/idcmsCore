@@ -124,7 +124,7 @@ class ModuleClass extends ConfigClass {
 			INSERT INTO `module`
 					(
 						`iconId`,							`moduleSequence`,
-						`moduleCode`,							`moduleNote`,
+						`moduleCode`,							`moduleEnglish`,
 						`isDefault`,							`isNew`,
 						`isDraft`,							`isUpdate`,
 						`isDelete`,							`isActive`,
@@ -134,7 +134,7 @@ class ModuleClass extends ConfigClass {
 			VALUES
 					(
 						'" . $this->model->getIconId () . "',					'" . $this->model->getmoduleSequence () . "',
-						'" . $this->model->getmoduleCode () . "',					'" . $this->model->getmoduleNote () . "',
+						'" . $this->model->getmoduleCode () . "',					'" . $this->model->getmoduleEnglish () . "',
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',		'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -146,7 +146,7 @@ class ModuleClass extends ConfigClass {
 			INSERT INTO [module]
 					(
 						[iconId],							[moduleSequence],
-						[moduleCode],							[moduleNote],
+						[moduleCode],							[moduleEnglish],
 						[isDefault],						[isNew],
 						[isDraft],							[isUpdate],
 						[isDelete],							[isActive],
@@ -156,7 +156,7 @@ class ModuleClass extends ConfigClass {
 			VALUES
 					(
 						'" . $this->model->getIconId () . "',					'" . $this->model->getmoduleSequence () . "',
-						'" . $this->model->getmoduleCode () . "',				'" . $this->model->getmoduleNote () . "',
+						'" . $this->model->getmoduleCode () . "',				'" . $this->model->getmoduleEnglish () . "',
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -178,7 +178,7 @@ class ModuleClass extends ConfigClass {
 			VALUES
 					(
 						'" . $this->model->getIconId () . "',					'" . $this->model->getmoduleSequence () . "',
-						'" . $this->model->getmoduleCode () . "',				'" . $this->model->getmoduleNote () . "',
+						'" . $this->model->getmoduleCode () . "',				'" . $this->model->getmoduleEnglish () . "',
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -274,7 +274,7 @@ class ModuleClass extends ConfigClass {
 				) VALUES (
 					'" . $lastId . "',
 					21,
-					'" . $this->model->getmoduleNote () . "'
+					'" . $this->model->getmoduleEnglish () . "'
 				);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -286,7 +286,7 @@ class ModuleClass extends ConfigClass {
 					) VALUES (
 						'" . $lastId . "',
 						21,
-						'" . $this->model->getmoduleNote () . "'
+						'" . $this->model->getmoduleEnglish () . "'
 					);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -298,7 +298,7 @@ class ModuleClass extends ConfigClass {
 					) VALUES (
 						'" . $lastId . "',
 						21,
-						'" . $this->model->getmoduleNote () . "'
+						'" . $this->model->getmoduleEnglish () . "'
 					);";
 		}
 		$this->q->create ( $sql );
@@ -344,7 +344,7 @@ class ModuleClass extends ConfigClass {
 							`module`.`iconId`,
 							`module`.`moduleSequence`,
 							`module`.`moduleCode`,
-							`module`.`moduleNote`,
+							`module`.`moduleEnglish`,
 							`module`.`isDefault`,
 							`module`.`isNew`,
 							`module`.`isDraft`,
@@ -371,7 +371,7 @@ class ModuleClass extends ConfigClass {
 							[module].[iconId],
 							[module].[moduleSequence],
 							[module].[moduleCode],
-							[module].[moduleNote],
+							[module].[moduleEnglish],
 							[module].[isDefault],
 							[module].[isNew],
 							[module].[isDraft],
@@ -510,7 +510,7 @@ class ModuleClass extends ConfigClass {
 										[module].[iconId],
 										[module].[moduleSequence],
 										[module].[moduleCode],
-										[module].[moduleNote],
+										[module].[moduleEnglish],
 										[module].[isDefault],
 										[module].[isNew],
 										[module].[isDraft],
@@ -601,7 +601,7 @@ class ModuleClass extends ConfigClass {
 			$sql = "
 			UPDATE 	`module`
 			SET 	`moduleSequence`	= 	'" . $this->model->getmoduleSequence () . "',
-					`moduleNote`		=	'" . $this->model->getmoduleNote () . "',
+					`moduleEnglish`		=	'" . $this->model->getmoduleEnglish () . "',
 					`iconId`			=	'" . $this->model->getIconId () . "',
 					`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 					`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -616,7 +616,7 @@ class ModuleClass extends ConfigClass {
 			$sql = "
 			UPDATE 	[module]
 			SET 	[moduleSequence]	= 	'" . $this->model->moduleSequence . "',
-					[moduleNote]		=	'" . $this->model->moduleNote . "',
+					[moduleEnglish]		=	'" . $this->model->moduleEnglish . "',
 					[iconId]			=	'" . $this->model->iconId . "',
 					[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 					[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -632,7 +632,7 @@ class ModuleClass extends ConfigClass {
 			$sql = "
 			UPDATE 	MODULE
 			SET 	MODULESEQUENCE	= 	'" . $this->model->moduleSequence . "',
-					MODULENOTE		=	'" . $this->model->moduleNote . "',
+					MODULENOTE		=	'" . $this->model->moduleEnglish . "',
 					ICONID			=	'" . $this->model->iconId . "',
 					ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 					ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -754,7 +754,7 @@ class ModuleClass extends ConfigClass {
 		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
-			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['moduleNote'] );
+			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['moduleEnglish'] );
 			$this->excel->getActiveSheet ()->setCellValue ( 'D' . $loopRow, $row ['moduleDesc'] );
 			$loopRow ++;
 			$lastRow = 'D' . $loopRow;

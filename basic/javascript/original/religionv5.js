@@ -1173,7 +1173,7 @@ Ext
 					});
 			var gridPanel = new Ext.Panel(
 					{
-						title : leafNote,
+						title : leafEnglish,
 						height : 50,
 						layout : 'fit',
 						iconCls : 'application_view_detail',

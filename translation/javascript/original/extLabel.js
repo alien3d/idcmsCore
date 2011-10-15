@@ -825,7 +825,7 @@ Ext
 						width : 600,
 						items : [ {
 							xtype : 'panel',
-							title : leafNote,
+							title : leafEnglish,
 							bodyStyle : "padding:5px",
 							layout : 'form',
 							items : [ extLabelId, extLabelNote, extLabelId ]

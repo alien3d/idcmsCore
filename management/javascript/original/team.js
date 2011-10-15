@@ -86,7 +86,7 @@ Ext
 					name : "teamCode",
 					type : "string"
 				}, {
-					name : "teamNote",
+					name : "teamEnglish",
 					type : "string"
 				}, {
 					name : "executeBy",
@@ -185,8 +185,8 @@ Ext
 					table : "team"
 				}, {
 					type : "string",
-					dataIndex : "teamNote",
-					column : "teamNote",
+					dataIndex : "teamEnglish",
+					column : "teamEnglish",
 					table : "team"
 				}, {
 					type : "list",
@@ -234,13 +234,13 @@ Ext
 				anchor : "95%"
 			});
 
-			var teamNote = new Ext.form.TextField({
+			var teamEnglish = new Ext.form.TextField({
 				labelAlign : "left",
-				fieldLabel : teamNoteLabel
+				fieldLabel : teamEnglishLabel
 						+ '<span style="color: red;">*</span>',
-				hiddenName : "teamNote",
-				name : "teamNote",
-				id : "teamNote",
+				hiddenName : "teamEnglish",
+				name : "teamEnglish",
+				id : "teamEnglish",
 				allowBlank : false,
 				blankText : blankTextLabel,
 				style : {
@@ -314,11 +314,11 @@ Ext
 
 					},
 					{
-						dataIndex : "teamNote",
-						header : teamNoteLabel,
+						dataIndex : "teamEnglish",
+						header : teamEnglishLabel,
 						sortable : true,
 						hidden : false,
-						editor : teamNote
+						editor : teamEnglish
 
 					},
 					isDefaultGrid,
@@ -381,7 +381,7 @@ Ext
 										teamSequence : record
 												.get('teamSequence'),
 										teamCode : record.get('teamCode'),
-										teamNote : record.get('teamNote'),
+										teamEnglish : record.get('teamEnglish'),
 										teamId : record.get('teamId'),
 										duplicateTest : true
 									},
@@ -413,7 +413,7 @@ Ext
 				name : "teamCode",
 				type : "string"
 			}, {
-				name : "teamNote",
+				name : "teamEnglish",
 				type : "string"
 			}, {
 				name : "executeBy",
@@ -480,7 +480,7 @@ Ext
 												teamId : '',
 												teamSequence : '',
 												teamCode : '',
-												teamNote : '',
+												teamEnglish : '',
 												executeBy : '',
 												staffName : '',
 												isDefault : '',
@@ -660,7 +660,7 @@ Ext
 	
 			var gridPanel = new Ext.Panel(
 					{
-						title : leafNote,
+						title : leafEnglish,
 						iconCls : "application_view_detail",
 						layout : 'fit',
 						tbar : [

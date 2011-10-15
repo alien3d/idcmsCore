@@ -117,12 +117,12 @@ class FolderAccessClass extends ConfigClass
         // by default if add new group will add access to module and folder.
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-				SELECT	`module`.`moduleNote`,
+				SELECT	`module`.`moduleEnglish`,
 						`module`.`moduleId`,
 						`folder`.`folderId`,
-						`folder`.`folderNote`,
+						`folder`.`folderEnglish`,
 						`team`.`TEAMID`,
-						`team`.`teamNote`,
+						`team`.`teamEnglish`,
 						`folderAccess`.`folderAccessId`,
 						(CASE `folderAccess`.`folderAccessValue`
 							WHEN '1' THEN
@@ -151,12 +151,12 @@ class FolderAccessClass extends ConfigClass
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "
-				SELECT	[module].[moduleNote],
+				SELECT	[module].[moduleEnglish],
 						[module].[moduleId],
 						[folder].[folderId],
-						[folder].[folderNote],
+						[folder].[folderEnglish],
 						[team].[teamId],
-						[team].[teamNote],
+						[team].[teamEnglish],
 						[folderAccess].[folderAccessId],
 						(CASE [folderAccess].[folderAccessValue]
 							WHEN '1' THEN
@@ -185,12 +185,12 @@ class FolderAccessClass extends ConfigClass
             } else 
                 if ($this->getVendor() == self::ORACLE) {
                     $sql = "
-				SELECT	MODULE.MODULENOTE 	AS	\"moduleNote\",
+				SELECT	MODULE.MODULENOTE 	AS	\"moduleEnglish\",
 						MODULE.MODULEID 	AS 	\"moduleId\",
 						FOLDER.FOLDERID 	AS 	\"folderId\",
-						FOLDER.FOLDERNOTE 	AS 	\"folderNote\",
+						FOLDER.FOLDERNOTE 	AS 	\"folderEnglish\",
 						TEAM.TEAMID 		AS 	\"teamId\",
-						TEAM.GROUPNOTE 	AS 	\"teamNote\",
+						TEAM.GROUPNOTE 	AS 	\"teamEnglish\",
 						FOLDERACCESS.FOLDERACCESSID AS \"folderAccessId\",
 						(CASE	FOLDERACCESS.FOLDERACCESSVALUE
 							WHEN '1' THEN
@@ -304,14 +304,14 @@ class FolderAccessClass extends ConfigClass
     function delete ()
     {}
     /**
-     * Enter description here ...
+     *  Team Information
      */
     function team ()
     {
         $this->security->team();
     }
     /**
-     * Enter description here ...
+     * Module Information
      */
     function module ()
     {

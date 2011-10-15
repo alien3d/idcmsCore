@@ -47,7 +47,7 @@ class FolderModel extends ValidationClass {
 	 * Folder Note
 	 * @var string
 	 */
-	private $folderNote;
+	private $folderEnglish;
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
 	 */
@@ -78,8 +78,8 @@ class FolderModel extends ValidationClass {
 		if (isset ( $_POST ['folderCode'] )) {
 			$this->setFolderCode ( $this->strict ( $_POST ['folderCode'], 'memo' ) );
 		}
-		if (isset ( $_POST ['folderNote'] )) {
-			$this->setFolderNote ( $this->strict ( $_POST ['folderNote'], 'memo' ) );
+		if (isset ( $_POST ['folderEnglish'] )) {
+			$this->setFolderNote ( $this->strict ( $_POST ['folderEnglish'], 'memo' ) );
 		}
 		if (isset ( $_SESSION ['staffId'] )) {
 			$this->setExecuteBy ( $_SESSION ['staffId'] );
@@ -445,15 +445,15 @@ class FolderModel extends ValidationClass {
 	 * Set Folder Note Value (english)
 	 * @param string $value
 	 */
-	public function setfolderNote($value) {
-		$this->folderNote = $value;
+	public function setfolderEnglish($value) {
+		$this->folderEnglish = $value;
 	}
 	/**
 	 * Return folder Note (english)
-	 * @return string $folderNote
+	 * @return string $folderEnglish
 	 */
-	public function getfolderNote() {
-		return $this->folderNote;
+	public function getfolderEnglish() {
+		return $this->folderEnglish;
 	}
 }
 ?>

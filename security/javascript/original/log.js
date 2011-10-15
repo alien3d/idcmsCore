@@ -436,7 +436,7 @@ Ext
 			
 
 			var gridPanel = new Ext.Panel({
-				title : leafNote,
+				title : leafEnglish,
 				height : 50,
 				layout : 'fit',
 				iconCls : 'application_view_detail',
@@ -517,7 +517,7 @@ Ext
 						id : 'formPanel',
 						method : 'post',
 						frame : true,
-						title : leafNote,
+						title : leafEnglish,
 						border : false,
 						width : 600,
 						bodyStyle : 'padding:5px',
@@ -638,7 +638,7 @@ Ext
 			var win = new Ext.Window({
 				tbar : toolbarPanelList,
 				items : [ gridList ],
-				title : leafNote,
+				title : leafEnglish,
 				closeAction : 'hide',
 				maximizable : true,
 				layout : 'fit',

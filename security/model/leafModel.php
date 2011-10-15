@@ -55,7 +55,7 @@ class LeafModel extends ValidationClass {
 	 * Leaf Translation Note
 	 * @var string
 	 */
-	private $leafNote;
+	private $leafEnglish;
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
 	 */
@@ -86,8 +86,8 @@ class LeafModel extends ValidationClass {
 		if (isset ( $_POST ['leafFilename'] )) {
 			$this->setLeafFilename ( $this->strict ( $_POST ['leafFilename'], 'memo' ) );
 		}
-		if (isset ( $_POST ['leafNote'] )) {
-			$this->setLeafNote ( $this->strict ( $_POST ['leafNote'], 'memo' ) );
+		if (isset ( $_POST ['leafEnglish'] )) {
+			$this->setLeafNote ( $this->strict ( $_POST ['leafEnglish'], 'memo' ) );
 		}
 		if (isset ( $_SESSION ['staffId'] )) {
 			$this->setExecuteBy ( $_SESSION ['staffId'] );
@@ -446,14 +446,14 @@ class LeafModel extends ValidationClass {
 	 * @param string $value
 	 */
 	public function setLeafNote($value) {
-		$this->leafNote = $value;
+		$this->leafEnglish = $value;
 	}
 	/**
 	 * Return Leaf/Application Note (English Translation Default)
 	 * @return string
 	 */
 	public function getLeafNote() {
-		return $this->leafNote;
+		return $this->leafEnglish;
 	}
 }
 ?>

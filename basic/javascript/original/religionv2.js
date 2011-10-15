@@ -41,18 +41,13 @@ Ext
 				method : 'POST',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,
-						// jsonResponse.message);
-						// //uncomment it for debugging
-						// purpose
-					} else { // Ext.MessageBox.alert(systemErrorLabel,
-						// jsonResponse.message);
-						Ext.MessageBox.show({
-							title : systemErrorLabel,
-							msg : jsonResponse.message,
-							buttons : Ext.Msg.WARNING,
-							warning : 'emoticon_unhappy'
-						});
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+						// uncomment it for debugging purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+
 					}
 				},
 				failure : function(response, options) {
@@ -75,7 +70,6 @@ Ext
 				pruneModifiedRecords : true,
 				baseParams : {
 					method : "read",
-					grid : "master",
 					leafId : leafId,
 					isAdmin : isAdmin,
 					start : 0,
@@ -135,7 +129,7 @@ Ext
 				method : 'POST',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { 
+					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel, jsonResponse.message); //uncomment for testing
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
@@ -213,9 +207,9 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { 
+					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						//uncomment for testing purpose
+						// uncomment for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -348,7 +342,8 @@ Ext
 				sortable : true,
 				hidden : false
 			}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid ];
+					isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid,
+					isPostGrid ];
 			var columnModelList = [
 					new Ext.grid.RowNumberer(),
 					{
@@ -559,7 +554,8 @@ Ext
 								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
 							}
 						}
-					},	{
+					},
+					{
 						dataIndex : "isReview",
 						header : isReviewLabel,
 						sortable : true,
@@ -608,7 +604,7 @@ Ext
 						}
 					} ];
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-					'isDelete', 'isActive', 'isApproved','isReview','isPost' ];
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var religionGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
@@ -666,7 +662,7 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												
+
 												religionStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -702,12 +698,13 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = religionStore
-														.getCount();
+
 												url = '../controller/religionController.php?';
 												var sub_url;
 												sub_url = '';
-												for (i = count - 1; i >= 0; i--) {
+												var modified = religionStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
 													var record = religionStore
 															.getAt(i);
 													sub_url = sub_url
@@ -741,11 +738,19 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
-																		// and
-																		// ajax
+												// and
+												// ajax
 												Ext.Ajax
 														.request({
 															url : url,
@@ -972,7 +977,7 @@ Ext
 					});
 			var gridPanel = new Ext.Panel(
 					{
-						title : leafNote,
+						title : leafEnglish,
 						iconCls : "application_view_detail",
 						layout : 'fit',
 						tbar : [
@@ -1188,7 +1193,7 @@ Ext
 				fieldLabel : isApprovedLabel,
 				hidden : isApprovedHidden
 			});
-			
+
 			var isReview = new Ext.form.Checkbox({
 				name : 'isReview',
 				id : 'isReview',
@@ -1210,7 +1215,7 @@ Ext
 						id : "formPanel",
 						method : "post",
 						frame : true,
-						title : leafNote,
+						title : leafEnglish,
 						border : false,
 						bodyStyle : "padding:5px",
 						width : 600,
@@ -1226,7 +1231,7 @@ Ext
 									title : 'System Administration',
 									items : [ isDefault, isNew, isDraft,
 											isUpdate, isDelete, isActive,
-											isApproved,isReview,isPost ]
+											isApproved, isReview, isPost ]
 								} ],
 						buttonVAlign : "top",
 						buttonAlign : "left",
@@ -1278,7 +1283,7 @@ Ext
 																					action.result.religionId);
 																	formPanel
 																			.getForm()
-																			.reset(); 
+																			.reset();
 																	religionStore
 																			.reload();
 																	religionStoreList
@@ -1374,7 +1379,7 @@ Ext
 			var win = new Ext.Window({
 				tbar : toolbarPanelList,
 				items : [ religionGridList ],
-				title : leafNote,
+				title : leafEnglish,
 				closeAction : "hide",
 				maximizable : true,
 				layout : "fit",

@@ -121,9 +121,9 @@ class ModuleAccessClass extends ConfigClass {
 			$sql = "
 				SELECT	`moduleAccess`.`moduleAccessId`,
 						`module`.`moduleId`,
-						`module`.`moduleNote`,
+						`module`.`moduleEnglish`,
 						`team`.`teamId`,
-						`team`.`teamNote`,
+						`team`.`teamEnglish`,
 						(CASE `moduleAccess`.`moduleAccessValue`
 							WHEN '1' THEN
 								'true'
@@ -144,9 +144,9 @@ class ModuleAccessClass extends ConfigClass {
 			$sql = "
 				SELECT	[moduleAccess].[moduleAccessId],
 						[module].[moduleId],
-						[module].[moduleNote],
+						[module].[moduleEnglish],
 						[team].[teamId],
-						[team].[teamNote],
+						[team].[teamEnglish],
 						(CASE [moduleAccess].[moduleAccessValue]
 							WHEN '1' THEN
 								'true'

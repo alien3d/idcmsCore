@@ -1,0 +1,121 @@
+/* CSS Document */
+
+body
+{
+font-family: Arial, Helvetica, sans-serif;
+font-size: 12px;
+text-align: left;
+}
+
+a:link, a:visited {
+	text-decoration: none;
+	color: Blue;
+}
+
+a:hover {
+	color: Red;
+}
+
+#content
+{
+background-color:#FFFFFF;
+
+}
+
+input
+{
+font-size: 9pt;
+padding: 2px;
+}
+
+#scroll
+{
+position: relative;
+height: 225px;
+overflow: auto;
+padding: 3px;
+background-color: White;
+}
+
+.item
+{
+color: #191970;
+padding: 3px;
+font-family: Arial, Helvetica, sans-serif;
+}
+
+#colorpicker
+{
+text-align:center
+}
+
+.message {
+   font-size: 9pt;
+	color: Blue;
+	padding: 2px 2px 2px 4px;
+	font-weight: bold;
+}
+
+.message a:link {
+	color: #FFD700;
+}
+
+
+.message a:hover {
+	color: #00BFFF;
+}
+#users {
+position: relative;
+height: 225px;
+overflow: auto;
+padding: 3px;
+background-color: White;
+border: 1px solid #6B8E23;
+font-family: Arial, Helvetica, sans-serif;
+font-size: 9pt;
+}
+
+#users b {
+font-size: 8pt;
+text-decoration: underline;
+letter-spacing: 2px;
+}
+
+#users img {
+	padding-top: 3px;
+	padding-left: 2px;
+}
+
+.myuser {
+   font-family: Arial, Helvetica, sans-serif;
+	color: Red;
+	padding: 3px;
+}
+
+ .userx { 
+	color: Red;
+	font-weight: bold;
+}
+
+.bg_login {
+background-image:url(../images/bg_login.jpg);
+}
+
+.bg_blue {
+background-image:url(../images/bg_2_09.jpg)
+}
+
+#scrollpriv
+{
+position: relative;
+height: 150px;
+overflow: auto;
+padding: 3px;
+background-color: White;
+}
+
+#txtuser {
+	border: 2px solid #00BFFF;
+	padding: 2px;
+	color: #8A2BE2;
+}

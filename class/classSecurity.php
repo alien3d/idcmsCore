@@ -169,14 +169,14 @@ class Security extends ConfigClass
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	`team`.`teamId`,
-					`team`.`teamNote`
+					`team`.`teamEnglish`
 			FROM   	`team`
 			WHERE 	`team`.`isActive`=1";
         } else 
             if ($this->getVendor() == self::MSSQL) {
                 $sql = "
 			SELECT 	[team].[teamId],
-					[team].[teamNote]
+					[team].[teamEnglish]
 			FROM   	[team]
 			WHERE   [team].[isActive]=1";
             } else 
@@ -295,14 +295,14 @@ class Security extends ConfigClass
             if ($type == 1) {
                 $sql = "
 				SELECT 	`module`.`moduleId`,
-						`module`.`moduleNote`
+						`module`.`moduleEnglish`
 				FROM   	`module`
 				WHERE   `module`.`isActive`=1";
             } else 
                 if ($type == 2) {
                     $sql = "
 				SELECT 	`moduleAccess`.`moduleId`,
-						`module`.`moduleNote`,
+						`module`.`moduleEnglish`,
 						`moduleAccess`.`TEAMID`,
 						`moduleAccess`.`moduleAccessValue`
 				FROM   	`moduleAccess`
@@ -319,14 +319,14 @@ class Security extends ConfigClass
                 if ($type == 1) {
                     $sql = "
 			SELECT 	[module].[moduleId],
-					[module].[moduleNote]
+					[module].[moduleEnglish]
 			FROM   	[module]
 			WHERE   [module].[isActive]=1";
                 } else 
                     if ($type == 2) {
                         $sql = "
 			SELECT 	[moduleAccess].[moduleId],
-					[module].[moduleNote],
+					[module].[moduleEnglish],
 					[moduleAccess].\"teamId\",
 					[moduleAccess].[moduleAccessValue]
 			FROM   	[moduleAccess]
@@ -415,7 +415,7 @@ class Security extends ConfigClass
             if ($type == 1) {
                 $sql = "
 			SELECT	`folder`.`folderId`,
-					`folder`.`folderNote`
+					`folder`.`folderEnglish`
 			FROM   	`folder`
 			WHERE   `isActive`	=	1 ";
             } else {
@@ -441,7 +441,7 @@ class Security extends ConfigClass
                 if ($type == 1) {
                     $sql = "
 			SELECT	[folder].[folderId],
-					[folder].[folderNote]
+					[folder].[folderEnglish]
 			FROM   	[folder]
 			WHERE   [isActive]=1 ";
                 } else {

@@ -72,25 +72,25 @@ Ext
 					name : 'leafAccessId',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				}, {
 					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'teamNote',
+					name : 'teamEnglish',
 					type : 'string'
 				}, {
 					name : 'folderId',
 					type : 'int'
 				}, {
-					name : 'folderNote',
+					name : 'folderEnglish',
 					type : 'string'
 				}, {
 					name : 'leafId',
 					type : 'int'
 				}, {
-					name : 'leafNote',
+					name : 'leafEnglish',
 					type : 'string'
 				}, {
 					name : 'leafAccessCreateValue',
@@ -158,7 +158,7 @@ Ext
 					name : 'teamId',
 					type : 'int'
 				}, {
-					name : 'teamNote',
+					name : 'teamEnglish',
 					type : 'string'
 				} ]
 
@@ -209,7 +209,7 @@ Ext
 					name : 'moduleId',
 					type : 'int'
 				}, {
-					name : 'moduleNote',
+					name : 'moduleEnglish',
 					type : 'string'
 				} ]
 
@@ -259,7 +259,7 @@ Ext
 					name : 'folderId',
 					type : 'int'
 				}, {
-					name : 'folderNote',
+					name : 'folderEnglish',
 					type : 'string'
 				} ]
 
@@ -358,16 +358,16 @@ Ext
 			var columnModel = new Ext.grid.ColumnModel({
 				columns : [ {
 					header : moduleNameLabel,
-					dataIndex : 'moduleNote'
+					dataIndex : 'moduleEnglish'
 				}, {
 					header : teamNameLabel,
-					dataIndex : 'teamNote'
+					dataIndex : 'teamEnglish'
 				}, {
 					header : folderNameLabel,
-					dataIndex : 'folderNote'
+					dataIndex : 'folderEnglish'
 				}, {
-					header : leafNoteLabel,
-					dataIndex : 'leafNote'
+					header : leafEnglishLabel,
+					dataIndex : 'leafEnglish'
 				}, {
 					header : staffNameLabel,
 					dataIndex : 'staffName'
@@ -384,7 +384,7 @@ Ext
 						hiddenName : 'teamId',
 						valueField : 'teamId',
 						id : 'team_fake',
-						displayField : 'teamNote',
+						displayField : 'teamEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
 						store : teamStore,
@@ -438,7 +438,7 @@ Ext
 						hiddenName : 'moduleId',
 						valueField : 'moduleId',
 						id : 'module_fake',
-						displayField : 'moduleNote',
+						displayField : 'moduleEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
 						store : moduleStore,
@@ -498,7 +498,7 @@ Ext
 				hiddenName : 'folderId',
 				valueField : 'folderId',
 				id : 'folder_fake',
-				displayField : 'folderNote',
+				displayField : 'folderEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
 				store : folderStore,
