@@ -41,17 +41,30 @@ class ModuleAccessModel extends ValidationClass {
 		 */
 		$this->setTableName ( 'moduleAccess' );
 		$this->setPrimaryKeyName ( 'moduleAccessId' );
-		/*
-		 *  All the $_GET enviroment.
-		 */
-		if (isset ( $_GET ['moduleAccessId'] )) {
-			$this->setTotal ( count ( $_GET ['moduleAccessId'] ) );
-		}
+		
 		/*
 		 *  All the $_POST enviroment.
 		 */
+		if (isset ( $_POST ['type'] )) {
+			$this->setType ( $this->strict ( $_POST ['type'], 'numeric' ) );
+		}
 		if (isset ( $_POST ['teamId'] )) {
 			$this->setTeamId ( $_POST ['teamId'] );
+		}
+		if (isset ( $_POST ['moduleId'] )) {
+			$this->setModuleId ( $this->strict ( $_POST ['moduleId'], 'numeric' ) );
+		}
+		/*
+		 *  All the $_GET enviroment.
+		*/
+		if (isset ( $_GET ['moduleAccessId'] )) {
+			$this->setTotal ( count ( $_GET ['moduleAccessId'] ) );
+		}
+		if (isset ( $_GET ['type'] )) {
+			$this->setType ( $this->strict ( $_GET ['type'], 'numeric' ) );
+		}
+		if (isset ( $_GET ['teamId'] )) {
+			$this->setTeamId ( $this->strict ( $_GET ['teamId'], 'numeric' ) );
 		}
 		// auto assign as array if true
 		if (isset ( $_GET ['moduleAccessId'] )) {
@@ -59,6 +72,10 @@ class ModuleAccessModel extends ValidationClass {
 				$this->moduleAccessId = array ();
 			}
 		}
+		if (isset ( $_GET ['moduleId'] )) {
+			$this->setModuleId ( $this->strict ( $_GET ['moduleId'], 'numeric' ) );
+		}
+		
 		$primaryKeyAll = '';
 		for($i = 0; $i < $this->getTotal (); $i ++) {
 			if (isset ( $_GET ['moduleAccessValue'] )) {
@@ -74,6 +91,23 @@ class ModuleAccessModel extends ValidationClass {
 			$primaryKeyAll .= $this->getModuleAccessId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see tab::create()
@@ -225,6 +259,20 @@ class ModuleAccessModel extends ValidationClass {
 		} else if ($type == 'array') {
 			return $this->moduleAccessValue [$key];
 		}
+	}
+	/**
+	 * Set  Type Filtering
+	 * @param  int $value
+	 */
+	public function setType($value) {
+		$this->type = $value;
+	}
+	/**
+	 * Return Type Filtering
+	 * @return int
+	 */
+	public function getType() {
+		return $this->type;
 	}
 }
 ?>

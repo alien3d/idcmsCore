@@ -363,7 +363,7 @@ class ModuleClass extends ConfigClass {
 					USING			(`iconId`)
 					WHERE 	" . $this->auditFilter;
 			if ($this->model->getModuleId ( 0, 'single' )) {
-				$sql .= " AND `" . $this->model->getmoduleleName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getModuleId ( 0, 'single' ) . "'";
+				$sql .= " AND `" . $this->model->getModuleName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getModuleId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -390,7 +390,7 @@ class ModuleClass extends ConfigClass {
 					ON		[iconId].[iconId] = [module].[iconId]
 					WHERE 	[module].[isActive] ='1'	";
 			if ($this->model->getModuleId ( 0, 'single' )) {
-				$sql .= " AND [" . $this->model->getmoduleleName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getModuleId ( 0, 'single' ) . "'";
+				$sql .= " AND [" . $this->model->getModuleName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getModuleId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -417,10 +417,10 @@ class ModuleClass extends ConfigClass {
 					USING	(ICONID)
 					WHERE 	ISACTIVE='1'	";
 			if ($this->model->getModuleId ( 0, 'single' )) {
-				$sql .= " AND '" . strtoupper ( $this->model->getmoduleleName () ) . "'.'" . strtoupper ( $this->model->getPrimaryKeyName () ) . "'='" . $this->model->getModuleId ( 0, 'single' ) . "'";
+				$sql .= " AND '" . strtoupper ( $this->model->getModuleName () ) . "'.'" . strtoupper ( $this->model->getPrimaryKeyName () ) . "'='" . $this->model->getModuleId ( 0, 'single' ) . "'";
 			}
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "Undefine Damodulease Vendor" ) );
+			echo json_encode ( array ("success" => false, "message" => "Undefine Database Vendor" ) );
 			exit ();
 		}
 		/**

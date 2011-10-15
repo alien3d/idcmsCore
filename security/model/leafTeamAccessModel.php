@@ -24,7 +24,7 @@ class leafTeamAccessModel extends ValidationClass {
 	private $teamId;
 	/**
 	 * Module   Identification (** For Filtering  Only)
-	 * @var bool
+	 * @var int
 	 */
 	private $moduleId;
 	/**
@@ -112,7 +112,7 @@ class leafTeamAccessModel extends ValidationClass {
 			$this->setTotal ( count ( $_GET ['leafTeamAccessId'] ) );
 		}
 		if (isset ( $_GET ['type'] )) {
-			$this->setType ( $this->strict ( $_GET ['type'], 'numeric' ) );			
+			$this->setType ( $this->strict ( $_GET ['type'], 'numeric' ) );
 		}
 		if (isset ( $_GET ['teamId'] )) {
 			$this->setTeamId ( $this->strict ( $_GET ['teamId'], 'numeric' ) );
@@ -123,22 +123,7 @@ class leafTeamAccessModel extends ValidationClass {
 		if (isset ( $_GET ['folderId'] )) {
 			$this->setFolderId ( $this->strict ( $_GET ['folderId'], 'numeric' ) );
 		}
-		/**
-		 * All the $_SESSION enviroment.
-		 */
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		/**
-		 * TimeStamp Value.
-		 */
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
+		
 		$primaryKeyAll = '';
 		for($i = 0; $i < $this->getTotal (); $i ++) {
 			if (isset ( $_GET ['leafTeamAccessId'] )) {
@@ -198,6 +183,23 @@ class leafTeamAccessModel extends ValidationClass {
 			$primaryKeyAll .= $this->getleafTeamAccessId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()

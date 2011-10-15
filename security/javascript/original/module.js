@@ -68,7 +68,6 @@ Ext
 				pruneModifiedRecords : true,
 				baseParams : {
 					method : "read",
-					grid : "master",
 					leafId : leafId,
 					isAdmin : isAdmin,
 					start : 0,
@@ -112,7 +111,10 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "Time",
+					name :'executeBy',
+					type :'int'
+				},{
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -121,11 +123,7 @@ Ext
 			var moduleTranslateProxy = new Ext.data.HttpProxy({
 				url : "../controller/moduleController.php",
 				method : 'POST',
-				baseParams : {
-					method : "read",
-					page : "detail",
-					leafId : leafId
-				},
+			
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -154,6 +152,11 @@ Ext
 				autoDestroy : true,
 				pruneModifiedRecords : true,
 				root : "data",
+				baseParams : {
+					method : "read",
+					page : "detail",
+					leafId : leafId
+				},
 				fields : [ {
 					name : 'moduleTranslateId',
 					type : 'int'
@@ -179,10 +182,9 @@ Ext
 			        method: "GET",
 			        success: function(response, options) {
 			            jsonResponse = Ext.decode(response.responseText);
-			            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-			                // jsonResponse.message);
-			                // //uncommen for testing
-			                // purpose
+			            if (jsonResponse.success == true) { 
+			            	// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+			                // uncomment for testing purpose
 			            } else {
 			                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
 			            }
@@ -217,7 +219,7 @@ Ext
 		            type: "string"
 		        }]
 		    });
-			var filters = new Ext.ux.grid.GridFilters({ // encode and local
+			var moduleFilters = new Ext.ux.grid.GridFilters({ // encode and local
 				// configuration options
 				// defined previously
 				// for
@@ -248,8 +250,8 @@ Ext
 					module : 'module'
 				},  {
 					type : "list",
-					dataIndex : "By",
-					column : "By",
+					dataIndex : "executeBy",
+					column : "executeBy",
 					module : "module",
 					labelField : "staffName",
 					store : staffByStore,
@@ -257,8 +259,8 @@ Ext
 				},{
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
-					dataIndex : 'createTime',
-					column : 'createTime',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
 					module : 'module'
 				} ]
 			});
@@ -268,7 +270,7 @@ Ext
 				hidden : isDefaultHidden
 			});
 			var isNewGrid = new Ext.ux.grid.CheckColumn({
-				header : 'New',
+				header : isNewLabel,
 				dataIndex : 'isNew',
 				hidden : isNewHidden
 			});
@@ -296,27 +298,34 @@ Ext
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : isReviewLabel,
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
+			});
+			var isPostGrid = new Ext.ux.grid.CheckColumn({
+				header : isPostLabel,
+				dataIndex : 'isPost',
+				hidden : isPostHidden
+			});
 			var moduleColumnModel = [
 					new Ext.grid.RowNumberer(),
 				
 					{
 						dataIndex : "moduleSequence",
 						header : moduleSequenceLabel,
-						sormodule : true,
 						hidden : false,
 						width : 50
 					},
 					{
 						dataIndex : "moduleEnglish",
 						header : moduleEnglishLabel,
-						sormodule : true,
 						hidden : false,
 						width : 100
 					},
 					{
 						dataIndex : 'iconName',
 						header : iconNameLabel,
-						sormodule : false,
 						hidden : false,
 						width : 50,
 						renderer : function(value, metaData, record, rowIndex,
@@ -327,51 +336,49 @@ Ext
 									+ value;
 						}
 					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid, {
-						dataIndex : 'By',
+					isDeleteGrid, isActiveGrid, isApprovedGrid,isReviewGrid,isPostgrid {
+						dataIndex : 'executeBy',
 						header : executeByLabel,
-						sormodule : true,
 						hidden : true,
 						width : 100
 					}, {
-						dataIndex : 'Time',
-						header : createTimeLabel,
+						dataIndex : 'executeTime',
+						header : executeTimeLabel,
 						type : 'date',
-						sormodule : true,
 						hidden : true,
 						width : 100
 					} ];
 			var moduleTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
 				dataIndex : "moduleEnglish",
 				header : moduleSequenceLabel,
-				sormodule : true,
+				sortable: true,
 				hidden : true,
 				width : 50
 			}, {
 				dataIndex : "languageCode",
 				header : "languageCode",
-				sormodule : true,
+				sortable: true,
 				hidden : false,
 				width : 100
 			}, {
 				dataIndex : "languageDesc",
 				header : "languageDesc",
-				sormodule : true,
+				sortable: true,
 				hidden : false,
 				width : 100
 			}, {
-				dataIndex : "moduleTranslate",
-				header : "moduleTranslate",
-				sormodule : true,
+				dataIndex : "moduleNative",
+				header : "moduleNative",
+				sortable: true,
 				hidden : false,
 				width : 100,
 				editor : {
 					xtype : 'textfield',
-					id : 'moduleTranslate'
+					id : 'moduleNative'
 				}
 			} ];
 			
-			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
+			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved','isReview','isPost'];
 			 
 			var moduleGrid = new Ext.grid.GridPanel(
 					{
@@ -380,7 +387,7 @@ Ext
 						autoHeight : false,
 						columns : moduleColumnModel,
 						loadMask : true,
-						plugins : [ filters ],
+						plugins : [ moduleFilters ],
 						sm : new Ext.grid.RowSelectionModel({
 							singleSelect : true
 						}),
@@ -421,7 +428,6 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = moduleStore.getCount();
 												moduleStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -457,7 +463,6 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = moduleStore.getCount();
 												url = '../controller/moduleController.php?';
 												var sub_url;
 												sub_url = '';
@@ -571,8 +576,8 @@ Ext
 										page : 'detail',
 										moduleTranslateId : record
 												.get('moduleTranslateId'),
-										moduleTranslate : Ext.getCmp(
-												'moduleTranslate').getValue()
+										moduleNative : Ext.getCmp(
+												'moduleNative').getValue()
 									},
 									success : function(response, options) {
 										jsonResponse = Ext
@@ -615,7 +620,7 @@ Ext
 								' ',
 								{
 									text : reloadToolbarLabel,
-									iconCls : 'damodulease_refresh',
+									iconCls : 'database_refresh',
 									id : 'pageReload',
 									disabled : pageReload,
 									handler : function() {
@@ -644,7 +649,7 @@ Ext
 															response, options) {
 														jsonResponse = Ext
 																.decode(response.responseText);
-														if (jsonResponse.success == 'false') {
+														if (jsonResponse.success == false) {
 															Ext.MessageBox
 																	.alert(
 																			systemLabel,

@@ -175,7 +175,7 @@ class FolderClass extends ConfigClass {
 						(
 							MODULEID,							ICONID,
 							FOLDERSEQUENCE,					FOLDERCODE,					
-							FOLDERPATH,						FOLDERNOTE,
+							FOLDERPATH,						FOLDERENGLISH,
 							ISDEFAULT,						ISNEW,
 							ISDRAFT,						ISUPDATE,
 							ISDELETE,						ISACTIVE,
@@ -594,7 +594,7 @@ class FolderClass extends ConfigClass {
 			$sql = "
 					UPDATE 	FOLDER
 					SET 	MODULEID		=	'" . $this->model->getModuleId () . "',
-							FOLDERNOTE		=	'" . $this->model->getfolderEnglish () . "',
+							FOLDERENGLISH		=	'" . $this->model->getfolderEnglish () . "',
 							FOLDERSEQUENCE	=	'" . $this->model->getfolderSequence () . "',
 							FOLDERPATH		=	'" . $this->model->getfolderPath () . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',

@@ -688,7 +688,7 @@ class StaffClass extends ConfigClass {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getStaffId ( 0, 'single' ) . "'";
 			}
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "Undefine Damodulease Vendor" ) );
+			echo json_encode ( array ("success" => false, "message" => "Undefine Database Vendor" ) );
 			exit ();
 		}
 		/**

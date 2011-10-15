@@ -1,24 +1,26 @@
 Ext
 		.onReady(function() {
 
+			var pageCreate;
+			var pageReload;
+			var pagePrint;
 			if (leafAccessCreateValue == 1) {
-				var pageCreate = false;
+				pageCreate = false;
 			} else {
-				var pageCreate = true;
+				pageCreate = true;
 			}
 			if (leafAccessReadValue == 1) {
-				var pageReload = false;
+				pageReload = false;
 			} else {
-				var pageReload = true;
+				pageReload = true;
 			}
 			if (leafAccessPrintValue == 1) {
-				var pagePrint = false;
+				pagePrint = false;
 			} else {
-				var pagePrint = true;
+				pagePrint = true;
 			}
 			// form panel + grid.When choose the form then activated filter the
-			// grid.Grid will automatically update on demand
-			// first viewport
+			
 			var perPage = 10;
 			var encode = false;
 			var local = false;
@@ -28,10 +30,10 @@ Ext
 						method : 'POST',
 						success : function(response, options) {
 							jsonResponse = Ext.decode(response.responseText);
-							;
+
 							if (jsonResponse.success == true) {
-								Ext.MessageBox.alert(systemLabel,
-										jsonResponse.message); // uncomment it for debugging purpose
+								//Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+								// uncomment it for debugging purpose
 							} else {
 								Ext.MessageBox.alert(systemErrorLabel,
 										jsonResponse.message);
@@ -51,7 +53,7 @@ Ext
 			});
 
 			var moduleAccessStore = new Ext.data.JsonStore({
-				proxy :moduleAccessProxy,
+				proxy : moduleAccessProxy,
 				reader : moduleAccessReader,
 				autoDestroy : true,
 				url : '../controller/moduleAccessController.php',
@@ -92,8 +94,9 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-					//	Ext.MessageBox.alert(successLabel, jsonResponse.message); // uncomment for testing purpose
-																			
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// uncomment for testing purpose
+
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -137,21 +140,15 @@ Ext
 				header : moduleAccessValueLabel,
 				dataIndex : 'moduleAccessValue'
 			});
-			// the id for administrator to see in any problem.User cannot see
-			// this page
-			// information
-			var columnModel = new Ext.grid.ColumnModel({
+
+			var moduleAccessColumnModel = new Ext.grid.ColumnModel({
 				columns : [ {
-					header : teamNameLabel,
-					dataIndex : 'teamEnglish'
-				}, {
-					header : moduleIdLabel,
-					dataIndex : 'teamId'
-				}, {
-					header : teamNameLabel,
-					dataIndex : 'teamEnglish'
+					header : moduleEnglishLabel,
+					hidden : false,
+					dataIndex : 'moduleEnglish'
 				}, {
 					header : teamIdLabel,
+					hidden : true,
 					dataIndex : 'teamId'
 				}, moduleAccessValue ]
 			});
@@ -162,7 +159,8 @@ Ext
 				name : 'teamId',
 				hiddenName : 'teamId',
 				valueField : 'teamId',
-				id : 'team_fake',
+				hiddenId : 'team_fake',
+				id : 'teamId',
 				displayField : 'teamEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
@@ -188,15 +186,14 @@ Ext
 						} else {
 							gridPanel.enable();
 						}
-						
+
 						moduleAccessStore.load({
-							params:{
+							params : {
 								leafId : leafId,
 								teamId : this.value
 							}
 						});
 
-					
 					}
 				}
 			});
@@ -210,12 +207,12 @@ Ext
 				items : [ teamId ]
 			});
 
-			var access_array = [ 'moduleAccessValue' ];
+			var accessArray = [ 'moduleAccessValue' ];
 			var gridPanel = new Ext.grid.GridPanel(
 					{
 						region : 'west',
 						store : moduleAccessStore,
-						cm : columnModel,
+						cm : moduleAccessColumnModel,
 						frame : true,
 						title : 'Module Access Grid',
 						height : 200,
@@ -232,18 +229,18 @@ Ext
 						tbar : {
 							items : [
 									{
-										text : 'Check All',
+										text : CheckAllLabel,
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												
+
 												moduleAccessStore
 														.each(function(rec) {
-															for ( var access in access_array) {
-																// alert(access);
+															for ( var access in accessArray) {
+
 																rec
 																		.set(
-																				access_array[access],
+																				accessArray[access],
 																				true);
 															}
 														});
@@ -251,16 +248,16 @@ Ext
 										}
 									},
 									{
-										text : 'Clear All',
+										text : ClearAllLabel,
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
 												moduleAccessStore
 														.each(function(rec) {
-															for ( var access in access_array) {
+															for ( var access in accessArray) {
 																rec
 																		.set(
-																				access_array[access],
+																				accessArray[access],
 																				false);
 															}
 														});
@@ -301,34 +298,26 @@ Ext
 																	options) {
 																Ext.MessageBox
 																		.alert('success updated');
-																// reload the
-																// store
-																moduleAccessStore.proxy = new Ext.data.HttpProxy(
-																		{
-																			url : '../controller/moduleAccessController.php?method=read&teamId='
-																					+ Ext
-																							.getCmp('team_fake').value,
-																			method : 'POST'
-																		});
-
-																moduleAccessStore
-																		.reload();
+																
+																moduleAccessStore.load({
+																	params : {
+																		teamId : Ext.getCmp('teamId').getValue()
+																	}
+																})
 																jsonResponse = Ext
 																		.decode(response.responseText);
-																title = 'Updated ';
+																
 																if (jsonResponse == true) {
-																	title = title
-																			+ ' True';
-																	Ext.MessageBox
-																			.alert(
-																					title,
-																					jsonResponse.message);
-																} else if (jsonResponse == false) {
-																	title = title
-																			+ 'False';
+																	
 																	Ext.MessageBox
 																			.alert(
 																					systemLabel,
+																					jsonResponse.message);
+																} else if (jsonResponse == false) {
+																	
+																	Ext.MessageBox
+																			.alert(
+																					systemErrorLabel,
 																					jsonResponse.message);
 																}
 															},

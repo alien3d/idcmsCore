@@ -1,20 +1,23 @@
 Ext
 		.onReady(function() {
 
+			var pageCreate;
+			var pageReload;
+			var pagePrint;
 			if (leafAccessCreateValue == 1) {
-				var pageCreate = false;
+				pageCreate = false;
 			} else {
-				var pageCreate = true;
+				pageCreate = true;
 			}
 			if (leafAccessReadValue == 1) {
-				var pageReload = false;
+				pageReload = false;
 			} else {
-				var pageReload = true;
+				pageReload = true;
 			}
 			if (leafAccessPrintValue == 1) {
-				var pagePrint = false;
+				pagePrint = false;
 			} else {
-				var pagePrint = true;
+				pagePrint = true;
 			}
 			// form panel + grid.When choose the form then activated filter the
 			// grid.Grid will automatically update on demand
@@ -26,7 +29,7 @@ Ext
 			var folderAccessProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderAccessController.php",
 				method : 'POST',
-				
+
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -60,7 +63,7 @@ Ext
 				reader : folderAccessReader,
 				baseParams : {
 					method : "read",
-					grid : "master",
+					isAdmin : isAdmin,
 					leafId : leafId
 				},
 				root : "data",
@@ -190,74 +193,57 @@ Ext
 				dataIndex : 'folderAccessValue'
 			});
 
-			// the id for administrator to see in any problem.User cannot see
-			// this page
-			// information
 			var columnModel = new Ext.grid.ColumnModel({
 				columns : [ {
-					header : moduleNameLabel,
+					header : moduleEnglishLabel,
 					dataIndex : 'moduleEnglish'
-				}, {
-					header : moduleIdLabel,
-					dataIndex : 'moduleId'
-				}, {
-					header : teamNameLabel,
-					dataIndex : 'teamEnglish'
-				}, {
-					header : teamIdLabel,
-					dataIndex : 'teamId'
-				}, {
-					header : folderNameLabel,
-					dataIndex : 'folderEnglish'
-				}, {
-					header : folderIdLabel,
-					dataIndex : 'folderId'
 				}, folderAccessValue ]
 			});
 
-			var teamId = new Ext.ux.form.ComboBoxMatch(
-					{
-						labelAlign : 'left',
-						fieldLabel : teamIdLabel,
-						name : 'teamId',
-						hiddenName : 'teamId',
-						valueField : 'teamId',
-						id : 'team_fake',
-						displayField : 'teamEnglish',
-						typeAhead : false,
-						triggerAction : 'all',
-						store : teamStore,
-						anchor : '95%',
-						selectOnFocus : true,
-						mode : 'local',
-						allowBlank : false,
-						blankText : blankTextLabel,
-						createValueMatcher : function(value) {
-							value = String(value).replace(/\s*/g, '');
-							if (Ext.isEmpty(value, false)) {
-								return new RegExp('^');
+			var teamId = new Ext.ux.form.ComboBoxMatch({
+				labelAlign : 'left',
+				fieldLabel : teamIdLabel,
+				name : 'teamId',
+				hiddenName : 'teamId',
+				valueField : 'teamId',
+				hiddenId : 'team_fake',
+				id : 'teamId',
+				displayField : 'teamEnglish',
+				typeAhead : false,
+				triggerAction : 'all',
+				store : teamStore,
+				anchor : '95%',
+				selectOnFocus : true,
+				mode : 'local',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				createValueMatcher : function(value) {
+					value = String(value).replace(/\s*/g, '');
+					if (Ext.isEmpty(value, false)) {
+						return new RegExp('^');
+					}
+					value = Ext.escapeRe(value.split('').join('\\s*')).replace(
+							/\\\\s\\\*/g, '\\s*');
+					return new RegExp('\\b(' + value + ')', 'i');
+				},
+				listeners : {
+					'select' : function(combo, record, index) {
+						Ext.getCmp('moduleId').reset(); // force the combobox to
+														// clear
+
+						moduleStore.load({
+							params : {
+								method : 'read',
+								field : 'moduleId',
+								leafId : leafId,
+								teamId : this.value,
+								type : 2
 							}
-							value = Ext.escapeRe(value.split('').join('\\s*'))
-									.replace(/\\\\s\\\*/g, '\\s*');
-							return new RegExp('\\b(' + value + ')', 'i');
-						},
-						listeners : {
-							'select' : function(combo, record, index) {
-								Ext.getCmp('module_fake').reset(); // force the combobox to clear
-								
-								moduleStore.load({
-									params:{
-										method:'read',
-										field:'moduleId',
-										leafId:leafId,
-										teamId:this.value,
-										type:2
-									}
-								});
-								Ext.getCmp('module_fake').enable();
-							}
-						}
-					});
+						});
+						Ext.getCmp('moduleId').enable();
+					}
+				}
+			});
 
 			var moduleId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
@@ -265,7 +251,8 @@ Ext
 				name : 'moduleId',
 				hiddenName : 'moduleId',
 				valueField : 'moduleId',
-				id : 'module_fake',
+				hiddenId : 'module_fake',
+				id : 'moduleId',
 				displayField : 'moduleEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
@@ -295,10 +282,10 @@ Ext
 
 						folderAccessStore.load({
 							params : {
-								method:'read',
+								method : 'read',
 								leafId : leafId,
-								teamId : Ext.getCmp('team_fake').getValue(),
-								moduleId : Ext.getCmp('module_fake').getValue()
+								teamId : Ext.getCmp('teamId').getValue(),
+								moduleId : Ext.getCmp('moduleId').getValue()
 							}
 
 						});
@@ -338,12 +325,10 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = folderAccessStore
-														.getCount();
+
 												folderAccessStore
 														.each(function(rec) {
 															for ( var access in access_array) {
-																// alert(access);
 																rec
 																		.set(
 																				access_array[access],
@@ -383,18 +368,19 @@ Ext
 														+ leafId;
 												var sub_url;
 												sub_url = '';
-												for (i = count - 1; i >= 0; i--) {
+												var modified = folderAccessStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
 													var record = folderAccessStore
 															.getAt(i);
 													sub_url = sub_url
 															+ '&teamId='
-															+ Ext
-																	.getCmp(
-																			'team_fake')
+															+ Ext.getCmp(
+																	'teamId')
 																	.getValue()
 															+ '&moduleId='
 															+ Ext
-																	.getCmp('module_fake').value
+																	.getCmp('moduleId').value
 															+ '&folderAccessId[]='
 															+ record
 																	.get('folderAccessId')
@@ -412,20 +398,18 @@ Ext
 																	options) {
 																jsonResponse = Ext
 																		.decode(response.responseText);
-																title = 'Update ';
+																
 																if (jsonResponse == true) {
-																	title = title
-																			+ ' Success';
+																
 																	Ext.MessageBox
 																			.alert(
-																					title,
+																					systemLabel,
 																					jsonResponse.message);
 																} else if (jsonResponse == false) {
-																	title = title
-																			+ 'Failure';
+																	
 																	Ext.MessageBox
 																			.alert(
-																					title,
+																					systemErrorLabel,
 																					jsonResponse.message);
 																}
 																// reload the
