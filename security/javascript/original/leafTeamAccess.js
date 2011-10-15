@@ -111,6 +111,12 @@ Ext
 				}, {
 					name : 'leafTeamAccessPostValue',
 					type : 'boolean'
+				}, {
+					name : 'leafTeamAccessDraftValue',
+					type : 'boolean'
+				}, {
+					name : 'leafTeamAccessReviewValue',
+					type : 'boolean'
 				} ]
 			});
 
@@ -306,6 +312,20 @@ Ext
 				width : 55
 			});
 
+			var leafTeamAccessReviewValue = new Ext.grid.CheckColumn({
+				header : leafTeamAccessReviewValueLabel,
+				dataIndex : 'leafTeamAccessReviewlue',
+				id : 'leafTeamAccessReviewValue',
+				width : 55
+			});
+
+			var leafTeamAccessDraftValue = new Ext.grid.CheckColumn({
+				header : leafTeamAccessDraftValueLabel,
+				dataIndex : 'leafTeamAccessDraftValue',
+				id : 'leafTeamAccessDraftValue',
+				width : 55
+			});
+
 			// the id for administrator to see in any problem.User cannot see
 			// this page information
 			var leafTeamAccessColumnModel = new Ext.grid.ColumnModel({
@@ -324,191 +344,174 @@ Ext
 				}, {
 					header : staffNameLabel,
 					dataIndex : 'staffName'
-				}, leafTeamAccessCreateValue, leafTeamAccessReadValue,
-						leafTeamAccessUpdateValue, leafTeamAccessDeleteValue,
-						leafTeamAccessPrintValue, leafTeamAccessPostValue ]
+				}, leafTeamAccessDraftValue, leafTeamAccessCreateValue,
+						leafTeamAccessReadValue, leafTeamAccessUpdateValue,
+						leafTeamAccessDeleteValue, leafTeamAccessPrintValue,
+						leafTeamAccessReviewValue, leafTeamAccessPostValue ]
 			});
 
-			var teamId = new Ext.ux.form.ComboBoxMatch(
-					{
-						labelAlign : 'left',
-						fieldLabel : teamIdLabel,
-						name : 'teamId',
-						hiddenName : 'teamId',
-						hiddenId : 'teamFakeId',
-						valueField : 'teamId',
-						id : 'teamId',
-						displayField : 'teamEnglish',
-						typeAhead : false,
-						triggerAction : 'all',
-						store : teamStore,
-						anchor : '95%',
-						selectOnFocus : true,
-						mode : 'local',
-						allowBlank : false,
-						blankText : blankTextLabel,
-						createValueMatcher : function(value) {
-							value = String(value).replace(/\s*/g, '');
-							if (Ext.isEmpty(value, false)) {
-								return new RegExp('^');
+			var teamId = new Ext.ux.form.ComboBoxMatch({
+				labelAlign : 'left',
+				fieldLabel : teamIdLabel,
+				name : 'teamId',
+				hiddenName : 'teamId',
+				hiddenId : 'teamFakeId',
+				valueField : 'teamId',
+				id : 'teamId',
+				displayField : 'teamEnglish',
+				typeAhead : false,
+				triggerAction : 'all',
+				store : teamStore,
+				anchor : '95%',
+				selectOnFocus : true,
+				mode : 'local',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				createValueMatcher : function(value) {
+					value = String(value).replace(/\s*/g, '');
+					if (Ext.isEmpty(value, false)) {
+						return new RegExp('^');
+					}
+					value = Ext.escapeRe(value.split('').join('\\s*')).replace(
+							/\\\\s\\\*/g, '\\s*');
+					return new RegExp('\\b(' + value + ')', 'i');
+				},
+				listeners : {
+					'select' : function(combo, record, index) {
+						Ext.getCmp('moduleId').reset();
+						moduleStore.load({
+							params : {
+								teamId : Ext.getCmp('teamId').getValue(),
+								type :2,
+								leafId : leafId,
+								isAdmin : isAdmin
+
 							}
-							value = Ext.escapeRe(value.split('').join('\\s*'))
-									.replace(/\\\\s\\\*/g, '\\s*');
-							return new RegExp('\\b(' + value + ')', 'i');
-						},
-						listeners : {
-							'select' : function(combo, record, index) {
-								Ext.getCmp('moduleId').reset();
-								moduleStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : '../controller/leafTeamAccessController.php?field=moduleId&teamId='
-													+ Ext.getCmp('teamId')
-															.getValue()
-													+ '&leafId='
-													+ leafId
-													+ '&isAdmin='
-													+ isAdmin
-													+ '&type=1',
-											method : 'GET'
-										});
+						});
+						Ext.getCmp('moduleId').enable();
+						Ext.getCmp('gridPanel').enable();
 
-								moduleStore.reload();
-								Ext.getCmp('moduleId').enable();
-								Ext.getCmp('gridPanel').enable();
+						leafTeamAccessStore.load({
+							params : {
+								teamId : Ext.getCmp('teamId').getValue(),
+								leafId : leafId,
+								isAdmin : isAdmin,
+								method : 'read'
 
-								leafTeamAccessStore.load({
-									params : {
-										teamId : Ext.getCmp('teamId')
-												.getValue(),
-										leafId : leafId,
-										isAdmin : isAdmin,
-										method : 'read'
-
-									}
-								});
 							}
+						});
+					}
+				}
+			});
+
+			var moduleId = new Ext.ux.form.ComboBoxMatch({
+				labelAlign : 'left',
+				fieldLabel : moduleIdLabel,
+				name : 'moduleId',
+				hiddenName : 'moduleId',
+				hiddenId : 'moduleFake',
+				valueField : 'moduleId',
+				id : 'moduleId',
+				displayField : 'moduleEnglish',
+				typeAhead : false,
+				triggerAction : 'all',
+				store : moduleStore,
+				anchor : '95%',
+				selectOnFocus : true,
+				mode : 'local',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				createValueMatcher : function(value) {
+					value = String(value).replace(/\s*/g, '');
+					if (Ext.isEmpty(value, false)) {
+						return new RegExp('^');
+					}
+					value = Ext.escapeRe(value.split('').join('\\s*')).replace(
+							/\\\\s\\\*/g, '\\s*');
+					return new RegExp('\\b(' + value + ')', 'i');
+				},
+				disabled : true,
+				listeners : {
+					'select' : function(combo, record, index) {
+						Ext.getCmp('folderId').reset();
+
+						folderStore.load({
+							params : {
+								teamId : Ext.getCmp('teamId').getValue(),
+								moduleId : Ext.getCmp('moduleId').getValue(),
+								type :2,
+								leafId : leafId,
+								isAdmin : isAdmin
+
+							}
+						});
+					
+						Ext.getCmp('folderId').enable();
+						Ext.getCmp('gridPanel').enable();
+
+						leafTeamAccessStore.load({
+							params : {
+								teamId : Ext.getCmp('teamId').getValue(),
+								moduleId : Ext.getCmp('moduleId').getValue(),
+								leafId : leafId,
+								isAdmin : isAdmin,
+								method : 'read'
+
+							}
+						});
+					}
+				}
+			});
+
+			var folderId = new Ext.ux.form.ComboBoxMatch({
+				labelAlign : 'left',
+				fieldLabel : folderIdLabel,
+				name : 'folderId',
+				hiddenName : 'folderId',
+				valueField : 'folderId',
+				hiddenId : 'folderFakeId',
+				id : 'folderId',
+				displayField : 'folderEnglish',
+				typeAhead : false,
+				triggerAction : 'all',
+				store : folderStore,
+				anchor : '95%',
+				selectOnFocus : true,
+				mode : 'local',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				createValueMatcher : function(value) {
+					value = String(value).replace(/\s*/g, '');
+					if (Ext.isEmpty(value, false)) {
+						return new RegExp('^');
+					}
+					value = Ext.escapeRe(value.split('').join('\\s*')).replace(
+							/\\\\s\\\*/g, '\\s*');
+					return new RegExp('\\b(' + value + ')', 'i');
+				},
+				disabled : true,
+				listeners : {
+					'select' : function(combo, record, index) {
+						if (this.value == '') {
+							Ext.getCmp('gridPanel').disable();
+						} else {
+							Ext.getCmp('gridPanel').enable();
 						}
-					});
-
-			var moduleId = new Ext.ux.form.ComboBoxMatch(
-					{
-						labelAlign : 'left',
-						fieldLabel : moduleIdLabel,
-						name : 'moduleId',
-						hiddenName : 'moduleId',
-						hiddenId : 'moduleFake',
-						valueField : 'moduleId',
-						id : 'moduleId',
-						displayField : 'moduleEnglish',
-						typeAhead : false,
-						triggerAction : 'all',
-						store : moduleStore,
-						anchor : '95%',
-						selectOnFocus : true,
-						mode : 'local',
-						allowBlank : false,
-						blankText : blankTextLabel,
-						createValueMatcher : function(value) {
-							value = String(value).replace(/\s*/g, '');
-							if (Ext.isEmpty(value, false)) {
-								return new RegExp('^');
-							}
-							value = Ext.escapeRe(value.split('').join('\\s*'))
-									.replace(/\\\\s\\\*/g, '\\s*');
-							return new RegExp('\\b(' + value + ')', 'i');
-						},
-						disabled : true,
-						listeners : {
-							'select' : function(combo, record, index) {
-								Ext.getCmp('folderId').reset();
-								folderStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : '../controller/leafTeamAccessController.php?field=folderId&teamId='
-													+ Ext.getCmp('teamId')
-															.getValue()
-													+ '&moduleId='
-													+ Ext.getCmp('moduleId')
-															.getValue()
-													+ '&leafId='
-													+ leafId
-													+ '&isAdmin='
-													+ isAdmin
-													+ '&type=1',
-											method : 'GET'
-										});
-
-								folderStore.reload();
-								Ext.getCmp('folderId').enable();
-								Ext.getCmp('gridPanel').enable();
-
-								leafTeamAccessStore.load({
-									params : {
-										teamId : Ext.getCmp('teamId')
-												.getValue(),
-										moduleId : Ext.getCmp('moduleId')
-												.getValue(),
-										leafId : leafId,
-										isAdmin : isAdmin,
-										method :'read'
-
-									}
-								});
-							}
-						}
-					});
-
-			var folderId = new Ext.ux.form.ComboBoxMatch(
-					{
-						labelAlign : 'left',
-						fieldLabel : folderIdLabel,
-						name : 'folderId',
-						hiddenName : 'folderId',
-						valueField : 'folderId',
-						id : 'folder_fake',
-						displayField : 'folderEnglish',
-						typeAhead : false,
-						triggerAction : 'all',
-						store : folderStore,
-						anchor : '95%',
-						selectOnFocus : true,
-						mode : 'local',
-						allowBlank : false,
-						blankText : blankTextLabel,
-						createValueMatcher : function(value) {
-							value = String(value).replace(/\s*/g, '');
-							if (Ext.isEmpty(value, false)) {
-								return new RegExp('^');
-							}
-							value = Ext.escapeRe(value.split('').join('\\s*'))
-									.replace(/\\\\s\\\*/g, '\\s*');
-							return new RegExp('\\b(' + value + ')', 'i');
-						},
-						disabled : true,
-						listeners : {
-							'select' : function(combo, record, index) {
-								if (this.value == '') {
-									Ext.getCmp('gridPanel').disable();
-								} else {
-									Ext.getCmp('gridPanel').enable();
-								}
-								leafTeamAccessStore.load({
-									params : {
-										teamId : Ext.getCmp('teamId')
-												.getValue(),
-										moduleId : Ext.getCmp('moduleId')
-												.getValue(),
-										folderId : Ext.getCmp('folderId')
-												.getValue(),		
-										leafId : leafId,
-										isAdmin : isAdmin,
-										method :'read'
-
-									}
-								});
+						leafTeamAccessStore.load({
+							params : {
+								teamId : Ext.getCmp('teamId').getValue(),
+								moduleId : Ext.getCmp('moduleId').getValue(),
+								folderId : Ext.getCmp('folderId').getValue(),
+								leafId : leafId,
+								isAdmin : isAdmin,
+								method : 'read'
 
 							}
-						}
-					});
+						});
+
+					}
+				}
+			});
 			// compare with the user leaf.Here Module and Folder just filtering
 			// mode
 			var formPanel = new Ext.Panel({
@@ -558,7 +561,6 @@ Ext
 												leafTeamAccessStore
 														.each(function(rec) {
 															for ( var access in access_array) {
-																// alert(access);
 																rec
 																		.set(
 																				access_array[access],

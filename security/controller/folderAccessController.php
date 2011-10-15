@@ -185,7 +185,7 @@ class FolderAccessClass extends ConfigClass
             } else 
                 if ($this->getVendor() == self::ORACLE) {
                     $sql = "
-				SELECT	MODULE.MODULENOTE 	AS	\"moduleEnglish\",
+				SELECT	MODULE.MODULEENGLISH 	AS	\"moduleEnglish\",
 						MODULE.MODULEID 	AS 	\"moduleId\",
 						FOLDER.FOLDERID 	AS 	\"folderId\",
 						FOLDER.FOLDERNOTE 	AS 	\"folderEnglish\",

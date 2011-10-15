@@ -194,6 +194,12 @@ class Security extends ConfigClass {
 			WHERE   ISACTIVE=1";
 		}
 		$result = $this->q->fast ( $sql );
+		if ($this->q->execute == 'fail') {
+			echo json_encode ( array ('success' => false, 'message' => $this->q->responce ) );
+			
+			exit ();
+		}
+		$total = 0;
 		$total = $this->q->numberRows ( $result );
 		$items = array ();
 		if ($total > 0) {
@@ -257,6 +263,11 @@ class Security extends ConfigClass {
 			WHERE   ISACTIVE=1";
 		}
 		$result = $this->q->fast ( $sql );
+		if ($this->q->execute == 'fail') {
+			echo json_encode ( array ('success' => false, 'message' => $this->q->responce ) );
+			
+			exit ();
+		}
 		$total = 0;
 		$total = $this->q->numberRows ( $result );
 		$items = array ();
@@ -270,8 +281,8 @@ class Security extends ConfigClass {
 		}
 		if ($total == 1) {
 			$jsonEncode = json_encode ( array ('success' => TRUE, 'total' => $total, 'department' => $items ) );
-			$jsonEncode = str_replace ( "[", "", $jsonEncode );
-			$jsonEncode = str_replace ( "]", "", $jsonEncode );
+			//$jsonEncode = str_replace ( "[", "", $jsonEncode );
+			//$jsonEncode = str_replace ( "]", "", $jsonEncode );
 			echo $jsonEncode;
 			exit ();
 		} else {
@@ -288,13 +299,14 @@ class Security extends ConfigClass {
 	function module($type, $teamId = NULL) {
 		header ( 'Content-Type', 'application/json; charset=utf-8' );
 		
-		if (isset ( $_GET ['type'] )) {
-			$type = intval ( $_GET ['type'] );
-		}
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
+		}
+		if (! ($type)) {
+			echo json_encode ( array ("success" => false, "message" => "There are no Type Define" ) );
+			exit ();
 		}
 		if ($this->getVendor () == self::MYSQL) {
 			if ($type == 1) {
@@ -326,7 +338,7 @@ class Security extends ConfigClass {
 			WHERE   [module].[isActive]=1";
 			} else if ($type == 2) {
 				$sql = "
-			SELECT 	[moduleAccess].[moduleId],
+			SELECT 	[module].[moduleId],
 					[module].[moduleEnglish],
 					[moduleAccess].[teamId],
 					[moduleAccess].[moduleAccessValue]
@@ -342,13 +354,13 @@ class Security extends ConfigClass {
 			if ($type == 1) {
 				$sql = "
 			SELECT 	MODULE.MODULEID,
-					MODULE.MODULENOTE
+					MODULE.MODULEENGLISH
 			FROM   	MODULE
 			WHERE   MODULE.ISACTIVE=1";
 			} else if ($type == 2) {
 				$sql = "
-			SELECT 	MODULEACCESS.MODULEID,
-					MODULEACCESS.MODULENOTE,
+			SELECT 	MODULE.MODULEID,
+					MODULE.MODULEENGLISH,
 					MODULEACCESS.TEAMID,
 					MODULEACCESS.MODULEACCESSVALUE
 			FROM   	MODULEACCESS
@@ -363,15 +375,15 @@ class Security extends ConfigClass {
 			if ($type == 1) {
 				$sql = "
 			SELECT 	MODULE.MODULEID,
-			MODULE.MODULENOTE
+					MODULE.MODULEENGLISH
 			FROM   	MODULE
 			WHERE   MODULE.ISACTIVE=1";
 			} else if ($type == 2) {
 				$sql = "
-			SELECT 	MODULEACCESS.MODULEID,
-			MODULEACCESS.MODULENOTE,
-			MODULEACCESS.TEAMID,
-			MODULEACCESS.MODULEACCESSVALUE
+			SELECT 	MODULE.MODULEID,
+					MODULE.MODULEENGLISH,
+					MODULEACCESS.TEAMID,
+					MODULEACCESS.MODULEACCESSVALUE
 			FROM   	MODULEACCESS
 			JOIN	MODULE
 			USING	(MODULEID)
@@ -384,15 +396,15 @@ class Security extends ConfigClass {
 			if ($type == 1) {
 				$sql = "
 			SELECT 	MODULE.MODULEID,
-			MODULE.MODULENOTE
+					MODULE.MODULEENGLISH
 			FROM   	MODULE
 			WHERE   MODULE.ISACTIVE=1";
 			} else if ($type == 2) {
 				$sql = "
-			SELECT 	MODULEACCESS.MODULEID,
-			MODULEACCESS.MODULENOTE,
-			MODULEACCESS.TEAMID,
-			MODULEACCESS.MODULEACCESSVALUE
+			SELECT 	MODULE.MODULEID,
+					MODULE.MODULEENGLISH,
+					MODULEACCESS.TEAMID,
+					MODULEACCESS.MODULEACCESSVALUE
 			FROM   	MODULEACCESS
 			JOIN	MODULE
 			USING	(MODULEID)
@@ -404,6 +416,11 @@ class Security extends ConfigClass {
 		}
 		
 		$result = $this->q->fast ( $sql );
+		if ($this->q->execute == 'fail') {
+			echo json_encode ( array ('success' => false, 'message' => $this->q->responce ) );
+			
+			exit ();
+		}
 		$total = $this->q->numberRows ( $result );
 		$items = array ();
 		if ($total > 0) {
@@ -413,8 +430,8 @@ class Security extends ConfigClass {
 		}
 		if ($total == 1) {
 			$jsonEncode = json_encode ( array ('success' => TRUE, 'total' => $total, 'module' => $items, 'message' => "data loaded" ) );
-			$jsonEncode = str_replace ( "[", "", $jsonEncode );
-			$jsonEncode = str_replace ( "]", "", $jsonEncode );
+			//$jsonEncode = str_replace ( "[", "", $jsonEncode );
+			//$jsonEncode = str_replace ( "]", "", $jsonEncode );
 			echo $jsonEncode;
 			exit ();
 		} else {
@@ -429,9 +446,13 @@ class Security extends ConfigClass {
 	 * @param int $teamId  Team Identification Value
 	 * @version  0.1 remove the session  language
 	 */
-	function folder($type, $moduleId = null, $teamId = null) {
+	function folder($type, $teamId = null,$moduleId = null) {
 		header ( 'Content-Type', 'application/json; charset=utf-8' );
 		
+		if (! ($type)) {
+			echo json_encode ( array ("success" => false, "message" => "There are no Type Define" ) );
+			exit ();
+		}
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -446,20 +467,24 @@ class Security extends ConfigClass {
 			WHERE   `isActive`	=	1 ";
 			} else {
 				$sql = "
-			SELECT 	`folderAccess`.`moduleId`,
-					`folderAccess`.`TEAMID`,
-					`folderAccess`.`moduleAccessValue`,
+			SELECT 	`folder`.`folderId`,
+					`folder`.`folderEnglish`,
+					`folder`.`moduleId`,
+					`folderAccess`.`teamId`,
+					`folderAccess`.`folderAccessValue`
 			FROM   	`folderAccess`
 			JOIN	`folder`
 			USING	(`folderId`)
 			WHERE   `folder`.`isActive`	=	1	";
 			}
-			if (isset ( $_GET ['TEAMID'] )) {
-				$sql .= " AND `folder`.`TEAMID`='" . $this->strict ( $_GET ['TEAMID'], 'numeric' ) . "'";
+			if (isset ( $teamId )) {
+				$sql .= " AND `folderAccess`.`teamId`='" . $teamId . "'";
 			}
 			if (isset ( $moduleId )) {
-				$sql .= " AND `folder`.`moduleId`	=	'" . $this->strict ( $moduleId, 'numeric' ) . "'";
+				$sql .= " AND `folder`.`moduleId`	=	'" . $moduleId . "'";
 			}
+		
+		//	echo $sql;
 		} else if ($this->getVendor () == self::MSSQL) {
 			if ($type == 1) {
 				$sql = "
@@ -469,45 +494,106 @@ class Security extends ConfigClass {
 			WHERE   [isActive]=1 ";
 			} else {
 				$sql = "
-			SELECT 	[folderAccess].[moduleId],
+			SELECT 	[folder].[folderId],
+					[folder].[folderEnglish],
+					[folder].[moduleId],
 					[folderAccess].[teamId],
-					[folderAccess].[moduleAccessValue],
+					[folderAccess].[folderAccessValue],
 			FROM   	[folderAccess]
 			JOIN	[folder]
 			ON		[folder].[folderId] = [folderAccess].[folderId]
-			WHERE   [folder].[isActive]=1";
+			WHERE   [folder].[isActive]	=	1";
 			}
 			if (isset ( $teamId )) {
-				$sql .= " AND [folder].[teamId]='" . $this->strict ( $teamId, 'numeric' ) . "'";
+				$sql .= " AND [folderAccess].[teamId]='" . $teamId . "'";
 			}
 			if (isset ( $moduleId )) {
-				$sql .= " AND [folder].[moduleId]='" . $this->strict ( $moduleId, 'numeric' ) . "'";
+				$sql .= " AND [folder].[moduleId]='" . $moduleId . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			if ($type == 1) {
 				$sql = "
 			SELECT 	FOLDER.FOLDERID,
-					FOLDER.FOLDERNOTE
+					FOLDER.FOLDERENGLISH
 			FROM   	FOLDER
 			WHERE   ISACTIVE=1";
 			} else {
 				$sql = "
-			SELECT 	FOLDERACCESS.MODULEID,
+			SELECT 	FOLDER.FOLDERID,
+					FOLDER.FOLDERENGLISH,
+					FOLDER.MODULEID,
 					FOLDERACCESS.TEAMID,
-					FOLDERACCESS.MODULEACCESSVALUE,
+					FOLDERACCESS.FOLDERACCESSVALUE,
 			FROM   	FOLDERACCESS
 			JOIN	FOLDER
 			USING	(FOLDERID)
 			WHERE   FOLDER.ISACTIVE=1";
 			}
 			if (isset ( $teamId )) {
-				$sql .= " AND FOLDER.TEAMID='" . $this->strict ( $_GET ['TEAMID'], 'numeric' ) . "'";
+				$sql .= " AND FOLDERACCESS.TEAMID='" . $teamId . "'";
 			}
 			if (isset ( $moduleId )) {
-				$sql .= " AND FOLDER.MODULEID='" . $this->strict ( $moduleId, 'numeric' ) . "'";
+				$sql .= " AND FOLDER.MODULEID='" . $moduleId . "'";
+			}
+		
+		} else if ($this->getVendor () == self::DB2) {
+			if ($type == 1) {
+				$sql = "
+			SELECT 	FOLDER.FOLDERID,
+					FOLDER.FOLDERENGLISH
+			FROM   	FOLDER
+			WHERE   ISACTIVE=1";
+			} else {
+				$sql = "
+			SELECT 	FOLDER.FOLDERID,
+					FOLDER.FOLDERENGLISH,
+					FOLDER.MODULEID,
+					FOLDERACCESS.TEAMID,
+					FOLDERACCESS.FOLDERACCESSVALUE,
+			FROM   	FOLDERACCESS
+			JOIN	FOLDER
+			USING	(FOLDERID)
+			WHERE   FOLDER.ISACTIVE=1";
+			}
+			if (isset ( $teamId )) {
+				$sql .= " AND FOLDERACCESS.TEAMID='" . $teamId . "'";
+			}
+			if (isset ( $moduleId )) {
+				$sql .= " AND FOLDER.MODULEID='" . $moduleId . "'";
+			}
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			if ($type == 1) {
+				$sql = "
+			SELECT 	FOLDER.FOLDERID,
+					FOLDER.FOLDERENGLISH
+			FROM   	FOLDER
+			WHERE   ISACTIVE=1";
+			} else {
+				$sql = "
+			SELECT 	FOLDER.FOLDERID,
+					FOLDER.FOLDERENGLISH,
+					FOLDER.MODULEID,
+					FOLDERACCESS.TEAMID,
+					FOLDERACCESS.FOLDERACCESSVALUE,
+			FROM   	FOLDERACCESS
+			JOIN	FOLDER
+			USING	(FOLDERID)
+			WHERE   FOLDER.ISACTIVE=1";
+			}
+			if (isset ( $teamId )) {
+				$sql .= " AND FOLDERACCESS.TEAMID='" . $teamId . "'";
+			}
+			if (isset ( $moduleId )) {
+				$sql .= " AND FOLDER.MODULEID='" . $moduleId . "'";
 			}
 		}
+	
 		$result = $this->q->fast ( $sql );
+		if ($this->q->execute == 'fail') {
+			echo json_encode ( array ('success' => false, 'message' => $this->q->responce ) );
+			
+			exit ();
+		}
 		$total = $this->q->numberRows ( $result );
 		$items = array ();
 		if ($total > 0) {
@@ -516,13 +602,13 @@ class Security extends ConfigClass {
 			}
 		}
 		if ($total == 1) {
-			$jsonEncode = json_encode ( array ('success' => TRUE, 'total' => $total, 'folder' => $items, 'message' => "data loaded" ) );
-			$jsonEncode = str_replace ( "[", "", $jsonEncode );
-			$jsonEncode = str_replace ( "]", "", $jsonEncode );
+			$jsonEncode = json_encode ( array ('success' => true, 'total' => $total, 'message' => "data loaded" ,'folder' => $items ) );
+		//	$jsonEncode = str_replace ( "[", "", $jsonEncode );
+		//	$jsonEncode = str_replace ( "]", "", $jsonEncode );
 			echo $jsonEncode;
 			exit ();
 		} else {
-			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'folder' => $items, 'message' => "data loaded" ) );
+			echo json_encode ( array ('success' => true, 'total' => $total, 'folder' => $items, 'message' => "data loaded" ) );
 			exit ();
 		}
 	}
@@ -531,7 +617,7 @@ class Security extends ConfigClass {
 	 * @param int moduleId
 	 * @param int folderId
 	 */
-	public function nextSequence($moduleId=null,$folderId=null) {
+	public function nextSequence($moduleId = null, $folderId = null) {
 		header ( 'Content-Type', 'application/json; charset=utf-8' );
 		/**
 		 * initilize dummy value  to 0
@@ -575,6 +661,11 @@ class Security extends ConfigClass {
 			}
 		}
 		$result = $this->q->fast ( $sql );
+		if ($this->q->execute == 'fail') {
+			echo json_encode ( array ('success' => false, 'message' => $this->q->responce ) );
+			
+			exit ();
+		}
 		$row = $this->q->fetchAssoc ( $result );
 		$nextSequence = $row ['nextSequence'];
 		if ($nextSequence == 0) {

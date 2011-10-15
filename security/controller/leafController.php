@@ -356,7 +356,7 @@ class LeafClass extends ConfigClass {
 						FOLDER.FOLDERID		AS	\"folderId\",
 						FOLDER.FOLDERNOTE	AS	\"folderEnglish\",
 						MODULE.MODULEID		AS 	\"moduleId\",		
-						MODULE.MODULENOTE	AS  \"moduleEnglish\",
+						MODULE.MODULEENGLISH	AS  \"moduleEnglish\",
 						LEAF.LEAFCATEGORYID AS  \"leafCategoryId\",
 						STAFF.STAFFNAME 	AS 	\"staffName\"
 			FROM 		LEAF
@@ -496,7 +496,7 @@ class LeafClass extends ConfigClass {
 						FOLDER.FOLDERID		AS	\"folderId\",
 						FOLDER.FOLDERNOTE	AS	\"folderEnglish\",
 						MODULE.MODULEID		AS 	\"moduleId\",		
-						MODULE.MODULENOTE	AS  \"moduleEnglish\",
+						MODULE.MODULEENGLISH	AS  \"moduleEnglish\",
 						LEAF.LEAFCATEGORYID AS  \"leafCategoryId\",
 						STAFF.STAFFNAME 	AS 	\"staffName\"
 			FROM 		LEAF

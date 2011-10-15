@@ -276,7 +276,7 @@ class LeafAccessClass extends ConfigClass {
 						LEAF.FOLDERID,
 						FOLDER.FOLDERNOTE,
 						LEAF.LEAFNOTE,
-						MODULE.MODULENOTE,
+						MODULE.MODULEENGLISH,
 						STAFF.STAFFNAME,
 						TEAM.GROUPNOTE,
 						LEAFACCESS.LEAFID,

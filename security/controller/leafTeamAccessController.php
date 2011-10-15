@@ -129,48 +129,48 @@ class LeafTeamAccessClass extends ConfigClass {
 						`leafTeamAccess`.`leafId`,
 						`leafTeamAccess`.`teamId`,
 						`leafTeamAccess`.`leafTeamAccessId`,
-						(CASE `leafTeamAccess`.`leafAccessCreateValue`
+						(CASE `leafTeamAccess`.`leafTeamAccessCreateValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafAccessCreateValue`,
+						END) AS `leafTeamAccessCreateValue`,
 
 
-						(CASE `leafTeamAccess`.`leafAccessReadValue`
+						(CASE `leafTeamAccess`.`leafTeamAccessReadValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafAccessReadValue`,
+						END) AS `leafTeamAccessReadValue`,
 
-						(CASE `leafTeamAccess`.`leafAccessUpdateValue`
+						(CASE `leafTeamAccess`.`leafTeamAccessUpdateValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafAccessUpdateValue`,
+						END) AS `leafTeamAccessUpdateValue`,
 
-						(CASE `leafTeamAccess`.`leafAccessDeleteValue`
+						(CASE `leafTeamAccess`.`leafTeamAccessDeleteValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafAccessDeleteValue` ,
+						END) AS `leafTeamAccessDeleteValue` ,
 
-						(CASE `leafTeamAccess`.`leafAccessPrintValue`
+						(CASE `leafTeamAccess`.`leafTeamAccessPrintValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafAccessPrintValue`,
+						END) AS `leafTeamAccessPrintValue`,
 
-						(CASE `leafTeamAccess`.`leafAccessPostValue`
+						(CASE `leafTeamAccess`.`leafTeamAccessPostValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafAccessPostValue`
+						END) AS `leafTeamAccessPostValue`
 				FROM 	`leafTeamAccess`
 				JOIN	`leaf`
 				USING	(`leafId`)
@@ -204,48 +204,48 @@ class LeafTeamAccessClass extends ConfigClass {
 						[leafTeamAccess].[leafId],
 						[leafTeamAccess].[teamId],
 						[leafTeamAccess].[leafTeamAccessId],
-						(CASE [leafTeamAccess].[leafAccessCreateValue]
+						(CASE [leafTeamAccess].[leafTeamAccessCreateValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafAccessCreateValue],
+						END) AS [leafTeamAccessCreateValue],
 
 
-						(CASE [leafTeamAccess].[leafAccessReadValue]
+						(CASE [leafTeamAccess].[leafTeamAccessReadValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafAccessReadValue],
+						END) AS [leafTeamAccessReadValue],
 
-						(CASE [leafTeamAccess].[leafAccessUpdateValue]
+						(CASE [leafTeamAccess].[leafTeamAccessUpdateValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafAccessUpdateValue],
+						END) AS [leafTeamAccessUpdateValue],
 
-						(CASE [leafTeamAccess].[leafAccessDeleteValue]
+						(CASE [leafTeamAccess].[leafTeamAccessDeleteValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafAccessDeleteValue] ,
+						END) AS [leafTeamAccessDeleteValue] ,
 
-						(CASE [leafTeamAccess].[leafAccessPrintValue]
+						(CASE [leafTeamAccess].[leafTeamAccessPrintValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
 						END) AS [leafAccessPrintValue],
 
-						(CASE [leafTeamAccess].[leafAccessPostValue]
+						(CASE [leafTeamAccess].[leafTeamAccessPostValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafAccessPostValue]
+						END) AS [leafTeamAccessPostValue]
 				FROM 	[leafTeamAccess]
 				JOIN	[leaf]
 				ON		[leafTeamAccess].[leafId]=[leaf].[leafId]
@@ -274,7 +274,7 @@ class LeafTeamAccessClass extends ConfigClass {
 						LEAF.FOLDERID,
 						FOLDER.FOLDERNOTE,
 						LEAF.LEAFNOTE,
-						MODULE.MODULENOTE,
+						MODULE.MODULEENGLISH,
 						TEAM.GROUPNOTE,
 						LEAFTEAMACCESS.LEAFID,
 						LEAFTEAMACCESS.TEAMID,
@@ -349,7 +349,7 @@ class LeafTeamAccessClass extends ConfigClass {
 			LEAF.FOLDERID,
 			FOLDER.FOLDERNOTE,
 			LEAF.LEAFNOTE,
-			MODULE.MODULENOTE,
+			MODULE.MODULEENGLISH,
 			TEAM.GROUPNOTE,
 			LEAFTEAMACCESS.LEAFID,
 			LEAFTEAMACCESS.TEAMID,
@@ -424,7 +424,7 @@ class LeafTeamAccessClass extends ConfigClass {
 			LEAF.FOLDERID,
 			FOLDER.FOLDERNOTE,
 			LEAF.LEAFNOTE,
-			MODULE.MODULENOTE,
+			MODULE.MODULEENGLISH,
 			TEAM.GROUPNOTE,
 			LEAFTEAMACCESS.LEAFID,
 			LEAFTEAMACCESS.TEAMID,
@@ -509,6 +509,7 @@ class LeafTeamAccessClass extends ConfigClass {
 			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		}
+		$items = array();
 		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
 			// select module access
 			$items [] = $row;

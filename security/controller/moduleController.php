@@ -168,7 +168,7 @@ class ModuleClass extends ConfigClass {
 			INSERT INTO MODULE
 					(
 						ICONID,							MODULESEQUENCE,
-						MODULECODE,						MODULENOTE,
+						MODULECODE,						MODULEENGLISH,
 						ISDEFAULT,						ISNEW,
 						ISDRAFT,						ISUPDATE,
 						ISDELETE,						ISACTIVE,
@@ -398,7 +398,7 @@ class ModuleClass extends ConfigClass {
 							MODULE.ICONID,
 							MODULE.MODULECODE,
 							MODULE.MODULESEQUENCE,
-							MODULE.MODULENOTE,
+							MODULE.MODULEENGLISH,
 							MODULE.ISDEFAULT,
 							MODULE.ISNEW,
 							MODULE.ISDRAFT,
@@ -537,7 +537,7 @@ class ModuleClass extends ConfigClass {
 											MODULE.ICONID,
 											MODULE.MODULESEQUENCE,
 											MODULE.MODULECODE,
-											MODULE.MODULENOTE,
+											MODULE.MODULEENGLISH,
 											MODULE.ISDEFAULT,
 											MODULE.ISNEW,
 											MODULE.ISDRAFT,
@@ -632,7 +632,7 @@ class ModuleClass extends ConfigClass {
 			$sql = "
 			UPDATE 	MODULE
 			SET 	MODULESEQUENCE	= 	'" . $this->model->moduleSequence . "',
-					MODULENOTE		=	'" . $this->model->moduleEnglish . "',
+					MODULEENGLISH		=	'" . $this->model->moduleEnglish . "',
 					ICONID			=	'" . $this->model->iconId . "',
 					ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 					ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',

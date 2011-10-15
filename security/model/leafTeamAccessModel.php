@@ -89,8 +89,9 @@ class leafTeamAccessModel extends ValidationClass {
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset ( $_GET ['leafTeamAccessId'] )) {
-			$this->setTotal ( count ( $_GET ['leafTeamAccessId'] ) );
+		
+		if (isset ( $_POST ['type'] )) {
+			$this->setType ( $this->strict ( $_POST ['type'], 'numeric' ) );
 		}
 		if (isset ( $_POST ['teamId'] )) {
 			$this->setTeamId ( $this->strict ( $_POST ['teamId'], 'numeric' ) );
@@ -107,6 +108,12 @@ class leafTeamAccessModel extends ValidationClass {
 		/**
 		 * All the $_GET enviroment.
 		 */
+		if (isset ( $_GET ['leafTeamAccessId'] )) {
+			$this->setTotal ( count ( $_GET ['leafTeamAccessId'] ) );
+		}
+		if (isset ( $_GET ['type'] )) {
+			$this->setType ( $this->strict ( $_GET ['type'], 'numeric' ) );			
+		}
 		if (isset ( $_GET ['teamId'] )) {
 			$this->setTeamId ( $this->strict ( $_GET ['teamId'], 'numeric' ) );
 		}
@@ -123,7 +130,7 @@ class leafTeamAccessModel extends ValidationClass {
 			$this->setExecuteBy ( $_SESSION ['staffId'] );
 		}
 		/**
-		 *  TimeStamp Value.
+		 * TimeStamp Value.
 		 */
 		if ($this->getVendor () == self::MYSQL) {
 			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
@@ -450,7 +457,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param  int $value
 	 */
 	public function setType($value) {
-		$this->getType = $value;
+		$this->type = $value;
 	}
 	/**
 	 * Return Type Filtering
