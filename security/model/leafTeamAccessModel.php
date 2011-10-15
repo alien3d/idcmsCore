@@ -11,13 +11,12 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class LeafGroupAccessModel extends ValidationClass
-{
+class leafTeamAccessModel extends ValidationClass {
 	/**
 	 * Leaf Access  Identification
 	 * @var int
 	 */
-	private $leafGroupAccessId;
+	private $leafTeamAccessId;
 	/**
 	 * Leaf Access  Identification
 	 * @var int
@@ -44,191 +43,221 @@ class LeafGroupAccessModel extends ValidationClass
 	 */
 	private $staffId;
 	/**
+	 * Type 1 filter  table only Type 2  Filter with access table
+	 * @var int   
+	 */
+	private $type;
+	/**
 	 * Leaf Create Access Value
 	 * @var bool
 	 */
-	private $leafGroupAccessCreateValue;
+	private $leafTeamAccessCreateValue;
 	/**
 	 * Leaf Read Access Value
 	 * @var bool
 	 */
-	private $leafGroupAccessReadValue;
+	private $leafTeamAccessReadValue;
 	/**
 	 * Leaf Update Access Value
 	 * @var bool
 	 */
-	private $leafGroupAccessUpdateValue;
+	private $leafTeamAccessUpdateValue;
 	/**
 	 * Leaf Delete Access Value
 	 * @var bool
 	 */
-	private $leafGroupAccessDeleteValue;
+	private $leafTeamAccessDeleteValue;
 	/**
 	 * Leaf Print Access Value
 	 * @var bool
 	 */
-	private $leafGroupAccessPrintValue;
+	private $leafTeamAccessPrintValue;
 	/**
 	 * Leaf Posting Access Value
 	 * @var bool
 	 */
-	private $leafGroupAccessPostValue;
+	private $leafTeamAccessPostValue;
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
-	function execute ()
-	{
+	function execute() {
 		/**
 		 * Basic Information Table
 		 */
-		$this->setTableName('leafGroupAccess');
-		$this->setPrimaryKeyName('leafGroupAccessId');
+		$this->setTableName ( 'leafTeamAccess' );
+		$this->setPrimaryKeyName ( 'leafTeamAccessId' );
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_GET['leafGroupAccessId'])) {
-			$this->setTotal(count($_GET['leafGroupAccessId']));
+		if (isset ( $_GET ['leafTeamAccessId'] )) {
+			$this->setTotal ( count ( $_GET ['leafTeamAccessId'] ) );
 		}
-		if (isset($_POST['TEAMID'])) {
-			$this->setTEAMID($this->strict($_POST['TEAMID'], 'numeric'));
+		if (isset ( $_POST ['teamId'] )) {
+			$this->setTeamId ( $this->strict ( $_POST ['teamId'], 'numeric' ) );
 		}
-		if (isset($_POST['moduleId'])) {
-			$this->setModuleId($this->strict($_POST['moduleId'], 'numeric'));
+		if (isset ( $_POST ['moduleId'] )) {
+			$this->setModuleId ( $this->strict ( $_POST ['moduleId'], 'numeric' ) );
 		}
-		if (isset($_POST['folderId'])) {
-			$this->setFolderId($this->strict($_POST['folderId'], 'numeric'));
+		if (isset ( $_POST ['folderId'] )) {
+			$this->setFolderId ( $this->strict ( $_POST ['folderId'], 'numeric' ) );
 		}
-		if (isset($_POST['staffId'])) {
-			$this->setStaffId($this->strict($_POST['staffId'], 'numeric'));
+		if (isset ( $_POST ['staffId'] )) {
+			$this->setStaffId ( $this->strict ( $_POST ['staffId'], 'numeric' ) );
 		}
-		if (isset($_SESSION['staffId'])) {
-			$this->setExecuteBy($_SESSION['staffId']);
+		/**
+		 * All the $_GET enviroment.
+		 */
+		if (isset ( $_GET ['teamId'] )) {
+			$this->setTeamId ( $this->strict ( $_GET ['teamId'], 'numeric' ) );
 		}
-		if ($this->getVendor() == self::MYSQL) {
-			$this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
-		} else
-		if ($this->getVendor() == self::MSSQL) {
-			$this->setExecuteTime("'" . date("Y-m-d H:i:s") . "'");
-		} else
-		if ($this->getVendor() == self::ORACLE) {
-			$this->setExecuteTime(
-                    "to_date('" . date("Y-m-d H:i:s") .
-                     "','YYYY-MM-DD HH24:MI:SS')");
+		if (isset ( $_GET ['moduleId'] )) {
+			$this->setModuleId ( $this->strict ( $_GET ['moduleId'], 'numeric' ) );
 		}
-		for ($i = 0; $i < $this->getTotal(); $i ++) {
-			$this->setLeafGroupAccessId(
-			$this->strict($_GET['leafGroupAccessId'][$i], 'numeric'), $i);
-			if ($_GET['leafGroupAccessCreateValue'][$i] == 'true') {
-				$this->setLeafGroupAccessCreateValue($i, 1);
-			} else {
-				$this->setLeafGroupAccessCreateValue($i, 0);
+		if (isset ( $_GET ['folderId'] )) {
+			$this->setFolderId ( $this->strict ( $_GET ['folderId'], 'numeric' ) );
+		}
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 *  TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
+		$primaryKeyAll = '';
+		for($i = 0; $i < $this->getTotal (); $i ++) {
+			if (isset ( $_GET ['leafTeamAccessId'] )) {
+				$this->setleafTeamAccessId ( $this->strict ( $_GET ['leafTeamAccessId'] [$i], 'numeric' ), $i );
 			}
-			if ($_GET['leafGroupAccessReadValue'][$i] == 'true') {
-				$this->setLeafGroupAccessReadValue($i, 1);
+			if (isset ( $_GET ['leafTeamAccessCreateValue'] )) {
+				if ($_GET ['leafTeamAccessCreateValue'] [$i] == 'true') {
+					$this->setleafTeamAccessCreateValue ( $i, 1 );
+				}
 			} else {
-				$this->setLeafGroupAccessReadValue($i, 0);
+				$this->setleafTeamAccessCreateValue ( $i, 0 );
 			}
-			if ($_GET['leafGroupAccessUpdateValue'][$i] == 'true') {
-				$this->setLeafGroupAccessUpdateValue($i, 1);
+			if (isset ( $_GET ['leafTeamAccessCreateValue'] )) {
+				if ($_GET ['leafTeamAccessReadValue'] [$i] == 'true') {
+					$this->setleafTeamAccessReadValue ( $i, 1 );
+				}
 			} else {
-				$this->setLeafGroupAccessUpdateValue($i, 0);
+				$this->setleafTeamAccessReadValue ( $i, 0 );
 			}
-			if ($_GET['leafGroupAccessDeleteValue'][$i] == 'true') {
-				$this->setLeafGroupAccessDeleteValue($i, 1);
+			if (isset ( $_GET ['leafTeamAccessCreateValue'] )) {
+				if ($_GET ['leafTeamAccessUpdateValue'] [$i] == 'true') {
+					$this->setleafTeamAccessUpdateValue ( $i, 1 );
+				}
 			} else {
-				$this->setLeafGroupAccessDeleteValue($i, 1);
+				$this->setleafTeamAccessUpdateValue ( $i, 0 );
 			}
-			if ($_GET['leafGroupAccessPrintValue'][$i] == 'true') {
-				$this->setLeafGroupAccessPrintValue($i, 1);
+			if (isset ( $_GET ['leafTeamAccessCreateValue'] )) {
+				if ($_GET ['leafTeamAccessDeleteValue'] [$i] == 'true') {
+					$this->setleafTeamAccessDeleteValue ( $i, 1 );
+				}
 			} else {
-				$this->setLeafGroupAccessPrintValue($i, 0);
+				$this->setleafTeamAccessDeleteValue ( $i, 1 );
 			}
-			if ($_GET['leafGroupAccessPostValue'][$i] == 'true') {
-				$this->setLeafGroupAccessPostValue($i, 1);
+			if (isset ( $_GET ['leafTeamAccessCreateValue'] )) {
+				if ($_GET ['leafTeamAccessPrintValue'] [$i] == 'true') {
+					$this->setleafTeamAccessPrintValue ( $i, 1 );
+				}
 			} else {
-				$this->setLeafGroupAccessPostValue($i, 0);
+				$this->setleafTeamAccessPrintValue ( $i, 0 );
 			}
-			if ($_GET['leafGroupAccessDraftValue'][$i] == 'true') {
-				$this->leafGroupAccessDraftValue[$i] = 1;
-				$this->setLeafAccessDraftValue($i, 1);
+			if (isset ( $_GET ['leafTeamAccessCreateValue'] )) {
+				if ($_GET ['leafTeamAccessPostValue'] [$i] == 'true') {
+					$this->setleafTeamAccessPostValue ( $i, 1 );
+				}
 			} else {
-				$this->leafGroupAccessDraftValue[$i] = 0;
-				$this->setLeafGroupAccessDraftValue($i, 0);
+				$this->setleafTeamAccessPostValue ( $i, 0 );
 			}
-			$primaryKeyAll .= $this->getLeafGroupAccessId($i, 'array') . ",";
+			if (isset ( $_GET ['leafTeamAccessCreateValue'] )) {
+				if ($_GET ['leafTeamAccessDraftValue'] [$i] == 'true') {
+					$this->leafTeamAccessDraftValue [$i] = 1;
+					$this->setLeafAccessDraftValue ( $i, 1 );
+				}
+			} else {
+				$this->leafTeamAccessDraftValue [$i] = 0;
+				$this->setleafTeamAccessDraftValue ( $i, 0 );
+			}
+			$primaryKeyAll .= $this->getleafTeamAccessId ( $i, 'array' ) . ",";
 		}
-		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
+		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()
 	 */
-	function create ()
-	{}
+	function create() {
+	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::update()
 	 */
-	function update ()
-	{}
+	function update() {
+	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::delete()
 	 */
-	function delete ()
-	{}
-	/* (non-PHPdoc)
-	 * @see ValidationClass::draft()
-	 */
-	public function draft ()
-	{
-		$this->setIsDefault(0, 0, 'single');
-		$this->setIsNew(1, 0, 'single');
-		$this->setIsDraft(1, 0, 'single');
-		$this->setIsUpdate(0, 0, 'single');
-		$this->setIsActive(0, 0, 'single');
-		$this->setIsDelete(0, 0, 'single');
-		$this->setIsApproved(0, 0, 'single');
+	function delete() {
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
 	 */
-	public function approved ()
-	{
-		$this->setIsDefault(0, 0, 'single');
-		$this->setIsNew(1, 0, 'single');
-		$this->setIsDraft(0, 0, 'single');
-		$this->setIsUpdate(0, 0, 'single');
-		$this->setIsActive(0, 0, 'single');
-		$this->setIsDelete(0, 0, 'single');
-		$this->setIsApproved(1, 0, 'single');
+	public function draft() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 1, 0, 'single' );
+		$this->setIsDraft ( 1, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 0, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 0, 0, 'single' );
+	}
+	/* (non-PHPdoc)
+	 * @see ValidationClass::draft()
+	 */
+	public function approved() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 1, 0, 'single' );
+		$this->setIsDraft ( 0, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 0, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 1, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::review()
 	 */
-	public function review ()
-	{
-		$this->setIsDefault(0, 0, 'single');
-		$this->setIsNew(1, 0, 'single');
-		$this->setIsDraft(0, 0, 'single');
-		$this->setIsUpdate(0, 0, 'single');
-		$this->setIsActive(0, 0, 'single');
-		$this->setIsDelete(0, 0, 'single');
-		$this->setIsApproved(0, 0, 'single');
-		$this->setIsReview(1, 0, 'single');
-		$this->setIsPost(0, 0, 'single');
+	public function review() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 1, 0, 'single' );
+		$this->setIsDraft ( 0, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 0, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 1, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::post()
 	 */
-	public function post ()
-	{
-		$this->setIsDefault(0, 0, 'single');
-		$this->setIsNew(1, 0, 'single');
-		$this->setIsDraft(0, 0, 'single');
-		$this->setIsUpdate(0, 0, 'single');
-		$this->setIsActive(0, 0, 'single');
-		$this->setIsDelete(0, 0, 'single');
-		$this->setIsApproved(1, 0, 'single');
-		$this->setIsReview(0, 0, 'single');
-		$this->setIsPost(1, 0, 'single');
+	public function post() {
+		$this->setIsDefault ( 0, 0, 'single' );
+		$this->setIsNew ( 1, 0, 'single' );
+		$this->setIsDraft ( 0, 0, 'single' );
+		$this->setIsUpdate ( 0, 0, 'single' );
+		$this->setIsActive ( 0, 0, 'single' );
+		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 1, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 1, 0, 'single' );
 	}
 	/**
 	 * Set Leaf Group Access Identification  Value
@@ -236,18 +265,14 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafGroupAccessId ($value, $key, $type)
-	{
+	public function setleafTeamAccessId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->leafGroupAccessId = $value;
-		} else
-		if ($type == 'array') {
-			$this->leafGroupAccessId[$key] = $value;
+			$this->leafTeamAccessId = $value;
+		} else if ($type == 'array') {
+			$this->leafTeamAccessId [$key] = $value;
 		} else {
-			echo json_encode(
-			array("success" => false,
-                "message" => "Cannot Identifiy Type String Or Array:setLeafGroupAccessId ?"));
-			exit();
+			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type String Or Array:setleafTeamAccessId ?" ) );
+			exit ();
 		}
 	}
 	/**
@@ -256,50 +281,42 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return int|array
 	 */
-	public function getLeafGroupAccessId ($key, $type)
-	{
+	public function getleafTeamAccessId($key, $type) {
 		if ($type == 'single') {
-			return $this->leafGroupAccessId;
-		} else
-		if ($type == 'array') {
-			return $this->leafGroupAccessId[$key];
+			return $this->leafTeamAccessId;
+		} else if ($type == 'array') {
+			return $this->leafTeamAccessId [$key];
 		} else {
-			echo json_encode(
-			array("success" => false,
-                "message" => "Cannot Identifiy Type String Or Array:getLeaGroupAccessId ?"));
-			exit();
+			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type String Or Array:getLeaGroupAccessId ?" ) );
+			exit ();
 		}
 	}
 	/**
 	 * Set Leaf Identification Value
 	 * @param  int $value
 	 */
-	public function setLeafTempId ($value)
-	{
+	public function setLeafTempId($value) {
 		$this->leafTempId = $value;
 	}
 	/**
 	 * Return Leaf Identification Value
 	 * @return int
 	 */
-	public function getLeafTempId ()
-	{
+	public function getLeafTempId() {
 		return $this->leafTempId;
 	}
 	/**
 	 * Set Group Identification Value
 	 * @param  int $value
 	 */
-	public function setTeamId ($value)
-	{
+	public function setTeamId($value) {
 		$this->teamId = $value;
 	}
 	/**
 	 * Return Group Identification Value
 	 * @return int
 	 */
-	public function getTeamId ()
-	{
+	public function getTeamId() {
 		return $this->teamId;
 	}
 	/**
@@ -308,9 +325,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'e
 	 */
-	public function setLeafGroupAccessCreateValue ($value, $key, $type)
-	{
-		$this->leafGroupAccessCreateValue[$key] = $value;
+	public function setleafTeamAccessCreateValue($value, $key, $type) {
+		$this->leafTeamAccessCreateValue [$key] = $value;
 	}
 	/**
 	 * Return Leaf Create Access Value
@@ -318,9 +334,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getLeafGroupAccessCreateValue ($key, $type)
-	{
-		return $this->leafGroupAccessCreateValue[$key];
+	public function getleafTeamAccessCreateValue($key, $type) {
+		return $this->leafTeamAccessCreateValue [$key];
 	}
 	/**
 	 * Set Leaf Read Access  Value
@@ -328,9 +343,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafGroupAccessReadValue ($value, $key, $type)
-	{
-		$this->leafGroupAccessReadValue[$key] = $value;
+	public function setleafTeamAccessReadValue($value, $key, $type) {
+		$this->leafTeamAccessReadValue [$key] = $value;
 	}
 	/**
 	 * Return Leaf Read Access Value
@@ -338,9 +352,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getLeafGroupAccessReadValue ($key, $type)
-	{
-		return $this->leafGroupAccessReadValue[$key];
+	public function getleafTeamAccessReadValue($key, $type) {
+		return $this->leafTeamAccessReadValue [$key];
 	}
 	/**
 	 * Set Leaf Update Access  Value
@@ -348,9 +361,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafGroupAccessUpdateValue ($value, $key, $type)
-	{
-		$this->leafGroupAccessUpdateValue[$key] = $value;
+	public function setleafTeamAccessUpdateValue($value, $key, $type) {
+		$this->leafTeamAccessUpdateValue [$key] = $value;
 	}
 	/**
 	 * Return Leaf Update Access Value
@@ -358,9 +370,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getLeafGroupAccessUpdateValue ($key, $type)
-	{
-		return $this->leafGroupAccessUpdateValue[$key];
+	public function getleafTeamAccessUpdateValue($key, $type) {
+		return $this->leafTeamAccessUpdateValue [$key];
 	}
 	/**
 	 * Set Leaf Update Access  Value
@@ -368,9 +379,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafGroupAccessDeleteValue ($value, $key, $type)
-	{
-		$this->leafGroupAccessUpdateValue[$key] = $value;
+	public function setleafTeamAccessDeleteValue($value, $key, $type) {
+		$this->leafTeamAccessUpdateValue [$key] = $value;
 	}
 	/**
 	 * Return Leaf Delete Access Value
@@ -378,9 +388,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getLeafGroupAccessDeleteValue ($key, $type)
-	{
-		return $this->leafGroupAccessDeleteValue[$key];
+	public function getleafTeamAccessDeleteValue($key, $type) {
+		return $this->leafTeamAccessDeleteValue [$key];
 	}
 	/**
 	 * Set Leaf Print Access  Value
@@ -388,9 +397,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafGroupAccessPrintValue ($value, $key, $type)
-	{
-		$this->leafGroupAccessPrintValue[$key] = $value;
+	public function setleafTeamAccessPrintValue($value, $key, $type) {
+		$this->leafTeamAccessPrintValue [$key] = $value;
 	}
 	/**
 	 * Return Leaf Print Access Value
@@ -398,9 +406,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getleafGroupAccessPrintValue ($key, $type)
-	{
-		return $this->leafGroupAccessPrintValue[$key];
+	public function getleafTeamAccessPrintValue($key, $type) {
+		return $this->leafTeamAccessPrintValue [$key];
 	}
 	/**
 	 * Set Leaf Post Access  Value
@@ -408,9 +415,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafGroupAccessPostValue ($value, $key, $type)
-	{
-		$this->leafGroupAccessPostValue[$key] = $value;
+	public function setleafTeamAccessPostValue($value, $key, $type) {
+		$this->leafTeamAccessPostValue [$key] = $value;
 	}
 	/**
 	 * Return Leaf Post  Access Value
@@ -418,9 +424,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getLeafGroupAccessPostValue ($key, $type)
-	{
-		return $this->leafGroupAccessPostValue[$key];
+	public function getleafTeamAccessPostValue($key, $type) {
+		return $this->leafTeamAccessPostValue [$key];
 	}
 	/**
 	 * Set Leaf Draft Access  Value
@@ -428,9 +433,8 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setLeafGroupAccessDraftValue ($value, $key, $type)
-	{
-		$this->leafGroupAccessDraftValue[$key] = $value;
+	public function setleafTeamAccessDraftValue($value, $key, $type) {
+		$this->leafTeamAccessDraftValue [$key] = $value;
 	}
 	/**
 	 * Return Leaf Draft Access Value
@@ -438,56 +442,63 @@ class LeafGroupAccessModel extends ValidationClass
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getLeafGroupAccessDraftValue ($key, $type)
-	{
-		return $this->leafGroupAccessDraftValue[$key];
+	public function getleafTeamAccessDraftValue($key, $type) {
+		return $this->leafTeamAccessDraftValue [$key];
+	}
+	/**
+	 * Set  Type Filtering
+	 * @param  int $value
+	 */
+	public function setType($value) {
+		$this->getType = $value;
+	}
+	/**
+	 * Return Type Filtering
+	 * @return int
+	 */
+	public function getType() {
+		return $this->type;
 	}
 	/**
 	 * Set Module Identification Value
 	 * @param  int $value
 	 */
-	public function setModuleId ($value)
-	{
+	public function setModuleId($value) {
 		$this->moduleId = $value;
 	}
 	/**
 	 * Return Module Identification Value
 	 * @return int
 	 */
-	public function getModuleId ()
-	{
+	public function getModuleId() {
 		return $this->moduleId;
 	}
 	/**
 	 * Set Folder Identification Value
 	 * @param  int $value
 	 */
-	public function setFolderId ($value)
-	{
+	public function setFolderId($value) {
 		$this->folderId = $value;
 	}
 	/**
 	 * Return Folder Identification Value
 	 * @return int
 	 */
-	public function getFolderId ()
-	{
+	public function getFolderId() {
 		return $this->folderId;
 	}
 	/**
 	 * Set Staff Identification Value
 	 * @param  int $value
 	 */
-	public function setStaffId ($value)
-	{
+	public function setStaffId($value) {
 		$this->staffId = $value;
 	}
 	/**
 	 * Return Staff Identification Value
 	 * @return int
 	 */
-	public function getStaffId ()
-	{
+	public function getStaffId() {
 		return $this->staffId;
 	}
 }

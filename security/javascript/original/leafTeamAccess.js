@@ -24,7 +24,7 @@ Ext
 			var encode = false;
 			var local = false;
 			var leafTeamAccessProxy = new Ext.data.HttpProxy({
-				url : "../controller/leaf/leafTeamAccessController.php",
+				url : "../controller/leafTeamAccessController.php",
 				method : 'POST',
 				baseParams : {
 					method : "read",
@@ -335,8 +335,9 @@ Ext
 						fieldLabel : teamIdLabel,
 						name : 'teamId',
 						hiddenName : 'teamId',
+						hiddenId : 'teamFakeId',
 						valueField : 'teamId',
-						id : 'team_fake',
+						id : 'teamId',
 						displayField : 'teamEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
@@ -358,27 +359,33 @@ Ext
 						listeners : {
 							'select' : function(combo, record, index) {
 								Ext.getCmp('moduleId').reset();
-								module_store.proxy = new Ext.data.HttpProxy(
+								moduleStore.proxy = new Ext.data.HttpProxy(
 										{
 											url : '../controller/leafTeamAccessController.php?field=moduleId&teamId='
 													+ Ext.getCmp('teamId')
 															.getValue()
-													+ '&leafId=' + leafId,
+													+ '&leafId='
+													+ leafId
+													+ '&isAdmin='
+													+ isAdmin
+													+ '&type=1',
 											method : 'GET'
 										});
 
-								module_store.reload();
+								moduleStore.reload();
 								Ext.getCmp('moduleId').enable();
 								Ext.getCmp('gridPanel').enable();
-								leafTeamAccessStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : '../controller/leafTeamAccessController.php?teamId='
-													+ Ext.getCmp('teamId')
-															.getValue()
-													+ '&leafId=' + leafId,
-											method : 'GET'
-										});
-								leafTeamAccessStore.reload();
+
+								leafTeamAccessStore.load({
+									params : {
+										teamId : Ext.getCmp('teamId')
+												.getValue(),
+										leafId : leafId,
+										isAdmin : isAdmin,
+										method : 'read'
+
+									}
+								});
 							}
 						}
 					});
@@ -389,8 +396,9 @@ Ext
 						fieldLabel : moduleIdLabel,
 						name : 'moduleId',
 						hiddenName : 'moduleId',
+						hiddenId : 'moduleFake',
 						valueField : 'moduleId',
-						id : 'module_fake',
+						id : 'moduleId',
 						displayField : 'moduleEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
@@ -413,7 +421,7 @@ Ext
 						listeners : {
 							'select' : function(combo, record, index) {
 								Ext.getCmp('folderId').reset();
-								folder_store.proxy = new Ext.data.HttpProxy(
+								folderStore.proxy = new Ext.data.HttpProxy(
 										{
 											url : '../controller/leafTeamAccessController.php?field=folderId&teamId='
 													+ Ext.getCmp('teamId')
@@ -421,25 +429,30 @@ Ext
 													+ '&moduleId='
 													+ Ext.getCmp('moduleId')
 															.getValue()
-													+ '&leafId=' + leafId,
+													+ '&leafId='
+													+ leafId
+													+ '&isAdmin='
+													+ isAdmin
+													+ '&type=1',
 											method : 'GET'
 										});
 
-								folder_store.reload();
+								folderStore.reload();
 								Ext.getCmp('folderId').enable();
 								Ext.getCmp('gridPanel').enable();
-								leafTeamAccessStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : '../controller/leafTeamAccessController.php?teamId='
-													+ Ext.getCmp('teamId')
-															.getValue()
-													+ '&moduleId='
-													+ Ext.getCmp('moduleId')
-															.getValue()
-													+ '&leafId=' + leafId,
-											method : 'GET'
-										});
-								leafTeamAccessStore.reload();
+
+								leafTeamAccessStore.load({
+									params : {
+										teamId : Ext.getCmp('teamId')
+												.getValue(),
+										moduleId : Ext.getCmp('moduleId')
+												.getValue(),
+										leafId : leafId,
+										isAdmin : isAdmin,
+										method :'read'
+
+									}
+								});
 							}
 						}
 					});
@@ -478,21 +491,20 @@ Ext
 								} else {
 									Ext.getCmp('gridPanel').enable();
 								}
-								leafTeamAccessStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : '../controller/leafTeamAccessController.php?teamId='
-													+ Ext.getCmp('teamId')
-															.getValue()
-													+ '&moduleId='
-													+ Ext.getCmp('moduleId')
-															.getValue()
-													+ '&folderId='
-													+ Ext.getCmp('folderId')
-															.getValue()
-													+ '&leafId=' + leafId,
-											method : 'GET'
-										});
-								leafTeamAccessStore.reload();
+								leafTeamAccessStore.load({
+									params : {
+										teamId : Ext.getCmp('teamId')
+												.getValue(),
+										moduleId : Ext.getCmp('moduleId')
+												.getValue(),
+										folderId : Ext.getCmp('folderId')
+												.getValue(),		
+										leafId : leafId,
+										isAdmin : isAdmin,
+										method :'read'
+
+									}
+								});
 
 							}
 						}
@@ -579,7 +591,7 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												
+
 												url = '../controller/leafTeamAccessController.php?method=update&leafId='
 														+ leafId;
 												var sub_url;
@@ -663,7 +675,7 @@ Ext
 																						+ ":"
 																						+ statusMessage);
 															}
-														
+
 														});
 												// refresh the store
 											}

@@ -408,17 +408,17 @@ class StaffClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	`leafGroupAccess`
+			FROM 	`leafTeamAccess`
 			WHERE 	`teamId`='" . $this->model->getTeamId() . "' ";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	[leafGroupAccess]
+			FROM 	[leafTeamAccess]
 			WHERE 	[teamId]	=	'" . $this->model->getTeamId() . "' ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT	*
-			FROM 	LEAFGROUPACCESS
+			FROM 	LEAFTEAMACCESS
 			WHERE 	TEAMID		=	'" . $this->model->getTeamId() . "' ";
 		}
 		$this->q->read ( $sql );
@@ -1001,17 +1001,17 @@ class StaffClass extends ConfigClass {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql = "
 					SELECT	`leafId`
-					FROM 	`leafGroupAccess`
+					FROM 	`leafTeamAccess`
 					WHERE 	`teamId`			=	'" . $this->model->getTeamId() . "' ";
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sql = "
 					SELECT	[leafId]
-					FROM 	[leafGroupAccess]
+					FROM 	[leafTeamAccess]
 					WHERE 	[teamId]			=	'" . $this->model->getTeamId() . "'";
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sql = "
 					SELECT	LEAFID		AS 	\"leafId\"
-					FROM 	LEAFGROUPACCESS
+					FROM 	LEAFTEAMACCESS
 					WHERE 	TEAMID				=	'" . $this->model->getTeamId() . "' ";
 			}
 			$this->q->read ( $sql );
