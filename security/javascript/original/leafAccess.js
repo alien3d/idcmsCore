@@ -27,7 +27,7 @@ Ext
 			var local = false;
 			leafAccessProxy = new Ext.data.HttpProxy({
 				url : "../controller/leafAccessController.php",
-				method : 'POST',				
+				method : 'POST',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -62,7 +62,7 @@ Ext
 				root : 'data',
 				baseParams : {
 					method : "read",
-					page : "master",
+					isAdmin : isAdmin,
 					leafId : leafId
 				},
 				fields : [ {
@@ -116,7 +116,7 @@ Ext
 
 			var teamProxy = new Ext.data.HttpProxy({
 				url : "../controller/leafAccessController.php?",
-				method : 'GET',				
+				method : 'GET',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -165,9 +165,9 @@ Ext
 			});
 
 			var moduleProxy = new Ext.data.HttpProxy({
-				url : "../controller/folderAccessController.php",
+				url : "../controller/leafAccessController.php",
 				method : 'GET',
-				
+
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -216,22 +216,19 @@ Ext
 			});
 
 			var folderProxy = new Ext.data.HttpProxy({
-				url : "../controller/folderAccessController.php",
+				url : "../controller/leafAccessController.php",
 				method : 'GET',
-				
-				success : function(response, options) {
-					var jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse == "true") {
-						title = successLabel;
-					} else {
 
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
 					}
-
 				},
 				failure : function(response, options) {
-
 					Ext.MessageBox.alert(systemErrorLabel,
 							escape(response.Status) + ":"
 									+ escape(response.statusText));
@@ -353,17 +350,29 @@ Ext
 				width : 55
 			});
 
-			// the id for administrator to see in any problem.User cannot see
-			// this page information
-			var columnModel = new Ext.grid.ColumnModel({
+			var leafAccessReviewValue = new Ext.grid.CheckColumn({
+				header : leafAccessReviewValueLabel,
+				dataIndex : 'leafAccessReviewValue',
+				id : 'leafAccessReviewValue',
+				width : 55
+			});
+
+			var leafAccessDraftValue = new Ext.grid.CheckColumn({
+				header : leafAccessDraftValueLabel,
+				dataIndex : 'leafAccessDraftValue',
+				id : 'leafAccessDraftValue',
+				width : 55
+			});
+
+			var leafAccessColumnModel = new Ext.grid.ColumnModel({
 				columns : [ {
-					header : moduleNameLabel,
+					header : moduleEnglishLabel,
 					dataIndex : 'moduleEnglish'
 				}, {
-					header : teamNameLabel,
+					header : teamEnglishLabel,
 					dataIndex : 'teamEnglish'
 				}, {
-					header : folderNameLabel,
+					header : folderEnglishLabel,
 					dataIndex : 'folderEnglish'
 				}, {
 					header : leafEnglishLabel,
@@ -371,9 +380,9 @@ Ext
 				}, {
 					header : staffNameLabel,
 					dataIndex : 'staffName'
-				}, leafAccessCreateValue, leafAccessReadValue,
+				}, leafAccessDraftValue,leafAccessCreateValue, leafAccessReadValue,
 						leafAccessUpdateValue, leafAccessDeleteValue,
-						leafAccessPrintValue, leafAccessPostValue ]
+						leafAccessPrintValue, leafAccessReviewValue,leafAccessPostValue ]
 			});
 
 			var teamId = new Ext.ux.form.ComboBoxMatch(
@@ -383,7 +392,8 @@ Ext
 						name : 'teamId',
 						hiddenName : 'teamId',
 						valueField : 'teamId',
-						id : 'team_fake',
+						hiddenId : 'team_fake',
+						id : 'teamId',
 						displayField : 'teamEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
@@ -405,27 +415,25 @@ Ext
 						listeners : {
 							'select' : function(combo, record, index) {
 								Ext.getCmp('moduleId').reset();
-								moduleStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : 'leaf_team_sec_data.php?method=read&field=moduleId&teamId='
-													+ Ext.getCmp('teamId')
-															.getValue()
-													+ '&leafId=' + leafId,
-											method : 'GET'
-										});
-
-								moduleStore.reload();
+								
+								moduleStore.load({
+									params :{
+										leafId : leafId ,
+										isAdmin : isAdmin,
+										teamId : Ext.getCmp('teamId').getValue(),
+										type : 2
+									}	
+								});
 								Ext.getCmp('moduleId').enable();
 								Ext.getCmp('gridPanel').enable();
-								leafAccessStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : 'leaf_team_sec_data.php?teamId='
-													+ Ext.getCmp('teamId')
-															.getValue()
-													+ '&leafId=' + leafId,
-											method : 'GET'
-										});
-								leafAccessStore.reload();
+								
+								leafAccessStore.load({
+									params :{
+										leafId : leafId ,
+										isAdmin : isAdmin,
+										teamId : Ext.getCmp('teamId').getValue()
+									}	
+								});
 							}
 						}
 					});
@@ -437,7 +445,8 @@ Ext
 						name : 'moduleId',
 						hiddenName : 'moduleId',
 						valueField : 'moduleId',
-						id : 'module_fake',
+						hiddenId : 'module_fake',
+						id : 'moduleId',
 						displayField : 'moduleEnglish',
 						typeAhead : false,
 						triggerAction : 'all',
@@ -460,44 +469,39 @@ Ext
 						listeners : {
 							'select' : function(combo, record, index) {
 								Ext.getCmp('folderId').reset();
-								folderStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : 'leaf_team_sec_data.php?method=read&field=folderId&teamId='
-													+ Ext.getCmp('teamId')
-															.getValue()
-													+ '&moduleId='
-													+ Ext.getCmp('moduleId')
-															.getValue()
-													+ '&leafId=' + leafId,
-											method : 'GET'
-										});
-
-								folderStore.reload();
+								
+								folderStore.load({
+									params :{
+										leafId : leafId ,
+										isAdmin : isAdmin,
+										teamId : Ext.getCmp('teamId').getValue(),
+										moduleId : Ext.getCmp('moduleId').getValue(),
+										type : 2
+									}	
+								});
 								Ext.getCmp('folderId').enable();
 								Ext.getCmp('gridPanel').enable();
-								leafAccessStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : 'leaf_team_sec_data.php?teamId='
-													+ Ext.getCmp('teamId')
-															.getValue()
-													+ '&moduleId='
-													+ Ext.getCmp('moduleId')
-															.getValue()
-													+ '&leafId=' + leafId,
-											method : 'GET'
-										});
-								leafAccessStore.reload();
+								
+								leafAccessStore.load({
+									params :{
+										leafId : leafId ,
+										isAdmin : isAdmin,
+										teamId : Ext.getCmp('teamId'),
+										moduleId : Ext.getCmp('moduleId').getValue()
+									}	
+								});
 							}
 						}
 					});
 
 			var folderId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
-				fieldLabel : moduleIdLabel,
+				fieldLabel : folderIdLabel,
 				name : 'folderId',
 				hiddenName : 'folderId',
 				valueField : 'folderId',
-				id : 'folder_fake',
+				hiddenId : 'folder_fake',
+				id:'folderId',
 				displayField : 'folderEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
@@ -524,17 +528,15 @@ Ext
 						} else {
 							Ext.getCmp('gridPanel').enable();
 						}
-						leafAccessStore.proxy = new Ext.data.HttpProxy({
-							url : 'leaf_team_sec_data.php?teamId='
-									+ Ext.getCmp('teamId').getValue()
-									+ '&moduleId='
-									+ Ext.getCmp('moduleId').getValue()
-									+ '&folderId='
-									+ Ext.getCmp('folderId').getValue()
-									+ '&leafId=' + leafId,
-							method : 'GET'
+						leafAccessStore.load({
+							params :{
+								leafId : leafId ,
+								isAdmin : isAdmin,
+								teamId : Ext.getCmp('teamId'),
+								moduleId : Ext.getCmp('moduleId').getValue(),
+								folderId : Ext.getCmp('folderId').getValue()
+							}	
 						});
-						leafAccessStore.reload();
 
 					}
 				}
@@ -547,7 +549,8 @@ Ext
 						name : 'staffId',
 						hiddenName : 'staffId',
 						valueField : 'staffId',
-						id : 'staff_fake',
+						hiddenId : 'staff_fake',
+						id : 'staffId',
 						displayField : 'staffName',
 						typeAhead : false,
 						triggerAction : 'all',
@@ -574,20 +577,14 @@ Ext
 								} else {
 									gridPanel.enable();
 								}
-								leafAccessStore.proxy = new Ext.data.HttpProxy(
-										{
-											url : '../controller/leafAccessController.php?moduleId='
-													+ Ext.getCmp('module_fake').value
-													+ '&folderId='
-													+ Ext.getCmp('folder_fake').value
-													+ '&staffId_temp='
-													+ this.value
-													+ '&leafId='
-													+ leafId,
-											method : 'GET'
-										});
-
-								leafAccessStore.reload();
+								folderStore.load({
+									params :{
+										leafId : leafId ,
+										isAdmin : isAdmin,
+										teamId : Ext.getCmp('teamId'),
+										moduleId : Ext.getCmp('moduleId').getValue()
+									}	
+								});
 								gridPanel.store.reload(); // force the grid
 								// the reload
 
@@ -603,24 +600,28 @@ Ext
 				items : [ teamId, moduleId, folderId, staffId ]
 
 			});
-			var access_array = [ 'leafAccessCreateValue',
+			var accessArray = [ 'leafAccessCreateValue',
 					'leafAccessReadValue', 'leafAccessUpdateValue',
 					'leafAccessDeleteValue', 'leafAccessPrintValue',
-					'leafAccessPostValue' ];
+					'leafAccessPostValue', 'leafAccessReviewValue',
+					'leafAccessDraftValue' ];
 			var gridPanel = new Ext.grid.GridPanel(
 					{
+						id : 'gridPanel',
 						region : 'west',
 						store : leafAccessStore,
-						cm : columnModel,
+						cm : leafAccessColumnModel,
 						autoHeight : false,
 						height : 360,
 						frame : true,
 						title : 'Leaf Access Grid',
 						disabled : true,
 						iconCls : 'application_view_detail',
-						plugins : [ leafAccessCreateValue, leafAccessReadValue,
+						plugins : [ leafAccessDraftValue,
+								leafAccessCreateValue, leafAccessReadValue,
 								leafAccessUpdateValue, leafAccessDeleteValue,
-								leafAccessPrintValue, leafAccessPostValue ],
+								leafAccessPrintValue, leafAccessReviewValue,
+								leafAccessPostValue ],
 						tbar : {
 							items : [
 									{
@@ -631,11 +632,11 @@ Ext
 
 												leafAccessStore
 														.each(function(rec) {
-															for ( var access in access_array) {
-																// alert(access);
+															for ( var access in accessArray) {
+
 																rec
 																		.set(
-																				access_array[access],
+																				accessArray[access],
 																				true);
 															}
 														});
@@ -649,10 +650,10 @@ Ext
 											'click' : function() {
 												leafAccessStore
 														.each(function(rec) {
-															for ( var access in access_array) {
+															for ( var access in accessArray) {
 																rec
 																		.set(
-																				access_array[access],
+																				accessArray[access],
 																				false);
 															}
 														});
@@ -665,14 +666,14 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = leafAccessStore
-														.getCount();
 
 												url = '../controller/leafAccessController.php?method=update&leafId='
 														+ leafId;
 												var sub_url;
 												sub_url = '';
-												for (i = count - 1; i >= 0; i--) {
+												var modified = leafAccessStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
 													var record = leafAccessStore
 															.getAt(i);
 													sub_url = sub_url
@@ -714,20 +715,18 @@ Ext
 																	options) {
 																jsonResponse = Ext
 																		.decode(response.responseText);
-																var title = 'Message';
-																if (jsonResponse.message == 'true') {
-																	title = title
-																			+ 'Success';
+
+																if (jsonResponse.message == true) {
+
 																	Ext.MessageBox
 																			.alert(
-																					title,
+																					systemLabel,
 																					jsonResponse.message);
-																} else if (jsonResponse.message == 'false') {
-																	title = title
-																			+ 'Failure';
+																} else if (jsonResponse.message == false) {
+
 																	Ext.MessageBox
 																			.alert(
-																					title,
+																					systemErrorLabel,
 																					jsonResponse.message);
 																}
 
@@ -739,14 +738,13 @@ Ext
 															failure : function(
 																	response,
 																	options) {
-																status_code = response.status;
-																status_message = response.statusText;
+
 																Ext.MessageBox
 																		.alert(
 																				systemErrorLabel,
-																				escape(status_code)
+																				escape(response.status)
 																						+ ":"
-																						+ status_message);
+																						+ escape(response.statusText));
 															}
 														});
 												// refresh the store

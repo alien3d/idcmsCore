@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
-require_once("../../class/classRecordSet.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
@@ -28,7 +28,7 @@ class LeafAccessClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
-	 *  Record Pagination
+	 * Record Pagination
 	 * @var string
 	 */
 	private $recordSet;
@@ -72,31 +72,30 @@ class LeafAccessClass extends ConfigClass {
 	 */
 	function execute() {
 		parent::__construct ();
-		parent::__construct();
+		parent::__construct ();
 		// audit property
-		$this->audit 			=	0;
-		$this->log 				= 	1;
+		$this->audit = 0;
+		$this->log = 1;
 		
-		$this->q 				= 	new Vendor();
-		$this->q->vendor 		= 	$this->getVendor();
-		$this->q->leafId 		= 	$this->getLeafId();
-		$this->q->staffId	 	= 	$this->getStaffId();
-		$this->q->fieldQuery 	= 	$this->getFieldQuery();
-		$this->q->gridQuery 	= 	$this->getGridQuery();
-		$this->q->log 			= 	$this->log;
-		$this->q->audit 		=	$this->audit;
-		$this->q->connect($this->getConnection(), $this->getUsername(),
-		$this->getDatabase(), $this->getPassword());
+		$this->q = new Vendor ();
+		$this->q->vendor = $this->getVendor ();
+		$this->q->leafId = $this->getLeafId ();
+		$this->q->staffId = $this->getStaffId ();
+		$this->q->fieldQuery = $this->getFieldQuery ();
+		$this->q->gridQuery = $this->getGridQuery ();
+		$this->q->log = $this->log;
+		$this->q->audit = $this->audit;
+		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 		
-		$this->security 		= 	new Security();
-		$this->security->setVendor($this->getVendor());
-		$this->security->execute();
+		$this->security = new Security ();
+		$this->security->setVendor ( $this->getVendor () );
+		$this->security->execute ();
 		
-		$this->model 			= 	new LeafAccessModel();
-		$this->model->setVendor($this->getVendor());
-		$this->model->execute();
+		$this->model = new LeafAccessModel ();
+		$this->model->setVendor ( $this->getVendor () );
+		$this->model->execute ();
 		
-		$this->excel 			= 	new PHPExcel();
+		$this->excel = new PHPExcel ();
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -257,7 +256,7 @@ class LeafAccessClass extends ConfigClass {
 				JOIN	[staff]
 				ON		[leaf].[staffId]=[staff].[staffId]
 				JOIN	[team]
-				USING	[team].[teamId]=[leafAccess].[teamId]
+				ON		[team].[teamId]=[leafAccess].[teamId]
 				WHERE 	[module].[isActive] 	=	1
 				AND		[folder].[isActive] 	=	1
 				AND		[leaf].[isActive]		=	1  ";
@@ -363,18 +362,18 @@ class LeafAccessClass extends ConfigClass {
 		//paging
 		
 
-		if ($this->getStart ()  && $this->getLimit()) {
-			if($this->getVendor()==self::MYSQL){
-				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit() . " ";
-			} else if ($this->getVendor()==self::MSSQL){
-				
-			} else if ($this->getVendor()==self::ORACLE){
-				
-			} else if ($this->getVendor()==self::DB2){
-				
-			} else if ($this->getVendor()==self::POSTGRESS){
-				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit() . " ";
-				
+		if ($this->getStart () && $this->getLimit ()) {
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+			} else if ($this->getVendor () == self::MSSQL) {
+			
+			} else if ($this->getVendor () == self::ORACLE) {
+			
+			} else if ($this->getVendor () == self::DB2) {
+			
+			} else if ($this->getVendor () == self::POSTGRESS) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+			
 			}
 		}
 		
@@ -393,7 +392,7 @@ class LeafAccessClass extends ConfigClass {
 		// select module access
 		}
 		
-		echo json_encode ( array ('success' => 'true', 'total' => $total, 'data' => $items ) );
+		echo json_encode ( array ('success' =>true, 'total' => $total, 'data' => $items ) );
 		exit ();
 	
 	}
@@ -406,14 +405,14 @@ class LeafAccessClass extends ConfigClass {
 	/**
 	 * Enter description here ...
 	 */
-	function moduleId() {
-		return $this->security->module ();
+	function module() {
+		$this->security->module ( $this->model->getType (), $this->model->getTeamId () );
 	}
 	/**
 	 * Enter description here ...
 	 */
 	function folder() {
-		return $this->security->folder();
+		$this->security->folder ( $this->model->getType (), $this->model->getTeamId (), $this->model->getModuleId () );
 	}
 	/* (non-PHPdoc)
 	 * @see config::update()
@@ -557,10 +556,10 @@ if (isset ( $_GET ['method'] )) {
 	}
 	if (isset ( $_GET ['field'] )) {
 		if ($_GET ['field'] == 'staffId') {
-			$leafAccessObject->staff();
+			$leafAccessObject->staff ();
 		}
 		if ($_GET ['field'] == 'teamId') {
-			$leafAccessObject->team();
+			$leafAccessObject->team ();
 		}
 		if ($_GET ['field'] == 'moduleId') {
 			$leafAccessObject->module ();

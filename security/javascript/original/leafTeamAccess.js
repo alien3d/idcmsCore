@@ -523,7 +523,7 @@ Ext
 				autoScroll : true,
 				items : [ teamId, moduleId, folderId ]
 			});
-			var access_array = [ 'leafTeamAccessCreateValue',
+			var accessArray = [ 'leafTeamAccessCreateValue',
 					'leafTeamAccessReadValue', 'leafTeamAccessUpdateValue',
 					'leafTeamAccessDeleteValue', 'leafTeamAccessPrintValue',
 					'leafTeamAccessPostValue' ];
@@ -560,10 +560,10 @@ Ext
 
 												leafTeamAccessStore
 														.each(function(rec) {
-															for ( var access in access_array) {
+															for ( var access in accessArray) {
 																rec
 																		.set(
-																				access_array[access],
+																				accessArray[access],
 																				true);
 															}
 														});
@@ -577,10 +577,10 @@ Ext
 											'click' : function() {
 												leafTeamAccessStore
 														.each(function(rec) {
-															for ( var access in access_array) {
+															for ( var access in accessArray) {
 																rec
 																		.set(
-																				access_array[access],
+																				accessArray[access],
 																				false);
 															}
 														});

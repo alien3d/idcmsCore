@@ -301,7 +301,7 @@ Ext
 				iconCls : 'application_form',
 				items : [ teamId, moduleId ]
 			});
-			var access_array = [ 'folderAccessValue' ];
+			var accessArray = [ 'folderAccessValue' ];
 
 			var gridPanel = new Ext.grid.GridPanel(
 					{
@@ -328,10 +328,10 @@ Ext
 
 												folderAccessStore
 														.each(function(rec) {
-															for ( var access in access_array) {
+															for ( var access in accessArray) {
 																rec
 																		.set(
-																				access_array[access],
+																				accessArray[access],
 																				true);
 															}
 														});
@@ -345,10 +345,10 @@ Ext
 											'click' : function() {
 												folderAccessStore
 														.each(function(rec) {
-															for ( var access in access_array) {
+															for ( var access in accessArray) {
 																rec
 																		.set(
-																				access_array[access],
+																				accessArray[access],
 																				false);
 															}
 														});
@@ -361,8 +361,7 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = folderAccessStore
-														.getCount();
+												
 
 												url = '../controller/folderAccessController.php?method=update&leafId='
 														+ leafId;

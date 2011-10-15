@@ -60,7 +60,7 @@ Ext
 				method : 'POST',
 				baseParams : {
 					method : "read",
-					page : "master",
+					isAdmin : isAdmin,
 					leafId : leafId
 				},
 				root : "data",
