@@ -110,7 +110,7 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -149,7 +149,6 @@ Ext
 				reader : folderTranslateReader,
 				baseParams : {
 					method : "read",
-					page : "detail",
 					leafId : leafId
 				},
 				root : 'data',
@@ -179,10 +178,8 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
-						// //uncommen for testing
-						// purpose
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -227,7 +224,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// //uncomment for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -306,7 +302,7 @@ Ext
 					table : 'folder'
 				}, {
 					type : 'list',
-					dataIndex : 'By',
+					dataIndex : 'executeBy',
 					column : 'staffId',
 					table : 'folder',
 					labelField : 'staffName',
@@ -315,8 +311,8 @@ Ext
 				}, {
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
-					dataIndex : 'Time',
-					column : 'Time',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
 					table : 'folder'
 				} ]
 			});
@@ -502,13 +498,13 @@ Ext
 						}
 					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
 					isDeleteGrid, isActiveGrid, isApprovedGrid, {
-						dataIndex : 'By',
+						dataIndex : 'executeBy',
 						header : executeByLabel,
 						sortable : true,
 						hidden : true,
 						width : 100
 					}, {
-						dataIndex : 'Time',
+						dataIndex : 'executeTime',
 						header : createTimeLabel,
 						type : 'date',
 						sortable : true,
@@ -536,21 +532,21 @@ Ext
 				width : 100
 
 			}, {
-				dataIndex : "folderTranslate",
-				header : "folderTranslate",
+				dataIndex : "folderNative",
+				header : "folderNative",
 				sortable : true,
 				hidden : false,
 				width : 100,
 
 				editor : {
 					xtype : 'textfield',
-					id : 'folderTranslate'
+					id : 'folderNative'
 				}
 
 			} ];
 
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-					'isDelete', 'isActive', 'isApproved' ];
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 
 			var folderGrid = new Ext.grid.GridPanel(
 					{
@@ -559,7 +555,7 @@ Ext
 						autoHeight : false,
 						columns : folderColumnModel,
 						loadMask : true,
-						plugins : [ filters ],
+						plugins : [ folderFilters ],
 						sm : new Ext.grid.RowSelectionModel({
 							singleSelect : true
 						}),
@@ -598,15 +594,14 @@ Ext
 						tbar : {
 							items : [
 									{
-										text : 'Check All',
+										text : CheckAllLabel,
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												var count = folderStore
-														.getCount();
+
 												folderStore
 														.each(function(rec) {
-															for ( var access in accessArray) { // alert(access);
+															for ( var access in accessArray) {
 																rec
 																		.set(
 																				accessArray[access],
@@ -617,7 +612,7 @@ Ext
 										}
 									},
 									{
-										text : 'Clear All',
+										text : ClearAllLabel,
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
@@ -634,17 +629,18 @@ Ext
 										}
 									},
 									{
-										text : 'save',
+										text : saveButtonLabel,
 										iconCls : 'bullet_disk',
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = folderStore
-														.getCount();
+
 												url = '../controller/folderController.php?';
 												var sub_url;
 												sub_url = '';
-												for (i = count - 1; i >= 0; i--) {
+												var modified = folderStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
 													var record = folderStore
 															.getAt(i);
 													sub_url = sub_url
@@ -678,6 +674,14 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
@@ -751,7 +755,7 @@ Ext
 								Ext.Ajax.request({
 									url : '../controller/folderController.php',
 									method : 'POST',
-									waitMsg : 'Harap Bersabar',
+									waitMsg : waitMeassageLabel,
 									params : {
 										leafId : leafId,
 										method : 'save',

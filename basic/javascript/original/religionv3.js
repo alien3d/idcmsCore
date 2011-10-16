@@ -405,7 +405,7 @@ Ext.onReady(function() {
                 }
             },
             {
-                text: 'Check All',
+                text: text:CheckAllLabel,
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function() {
@@ -419,7 +419,7 @@ Ext.onReady(function() {
                 }
             },
             {
-                text: 'Clear All',
+                text:ClearAllLabel,
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function() {

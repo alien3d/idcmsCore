@@ -388,7 +388,7 @@ Ext
 										iconCls : 'add',
 										id : 'add_record',
 										name : 'add_record',
-										text : 'New Record',
+										text : newButtonLabel,
 										handler : function() {
 											var e = new religionEntity({
 												religionId : '',
@@ -414,7 +414,7 @@ Ext
 										}
 									},
 									{
-										text : 'Check All',
+										text : CheckAllLabel,
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
@@ -432,7 +432,7 @@ Ext
 										}
 									},
 									{
-										text : 'Clear All',
+										text:ClearAllLabel,
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
@@ -449,7 +449,7 @@ Ext
 										}
 									},
 									{
-										text : 'save',
+										text : saveButtonLabel,
 										iconCls : 'bullet_disk',
 										listeners : {
 											'click' : function(c) {

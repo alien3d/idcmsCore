@@ -92,7 +92,7 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -131,7 +131,6 @@ Ext
 				reader : extLabelTranslateReader,
 				baseParams : {
 					method : "read",
-					page : "detail",
 					leafId : leafId
 				},
 				root : 'data',
@@ -151,7 +150,7 @@ Ext
 					name : 'languageDesc',
 					type : 'string'
 				}, {
-					name : 'extLabelTranslate',
+					name : 'extLabelNative',
 					type : 'string'
 				} ]
 			});
@@ -206,15 +205,15 @@ Ext
 				// easier reuse
 				encode : encode, // json encode the filter query
 				local : false, // defaults to false (remote filtering)
-				filters : [  {
+				filters : [ {
 					type : 'string',
 					dataIndex : 'extLabelNote',
 					column : 'extLabelNote',
 					table : 'extLabel'
 				}, {
 					type : 'list',
-					dataIndex : 'By',
-					column : 'staffId',
+					dataIndex : 'executeBy',
+					column : 'executeBy',
 					table : 'extLabel',
 					labelField : 'staffName',
 					store : staffByStore,
@@ -222,8 +221,8 @@ Ext
 				}, {
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
-					dataIndex : 'Time',
-					column : 'Time',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
 					table : 'extLabel'
 				} ]
 			});
@@ -381,14 +380,14 @@ Ext
 						header : extLabelNoteLabel
 					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
 					isDeleteGrid, isActiveGrid, isApprovedGrid, {
-						dataIndex : 'By',
+						dataIndex : 'executeBy',
 						header : executeByLabel,
 						sortable : true,
 						hidden : true,
 						width : 100
 					}, {
-						dataIndex : 'Time',
-						header : createTimeLabel,
+						dataIndex : 'executeTime',
+						header : executeTimeLabel,
 						type : 'date',
 						sortable : true,
 						hidden : true,
@@ -396,8 +395,8 @@ Ext
 					} ];
 
 			var extLabelTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
-				dataIndex : "extLabelNote",
-				header : extLabelNoteLabel,
+				dataIndex : "extLabelEnglish",
+				header : extLabelEnglishLabel,
 				sortable : true,
 				hidden : true,
 				width : 50
@@ -415,21 +414,21 @@ Ext
 				width : 100
 
 			}, {
-				dataIndex : "extLabelTranslate",
-				header : "extLabelTranslate",
+				dataIndex : "extLabelNative",
+				header : "extLabelNative",
 				sortable : true,
 				hidden : false,
 				width : 100,
 
 				editor : {
 					xtype : 'textfield',
-					id : 'extLabelTranslate'
+					id : 'extLabelNative'
 				}
 
 			} ];
 
 			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
-					'isDelete', 'isActive', 'isApproved' ];
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 
 			var extLabelGrid = new Ext.grid.GridPanel(
 					{
@@ -438,7 +437,7 @@ Ext
 						autoHeight : false,
 						columns : extLabelColumnModel,
 						loadMask : true,
-						plugins : [ filters ],
+						plugins : [ extLabelFilters ],
 						sm : new Ext.grid.RowSelectionModel({
 							singleSelect : true
 						}),
@@ -482,11 +481,11 @@ Ext
 						tbar : {
 							items : [
 									{
-										text : 'Check All',
+										text : CheckAllLabel,
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												
+
 												extLabelStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -500,7 +499,7 @@ Ext
 										}
 									},
 									{
-										text : 'Clear All',
+										text : ClearAllLabel,
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
@@ -517,17 +516,18 @@ Ext
 										}
 									},
 									{
-										text : 'save',
+										text : saveButtonLabel,
 										iconCls : 'bullet_disk',
 										listeners : {
 											'click' : function(c) {
 												var url;
-												
+
 												url = '../controller/extLabelController.php?';
 												var sub_url;
 												sub_url = '';
-												   var modified = extLabelStore.getModifiedRecords();
-							                        for(var i = 0; i < modified.length; i++) {
+												var modified = extLabelStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
 													var record = extLabelStore
 															.getAt(i);
 													sub_url = sub_url
@@ -561,6 +561,14 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
@@ -627,8 +635,9 @@ Ext
 									rowIndex) {
 
 								this.save = true;
-								// @todo  update record manually
-								//var curr_store = this.grid.getStore().getAt(rowIndex);
+								// @todo update record manually
+								// var curr_store =
+								// this.grid.getStore().getAt(rowIndex);
 
 								Ext.Ajax
 										.request({
@@ -638,7 +647,6 @@ Ext
 											params : {
 												leafId : leafId,
 												method : 'save',
-												page : 'detail',
 												extLabelTranslateId : record
 														.get('extLabelTranslateId'),
 												extLabelTranslate : Ext.getCmp(

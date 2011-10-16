@@ -97,9 +97,9 @@ Ext
 				}, {
 					name : "isApproved",
 					type : "boolean"
-				},{
+				}, {
 					name : 'executeBy',
-					type :'int',
+					type : 'int',
 				}, {
 					name : "executeTime",
 					type : "date",
@@ -126,49 +126,51 @@ Ext
 									+ escape(response.statusText));
 				}
 			});
-			
-			  var staffByProxy = new Ext.data.HttpProxy({
-			        url: "../controller/tableMappingController.php?",
-			        method: "GET",
-			        success: function(response, options) {
-			            jsonResponse = Ext.decode(response.responseText);
-			            if (jsonResponse.success == true) { 
-			            	// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-			            	// uncomment  for testing purpose
-			            } else {
-			                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-			            }
-			        },
-			        failure: function(response, options) {
-			            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
-			        }
-			    });
-			    var staffByReader = new Ext.data.JsonReader({
-			        totalProperty: "total",
-			        successProperty: "success",
-			        messageProperty: "message",
-			        idProperty: "staffId"
-			    });
-			    var staffByStore = new Ext.data.JsonStore({
-			        proxy: staffByProxy,
-			        reader: staffByReader,
-			        autoLoad: true,
-			        autoDestroy: true,
-			        baseParams: {
-			            method: 'read',
-			            field: 'staffId',
-			            leafId: leafId
-			        },
-			        root: 'staff',
-			        fields: [{
-			            name: "staffId",
-			            type: "int"
-			        },
-			        {
-			            name: "staffName",
-			            type: "string"
-			        }]
-			    });
+
+			var staffByProxy = new Ext.data.HttpProxy({
+				url : "../controller/tableMappingController.php?",
+				method : "GET",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// uncomment for testing purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var staffByReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "staffId"
+			});
+			var staffByStore = new Ext.data.JsonStore({
+				proxy : staffByProxy,
+				reader : staffByReader,
+				autoLoad : true,
+				autoDestroy : true,
+				baseParams : {
+					method : 'read',
+					field : 'staffId',
+					leafId : leafId
+				},
+				root : 'staff',
+				fields : [ {
+					name : "staffId",
+					type : "int"
+				}, {
+					name : "staffName",
+					type : "string"
+				} ]
+			});
 
 			var tableMappingTranslateReader = new Ext.data.JsonReader({
 				totalProperty : "total",
@@ -199,12 +201,8 @@ Ext
 				}, {
 					name : 'languageId',
 					type : 'string'
-				}]
+				} ]
 			});
-
-			
-
-			
 
 			var filters = new Ext.ux.grid.GridFilters({
 				// encode and local configuration options defined previously for
@@ -243,7 +241,7 @@ Ext
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
 					dataIndex : 'executeTime',
-					column : 'Time',
+					column : 'executeTime',
 					table : 'tableMapping'
 				} ]
 			});
@@ -282,16 +280,16 @@ Ext
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
 			});
-			
+
 			var isReviewGrid = new Ext.ux.grid.CheckColumn({
 				header : isReviewLabel,
 				dataIndex : 'isReview',
 				hidden : isReviewHidden
 			});
-			var isReviewGrid = new Ext.ux.grid.CheckColumn({
-				header : isReviewLabel,
-				dataIndex : 'isReview',
-				hidden : isReviewHidden
+			var isPostGrid = new Ext.ux.grid.CheckColumn({
+				header : isPostLabel,
+				dataIndex : 'isPost',
+				hidden : isPostHidden
 			});
 			var tableMappingColumnModel = [
 					new Ext.grid.RowNumberer(),
@@ -322,7 +320,7 @@ Ext
 													},
 													success : function(form,
 															action) {
-													
+
 														viewPort.items.get(1)
 																.expand();
 													},
@@ -366,9 +364,9 @@ Ext
 																			jsonResponse = Ext
 																					.decode(response.responseText);
 																			if (jsonResponse.success == true) {
-																				title = successLabel;
+
 																			} else {
-																				title = failureLabel;
+
 																			}
 																			tableMappingStore
 																					.reload({
@@ -388,7 +386,7 @@ Ext
 																					});
 																			Ext.MessageBox
 																					.alert(
-																							title,
+																							systemLabel,
 																							jsonResponse.message);
 																		},
 																		failure : function(
@@ -407,12 +405,12 @@ Ext
 												});
 									}
 								} ]
-					},
-					{
+					}, {
 						dataIndex : 'tableMappingTranslate',
 						header : tableMappingTranslateLabel
 					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid,isReviewGrid,isPostGrid, {
+					isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid,
+					isPostGrid, {
 						dataIndex : 'executeBy',
 						header : executeByLabel,
 						sortable : true,
@@ -425,45 +423,46 @@ Ext
 						sortable : true,
 						hidden : true,
 						width : 100
-					}  ];
+					} ];
 
-			
-			var tableMappingTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
-				dataIndex : "languageCode",
-				header : languageCodeLabel,
-				sortable : true,
-				hidden : false,
-				width : 100
-			}, {
-				dataIndex : "languageDesc",
-				header : languageDescLabel,
-				sortable : true,
-				hidden : false,
-				width : 100
+			var tableMappingTranslateColumnModel = [
+					new Ext.grid.RowNumberer(), {
+						dataIndex : "languageCode",
+						header : languageCodeLabel,
+						sortable : true,
+						hidden : false,
+						width : 100
+					}, {
+						dataIndex : "languageDesc",
+						header : languageDescLabel,
+						sortable : true,
+						hidden : false,
+						width : 100
 
-			}, {
-				dataIndex : "tableMappingEnglish",
-				header : tableMappingEnglishLabel,
-				sortable : true,
-				hidden : false,
-				width : 100
+					}, {
+						dataIndex : "tableMappingEnglish",
+						header : tableMappingEnglishLabel,
+						sortable : true,
+						hidden : false,
+						width : 100
 
-			}, {
-				dataIndex : "tableMappingTranslate",
-				header : tableMappingTranslateLabel,
-				sortable : true,
-				hidden : false,
-				width : 100,
+					}, {
+						dataIndex : "tableMappingNative",
+						header : tableMappingNativeLabel,
+						sortable : true,
+						hidden : false,
+						width : 100,
 
-				editor : {
-					xtype : 'textfield',
-					id : 'tableMappingTranslate'
-				}
+						editor : {
+							xtype : 'textfield',
+							id : 'tableMappingNative'
+						}
 
-			} ];
-			
-			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved','isReview','isPost'];
-			 
+					} ];
+
+			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
+
 			var tableMappingGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
@@ -471,7 +470,7 @@ Ext
 						autoHeight : false,
 						columns : tableMappingColumnModel,
 						loadMask : true,
-						plugins : [ filters ],
+						plugins : [ tableMappingFilters ],
 						sm : new Ext.grid.RowSelectionModel({
 							singleSelect : true
 						}),
@@ -483,38 +482,43 @@ Ext
 							'rowclick' : function(object, rowIndex, e) {
 								var record = tableMappingStore.getAt(rowIndex);
 								formPanel.getForm().reset();
-								formPanel.form.load({
-									url : "../controller/tableMappingController.php",
-									method : "POST",
-									waitTitle : systemLabel,
-									waitMsg : waitMessageLabel,
-									params : {
-										method : "read",
-										mode : "update",
-										tableMappingId : record.data.tableMappingId,
-										leafId : leafId
-									},
-									success : function(form, action) {
-										Ext.getCmp("tableMappingDesc_temp").setValue(
-												record.data.tableMappingDesc);
-										
-										viewPort.items.get(1).expand();
-									},
-									failure : function(form, action) {
-										Ext.MessageBox.alert(systemErrorLabel,
-												action.result.message);
-									}
-								});
+								formPanel.form
+										.load({
+											url : "../controller/tableMappingController.php",
+											method : "POST",
+											waitTitle : systemLabel,
+											waitMsg : waitMessageLabel,
+											params : {
+												method : "read",
+												mode : "update",
+												tableMappingId : record.data.tableMappingId,
+												leafId : leafId
+											},
+											success : function(form, action) {
+												Ext
+														.getCmp(
+																"tableMappingDesc_temp")
+														.setValue(
+																record.data.tableMappingDesc);
+
+												viewPort.items.get(1).expand();
+											},
+											failure : function(form, action) {
+												Ext.MessageBox.alert(
+														systemErrorLabel,
+														action.result.message);
+											}
+										});
 							}
 						},
 						tbar : {
 							items : [
 									{
-										text : 'Check All',
+										text : CheckAllLabel,
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												
+
 												tableMappingStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -528,7 +532,7 @@ Ext
 										}
 									},
 									{
-										text : 'Clear All',
+										text : ClearAllLabel,
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
@@ -545,18 +549,18 @@ Ext
 										}
 									},
 									{
-										text : 'save',
+										text : saveButtonLabel,
 										iconCls : 'bullet_disk',
 										listeners : {
 											'click' : function(c) {
 												var url;
-												
+
 												url = '../controller/tableMappingController.php?';
 												var sub_url;
 												sub_url = '';
 												var modified = tableMappingStore
-												.getModifiedRecords();
-										for ( var i = 0; i < modified.length; i++) {
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
 													var record = tableMappingStore
 															.getAt(i);
 													sub_url = sub_url
@@ -591,18 +595,18 @@ Ext
 																+ record
 																		.get('isApproved');
 														sub_url = sub_url
-														+ '&isReview[]='
-														+ record
-																.get('isReview');
-												sub_url = sub_url
-														+ '&isPost[]='
-														+ record
-																.get('isPost');
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
 												url = url + sub_url; // reques
-																		// and
-																		// ajax
+												// and
+												// ajax
 												Ext.Ajax
 														.request({
 															url : url,
@@ -664,45 +668,61 @@ Ext
 									rowIndex) {
 
 								this.save = true;
-								// @todo  errk what this update record manually
-								//var curr_store = this.grid.getStore().getAt(rowIndex);
+								// @todo errk what this update record manually
+								// var curr_store =
+								// this.grid.getStore().getAt(rowIndex);
 
-								Ext.Ajax.request({
-									url : '../controller/tableMappingController.php',
-									method : 'POST',
-									waitMsg : 'Harap Bersabar',
-									params : {
-										leafId : leafId,
-										method : 'save',
-										page : 'detail',
-										tableMappingTranslateId : record
-												.get('tableMappingTranslateId'),
-										tableMappingTranslate : Ext.getCmp(
-												'tableMappingTranslate').getValue()
+								Ext.Ajax
+										.request({
+											url : '../controller/tableMappingController.php',
+											method : 'POST',
+											waitMsg : 'Harap Bersabar',
+											params : {
+												leafId : leafId,
+												method : 'save',
+												page : 'detail',
+												tableMappingTranslateId : record
+														.get('tableMappingTranslateId'),
+												tableMappingTranslate : Ext
+														.getCmp(
+																'tableMappingTranslate')
+														.getValue()
 
-									},
-									success : function(response, options) {
-										jsonResponse = Ext.decode(response.responseText);
-										if (jsonResponse == false) {
-											Ext.MessageBox.alert(systemLabel,
-													jsonResponse.message);
-										} else {
-											// if required messagebox to check
-											// status uncomment below
-											Ext.MessageBox.alert(systemLabel,
-													jsonResponse.message);
-											tableMappingTranslateStore.reload();
-										}
+											},
+											success : function(response,
+													options) {
+												jsonResponse = Ext
+														.decode(response.responseText);
+												if (jsonResponse == false) {
+													Ext.MessageBox
+															.alert(
+																	systemLabel,
+																	jsonResponse.message);
+												} else {
+													// if required messagebox to
+													// check
+													// status uncomment below
+													Ext.MessageBox
+															.alert(
+																	systemLabel,
+																	jsonResponse.message);
+													tableMappingTranslateStore
+															.reload();
+												}
 
-									},
-									failure : function(response, options) {
-										statusCode = response.status;
-										statusMessage = response.statusText;
-										Ext.MessageBox.alert(systemLabel,
-												escape(statusCode) + ":"
-														+ statusMessage);
-									}
-								});
+											},
+											failure : function(response,
+													options) {
+												statusCode = response.status;
+												statusMessage = response.statusText;
+												Ext.MessageBox
+														.alert(
+																systemLabel,
+																escape(statusCode)
+																		+ ":"
+																		+ statusMessage);
+											}
+										});
 
 							}
 						}
@@ -768,7 +788,8 @@ Ext
 													method : 'GET',
 													success : function(
 															response, options) {
-														jsonResponse = Ext.decode(response.responseText);
+														jsonResponse = Ext
+																.decode(response.responseText);
 														if (jsonResponse == true) {
 
 															window
@@ -805,18 +826,12 @@ Ext
 			// viewport just save information,items will do separate
 			// only load store when viewport is open
 
-			
-
-			
-
-			
-
 			// hidden id for updated
 			var tableMappingId = new Ext.form.Hidden({
 				name : 'tableMappingId',
 				id : 'tableMappingId'
 			});
-			
+
 			var tableMappingName = new Ext.form.TextField({
 				labelAlign : 'left',
 				fieldLabel : tableMappingNameLabel,
@@ -840,8 +855,6 @@ Ext
 				anchor : '95%'
 			});
 
-				
-			
 			var firstRecord = new Ext.form.Hidden({
 				name : 'firstRecord',
 				id : 'firstRecord'
@@ -870,23 +883,21 @@ Ext
 						border : false,
 
 						width : 600,
-						items : [ {
-							xtype : 'panel',
-							title : leafEnglish,
-							bodyStyle : "padding:5px",
-							layout : 'form',
-							items : [ 
-							          tableMappingId,
-							          tableMappingName,
-							          tableMappingColumnName, 
-							          tableMappingEnglish 
-							         ]
-						}, {
-							xtype : 'panel',
-							title : 'tableMapping Translation',
+						items : [
+								{
+									xtype : 'panel',
+									title : leafEnglish,
+									bodyStyle : "padding:5px",
+									layout : 'form',
+									items : [ tableMappingId, tableMappingName,
+											tableMappingColumnName,
+											tableMappingEnglish ]
+								}, {
+									xtype : 'panel',
+									title : 'tableMapping Translation',
 
-							items : [ tableMappingTranslateGrid ]
-						} ],
+									items : [ tableMappingTranslateGrid ]
+								} ],
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
 						iconCls : 'application_form',
@@ -896,7 +907,8 @@ Ext
 									iconCls : 'bullet_disk',
 									handler : function() {
 										var id = 0;
-										id = Ext.getCmp('tableMappingId').getValue();
+										id = Ext.getCmp('tableMappingId')
+												.getValue();
 										var method;
 										if (id.length > 0) {
 											method = 'save';
@@ -983,19 +995,20 @@ Ext
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-										
+
 										Ext.Ajax
 												.request({
 
 													url : "../controller/tableMappingController.php",
 													method : 'GET',
-													waitTitle:'Translation',
-													waitMessage:'Translation in Progress',
+													waitTitle : 'Translation',
+													waitMessage : 'Translation in Progress',
 													params : {
 														leafId : leafId,
 														method : 'translate',
-														tableMappingId : Ext.getCmp(
-																'tableMappingId')
+														tableMappingId : Ext
+																.getCmp(
+																		'tableMappingId')
 																.getValue()
 													},
 													success : function(
@@ -1010,7 +1023,7 @@ Ext
 
 															tableMappingTranslateStore
 																	.reload();
-															
+
 														} else {
 															Ext.MessageBox
 																	.alert(

@@ -5,11 +5,8 @@ Ext
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
-			var pagePrint;
-			var pagePrintList;
+			var pagePrint;;
 			var perPage = 15;
 			var encode = false;
 			var local = false;
@@ -17,24 +14,18 @@ Ext
 			var duplicate = 0;
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
-				pageCreateList = false;
 			} else {
 				pageCreate = true;
-				pageCreateList = true;
 			}
 			if (leafAccessReadValue == 1) {
 				pageReload = false;
-				pageReloadList = false;
 			} else {
 				pageReload = true;
-				pageReloadList = true;
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
-				pagePrintList = false;
 			} else {
 				pagePrint = true;
-				pagePrintList = true;
 			}
 			var departmentProxy = new Ext.data.HttpProxy({
 				url : "../controller/departmentController.php",
@@ -69,7 +60,6 @@ Ext
 				pruneModifiedRecords : true,
 				baseParams : {
 					method : "read",
-					grid : "master",
 					leafId : leafId,
 					isAdmin : isAdmin,
 					start : 0,
@@ -172,7 +162,7 @@ Ext
 					type : "string"
 				} ]
 			});
-			var filters = new Ext.ux.grid.GridFilters({
+			var departmentFilters = new Ext.ux.grid.GridFilters({
 				encode : encode,
 				local : false,
 				filters : [ {
@@ -192,16 +182,16 @@ Ext
 					table : "department"
 				}, {
 					type : "list",
-					dataIndex : "By",
-					column : "By",
+					dataIndex : "executeBy",
+					column : "executeBy",
 					table : "department",
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
 				}, {
 					type : "date",
-					dataIndex : "Time",
-					column : "Time",
+					dataIndex : "executeTime",
+					column : "executeTime",
 					table : "department"
 				} ]
 			});
@@ -474,7 +464,7 @@ Ext
 						autoHeight : false,
 						height : 400,
 						columns : departmentColumnModelGrid,
-						plugins : [ filters, departmentEditor ],
+						plugins : [ departmentFilters, departmentEditor ],
 						sm : new Ext.grid.RowSelectionModel({
 							singleSelect : true
 						}),
@@ -488,7 +478,7 @@ Ext
 										iconCls : 'add',
 										id : 'add_record',
 										name : 'add_record',
-										text : 'New Record',
+										text : newButtonLabel,
 										handler : function() {
 											var e = new departmentEntity({
 												departmentId : '',
@@ -517,7 +507,7 @@ Ext
 										}
 									},
 									{
-										text : 'Check All',
+										text : CheckAllLabel,
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
@@ -534,7 +524,7 @@ Ext
 										}
 									},
 									{
-										text : 'Clear All',
+										text:ClearAllLabel,
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
@@ -551,7 +541,7 @@ Ext
 										}
 									},
 									{
-										text : 'save',
+										text : saveButtonLabel,
 										iconCls : 'bullet_disk',
 										listeners : {
 											'click' : function(c) {

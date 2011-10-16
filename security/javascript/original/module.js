@@ -5,11 +5,8 @@ Ext
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
 			var pagePrint;
-			var pagePrintList;
 			var perPage = 15;
 			var encode = false;
 			var local = false;
@@ -17,28 +14,22 @@ Ext
 			var duplicate = 0;
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
-				pageCreateList = false;
 			} else {
 				pageCreate = true;
-				pageCreateList = true;
 			}
 			if (leafAccessReadValue == 1) {
 				pageReload = false;
-				pageReloadList = false;
 			} else {
 				pageReload = true;
-				pageReloadList = true;
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
-				pagePrintList = false;
 			} else {
 				pagePrint = true;
-				pagePrintList = true;
 			}
 			var moduleProxy = new Ext.data.HttpProxy({
 				url : "../controller/moduleController.php",
-				method:'POST',
+				method : 'POST',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -111,9 +102,9 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name :'executeBy',
-					type :'int'
-				},{
+					name : 'executeBy',
+					type : 'int'
+				}, {
 					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
@@ -123,7 +114,7 @@ Ext
 			var moduleTranslateProxy = new Ext.data.HttpProxy({
 				url : "../controller/moduleController.php",
 				method : 'POST',
-			
+
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
@@ -173,53 +164,56 @@ Ext
 					name : 'languageDesc',
 					type : 'string'
 				}, {
-					name : 'moduleTranslate',
+					name : 'moduleNative',
 					type : 'string'
 				} ]
 			});
-			 var staffByProxy = new Ext.data.HttpProxy({
-			        url: "../controller/moduleController.php?",
-			        method: "GET",
-			        success: function(response, options) {
-			            jsonResponse = Ext.decode(response.responseText);
-			            if (jsonResponse.success == true) { 
-			            	// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-			                // uncomment for testing purpose
-			            } else {
-			                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-			            }
-			        },
-			        failure: function(response, options) {
-			            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
-			        }
-			    });
+			var staffByProxy = new Ext.data.HttpProxy({
+				url : "../controller/moduleController.php?",
+				method : "GET",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// uncomment for testing purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
 			var staffByReader = new Ext.data.JsonReader({
-		        totalProperty: "total",
-		        successProperty: "success",
-		        messageProperty: "message",
-		        idProperty: "staffId"
-		    });
-		    var staffByStore = new Ext.data.JsonStore({
-		        proxy: staffByProxy,
-		        reader: staffByReader,
-		        autoLoad: true,
-		        autoDestroy: true,
-		        baseParams: {
-		            method: 'read',
-		            field: 'staffId',
-		            leafId: leafId
-		        },
-		        root: 'staff',
-		        fields: [{
-		            name: "staffId",
-		            type: "int"
-		        },
-		        {
-		            name: "staffName",
-		            type: "string"
-		        }]
-		    });
-			var moduleFilters = new Ext.ux.grid.GridFilters({ // encode and local
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "staffId"
+			});
+			var staffByStore = new Ext.data.JsonStore({
+				proxy : staffByProxy,
+				reader : staffByReader,
+				autoLoad : true,
+				autoDestroy : true,
+				baseParams : {
+					method : 'read',
+					field : 'staffId',
+					leafId : leafId
+				},
+				root : 'staff',
+				fields : [ {
+					name : "staffId",
+					type : "int"
+				}, {
+					name : "staffName",
+					type : "string"
+				} ]
+			});
+			var moduleFilters = new Ext.ux.grid.GridFilters({ // encode and
+																// local
 				// configuration options
 				// defined previously
 				// for
@@ -233,7 +227,7 @@ Ext
 					dataIndex : 'moduleSequence',
 					column : 'moduleSequence',
 					module : 'module'
-				},{
+				}, {
 					type : 'numeric',
 					dataIndex : 'moduleCode',
 					column : 'moduleCode',
@@ -248,7 +242,7 @@ Ext
 					dataIndex : 'iconId',
 					column : 'iconId',
 					module : 'module'
-				},  {
+				}, {
 					type : "list",
 					dataIndex : "executeBy",
 					column : "executeBy",
@@ -256,7 +250,7 @@ Ext
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
-				},{
+				}, {
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
 					dataIndex : 'executeTime',
@@ -310,7 +304,7 @@ Ext
 			});
 			var moduleColumnModel = [
 					new Ext.grid.RowNumberer(),
-				
+
 					{
 						dataIndex : "moduleSequence",
 						header : moduleSequenceLabel,
@@ -336,7 +330,8 @@ Ext
 									+ value;
 						}
 					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid,isReviewGrid,isPostgrid {
+					isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid,
+					isPostGrid, {
 						dataIndex : 'executeBy',
 						header : executeByLabel,
 						hidden : true,
@@ -351,25 +346,25 @@ Ext
 			var moduleTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
 				dataIndex : "moduleEnglish",
 				header : moduleSequenceLabel,
-				sortable: true,
+				sortable : true,
 				hidden : true,
 				width : 50
 			}, {
 				dataIndex : "languageCode",
 				header : "languageCode",
-				sortable: true,
+				sortable : true,
 				hidden : false,
 				width : 100
 			}, {
 				dataIndex : "languageDesc",
 				header : "languageDesc",
-				sortable: true,
+				sortable : true,
 				hidden : false,
 				width : 100
 			}, {
 				dataIndex : "moduleNative",
 				header : "moduleNative",
-				sortable: true,
+				sortable : true,
 				hidden : false,
 				width : 100,
 				editor : {
@@ -377,9 +372,10 @@ Ext
 					id : 'moduleNative'
 				}
 			} ];
-			
-			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved','isReview','isPost'];
-			 
+
+			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
+
 			var moduleGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
@@ -411,7 +407,7 @@ Ext
 										leafId : leafId
 									},
 									success : function(form, action) {
-									
+
 										viewPort.items.get(1).expand();
 									},
 									failure : function(form, action) {
@@ -424,7 +420,7 @@ Ext
 						tbar : {
 							items : [
 									{
-										text : 'Check All',
+										text : CheckAllLabel,
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
@@ -441,7 +437,7 @@ Ext
 										}
 									},
 									{
-										text : 'Clear All',
+										text : ClearAllLabel,
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
@@ -458,7 +454,7 @@ Ext
 										}
 									},
 									{
-										text : 'save',
+										text : saveButtonLabel,
 										iconCls : 'bullet_disk',
 										listeners : {
 											'click' : function(c) {
@@ -502,11 +498,17 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
-												url = url + sub_url; // reques
-												// and
-												// ajax
+												url = url + sub_url;
 												Ext.Ajax
 														.request({
 															url : url,
@@ -607,7 +609,7 @@ Ext
 					forceFit : true
 				},
 				layout : 'fit',
-				disabled: true,
+				disabled : true,
 				plugins : [ moduleTranslateEditor ]
 			});
 			var gridPanel = new Ext.Panel(
@@ -664,7 +666,7 @@ Ext
 													},
 													failure : function(
 															response, options) {
-														
+
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
@@ -706,7 +708,7 @@ Ext
 													},
 													failure : function(
 															response, options) {
-													
+
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
@@ -722,7 +724,7 @@ Ext
 								}) ],
 						items : [ moduleGrid ]
 					}); // viewport just save information,items will do separate
-			
+
 			var moduleCode = new Ext.form.TextField({
 				labelAlign : 'left',
 				fieldLabel : moduleCodeLabel,
@@ -846,8 +848,7 @@ Ext
 					[ '1088', 'vector' ], [ '1091', 'video' ],
 					[ '1093', 'wand' ], [ '1123', 'zoom' ],
 					[ '1124', 'zoom_in' ], [ '1125', 'zoom_out' ] ];
-		
-			
+
 			var iconId = new Ext.ux.form.IconCombo({
 				name : 'iconId',
 				hiddenName : 'iconId',
@@ -866,12 +867,12 @@ Ext
 				displayField : 'iconName',
 				iconClsTpl : '{iconName}'
 			});
-			
+
 			var moduleId = new Ext.form.Hidden({
 				name : 'moduleId',
 				id : 'moduleId'
 			});
-			
+
 			var firstRecord = new Ext.form.Hidden({
 				name : 'firstRecord',
 				id : 'firstRecord'
@@ -890,7 +891,7 @@ Ext
 				name : 'lastRecord',
 				id : 'lastRecord'
 			});
-			
+
 			var formPanel = new Ext.form.FormPanel(
 					{
 						url : '../controller/moduleController.php',
@@ -910,18 +911,17 @@ Ext
 										layout : 'form',
 										title : leafEnglish,
 										bodyStyle : "padding:5px",
-										border: true,
-										frame: true,
-										items : [ moduleId,
-										          moduleSequence,moduleCode,
-												moduleEnglish, iconId,
-												moduleId ]
+										border : true,
+										frame : true,
+										items : [ moduleId, moduleSequence,
+												moduleCode, moduleEnglish,
+												iconId, moduleId ]
 									} ]
 								}, {
 									xtype : 'panel',
 									title : 'module Translation',
-									disable:true,
-									items : [ moduleTranslateGridTranslate]
+									disable : true,
+									items : [ moduleTranslateGridTranslate ]
 								} ],
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
@@ -965,18 +965,17 @@ Ext
 																		.enable();
 																moduleStore
 																		.reload({
-																		params : {
+																			params : {
 																				leafId : leafId,
 																				start : 0,
 																				limit : perPage
-																		}
-																			});
+																			}
+																		});
 																Ext
 																		.getCmp(
 																				'moduleId')
 																		.setValue(
 																				action.result.moduleId);
-																			
 
 															},
 															failure : function(
@@ -986,7 +985,7 @@ Ext
 																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																	alert(loadFailureMessageLabel);
 																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																
+
 																	alert(clientInvalidMessageLabel);
 																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																	Ext.Msg
@@ -1016,7 +1015,7 @@ Ext
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-										
+
 										Ext.Ajax
 												.request({
 
@@ -1025,16 +1024,15 @@ Ext
 													params : {
 														leafId : leafId,
 														method : 'translate',
-														moduleId : Ext
-																.getCmp(
-																		'moduleId')
+														moduleId : Ext.getCmp(
+																'moduleId')
 																.getValue()
 													},
 													success : function(
 															response, options) {
 														jsonResponse = Ext
 																.decode(response.responseText);
-														if (jsonResponse.success == "true") {
+														if (jsonResponse.success == true) {
 															Ext.MessageBox
 																	.alert(
 																			systemLabel,
@@ -1052,7 +1050,7 @@ Ext
 													},
 													failure : function(
 															response, options) {
-													
+
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
@@ -1074,6 +1072,6 @@ Ext
 					animate : false,
 					activeOnTop : true
 				},
-				items : [ gridPanel,formPanel ]
+				items : [ gridPanel, formPanel ]
 			});
 		});

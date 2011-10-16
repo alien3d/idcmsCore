@@ -177,7 +177,7 @@ Ext.onReady(function() {
             type: "string"
         }]
     });
-    var filters = new Ext.ux.grid.GridFilters({
+    var languageFilters = new Ext.ux.grid.GridFilters({
         encode: encode,
         local: false,
         filters: [{
@@ -275,14 +275,14 @@ Ext.onReady(function() {
     });
     
     var isReviewGrid = new Ext.ux.grid.CheckColumn({
-        header: isActiveLabel,
-        dataIndex: 'isActive',
-        hidden: isActiveHidden
+        header: isReviewLabel,
+        dataIndex: 'isReview',
+        hidden: isReviewHidden
     });
     var isPostGrid = new Ext.ux.grid.CheckColumn({
         header: isPostLabel,
         dataIndex: 'isPost',
-        hidden: isApprovedHidden
+        hidden: isPostHidden
     });
     var languageColumnModelGrid = [new Ext.grid.RowNumberer(),
                                      {
@@ -341,7 +341,7 @@ Ext.onReady(function() {
                     params: {
                         method: method,
                         leafId: leafId,
-                    
+                        isAdmin : isAdmin,
                         languageCode : record.get('languageCode'),
                         languageDesc: record.get('languageDesc'),
 						languageId:record.get('languageId'),
@@ -421,7 +421,7 @@ Ext.onReady(function() {
         autoHeight: false,
         height: 400,
         columns: languageColumnModelGrid,
-        plugins: [filters, languageEditor],
+        plugins: [languageFilters, languageEditor],
         sm: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
@@ -459,7 +459,7 @@ Ext.onReady(function() {
                 }
             },
             {
-                text: 'Check All',
+                text: text:CheckAllLabel,
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function() {
@@ -472,7 +472,7 @@ Ext.onReady(function() {
                 }
             },
             {
-                text: 'Clear All',
+                text:ClearAllLabel,
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function() {

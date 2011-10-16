@@ -1,9 +1,9 @@
 Ext
 		.onReady(function() {
 
-			var pageCreate;
-			var pageReload;
-			var pagePrint;
+			var pageCreate='';
+			var pageReload='';
+			var pagePrint='';
 			if (leafAccessCreateValue == 1) {
 				pageCreate = false;
 			} else {
@@ -20,31 +20,30 @@ Ext
 				pagePrint = true;
 			}
 			// form panel + grid.When choose the form then activated filter the
-			
+
 			var perPage = 10;
 			var encode = false;
 			var local = false;
-			var moduleAccessProxy = new Ext.data.HttpProxy(
-					{
-						url : "../controller/moduleAccessController.php",
-						method : 'POST',
-						success : function(response, options) {
-							jsonResponse = Ext.decode(response.responseText);
+			var moduleAccessProxy = new Ext.data.HttpProxy({
+				url : "../controller/moduleAccessController.php",
+				method : 'POST',
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
 
-							if (jsonResponse.success == true) {
-								//Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-								// uncomment it for debugging purpose
-							} else {
-								Ext.MessageBox.alert(systemErrorLabel,
-										jsonResponse.message);
-							}
-						},
-						failure : function(response, options) {
-							Ext.MessageBox.alert(systemErrorLabel,
-									escape(response.Status) + ":"
-											+ escape(response.statusText));
-						}
-					});
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+						// uncomment it for debugging purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
 			var moduleAccessReader = new Ext.data.JsonReader({
 				totalProperty : "total",
 				successProperty : "success",
@@ -289,7 +288,7 @@ Ext
 																	.get('moduleAccessValue');
 												}
 												url = url + sub_url;
-												// reques and ajax
+										
 												Ext.Ajax
 														.request({
 															url : url,
@@ -298,23 +297,27 @@ Ext
 																	options) {
 																Ext.MessageBox
 																		.alert('success updated');
-																
-																moduleAccessStore.load({
-																	params : {
-																		teamId : Ext.getCmp('teamId').getValue()
-																	}
-																})
+
+																moduleAccessStore
+																		.load({
+																			params : {
+																				teamId : Ext
+																						.getCmp(
+																								'teamId')
+																						.getValue()
+																			}
+																		})
 																jsonResponse = Ext
 																		.decode(response.responseText);
-																
+
 																if (jsonResponse == true) {
-																	
+
 																	Ext.MessageBox
 																			.alert(
 																					systemLabel,
 																					jsonResponse.message);
 																} else if (jsonResponse == false) {
-																	
+
 																	Ext.MessageBox
 																			.alert(
 																					systemErrorLabel,
@@ -324,14 +327,13 @@ Ext
 															failure : function(
 																	response,
 																	options) {
-																status_code = response.status;
-																status_message = response.statusText;
+
 																Ext.MessageBox
 																		.alert(
 																				systemErrorLabel,
-																				escape(status_code)
+																				escape(response.status)
 																						+ ":"
-																						+ status_message);
+																						+ escape(response.statusText));
 															}
 														});
 												// refresh the store

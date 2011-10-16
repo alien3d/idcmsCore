@@ -9,19 +9,19 @@ Ext
 			var pagePrint;
 
 			if (leafAccessCreateValue == 1) {
-				var pageCreate = false;
+				pageCreate = false;
 			} else {
-				var pageCreate = true;
+				pageCreate = true;
 			}
 			if (leafAccessReadValue == 1) {
-				var pageReload = false;
+				pageReload = false;
 			} else {
-				var pageReload = true;
+				pageReload = true;
 			}
 			if (leafAccessPrintValue == 1) {
-				var pagePrint = false;
+				pagePrint = false;
 			} else {
-				var pagePrint = true;
+				pagePrint = true;
 			}
 			Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
 			var perPage = 15;
@@ -139,8 +139,7 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 
-						// Ext.MessageBox.alert(systemLabel,
-						// jsonResponse.message);
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 					}
 				},
 				failure : function(response, options) {
@@ -185,7 +184,7 @@ Ext
 					name : 'languageDesc',
 					type : 'string'
 				}, {
-					name : 'leafTranslate',
+					name : 'leafNative',
 					type : 'string'
 				} ]
 			});
@@ -196,8 +195,7 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
 
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
@@ -336,18 +334,18 @@ Ext
 				local : local,
 				filters : [ {
 					type : 'list',
-					dataIndex : 'moduleTranslate',
+					dataIndex : 'moduleNative',
 					column : 'moduleId',
 					table : 'module',
-					labelField : 'moduleTranslate',
+					labelField : 'moduleNative',
 					store : moduleStore,
 					phpMode : true
 				}, {
 					type : 'list',
-					dataIndex : 'folderTranslate',
+					dataIndex : 'folderNative',
 					column : 'folderId',
 					table : 'folder',
-					labelField : 'folderTranslate',
+					labelField : 'folderNative',
 					store : folderStore,
 					phpMode : true
 
@@ -374,16 +372,16 @@ Ext
 					table : 'leaf'
 				}, {
 					type : "list",
-					dataIndex : "By",
-					column : "By",
+					dataIndex : "executeBy",
+					column : "executeBy",
 					table : "religion",
 					labelField : "staffName",
 					store : staffByStore,
 					phpMode : true
 				}, {
 					type : "date",
-					dataIndex : "Time",
-					column : "Time",
+					dataIndex : "executeTime",
+					column : "executeTime",
 					table : "religion"
 				} ]
 			});
@@ -506,15 +504,15 @@ Ext
 				width : 100
 
 			}, {
-				dataIndex : "leafTranslate",
-				header : "leafTranslate",
+				dataIndex : "leafNative",
+				header : "leafNative",
 				sortable : true,
 				hidden : false,
 				width : 100,
 
 				editor : {
 					xtype : 'textfield',
-					id : 'leafTranslate'
+					id : 'leafNative'
 				}
 
 			} ];
@@ -566,7 +564,7 @@ Ext
 						tbar : {
 							items : [
 									{
-										text : 'Check All',
+										text :CheckAllLabel,
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
@@ -583,7 +581,7 @@ Ext
 										}
 									},
 									{
-										text : 'Clear All',
+										text:ClearAllLabel,
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
@@ -600,7 +598,7 @@ Ext
 										}
 									},
 									{
-										text : 'save',
+										text : saveButtonLabel,
 										iconCls : 'bullet_disk',
 										listeners : {
 											'click' : function(c) {
@@ -617,7 +615,7 @@ Ext
 															+ '&leafId[]='
 															+ record
 																	.get('leafId');
-													if (isAdmin == 1) {
+													if (isAdmin == 1) {	
 														sub_url = sub_url
 																+ '&isDraft[]='
 																+ record
@@ -776,7 +774,7 @@ Ext
 					var prez = [];
 					var i =0;
 					for (i ; i < approved.selModel.getCount(); i++) {
-						prez.push(selections[i].json.tabTranslateId);
+						prez.push(selections[i].json.leafTranslateId);
 					}
 					var encoded_array = Ext.encode(prez);
 
@@ -1164,7 +1162,6 @@ Ext
 					[ '675', 'newspaper' ], [ '680', 'note' ],
 					[ '685', 'note_go' ], [ '686', 'ooo_gulls' ],
 					[ '687', 'openoffice' ], [ '688', 'overlays' ],
-
 					[ '783', 'paintbrush' ], [ '784', 'paintcan' ],
 					[ '785', 'palette' ], [ '789', 'pencil' ],
 					[ '793', 'phone' ], [ '797', 'photo' ],
@@ -1259,7 +1256,7 @@ Ext
 									bodyStyle : "padding:5px",
 									layout : 'form',
 									frame : true,
-									items : [ moduleId, folderId, leafEnglish,
+									items : [ moduleId, folderId, leafCode,leafEnglish,
 											leafSequence, leafFilename, iconId,
 											leafId ]
 								}, {
