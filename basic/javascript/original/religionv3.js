@@ -405,7 +405,7 @@ Ext.onReady(function() {
                 }
             },
             {
-                text: text:CheckAllLabel,
+                text:CheckAllLabel,
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function() {

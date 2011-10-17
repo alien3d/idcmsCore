@@ -95,7 +95,7 @@ Ext
 					name : "isApproved",
 					type : "boolean"
 				}, {
-					name : "Time",
+					name : "executeTime",
 					type : "date",
 					dateFormat : "Y-m-d H:i:s"
 				} ]
@@ -154,85 +154,62 @@ Ext
 					name : 'languageDesc',
 					type : 'string'
 				}, {
-					name : 'defaultLabelTranslate',
+					name : 'defaultLabelNative',
 					type : 'string'
 				} ]
 			});
 
-			var staffProxy = new Ext.data.HttpProxy({
+			var staffByProxy = new Ext.data.HttpProxy({
 				url : "../controller/defaultLabelController.php?",
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message); //uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
 					}
-
 				},
 				failure : function(response, options) {
 					Ext.MessageBox.alert(systemErrorLabel,
 							escape(response.Status) + ":"
 									+ escape(response.statusText));
 				}
-
 			});
-			
-		    var staffByProxy = new Ext.data.HttpProxy({
-		        url: "../controller/defaultLabelController.php?",
-		        method: "GET",
-		        success: function(response, options) {
-		            jsonResponse = Ext.decode(response.responseText);
-		            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-		                // jsonResponse.message);
-		                // //uncommen for testing
-		                // purpose
-		            } else {
-		                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-		            }
-		        },
-		        failure: function(response, options) {
-		            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
-		        }
-		    });
-		    var staffByReader = new Ext.data.JsonReader({
-		        totalProperty: "total",
-		        successProperty: "success",
-		        messageProperty: "message",
-		        idProperty: "staffId"
-		    });
-		    var staffByStore = new Ext.data.JsonStore({
-		        proxy: staffByProxy,
-		        reader: staffByReader,
-		        autoLoad: true,
-		        autoDestroy: true,
-		        baseParams: {
-		            method: 'read',
-		            field: 'staffId',
-		            leafId: leafId
-		        },
-		        root: 'staff',
-		        fields: [{
-		            name: "staffId",
-		            type: "int"
-		        },
-		        {
-		            name: "staffName",
-		            type: "string"
-		        }]
-		    });
+			var staffByReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "staffId"
+			});
+			var staffByStore = new Ext.data.JsonStore({
+				proxy : staffByProxy,
+				reader : staffByReader,
+				autoLoad : true,
+				autoDestroy : true,
+				baseParams : {
+					method : 'read',
+					field : 'staffId',
+					leafId : leafId
+				},
+				root : 'staff',
+				fields : [ {
+					name : "staffId",
+					type : "int"
+				}, {
+					name : "staffName",
+					type : "string"
+				} ]
+			});
 
-			
-
-			var filters = new Ext.ux.grid.GridFilters({
+			var defaultLabelFilters = new Ext.ux.grid.GridFilters({
 				// encode and local configuration options defined previously for
 				// easier reuse
 				encode : encode, // json encode the filter query
-				local : false, // defaults to false (remote filtering)
-				filters : [  {
+				local : local, // defaults to false (remote filtering)
+				filters : [ {
 					type : 'string',
 					dataIndex : 'defaultLabel',
 					column : 'defaultLabel',
@@ -242,10 +219,10 @@ Ext
 					dataIndex : 'defaultLabelEnglish',
 					column : 'defaultLabelEnglish',
 					table : 'defaultLabel'
-				},  {
+				}, {
 					type : 'list',
-					dataIndex : 'By',
-					column : 'staffId',
+					dataIndex : 'executeBy',
+					column : 'executeBy',
 					table : 'defaultLabel',
 					labelField : 'staffName',
 					store : staffByStore,
@@ -253,8 +230,8 @@ Ext
 				}, {
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
-					dataIndex : 'Time',
-					column : 'Time',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
 					table : 'defaultLabel'
 				} ]
 			});
@@ -369,11 +346,7 @@ Ext
 																				options) {
 																			jsonResponse = Ext
 																					.decode(response.responseText);
-																			if (jsonResponse.success == true) {
-																				title = successLabel;
-																			} else {
-																				title = failureLabel;
-																			}
+
 																			defaultLabelStore
 																					.reload({
 																						params : {
@@ -392,7 +365,7 @@ Ext
 																					});
 																			Ext.MessageBox
 																					.alert(
-																							title,
+																							systemLabel,
 																							jsonResponse.message);
 																		},
 																		failure : function(
@@ -411,66 +384,65 @@ Ext
 												});
 									}
 								} ]
-					},
-					{
+					}, {
 						dataIndex : 'defaultLabel',
 						header : defaultLabel
-					},
-					{
+					}, {
 						dataIndex : 'defaultLabelEnglish',
 						header : defaultLabelEnglish
 					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
 					isDeleteGrid, isActiveGrid, isApprovedGrid, {
-						dataIndex : 'By',
+						dataIndex : 'executeBy',
 						header : executeByLabel,
 						sortable : true,
 						hidden : true,
 						width : 100
 					}, {
-						dataIndex : 'Time',
+						dataIndex : 'executeTime',
 						header : createTimeLabel,
 						type : 'date',
 						sortable : true,
 						hidden : true,
 						width : 100
-					}  ];
+					} ];
 
-			
-			var defaultLabelTranslateColumnModel = [ new Ext.grid.RowNumberer(), {
-				dataIndex : "defaultLabelNote",
-				header : defaultLabelSequenceLabel,
-				sortable : true,
-				hidden : true,
-				width : 50
-			}, {
-				dataIndex : "languageCode",
-				header : "languageCode",
-				sortable : true,
-				hidden : false,
-				width : 100
-			}, {
-				dataIndex : "languageDesc",
-				header : "languageDesc",
-				sortable : true,
-				hidden : false,
-				width : 100
+			var defaultLabelTranslateColumnModel = [
+					new Ext.grid.RowNumberer(), {
+						dataIndex : "defaultLabelNote",
+						header : defaultLabelSequenceLabel,
+						sortable : true,
+						hidden : true,
+						width : 50
+					}, {
+						dataIndex : "languageCode",
+						header : "languageCode",
+						sortable : true,
+						hidden : false,
+						width : 100
+					}, {
+						dataIndex : "languageDesc",
+						header : "languageDesc",
+						sortable : true,
+						hidden : false,
+						width : 100
 
-			}, {
-				dataIndex : "defaultLabelTranslate",
-				header : "defaultLabelTranslate",
-				sortable : true,
-				hidden : false,
-				width : 100,
+					}, {
+						dataIndex : "defaultLabelTranslate",
+						header : "defaultLabelTranslate",
+						sortable : true,
+						hidden : false,
+						width : 100,
 
-				editor : {
-					xtype : 'textfield',
-					id : 'defaultLabelTranslate'
-				}
+						editor : {
+							xtype : 'textfield',
+							id : 'defaultLabelTranslate'
+						}
 
-			} ];
-			
-			 var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved'];
-			 
+					} ];
+
+			var accessArray = [ 'isDefault', 'isNew', 'isDraft', 'isUpdate',
+					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
+
 			var defaultLabelGrid = new Ext.grid.GridPanel(
 					{
 						border : false,
@@ -490,28 +462,33 @@ Ext
 							'rowclick' : function(object, rowIndex, e) {
 								var record = defaultLabelStore.getAt(rowIndex);
 								formPanel.getForm().reset();
-								formPanel.form.load({
-									url : "../controller/defaultLabelController.php",
-									method : "POST",
-									waitTitle : systemLabel,
-									waitMsg : waitMessageLabel,
-									params : {
-										method : "read",
-										mode : "update",
-										defaultLabelId : record.data.defaultLabelId,
-										leafId : leafId
-									},
-									success : function(form, action) {
-										Ext.getCmp("defaultLabelDesc_temp").setValue(
-												record.data.defaultLabelDesc);
-										
-										viewPort.items.get(1).expand();
-									},
-									failure : function(form, action) {
-										Ext.MessageBox.alert(systemErrorLabel,
-												action.result.message);
-									}
-								});
+								formPanel.form
+										.load({
+											url : "../controller/defaultLabelController.php",
+											method : "POST",
+											waitTitle : systemLabel,
+											waitMsg : waitMessageLabel,
+											params : {
+												method : "read",
+												mode : "update",
+												defaultLabelId : record.data.defaultLabelId,
+												leafId : leafId
+											},
+											success : function(form, action) {
+												Ext
+														.getCmp(
+																"defaultLabelDesc_temp")
+														.setValue(
+																record.data.defaultLabelDesc);
+
+												viewPort.items.get(1).expand();
+											},
+											failure : function(form, action) {
+												Ext.MessageBox.alert(
+														systemErrorLabel,
+														action.result.message);
+											}
+										});
 							}
 						},
 						tbar : {
@@ -521,7 +498,7 @@ Ext
 										iconCls : 'row-check-sprite-check',
 										listeners : {
 											'click' : function() {
-												
+
 												defaultLabelStore
 														.each(function(rec) {
 															for ( var access in accessArray) { // alert(access);
@@ -535,7 +512,7 @@ Ext
 										}
 									},
 									{
-										text:ClearAllLabel,
+										text : ClearAllLabel,
 										iconCls : 'row-check-sprite-uncheck',
 										listeners : {
 											'click' : function() {
@@ -557,13 +534,13 @@ Ext
 										listeners : {
 											'click' : function(c) {
 												var url;
-												var count = defaultLabelStore
-														.getCount();
+
 												url = '../controller/defaultLabelController.php?';
 												var sub_url;
 												sub_url = '';
-												   var modified = defaultLabelStore.getModifiedRecords();
-							                        for(var i = 0; i < modified.length; i++) {
+												var modified = defaultLabelStore
+														.getModifiedRecords();
+												for ( var i = 0; i < modified.length; i++) {
 													var record = defaultLabelStore
 															.getAt(i);
 													sub_url = sub_url
@@ -597,11 +574,17 @@ Ext
 																+ '&isApproved[]='
 																+ record
 																		.get('isApproved');
+														sub_url = sub_url
+																+ '&isReview[]='
+																+ record
+																		.get('isReview');
+														sub_url = sub_url
+																+ '&isPost[]='
+																+ record
+																		.get('isPost');
 													}
 												}
-												url = url + sub_url; // reques
-																		// and
-																		// ajax
+												url = url + sub_url; 
 												Ext.Ajax
 														.request({
 															url : url,
@@ -664,43 +647,59 @@ Ext
 
 								this.save = true;
 								// @todo update record manually
-								//var curr_store = this.grid.getStore().getAt(rowIndex);
+								// var curr_store =
+								// this.grid.getStore().getAt(rowIndex);
 
-								Ext.Ajax.request({
-									url : '../controller/defaultLabelController.php',
-									method : 'POST',
-									waitMsg : 'Harap Bersabar',
-									params : {
-										leafId : leafId,
-										method : 'save',
-										page : 'detail',
-										defaultLabelTranslateId : record
-												.get('defaultLabelTranslateId'),
-										defaultLabelTranslate : Ext.getCmp(
-												'defaultLabelTranslate').getValue()
+								Ext.Ajax
+										.request({
+											url : '../controller/defaultLabelController.php',
+											method : 'POST',
+											waitMsg : waitMeassageLabel,
+											params : {
+												leafId : leafId,
+												method : 'save',
+												page : 'detail',
+												defaultLabelTranslateId : record
+														.get('defaultLabelTranslateId'),
+												defaultLabelTranslate : Ext
+														.getCmp(
+																'defaultLabelTranslate')
+														.getValue()
 
-									},
-									success : function(response, options) {
-										jsonResponse = Ext.decode(response.responseText);
-										if (jsonResponse == false) {
-											Ext.MessageBox.alert(systemErrorLabel,
-													jsonResponse.message);
-										} else {
-											// if required messagebox to check
-											// status uncomment below
-											Ext.MessageBox.alert(systemLabel,
-													jsonResponse.message);
-											defaultLabelTranslateStore.reload();
-										}
+											},
+											success : function(response,
+													options) {
+												jsonResponse = Ext
+														.decode(response.responseText);
+												if (jsonResponse == false) {
+													Ext.MessageBox
+															.alert(
+																	systemErrorLabel,
+																	jsonResponse.message);
+												} else {
+													// if required messagebox to
+													// check
+													// status uncomment below
+													Ext.MessageBox
+															.alert(
+																	systemLabel,
+																	jsonResponse.message);
+													defaultLabelTranslateStore
+															.reload();
+												}
 
-									},
-									failure : function(response, options) {
-										
-										Ext.MessageBox.alert(systemErrorLabel,
-												escape(statusCode) + ":"
-														+ escape(response.statusText));
-									}
-								});
+											},
+											failure : function(response,
+													options) {
+
+												Ext.MessageBox
+														.alert(
+																systemErrorLabel,
+																escape(statusCode)
+																		+ ":"
+																		+ escape(response.statusText));
+											}
+										});
 
 							}
 						}
@@ -766,7 +765,8 @@ Ext
 													method : 'GET',
 													success : function(
 															response, options) {
-														jsonResponse = Ext.decode(response.responseText);
+														jsonResponse = Ext
+																.decode(response.responseText);
 														if (jsonResponse == true) {
 
 															window
@@ -781,7 +781,7 @@ Ext
 													},
 													failure : function(
 															response, options) {
-														
+
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
@@ -817,16 +817,12 @@ Ext
 				anchor : '95%'
 			});
 
-			
-
-			
-
 			// hidden id for updated
 			var defaultLabelId = new Ext.form.Hidden({
 				name : 'defaultLabelId',
 				id : 'defaultLabelId'
 			});
-			
+
 			var firstRecord = new Ext.form.Hidden({
 				name : 'firstRecord',
 				id : 'firstRecord'
@@ -860,9 +856,9 @@ Ext
 							title : leafEnglish,
 							bodyStyle : "padding:5px",
 							layout : 'form',
-							items : [ defaultLabelId,defaultLabel,
+							items : [ defaultLabelId, defaultLabel,
 
-							defaultLabelEnglish,defaultLabelId ]
+							defaultLabelEnglish, defaultLabelId ]
 						}, {
 							xtype : 'panel',
 							title : 'defaultLabel Translation',
@@ -877,7 +873,8 @@ Ext
 									iconCls : 'bullet_disk',
 									handler : function() {
 										var id = 0;
-										id = Ext.getCmp('defaultLabelId').getValue();
+										id = Ext.getCmp('defaultLabelId')
+												.getValue();
 										var method;
 										if (id.length > 0) {
 											method = 'save';
@@ -891,7 +888,6 @@ Ext
 															waitMsg : waitMessageLabel,
 															params : {
 																method : method,
-																page : 'master',
 																leafId : leafId
 															},
 															success : function(
@@ -964,19 +960,20 @@ Ext
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-										
+
 										Ext.Ajax
 												.request({
 
 													url : "../controller/defaultLabelController.php",
 													method : 'GET',
-													waitTitle:'Translation',
-													waitMessage:'Translation in Progress',
+													waitTitle : 'Translation',
+													waitMessage : 'Translation in Progress',
 													params : {
 														leafId : leafId,
 														method : 'translate',
-														defaultLabelId : Ext.getCmp(
-																'defaultLabelId')
+														defaultLabelId : Ext
+																.getCmp(
+																		'defaultLabelId')
 																.getValue()
 													},
 													success : function(
@@ -991,7 +988,7 @@ Ext
 
 															defaultLabelTranslateStore
 																	.reload();
-															
+
 														} else if (jsonResponse.success == false) {
 															Ext.MessageBox
 																	.alert(
@@ -1005,7 +1002,7 @@ Ext
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
-																		 escape(response.status)
+																		escape(response.status)
 																				+ ":"
 																				+ escape(response.statusText));
 													}

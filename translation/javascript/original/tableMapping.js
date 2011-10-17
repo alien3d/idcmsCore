@@ -208,7 +208,7 @@ Ext
 				// encode and local configuration options defined previously for
 				// easier reuse
 				encode : encode, // json encode the filter query
-				local : false, // defaults to false (remote filtering)
+				local : local, // defaults to false (remote filtering)
 				filters : [ {
 					type : 'numeric',
 					dataIndex : 'tableMappingName',

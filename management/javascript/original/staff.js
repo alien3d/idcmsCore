@@ -10,6 +10,10 @@ Ext
 			var pageReloadList;
 			var pagePrint;
 			var pagePrintList;
+			var perPage = 15;
+			var encode = false;
+			var local = false;
+			
 			if (leafAccessCreateValue == 1) {
 				pageCreate = false;
 				pageCreateList = false;
@@ -32,9 +36,7 @@ Ext
 				pagePrintList = true;
 			}
 			Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
-			var perPage = 15;
-			var encode = false;
-			var local = false;
+			
 			var staffProxy = new Ext.data.HttpProxy({
 				url : "../controller/staffController.php",
 				method : 'POST',
@@ -222,10 +224,7 @@ Ext
 					name : "teamId",
 					type : "int"
 				}, {
-					name : "teamEnglish",
-					type : "string"
-				}, {
-					name : "teamTranslate",
+					name : "teamNative",
 					type : "string"
 				} ]
 			});
@@ -273,10 +272,7 @@ Ext
 					name : "departmentId",
 					type : "int"
 				}, {
-					name : "departmentNote",
-					type : "string"
-				}, {
-					name : "departmentTranslate",
+					name : "departmentNative",
 					type : "string"
 				} ]
 			});
@@ -285,7 +281,7 @@ Ext
 				// encode and local configuration options defined previously for
 				// easier reuse
 				encode : encode, // json encode the filter query
-				local : false, // defaults to false (remote filtering)
+				local : local, // defaults to false (remote filtering)
 				filters : [ {
 					type : 'list',
 					dataIndex : 'teamId',

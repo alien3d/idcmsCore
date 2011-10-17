@@ -7,19 +7,19 @@ Ext
 			var pageReload;
 			var pagePrint;
 			if (leafAccessCreateValue == 1) {
-				var pageCreate = false;
+				pageCreate = false;
 			} else {
-				var pageCreate = true;
+				pageCreate = true;
 			}
 			if (leafAccessReadValue == 1) {
-				var pageReload = false;
+				pageReload = false;
 			} else {
-				var pageReload = true;
+				pageReload = true;
 			}
 			if (leafAccessPrintValue == 1) {
-				var pagePrint = false;
+				 pagePrint = false;
 			} else {
-				var pagePrint = true;
+				pagePrint = true;
 			}
 			var perPage = 10;
 			var encode = false;
@@ -200,11 +200,11 @@ Ext
 				} ]
 			});
 
-			var filters = new Ext.ux.grid.GridFilters({
+			var extLabelFilters = new Ext.ux.grid.GridFilters({
 				// encode and local configuration options defined previously for
 				// easier reuse
 				encode : encode, // json encode the filter query
-				local : false, // defaults to false (remote filtering)
+				local : local, // defaults to false (remote filtering)
 				filters : [ {
 					type : 'string',
 					dataIndex : 'extLabelNote',
@@ -462,11 +462,7 @@ Ext
 												leafId : leafId
 											},
 											success : function(form, action) {
-												Ext
-														.getCmp(
-																"extLabelDesc_temp")
-														.setValue(
-																record.data.extLabelDesc);
+								
 
 												viewPort.items.get(1).expand();
 											},
@@ -789,11 +785,11 @@ Ext
 			// viewport just save information,items will do separate
 			// only load store when viewport is open
 
-			var extLabelNote = new Ext.form.TextField({
+			var extLabelEnglish = new Ext.form.TextField({
 				labelAlign : 'left',
-				fieldLabel : extLabelNoteLabel,
-				hiddenName : 'extLabelNote',
-				name : 'extLabelNote',
+				fieldLabel : extLabelEnglishLabel,
+				hiddenName : 'extLabelEnglish',
+				name : 'extLabelEnglish',
 				anchor : '95%'
 			});
 
@@ -836,7 +832,7 @@ Ext
 							title : leafEnglish,
 							bodyStyle : "padding:5px",
 							layout : 'form',
-							items : [ extLabelId, extLabelNote, extLabelId ]
+							items : [ extLabelId, extLabelEnglish, extLabelId ]
 						}, {
 							xtype : 'panel',
 							title : 'extLabel Translation',
@@ -866,7 +862,6 @@ Ext
 															waitMsg : waitMessageLabel,
 															params : {
 																method : method,
-																page : 'master',
 																leafId : leafId
 															},
 															success : function(

@@ -12,6 +12,7 @@ Ext
 			var pagePrintList;
 			var perPage = 2;
 			var encode = false;
+			var local = false;
 
 			var jsonResponse;
 			var duplicate = 0;
@@ -1157,13 +1158,7 @@ Ext
 																					action.result.religionId);
 																	formPanel
 																			.getForm()
-																			.reset(); // comment
-																	// it
-																	// if
-																	// wanted
-																	// to
-																	// continue
-																	// mode
+																			.reset(); /
 																	religionStore
 																			.reload();
 																	religionStoreList
