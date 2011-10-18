@@ -134,7 +134,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// uncomment for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -232,7 +231,7 @@ Ext
 				}, {
 					type : 'list',
 					dataIndex : 'executeBy',
-					column : 'staffId',
+					column : 'executeBy',
 					table : 'tableMapping',
 					labelField : 'staffName',
 					store : staffByStore,
@@ -676,7 +675,7 @@ Ext
 										.request({
 											url : '../controller/tableMappingController.php',
 											method : 'POST',
-											waitMsg : 'Harap Bersabar',
+											waitMsg : waitMessageLabel,
 											params : {
 												leafId : leafId,
 												method : 'save',
@@ -713,8 +712,7 @@ Ext
 											},
 											failure : function(response,
 													options) {
-												
-												
+
 												Ext.MessageBox
 														.alert(
 																systemLabel,
@@ -766,7 +764,7 @@ Ext
 									iconCls : 'add',
 									id : 'pageCreate',
 									disabled : pageCreate,
-									handler : function() {
+									handlfer : function() {
 
 										viewPort.items.get(1).expand();
 									}
@@ -804,8 +802,7 @@ Ext
 													},
 													failure : function(
 															response, options) {
-														
-														
+
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,

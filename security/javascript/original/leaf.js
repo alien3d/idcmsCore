@@ -725,7 +725,7 @@ Ext
 											url : '../controller/leafTranslateController.php',
 											method : 'POST',
 											waitTitle : 'Harap Sabar',
-											waitMsg : 'Harap Bersabar',
+											waitMsg : waitMessageLabel,
 											params : {
 												leafId : leafId,
 												method : 'save',

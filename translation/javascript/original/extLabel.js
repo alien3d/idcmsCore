@@ -639,7 +639,7 @@ Ext
 										.request({
 											url : '../controller/extLabelController.php',
 											method : 'POST',
-											waitMsg : 'Harap Bersabar',
+											waitMsg : waitMessageLabel,
 											params : {
 												leafId : leafId,
 												method : 'save',
@@ -689,6 +689,8 @@ Ext
 					});
 
 			var extLabelTranslateGrid = new Ext.grid.GridPanel({
+				name : 'extLabelTranslateGrid',
+				id : 'extLabelTranslateGrid',
 				border : false,
 				store : extLabelTranslateStore,
 				height : 400,
@@ -882,7 +884,7 @@ Ext
 																		});
 																Ext
 																		.getCmp(
-																				'translation')
+																				'extLabelGrid')
 																		.enable();
 																Ext
 																		.getCmp(

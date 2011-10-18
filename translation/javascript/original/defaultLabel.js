@@ -427,15 +427,15 @@ Ext
 						width : 100
 
 					}, {
-						dataIndex : "defaultLabelTranslate",
-						header : "defaultLabelTranslate",
+						dataIndex : "defaultLabelNative",
+						header : "defaultLabelNative",
 						sortable : true,
 						hidden : false,
 						width : 100,
 
 						editor : {
 							xtype : 'textfield',
-							id : 'defaultLabelTranslate'
+							id : 'defaultLabelNative'
 						}
 
 					} ];
@@ -706,6 +706,8 @@ Ext
 					});
 
 			var defaultLabelTranslateGrid = new Ext.grid.GridPanel({
+				name : 'defaultLabelTranslateGrid',
+				id : 'defaultLabelTranslateGrid',
 				border : false,
 				store : defaultLabelTranslateStore,
 				height : 400,
@@ -908,7 +910,7 @@ Ext
 																		});
 																Ext
 																		.getCmp(
-																				'translation')
+																				'defaultLabel')
 																		.enable();
 																Ext
 																		.getCmp(

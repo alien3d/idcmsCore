@@ -7,7 +7,7 @@ require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
 require_once ("../model/folderTranslateModel.php");
 /**
- * this defaultLabelTranslation menu creation
+ * this folderTranslate menu creation
  * @name IDCMS
  * @version 2
  * @author hafizan
@@ -128,9 +128,9 @@ class folderTranslateClass extends ConfigClass {
 		$this->model->create ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-			INSERT INTO `defaultLabelTranslation`
+			INSERT INTO `folderTranslate`
 					(
-						`defautlLabel`,							`defaultLabelTranslationEnglish`
+						`defautlLabel`,							`folderTranslateEnglish`
 						`isDefault`,							`isNew`,
 						`isDraft`,								`isUpdate`,
 						`isDelete`,								`isActive`,
@@ -139,7 +139,7 @@ class folderTranslateClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getdefaultLabelTranslation () . "',			'" . $this->model->getdefaultLabelTranslationEnglish () . "'
+						'" . $this->model->getfolderTranslate () . "',			'" . $this->model->getfolderTranslateEnglish () . "'
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -149,9 +149,9 @@ class folderTranslateClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-			INSERT INTO [defaultLabelTranslation]
+			INSERT INTO [folderTranslate]
 					(
-						[defaultLabelTranslation],							[defaultLabelTranslationEnglish]
+						[folderTranslate],							[folderTranslateEnglish]
 						[isDefault],
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
@@ -160,7 +160,7 @@ class folderTranslateClass extends ConfigClass {
 				)
 			VALUES
 				(
-						'" . $this->model->getdefaultLabelTranslation () . "',		    '" . $this->model->getdefaultLabelTranslationEnglish () . "'
+						'" . $this->model->getfolderTranslate () . "',		    '" . $this->model->getfolderTranslateEnglish () . "'
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -179,7 +179,7 @@ class folderTranslateClass extends ConfigClass {
 							ISAPPROVED,							    EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							'" . $this->model->getdefaultLabelTranslation () . "',		'" . $this->model->getdefaultLabelTranslationEnglish () . "'
+							'" . $this->model->getfolderTranslate () . "',		'" . $this->model->getfolderTranslateEnglish () . "'
 							'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -195,7 +195,7 @@ class folderTranslateClass extends ConfigClass {
 		}
 		$lastId = $this->q->lastInsertId ();
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "defaultLabelTranslationId" => $lastId, "message" => "Record Created" ) );
+		echo json_encode ( array ("success" => true, "folderTranslateId" => $lastId, "message" => "Record Created" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -214,26 +214,26 @@ class folderTranslateClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			SELECT 		*
-			FROM 		`defaultLabelTranslation`
+			FROM 		`folderTranslate`
 			WHERE 1 ";
-			if ($this->model->getdefaultLabelTranslationId ( 0, 'single' )) {
-				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+			if ($this->model->getfolderTranslateId ( 0, 'single' )) {
+				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			SELECT 		*
-			FROM 		[defaultLabelTranslation]
+			FROM 		[folderTranslate]
 			WHERE 1 ";
-			if ($this->model->getdefaultLabelTranslationId ( 0, 'single' )) {
-				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+			if ($this->model->getfolderTranslateId ( 0, 'single' )) {
+				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT 		*
 			FROM 		DEFAULTLABELTRANSLATION
 			WHERE 1";
-			if ($this->model->getdefaultLabelTranslationId ( 0, 'single' )) {
-				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "=" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+			if ($this->model->getfolderTranslateId ( 0, 'single' )) {
+				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "=" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
 			}
 		}
 		/**
@@ -241,12 +241,12 @@ class folderTranslateClass extends ConfigClass {
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
 		 * @variables $filterArray;
 		 */
-		$filterArray = array ('defaultLabelTranslationId' );
+		$filterArray = array ('folderTranslateId' );
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
-		$tableArray = array ('defaultLabelTranslation' );
+		$tableArray = array ('folderTranslate' );
 		if ($this->getFieldQuery ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );
@@ -302,17 +302,17 @@ class folderTranslateClass extends ConfigClass {
 					 * Parameterize Query We don't support
 					 */
 					$sqlLimit = "
-							WITH [defaultLabelTranslationDerived] AS
+							WITH [folderTranslateDerived] AS
 							(
 								SELECT	*,
-								[defaultLabelTranslation].[executeBy],
-								[defaultLabelTranslation].[executeTime]
-								ROW_NUMBER() OVER (ORDER BY [defaultLabelTranslationId]) AS 'RowNumber'
-								FROM 		[defaultLabelTranslation]
+								[folderTranslate].[executeBy],
+								[folderTranslate].[executeTime]
+								ROW_NUMBER() OVER (ORDER BY [folderTranslateId]) AS 'RowNumber'
+								FROM 		[folderTranslate]
 								WHERE	1  " . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[defaultLabelTranslationDerived]
+							FROM 		[folderTranslateDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $_POST ['limit'] - 1) . ";";
@@ -340,7 +340,7 @@ class folderTranslateClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (! ($this->getdefaultLabelTranslationId ( 0, 'single' ))) {
+		if (! ($this->getfolderTranslateId ( 0, 'single' ))) {
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
 				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -351,7 +351,7 @@ class folderTranslateClass extends ConfigClass {
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
 			$items [] = $row;
 		}
-		if ($this->getdefaultLabelTranslationId ( 0, 'single' )) {
+		if ($this->getfolderTranslateId ( 0, 'single' )) {
 			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
@@ -378,9 +378,9 @@ class folderTranslateClass extends ConfigClass {
 		$this->model->update ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-					UPDATE 	`defaultLabelTranslation`
-					SET 	`defaultLabelTranslationNote`		=	'" . $this->model->getdefaultLabelTranslationNote () . "',
-							`defaultLabelTranslationEnglish`	=	'" . $this->model->getdefaultLabelTranslationEnglish () . "',
+					UPDATE 	`folderTranslate`
+					SET 	`folderTranslateNote`		=	'" . $this->model->getfolderTranslateNote () . "',
+							`folderTranslateEnglish`	=	'" . $this->model->getfolderTranslateEnglish () . "',
 							`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -390,12 +390,12 @@ class folderTranslateClass extends ConfigClass {
 							`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`			=	" . $this->model->getExecuteTime () . "
-					WHERE 	`defaultLabelTranslationId`			=	'" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+					WHERE 	`folderTranslateId`			=	'" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-					UPDATE 	[defaultLabelTranslation]
-					SET 	[defaultLabelTranslationNote]		=	'" . $this->model->getdefaultLabelTranslationNote () . "',
-							[defaultLabelTranslationEnglish]	=	'" . $this->model->getdefaultLabelTranslationEnglish () . "',
+					UPDATE 	[folderTranslate]
+					SET 	[folderTranslateNote]		=	'" . $this->model->getfolderTranslateNote () . "',
+							[folderTranslateEnglish]	=	'" . $this->model->getfolderTranslateEnglish () . "',
 							[isDefault]		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -405,12 +405,12 @@ class folderTranslateClass extends ConfigClass {
 							[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]			=	" . $this->model->getExecuteTime () . "
-					WHERE 	[defaultLabelTranslationId]			=	'" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+					WHERE 	[folderTranslateId]			=	'" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 					UPDATE 	DEFAULTLABELTRANSLATION
-					SET 	DEFAULTLABELTRANSLATIONNOTE		=	'" . $this->model->getdefaultLabelTranslationNote () . "',
-							DEFAULTLABELTRANSLATIONENGLISH	=	'" . $this->model->getdefaultLabelTranslationEnglish () . "',
+					SET 	DEFAULTLABELTRANSLATIONNOTE		=	'" . $this->model->getfolderTranslateNote () . "',
+							DEFAULTLABELTRANSLATIONENGLISH	=	'" . $this->model->getfolderTranslateEnglish () . "',
 							ISDEFAULT						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -420,7 +420,7 @@ class folderTranslateClass extends ConfigClass {
 							ISAPPROVED						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY						=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME						=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -445,7 +445,7 @@ class folderTranslateClass extends ConfigClass {
 		$this->model->delete ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-					UPDATE	`defaultLabelTranslation`
+					UPDATE	`folderTranslate`
 					SET		`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -455,10 +455,10 @@ class folderTranslateClass extends ConfigClass {
 							`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`			=	" . $this->model->getExecuteTime () . "
-					WHERE 	`defaultLabelTranslationId`		=	'" . $this->model->getdefaultLabelTranslationId () . "'";
+					WHERE 	`folderTranslateId`		=	'" . $this->model->getfolderTranslateId () . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-					UPDATE	[defaultLabelTranslation]
+					UPDATE	[folderTranslate]
 					SET		[isDefault]						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							[isActive]						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							[isNew]							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -468,7 +468,7 @@ class folderTranslateClass extends ConfigClass {
 							[isApproved]					=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							[executeBy]						=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]					=	" . $this->model->getExecuteTime () . "
-					WHERE 	[defaultLabelTranslationId]		=	'" . $this->model->getdefaultLabelTranslationId () . "'";
+					WHERE 	[folderTranslateId]		=	'" . $this->model->getfolderTranslateId () . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 					UPDATE	DEFAULTLABELTRANSLATION
@@ -481,7 +481,7 @@ class folderTranslateClass extends ConfigClass {
 							ISAPPROVED						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY						=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME						=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getdefaultLabelTranslationId () . "'";
+					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getfolderTranslateId () . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -673,7 +673,7 @@ class folderTranslateClass extends ConfigClass {
 		$this->excel->getActiveSheet ()->setCellValue ( 'D2', '' );
 		$this->excel->getActiveSheet ()->mergeCells ( 'B2:D2' );
 		$this->excel->getActiveSheet ()->setCellValue ( 'B3', 'No' );
-		$this->excel->getActiveSheet ()->setCellValue ( 'C3', 'defaultLabelTranslation' );
+		$this->excel->getActiveSheet ()->setCellValue ( 'C3', 'folderTranslate' );
 		$this->excel->getActiveSheet ()->setCellValue ( 'D3', 'Description' );
 		$this->excel->getActiveSheet ()->getStyle ( 'B2:D2' )->getFill ()->setFillType ( PHPExcel_Style_Fill::FILL_SOLID );
 		$this->excel->getActiveSheet ()->getStyle ( 'B2:D2' )->getFill ()->getStartColor ()->setARGB ( '66BBFF' );
@@ -684,7 +684,7 @@ class folderTranslateClass extends ConfigClass {
 		$i = 0;
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
-			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['defaultLabelTranslationNote'] );
+			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['folderTranslateNote'] );
 			$loopRow ++;
 			$lastRow = 'D' . $loopRow;
 		}
@@ -693,7 +693,7 @@ class folderTranslateClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet ()->getStyle ( $formula )->applyFromArray ( $styleThinBlackBorderOutline );
 		$objWriter = PHPExcel_IOFactory::createWriter ( $this->excel, 'Excel2007' );
-		$filename = "defaultLabelTranslation" . rand ( 0, 10000000 ) . ".xlsx";
+		$filename = "folderTranslate" . rand ( 0, 10000000 ) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
 		$objWriter->save ( $path );
 		$this->audit->create_trail ( $this->leafId, $path, $filename );
@@ -799,8 +799,8 @@ if (isset ( $_GET ['method'] )) {
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset ( $_GET ['defaultLabelTranslationCode'] )) {
-		if (strlen ( $_GET ['defaultLabelTranslationCode'] ) > 0) {
+	if (isset ( $_GET ['folderTranslateCode'] )) {
+		if (strlen ( $_GET ['folderTranslateCode'] ) > 0) {
 			$folderTranslateObject->duplicate ();
 		}
 	}
