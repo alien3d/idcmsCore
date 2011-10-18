@@ -485,11 +485,11 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "true", "message" => "Record Removed" ) );
+		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
 		exit ();
 	}
 	/**
@@ -699,10 +699,10 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$this->audit->create_trail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => "true", "message" => "File generated" ) );
+			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => "false", "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
 			exit ();
 		}
 	}

@@ -476,10 +476,10 @@ class LeafAccessClass extends ConfigClass {
 		}
 		if ($this->q->execute == 'fail') {
 			
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => "true", "message" => "Update Success" ) );
+			echo json_encode ( array ("success" =>true, "message" => "Update Success" ) );
 			exit ();
 		}
 	

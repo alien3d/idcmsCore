@@ -170,9 +170,9 @@ class folderTranslateClass extends ConfigClass {
 			);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-			INSERT INTO 	DEFAULTLABELTRANSLATION
+			INSERT INTO 	FOLDERTRANSLATE
 						(
-							DEFAULTLABELTRANSLATION,				DEFAULTLABELTRANSLATIONENGLISH,
+							FOLDERTRANSLATE,				FOLDERTRANSLATEENGLISH,
 							ISDEFAULT,								ISNEW,
 							ISDRAFT,								ISUPDATE,
 							ISDELETE,								ISACTIVE,
@@ -230,7 +230,7 @@ class folderTranslateClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT 		*
-			FROM 		DEFAULTLABELTRANSLATION
+			FROM 		FOLDERTRANSLATE
 			WHERE 1";
 			if ($this->model->getfolderTranslateId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "=" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
@@ -326,7 +326,7 @@ class folderTranslateClass extends ConfigClass {
 												rownum r
 						FROM (
 									SELECT 		*
-									FROM 		DEFAULTLABELTRANSLATION
+									FROM 		FOLDERTRANSLATE
 									WHERE		1
 									AND 		" . $tempSql . $tempSql2 . "
 								 ) a
@@ -408,9 +408,9 @@ class folderTranslateClass extends ConfigClass {
 					WHERE 	[folderTranslateId]			=	'" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					UPDATE 	DEFAULTLABELTRANSLATION
-					SET 	DEFAULTLABELTRANSLATIONNOTE		=	'" . $this->model->getfolderTranslateNote () . "',
-							DEFAULTLABELTRANSLATIONENGLISH	=	'" . $this->model->getfolderTranslateEnglish () . "',
+					UPDATE 	FOLDERTRANSLATE
+					SET 	FOLDERTRANSLATENOTE		=	'" . $this->model->getfolderTranslateNote () . "',
+							FOLDERTRANSLATEENGLISH	=	'" . $this->model->getfolderTranslateEnglish () . "',
 							ISDEFAULT						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -420,7 +420,7 @@ class folderTranslateClass extends ConfigClass {
 							ISAPPROVED						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY						=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME						=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
+					WHERE 	FOLDERTRANSLATEID		=	'" . $this->model->getfolderTranslateId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -471,7 +471,7 @@ class folderTranslateClass extends ConfigClass {
 					WHERE 	[folderTranslateId]		=	'" . $this->model->getfolderTranslateId () . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					UPDATE	DEFAULTLABELTRANSLATION
+					UPDATE	FOLDERTRANSLATE
 					SET		ISDEFAULT						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -481,15 +481,15 @@ class folderTranslateClass extends ConfigClass {
 							ISAPPROVED						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY						=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME						=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getfolderTranslateId () . "'";
+					WHERE 	FOLDERTRANSLATEID		=	'" . $this->model->getfolderTranslateId () . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "true", "message" => "Record Removed" ) );
+		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
 		exit ();
 	}
 	/**
@@ -699,10 +699,10 @@ class folderTranslateClass extends ConfigClass {
 		$this->audit->create_trail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => "true", "message" => "File generated" ) );
+			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => "false", "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
 			exit ();
 		}
 	}

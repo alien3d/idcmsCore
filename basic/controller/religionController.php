@@ -647,7 +647,7 @@ class ReligionClass extends ConfigClass {
 			$this->q->audit = $this->audit;
 			$this->q->update ( $sql );
 			if ($this->q->execute == 'fail') {
-				echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 				exit ();
 			}
 		}
@@ -760,7 +760,7 @@ class ReligionClass extends ConfigClass {
 			$this->q->audit = $this->audit;
 			$this->q->update ( $sql );
 			if ($this->q->execute == 'fail') {
-				echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 				exit ();
 			}
 		}

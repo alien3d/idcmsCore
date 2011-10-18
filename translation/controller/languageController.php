@@ -191,7 +191,7 @@ class LanguageClass extends ConfigClass {
 		}
 		
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "true", "message" => "Record Created" ) );
+		echo json_encode ( array ("success" =>true, "message" => "Record Created" ) );
 		exit ();
 	
 	}
@@ -797,7 +797,7 @@ class LanguageClass extends ConfigClass {
 				return $total . "|" . $row ['languageCode'];
 			} else {
 				
-				echo json_encode ( array ("success" => "true", "total" => $total, "message" => "Duplicate Record", "languageCode" => $row ['languageCode'] ) );
+				echo json_encode ( array ("success" =>true, "total" => $total, "message" => "Duplicate Record", "languageCode" => $row ['languageCode'] ) );
 				exit ();
 			}
 		}

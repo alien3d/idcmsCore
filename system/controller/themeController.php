@@ -824,7 +824,7 @@ class ThemeClass  extends ConfigClass {
 			} else {
 
 				echo json_encode(array(
-					"success" => "true",
+					"success" =>true,
 					"total" => $total,
 					"message" => "Duplicate Record",
 					"themeCode" => $row['themeCode']

@@ -16,7 +16,7 @@ require_once ("../model/moduleTranslateModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class DefaultLabelTranslationClass extends ConfigClass {
+class ModuleTranslateClass extends ConfigClass {
 	/**
 	 * Connection to the database
 	 * @var string
@@ -170,9 +170,9 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-			INSERT INTO 	DEFAULTLABELTRANSLATION
+			INSERT INTO 	MODULETRANSLATE
 						(
-							DEFAULTLABELTRANSLATION,				DEFAULTLABELTRANSLATIONENGLISH,
+							MODULETRANSLATE,				MODULETRANSLATEENGLISH,
 							ISDEFAULT,								ISNEW,
 							ISDRAFT,								ISUPDATE,
 							ISDELETE,								ISACTIVE,
@@ -230,7 +230,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT 		*
-			FROM 		DEFAULTLABELTRANSLATION
+			FROM 		MODULETRANSLATE
 			WHERE 1";
 			if ($this->model->getmoduleTranslateId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "=" . $this->model->getmoduleTranslateId ( 0, 'single' ) . "'";
@@ -326,7 +326,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 												rownum r
 						FROM (
 									SELECT 		*
-									FROM 		DEFAULTLABELTRANSLATION
+									FROM 		MODULETRANSLATE
 									WHERE		1
 									AND 		" . $tempSql . $tempSql2 . "
 								 ) a
@@ -379,38 +379,38 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 					UPDATE 	`moduleTranslate`
-					SET 	`moduleTranslateNote`		=	'" . $this->model->getmoduleTranslateNote () . "',
-							`moduleTranslateEnglish`	=	'" . $this->model->getmoduleTranslateEnglish () . "',
-							`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-							`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-							`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-							`isDraft`		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-							`isUpdate`		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-							`isDelete`		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-							`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
-							`executeTime`			=	" . $this->model->getExecuteTime () . "
-					WHERE 	`moduleTranslateId`			=	'" . $this->model->getmoduleTranslateId ( 0, 'single' ) . "'";
+					SET 	`moduleTranslateNote`			=	'" . $this->model->getmoduleTranslateNote () . "',
+							`moduleTranslateEnglish`		=	'" . $this->model->getmoduleTranslateEnglish () . "',
+							`isDefault`						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							`isActive`						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							`isNew`							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							`isDraft`						=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							`isUpdate`						=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isDelete`						=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							`isApproved`					=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`executeBy`						=	'" . $this->model->getExecuteBy () . "',
+							`executeTime`					=	" . $this->model->getExecuteTime () . "
+					WHERE 	`moduleTranslateId`				=	'" . $this->model->getmoduleTranslateId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 					UPDATE 	[moduleTranslate]
-					SET 	[moduleTranslateNote]		=	'" . $this->model->getmoduleTranslateNote () . "',
-							[moduleTranslateEnglish]	=	'" . $this->model->getmoduleTranslateEnglish () . "',
-							[isDefault]		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-							[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-							[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-							[isDraft]		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-							[isUpdate]		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-							[isDelete]		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-							[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
-							[executeTime]			=	" . $this->model->getExecuteTime () . "
-					WHERE 	[moduleTranslateId]			=	'" . $this->model->getmoduleTranslateId ( 0, 'single' ) . "'";
+					SET 	[moduleTranslateNote]			=	'" . $this->model->getmoduleTranslateNote () . "',
+							[moduleTranslateEnglish]		=	'" . $this->model->getmoduleTranslateEnglish () . "',
+							[isDefault]						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							[isActive]						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+							[isNew]							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							[isDraft]						=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							[isUpdate]						=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							[isDelete]						=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							[isApproved]					=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							[executeBy]						=	'" . $this->model->getExecuteBy () . "',
+							[executeTime]					=	" . $this->model->getExecuteTime () . "
+					WHERE 	[moduleTranslateId]				=	'" . $this->model->getmoduleTranslateId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					UPDATE 	DEFAULTLABELTRANSLATION
-					SET 	DEFAULTLABELTRANSLATIONNOTE		=	'" . $this->model->getmoduleTranslateNote () . "',
-							DEFAULTLABELTRANSLATIONENGLISH	=	'" . $this->model->getmoduleTranslateEnglish () . "',
+					UPDATE 	MODULETRANSLATE
+					SET 	MODULETRANSLATENOTE		=	'" . $this->model->getmoduleTranslateNote () . "',
+							MODULETRANSLATEENGLISH	=	'" . $this->model->getmoduleTranslateEnglish () . "',
 							ISDEFAULT						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -420,7 +420,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							ISAPPROVED						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY						=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME						=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getmoduleTranslateId ( 0, 'single' ) . "'";
+					WHERE 	MODULETRANSLATEID		=	'" . $this->model->getmoduleTranslateId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -471,7 +471,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 					WHERE 	[moduleTranslateId]		=	'" . $this->model->getmoduleTranslateId () . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					UPDATE	DEFAULTLABELTRANSLATION
+					UPDATE	MODULETRANSLATE
 					SET		ISDEFAULT						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -481,15 +481,15 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							ISAPPROVED						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY						=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME						=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getmoduleTranslateId () . "'";
+					WHERE 	MODULETRANSLATEID		=	'" . $this->model->getmoduleTranslateId () . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "true", "message" => "Record Removed" ) );
+		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
 		exit ();
 	}
 	/**
@@ -699,15 +699,15 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$this->audit->create_trail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => "true", "message" => "File generated" ) );
+			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => "false", "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
 			exit ();
 		}
 	}
 }
-$moduleTranslateObject = new DefaultLabelTranslationClass ();
+$moduleTranslateObject = new ModuleTranslateClass ();
 /**
  * crud -create,read,update,delete
  **/

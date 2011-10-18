@@ -801,9 +801,9 @@ class LeafClass extends ConfigClass {
 		$objWriter->save ( $path );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => "true", "message" => "File generated" ) );
+			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
 		} else {
-			echo json_encode ( array ("success" => "false", "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
 		}
 	}
 }

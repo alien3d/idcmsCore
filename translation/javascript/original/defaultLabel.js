@@ -661,9 +661,9 @@ Ext
 												page : 'detail',
 												defaultLabelTranslateId : record
 														.get('defaultLabelTranslateId'),
-												defaultLabelTranslate : Ext
+												defaultLabelNative : Ext
 														.getCmp(
-																'defaultLabelTranslate')
+																'defaultLabelNative')
 														.getValue()
 
 											},
@@ -677,9 +677,7 @@ Ext
 																	systemErrorLabel,
 																	jsonResponse.message);
 												} else {
-													// if required messagebox to
-													// check
-													// status uncomment below
+													
 													Ext.MessageBox
 															.alert(
 																	systemLabel,

@@ -392,10 +392,10 @@ class LogAdvanceClass extends ConfigClass {
 		$this->create_trail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => "true", "message" => "File generated" ) );
+			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => "false", "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
 			exit ();
 		}
 	}

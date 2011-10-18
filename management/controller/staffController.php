@@ -1016,7 +1016,7 @@ class StaffClass extends ConfigClass {
 			}
 			$this->q->update ( $sql );
 			if ($this->q->execute == 'fail') {
-				echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 				exit ();
 			}
 			// check change group or not
@@ -1132,7 +1132,7 @@ class StaffClass extends ConfigClass {
 						}
 						$this->q->update ( $sql );
 						if ($this->q->execute == 'fail') {
-							echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+							echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 							exit ();
 						}
 					} else {
@@ -1580,7 +1580,7 @@ class StaffClass extends ConfigClass {
 		}
 		$this->q->read ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		}
 		$this->excel->setActiveSheetIndex ( 0 );
