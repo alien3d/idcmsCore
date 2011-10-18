@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
-require_once("../../class/classRecordSet.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
@@ -27,6 +27,11 @@ class ModuleClass extends ConfigClass {
 	 * @var string
 	 */
 	private $excel;
+	/**
+	 * Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
 	/**
 	 * Document Trail Audit.
 	 * @var string 
@@ -86,7 +91,6 @@ class ModuleClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 		
-		
 		$this->security = new Security ();
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
@@ -96,10 +100,10 @@ class ModuleClass extends ConfigClass {
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
-		$this->recordSet =  new RecordSet();
-		$this->recordSet->setTableName($this->model->getTableName());
-		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
-		$this->recordSet->execute();
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName ( $this->model->getTableName () );
+		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
+		$this->recordSet->execute ();
 		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
@@ -123,66 +127,120 @@ class ModuleClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `module`
 					(
-						`iconId`,							`moduleSequence`,
-						`moduleCode`,							`moduleEnglish`,
-						`isDefault`,							`isNew`,
-						`isDraft`,							`isUpdate`,
-						`isDelete`,							`isActive`,
-						`isApproved`,						`executeBy`,
+						`iconId`,												`moduleSequence`,
+						`moduleCode`,											`moduleEnglish`,
+						`isDefault`,											`isNew`,
+						`isDraft`,												`isUpdate`,
+						`isDelete`,												`isActive`,
+						`isApproved`,											`isReview`,
+						`isPost`,												`executeBy`,
 						`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId () . "',					'" . $this->model->getmoduleSequence () . "',
-						'" . $this->model->getmoduleCode () . "',					'" . $this->model->getmoduleEnglish () . "',
-						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						'" . $this->model->getIconId () . "',					'" . $this->model->getModuleSequence () . "',
+						'" . $this->model->getModuleCode () . "',				'" . $this->model->getModuleEnglish () . "',
+						'" . $this->model->getIsDefault ( 0, 'single' ) . "',	'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',		'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						'" . $this->model->getIsApproved ( 0, 'single' ) . "',	'" . $this->model->getExecuteBy () . "',
+						'" . $this->model->getIsDelete ( 0, 'single' ) . "',	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',				'" . $this->model->getExecuteBy () . "',
 						" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			INSERT INTO [module]
 					(
-						[iconId],							[moduleSequence],
-						[moduleCode],							[moduleEnglish],
-						[isDefault],						[isNew],
-						[isDraft],							[isUpdate],
-						[isDelete],							[isActive],
-						[isApproved],						[executeBy],
+						[iconId],													[moduleSequence],
+						[moduleCode],												[moduleEnglish],
+						[isDefault],												[isNew],
+						[isDraft],													[isUpdate],
+						[isDelete],													[isActive],
+						[isApproved],												[isReview'],
+						[isPost],													[executeBy],
 						[executeTime]
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId () . "',					'" . $this->model->getmoduleSequence () . "',
-						'" . $this->model->getmoduleCode () . "',				'" . $this->model->getmoduleEnglish () . "',
-						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						'" . $this->model->getIconId () . "',						'" . $this->model->getModuleSequence () . "',
+						'" . $this->model->getModuleCode () . "',					'" . $this->model->getModuleEnglish () . "',
+						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getExecuteBy () . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',					'" . $this->model->getExecuteBy () . "',
 						" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			INSERT INTO MODULE
 					(
-						ICONID,							MODULESEQUENCE,
-						MODULECODE,						MODULEENGLISH,
-						ISDEFAULT,						ISNEW,
-						ISDRAFT,						ISUPDATE,
-						ISDELETE,						ISACTIVE,
-						ISAPPROVED,						EXECUTEBY,
+						ICONID,														MODULESEQUENCE,
+						MODULECODE,													MODULEENGLISH,
+						ISDEFAULT,													ISNEW,
+						ISDRAFT,													ISUPDATE,
+						ISDELETE,													ISACTIVE,
+						ISAPPROVED,													ISREVIEW,
+						ISPOST,														EXECUTEBY,
 						EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId () . "',					'" . $this->model->getmoduleSequence () . "',
-						'" . $this->model->getmoduleCode () . "',				'" . $this->model->getmoduleEnglish () . "',
-						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						'" . $this->model->getIconId () . "',						'" . $this->model->getModuleSequence () . "',
+						'" . $this->model->getModuleCode () . "',					'" . $this->model->getModuleEnglish () . "',
+						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getExecuteBy () . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',					'" . $this->model->getExecuteBy () . "',
+						" . $this->model->getExecuteTime () . "
+					);";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			INSERT INTO MODULE
+					(
+						ICONID,														MODULESEQUENCE,
+						MODULECODE,													MODULEENGLISH,
+						ISDEFAULT,													ISNEW,
+						ISDRAFT,													ISUPDATE,
+						ISDELETE,													ISACTIVE,
+						ISAPPROVED,													ISREVIEW,
+						ISPOST,														EXECUTEBY,
+						EXECUTETIME
+					)
+			VALUES
+					(
+						'" . $this->model->getIconId () . "',						'" . $this->model->getModuleSequence () . "',
+						'" . $this->model->getModuleCode () . "',					'" . $this->model->getModuleEnglish () . "',
+						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',					'" . $this->model->getExecuteBy () . "',
+						" . $this->model->getExecuteTime () . "
+					);";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			INSERT INTO MODULE
+					(
+						ICONID,														MODULESEQUENCE,
+						MODULECODE,													MODULEENGLISH,
+						ISDEFAULT,													ISNEW,
+						ISDRAFT,													ISUPDATE,
+						ISDELETE,													ISACTIVE,
+						ISAPPROVED,													ISREVIEW,
+						ISPOST,														EXECUTEBY,
+						EXECUTETIME
+					)
+			VALUES
+					(
+						'" . $this->model->getIconId () . "',						'" . $this->model->getModuleSequence () . "',
+						'" . $this->model->getModuleCode () . "',					'" . $this->model->getModuleEnglish () . "',
+						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',					'" . $this->model->getExecuteBy () . "',
 						" . $this->model->getExecuteTime () . "
 					);";
 		}
@@ -196,19 +254,29 @@ class ModuleClass extends ConfigClass {
 		// loop the group
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-			SELECT 	*
-			FROM 	`theme`
+			SELECT 	`teamId`
+			FROM 	`team`
 			WHERE 	`isActive`	=	1 ";
 		} else if ($this->q->vendor == self::MSSQL) {
 			$sql = "
-			SELECT 	*
+			SELECT 	[teamId]
 			FROM 	[team]
 			WHERE 	[isActive]	=	1 ";
 		} else if ($this->q->vendor == self::ORACLE) {
 			$sql = "
-			SELECT 	*
+			SELECT 	TEAMID AS \"teamId\"
 			FROM 	TEAM
-			WHERE 	`ISACTIVE	=	1 ";
+			WHERE 	ISACTIVE	=	1 ";
+		} else if ($this->q->vendor == self::DB2) {
+			$sql = "
+			SELECT 	TEAMID AS \"teamId\"
+			FROM 	TEAM
+			WHERE 	ISACTIVE	=	1 ";
+		} else if ($this->q->vendor == self::POSTGRESS) {
+			$sql = "
+			SELECT 	TEAMID AS \"teamId\"	
+			FROM 	TEAM
+			WHERE 	ISACTIVE	=	1 ";
 		}
 		$this->q->read ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -216,22 +284,22 @@ class ModuleClass extends ConfigClass {
 			exit ();
 		}
 		$data = $this->q->activeRecord ();
+		$sqlLooping = '';
 		foreach ( $data as $row ) {
-			/**
-			 * By Default  No Access
-			 **/
-			echo $sqlLooping .= "(
+			
+			$sqlLooping .= "(
 							'" . $lastId . "',
-							 '" . $row ['TEAMID'] . "',
-							 \"0\"
+							 '" . $row ['teamId'] . "',
+							 '0'
 						),";
+		
 		}
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 				INSERT INTO	`moduleAccess`
 						(
 							`moduleId`,
-							`TEAMID`,
+							`teamId`,
 							`moduleAccessValue`
 						) VALUES";
 		} else if ($this->getVendor () == self::MSSQL) {
@@ -239,10 +307,26 @@ class ModuleClass extends ConfigClass {
 				INSERT INTO	[moduleAccess]
 						(
 							[moduleId],
-							\"teamId\",
+							[teamId],
 							[moduleAccessValue]
 					) VALUES";
 		} else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+				INSERT INTO	MODULEACCESS
+						(
+							MODULEID,
+							TEAMID,
+							MODULEACCESSVALUE
+					) VALUES";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+				INSERT INTO	MODULEACCESS
+						(
+							MODULEID,
+							TEAMID,
+							MODULEACCESSVALUE
+					) VALUES";
+		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 				INSERT INTO	MODULEACCESS
 						(
@@ -270,11 +354,11 @@ class ModuleClass extends ConfigClass {
 		 		(
 				 	`moduleId`,
 				 	`languageId`,
-					`moduleTranslate`
+					`moduleNative`
 				) VALUES (
 					'" . $lastId . "',
 					21,
-					'" . $this->model->getmoduleEnglish () . "'
+					'" . $this->model->getModuleEnglish () . "'
 				);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -282,11 +366,11 @@ class ModuleClass extends ConfigClass {
 					(
 					 	[moduleId],
 						[languageId],
-						[moduleTranslate]
+						[moduleNative]
 					) VALUES (
 						'" . $lastId . "',
 						21,
-						'" . $this->model->getmoduleEnglish () . "'
+						'" . $this->model->getModuleEnglish () . "'
 					);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -294,11 +378,11 @@ class ModuleClass extends ConfigClass {
 					(
 					 	MODULEID,
 						LANGUAGEID,
-						MODULETRANSLATE
+						MODULENATIVE
 					) VALUES (
 						'" . $lastId . "',
 						21,
-						'" . $this->model->getmoduleEnglish () . "'
+						'" . $this->model->getModuleEnglish () . "'
 					);";
 		}
 		$this->q->create ( $sql );
@@ -363,7 +447,7 @@ class ModuleClass extends ConfigClass {
 					USING			(`iconId`)
 					WHERE 	" . $this->auditFilter;
 			if ($this->model->getModuleId ( 0, 'single' )) {
-				$sql .= " AND `" . $this->model->getModuleName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getModuleId ( 0, 'single' ) . "'";
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getModuleId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -388,9 +472,9 @@ class ModuleClass extends ConfigClass {
 					ON		[module].[executeBy] = [staff].[staffId]
 					LEFT 	JOIN	`icon`
 					ON		[iconId].[iconId] = [module].[iconId]
-					WHERE 	[module].[isActive] ='1'	";
+					WHERE 	" . $this->auditFilter;
 			if ($this->model->getModuleId ( 0, 'single' )) {
-				$sql .= " AND [" . $this->model->getModuleName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getModuleId ( 0, 'single' ) . "'";
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getModuleId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -415,9 +499,9 @@ class ModuleClass extends ConfigClass {
 					ON		MODULE.EXECUTEBY = STAFF.STAFFID
 					LEFT 	JOIN	ICON
 					USING	(ICONID)
-					WHERE 	ISACTIVE='1'	";
+					WHERE 	" . $this->auditFilter;
 			if ($this->model->getModuleId ( 0, 'single' )) {
-				$sql .= " AND '" . strtoupper ( $this->model->getModuleName () ) . "'.'" . strtoupper ( $this->model->getPrimaryKeyName () ) . "'='" . $this->model->getModuleId ( 0, 'single' ) . "'";
+				$sql .= " AND " . strtoupper ( $this->model->getTableName() ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getModuleId ( 0, 'single' ) . "'";
 			}
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Undefine Database Vendor" ) );
@@ -488,25 +572,20 @@ class ModuleClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		if (! ($this->getGridQuery ())) {
-			if ($this->getLimit ()) {
-				// only mysql have limit
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sql = "
+		
+		if ($this->getLimit ()) {
+			// only mysql have limit
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sql = "
 							WITH [moduleDerived] AS
 							(
-								SELECT *,
-								ROW_NUMBER() OVER (ORDER BY [moduleId]) AS 'RowNumber'
-								FROM [module]
-								WHERE [isActive] =1   " . $tempSql . $tempSql2 . "
-							)
-							SELECT		[module].[moduleId],
+								SELECT 	[module].[moduleId],
 										[module].[iconId],
 										[module].[moduleSequence],
 										[module].[moduleCode],
@@ -517,18 +596,25 @@ class ModuleClass extends ConfigClass {
 										[module].[isUpdate],
 										[module].[isDelete],
 										[module].[isApproved],
+										[module].[isReview],
+										[module].[isPost],
 										[module].[executeBy],
 										[module].[executeTime],
 										[staff].[staffName]
+										ROW_NUMBER() OVER (ORDER BY [moduleId]) AS 'RowNumber'
+								FROM 	[module]
+								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
+							)
+							SELECT		*
 							FROM 		[moduleDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $this->getLimit () - 1) . ";";
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived modulele also
-					 */
-					$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived modulele also
+				 */
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -544,20 +630,22 @@ class ModuleClass extends ConfigClass {
 											MODULE.ISUPDATE,
 											MODULE.ISDELETE,
 											MODULE.ISAPPROVED,
+											MODULE.ISREVIEW,
+											MODULE.ISPOST,
 											MODULE.EXECUTEBY,
 											MODULE.EXECUTETIME,
 											STAFF.STAFFNAME
 									FROM 	MODULE
-									WHERE 	MODULE.ISACTIVE=1  " . $tempSql . $tempSql2 . "
+									WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
-				} else {
-					echo "undefine vendor";
-					exit ();
-				}
+			} else {
+				echo "undefine vendor";
+				exit ();
 			}
 		}
+		
 		/*
              *  Only Execute One Query
              */
@@ -597,11 +685,44 @@ class ModuleClass extends ConfigClass {
 		}
 		$this->q->start ();
 		$this->model->update ();
+		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
+			SELECT	`" . $this->model->getPrimaryKeyName () . "` 
+			FROM 	`" . $this->model->getTableName () . "` 
+			WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::MSSQL) {
+			$sql = "
+			SELECT	[" . $this->model->getPrimaryKeyName () . "]
+			FROM 	[" . $this->model->getTableName () . "]
+			WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		}
+		$result = $this->q->fast ( $sql );
+		$total = $this->q->numberRows ( $result, $sql );
+		if ($total == 0) {
+			echo json_encode ( array ("success" => false, "message" => 'Cannot find the record' ) );
+			exit ();
+		} else {
+			if ($this->getVendor () == self::MYSQL) {
+				$sql = "
 			UPDATE 	`module`
-			SET 	`moduleSequence`	= 	'" . $this->model->getmoduleSequence () . "',
-					`moduleEnglish`		=	'" . $this->model->getmoduleEnglish () . "',
+			SET 	`moduleSequence`	= 	'" . $this->model->getModuleSequence () . "',
+					`moduleEnglish`		=	'" . $this->model->getModuleEnglish () . "',
 					`iconId`			=	'" . $this->model->getIconId () . "',
 					`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 					`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -609,15 +730,17 @@ class ModuleClass extends ConfigClass {
 					`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 					`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 					`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					`executeBy`				=	'" . $this->model->getExecuteBy () . "',
-					`executeTime`				=	" . $this->model->getExecuteTime () . "
+					`isReview`			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					`isPost`			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+					`executeBy`			=	'" . $this->model->getExecuteBy () . "',
+					`executeTime`		=	" . $this->model->getExecuteTime () . "
 			WHERE 	`moduleId`			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "
+			} else if ($this->getVendor () == self::MSSQL) {
+				$sql = "
 			UPDATE 	[module]
-			SET 	[moduleSequence]	= 	'" . $this->model->moduleSequence . "',
-					[moduleEnglish]		=	'" . $this->model->moduleEnglish . "',
-					[iconId]			=	'" . $this->model->iconId . "',
+			SET 	[moduleSequence]	= 	'" . $this->model->getModuleSequence () . "',
+					[moduleEnglish]		=	'" . $this->model->getModuleEnglish () . "',
+					[iconId]			=	'" . $this->model->getIconId () . "',
 					[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 					[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 					[isNew]				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -625,29 +748,68 @@ class ModuleClass extends ConfigClass {
 					[isUpdate]			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 					[isDelete]			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 					[isApproved]		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					[executeBy]				=	'" . $this->model->getExecuteBy () . ",
-					[executeTime]				=	" . $this->model->getExecuteTime () . "
+					[isReview]			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					[isPost]			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+					[executeBy]			=	'" . $this->model->getExecuteBy () . ",
+					[executeTime]		=	" . $this->model->getExecuteTime () . "
 			WHERE 	[moduleId]			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				$sql = "
 			UPDATE 	MODULE
-			SET 	MODULESEQUENCE	= 	'" . $this->model->moduleSequence . "',
-					MODULEENGLISH		=	'" . $this->model->moduleEnglish . "',
-					ICONID			=	'" . $this->model->iconId . "',
-					ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					EXECUTEBY				=	'" . $this->model->getExecuteBy () . "',
+			SET 	MODULESEQUENCE		= 	'" . $this->model->getModuleSequence () . "',
+					MODULEENGLISH		=	'" . $this->model->getModuleEnglish () . "',
+					ICONID				=	'" . $this->model->getIconId () . "',
+					ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					ISREVIEW			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					ISPOST				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+					EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime () . "
-			WHERE 	MODULEID		=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
-		}
-		$this->q->update ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
-			exit ();
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
+			} else if ($this->getVendor () == self::DB2) {
+				$sql = "
+			UPDATE 	MODULE
+			SET 	MODULESEQUENCE		= 	'" . $this->model->getModuleSequence () . "',
+					MODULEENGLISH		=	'" . $this->model->getModuleEnglish () . "',
+					ICONID				=	'" . $this->model->getIconId () . "',
+					ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					ISREVIEW			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					ISPOST				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+					EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime () . "
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
+			} else if ($this->getVendor () == self::POSTGRESS) {
+				$sql = "
+			UPDATE 	MODULE
+			SET 	MODULESEQUENCE		= 	'" . $this->model->getModuleSequence () . "',
+					MODULEENGLISH		=	'" . $this->model->getModuleEnglish () . "',
+					ICONID				=	'" . $this->model->getIconId () . "',
+					ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					ISREVIEW			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					ISPOST				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+					EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime () . "
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
+			}
+			$this->q->update ( $sql );
+			if ($this->q->execute == 'fail') {
+				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
+				exit ();
+			}
 		}
 		$this->q->commit ();
 		echo json_encode ( array ("success" => true, "message" => "update success", "moduleId" => $this->model->getModuleId ( 0, 'single' ) ) );
@@ -665,57 +827,127 @@ class ModuleClass extends ConfigClass {
 		}
 		$this->q->start ();
 		$this->model->delete ();
+		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-			UPDATE 	`module`
-			SET 	`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					`isDraft`		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					`isUpdate`		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					`isDelete`		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					`executeBy`			=	'" . $this->model->getBy ( 0, 'single' ) . "',
-					`Time			=	" . $this->model->getExecuteTime () . "
-			WHERE 	`moduleId`		=	'" . $this->model->moduleId . "'";
+		SELECT	`" . $this->model->getPrimaryKeyName () . "`
+		FROM 	`" . $this->model->getTableName () . "`
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-			UPDATE 	[module]
-			SET 	[isDefault]		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					[isDraft]		=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					[isUpdate]		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					[isDelete]		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					[executeBy]			=	'" . $this->model->getBy ( 0, 'single' ) . "',
-					[executeTime]			=	" . $this->model->getExecuteTime () . "
-			WHERE 	[moduleId]			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
+		SELECT	[" . $this->model->getPrimaryKeyName () . "]
+		FROM 	[" . $this->model->getTableName () . "]
+		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		}
+		$result = $this->q->fast ( $sql );
+		$total = $this->q->numberRows ( $result, $sql );
+		if ($total == 0) {
+			echo json_encode ( array ("success" => false, "message" => 'Cannot find the record' ) );
+			exit ();
+		} else {
+			if ($this->getVendor () == self::MYSQL) {
+				$sql = "
+			UPDATE 	`module`
+			SET 	`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+					`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					`isDraft`			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					`isReview`			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					`isPost`			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+					`executeBy`			=	'" . $this->model->getBy ( 0, 'single' ) . "',
+					`executeTime		=	" . $this->model->getExecuteTime () . "
+			WHERE 	`moduleId`			=	'" . $this->model->moduleId . "'";
+			} else if ($this->getVendor () == self::MSSQL) {
+				$sql = "
+			UPDATE 	[module]
+			SET 	[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+					[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					[isNew]				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					[isDraft]			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					[isUpdate]			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					[isDelete]			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					[isApproved]		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					[isReview]			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					[isPost]			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+					[executeBy]			=	'" . $this->model->getBy ( 0, 'single' ) . "',
+					[executeTime]		=	" . $this->model->getExecuteTime () . "
+			WHERE 	[moduleId]			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
+			} else if ($this->getVendor () == self::ORACLE) {
+				$sql = "
 			UPDATE 	MODULE
-			SET 	ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					EXECUTEBY				=	'" . $this->model->getBy ( 0, 'single' ) . "',
+			SET 	ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+					ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					EXECUTEBY			=	'" . $this->model->getBy ( 0, 'single' ) . "',
+					ISREVIEW			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					ISPOST				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime () . "
 			WHERE 	MODULEID			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
-		}
-		$this->q->update ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
-			exit ();
+			} else if ($this->getVendor () == self::DB2) {
+				$sql = "
+			UPDATE 	MODULE
+			SET 	ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+					ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					EXECUTEBY			=	'" . $this->model->getBy ( 0, 'single' ) . "',
+					ISREVIEW			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					ISPOST				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime () . "
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
+			} else if ($this->getVendor () == self::POSTGRESS) {
+				$sql = "
+			UPDATE 	MODULE
+			SET 	ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+					ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+					ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+					ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+					EXECUTEBY			=	'" . $this->model->getBy ( 0, 'single' ) . "',
+					ISREVIEW			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+					ISPOST				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime () . "
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId ( 0, 'single' ) . "'";
+			}
+			$this->q->update ( $sql );
+			if ($this->q->execute == 'fail') {
+				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
+				exit ();
+			}
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => "true", "message" => "Delete Succes" ) );
+		echo json_encode ( array ("success" => true, "message" => "Delete Succes" ) );
 		exit ();
 	}
 	public function nextSequence() {
-		$this->security->nextSequence ();
+		$this->recordSet->nextSequence ();
 	}
 	/* (non-PHPdoc)
 	 * @see ConfigClass::excel()
@@ -770,9 +1002,9 @@ class ModuleClass extends ConfigClass {
 		$this->audit->createTrail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => "true", "message" => "File generated" ) );
+			echo json_encode ( array ("success" => true, "message" => "File generated" ) );
 		} else {
-			echo json_encode ( array ("success" => "false", "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
 		}
 	}
 }

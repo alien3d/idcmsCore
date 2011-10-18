@@ -56,6 +56,11 @@ class LeafModel extends ValidationClass {
 	 * @var string
 	 */
 	private $leafEnglish;
+	/**
+	 * Type 1 filter  table only Type 2  Filter with access table
+	 * @var int
+	 */
+	private $type;
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
 	 */
@@ -65,9 +70,12 @@ class LeafModel extends ValidationClass {
 		 */
 		$this->setTableName ( 'leaf' );
 		$this->setPrimaryKeyName ( 'leafId' );
-		/*
-		 *  All the $_POST enviroment.
+		/**
+		 * All the $_POST enviroment.
 		 */
+		if (isset ( $_POST ['type'] )) {
+			$this->setType ( $this->strict ( $_POST ['type'], 'numeric' ) );
+		}
 		if (isset ( $_POST ['leafId'] )) {
 			$this->setLeafId ( $this->strict ( $_POST ['leafId'], 'numeric' ), 0, 'single' );
 		}
@@ -89,21 +97,13 @@ class LeafModel extends ValidationClass {
 		if (isset ( $_POST ['leafEnglish'] )) {
 			$this->setLeafNote ( $this->strict ( $_POST ['leafEnglish'], 'memo' ) );
 		}
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
+		/**
+		 * All the $_GET enviroment.
+		 */
 		if (isset ( $_GET ['leafId'] )) {
 			$this->setTotal ( count ( $_GET ['leafId'] ) );
 		}
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		// auto assign as array if true
+		
 		if (isset ( $_GET ['isDefault'] )) {
 			if (is_array ( $_GET ['isDefault'] )) {
 				$this->isDefault = array ();
@@ -149,57 +149,93 @@ class LeafModel extends ValidationClass {
 				$this->isPost = array ();
 			}
 		}
-		$primaryKeyAll='';
+		$primaryKeyAll = '';
 		for($i = 0; $i < $this->getTotal (); $i ++) {
-			$this->setLeafId ( $this->strict ( $_GET ['leafId'] [$i], 'numeric' ), $i, 'array' );
-			if ($_GET ['isDefault'] [$i] == 'true') {
-				$this->setIsDefault ( 1, $i, 'array' );
-			} else if ($_GET ['default'] == 'FALSE') {
+			if (isset ( $_GET ['leafId'] )) {
+				$this->setLeafId ( $this->strict ( $_GET ['leafId'] [$i], 'numeric' ), $i, 'array' );
+			}
+			if (isset ( $_GET ['isDefault'] )) {
+				if ($_GET ['isDefault'] [$i] == 'true') {
+					$this->setIsDefault ( 1, $i, 'array' );
+				}
+			} else {
 				$this->setIsDefault ( 0, $i, 'array' );
 			}
-			if ($_GET ['isNew'] [$i] == 'true') {
-				$this->setIsNew ( 1, $i, 'array' );
+			if (isset ( $_GET ['isNew'] )) {
+				if ($_GET ['isNew'] [$i] == 'true') {
+					$this->setIsNew ( 1, $i, 'array' );
+				}
 			} else {
 				$this->setIsNew ( 0, $i, 'array' );
 			}
-			if ($_GET ['isDraft'] [$i] == 'true') {
-				$this->setIsDraft ( 1, $i, 'array' );
+			if (isset ( $_GET ['isDraft'] )) {
+				if ($_GET ['isDraft'] [$i] == 'true') {
+					$this->setIsDraft ( 1, $i, 'array' );
+				}
 			} else {
 				$this->setIsDraft ( 0, $i, 'array' );
 			}
-			if ($_GET ['isUpdate'] [$i] == 'true') {
-				$this->setIsUpdate ( 1, $i, 'array' );
+			if (isset ( $_GET ['isUpdate'] )) {
+				if ($_GET ['isUpdate'] [$i] == 'true') {
+					$this->setIsUpdate ( 1, $i, 'array' );
+				}
 			} else {
 				$this->setIsUpdate ( 0, $i, 'array' );
 			}
-			if ($_GET ['isDelete'] [$i] == 'true') {
-				$this->setIsDelete ( 1, $i, 'array' );
-			} else if ($_GET ['isDelete'] [$i] == 'FALSE') {
+			if (isset ( $_GET ['isDelete'] )) {
+				if ($_GET ['isDelete'] [$i] == 'true') {
+					$this->setIsDelete ( 1, $i, 'array' );
+				}
+			} else {
 				$this->setIsDelete ( 0, $i, 'array' );
 			}
-			if ($_GET ['isActive'] [$i] == 'true') {
-				$this->setIsActive ( 1, $i, 'array' );
+			if (isset ( $_GET ['isActive'] )) {
+				if ($_GET ['isActive'] [$i] == 'true') {
+					$this->setIsActive ( 1, $i, 'array' );
+				}
 			} else {
 				$this->setIsActive ( 0, $i, 'array' );
 			}
-			if ($_GET ['isApproved'] [$i] == 'true') {
-				$this->setIsApproved ( 1, $i, 'array' );
+			if (isset ( $_GET ['isApproved'] )) {
+				if ($_GET ['isApproved'] [$i] == 'true') {
+					$this->setIsApproved ( 1, $i, 'array' );
+				}
 			} else {
 				$this->setIsApproved ( 0, $i, 'array' );
 			}
-			if ($_GET ['isReview'] [$i] == 'true') {
-				$this->setIsReview ( 1, $i, 'array' );
+			if (isset ( $_GET ['isReview'] )) {
+				if ($_GET ['isReview'] [$i] == 'true') {
+					$this->setIsReview ( 1, $i, 'array' );
+				}
 			} else {
 				$this->setIsReview ( 0, $i, 'array' );
 			}
-			if ($_GET ['isPost'] [$i] == 'true') {
-				$this->setIsPost ( 1, $i, 'array' );
+			if (isset ( $_GET ['isPost'] )) {
+				if ($_GET ['isPost'] [$i] == 'true') {
+					$this->setIsPost ( 1, $i, 'array' );
+				}
 			} else {
 				$this->setIsPost ( 0, $i, 'array' );
 			}
 			$primaryKeyAll .= $this->getLeafId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()
@@ -212,8 +248,8 @@ class LeafModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
-		$this->setIsReview(0, 0, 'single');
-		$this->setIsPost(0, 0, 'single');
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -226,8 +262,8 @@ class LeafModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
-		$this->setIsReview(0, 0, 'single');
-		$this->setIsPost(0, 0, 'single');
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -240,8 +276,8 @@ class LeafModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 1, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
-		$this->setIsReview(0, 0, 'single');
-		$this->setIsPost(0, 0, 'single');
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -254,8 +290,8 @@ class LeafModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
-		$this->setIsReview(0, 0, 'single');
-		$this->setIsPost(0, 0, 'single');
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -268,8 +304,8 @@ class LeafModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 1, 0, 'single' );
-		$this->setIsReview(0, 0, 'single');
-		$this->setIsPost(0, 0, 'single');
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::review()
@@ -455,5 +491,19 @@ class LeafModel extends ValidationClass {
 	public function getLeafNote() {
 		return $this->leafEnglish;
 	}
+	/**
+	 * @return the $type
+	 */
+	public function getType() {
+		return $this->type;
+	}
+	
+	/**
+	 * @param number $type
+	 */
+	public function setType($type) {
+		$this->type = $type;
+	}
+
 }
 ?>

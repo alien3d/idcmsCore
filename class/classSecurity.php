@@ -612,67 +612,7 @@ class Security extends ConfigClass {
 			exit ();
 		}
 	}
-	/**
-	 * Generate Sequence Order
-	 * @param int moduleId
-	 * @param int folderId
-	 */
-	public function nextSequence($moduleId = null, $folderId = null) {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
-		/**
-		 * initilize dummy value  to 0
-		 */
-		$nextSequence = 0;
-		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
-			$sql = "SET NAMES \"utf8\"";
-			$this->q->fast ( $sql );
-		}
-		if (isset ( $_GET ['table'] )) {
-			$table = $_GET ['table'];
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$sql = "
-			SELECT 	(MAX(`" . $table . "Sequence`)+1) AS `nextSequence`
-			FROM 	`" . $table . "`
-			WHERE	`isActive` = 1";
-		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "
-			SELECT 	(MAX([" . $table . "Sequence])+1) AS [nextSequence]
-			FROM 	[" . $table . "]
-			WHERE 	[isActive]=1";
-		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "
-			SELECT 	(MAX('" . $table . "Sequence\")+1) AS \"nextSequence\"
-			FROM 	'" . $table . "'
-			WHERE	ISACTIVE=1";
-		}
-		if ($table == 'folder') {
-			if (isset ( $moduleId )) {
-				$sql .= " AND `moduleId`='" . $moduleId . "'";
-			}
-		}
-		if ($table == 'leaf') {
-			if (isset ( $moduleId )) {
-				$sql .= " AND `moduleId`='" . $moduleId . "'";
-			}
-			if (isset ( $folderId )) {
-				$sql .= " AND `folderId`='" . $folderId . "'";
-			}
-		}
-		$result = $this->q->fast ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ('success' => false, 'message' => $this->q->responce ) );
-			
-			exit ();
-		}
-		$row = $this->q->fetchAssoc ( $result );
-		$nextSequence = $row ['nextSequence'];
-		if ($nextSequence == 0) {
-			$nextSequence = 1;
-		}
-		echo json_encode ( array ("success" => true, "nextSequence" => $nextSequence ) );
-	}
+	
 	/**
 	 * Google Api Change Language
 	 * @param string $from

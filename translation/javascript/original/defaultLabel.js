@@ -695,7 +695,7 @@ Ext
 												Ext.MessageBox
 														.alert(
 																systemErrorLabel,
-																escape(statusCode)
+																escape(response.status)
 																		+ ":"
 																		+ escape(response.statusText));
 											}

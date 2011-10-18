@@ -18,7 +18,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 */
 	private $leafTeamAccessId;
 	/**
-	 * Leaf Access  Identification
+	 * Team  Identification ( ** For Filtering Only(
 	 * @var int
 	 */
 	private $teamId;

@@ -703,8 +703,41 @@ class TeamClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$this->model->update ();
+		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
+		SELECT	`" . $this->model->getPrimaryKeyName () . "`
+		FROM 	`" . $this->model->getTableName () . "`
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::MSSQL) {
+			$sql = "
+		SELECT	[" . $this->model->getPrimaryKeyName () . "]
+		FROM 	[" . $this->model->getTableName () . "]
+		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		}
+		$result = $this->q->fast ( $sql );
+		$total = $this->q->numberRows ( $result, $sql );
+		if ($total == 0) {
+			echo json_encode ( array ("success" => false, "message" => 'Cannot find the record' ) );
+			exit ();
+		} else {
+			if ($this->getVendor () == self::MYSQL) {
+				$sql = "
 			UPDATE 	`team`
 			SET 			`teamSequence`	=   '" . $this->model->getTeamSequence () . "',
 							`teamCode`			=	'" . $this->model->getTeamCode () . "',
@@ -719,8 +752,8 @@ class TeamClass extends ConfigClass {
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`		=	" . $this->model->getExecuteTime () . "
 			WHERE 		`teamId`				=	'" . $this->model->getTeamId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "
+			} else if ($this->getVendor () == self::MSSQL) {
+				$sql = "
 			UPDATE 	[team]
 			SET 			[teamSequence] 	=   '" . $this->model->getTeamSequence () . "',
 							[teamCode]			=	'" . $this->model->getTeamCode () . "',
@@ -735,8 +768,8 @@ class TeamClass extends ConfigClass {
 							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]		=	" . $this->model->getExecuteTime () . "
 			WHERE 		[teamId]				=	'" . $this->model->getTeamId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				$sql = "
 			UPDATE 	TEAM
 			SET 			TEAMSEQUENCE	=   '" . $this->model->getTeamSequence () . "',
 							TEAMCODE			=	'" . $this->model->getTeamCode () . "',
@@ -750,11 +783,12 @@ class TeamClass extends ConfigClass {
 							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME		=	" . $this->model->getExecuteTime () . "
 			WHERE 		TEAMID					=	'" . $this->model->getTeamCode ( 0, 'single' ) . "'";
-		}
-		$this->q->update ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
-			exit ();
+			}
+			$this->q->update ( $sql );
+			if ($this->q->execute == 'fail') {
+				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
+				exit ();
+			}
 		}
 		$this->q->commit ();
 		echo json_encode ( array ("success" => TRUE, "message" => "Record Update" ) );
@@ -772,8 +806,41 @@ class TeamClass extends ConfigClass {
 		}
 		$this->q->start ();
 		$this->model->delete ();
+		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
+		SELECT	`" . $this->model->getPrimaryKeyName () . "`
+		FROM 	`" . $this->model->getTableName () . "`
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::MSSQL) {
+			$sql = "
+		SELECT	[" . $this->model->getPrimaryKeyName () . "]
+		FROM 	[" . $this->model->getTableName () . "]
+		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		}
+		$result = $this->q->fast ( $sql );
+		$total = $this->q->numberRows ( $result, $sql );
+		if ($total == 0) {
+			echo json_encode ( array ("success" => false, "message" => 'Cannot find the record' ) );
+			exit ();
+		} else {
+			if ($this->getVendor () == self::MYSQL) {
+				$sql = "
 			UPDATE 	`team`
 			SET 			`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -785,8 +852,8 @@ class TeamClass extends ConfigClass {
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`		=	" . $this->model->getExecuteTime () . "
 			WHERE 		`teamId`				=	'" . $this->model->getTeamId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "
+			} else if ($this->getVendor () == self::MSSQL) {
+				$sql = "
 			UPDATE 	[team]
 			SET 			[isDefault]				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							[isNew]					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -798,8 +865,8 @@ class TeamClass extends ConfigClass {
 							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]		=	" . $this->model->getExecuteTime () . "
 			WHERE 		[teamId]				=	'" . $this->model->getTeamId . "'";
-		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				$sql = "
 			UPDATE 	TEAM
 			SET 			TEAMDESC			=	'" . $this->model->getTeamDesc ( 0, 'single' ) . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
@@ -812,16 +879,17 @@ class TeamClass extends ConfigClass {
 							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME		=	" . $this->model->getExecuteTime () . "
 			WHERE 		TEAMID					=	'" . $this->model->getTeamId () . "'";
-		}
-		// advance logging future
-		$this->q->tableName = $this->model->getTableName ();
-		$this->q->primaryKeyName = $this->model->getPrimaryKeyName ();
-		$this->q->primaryKeyValue = $this->model->getTeamId ();
-		$this->q->audit = $this->audit;
-		$this->q->update ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
-			exit ();
+			}
+			// advance logging future
+			$this->q->tableName = $this->model->getTableName ();
+			$this->q->primaryKeyName = $this->model->getPrimaryKeyName ();
+			$this->q->primaryKeyValue = $this->model->getTeamId ();
+			$this->q->audit = $this->audit;
+			$this->q->update ( $sql );
+			if ($this->q->execute == 'fail') {
+				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
+				exit ();
+			}
 		}
 		$this->q->commit ();
 		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );

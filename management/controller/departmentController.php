@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
-require_once("../../class/classRecordSet.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../model/departmentModel.php");
@@ -27,7 +27,7 @@ class DepartmentClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
-	 *  Record Pagination
+	 * Record Pagination
 	 * @var string
 	 */
 	private $recordSet;
@@ -94,10 +94,10 @@ class DepartmentClass extends ConfigClass {
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
 		
-		$this->recordSet =  new RecordSet();
-		$this->recordSet->setTableName($this->model->getTableName());
-		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
-		$this->recordSet->execute();
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName ( $this->model->getTableName () );
+		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
+		$this->recordSet->execute ();
 		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
@@ -368,17 +368,17 @@ class DepartmentClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-	
-			if ($this->getLimit ()) {
-				// only mysql have limit
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sql = "
+		
+		if ($this->getLimit ()) {
+			// only mysql have limit
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sql = "
 					WITH [departmentDerived] AS
 					(
 						SELECT *,
@@ -405,11 +405,11 @@ class DepartmentClass extends ConfigClass {
 					WHERE 		[RowNumber]
 					BETWEEN	" . $this->getStart () . "
 					AND 			" . ($this->getStart () + $this->getLimit () - 1) . ";";
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -437,11 +437,11 @@ class DepartmentClass extends ConfigClass {
 								 ) a
 						where rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
-				} else {
-					echo "undefine vendor";
-					exit ();
-				}
+			} else {
+				echo "undefine vendor";
+				exit ();
 			}
+		}
 		
 		/*
 		 *  Only Execute One Query
@@ -466,7 +466,7 @@ class DepartmentClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( array ('success' =>true, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
+			echo json_encode ( array ('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
 			exit ();
 		}
 	}
@@ -482,8 +482,41 @@ class DepartmentClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$this->model->update ();
+		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
+		SELECT	`" . $this->model->getPrimaryKeyName () . "`
+		FROM 	`" . $this->model->getTableName () . "`
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::MSSQL) {
+			$sql = "
+		SELECT	[" . $this->model->getPrimaryKeyName () . "]
+		FROM 	[" . $this->model->getTableName () . "]
+		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		}
+		$result = $this->q->fast ( $sql );
+		$total = $this->q->numberRows ( $result, $sql );
+		if ($total == 0) {
+			echo json_encode ( array ("success" => false, "message" => 'Cannot find the record' ) );
+			exit ();
+		} else {
+			if ($this->getVendor () == self::MYSQL) {
+				$sql = "
 			UPDATE	`department`
 			SET			`departmentSequence`		=	'" . $this->model->getDepartmentSequence () . "',
 							`departmentCode`			=	'" . $this->model->getDepartmentCode () . "',
@@ -500,8 +533,8 @@ class DepartmentClass extends ConfigClass {
 							`executeBy`						=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`					=	" . $this->model->getExecuteTime () . "
 			WHERE 		`departmentId`					=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "
+			} else if ($this->getVendor () == self::MSSQL) {
+				$sql = "
 			UPDATE	[department]
 			SET 			[departmentSequence]		=	'" . $this->model->getDepartmentSequence () . "',
 							[departmentCode]				=	'" . $this->model->getDepartmentCode () . "',
@@ -518,8 +551,8 @@ class DepartmentClass extends ConfigClass {
 							[executeBy]						=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]					=	" . $this->model->getExecuteTime () . "
 			WHERE 		[departmentId]					=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				$sql = "
 			UPDATE 	DEPARTMENT
 			SET 			DEPARTMENTSEQUENCE	=	'" . $this->model->getDepartmentSequence () . "',
 							DEPARTMENTCODE		=	'" . $this->model->getDepartmentCode () . "',
@@ -536,11 +569,12 @@ class DepartmentClass extends ConfigClass {
 							EXECUTEBY					=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME				=	" . $this->model->getExecuteTime () . "
 			WHERE 		DEPARTMENTID				=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
-		}
-		$this->q->update ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
-			exit ();
+			}
+			$this->q->update ( $sql );
+			if ($this->q->execute == 'fail') {
+				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
+				exit ();
+			}
 		}
 		$this->q->commit ();
 		echo json_encode ( array ("success" => TRUE, "message" => "Record Update" ) );
@@ -558,8 +592,41 @@ class DepartmentClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$this->model->delete ();
+		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
+		SELECT	`" . $this->model->getPrimaryKeyName () . "`
+		FROM 	`" . $this->model->getTableName () . "`
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::MSSQL) {
+			$sql = "
+		SELECT	[" . $this->model->getPrimaryKeyName () . "]
+		FROM 	[" . $this->model->getTableName () . "]
+		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		}
+		$result = $this->q->fast ( $sql );
+		$total = $this->q->numberRows ( $result, $sql );
+		if ($total == 0) {
+			echo json_encode ( array ("success" => false, "message" => 'Cannot find the record' ) );
+			exit ();
+		} else {
+			if ($this->getVendor () == self::MYSQL) {
+				$sql = "
 			UPDATE 	`department`
 			SET 			`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							`isActive`				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -573,8 +640,8 @@ class DepartmentClass extends ConfigClass {
 							`executeBy`			=	'" . $this->model->getBy ( 0, 'single' ) . "',
 							`executeTime		=	" . $this->model->getExecuteTime () . "
 			WHERE 		`departmentId`		=	'" . $this->model->getDepartrmentId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "
+			} else if ($this->getVendor () == self::MSSQL) {
+				$sql = "
 			UPDATE 	[department]
 			SET 			[isDefault]				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							[isActive]				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -589,8 +656,8 @@ class DepartmentClass extends ConfigClass {
 							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]		=	" . $this->model->getExecuteTime () . "
 			WHERE 		[departmentId]		=	'" . $this->model->getDepartmentId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				$sql = "
 			UPDATE 	DEPARTMENT
 			SET 			ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -604,11 +671,12 @@ class DepartmentClass extends ConfigClass {
 							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME		=	" . $this->model->getExecuteTime () . "
 			WHERE 		DEPARTMENTID		=	'" . $this->model->getdepartmentId ( 0, 'single' ) . "'";
-		}
-		$this->q->update ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
-			exit ();
+			}
+			$this->q->update ( $sql );
+			if ($this->q->execute == 'fail') {
+				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
+				exit ();
+			}
 		}
 		$this->q->commit ();
 		echo json_encode ( array ("success" => TRUE, "message" => "Record Remove" ) );
@@ -735,7 +803,7 @@ class DepartmentClass extends ConfigClass {
 					break;
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsPost( $i, 'array' )) {
+						if ($this->model->getIsPost ( $i, 'array' )) {
 							
 							$sqlLooping .= "
                                 WHEN '" . $this->model->getDepartmentId ( $i, 'array' ) . "'
@@ -756,10 +824,10 @@ class DepartmentClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
-		}else if ($this->getVendor () == self::DB2) {
+		} else if ($this->getVendor () == self::DB2) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
-		}else if ($this->getVendor () == self::POSTGRESS) {
+		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
 		}
@@ -800,13 +868,13 @@ class DepartmentClass extends ConfigClass {
 			FROM 	DEPARTMENT
 			WHERE 	DEPARTMENTCODE 	= 	'" . $this->model->getDepartmentCode () . "'
 			AND		ISACTIVE		=	1";
-		}else if ($this->getVendor () == self::DB2) {
+		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
 			SELECT	*
 			FROM 	DEPARTMENT
 			WHERE 	DEPARTMENTCODE 	= 	'" . $this->model->getDepartmentCode () . "'
 			AND		ISACTIVE		=	1";
-		}else if ($this->getVendor () == self::POSTGRESS) {
+		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			SELECT	*
 			FROM 	DEPARTMENT

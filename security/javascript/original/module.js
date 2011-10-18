@@ -598,7 +598,9 @@ Ext
 							}
 						}
 					});
-			var moduleTranslateGridTranslate = new Ext.grid.GridPanel({
+			var moduleTranslateGrid = new Ext.grid.GridPanel({
+				name :'moduleTranslateGrid',
+				id : 'moduleTranslateGrid',
 				border : false,
 				store : moduleTranslateStore,
 				height : 250,
@@ -921,7 +923,7 @@ Ext
 									xtype : 'panel',
 									title : 'module Translation',
 									disable : true,
-									items : [ moduleTranslateGridTranslate ]
+									items : [ moduleTranslateGrid ]
 								} ],
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
@@ -945,23 +947,23 @@ Ext
 												.getForm()
 												.submit(
 														{
+															waitTitle : systemLabel,
 															waitMsg : waitMessageLabel,
 															params : {
 																method : method,
-																leafId : leafId,
-																page : 'master'
+																leafId : leafId
 															},
 															success : function(
 																	form,
 																	action) {
-																var title = successLabel;
+																
 																Ext.MessageBox
 																		.alert(
-																				title,
+																				successLabel,
 																				action.result.message);
 																Ext
 																		.getCmp(
-																				'translation')
+																				'moduleTranslateGrid')
 																		.enable();
 																moduleStore
 																		.reload({

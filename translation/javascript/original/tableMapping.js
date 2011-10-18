@@ -713,14 +713,14 @@ Ext
 											},
 											failure : function(response,
 													options) {
-												statusCode = response.status;
-												statusMessage = response.statusText;
+												
+												
 												Ext.MessageBox
 														.alert(
 																systemLabel,
-																escape(statusCode)
+																escape(response.status)
 																		+ ":"
-																		+ statusMessage);
+																		+ escape(response.statusText));
 											}
 										});
 
@@ -804,14 +804,14 @@ Ext
 													},
 													failure : function(
 															response, options) {
-														statusCode = response.status;
-														statusMessage = response.statusText;
+														
+														
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
-																		escape(statusCode)
+																		escape(response.status)
 																				+ ":"
-																				+ statusMessage);
+																				+ escape(response.statusText));
 													}
 
 												});

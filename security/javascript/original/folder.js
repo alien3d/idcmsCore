@@ -6,24 +6,25 @@ Ext
 			var pageCreate;
 			var pageReload;
 			var pagePrint;
-			if (leafAccessCreateValue == 1) {
-				var pageCreate = false;
-			} else {
-				var pageCreate = true;
-			}
-			if (leafAccessReadValue == 1) {
-				var pageReload = false;
-			} else {
-				var pageReload = true;
-			}
-			if (leafAccessPrintValue == 1) {
-				var pagePrint = false;
-			} else {
-				var pagePrint = true;
-			}
 			var perPage = 10;
 			var encode = false;
 			var local = false;
+			if (leafAccessCreateValue == 1) {
+				pageCreate = false;
+			} else {
+				pageCreate = true;
+			}
+			if (leafAccessReadValue == 1) {
+				pageReload = false;
+			} else {
+				pageReload = true;
+			}
+			if (leafAccessPrintValue == 1) {
+				pagePrint = false;
+			} else {
+				pagePrint = true;
+			}
+			
 			var folderProxy = new Ext.data.HttpProxy({
 				url : "../controller/folderController.php",
 				method : "POST",
@@ -168,7 +169,7 @@ Ext
 					name : 'languageDesc',
 					type : 'string'
 				}, {
-					name : 'folderTranslate',
+					name : 'folderNative',
 					type : 'string'
 				} ]
 			});
@@ -267,7 +268,7 @@ Ext
 				} ]
 			});
 
-			var filters = new Ext.ux.grid.GridFilters({
+			var folderFilters = new Ext.ux.grid.GridFilters({
 				// encode and local configuration options defined previously for
 				// easier reuse
 				encode : encode, // json encode the filter query
@@ -303,7 +304,7 @@ Ext
 				}, {
 					type : 'list',
 					dataIndex : 'executeBy',
-					column : 'staffId',
+					column : 'executeBy',
 					table : 'folder',
 					labelField : 'staffName',
 					store : staffByStore,
@@ -350,6 +351,16 @@ Ext
 				header : isApprovedLabel,
 				dataIndex : 'isApproved',
 				hidden : isApprovedHidden
+			});
+			var isReviewGrid = new Ext.ux.grid.CheckColumn({
+				header : isReviewLabel,
+				dataIndex : 'isReview',
+				hidden : isReviewHidden
+			});
+			var isPostGrid = new Ext.ux.grid.CheckColumn({
+				header : isPostLabel,
+				dataIndex : 'isPost',
+				hidden : isPostHidden
 			});
 			var folderColumnModel = [
 					new Ext.grid.RowNumberer(),
@@ -497,7 +508,7 @@ Ext
 									+ value;
 						}
 					}, isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid,
-					isDeleteGrid, isActiveGrid, isApprovedGrid, {
+					isDeleteGrid, isActiveGrid, isApprovedGrid,isReviewGrid,isPostGrid, {
 						dataIndex : 'executeBy',
 						header : executeByLabel,
 						sortable : true,
@@ -505,7 +516,7 @@ Ext
 						width : 100
 					}, {
 						dataIndex : 'executeTime',
-						header : createTimeLabel,
+						header : executeTimeLabel,
 						type : 'date',
 						sortable : true,
 						hidden : true,
@@ -576,7 +587,8 @@ Ext
 										method : "read",
 										mode : "update",
 										folderId : record.data.folderId,
-										leafId : leafId
+										leafId : leafId,
+										isAdmin : isAdmin
 									},
 									success : function(form, action) {
 										Ext.getCmp("folderDesc_temp").setValue(
@@ -749,17 +761,15 @@ Ext
 
 								this.save = true;
 								// update record manually
-								var curr_store = this.grid.getStore().getAt(
-										rowIndex);
+								//var curr_store = this.grid.getStore().getAt(rowIndex);
 
 								Ext.Ajax.request({
-									url : '../controller/folderController.php',
+									url : '../controller/folderTranslateController.php',
 									method : 'POST',
 									waitMsg : waitMeassageLabel,
 									params : {
 										leafId : leafId,
 										method : 'save',
-										page : 'detail',
 										folderTranslateId : record
 												.get('folderTranslateId'),
 										folderTranslate : Ext.getCmp(
@@ -773,8 +783,7 @@ Ext
 											Ext.MessageBox.alert(systemLabel,
 													jsonResponse.message);
 										} else {
-											// if required messagebox to check
-											// status uncomment below
+											
 											Ext.MessageBox.alert(systemLabel,
 													jsonResponse.message);
 											folderTranslateStore.reload();
@@ -782,11 +791,10 @@ Ext
 
 									},
 									failure : function(response, options) {
-										statusCode = response.status;
-										statusMessage = response.statusText;
+										
 										Ext.MessageBox.alert(systemLabel,
-												escape(statusCode) + ":"
-														+ statusMessage);
+												escape(response.status) + ":"
+														+ escape(response.statusText));
 									}
 								});
 
@@ -795,6 +803,8 @@ Ext
 					});
 
 			var folderTranslateGrid = new Ext.grid.GridPanel({
+				name : 'folderTranslateGrid',
+				id :'folderTranslateGrid',
 				border : false,
 				store : folderTranslateStore,
 				height : 400,
@@ -870,14 +880,14 @@ Ext
 													},
 													failure : function(
 															response, options) {
-														statusCode = response.status;
-														statusMessage = response.statusText;
+														
+														
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
-																		escape(statusCode)
+																		escape(response.status)
 																				+ ":"
-																				+ statusMessage);
+																				+ escape(response.statusText));
 													}
 
 												});
@@ -898,7 +908,8 @@ Ext
 				name : 'moduleId',
 				hiddenName : 'moduleId',
 				valueField : 'moduleId',
-				id : 'module_fake',
+				hiddenId 	: 'module_fake',
+				id :'moduleId',
 				displayField : 'moduleEnglish',
 				typeAhead : false,
 				triggerAction : 'all',
@@ -933,23 +944,22 @@ Ext
 							success : function(response, options) {
 								jsonResponse = Ext
 										.decode(response.responseText);
-								if (jsonResponse == false) {
+								if (jsonResponse.success == false) {
 									Ext.MessageBox.alert(systemLabel,
 											jsonResponse.message);
 								} else {
 
 									Ext.getCmp('folderSequence').setValue(
-											x.nextSequence);
+											jsonResponse.nextSequence);
 
 								}
 
 							},
 							failure : function(response, options) {
-								statusCode = response.status;
-								statusMessage = response.statusText;
+								
 								Ext.MessageBox.alert(systemLabel,
-										escape(statusCode) + ":"
-												+ statusMessage);
+										escape(response.status) + ":"
+												+ escape(response.statusText));
 							}
 
 						});
@@ -1195,7 +1205,7 @@ Ext
 																		});
 																Ext
 																		.getCmp(
-																				'translation')
+																				'folderTranslateGrid')
 																		.enable();
 																Ext
 																		.getCmp(
@@ -1210,11 +1220,7 @@ Ext
 																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																	alert(loadFailureMessageLabel);
 																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																	// here will
-																	// be error
-																	// if
-																	// duplicate
-																	// code
+																
 																	alert(clientInvalidMessageLabel);
 																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																	Ext.Msg
@@ -1286,7 +1292,7 @@ Ext
 														Ext.MessageBox
 																.alert(
 																		systemErrorLabel,
-																		escape(statusCode)
+																		escape(response.status)
 																				+ ":"
 																				+ escape(response.statusText));
 													}

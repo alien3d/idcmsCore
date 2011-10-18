@@ -11,8 +11,13 @@ require_once ("../../class/classValidation.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class ReligionModel extends ValidationClass {
-	// table field
+	/**
+	 * @var int 
+	 */
 	private $religionId;
+	/**
+	 * @var string
+	 */
 	private $religionDesc;
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -23,12 +28,8 @@ class ReligionModel extends ValidationClass {
 		 */
 		$this->setTableName ( 'religion' );
 		$this->setPrimaryKeyName ( 'religionId' );
-		/*
-		 * SET ALL OUTSIDE VARIABLE FROM POST OR GET OR PUT OR DELETE
-		 * Restfull Format  POST 			-->Is to View Data
-		 *                  GET  			-->Is to Receive Data
-		 *                  PUT  			-->Is To Update Data
-		 *                  DELETE/Destroy  -->Is To Delete/Destroy Data
+		/**
+		 * All the $_POST enviroment.
 		 */
 		if (isset ( $_POST ['religionId'] )) {
 			$this->setReligionId ( $this->strict ( $_POST ['religionId'], 'numeric' ), 0, 'single' );
@@ -40,23 +41,11 @@ class ReligionModel extends ValidationClass {
 			$this->setReligionDesc ( $this->strict ( $_GET ['religionDesc'], 'memo' ) );
 		}
 		/**
-		 * Don't change below code
-		 **/
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s.u" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
+		 * All the $_GET enviroment.
+		 */
 		if (isset ( $_GET ['religionId'] )) {
 			$this->setTotal ( count ( $_GET ['religionId'] ) );
 		}
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		// auto assign as array if TRUE
 		if (isset ( $_GET ['isDefault'] )) {
 			if (is_array ( $_GET ['isDefault'] )) {
 				$this->isDefault = array ();
@@ -153,26 +142,42 @@ class ReligionModel extends ValidationClass {
 				if ($_GET ['isApproved'] [$i] == 'true') {
 					$this->setIsApproved ( 1, $i, 'array' );
 				}
-			} else  {
+			} else {
 				$this->setIsApproved ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isReview'] )) {
 				if ($_GET ['isReview'] [$i] == 'true') {
 					$this->setIsReview ( 1, $i, 'array' );
 				}
-			} else  {
+			} else {
 				$this->setIsReview ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isPost'] )) {
 				if ($_GET ['isPost'] [$i] == 'true') {
 					$this->setIsPost ( 1, $i, 'array' );
 				}
-			} else  {
+			} else {
 				$this->setIsPost ( 0, $i, 'array' );
 			}
 			$primaryKeyAll .= $this->getReligionId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s.u" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()

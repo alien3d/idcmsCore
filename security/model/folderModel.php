@@ -48,6 +48,17 @@ class FolderModel extends ValidationClass {
 	 * @var string
 	 */
 	private $folderEnglish;
+	/**
+	 * Type 1 filter  table only Type 2  Filter with access table
+	 * @var int
+	 */
+	private $type;
+	/**
+	 * Team  Identification ( ** For Filtering Only(
+	 * @var int
+	 */
+	private $teamId;
+	
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
 	 */
@@ -57,9 +68,12 @@ class FolderModel extends ValidationClass {
 		 */
 		$this->setTableName ( 'folder' );
 		$this->setPrimaryKeyName ( 'folderId' );
-		/*
-		 *  All the $_POST enviroment.
+		/**
+		 * All the $_POST enviroment.
 		 */
+		if (isset ( $_POST ['type'] )) {
+			$this->setType ( $this->strict ( $_POST ['type'], 'numeric' ) );
+		}
 		if (isset ( $_POST ['folderId'] )) {
 			$this->setFolderId ( $this->strict ( $_POST ['folderId'], 'numeric' ), 0, 'single' );
 		}
@@ -79,23 +93,21 @@ class FolderModel extends ValidationClass {
 			$this->setFolderCode ( $this->strict ( $_POST ['folderCode'], 'memo' ) );
 		}
 		if (isset ( $_POST ['folderEnglish'] )) {
-			$this->setFolderNote ( $this->strict ( $_POST ['folderEnglish'], 'memo' ) );
+			$this->setFolderEnglish ( $this->strict ( $_POST ['folderEnglish'], 'memo' ) );
 		}
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
-		if(isset($_GET['folderId'])){
+		/**
+		 * All the $_GET enviroment.
+		 */
+		if (isset ( $_GET ['folderId'] )) {
 			$this->setTotal ( count ( $_GET ['folderId'] ) );
 		}
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		// auto assign as array if true
+		if (isset ( $_GET ['moduleId'] )) {
+			$this->setModuleId ( $this->strict ( $_GET ['moduleId'], 'numeric' ) );
+			
+		}
+		if (isset ( $_GET ['type'] )) {
+			$this->setType ( $this->strict ( $_GET ['type'], 'numeric' ) );
+		}
 		if (isset ( $_GET ['isDefault'] )) {
 			if (is_array ( $_GET ['isDefault'] )) {
 				$this->isDefault = array ();
@@ -147,71 +159,88 @@ class FolderModel extends ValidationClass {
 				$this->setFolderId ( $this->strict ( $_GET ['folderId'] [$i], 'numeric' ), $i, 'array' );
 			}
 			if (isset ( $_GET ['isDefault'] )) {
-				if ($_GET ['isDefault'] [$i] == 'TRUE') {
+				if ($_GET ['isDefault'] [$i] == 'true') {
 					$this->setIsDefault ( 1, $i, 'array' );
-				} else if ($_GET ['default'] == 'FALSE') {
-					$this->setIsDefault ( 0, $i, 'array' );
 				}
+			} else {
+				$this->setIsDefault ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isNew'] )) {
-				if ($_GET ['isNew'] [$i] == 'TRUE') {
+				if ($_GET ['isNew'] [$i] == 'true') {
 					$this->setIsNew ( 1, $i, 'array' );
-				} else {
-					$this->setIsNew ( 0, $i, 'array' );
 				}
+			} else {
+				$this->setIsNew ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isDraft'] )) {
-				if ($_GET ['isDraft'] [$i] == 'TRUE') {
+				if ($_GET ['isDraft'] [$i] == 'true') {
 					$this->setIsDraft ( 1, $i, 'array' );
-				} else {
-					$this->setIsDraft ( 0, $i, 'array' );
 				}
+			} else {
+				$this->setIsDraft ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isUpdate'] )) {
-				if ($_GET ['isUpdate'] [$i] == 'TRUE') {
+				if ($_GET ['isUpdate'] [$i] == 'true') {
 					$this->setIsUpdate ( 1, $i, 'array' );
-				} else {
-					$this->setIsUpdate ( 0, $i, 'array' );
 				}
+			} else {
+				$this->setIsUpdate ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isDelete'] )) {
-				if ($_GET ['isDelete'] [$i] == 'TRUE') {
+				if ($_GET ['isDelete'] [$i] == 'true') {
 					$this->setIsDelete ( 1, $i, 'array' );
-				} else if ($_GET ['isDelete'] [$i] == 'FALSE') {
-					$this->setIsDelete ( 0, $i, 'array' );
 				}
+			} else {
+				$this->setIsDelete ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isActive'] )) {
-				if ($_GET ['isActive'] [$i] == 'TRUE') {
+				if ($_GET ['isActive'] [$i] == 'true') {
 					$this->setIsActive ( 1, $i, 'array' );
-				} else {
-					$this->setIsActive ( 0, $i, 'array' );
 				}
+			} else {
+				$this->setIsActive ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isApproved'] )) {
-				if ($_GET ['isApproved'] [$i] == 'TRUE') {
+				if ($_GET ['isApproved'] [$i] == 'true') {
 					$this->setIsApproved ( 1, $i, 'array' );
-				} else if ($_GET ['isApproved'] [$i] == 'FALSE') {
-					$this->setIsApproved ( 0, $i, 'array' );
 				}
+			} else {
+				$this->setIsApproved ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isReview'] )) {
-				if ($_GET ['isReview'] [$i] == 'TRUE') {
+				if ($_GET ['isReview'] [$i] == 'true') {
 					$this->setIsReview ( 1, $i, 'array' );
-				} else if ($_GET ['isReview'] [$i] == 'FALSE') {
-					$this->setIsReview ( 0, $i, 'array' );
 				}
+			} else {
+				$this->setIsReview ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isPost'] )) {
-				if ($_GET ['isPost'] [$i] == 'TRUE') {
+				if ($_GET ['isPost'] [$i] == 'true') {
 					$this->setIsPost ( 1, $i, 'array' );
-				} else if ($_GET ['isPost'] [$i] == 'FALSE') {
-					$this->setIsPost ( 0, $i, 'array' );
 				}
+			} else {
+				$this->setIsPost ( 0, $i, 'array' );
 			}
 			$primaryKeyAll .= $this->getFolderId ( $i, 'array' ) . ",";
+		
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()
@@ -386,10 +415,8 @@ class FolderModel extends ValidationClass {
 	/**
 	 * Set icon identification  Value
 	 * @param int $value
-	 * @param array[int]int $key List Of Primary Key.
-	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setIconId() {
+	public function setIconId($value) {
 		$this->iconId = $value;
 	}
 	/**
@@ -455,5 +482,32 @@ class FolderModel extends ValidationClass {
 	public function getfolderEnglish() {
 		return $this->folderEnglish;
 	}
+	/**
+	 * @return the $type
+	 */
+	public function getType() {
+		return $this->type;
+	}
+	
+	/**
+	 * @param number $type
+	 */
+	public function setType($type) {
+		$this->type = $type;
+	}
+	/**
+	 * @return the $teamId
+	 */
+	public function getTeamId() {
+		return $this->teamId;
+	}
+	
+	/**
+	 * @param number $teamId
+	 */
+	public function setTeamId($teamId) {
+		$this->teamId = $teamId;
+	}
+
 }
 ?>

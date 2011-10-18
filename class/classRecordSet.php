@@ -222,9 +222,83 @@ class RecordSet extends ConfigClass {
 		if ($value == 'value') {
 			return intval ( $lastRecord );
 		} else {
-			$json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'lastRecord' => $lastRecord ) );
+			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'lastRecord' => $lastRecord ) );
 			exit ();
 		}
+	}
+	/**
+	 * Generate Sequence Order
+	 * @param string table name
+	 * @param int moduleId
+	 * @param int folderId
+	 */
+	public function nextSequence($moduleId = null, $folderId = null) {
+		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		/**
+		 * initilize dummy value  to 0
+		 */
+		$nextSequence = 0;
+		if ($this->getVendor () == self::MYSQL) {
+			//UTF8
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast ( $sql );
+		}
+		
+		if ($this->getVendor () == self::MYSQL) {
+			$sql = "
+			SELECT 	(MAX(`" . $this->getTableName() . "Sequence`)+1) AS `nextSequence`
+			FROM 	`" .  $this->getTableName() . "`
+			WHERE	`isActive` = 1";
+		} else if ($this->getVendor () == self::MSSQL) {
+			$sql = "
+			SELECT 	(MAX([" .  $this->getTableName() . "Sequence])+1) AS [nextSequence]
+			FROM 	[" .  $this->getTableName() . "]
+			WHERE 	[isActive]=1";
+		} else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+			SELECT 	(MAX('" .  $this->getTableName() . "Sequence\")+1) AS \"nextSequence\"
+			FROM 	'" .  $this->getTableName() . "'
+			WHERE	ISACTIVE=1";
+		}
+		if ($this->getTableName()  == 'folder') {
+		
+			if (isset ( $moduleId )) {
+				$sql .= " AND `moduleId`='" . $moduleId . "'";
+			} else {
+				echo json_encode(array("success"=>false,"message"=>"Module Identification Not Found"));
+				exit();
+			}
+		} else {
+			echo "uiks";
+		}
+		if ($this->getTableName() == 'leaf') {
+			if (isset ( $moduleId )) {
+				$sql .= " AND `moduleId`='" . $moduleId . "'";
+			}else {
+				echo json_encode(array("success"=>false,"message"=>"Module Identification Not Found"));
+				exit();
+			}
+			if (isset ( $folderId )) {
+				$sql .= " AND `folderId`='" . $folderId . "'";
+			}else {
+				echo json_encode(array("success"=>false,"message"=>"Folder Identification Not Found"));
+				exit();
+			}
+		}
+	
+		$result = $this->q->fast ( $sql );
+		if ($this->q->execute == 'fail') {
+			echo json_encode ( array ('success' => false, 'message' => $this->q->responce ) );
+				
+			exit ();
+		}
+		$row = $this->q->fetchAssoc ( $result );
+		$nextSequence = $row ['nextSequence'];
+		if ($nextSequence == 0) {
+			$nextSequence = 1;
+		}
+		//return $nextSequence;
+		echo json_encode ( array ("success" => true, "nextSequence" => $nextSequence ) );
 	}
 	/**
 	 * @return the $PrimaryKeyName
