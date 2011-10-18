@@ -118,7 +118,7 @@ Ext
 			});
 
 			var folderTranslateProxy = new Ext.data.HttpProxy({
-				url : "../controller/folderController.php",
+				url : "../controller/folderTranslateController.php",
 				method : 'POST',
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
@@ -1207,6 +1207,14 @@ Ext
 																		.getCmp(
 																				'folderTranslateGrid')
 																		.enable();
+																folderTranslateStore.load({
+																	params:{
+																		leafId : leafId,
+																		isAdmin: isAdmin,
+																		folderId :action.result.folderId 
+																	}
+																	
+																});
 																Ext
 																		.getCmp(
 																				'folderId')

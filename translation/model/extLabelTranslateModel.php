@@ -25,15 +25,16 @@ class ExtLabelTranslateModel extends ValidationClass {
 	 */
 	private $extLabelId;
 	/**
-	 * ExtJS / Sencha Label Identification
+	 * Language Identification
 	 * @var int
 	 */
-	private $extLabelTranslationNativeLabel;
+	private $languageId;
 	/**
 	 * ExtJS / Sencha Label Identification
 	 * @var int
 	 */
-	private $languageId;
+	private $extLabelNative;
+	
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -58,19 +59,9 @@ class ExtLabelTranslateModel extends ValidationClass {
 		if (isset ( $_POST ['extLabelNote'] )) {
 			$this->setextLabelNote ( $this->strict ( $_POST ['extLabelNote'], 'memo' ) );
 		}
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
+		
 		$this->setTotal ( count ( $_GET ['extLabelId'] ) );
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		// auto assign as array if true
+		
 		if (isset ( $_GET ['extLabelTranslateId'] )) {
 			if (is_array ( $_GET ['extLabelTranslateId'] )) {
 				$this->extLabelTranslateId = array ();
@@ -192,6 +183,17 @@ class ExtLabelTranslateModel extends ValidationClass {
 			$primaryKeyAll .= $this->getDefaultLabelId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()
@@ -204,6 +206,8 @@ class ExtLabelTranslateModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -216,6 +220,8 @@ class ExtLabelTranslateModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -228,6 +234,8 @@ class ExtLabelTranslateModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 1, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -240,6 +248,8 @@ class ExtLabelTranslateModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -251,6 +261,9 @@ class ExtLabelTranslateModel extends ValidationClass {
 		$this->setIsUpdate ( 0, 0, 'single' );
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 1, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::review()

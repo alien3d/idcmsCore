@@ -72,23 +72,13 @@ class DocumentCategoryModel extends ValidationClass {
 		if (isset ( $_POST ['documentCategoryNote'] )) {
 			$this->setDocumentCategoryNote ( $this->strict ( $_POST ['documentCategoryNote'], 'memo' ) );
 		}
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		} else {
-			echo "udentified vendor ?";
-		}
+		/**
+		 * All the $_GET enviroment.
+		 */
 		if (isset ( $_GET ['documentCategoryId'] )) {
 			$this->setTotal ( count ( $_GET ['documentCategoryId'] ) );
 		}
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		// auto assign as array if TRUE
+
 		if (isset ( $_GET ['isDefault'] )) {
 			if (is_array ( $_GET ['isDefault'] )) {
 				$this->isDefault = array ();
@@ -205,6 +195,24 @@ class DocumentCategoryModel extends ValidationClass {
 			$primaryKeyAll .= $this->getDocumentCategoryId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		} else {
+			echo "udentified vendor ?";
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()

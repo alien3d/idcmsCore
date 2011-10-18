@@ -56,19 +56,7 @@ class ReligionDetailModel extends ValidationClass {
 		if (isset ( $_POST ['religionDetailDesc'] )) {
 			$this->setReligionDetailDesc ( $this->strict ( $_POST ['religionDetailDesc'], 'memo' ) );
 		}
-		/**
-		 * Don't change below code
-		 **/
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s.u" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
+		
 		if (isset ( $_GET ['religionDetailId'] )) {
 			$this->setTotal ( count ( $_GET ['religionDetailId'] ) );
 		}
@@ -191,6 +179,22 @@ class ReligionDetailModel extends ValidationClass {
 			$primaryKeyAll .= $this->getReligionDetailId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s.u" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()

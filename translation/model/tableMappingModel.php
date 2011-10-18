@@ -1,5 +1,4 @@
 <?php
-
 require_once ("../../class/classValidation.php");
 /**
  * this is Table Mapping model file.This is to ensure strict setting enable for all variable enter to daFolderase
@@ -19,17 +18,22 @@ class TableMappingModel extends ValidationClass {
 	 */
 	private $tableMappingId;
 	/**
-	 * ExtJS / Sencha Label Identification
-	 * @var int
+	 * Table Mapping Name
+	 * @var string
 	 */
-	private $tableMapping;
+	private $tableMappingName;
 	/**
-	 * ExtJS / Sencha Label Identification
-	 * @var int
+	 * Table Mapping Column Name
+	 * @var string
+	 */
+	private $tableMappingColumnName;
+	/**
+	 * Table Mapping English 
+	 * @var string
 	 */
 	private $tableMappingEnglish;
 	/**
-	 * ExtJS / Sencha Label Identification
+	 * Language Identification
 	 * @var int
 	 */
 	private $languageId;
@@ -312,28 +316,42 @@ class TableMappingModel extends ValidationClass {
 		}
 	}
 	/**
-	 * Set Default Label Value
+	 * Set Table Mapping Name Value
 	 * @param  string $value
 	 */
-	public function setTableMappingDesc($value) {
-		$this->tableMappingDesc = $value;
+	public function setTableMappingName($value) {
+		$this->tableMappingName = $value;
 	}
 	/**
-	 * Return Default Label Value
-	 * @return string Default Label
+	 * Return Table Mapping Name Value
+	 * @return string Table Mapping
 	 */
-	public function getTableMappingDesc() {
-		return $this->tableMappingDesc;
+	public function getTableMappingName() {
+		return $this->tableMappingName;
 	}
 	/**
-	 * Set Default Label Value
+	 * Set Table Mapping Column Name Value
+	 * @param  string $value
+	 */
+	public function setTableMappingColumnName($value) {
+		$this->tableMappingColumnName = $value;
+	}
+	/**
+	 * Return Table Mapping Column Name Value
+	 * @return string Table Mapping
+	 */
+	public function getTableMappingColumnName() {
+		return $this->tableMappingColumnName;
+	}
+	/**
+	 * Set Table Mapping  English Value
 	 * @param  string $value
 	 */
 	public function setTableMappingEnglish($value) {
 		$this->tableMappingEnglish = $value;
 	}
 	/**
-	 * Return Default Label Value
+	 * Return Table Mapping English
 	 * @return string
 	 */
 	public function getTableMappingEnglish() {

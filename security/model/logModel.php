@@ -57,12 +57,12 @@ class LogModel extends ValidationClass {
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute() {
-		/*
+		/**
 		 *  Basic Information Table
 		 */
 		$this->setTableName ( 'log' );
 		$this->setPrimaryKeyName ( 'logId' );
-		/*
+		/**
 		 *  All the $_POST enviroment.
 		 */
 		if (isset ( $_SESSION ['staffId'] )) {
@@ -86,8 +86,21 @@ class LogModel extends ValidationClass {
 		if (isset ( $_POST ['logError'] )) {
 			$this->setLogError ( $this->strict ( $_POST ['logError'], 'numeric' ) );
 		}
-		/*.
-		 * All the $_GET enviroment .
+		/**
+		 * All the $_GET enviroment 
+		 */
+		if (isset ( $_GET ['leafId'] )) {
+			
+			$this->setLeafId ( $this->strict ( $_GET ['leafId'], 'numeric' ) );
+		}
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
 		 */
 		if ($this->getVendor () == self::MYSQL) {
 			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );

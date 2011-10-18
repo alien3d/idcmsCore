@@ -55,12 +55,6 @@ class FolderAccessModel extends ValidationClass {
 		$this->folderAccessId = array ();
 		$this->folderAccessValue = array ();
 		/**
-		 * All the $_GET enviroment.
-		 */
-		if (isset ( $_GET ['folderAccessId'] )) {
-			$this->setTotal ( count ( $_GET ['folderAccessId'] ) );
-		}
-		/**
 		 * All the $_POST enviroment.
 		 */
 		if (isset ( $_POST ['type'] )) {
@@ -76,7 +70,9 @@ class FolderAccessModel extends ValidationClass {
 		/**
 		 * All the $_GET enviroment.
 		 */
-		
+		if (isset ( $_GET ['folderAccessId'] )) {
+		$this->setTotal ( count ( $_GET ['folderAccessId'] ) );
+		}
 		if (isset ( $_GET ['type'] )) {
 			$this->setType ( $this->strict ( $_GET ['type'], 'numeric' ) );
 		}

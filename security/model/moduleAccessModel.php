@@ -66,7 +66,6 @@ class ModuleAccessModel extends ValidationClass {
 		if (isset ( $_GET ['teamId'] )) {
 			$this->setTeamId ( $this->strict ( $_GET ['teamId'], 'numeric' ) );
 		}
-		// auto assign as array if true
 		if (isset ( $_GET ['moduleAccessId'] )) {
 			if (is_array ( $_GET ['moduleAccessId'] )) {
 				$this->moduleAccessId = array ();
@@ -135,6 +134,8 @@ class ModuleAccessModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -147,6 +148,8 @@ class ModuleAccessModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 1, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::review()

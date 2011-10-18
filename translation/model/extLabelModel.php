@@ -1,5 +1,4 @@
 <?php
-
 require_once ("../../class/classValidation.php");
 /**
  * this is Extjs Label  Translation model file.
@@ -19,10 +18,10 @@ class ExtLabelModel extends ValidationClass {
 	 */
 	private $extLabelId;
 	/**
-	 * Ext JS /Sencha  English  Note
+	 * Ext JS /Sencha  English 
 	 * @var string
 	 */
-	private $extLabelNote;
+	private $extLabelEnglish;
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -47,21 +46,10 @@ class ExtLabelModel extends ValidationClass {
 		if (isset ( $_POST ['extLabelNote'] )) {
 			$this->setextLabelNote ( $this->strict ( $_POST ['extLabelNote'], 'memo' ) );
 		}
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
+		
 		if (isset ( $_GET ['extLabelId'] )) {
 			$this->setTotal ( count ( $_GET ['extLabelId'] ) );
 		}
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		// auto assign as array if true
 		if (isset ( $_GET ['extLabelId'] )) {
 			if (is_array ( $_GET ['extLabelId'] )) {
 				$this->extLabelId = array ();
@@ -183,6 +171,16 @@ class ExtLabelModel extends ValidationClass {
 			$primaryKeyAll .= $this->getDefaultLabelId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()
@@ -195,6 +193,8 @@ class ExtLabelModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -207,6 +207,8 @@ class ExtLabelModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -219,6 +221,8 @@ class ExtLabelModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 1, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -231,6 +235,8 @@ class ExtLabelModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -242,6 +248,9 @@ class ExtLabelModel extends ValidationClass {
 		$this->setIsUpdate ( 0, 0, 'single' );
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 1, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::review()
@@ -304,18 +313,18 @@ class ExtLabelModel extends ValidationClass {
 		}
 	}
 	/**
-	 * Set Extjs Label NoteValue
+	 * Set Extjs Label English Value
 	 * @param  string $value
 	 */
-	public function setExtLabelNote($value) {
-		$this->extLabelNote = $value;
+	public function setExtLabelEnglish($value) {
+		$this->extLabelEnglish = $value;
 	}
 	/**
-	 * Return Label Note Value
+	 * Return Label English Value
 	 * @return string
 	 */
-	public function getExtLabelNote() {
-		return $this->extLabelNote;
+	public function getExtLabelEnglish() {
+		return $this->extLabelEnglish;
 	}
 }
 ?>

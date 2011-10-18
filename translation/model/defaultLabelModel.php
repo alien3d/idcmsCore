@@ -1,5 +1,4 @@
 <?php
-
 require_once ("../../class/classValidation.php");
 /**
  * this is Default Label Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
@@ -211,6 +210,8 @@ class DefaultLabelModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -223,6 +224,8 @@ class DefaultLabelModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -235,6 +238,8 @@ class DefaultLabelModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 1, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -247,6 +252,8 @@ class DefaultLabelModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -258,6 +265,9 @@ class DefaultLabelModel extends ValidationClass {
 		$this->setIsUpdate ( 0, 0, 'single' );
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved(1, 0,'single');
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::review()

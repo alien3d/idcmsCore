@@ -53,21 +53,14 @@ class DepartmentModel extends ValidationClass {
 		if (isset ( $_POST ['departmentNote'] )) {
 			$this->setDepartmentNote ( $this->strict ( $_POST ['departmentNote'], 'memo' ) );
 		}
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
+		
+		/**
+		* All the $_GET enviroment.
+		*/
 		if (isset ( $_GET ['departmentId'] )) {
 			$this->setTotal ( count ( $_GET ['departmentId'] ) );
 		}
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		// auto assign as array if TRUE
+		
 		if (isset ( $_GET ['departmentId'] )) {
 			
 			if (is_array ( $_GET ['departmentId'] )) {
@@ -191,6 +184,22 @@ class DepartmentModel extends ValidationClass {
 			$primaryKeyAll .= $this->getDepartmentId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()

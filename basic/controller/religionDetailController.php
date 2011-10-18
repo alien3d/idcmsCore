@@ -1,7 +1,7 @@
 <?php
 session_start ();
 require_once ("../../class/classAbstract.php");
-require_once("../../class/classRecordSet.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../model/religionDetailModel.php");
@@ -27,7 +27,7 @@ class ReligionDetailClass extends ConfigClass {
 	 */
 	private $excel;
 	/**
-	 *  Record Pagination
+	 * Record Pagination
 	 * @var string
 	 */
 	private $recordSet;
@@ -493,8 +493,41 @@ class ReligionDetailClass extends ConfigClass {
 		}
 		$this->q->start ();
 		$this->model->update ();
+		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
+		SELECT	`" . $this->model->getPrimaryKeyName () . "`
+		FROM 	`" . $this->model->getTableName () . "`
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getReligionDetailId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::MSSQL) {
+			$sql = "
+			SELECT	[" . $this->model->getPrimaryKeyName () . "]
+			FROM 	[" . $this->model->getTableName () . "]
+			WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getReligionDetailId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionDetailId  ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionDetailId  ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionDetailId  ( 0, 'single' ) . "' ";
+		}
+		$result = $this->q->fast ( $sql );
+		$total = $this->q->numberRows ( $result, $sql );
+		if ($total == 0) {
+			echo json_encode ( array ("success" => false, "message" => 'Cannot find the record' ) );
+			exit ();
+		} else {
+			if ($this->getVendor () == self::MYSQL) {
+				$sql = "
 			UPDATE 	`religionDetail`
 			SET 	`religionDetailDesc`	=	'" . $this->model->getReligionDetailDesc () . "',
 					`isDefault`				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
@@ -509,8 +542,8 @@ class ReligionDetailClass extends ConfigClass {
 					`executeBy`				=	'" . $this->model->getExecuteBy () . "',
 					`executeTime`			=	" . $this->model->getExecuteTime () . "
 			WHERE 	`religionDetailId`		=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "
+			} else if ($this->getVendor () == self::MSSQL) {
+				$sql = "
 			UPDATE 	[religionDetail]
 			SET 	[religionDetailDesc]	=	'" . $this->model->getReligionDetailDesc () . "',
 					[isDefault]				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
@@ -525,8 +558,8 @@ class ReligionDetailClass extends ConfigClass {
 					[executeBy]				=	'" . $this->model->getExecuteBy () . "',
 					[executeTime]			=	" . $this->model->getExecuteTime () . "
 			WHERE 	[religionDetailId]		=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				$sql = "
 			UPDATE 	RELIGIONDETAIL
 			SET 	RELIGIONTITLE			=	'" . $this->model->getReligionDetailTitle () . "',
 					RELIGIONDESC			=	'" . $this->model->getReligionDetailDesc () . "',
@@ -542,22 +575,23 @@ class ReligionDetailClass extends ConfigClass {
 					EXECUTEBY				=	'" . $this->model->getExecuteBy () . "',
 					EXECUTETIME				=	" . $this->model->getExecuteTime () . "
 			WHERE 	RELIGIONDETAILID		=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::DB2) {
-		
-		} else if ($this->getVendor () == self::POSTGRESS) {
-		
-		}
-		/*
+			} else if ($this->getVendor () == self::DB2) {
+			
+			} else if ($this->getVendor () == self::POSTGRESS) {
+			
+			}
+			/*
 		 *  require three variable below to track  table audit
 		 */
-		$this->q->tableName = $this->model->getTableName ();
-		$this->q->primaryKeyName = $this->model->getPrimaryKeyName ();
-		$this->q->primaryKeyValue = $this->model->getReligionDetailId ( 0, 'single' );
-		$this->q->audit = $this->audit;
-		$this->q->update ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
-			exit ();
+			$this->q->tableName = $this->model->getTableName ();
+			$this->q->primaryKeyName = $this->model->getPrimaryKeyName ();
+			$this->q->primaryKeyValue = $this->model->getReligionDetailId ( 0, 'single' );
+			$this->q->audit = $this->audit;
+			$this->q->update ( $sql );
+			if ($this->q->execute == 'fail') {
+				echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+				exit ();
+			}
 		}
 		$this->q->commit ();
 		echo json_encode ( array ("success" => "TRUE", "message" => "Updated" ) );
@@ -575,8 +609,41 @@ class ReligionDetailClass extends ConfigClass {
 		}
 		$this->q->start ();
 		$this->model->delete ();
+		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
+		SELECT	`" . $this->model->getPrimaryKeyName () . "`
+		FROM 	`" . $this->model->getTableName () . "`
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getReligionDetailId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::MSSQL) {
+			$sql = "
+			SELECT	[" . $this->model->getPrimaryKeyName () . "]
+			FROM 	[" . $this->model->getTableName () . "]
+			WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getReligionDetailId  ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionDetailId ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::DB2) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionDetailId  ( 0, 'single' ) . "' ";
+		} else if ($this->getVendor () == self::POSTGRESS) {
+			$sql = "
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionDetailId  ( 0, 'single' ) . "' ";
+		}
+		$result = $this->q->fast ( $sql );
+		$total = $this->q->numberRows ( $result, $sql );
+		if ($total == 0) {
+			echo json_encode ( array ("success" => false, "message" => 'Cannot find the record' ) );
+			exit ();
+		} else {
+			if ($this->getVendor () == self::MYSQL) {
+				$sql = "
 			UPDATE 	`religionDetail`
 			SET 	`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 					`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -590,8 +657,8 @@ class ReligionDetailClass extends ConfigClass {
 					`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 					`executeTime`		=	" . $this->model->getExecuteTime () . "
 			WHERE 	`religionDetailId`	=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "
+			} else if ($this->getVendor () == self::MSSQL) {
+				$sql = "
 			UPDATE 	[religionDetail]
 			SET 	[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 					[isNew]				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -605,8 +672,8 @@ class ReligionDetailClass extends ConfigClass {
 					[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 					[executeTime]		=	" . $this->model->getExecuteTime () . "
 			WHERE 	[religionDetailId]	=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
-		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				$sql = "
 			UPDATE 	RELIGIONDETAIL
 			SET 	RELIGIONDETAILDESC	=	'" . $this->model->getReligionDetailDesc ( 0, 'single' ) . "',
 					ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
@@ -620,16 +687,17 @@ class ReligionDetailClass extends ConfigClass {
 					EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime () . "
 			WHERE 	RELIGIONDETAILID	=	'" . $this->model->getReligionDetailId ( 0, 'single' ) . "'";
-		}
-		// advance logging future
-		$this->q->tableName = $this->model->getTableName ();
-		$this->q->primaryKeyName = $this->model->getPrimaryKeyName ();
-		$this->q->primaryKeyValue = $this->model->getReligionDetailId ();
-		$this->q->audit = $this->audit;
-		$this->q->update ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
-			exit ();
+			}
+			// advance logging future
+			$this->q->tableName = $this->model->getTableName ();
+			$this->q->primaryKeyName = $this->model->getPrimaryKeyName ();
+			$this->q->primaryKeyValue = $this->model->getReligionDetailId ();
+			$this->q->audit = $this->audit;
+			$this->q->update ( $sql );
+			if ($this->q->execute == 'fail') {
+				echo json_encode ( array ("success" => "false", "message" => $this->q->responce ) );
+				exit ();
+			}
 		}
 		$this->q->commit ();
 		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );

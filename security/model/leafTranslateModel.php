@@ -1,42 +1,38 @@
 <?php
+
 require_once ("../../class/classValidation.php");
 /**
- * this is module model file.
+ * this is Table Mapping Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package Security
- * @subpackage module
+ * @package Translation
+ * @subpackage Table Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ModuleModel extends ValidationClass {
+class LeafTranslateModel extends ValidationClass {
 	/**
-	 * Module Identification
+	 * Leaf Identification
 	 * @var int
 	 */
-	private $moduleId;
+	private $leafTranslateId;
 	/**
-	 * Icon Identification
-	 * @var int
-	 */
-	private $iconId;
-	/**
-	 * Module Sequence
-	 * @var int
-	 */
-	private $moduleSequence;
-	/**
-	 * Module Code
+	 * Leaf Text Identification
 	 * @var string
 	 */
-	private $moduleCode;
+	private $LeafText;
 	/**
-	 * Module Note .English Only
-	 * @var string
+	 * Leaf Identification
+	 * @var int
 	 */
-	private $moduleEnglish;
+	private $Leafd;
+	/**
+	 * Language Identification
+	 * @var int
+	 */
+	private $languageId;
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -44,37 +40,31 @@ class ModuleModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName ( 'module' );
-		$this->setPrimaryKeyName ( 'moduleId' );
+		$this->setTableName ( 'Leaf' );
+		$this->setPrimaryKeyName ( 'LeafId' );
 		/*
 		 *  All the $_POST enviroment.
 		 */
-		if (isset ( $_POST ['moduleId'] )) {
-			$this->setModuleId ( $this->strict ( $_POST ['moduleId'], 'numeric' ), 0, 'single' );
+		if (isset ( $_POST ['LeafId'] )) {
+			$this->setLeafId ( $this->strict ( $_POST ['LeafId'], 'numeric' ), 0, 'single' );
 		}
-		if (isset ( $_POST ['iconId'] )) {
-			$this->setIconId ( $this->strict ( $_POST ['iconId'], 'numeric' ) );
+		if (isset ( $_POST ['LeafSequence'] )) {
+			$this->setLeafSequence ( $this->strict ( $_POST ['LeafSequence'], 'memo' ) );
 		}
-		if (isset ( $_POST ['moduleSequence'] )) {
-			$this->setModuleSequence ( $this->strict ( $_POST ['moduleSequence'], 'numeric' ) );
+		if (isset ( $_POST ['LeafCode'] )) {
+			$this->setLeafCode ( $this->strict ( $_POST ['LeafCode'], 'memo' ) );
 		}
-		if (isset ( $_POST ['moduleCode'] )) {
-			$this->setModuleCode ( $this->strict ( $_POST ['moduleCode'], 'string' ) );
-		}
-		if (isset ( $_POST ['moduleEnglish'] )) {
-			$this->setModuleEnglish ( $this->strict ( $_POST ['moduleEnglish'], 'memo' ) );
+		if (isset ( $_POST ['LeafNote'] )) {
+			$this->setLeafNote ( $this->strict ( $_POST ['LeafNote'], 'memo' ) );
 		}
 		
-		if (isset ( $_GET ['moduleId'] )) {
-			$this->setTotal ( count ( $_GET ['moduleId'] ) );
+		if (isset ( $_GET ['LeafTranslateId'] )) {
+			$this->setTotal ( count ( $_GET ['LeafTranslateId'] ) );
 		}
-		
-		/*
-		 *  All the $_GET enviroment.
-		*/
-		if (isset ( $_GET ['moduleId'] )) {
-			if (is_array ( $_GET ['moduleId'] )) {
-				$this->moduleId = array ();
+		// auto assign as array if true
+		if (isset ( $_GET ['LeafTranslateId'] )) {
+			if (is_array ( $_GET ['LeafTranslateId'] )) {
+				$this->LeafTranslateId = array ();
 			}
 		}
 		if (isset ( $_GET ['isDefault'] )) {
@@ -124,7 +114,9 @@ class ModuleModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for($i = 0; $i < $this->getTotal (); $i ++) {
-			$this->setModuleId ( $this->strict ( $_GET ['moduleId'] [$i], 'numeric' ), $i, 'array' );
+			if (isset ( $_GET ['LeafTranslateId'] )) {
+				$this->setLeafTranslateId ( $this->strict ( $_GET ['LeafTranslateId'] [$i], 'numeric' ), $i, 'array' );
+			}
 			if (isset ( $_GET ['isDefault'] )) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
 					$this->setIsDefault ( 1, $i, 'array' );
@@ -188,7 +180,7 @@ class ModuleModel extends ValidationClass {
 			} else {
 				$this->setIsPost ( 0, $i, 'array' );
 			}
-			$primaryKeyAll .= $this->getTabId ( $i, 'array' ) . ",";
+			$primaryKeyAll .= $this->getLeafId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
 		/**
@@ -274,7 +266,7 @@ class ModuleModel extends ValidationClass {
 		$this->setIsUpdate ( 0, 0, 'single' );
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
-		$this->setIsApproved ( 1, 0, 'single' );
+		$this->setIsApproved ( 0, 0, 'single' );
 		$this->setIsReview ( 0, 0, 'single' );
 		$this->setIsPost ( 0, 0, 'single' );
 	}
@@ -307,118 +299,78 @@ class ModuleModel extends ValidationClass {
 		$this->setIsPost ( 1, 0, 'single' );
 	}
 	/**
-	 * Update tab Table Status
-	 */
-	public function updateStatus() {
-		if (! (is_array ( $_GET ['isDefault'] ))) {
-			$this->setIsDefault ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isNew'] ))) {
-			$this->setIsNew ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isDraft'] ))) {
-			$this->setIsDraft ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isUpdate'] ))) {
-			$this->setIsUpdate ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isDelete'] ))) {
-			$this->setIsDelete ( 1, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isActive'] ))) {
-			$this->setIsActive ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isApproved'] ))) {
-			$this->setIsApproved ( 0, 0, 'single' );
-		}
-	}
-	/**
-	 * Set Module   Value
+	 * Set Leaf Translation   Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setModuleId($value, $key, $type) {
+	public function setLeafTranslateId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->moduleId = $value;
+			$this->leafTranslateId = $value;
 		} else if ($type == 'array') {
-			$this->moduleId [$key] = $value;
+			$this->leafTranslateId [$key] = $value;
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type String Or Array:setModuleId ?" ) );
+			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type Single Or Array:setLeafTranslateId ?" ) );
 			exit ();
 		}
 	}
 	/**
-	 * Return Module  Identification
-	 * @param array[int][int] $key List Of Primary Key.
+	 * Return Leaf Translation Identification
+	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return int|array
 	 */
-	public function getModuleId($key, $type) {
+	public function getLeafTranslateId($key, $type) {
 		if ($type == 'single') {
-			return $this->moduleId;
+			return $this->LeafTranslateId;
 		} else if ($type == 'array') {
-			return $this->moduleId [$key];
+			return $this->LeafTranslateId [$key];
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type String Or Array:getModuleId ?" ) );
+			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type Single Or Array:setLeafTranslateId ?" ) );
 			exit ();
 		}
 	}
 	/**
-	 * Set Icon Identification
-	 * @param  int $value
+	 * Set Leaf Identication Value
+	 * @param  string $value
 	 */
-	public function setIconId($value) {
-		$this->iconId = $value;
+	public function setLeaf($value) {
+		$this->Leafd = $value;
 	}
 	/**
-	 * Return Icon Identification
-	 * @return int
-	 */
-	public function getIconId() {
-		return $this->iconId;
-	}
-	/**
-	 * Set Module Sequence Value
-	 * @param  int $value
-	 */
-	public function setModuleSequence($value) {
-		$this->moduleSequence = $value;
-	}
-	/**
-	 * Return module Sequence Value
-	 * @return int
-	 */
-	public function getModuleSequence() {
-		return $this->moduleSequence;
-	}
-	/**
-	 * Set Module Code Value
-	 * @param string $value
-	 */
-	public function setModuleCode($value) {
-		$this->moduleCode = $value;
-	}
-	/**
-	 * Return Module Code
+	 * Return Leaf Identication Value
 	 * @return string
 	 */
-	public function getModuleCode() {
-		return $this->moduleCode;
+	public function getLeafId() {
+		return $this->Leafd;
 	}
 	/**
-	 * Set Module Note Value
-	 * @param string $value
+	 * Set Leaf Translation Value
+	 * @param  string $value
 	 */
-	public function setModuleEnglish($value) {
-		$this->moduleEnglish = $value;
+	public function setLeafNative($value) {
+		$this->LeafNative = $value;
 	}
 	/**
-	 * Return module Note
+	 * Return Leaf Native Translation
 	 * @return string
 	 */
-	public function getModuleEnglish() {
-		return $this->moduleEnglish;
+	public function getLeafNative() {
+		return $this->LeafNative;
+	}
+	/**
+	 * Set Language Identification
+	 * @param  string $value
+	 */
+	public function setLanguageId($value) {
+		$this->languageId = $value;
+	}
+	/**
+	 * Return Language Identification
+	 * @return string Language Identification
+	 */
+	public function getLanguageId() {
+		return $this->languageId;
 	}
 }
 ?>

@@ -1,42 +1,39 @@
 <?php
+
 require_once ("../../class/classValidation.php");
 /**
- * this is module model file.
+ * this is Table Mapping Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package Security
- * @subpackage module
+ * @package Translation
+ * @subpackage Table Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ModuleModel extends ValidationClass {
+class FolderTranslateModel extends ValidationClass {
 	/**
-	 * Module Identification
+	 * Folder Identification
 	 * @var int
 	 */
-	private $moduleId;
+	private $folderTranslateId;
+	
 	/**
-	 * Icon Identification
+	 * Folder Identification
 	 * @var int
 	 */
-	private $iconId;
+	private $folderId;
 	/**
-	 * Module Sequence
+	 * Language Identification
 	 * @var int
 	 */
-	private $moduleSequence;
+	private $languageId;
 	/**
-	 * Module Code
+	 * Folder Native Translation
 	 * @var string
 	 */
-	private $moduleCode;
-	/**
-	 * Module Note .English Only
-	 * @var string
-	 */
-	private $moduleEnglish;
+	private $folderNative;
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -44,37 +41,34 @@ class ModuleModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName ( 'module' );
-		$this->setPrimaryKeyName ( 'moduleId' );
-		/*
-		 *  All the $_POST enviroment.
+		$this->setTableName ( 'folderTranslate' );
+		$this->setPrimaryKeyName ( 'folderTranslateId' );
+		/**
+		 * All the $_POST enviroment.
 		 */
-		if (isset ( $_POST ['moduleId'] )) {
-			$this->setModuleId ( $this->strict ( $_POST ['moduleId'], 'numeric' ), 0, 'single' );
+		if (isset ( $_POST ['folderTranslateId'] )) {
+			$this->setfolderId ( $this->strict ( $_POST ['folderId'], 'numeric' ), 0, 'single' );
 		}
-		if (isset ( $_POST ['iconId'] )) {
-			$this->setIconId ( $this->strict ( $_POST ['iconId'], 'numeric' ) );
+		if (isset ( $_POST ['folderSequence'] )) {
+			$this->setfolderSequence ( $this->strict ( $_POST ['folderSequence'], 'memo' ) );
 		}
-		if (isset ( $_POST ['moduleSequence'] )) {
-			$this->setModuleSequence ( $this->strict ( $_POST ['moduleSequence'], 'numeric' ) );
+		if (isset ( $_POST ['folderCode'] )) {
+			$this->setfolderCode ( $this->strict ( $_POST ['folderCode'], 'memo' ) );
 		}
-		if (isset ( $_POST ['moduleCode'] )) {
-			$this->setModuleCode ( $this->strict ( $_POST ['moduleCode'], 'string' ) );
-		}
-		if (isset ( $_POST ['moduleEnglish'] )) {
-			$this->setModuleEnglish ( $this->strict ( $_POST ['moduleEnglish'], 'memo' ) );
+		if (isset ( $_POST ['folderNote'] )) {
+			$this->setfolderNote ( $this->strict ( $_POST ['folderNote'], 'memo' ) );
 		}
 		
-		if (isset ( $_GET ['moduleId'] )) {
-			$this->setTotal ( count ( $_GET ['moduleId'] ) );
+		/**
+		 * All the $_GET enviroment.
+		 */
+		if (isset ( $_GET ['folderTranslateId'] )) {
+			$this->setTotal ( count ( $_GET ['folderTranslateId'] ) );
 		}
-		
-		/*
-		 *  All the $_GET enviroment.
-		*/
-		if (isset ( $_GET ['moduleId'] )) {
-			if (is_array ( $_GET ['moduleId'] )) {
-				$this->moduleId = array ();
+		// auto assign as array if true
+		if (isset ( $_GET ['folderTranslateId'] )) {
+			if (is_array ( $_GET ['folderTranslateId'] )) {
+				$this->folderTranslateId = array ();
 			}
 		}
 		if (isset ( $_GET ['isDefault'] )) {
@@ -124,7 +118,9 @@ class ModuleModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for($i = 0; $i < $this->getTotal (); $i ++) {
-			$this->setModuleId ( $this->strict ( $_GET ['moduleId'] [$i], 'numeric' ), $i, 'array' );
+			if (isset ( $_GET ['folderTranslateId'] )) {
+				$this->setDefaultLabelTranslateId ( $this->strict ( $_GET ['folderTranslateId'] [$i], 'numeric' ), $i, 'array' );
+			}
 			if (isset ( $_GET ['isDefault'] )) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
 					$this->setIsDefault ( 1, $i, 'array' );
@@ -188,7 +184,7 @@ class ModuleModel extends ValidationClass {
 			} else {
 				$this->setIsPost ( 0, $i, 'array' );
 			}
-			$primaryKeyAll .= $this->getTabId ( $i, 'array' ) . ",";
+			$primaryKeyAll .= $this->getDefaultLabelId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
 		/**
@@ -274,7 +270,6 @@ class ModuleModel extends ValidationClass {
 		$this->setIsUpdate ( 0, 0, 'single' );
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
-		$this->setIsApproved ( 1, 0, 'single' );
 		$this->setIsReview ( 0, 0, 'single' );
 		$this->setIsPost ( 0, 0, 'single' );
 	}
@@ -307,118 +302,78 @@ class ModuleModel extends ValidationClass {
 		$this->setIsPost ( 1, 0, 'single' );
 	}
 	/**
-	 * Update tab Table Status
-	 */
-	public function updateStatus() {
-		if (! (is_array ( $_GET ['isDefault'] ))) {
-			$this->setIsDefault ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isNew'] ))) {
-			$this->setIsNew ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isDraft'] ))) {
-			$this->setIsDraft ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isUpdate'] ))) {
-			$this->setIsUpdate ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isDelete'] ))) {
-			$this->setIsDelete ( 1, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isActive'] ))) {
-			$this->setIsActive ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isApproved'] ))) {
-			$this->setIsApproved ( 0, 0, 'single' );
-		}
-	}
-	/**
-	 * Set Module   Value
+	 * Set Folder Translation   Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setModuleId($value, $key, $type) {
+	public function setFolderTranslateId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->moduleId = $value;
+			$this->folderTranslateId = $value;
 		} else if ($type == 'array') {
-			$this->moduleId [$key] = $value;
+			$this->folderTranslateId [$key] = $value;
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type String Or Array:setModuleId ?" ) );
+			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type Single Or Array:setFolderTranslateId ?" ) );
 			exit ();
 		}
 	}
 	/**
-	 * Return Module  Identification
-	 * @param array[int][int] $key List Of Primary Key.
+	 * Return Folder Translation Identification
+	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return int|array
 	 */
-	public function getModuleId($key, $type) {
+	public function getFolderTranslateId($key, $type) {
 		if ($type == 'single') {
-			return $this->moduleId;
+			return $this->folderTranslateId;
 		} else if ($type == 'array') {
-			return $this->moduleId [$key];
+			return $this->folderTranslateId [$key];
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type String Or Array:getModuleId ?" ) );
+			echo json_encode ( array ("success" => false, "message" => "Cannot Identifiy Type Single Or Array:setFolderTranslateId ?" ) );
 			exit ();
 		}
 	}
 	/**
-	 * Set Icon Identification
+	 * Set Folder Identication Value
 	 * @param  int $value
 	 */
-	public function setIconId($value) {
-		$this->iconId = $value;
+	public function setFolder($value) {
+		$this->folderd = $value;
 	}
 	/**
-	 * Return Icon Identification
+	 * Return Folder Identication Value
 	 * @return int
 	 */
-	public function getIconId() {
-		return $this->iconId;
+	public function getFolderId() {
+		return $this->folderd;
 	}
 	/**
-	 * Set Module Sequence Value
-	 * @param  int $value
+	 * Set folderText  Value
+	 * @param  string $value
 	 */
-	public function setModuleSequence($value) {
-		$this->moduleSequence = $value;
+	public function setfolderNative($value) {
+		$this->folderNative = $value;
 	}
 	/**
-	 * Return module Sequence Value
-	 * @return int
-	 */
-	public function getModuleSequence() {
-		return $this->moduleSequence;
-	}
-	/**
-	 * Set Module Code Value
-	 * @param string $value
-	 */
-	public function setModuleCode($value) {
-		$this->moduleCode = $value;
-	}
-	/**
-	 * Return Module Code
+	 * Return folderNative
 	 * @return string
 	 */
-	public function getModuleCode() {
-		return $this->moduleCode;
+	public function getFolderNative() {
+		return $this->folderNative;
 	}
 	/**
-	 * Set Module Note Value
-	 * @param string $value
+	 * Set Language Identification
+	 * @param  string $value
 	 */
-	public function setModuleEnglish($value) {
-		$this->moduleEnglish = $value;
+	public function setLanguageId($value) {
+		$this->languageId = $value;
 	}
 	/**
-	 * Return module Note
-	 * @return string
+	 * Return Language Identification
+	 * @return string Language Identification
 	 */
-	public function getModuleEnglish() {
-		return $this->moduleEnglish;
+	public function getLanguageId() {
+		return $this->languageId;
 	}
 }
 ?>

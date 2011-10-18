@@ -68,8 +68,8 @@ class StaffModel extends ValidationClass {
 		if (isset ( $_POST ['staffId'] )) {
 			$this->setStaffId ( $this->strict ( $_POST ['staffId'], 'numeric' ), '', 'string' );
 		}
-		if (isset ( $_POST ['TEAMID'] )) {
-			$this->setTEAMID ( $this->strict ( $_POST ['TEAMID'], 'numeric' ) );
+		if (isset ( $_POST ['teamId'] )) {
+			$this->setTeamId ( $this->strict ( $_POST ['teamId'], 'numeric' ) );
 		}
 		if (isset ( $_POST ['departmentId'] )) {
 			$this->setDepartmentId ( $this->strict ( $_POST ['departmentId'], 'numeric' ) );
@@ -91,21 +91,12 @@ class StaffModel extends ValidationClass {
 		if (isset ( $_POST ['staffIc'] )) {
 			$this->setStaffIc ( $this->strict ( $_POST ['staffIc'], 'string' ) );
 		}
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
+		/**
+		 * All the $_GET enviroment.
+		 */
 		if (isset ( $_GET ['staffId'] )) {
 			$this->setTotal ( count ( $_GET ['staffId'] ) );
 		}
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		// auto assign as array if TRUE
 		if (isset ( $_GET ['staffId'] )) {
 			if (is_array ( $_GET ['staffId'] )) {
 				$this->staffId = array ();
@@ -216,6 +207,22 @@ class StaffModel extends ValidationClass {
 			$primaryKeyAll .= $this->getStaffId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()

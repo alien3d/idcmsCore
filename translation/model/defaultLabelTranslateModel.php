@@ -57,20 +57,7 @@ class DefaultLabelTranslateModel extends ValidationClass {
 		if (isset ( $_POST ['defaultLabelNote'] )) {
 			$this->setdefaultLabelNote ( $this->strict ( $_POST ['defaultLabelNote'], 'memo' ) );
 		}
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
-		if (isset ( $_GET ['defaultLabelTranslateId'] )) {
-			$this->setTotal ( count ( $_GET ['defaultLabelTranslateId'] ) );
-		}
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
+		
 		// auto assign as array if true
 		if (isset ( $_GET ['defaultLabelTranslateId'] )) {
 			if (is_array ( $_GET ['defaultLabelTranslateId'] )) {
@@ -193,6 +180,22 @@ class DefaultLabelTranslateModel extends ValidationClass {
 			$primaryKeyAll .= $this->getDefaultLabelId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
+		if (isset ( $_GET ['defaultLabelTranslateId'] )) {
+			$this->setTotal ( count ( $_GET ['defaultLabelTranslateId'] ) );
+		}
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()
@@ -205,6 +208,8 @@ class DefaultLabelTranslateModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -217,6 +222,8 @@ class DefaultLabelTranslateModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -229,6 +236,8 @@ class DefaultLabelTranslateModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 1, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -241,6 +250,8 @@ class DefaultLabelTranslateModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -252,6 +263,9 @@ class DefaultLabelTranslateModel extends ValidationClass {
 		$this->setIsUpdate ( 0, 0, 'single' );
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 1, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::review()
@@ -345,7 +359,7 @@ class DefaultLabelTranslateModel extends ValidationClass {
 	 * Set Language Identification
 	 * @param  string $value
 	 */
-	public function setLanguageLabel($value) {
+	public function setLanguageId($value) {
 		$this->languageId = $value;
 	}
 	/**

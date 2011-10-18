@@ -75,6 +75,15 @@ class LogAdvanceModel extends ValidationClass {
 			
 			$this->setLeafId ( $this->strict ( $_GET ['leafId'], 'numeric' ) );
 		}
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
 		if ($this->getVendor () == self::MYSQL) {
 			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
 		} else if ($this->getVendor () == self::MSSQL) {

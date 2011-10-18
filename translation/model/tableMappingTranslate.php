@@ -18,32 +18,34 @@ class TableMappingTranslateModel extends ValidationClass {
 	 * @var int
 	 */
 	private $tableMappingTranslateId;
+	
 	/**
-	 * ExtJS / Sencha Label Identification
+	 * Table Mapping Identification
 	 * @var int
 	 */
-	private $defaultLabelText;
+	private $tableMappingld;
 	/**
-	 * ExtJS / Sencha Label Identification
-	 * @var int
+	 * Table Mapping  Native Translation
+	 * @var string
 	 */
-	private $defaultLabeld;
+	private $tableMappingNative;
 	/**
 	 * ExtJS / Sencha Label Identification
 	 * @var int
 	 */
 	private $languageId;
+	
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute() {
-		/*
-		 *  Basic Information Table
+		/**
+		 * Basic Information Table
 		 */
 		$this->setTableName ( 'tableMapping' );
 		$this->setPrimaryKeyName ( 'tableMappingId' );
-		/*
-		 *  All the $_POST enviroment.
+		/**
+		 * All the $_POST enviroment.
 		 */
 		if (isset ( $_POST ['tableMappingId'] )) {
 			$this->settableMappingId ( $this->strict ( $_POST ['tableMappingId'], 'numeric' ), 0, 'single' );
@@ -57,21 +59,12 @@ class TableMappingTranslateModel extends ValidationClass {
 		if (isset ( $_POST ['tableMappingNote'] )) {
 			$this->settableMappingNote ( $this->strict ( $_POST ['tableMappingNote'], 'memo' ) );
 		}
-		if (isset ( $_SESSION ['staffId'] )) {
-			$this->setExecuteBy ( $_SESSION ['staffId'] );
-		}
-		if ($this->getVendor () == self::MYSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::MSSQL) {
-			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
-		} else if ($this->getVendor () == self::ORACLE) {
-			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
-		}
+		/**
+		 * All the $_GET enviroment.
+		 */
 		if (isset ( $_GET ['tableMappingTranslateId'] )) {
 			$this->setTotal ( count ( $_GET ['tableMappingTranslateId'] ) );
 		}
-		$accessArray = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		// auto assign as array if true
 		if (isset ( $_GET ['tableMappingTranslateId'] )) {
 			if (is_array ( $_GET ['tableMappingTranslateId'] )) {
 				$this->tableMappingTranslateId = array ();
@@ -193,6 +186,23 @@ class TableMappingTranslateModel extends ValidationClass {
 			$primaryKeyAll .= $this->getDefaultLabelId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		/**
+		 * All the $_SESSION enviroment.
+		 */
+		if (isset ( $_SESSION ['staffId'] )) {
+			$this->setExecuteBy ( $_SESSION ['staffId'] );
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if ($this->getVendor () == self::MYSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::MSSQL) {
+			$this->setExecuteTime ( "'" . date ( "Y-m-d H:i:s" ) . "'" );
+		} else if ($this->getVendor () == self::ORACLE) {
+			$this->setExecuteTime ( "to_date('" . date ( "Y-m-d H:i:s" ) . "','YYYY-MM-DD HH24:MI:SS')" );
+		}
+	
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::create()
@@ -205,6 +215,8 @@ class TableMappingTranslateModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -217,6 +229,8 @@ class TableMappingTranslateModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -229,6 +243,8 @@ class TableMappingTranslateModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 1, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -241,6 +257,8 @@ class TableMappingTranslateModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -252,6 +270,9 @@ class TableMappingTranslateModel extends ValidationClass {
 		$this->setIsUpdate ( 0, 0, 'single' );
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
+		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::review()
@@ -314,35 +335,35 @@ class TableMappingTranslateModel extends ValidationClass {
 	 * Set Table Mapping Identication Value
 	 * @param  string $value
 	 */
-	public function setDefaultLabel($value) {
-		$this->defaultLabeld = $value;
+	public function setTableMapping($value) {
+		$this->tableMappingld = $value;
 	}
 	/**
 	 * Return Table Mapping Identication Value
 	 * @return string Table Mapping Identication
 	 */
-	public function getDefaultLabelId() {
-		return $this->defaultLabeld;
+	public function getTableMappingId() {
+		return $this->tableMappingld;
 	}
 	/**
-	 * Set defaultLabelText  Value
+	 * Set Table Mapping Native Translation  Value
 	 * @param  string $value
 	 */
-	public function setdefaultLabelText($value) {
-		$this->defaultLabelText = $value;
+	public function setTableMappingNative($value) {
+		$this->tableMappingNative = $value;
 	}
 	/**
-	 * Return defaultLabelText
+	 * Return Table Mapping Native Translation
 	 * @return string
 	 */
-	public function getDefaultLabelText() {
-		return $this->defaultLabelText;
+	public function getTableMappingNative() {
+		return $this->tableMappingNative;
 	}
 	/**
 	 * Set Language Identification
 	 * @param  int $value
 	 */
-	public function setLanguageLabel($value) {
+	public function setLanguageId($value) {
 		$this->languageId = $value;
 	}
 	/**
