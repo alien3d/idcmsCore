@@ -487,27 +487,27 @@ class DepartmentClass extends ConfigClass {
 			$sql = "
 		SELECT	`" . $this->model->getPrimaryKeyName () . "`
 		FROM 	`" . $this->model->getTableName () . "`
-		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 		SELECT	[" . $this->model->getPrimaryKeyName () . "]
 		FROM 	[" . $this->model->getTableName () . "]
-		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
 		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		}
 		$result = $this->q->fast ( $sql );
 		$total = $this->q->numberRows ( $result, $sql );
@@ -597,27 +597,27 @@ class DepartmentClass extends ConfigClass {
 			$sql = "
 		SELECT	`" . $this->model->getPrimaryKeyName () . "`
 		FROM 	`" . $this->model->getTableName () . "`
-		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 		SELECT	[" . $this->model->getPrimaryKeyName () . "]
 		FROM 	[" . $this->model->getTableName () . "]
-		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
 		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getDepartmentId ( 0, 'single' ) . "' ";
 		}
 		$result = $this->q->fast ( $sql );
 		$total = $this->q->numberRows ( $result, $sql );
