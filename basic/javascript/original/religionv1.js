@@ -1156,7 +1156,7 @@ Ext
 																					action.result.religionId);
 																	formPanel
 																			.getForm()
-																			.reset(); /
+																			.reset(); 
 																	religionStore
 																			.reload();
 																	religionStoreList

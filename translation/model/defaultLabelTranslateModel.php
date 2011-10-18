@@ -19,11 +19,6 @@ class DefaultLabelTranslateModel extends ValidationClass {
 	 */
 	private $defaultLabelTranslateId;
 	/**
-	 * Default Label Text Identification
-	 * @var string
-	 */
-	private $defaultLabelText;
-	/**
 	 * Default Label Identification
 	 * @var int
 	 */
@@ -33,6 +28,11 @@ class DefaultLabelTranslateModel extends ValidationClass {
 	 * @var int
 	 */
 	private $languageId;
+	/**
+	* Default Label Native Translation
+	* @var string
+	*/
+	private $defaultLabelNative;
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
@@ -180,6 +180,7 @@ class DefaultLabelTranslateModel extends ValidationClass {
 			$primaryKeyAll .= $this->getDefaultLabelId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		
 		if (isset ( $_SESSION ['staffId'] )) {
 			$this->setExecuteBy ( $_SESSION ['staffId'] );
 		}
@@ -331,7 +332,7 @@ class DefaultLabelTranslateModel extends ValidationClass {
 	 * Set Default Label Identication Value
 	 * @param  string $value
 	 */
-	public function setDefaultLabel($value) {
+	public function setDefaultLabeld($value) {
 		$this->defaultLabeld = $value;
 	}
 	/**
@@ -342,29 +343,29 @@ class DefaultLabelTranslateModel extends ValidationClass {
 		return $this->defaultLabeld;
 	}
 	/**
-	 * Set defaultLabelText  Value
+	 * Set Default Label Translation  Value
 	 * @param  string $value
 	 */
-	public function setdefaultLabelText($value) {
-		$this->defaultLabelText = $value;
+	public function setdefaultLabelNative($value) {
+		$this->defaultLabelNative = $value;
 	}
 	/**
-	 * Return defaultLabelText
+	 * Return Default Label Translation 
 	 * @return string
 	 */
-	public function getDefaultLabelText() {
-		return $this->defaultLabelText;
+	public function getDefaultLabelNative() {
+		return $this->defaultLabelNative;
 	}
 	/**
 	 * Set Language Identification
-	 * @param  string $value
+	 * @param  int $value
 	 */
 	public function setLanguageId($value) {
 		$this->languageId = $value;
 	}
 	/**
 	 * Return Language Identification
-	 * @return string Language Identification
+	 * @return int
 	 */
 	public function getLanguageId() {
 		return $this->languageId;

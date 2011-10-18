@@ -14,31 +14,56 @@ require_once ("../../class/classValidation.php");
  */
 class LanguageModel extends ValidationClass {
 	/**
-	 * ExtJS / Sencha Label Identification
+	 *Language Identification
 	 * @var int
 	 */
 	private $languageId;
 	/**
-	 * ExtJS / Sencha Label Identification
-	 * @var int
+	 * Language Description
+	 * @var string
 	 */
 	private $languageDesc;
 	/**
-	 * ExtJS / Sencha Label Identification
-	 * @var int
+	 * Language Code
+	 * @var string
 	 */
 	private $languageCode;
+	/**
+	 * Google Api Translation 
+	 * @link http://code.google.com/apis/language/
+	 * @var string
+	 */
+	private $isGoogle;
+	/**
+	 * Bing Api Translation ( Microsoft Product )
+	 * @link http://www.microsofttranslator.com/dev/
+	 * @var string
+	 */
+	private $isBing;
+	/**
+	 * Speak Lite Translation
+	 * @link http://www.speaklike.com/
+	 * @var string
+	 */
+	private $isSpeakLite;
+	/**
+	 * Web Services
+	 * @link http://www.webservicex.net/ws/wsdetails.aspx?wsid=63
+	 * @var string
+	 */
+	private $isWebServices;
+	
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
 	 */
 	function execute() {
-		/*
-		 *  Basic Information Table
+		/**
+		 * Basic Information Table
 		 */
 		$this->setTableName ( 'language' );
 		$this->setPrimaryKeyName ( 'languageId' );
-		/*
-		 *  All the $_POST enviroment.
+		/**
+		 * All the $_POST enviroment.
 		 */
 		if (isset ( $_POST ['languageId'] )) {
 			$this->setLanguageId ( $this->strict ( $_POST ['languageId'], 'numeric' ), 0, 'single' );
@@ -49,7 +74,9 @@ class LanguageModel extends ValidationClass {
 		if (isset ( $_POST ['languageDesc'] )) {
 			$this->setLanguageDesc ( $this->strict ( $_POST ['languageDesc'], 'memo' ) );
 		}
-		
+		/**
+		 * All the $_POST enviroment.
+		 */
 		if (isset ( $_GET ['languageId'] )) {
 			$this->setTotal ( count ( $_GET ['languageId'] ) );
 		}
@@ -169,6 +196,9 @@ class LanguageModel extends ValidationClass {
 			$primaryKeyAll .= $this->getDefaultLabelId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
+		/**
+		 * All the $_SESSION enviroment.
+		 */
 		if (isset ( $_SESSION ['staffId'] )) {
 			$this->setExecuteBy ( $_SESSION ['staffId'] );
 		}
@@ -300,5 +330,61 @@ class LanguageModel extends ValidationClass {
 	public function getLanguageCode() {
 		return $this->languageCode;
 	}
+	/**
+	 * @return the $isGoogle
+	 */
+	public function getIsGoogle() {
+		return $this->isGoogle;
+	}
+
+	/**
+	 * @return the $isBing
+	 */
+	public function getIsBing() {
+		return $this->isBing;
+	}
+
+	/**
+	 * @return the $isSpeakLite
+	 */
+	public function getIsSpeakLite() {
+		return $this->isSpeakLite;
+	}
+
+	/**
+	 * @return the $isWebServices
+	 */
+	public function getIsWebServices() {
+		return $this->isWebServices;
+	}
+
+	/**
+	 * @param string $isGoogle
+	 */
+	public function setIsGoogle($isGoogle) {
+		$this->isGoogle = $isGoogle;
+	}
+
+	/**
+	 * @param string $isBing
+	 */
+	public function setIsBing($isBing) {
+		$this->isBing = $isBing;
+	}
+
+	/**
+	 * @param string $isSpeakLite
+	 */
+	public function setIsSpeakLite($isSpeakLite) {
+		$this->isSpeakLite = $isSpeakLite;
+	}
+
+	/**
+	 * @param string $isWebServices
+	 */
+	public function setIsWebServices($isWebServices) {
+		$this->isWebServices = $isWebServices;
+	}
+
 }
 ?>
