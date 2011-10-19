@@ -108,7 +108,7 @@ class ReligionClass extends ConfigClass {
 	 * @see config::create()
 	 */
 	public function create() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -564,7 +564,7 @@ class ReligionClass extends ConfigClass {
 	 * @see config::update()
 	 */
 	function update() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -717,7 +717,7 @@ class ReligionClass extends ConfigClass {
 	 * @see config::delete()
 	 */
 	function delete() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -859,7 +859,7 @@ class ReligionClass extends ConfigClass {
 	 * To Update flag Status
 	 */
 	function updateStatus() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1037,7 +1037,7 @@ class ReligionClass extends ConfigClass {
 	 * To check if a key duplicate or not
 	 */
 	function duplicate() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1109,7 +1109,7 @@ class ReligionClass extends ConfigClass {
 	 * @see config::excel()
 	 */
 	function excel() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -1271,17 +1271,20 @@ if (isset ( $_GET ['method'] )) {
 			$religionObject->duplicate ();
 		}
 	}
+	/**
+	 * Button Navigation
+	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
-		if ($_GET ['dataNavigation'] == 'first') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
 			$religionObject->firstRecord ( 'json' );
 		}
-		if ($_GET ['dataNavigation'] == 'previous') {
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
 			$religionObject->previousRecord ( 'json', 0 );
 		}
-		if ($_GET ['dataNavigation'] == 'next') {
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
 			$religionObject->nextRecord ( 'json', 0 );
 		}
-		if ($_GET ['dataNavigation'] == 'last') {
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
 			$religionObject->lastRecord ( 'json' );
 		}
 	}

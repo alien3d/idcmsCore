@@ -107,7 +107,7 @@ class DocumentCategoryClass extends ConfigClass {
 	 * @see config::create()
 	 */
 	function create() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -201,7 +201,7 @@ class DocumentCategoryClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	`documentCategory`.`isActive`		=	1	";
@@ -485,7 +485,7 @@ class DocumentCategoryClass extends ConfigClass {
 	 * @see config::update()
 	 */
 	function update() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -567,7 +567,7 @@ class DocumentCategoryClass extends ConfigClass {
 	 * @see config::delete()
 	 */
 	function delete() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -634,7 +634,7 @@ class DocumentCategoryClass extends ConfigClass {
 	 * To Update flag Status
 	 */
 	function updateStatus() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -777,7 +777,7 @@ class DocumentCategoryClass extends ConfigClass {
 	 * To check if a key duplicate or not
 	 */
 	function duplicate() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -834,7 +834,7 @@ class DocumentCategoryClass extends ConfigClass {
 	 * @see config::excel()
 	 */
 	function excel() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";

@@ -107,7 +107,7 @@ class LeafAccessClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -418,7 +418,7 @@ class LeafAccessClass extends ConfigClass {
 	 * @see config::update()
 	 */
 	function update() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";

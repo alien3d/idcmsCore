@@ -223,7 +223,7 @@ abstract class ConfigClass
      */
     public function staff ()
     {
-        header('Content-Type', 'application/json; charset=utf-8');
+        header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	`staffId`,

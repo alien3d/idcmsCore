@@ -1806,15 +1806,85 @@ Ext
 								{
 									text : deleteButtonLabel,
 									type : 'button',
+									name :'deleteButton',
+									id :'deleteButton',
 									iconCls : 'trash',
 									disabled : true,
 									handler : function() {
-										formPanel.getForm().reset();
+										Ext.Msg
+												.show({
+													title : deleteRecordTitleMessageLabel,
+													msg : deleteRecordMessageLabel,
+													icon : Ext.Msg.QUESTION,
+													buttons : Ext.Msg.YESNO,
+													scope : this,
+													fn : function(response) {
+														if ("yes" == response) {
+															Ext.Ajax
+																	.request({
+																		url : "../controller/religionController.php",
+																		params : {
+																			method : "delete",
+																			religionId : record.data.religionId,
+																			leafId : leafId,
+																			isAdmin : isAdmin
+																		},
+																		success : function(
+																				response,
+																				options) {
+																			jsonResponse = Ext
+																					.decode(response.responseText);
+																			if (jsonResponse.success == true) {
+																				
+																				Ext.MessageBox
+																					.alert(
+																							systemLabel,
+																							jsonResponse.message);
+																							
+																				religionStore
+																					.reload({
+																						params : {
+																							leafId : leafId,
+																							start : 0,
+																							limit : perPage
+																						}
+																					});
+																				Ext.getCmp('religionDetail').disable();
+																				Ext.getCmp('saveButton').disable();
+																				Ext.getCmp('nextButton').disable();
+																				Ext.getCmp('previousButton').disable();
+																				
+																			} else {
+																				
+																				Ext.MessageBox
+																					.alert(
+																							systemErrorLabel,
+																							jsonResponse.message);
+																			}
+																			
+																			
+																		},
+																		failure : function(
+																				response,
+																				options) {
+																			Ext.MessageBox
+																					.alert(
+																							systemErrorLabel,
+																							escape(response.status)
+																									+ ":"
+																									+ response.statusText);
+																		}
+																	});
+														}
+													}
+												});
 									}
 								},
 								{
 									text : resetButtonLabel,
 									type : 'reset',
+									name :'resetButton',
+									id :'resetButton',
 									iconCls : 'database_refresh',
 									handler : function() {
 										formPanel.getForm().reset();
@@ -1824,6 +1894,8 @@ Ext
 								{
 									text : postButtonLabel,
 									type : 'button',
+									name :'postButton',
+									id :'postButton',
 									iconCls : 'lock',
 									handler : function() {
 										formPanel.getForm().reset();
@@ -1865,7 +1937,7 @@ Ext
 
 															jsonResponse = Ext
 																	.decode(response.responseText);
-															if (jsonReponse.success == true) {
+															if (jsonResponse.success == true) {
 																Ext
 																		.getCmp(
 																				'firstRecord')
@@ -1972,7 +2044,10 @@ Ext
 									disabled : true,
 									handler : function() {
 										if (Ext.getCmp('previousRecord')
-												.getValue() == '') {
+												.getValue() == '' ||
+												
+												Ext.getCmp('previousRecord')
+												.getValue() == undefined ) {
 											Ext.MessageBox
 													.alert("Please Pick A Record First Ya");
 
@@ -2022,8 +2097,8 @@ Ext
 																			'endRecord')
 																	.setValue(
 																			(action.result.lastRecord + 1));
-															// load the detail
-															// grid
+															
+															
 															religionDetailStore
 																	.load({
 																		params : {
@@ -2070,7 +2145,10 @@ Ext
 									disabled : true,
 									iconCls : 'resultset_next',
 									handler : function() {
-										if (Ext.getCmp('nextRecord').getValue() == '') {
+										if (Ext.getCmp('nextRecord').getValue() == '' ||
+											Ext.getCmp('nextRecord').getValue() == undefined
+										
+										) {
 											Ext.MessageBox
 													.alert("Please Pick A Record First Ya");
 
@@ -2122,8 +2200,8 @@ Ext
 																			'endRecord')
 																	.setValue(
 																			(action.result.lastRecord + 1));
-															// load the detail
-															// grid
+															
+															
 															religionDetailStore
 																	.load({
 																		params : {
@@ -2186,7 +2264,9 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_last',
 									handler : function() {
-										if (Ext.getCmp('lastRecord').getValue() == '') {
+										if (Ext.getCmp('lastRecord').getValue() == ''
+										||
+											Ext.getCmp('lastRecord').getValue() == undefined) {
 											Ext.Ajax
 													.request({
 														url : "../controller/religionController.php",
@@ -2202,16 +2282,91 @@ Ext
 
 															jsonResponse = Ext
 																	.decode(response.responseText);
-															if (jsonReponse.success == true) {
+															if (jsonResponse.success == true) {
 																Ext
 																		.getCmp(
 																				'lastRecord')
 																		.setValue(
 																				jsonResponse.lastRecord);
+																				
+																formPanel.form
+													.load({
+														url : "../controller/religionController.php",
+														method : "POST",
+														waitTitle : systemLabel,
+														waitMsg : waitMessageLabel,
+														params : {
+															method : "read",
+
+															religionId : Ext
+																	.getCmp(
+																			'lastRecord')
+																	.getValue(),
+															leafId : leafId,
+															isAdmin : isAdmin
+														},
+														success : function(
+																form, action) {
+															Ext
+																	.getCmp(
+																			'firstRecord')
+																	.setValue(
+																			action.result.firstRecord);
+															Ext
+																	.getCmp(
+																			'previousRecord')
+																	.setValue(
+																			action.result.previousRecord);
+															Ext
+																	.getCmp(
+																			'nextRecord')
+																	.setValue(
+																			action.result.nextRecord);
+															Ext
+																	.getCmp(
+																			'lastRecord')
+																	.setValue(
+																			action.result.lastRecord);
+															Ext
+																	.getCmp(
+																			'endRecord')
+																	.setValue(
+																			(action.result.lastRecord + 1));
+															
+															religionDetailStore
+																	.load({
+																		params : {
+																			leafId : leafId,
+																			isAdmin : isAdmin,
+																			religionId : action.result.data.religionId
+																		}
+																	});
+															Ext
+																	.getCmp(
+																			'nextButton')
+																	.disable();
+															Ext
+																	.getCmp(
+																			'previousButton')
+																	.enable();
+
+															religionDetailGrid
+																	.enable();
+															viewPort.items.get(
+																	1).expand();
+														},
+														failure : function(
+																form, action) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			action.result.message);
+														}
+													});				
 															} else {
 																Ext.MessageBox
 																		.alert(
-																				systemLabel,
+																				systemErrorLabel,
 																				jsonResponse.message);
 															}
 														},
@@ -2273,8 +2428,7 @@ Ext
 																			'endRecord')
 																	.setValue(
 																			(action.result.lastRecord + 1));
-															// load the detail
-															// grid
+															
 															religionDetailStore
 																	.load({
 																		params : {

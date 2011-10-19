@@ -109,7 +109,7 @@ class LeafTeamAccessClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -523,7 +523,7 @@ class LeafTeamAccessClass extends ConfigClass {
 		exit ();
 	}
 	function update() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";

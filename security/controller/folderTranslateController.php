@@ -118,7 +118,7 @@ class folderTranslateClass extends ConfigClass {
 	 * @see config::create()
 	 */
 	function create() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -248,7 +248,7 @@ class folderTranslateClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
@@ -582,7 +582,7 @@ class folderTranslateClass extends ConfigClass {
 	 * @see config::update()
 	 */
 	function update() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -729,7 +729,7 @@ class folderTranslateClass extends ConfigClass {
 	 * @see config::delete()
 	 */
 	function delete() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -867,7 +867,7 @@ class folderTranslateClass extends ConfigClass {
 	 * To Update flag Status
 	 */
 	function updateStatus() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1056,7 +1056,7 @@ class folderTranslateClass extends ConfigClass {
 	 * @see config::excel()
 	 */
 	function excel() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";

@@ -152,7 +152,7 @@ class TreeClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	public function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {

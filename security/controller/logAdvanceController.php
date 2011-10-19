@@ -104,7 +104,7 @@ class LogAdvanceClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	public function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -343,7 +343,7 @@ class LogAdvanceClass extends ConfigClass {
 	 * @see config::excel()
 	 */
 	function excel() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";

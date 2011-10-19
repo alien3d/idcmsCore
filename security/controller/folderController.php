@@ -1,5 +1,4 @@
-<?php
-session_start ();
+<?php	session_start ();
 require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
@@ -1034,6 +1033,7 @@ class FolderClass extends ConfigClass {
 		$this->recordSet->nextSequence ( $this->model->getModuleId () );
 	}
 	function firstRecord($value) {
+		
 		$this->recordSet->firstRecord ( $value );
 	}
 	function nextRecord($value, $primaryKeyValue) {
@@ -1203,6 +1203,25 @@ if (isset ( $_GET ['method'] )) {
 	if (isset ( $_GET ['folderCode'] )) {
 		if (strlen ( $_GET ['folderCode'] ) > 0) {
 			$folderObject->duplicate ();
+		}
+	}
+	/**
+	 * Button Navigation
+	 */ 
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			
+			$folderObject->firstRecord ( 'json' );
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$folderObject->previousRecord ( 'json', 0 );
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$folderObject->nextRecord ( 'json', 0 );
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$folderObject->lastRecord ( 'json' );
 		}
 	}
 	/*

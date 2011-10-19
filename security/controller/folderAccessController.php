@@ -103,7 +103,7 @@ class FolderAccessClass extends ConfigClass {
 	function create() {
 	}
 	function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
@@ -242,7 +242,7 @@ class FolderAccessClass extends ConfigClass {
 	 * @see config::update()
 	 */
 	function update() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->q->vendor == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";

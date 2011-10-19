@@ -70,6 +70,7 @@ class RecordSet extends ConfigClass {
 			SELECT 	MIN(" . strtoupper ( $this->getPrimaryKeyName () ) . ") AS \"firstRecord\"
 			FROM 	" . strtoupper ( $this->getTableName () ) . " ";
 		}
+		
 		$result = $this->q->fast ( $sql );
 		$total = $this->q->numberRows($result);
 		if ($total > 0) {
@@ -81,7 +82,7 @@ class RecordSet extends ConfigClass {
 		if ($value == 'value') {
 			return intval ( $firstRecord );
 		} else {
-			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'firstRecord' => $firstRecord ) );
+			echo $json_encode = json_encode ( array ('success' => true, 'total' => $total, 'firstRecord' => $firstRecord ) );
 			exit ();
 		}
 	}
@@ -129,7 +130,7 @@ class RecordSet extends ConfigClass {
 		if ($value == 'value') {
 			return intval ( $nextRecord );
 		} else {
-			$json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'nextRecord' => $nextRecord ) );
+			echo $json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'nextRecord' => $nextRecord ) );
 			exit ();
 		}
 	}
@@ -180,7 +181,7 @@ class RecordSet extends ConfigClass {
 		if ($value == 'value') {
 			return intval ( $previousRecord );
 		} else {
-			$json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'previousRecord' => $previousRecord ) );
+			echo $json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'previousRecord' => $previousRecord ) );
 			exit ();
 		}
 	}
@@ -222,7 +223,7 @@ class RecordSet extends ConfigClass {
 		if ($value == 'value') {
 			return intval ( $lastRecord );
 		} else {
-			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'lastRecord' => $lastRecord ) );
+			echo $json_encode = json_encode ( array ('success' => true, 'total' => $total, 'lastRecord' => $lastRecord ) );
 			exit ();
 		}
 	}
@@ -233,7 +234,7 @@ class RecordSet extends ConfigClass {
 	 * @param int folderId
 	 */
 	public function nextSequence($moduleId = null, $folderId = null) {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		/**
 		 * initilize dummy value  to 0
 		 */

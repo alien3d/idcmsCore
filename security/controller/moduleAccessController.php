@@ -110,7 +110,7 @@ class ModuleAccessClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -239,7 +239,7 @@ class ModuleAccessClass extends ConfigClass {
 	 * @see config::update()
 	 */
 	function update() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->q->vendor == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";

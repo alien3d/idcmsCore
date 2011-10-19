@@ -277,7 +277,7 @@ Ext.extend (Ext.ux.form.LoginDialog, Ext.util.Observable, {
      *
      * @type {String}
      */
-    waitMessage : waitMessageLabel,
+    waitMessage : 'Be patient',
 
     /**
      * The login button text

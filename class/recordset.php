@@ -1,5 +1,5 @@
 <?php
-class RecordSet {
+class RecordSet extends ConfigClass {
 	private $vendor;
 	/**
 	* Mysql Database (open Core)
@@ -38,7 +38,7 @@ class RecordSet {
 	 const IBASE = 'ibase';
 	 // end basic access database
 	public function execute(){
-		
+		echo "xmen";
 	}
 	/**
 	 * Return The First Record
@@ -46,6 +46,7 @@ class RecordSet {
 	 * @return int
 	 */
 	public function firstRecord($value) {
+		echo "jo";
 		$first = 0;
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
@@ -60,6 +61,7 @@ class RecordSet {
 	SELECT 	MIN(" . strtoupper ( $this->model->getPrimaryKeyName () ) . ") AS \"firstRecord\"
 	FROM 	" . strtoupper ( $this->model->getTableName () ) . " ";
 		}
+		echo $sql;
 		$result = $this->q->fast ( $sql );
 		$total = $this->q->numberRows ( $result );
 		if ($total > 0) {

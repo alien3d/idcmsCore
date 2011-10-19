@@ -122,7 +122,7 @@ class StaffClass extends ConfigClass {
 	 * @see config::create()
 	 */
 	public function create() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -564,7 +564,7 @@ class StaffClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	`staff`.`isActive`		=	1	";
@@ -875,7 +875,7 @@ class StaffClass extends ConfigClass {
 	 * @see config::update()
 	 */
 	public function update() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1222,7 +1222,7 @@ class StaffClass extends ConfigClass {
 	 * @see config::delete()
 	 */
 	public function delete() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1321,7 +1321,7 @@ class StaffClass extends ConfigClass {
 	}
 	
 	function updateStatus() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
@@ -1499,7 +1499,7 @@ class StaffClass extends ConfigClass {
 	 * To check if a key duplicate or not
 	 */
 	function duplicate() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";

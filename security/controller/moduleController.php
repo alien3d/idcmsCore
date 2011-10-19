@@ -112,7 +112,7 @@ class ModuleClass extends ConfigClass {
 		$this->excel = new PHPExcel ();
 	}
 	function create() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES utf8";
@@ -398,7 +398,7 @@ class ModuleClass extends ConfigClass {
 	 * @see class/config::read()
 	 */
 	function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	`module`.`isActive`		=	1	";
@@ -677,7 +677,7 @@ class ModuleClass extends ConfigClass {
 	 * @see ConfigClass::update()
 	 */
 	function update() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES utf8";
@@ -819,7 +819,7 @@ class ModuleClass extends ConfigClass {
 	 * @see ConfigClass::delete()
 	 */
 	function delete() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES utf8";
@@ -965,7 +965,7 @@ class ModuleClass extends ConfigClass {
 	 * @see ConfigClass::excel()
 	 */
 	function excel() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES utf8";

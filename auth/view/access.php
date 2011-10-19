@@ -52,7 +52,7 @@ class LoginClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	public function read() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		
 

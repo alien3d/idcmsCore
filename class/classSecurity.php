@@ -156,7 +156,7 @@ class Security extends ConfigClass {
 	 * Give output Team/Department
 	 */
 	public function team() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -225,7 +225,7 @@ class Security extends ConfigClass {
 	 * Give Ouput Department
 	 */
 	public function department() {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -297,7 +297,7 @@ class Security extends ConfigClass {
 	 * @version  0.1 remove the session  language
 	 */
 	function module($type, $teamId = NULL) {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
@@ -447,7 +447,7 @@ class Security extends ConfigClass {
 	 * @version  0.1 remove the session  language
 	 */
 	function folder($type, $teamId = null,$moduleId = null) {
-		header ( 'Content-Type', 'application/json; charset=utf-8' );
+		header('Content-Type:application/json; charset=utf-8');
 		
 		if (! ($type)) {
 			echo json_encode ( array ("success" => false, "message" => "There are no Type Define" ) );
