@@ -411,6 +411,12 @@ class ReligionClass extends ConfigClass {
 				 * Sql Server and Oracle used row_number
 				 * Parameterize Query We don't support
 				 */
+				 /**
+				  * Only On Sql Server Denali
+				  * select * from Production.Product order by name asc 
+                  *offset 10 rows fetch first 10 rows only
+				  * 
+				  */
 				$sql = "
 							WITH [religionDerived] AS
 							(
@@ -469,9 +475,20 @@ class ReligionClass extends ConfigClass {
 						where rownum <= '" . ($this->getStart () + $this->getLimit ()) . "' )
 						where r >=  '" . ($this->getStart () + 1) . "'";
 			} else if ($this->getVendor () == self::DB2) {
-			
+				/* 
+				 * Old Version db2.same as oracle and microsoft sql server
+				 * SELECT * FROM (
+						SELECT
+						ROW_NUMBER() OVER (ORDER BY ID_USER ASC) AS ROWNUM,
+						ID_EMPLOYEE, FIRSTNAME, LASTNAME
+						FROM EMPLOYEE
+						WHERE FIRSTNAME LIKE 'DEL%'
+				)  AS A WHERE A.rownum
+				BETWEEN 1 AND 25 */
+				
+				$sql .= " LIMIT  " . $this->getStart () . " AND " . $this->getLimit () . " ";
 			} else if ($this->getVendor () == self::POSTGRESS) {
-				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+				$sql .= " LIMIT  " . $this->getStart () . " OFFSET " . $this->getLimit () . " ";
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();

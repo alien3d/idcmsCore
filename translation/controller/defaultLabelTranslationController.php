@@ -516,7 +516,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
 		}
-		//	echo "arnab[".$this->model->getDefaultLabelTranslateId(0,'array')."]";
+		setLanguageId
 		/**
 		 * System Validation Checking
 		 * @var $access
