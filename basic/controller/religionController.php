@@ -120,16 +120,16 @@ class ReligionClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `religion`
 					(
-						`religionDesc`,													`isDefault`,
-						`isNew`,															`isDraft`,
-						`isUpdate`,														`isDelete`,
-						`isActive`,														`isApproved`,
-						`isReview`,                      		  	 						`isPost`,
-						`executeBy`,													`executeTime`
+						`religionDesc`,												`isDefault`,
+						`isNew`,													`isDraft`,
+						`isUpdate`,													`isDelete`,
+						`isActive`,													`isApproved`,
+						`isReview`,                      		  	 				`isPost`,
+						`executeBy`,												`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getReligionDesc () . "',				'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getReligionDesc () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
@@ -140,37 +140,37 @@ class ReligionClass extends ConfigClass {
 			$sql = "
 			INSERT INTO [religion]
 					(
-						[religionDesc],														[isDefault],
-						[isNew],																[isDraft],
-						[isUpdate],															[isDelete],
-						[isActive],																[isApproved],
-						[isReview],															[isPost],
-						[executeBy],															[executeTime]
+						[religionDesc],													[isDefault],
+						[isNew],														[isDraft],
+						[isUpdate],														[isDelete],
+						[isActive],														[isApproved],
+						[isReview],														[isPost],
+						[executeBy],													[executeTime]
 					)
 			VALUES
 					(
-						'" . $this->model->getReligionDesc () . "',				'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-						'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
-						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
+						'" . $this->model->getReligionDesc () . "',						'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',				'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						'" . $this->model->getIsActive ( 0, 'single' ) . "',			'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',			'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',						" . $this->model->getExecuteTime () . "
 					);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			
 			$sql = "
 			INSERT INTO	RELIGION
 					(
-						RELIGIONDESC,													ISDEFAULT,
-						ISNEW,																	ISDRAFT,
-						ISUPDATE,															ISDELETE,
-						ISACTIVE,																ISAPPROVED,
-						ISREVIEW,															ISPOST,
-						EXECUTEBY,															EXECUTETIME
+						RELIGIONDESC,												ISDEFAULT,
+						ISNEW,														ISDRAFT,
+						ISUPDATE,													ISDELETE,
+						ISACTIVE,													ISAPPROVED,
+						ISREVIEW,													ISPOST,
+						EXECUTEBY,													EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getReligionDesc () . "',				'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getReligionDesc () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
@@ -178,9 +178,45 @@ class ReligionClass extends ConfigClass {
 						'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
 					)";
 		} else if ($this->getVendor () == self::DB2) {
-		
+			$sql = "
+			INSERT INTO	RELIGION
+			(
+			RELIGIONDESC,												ISDEFAULT,
+			ISNEW,														ISDRAFT,
+			ISUPDATE,													ISDELETE,
+			ISACTIVE,													ISAPPROVED,
+			ISREVIEW,													ISPOST,
+			EXECUTEBY,													EXECUTETIME
+			)
+			VALUES
+			(
+			'" . $this->model->getReligionDesc () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+			'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+			'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+			'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
+			'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
+			)";
 		} else if ($this->getVendor () == self::POSTGRESS) {
-		
+			$sql = "
+			INSERT INTO	RELIGION
+			(
+			RELIGIONDESC,												ISDEFAULT,
+			ISNEW,														ISDRAFT,
+			ISUPDATE,													ISDELETE,
+			ISACTIVE,													ISAPPROVED,
+			ISREVIEW,													ISPOST,
+			EXECUTEBY,													EXECUTETIME
+			)
+			VALUES
+			(
+			'" . $this->model->getReligionDesc () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+			'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+			'" . $this->model->getIsActive ( 0, 'single' ) . "',		'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+			'" . $this->model->getIsReview ( 0, 'single' ) . "',		'" . $this->model->getIsPost ( 0, 'single' ) . "',
+			'" . $this->model->getExecuteBy () . "',					" . $this->model->getExecuteTime () . "
+			)";
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 			exit ();
@@ -197,7 +233,7 @@ class ReligionClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Record Created", "religionId" => $religionId ) );
+		echo json_encode ( array ("success" => true, "message" => "Record Created", "religionId" => $religionId ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -213,9 +249,9 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	AND RELIGION.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-			
+				$this->auditFilter = "	AND RELIGION.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-			
+				$this->auditFilter = "	AND RELIGION.ISACTIVE	=	1	";
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();
@@ -228,9 +264,9 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	1	=	1 	";
 			} else if ($this->q->vendor == self::DB2) {
-			
+				$this->auditFilter = "	1	=	1 	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-			
+				$this->auditFilter = "	1	=	1 	";
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();
@@ -290,22 +326,22 @@ class ReligionClass extends ConfigClass {
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-			SELECT		RELIGION.RELIGIONID   		 AS 	\"religionId\",
-							RELIGION.RELIGIONDESC 		AS 	\"religionDesc\",
-							RELIGION.ISDEFAULT    			AS	\"isDefault\",
-							RELIGION.ISNEW		  			AS	\"isNew\",
-							RELIGION.ISDRAFT	  			AS	\"isDraft\",
-							RELIGION.ISUPDATE     			AS	\"isUpdate\",
-							RELIGION.ISDELETE	  			AS	\"isDelete\",
-							RELIGION.ISACTIVE	  			AS	\"isActive\",
-							RELIGION.ISAPPROVED   		AS	\"isApproved\",
-							RELIGION.ISREVIEW	  			AS	\"isReview\",
-							RELIGION.ISPOST  	  			AS	\"isPost\",
-							RELIGION.EXECUTEBY    		AS	\"executeBy\",
-							RELIGION.EXECUTETIME  		AS	\"executeTime\",
-							STAFF.STAFFNAME		  			AS	\"staffName\"	
+			SELECT		RELIGION.RELIGIONID   		 	AS 	\"religionId\",
+						RELIGION.RELIGIONDESC 			AS 	\"religionDesc\",
+						RELIGION.ISDEFAULT    			AS	\"isDefault\",
+						RELIGION.ISNEW		  			AS	\"isNew\",
+						RELIGION.ISDRAFT	  			AS	\"isDraft\",
+						RELIGION.ISUPDATE     			AS	\"isUpdate\",
+						RELIGION.ISDELETE	  			AS	\"isDelete\",
+						RELIGION.ISACTIVE	  			AS	\"isActive\",
+						RELIGION.ISAPPROVED   			AS	\"isApproved\",
+						RELIGION.ISREVIEW	  			AS	\"isReview\",
+						RELIGION.ISPOST  	  			AS	\"isPost\",
+						RELIGION.EXECUTEBY    			AS	\"executeBy\",
+						RELIGION.EXECUTETIME  			AS	\"executeTime\",
+						STAFF.STAFFNAME		  			AS	\"staffName\"	
 			FROM 		RELIGION
-			JOIN			STAFF
+			JOIN		STAFF
 			ON			RELIGION.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getReligionId ( 0, 'single' )) {
@@ -340,7 +376,9 @@ class ReligionClass extends ConfigClass {
 				$tempSql = $this->q->quickSearch ( $tableArray, $filterArray );
 				$sql .= $tempSql;
 			} else if ($this->getVendor () == self::DB2) {
+				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );
 			} else if ($this->getVendor () == self::POSTGRESS) {
+				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();
@@ -359,9 +397,9 @@ class ReligionClass extends ConfigClass {
 				$tempSql2 = $this->q->searching ();
 				$sql .= $tempSql2;
 			} else if ($this->getVendor () == self::DB2) {
-			
+				$sql .= $this->q->searching ();
 			} else if ($this->getVendor () == self::POSTGRESS) {
-			
+				$sql .= $this->q->searching ();
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();
@@ -390,9 +428,9 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sql .= "	ORDER BY " . strtoupper ( $this->getSortField () ) . " " . strtoupper ( $this->getOrder () ) . " ";
 			} else if ($this->getVendor () == self::DB2) {
-			
+				$sql .= "	ORDER BY " . strtoupper ( $this->getSortField () ) . " " . strtoupper ( $this->getOrder () ) . " ";
 			} else if ($this->getVendor () == self::POSTGRESS) {
-			
+				$sql .= "	ORDER BY " . strtoupper ( $this->getSortField () ) . " " . strtoupper ( $this->getOrder () ) . " ";
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();
@@ -411,12 +449,12 @@ class ReligionClass extends ConfigClass {
 				 * Sql Server and Oracle used row_number
 				 * Parameterize Query We don't support
 				 */
-				 /**
-				  * Only On Sql Server Denali
-				  * select * from Production.Product order by name asc 
-                  *offset 10 rows fetch first 10 rows only
-				  * 
-				  */
+				/**
+				 * Only On Sql Server Denali
+				 * select * from Production.Product order by name asc 
+				 *offset 10 rows fetch first 10 rows only
+				 * 
+				 */
 				$sql = "
 							WITH [religionDerived] AS
 							(
@@ -453,20 +491,20 @@ class ReligionClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	RELIGION.RELIGIONID   	AS 	\"religionId\",
-											RELIGION.RELIGIONDESC 	AS 	\"religionDesc\",
-											RELIGION.ISDEFAULT    		AS	\"isDefault\",
-											RELIGION.ISNEW		  		AS	\"isNew\",
-											RELIGION.ISDRAFT	 		AS	\"isDraft\",
-											RELIGION.ISUPDATE     		AS	\"isUpdate\",
-											RELIGION.ISDELETE	  		AS	\"isDelete\",
-											RELIGION.ISACTIVE	  		AS	\"isActive\",
-											RELIGION.ISAPPROVED   	AS	\"isApproved\",
-											RELIGION.ISREVIEW	  		AS 	\"isReview\",
-											RELIGION.ISPOST		  		AS	\"isPost\",
-											RELIGION.EXECUTEBY    	AS	\"executeBy\",
-											RELIGION.EXECUTETIME  	AS	\"executeTime\",
-											STAFF.STAFFNAME		  		AS	\"staffName\"	
+								SELECT	RELIGION.RELIGIONID   		AS 	\"religionId\",
+										RELIGION.RELIGIONDESC 		AS 	\"religionDesc\",
+										RELIGION.ISDEFAULT    		AS	\"isDefault\",
+										RELIGION.ISNEW		  		AS	\"isNew\",
+										RELIGION.ISDRAFT	 		AS	\"isDraft\",
+										RELIGION.ISUPDATE     		AS	\"isUpdate\",
+										RELIGION.ISDELETE	  		AS	\"isDelete\",
+										RELIGION.ISACTIVE	  		AS	\"isActive\",
+										RELIGION.ISAPPROVED   		AS	\"isApproved\",
+										RELIGION.ISREVIEW	  		AS 	\"isReview\",
+										RELIGION.ISPOST		  		AS	\"isPost\",
+										RELIGION.EXECUTEBY    		AS	\"executeBy\",
+										RELIGION.EXECUTETIME  		AS	\"executeTime\",
+										STAFF.STAFFNAME		  		AS	\"staffName\"	
 								FROM 	RELIGION
 								JOIN	STAFF
 								ON		RELIGION.EXECUTEBY 	  	=	STAFF.STAFFID
@@ -541,29 +579,32 @@ class ReligionClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-		SELECT	`" . $this->model->getPrimaryKeyName () . "`
-		FROM 	`" . $this->model->getTableName () . "`
-		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getReligionId( 0, 'single' ) . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName () . "`
+			FROM 	`" . $this->model->getTableName () . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-		SELECT	[" . $this->model->getPrimaryKeyName () . "]
-		FROM 	[" . $this->model->getTableName () . "]
-		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
+			SELECT	[" . $this->model->getPrimaryKeyName () . "]
+			FROM 	[" . $this->model->getTableName () . "]
+			WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
-		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId( 0, 'single' ) . "' ";
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
-		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
-		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
 			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
+		} else {
+			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
+			exit ();
 		}
 		$result = $this->q->fast ( $sql );
 		$total = $this->q->numberRows ( $result, $sql );
@@ -573,24 +614,24 @@ class ReligionClass extends ConfigClass {
 		} else {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql = "
-			UPDATE 	`religion`
-			SET 			`religionDesc`	=	'" . $this->model->getReligionDesc () . "',
-							`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-							`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+				UPDATE		`religion`
+				SET 		`religionDesc`		=	'" . $this->model->getReligionDesc () . "',
+							`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							`isDraft`			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-							`isUpdate`		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+							`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 							`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-							`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-							`isReview`		=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+							`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							`isReview`			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
 							`isPost`			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
-							`executeBy`		=	'" . $this->model->getExecuteBy () . "',
-							`executeTime`	=	" . $this->model->getExecuteTime () . "
-			WHERE 		`religionId`		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
+							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
+							`executeTime`		=	" . $this->model->getExecuteTime () . "
+				WHERE 		`religionId`		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sql = "
-			UPDATE 	[religion]
-			SET 			[religionDesc]	=	'" . $this->model->getReligionDesc () . "',
+				UPDATE 		[religion]
+				SET 		[religionDesc]		=	'" . $this->model->getReligionDesc () . "',
 							[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							[isNew]				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							[isDraft]			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
@@ -599,14 +640,14 @@ class ReligionClass extends ConfigClass {
 							[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							[isApproved]		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							[isReview]			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
-							[isPost]				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
-							[executeBy]		=	'" . $this->model->getExecuteBy () . "',
-							[executeTime]	=	" . $this->model->getExecuteTime () . "
-			WHERE 		[religionId]		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
+							[isPost]			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
+							[executeTime]		=	" . $this->model->getExecuteTime () . "
+			WHERE 		[religionId]			=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sql = "
-			UPDATE	RELIGION
-			SET 			RELIGIONDESC	=	'" . $this->model->getReligionDesc () . "',
+				UPDATE		RELIGION
+				SET 		RELIGIONDESC	=	'" . $this->model->getReligionDesc () . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
@@ -637,20 +678,20 @@ class ReligionClass extends ConfigClass {
 			WHERE 		RELIGIONID		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			} else if ($this->getVendor () == self::POSTGRESS) {
 				$sql = "
-			UPDATE	RELIGION
-			SET 			RELIGIONDESC	=	'" . $this->model->getReligionDesc () . "',
-							ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+				UPDATE		RELIGION
+				SET 		RELIGIONDESC		=	'" . $this->model->getReligionDesc () . "',
+							ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-							ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							ISDRAFT				=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
 							ISUPDATE			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							ISDELETE			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
 							ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-							ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							ISAPPROVED			=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							ISREVIEW			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
 							ISPOST				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
-							EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
-							EXECUTETIME	=	" . $this->model->getExecuteTime () . "
-			WHERE 		RELIGIONID		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
+							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
+							EXECUTETIME			=	" . $this->model->getExecuteTime () . "
+				WHERE 		RELIGIONID			=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();
@@ -687,29 +728,32 @@ class ReligionClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-		SELECT	`" . $this->model->getPrimaryKeyName () . "`
-		FROM 	`" . $this->model->getTableName () . "`
-		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getReligionId( 0, 'single' ) . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName () . "`
+			FROM 	`" . $this->model->getTableName () . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-		SELECT	[" . $this->model->getPrimaryKeyName () . "]
-		FROM 	[" . $this->model->getTableName () . "]
-		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
+			SELECT	[" . $this->model->getPrimaryKeyName () . "]
+			FROM 	[" . $this->model->getTableName () . "]
+			WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
-		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
-		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
-		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
+			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
+			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId( 0, 'single' ) . "' ";
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getReligionId ( 0, 'single' ) . "' ";
+		} else {
+			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
+			exit ();
 		}
 		$result = $this->q->fast ( $sql );
 		$total = $this->q->numberRows ( $result, $sql );
@@ -719,53 +763,79 @@ class ReligionClass extends ConfigClass {
 		} else {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql = "
-			UPDATE 	`religion`
-			SET 	`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					`isDraft`			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					`isReview`			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
-					`isPost`			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
-					`executeBy`			=	'" . $this->model->getExecuteBy () . "',
-					`executeTime`		=	" . $this->model->getExecuteTime () . "
-			WHERE 	`religionId`		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
+				UPDATE 	`religion`
+				SET 	`isDefault`			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						`isNew`				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						`isDraft`			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						`isUpdate`			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+						`isDelete`			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						`isActive`			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						`isApproved`		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						`isReview`			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						`isPost`			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						`executeBy`			=	'" . $this->model->getExecuteBy () . "',
+						`executeTime`		=	" . $this->model->getExecuteTime () . "
+				WHERE 	`religionId`		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sql = "
-			UPDATE 	[religion]
-			SET 	[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					[isNew]				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					[isDraft]			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					[isUpdate]			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					[isDelete]			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					[isApproved]		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					[isReview]			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
-					[isPost]			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
-					[executeBy]			=	'" . $this->model->getExecuteBy () . "',
-					[executeTime]		=	" . $this->model->getExecuteTime () . "
-			WHERE 	[religionId]		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
+				UPDATE 	[religion]
+				SET 	[isDefault]			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						[isNew]				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						[isDraft]			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						[isUpdate]			=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+						[isDelete]			=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						[isActive]			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						[isApproved]		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						[isReview]			=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						[isPost]			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						[executeBy]			=	'" . $this->model->getExecuteBy () . "',
+						[executeTime]		=	" . $this->model->getExecuteTime () . "
+				WHERE 	[religionId]		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sql = "
-			UPDATE 	RELIGION
-			SET 	ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
-					ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
-					ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
-					ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
-					ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
-					ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
-					ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
-					ISREVIEW		=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
-					ISPOST			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
-					EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
-					EXECUTETIME		=	" . $this->model->getExecuteTime () . "
-			WHERE 	RELIGIONID		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
+				UPDATE 	RELIGION
+				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+						ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						ISREVIEW		=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						ISPOST			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
+						EXECUTETIME		=	" . $this->model->getExecuteTime () . "
+				WHERE 	RELIGIONID		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			} else if ($this->getVendor () == self::DB2) {
-			
+				$sql = "
+				UPDATE 	RELIGION
+				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+						ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						ISREVIEW		=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						ISPOST			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
+						EXECUTETIME		=	" . $this->model->getExecuteTime () . "
+				WHERE 	RELIGIONID		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			} else if ($this->getVendor () == self::POSTGRESS) {
-			
+				$sql = "
+				UPDATE 	RELIGION
+				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						ISNEW			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						ISDRAFT			=	'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						ISUPDATE		=	'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+						ISDELETE		=	'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						ISACTIVE		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
+						ISAPPROVED		=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						ISREVIEW		=	'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						ISPOST			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
+						EXECUTETIME		=	" . $this->model->getExecuteTime () . "
+				WHERE 	RELIGIONID		=	'" . $this->model->getReligionId ( 0, 'single' ) . "'";
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();
@@ -798,8 +868,8 @@ class ReligionClass extends ConfigClass {
 		$loop = $this->model->getTotal ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-				UPDATE `" . $this->model->getTableName () . "`
-				SET";
+			UPDATE `" . $this->model->getTableName () . "`
+			SET";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			UPDATE 	[" . $this->model->getTableName () . "]
@@ -809,9 +879,13 @@ class ReligionClass extends ConfigClass {
 			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
 		} else if ($this->getVendor () == self::DB2) {
-		
+			$sql = "
+			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
+			SET    ";
 		} else if ($this->getVendor () == self::POSTGRESS) {
-		
+			$sql = "
+			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
+			SET    ";
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 			exit ();
@@ -829,9 +903,9 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
 			} else if ($this->getVendor () == self::DB2) {
-			
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
 			} else if ($this->getVendor () == self::POSTGRESS) {
-			
+				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";		
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();
@@ -941,9 +1015,11 @@ class ReligionClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
 		} else if ($this->getVendor () == self::DB2) {
-		
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
 		} else if ($this->getVendor () == self::POSTGRESS) {
-		
+			$sql .= "
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 			exit ();
@@ -986,9 +1062,17 @@ class ReligionClass extends ConfigClass {
 			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc () . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor () == self::DB2) {
-		
+			$sql = "
+			SELECT	RELIGIONDESC
+			FROM 	RELIGION
+			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc () . "'
+			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor () == self::POSTGRESS) {
-		
+			$sql = "
+			SELECT	RELIGIONDESC
+			FROM 	RELIGION
+			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc () . "'
+			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 			exit ();

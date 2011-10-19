@@ -194,7 +194,7 @@ class DocumentCategoryClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Record Created" ) );
+		echo json_encode ( array ("success" => true, "message" => "Record Created" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -560,7 +560,7 @@ class DocumentCategoryClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Record Update" ) );
+		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -627,7 +627,7 @@ class DocumentCategoryClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Record Remove" ) );
+		echo json_encode ( array ("success" => true, "message" => "Record Remove" ) );
 		exit ();
 	}
 	/**
@@ -770,7 +770,7 @@ class DocumentCategoryClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -817,6 +817,18 @@ class DocumentCategoryClass extends ConfigClass {
 				exit ();
 			}
 		}
+	}
+	function firstRecord($value) {
+		$this->recordSet->firstRecord ( $value );
+	}
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord ( $value, $primaryKeyValue );
+	}
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord ( $value, $primaryKeyValue );
+	}
+	function lastRecord($value) {
+		$this->recordSet->lastRecord ( $value );
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
@@ -945,7 +957,7 @@ class DocumentCategoryClass extends ConfigClass {
 		$objWriter->save ( $path );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => TRUE, "message" => "File generated", "filename" => $filename ) );
+			echo json_encode ( array ("success" => true, "message" => "File generated", "filename" => $filename ) );
 			exit ();
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );

@@ -188,7 +188,7 @@ class ReligionDetailClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Record Created", "religionDetailId" => $religionDetailId ) );
+		echo json_encode ( array ("success" => true, "message" => "Record Created", "religionDetailId" => $religionDetailId ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -700,7 +700,7 @@ class ReligionDetailClass extends ConfigClass {
 			}
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -852,7 +852,7 @@ class ReligionDetailClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
 	/**
@@ -899,6 +899,18 @@ class ReligionDetailClass extends ConfigClass {
 			echo json_encode ( array ("success" => "TRUE", "total" => $total, "message" => "Duplicate Non" ) );
 			exit ();
 		}
+	}
+	function firstRecord($value) {
+		$this->recordSet->firstRecord ( $value );
+	}
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord ( $value, $primaryKeyValue );
+	}
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord ( $value, $primaryKeyValue );
+	}
+	function lastRecord($value) {
+		$this->recordSet->lastRecord ( $value );
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
@@ -957,7 +969,7 @@ class ReligionDetailClass extends ConfigClass {
 		$objWriter->save ( $path );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => TRUE, "message" => "File generated", "filename" => $filename ) );
+			echo json_encode ( array ("success" => true, "message" => "File generated", "filename" => $filename ) );
 			exit ();
 		} else {
 			echo json_encode ( array ("success" => FALSE, "message" => "File not generated" ) );

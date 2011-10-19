@@ -516,7 +516,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
 		}
-		setLanguageId
+	
 		/**
 		 * System Validation Checking
 		 * @var $access
@@ -647,6 +647,18 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$this->q->commit ();
 		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
+	}
+	function firstRecord($value) {
+		$this->recordSet->firstRecord ( $value );
+	}
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord ( $value, $primaryKeyValue );
+	}
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord ( $value, $primaryKeyValue );
+	}
+	function lastRecord($value) {
+		$this->recordSet->lastRecord ( $value );
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()

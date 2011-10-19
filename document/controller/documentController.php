@@ -308,7 +308,7 @@ class DocumentClass extends ConfigClass {
 		$source = $this->path . $this->model->getDocumentDownloadFilename ();
 		chmod ( $source, 0777 );
 		$this->q->commit ();
-		echo json_encode ( array ("success" => TRUE, "message" => "Record Created", "documentId" => $documentId ) );
+		echo json_encode ( array ("success" => true, "message" => "Record Created", "documentId" => $documentId ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -1013,6 +1013,18 @@ class DocumentClass extends ConfigClass {
 		$this->q->commit ();
 		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
+	}
+	function firstRecord($value) {
+		$this->recordSet->firstRecord ( $value );
+	}
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord ( $value, $primaryKeyValue );
+	}
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord ( $value, $primaryKeyValue );
+	}
+	function lastRecord($value) {
+		$this->recordSet->lastRecord ( $value );
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()

@@ -209,7 +209,7 @@ class LoginClass extends ConfigClass {
 			}
 			$this->q->update ( $sql );
 			
-			echo json_encode ( array ("success" => TRUE, "message" => "success login" ) );
+			echo json_encode ( array ("success" => true, "message" => "success login" ) );
 			exit ();
 		
 		} else {

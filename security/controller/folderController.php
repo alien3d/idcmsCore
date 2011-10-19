@@ -389,7 +389,7 @@ class FolderClass extends ConfigClass {
 							) VALUES (
 								'" . $lastId . "',
 								21,
-								'" . $this->model - getfolderEnglish () . "'
+								'" . $this->model->getFolderEnglish () . "'
 							);";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
@@ -990,6 +990,18 @@ class FolderClass extends ConfigClass {
 	}
 	public function nextSequence() {
 		$this->recordSet->nextSequence ( $this->model->getModuleId () );
+	}
+	function firstRecord($value) {
+		$this->recordSet->firstRecord ( $value );
+	}
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord ( $value, $primaryKeyValue );
+	}
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord ( $value, $primaryKeyValue );
+	}
+	function lastRecord($value) {
+		$this->recordSet->lastRecord ( $value );
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()

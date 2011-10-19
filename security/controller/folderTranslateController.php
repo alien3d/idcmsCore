@@ -978,6 +978,18 @@ class folderTranslateClass extends ConfigClass {
 		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}
+	function firstRecord($value) {
+		$this->recordSet->firstRecord ( $value );
+	}
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord ( $value, $primaryKeyValue );
+	}
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord ( $value, $primaryKeyValue );
+	}
+	function lastRecord($value) {
+		$this->recordSet->lastRecord ( $value );
+	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
 	 */

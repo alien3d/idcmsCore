@@ -143,7 +143,7 @@ class CalendarClass extends ConfigClass {
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
 		 * @variables $filterArray;
 		 */
-
+		$filterArray = array();
 		/**
 		 * filter table
 		 * @variables $tableArray
@@ -361,6 +361,18 @@ class CalendarClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
+	}
+	function firstRecord($value) {
+		$this->recordSet->firstRecord ( $value );
+	}
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord ( $value, $primaryKeyValue );
+	}
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord ( $value, $primaryKeyValue );
+	}
+	function lastRecord($value) {
+		$this->recordSet->lastRecord ( $value );
 	}
 	/* (non-PHPdoc)
 	 * @see config::excel()
