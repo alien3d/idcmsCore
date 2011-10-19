@@ -531,20 +531,20 @@ Ext
 				width : 50
 			}, {
 				dataIndex : "languageCode",
-				header : "languageCode",
+				header : languageCodeLabel,
 				sortable : true,
 				hidden : false,
 				width : 100
 			}, {
 				dataIndex : "languageDesc",
-				header : "languageDesc",
+				header : languageDescLabel,
 				sortable : true,
 				hidden : false,
 				width : 100
 
 			}, {
 				dataIndex : "folderNative",
-				header : "folderNative",
+				header : folderNativeLabel,
 				sortable : true,
 				hidden : false,
 				width : 100,

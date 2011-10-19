@@ -359,62 +359,104 @@ class FolderClass extends ConfigClass {
 			$sql = "
 				 	INSERT INTO `folderTranslate`
 				 		(
-						 	`folderId`,
-						 	`languageId`,
-							`folderNative`
+						 	`folderId`,														`languageId`,
+							`folderNative`,													`isDefault`,							
+							`isNew`,														`isDraft`,								
+							`isUpdate`,														`isDelete`,								
+							`isActive`,														`isApproved`,							
+							`isReview`,														`isPost`,
+							`executeBy`,													`executeTime`
 						) VALUES (
-							'" . $lastId . "',
-							21,
-							'" . $this->model->getfolderEnglish () . "'
-						);";
+							'" . $lastId . "',												'" . $this->getDefaultLanguageId() . "',
+							'" . $this->model->getFolderEnglish () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',			
+							'" . $this->model->getIsNew ( 0, 'single' )  . "',					'" . $this->model->getIsDraft ( 0, 'single' ) . "',				
+							'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',			
+							'" . $this->model->getIsActive ( 0, 'single' ) . "',			'" . $this->model->getIsApproved ( 0, 'single' ) . "',			
+							'" . $this->model->getIsReview ( 0, 'single' ) . "',			'" . $this->model->getIsPost ( 0, 'single' ) . "',										
+							'" . $this->model->getExecuteBy () . "',						" . $this->model->getExecuteTime () . "
+					);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
-				 	INSERT INTO  [folderTranslate]
-							(
-							 	[folderId],
-								[languageId],
-								[folderNative]
-							) VALUES (
-								'" . $lastId . "',
-								21,
-								'" . $this->model->getfolderEnglish () . "'
-							);";
+			INSERT INTO [folderTranslate]
+					(
+						[folderId],														[languageId],
+						[folderNative],													[isDefault],
+						[isNew],														[isDraft],
+						[isUpdate],														[isDelete],
+						[isActive],														[isApproved],
+						[isReview],														[isPost],
+						[executeBy],													[executeTime]
+				)
+			VALUES
+				(
+						'" . $lastId . "',													'" . $this->getDefaultLanguageId() . "',
+						'" . $this->model->getFolderEnglish () . "',						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',					'" . $this->model->getIsDraft ( 0, 'single' ) . "',				
+						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',				'" . $this->model->getIsDelete ( 0, 'single' ) . "',			
+						'" . $this->model->getIsActive ( 0, 'single' ) . "',				'" . $this->model->getIsApproved ( 0, 'single' ) . "',			
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',				'" . $this->model->getIsPost ( 0, 'single' ) . "',										
+						'" . $this->model->getExecuteBy () . "',							" . $this->model->getExecuteTime () . "
+			);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-				 	INSERT INTO	FOLDERTRANSLATE
-							(
-							 	FOLDERID,
-								LANGUAGEID,
-								FOLDERNATIVE
-							) VALUES (
-								'" . $lastId . "',
-								21,
-								'" . $this->model->getFolderEnglish () . "'
-							);";
+			INSERT INTO	FOLDERTRANSLATE
+				(
+						FOLDERID,														LANGUAGEID,
+						FOLDERNATIVE,													ISDEFAULT,							
+						ISNEW,															ISDRAFT,								
+						ISUPDATE,														ISDELETE,								
+						ISACTIVE,														ISAPPROVED,							
+						ISREVIEW,														ISPOST,
+						EXECUTEBY,														EXECUTETIME
+			)VALUES	(
+						'" . $lastId . "',												'" . $this->getDefaultLanguageId() . "',
+						'" .$this->model->getFolderEnglish () . "',						'" . $this->model->getIsDefault ( 0, 'single' ) . "',	
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',				'" . $this->model->getIsDraft ( 0, 'single' ) . "',				
+						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',			
+						'" . $this->model->getIsActive ( 0, 'single' ) . "',			'" . $this->model->getIsApproved ( 0, 'single' ) . "',			
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',			'" . $this->model->getIsPost ( 0, 'single' ) . "',										
+						'" . $this->model->getExecuteBy () . "',						" . $this->model->getExecuteTime () . "
+			)";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
-				 	INSERT INTO	FOLDERTRANSLATE
-							(
-							 	FOLDERID,
-								LANGUAGEID,
-								FOLDERNATIVE
-							) VALUES (
-								'" . $lastId . "',
-								21,
-								'" . $this->model->getfolderEnglish () . "'
-							);";
+			INSERT INTO 	FOLDERTRANSLATE
+			(
+							FOLDERID,														LANGUAGEID,
+							FOLDERNATIVE,													ISDEFAULT,
+							ISNEW,															ISDRAFT,
+							ISUPDATE,														ISDELETE,
+							ISACTIVE,														ISAPPROVED,
+							ISREVIEW,														ISPOST,
+							EXECUTEBY,														EXECUTETIME
+			)VALUES	(
+							'" . $lastId . "',												'" . $this->getDefaultLanguageId() . "',
+							'" . $this->model->getFolderNative () . "',						'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+							'" . $this->model->getIsNew ( 0, 'single' ) . "',				'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+							'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+							'" . $this->model->getIsActive ( 0, 'single' ) . "',			'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+							'" . $this->model->getIsReview ( 0, 'single' ) . "',			'" . $this->model->getIsPost ( 0, 'single' ) . "',
+							'" . $this->model->getExecuteBy () . "',						" . $this->model->getExecuteTime () . "
+			)";
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
-				 	INSERT INTO	FOLDERTRANSLATE
-							(
-							 	FOLDERID,
-								LANGUAGEID,
-								FOLDERNATIVE
-							) VALUES (
-								'" . $lastId . "',
-								21,
-								'" . $this->model->getfolderEnglish () . "'
-							);";
+			INSERT INTO	FOLDERTRANSLATE
+			(
+						FOLDERID,														LANGUAGEID,
+						FOLDERNATIVE,													ISDEFAULT,
+						ISNEW,															ISDRAFT,
+						ISUPDATE,														ISDELETE,
+						ISACTIVE,														ISAPPROVED,
+						ISREVIEW,														ISPOST,
+						EXECUTEBY,														EXECUTETIME
+			)VALUES	(
+						'" . $lastId . "',												'" . $this->getDefaultLanguageId() . "',
+						'" . $this->model->getFolderNative () . "',						'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+						'" . $this->model->getIsNew ( 0, 'single' ) . "',				'" . $this->model->getIsDraft ( 0, 'single' ) . "',
+						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',
+						'" . $this->model->getIsActive ( 0, 'single' ) . "',			'" . $this->model->getIsApproved ( 0, 'single' ) . "',
+						'" . $this->model->getIsReview ( 0, 'single' ) . "',			'" . $this->model->getIsPost ( 0, 'single' ) . "',
+						'" . $this->model->getExecuteBy () . "',						" . $this->model->getExecuteTime () . "
+			)";
 		}
 		$this->q->create ( $sql );
 		if ($this->q->execute == 'fail') {

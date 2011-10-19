@@ -46,16 +46,16 @@ class FolderTranslateModel extends ValidationClass {
 		 * All the $_POST enviroment.
 		 */
 		if (isset ( $_POST ['folderTranslateId'] )) {
-			$this->setfolderId ( $this->strict ( $_POST ['folderId'], 'numeric' ), 0, 'single' );
+			$this->setFolderId ( $this->strict ( $_POST ['folderId'], 'numeric' ), 0, 'single' );
 		}
-		if (isset ( $_POST ['folderSequence'] )) {
-			$this->setfolderSequence ( $this->strict ( $_POST ['folderSequence'], 'memo' ) );
+		if (isset ( $_POST ['folderId'] )) {
+			$this->setFolderId ( $this->strict ( $_POST ['folderId'], 'memo' ) );
 		}
 		if (isset ( $_POST ['folderCode'] )) {
-			$this->setfolderCode ( $this->strict ( $_POST ['folderCode'], 'memo' ) );
+			$this->setFolderCode ( $this->strict ( $_POST ['languageId'], 'memo' ) );
 		}
-		if (isset ( $_POST ['folderNote'] )) {
-			$this->setfolderNote ( $this->strict ( $_POST ['folderNote'], 'memo' ) );
+		if (isset ( $_POST ['folderNative'] )) {
+			$this->setFolderNative ( $this->strict ( $_POST ['folderNative'], 'memo' ) );
 		}
 		
 		/**
@@ -336,15 +336,15 @@ class FolderTranslateModel extends ValidationClass {
 	 * Set Folder Identication Value
 	 * @param  int $value
 	 */
-	public function setFolder($value) {
-		$this->folderd = $value;
+	public function setFolderId($value) {
+		$this->folderId = $value;
 	}
 	/**
 	 * Return Folder Identication Value
 	 * @return int
 	 */
 	public function getFolderId() {
-		return $this->folderd;
+		return $this->folderId;
 	}
 	/**
 	 * Set folderText  Value

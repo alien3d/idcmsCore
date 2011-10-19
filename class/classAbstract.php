@@ -143,6 +143,7 @@ abstract class ConfigClass
      * @var const string
      */
     const IBASE = 'ibase';
+
     // end basic access database
     /*
 	 *   @version  0.1  filter strict php setting
@@ -195,6 +196,7 @@ abstract class ConfigClass
         } else {
             // undefined database vendor and application
         }
+        $this->setDefaultLanguageId(21);
     }
     /**
      * New Record From Database
@@ -634,5 +636,19 @@ abstract class ConfigClass
     {
         return $this->sortField;
     }
+	/**
+	 * @return the $defaultLanguageId
+	 */
+	public function getDefaultLanguageId() {
+		return $this->defaultLanguageId;
+	}
+
+	/**
+	 * @param number $defaultLanguageId
+	 */
+	public function setDefaultLanguageId($defaultLanguageId) {
+		$this->defaultLanguageId = $defaultLanguageId;
+	}
+
 }
 ?>

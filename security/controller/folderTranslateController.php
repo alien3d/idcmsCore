@@ -140,7 +140,7 @@ class folderTranslateClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getFolderId () . "',							'" . $this->model->getLanguageId () . "'
+						'" . $this->model->getFolderId () . "',							'" . $this->model->getLanguageId () . "',
 						'" . $this->model->getFolderNative () . "',						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',				'" . $this->model->getIsDraft ( 0, 'single' ) . "',				
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',			
@@ -162,7 +162,7 @@ class folderTranslateClass extends ConfigClass {
 				)
 			VALUES
 				(
-						'" . $this->model->getFolderId () . "',							'" . $this->model->getLanguageId () . "'
+						'" . $this->model->getFolderId () . "',							'" . $this->model->getLanguageId () . "',
 						'" . $this->model->getFolderNative () . "',						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',				'" . $this->model->getIsDraft ( 0, 'single' ) . "',				
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',			
@@ -182,7 +182,7 @@ class folderTranslateClass extends ConfigClass {
 							ISREVIEW,													ISPOST,
 							EXECUTEBY,													EXECUTETIME
 				VALUES	(
-							'" . $this->model->getFolderId () . "',						'" . $this->model->getLanguageId () . "'
+							'" . $this->model->getFolderId () . "',						'" . $this->model->getLanguageId () . "',
 						'" . $this->model->getFolderNative () . "',						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			
 						'" . $this->model->getIsNew ( 0, 'single' ) . "',				'" . $this->model->getIsDraft ( 0, 'single' ) . "',				
 						'" . $this->model->getIsUpdate ( 0, 'single' ) . "',			'" . $this->model->getIsDelete ( 0, 'single' ) . "',			
@@ -202,7 +202,7 @@ class folderTranslateClass extends ConfigClass {
 							ISREVIEW,													ISPOST,
 							EXECUTEBY,													EXECUTETIME
 				VALUES	(
-							'" . $this->model->getFolderId () . "',						'" . $this->model->getLanguageId () . "'
+							'" . $this->model->getFolderId () . "',						'" . $this->model->getLanguageId () . "',
 							'" . $this->model->getFolderNative () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',			
 							'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',				
 							'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',			
@@ -222,7 +222,7 @@ class folderTranslateClass extends ConfigClass {
 							ISREVIEW,													ISPOST,
 							EXECUTEBY,													EXECUTETIME
 				VALUES	(
-							'" . $this->model->getFolderId () . "',						'" . $this->model->getLanguageId () . "'
+							'" . $this->model->getFolderId () . "',						'" . $this->model->getLanguageId () . "',
 							'" . $this->model->getFolderNative () . "',					'" . $this->model->getIsDefault ( 0, 'single' ) . "',			
 							'" . $this->model->getIsNew ( 0, 'single' ) . "',			'" . $this->model->getIsDraft ( 0, 'single' ) . "',				
 							'" . $this->model->getIsUpdate ( 0, 'single' ) . "',		'" . $this->model->getIsDelete ( 0, 'single' ) . "',			
@@ -273,15 +273,23 @@ class folderTranslateClass extends ConfigClass {
 					`folderTranslate`.`isReview`,
 					`folderTranslate`.`isPost`,
 					`folderTranslate`.`executeBy`,
-					`folderTranslate`.`executeTime`
+					`folderTranslate`.`executeTime`,
+					`language`.`languageDesc`,
+					`language`.`languageCode`
 			FROM 	`folderTranslate`
 			JOIN	`staff`
-			ON		`folderTranslate`.`executeBy` = `staff`.`staffId` ";
+			ON		`folderTranslate`.`executeBy` = `staff`.`staffId`
+			JOIN	`language`
+			ON		`folderTranslate`.`languageId`	= `language`.`languageId`	
+			WHERE 	1	=	1 ";
 			if ($this->model->getFolderTranslateId ( 0, 'single' )) {
 				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getFolderTranslateId ( 0, 'single' ) . "'";
 			}
+			if($this->model->getFolderId()){
+				$sql.= " AND `folderId`='".$this->model->getFolderId()."'";
+			}
 		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "]
+			$sql = "
 			SELECT	[folderTranslate].[folderTranslateId],
 					[folderTranslate].[folderId],
 					[folderTranslate].[languageId],
@@ -296,12 +304,20 @@ class folderTranslateClass extends ConfigClass {
 					[folderTranslate].[isReview],
 					[folderTranslate].[isPost],
 					[folderTranslate].[executeBy],
-					[folderTranslate].[executeTime]
+					[folderTranslate].[executeTime],
+					[language].[languageDesc],
+					[language].[languageCode]
 			FROM 	[folderTranslate]
 			JOIN	[staff]
-			ON		[folderTranslate].[executeBy] = staff.staffId ";
+			ON		[folderTranslate].[executeBy] = [staff].[staffId]
+			JOIN	[language]
+			ON		[folderTranslate].[languageId]	= [language].[languageId] 
+			WHERE 	1	=	1 ";
 			if ($this->model->getFolderTranslateId ( 0, 'single' )) {
 				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getFolderTranslateId ( 0, 'single' ) . "'";
+			}
+			if($this->model->getFolderId()){
+				$sql.= " AND [folderId]='".$this->model->getFolderId()."'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -319,12 +335,20 @@ class folderTranslateClass extends ConfigClass {
 					FOLDERTRANSLATE.ISREVIEW,
 					FOLDERTRANSLATE.ISPOST,
 					FOLDERTRANSLATE.EXECUTEBY,
-					FOLDERTRANSLATE.EXECUTETIME
+					FOLDERTRANSLATE.EXECUTETIME,
+					LANGUAGE.LANGUAGEDESC,
+					LANGUAGE.LANGUAGECODE
 			FROM 	FOLDERTRANSLATE
 			JOIN	STAFF
-			ON		FOLDERTRANSLATE.EXECUTEBY = STAFF.STAFFID";
+			ON		FOLDERTRANSLATE.EXECUTEBY = STAFF.STAFFID
+			JOIN	LANGUAGE
+			ON		FOLDERTRANSLATE.LANGUAGEID	= LANGUAGE.LANGUAGEID
+			WHERE 	1	=	1";
 			if ($this->model->getFolderTranslateId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "=" . $this->model->getFolderTranslateId ( 0, 'single' ) . "'";
+			}
+			if($this->model->getFolderId()){
+				$sql.= " AND FOLDERID='".$this->model->getFolderId()."'";
 			}
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
@@ -342,10 +366,15 @@ class folderTranslateClass extends ConfigClass {
 					FOLDERTRANSLATE.ISREVIEW,
 					FOLDERTRANSLATE.ISPOST,
 					FOLDERTRANSLATE.EXECUTEBY,
-					FOLDERTRANSLATE.EXECUTETIME
+					FOLDERTRANSLATE.EXECUTETIME,
+					LANGUAGE.LANGUAGEDESC,
+					LANGUAGE.LANGUAGECODE
 			FROM 	FOLDERTRANSLATE
 			JOIN	STAFF
-			ON		FOLDERTRANSLATE.EXECUTEBY = STAFF.STAFFID";
+			ON		FOLDERTRANSLATE.EXECUTEBY = STAFF.STAFFID
+			JOIN	LANGUAGE
+			ON		FOLDERTRANSLATE.LANGUAGEID	= LANGUAGE.LANGUAGEID
+			WHERE 	1	=	1";
 			if ($this->model->getFolderTranslateId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "=" . $this->model->getFolderTranslateId ( 0, 'single' ) . "'";
 			}
@@ -365,12 +394,20 @@ class folderTranslateClass extends ConfigClass {
 					FOLDERTRANSLATE.ISREVIEW,
 					FOLDERTRANSLATE.ISPOST,
 					FOLDERTRANSLATE.EXECUTEBY,
-					FOLDERTRANSLATE.EXECUTETIME
+					FOLDERTRANSLATE.EXECUTETIME,
+					LANGUAGE.LANGUAGEDESC,
+					LANGUAGE.LANGUAGECODE
 			FROM 	FOLDERTRANSLATE
 			JOIN	STAFF
-			ON		FOLDERTRANSLATE.EXECUTEBY = STAFF.STAFFID";
+			ON		FOLDERTRANSLATE.EXECUTEBY = STAFF.STAFFID
+			JOIN	LANGUAGE
+			ON		FOLDERTRANSLATE.LANGUAGEID	= LANGUAGE.LANGUAGEID
+			WHERE 	1	=	1";
 			if ($this->model->getFolderTranslateId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "=" . $this->model->getFolderTranslateId ( 0, 'single' ) . "'";
+			}
+			if($this->model->getFolderId()){
+				$sql.= " AND FOLDERID='".$this->model->getFolderId()."'";
 			}
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
@@ -455,18 +492,29 @@ class folderTranslateClass extends ConfigClass {
 				$sql = "
 							WITH [folderTranslateDerived] AS
 							(
-								SELECT	*,
-								[folderTranslate].[executeBy],
-								[folderTranslate].[executeTime]
-								ROW_NUMBER() OVER (ORDER BY [folderTranslateId]) AS 'RowNumber'
-								FROM 		[folderTranslate]
-								WHERE	1  " . $tempSql . $tempSql2 . "
+								SELECT	[folderTranslate].[folderTranslateId],
+										[folderTranslate].[folderId],
+										[folderTranslate].[languageId],
+										[folderTranslate].[folderNative],
+										[folderTranslate].[isDefault],
+										[folderTranslate].[isNew],
+										[folderTranslate].[isDraft],
+										[folderTranslate].[isDelete],
+										[folderTranslate].[isActive],
+										[folderTranslate].[isUpdate],
+										[folderTranslate].[isApproved],
+										[folderTranslate].[isReview],
+										[folderTranslate].[isPost],
+										[folderTranslate].[executeBy],
+										ROW_NUMBER() OVER (ORDER BY [folderTranslateId]) AS 'RowNumber'
+								FROM 	[folderTranslate]
+								WHERE	1 =1   " . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
 							FROM 		[folderTranslateDerived]
 							WHERE 		[RowNumber]
-							BETWEEN	" . $this->getStart () . "
-							AND 			" . ($this->getStart () + $_POST ['limit'] - 1) . ";";
+							BETWEEN	" . ($this->getStart () + 1) . "
+							AND 			" . ($this->getStart () + $this->getLimit ()) . ";";
 			} else if ($this->getVendor () == self::ORACLE) {
 				/**
 				 * Oracle using derived table also
@@ -476,13 +524,27 @@ class folderTranslateClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT 		*
+									SELECT 		FOLDERTRANSLATE.FOLDERTRANSLATEID,
+												FOLDERTRANSLATE.FOLDERID,
+												FOLDERTRANSLATE.LANGUAGEID,
+												FOLDERTRANSLATE.FOLDERNATIVE,
+												FOLDERTRANSLATE.ISDEFAULT,
+												FOLDERTRANSLATE.ISNEW,
+												FOLDERTRANSLATE.ISDRAFT,
+												FOLDERTRANSLATE.ISDELETE,
+												FOLDERTRANSLATE.ISACTIVE,
+												FOLDERTRANSLATE.ISUPDATE,
+												FOLDERTRANSLATE.ISAPPROVED,
+												FOLDERTRANSLATE.ISREVIEW,
+												FOLDERTRANSLATE.ISPOST,
+												FOLDERTRANSLATE.EXECUTEBY,
+												FOLDERTRANSLATE.EXECUTETIME
 									FROM 		FOLDERTRANSLATE
-									WHERE		1
+									WHERE		1 	=	1
 									AND 		" . $tempSql . $tempSql2 . "
 								 ) a
-						WHERE rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
-						where r >=  '" . $this->getStart () . "'";
+						WHERE rownum <= '" . ($this->getStart () + $this->getLimit ())  . "' )
+						where r >=  '" .($this->getStart () + 1) . "'";
 			} else {
 				echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 				exit ();
@@ -492,7 +554,7 @@ class folderTranslateClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (! ($this->getFolderTranslateId ( 0, 'single' ))) {
+		if (! ($this->model->getFolderTranslateId ( 0, 'single' ))) {
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
 				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -503,7 +565,7 @@ class folderTranslateClass extends ConfigClass {
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
 			$items [] = $row;
 		}
-		if ($this->getFolderTranslateId ( 0, 'single' )) {
+		if ($this->model->getFolderTranslateId ( 0, 'single' )) {
 			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
