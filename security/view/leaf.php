@@ -69,6 +69,10 @@ x-grid3-row-alt {
 	src="../../javascript/examples/ux/checkColumn.js"></script>
 <script type="text/javascript"
 	src="../../javascript/examples/ux/RowEditor.js"></script>
+	<script type="text/javascript"
+	src="../../javascript/examples/ux/BufferView.js"></script>	
+<script type="text/javascript"
+	src="../../javascript/examples/ux/RowExpander.js"></script>
 <script  type="text/javascript"
 	src="../javascript/original/leaf.js?<?php echo time(); ?>"></script>
 </html>

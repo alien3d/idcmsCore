@@ -27,6 +27,10 @@ if(isset($_SESSION['theme'])) { ?>
 	src="../../javascript/ext-all.js"></script>
 		<script type="text/javascript"
 	src="../../javascript/examples/ux/checkColumn.js"></script>
+<script type="text/javascript"
+	src="../../javascript/examples/ux/BufferView.js"></script>	
+<script type="text/javascript"
+	src="../../javascript/examples/ux/RowExpander.js"></script>
 <script  type="text/javascript"
 	src="../javascript/original/leafAccess.js?<?php echo time(); ?>"></script>
 
