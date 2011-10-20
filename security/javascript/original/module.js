@@ -1065,6 +1065,34 @@ Ext
 									}
 								} ]
 					});
+			
+			var auditWindow = new Ext.Window({
+				layout : 'fit',
+				width : 500,
+				height : 300,
+				closeAction : 'hide',
+				plain : true,
+				items : {
+					xtype : 'tabpanel',
+					activeTab : 0,
+					items : [ {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logGrid ]
+					}, {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logAdvanceGrid ]
+					} ]
+
+				},
+				title : 'Sql Statement audit',
+
+				maximizable : true,
+				autoScroll : true
+			});
 			var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',

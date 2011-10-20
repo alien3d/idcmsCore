@@ -67,7 +67,7 @@ Ext
 					name : 'access',
 					type : 'string'
 				}, {
-					name : 'log_error',
+					name : 'logError',
 					type : 'string'
 				} ]
 			});
@@ -176,8 +176,8 @@ Ext
 
 				{
 					type : 'string',
-					dataIndex : 'log_error',
-					column : 'log_error',
+					dataIndex : 'logError',
+					column : 'logError',
 					table : 'log'
 				} ]
 			});
@@ -267,7 +267,7 @@ Ext
 			},
 
 			{
-				dataIndex : 'log_error',
+				dataIndex : 'logError',
 				header : logErrorLabel,
 				sortable : true,
 				hidden : false
@@ -323,7 +323,7 @@ Ext
 			},
 
 			{
-				dataIndex : 'log_error',
+				dataIndex : 'logError',
 				header : logErrorLabel,
 				sortable : true,
 				hidden : false
@@ -481,12 +481,12 @@ Ext
 				anchor : '95%'
 			});
 
-			var log_error = new Ext.form.TextArea({
+			var logError = new Ext.form.TextArea({
 				labelAlign : 'left',
 				fieldLabel : logErrorLabel,
-				hiddenName : 'log_error',
+				hiddenName : 'logError',
 				style : 'height: 35%',
-				name : 'log_error',
+				name : 'logError',
 				allowBlank : true,
 				blankText : blankTextLabel,
 				anchor : '95%'
@@ -531,7 +531,7 @@ Ext
 
 						access,
 
-						log_error
+						logError
 
 						],
 						buttonVAlign : 'top',

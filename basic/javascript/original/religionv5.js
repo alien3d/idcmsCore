@@ -276,7 +276,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// //uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -331,7 +330,7 @@ Ext
 					name : 'access',
 					type : 'string'
 				}, {
-					name : 'log_error',
+					name : 'logError',
 					type : 'string'
 				} ]
 			});
@@ -342,8 +341,7 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,jsonResponse.message);//
-						// uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -1301,8 +1299,8 @@ Ext
 
 				{
 					type : 'string',
-					dataIndex : 'log_error',
-					column : 'log_error',
+					dataIndex : 'logError',
+					column : 'logError',
 					table : 'log'
 				} ]
 			});
@@ -1362,7 +1360,7 @@ Ext
 			},
 
 			{
-				dataIndex : 'log_error',
+				dataIndex : 'logError',
 				header : logErrorLabel,
 				sortable : true,
 				hidden : false
@@ -1630,6 +1628,8 @@ Ext
 									handler : function() {
 
 										if (auditWindow) {
+											religionStore.reload();
+											religionDetailStore.reload();
 											auditWindow.show().center();
 										}
 									}
@@ -1724,6 +1724,8 @@ Ext
 									iconCls : 'bullet_disk',
 									disabled : true,
 									handler : function() {
+										Ext.getCmp('newButton').disable();
+
 										var id = 0;
 										var id = Ext.getCmp('religionId')
 												.getValue();
@@ -1809,6 +1811,8 @@ Ext
 									iconCls : 'trash',
 									disabled : true,
 									handler : function() {
+										Ext.getCmp('newButton').disable();
+
 										Ext.Msg
 												.show({
 													title : deleteRecordTitleMessageLabel,
@@ -1885,6 +1889,8 @@ Ext
 									id :'resetButton',
 									iconCls : 'database_refresh',
 									handler : function() {
+										Ext.getCmp('newButton').enable();
+
 										formPanel.getForm().reset();
 									}
 
@@ -1896,6 +1902,8 @@ Ext
 									id :'postButton',
 									iconCls : 'lock',
 									handler : function() {
+										Ext.getCmp('newButton').disable();
+
 										formPanel.getForm().reset();
 									}
 
@@ -1918,6 +1926,8 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_first',
 									handler : function() {
+										Ext.getCmp('newButton').disable();
+
 										if (Ext.getCmp('firstRecord')
 												.getValue() == '') {
 											Ext.Ajax
@@ -2030,6 +2040,8 @@ Ext
 																		action.result.message);
 													}
 												});
+										
+										Ext.getCmp('newButton').di
 
 									}
 								},
@@ -2041,6 +2053,8 @@ Ext
 									iconCls : 'resultset_previous',
 									disabled : true,
 									handler : function() {
+										Ext.getCmp('newButton').disable();
+
 										if (Ext.getCmp('previousRecord')
 												.getValue() == '' ||
 												
@@ -2143,6 +2157,7 @@ Ext
 									disabled : true,
 									iconCls : 'resultset_next',
 									handler : function() {
+										Ext.getCmp('newButton').disable();
 										if (Ext.getCmp('nextRecord').getValue() == '' ||
 											Ext.getCmp('nextRecord').getValue() == undefined
 										
@@ -2262,6 +2277,8 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_last',
 									handler : function() {
+										Ext.getCmp('newButton').disable();
+
 										if (Ext.getCmp('lastRecord').getValue() == ''
 										||
 											Ext.getCmp('lastRecord').getValue() == undefined) {

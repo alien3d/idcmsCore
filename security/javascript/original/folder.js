@@ -330,7 +330,7 @@ Ext
 					name : 'access',
 					type : 'string'
 				}, {
-					name : 'log_error',
+					name : 'logError',
 					type : 'string'
 				} ]
 			});
@@ -493,118 +493,7 @@ Ext
 			});
 			var folderColumnModel = [
 					new Ext.grid.RowNumberer(),
-					{
-						id : 'action',
-						header : 'Task',
-						xtype : 'actioncolumn',
-						width : 50,
-						items : [
-								{
-									icon : '../../javascript/resources/images/icon/application_edit.png',
-									tooltip : updateRecordToolTipLabel,
-									handler : function(grid, rowIndex, colIndex) {
-										var record = folderStore
-												.getAt(rowIndex);
-										formPanel.getForm().reset();
-										formPanel.form
-												.load({
-													url : "../controller/folderController.php",
-													method : "POST",
-													waitTitle : systemLabel,
-													waitMsg : waitMessageLabel,
-													params : {
-														method : "read",
-														mode : "update",
-														folderId : record.data.folderId,
-														leafId : leafId
-													},
-													success : function(form,
-															action) {
-														
-														viewPort.items.get(1)
-																.expand();
-													},
-													failure : function(form,
-															action) {
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		action.result.message);
-													}
-												});
-									}
-								},
-								{
-									icon : '../../javascript/resources/images/icon/trash.gif',
-									tooltip : deleteRecordToolTipLabel,
-									handler : function(grid, rowIndex, colIndex) {
-										var record = folderStore
-												.getAt(rowIndex);
-										Ext.Msg
-												.show({
-													title : deleteRecordTitleMessageLabel,
-													msg : deleteRecordMessageLabel,
-													icon : Ext.Msg.QUESTION,
-													buttons : Ext.Msg.YESNO,
-													scope : this,
-													fn : function(response) {
-														if ("yes" == response) {
-															Ext.Ajax
-																	.request({
-																		url : "../controller/folderController.php",
-																		params : {
-																			method : "delete",
-																			folderId : record.data.folderId,
-																			leafId : leafId
-																		},
-																		success : function(
-																				response,
-																				options) {
-																			jsonResponse = Ext
-																					.decode(response.responseText);
-																			if (jsonResponse.success == true) {
-																				title = successLabel;
-																			} else {
-																				title = failureLabel;
-																			}
-																			folderStore
-																					.reload({
-																						params : {
-																							leafId : leafId,
-																							start : 0,
-																							limit : perPage
-																						}
-																					});
-																			folderStoreList
-																					.reload({
-																						params : {
-																							leafId : leafId,
-																							start : 0,
-																							limit : perPage
-																						}
-																					});
-																			Ext.MessageBox
-																					.alert(
-																							title,
-																							jsonResponse.message);
-																		},
-																		failure : function(
-																				response,
-																				options) {
-																			Ext.MessageBox
-																					.alert(
-																							systemErrorLabel,
-																							escape(response.status)
-																									+ ":"
-																									+ response.statusText);
-																		}
-																	});
-														}
-													}
-												});
-									}
-								} ]
-					},
+				
 					{
 						dataIndex : 'folderSequence',
 						header : folderSequenceLabel
@@ -725,6 +614,15 @@ Ext
 												action.result.message);
 									}
 								});
+								folderTranslateStore.load({
+									params : {
+										method :'read',
+										folderId : record.data.folderId,
+										leafId : leafId,
+										isAdmin : isAdmin
+									}
+								});
+								
 							}
 						},
 						tbar : {
@@ -1319,8 +1217,8 @@ Ext
 
 				{
 					type : 'string',
-					dataIndex : 'log_error',
-					column : 'log_error',
+					dataIndex : 'logError',
+					column : 'logError',
 					table : 'log'
 				} ]
 			});
@@ -1380,7 +1278,7 @@ Ext
 			},
 
 			{
-				dataIndex : 'log_error',
+				dataIndex : 'logError',
 				header : logErrorLabel,
 				sortable : true,
 				hidden : false
@@ -1831,14 +1729,17 @@ Ext
 							title : leafEnglish,
 							bodyStyle : "padding:5px",
 							layout : 'form',
-							items : [ folderId, moduleId, folderEnglish,
+							items : [ {
+								xtype : 'fieldset',
+								layout : 'form',
+								bodyStyle : "padding:5px",
+								border : true,
+								frame : true,
+								items : [folderId, moduleId, folderEnglish,
 
-							folderSequence, folderPath, iconId, folderId ]
-						}, {
-							xtype : 'panel',
-							title : 'Folder Translation',
-							items : [ folderTranslateGrid ]
-						} ],
+							folderSequence, folderPath, iconId, folderId  ]
+							} ]
+						}, folderTranslateGrid ],
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
 						iconCls : 'application_form',
@@ -1950,6 +1851,7 @@ Ext
 									iconCls : 'bullet_disk',
 									disabled : true,
 									handler : function() {
+										Ext.getCmp('newButton').disable();
 										var id = 0;
 										var id = Ext.getCmp('folderId')
 												.getValue();
@@ -2035,9 +1937,7 @@ Ext
 									iconCls : 'trash',
 									disabled : true,
 									handler : function() {
-										alert("testing value folder id "
-												+ Ext.getCmp('folderId')
-														.getValue());
+										Ext.getCmp('newButton').disable();
 										Ext.Msg
 												.show({
 													title : deleteRecordTitleMessageLabel,
@@ -2131,6 +2031,7 @@ Ext
 									id : 'resetButton',
 									iconCls : 'database_refresh',
 									handler : function() {
+										Ext.getCmp('newButton').enable();
 										formPanel.getForm().reset();
 									}
 
@@ -2142,6 +2043,7 @@ Ext
 									id : 'postButton',
 									iconCls : 'lock',
 									handler : function() {
+										Ext.getCmp('newButton').disable();
 										formPanel.getForm().reset();
 									}
 
@@ -2164,7 +2066,7 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_first',
 									handler : function() {
-
+										Ext.getCmp('newButton').disable();
 										if (Ext.getCmp('firstRecord')
 												.getValue() == ''
 												|| Ext.getCmp('firstRecord')
@@ -2236,10 +2138,7 @@ Ext
 																								'endRecord')
 																						.setValue(
 																								(action.result.lastRecord + 1));
-																				// load
-																				// the
-																				// detail
-																				// grid
+																				
 																				Ext
 																						.getCmp(
 																								'previousButton')
@@ -2372,6 +2271,7 @@ Ext
 									iconCls : 'resultset_previous',
 									disabled : true,
 									handler : function() {
+										Ext.getCmp('newButton').disable();
 										if (Ext.getCmp('previousRecord')
 												.getValue() == ''
 												|| Ext.getCmp('previousRecord')
@@ -2425,8 +2325,7 @@ Ext
 																			'endRecord')
 																	.setValue(
 																			(action.result.lastRecord + 1));
-															// load the detail
-															// grid
+															
 															folderTranslateStore
 																	.load({
 																		params : {
@@ -2473,6 +2372,7 @@ Ext
 									disabled : true,
 									iconCls : 'resultset_next',
 									handler : function() {
+										Ext.getCmp('newButton').disable();
 										if (Ext.getCmp('nextRecord').getValue() == ''
 												|| Ext.getCmp('nextRecord')
 														.getValue() == undefined) {
@@ -2527,8 +2427,7 @@ Ext
 																			'endRecord')
 																	.setValue(
 																			(action.result.lastRecord + 1));
-															// load the detail
-															// grid
+															
 															folderTranslateStore
 																	.load({
 																		params : {
@@ -2591,6 +2490,7 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_last',
 									handler : function() {
+										Ext.getCmp('newButton').disable();
 										if (Ext.getCmp('lastRecord').getValue() == ''
 												|| Ext.getCmp('lastRecord')
 														.getValue() == undefined) {
@@ -2659,10 +2559,7 @@ Ext
 																								'endRecord')
 																						.setValue(
 																								(action.result.lastRecord + 1));
-																				// load
-																				// the
-																				// detail
-																				// grid
+																				
 																				folderTranslateStore
 																						.load({
 																							params : {
@@ -2762,9 +2659,7 @@ Ext
 																				'endRecord')
 																		.setValue(
 																				(action.result.lastRecord + 1));
-																// load the
-																// detail
-																// grid
+																
 																folderTranslateStore
 																		.load({
 																			params : {
@@ -2812,7 +2707,7 @@ Ext
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-
+										Ext.getCmp('newButton').disable();
 										Ext.Ajax
 												.request({
 
