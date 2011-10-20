@@ -123,7 +123,7 @@ class LogAdvanceClass extends ConfigClass {
 				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getLogId ( 0, 'single' ) . "'";
 			}
 			if ($this->model->getLeafId ()) {
-				$sql .= " AND `logAdvance`.`leafId`='" . $this->model->getLeafId () . "'";
+			ECHO	$sql .= " AND `logAdvance`.`leafId`='" . $this->model->getLeafId () . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -132,28 +132,28 @@ class LogAdvanceClass extends ConfigClass {
 			JOIN	[leaf]
 			ON		[logAdvance].[leafId] = [leaf].[leafId]
 			JOIN	[staff]
-			ON		[logAdvance].[staffId]= [staff].[staffId]
+			ON		[logAdvance].[executeBy]= [staff].[staffId]
 			WHERE ";
 			if ($this->model->getLogAdvanceId ( 0, 'single' )) {
 				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getLogId ( 0, 'single' ) . "'";
 			}
 			if ($this->model->getLeafId ()) {
-				$sql .= " AND [logAdvance].[refId]='" . $this->model->getLeafId () . "'";
+				$sql .= " AND [logAdvance].[leafId]='" . $this->model->getLeafId () . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT	*
-			FROM 	LOG
+			FROM 	LOGADVANCE
 			JOIN	LEAF
 			ON		LOG.LEAFID	=LEAF.LEAFID
 			JOIN	STAFF
-			ON		STAFF.STAFFID= LOG.STAFFID
+			ON		STAFF.STAFFID= LOGADVANCE.EXECUTEBY
 			WHERE ";
 			if ($this->model->getLogAdvanceId ( 0, 'single' )) {
 				$sql .= " AND `" . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getLogId ( 0, 'single' ) . "'";
 			}
 			if ($this->model->getLeafId ()) {
-				$sql .= " AND LOG.LEAFID='" . $this->model->getLeafId () . "'";
+				$sql .= " AND LOGADVANCE.LEAFID='" . $this->model->getLeafId () . "'";
 			}
 		}
 		/**

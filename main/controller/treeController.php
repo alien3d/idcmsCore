@@ -163,7 +163,13 @@ class TreeClass extends ConfigClass {
 		$treeJsonString = " [";
 		if ($this->getVendor () == self::MYSQL) {
 			$sqlModule = "
-		      SELECT    *
+		      SELECT    `moduleAccessId`,
+		      			`moduleId`,
+		      			`teamId`,
+		      			`moduleAccessValue`,
+		      			`moduleId`,
+		      			`moduleNative`,
+		      			`iconName`
 		      FROM		`moduleAccess`
 		      JOIN    	`module`
 		      USING    	(`moduleId`)
@@ -183,7 +189,13 @@ class TreeClass extends ConfigClass {
 		//	print"<br><br>";
 		} elseif ($this->getVendor () == self::MSSQL) {
 			$sqlModule = "
-		      SELECT    *
+		      SELECT    [moduleAccessId],
+		      			[moduleId],
+		      			[teamId],
+		      			[moduleAccessValue],
+		      			[moduleId],
+		      			[moduleNative],
+		      			[iconName]
 		      FROM     	[moduleAccess]
 		      JOIN      [module]
 		      ON      	[moduleAccess].[moduleId]=[module].[moduleId]
@@ -238,7 +250,13 @@ class TreeClass extends ConfigClass {
 					    \"expanded\":	true,";
 				if ($this->getVendor () == self::MYSQL) {
 					$sqlFolder = "
-					      SELECT    *
+					      SELECT    `folderAccessId`,
+				      				`teamId`,
+				      				`folderAccessValue`,
+				      				`folderId`,
+				      				`folderPath`,
+				      				`folderNative`,
+				      				`iconName`	
 					      FROM    	`folderAccess`
 					      JOIN    	`folder`
 					      USING    	(`folderId`)
@@ -256,7 +274,13 @@ class TreeClass extends ConfigClass {
 					      ORDER BY   `folder`.`folderSequence`  ";
 				} elseif ($this->getVendor () == self::MSSQL) {
 					$sqlFolder = "
-				      SELECT    	*
+				      SELECT    [folderAccessId],
+				      			[teamId],
+				      			[folderAccessValue],
+				      			[folderId],
+				      			[folderPath],
+				      			[folderNative],
+				      			[iconName]
 				      FROM     	[folderAccess]
 				      JOIN      [folder]
 				      ON      	[folderAccess].[folderId]=[folder].[folderId]
@@ -316,7 +340,13 @@ class TreeClass extends ConfigClass {
 						$counter_leaf = 0;
 						if ($this->getVendor () == self::MYSQL) {
 							$sqlLeaf = "
-					          SELECT    *
+					          SELECT   	`leafAccessId`,
+						      			`staffId`,
+						      			`leafAccessReadValue`,
+						      			`leafId`,
+						      			`leafFilename`,
+						      			`leafNative`,
+						      			`iconName`
 					          FROM    `leafAccess`
 					          JOIN    `leaf`
 					          USING    (`leafId`)
@@ -333,7 +363,13 @@ class TreeClass extends ConfigClass {
 		//	print"<br><br>";
 						} elseif ($this->getVendor () == self::MSSQL) {
 							$sqlLeaf = "
-					          SELECT    *
+					          SELECT   	[leafAccessId],
+						      			[staffId],
+						      			[leafAccessReadValue],
+						      			[leafId],
+						      			[leafFilename],
+						      			[leafNative],
+						      			[iconName]
 					          FROM    	[leafAccess]
 					          JOIN      [leaf]
 					          ON      	[leafAccess].[leafId]=[leaf].[leafId]

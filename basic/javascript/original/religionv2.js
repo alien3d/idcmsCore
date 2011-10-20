@@ -248,7 +248,7 @@ Ext
 			});
 			var filters = new Ext.ux.grid.GridFilters({
 				encode : encode,
-				local : false,
+				local : local,
 				filters : [ {
 					type : "string",
 					dataIndex : "religionDesc",
@@ -271,7 +271,7 @@ Ext
 			});
 			var filtersList = new Ext.ux.grid.GridFilters({
 				encode : encode,
-				local : false,
+				local : local,
 				filters : [ {
 					type : "string",
 					dataIndex : "religionDesc",

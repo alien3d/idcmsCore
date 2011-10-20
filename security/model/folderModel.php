@@ -465,21 +465,21 @@ class FolderModel extends ValidationClass {
 	 * Return folder Path
 	 * @return string $folderPath
 	 */
-	public function getfolderPath() {
+	public function getFolderPath() {
 		return $this->folderPath;
 	}
 	/**
 	 * Set Folder Note Value (english)
 	 * @param string $value
 	 */
-	public function setfolderEnglish($value) {
+	public function setFolderEnglish($value) {
 		$this->folderEnglish = $value;
 	}
 	/**
 	 * Return folder Note (english)
 	 * @return string $folderEnglish
 	 */
-	public function getfolderEnglish() {
+	public function getFolderEnglish() {
 		return $this->folderEnglish;
 	}
 	/**

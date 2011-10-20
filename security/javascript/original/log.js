@@ -122,7 +122,7 @@ Ext
 
 			var logFilters = new Ext.ux.grid.GridFilters({
 				encode : encode,
-				local : false,
+				local : local,
 				filters : [
 
 				{
@@ -268,7 +268,7 @@ Ext
 
 			{
 				dataIndex : 'log_error',
-				header : log_errorLabel,
+				header : logErrorLabel,
 				sortable : true,
 				hidden : false
 			} ];
@@ -324,7 +324,7 @@ Ext
 
 			{
 				dataIndex : 'log_error',
-				header : log_errorLabel,
+				header : logErrorLabel,
 				sortable : true,
 				hidden : false
 			} ];
@@ -483,7 +483,7 @@ Ext
 
 			var log_error = new Ext.form.TextArea({
 				labelAlign : 'left',
-				fieldLabel : log_errorLabel,
+				fieldLabel : logErrorLabel,
 				hiddenName : 'log_error',
 				style : 'height: 35%',
 				name : 'log_error',

@@ -77,8 +77,8 @@ class FolderClass extends ConfigClass {
 	function execute() {
 		parent::__construct ();
 		// audit property
-		$this->audit = 0;
-		$this->log = 0;
+		$this->audit = 1;
+		$this->log = 1;
 		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
@@ -941,27 +941,27 @@ class FolderClass extends ConfigClass {
 			$sql = "
 		SELECT	`" . $this->model->getPrimaryKeyName () . "`
 		FROM 	`" . $this->model->getTableName () . "`
-		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		WHERE  	`" . $this->model->getPrimaryKeyName () . "` = '" . $this->model->getFolderId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 		SELECT	[" . $this->model->getPrimaryKeyName () . "]
 		FROM 	[" . $this->model->getTableName () . "]
-		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		WHERE  	[" . $this->model->getPrimaryKeyName () . "] = '" . $this->model->getFolderId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+		WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getFolderId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
 		SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 		FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+				WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getFolderId ( 0, 'single' ) . "' ";
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper ( $this->model->getPrimaryKeyName () ) . "
 			FROM 	" . strtoupper ( $this->model->getTableName () ) . "
-			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getModuleId ( 0, 'single' ) . "' ";
+			WHERE  	" . strtoupper ( $this->model->getPrimaryKeyName () ) . " = '" . $this->model->getFolderId ( 0, 'single' ) . "' ";
 		}
 		$result = $this->q->fast ( $sql );
 		$total = $this->q->numberRows ( $result, $sql );
@@ -983,7 +983,7 @@ class FolderClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`		=	" . $this->model->getExecuteTime () . "
-					WHERE 	`folderId`			=	'" . $this->model->getFolderId () . "'";
+					WHERE 	`folderId`			=	'" . $this->model->getFolderId (0,'single') . "'";
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sql = "
 					UPDATE	[folder]
@@ -998,7 +998,7 @@ class FolderClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]		=	" . $this->model->getExecuteTime () . "
-					WHERE 	[folderId]			=	'" . $this->model->getFolderId () . "'";
+					WHERE 	[folderId]			=	'" . $this->model->getFolderId (0,'single') . "'";
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sql = "
 					UPDATE	FOLDER
@@ -1013,7 +1013,7 @@ class FolderClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime () . "
-					WHERE 	FOLDERID			=	'" . $this->model->getFolderId () . "'";
+					WHERE 	FOLDERID			=	'" . $this->model->getFolderId (0,'single') . "'";
 			}
 			$this->q->update ( $sql );
 			if ($this->q->execute == 'fail') {

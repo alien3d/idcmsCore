@@ -1624,7 +1624,7 @@ Ext.ux.grid.GridFilters = Ext.extend(Ext.util.Observable, {
      * <tt>true</tt> to use Ext.data.Store filter functions (local filtering)
      * instead of the default (<tt>false</tt>) server side filtering.
      */
-    local : false,
+    local : local,
     /**
      * @cfg {String} menuFilterText
      * defaults to <tt>'Filters'</tt>.

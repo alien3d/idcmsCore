@@ -5,11 +5,8 @@ Ext
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
 			var pagePrint;
-			var pagePrintList;
 			var perPage = 2;
 			var encode = false;
 			var local = false;
@@ -18,17 +15,13 @@ Ext
 			var auditButtonlabel = 'audit';
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
-				pageCreateList = false;
 			} else {
 				pageCreate = true;
-				pageCreateList = true;
 			}
 			if (leafAccessReadValue == 1) {
 				pageReload = false;
-				pageReloadList = false;
 			} else {
 				pageReload = true;
-				pageReloadList = true;
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
@@ -391,15 +384,18 @@ Ext
 					name : 'logAdvanceText',
 					type : 'string'
 				}, {
-					name : '',
+					name : 'logAdvanceType',
 					type : 'string'
 				}, {
 					name : 'logAdvanceComparison',
 					type : 'string'
 				}, {
-					name : 'refId',
+					name : 'refTableName',
 					type : 'int'
-				} ]
+				} ,{
+					 name :'leafId',
+					 type :'int'
+				}]
 			});
 			var religionFilters = new Ext.ux.grid.GridFilters({ // encode and
 																// local
@@ -409,7 +405,7 @@ Ext
 				// easier reuse
 				encode : encode,
 				// json encode the filter query
-				local : false,
+				local : local,
 				// defaults to false (remote filtering)
 				filters : [ {
 					type : 'string',
@@ -418,8 +414,8 @@ Ext
 					table : 'religion'
 				}, {
 					type : "list",
-					dataIndex : "By",
-					column : "By",
+					dataIndex : "executeBy",
+					column : "executeBy",
 					table : "religion",
 					labelField : "staffName",
 					store : staffByStore,
@@ -427,8 +423,8 @@ Ext
 				}, {
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s',
-					dataIndex : 'createTime',
-					column : 'createTime',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
 					table : 'religion'
 				} ]
 			});
@@ -539,7 +535,7 @@ Ext
 						width : 100
 					}, {
 						dataIndex : 'executeTime',
-						header : createTimeLabel,
+						header : executeTimeLabel,
 						type : 'date',
 						hidden : true,
 						width : 100
@@ -577,7 +573,7 @@ Ext
 						width : 100
 					}, {
 						dataIndex : 'executeTime',
-						header : createTimeLabel,
+						header : executeTimeLabel,
 						type : 'date',
 						hidden : true,
 						width : 100
@@ -1251,7 +1247,7 @@ Ext
 
 			var logFilters = new Ext.ux.grid.GridFilters({
 				encode : encode,
-				local : false,
+				local : local,
 				filters : [
 
 				{
@@ -1367,7 +1363,7 @@ Ext
 
 			{
 				dataIndex : 'log_error',
-				header : log_errorLabel,
+				header : logErrorLabel,
 				sortable : true,
 				hidden : false
 			} ];
@@ -1413,49 +1409,49 @@ Ext
 			// audit advance grid
 			var logAdvancefilters = new Ext.ux.grid.GridFilters({
 				encode : encode,
-				local : false,
+				local : local,
 				filters : [
 
 				{
 					type : 'numeric',
 					dataIndex : 'logAdvanceId',
 					column : 'logAdvanceId',
-					table : 'log_advance'
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'string',
 					dataIndex : 'logAdvanceText',
 					column : 'logAdvanceText',
-					table : 'log_advance'
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'string',
 					dataIndex : 'logAdvanceType',
 					column : 'logAdvanceType',
-					table : 'log_advance'
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'string',
 					dataIndex : 'logAdvanceComparison',
 					column : 'logAdvanceComparison',
-					table : 'log_advance'
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'numeric',
-					dataIndex : 'refId',
-					column : 'refId',
-					table : 'log_advance'
+					dataIndex : 'refTableName',
+					column : 'refTableName',
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'list',
 					dataIndex : 'executeBy',
 					column : 'executeBy',
-					table : 'log_advance',
+					table : 'logAdvance',
 					labelField : 'staffName',
 					store : staffByStore,
 					phpMode : true
@@ -1465,7 +1461,7 @@ Ext
 					type : 'date',
 					dataIndex : 'executeTime',
 					column : 'executeTime',
-					table : 'log_advance'
+					table : 'logAdvance'
 				}]
 			});
 
@@ -1498,8 +1494,8 @@ Ext
 			},
 
 			{
-				dataIndex : 'refId',
-				header : refIdLabel,
+				dataIndex : 'refTableName',
+				header : refTableNameLabel,
 				sortable : true,
 				hidden : false
 			} ];
@@ -1723,6 +1719,8 @@ Ext
 								},
 								{
 									text : saveButtonLabel,
+									name :'saveButton',
+									id :'saveButton',
 									iconCls : 'bullet_disk',
 									disabled : true,
 									handler : function() {

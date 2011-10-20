@@ -478,7 +478,7 @@ Ext
 						width : 100
 					}, {
 						dataIndex : 'executeTime',
-						header : createTimeLabel,
+						header : executeTimeLabel,
 						type : 'date',
 						sortable : true,
 						hidden : true,

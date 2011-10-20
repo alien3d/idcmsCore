@@ -220,7 +220,7 @@ Ext
 				// easier reuse
 				encode : encode,
 				// json encode the filter query
-				local : false,
+				local : local,
 				// defaults to false (remote filtering)
 				filters : [ {
 					type : 'numeric',

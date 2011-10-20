@@ -131,49 +131,49 @@ Ext
 
 			var filters = new Ext.ux.grid.GridFilters({
 				encode : encode,
-				local : false,
+				local : local,
 				filters : [
 
 				{
 					type : 'numeric',
 					dataIndex : 'logAdvanceId',
 					column : 'logAdvanceId',
-					table : 'log_advance'
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'string',
 					dataIndex : 'logAdvanceText',
 					column : 'logAdvanceText',
-					table : 'log_advance'
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'string',
 					dataIndex : 'logAdvanceType',
 					column : 'logAdvanceType',
-					table : 'log_advance'
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'string',
 					dataIndex : 'logAdvanceComparison',
 					column : 'logAdvanceComparison',
-					table : 'log_advance'
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'numeric',
 					dataIndex : 'refId',
 					column : 'refId',
-					table : 'log_advance'
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'list',
 					dataIndex : 'createBy',
 					column : 'createBy',
-					table : 'log_advance',
+					table : 'logAdvance',
 					labelField : 'staffName',
 					store : staffStore,
 					phpMode : true
@@ -181,16 +181,16 @@ Ext
 
 				{
 					type : 'date',
-					dataIndex : 'createTime',
-					column : 'createTime',
-					table : 'log_advance'
+					dataIndex : 'executeTime',
+					column : 'executeTime',
+					table : 'logAdvance'
 				},
 
 				{
 					type : 'list',
 					dataIndex : 'updatedBy',
 					column : 'updatedBy',
-					table : 'log_advance',
+					table : 'logAdvance',
 					labelField : 'staffName',
 					store : staff_store,
 					phpMode : true
@@ -200,7 +200,7 @@ Ext
 					type : 'date',
 					dataIndex : 'updatedTime',
 					column : 'updatedTime',
-					table : 'log_advance'
+					table : 'logAdvance'
 				} ]
 			});
 
@@ -349,7 +349,7 @@ Ext
 														if (jsonResponse == true) {
 															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
 															window
-																	.open("../security/document/excel/log_advance.xlsx");
+																	.open("../security/document/excel/logAdvance.xlsx");
 														} else {
 															Ext.MessageBox
 																	.alert(
