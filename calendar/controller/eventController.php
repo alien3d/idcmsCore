@@ -103,7 +103,7 @@ class EventClass extends ConfigClass
 	 */
     public function create ()
     {
-        header('Content-Type', 'application/json; charset=utf-8');
+        header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
@@ -203,7 +203,7 @@ class EventClass extends ConfigClass
 	 */
     public function read ()
     {
-        header('Content-Type', 'application/json; charset=utf-8');
+        header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
@@ -289,7 +289,7 @@ class EventClass extends ConfigClass
 	 */
     function update ()
     {
-        header('Content-Type', 'application/json; charset=utf-8');
+        header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
@@ -358,7 +358,7 @@ class EventClass extends ConfigClass
 	 */
     function delete ()
     {
-        header('Content-Type', 'application/json; charset=utf-8');
+        header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";
@@ -409,7 +409,7 @@ class EventClass extends ConfigClass
 	 */
     function excel ()
     {
-        header('Content-Type', 'application/json; charset=utf-8');
+        header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
             //UTF8
             $sql = "SET NAMES \"utf8\"";

@@ -240,7 +240,7 @@ class ReligionClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	public function read() {
-		//	header('Content-Type', 'application/json; charset=utf-8');
+		//	header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
 				$this->auditFilter = "	AND `religion`.`isActive`		=	1	";
