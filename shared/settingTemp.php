@@ -11,61 +11,44 @@
 		}
 
 	/**
-	*	 all label language
-	**/
-
-	if( $q->vendor==sharedx::MYSQL) {
-		// future
-		$sql="
-		SELECT 			`tableMapping`.`tableMappingColumnName`,
-						`tableMappingTranslate`.`tableMappingNativeLabel`
-		FROM 			`tableMapping`
-		JOIN			`tableMappingTranslate`
-		USING			(`tableMappingId`)
-		WHERE 			`tableMappingTranslate`.`languageId`='".$_SESSION['languageId']."'";
-		// temp
-		$sql="
-		SELECT 			`tableMapping`.`tableMappingColumnName`,
-						`tableMapping`.`tableMappingNativeLabel`
-		FROM 			`tableMapping`
-		WHERE 			`tableMapping`.`languageId`='".$_SESSION['languageId']."'";
-	} else if ($q->vendor==sharedx::MSSQL) {
-		$sql="
-		SELECT 			[tableMapping].[tableMappingColumnName],
-						[tableMappingTranslate].[tableMappingNativeLabel]
-		FROM 			[tableMapping]
-		JOIN			[tableMappingTranslate]
-		USING			[tableMapping].[tableMappingId]=[tableMappingTranslate].[tableMappingId]
-		WHERE 			[tableMapping].[languageId]='".$_SESSION['languageId']."'";
-		// temp
-		$sql="
-		SELECT 			[tableMapping].[tableMappingColumnName],
-						[tableMapping].[tableMappingNativeLabel]
-		FROM 			[tableMapping]
-		WHERE 			[tableMapping].[languageId]='".$_SESSION['languageId']."'";
-		} else if ($q->vendor==sharedx::ORACLE) {
-		$sql="
-		SELECT DISTINCT TABLEMAPPING.TABLEMAPPINGCOLUMNNAME AS \"tableMappingColumnName\",
-						TABLEMAPPINGTRANSLATE.TABLEMAPPINGNATIVELABEL AS \"tableMappingNativeLabel\"
-		FROM 			TABLEMAPPING
-		JOIN			TABLEMAPPINGTRANSLATE
-		USING			(TABLEMAPPINGID)
-		WHERE 			TABLEMAPPING.LANGUAGEID='".$_SESSION['languageId']."'";
-		// temp
-		$sql="
-		SELECT 			TABLEMAPPING.TABLEMAPINGCOLUMNNAME AS \"tableMappingColumnName\",
-						TABLEMAPPING.TABLEMAPPINGNATIVEBALE AS \"tableMappingNativeLabel\"
-		FROM 			TABLEMAPPING
-		WHERE 			TABLEMAPPING.LANGUAGEID='".$_SESSION['languageId']."'";
-	} else {
-
-	}
-
+ * all label language
+ * */
+if ($q->vendor == sharedx::MYSQL) {
+	// future
+	$sql = "
+                SELECT 			`tableMapping`.`tableMappingColumnName`,
+                                 `tableMappingTranslate`.`tableMappingNative`
+                FROM 			`tableMapping`
+                JOIN			`tableMappingTranslate`
+                USING			(`tableMappingId`)
+                WHERE 			`tableMappingTranslate`.`languageId`='" . $_SESSION ['languageId'] . "'";
+	
+} else if ($q->vendor == sharedx::MSSQL) {
+	$sql = "
+                SELECT 			[tableMapping].[tableMappingColumnName],
+                                [tableMappingTranslate].[tableMappingNative]
+                FROM 			[tableMapping]
+                JOIN			[tableMappingTranslate]
+                USING			[tableMapping].[tableMappingId]=[tableMappingTranslate].[tableMappingId]
+                WHERE 			[tableMapping].[languageId]='" . $_SESSION ['languageId'] . "'";
+	
+} else if ($q->vendor == sharedx::ORACLE) {
+	$sql = "
+                SELECT DISTINCT TABLEMAPPING.TABLEMAPPINGCOLUMNNAME 			AS 	\"tableMappingColumnName\",
+                                TABLEMAPPINGTRANSLATE.TABLEMAPPINGNATIVELABEL	AS	\"tableMappingNative\"
+                FROM 			TABLEMAPPING
+                JOIN			TABLEMAPPINGTRANSLATE
+                USING			(TABLEMAPPINGID)
+                WHERE 			TABLEMAPPING.LANGUAGEID='" . $_SESSION ['languageId'] . "'";
+	
+} else if ($q->vendor ==sharedx::DB2) {
+} else if ($q->vendor ==sharedx::POSTGRESS) {
+}	
 	$result	=	$q->fast($sql);
 
 while (($row = $q->fetchAssoc($result))== TRUE)  {
 
-		echo "var ".$row['tableMappingColumnName']."Label = '".$row['tableMappingNativeLabel']."';\n";
+		echo "var ".$row['tableMappingColumnName']."Label = '".$row['tableMappingNative']."';\n";
 	   } 
 
 /**
@@ -100,7 +83,7 @@ while (($row = $q->fetchAssoc($result))== TRUE)  {
 
 
 
-		echo "var ".$row['defaultLabel']." = '".$row['defaultLabelText']."';\n";
+		echo "var ".$row['defaultLabel']." = '".$row['defaultLabel']."';\n";
 	  }
 
 /**
@@ -162,15 +145,18 @@ $row_leafAccess 		= 	$q->fetchAssoc($result);
 ?>
 
 var leafIdTemp			= '<?php echo $row_leafAccess['leafId'];   ?>';
-var leafEnglish			= '<?php echo $row_leafAccess['leafTranslate'];   ?>';
+var leafEnglish			= '<?php echo $row_leafAccess['leafNative'];   ?>';
 var leafAccessCreateValue	= '<?php echo $row_leafAccess['leafAccessCreateValue'];   ?>';
 var leafAccessReadValue		= '<?php echo $row_leafAccess['leafAccessReadValue'];   ?>';
 var leafAccessPrintValue	= '<?php echo $row_leafAccess['leafAccessPrintValue'];   ?>';
-var leafAccessPostValue	= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>'
+var leafAccessPostValue	= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>';
+
+
+
 <?php
 		if( $q->vendor==sharedx::MYSQL) {
 			$sql	=	"
-			SELECT	`theme`.`isAdmin`
+			SELECT	`team`.`isAdmin`
 			FROM 	`staff`
 			JOIN	`team`
 			USING	(`teamId`)
@@ -235,7 +221,8 @@ var isNewLabel	 		= 'New';
 var isDraftLabel 		= 'Draft';
 var isUpdateLabel		= 'Update';
 var isDeleteLabel		= 'Delete';
-var isActive 			= 'Active';
+var isActiveLabel 		= 'Active';
+var isReviewLabel		= 'Review';
 var isApprovedLabel		= 'Approved';
 
 </script>

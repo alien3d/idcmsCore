@@ -193,7 +193,7 @@ Ext
 				dataIndex : 'folderAccessValue'
 			});
 
-			var columnModel = new Ext.grid.ColumnModel({
+			var folderAccessColumnModel = new Ext.grid.ColumnModel({
 				columns : [ {
 					header : moduleEnglishLabel,
 					dataIndex : 'moduleEnglish'
@@ -307,7 +307,7 @@ Ext
 					{
 						region : 'west',
 						store : folderAccessStore,
-						cm : columnModel,
+						cm : folderAccessColumnModel,
 						frame : true,
 						title : 'Folder Access Grid',
 						autoHeight : true,

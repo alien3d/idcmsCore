@@ -117,15 +117,13 @@ class Security extends ConfigClass {
 	 */
 	function execute() {
 		parent::__construct ();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
 		$this->q->staffId = $this->getStaffId ();
-		//	$this->q->filter 			= 	$this->filter;
-		//	$this->q->quickFilter		=	$this->quickFilter;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		//	$this->excel				=	new  PHPExcel();
-		$this->audit = 0;
+		
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
@@ -484,7 +482,7 @@ class Security extends ConfigClass {
 				$sql .= " AND `folder`.`moduleId`	=	'" . $moduleId . "'";
 			}
 		
-		//	echo $sql;
+			
 		} else if ($this->getVendor () == self::MSSQL) {
 			if ($type == 1) {
 				$sql = "

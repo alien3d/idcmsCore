@@ -54,7 +54,7 @@ class FolderModel extends ValidationClass {
 	 */
 	private $type;
 	/**
-	 * Team  Identification ( ** For Filtering Only(
+	 * Team  Identification ** For Filtering Only
 	 * @var int
 	 */
 	private $teamId;
@@ -490,7 +490,7 @@ class FolderModel extends ValidationClass {
 	}
 	
 	/**
-	 * @param number $type
+	 * @param int $type
 	 */
 	public function setType($type) {
 		$this->type = $type;
@@ -503,7 +503,7 @@ class FolderModel extends ValidationClass {
 	}
 	
 	/**
-	 * @param number $teamId
+	 * @param int $teamId
 	 */
 	public function setTeamId($teamId) {
 		$this->teamId = $teamId;

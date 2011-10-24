@@ -165,7 +165,7 @@ Ext
 				pruneModifiedRecords : true,
 				baseParams : {
 					method : "read",
-					leafIdTemp : leafIdTemp
+					leafId : leafIdTemp
 				},
 				root : "data",
 				fields : [ {
@@ -222,7 +222,7 @@ Ext
 				baseParams : {
 					method : 'read',
 					field : 'staffId',
-					leafIdTemp : leafIdTemp
+					leafId : leafIdTemp
 				},
 				root : 'staff',
 				fields : [ {
@@ -232,6 +232,54 @@ Ext
 					name : "staffName",
 					type : "string"
 				} ]
+			});
+			
+			var teamProxy = new Ext.data.HttpProxy({
+				url : "../controller/leafAccessController.php",
+				method : 'GET',
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var teamReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "teamId"
+			});
+
+			var teamStore = new Ext.data.JsonStore({
+				proxy : teamProxy,
+				reader : teamReader,
+				autoLoad : true,
+				autoDestroy : true,
+				pruneModifiedRecords : true,
+
+				baseParams : {
+					method : "read",
+					field : "teamId",
+					leafId : leafId
+				},
+				root : 'team',
+				fields : [ {
+					name : 'teamId',
+					type : 'int'
+				}, {
+					name : 'teamEnglish',
+					type : 'string'
+				} ]
+
 			});
 
 			var moduleProxy = new Ext.data.HttpProxy({
@@ -269,7 +317,7 @@ Ext
 					method : 'read',
 					field : 'moduleId',
 					type : 1,
-					leafIdTemp : leafIdTemp
+					leafId : leafIdTemp
 				},
 				root : 'module',
 				fields : [ {
@@ -316,7 +364,7 @@ Ext
 					method : 'read',
 					field : 'folderId',
 					type : 1,
-					leafIdTemp : leafIdTemp
+					leafId : leafIdTemp
 				},
 				root : 'folder',
 				fields : [ {
@@ -429,6 +477,137 @@ Ext
 				header : 'Post',
 				dataIndex : 'isPost',
 				hidden : isPostHidden
+			});
+			
+			
+			var logProxy = new Ext.data.HttpProxy({
+				url : "../../security/controller/logController.php?",
+				method : "POST",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						// //uncommen for testing purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var logReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "logId"
+			});
+			var logStore = new Ext.data.JsonStore({
+				proxy : logProxy,
+				reader : logReader,
+				autoLoad : true,
+				autoDestroy : true,
+				baseParams : {
+					method : "read",
+					leafId : leafIdTemp,
+					isAdmin : isAdmin,
+					start : 0,
+					limit : perPage,
+					perPage : perPage
+				},
+				root : 'data',
+				fields : [ {
+					name : 'logId',
+					type : 'int'
+				}, {
+					name : 'leafId',
+					type : 'int'
+				}, {
+					name : 'operation',
+					type : 'string'
+				}, {
+					name : 'sql',
+					type : 'string'
+				}, {
+					name : 'date',
+					type : 'date',
+					dateFormat : 'Y-m-d'
+				}, {
+					name : 'staffId',
+					type : 'int'
+				}, {
+					name : 'access',
+					type : 'string'
+				}, {
+					name : 'logError',
+					type : 'string'
+				} ]
+			});
+
+			var logAdvanceProxy = new Ext.data.HttpProxy({
+				url : "../../security/controller/logAdvanceController.php?",
+				method : "POST",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);//
+						// uncommen for testing purpose
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var logAdvanceReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "logAdvanceId"
+			});
+			var logAdvanceStore = new Ext.data.JsonStore({
+				proxy : logAdvanceProxy,
+				reader : logAdvanceReader,
+				autoLoad : true,
+				autoDestroy : true,
+				pruneModifiedRecords : true,
+				method : 'POST',
+				baseParams : {
+					method : "read",
+					leafId : leafIdTemp,
+					isAdmin : isAdmin,
+					start : 0,
+					limit : perPage,
+					perPage : perPage
+				},
+				root : 'data',
+				fields : [ {
+					name : 'logAdvanceId',
+					type : 'int'
+				}, {
+					name : 'logAdvanceText',
+					type : 'string'
+				}, {
+					name : 'logAdvanceType',
+					type : 'string'
+				}, {
+					name : 'logAdvanceComparison',
+					type : 'string'
+				}, {
+					name : 'refTableName',
+					type : 'int'
+				} ,{
+					name :'leafId',
+					type : 'int'
+						
+				}]
 			});
 
 			var leafColumnModel = [
@@ -904,6 +1083,378 @@ Ext
 								}) ],
 						items : [ leafGrid ]
 					});
+					
+					var logFilters = new Ext.ux.grid.GridFilters({
+				encode : encode,
+				local : local,
+				filters : [
+
+				{
+					type : 'numeric',
+					dataIndex : 'logId',
+					column : 'logId',
+					table : 'log'
+				},
+
+				{
+					type : 'numeric',
+					dataIndex : 'leafId',
+					column : 'leafId',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'operation',
+					column : 'operation',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'sql',
+					column : 'sql',
+					table : 'log'
+				},
+
+				{
+					type : 'date',
+					dataIndex : 'date',
+					column : 'date',
+					table : 'log'
+				},
+
+				{
+					type : 'numeric',
+					dataIndex : 'staffId',
+					column : 'staffId',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'access',
+					column : 'access',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logError',
+					column : 'logError',
+					table : 'log'
+				} ]
+			});
+
+			var expander = new Ext.ux.grid.RowExpander({
+				tpl : new Ext.Template(
+						'<br><p><b>Operation:</b> {operation}</p><br>',
+						'<p><b>SQL STATEMENT:</b> {sql}</p><br>')
+			});
+			var logColumnModel = [ expander, new Ext.grid.RowNumberer(), {
+				dataIndex : 'logId',
+				header : logIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'leafId',
+				header : leafIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'operation',
+				header : operationLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'sql',
+				header : sqlLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'date',
+				header : dateLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'staffId',
+				header : staffIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'access',
+				header : accessLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logError',
+				header : logErrorLabel,
+				sortable : true,
+				hidden : false
+			} ];
+
+			var logGrid = new Ext.grid.GridPanel({
+				border : false,
+				store : logStore,
+				autoHeight : false,
+				height : 400,
+				columns : logColumnModel,
+				loadMask : true,
+				plugins : [ logFilters, expander ],
+				collapsible : true,
+				animCollapse : false,
+				sm : new Ext.grid.RowSelectionModel({
+					singleSelect : true
+				}),
+				viewConfig : {
+					emptyText : emptyRowLabel
+				},
+				iconCls : 'application_view_detail',
+				listeners : {
+					render : {
+						fn : function() {
+							logStore.load({
+								params : {
+									start : 0,
+									limit : perPage,
+									method : 'read',
+									mode : 'view',
+									plugin : [ logFilters ]
+								}
+							});
+						}
+					}
+				},
+				bbar : new Ext.PagingToolbar({
+					store : logStore,
+					pageSize : perPage,
+					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
+				})
+			});
+			// audit advance grid
+			var logAdvancefilters = new Ext.ux.grid.GridFilters({
+				encode : encode,
+				local : local,
+				filters : [
+
+				{
+					type : 'numeric',
+					dataIndex : 'logAdvanceId',
+					column : 'logAdvanceId',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logAdvanceText',
+					column : 'logAdvanceText',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logAdvanceType',
+					column : 'logAdvanceType',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logAdvanceComparison',
+					column : 'logAdvanceComparison',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'refTableName',
+					column : 'refTableName',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'list',
+					dataIndex : 'executeBy',
+					column : 'executeBy',
+					table : 'logAdvance',
+					labelField : 'staffName',
+					store : staffByStore,
+					phpMode : true
+				},
+
+				{
+					type : 'date',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
+					table : 'logAdvance'
+				}]
+			});
+
+			var logAdvanceColumnModel = [ new Ext.grid.RowNumberer(), {
+				dataIndex : 'logAdvanceId',
+				header : logAdvanceIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logAdvanceText',
+				header : logAdvanceTextLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logAdvanceType',
+				header : logAdvanceTypeLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logAdvanceComparision',
+				header : logAdvanceComparisionLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'refTableName',
+				header : refTableNameLabel,
+				sortable : true,
+				hidden : false
+			} ,{
+				dataIndex :'leafId',
+				header :leafIdLabel,
+				sortable :true,
+				hidden : false
+			}];
+
+			var logAdvanceGrid = new Ext.grid.GridPanel({
+				border : false,
+				store : logAdvanceStore,
+				autoHeight : false,
+				height : 400,
+				columns : logAdvanceColumnModel,
+				loadMask : true,
+				plugins : [ logAdvancefilters ],
+				sm : new Ext.grid.RowSelectionModel({
+					singleSelect : true
+				}),
+				viewConfig : {
+					forceFit : true,
+					emptyText : 'No rows to display'
+				},
+				iconCls : 'application_view_detail',
+				listeners : {
+					render : {
+						fn : function() {
+							logAdvanceStore.load({
+								params : {
+									start : 0,
+									limit : perPage,
+									method : 'read',
+									mode : 'view',
+									plugin : [ logAdvancefilters ]
+								}
+							});
+						}
+					}
+				},
+				bbar : new Ext.PagingToolbar({
+					store : logAdvanceStore,
+					pageSize : perPage,
+					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
+				}),
+				view : new Ext.ux.grid.BufferView({
+					// custom row height
+					rowHeight : 34,
+					// render rows as they come into viewable area.
+					scrollDelay : false
+				})
+			});
+
+			// viewport just save information,items will do separate
+			// only load store when viewport is open
+
+			var moduleId = new Ext.ux.form.ComboBoxMatch({
+				labelAlign : 'left',
+				fieldLabel : moduleIdLabel,
+				name : 'moduleId',
+				hiddenName : 'moduleId',
+				valueField : 'moduleId',
+				hiddenId : 'module_fake',
+				id : 'moduleId',
+				displayField : 'moduleEnglish',
+				typeAhead : false,
+				triggerAction : 'all',
+				store : moduleStore,
+				anchor : '95%',
+				selectOnFocus : true,
+				mode : 'local',
+				allowBlank : false,
+				blankText : blankTextLabel,
+				createValueMatcher : function(value) {
+					value = String(value).replace(/\s*/g, '');
+					if (Ext.isEmpty(value, false)) {
+						return new RegExp('^');
+					}
+					value = Ext.escapeRe(value.split('').join('\\s*')).replace(
+							/\\\\s\\\*/g, '\\s*');
+					return new RegExp('\\b(' + value + ')', 'i');
+				},
+				listeners : {
+
+					'select' : function(combo, record, index) {
+						Ext.Ajax.request({
+							url : '../controller/folderController.php',
+							method : 'GET',
+							params : {
+								method : 'read',
+								field : 'sequence',
+								table : 'folder',
+								moduleId : combo.value,
+								leafId : leafId
+							},
+							success : function(response, options) {
+								jsonResponse = Ext
+										.decode(response.responseText);
+								if (jsonResponse.success == false) {
+									Ext.MessageBox.alert(systemLabel,
+											jsonResponse.message);
+								} else {
+
+									Ext.getCmp('folderSequence').setValue(
+											jsonResponse.nextSequence);
+
+								}
+
+							},
+							failure : function(response, options) {
+
+								Ext.MessageBox.alert(systemLabel,
+										escape(response.status) + ":"
+												+ escape(response.statusText));
+							}
+
+						});
+					}
+				}
+			});
 			// viewport just save information,items will do separate
 
 			var moduleId = new Ext.ux.form.ComboBoxMatch(

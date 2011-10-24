@@ -61,6 +61,11 @@ class LeafModel extends ValidationClass {
 	 * @var int
 	 */
 	private $type;
+	/**
+	 * Team  Identification ** For Filtering Only
+	 * @var int
+	 */
+	private $teamId;
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
 	 */
@@ -78,6 +83,9 @@ class LeafModel extends ValidationClass {
 		}
 		if (isset ( $_POST ['leafId'] )) {
 			$this->setLeafId ( $this->strict ( $_POST ['leafId'], 'numeric' ), 0, 'single' );
+		}
+		if (isset ( $_POST ['teamId'] )) {
+			$this->setTeamId ( $this->strict ( $_POST ['teamId'], 'numeric' ) );
 		}
 		if (isset ( $_POST ['moduleId'] )) {
 			$this->setModuleId ( $this->strict ( $_POST ['moduleId'], 'numeric' ) );
@@ -102,6 +110,20 @@ class LeafModel extends ValidationClass {
 		 */
 		if (isset ( $_GET ['leafId'] )) {
 			$this->setTotal ( count ( $_GET ['leafId'] ) );
+		}
+		if (isset ( $_GET ['teamId'] )) {
+			$this->setTeamId ( $this->strict ( $_GET ['teamId'], 'numeric' ) );
+			
+		}
+		if (isset ( $_GET ['moduleId'] )) {
+			$this->setModuleId ( $this->strict ( $_GET ['moduleId'], 'numeric' ) );
+		}
+		if (isset ( $_GET ['folderId'] )) {
+			$this->setFolderId ( $this->strict ( $_GET ['folderId'], 'numeric' ) );
+			
+		}
+		if (isset ( $_GET ['type'] )) {
+			$this->setType ( $this->strict ( $_GET ['type'], 'numeric' ) );
 		}
 		
 		if (isset ( $_GET ['isDefault'] )) {
@@ -499,10 +521,23 @@ class LeafModel extends ValidationClass {
 	}
 	
 	/**
-	 * @param number $type
+	 * @param int $type
 	 */
 	public function setType($type) {
 		$this->type = $type;
+	}
+	/**
+	 * @return the $teamId
+	 */
+	public function getTeamId() {
+		return $this->teamId;
+	}
+	
+	/**
+	 * @param int $teamId
+	 */
+	public function setTeamId($teamId) {
+		$this->teamId = $teamId;
 	}
 
 }

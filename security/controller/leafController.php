@@ -552,13 +552,16 @@ class LeafClass extends ConfigClass {
 	 * Return module Identification
 	 */
 	function module() {
-		return $this->security->module ();
+		$this->security->module ( $this->model->getType (), $this->model->getTeamId () );
+
 	}
 	/**
 	 * Return Folder Identification
 	 */
 	function folder() {
-		return $this->security->folder ();
+		
+		$this->security->folder( $this->model->getType (), $this->model->getTeamId (),$this->model->getModuleId() );
+	
 	}
 	/* (non-PHPdoc)
 	 * @see config::update()
@@ -699,15 +702,16 @@ class LeafClass extends ConfigClass {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql = "
 			UPDATE	`leaf`
-			SET		`isActive`	=	'" . $this->model->getIsActive . "',
-					`isNew`		=	'" . $this->model->getIsNew . "',
-					`isDraft`	=	'" . $this->model->getIsDraft . "',
-					`isUpdate`	=	'" . $this->model->getIsUpdate . "',
-					`isDelete`	=	'" . $this->model->getIsDelete . "',
-					`isApproved`=	'" . $this->model->getIsApproved . "',
-					`executeBy`		=	'" . $this->model->getExecuteBy () . "',
-					`Time		=	" . $this->model->getTime . "
-			WHERE 	`leafId`	=	'" . $this->model->getLeafId ( 0, 'single' ) . "'";
+			SET		`isDefault`				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
+					`isActive`				=	'" . $this->model->getIsActive . "',
+					`isNew`					=	'" . $this->model->getIsNew . "',
+					`isDraft`				=	'" . $this->model->getIsDraft . "',
+					`isUpdate`				=	'" . $this->model->getIsUpdate . "',
+					`isDelete`				=	'" . $this->model->getIsDelete . "',
+					`isApproved`			=	'" . $this->model->getIsApproved . "',
+					`executeBy`				=	'" . $this->model->getExecuteBy () . "',
+					`executeTime`			=	" . $this->model->getExecuteTime() . "
+			WHERE 	`leafId`				=	'" . $this->model->getLeafId ( 0, 'single' ) . "'";
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sql = "
 			UPDATE	[leaf]
