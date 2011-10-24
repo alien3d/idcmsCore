@@ -140,6 +140,10 @@ class ModuleAccessClass extends ConfigClass {
 			if ($this->model->getTeamId ()) {
 				$sql .= " AND `team`.`teamId`='" . $this->model->getTeamId () . "'";
 			}
+			if ($this->model->getModuleId ()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId () . "'";
+			}
+
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 				SELECT	[moduleAccess].[moduleAccessId],
@@ -163,6 +167,10 @@ class ModuleAccessClass extends ConfigClass {
 			if ($this->model->getTeamId()) {
 				$sql .= " AND [team].[teamId]		=	'" . $this->model->getTeamId() . "'";
 			}
+			if ($this->model->getModuleId ()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId () . "'";
+			}
+
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 				SELECT	MODULEACCESS.MODULEACCESSID,
@@ -186,6 +194,10 @@ class ModuleAccessClass extends ConfigClass {
 			if ($this->model->getTeamId ()) {
 				$sql .= " AND `team`.`teamId`	=	'" . $this->model->getTeamId() . "'";
 			}
+			if ($this->model->getModuleId ()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId () . "'";
+			}
+
 		}
 		//echo $sql;
 		// searching filtering

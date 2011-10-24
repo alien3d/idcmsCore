@@ -904,7 +904,7 @@ Ext
 																	// if
 																	// duplicate
 																	// code
-																	alert(clientInvalidMessageLabel);
+																	Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
 																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																	Ext.Msg
 																			.alert(

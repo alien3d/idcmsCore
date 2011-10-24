@@ -192,6 +192,9 @@ class LeafAccessClass extends ConfigClass {
 			if ($this->model->getStaffId ()) {
 				$sql .= " AND `leafAccess`.`staffId`	=	'" . $this->model->getStaffId () . "'";
 			}
+			if ($this->model->getLeafId ()) {
+				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId () . "'";
+			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 				SELECT	[leaf].[moduleId],
@@ -268,6 +271,9 @@ class LeafAccessClass extends ConfigClass {
 			}
 			if ($this->model->getStaffId ()) {
 				$sql .= " AND [leafAccess`.[staffId]	=	'" . $this->strict ( $this->staffId, 'numeric' ) . "'";
+			}
+			if ($this->model->getLeafId ()) {
+				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId () . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -347,6 +353,9 @@ class LeafAccessClass extends ConfigClass {
 			if ($this->model->getStaffId ()) {
 				$sql .= " AND LEAFACCESS.STAFFID='" . $this->model->getStaffId () . "'";
 			}
+			if ($this->model->getLeafId ()) {
+				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId () . "'";
+			}
 		}
 		//echo $sql;
 		// searching filtering
@@ -370,16 +379,17 @@ class LeafAccessClass extends ConfigClass {
 			} else if ($this->getVendor () == self::ORACLE) {
 			
 			} else if ($this->getVendor () == self::DB2) {
+				$sql .= " LIMIT  " . $this->getStart () . " OFFSET " . $this->getLimit () . " ";
 			
 			} else if ($this->getVendor () == self::POSTGRESS) {
-				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
+				$sql .= " LIMIT  " . $this->getStart () . " OFFSET " . $this->getLimit () . " ";
 			
 			}
 		}
 		
 		$this->q->read ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => FALSE, "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" =>false, "message" => $this->q->responce ) );
 			exit ();
 		}
 		
@@ -542,9 +552,11 @@ if (isset ( $_POST ['method'] )) {
 }
 // crud -create,read,update,delete.
 if (isset ( $_GET ['method'] )) {
+	
 	/*
 	 *  Initilize Value before load in the loader
 	 */
+	 
 	/*
 	 *  Leaf / Application Identification
 	 */

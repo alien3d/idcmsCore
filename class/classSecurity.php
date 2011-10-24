@@ -174,19 +174,19 @@ class Security extends ConfigClass {
 			WHERE   [team].[isActive]=1";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-			SELECT 	TEAM.TEAMID,
+			SELECT 	TEAM.TEAMID as \"teamId\",
 					TEAM.TEAMENGLISH
 			FROM   	TEAM
 			WHERE   ISACTIVE=1";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql = "
-			SELECT 	TEAM.TEAMID,
+			SELECT 	TEAM.TEAMID as \"teamId\",
 					TEAM.TEAMENGLISH
 			FROM   	TEAM
 			WHERE   ISACTIVE=1";
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
-			SELECT 	TEAM.TEAMID,
+			SELECT 	TEAM.TEAMID as \"teamId\",
 					TEAM.TEAMENGLISH
 			FROM   	TEAM
 			WHERE   ISACTIVE=1";
@@ -205,17 +205,17 @@ class Security extends ConfigClass {
 				$items [] = $row;
 			}
 		} else {
-			echo json_encode ( array ('success' => false, 'total' => $total, 'group' => $items, 'message' => 'Empty Record' ) );
+			echo json_encode ( array ('success' => false, 'total' => $total, 'team' => $items, 'message' => 'Empty Record' ) );
 			exit ();
 		}
 		if ($total == 1) {
-			$jsonEncode = json_encode ( array ('success' => TRUE, 'total' => $total, 'group' => $items, 'message' => 'Data loaded' ) );
+			$jsonEncode = json_encode ( array ('success' => true, 'total' => $total, 'team' => $items, 'message' => 'Data loaded' ) );
 			$jsonEncode = str_replace ( "[", "", $jsonEncode );
 			$jsonEncode = str_replace ( "]", "", $jsonEncode );
 			echo $jsonEncode;
 			exit ();
 		} else {
-			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'team' => $items ) );
+			echo json_encode ( array ('success' => true, 'total' => $total, 'team' => $items ) );
 			exit ();
 		}
 	}
@@ -351,16 +351,16 @@ class Security extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			if ($type == 1) {
 				$sql = "
-			SELECT 	MODULE.MODULEID,
-					MODULE.MODULEENGLISH
+			SELECT 	MODULE.MODULEID 		AS	\"moduleId\",
+					MODULE.MODULEENGLISH	AS	\"moduleEnglish\"
 			FROM   	MODULE
 			WHERE   MODULE.ISACTIVE=1";
 			} else if ($type == 2) {
 				$sql = "
-			SELECT 	MODULE.MODULEID,
-					MODULE.MODULEENGLISH,
-					MODULEACCESS.TEAMID,
-					MODULEACCESS.MODULEACCESSVALUE
+			SELECT 	MODULE.MODULEID 				AS	\"moduleId\",
+					MODULE.MODULEENGLISH 			AS 	\"moduleEnglish\",
+					MODULEACCESS.TEAMID 			AS 	\"teamId\",
+					MODULEACCESS.MODULEACCESSVALUE	AS 	\"moduleAccessValue\"
 			FROM   	MODULEACCESS
 			JOIN	MODULE
 			USING	(MODULEID)
@@ -372,20 +372,20 @@ class Security extends ConfigClass {
 		} else if ($this->getVendor () == self::DB2) {
 			if ($type == 1) {
 				$sql = "
-			SELECT 	MODULE.MODULEID,
-					MODULE.MODULEENGLISH
-			FROM   	MODULE
-			WHERE   MODULE.ISACTIVE=1";
+				SELECT 	MODULE.MODULEID 		AS	\"moduleId\",
+						MODULE.MODULEENGLISH	AS	\"moduleEnglish\"
+				FROM   	MODULE
+				WHERE   MODULE.ISACTIVE=1";
 			} else if ($type == 2) {
 				$sql = "
-			SELECT 	MODULE.MODULEID,
-					MODULE.MODULEENGLISH,
-					MODULEACCESS.TEAMID,
-					MODULEACCESS.MODULEACCESSVALUE
-			FROM   	MODULEACCESS
-			JOIN	MODULE
-			USING	(MODULEID)
-			WHERE   MODULE.ISACTIVE=1";
+				SELECT 	MODULE.MODULEID 				AS	\"moduleId\",
+						MODULE.MODULEENGLISH 			AS 	\"moduleEnglish\",
+						MODULEACCESS.TEAMID 			AS 	\"teamId\",
+						MODULEACCESS.MODULEACCESSVALUE	AS 	\"moduleAccessValue\"
+				FROM   	MODULEACCESS
+				JOIN	MODULE
+				USING	(MODULEID)
+				WHERE   MODULE.ISACTIVE=1";
 				if (isset ( $teamId )) {
 					$sql .= " AND MODULEACCESS.TEAMID='" . $teamId . "'";
 				}
@@ -393,20 +393,20 @@ class Security extends ConfigClass {
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			if ($type == 1) {
 				$sql = "
-			SELECT 	MODULE.MODULEID,
-					MODULE.MODULEENGLISH
-			FROM   	MODULE
-			WHERE   MODULE.ISACTIVE=1";
+				SELECT 	MODULE.MODULEID 		AS	\"moduleId\",
+						MODULE.MODULEENGLISH	AS	\"moduleEnglish\"
+				FROM   	MODULE
+				WHERE   MODULE.ISACTIVE=1";
 			} else if ($type == 2) {
 				$sql = "
-			SELECT 	MODULE.MODULEID,
-					MODULE.MODULEENGLISH,
-					MODULEACCESS.TEAMID,
-					MODULEACCESS.MODULEACCESSVALUE
-			FROM   	MODULEACCESS
-			JOIN	MODULE
-			USING	(MODULEID)
-			WHERE   MODULE.ISACTIVE=1";
+				SELECT 	MODULE.MODULEID 				AS	\"moduleId\",
+						MODULE.MODULEENGLISH 			AS 	\"moduleEnglish\",
+						MODULEACCESS.TEAMID 			AS 	\"teamId\",
+						MODULEACCESS.MODULEACCESSVALUE	AS 	\"moduleAccessValue\"
+				FROM   	MODULEACCESS
+				JOIN	MODULE
+				USING	(MODULEID)
+				WHERE   MODULE.ISACTIVE=1";
 				if (isset ( $teamId )) {
 					$sql .= " AND MODULEACCESS.TEAMID='" . $teamId . "'";
 				}

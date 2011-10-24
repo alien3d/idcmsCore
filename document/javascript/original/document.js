@@ -1028,7 +1028,7 @@ Ext
 																		action) {
 
 																	if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
-																		alert(loadFailureMessageLabel);
+																		Ext.Msg.alert(systemErrorLabel,loadFailureLabel);
 																	} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
 																		// here
 																		// will
@@ -1037,7 +1037,7 @@ Ext
 																		// if
 																		// duplicate
 																		// code
-																		alert(clientInvalidMessageLabel);
+																		Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
 																	} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																		Ext.Msg
 																				.alert(connectFailureLabel

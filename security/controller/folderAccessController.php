@@ -117,7 +117,7 @@ class FolderAccessClass extends ConfigClass {
 						`module`.`moduleId`,
 						`folder`.`folderId`,
 						`folder`.`folderEnglish`,
-						`team`.`TEAMID`,
+						`team`.`teamId`,
 						`team`.`teamEnglish`,
 						`folderAccess`.`folderAccessId`,
 						(CASE `folderAccess`.`folderAccessValue`
@@ -130,7 +130,7 @@ class FolderAccessClass extends ConfigClass {
 				JOIN	`folder`
 				USING 	(`folderId`)
 				JOIN 	`team`
-				USING 	(`TEAMID`)
+				USING 	(`teamId`)
 				JOIN 	`module`
 				USING	(`moduleId`)
 				WHERE 	`module`.`isActive` =1
@@ -141,6 +141,9 @@ class FolderAccessClass extends ConfigClass {
 			}
 			if ($this->model->getModuleId ()) {
 				$sql .= " AND `folder`.`moduleId`='" . $this->model->getModuleId () . "'";
+			}
+			if ($this->model->getFolderId ()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId () . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -203,6 +206,111 @@ class FolderAccessClass extends ConfigClass {
 			}
 			if ($this->model->getModuleId ()) {
 				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId () . "'";
+			}
+			if ($this->model->getFolderId ()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId () . "'";
+			}
+		}else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+				SELECT	MODULE.MODULEENGLISH 			AS	\"moduleEnglish\",
+						MODULE.MODULEID 				AS 	\"moduleId\",
+						FOLDER.FOLDERID 				AS 	\"folderId\",
+						FOLDER.FOLDERENGLISH 			AS 	\"folderEnglish\",
+						TEAM.TEAMID 					AS 	\"teamId\",
+						TEAM.TEAMENGLISH 				AS 	\"teamEnglish\",
+						FOLDERACCESS.FOLDERACCESSID 	AS 	\"folderAccessId\",
+						(CASE	FOLDERACCESS.FOLDERACCESSVALUE
+							WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS \"folderAccessValue\"
+				FROM 	FOLDERACCESS
+				JOIN	FOLDER
+				ON		FOLDER.FOLDERID		=	FOLDERACCESS.FOLDERID
+				JOIN 	TEAM
+				ON		TEAM.TEAMID		=	FOLDERACCESS.TEAMID
+				JOIN 	MODULE
+				ON		MODULE.MODULEID		=	FOLDER.MODULEID
+				WHERE 	FOLDER.ISACTIVE		=	1
+				AND		MODULE.ISACTIVE		=	1
+				AND		TEAM.ISACTIVE		=	1";
+			if ($this->model->getTeamId ()) {
+				$sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId () . "'";
+			}
+			if ($this->model->getModuleId ()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId () . "'";
+			}
+			if ($this->model->getFolderId ()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId () . "'";
+			}
+		}else if ($this->getVendor () == self::DB2) {
+			$sql = "
+				SELECT	MODULE.MODULEENGLISH 			AS	\"moduleEnglish\",
+						MODULE.MODULEID 				AS 	\"moduleId\",
+						FOLDER.FOLDERID 				AS 	\"folderId\",
+						FOLDER.FOLDERENGLISH 			AS 	\"folderEnglish\",
+						TEAM.TEAMID 					AS 	\"teamId\",
+						TEAM.TEAMENGLISH 				AS 	\"teamEnglish\",
+						FOLDERACCESS.FOLDERACCESSID 	AS 	\"folderAccessId\",
+						(CASE	FOLDERACCESS.FOLDERACCESSVALUE
+							WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS \"folderAccessValue\"
+				FROM 	FOLDERACCESS
+				JOIN	FOLDER
+				ON		FOLDER.FOLDERID		=	FOLDERACCESS.FOLDERID
+				JOIN 	TEAM
+				ON		TEAM.TEAMID		=	FOLDERACCESS.TEAMID
+				JOIN 	MODULE
+				ON		MODULE.MODULEID		=	FOLDER.MODULEID
+				WHERE 	FOLDER.ISACTIVE		=	1
+				AND		MODULE.ISACTIVE		=	1
+				AND		TEAM.ISACTIVE		=	1";
+			if ($this->model->getTeamId ()) {
+				$sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId () . "'";
+			}
+			if ($this->model->getModuleId ()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId () . "'";
+			}
+			if ($this->model->getFolderId ()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId () . "'";
+			}
+		}else if ($this->getVendor () == self::ORACLE) {
+			$sql = "
+				SELECT	MODULE.MODULEENGLISH 			AS	\"moduleEnglish\",
+						MODULE.MODULEID 				AS 	\"moduleId\",
+						FOLDER.FOLDERID 				AS 	\"folderId\",
+						FOLDER.FOLDERENGLISH 			AS 	\"folderEnglish\",
+						TEAM.TEAMID 					AS 	\"teamId\",
+						TEAM.TEAMENGLISH 				AS 	\"teamEnglish\",
+						FOLDERACCESS.FOLDERACCESSID 	AS 	\"folderAccessId\",
+						(CASE	FOLDERACCESS.FOLDERACCESSVALUE
+							WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS \"folderAccessValue\"
+				FROM 	FOLDERACCESS
+				JOIN	FOLDER
+				ON		FOLDER.FOLDERID		=	FOLDERACCESS.FOLDERID
+				JOIN 	TEAM
+				ON		TEAM.TEAMID		=	FOLDERACCESS.TEAMID
+				JOIN 	MODULE
+				ON		MODULE.MODULEID		=	FOLDER.MODULEID
+				WHERE 	FOLDER.ISACTIVE		=	1
+				AND		MODULE.ISACTIVE		=	1
+				AND		TEAM.ISACTIVE		=	1";
+			if ($this->model->getTeamId ()) {
+				$sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId () . "'";
+			}
+			if ($this->model->getModuleId ()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId () . "'";
+			}
+			if ($this->model->getFolderId ()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId () . "'";
 			}
 		}
 		//echo $sql;

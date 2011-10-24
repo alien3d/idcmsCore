@@ -66,7 +66,9 @@ class FolderAccessModel extends ValidationClass {
 		if (isset ( $_POST ['moduleId'] )) {
 			$this->setModuleId ( $this->strict ( $_POST ['moduleId'], 'numeric' ) );
 		}
-		
+		if (isset ( $_POST ['folderId'] )) {
+			$this->setFolderId ( $this->strict ( $_POST ['folderId'], 'numeric' ) );
+		}
 		/**
 		 * All the $_GET enviroment.
 		 */
