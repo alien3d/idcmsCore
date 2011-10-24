@@ -1,39 +1,37 @@
 Ext
 		.onReady(function() {
 			Ext.QuickTips.init();
-			Ext.form.Field.prototype.msgTarget = 'under';
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
+			Ext.form.Field.prototype.msgTarget = "under";
+			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
-			var pagePrint;
-			var pagePrintList;
+			var pagePrint;;
+			var perPage = 15;
+			var encode = false;
+			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
 			if (leafAccessCreateValue == 1) {
 				pageCreate = false;
-				pageCreateList = false;
 			} else {
 				pageCreate = true;
-				pageCreateList = true;
 			}
 			if (leafAccessReadValue == 1) {
 				pageReload = false;
-				pageReloadList = false;
 			} else {
 				pageReload = true;
-				pageReloadList = true;
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
-				pagePrintList = false;
 			} else {
 				pagePrint = true;
-				pagePrintList = true;
 			}
-			Ext.BLANK_IMAGE_URL = '../javascript/resources/images/s.gif';
-			var perPage = 10;
-			var encode = false;
-			var local = false;
-			var store = new Ext.data.JsonStore({
+			
+			
+			var logStore = new Ext.data.JsonStore({
 				autoDestroy : true,
 				url : '../controller/logController.php',
 				remoteSort : true,
@@ -217,7 +215,7 @@ Ext
 
 			
 
-			var columnModel = [ new Ext.grid.RowNumberer(), this.action, {
+			var logColumnModel = [ new Ext.grid.RowNumberer(), this.action, {
 				dataIndex : 'logId',
 				header : logIdLabel,
 				sortable : true,
@@ -273,70 +271,15 @@ Ext
 				hidden : false
 			} ];
 
-			var columnModelList = [ new Ext.grid.RowNumberer(), this.action, {
-				dataIndex : 'logId',
-				header : logIdLabel,
-				sortable : true,
-				hidden : false
-			},
-
-			{
-				dataIndex : 'leafId',
-				header : leafIdLabel,
-				sortable : true,
-				hidden : false
-			},
-
-			{
-				dataIndex : 'operation',
-				header : operationLabel,
-				sortable : true,
-				hidden : false
-			},
-
-			{
-				dataIndex : 'sql',
-				header : sqlLabel,
-				sortable : true,
-				hidden : false
-			},
-
-			{
-				dataIndex : 'date',
-				header : dateLabel,
-				sortable : true,
-				hidden : false
-			},
-
-			{
-				dataIndex : 'staffId',
-				header : staffIdLabel,
-				sortable : true,
-				hidden : false
-			},
-
-			{
-				dataIndex : 'access',
-				header : accessLabel,
-				sortable : true,
-				hidden : false
-			},
-
-			{
-				dataIndex : 'logError',
-				header : logErrorLabel,
-				sortable : true,
-				hidden : false
-			} ];
-
+			
 			var grid = new Ext.grid.GridPanel({
 				border : false,
-				store : store,
+				store : logStore,
 				autoHeight : false,
 				height : 400,
 				columns : columnModel,
 				loadMask : true,
-				plugins : [ this.action, filters ],
+				plugins : [ this.action, logFilters ],
 				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true
 				}),
@@ -354,7 +297,7 @@ Ext
 									limit : perPage,
 									method : 'read',
 									mode : 'view',
-									plugin : [ filters ]
+									plugin : [ logFilters ]
 								}
 							});
 						}
@@ -444,7 +387,7 @@ Ext
 					store : store,
 					width : 320
 				}) ],
-				items : [ grid ]
+				items : [ logGrid ]
 			});
 
 			var logId = new Ext.form.Hidden({
@@ -514,6 +457,7 @@ Ext
 			var formPanel = new Ext.form.FormPanel(
 					{
 						url : 'logData.php',
+						name :'formPanel',
 						id : 'formPanel',
 						method : 'post',
 						frame : true,

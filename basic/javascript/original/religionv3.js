@@ -1,39 +1,38 @@
 Ext.onReady(function() {
     Ext.QuickTips.init();
-    Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
-    Ext.form.Field.prototype.msgTarget = "under";
-    Ext.Ajax.timeout = 90000;
-    var pageCreate;
-  
-    var pageReload;
-    
-    var pagePrint;
-    
-    var perPage = 15;
-    var encode = false;
-   
-    var jsonResponse;
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
+			Ext.form.Field.prototype.msgTarget = "under";
+			Ext.Ajax.timeout = 90000;
+			
+			var pageCreate;
+			var pageReload;
+			var pagePrint;;
+			var perPage = 15;
+			var encode = false;
+			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
  
     if (leafAccessReadValue == 1) {
         pageCreate = false;
-        pageCreateList = false;
+       
     } else {
         pageCreate = true;
-        pageCreateList = true;
+     
     }
     if (leafAccessReadValue == 1) {
         pageReload = false;
-        pageReloadList = false;
+        
     } else {
         pageReload = true;
-        pageReloadList = true;
+      
     }
     if (leafAccessPrintValue == 1) {
         pagePrint = false;
-        pagePrintList = false;
+     
     } else {
         pagePrint = true;
-        pagePrintList = true;
     }
     var religionProxy = new Ext.data.HttpProxy({
         url: "../controller/religionController.php",
@@ -41,10 +40,7 @@ Ext.onReady(function() {
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { 
-            	// Ext.MessageBox.alert(systemLabel,
-                // jsonResponse.message);
-                // //uncomment it for debugging
-                // purpose
+            	// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
             } else { 
             	Ext.MessageBox.alert(systemErrorLabel,jsonResponse.message);
                
@@ -68,7 +64,6 @@ Ext.onReady(function() {
     	pruneModifiedRecords :true,
         baseParams: {
             method: "read",
-            grid: "master",
             leafId: leafId,
             isAdmin: isAdmin,
             start: 0,
@@ -144,7 +139,7 @@ Ext.onReady(function() {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { 
             	// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-                // uncomment for testing purpose
+               
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }

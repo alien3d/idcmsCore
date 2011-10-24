@@ -4,14 +4,16 @@ Ext
 			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
-			var pagePrint;
-			var pagePrintList;
+			var pagePrint;;
 			var perPage = 15;
 			var encode = false;
+			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
 
 			var jsonResponse;
 			var duplicate = 0;
@@ -1212,6 +1214,7 @@ Ext
 			var formPanel = new Ext.form.FormPanel(
 					{
 						url : "../controller/religionController.php",
+						name :"formPanel",
 						id : "formPanel",
 						method : "post",
 						frame : true,

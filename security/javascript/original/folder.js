@@ -1,16 +1,20 @@
 Ext
 		.onReady(function() {
 			Ext.QuickTips.init();
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
-			Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
-
+			
 			var pageCreate;
 			var pageReload;
-			var pagePrint;
-			var perPage = 10;
+			var pagePrint;;
+			var perPage = 15;
 			var encode = false;
 			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
+			
 			if (leafAccessCreateValue == 1) {
 				pageCreate = false;
 			} else {

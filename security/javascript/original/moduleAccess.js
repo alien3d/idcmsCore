@@ -1,9 +1,19 @@
 Ext
 		.onReady(function() {
-
-			var pageCreate='';
-			var pageReload='';
-			var pagePrint='';
+			Ext.QuickTips.init();
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
+			Ext.form.Field.prototype.msgTarget = "under";
+			Ext.Ajax.timeout = 90000;
+			
+			var pageCreate;
+			var pageReload;
+			var pagePrint;;
+			var perPage = 15;
+			var encode = false;
+			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
 			if (leafAccessCreateValue == 1) {
 				pageCreate = false;
 			} else {
@@ -32,7 +42,7 @@ Ext
 
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging purpose
+					
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);

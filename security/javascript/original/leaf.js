@@ -1,12 +1,19 @@
 Ext
 		.onReady(function() {
-			Ext.Ajax.timeout = 90000000;
-
-			var temp;
-
+			Ext.QuickTips.init();
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
+			Ext.form.Field.prototype.msgTarget = "under";
+			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
 			var pageReload;
-			var pagePrint;
+			var pagePrint;;
+			var perPage = 15;
+			var encode = false;
+			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
 
 			if (leafAccessCreateValue == 1) {
 				pageCreate = false;
@@ -23,10 +30,7 @@ Ext
 			} else {
 				pagePrint = true;
 			}
-			Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
-			var perPage = 15;
-			var encode = false;
-			var local = false;
+			
 
 			var leafProxy = new Ext.data.HttpProxy({
 				url : "../controller/leafController.php",
@@ -269,7 +273,7 @@ Ext
 				baseParams : {
 					method : "read",
 					field : "teamId",
-					leafId : leafId
+					leafId : leafIdTemp
 				},
 				root : 'team',
 				fields : [ {
@@ -430,7 +434,7 @@ Ext
 					type : "date",
 					dataIndex : "executeTime",
 					column : "executeTime",
-					table : "religion"
+					table : "leaf"
 				} ]
 			});
 
@@ -487,7 +491,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// //uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -553,8 +556,7 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,jsonResponse.message);//
-						// uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -963,7 +965,7 @@ Ext
 						params : {
 							method : "DELETE",
 							ids : encoded_array,
-							leafId : leafId
+							leafId : leafIdTemp
 						},
 						success : function(response, options) {
 							jsonResponse = Ext.decode(response.responseText);
@@ -1793,6 +1795,8 @@ Ext
 			var formPanel = new Ext.form.FormPanel(
 					{
 						url : '../controller/leafController.php',
+						name :'formPanel',
+						id :'formPanel',
 						method : 'post',
 						frame : true,
 						title : 'Menu Administration',

@@ -4,37 +4,30 @@ Ext
 			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
-			var pagePrint;
-			var pagePrintList;
+			var pagePrint;;
 			var perPage = 15;
 			var encode = false;
 			var local = false;
 			var jsonResponse;
 			var duplicate = 0;
+			
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
-				pageCreateList = false;
 			} else {
 				pageCreate = true;
-				pageCreateList = true;
 			}
 			if (leafAccessReadValue == 1) {
 				pageReload = false;
-				pageReloadList = false;
 			} else {
 				pageReload = true;
-				pageReloadList = true;
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
-				pagePrintList = false;
 			} else {
 				pagePrint = true;
-				pagePrintList = true;
 			}
 			var documentCategoryProxy = new Ext.data.HttpProxy({
 				url : "../controller/documentCategoryController.php",
@@ -69,7 +62,6 @@ Ext
 				pruneModifiedRecords : true,
 				baseParams : {
 					method : "read",
-					grid : "master",
 					leafId : leafId,
 					isAdmin : isAdmin,
 					start : 0,
@@ -141,7 +133,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);

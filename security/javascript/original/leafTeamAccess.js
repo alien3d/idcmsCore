@@ -1,9 +1,19 @@
 Ext
 		.onReady(function() {
-			Ext.form.Field.prototype.msgTarget = 'under';
+			Ext.QuickTips.init();
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
+			Ext.form.Field.prototype.msgTarget = "under";
+			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
 			var pageReload;
-			var pagePrint;
+			var pagePrint;;
+			var perPage = 15;
+			var encode = false;
+			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
 			if (leafTeamAccessCreateValue == 1) {
 				pageCreate = false;
 			} else {
@@ -20,9 +30,7 @@ Ext
 				pagePrint = true;
 			}
 
-			var perPage = 10;
-			var encode = false;
-			var local = false;
+			
 			var leafTeamAccessProxy = new Ext.data.HttpProxy({
 				url : "../controller/leafTeamAccessController.php",
 				method : 'POST',
@@ -35,7 +43,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -179,7 +186,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -229,7 +235,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);

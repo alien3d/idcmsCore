@@ -4,15 +4,17 @@ Ext
 			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
 			var pageReload;
 			var pagePrint;
-			var perPage = 2;
+			var perPage = 15;
 			var encode = false;
 			var local = false;
 			var jsonResponse;
 			var duplicate = 0;
-			var auditButtonlabel = 'audit';
+			
+			
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
 			} else {
@@ -25,10 +27,8 @@ Ext
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
-				pagePrintList = false;
 			} else {
 				pagePrint = true;
-				pagePrintList = true;
 			}
 
 			// master table
@@ -39,7 +39,7 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging purpose
+						
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -135,7 +135,7 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging purpose
+						
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -1594,6 +1594,8 @@ Ext
 			var formPanel = new Ext.form.FormPanel(
 					{
 						url : '../controller/religionController.php',
+						name :'formPanel',
+						id :'formPanel',
 						method : 'post',
 						frame : true,
 						title : 'Religion',

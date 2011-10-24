@@ -4,6 +4,7 @@ Ext
 			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
 			var pageReload;
 			var pagePrint;;
@@ -12,6 +13,8 @@ Ext
 			var local = false;
 			var jsonResponse;
 			var duplicate = 0;
+			
+			
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
 			} else {
@@ -125,7 +128,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) { 
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// uncomment for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);

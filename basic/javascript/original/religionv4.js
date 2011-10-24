@@ -16,24 +16,24 @@ Ext
 			var jsonResponse;
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
-				pageCreateList = false;
+			
 			} else {
 				pageCreate = true;
-				pageCreateList = true;
+				
 			}
 			if (leafAccessReadValue == 1) {
 				pageReload = false;
-				pageReloadList = false;
+				
 			} else {
 				pageReload = true;
-				pageReloadList = true;
+				
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
-				pagePrintList = false;
+				
 			} else {
 				pagePrint = true;
-				pagePrintList = true;
+				
 			}
 			var religionProxy = new Ext.data.HttpProxy({
 				url : "../controller/religionController.php",
@@ -42,7 +42,7 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging purpose
+						
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -69,7 +69,6 @@ Ext
 				pruneModifiedRecords : true,
 				baseParams : {
 					method : "read",
-					grid : "master",
 					leafId : leafId,
 					isAdmin : isAdmin,
 					start : 0,

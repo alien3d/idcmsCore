@@ -4,38 +4,31 @@ Ext
 			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
 			var pagePrint;
-			var pagePrintList;
-			var perPage = 2;
+			var perPage = 15;
 			var encode = false;
 			var local = false;
-
 			var jsonResponse;
 			var duplicate = 0;
+			
+			
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
-				pageCreateList = false;
 			} else {
 				pageCreate = true;
-				pageCreateList = true;
 			}
 			if (leafAccessReadValue == 1) {
 				pageReload = false;
-				pageReloadList = false;
 			} else {
 				pageReload = true;
-				pageReloadList = true;
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
-				pagePrintList = false;
 			} else {
 				pagePrint = true;
-				pagePrintList = true;
 			}
 			var religionProxy = new Ext.data.HttpProxy({
 				url : "../controller/religionController.php",
@@ -1088,6 +1081,7 @@ Ext
 			var formPanel = new Ext.form.FormPanel(
 					{
 						url : "../controller/religionController.php",
+						name :'formPanel',
 						id : "formPanel",
 						method : "post",
 						frame : true,

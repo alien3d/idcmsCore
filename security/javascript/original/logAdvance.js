@@ -1,13 +1,19 @@
 Ext
 		.onReady(function() {
 			Ext.QuickTips.init();
-			Ext.form.Field.prototype.msgTarget = 'under';
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
+			Ext.form.Field.prototype.msgTarget = "under";
+			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
-			var pagePrint;
-			var pagePrintList;
+			var pagePrint;;
+			var perPage = 15;
+			var encode = false;
+			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
 			if (leafAccessCreateValue == 1) {
 				var pageCreate = false;
 			} else {
@@ -23,10 +29,7 @@ Ext
 			} else {
 				var pagePrint = true;
 			}
-			Ext.BLANK_IMAGE_URL = '../javascript/resources/images/s.gif';
-			var perPage = 10;
-			var encode = false;
-			var local = false;
+			
 			var logAdvanceProxy = new Ext.data.HttpProxy({
 				url : "../controller/logAdvanceController.php",
 				method : 'POST',

@@ -2,39 +2,35 @@ Ext
 		.onReady(function() {
 			Ext.QuickTips.init();
 			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
-			Ext.form.Field.prototype.msgTarget = 'under';
+			Ext.form.Field.prototype.msgTarget = "under";
+			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
-			var pagePrint;
-			var pagePrintList;
-			var duplicate = 0; // bypassing the extjs bugs
+			var pagePrint;;
+			var perPage = 15;
+			var encode = false;
+			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
 			if (leafAccessCreateValue == 1) {
 				pageCreate = false;
-				pageCreateList = false;
 			} else {
 				pageCreate = true;
-				pageCreateList = true;
 			}
 			if (leafAccessReadValue == 1) {
 				pageReload = false;
-				pageReloadList = false;
 			} else {
 				pageReload = true;
-				pageReloadList = true;
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
-				pagePrintList = false;
 			} else {
 				pagePrint = true;
-				pagePrintList = true;
 			}
 
-			var perPage = 10;
-			var encode = false;
-			var local = false;
+			
 
 			var documentProxy = new Ext.data.HttpProxy({
 				url : "../controller/documentController.php",
@@ -120,7 +116,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -861,6 +856,7 @@ Ext
 			var formPanel = new Ext.FormPanel(
 					{
 						method : 'POST',
+						name :'formPanel',
 						id : 'formPanel',
 						url : '../controller/documentController.php',
 						title : leafEnglish,
@@ -1030,13 +1026,7 @@ Ext
 																	if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																		Ext.Msg.alert(systemErrorLabel,loadFailureLabel);
 																	} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																		// here
-																		// will
-																		// be
-																		// error
-																		// if
-																		// duplicate
-																		// code
+																		
 																		Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
 																	} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																		Ext.Msg

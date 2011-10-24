@@ -1,41 +1,36 @@
 Ext
 		.onReady(function() {
 			Ext.QuickTips.init();
-			// get current information of the page
-
-			Ext.form.Field.prototype.msgTarget = 'under';
+			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
+			Ext.form.Field.prototype.msgTarget = "under";
+			Ext.Ajax.timeout = 90000;
+			
 			var pageCreate;
-			var pageCreateList;
 			var pageReload;
-			var pageReloadList;
-			var pagePrint;
-			var pagePrintList;
+			var pagePrint;;
 			var perPage = 15;
 			var encode = false;
 			var local = false;
+			var jsonResponse;
+			var duplicate = 0;
+			
 			
 			if (leafAccessCreateValue == 1) {
 				pageCreate = false;
-				pageCreateList = false;
 			} else {
 				pageCreate = true;
-				pageCreateList = true;
 			}
 			if (leafAccessReadValue == 1) {
 				pageReload = false;
-				pageReloadList = false;
 			} else {
 				pageReload = true;
-				pageReloadList = true;
 			}
 			if (leafAccessPrintValue == 1) {
 				pagePrint = false;
-				pagePrintList = false;
 			} else {
 				pagePrint = true;
-				pagePrintList = true;
 			}
-			Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
+			
 			
 			var staffProxy = new Ext.data.HttpProxy({
 				url : "../controller/staffController.php",
@@ -44,8 +39,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging
-
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -140,8 +133,7 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message); //uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message); 
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -278,10 +270,8 @@ Ext
 			});
 
 			var staffFilters = new Ext.ux.grid.GridFilters({
-				// encode and local configuration options defined previously for
-				// easier reuse
-				encode : encode, // json encode the filter query
-				local : local, // defaults to false (remote filtering)
+				encode : encode, 
+				local : local, 
 				filters : [ {
 					type : 'list',
 					dataIndex : 'teamId',
@@ -684,10 +674,10 @@ Ext
 																			.alert(
 																					systemLabel,
 																					jsonResponse.message);
-																	departmentStore
+																	staffStore
 																			.removeAll(); 
 																
-																	departmentStore
+																	staffStore
 																			.reload();
 																} else if (jsonResponse.success == false) {
 																	Ext.MessageBox
@@ -910,8 +900,10 @@ Ext
 
 			var formPanel = new Ext.form.FormPanel(
 					{
-						id : 'formPanel',
+						
 						url : '../controller/staffController.php',
+						name :'formPanel',
+						id : 'formPanel',
 						method : 'post',
 						frame : true,
 						title : leafEnglish,
@@ -1066,13 +1058,7 @@ Ext
 																		if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																			Ext.Msg.alert(systemErrorLabel,loadFailureLabel);
 																		} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																			// here
-																			// will
-																			// be
-																			// error
-																			// if
-																			// duplicate
-																			// code
+																	
 																			Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
 																		} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																			Ext.Msg
