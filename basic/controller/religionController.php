@@ -240,7 +240,7 @@ class ReligionClass extends ConfigClass {
 	 * @see config::read()
 	 */
 	public function read() {
-		//	header('Content-Type:application/json; charset=utf-8');
+		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
 				$this->auditFilter = "	AND `religion`.`isActive`		=	1	";
@@ -843,7 +843,7 @@ class ReligionClass extends ConfigClass {
 			// advance logging future
 			$this->q->tableName = $this->model->getTableName ();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName ();
-			$this->q->primaryKeyValue = $this->model->getReligionId ();
+			$this->q->primaryKeyValue = $this->model->getReligionId (0,'single');
 			$this->q->audit = $this->audit;
 			$this->q->update ( $sql );
 			if ($this->q->execute == 'fail') {
@@ -859,7 +859,7 @@ class ReligionClass extends ConfigClass {
 	 * To Update flag Status
 	 */
 	function updateStatus() {
-		header('Content-Type:application/json; charset=utf-8');
+//		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1007,19 +1007,19 @@ class ReligionClass extends ConfigClass {
 		$sql .= substr ( $sqlLooping, 0, - 1 );
 		if ($this->getVendor () == self::MYSQL) {
 			$sql .= "
-			WHERE `" . $this->model->getPrimaryKeyName () . "` IN (" . $this->model->getReligionIdAll () . ")";
+			WHERE `" . $this->model->getPrimaryKeyName () . "` IN (" . $this->model->getPrimaryKeyAll ()  . ")";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql .= "
-			WHERE [" . $this->model->getPrimaryKeyName () . "] IN (" . $this->model->getReligionIdAll () . ")";
+			WHERE [" . $this->model->getPrimaryKeyName () . "] IN (" . $this->model->getPrimaryKeyAll ()  . ")";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql .= "
-			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getPrimaryKeyAll () . ")";
 		} else if ($this->getVendor () == self::DB2) {
 			$sql .= "
-			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getPrimaryKeyAll ()  . ")";
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql .= "
-			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getReligionIdAll () . ")";
+			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "  IN (" . $this->model->getPrimaryKeyAll ()  . ")";
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "Unsupported Database Vendor" ) );
 			exit ();

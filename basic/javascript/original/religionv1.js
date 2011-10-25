@@ -4,7 +4,7 @@ Ext
 			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
-			
+
 			var pageCreate;
 			var pageReload;
 			var pagePrint;
@@ -13,8 +13,7 @@ Ext
 			var local = false;
 			var jsonResponse;
 			var duplicate = 0;
-			
-			
+
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
 			} else {
@@ -37,7 +36,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -63,7 +61,6 @@ Ext
 				autoDestroy : true,
 				baseParams : {
 					method : "read",
-					grid : "master",
 					leafId : leafId,
 					isAdmin : isAdmin,
 					start : 0,
@@ -119,83 +116,8 @@ Ext
 					dateFormat : "Y-m-d H:i:s"
 				} ]
 			});
-			var religionListProxy = new Ext.data.HttpProxy({
-				url : "../controller/religionController.php",
-				method : 'POST',
-				success : function(response, options) {
-					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { 
-						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-					} else {
-						Ext.MessageBox.alert(systemErrorLabel,
-								jsonResponse.message);
-					}
-				},
-				failure : function(response, options) {
-					Ext.MessageBox.alert(systemErrorLabel,
-							escape(response.Status) + ":"
-									+ escape(response.statusText));
-				}
-			});
-			var religionListReader = new Ext.data.JsonReader({
-				totalProperty : "total",
-				successProperty : "success",
-				messageProperty : "message",
-				idProperty : "religionId"
-			});
-			var religionStoreList = new Ext.data.JsonStore({
-				proxy : religionListProxy,
-				reader : religionListReader,
-				autoLoad : true,
-				autoDestroy : true,
-				baseParams : {
-					method : "read",
-					leafId : leafId,
-					isAdmin : isAdmin,
-					start : 0,
-					limit : perPage
-					
-				},
-				root : "data",
-				fields : [ {
-					name : "religionId",
-					type : "int"
-				}, {
-					name : "religionDesc",
-					type : "string"
-				}, {
-					name : "executeBy",
-					type : "int"
-				}, {
-					name : "staffName",
-					type : "string"
-				}, {
-					name : "isDefault",
-					type : "boolean"
-				}, {
-					name : "isNew",
-					type : "boolean"
-				}, {
-					name : "isDraft",
-					type : "boolean"
-				}, {
-					name : "isUpdate",
-					type : "boolean"
-				}, {
-					name : "isDelete",
-					type : "boolean"
-				}, {
-					name : "isActive",
-					type : "boolean"
-				}, {
-					name : "isApproved",
-					type : "boolean"
-				}, {
-					name : "executeTime",
-					type : "date",
-					dateFormat : "Y-m-d H:i:s"
-				} ]
-			});
+			
+			
 			var staffByProxy = new Ext.data.HttpProxy({
 				url : "../controller/religionController.php?",
 				method : "GET",
@@ -203,7 +125,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// uncomment for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -240,7 +161,135 @@ Ext
 					type : "string"
 				} ]
 			});
-			var filters = new Ext.ux.grid.GridFilters({
+			
+			var logProxy = new Ext.data.HttpProxy({
+				url : "../../security/controller/logController.php?",
+				method : "POST",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var logReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "logId"
+			});
+			var logStore = new Ext.data.JsonStore({
+				proxy : logProxy,
+				reader : logReader,
+				autoLoad : true,
+				autoDestroy : true,
+				baseParams : {
+					method : "read",
+					leafId : leafId,
+					isAdmin : isAdmin,
+					start : 0,
+					limit : perPage,
+					perPage : perPage
+				},
+				root : 'data',
+				fields : [ {
+					name : 'logId',
+					type : 'int'
+				}, {
+					name : 'leafId',
+					type : 'int'
+				}, {
+					name : 'operation',
+					type : 'string'
+				}, {
+					name : 'sql',
+					type : 'string'
+				}, {
+					name : 'date',
+					type : 'date',
+					dateFormat : 'Y-m-d'
+				}, {
+					name : 'staffId',
+					type : 'int'
+				}, {
+					name : 'access',
+					type : 'string'
+				}, {
+					name : 'logError',
+					type : 'string'
+				} ]
+			});
+
+			var logAdvanceProxy = new Ext.data.HttpProxy({
+				url : "../../security/controller/logAdvanceController.php?",
+				method : "POST",
+				success : function(response, options) {
+					jsonResponse = Ext.decode(response.responseText);
+					if (jsonResponse.success == true) {
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+					} else {
+						Ext.MessageBox.alert(systemErrorLabel,
+								jsonResponse.message);
+					}
+				},
+				failure : function(response, options) {
+					Ext.MessageBox.alert(systemErrorLabel,
+							escape(response.Status) + ":"
+									+ escape(response.statusText));
+				}
+			});
+			var logAdvanceReader = new Ext.data.JsonReader({
+				totalProperty : "total",
+				successProperty : "success",
+				messageProperty : "message",
+				idProperty : "logAdvanceId"
+			});
+			var logAdvanceStore = new Ext.data.JsonStore({
+				proxy : logAdvanceProxy,
+				reader : logAdvanceReader,
+				autoLoad : true,
+				autoDestroy : true,
+				pruneModifiedRecords : true,
+				method : 'POST',
+				baseParams : {
+					method : "read",
+					leafId : leafId,
+					isAdmin : isAdmin,
+					start : 0,
+					limit : perPage,
+					perPage : perPage
+				},
+				root : 'data',
+				fields : [ {
+					name : 'logAdvanceId',
+					type : 'int'
+				}, {
+					name : 'logAdvanceText',
+					type : 'string'
+				}, {
+					name : 'logAdvanceType',
+					type : 'string'
+				}, {
+					name : 'logAdvanceComparison',
+					type : 'string'
+				}, {
+					name : 'refTableName',
+					type : 'int'
+				}, {
+					name : 'leafId',
+					type : 'int'
+				} ]
+			});
+			
+			var religionFilters = new Ext.ux.grid.GridFilters({
 				encode : encode,
 				local : local,
 				filters : [ {
@@ -264,31 +313,9 @@ Ext
 				} ]
 			});
 
-			var filtersList = new Ext.ux.grid.GridFilters({
-				encode : encode,
-				local : local,
-				filters : [ {
-					type : "string",
-					dataIndex : "religionDesc",
-					column : "religionDesc",
-					table : "religion"
-				}, {
-					type : "list",
-					dataIndex : "executeBy",
-					column : "executeBy",
-					table : "religion",
-					labelField : "staffName",
-					store : staffByStore,
-					phpMode : true
-				}, {
-					type : "date",
-					dataIndex : "executeTime",
-					column : "executeTime",
-					table : "religion"
-				} ]
-			});
+			
 
-			var columnModel = [
+			var religionColumnModel = [
 					new Ext.grid.RowNumberer(),
 					{
 						id : 'action',
@@ -318,16 +345,23 @@ Ext
 													},
 													success : function(form,
 															action) {
+														if(action.result.success==true) {
+														Ext.getCmp('newButton').disable();		
+														Ext.getCmp('saveButton').enable();
 														Ext
 																.getCmp(
 																		"religionDesc_temp")
 																.setValue(
 																		record.data.religionDesc);
-														Ext.getCmp(
-																'deleteButton')
-																.enable();
+														
 														viewPort.items.get(1)
 																.expand();
+														} else {
+																Ext.MessageBox
+																.alert(
+																		systemErrorLabel,
+																		action.result.message);
+														}														
 													},
 													failure : function(form,
 															action) {
@@ -337,7 +371,7 @@ Ext
 																		action.result.message);
 													}
 												});
-										win.hide();
+										
 									}
 								},
 								{
@@ -370,30 +404,28 @@ Ext
 																			jsonResponse = Ext
 																					.decode(response.responseText);
 																			if (jsonResponse.success == true) {
-																				title = successLabel;
+																				Ext.MessageBox
+																					.alert(
+																							systemLabel,
+																							jsonResponse.message);
+																				religionStore
+																					.reload({
+																						params : {
+																							leafId : leafId,
+																							isAdmin :isAdmin,
+																							start : 0,
+																							limit : perPage
+																						}
+																					});
 																			} else {
-																				title = failureLabel;
-																			}
-																			religionStore
-																					.reload({
-																						params : {
-																							leafId : leafId,
-																							start : 0,
-																							limit : perPage
-																						}
-																					});
-																			religionStoreList
-																					.reload({
-																						params : {
-																							leafId : leafId,
-																							start : 0,
-																							limit : perPage
-																						}
-																					});
-																			Ext.MessageBox
+																				Ext.MessageBox
 																					.alert(
 																							systemErrorLabel,
 																							jsonResponse.message);
+																			}
+																			
+																			
+																			
 																		},
 																		failure : function(
 																				response,
@@ -501,7 +533,8 @@ Ext
 								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
 							}
 						}
-					},{
+					},
+					{
 						dataIndex : "isReview",
 						header : isReviewLabel,
 						sortable : true,
@@ -549,271 +582,16 @@ Ext
 							return Ext.util.Format.date(value, 'd-m-Y H:i:s');
 						}
 					} ];
-			var columnModelList = [
-					new Ext.grid.RowNumberer(),
-					{
-						id : 'action',
-						header : 'Task',
-						xtype : 'actioncolumn',
-						width : 50,
-						items : [
-								{
-									icon : '../../javascript/resources/images/icon/application_edit.png',
-									tooltip : updateRecordToolTipLabel,
-									handler : function(grid, rowIndex, colIndex) {
-										var record = religionStore
-												.getAt(rowIndex);
-										formPanel.getForm().reset();
-										formPanel.form
-												.load({
-													url : "../controller/religionController.php",
-													method : "POST",
-													waitTitle : systemLabel,
-													waitMsg : waitMessageLabel,
-													params : {
-														method : "read",
-														mode : "update",
-														religionId : record.data.religionId,
-														leafId : leafId,
-														isAdmin : isAdmin
-													},
-													success : function(form,
-															action) {
-														Ext
-																.getCmp(
-																		"religionDesc_temp")
-																.setValue(
-																		record.data.religionDesc);
-														viewPort.items.get(1)
-																.expand();
-													},
-													failure : function(form,
-															action) {
-														Ext.MessageBox
-																.alert(
-																		systemErrorLabel,
-																		action.result.message);
-													}
-												});
-										win.hide();
-									}
-								},
-								{
-									icon : '../../javascript/resources/images/icon/trash.gif',
-									tooltip : deleteRecordToolTipLabel,
-									handler : function(grid, rowIndex, colIndex) {
-										var record = religionStore
-												.getAt(rowIndex);
-										Ext.Msg
-												.show({
-													title : deleteRecordTitleMessageLabel,
-													msg : deleteRecordMessageLabel,
-													icon : Ext.Msg.QUESTION,
-													buttons : Ext.Msg.YESNO,
-													scope : this,
-													fn : function(response) {
-														if ("yes" == response) {
-															Ext.Ajax
-																	.request({
-																		url : "../controller/religionController.php",
-																		params : {
-																			method : "delete",
-																			religionId : record.data.religionId,
-																			leafId : leafId,
-																			isAdmin : isAdmin
-																		},
-																		success : function(
-																				response,
-																				options) {
-																			jsonResponse = Ext
-																					.decode(response.responseText);
-																			if (jsonResponse.success == true) {
-																				title = successLabel;
-																			} else {
-																				title = failureLabel;
-																			}
-																			religionStore
-																					.reload({
-																						params : {
-																							leafId : leafId,
-																							start : 0,
-																							limit : perPage
-																						}
-																					});
-																			religionStoreList
-																					.reload({
-																						params : {
-																							leafId : leafId,
-																							start : 0,
-																							limit : perPage
-																						}
-																					});
-																			Ext.MessageBox
-																					.alert(
-																							systemErrorLabel,
-																							jsonResponse.message);
-																		},
-																		failure : function(
-																				response,
-																				options) {
-																			Ext.MessageBox
-																					.alert(
-																							systemErrorLabel,
-																							escape(response.status)
-																									+ ":"
-																									+ response.statusText);
-																		}
-																	});
-														}
-													}
-												});
-									}
-								} ]
-					},
-					{
-						dataIndex : "religionDesc",
-						header : religionDescLabel,
-						sortable : true,
-						hidden : false
-					},
-					{
-						dataIndex : "isDefault",
-						header : isDefaultLabel,
-						sortable : true,
-						hidden : isDefaultHidden,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							if (value == true) {
-								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
-							} else if (value == false) {
-								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
-							}
-						}
-					},
-					{
-						dataIndex : "isNew",
-						header : isNewLabel,
-						sortable : true,
-						hidden : isNewHidden,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							if (value == true) {
-								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
-							} else if (value == false) {
-								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
-							}
-						}
-					},
-					{
-						dataIndex : "isUpdate",
-						header : isUpdateLabel,
-						sortable : true,
-						hidden : isUpdateHidden,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							if (value == true) {
-								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
-							} else if (value == false) {
-								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
-							}
-						}
-					},
-					{
-						dataIndex : "isDelete",
-						header : isDeleteLabel,
-						sortable : true,
-						hidden : isDeleteHidden,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							if (value == true) {
-								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
-							} else if (value == false) {
-								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
-							}
-						}
-					},
-					{
-						dataIndex : "isActive",
-						header : isActiveLabel,
-						sortable : true,
-						hidden : isActiveHidden,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							if (value == true) {
-								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
-							} else if (value == false) {
-								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
-							}
-						}
-					},
-					{
-						dataIndex : "isApproved",
-						header : isApprovedLabel,
-						sortable : true,
-						hidden : isApprovedHidden,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							if (value == true) {
-								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
-							} else if (value == false) {
-								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
-							}
-						}
-					},{
-						dataIndex : "isReview",
-						header : isReviewLabel,
-						sortable : true,
-						hidden : isReviewHidden,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							if (value == true) {
-								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
-							} else if (value == false) {
-								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
-							}
-						}
-					},
-					{
-						dataIndex : "isPost",
-						header : isPostLabel,
-						sortable : true,
-						hidden : isApprovedHidden,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							if (value == true) {
-								return '<img src=\'../../javascript/resources/images/icon/accept.png\' width=\'12\' height=\'12\'> ';
-							} else if (value == false) {
-								return '<img src=\'../../javascript/resources/images/icon/cancel.png\' width=\'12\' height=\'12\'> ';
-							}
-						}
-					},
-					{
-						dataIndex : "executeBy",
-						header : executeByLabel,
-						sortable : true,
-						hidden : false,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							return record.data.staffName;
-						}
-					},
-					{
-						dataIndex : "executeTime",
-						header : executeTimeLabel,
-						sortable : true,
-						hidden : false,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							return Ext.util.Format.date(value, 'Y-m-d H:i:s');
-						}
-					} ];
+			
 			var religionGrid = new Ext.grid.GridPanel({
+				name :'religionGrid',
+				id:'religionGrid',
 				border : false,
 				store : religionStore,
 				autoHeight : false,
 				height : 400,
-				columns : columnModel,
-				plugins : [ filters ],
+				columns : religionColumnModel,
+				plugins : [ religionFilters ],
 				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true
 				}),
@@ -826,96 +604,11 @@ Ext
 					pageSize : perPage
 				})
 			});
-			var religionGridList = new Ext.grid.GridPanel({
-				border : false,
-				store : religionStoreList,
-				autoHeight : false,
-				height : 400,
-				columns : columnModelList,
-				loadMask : true,
-				plugins : [ filtersList ],
-				sm : new Ext.grid.RowSelectionModel({
-					singleSelect : true
-				}),
-				viewConfig : {
-					emptyText : emptyTextLabel
-				},
-				iconCls : "application_view_detail",
-				bbar : new Ext.PagingToolbar({
-					store : religionStoreList,
-					pageSize : perPage
-				})
-			});
-
-			var toolbarPanelList = new Ext.Toolbar(
-					{
-						items : [
-								{
-									text : reloadToolbarLabel,
-									iconCls : "database_refresh",
-									id : "pageReloadList",
-									disabled : pageReloadList,
-									handler : function() {
-										religionStoreList.reload();
-									}
-								},
-								{
-									text : addToolbarLabel,
-									iconCls : "add",
-									id : "pageCreateList",
-									disabled : pageCreateList,
-									handler : function() {
-										viewPort.items.get(1).expand();
-										win.hide();
-									}
-								},
-								{
-									text : excelToolbarLabel,
-									iconCls : "page_excel",
-									id : "page_excelList",
-									disabled : pagePrintList,
-									handler : function() {
-										Ext.Ajax
-												.request({
-													url : "../controller/religionController.php",
-													method : "GET",
-													params : {
-														method : 'report',
-														mode : 'excel',
-														limit : perPage,
-														leafId : leafId
-													},
-													success : function(
-															response, options) {
-														jsonResponse = Ext
-																.decode(response.responseText);
-														if (jsonResponse.success == true) {
-															window
-																	.open("../../basic/document/excel/"
-																			+ jsonResponse.filename);
-														} else {
-															Ext.MessageBox
-																	.alert(
-																			systemLabel,
-																			jsonResponse.message);
-														}
-													},
-													failure : function(
-															response, options) {
-														Ext.MessageBox
-																.alert(
-																		systemLabel,
-																		escape(response.status)
-																				+ ":"
-																				+ escape(response.statusText));
-													}
-												});
-									}
-								} ]
-					});
+			
+			
 			var gridPanel = new Ext.Panel(
 					{
-						title : leafEnglish,
+						title : leafNative,
 						height : 50,
 						layout : "fit",
 						iconCls : "application_view_detail",
@@ -986,6 +679,309 @@ Ext
 								}) ],
 						items : [ religionGrid ]
 					});
+					
+			// audit grid
+
+			var logFilters = new Ext.ux.grid.GridFilters({
+				encode : encode,
+				local : local,
+				filters : [
+
+				{
+					type : 'numeric',
+					dataIndex : 'logId',
+					column : 'logId',
+					table : 'log'
+				},
+
+				{
+					type : 'numeric',
+					dataIndex : 'leafId',
+					column : 'leafId',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'operation',
+					column : 'operation',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'sql',
+					column : 'sql',
+					table : 'log'
+				},
+
+				{
+					type : 'date',
+					dataIndex : 'date',
+					column : 'date',
+					table : 'log'
+				},
+
+				{
+					type : 'numeric',
+					dataIndex : 'staffId',
+					column : 'staffId',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'access',
+					column : 'access',
+					table : 'log'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logError',
+					column : 'logError',
+					table : 'log'
+				} ]
+			});
+
+			var expander = new Ext.ux.grid.RowExpander({
+				tpl : new Ext.Template(
+						'<br><p><b>Operation:</b> {operation}</p><br>',
+						'<p><b>SQL STATEMENT:</b> {sql}</p><br>')
+			});
+			var logColumnModel = [ expander, new Ext.grid.RowNumberer(), {
+				dataIndex : 'logId',
+				header : logIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'leafId',
+				header : leafIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'operation',
+				header : operationLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'sql',
+				header : sqlLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'date',
+				header : dateLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'staffId',
+				header : staffIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'access',
+				header : accessLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logError',
+				header : logErrorLabel,
+				sortable : true,
+				hidden : false
+			} ];
+
+			var logGrid = new Ext.grid.GridPanel({
+				border : false,
+				store : logStore,
+				autoHeight : false,
+				height : 400,
+				columns : logColumnModel,
+				loadMask : true,
+				plugins : [ logFilters, expander ],
+				collapsible : true,
+				animCollapse : false,
+				sm : new Ext.grid.RowSelectionModel({
+					singleSelect : true
+				}),
+				viewConfig : {
+					emptyText : emptyRowLabel
+				},
+				iconCls : 'application_view_detail',
+				listeners : {
+					render : {
+						fn : function() {
+							logStore.load({
+								params : {
+									start : 0,
+									limit : perPage,
+									method : 'read',
+									mode : 'view',
+									plugin : [ logFilters ]
+								}
+							});
+						}
+					}
+				},
+				bbar : new Ext.PagingToolbar({
+					store : logStore,
+					pageSize : perPage,
+					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
+				})
+			});
+			// audit advance grid
+			var logAdvancefilters = new Ext.ux.grid.GridFilters({
+				encode : encode,
+				local : local,
+				filters : [
+
+				{
+					type : 'numeric',
+					dataIndex : 'logAdvanceId',
+					column : 'logAdvanceId',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logAdvanceText',
+					column : 'logAdvanceText',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logAdvanceType',
+					column : 'logAdvanceType',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'string',
+					dataIndex : 'logAdvanceComparison',
+					column : 'logAdvanceComparison',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'numeric',
+					dataIndex : 'refTableName',
+					column : 'refTableName',
+					table : 'logAdvance'
+				},
+
+				{
+					type : 'list',
+					dataIndex : 'executeBy',
+					column : 'executeBy',
+					table : 'logAdvance',
+					labelField : 'staffName',
+					store : staffByStore,
+					phpMode : true
+				},
+
+				{
+					type : 'date',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
+					table : 'logAdvance'
+				} ]
+			});
+
+			var logAdvanceColumnModel = [ new Ext.grid.RowNumberer(), {
+				dataIndex : 'logAdvanceId',
+				header : logAdvanceIdLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logAdvanceText',
+				header : logAdvanceTextLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logAdvanceType',
+				header : logAdvanceTypeLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'logAdvanceComparision',
+				header : logAdvanceComparisionLabel,
+				sortable : true,
+				hidden : false
+			},
+
+			{
+				dataIndex : 'refTableName',
+				header : refTableNameLabel,
+				sortable : true,
+				hidden : false
+			} ];
+
+			var logAdvanceGrid = new Ext.grid.GridPanel({
+				border : false,
+				store : logAdvanceStore,
+				autoHeight : false,
+				height : 400,
+				columns : logAdvanceColumnModel,
+				loadMask : true,
+				plugins : [ logAdvancefilters ],
+				sm : new Ext.grid.RowSelectionModel({
+					singleSelect : true
+				}),
+				viewConfig : {
+					forceFit : true,
+					emptyText : 'No rows to display'
+				},
+				iconCls : 'application_view_detail',
+				listeners : {
+					render : {
+						fn : function() {
+							logAdvanceStore.load({
+								params : {
+									start : 0,
+									limit : perPage,
+									method : 'read',
+									mode : 'view',
+									plugin : [ logAdvancefilters ]
+								}
+							});
+						}
+					}
+				},
+				bbar : new Ext.PagingToolbar({
+					store : logAdvanceStore,
+					pageSize : perPage,
+					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
+				}),
+				view : new Ext.ux.grid.BufferView({
+				
+					rowHeight : 34,
+
+					scrollDelay : false
+				})
+			});
+			
+			// start form entry 
 			var religionDesc_temp = new Ext.form.Hidden({
 				name : "religionDesc_temp",
 				id : "religionDesc_temp"
@@ -1077,15 +1073,114 @@ Ext
 				name : "religionId",
 				id : "religionId"
 			});
+			
+			// end form entry
+			
+			// start System Validation Entry
+
+			var isDefault = new Ext.form.Checkbox({
+				name : 'isDefault',
+				id : 'isDefault',
+				fieldLabel : isDefaultLabel,
+				hidden : isDefaultHidden
+			});
+
+			var isNew = new Ext.form.Checkbox({
+				name : 'isNew',
+				id : 'isNew',
+				fieldLabel : isNewLabel,
+				hidden : isNewHidden
+			});
+
+			var isDraft = new Ext.form.Checkbox({
+				name : 'isDraft',
+				id : 'isDraft',
+				fieldLabel : isDraftLabel,
+				hidden : isDraftHidden
+			});
+			var isUpdate = new Ext.form.Checkbox({
+				name : 'isUpdate',
+				id : 'isUpdate',
+				fieldLabel : isUpdateLabel,
+				hidden : isUpdateHidden
+			});
+
+			var isDelete = new Ext.form.Checkbox({
+				name : 'isDelete',
+				id : 'isDelete',
+				fieldLabel : isDeleteLabel,
+				hidden : isDeleteHidden
+			});
+
+			var isActive = new Ext.form.Checkbox({
+				name : 'isActive',
+				id : 'isActive',
+				fieldLabel : isActiveLabel,
+				hidden : isActiveHidden
+			});
+
+			var isApproved = new Ext.form.Checkbox({
+				name : 'isApproved',
+				id : 'isApproved',
+				fieldLabel : isApprovedLabel,
+				hidden : isApprovedHidden
+			});
+
+			var isReview = new Ext.form.Checkbox({
+				name : 'isReview',
+				id : 'isReview',
+				fieldLabel : isReviewLabel,
+				hidden : isReviewHidden
+			});
+
+			var isPost = new Ext.form.Checkbox({
+				name : 'isPost',
+				id : 'isPost',
+				fieldLabel : isPostLabel,
+				hidden : isPostHidden
+			});
+			// end system entry validation
+			
+			// start navigation button hidden value
+			var firstRecord = new Ext.form.Hidden({
+				name : 'firstRecord',
+				id : 'firstRecord',
+				value:''
+			});
+
+			var nextRecord = new Ext.form.Hidden({
+				name : 'nextRecord',
+				id : 'nextRecord',
+				value:''
+			});
+
+			var previousRecord = new Ext.form.Hidden({
+				name : 'previousRecord',
+				id : 'previousRecord',
+				value:''
+			});
+			var lastRecord = new Ext.form.Hidden({
+				name : 'lastRecord',
+				id : 'lastRecord',
+				value:''
+			});
+
+			var endRecord = new Ext.form.Hidden({
+				name : 'endRecord',
+				id : 'endRecord',
+				value:''
+			});
+			// end navigation button hidden value
+			
 
 			var formPanel = new Ext.form.FormPanel(
 					{
 						url : "../controller/religionController.php",
-						name :'formPanel',
+						name : 'formPanel',
 						id : "formPanel",
 						method : "post",
 						frame : true,
-						title : leafEnglish,
+						title : leafNative,
 						border : false,
 						bodyStyle : "padding:5px",
 						width : 600,
@@ -1095,10 +1190,30 @@ Ext
 									title : 'Form Entry',
 									items : [ religionId, religionDesc,
 											religionDesc_temp ]
-								}, {
+								},
+								{
 									xtype : 'fieldset',
-									title : 'System Administration'
-								} ],
+									title : 'System Administration',
+									layout : 'column',
+									items : [{
+												columnWidth:0.3,
+												layout:'form',
+												border:false,
+												items:[isDefault, isNew, isDraft]
+											},
+											{
+												columnWidth:0.3,
+												layout:'form',
+												border:false,
+												items:[isUpdate, isDelete, isActive]
+											},
+											{
+												columnWidth:0.3,
+												layout:'form',
+												border:false,
+												items:[isApproved, isReview, isPost] 
+											}]
+								}],
 
 						buttonVAlign : "top",
 						buttonAlign : "left",
@@ -1112,116 +1227,192 @@ Ext
 						}),
 						buttons : [
 								{
-									id : 'saveButton',
-									text : saveButtonLabel,
-									iconCls : "bullet_disk",
+									text : auditButtonLabel,
+									name : 'auditButtonLabel',
+									id : 'auditButtonLabel',
+									type : 'button',
+									iconCls : 'key',
+									disabled : auditButtonLabelDisabled,
 									handler : function() {
-										if (formPanel.getForm().isValid()) {
-											var id = 0;
-											id = Ext.getCmp('religionId')
-													.getValue();
-											var method;
-											if (id.length > 0) {
-												method = 'save';
-											} else {
-												method = 'create';
-											}
-											formPanel
-													.getForm()
-													.submit(
-															{
-																waitTitle : waitTitleLabel,
-																waitMsg : waitMessageLabel,
-																params : {
-																	method : method,
-																	leafId : leafId
-																},
-																success : function(
-																		form,
-																		action) {
-																	Ext.MessageBox
-																			.alert(
-																					successLabel,
-																					action.result.message);
-																	Ext
-																			.getCmp(
-																					'religionId')
-																			.setValue(
-																					action.result.religionId);
-																	formPanel
-																			.getForm()
-																			.reset(); 
-																	religionStore
-																			.reload();
-																	religionStoreList
-																			.reload();
-																},
-																failure : function(
-																		form,
-																		action) {
-																	if (duplicate == 1) {
-																		Ext.MessageBox
-																				.alert(
-																						systemErrorLabel,
-																						duplicateMessageLabel);
-																	}
-																	if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
-																		Ext.Msg.alert(systemErrorLabel,loadFailureLabel);
-																	} else {
-																		if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																			Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
-																		} else {
-																			if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
-																				Ext.Msg
-																						.alert(
-																								connectFailureLabel,
-																								"Server reported:"
-																										+ form.response.status
-																										+ " "
-																										+ form.response.statusText);
-																			} else {
-																				if (action.failureType === Ext.form.Action.SERVER_INVALID) {
-																					Ext.Msg
-																							.alert(
-																									serverInvalidLabel,
-																									action.result.message);
-																				}
-																			}
-																		}
-																	}
-																}
-															});
+
+										if (auditWindow) {
+											religionStore.reload();
+											auditWindow.show().center();
 										}
 									}
 								},
+
 								{
 									text : newButtonLabel,
-									name : 'newButton',
-									id : 'newButton',
+									name:'newButton',
+									id:'newButton',
 									type : 'button',
 									iconCls : 'new',
 									handler : function() {
-										formPanel.getForm().reset();
+										var id = 0;
+										var id = Ext.getCmp('religionId')
+												.getValue();
+										var method = 'create';
+										
+										formPanel
+												.getForm()
+												.submit(
+														{
+															waitMsg : waitMessageLabel,
+															params : {
+																method : method,
+																leafId : leafId,
+																isAdmin : isAdmin
+															},
+															success : function(
+																	form,
+																	action) {
+																if(action.result.success==true) { 
+																Ext.MessageBox
+																		.alert(
+																				systemLabel,
+																				action.result.message);
+																
+																Ext
+																		.getCmp(
+																				'deleteButton')
+																		.enable();
+
+																religionStore
+																		.reload({
+																			params : {
+																				leafId : leafId,
+																				start : 0,
+																				limit : perPage
+																			}
+																		});
+																Ext
+																		.getCmp(
+																				'religionId')
+																		.setValue(
+																				action.result.religionId);
+																} else {
+																	Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																}																
+
+															},
+															failure : function(
+																	form,
+																	action) {
+
+																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
+																	Ext.Msg
+																			.alert(
+																					systemErrorLabel,
+																					loadFailureLabel);
+																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
+
+																	Ext.Msg
+																			.alert(
+																					systemErrorLabel,
+																					clientInvalidLabel);
+																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
+																	Ext.Msg
+																			.alert(form.response.status
+																					+ ' '
+																					+ form.response.statusText);
+																} else if (action.failureType === Ext.form.Action.SERVER_INVALID) {
+																	Ext.Msg
+																			.alert(
+																					systemErrorLabel,
+																					action.result.message);
+																}
+															}
+														});
 									}
 								},
 								{
-									text : draftButtonLabel,
-									name : 'draftButton',
-									id : 'draftButton',
-									type : 'button',
-									iconCls : 'draft',
+									text : saveButtonLabel,
+									name : 'saveButton',
+									id : 'saveButton',
+									iconCls : 'bullet_disk',
+									disabled : true,
 									handler : function() {
-										formPanel.getForm().reset();
-									}
-								},
-								{
-									text : cancelButtonLabel,
-									type : 'button',
-									name : 'cancelButton',
-									id : 'cancelButton',
-									iconCls : 'cancel',
-									handler : function() {
-										formPanel.getForm().reset();
+										Ext.getCmp('newButton').disable();
+
+										var id = 0;
+										var id = Ext.getCmp('religionId')
+												.getValue();
+										var method= 'save';
+
+							
+										formPanel
+												.getForm()
+												.submit(
+														{
+															waitMsg : waitMessageLabel,
+															params : {
+																method : method,
+																leafId : leafId,
+																isAdmin : isAdmin
+															},
+															success : function(
+																	form,
+																	action) {
+																if(action.result.success==true) { 
+																Ext.MessageBox
+																		.alert(
+																				systemLabel,
+																				action.result.message);
+																
+																Ext
+																		.getCmp(
+																				'deleteButton')
+																		.enable();
+
+																religionStore
+																		.reload({
+																			params : {
+																				leafId : leafId,
+																				start : 0,
+																				limit : perPage
+																			}
+																		});
+																
+																} else {
+																	Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																}								
+
+															},
+															failure : function(
+																	form,
+																	action) {
+
+																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
+																	Ext.Msg
+																			.alert(
+																					systemErrorLabel,
+																					loadFailureLabel);
+																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
+
+																	Ext.Msg
+																			.alert(
+																					systemErrorLabel,
+																					clientInvalidLabel);
+																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
+																	Ext.Msg
+																			.alert(form.response.status
+																					+ ' '
+																					+ form.response.statusText);
+																} else if (action.failureType === Ext.form.Action.SERVER_INVALID) {
+																	Ext.Msg
+																			.alert(
+																					systemErrorLabel,
+																					action.result.message);
+																}
+															}
+														});
 									}
 								},
 								{
@@ -1230,8 +1421,85 @@ Ext
 									name : 'deleteButton',
 									id : 'deleteButton',
 									iconCls : 'trash',
+									disabled : true,
 									handler : function() {
-										formPanel.getForm().reset();
+										Ext.getCmp('newButton').disable();
+
+										Ext.Msg
+												.show({
+													title : deleteRecordTitleMessageLabel,
+													msg : deleteRecordMessageLabel,
+													icon : Ext.Msg.QUESTION,
+													buttons : Ext.Msg.YESNO,
+													scope : this,
+													fn : function(response) {
+														if ("yes" == response) {
+															Ext.Ajax
+																	.request({
+																		url : "../controller/religionController.php",
+																		params : {
+																			method : "delete",
+																			religionId : record.data.religionId,
+																			leafId : leafId,
+																			isAdmin : isAdmin
+																		},
+																		success : function(
+																				response,
+																				options) {
+																			jsonResponse = Ext
+																					.decode(response.responseText);
+																			if (jsonResponse.success == true) {
+
+																				Ext.MessageBox
+																						.alert(
+																								systemLabel,
+																								jsonResponse.message);
+
+																				religionStore
+																						.reload({
+																							params : {
+																								leafId : leafId,
+																								start : 0,
+																								limit : perPage
+																							}
+																						});
+																				
+																				Ext
+																						.getCmp(
+																								'saveButton')
+																						.disable();
+																				Ext
+																						.getCmp(
+																								'nextButton')
+																						.disable();
+																				Ext
+																						.getCmp(
+																								'previousButton')
+																						.disable();
+
+																			} else {
+
+																				Ext.MessageBox
+																						.alert(
+																								systemErrorLabel,
+																								jsonResponse.message);
+																			}
+
+																		},
+																		failure : function(
+																				response,
+																				options) {
+																			Ext.MessageBox
+																					.alert(
+																							systemErrorLabel,
+																							escape(response.status)
+																									+ ":"
+																									+ response.statusText);
+																		}
+																	});
+														}
+													}
+												});
 									}
 								},
 								{
@@ -1239,10 +1507,27 @@ Ext
 									type : 'reset',
 									name : 'resetButton',
 									id : 'resetButton',
-									iconCls : 'reset',
+									iconCls : 'database_refresh',
 									handler : function() {
+										Ext.getCmp('newButton').enable();
+
 										formPanel.getForm().reset();
 									}
+
+								},
+								{
+									text : postButtonLabel,
+									type : 'button',
+									name : 'postButton',
+									id : 'postButton',
+									iconCls : 'lock',
+									disabled: true,
+									handler : function() {
+										Ext.getCmp('newButton').disable();
+
+										formPanel.getForm().reset();
+									}
+
 								},
 								{
 									text : gridButtonLabel,
@@ -1262,6 +1547,9 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_first',
 									handler : function() {
+										Ext.getCmp('newButton').disable();
+										
+
 										if (Ext.getCmp('firstRecord')
 												.getValue() == '') {
 											Ext.Ajax
@@ -1279,12 +1567,83 @@ Ext
 
 															jsonResponse = Ext
 																	.decode(response.responseText);
-															if (jsonReponse.success == true) {
+															if (jsonResponse.success == true) {
 																Ext
 																		.getCmp(
 																				'firstRecord')
 																		.setValue(
 																				jsonResponse.firstRecord);
+																				
+																formPanel.form
+												.load({
+													url : "../controller/religionController.php",
+													method : "POST",
+													waitTitle : systemLabel,
+													waitMsg : waitMessageLabel,
+													params : {
+														method : "read",
+
+														religionId : Ext
+																.getCmp(
+																		'firstRecord')
+																.getValue(),
+														leafId : leafId,
+														isAdmin : isAdmin
+													},
+													success : function(form,
+															action) {
+														if(action.result.success==true) { 
+														if(action.result.nextRecord == 0 ) { 
+															Ext.getCmp('nextButton').disable();
+														} else {
+															Ext.getCmp('nextButton').enable();
+														}
+														Ext
+																.getCmp(
+																		'firstRecord')
+																.setValue(
+																		action.result.firstRecord);
+														Ext
+																.getCmp(
+																		'previousRecord')
+																.setValue(
+																		action.result.previousRecord);
+														Ext
+																.getCmp(
+																		'nextRecord')
+																.setValue(
+																		action.result.nextRecord);
+														Ext
+																.getCmp(
+																		'lastRecord')
+																.setValue(
+																		action.result.lastRecord);
+														Ext
+																.getCmp(
+																		'endRecord')
+																.setValue(
+																		(action.result.lastRecord + 1));
+														
+														Ext
+																.getCmp(
+																		'previousButton')
+																.disable();
+														
+														} else {
+															Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+														}
+													},
+													failure : function(form,
+															action) {
+														Ext.MessageBox
+																.alert(
+																		systemErrorLabel,
+																		action.result.message);
+													}
+												});				
 															} else {
 																Ext.MessageBox
 																		.alert(
@@ -1303,7 +1662,7 @@ Ext
 																					+ escape(response.statusText));
 														}
 													});
-										}
+										} else  { 
 										formPanel.form
 												.load({
 													url : "../controller/religionController.php",
@@ -1322,9 +1681,49 @@ Ext
 													},
 													success : function(form,
 															action) {
-
-														viewPort.items.get(1)
-																.expand();
+														if(action.result.success==true) {
+														if(action.result.nextRecord == 0 ) { 
+															Ext.getCmp('nextButton').disable();
+														} else {
+															Ext.getCmp('nextButton').enable();
+														}								
+														Ext
+																.getCmp(
+																		'firstRecord')
+																.setValue(
+																		action.result.firstRecord);
+														Ext
+																.getCmp(
+																		'previousRecord')
+																.setValue(
+																		action.result.previousRecord);
+														Ext
+																.getCmp(
+																		'nextRecord')
+																.setValue(
+																		action.result.nextRecord);
+														Ext
+																.getCmp(
+																		'lastRecord')
+																.setValue(
+																		action.result.lastRecord);
+														Ext
+																.getCmp(
+																		'endRecord')
+																.setValue(
+																		(action.result.lastRecord + 1));
+														
+														Ext
+																.getCmp(
+																		'previousButton')
+																.disable();
+														
+														} else {
+															Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+														}
 													},
 													failure : function(form,
 															action) {
@@ -1334,6 +1733,9 @@ Ext
 																		action.result.message);
 													}
 												});
+										}		
+
+										
 
 									}
 								},
@@ -1343,11 +1745,19 @@ Ext
 									id : 'previousButton',
 									type : 'button',
 									iconCls : 'resultset_previous',
+									disabled : true,
 									handler : function() {
+										Ext.getCmp('newButton').disable();
+
 										if (Ext.getCmp('previousRecord')
-												.getValue() == '') {
+												.getValue() == ''
+												||
+
+												Ext.getCmp('previousRecord')
+														.getValue() == undefined) {
 											Ext.MessageBox
-													.Alert("Please Pick A Record First Ya");
+													.alert(systemErrorLabel,chooseRecordLabel);
+
 										}
 										if (Ext.getCmp('firstRecord')
 												.getValue() >= 1) {
@@ -1369,9 +1779,50 @@ Ext
 														},
 														success : function(
 																form, action) {
+															if(action.result.success==true) { 
+															Ext
+																	.getCmp(
+																			'firstRecord')
+																	.setValue(
+																			action.result.firstRecord);
+															Ext
+																	.getCmp(
+																			'previousRecord')
+																	.setValue(
+																			action.result.previousRecord);
+															Ext
+																	.getCmp(
+																			'nextRecord')
+																	.setValue(
+																			action.result.nextRecord);
+															Ext
+																	.getCmp(
+																			'lastRecord')
+																	.setValue(
+																			action.result.lastRecord);
+															Ext
+																	.getCmp(
+																			'endRecord')
+																	.setValue(
+																			(action.result.lastRecord + 1));
 
-															viewPort.items.get(
-																	1).expand();
+															
+															if (Ext
+																	.getCmp(
+																			'previousRecord')
+																	.getValue() == 0) {
+																Ext
+																		.getCmp(
+																				'previousButton')
+																		.disable();
+															}
+															
+															} else{
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}
 														},
 														failure : function(
 																form, action) {
@@ -1382,10 +1833,10 @@ Ext
 														}
 													});
 										} else {
-											// empty record
+											
 											Ext.MessageBox.alert(
 													systemErrorLabel,
-													'Record Not Found');
+													recordNotFoundLabel);
 										}
 									}
 								},
@@ -1394,15 +1845,23 @@ Ext
 									name : 'nextButton',
 									id : 'nextButton',
 									type : 'button',
+									disabled : true,
 									iconCls : 'resultset_next',
 									handler : function() {
-										if (Ext.getCmp('nextRecord').getValue() == '') {
+										Ext.getCmp('newButton').disable();
+										if (Ext.getCmp('nextRecord').getValue() == ''
+												|| Ext.getCmp('nextRecord')
+														.getValue() == undefined
+
+										) {
 											Ext.MessageBox
-													.Alert("Please Pick A Record First Ya");
+													.alert(systemErrorLabel,chooseRecordLabel);
+
 										}
 										if (Ext.getCmp('nextRecord').getValue() <= Ext
 												.getCmp('lastRecord')
 												.getValue()) {
+
 											formPanel.form
 													.load({
 														url : "../controller/religionController.php",
@@ -1421,9 +1880,66 @@ Ext
 														},
 														success : function(
 																form, action) {
+															if(action.result.success==true) { 
+															Ext
+																	.getCmp(
+																			'firstRecord')
+																	.setValue(
+																			action.result.firstRecord);
+															Ext
+																	.getCmp(
+																			'previousRecord')
+																	.setValue(
+																			action.result.previousRecord);
+															Ext
+																	.getCmp(
+																			'nextRecord')
+																	.setValue(
+																			action.result.nextRecord);
+															Ext
+																	.getCmp(
+																			'lastRecord')
+																	.setValue(
+																			action.result.lastRecord);
+															Ext
+																	.getCmp(
+																			'endRecord')
+																	.setValue(
+																			(action.result.lastRecord + 1));
 
-															viewPort.items.get(
-																	1).expand();
+															
+															if (Ext
+																	.getCmp(
+																			'nextRecord')
+																	.getValue() > Ext
+																	.getCmp(
+																			'lastRecord')
+																	.getValue()) {
+																Ext
+																		.getCmp(
+																				'nextButton')
+																		.disable();
+															}
+															if (Ext
+																	.getCmp(
+																			'nextRecord')
+																	.getValue() == 0) {
+																Ext
+																		.getCmp(
+																				'nextButton')
+																		.disable();
+															}
+															Ext
+																	.getCmp(
+																			'previousButton')
+																	.enable();
+															
+															} else{
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}
 														},
 														failure : function(
 																form, action) {
@@ -1434,10 +1950,10 @@ Ext
 														}
 													});
 										} else {
-											// empty record
+											
 											Ext.MessageBox.alert(
 													systemErrorLabel,
-													'Record Not Found');
+													recordNotFoundLabel);
 										}
 									}
 
@@ -1449,7 +1965,11 @@ Ext
 									type : 'button',
 									iconCls : 'resultset_last',
 									handler : function() {
-										if (Ext.getCmp('lastRecord').getValue() == '') {
+										Ext.getCmp('newButton').disable();
+
+										if (Ext.getCmp('lastRecord').getValue() == ''
+												|| Ext.getCmp('lastRecord')
+														.getValue() == undefined) {
 											Ext.Ajax
 													.request({
 														url : "../controller/religionController.php",
@@ -1465,16 +1985,97 @@ Ext
 
 															jsonResponse = Ext
 																	.decode(response.responseText);
-															if (jsonReponse.success == true) {
+															if (jsonResponse.success == true) {
 																Ext
 																		.getCmp(
 																				'lastRecord')
 																		.setValue(
 																				jsonResponse.lastRecord);
+
+																formPanel.form
+																		.load({
+																			url : "../controller/religionController.php",
+																			method : "POST",
+																			waitTitle : systemLabel,
+																			waitMsg : waitMessageLabel,
+																			params : {
+																				method : "read",
+
+																				religionId : Ext
+																						.getCmp(
+																								'lastRecord')
+																						.getValue(),
+																				leafId : leafId,
+																				isAdmin : isAdmin
+																			},
+																			success : function(
+																					form,
+																					action) {
+																				if(action.result.success==true) { 	
+																					if(action.result.previousRecord == 0 ) { 
+																						Ext.getCmp('previousButton').disable();
+																					} else {
+																						Ext.getCmp('previousButton').enable();
+																					}
+																				Ext
+																						.getCmp(
+																								'firstRecord')
+																						.setValue(
+																								action.result.firstRecord);
+																				Ext
+																						.getCmp(
+																								'previousRecord')
+																						.setValue(
+																								action.result.previousRecord);
+																				Ext
+																						.getCmp(
+																								'nextRecord')
+																						.setValue(
+																								action.result.nextRecord);
+																				Ext
+																						.getCmp(
+																								'lastRecord')
+																						.setValue(
+																								action.result.lastRecord);
+																				Ext
+																						.getCmp(
+																								'endRecord')
+																						.setValue(
+																								(action.result.lastRecord + 1));
+
+																				
+																				Ext
+																						.getCmp(
+																								'nextButton')
+																						.disable();
+																				Ext
+																						.getCmp(
+																								'previousButton')
+																						.enable();
+
+																				
+																				
+																				} else {
+																					Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);	
+																				}
+																				
+																			},
+																			failure : function(
+																					form,
+																					action) {
+																				Ext.MessageBox
+																						.alert(
+																								systemErrorLabel,
+																								action.result.message);
+																			}
+																		});
 															} else {
 																Ext.MessageBox
 																		.alert(
-																				systemLabel,
+																				systemErrorLabel,
 																				jsonResponse.message);
 															}
 														},
@@ -1490,7 +2091,7 @@ Ext
 														}
 													});
 										}
-										if (Ext.getCmp('endRecord').getValue() <= Ext
+										if (Ext.getCmp('religionId').getValue() <= Ext
 												.getCmp('lastRecord')
 												.getValue()) {
 											formPanel.form
@@ -1501,7 +2102,6 @@ Ext
 														waitMsg : waitMessageLabel,
 														params : {
 															method : "read",
-
 															religionId : Ext
 																	.getCmp(
 																			'lastRecord')
@@ -1511,9 +2111,57 @@ Ext
 														},
 														success : function(
 																form, action) {
+															if(action.result.success==true) {
+															if(action.result.previousRecord == 0 ) { 
+																Ext.getCmp('previousButton').disable();
+															} else {
+																Ext.getCmp('previousButton').enable();
+															}
+															Ext
+																	.getCmp(
+																			'firstRecord')
+																	.setValue(
+																			action.result.firstRecord);
+															Ext
+																	.getCmp(
+																			'previousRecord')
+																	.setValue(
+																			action.result.previousRecord);
+															Ext
+																	.getCmp(
+																			'nextRecord')
+																	.setValue(
+																			action.result.nextRecord);
+															Ext
+																	.getCmp(
+																			'lastRecord')
+																	.setValue(
+																			action.result.lastRecord);
+															Ext
+																	.getCmp(
+																			'endRecord')
+																	.setValue(
+																			(action.result.lastRecord + 1));
 
-															viewPort.items.get(
-																	1).expand();
+															
+															Ext
+																	.getCmp(
+																			'nextButton')
+																	.disable();
+															Ext
+																	.getCmp(
+																			'previousButton')
+																	.enable();
+
+															
+															} else{
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}
+															
+															
 														},
 														failure : function(
 																form, action) {
@@ -1524,24 +2172,45 @@ Ext
 														}
 													});
 										} else {
-											// empty record
+										
 											Ext.MessageBox.alert(
 													systemErrorLabel,
-													'Record Not Found');
+													recordNotFoundLabel);
 										}
 									}
 								} ]
 					});
-			var win = new Ext.Window({
-				tbar : toolbarPanelList,
-				items : [ religionGridList ],
-				title : leafEnglish,
-				closeAction : "hide",
-				maximizable : true,
-				layout : "fit",
+			
+			
+			var auditWindow = new Ext.Window({
+				name :'auditWindow',
+				id :'auditWindow',
+				layout : 'fit',
 				width : 500,
+				height : 300,
+				closeAction : 'hide',
+				plain : true,
+				items : {
+					xtype : 'tabpanel',
+					activeTab : 0,
+					items : [ {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logGrid ]
+					}, {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logAdvanceGrid ]
+					} ]
+
+				},
+				title : 'Sql Statement audit',
+				maximizable : true,
 				autoScroll : true
 			});
+			
 			var viewPort = new Ext.Viewport({
 				id : "viewport",
 				region : "center",

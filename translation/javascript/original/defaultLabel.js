@@ -172,7 +172,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -213,7 +212,7 @@ Ext
 			var defaultLabelFilters = new Ext.ux.grid.GridFilters({
 				// encode and local configuration options defined previously for
 				// easier reuse
-				encode : encode, // json encode the filter query
+				encode : encode, var pagePrint;
 				local : local, // defaults to false (remote filtering)
 				filters : [ {
 					type : 'string',
@@ -328,6 +327,7 @@ Ext
 									icon : '../../javascript/resources/images/icon/trash.gif',
 									tooltip : deleteRecordToolTipLabel,
 									handler : function(grid, rowIndex, colIndex) {
+										
 										var record = defaultLabelStore
 												.getAt(rowIndex);
 										Ext.Msg
@@ -507,7 +507,7 @@ Ext
 
 												defaultLabelStore
 														.each(function(rec) {
-															for ( var access in accessArray) { // alert(access);
+															for ( var access in accessArray) { 
 																rec
 																		.set(
 																				accessArray[access],
@@ -628,7 +628,7 @@ Ext
 																						+ ":"
 																						+ escape(response.statusText));
 															}
-														}); // refresh the store
+														});
 											}
 										}
 									} ]
@@ -641,7 +641,8 @@ Ext
 
 			var defaultLabelTranslateEditor = new Ext.ux.grid.RowEditor(
 					{
-						saveText : 'Save',
+						saveText : saveButtonLabel,
+						cancelText:cancelButtonLabel,
 						listeners : {
 							CancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
@@ -651,16 +652,17 @@ Ext
 							afteredit : function(rowEditor, changes, record,
 									rowIndex) {
 
-								this.save = true;
-								// @todo update record manually
-								// var curr_store =
-								// this.grid.getStore().getAt(rowIndex);
+								var method;
+								this.save = true; 
+								var record = this.grid.getStore().getAt(
+										rowIndex);
 
 								Ext.Ajax
 										.request({
 											url : '../controller/defaultLabelController.php',
 											method : 'POST',
-											waitMsg : waitMeassageLabel,
+											waitTitle :systemLabel,
+											waitMsg : waitMessageLabel,
 											params : {
 												leafId : leafId,
 												method : 'save',
@@ -929,11 +931,7 @@ Ext
 																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																	Ext.Msg.alert(systemErrorLabel,loadFailureLabel);
 																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																	// here will
-																	// be error
-																	// if
-																	// duplicate
-																	// code
+															
 																	Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
 																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																	Ext.Msg
@@ -1018,7 +1016,36 @@ Ext
 								} ]
 					});
 
-			var viewPort = new Ext.Viewport({
+		var auditWindow = new Ext.Window({
+				name :'auditWindow',
+				id:'auditWindow',
+				layout : 'fit',
+				width : 500,
+				height : 300,
+				closeAction : 'hide',
+				plain : true,
+				items : {
+					xtype : 'tabpanel',
+					activeTab : 0,
+					items : [ {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logGrid ]
+					}, {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logAdvanceGrid ]
+					} ]
+
+				},
+				title : 'Sql Statement audit',
+				maximizable : true,
+				autoScroll : true
+		});
+			
+		var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',
 				layout : 'accordion',

@@ -36,15 +36,15 @@ class ReligionModel extends ValidationClass {
 		}
 		if (isset ( $_POST ['religionDesc'] )) {
 			$this->setReligionDesc ( $this->strict ( $_POST ['religionDesc'], 'memo' ) );
-		}
-		if (isset ( $_GET ['religionDesc'] )) {
-			$this->setReligionDesc ( $this->strict ( $_GET ['religionDesc'], 'memo' ) );
-		}
+		}		
 		/**
 		 * All the $_GET enviroment.
 		 */
 		if (isset ( $_GET ['religionId'] )) {
 			$this->setTotal ( count ( $_GET ['religionId'] ) );
+		}
+		if (isset ( $_GET ['religionDesc'] )) {
+			$this->setReligionDesc ( $this->strict ( $_GET ['religionDesc'], 'memo' ) );
 		}
 		if (isset ( $_GET ['isDefault'] )) {
 			if (is_array ( $_GET ['isDefault'] )) {
@@ -99,13 +99,18 @@ class ReligionModel extends ValidationClass {
 			if (isset ( $_GET ['isDefault'] )) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
 					$this->setIsDefault ( 1, $i, 'array' );
+				} else {
+					$this->setIsDefault ( 0, $i, 'array' );
 				}
+
 			} else {
 				$this->setIsDefault ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isNew'] )) {
 				if ($_GET ['isNew'] [$i] == 'true') {
 					$this->setIsNew ( 1, $i, 'array' );
+				}else {
+					$this->setIsNew ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsNew ( 0, $i, 'array' );
@@ -113,6 +118,8 @@ class ReligionModel extends ValidationClass {
 			if (isset ( $_GET ['isDraft'] )) {
 				if ($_GET ['isDraft'] [$i] == 'true') {
 					$this->setIsDraft ( 1, $i, 'array' );
+				}else {
+					$this->setIsDraft ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsDraft ( 0, $i, 'array' );
@@ -120,6 +127,8 @@ class ReligionModel extends ValidationClass {
 			if (isset ( $_GET ['isUpdate'] )) {
 				if ($_GET ['isUpdate'] [$i] == 'true') {
 					$this->setIsUpdate ( 1, $i, 'array' );
+				}else {
+					$this->setIsUpdate ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsUpdate ( 0, $i, 'array' );
@@ -127,6 +136,8 @@ class ReligionModel extends ValidationClass {
 			if (isset ( $_GET ['isDelete'] )) {
 				if ($_GET ['isDelete'] [$i] == 'true') {
 					$this->setIsDelete ( 1, $i, 'array' );
+				}else {
+					$this->setIsDelete ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsDelete ( 0, $i, 'array' );
@@ -134,6 +145,8 @@ class ReligionModel extends ValidationClass {
 			if (isset ( $_GET ['isActive'] )) {
 				if ($_GET ['isActive'] [$i] == 'true') {
 					$this->setIsActive ( 1, $i, 'array' );
+				}else {
+					$this->setIsActive ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsActive ( 0, $i, 'array' );
@@ -141,6 +154,8 @@ class ReligionModel extends ValidationClass {
 			if (isset ( $_GET ['isApproved'] )) {
 				if ($_GET ['isApproved'] [$i] == 'true') {
 					$this->setIsApproved ( 1, $i, 'array' );
+				}else {
+					$this->setIsApproved ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsApproved ( 0, $i, 'array' );
@@ -148,6 +163,8 @@ class ReligionModel extends ValidationClass {
 			if (isset ( $_GET ['isReview'] )) {
 				if ($_GET ['isReview'] [$i] == 'true') {
 					$this->setIsReview ( 1, $i, 'array' );
+				}else {
+					$this->setIsReview ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsReview ( 0, $i, 'array' );
@@ -155,6 +172,8 @@ class ReligionModel extends ValidationClass {
 			if (isset ( $_GET ['isPost'] )) {
 				if ($_GET ['isPost'] [$i] == 'true') {
 					$this->setIsPost ( 1, $i, 'array' );
+				}	else {
+					$this->setIsPost ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsPost ( 0, $i, 'array' );
@@ -215,8 +234,8 @@ class ReligionModel extends ValidationClass {
 		$this->setIsNew ( 0, 0, 'single' );
 		$this->setIsDraft ( 0, 0, 'single' );
 		$this->setIsUpdate ( 0, 0, 'single' );
-		$this->setIsActive ( 0, '', 'string' );
-		$this->setIsDelete ( 1, '', 'string' );
+		$this->setIsActive ( 0, '', 'single' );
+		$this->setIsDelete ( 1, '', 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
 		$this->setIsReview ( 0, 0, 'single' );
 		$this->setIsPost ( 0, 0, 'single' );
@@ -277,32 +296,7 @@ class ReligionModel extends ValidationClass {
 		$this->setIsReview ( 0, 0, 'single' );
 		$this->setIsPost ( 1, 0, 'single' );
 	}
-	/**
-	 * Update Religion Table Status
-	 */
-	public function updateStatus() {
-		if (! (is_array ( $_GET ['isDefault'] ))) {
-			$this->setIsDefault ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isNew'] ))) {
-			$this->setIsNew ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isDraft'] ))) {
-			$this->setIsDraft ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isUpdate'] ))) {
-			$this->setIsUpdate ( 0, 0, 'single' );
-		}
-		if (! (is_array ( $_GET ['isDelete'] ))) {
-			$this->setIsDelete ( 1, '', 'string' );
-		}
-		if (! (is_array ( $_GET ['isActive'] ))) {
-			$this->setIsActive ( 0, '', 'string' );
-		}
-		if (! (is_array ( $_GET ['isApproved'] ))) {
-			$this->setIsApproved ( 0, 0, 'single' );
-		}
-	}
+	
 	/**
 	 * Set Religion Identification  Value
 	 * @param int|array $value

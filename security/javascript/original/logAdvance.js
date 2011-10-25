@@ -92,7 +92,7 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,jsonResponse.message); //uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message); 
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -214,12 +214,12 @@ Ext
 					iconCls : 'application_edit',
 					tooltip : updateRecordToolTipLabel,
 					callback : function(grid, record, action, row, col) {
-						// Ext.MessageBox.alert('message', 'This is for update
-						// button');
+						
 						formPanel.getForm().reset();
 						formPanel.form.load({
 							url : '../controller/logAdvanceController.php',
 							method : 'POST',
+							waitTitle:systemLabel,
 							waitMsg : waitMessageLabel,
 							params : {
 								method : 'read',
@@ -238,8 +238,7 @@ Ext
 					}
 				} ]
 			});
-
-			var columnModel = [ new Ext.grid.RowNumberer(), this.action, {
+logAdvanceColumnModel = [ new Ext.grid.RowNumberer(), this.action, {
 				dataIndex : 'logAdvanceId',
 				header : logAdvanceIdLabel,
 				sortable : true,
@@ -274,20 +273,20 @@ Ext
 				hidden : false
 			} ];
 
-			var grid = new Ext.grid.GridPanel({
+			var logAdvanceGrid = new Ext.grid.GridPanel({
 				border : false,
 				store : store,
 				autoHeight : false,
 				height : 400,
-				columns : columnModel,
+				columns : logAdvanceColumnModel,
 				loadMask : true,
-				plugins : [ this.action, filters ],
+				plugins : [ this.action, logAdvcanceFilters ],
 				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true
 				}),
 				viewConfig : {
 					forceFit : true,
-					emptyText : 'No rows to display'
+					emptyText : emptyTextLabel
 				},
 				iconCls : 'application_view_detail',
 				listeners : {
@@ -299,7 +298,7 @@ Ext
 									limit : perPage,
 									method : 'read',
 									mode : 'view',
-									plugin : [ filters ]
+									plugin : [ logAdvanceFilters ]
 								}
 							});
 						}
@@ -312,77 +311,14 @@ Ext
 				})
 			});
 
-			var toolbarPanel = new Ext.Toolbar(
-					{
-						items : [
-								{
-									text : reloadToolbarLabel,
-									iconCls : 'database_refresh',
-									id : 'pageReload',
-									disabled : pageReload,
-									handler : function() {
-										store.reload();
-									}
-								},
-								{
-									text : printerToolbarLabel,
-									iconCls : 'printer',
-									id : 'pagePrinter',
-									disabled : pagePrint,
-									handler : function() {
-										Ext.ux.GridPrinter.print(grid);
-									}
-								},
-								{
-									text : excelToolbarLabel,
-									iconCls : 'page_excel',
-									id : 'page_excel',
-									disabled : pagePrint,
-									handler : function() {
-										Ext.Ajax
-												.request({
-													url : '../controller/logAdvanceController.php?method=report&mode=excel&limit='
-															+ perPage
-															+ '&leafId='
-															+ leafId,
-													method : 'GET',
-													success : function(
-															response, options) {
-														jsonResponse = Ext.decode(response.responseText);
-														if (jsonResponse == true) {
-															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-															window
-																	.open("../security/document/excel/logAdvance.xlsx");
-														} else {
-															Ext.MessageBox
-																	.alert(
-																			systemLabel,
-																			jsonResponse.message);
-														}
-
-													},
-													failure : function(
-															response, options) {
-														status_code = response.status;
-														status_message = response.statusText;
-														Ext.MessageBox.alert(systemLabel,
-																		escape(status_code)
-																				+ ":"
-																				+ status_message);
-													}
-
-												});
-									}
-								} ]
-					});
+			
 
 			var gridPanel = new Ext.Panel({
 				title : leafEnglish,
 				height : 50,
 				layout : 'fit',
 				iconCls : 'application_view_detail',
-				tbar : [ toolbarPanel ],
-				items : [ grid ]
+				items : [ logAdvanceGrid ]
 			});
 
 			var logAdvanceId = new Ext.form.Hidden({
@@ -449,6 +385,7 @@ Ext
 
 			var formPanel = new Ext.form.FormPanel({
 				url : '../controller/logAdvanceController.php',
+				name:'formPanel',
 				id : 'formPanel',
 				method : 'post',
 				frame : true,

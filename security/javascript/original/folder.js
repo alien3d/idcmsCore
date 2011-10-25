@@ -399,7 +399,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// //uncommen for testing purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -465,8 +464,7 @@ Ext
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
-						// Ext.MessageBox.alert(successLabel,jsonResponse.message);//
-						// uncommen for testing purpose
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -847,7 +845,7 @@ Ext
 															method : 'GET',
 															params : {
 																leafId : leafId,
-																method : 'updateStatus'
+																method : 'update'
 															},
 															success : function(
 																	response,
@@ -891,7 +889,8 @@ Ext
 
 			var folderTranslateEditor = new Ext.ux.grid.RowEditor(
 					{
-						saveText : 'Save',
+						saveText : saveButtonLabel,
+						cancelText:cancelButtonLabel,
 						listeners : {
 							CancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
@@ -1198,9 +1197,7 @@ Ext
 							pageSize : perPage
 						}),
 						view : new Ext.ux.grid.BufferView({
-							// custom row height
 							rowHeight : 34,
-							// render rows as they come into viewable area.
 							scrollDelay : false
 						})
 					});
@@ -1355,7 +1352,7 @@ Ext
 																	.get('folderAccessValue');
 												}
 												url = url + sub_url;
-												// reques and ajax
+												
 												Ext.Ajax
 														.request({
 															url : url,
@@ -1783,9 +1780,7 @@ Ext
 					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
 				}),
 				view : new Ext.ux.grid.BufferView({
-					// custom row height
 					rowHeight : 34,
-					// render rows as they come into viewable area.
 					scrollDelay : false
 				})
 			});
@@ -2052,7 +2047,7 @@ Ext
 						method : 'post',
 						frame : true,
 						border : false,
-						title :'Folder Entry',
+						title : leafNative,
 						width : 600,
 						items : [ {
 							xtype : 'panel',
@@ -2081,7 +2076,7 @@ Ext
 						iconCls : 'application_form',
 						bbar : new Ext.ux.StatusBar({
 							id : "form-statusbar",
-							defaultText : "Ready",
+							defaultText : defaultTextLabel,
 							plugins : new Ext.ux.ValidationStatus({
 								form : "formPanel"
 							})
@@ -2107,6 +2102,7 @@ Ext
 
 								{
 									text : newButtonLabel,
+									name :newButton,
 									id :'newButton',
 									title:'newButton',
 									type : 'button',
@@ -2117,14 +2113,8 @@ Ext
 										var id = 0;
 										var id = Ext.getCmp('folderId')
 												.getValue();
-										var method;
-
-										if (id.length > 0) {
-											method = 'save';
-
-										} else {
-											method = 'create';
-										}
+										var method = 'create';
+										
 										formPanel
 												.getForm()
 												.submit(
@@ -2137,10 +2127,10 @@ Ext
 															success : function(
 																	form,
 																	action) {
-																var title = successLabel;
+																if(action.result.success==true) { 
 																Ext.MessageBox
 																		.alert(
-																				title,
+																				systemLabel,
 																				action.result.message);
 																Ext
 																		.getCmp(
@@ -2151,7 +2141,7 @@ Ext
 																				'deleteButton')
 																		.enable();
 
-																folderStore
+																moduleStore
 																		.reload({
 																			params : {
 																				leafId : leafId,
@@ -2164,6 +2154,12 @@ Ext
 																				'folderId')
 																		.setValue(
 																				action.result.folderId);
+																} else {
+																	Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																}		
 
 															},
 															failure : function(
@@ -2205,31 +2201,27 @@ Ext
 										var id = 0;
 										var id = Ext.getCmp('folderId')
 												.getValue();
-										var method;
+										var method= 'save';
 
-										if (id.length > 0) {
-											method = 'save';
-
-										} else {
-											method = 'create';
-										}
+										
 										formPanel
 												.getForm()
 												.submit(
 														{
+															waitTitle:systemLabel,
 															waitMsg : waitMessageLabel,
 															params : {
 																method : method,
 																leafId : leafId,
-																page : 'master'
+																isAdmin :isAdmin
 															},
 															success : function(
 																	form,
 																	action) {
-																var title = successLabel;
+																if(action.result.success == true) { 
 																Ext.MessageBox
 																		.alert(
-																				title,
+																				systemLabel,
 																				action.result.message);
 																Ext
 																		.getCmp(
@@ -2240,7 +2232,7 @@ Ext
 																				'deleteButton')
 																		.enable();
 
-																folderStore
+																moduleStore
 																		.reload({
 																			params : {
 																				leafId : leafId,
@@ -2253,6 +2245,12 @@ Ext
 																				'folderId')
 																		.setValue(
 																				action.result.folderId);
+																} else {
+																	Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																}
 
 															},
 															failure : function(
@@ -2323,7 +2321,7 @@ Ext
 																								systemLabel,
 																								jsonResponse.message);
 
-																				folderStore
+																				moduleStore
 																						.reload({
 																							params : {
 																								leafId : leafId,
@@ -2473,6 +2471,12 @@ Ext
 																			success : function(
 																					form,
 																					action) {
+																				if(action.result.success == true) {
+																					if(action.result.nextRecord == 0 ) { 
+															Ext.getCmp('nextButton').disable();
+														} else {
+															Ext.getCmp('nextButton').enable();
+														}						
 																				Ext
 																						.getCmp(
 																								'firstRecord')
@@ -2527,10 +2531,13 @@ Ext
 																				folderAccessGrid
 																						.enable();
 																						
-																				viewPort.items
-																						.get(
-																								1)
-																						.expand();
+																				
+																				} else {
+																					Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																				}		
 																			},
 																			failure : function(
 																					form,
@@ -2579,6 +2586,12 @@ Ext
 														},
 														success : function(
 																form, action) {
+															if(action.result.success == true) {	
+																if(action.result.nextRecord == 0 ) { 
+															Ext.getCmp('nextButton').disable();
+														} else {
+															Ext.getCmp('nextButton').enable();
+														}
 															Ext
 																	.getCmp(
 																			'firstRecord')
@@ -2604,8 +2617,7 @@ Ext
 																			'endRecord')
 																	.setValue(
 																			(action.result.lastRecord + 1));
-															// load the detail
-															// grid
+														
 															Ext
 																	.getCmp(
 																			'previousButton')
@@ -2631,9 +2643,14 @@ Ext
 																						});
 
 																				folderAccessGrid
-																						.enable();		
-															viewPort.items.get(
-																	1).expand();
+																						.enable();
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}		
+															
 														},
 														failure : function(
 																form, action) {
@@ -2663,7 +2680,7 @@ Ext
 												|| Ext.getCmp('previousRecord')
 														.getValue() == undefined) {
 											Ext.MessageBox
-													.alert("Please Pick A Record First Ya");
+													.alert(systemErrorLabel,chooseRecordLabel);
 
 										}
 										if (Ext.getCmp('firstRecord')
@@ -2686,6 +2703,7 @@ Ext
 														},
 														success : function(
 																form, action) {
+															if(action.result.success == true) {	
 															Ext
 																	.getCmp(
 																			'firstRecord')
@@ -2742,8 +2760,13 @@ Ext
 															}
 															folderTranslateGrid
 																	.enable();
-															viewPort.items.get(
-																	1).expand();
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}		
+															
 														},
 														failure : function(
 																form, action) {
@@ -2754,10 +2777,10 @@ Ext
 														}
 													});
 										} else {
-											// empty record
+											
 											Ext.MessageBox.alert(
 													systemErrorLabel,
-													'Record Not Found');
+													recordNotFoundLabel);
 										}
 									}
 								},
@@ -2778,7 +2801,7 @@ Ext
 												|| Ext.getCmp('nextRecord')
 														.getValue() == undefined) {
 											Ext.MessageBox
-													.alert("Please Pick A Record First Ya");
+													.alert(systemErrorLabel,chooseRecordLabel);
 
 										}
 										if (Ext.getCmp('nextRecord').getValue() <= Ext
@@ -2803,6 +2826,7 @@ Ext
 														},
 														success : function(
 																form, action) {
+															if(action.result.success == true) {	
 															Ext
 																	.getCmp(
 																			'firstRecord')
@@ -2875,8 +2899,13 @@ Ext
 																	.enable();
 															folderTranslateGrid
 																	.enable();
-															viewPort.items.get(
-																	1).expand();
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}		
+															
 														},
 														failure : function(
 																form, action) {
@@ -2887,10 +2916,10 @@ Ext
 														}
 													});
 										} else {
-											// empty record
+											
 											Ext.MessageBox.alert(
 													systemErrorLabel,
-													'Record Not Found');
+													recordNotFoundLabel);
 										}
 									}
 
@@ -2948,6 +2977,12 @@ Ext
 																			success : function(
 																					form,
 																					action) {
+																				if(action.result.success == true) {
+																				if(action.result.previousRecord == 0 ) { 
+																					Ext.getCmp('previousButton').disable();
+																				} else {
+																					Ext.getCmp('previousButton').enable();
+																				}
 																				Ext
 																						.getCmp(
 																								'firstRecord')
@@ -3004,10 +3039,13 @@ Ext
 
 																				folderTranslateGrid
 																						.enable();
-																				viewPort.items
-																						.get(
-																								1)
-																						.expand();
+																				
+																				} else {
+																						Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																				}								
 																			},
 																			failure : function(
 																					form,
@@ -3059,6 +3097,12 @@ Ext
 															success : function(
 																	form,
 																	action) {
+																if(action.result.success == true) {
+																if(action.result.previousRecord == 0 ) { 
+																	Ext.getCmp('previousButton').disable();
+																} else {
+																	Ext.getCmp('previousButton').enable();
+																}
 																Ext
 																		.getCmp(
 																				'firstRecord')
@@ -3104,9 +3148,13 @@ Ext
 
 																folderTranslateGrid
 																		.enable();
-																viewPort.items
-																		.get(1)
-																		.expand();
+																} else {
+																	Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																}		
+																
 															},
 															failure : function(
 																	form,
@@ -3118,10 +3166,10 @@ Ext
 															}
 														});
 											} else {
-												// empty record
+												
 												Ext.MessageBox.alert(
 														systemErrorLabel,
-														'Record Not Found');
+														recordNotFoundLabel);
 											}
 										}
 									}
@@ -3182,6 +3230,8 @@ Ext
 					});
 
 			var auditWindow = new Ext.Window({
+				name :'auditWindow',
+				id:'auditWindow',
 				layout : 'fit',
 				width : 500,
 				height : 300,
@@ -3204,7 +3254,6 @@ Ext
 
 				},
 				title : 'Sql Statement audit',
-
 				maximizable : true,
 				autoScroll : true
 			});

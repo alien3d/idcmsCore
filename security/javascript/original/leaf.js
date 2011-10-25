@@ -580,7 +580,6 @@ Ext
 				autoLoad : true,
 				autoDestroy : true,
 				pruneModifiedRecords : true,
-				method : 'POST',
 				baseParams : {
 					method : "read",
 					leafId : leafIdTemp,
@@ -751,7 +750,7 @@ Ext
 											'click' : function() {
 												leafStore
 														.each(function(rec) {
-															for ( var access in accessArray) { // alert(access);
+															for ( var access in accessArray) { 
 																rec
 																		.set(
 																				accessArray[access],
@@ -833,16 +832,14 @@ Ext
 																		.get('isPost');
 													}
 												}
-												url = url + sub_url; // reques
-												// and
-												// ajax
+												url = url + sub_url; 
 												Ext.Ajax
 														.request({
 															url : url,
 															method : 'GET',
 															params : {
-																leafId : leafId,
-																method : 'updateStatus'
+																leafIdTemp : leafIdTemp,
+																method : 'update'
 															},
 															success : function(
 																	response,
@@ -873,7 +870,7 @@ Ext
 																						+ ":"
 																						+ escape(response.statusText));
 															}
-														}); // refresh the store
+														}); 
 											}
 										}
 									} ]
@@ -886,7 +883,8 @@ Ext
 
 			var leafTranslateEditor = new Ext.ux.grid.RowEditor(
 					{
-						saveText : 'Save',
+						saveText : saveButtonLabel,
+						cancelText :cancelButtonLabel,
 						listeners : {
 							CancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
@@ -897,7 +895,7 @@ Ext
 									rowIndex) {
 
 								this.save = true;
-								// update record manually
+							
 								var record = this.grid.getStore().getAt(
 										rowIndex);
 
@@ -905,11 +903,11 @@ Ext
 										.request({
 											url : '../controller/leafTranslateController.php',
 											method : 'POST',
-											waitTitle : 'Harap Sabar',
+											waitTitle : systemLabel,
 											waitMsg : waitMessageLabel,
 											params : {
-												leafId : leafId,
-												method : 'save',
+												leafIdTemp : leafIdTemp,
+												method : method,
 												leafTranslateId : record
 														.get('leafTranslateId'),
 												leafTranslate : Ext.getCmp(
@@ -965,7 +963,7 @@ Ext
 						params : {
 							method : "DELETE",
 							ids : encoded_array,
-							leafId : leafIdTemp
+							leafIdTemp : leafIdTemp
 						},
 						success : function(response, options) {
 							jsonResponse = Ext.decode(response.responseText);
@@ -1010,6 +1008,8 @@ Ext
 
 			var gridPanel = new Ext.Panel(
 					{
+						name :'gridPanel',
+						id :'gridPanel',
 						title : 'Menu Listing',
 						height : 50,
 						layout : 'fit',
@@ -1210,6 +1210,8 @@ Ext
 			} ];
 
 			var logGrid = new Ext.grid.GridPanel({
+				name :'logGrid',
+				id :'logGrid',
 				border : false,
 				store : logStore,
 				autoHeight : false,
@@ -1347,19 +1349,21 @@ Ext
 			}];
 
 			var logAdvanceGrid = new Ext.grid.GridPanel({
+				name :'logAdvanceGrid',
+				id :'logAdvanceGrid',
 				border : false,
 				store : logAdvanceStore,
 				autoHeight : false,
 				height : 400,
 				columns : logAdvanceColumnModel,
 				loadMask : true,
-				plugins : [ logAdvancefilters ],
+				plugins : [ logAdvanceFilters ],
 				sm : new Ext.grid.RowSelectionModel({
 					singleSelect : true
 				}),
 				viewConfig : {
 					forceFit : true,
-					emptyText : 'No rows to display'
+					emptyText : emptyTextLabel
 				},
 				iconCls : 'application_view_detail',
 				listeners : {
@@ -1383,9 +1387,9 @@ Ext
 					plugins : [ new Ext.ux.plugins.PageComboResizer() ]
 				}),
 				view : new Ext.ux.grid.BufferView({
-					// custom row height
+				
 					rowHeight : 34,
-					// render rows as they come into viewable area.
+				
 					scrollDelay : false
 				})
 			});
@@ -1430,7 +1434,7 @@ Ext
 								field : 'sequence',
 								table : 'folder',
 								moduleId : combo.value,
-								leafId : leafId
+								leafIdTemp: leafIdTemp
 							},
 							success : function(response, options) {
 								jsonResponse = Ext
@@ -1585,7 +1589,7 @@ Ext
 								table : 'leaf',
 								moduleId : Ext.getCmp('tab_fake').getValue(),
 								folderId : combo.value,
-								leafId : leafIdTemp
+								leafIdTemp : leafIdTemp
 							},
 							success : function(response, options) {
 								jsonResponse = Ext
@@ -1775,21 +1779,31 @@ Ext
 
 			var firstRecord = new Ext.form.Hidden({
 				name : 'firstRecord',
-				id : 'firstRecord'
+				id : 'firstRecord',
+				value : ''
 			});
 
 			var nextRecord = new Ext.form.Hidden({
 				name : 'nextRecord',
-				id : 'nextRecord'
+				id : 'nextRecord',
+				value : ''
 			});
 
 			var previousRecord = new Ext.form.Hidden({
 				name : 'previousRecord',
-				id : 'previousRecord'
+				id : 'previousRecord',
+				value : ''
 			});
 			var lastRecord = new Ext.form.Hidden({
 				name : 'lastRecord',
-				id : 'lastRecord'
+				id : 'lastRecord',
+				value : ''
+			});
+
+			var endRecord = new Ext.form.Hidden({
+				name : 'endRecord',
+				id : 'endRecord',
+				value : ''
 			});
 
 			var formPanel = new Ext.form.FormPanel(
@@ -1799,7 +1813,7 @@ Ext
 						id :'formPanel',
 						method : 'post',
 						frame : true,
-						title : 'Menu Administration',
+						title : leafNative,
 						border : false,
 						bodyStyle : 'padding: 10px',
 						width : 600,
@@ -1807,7 +1821,7 @@ Ext
 						items : [
 								{
 									xtype : 'panel',
-									title : leafEnglish,
+									title : leafNative,
 									bodyStyle : "padding:5px",
 									layout : 'form',
 									frame : true,
@@ -1821,54 +1835,187 @@ Ext
 								} ],
 						buttonVAlign : 'top',
 						buttonAlign : 'left',
+						iconCls : 'application_form',
+						bbar : new Ext.ux.StatusBar({
+							id : "form-statusbar",
+							defaultText : defaultTextLabel,
+							plugins : new Ext.ux.ValidationStatus({
+								form : "formPanel"
+							})
+						}),
 						buttons : [
 								{
-									text : saveButtonLabel,
-									iconCls : 'bullet_disk',
+									text : auditButtonLabel,
+									name : 'auditButtonLabel',
+									id : 'auditButtonLabel',
+									type : 'button',
+									iconCls : 'key',
+									disabled : auditButtonLabelDisabled,
 									handler : function() {
-										var id = 0;
-										id = Ext.getCmp('leafId').getValue();
-										var method;
-										if (id.length > 0) {
-											method = 'save';
-										} else {
-											method = 'create';
+										
+										if (auditWindow) {
+											logStore.reload();
+											logAdvanceStore.reload();
+											auditWindow.show().center();
 										}
+									}
+								},
+
+								{
+									text : newButtonLabel,
+									name :'newButton',
+									id :'newButton',
+									title:'newButton',
+									type : 'button',
+									iconCls : 'new',
+									handler : function() {
+										Ext.getCmp('leafTranslateGrid').enable();
+										Ext.getCmp('leafAccessGrid').enable();
+										var id = 0;
+										var id = Ext.getCmp('leafId')
+												.getValue();
+										var method = 'create';
+										
 										formPanel
 												.getForm()
 												.submit(
 														{
+															waitTitle :systemLabel,
 															waitMsg : waitMessageLabel,
 															params : {
 																method : method,
-																page : 'master',
-																leafIdTemp : leafIdTemp
+																leafIdTemp : leafIdTemp,
+																isAdmin		:isAdmin
 															},
 															success : function(
 																	form,
 																	action) {
+																if(action.result.success==true) { 
 																Ext.MessageBox
 																		.alert(
 																				systemLabel,
 																				action.result.message);
+																Ext
+																		.getCmp(
+																				'leafTranslateGrid')
+																		.enable();
+																Ext
+																		.getCmp(
+																				'deleteButton')
+																		.enable();
 
 																leafStore
 																		.reload({
 																			params : {
-																				leafIdTemp : leafIdTemp,
+																				leafTempId  : leafTempId ,
 																				start : 0,
 																				limit : perPage
 																			}
 																		});
 																Ext
 																		.getCmp(
-																				'translation')
+																				'leafId')
+																		.setValue(
+																				action.result.leafId);
+																} else {
+																	Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																}		
+
+															},
+															failure : function(
+																	form,
+																	action) {
+
+																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
+																	
+																	Ext.Msg.alert(systemErrorLabel,loadFailureLabel);
+																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
+
+																	
+																	Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
+																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
+																	Ext.Msg
+																			.alert(form.response.status
+																					+ ' '
+																					+ form.response.statusText);
+																} else if (action.failureType === Ext.form.Action.SERVER_INVALID) {
+																	Ext.Msg
+																			.alert(
+																					systemErrorLabel,
+																					action.result.message);
+																}
+															}
+														});
+									}
+								},
+								{
+									text : saveButtonLabel,
+									name : 'saveButton',
+									id : 'saveButton',
+									iconCls : 'bullet_disk',
+									disabled : true,
+									handler : function() {
+										Ext.getCmp('newButton').disable();
+										Ext.getCmp('leafTranslateGrid').disable();
+										Ext.getCmp('leafAccessGrid').disable();
+										var id = 0;
+										var id = Ext.getCmp('leafId')
+												.getValue();
+										var method= 'save';
+
+										
+										formPanel
+												.getForm()
+												.submit(
+														{
+															waitTitle:systemLabel,
+															waitMsg : waitMessageLabel,
+															params : {
+																method : method,
+																leafIdTemp : leafIdTemp,
+																isAdmin :isAdmin
+															},
+															success : function(
+																	form,
+																	action) {
+																if(action.result.success == true) { 
+																Ext.MessageBox
+																		.alert(
+																				systemLabel,
+																				action.result.message);
+																Ext
+																		.getCmp(
+																				'leafTranslateGrid')
 																		.enable();
+																Ext
+																		.getCmp(
+																				'deleteButton')
+																		.enable();
+
+																leafStore
+																		.reload({
+																			params : {
+																				leafIdTemp : leafIdTemp,
+																				isAdmin:isAdmin,
+																				start : 0,
+																				limit : perPage
+																			}
+																		});
 																Ext
 																		.getCmp(
 																				'leafId')
 																		.setValue(
 																				action.result.leafId);
+																} else {
+																	Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																}
+
 															},
 															failure : function(
 																	form,
@@ -1881,8 +2028,7 @@ Ext
 																	Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
 																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																	Ext.Msg
-																			.alert(connectFailureLabel
-																					+ form.response.status
+																			.alert(form.response.status
 																					+ ' '
 																					+ form.response.statusText);
 																} else if (action.failureType === Ext.form.Action.SERVER_INVALID) {
@@ -1892,39 +2038,929 @@ Ext
 																					action.result.message);
 																}
 															}
-
 														});
+									}
+								},
+								{
+									text : deleteButtonLabel,
+									type : 'button',
+									name : 'deleteButton',
+									id : 'deleteButton',
+									iconCls : 'trash',
+									disabled : true,
+									handler : function() {
+										Ext.getCmp('newButton').disable();
+										Ext.getCmp('leafTranslateGrid').disable();
+										Ext.getCmp('leafAccessGrid').disable();
+										Ext.Msg
+												.show({
+													title : deleteRecordTitleMessageLabel,
+													msg : deleteRecordMessageLabel,
+													icon : Ext.Msg.QUESTION,
+													buttons : Ext.Msg.YESNO,
+													scope : this,
+													fn : function(response) {
+														if ("yes" == response) {
+															Ext.Ajax
+																	.request({
+																		url : "../controller/leafController.php",
+																		params : {
+																			method : "delete",
+																			leafId : Ext
+																					.getCmp(
+																							'leafId')
+																					.getValue(),
+																			leafIdTemp : leafIdTemp,
+																			isAdmin : isAdmin
+																		},
+																		success : function(
+																				response,
+																				options) {
+																			jsonResponse = Ext
+																					.decode(response.responseText);
+																			if (jsonResponse.success == true) {
+
+																				Ext.MessageBox
+																						.alert(
+																								systemLabel,
+																								jsonResponse.message);
+
+																				leafStore
+																						.reload({
+																							params : {
+																								leafIdTemp : leafIdTemp,
+																								isAdmin:isAdmin,
+																								start : 0,
+																								limit : perPage
+																							}
+																						});
+																						
+																						
+																				Ext
+																						.getCmp(
+																								'leafTranslateGrid')
+																						.disable();
+																				Ext
+																						.getCmp(
+																								'saveButton')
+																						.disable();
+																				Ext
+																						.getCmp(
+																								'nextButton')
+																						.disable();
+																				Ext
+																						.getCmp(
+																								'previousButton')
+																						.disable();
+																				Ext
+																						.getCmp(
+																								'translation')
+																						.disable();
+																			} else {
+
+																				Ext.MessageBox
+																						.alert(
+																								systemErrorLabel,
+																								jsonResponse.message);
+																			}
+
+																		},
+																		failure : function(
+																				response,
+																				options) {
+																			Ext.MessageBox
+																					.alert(
+																							systemErrorLabel,
+																							escape(response.status)
+																									+ ":"
+																									+ response.statusText);
+																		}
+																	});
+														}
+													}
+												});
 									}
 								},
 								{
 									text : resetButtonLabel,
 									type : 'reset',
-									iconCls : 'table_refresh',
+									name : 'resetButton',
+									id : 'resetButton',
+									iconCls : 'database_refresh',
+									handler : function() {
+										Ext.getCmp('newButton').enable();
+										Ext.getCmp('leafTranslateGrid').disable();
+										Ext.getCmp('leafAccessGrid').disable();
+										formPanel.getForm().reset();
+									}
+
+								},
+								{
+									text : postButtonLabel,
+									type : 'button',
+									name : 'postButton',
+									id : 'postButton',
+									iconCls : 'lock',
+									handler : function() {
+										Ext.getCmp('newButton').disable();
+										Ext.getCmp('leafTranslateGrid').disable();
+										Ext.getCmp('leafAccessGrid').disable();
+										formPanel.getForm().reset();
+									}
+
+								},
+								{
+									text : gridButtonLabel,
+									type : 'button',
+									name : 'gridButton',
+									id : 'gridButton',
+									iconCls : 'table',
 									handler : function() {
 										formPanel.getForm().reset();
+										viewPort.items.get(0).expand();
+									}
+								},
+								{
+									text : firstButtonLabel,
+									name : 'firstButton',
+									id : 'firstButton',
+									type : 'button',
+									iconCls : 'resultset_first',
+									handler : function() {
+										Ext.getCmp('newButton').disable();
+										Ext.getCmp('teamId').enable();
+										Ext.getCmp('leafAccessGrid').enable();
+										if (Ext.getCmp('firstRecord')
+												.getValue() == ''
+												|| Ext.getCmp('firstRecord')
+														.getValue() == undefined) {
+
+											Ext.Ajax
+													.request({
+														url : "../controller/leafController.php",
+														method : "GET",
+														params : {
+															method : "dataNavigationRequest",
+															leafIdTemp : leafIdTemp,
+															dataNavigation : 'firstRecord'
+														},
+														success : function(
+																response,
+																options) {
+
+															jsonResponse = Ext
+																	.decode(response.responseText);
+															if (jsonResponse.success == true) {
+																Ext
+																		.getCmp(
+																				'firstRecord')
+																		.setValue(
+																				jsonResponse.firstRecord);
+
+																formPanel.form
+																		.load({
+																			url : "../controller/leafController.php",
+																			method : "POST",
+																			waitTitle : systemLabel,
+																			waitMsg : waitMessageLabel,
+																			params : {
+																				method : "read",
+
+																				leafId : Ext
+																						.getCmp(
+																								'firstRecord')
+																						.getValue(),
+																				leafTempId : leafTempId,
+																				isAdmin : isAdmin
+																			},
+																			success : function(
+																					form,
+																					action) {
+																				if(action.result.success == true) {
+																				if(action.result.nextRecord == 0 ) { 
+																					Ext.getCmp('nextButton').disable();
+																				} else {
+																					Ext.getCmp('nextButton').enable();
+																				}					
+																				Ext
+																						.getCmp(
+																								'firstRecord')
+																						.setValue(
+																								action.result.firstRecord);
+																				Ext
+																						.getCmp(
+																								'previousRecord')
+																						.setValue(
+																								action.result.previousRecord);
+																				Ext
+																						.getCmp(
+																								'nextRecord')
+																						.setValue(
+																								action.result.nextRecord);
+																				Ext
+																						.getCmp(
+																								'lastRecord')
+																						.setValue(
+																								action.result.lastRecord);
+																				Ext
+																						.getCmp(
+																								'endRecord')
+																						.setValue(
+																								(action.result.lastRecord + 1));
+																				
+																				Ext
+																						.getCmp(
+																								'previousButton')
+																						.disable();
+																				leafTranslateStore
+																						.load({
+																							params : {
+																								leafIdTemp : leafIdTemp,
+																								isAdmin : isAdmin,
+																								leafId : action.result.data.leafId
+																							}
+																						});
+
+																				leafTranslateGrid
+																						.enable();
+																						
+																				leafAccessStore
+																						.load({
+																							params : {
+																								leafIdTemp : leafIdTemp,
+																								isAdmin : isAdmin,
+																								leafId : action.result.data.leafId
+																							}
+																						});
+
+																				leafAccessGrid
+																						.enable();
+																						
+																				
+																				} else {
+																					Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																				}		
+																			},
+																			failure : function(
+																					form,
+																					action) {
+																				Ext.MessageBox
+																						.alert(
+																								systemErrorLabel,
+																								action.result.message);
+																			}
+																		});
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				jsonResponse.message);
+															}
+														},
+														failure : function(
+																response,
+																options) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			escape(response.status)
+																					+ ":"
+																					+ escape(response.statusText));
+														}
+													});
+										} else {
+
+											formPanel.form
+													.load({
+														url : "../controller/leafController.php",
+														method : "POST",
+														waitTitle : systemLabel,
+														waitMsg : waitMessageLabel,
+														params : {
+															method : "read",
+
+															leafId : Ext
+																	.getCmp(
+																			'firstRecord')
+																	.getValue(),
+															leafIdTemp : leafIdTemp,
+															isAdmin : isAdmin
+														},
+														success : function(
+																form, action) {
+															if(action.result.success == true) {
+															if(action.result.nextRecord == 0 ) { 
+																Ext.getCmp('nextButton').disable();
+															} else {
+																Ext.getCmp('nextButton').enable();
+															}	
+															Ext
+																	.getCmp(
+																			'firstRecord')
+																	.setValue(
+																			action.result.firstRecord);
+															Ext
+																	.getCmp(
+																			'previousRecord')
+																	.setValue(
+																			action.result.previousRecord);
+															Ext
+																	.getCmp(
+																			'nextRecord')
+																	.setValue(
+																			action.result.nextRecord);
+															Ext
+																	.getCmp(
+																			'lastRecord')
+																	.setValue(
+																			action.result.lastRecord);
+															Ext
+																	.getCmp(
+																			'endRecord')
+																	.setValue(
+																			(action.result.lastRecord + 1));
+														
+															Ext
+																	.getCmp(
+																			'previousButton')
+																	.disable();
+															leafTranslateStore
+																	.load({
+																		params : {
+																			leafIdTemp : leafIdTemp,
+																			isAdmin : isAdmin,
+																			leafId : action.result.data.leafId
+																		}
+																	});
+
+															leafTranslateGrid
+																	.enable();
+															leafAccessStore
+																						.load({
+																							params : {
+																								leafIdTemp : leafIdTemp,
+																								isAdmin : isAdmin,
+																								leafId : action.result.data.leafId
+																							}
+																						});
+
+																				leafAccessGrid
+																						.enable();
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}		
+															
+														},
+														failure : function(
+																form, action) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			action.result.message);
+														}
+													});
+										}
+
+									}
+								},
+								{
+									text : previousButtonLabel,
+									name : 'previousButton',
+									id : 'previousButton',
+									type : 'button',
+									iconCls : 'resultset_previous',
+									disabled : true,
+									handler : function() {
+										Ext.getCmp('newButton').disable();
+										Ext.getCmp('leafTranslateGrid').enable();
+										Ext.getCmp('leafAccessGrid').enable();
+										if (Ext.getCmp('previousRecord')
+												.getValue() == ''
+												|| Ext.getCmp('previousRecord')
+														.getValue() == undefined) {
+											Ext.MessageBox
+													.alert("Please Pick A Record First Ya");
+
+										}
+										if (Ext.getCmp('firstRecord')
+												.getValue() >= 1) {
+											formPanel.form
+													.load({
+														url : "../controller/leafController.php",
+														method : "POST",
+														waitTitle : systemLabel,
+														waitMsg : waitMessageLabel,
+														params : {
+															method : "read",
+
+															leafId : Ext
+																	.getCmp(
+																			'previousRecord')
+																	.getValue(),
+															leafIdTemp : leafIdTemp,
+															isAdmin : isAdmin
+														},
+														success : function(
+																form, action) {
+															if(action.result.success == true) {	
+															Ext
+																	.getCmp(
+																			'firstRecord')
+																	.setValue(
+																			action.result.firstRecord);
+															Ext
+																	.getCmp(
+																			'previousRecord')
+																	.setValue(
+																			action.result.previousRecord);
+															Ext
+																	.getCmp(
+																			'nextRecord')
+																	.setValue(
+																			action.result.nextRecord);
+															Ext
+																	.getCmp(
+																			'lastRecord')
+																	.setValue(
+																			action.result.lastRecord);
+															Ext
+																	.getCmp(
+																			'endRecord')
+																	.setValue(
+																			(action.result.lastRecord + 1));
+															
+															leafTranslateStore
+																	.load({
+																		params : {
+																			leafIdTemp : leafIdTemp,
+																			isAdmin : isAdmin,
+																			leafId : action.result.data.leafId
+																		}
+																	});
+																	
+															leafAccessStore
+																						.load({
+																							params : {
+																								leafIdTemp : leafIdTemp,
+																								isAdmin : isAdmin,
+																								leafId : action.result.data.leafId
+																							}
+																						});
+
+																						
+															if (Ext
+																	.getCmp(
+																			'previousRecord')
+																	.getValue() == 0) {
+																Ext
+																		.getCmp(
+																				'previousButton')
+																		.disable();
+															}
+															leafTranslateGrid
+																	.enable();
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}		
+															
+														},
+														failure : function(
+																form, action) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			action.result.message);
+														}
+													});
+										} else {
+											// empty record
+											Ext.MessageBox.alert(
+													systemErrorLabel,
+													'Record Not Found');
+										}
+									}
+								},
+								{
+									text : nextButtonLabel,
+									name : 'nextButton',
+									id : 'nextButton',
+									type : 'button',
+									disabled : true,
+									iconCls : 'resultset_next',
+									handler : function() {
+										
+										Ext.getCmp('newButton').disable();
+										Ext.getCmp('leafTranslateGrid').enable();
+										Ext.getCmp('leafAccessGrid').enable();
+										
+										if (Ext.getCmp('nextRecord').getValue() == ''
+												|| Ext.getCmp('nextRecord')
+														.getValue() == undefined) {
+											Ext.MessageBox
+													.alert("Please Pick A Record First Ya");
+
+										}
+										if (Ext.getCmp('nextRecord').getValue() <= Ext
+												.getCmp('lastRecord')
+												.getValue()) {
+
+											formPanel.form
+													.load({
+														url : "../controller/leafController.php",
+														method : "POST",
+														waitTitle : systemLabel,
+														waitMsg : waitMessageLabel,
+														params : {
+															method : "read",
+
+															leafId : Ext
+																	.getCmp(
+																			'nextRecord')
+																	.getValue(),
+															leafIdTemp : leafIdTemp,
+															isAdmin : isAdmin
+														},
+														success : function(
+																form, action) {
+															if(action.result.success == true) {	
+															Ext
+																	.getCmp(
+																			'firstRecord')
+																	.setValue(
+																			action.result.firstRecord);
+															Ext
+																	.getCmp(
+																			'previousRecord')
+																	.setValue(
+																			action.result.previousRecord);
+															Ext
+																	.getCmp(
+																			'nextRecord')
+																	.setValue(
+																			action.result.nextRecord);
+															Ext
+																	.getCmp(
+																			'lastRecord')
+																	.setValue(
+																			action.result.lastRecord);
+															Ext
+																	.getCmp(
+																			'endRecord')
+																	.setValue(
+																			(action.result.lastRecord + 1));
+															
+															leafTranslateStore
+																	.load({
+																		params : {
+																			leafTempd : leafIdTemp,
+																			isAdmin : isAdmin,
+																			leafId : action.result.data.leafId
+																		}
+																	});
+																	
+															leafAccessStore
+																						.load({
+																							params : {
+																								leafIdTemp: leafIdTemp,
+																								isAdmin : isAdmin,
+																								leafId : action.result.data.leafId
+																							}
+																						});
+
+																					
+															if (Ext
+																	.getCmp(
+																			'nextRecord')
+																	.getValue() > Ext
+																	.getCmp(
+																			'lastRecord')
+																	.getValue()) {
+																Ext
+																		.getCmp(
+																				'nextButton')
+																		.disable();
+															}
+															if (Ext
+																	.getCmp(
+																			'nextRecord')
+																	.getValue() == 0) {
+																Ext
+																		.getCmp(
+																				'nextButton')
+																		.disable();
+															}
+															Ext
+																	.getCmp(
+																			'previousButton')
+																	.enable();
+															leafTranslateGrid
+																	.enable();
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}		
+															
+														},
+														failure : function(
+																form, action) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			action.result.message);
+														}
+													});
+										} else {
+											
+											Ext.MessageBox.alert(
+													systemErrorLabel,
+													'Record Not Found');
+										}
+									}
+
+								},
+								{
+									text : endButtonLabel,
+									name : 'endButton',
+									id : 'endButton',
+									type : 'button',
+									iconCls : 'resultset_last',
+									handler : function() {
+										Ext.getCmp('newButton').disable();
+										Ext.getCmp('leafTranslateGrid').enable();
+										Ext.getCmp('leafAccessGrid').enable();
+										if (Ext.getCmp('lastRecord').getValue() == ''
+												|| Ext.getCmp('lastRecord')
+														.getValue() == undefined) {
+											Ext.Ajax
+													.request({
+														url : "../controller/leafController.php",
+														method : "GET",
+														params : {
+															method : "dataNavigationRequest",
+															leafIdTemp : leafIdTemp,
+															dataNavigation : 'lastRecord'
+														},
+														success : function(
+																response,
+																options) {
+
+															jsonResponse = Ext
+																	.decode(response.responseText);
+															if (jsonResponse.success == true) {
+																Ext
+																		.getCmp(
+																				'lastRecord')
+																		.setValue(
+																				jsonResponse.lastRecord);
+																formPanel.form
+																		.load({
+																			url : "../controller/leafController.php",
+																			method : "POST",
+																			waitTitle : systemLabel,
+																			waitMsg : waitMessageLabel,
+																			params : {
+																				method : "read",
+
+																				leafId : Ext
+																						.getCmp(
+																								'lastRecord')
+																						.getValue(),
+																				leafIdTemp : leafIdTemp,
+																				isAdmin : isAdmin
+																			},
+																			success : function(
+																					form,
+																					action) {
+																				if(action.result.success == true) {
+																				if(action.result.nextRecord == 0 ) { 
+																					Ext.getCmp('previousButton').disable();
+																				} else {
+																					Ext.getCmp('previousButton').enable();
+																				}
+																				Ext
+																						.getCmp(
+																								'firstRecord')
+																						.setValue(
+																								action.result.firstRecord);
+																				Ext
+																						.getCmp(
+																								'previousRecord')
+																						.setValue(
+																								action.result.previousRecord);
+																				Ext
+																						.getCmp(
+																								'nextRecord')
+																						.setValue(
+																								action.result.nextRecord);
+																				Ext
+																						.getCmp(
+																								'lastRecord')
+																						.setValue(
+																								action.result.lastRecord);
+																				Ext
+																						.getCmp(
+																								'endRecord')
+																						.setValue(
+																								(action.result.lastRecord + 1));
+																				
+																				leafTranslateStore
+																						.load({
+																							params : {
+																								leafIdTemp : leafIdTemp,
+																								isAdmin : isAdmin,
+																								leafId : action.result.data.leafId
+																							}
+																						});
+																				
+																				leafAccessStore
+																						.load({
+																							params : {
+																								leafIdTemp : leafIdTemp,
+																								isAdmin : isAdmin,
+																								leafId : action.result.data.leafId
+																							}
+																						});
+
+																			
+																				Ext
+																						.getCmp(
+																								'nextButton')
+																						.disable();
+																				Ext
+																						.getCmp(
+																								'previousButton')
+																						.enable();
+
+																				leafTranslateGrid
+																						.enable();
+																				
+																				} else {
+																						Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																				}								
+																			},
+																			failure : function(
+																					form,
+																					action) {
+																				Ext.MessageBox
+																						.alert(
+																								systemErrorLabel,
+																								action.result.message);
+																			}
+																		});
+															} else {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				jsonResponse.message);
+															}
+														},
+														failure : function(
+																response,
+																options) {
+															Ext.MessageBox
+																	.alert(
+																			systemErrorLabel,
+																			escape(response.status)
+																					+ ":"
+																					+ escape(response.statusText));
+														}
+													});
+										} else {
+											if (Ext.getCmp('leafId')
+													.getValue() <= Ext.getCmp(
+													'lastRecord').getValue()) {
+												formPanel.form
+														.load({
+															url : "../controller/leafController.php",
+															method : "POST",
+															waitTitle : systemLabel,
+															waitMsg : waitMessageLabel,
+															params : {
+																method : "read",
+
+																leafId : Ext
+																		.getCmp(
+																				'lastRecord')
+																		.getValue(),
+																leafIdTemp : leafIdTemp,
+																isAdmin : isAdmin
+															},
+															success : function(
+																	form,
+																	action) {
+																if(action.result.success == true) {
+																if(action.result.previousRecord == 0 ) { 
+															Ext.getCmp('previousButton').disable();
+														} else {
+															Ext.getCmp('previousButton').enable();
+														}
+																Ext
+																		.getCmp(
+																				'firstRecord')
+																		.setValue(
+																				action.result.firstRecord);
+																Ext
+																		.getCmp(
+																				'previousRecord')
+																		.setValue(
+																				action.result.previousRecord);
+																Ext
+																		.getCmp(
+																				'nextRecord')
+																		.setValue(
+																				action.result.nextRecord);
+																Ext
+																		.getCmp(
+																				'lastRecord')
+																		.setValue(
+																				action.result.lastRecord);
+																Ext
+																		.getCmp(
+																				'endRecord')
+																		.setValue(
+																				(action.result.lastRecord + 1));
+																
+																leafTranslateStore
+																		.load({
+																			params : {
+																				leafIdTemp : leafIdTemp,
+																				isAdmin : isAdmin,
+																				leafId : action.result.data.leafId
+																			}
+																		});
+																Ext
+																		.getCmp(
+																				'nextButton')
+																		.disable();
+																Ext
+																		.getCmp(
+																				'previousButton')
+																		.enable();
+
+																leafTranslateGrid
+																		.enable();
+																} else {
+																	Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+																}		
+																
+															},
+															failure : function(
+																	form,
+																	action) {
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				action.result.message);
+															}
+														});
+											} else {
+												
+												Ext.MessageBox.alert(
+														systemErrorLabel,
+														recordNotFoundLabel);
+											}
+										}
 									}
 								},
 								{
 									text : 'Translation',
+									name : 'translation',
 									id : 'translation',
 									disabled : true,
 									handler : function() {
-
+										Ext.getCmp('newButton').disable();
 										Ext.Ajax
 												.request({
 
-													url : "../controller/leafController.php",
+													url : "../controller/leafTranslateController.php",
 													method : 'GET',
 													params : {
 														leafIdTemp : leafIdTemp,
-														method : 'translate',
+														method : 'create',
 														leafId : Ext.getCmp(
 																'leafId')
 																.getValue()
 													},
 													success : function(
 															response, options) {
-														jsonReponse = Ext
+														jsonResponse = Ext
 																.decode(response.responseText);
 														if (jsonResponse.success == true) {
 															Ext.MessageBox
@@ -1934,7 +2970,7 @@ Ext
 
 															leafTranslateStore
 																	.reload();
-															box.hide();
+
 														} else {
 															Ext.MessageBox
 																	.alert(

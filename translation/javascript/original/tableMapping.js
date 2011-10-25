@@ -209,7 +209,7 @@ Ext
 				} ]
 			});
 
-			var tableMappingfilters = new Ext.ux.grid.GridFilters({
+			var tableMappingFilters = new Ext.ux.grid.GridFilters({
 				encode : encode, 
 				local : local, 
 				filters : [ {
@@ -313,7 +313,7 @@ Ext
 												.load({
 													url : "../controller/tableMappingController.php",
 													method : "POST",
-													waitTitle : systemTitleLabel,
+													waitTitle : systemLabel,
 													waitMsg : waitMessageLabel,
 													params : {
 														method : "read",
@@ -524,7 +524,7 @@ Ext
 
 												tableMappingStore
 														.each(function(rec) {
-															for ( var access in accessArray) { // alert(access);
+															for ( var access in accessArray) { 
 																rec
 																		.set(
 																				accessArray[access],
@@ -607,16 +607,14 @@ Ext
 																		.get('isPost');
 													}
 												}
-												url = url + sub_url; // reques
-												// and
-												// ajax
+												url = url + sub_url; 
 												Ext.Ajax
 														.request({
 															url : url,
 															method : 'GET',
 															params : {
 																leafId : leafId,
-																method : 'updateStatus'
+																method : 'update'
 															},
 															success : function(
 																	response,
@@ -647,7 +645,7 @@ Ext
 																						+ ":"
 																						+ escape(response.statusText));
 															}
-														}); // refresh the store
+														}); 
 											}
 										}
 									} ]
@@ -660,7 +658,8 @@ Ext
 
 			var tableMappingTranslateEditor = new Ext.ux.grid.RowEditor(
 					{
-						saveText : 'Save',
+						saveText : saveButtonLabel,
+						cancelText: cancelButtonLabel,
 						listeners : {
 							CancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
@@ -670,20 +669,19 @@ Ext
 							afteredit : function(rowEditor, changes, record,
 									rowIndex) {
 
-								this.save = true;
-								// @todo errk what this update record manually
-								// var curr_store =
-								// this.grid.getStore().getAt(rowIndex);
+								var method;
+								this.save = true; 
+								var record = this.grid.getStore().getAt(
+										rowIndex);
 
 								Ext.Ajax
 										.request({
-											url : '../controller/tableMappingController.php',
+											url : '../controller/tableMappingTranslateController.php',
 											method : 'POST',
 											waitMsg : waitMessageLabel,
 											params : {
 												leafId : leafId,
-												method : 'save',
-												page : 'detail',
+												method : method,
 												tableMappingTranslateId : record
 														.get('tableMappingTranslateId'),
 												tableMappingTranslate : Ext
@@ -702,9 +700,7 @@ Ext
 																	systemLabel,
 																	jsonResponse.message);
 												} else {
-													// if required messagebox to
-													// check
-													// status uncomment below
+												
 													Ext.MessageBox
 															.alert(
 																	systemLabel,
@@ -922,10 +918,10 @@ Ext
 												.getForm()
 												.submit(
 														{
+															waitTitle :systemLabel,
 															waitMsg : waitMessageLabel,
 															params : {
 																method : method,
-																page : 'master',
 																leafId : leafId
 															},
 															success : function(
@@ -959,13 +955,9 @@ Ext
 																	action) {
 
 																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
-																	alert(loadFailureMessageLabel);
+																	Ext.Msg.alert(systemErrorLabel,loadFailureLabel);
 																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																	// here will
-																	// be error
-																	// if
-																	// duplicate
-																	// code
+																
 																	Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
 																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																	Ext.Msg

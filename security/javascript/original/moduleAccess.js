@@ -29,11 +29,7 @@ Ext
 			} else {
 				pagePrint = true;
 			}
-			// form panel + grid.When choose the form then activated filter the
-
-			var perPage = 10;
-			var encode = false;
-			var local = false;
+			
 			var moduleAccessProxy = new Ext.data.HttpProxy({
 				url : "../controller/moduleAccessController.php",
 				method : 'POST',
@@ -65,11 +61,8 @@ Ext
 				proxy : moduleAccessProxy,
 				reader : moduleAccessReader,
 				autoDestroy : true,
-				url : '../controller/moduleAccessController.php',
 				remoteSort : true,
-				storeId : 'myStore',
 				root : 'data',
-				totalProperty : 'total',
 				baseParams : {
 					method : 'read',
 					mode : 'view',
@@ -104,7 +97,6 @@ Ext
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
-						// uncomment for testing purpose
 
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
@@ -208,10 +200,12 @@ Ext
 			});
 
 			var formPanel = new Ext.Panel({
+				name:'formPanel',
+				id:'formPanel',
 				region : 'center',
 				layout : 'form',
 				frame : true,
-				title : 'Accordian Access Form',
+				title : leafNative,
 				iconCls : 'application_form',
 				items : [ teamId ]
 			});
@@ -219,6 +213,8 @@ Ext
 			var accessArray = [ 'moduleAccessValue' ];
 			var gridPanel = new Ext.grid.GridPanel(
 					{
+						name:'gridPanel',
+						id:'gridPanel',
 						region : 'west',
 						store : moduleAccessStore,
 						cm : moduleAccessColumnModel,
@@ -320,13 +316,13 @@ Ext
 																jsonResponse = Ext
 																		.decode(response.responseText);
 
-																if (jsonResponse == true) {
+																if (jsonResponse.success == true) {
 
 																	Ext.MessageBox
 																			.alert(
 																					systemLabel,
 																					jsonResponse.message);
-																} else if (jsonResponse == false) {
+																} else if (jsonResponse.success == false) {
 
 																	Ext.MessageBox
 																			.alert(

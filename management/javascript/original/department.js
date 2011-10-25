@@ -79,7 +79,7 @@ Ext
 					name : "departmentCode",
 					type : "string"
 				}, {
-					name : "departmentNote",
+					name : "departmentEnglish",
 					type : "string"
 				}, {
 					name : "staffName",
@@ -179,8 +179,8 @@ Ext
 					table : "department"
 				}, {
 					type : "string",
-					dataIndex : "departmentNote",
-					column : "departmentNote",
+					dataIndex : "departmentEnglish",
+					column : "departmentEnglish",
 					table : "department"
 				}, {
 					type : "list",
@@ -228,13 +228,13 @@ Ext
 				anchor : "95%"
 			});
 
-			var departmentNote = new Ext.form.TextField({
+			var departmentEnglish = new Ext.form.TextField({
 				labelAlign : "left",
-				fieldLabel : departmentNoteLabel
+				fieldLabel : departmentEnglishLabel
 						+ '<span style="color: red;">*</span>',
-				hiddenName : "departmentNote",
-				name : "departmentNote",
-				id : "departmentNote",
+				hiddenName : "departmentEnglish",
+				name : "departmentEnglish",
+				id : "departmentEnglish",
 				allowBlank : false,
 				blankText : blankTextLabel,
 				style : {
@@ -309,11 +309,11 @@ Ext
 
 					},
 					{
-						dataIndex : "departmentNote",
-						header : departmentNoteLabel,
+						dataIndex : "departmentEnglish",
+						header : departmentEnglishLabel,
 						sortable : true,
 						hidden : false,
-						editor : departmentNote
+						editor : departmentEnglish
 
 					},
 					isDefaultGrid,
@@ -349,7 +349,8 @@ Ext
 					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var departmentEditor = new Ext.ux.grid.RowEditor(
 					{
-						saveText : 'Save',
+						saveText : saveButtonLabel,
+						cancelText : cancelButtonLabel,
 						listeners : {
 							CancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
@@ -358,7 +359,7 @@ Ext
 							afteredit : function(rowEditor, changes, record,
 									rowIndex) {
 								var method;
-								this.save = true; // update record manually
+								this.save = true; 
 								var record = this.grid.getStore().getAt(
 										rowIndex);
 								if (record.get('departmentId') > 0) {
@@ -378,8 +379,8 @@ Ext
 														.get('departmentSequence'),
 												departmentCode : record
 														.get('departmentCode'),
-												departmentNote : record
-														.get('departmentNote'),
+												departmentEnglish : record
+														.get('departmentEnglish'),
 												departmentId : record
 														.get('departmentId'),
 												duplicateTest : true
@@ -419,7 +420,7 @@ Ext
 				name : "departmentCode",
 				type : "string"
 			}, {
-				name : "departmentNote",
+				name : "departmentEnglish",
 				type : "string"
 			}, {
 				name : "executeBy",
@@ -486,7 +487,7 @@ Ext
 												departmentId : '',
 												departmentSequence : '',
 												departmentCode : '',
-												departmentNote : '',
+												departmentEnglish : '',
 												executeBy : '',
 												staffName : '',
 												isDefault : '',
@@ -515,7 +516,7 @@ Ext
 											'click' : function() {
 												departmentStore
 														.each(function(rec) {
-															for ( var access in accessArray) { // alert(access);
+															for ( var access in accessArray) { 
 																rec
 																		.set(
 																				accessArray[access],
@@ -606,9 +607,7 @@ Ext
 																		.get('isPost');
 													}
 												}
-												url = url + sub_url; // reques
-												// and
-												// ajax
+												url = url + sub_url;
 
 												Ext.Ajax
 														.request({
@@ -650,7 +649,7 @@ Ext
 																						+ ":"
 																						+ escape(response.statusText));
 															}
-														}); // refresh the store
+														}); 
 											}
 										}
 									} ]

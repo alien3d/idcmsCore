@@ -164,7 +164,7 @@ Ext
 					type : "string"
 				} ]
 			});
-			var filters = new Ext.ux.grid.GridFilters({
+			var teamFilters = new Ext.ux.grid.GridFilters({
 				encode : encode,
 				local : local,
 				filters : [ {
@@ -348,7 +348,8 @@ Ext
 					'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost' ];
 			var teamEditor = new Ext.ux.grid.RowEditor(
 					{
-						saveText : 'Save',
+						saveText : saveButtonLabel,
+						cancelText :cancelButtonLabel,
 						listeners : {
 							CancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
@@ -357,7 +358,7 @@ Ext
 							afteredit : function(rowEditor, changes, record,
 									rowIndex) {
 								var method;
-								this.save = true; // update record manually
+								this.save = true; 
 								var record = this.grid.getStore().getAt(
 										rowIndex);
 								if (record.get('teamId') > 0) {
@@ -454,7 +455,7 @@ Ext
 						autoHeight : false,
 						height : 400,
 						columns : teamColumnModelGrid,
-						plugins : [ filters, teamEditor ],
+						plugins : [ teamFilters, teamEditor ],
 						sm : new Ext.grid.RowSelectionModel({
 							singleSelect : true
 						}),
@@ -503,7 +504,7 @@ Ext
 											'click' : function() {
 												teamStore
 														.each(function(rec) {
-															for ( var access in accessArray) { // alert(access);
+															for ( var access in accessArray) { 
 																rec
 																		.set(
 																				accessArray[access],
@@ -593,9 +594,7 @@ Ext
 																		.get('isPost');
 													}
 												}
-												url = url + sub_url; // reques
-												// and
-												// ajax
+												url = url + sub_url;
 
 												Ext.Ajax
 														.request({
@@ -617,7 +616,7 @@ Ext
 																					systemLabel,
 																					jsonResponse.message);
 																	teamStore
-																			.removeAll(); // force
+																			.removeAll(); 
 																	
 																	teamStore
 																			.reload();
@@ -638,7 +637,7 @@ Ext
 																						+ ":"
 																						+ escape(response.statusText));
 															}
-														}); // refresh the store
+														}); 
 											}
 										}
 									} ]

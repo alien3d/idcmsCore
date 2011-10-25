@@ -517,9 +517,10 @@ Ext
 					}
 				}
 			});
-			// compare with the user leaf.Here Module and Folder just filtering
-			// mode
+			
 			var formPanel = new Ext.Panel({
+				name :'formPanel',
+				id:'formPanel',
 				region : 'north',
 				layout : 'form',
 				frame : true,
@@ -535,16 +536,17 @@ Ext
 			var grid = new Ext.grid.GridPanel(
 					{
 						region : 'west',
+						name :'gridPanel',
 						id : 'gridPanel',
 						store : leafTeamAccessStore,
 						cm : leafTeamAccessColumnModel,
 						frame : true,
 
-						title : 'leaf Access Grid',
+						title : leafNote,
 						disabled : true,
 						iconCls : 'application_view_detail',
 						viewConfig : {
-							emptyText : 'No rows to display'
+							emptyText : emptyTextLabel
 						},
 						autoScroll : true,
 						autoHeight : false,
@@ -637,10 +639,8 @@ Ext
 																	.get('leafTeamAccessPostValue');
 													sub_url = sub_url + '|';
 												}
-												// url = url+sub_url;
-												// using post method because
-												// limitation $_GET value post
-												// on all browser.
+												url = url+sub_url;
+												
 												Ext.Ajax
 														.request({
 															url : url,
@@ -684,7 +684,7 @@ Ext
 															}
 
 														});
-												// refresh the store
+												
 											}
 
 										}

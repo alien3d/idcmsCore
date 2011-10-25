@@ -4,16 +4,16 @@ Ext
 			Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
 			Ext.form.Field.prototype.msgTarget = "under";
 			Ext.Ajax.timeout = 90000;
+
 			var pageCreate;
-
 			var pageReload;
-
 			var pagePrint;
-
-			var perPage = 500;
+			var perPage = 15;
 			var encode = false;
-
+			var local = false;
 			var jsonResponse;
+			var duplicate = 0;
+			
 			if (leafAccessReadValue == 1) {
 				pageCreate = false;
 			
@@ -128,10 +128,8 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
-						// //uncommen for testing
-						// purpose
+					if (jsonResponse.success == true) { 
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -274,7 +272,7 @@ Ext
 							afteredit : function(rowEditor, changes, record,
 									rowIndex) {
 								var method;
-								this.save = true; // update record manually
+								this.save = true; 
 								var record = this.grid.getStore().getAt(
 										rowIndex);
 								if (record.get('religionId') > 0) {
@@ -420,7 +418,7 @@ Ext
 
 												religionStore
 														.each(function(rec) {
-															for ( var access in accessArray) { // alert(access);
+															for ( var access in accessArray) { 
 																rec
 																		.set(
 																				accessArray[access],
@@ -513,9 +511,7 @@ Ext
 																		.get('isPost');
 													}
 												}
-												url = url + sub_url; // reques
-												// and
-												// ajax
+												url = url + sub_url; 
 
 												Ext.Ajax
 														.request({

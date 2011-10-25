@@ -394,7 +394,7 @@ Ext
 																	.get('folderAccessValue');
 												}
 												url = url + sub_url;
-												// reques and ajax
+												
 												Ext.Ajax
 														.request({
 															url : url,
@@ -417,8 +417,7 @@ Ext
 																					systemErrorLabel,
 																					jsonResponse.message);
 																}
-																// reload the
-																// store
+															
 																folderAccessStore
 																		.reload();
 															},
@@ -435,7 +434,7 @@ Ext
 																						+ escape(response.statusText));
 															}
 														});
-												// refresh the store
+												
 											}
 
 										}

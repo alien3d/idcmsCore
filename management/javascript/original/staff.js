@@ -651,9 +651,7 @@ Ext
 																		.get('isPost');
 													}
 												}
-												url = url + sub_url; // reques
-												// and
-												// ajax
+												url = url + sub_url; 
 
 												Ext.Ajax
 														.request({
@@ -1315,6 +1313,36 @@ Ext
 								} ]
 					});
 
+			
+			var auditWindow = new Ext.Window({
+				name :'auditWindow',
+				id:'auditWindow',
+				layout : 'fit',
+				width : 500,
+				height : 300,
+				closeAction : 'hide',
+				plain : true,
+				items : {
+					xtype : 'tabpanel',
+					activeTab : 0,
+					items : [ {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logGrid ]
+					}, {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logAdvanceGrid ]
+					} ]
+
+				},
+				title : 'Sql Statement audit',
+				maximizable : true,
+				autoScroll : true
+			});
+			
 			var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',

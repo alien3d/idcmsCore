@@ -77,10 +77,9 @@ Ext
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
-					if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,
-						// jsonResponse.message);
-						// //uncommen for testing
-						// purpose
+					if (jsonResponse.success == true) { 
+						// Ext.MessageBox.alert(successLabel,jsonResponse.message);
+						
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -192,8 +191,9 @@ Ext
 
 						formPanel.getForm().reset();
 						formPanel.form.load({
-							url : 'logData.php',
+							url : '../controller/logController.php',
 							method : 'POST',
+							waitTitle:systemLabel
 							waitMsg : waitMessageLabel,
 							params : {
 								method : 'read',
@@ -277,7 +277,7 @@ Ext
 				store : logStore,
 				autoHeight : false,
 				height : 400,
-				columns : columnModel,
+				columns : logColumnModel,
 				loadMask : true,
 				plugins : [ this.action, logFilters ],
 				sm : new Ext.grid.RowSelectionModel({
@@ -523,13 +523,7 @@ Ext
 																	if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
 																		alert("Client ada Error 1 ");
 																	} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																		// here
-																		// will
-																		// be
-																		// error
-																		// if
-																		// duplicate
-																		// code
+																		
 																		alert("Client ada Error 2");
 																	} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																		Ext.Msg

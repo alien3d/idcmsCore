@@ -207,10 +207,8 @@ Ext
 			});
 
 			var extLabelFilters = new Ext.ux.grid.GridFilters({
-				// encode and local configuration options defined previously for
-				// easier reuse
-				encode : encode, // json encode the filter query
-				local : local, // defaults to false (remote filtering)
+				encode : encode, 
+				local : local, 
 				filters : [ {
 					type : 'string',
 					dataIndex : 'extLabelNote',
@@ -438,6 +436,8 @@ Ext
 
 			var extLabelGrid = new Ext.grid.GridPanel(
 					{
+						name : "extLabelGrid",
+						id :"extLabelGrid",
 						border : false,
 						store : extLabelStore,
 						autoHeight : false,
@@ -573,9 +573,7 @@ Ext
 																		.get('isPost');
 													}
 												}
-												url = url + sub_url; // reques
-												// and
-												// ajax
+												url = url + sub_url; 
 												Ext.Ajax
 														.request({
 															url : url,
@@ -626,7 +624,8 @@ Ext
 
 			var extLabelTranslateEditor = new Ext.ux.grid.RowEditor(
 					{
-						saveText : 'Save',
+						saveText : saveButtonLabel,
+						cancelText : cancelButtonLabel,
 						listeners : {
 							CancelEdit : function(rowEditor, changes, record,
 									rowIndex) {
@@ -636,10 +635,10 @@ Ext
 							afteredit : function(rowEditor, changes, record,
 									rowIndex) {
 
-								this.save = true;
-								// @todo update record manually
-								// var curr_store =
-								// this.grid.getStore().getAt(rowIndex);
+								var method;
+								this.save = true; 
+								var record = this.grid.getStore().getAt(
+										rowIndex);
 
 								Ext.Ajax
 										.request({
@@ -666,9 +665,6 @@ Ext
 																	systemErrorLabel,
 																	jsonResponse.message);
 												} else {
-													// if required messagebox to
-													// check
-													// status uncomment below
 													Ext.MessageBox
 															.alert(
 																	systemLabel,
@@ -869,6 +865,7 @@ Ext
 												.getForm()
 												.submit(
 														{
+															waitTitle :systemLabel,
 															waitMsg : waitMessageLabel,
 															params : {
 																method : method,
@@ -905,13 +902,8 @@ Ext
 																	action) {
 
 																if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
-																	alert(loadFailureMessageLabel);
-																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
-																	// here will
-																	// be error
-																	// if
-																	// duplicate
-																	// code
+																	Ext.Msg.alert(systemErrorLabel,loadFailureLabel);
+																} else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {														
 																	Ext.Msg.alert(systemErrorLabel,clientInvalidLabel);
 																} else if (action.failureType === Ext.form.Action.CONNECT_FAILURE) {
 																	Ext.Msg
@@ -996,7 +988,37 @@ Ext
 								} ]
 					});
 
-			var viewPort = new Ext.Viewport({
+		
+		var auditWindow = new Ext.Window({
+				name :'auditWindow',
+				id:'auditWindow',
+				layout : 'fit',
+				width : 500,
+				height : 300,
+				closeAction : 'hide',
+				plain : true,
+				items : {
+					xtype : 'tabpanel',
+					activeTab : 0,
+					items : [ {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logGrid ]
+					}, {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logAdvanceGrid ]
+					} ]
+
+				},
+				title : 'Sql Statement audit',
+				maximizable : true,
+				autoScroll : true
+		});
+			
+		var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',
 				layout : 'accordion',

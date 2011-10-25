@@ -506,7 +506,7 @@ Ext
 						height : 450,
 						columns : documentColumnModel,
 						loadMask : true,
-						plugins : [ filters ],
+						plugins : [ documentFilters ],
 						sm : new Ext.grid.RowSelectionModel({
 							singleSelect : true
 						}),
@@ -535,7 +535,7 @@ Ext
 														.getCount();
 												documentStore
 														.each(function(rec) {
-															for ( var access in accessArray) { // alert(access);
+															for ( var access in accessArray) { 
 																rec
 																		.set(
 																				accessArray[access],
@@ -682,62 +682,7 @@ Ext
 						})
 					});
 
-			var toolbarPanel = new Ext.Toolbar(
-					{
-						items : [
-								{
-									text : reloadToolbarLabel,
-									iconCls : 'database_refresh',
-									id : 'pageReload',
-									disabled : pageReload,
-									handler : function() {
-										store.reload();
-									}
-								},
-								{
-									text : addToolbarLabel,
-									iconCls : 'add',
-									id : 'pageCreate',
-									disabled : pageCreate,
-									handler : function() {
-										viewPort.items.get(1).expand();
-									}
-								},
-
-								{
-									text : excelToolbarLabel,
-									iconCls : 'page_excel',
-									id : 'page_excel',
-									disabled : pagePrint,
-									handler : function() {
-										Ext.Ajax
-												.request({
-													url : '../controller/documentController.php?method=report&mode=excel&limit='
-															+ perPage
-															+ '&leafId='
-															+ leafId,
-													method : 'GET',
-													success : function(
-															response, options) {
-														jsonResponse = Ext
-																.decode(response.responseText);
-														if (jsonResponse == true) {
-															// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-															window
-																	.open("../document/document/excel/document.xlsx");
-														} else {
-															Ext.MessageBox
-																	.alert(
-																			systemLabel,
-																			jsonResponse.message);
-														}
-
-													}
-
-												});
-									}
-								} ]
-					});
+			
 
 			var documentCategoryId = new Ext.ux.form.ComboBoxMatch({
 				labelAlign : 'left',
@@ -1083,7 +1028,38 @@ Ext
 								} ]
 					});
 
-			var viewPort = new Ext.Viewport({
+		
+		
+		var auditWindow = new Ext.Window({
+				name :'auditWindow',
+				id:'auditWindow',
+				layout : 'fit',
+				width : 500,
+				height : 300,
+				closeAction : 'hide',
+				plain : true,
+				items : {
+					xtype : 'tabpanel',
+					activeTab : 0,
+					items : [ {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logGrid ]
+					}, {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logAdvanceGrid ]
+					} ]
+
+				},
+				title : 'Sql Statement audit',
+				maximizable : true,
+				autoScroll : true
+		});
+		
+		var viewPort = new Ext.Viewport({
 				id : 'viewport',
 				region : 'center',
 				layout : 'accordion',

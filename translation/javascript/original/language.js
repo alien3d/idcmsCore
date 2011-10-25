@@ -319,14 +319,15 @@ Ext.onReady(function() {
     }];
     var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved','isReview','isPost'];
     var languageEditor = new Ext.ux.grid.RowEditor({
-        saveText: 'Save',
+        saveText: saveButtonLabel,
+		cancelText:cancelButtonLabel,
         listeners: {
             CancelEdit: function(rowEditor, changes, record, rowIndex) {
                 languageStore.reload();
             },
             afteredit: function(rowEditor, changes, record, rowIndex) {
                 var method;
-				this.save = true; // update record manually
+				this.save = true; 
                 var record = this.grid.getStore().getAt(rowIndex);
 				if(record.get('languageId')  > 0 ) {
 					method ='save';
@@ -463,7 +464,7 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function() {
                         languageStore.each(function(rec) {
-                            for (var access in accessArray) { // alert(access);
+                            for (var access in accessArray) { 
                                 rec.set(accessArray[access], true);
                             }
                         });
@@ -515,7 +516,7 @@ Ext.onReady(function() {
                                 sub_url = sub_url + '&isPost[]=' + record.get('isPost');
                             }
                         }
-                        url = url + sub_url; // reques and ajax
+                        url = url + sub_url; 
                     	
         				
                         Ext.Ajax.request({
@@ -530,7 +531,7 @@ Ext.onReady(function() {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    languageStore.removeAll(); // force to remove all data
+                                    languageStore.removeAll(); 
                                     languageStore.reload();
                                 } else if (jsonResponse.success == false) {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
@@ -601,7 +602,35 @@ Ext.onReady(function() {
     });
     
 	
-	
+	var auditWindow = new Ext.Window({
+				name :'auditWindow',
+				id:'auditWindow',
+				layout : 'fit',
+				width : 500,
+				height : 300,
+				closeAction : 'hide',
+				plain : true,
+				items : {
+					xtype : 'tabpanel',
+					activeTab : 0,
+					items : [ {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logGrid ]
+					}, {
+						xtype : 'panel',
+						layout : "fit",
+						title : 'Log Sql Statement',
+						items : [ logAdvanceGrid ]
+					} ]
+
+				},
+				title : 'Sql Statement audit',
+				maximizable : true,
+				autoScroll : true
+	});
+			
     var viewPort = new Ext.Viewport({
         id: "viewport",
         region: "center",

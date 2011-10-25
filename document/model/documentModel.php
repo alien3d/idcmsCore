@@ -176,13 +176,18 @@ class DocumentModel extends ValidationClass {
 			if (isset ( $_GET ['isDefault'] )) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
 					$this->setIsDefault ( 1, $i, 'array' );
+				} else {
+					$this->setIsDefault ( 0, $i, 'array' );
 				}
+
 			} else {
 				$this->setIsDefault ( 0, $i, 'array' );
 			}
 			if (isset ( $_GET ['isNew'] )) {
 				if ($_GET ['isNew'] [$i] == 'true') {
 					$this->setIsNew ( 1, $i, 'array' );
+				}else {
+					$this->setIsNew ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsNew ( 0, $i, 'array' );
@@ -190,6 +195,8 @@ class DocumentModel extends ValidationClass {
 			if (isset ( $_GET ['isDraft'] )) {
 				if ($_GET ['isDraft'] [$i] == 'true') {
 					$this->setIsDraft ( 1, $i, 'array' );
+				}else {
+					$this->setIsDraft ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsDraft ( 0, $i, 'array' );
@@ -197,6 +204,8 @@ class DocumentModel extends ValidationClass {
 			if (isset ( $_GET ['isUpdate'] )) {
 				if ($_GET ['isUpdate'] [$i] == 'true') {
 					$this->setIsUpdate ( 1, $i, 'array' );
+				}else {
+					$this->setIsUpdate ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsUpdate ( 0, $i, 'array' );
@@ -204,6 +213,8 @@ class DocumentModel extends ValidationClass {
 			if (isset ( $_GET ['isDelete'] )) {
 				if ($_GET ['isDelete'] [$i] == 'true') {
 					$this->setIsDelete ( 1, $i, 'array' );
+				}else {
+					$this->setIsDelete ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsDelete ( 0, $i, 'array' );
@@ -211,6 +222,8 @@ class DocumentModel extends ValidationClass {
 			if (isset ( $_GET ['isActive'] )) {
 				if ($_GET ['isActive'] [$i] == 'true') {
 					$this->setIsActive ( 1, $i, 'array' );
+				}else {
+					$this->setIsActive ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsActive ( 0, $i, 'array' );
@@ -218,6 +231,8 @@ class DocumentModel extends ValidationClass {
 			if (isset ( $_GET ['isApproved'] )) {
 				if ($_GET ['isApproved'] [$i] == 'true') {
 					$this->setIsApproved ( 1, $i, 'array' );
+				}else {
+					$this->setIsApproved ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsApproved ( 0, $i, 'array' );
@@ -225,6 +240,8 @@ class DocumentModel extends ValidationClass {
 			if (isset ( $_GET ['isReview'] )) {
 				if ($_GET ['isReview'] [$i] == 'true') {
 					$this->setIsReview ( 1, $i, 'array' );
+				}else {
+					$this->setIsReview ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsReview ( 0, $i, 'array' );
@@ -232,6 +249,8 @@ class DocumentModel extends ValidationClass {
 			if (isset ( $_GET ['isPost'] )) {
 				if ($_GET ['isPost'] [$i] == 'true') {
 					$this->setIsPost ( 1, $i, 'array' );
+				}	else {
+					$this->setIsPost ( 0, $i, 'array' );
 				}
 			} else {
 				$this->setIsPost ( 0, $i, 'array' );

@@ -268,13 +268,12 @@ Ext
 			});
 
 			var staffByProxy = new Ext.data.HttpProxy({
-				url : "../controller/leafAccessController.php?",
+				url : "../controller/leafAccessController.php",
 				method : "GET",
 				success : function(response, options) {
 					jsonResponse = Ext.decode(response.responseText);
 					if (jsonResponse.success == true) {
 						// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-						// uncomment it for debugging purpose
 					} else {
 						Ext.MessageBox.alert(systemErrorLabel,
 								jsonResponse.message);
@@ -587,11 +586,11 @@ Ext
 										leafId : leafId ,
 										isAdmin : isAdmin,
 										teamId : Ext.getCmp('teamId'),
-										moduleId : Ext.getCmp('moduleId').getValue()
+										moduleId : Ext.getCmp('moduleId').getValue(),
+										staffId : Ext.getCmp('staffId').getValue()
 									}	
 								});
-								gridPanel.store.reload(); // force the grid
-								// the reload
+								gridPanel.store.reload(); 
 
 							}
 						}
@@ -711,7 +710,7 @@ Ext
 																	.get('leafAccessPostValue');
 												}
 												url = url + sub_url;
-												// reques and ajax
+												
 												Ext.Ajax
 														.request({
 															url : url,
@@ -735,8 +734,7 @@ Ext
 																					jsonResponse.message);
 																}
 
-																// reload the
-																// store
+																
 																leafAccessStore
 																		.reload();
 															},
@@ -752,7 +750,7 @@ Ext
 																						+ escape(response.statusText));
 															}
 														});
-												// refresh the store
+												
 											}
 
 										}
