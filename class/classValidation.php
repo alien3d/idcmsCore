@@ -290,6 +290,7 @@ abstract class ValidationClass
         } else 
             if ($type == 'array') {
                 $this->isDefault[$key] = $value;
+               
             } else {
                 echo json_encode(
                 array("success" => false, 
@@ -573,7 +574,7 @@ abstract class ValidationClass
             } else {
                 echo json_encode(
                 array("success" => false, 
-                "message" => "Cannot Identifiy Type String Or Array:setIsApproved ?"));
+                "message" => "Cannot Identifiy Type String Or Array:setIsReview ?"));
                 exit();
             }
     }
@@ -593,7 +594,7 @@ abstract class ValidationClass
             } else {
                 echo json_encode(
                 array("success" => false, 
-                "message" => "Cannot Identifiy Type String Or Array:getIsApproved ?"));
+                "message" => "Cannot Identifiy Type String Or Array:getIsReview ?"));
                 exit();
             }
     }
@@ -605,15 +606,17 @@ abstract class ValidationClass
      */
     public function setIsPost ($value, $key, $type)
     {
-        if ($type == 'single') {
+    
+    	if ($type == 'single') {
             $this->isPost = $value;
         } else 
             if ($type == 'array') {
                 $this->isPost[$key] = $value;
+                
             } else {
                 echo json_encode(
                 array("success" => false, 
-                "message" => "Cannot Identifiy Type String Or Array:setIsApproved ?"));
+                "message" => "Cannot Identifiy Type String Or Array:setIsPost ?"));
                 exit();
             }
     }
@@ -629,11 +632,11 @@ abstract class ValidationClass
             return $this->isPost;
         } else 
             if ($type == 'array') {
-                return $this->isPost;
+                return $this->isPost[$key];
             } else {
                 echo json_encode(
                 array("success" => false, 
-                "message" => "Cannot Identifiy Type String Or Array:getIsApproved ?"));
+                "message" => "Cannot Identifiy Type String Or Array:getIsPost ?"));
                 exit();
             }
     }
