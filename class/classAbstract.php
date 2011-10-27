@@ -224,7 +224,11 @@ abstract class ConfigClass
     public function staff ()
     {
         header('Content-Type:application/json; charset=utf-8');
-        if ($this->getVendor() == self::MYSQL) {
+        $time_start = microtime(true);
+
+
+
+		if ($this->getVendor() == self::MYSQL) {
             $sql = "
 			SELECT 	`staffId`,
 					`staffNo`,
@@ -254,8 +258,10 @@ abstract class ConfigClass
         while (($row = $this->q->fetchAssoc($result)) == TRUE) {
             $items[] = $row;
         }
+		$time_end = microtime(true);
+		$time = $time_end - $time_start;
         echo json_encode(
-        array('success' => TRUE, 'total' => $total, 'message' => 'Data loaded', 
+        array('success' => true, 'total' => $total, 'timeExecute'=>$time,'message' => 'Data loaded', 
         'staff' => $items));
     }
     /**
@@ -650,5 +656,6 @@ abstract class ConfigClass
 		$this->defaultLanguageId = $defaultLanguageId;
 	}
 
+	
 }
 ?>
