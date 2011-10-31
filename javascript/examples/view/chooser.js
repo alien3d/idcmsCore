@@ -6,7 +6,7 @@
  */
 var ImageChooser = function(config){
 	this.config = config;
-}
+};
 
 ImageChooser.prototype = {
     // cache data by image name for easy lookup

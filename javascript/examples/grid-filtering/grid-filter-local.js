@@ -56,7 +56,7 @@ Ext.onReady(function(){
 
     var filters = new Ext.ux.grid.GridFilters({
         // encode and local configuration options defined previously for easier reuse
-        encode: encode, var pagePrint;
+        encode: encode, 
         local: local,   // defaults to false (remote filtering)
         filters: [{
             type: 'numeric',

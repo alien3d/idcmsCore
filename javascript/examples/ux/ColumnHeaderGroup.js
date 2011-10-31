@@ -215,7 +215,7 @@ Ext.ux.grid.ColumnHeaderGroup = Ext.extend(Ext.util.Observable, {
                                         }
                                     }
                                 });
-                            }
+                            };
                             updateChildren(item.menu);
                         }
                         var parentMenu = item, parentItem;

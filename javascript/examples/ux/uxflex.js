@@ -522,7 +522,7 @@
                 return this.bridge.deserialize(
                     this.bridge.callASMethod(this.id,methodName,ux.Flex.argsToArray(arguments))
                     );
-            }
+            };
         },
 
         /*------------------------------------------------------------------------------------
@@ -535,7 +535,7 @@
             if(this.remoteFunctionCache[funcID] == null) {
                 this.remoteFunctionCache[funcID] = function() {
                     bridge.callASFunction(funcID,ux.Flex.argsToArray(arguments));
-                }
+                };
             }
             return this.remoteFunctionCache[funcID];
         },

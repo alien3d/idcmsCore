@@ -3,41 +3,47 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is Table Mapping Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
+ * this is application model file.
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package Translation
- * @subpackage Table Translation
+ * @package Security
+ * @subpackage application
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ModuleTranslateModel extends ValidationClass {
+class ApplicationModel extends ValidationClass {
 
     /**
-     * Module Identification
+     * Application Identification
      * @var int
      */
-    private $folderTranslateId;
+    private $applicationId;
 
     /**
-     * Module Identification
+     * Icon Identification
      * @var int
      */
-    private $moduled;
+    private $iconId;
 
     /**
-     * Language Identification
+     * Application Sequence
      * @var int
      */
-    private $languageId;
+    private $applicationSequence;
 
     /**
-     * Module Native Translation
+     * Application Code
      * @var string
      */
-    private $moduleNative;
+    private $applicationCode;
+
+    /**
+     * Application Note .English Only
+     * @var string
+     */
+    private $applicationEnglish;
 
     /**
      * Class Loader to load outside variable and test it suppose variable type
@@ -46,31 +52,36 @@ class ModuleTranslateModel extends ValidationClass {
         /*
          *  Basic Information Table
          */
-        $this->setTableName('module');
-        $this->setPrimaryKeyName('moduleId');
+        $this->setTableName('application');
+        $this->setPrimaryKeyName('applicationId');
         /*
          *  All the $_POST enviroment.
          */
-        if (isset($_POST ['moduleId'])) {
-            $this->setmoduleId($this->strict($_POST ['moduleId'], 'numeric'), 0, 'single');
+        if (isset($_POST ['applicationId'])) {
+            $this->setApplicationId($this->strict($_POST ['applicationId'], 'numeric'), 0, 'single');
         }
-        if (isset($_POST ['moduleSequence'])) {
-            $this->setmoduleSequence($this->strict($_POST ['moduleSequence'], 'memo'));
+        if (isset($_POST ['iconId'])) {
+            $this->setIconId($this->strict($_POST ['iconId'], 'numeric'));
         }
-        if (isset($_POST ['moduleCode'])) {
-            $this->setmoduleCode($this->strict($_POST ['moduleCode'], 'memo'));
+        if (isset($_POST ['applicationSequence'])) {
+            $this->setApplicationSequence($this->strict($_POST ['applicationSequence'], 'numeric'));
         }
-        if (isset($_POST ['moduleNote'])) {
-            $this->setmoduleNote($this->strict($_POST ['moduleNote'], 'memo'));
+        if (isset($_POST ['applicationCode'])) {
+            $this->setApplicationCode($this->strict($_POST ['applicationCode'], 'string'));
+        }
+        if (isset($_POST ['applicationEnglish'])) {
+            $this->setApplicationEnglish($this->strict($_POST ['applicationEnglish'], 'memo'));
         }
 
-        if (isset($_GET ['moduleTranslateId'])) {
-            $this->setTotal(count($_GET ['moduleTranslateId']));
+        /*
+         *  All the $_GET enviroment.
+         */
+        if (isset($_GET ['applicationId'])) {
+            $this->setTotal(count($_GET ['applicationId']));
         }
-        // auto assign as array if true
-        if (isset($_GET ['moduleTranslateId'])) {
-            if (is_array($_GET ['moduleTranslateId'])) {
-                $this->moduleTranslateId = array();
+        if (isset($_GET ['applicationId'])) {
+            if (is_array($_GET ['applicationId'])) {
+                $this->applicationId = array();
             }
         }
         if (isset($_GET ['isDefault'])) {
@@ -120,8 +131,8 @@ class ModuleTranslateModel extends ValidationClass {
         }
         $primaryKeyAll = '';
         for ($i = 0; $i < $this->getTotal(); $i++) {
-            if (isset($_GET ['moduleTranslateId'])) {
-                $this->setModuleTranslateId($this->strict($_GET ['moduleTranslateId'] [$i], 'numeric'), $i, 'array');
+            if (isset($_GET['applicationId'])) {
+                $this->setApplicationId($this->strict($_GET ['applicationId'] [$i], 'numeric'), $i, 'array');
             }
             if (isset($_GET ['isDefault'])) {
                 if ($_GET ['isDefault'] [$i] == 'true') {
@@ -186,7 +197,7 @@ class ModuleTranslateModel extends ValidationClass {
                     $this->setIsPost(0, $i, 'array');
                 }
             }
-            $primaryKeyAll .= $this->getModuleId($i, 'array') . ",";
+            $primaryKeyAll .= $this->getTabId($i, 'array') . ",";
         }
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
         /**
@@ -282,7 +293,7 @@ class ModuleTranslateModel extends ValidationClass {
         $this->setIsUpdate(0, 0, 'single');
         $this->setIsActive(0, 0, 'single');
         $this->setIsDelete(0, 0, 'single');
-        $this->setIsApproved(0, 0, 'single');
+        $this->setIsApproved(1, 0, 'single');
         $this->setIsReview(0, 0, 'single');
         $this->setIsPost(0, 0, 'single');
     }
@@ -320,85 +331,128 @@ class ModuleTranslateModel extends ValidationClass {
     }
 
     /**
-     * Set Module Translation   Value
+     * Update tab Table Status
+     */
+    public function updateStatus() {
+        if (!(is_array($_GET ['isDefault']))) {
+            $this->setIsDefault(0, 0, 'single');
+        }
+        if (!(is_array($_GET ['isNew']))) {
+            $this->setIsNew(0, 0, 'single');
+        }
+        if (!(is_array($_GET ['isDraft']))) {
+            $this->setIsDraft(0, 0, 'single');
+        }
+        if (!(is_array($_GET ['isUpdate']))) {
+            $this->setIsUpdate(0, 0, 'single');
+        }
+        if (!(is_array($_GET ['isDelete']))) {
+            $this->setIsDelete(1, 0, 'single');
+        }
+        if (!(is_array($_GET ['isActive']))) {
+            $this->setIsActive(0, 0, 'single');
+        }
+        if (!(is_array($_GET ['isApproved']))) {
+            $this->setIsApproved(0, 0, 'single');
+        }
+    }
+
+    /**
+     * Set Application   Value
      * @param int|array $value
      * @param array[int]int $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      */
-    public function setModuleTranslateId($value, $key, $type) {
+    public function setApplicationId($value, $key, $type) {
         if ($type == 'single') {
-            $this->moduleTranslateId = $value;
+            $this->applicationId = $value;
         } else if ($type == 'array') {
-            $this->moduleTranslateId [$key] = $value;
+            $this->applicationId [$key] = $value;
         } else {
-            echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type Single Or Array:setModuleTranslateId ?"));
+            echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setApplicationId ?"));
             exit();
         }
     }
 
     /**
-     * Return Module Translation Identification
-     * @param array[int]int $key List Of Primary Key.
+     * Return Application  Identification
+     * @param array[int][int] $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      * @return int|array
      */
-    public function getModuleTranslateId($key, $type) {
+    public function getApplicationId($key, $type) {
         if ($type == 'single') {
-            return $this->moduleTranslateId;
+            return $this->applicationId;
         } else if ($type == 'array') {
-            return $this->moduleTranslateId [$key];
+            return $this->applicationId [$key];
         } else {
-            echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type Single Or Array:setModuleTranslateId ?"));
+            echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getApplicationId ?"));
             exit();
         }
     }
 
     /**
-     * Set Module Identication Value
-     * @param  string $value
+     * Set Icon Identification
+     * @param  int $value
      */
-    public function setModule($value) {
-        $this->moduled = $value;
+    public function setIconId($value) {
+        $this->iconId = $value;
     }
 
     /**
-     * Return Module Identication Value
+     * Return Icon Identification
+     * @return int
+     */
+    public function getIconId() {
+        return $this->iconId;
+    }
+
+    /**
+     * Set Application Sequence Value
+     * @param  int $value
+     */
+    public function setApplicationSequence($value) {
+        $this->applicationSequence = $value;
+    }
+
+    /**
+     * Return application Sequence Value
+     * @return int
+     */
+    public function getApplicationSequence() {
+        return $this->applicationSequence;
+    }
+
+    /**
+     * Set Application Code Value
+     * @param string $value
+     */
+    public function setApplicationCode($value) {
+        $this->applicationCode = $value;
+    }
+
+    /**
+     * Return Application Code
      * @return string
      */
-    public function getModuleId() {
-        return $this->moduled;
+    public function getApplicationCode() {
+        return $this->applicationCode;
     }
 
     /**
-     * Set Module Translation
-     * @param  string $value
+     * Set Application Note Value
+     * @param string $value
      */
-    public function setModuleNatie($value) {
-        $this->moduleText = $value;
+    public function setApplicationEnglish($value) {
+        $this->applicationEnglish = $value;
     }
 
     /**
-     * Return Module Translation
+     * Return application Note
      * @return string
      */
-    public function getModuleNative() {
-        return $this->moduleNative;
-    }
-
-    /**
-     * Set Language Identification
-     * @param  string $value
-     */
-    public function setLanguageId($value) {
-        $this->languageId = $value;
-    }
-
-    /**
-     * Return Language Identification
-     * @return string Language Identification
-     */
-    public function getLanguageId() {
-        return $this->languageId;
+    public function getApplicationEnglish() {
+        return $this->applicationEnglish;
     }
 
 }

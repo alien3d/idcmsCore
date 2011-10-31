@@ -5,7 +5,7 @@
  * http://www.sencha.com/license
  */
 // for old browsers
-window.undefined = window.undefined;
+window.undefined=window.undefined;
 
 /**
  * @class Ext

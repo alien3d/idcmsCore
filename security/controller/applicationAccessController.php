@@ -6,19 +6,19 @@ require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
-require_once ("../model/moduleAccessModel.php");
+require_once ("../model/applicationAccessModel.php");
 
 /**
- * this is module security access
+ * this is application security access
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package Security
- * @package Module Security Access
+ * @package Application Security Access
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ModuleAccessClass extends ConfigClass {
+class ApplicationeAccessClass extends ConfigClass {
 
     /**
      * Connection to the database
@@ -75,7 +75,7 @@ class ModuleAccessClass extends ConfigClass {
     public $auditColumn;
 
     /**
-     * Duplicate Testing either the key of modulele same or have been created.
+     * Duplicate Testing either the key of applicationle same or have been created.
      * @var bool
      */
     public $duplicateTest;
@@ -109,7 +109,7 @@ class ModuleAccessClass extends ConfigClass {
         $this->security->setVendor($this->getVendor());
         $this->security->execute();
 
-        $this->model = new ModuleAccessModel ();
+        $this->model = new ApplicationAccessModel ();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
 
@@ -135,87 +135,139 @@ class ModuleAccessClass extends ConfigClass {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
-        // by default if add new group will add access to module and folder.
+        // by default if add new group will add access to application and folder.
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-				SELECT	`moduleAccess`.`moduleAccessId`,
-						`module`.`moduleId`,
-						`module`.`moduleEnglish`,
+				SELECT	`applicationAccess`.`applicationAccessId`,
+						`application`.`applicationId`,
+						`application`.`applicationEnglish`,
 						`team`.`teamId`,
 						`team`.`teamEnglish`,
-						(CASE `moduleAccess`.`moduleAccessValue`
+						(CASE `applicationAccess`.`applicationAccessValue`
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `moduleAccessValue`
-				FROM 	`moduleAccess`
-				JOIN	`module`
-				USING 	(`moduleId`)
+						END) AS `applicationAccessValue`
+				FROM 	`applicationAccess`
+				JOIN	`application`
+				USING 	(`applicationId`)
 				JOIN 	`team`
 				USING 	(`teamId`)
-				WHERE 	`module`.`isActive` 	=	1
+				WHERE 	`application`.`isActive` 	=	1
 				AND		`team`.`isActive`		=	1";
             if ($this->model->getTeamId()) {
                 $sql .= " AND `team`.`teamId`='" . $this->model->getTeamId() . "'";
             }
-            if ($this->model->getModuleId()) {
-                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+            if ($this->model->getApplicationId()) {
+                $sql .= " AND application.applicationId='" . $this->model->getApplicationId() . "'";
             }
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
-				SELECT	[moduleAccess].[moduleAccessId],
-						[module].[moduleId],
-						[module].[moduleEnglish],
+				SELECT	[applicationAccess].[applicationAccessId],
+						[application].[applicationId],
+						[application].[applicationEnglish],
 						[team].[teamId],
 						[team].[teamEnglish],
-						(CASE [moduleAccess].[moduleAccessValue]
+						(CASE [applicationAccess].[applicationAccessValue]
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [moduleAccessValue]
-				FROM 	[moduleAccess]
-				JOIN	[module]
-				ON		[moduleAccess].[moduleId] 	= 	[module].[moduleId]
+						END) AS [applicationAccessValue]
+				FROM 	[applicationAccess]
+				JOIN	[application]
+				ON		[applicationAccess].[applicationId] 	= 	[application].[applicationId]
 				JOIN 	[team]
-				on		[team].[teamId]  			= 	[moduleAccess].[teamId]
-				WHERE 	[module].[isActive] 		=	1
+				on		[team].[teamId]  			= 	[applicationAccess].[teamId]
+				WHERE 	[application].[isActive] 		=	1
 				AND		[team].[isActive]			=	1";
             if ($this->model->getTeamId()) {
                 $sql .= " AND [team].[teamId]		=	'" . $this->model->getTeamId() . "'";
             }
-            if ($this->model->getModuleId()) {
-                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+            if ($this->model->getApplicationId()) {
+                $sql .= " AND [application].[applicationId]='" . $this->model->getApplicationId() . "'";
             }
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
-				SELECT	MODULEACCESS.MODULEACCESSID,
-						MODULE.MODULEID,
-						MODULE.MODULEENGLISH,
-						TEAM.TEAMID,
-						TEAM.TEAMNOTE,
-						(CASE MODULEACCESS.MODULEACCESSVALUE
+				SELECT	APPLICATIONACCESS.APPLICATIONACCESSID AS \"applicationAccessId\",
+						APPLICATION.APPLICATIONID AS \"applicationId\",
+						APPLICATION.APPLICATIONENGLISH AS \"applicationEnglish\",
+						TEAM.TEAMID AS\"teamId\",
+						TEAM.TEAMNOTE AS \"teamNote\",
+						(CASE APPLICATIONACCESS.APPLICATIONACCESSVALUE
 							WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS \"moduleAccessValue\"
-				FROM 	MODULEACCESS
-				JOIN	MODULE
-				ON		MODULEACCESS.MODULEID 	= 	MODULE.MODULEID
+						END) AS \"applicationAccessValue\"
+				FROM 	APPLICATIONACCESS
+				JOIN	APPLICATION
+				ON		APPLICATIONACCESS.APPLICATIONID 	= 	APPLICATION.APPLICATIONID
 				JOIN 	TEAM
-				ON		MODULEACCESS.TEAMID 	= 	TEAM.TEAMID
-				WHERE 	MODULE.ISACTIVE 		=	1
+				ON		APPLICATIONACCESS.TEAMID 	= 	TEAM.TEAMID
+				WHERE 	APPLICATION.ISACTIVE 		=	1
 				AND		TEAM.ISACTIVE			=	1";
             if ($this->model->getTeamId()) {
-                $sql .= " AND `team`.`teamId`	=	'" . $this->model->getTeamId() . "'";
+                $sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
             }
-            if ($this->model->getModuleId()) {
-                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+            if ($this->model->getApplicationeId()) {
+                $sql .= " AND FOLDER.APPLICATIONID='" . $this->model->getApplicationeId() . "'";
+            }
+        } else if ($this->getVendor() == self::DB2) {
+            $sql = "
+				SELECT	APPLICATIONACCESS.APPLICATIONACCESSID AS \"applicationAccessId\",
+						APPLICATION.APPLICATIONID AS \"applicationId\",
+						APPLICATION.APPLICATIONENGLISH AS \"applicationEnglish\",
+						TEAM.TEAMID AS\"teamId\",
+						TEAM.TEAMNOTE AS \"teamNote\",
+						(CASE APPLICATIONACCESS.APPLICATIONACCESSVALUE
+							WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS \"applicationAccessValue\"
+				FROM 	APPLICATIONACCESS
+				JOIN	APPLICATION
+				ON		APPLICATIONACCESS.APPLICATIONID 	= 	APPLICATION.APPLICATIONID
+				JOIN 	TEAM
+				ON		APPLICATIONACCESS.TEAMID 	= 	TEAM.TEAMID
+				WHERE 	APPLICATION.ISACTIVE 		=	1
+				AND		TEAM.ISACTIVE			=	1";
+            if ($this->model->getTeamId()) {
+                $sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
+            }
+            if ($this->model->getApplicationId()) {
+                $sql .= " AND APPLICATION.APPLICATIONID='" . $this->model->getApplicationId() . "'";
+            }
+        }else if ($this->getVendor() == self::POSTGRESS) {
+            $sql = "
+				SELECT	APPLICATIONACCESS.APPLICATIONACCESSID AS \"applicationAccessId\",
+						APPLICATION.APPLICATIONID AS \"applicationId\",
+						APPLICATION.APPLICATIONENGLISH AS \"applicationEnglish\",
+						TEAM.TEAMID AS\"teamId\",
+						TEAM.TEAMNOTE AS \"teamNote\",
+						(CASE APPLICATIONACCESS.APPLICATIONACCESSVALUE
+							WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS \"applicationAccessValue\"
+				FROM 	APPLICATIONACCESS
+				JOIN	APPLICATION
+				ON		APPLICATIONACCESS.APPLICATIONID 	= 	APPLICATION.APPLICATIONID
+				JOIN 	TEAM
+				ON		APPLICATIONACCESS.TEAMID 	= 	TEAM.TEAMID
+				WHERE 	APPLICATION.ISACTIVE 		=	1
+				AND		TEAM.ISACTIVE				=	1";
+            if ($this->model->getTeamId()) {
+                $sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
+            }
+            if ($this->model->getApplicationeId()) {
+                $sql .= " AND APPLICATION.APPLICATIONID='" . $this->model->getApplicationId() . "'";
             }
         }
-        //echo $sql;
+      
         // searching filtering
         $sql .= $this->q->searching();
         $this->q->read($sql);
@@ -281,11 +333,11 @@ class ModuleAccessClass extends ConfigClass {
             $sql = "
 			UPDATE 	`" . $this->model->getTableName() . "`
 			SET 	";
-            $sql .= "	   `moduleAccessValue`			=	case `" . $this->model->getPrimaryKeyName() . "` ";
+            $sql .= "	   `applicationAccessValue`			=	case `" . $this->model->getPrimaryKeyName() . "` ";
             for ($i = 0; $i < $loop; $i++) {
                 $sql .= "
-				WHEN '" . $this->model->getModuleAccessId($i, 'array') . "'
-				THEN '" . $this->model->getModuleAccessValue($i, 'array') . "'";
+				WHEN '" . $this->model->getApplicationeAccessId($i, 'array') . "'
+				THEN '" . $this->model->getApplicationeAccessValue($i, 'array') . "'";
             }
             $sql .= "	END ";
             $sql .= " WHERE 	`" . $this->model->getPrimaryKeyName() . "`		IN	(" . $this->model->getPrimaryKeyAll() . ")";
@@ -341,7 +393,7 @@ class ModuleAccessClass extends ConfigClass {
 
 }
 
-$moduleAccessObject = new ModuleAccessClass ();
+$applicationAccessObject = new ApplicationeAccessClass ();
 // crud -create,read,update,delete.
 if (isset($_POST ['method'])) {
     /*
@@ -351,20 +403,20 @@ if (isset($_POST ['method'])) {
      *  Leaf / Application Identification
      */
     if (isset($_POST ['leafId'])) {
-        $moduleAccessObject->setLeafId($_POST ['leafId']);
+        $applicationAccessObject->setLeafId($_POST ['leafId']);
     }
     /*
      * Admin Only
      */
     if (isset($_POST ['isAdmin'])) {
-        $moduleAccessObject->setIsAdmin($_POST ['isAdmin']);
+        $applicationAccessObject->setIsAdmin($_POST ['isAdmin']);
     }
     /*
      *  Load the dynamic value
      */
-    $moduleAccessObject->execute();
+    $applicationAccessObject->execute();
     if ($_POST ['method'] == 'read') {
-        $moduleAccessObject->read();
+        $applicationAccessObject->read();
     }
 }
 if (isset($_GET ['method'])) {
@@ -375,21 +427,21 @@ if (isset($_GET ['method'])) {
      *  Leaf / Application Identification
      */
     if (isset($_GET ['leafId'])) {
-        $moduleAccessObject->setLeafId($_GET ['leafId']);
+        $applicationAccessObject->setLeafId($_GET ['leafId']);
     }
     if (isset($_GET ['isAdmin'])) {
-        $moduleAccessObject->setIsAdmin($_GET ['isAdmin']);
+        $applicationAccessObject->setIsAdmin($_GET ['isAdmin']);
     }
     /*
      *  Load the dynamic value
      */
-    $moduleAccessObject->execute();
+    $applicationAccessObject->execute();
     if ($_GET ['method'] == 'update') {
-        $moduleAccessObject->update();
+        $applicationAccessObject->update();
     }
     if (isset($_GET ['field'])) {
         if ($_GET ['field'] == 'teamId') {
-            $moduleAccessObject->team();
+            $applicationAccessObject->team();
         }
     }
 }

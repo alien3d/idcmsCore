@@ -3,7 +3,7 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is module security model file.This is to ensure strict setting enable for all variable enter to database
+ * this is application security model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
@@ -13,19 +13,19 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ModuleAccessModel extends ValidationClass {
+class ApplicationAccessModel extends ValidationClass {
 
     /**
-     * Module Access  Identification
+     * Application Access  Identification
      * @var int
      */
-    private $moduleAccessId;
+    private $applicationAccessId;
 
     /**
-     * Module Identification
+     * Application Identification
      * @var int
      */
-    private $moduleId;
+    private $applicationId;
 
     /**
      * Crew Identification
@@ -34,10 +34,10 @@ class ModuleAccessModel extends ValidationClass {
     private $teamId;
 
     /**
-     * Module Access Value
+     * Application Access Value
      * @var bool
      */
-    private $moduleAccessValue;
+    private $applicationAccessValue;
 
     /**
      * Class Loader to load outside variable and test it suppose variable type
@@ -46,8 +46,8 @@ class ModuleAccessModel extends ValidationClass {
         /*
          *  Basic Information Table
          */
-        $this->setTableName('moduleAccess');
-        $this->setPrimaryKeyName('moduleAccessId');
+        $this->setTableName('applicationAccess');
+        $this->setPrimaryKeyName('applicationAccessId');
 
         /*
          *  All the $_POST enviroment.
@@ -58,14 +58,14 @@ class ModuleAccessModel extends ValidationClass {
         if (isset($_POST ['teamId'])) {
             $this->setTeamId($_POST ['teamId']);
         }
-        if (isset($_POST ['moduleId'])) {
-            $this->setModuleId($this->strict($_POST ['moduleId'], 'numeric'));
+        if (isset($_POST ['applicationId'])) {
+            $this->setApplicationId($this->strict($_POST ['applicationId'], 'numeric'));
         }
         /*
          *  All the $_GET enviroment.
          */
-        if (isset($_GET ['moduleAccessId'])) {
-            $this->setTotal(count($_GET ['moduleAccessId']));
+        if (isset($_GET ['applicationAccessId'])) {
+            $this->setTotal(count($_GET ['applicationAccessId']));
         }
         if (isset($_GET ['type'])) {
             $this->setType($this->strict($_GET ['type'], 'numeric'));
@@ -73,28 +73,28 @@ class ModuleAccessModel extends ValidationClass {
         if (isset($_GET ['teamId'])) {
             $this->setTeamId($this->strict($_GET ['teamId'], 'numeric'));
         }
-        if (isset($_GET ['moduleAccessId'])) {
-            if (is_array($_GET ['moduleAccessId'])) {
-                $this->moduleAccessId = array();
+        if (isset($_GET ['applicationAccessId'])) {
+            if (is_array($_GET ['applicationAccessId'])) {
+                $this->applicationAccessId = array();
             }
         }
-        if (isset($_GET ['moduleId'])) {
-            $this->setModuleId($this->strict($_GET ['moduleId'], 'numeric'));
+        if (isset($_GET ['applicationId'])) {
+            $this->setApplicationId($this->strict($_GET ['applicationId'], 'numeric'));
         }
 
         $primaryKeyAll = '';
         for ($i = 0; $i < $this->getTotal(); $i++) {
-            if (isset($_GET ['moduleAccessValue'])) {
-                $this->setModuleAccessId($this->strict($_GET ['moduleAccessId'] [$i], 'numeric'), $i, 'array');
+            if (isset($_GET ['applicationAccessValue'])) {
+                $this->setApplicationAccessId($this->strict($_GET ['applicationAccessId'] [$i], 'numeric'), $i, 'array');
             }
-            if (isset($_GET ['moduleAccessValue'])) {
-                if ($_GET ['moduleAccessValue'] [$i] == 'true') {
-                    $this->setModuleAccessValue(1, $i, 'array');
+            if (isset($_GET ['applicationAccessValue'])) {
+                if ($_GET ['applicationAccessValue'] [$i] == 'true') {
+                    $this->setApplicationAccessValue(1, $i, 'array');
                 } else {
-                    $this->setModuleAccessValue(0, $i, 'array');
+                    $this->setApplicationAccessValue(0, $i, 'array');
                 }
             }
-            $primaryKeyAll .= $this->getModuleAccessId($i, 'array') . ",";
+            $primaryKeyAll .= $this->getApplicationAccessId($i, 'array') . ",";
         }
         $this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 
@@ -205,53 +205,53 @@ class ModuleAccessModel extends ValidationClass {
     }
 
     /**
-     * Set Module Access  Value
+     * Set Application Access  Value
      * @param int|array $value
      * @param array[int]int $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      */
-    public function setModuleAccessId($value, $key, $type) {
+    public function setApplicationAccessId($value, $key, $type) {
         if ($type == 'single') {
-            $this->moduleAccessId = $value;
+            $this->applicationAccessId = $value;
         } else if ($type == 'array') {
-            $this->moduleAccessId [$key] = $value;
+            $this->applicationAccessId [$key] = $value;
         } else {
-            echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setModuleAccessId ?"));
+            echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setApplicationAccessId ?"));
             exit();
         }
     }
 
     /**
-     * Return Module Access Identification
+     * Return Application Access Identification
      * @param array[int][int] $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      * @return int|array
      */
-    public function getModuleAccessId($key, $type) {
+    public function getApplicationAccessId($key, $type) {
         if ($type == 'single') {
-            return $this->moduleAccessId;
+            return $this->applicationAccessId;
         } else if ($type == 'array') {
-            return $this->moduleAccessId [$key];
+            return $this->applicationAccessId [$key];
         } else {
-            echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getModuleAccessId ?"));
+            echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getApplicationAccessId ?"));
             exit();
         }
     }
 
     /**
-     * Set Module Identification Value
+     * Set Application Identification Value
      * @param  int $value
      */
-    public function setModuleId($value) {
-        $this->moduleId = $value;
+    public function setApplicationId($value) {
+        $this->applicationId = $value;
     }
 
     /**
-     * Return Module Identiification Value
+     * Return Application Identiification Value
      * @return int
      */
-    public function getModuleId() {
-        return $this->moduleId;
+    public function getApplicationId() {
+        return $this->applicationId;
     }
 
     /**
@@ -271,30 +271,30 @@ class ModuleAccessModel extends ValidationClass {
     }
 
     /**
-     * Set Module Access Value
+     * Set Application Access Value
      * @param bool|array $value
      * @param array[int]int $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      */
-    public function setModuleAccessValue($value, $key, $type) {
+    public function setApplicationAccessValue($value, $key, $type) {
         if ($type == 'single') {
             
         } else if ($type == 'array') {
-            $this->moduleAccessValue [$key] = $value;
+            $this->applicationAccessValue [$key] = $value;
         }
     }
 
     /**
-     * Return Module Access Value
+     * Return Application Access Value
      * @param array[int]int $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      * @return bool|array
      */
-    public function getModuleAccessValue($key, $type) {
+    public function getApplicationAccessValue($key, $type) {
         if ($type == 'single') {
             
         } else if ($type == 'array') {
-            return $this->moduleAccessValue [$key];
+            return $this->applicationAccessValue [$key];
         }
     }
 

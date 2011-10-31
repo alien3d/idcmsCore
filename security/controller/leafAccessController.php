@@ -1,11 +1,13 @@
 <?php
-session_start ();
+
+session_start();
 require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
 require_once ("../model/leafAccessModel.php");
+
 /**
  * this is  leaf security access
  * @name IDCMS
@@ -17,105 +19,120 @@ require_once ("../model/leafAccessModel.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class LeafAccessClass extends ConfigClass {
-	/**
-	 * Connection to the database
-	 * @var string
-	 */
-	public $q;
-	/**
-	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-	 * @var string
-	 */
-	private $excel;
-	/**
-	 * Record Pagination
-	 * @var string
-	 */
-	private $recordSet;
-	/**
-	 * Document Trail Audit.
-	 * @var string 
-	 */
-	private $documentTrail;
-	/**
-	 * Audit Row True or False
-	 * @var bool
-	 */
-	private $audit;
-	/**
-	 * Log Sql Statement True or False
-	 * @var string
-	 */
-	private $log;
-	/**
-	 * Model
-	 * @var string 
-	 */
-	public $model;
-	/**
-	 * Audit Filter
-	 * @var string 
-	 */
-	public $auditFilter;
-	/**
-	 * Audit Column
-	 * @var string 
-	 */
-	public $auditColumn;
-	/**
-	 * Duplicate Testing either the key of table same or have been created.
-	 * @var bool
-	 */
-	public $duplicateTest;
-	/**
-	 * Class Loader
-	 */
-	function execute() {
-		parent::__construct ();
-		parent::__construct ();
-		// audit property
-		$this->audit = 0;
-		$this->log = 1;
-		
-		$this->q = new Vendor ();
-		$this->q->vendor = $this->getVendor ();
-		$this->q->leafId = $this->getLeafId ();
-		$this->q->staffId = $this->getStaffId ();
-		$this->q->fieldQuery = $this->getFieldQuery ();
-		$this->q->gridQuery = $this->getGridQuery ();
-		$this->q->log = $this->log;
-		$this->q->audit = $this->audit;
-		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		
-		$this->security = new Security ();
-		$this->security->setVendor ( $this->getVendor () );
-		$this->security->execute ();
-		
-		$this->model = new LeafAccessModel ();
-		$this->model->setVendor ( $this->getVendor () );
-		$this->model->execute ();
-		
-		$this->excel = new PHPExcel ();
-	}
-	/* (non-PHPdoc)
-	 * @see config::create()
-	 */
-	function create() {
-	
-	}
-	/* (non-PHPdoc)
-	 * @see config::read()
-	 */
-	function read() {
-		header('Content-Type:application/json; charset=utf-8');
-		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
-			$sql = "SET NAMES \"utf8\"";
-			$this->q->fast ( $sql );
-		}
-		// by default if add new group will add access to module and leaf.
-		if ($this->getVendor () == self::MYSQL) {
-			$sql = "
+
+    /**
+     * Connection to the database
+     * @var string
+     */
+    public $q;
+
+    /**
+     * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
+     * @var string
+     */
+    private $excel;
+
+    /**
+     * Record Pagination
+     * @var string
+     */
+    private $recordSet;
+
+    /**
+     * Document Trail Audit.
+     * @var string 
+     */
+    private $documentTrail;
+
+    /**
+     * Audit Row True or False
+     * @var bool
+     */
+    private $audit;
+
+    /**
+     * Log Sql Statement True or False
+     * @var string
+     */
+    private $log;
+
+    /**
+     * Model
+     * @var string 
+     */
+    public $model;
+
+    /**
+     * Audit Filter
+     * @var string 
+     */
+    public $auditFilter;
+
+    /**
+     * Audit Column
+     * @var string 
+     */
+    public $auditColumn;
+
+    /**
+     * Duplicate Testing either the key of table same or have been created.
+     * @var bool
+     */
+    public $duplicateTest;
+
+    /**
+     * Class Loader
+     */
+    function execute() {
+        parent::__construct();
+        parent::__construct();
+        // audit property
+        $this->audit = 0;
+        $this->log = 1;
+
+        $this->q = new Vendor ();
+        $this->q->vendor = $this->getVendor();
+        $this->q->leafId = $this->getLeafId();
+        $this->q->staffId = $this->getStaffId();
+        $this->q->fieldQuery = $this->getFieldQuery();
+        $this->q->gridQuery = $this->getGridQuery();
+        $this->q->log = $this->log;
+        $this->q->audit = $this->audit;
+        $this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+
+        $this->security = new Security ();
+        $this->security->setVendor($this->getVendor());
+        $this->security->execute();
+
+        $this->model = new LeafAccessModel ();
+        $this->model->setVendor($this->getVendor());
+        $this->model->execute();
+
+        $this->excel = new PHPExcel ();
+    }
+
+    /* (non-PHPdoc)
+     * @see config::create()
+     */
+
+    function create() {
+        
+    }
+
+    /* (non-PHPdoc)
+     * @see config::read()
+     */
+
+    function read() {
+        header('Content-Type:application/json; charset=utf-8');
+        if ($this->getVendor() == self::MYSQL) {
+            //UTF8
+            $sql = "SET NAMES \"utf8\"";
+            $this->q->fast($sql);
+        }
+        // by default if add new group will add access to module and leaf.
+        if ($this->getVendor() == self::MYSQL) {
+            $sql = "
 				SELECT	`leaf`.`moduleId`,
 						`leaf`.`folderId`,
 						`folder`.`folderEnglish`,
@@ -183,20 +200,20 @@ class LeafAccessClass extends ConfigClass {
 				AND		`folder`.`isActive` 	=	1
 				AND		`leaf`.`isActive`		=	1 
 				AND		`team`.`isActive`		=	1";
-			if ($this->model->getModuleId ()) {
-				$sql .= " AND `leaf`.`moduleId`		=	'" . $this->model->getModuleId () . "'";
-			}
-			if ($this->model->getFolderId ()) {
-				$sql .= " AND `leaf`.`folderId`		=	'" . $this->model->getFolderId () . "'";
-			}
-			if ($this->model->getStaffId ()) {
-				$sql .= " AND `leafAccess`.`staffId`	=	'" . $this->model->getStaffId () . "'";
-			}
-			if ($this->model->getLeafId ()) {
-				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId () . "'";
-			}
-		} else if ($this->getVendor () == self::MSSQL) {
-			$sql = "
+            if ($this->model->getModuleId()) {
+                $sql .= " AND `leaf`.`moduleId`		=	'" . $this->model->getModuleId() . "'";
+            }
+            if ($this->model->getFolderId()) {
+                $sql .= " AND `leaf`.`folderId`		=	'" . $this->model->getFolderId() . "'";
+            }
+            if ($this->model->getStaffId()) {
+                $sql .= " AND `leafAccess`.`staffId`	=	'" . $this->model->getStaffId() . "'";
+            }
+            if ($this->model->getLeafId()) {
+                $sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId() . "'";
+            }
+        } else if ($this->getVendor() == self::MSSQL) {
+            $sql = "
 				SELECT	[leaf].[moduleId],
 						[leaf].[folderId],
 						[folder].[folderEnglish],
@@ -263,20 +280,20 @@ class LeafAccessClass extends ConfigClass {
 				WHERE 	[module].[isActive] 	=	1
 				AND		[folder].[isActive] 	=	1
 				AND		[leaf].[isActive]		=	1  ";
-			if ($this->model->getModuleId ()) {
-				$sql .= " AND [leaf].[moduleId]		=	'" . $this->strict ( $this->moduleId, 'numeric' ) . "'";
-			}
-			if ($this->model->getFolderId ()) {
-				$sql .= " AND [leaf].[folderId]		=	'" . $this->strict ( $this->folderId, 'numeric' ) . "'";
-			}
-			if ($this->model->getStaffId ()) {
-				$sql .= " AND [leafAccess`.[staffId]	=	'" . $this->strict ( $this->staffId, 'numeric' ) . "'";
-			}
-			if ($this->model->getLeafId ()) {
-				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId () . "'";
-			}
-		} else if ($this->getVendor () == self::ORACLE) {
-			$sql = "
+            if ($this->model->getModuleId()) {
+                $sql .= " AND [leaf].[moduleId]		=	'" . $this->strict($this->moduleId, 'numeric') . "'";
+            }
+            if ($this->model->getFolderId()) {
+                $sql .= " AND [leaf].[folderId]		=	'" . $this->strict($this->folderId, 'numeric') . "'";
+            }
+            if ($this->model->getStaffId()) {
+                $sql .= " AND [leafAccess`.[staffId]	=	'" . $this->strict($this->staffId, 'numeric') . "'";
+            }
+            if ($this->model->getLeafId()) {
+                $sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId() . "'";
+            }
+        } else if ($this->getVendor() == self::ORACLE) {
+            $sql = "
 				SELECT	LEAF.MODULEID,
 						LEAF.FOLDERID,
 						FOLDER.FOLDERENGLISH,
@@ -344,254 +361,261 @@ class LeafAccessClass extends ConfigClass {
 				AND		FOLDER.ISACTIVE=1
 				AND		MODULE.ISACTIVE=1
 				AND		STAFF.ISACTIVE=1";
-			if ($this->model->getModuleId ()) {
-				$sql .= " AND LEAFACCESS.MODULEID='" . $this->model->getModuleId () . "'";
-			}
-			if ($this->model->getFolderId ()) {
-				$sql .= " AND LEAFACCESS.FOLDERID='" . $this->model->getFolderId () . "'";
-			}
-			if ($this->model->getStaffId ()) {
-				$sql .= " AND LEAFACCESS.STAFFID='" . $this->model->getStaffId () . "'";
-			}
-			if ($this->model->getLeafId ()) {
-				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId () . "'";
-			}
-		}
-		//echo $sql;
-		// searching filtering
-		$sql .= $this->q->searching ();
-		
-		$record_all = $this->q->read ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => FALSE, "message" => $this->q->responce ) );
-			exit ();
-		}
-		
-		$total = $this->q->numberRows ();
-		//paging
-		
+            if ($this->model->getModuleId()) {
+                $sql .= " AND LEAFACCESS.MODULEID='" . $this->model->getModuleId() . "'";
+            }
+            if ($this->model->getFolderId()) {
+                $sql .= " AND LEAFACCESS.FOLDERID='" . $this->model->getFolderId() . "'";
+            }
+            if ($this->model->getStaffId()) {
+                $sql .= " AND LEAFACCESS.STAFFID='" . $this->model->getStaffId() . "'";
+            }
+            if ($this->model->getLeafId()) {
+                $sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId() . "'";
+            }
+        }
+        //echo $sql;
+        // searching filtering
+        $sql .= $this->q->searching();
 
-		if ($this->getStart () && $this->getLimit ()) {
-			if ($this->getVendor () == self::MYSQL) {
-				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
-			} else if ($this->getVendor () == self::MSSQL) {
-			
-			} else if ($this->getVendor () == self::ORACLE) {
-			
-			} else if ($this->getVendor () == self::DB2) {
-				$sql .= " LIMIT  " . $this->getStart () . " OFFSET " . $this->getLimit () . " ";
-			
-			} else if ($this->getVendor () == self::POSTGRESS) {
-				$sql .= " LIMIT  " . $this->getStart () . " OFFSET " . $this->getLimit () . " ";
-			
-			}
-		}
-		
-		$this->q->read ( $sql );
-		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" =>false, "message" => $this->q->responce ) );
-			exit ();
-		}
-		
-		while ( ($row = $this->q->fetchAssoc ()) == TRUE ) {
-			// select module access
-			
+        $record_all = $this->q->read($sql);
+        if ($this->q->execute == 'fail') {
+            echo json_encode(array("success" => FALSE, "message" => $this->q->responce));
+            exit();
+        }
 
-			$items [] = $row;
-		
-		// select module access
-		}
-		
-		echo json_encode ( array ('success' =>true, 'total' => $total, 'data' => $items ) );
-		exit ();
-	
-	}
-	/**
-	 * Enter description here ...
-	 */
-	function team() {
-		return $this->security->team ();
-	}
-	/**
-	 * Enter description here ...
-	 */
-	function module() {
-		$this->security->module ( $this->model->getType (), $this->model->getTeamId () );
-	}
-	/**
-	 * Enter description here ...
-	 */
-	function folder() {
-		$this->security->folder ( $this->model->getType (), $this->model->getTeamId (), $this->model->getModuleId () );
-	}
-	/* (non-PHPdoc)
-	 * @see config::update()
-	 */
-	function update() {
-		header('Content-Type:application/json; charset=utf-8');
-		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
-			$sql = "SET NAMES \"utf8\"";
-			$this->q->fast ( $sql );
-		
-		}
-		$this->model->update ();
-		$loop = count ( $_GET ['leafAccessId'] );
-		// @todo  repair this code !!!
-		for($i = 0; $i < $loop; $i ++) {
-			// mysql doesn't support bolean expression
-			foreach ( $this->model->getLeafTempId () as $access_type ) {
-				if ($_GET ['leaf_' . $access_type . '_acs_val'] [$i] == 'true') {
-					$_GET ['leaf_' . $access_type . '_acs_val'] [$i] = 1;
-				} else {
-					$_GET ['leaf_' . $access_type . '_acs_val'] [$i] = 0;
-				}
-			}
-			
-			if ($this->getVendor () == self::MYSQL) {
-				$sql = "
+        $total = $this->q->numberRows();
+        //paging
+
+
+        if ($this->getStart() && $this->getLimit()) {
+            if ($this->getVendor() == self::MYSQL) {
+                $sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
+            } else if ($this->getVendor() == self::MSSQL) {
+                
+            } else if ($this->getVendor() == self::ORACLE) {
+                
+            } else if ($this->getVendor() == self::DB2) {
+                $sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
+            } else if ($this->getVendor() == self::POSTGRESS) {
+                $sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
+            }
+        }
+
+        $this->q->read($sql);
+        if ($this->q->execute == 'fail') {
+            echo json_encode(array("success" => false, "message" => $this->q->responce));
+            exit();
+        }
+
+        while (($row = $this->q->fetchAssoc()) == TRUE) {
+            // select module access
+
+
+            $items [] = $row;
+
+            // select module access
+        }
+
+        echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+        exit();
+    }
+
+    /**
+     * Enter description here ...
+     */
+    function team() {
+        return $this->security->team();
+    }
+
+    /**
+     * Enter description here ...
+     */
+    function module() {
+        $this->security->module($this->model->getType(), $this->model->getTeamId());
+    }
+
+    /**
+     * Enter description here ...
+     */
+    function folder() {
+        $this->security->folder($this->model->getType(), $this->model->getTeamId(), $this->model->getModuleId());
+    }
+
+    /* (non-PHPdoc)
+     * @see config::update()
+     */
+
+    function update() {
+        header('Content-Type:application/json; charset=utf-8');
+        if ($this->getVendor() == self::MYSQL) {
+            //UTF8
+            $sql = "SET NAMES \"utf8\"";
+            $this->q->fast($sql);
+        }
+        $this->model->update();
+        $loop = count($_GET ['leafAccessId']);
+        // @todo  repair this code !!!
+        for ($i = 0; $i < $loop; $i++) {
+            // mysql doesn't support bolean expression
+            foreach ($this->model->getLeafTempId() as $access_type) {
+                if ($_GET ['leaf_' . $access_type . '_acs_val'] [$i] == 'true') {
+                    $_GET ['leaf_' . $access_type . '_acs_val'] [$i] = 1;
+                } else {
+                    $_GET ['leaf_' . $access_type . '_acs_val'] [$i] = 0;
+                }
+            }
+
+            if ($this->getVendor() == self::MYSQL) {
+                $sql = "
 					UPDATE 	`leafAccess`
-					SET 	`leafAccessCreateValue`	=	'" . $this->strict ( $_GET ['leafAccessCreateValue'] [$i], 'numeric' ) . "',
-							`leafAccessReadValue`	=	'" . $this->strict ( $_GET ['leafAccessReadValue'] [$i], 'numeric' ) . "',
-							`leafAccessUpdateValue`	=	'" . $this->strict ( $_GET ['leafAccessUpdateValue'] [$i], 'numeric' ) . "',
-							`leafAccessDeleteValue`	=	'" . $this->strict ( $_GET ['leafAccessDeleteValue'] [$i], 'numeric' ) . "',
-							`leafAccessDraftValue`	=	'" . $this->strict ( $_GET ['leafAccessDraftValue'] [$i], 'numeric' ) . "',
-							`leafAccessPrintValue`	=	'" . $this->strict ( $_GET ['leafAccessPrintValue'] [$i], 'numeric' ) . "',
-							`leafAccessPostValue`	=	'" . $this->strict ( $_GET ['leafAccessPostValue'] [$i], 'numeric' ) . "'
-					WHERE 	`leafAccessId`			=	'" . $this->strict ( $_GET ['leafAccessId'] [$i], 'numeric' ) . "'";
-			} else if ($this->getVendor () == self::MSSQL) {
-				$sql = "
+					SET 	`leafAccessCreateValue`	=	'" . $this->strict($_GET ['leafAccessCreateValue'] [$i], 'numeric') . "',
+							`leafAccessReadValue`	=	'" . $this->strict($_GET ['leafAccessReadValue'] [$i], 'numeric') . "',
+							`leafAccessUpdateValue`	=	'" . $this->strict($_GET ['leafAccessUpdateValue'] [$i], 'numeric') . "',
+							`leafAccessDeleteValue`	=	'" . $this->strict($_GET ['leafAccessDeleteValue'] [$i], 'numeric') . "',
+							`leafAccessDraftValue`	=	'" . $this->strict($_GET ['leafAccessDraftValue'] [$i], 'numeric') . "',
+							`leafAccessPrintValue`	=	'" . $this->strict($_GET ['leafAccessPrintValue'] [$i], 'numeric') . "',
+							`leafAccessPostValue`	=	'" . $this->strict($_GET ['leafAccessPostValue'] [$i], 'numeric') . "'
+					WHERE 	`leafAccessId`			=	'" . $this->strict($_GET ['leafAccessId'] [$i], 'numeric') . "'";
+            } else if ($this->getVendor() == self::MSSQL) {
+                $sql = "
 					UPDATE 	[leafAccess]
-					SET 	[leafAccessCreateValue]	=	'" . $this->strict ( $_GET ['leafAccessCreateValue'] [$i], 'numeric' ) . "',
-							[leafAccessReadValue]	=	'" . $this->strict ( $_GET ['leafAccessReadValue'] [$i], 'numeric' ) . "',
-							[leafAccessUpdateValue]	=	'" . $this->strict ( $_GET ['leafAccessUpdateValue'] [$i], 'numeric' ) . "',
-							[leafAccessDeleteValue]	=	'" . $this->strict ( $_GET ['leafAccessDeleteValue'] [$i], 'numeric' ) . "',
-							[leafAccessDraftValue]	=	'" . $this->strict ( $_GET ['leafAccessDraftValue'] [$i], 'numeric' ) . "',
-							[leafAccessPrintValue]	=	'" . $this->strict ( $_GET ['leafAccessPrintValue'] [$i], 'numeric' ) . "',
-							[leafAccessPostValue]	=	'" . $this->strict ( $_GET ['leafAccessPostValue'] [$i], 'numeric' ) . "'
-					WHERE 	[leafAccessId]			=	'" . $this->strict ( $_GET ['leafAccessId'] [$i], 'numeric' ) . "'";
-			} else if ($this->getVendor () == self::ORACLE) {
-				$sql = "
+					SET 	[leafAccessCreateValue]	=	'" . $this->strict($_GET ['leafAccessCreateValue'] [$i], 'numeric') . "',
+							[leafAccessReadValue]	=	'" . $this->strict($_GET ['leafAccessReadValue'] [$i], 'numeric') . "',
+							[leafAccessUpdateValue]	=	'" . $this->strict($_GET ['leafAccessUpdateValue'] [$i], 'numeric') . "',
+							[leafAccessDeleteValue]	=	'" . $this->strict($_GET ['leafAccessDeleteValue'] [$i], 'numeric') . "',
+							[leafAccessDraftValue]	=	'" . $this->strict($_GET ['leafAccessDraftValue'] [$i], 'numeric') . "',
+							[leafAccessPrintValue]	=	'" . $this->strict($_GET ['leafAccessPrintValue'] [$i], 'numeric') . "',
+							[leafAccessPostValue]	=	'" . $this->strict($_GET ['leafAccessPostValue'] [$i], 'numeric') . "'
+					WHERE 	[leafAccessId]			=	'" . $this->strict($_GET ['leafAccessId'] [$i], 'numeric') . "'";
+            } else if ($this->getVendor() == self::ORACLE) {
+                $sql = "
 				UPDATE 	LEAFACCESS
-				SET 	LEAFACCESSCREATEVALUE	=	'" . $this->strict ( $_GET ['leafAccessCreateValue'] [$i], 'numeric' ) . "',
-						LEAFACCESSREADVALUE		=	'" . $this->strict ( $_GET ['leafAccessReadValue'] [$i], 'numeric' ) . "',
-						LEAFACCESSUPDATEVALUE	=	'" . $this->strict ( $_GET ['leafAccessUpdateValue'] [$i], 'numeric' ) . "',
-						LEAFACCESSDELETEVALUE	=	'" . $this->strict ( $_GET ['leafAccessDeleteValue'] [$i], 'numeric' ) . "',
-						LEAFACCESSDRAFTVALUE	=	'" . $this->strict ( $_GET ['leafAccessDeleteValue'] [$i], 'numeric' ) . "',
-						LEAFACCESSPRINTVALUE	=	'" . $this->strict ( $_GET ['leafAccessPrintValue'] [$i], 'numeric' ) . "',
-						LEAFACCESSPOSTVALUE		=	'" . $this->strict ( $_GET ['leafAccessPostValue'] [$i], 'numeric' ) . "'
-				WHERE 	LEAFACCESSID			=	'" . $this->strict ( $_GET ['leafAccessId'] [$i], 'numeric' ) . "'";
-			}
-			$this->q->update ( $sql );
-		}
-		if ($this->q->execute == 'fail') {
-			
-			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
-			exit ();
-		} else {
-			echo json_encode ( array ("success" =>true, "message" => "Update Success" ) );
-			exit ();
-		}
-	
-	}
-	/* (non-PHPdoc)
-	 * @see config::delete()
-	 */
-	function delete() {
-	
-	}
-	function firstRecord($value) {
-		$this->recordSet->firstRecord ( $value );
-	}
-	function nextRecord($value, $primaryKeyValue) {
-		$this->recordSet->nextRecord ( $value, $primaryKeyValue );
-	}
-	function previousRecord($value, $primaryKeyValue) {
-		$this->recordSet->previousRecord ( $value, $primaryKeyValue );
-	}
-	function lastRecord($value) {
-		$this->recordSet->lastRecord ( $value );
-	}
-	/* (non-PHPdoc)
-	 * @see config::excel()
-	 */
-	function excel() {
-	}
+				SET 	LEAFACCESSCREATEVALUE	=	'" . $this->strict($_GET ['leafAccessCreateValue'] [$i], 'numeric') . "',
+						LEAFACCESSREADVALUE		=	'" . $this->strict($_GET ['leafAccessReadValue'] [$i], 'numeric') . "',
+						LEAFACCESSUPDATEVALUE	=	'" . $this->strict($_GET ['leafAccessUpdateValue'] [$i], 'numeric') . "',
+						LEAFACCESSDELETEVALUE	=	'" . $this->strict($_GET ['leafAccessDeleteValue'] [$i], 'numeric') . "',
+						LEAFACCESSDRAFTVALUE	=	'" . $this->strict($_GET ['leafAccessDeleteValue'] [$i], 'numeric') . "',
+						LEAFACCESSPRINTVALUE	=	'" . $this->strict($_GET ['leafAccessPrintValue'] [$i], 'numeric') . "',
+						LEAFACCESSPOSTVALUE		=	'" . $this->strict($_GET ['leafAccessPostValue'] [$i], 'numeric') . "'
+				WHERE 	LEAFACCESSID			=	'" . $this->strict($_GET ['leafAccessId'] [$i], 'numeric') . "'";
+            }
+            $this->q->update($sql);
+        }
+        if ($this->q->execute == 'fail') {
+
+            echo json_encode(array("success" => false, "message" => $this->q->responce));
+            exit();
+        } else {
+            echo json_encode(array("success" => true, "message" => "Update Success"));
+            exit();
+        }
+    }
+
+    /* (non-PHPdoc)
+     * @see config::delete()
+     */
+
+    function delete() {
+        
+    }
+
+    function firstRecord($value) {
+        $this->recordSet->firstRecord($value);
+    }
+
+    function nextRecord($value, $primaryKeyValue) {
+        $this->recordSet->nextRecord($value, $primaryKeyValue);
+    }
+
+    function previousRecord($value, $primaryKeyValue) {
+        $this->recordSet->previousRecord($value, $primaryKeyValue);
+    }
+
+    function lastRecord($value) {
+        $this->recordSet->lastRecord($value);
+    }
+
+    /* (non-PHPdoc)
+     * @see config::excel()
+     */
+
+    function excel() {
+        
+    }
 
 }
 
 $leafAccessObject = new LeafAccessClass ();
 
-if (isset ( $_POST ['method'] )) {
-	/*
-	 *  Initilize Value before load in the loader
-	 */
-	/*
-	 *  Leaf / Application Identification
-	 */
-	if (isset ( $_POST ['leafId'] )) {
-		$leafAccessObject->setLeafId ( $_POST ['leafId'] );
-	}
-	/*
-	 * Admin Only
-	 */
-	if (isset ( $_POST ['isAdmin'] )) {
-		$leafAccessObject->setIsAdmin ( $_POST ['isAdmin'] );
-	}
-	
-	/*
-	 *  Load the dynamic value
-	 */
-	$leafAccessObject->execute ();
-	/*
-	 *  Crud Operation
-	 */
-	if ($_POST ['method'] == 'read') {
-		$leafAccessObject->read ();
-	}
+if (isset($_POST ['method'])) {
+    /*
+     *  Initilize Value before load in the loader
+     */
+    /*
+     *  Leaf / Application Identification
+     */
+    if (isset($_POST ['leafId'])) {
+        $leafAccessObject->setLeafId($_POST ['leafId']);
+    }
+    /*
+     * Admin Only
+     */
+    if (isset($_POST ['isAdmin'])) {
+        $leafAccessObject->setIsAdmin($_POST ['isAdmin']);
+    }
+
+    /*
+     *  Load the dynamic value
+     */
+    $leafAccessObject->execute();
+    /*
+     *  Crud Operation
+     */
+    if ($_POST ['method'] == 'read') {
+        $leafAccessObject->read();
+    }
 }
 // crud -create,read,update,delete.
-if (isset ( $_GET ['method'] )) {
-	
-	/*
-	 *  Initilize Value before load in the loader
-	 */
-	 
-	/*
-	 *  Leaf / Application Identification
-	 */
-	if (isset ( $_GET ['leafId'] )) {
-		$leafAccessObject->setLeafId ( $_GET ['leafId'] );
-	}
-	/*
-	 * Admin Only
-	 */
-	if (isset ( $_GET ['isAdmin'] )) {
-		$leafAccessObject->setIsAdmin ( $_GET ['isAdmin'] );
-	}
-	/*
-	 *  Load the dynamic value
-	 */
-	$leafAccessObject->execute ();
-	
-	if ($_GET ['method'] == 'update') {
-		$leafAccessObject->update ();
-	}
-	if (isset ( $_GET ['field'] )) {
-		if ($_GET ['field'] == 'staffId') {
-			$leafAccessObject->staff ();
-		}
-		if ($_GET ['field'] == 'teamId') {
-			$leafAccessObject->team ();
-		}
-		if ($_GET ['field'] == 'moduleId') {
-			$leafAccessObject->module ();
-		}
-		if ($_GET ['field'] == 'folderId') {
-			$leafAccessObject->folder ();
-		}
-	}
+if (isset($_GET ['method'])) {
 
+    /*
+     *  Initilize Value before load in the loader
+     */
+
+    /*
+     *  Leaf / Application Identification
+     */
+    if (isset($_GET ['leafId'])) {
+        $leafAccessObject->setLeafId($_GET ['leafId']);
+    }
+    /*
+     * Admin Only
+     */
+    if (isset($_GET ['isAdmin'])) {
+        $leafAccessObject->setIsAdmin($_GET ['isAdmin']);
+    }
+    /*
+     *  Load the dynamic value
+     */
+    $leafAccessObject->execute();
+
+    if ($_GET ['method'] == 'update') {
+        $leafAccessObject->update();
+    }
+    if (isset($_GET ['field'])) {
+        if ($_GET ['field'] == 'staffId') {
+            $leafAccessObject->staff();
+        }
+        if ($_GET ['field'] == 'teamId') {
+            $leafAccessObject->team();
+        }
+        if ($_GET ['field'] == 'moduleId') {
+            $leafAccessObject->module();
+        }
+        if ($_GET ['field'] == 'folderId') {
+            $leafAccessObject->folder();
+        }
+    }
 }
-
 ?>

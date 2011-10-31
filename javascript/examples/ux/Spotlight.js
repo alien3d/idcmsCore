@@ -6,7 +6,7 @@
  */
 Ext.ux.Spotlight = function(config){
     Ext.apply(this, config);
-}
+};
 Ext.ux.Spotlight.prototype = {
     active : false,
     animate : true,

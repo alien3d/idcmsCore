@@ -205,6 +205,7 @@ if (isAdmin  == 1 ) {
 	isApprovedHidden	= false;
 	isReviewHidden		= false;
     isPostHidden    	= false;
+	auditButtonLabelDisabled = false;
 } else {
 	isDefaultHidden 	= true;
 	isNewHidden   		= true;
@@ -215,6 +216,7 @@ if (isAdmin  == 1 ) {
 	isApprovedHidden	= true;
 	isReviewHidden		= true;
     isPostHidden    	= true;
+	auditButtonLabelDisabled = true;
 }
 var isDefaultLabel		= 'Default Value';
 var isNewLabel	 		= 'New';
@@ -224,5 +226,5 @@ var isDeleteLabel		= 'Delete';
 var isActiveLabel 		= 'Active';
 var isReviewLabel		= 'Review';
 var isApprovedLabel		= 'Approved';
-
+var auditButtonLabel 	= 'Audit';
 </script>

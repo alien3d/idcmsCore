@@ -6,31 +6,25 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
-require_once ("../model/leafModel.php");
+require_once ("../model/applicationModel.php");
 
 /**
- * this is leaf creation
+ * this is application  files
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package Security
- * @package Leaf Controller
+ * @subpackage application
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class LeafClass extends ConfigClass {
+class ApplicationClass extends ConfigClass {
 
     /**
-     * Connection to the database
+     * Connection to the daapplicationase
      * @var string
      */
     public $q;
-
-    /**
-     * Program Identification
-     * @var int
-     */
-    public $leafTempId;
 
     /**
      * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
@@ -46,7 +40,7 @@ class LeafClass extends ConfigClass {
 
     /**
      * Document Trail Audit.
-     * @var string
+     * @var string 
      */
     private $documentTrail;
 
@@ -64,13 +58,13 @@ class LeafClass extends ConfigClass {
 
     /**
      * Model
-     * @var string
+     * @var string 
      */
     public $model;
 
     /**
      * Audit Filter
-     * @var string
+     * @var string 
      */
     public $auditFilter;
 
@@ -81,21 +75,21 @@ class LeafClass extends ConfigClass {
     public $auditColumn;
 
     /**
-     * Duplicate Testing either the key of modulele same or have been created.
+     * Duplicate Testing either the key of applicationle same or have been created.
      * @var bool
      */
     public $duplicateTest;
 
     /**
      * Common class function for security menu
-     * @var  string
+     * @var  string 
      */
     private $security;
 
     /**
      * Class Loader
      */
-    public function execute() {
+    function execute() {
         parent::__construct();
         // audit property
         $this->audit = 0;
@@ -116,9 +110,14 @@ class LeafClass extends ConfigClass {
         $this->security->setLeafId($this->getLeafId());
         $this->security->execute();
 
-        $this->model = new LeafModel ();
+        $this->model = new ApplicationModel ();
         $this->model->setVendor($this->getVendor());
         $this->model->execute();
+
+        $this->recordSet = new RecordSet ();
+        $this->recordSet->setTableName($this->model->getTableName());
+        $this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+        $this->recordSet->execute();
 
         $this->documentTrail = new DocumentTrailClass ();
         $this->documentTrail->setVendor($this->getVendor());
@@ -127,87 +126,137 @@ class LeafClass extends ConfigClass {
         $this->excel = new PHPExcel ();
     }
 
-    /* (non-PHPdoc)
-     * @see config::create()
-     */
-
     function create() {
         header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
             //UTF8
-            $sql = "SET NAMES \"utf8\"";
+            $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
         $this->q->start();
         $this->model->create();
+        /**
+         * Example  using Constant .This much cleaner approch  to Sql Statement
+         */
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			INSERT INTO `leaf`
+			INSERT INTO `application`
 					(
-						`moduleId`,												`folderId`,
-						`leafEnglish`,											`leafSequence`,
-						`leafcode`,												`leafFilename`,
-						`iconId`,												`isDefault`,
-						`isNew`,												`isDraft`,
-						`isUpdate`,												`isDelete`,
-						`isActive`,												`isApproved`,
-						`executeBy`,											`executeTime`
+						`iconId`,												`applicationSequence`,
+						`applicationCode`,											`applicationEnglish`,
+						`isDefault`,											`isNew`,
+						`isDraft`,												`isUpdate`,
+						`isDelete`,												`isActive`,
+						`isApproved`,											`isReview`,
+						`isPost`,												`executeBy`,
+						`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getModuleId() . "',					'" . $this->model->getFolderId() . "',
-						'" . $this->model->getLeafNote() . "',					'" . $this->model->getLeafSequence() . "',
-						'" . $this->model->getLeafCode() . "',					'" . $this->model->getLeafFilename() . "',
-						'" . $this->model->getIconId() . "',					'" . $this->model->getIsNew(0, 'single') . "',
+						'" . $this->model->getIconId() . "',					'" . $this->model->getApplicationSequence() . "',
+						'" . $this->model->getApplicationCode() . "',				'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIsDefault(0, 'single') . "',	'" . $this->model->getIsNew(0, 'single') . "',
 						'" . $this->model->getIsDraft(0, 'single') . "',		'" . $this->model->getIsUpdate(0, 'single') . "',
 						'" . $this->model->getIsDelete(0, 'single') . "',	'" . $this->model->getIsActive(0, 'single') . "',
-						'" . $this->model->getIsApproved(0, 'single') . "',	'" . $this->model->getExecuteBy() . "',
+						'" . $this->model->getIsApproved(0, 'single') . "',	'" . $this->model->getIsReview(0, 'single') . "',
+						'" . $this->model->getIsPost(0, 'single') . "',				'" . $this->model->getExecuteBy() . "',
 						" . $this->model->getExecuteTime() . "
-					) ";
+					);";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
-			INSERT INTO [leaf]
+			INSERT INTO [application]
 					(
-						[moduleId],												[folderId],
-						[leafEnglish],											[leafSequence],
-						[leafCode],												[leafFilename],
-						[iconId],												[isDefault],
-						[isNew],												[isDraft],
-						[isUpdate],												[isDelete],
-						[isActive],												[isApproved],
-						[executeBy],											[executeTime]
-			VALUES
-					(
-						'" . $this->model->getModuleId() . "',					'" . $this->model->getFolderId() . "',
-						'" . $this->model->getLeafNote() . "',					'" . $this->model->getLeafSequence() . "',
-						'" . $this->model->getLeafCode() . "',					'" . $this->model->getLeafFilename() . "',
-						'" . $this->model->getIconId() . "',					'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',	'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',	'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',				" . $this->model->getExecuteTime() . "
-					)";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
-			INSERT INTO LEAF
-					(
-						MODULEID,												FOLDERID,
-						LEAFNOTE,												LEAFSEQUENCE,
-						LEAFCODE,												LEAFFILENAME,
-						ICONID,													ISDEFAULT,
-						ISNEW,													ISDRAFT,
-						ISUPDATE,												ISDELETE,
-						ISACTIVE,												ISAPPROVED,
-						EXECUTEBY,												EXECUTETIME
+						[iconId],													[applicationSequence],
+						[applicationCode],												[applicationEnglish],
+						[isDefault],												[isNew],
+						[isDraft],													[isUpdate],
+						[isDelete],													[isActive],
+						[isApproved],												[isReview'],
+						[isPost],													[executeBy],
+						[executeTime]
 					)
 			VALUES
 					(
-						'" . $this->model->getModuleId() . "',					'" . $this->model->getFolderId() . "',
-						'" . $this->model->getLeafNote() . "',					'" . $this->model->getLeafSequence() . "',
-						'" . $this->model->getLeafCode() . "',					'" . $this->model->getLeafFilename() . "',
-						'" . $this->model->getIconId() . "',					'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',	'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',	'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',				" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIconId() . "',						'" . $this->model->getApplicationSequence() . "',
+						'" . $this->model->getApplicationCode() . "',					'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIsDefault(0, 'single') . "',		'" . $this->model->getIsNew(0, 'single') . "',
+						'" . $this->model->getIsDraft(0, 'single') . "',			'" . $this->model->getIsUpdate(0, 'single') . "',
+						'" . $this->model->getIsDelete(0, 'single') . "',		'" . $this->model->getIsActive(0, 'single') . "',
+						'" . $this->model->getIsApproved(0, 'single') . "',		'" . $this->model->getIsReview(0, 'single') . "',
+						'" . $this->model->getIsPost(0, 'single') . "',					'" . $this->model->getExecuteBy() . "',
+						" . $this->model->getExecuteTime() . "
+					);";
+        } else if ($this->getVendor() == self::ORACLE) {
+            $sql = "
+			INSERT INTO APPLICATION
+					(
+						ICONID,														APPLICATIONSEQUENCE,
+						APPLICATIONCODE,													APPLICATIONENGLISH,
+						ISDEFAULT,													ISNEW,
+						ISDRAFT,													ISUPDATE,
+						ISDELETE,													ISACTIVE,
+						ISAPPROVED,													ISREVIEW,
+						ISPOST,														EXECUTEBY,
+						EXECUTETIME
+					)
+			VALUES
+					(
+						'" . $this->model->getIconId() . "',						'" . $this->model->getApplicationSequence() . "',
+						'" . $this->model->getApplicationCode() . "',					'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIsDefault(0, 'single') . "',		'" . $this->model->getIsNew(0, 'single') . "',
+						'" . $this->model->getIsDraft(0, 'single') . "',			'" . $this->model->getIsUpdate(0, 'single') . "',
+						'" . $this->model->getIsDelete(0, 'single') . "',		'" . $this->model->getIsActive(0, 'single') . "',
+						'" . $this->model->getIsApproved(0, 'single') . "',		'" . $this->model->getIsReview(0, 'single') . "',
+						'" . $this->model->getIsPost(0, 'single') . "',					'" . $this->model->getExecuteBy() . "',
+						" . $this->model->getExecuteTime() . "
+					);";
+        } else if ($this->getVendor() == self::DB2) {
+            $sql = "
+			INSERT INTO APPLICATION
+					(
+						ICONID,														APPLICATIONSEQUENCE,
+						APPLICATIONCODE,													APPLICATIONENGLISH,
+						ISDEFAULT,													ISNEW,
+						ISDRAFT,													ISUPDATE,
+						ISDELETE,													ISACTIVE,
+						ISAPPROVED,													ISREVIEW,
+						ISPOST,														EXECUTEBY,
+						EXECUTETIME
+					)
+			VALUES
+					(
+						'" . $this->model->getIconId() . "',						'" . $this->model->getApplicationSequence() . "',
+						'" . $this->model->getApplicationCode() . "',					'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIsDefault(0, 'single') . "',		'" . $this->model->getIsNew(0, 'single') . "',
+						'" . $this->model->getIsDraft(0, 'single') . "',			'" . $this->model->getIsUpdate(0, 'single') . "',
+						'" . $this->model->getIsDelete(0, 'single') . "',		'" . $this->model->getIsActive(0, 'single') . "',
+						'" . $this->model->getIsApproved(0, 'single') . "',		'" . $this->model->getIsReview(0, 'single') . "',
+						'" . $this->model->getIsPost(0, 'single') . "',					'" . $this->model->getExecuteBy() . "',
+						" . $this->model->getExecuteTime() . "
+					);";
+        } else if ($this->getVendor() == self::POSTGRESS) {
+            $sql = "
+			INSERT INTO APPLICATION
+					(
+						ICONID,														APPLICATIONSEQUENCE,
+						APPLICATIONCODE,													APPLICATIONENGLISH,
+						ISDEFAULT,													ISNEW,
+						ISDRAFT,													ISUPDATE,
+						ISDELETE,													ISACTIVE,
+						ISAPPROVED,													ISREVIEW,
+						ISPOST,														EXECUTEBY,
+						EXECUTETIME
+					)
+			VALUES
+					(
+						'" . $this->model->getIconId() . "',						'" . $this->model->getApplicationSequence() . "',
+						'" . $this->model->getApplicationCode() . "',					'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIsDefault(0, 'single') . "',		'" . $this->model->getIsNew(0, 'single') . "',
+						'" . $this->model->getIsDraft(0, 'single') . "',			'" . $this->model->getIsUpdate(0, 'single') . "',
+						'" . $this->model->getIsDelete(0, 'single') . "',		'" . $this->model->getIsActive(0, 'single') . "',
+						'" . $this->model->getIsApproved(0, 'single') . "',		'" . $this->model->getIsReview(0, 'single') . "',
+						'" . $this->model->getIsPost(0, 'single') . "',					'" . $this->model->getExecuteBy() . "',
+						" . $this->model->getExecuteTime() . "
 					);";
         }
         $this->q->create($sql);
@@ -216,71 +265,91 @@ class LeafClass extends ConfigClass {
             exit();
         }
         $lastId = $this->q->lastInsertId();
+        //  create a record  in applicationAccess.update no effect
         // loop the group
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			SELECT 	*
-			FROM 	`staff`
+			SELECT 	`teamId`
+			FROM 	`team`
 			WHERE 	`isActive`	=	1 ";
-        } else if ($this->getVendor() == self::MSSQL) {
+        } else if ($this->q->vendor == self::MSSQL) {
             $sql = "
-			SELECT 	*
-			FROM 	[staff]
+			SELECT 	[teamId]
+			FROM 	[team]
 			WHERE 	[isActive]	=	1 ";
-        } else if ($this->q->vendor == self::MYSQL) {
+        } else if ($this->q->vendor == self::ORACLE) {
             $sql = "
-			SELECT 	* 
-			FROM 	STAFF 
+			SELECT 	TEAMID AS \"teamId\"
+			FROM 	TEAM
+			WHERE 	ISACTIVE	=	1 ";
+        } else if ($this->q->vendor == self::DB2) {
+            $sql = "
+			SELECT 	TEAMID AS \"teamId\"
+			FROM 	TEAM
+			WHERE 	ISACTIVE	=	1 ";
+        } else if ($this->q->vendor == self::POSTGRESS) {
+            $sql = "
+			SELECT 	TEAMID AS \"teamId\"	
+			FROM 	TEAM
 			WHERE 	ISACTIVE	=	1 ";
         }
         $this->q->read($sql);
-        $data = $this->q->activeRecord();
-        foreach ($data as $row) {
-            // by default no access
-            $sqlLooping .= "
-				(
-					'" . $lastId . "',				'" . $row ['staffId'] . "',
-					'0',							'0',
-					'0',							'0',
-					'0',							'0',
-					'0'
-				),";
+        if ($this->q->execute == 'fail') {
+            echo json_encode(array("success" => false, "message" => $this->q->responce));
+            exit();
         }
-        // optimize to 1 Query
+        $data = $this->q->activeRecord();
+        $sqlLooping = '';
+        foreach ($data as $row) {
+
+            $sqlLooping .= "(
+							'" . $lastId . "',
+							 '" . $row ['teamId'] . "',
+							 '0'
+						),";
+        }
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			INSERT INTO	`leafAccess`
-					(
-						`leafId`,					`staffId`,
-						`leafAccessReadValue`,		`leafAccessCreateValue`,
-						`leafAccessUpdateValue`,	`leafAccessDeleteValue`,
-						`leafAccessPrintValue`,		`leafAccessPostValue`,
-						`leafAccessDraftValue`
-					)
-			VALUES";
+				INSERT INTO	`applicationAccess`
+						(
+							`applicationId`,
+							`teamId`,
+							`applicationAccessValue`
+						) VALUES";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
-			INSERT INTO	[leafAccess]
-				(
-					[leafId],					[staffId],
-					[leafAccessReadValue],		[leafAccessCreateValue],
-					[leafAccessUpdateValue],	[leafAccessDeleteValue],
-					[leafAccessPrintValue],		[leafAccessPostValue],
-					[leafAccessDraftValue]
-				)
-			VALUES";
+				INSERT INTO	[applicationAccess]
+						(
+							[applicationId],
+							[teamId],
+							[applicationAccessValue]
+					) VALUES";
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
-			INSERT INTO 	LEAFACCESS
+				INSERT INTO	APPLICATIONACCESS
 						(
-							LEAFID,					STAFFID,
-							LEAFACCESSREADVALUE,	LEAFACCESSCREATEVALUE,
-							LEAFACCESSUPDATEVALUE,	LEAFACCESSDELETEVALUE,
-							LEAFACCESSPRINTVALUE,	LEAFACCESSPOSTVALUE,
-							LEAFACCESSDRAFTVALUE
-						)
-			VALUES";
+							APPLICATIONID,
+							TEAMID,
+							APPLICATIONACCESSVALUE
+					) VALUES";
+        } else if ($this->getVendor() == self::DB2) {
+            $sql = "
+				INSERT INTO	APPLICATIONACCESS
+						(
+							APPLICATIONID,
+							TEAMID,
+							APPLICATIONACCESSVALUE
+					) VALUES";
+        } else if ($this->getVendor() == self::POSTGRESS) {
+            $sql = "
+				INSERT INTO	APPLICATIONACCESS
+						(
+							APPLICATIONID,
+							TEAMID,
+							APPLICATIONACCESSVALUE
+					) VALUES";
         }
+        // optimize to 1 Query
         // remove last comma
         $sqlLooping = substr($sqlLooping, 0, - 1);
         // combine SQL Statement
@@ -290,122 +359,184 @@ class LeafClass extends ConfigClass {
             echo json_encode(array("success" => false, "message" => $this->q->responce));
             exit();
         }
+        /**
+         * insert default value to detail applicationle .English only
+         * */
+        if ($this->getVendor() == self::MYSQL) {
+            $sql = "
+		 	INSERT INTO `applicationTranslate`
+		 		(
+				 	`applicationId`,
+				 	`languageId`,
+					`applicationNative`
+				) VALUES (
+					'" . $lastId . "',
+					21,
+					'" . $this->model->getApplicationEnglish() . "'
+				);";
+        } else if ($this->getVendor() == self::MSSQL) {
+            $sql = "
+		 	INSERT INTO  [applicationTranslate]
+					(
+					 	[applicationId],
+						[languageId],
+						[applicationNative]
+					) VALUES (
+						'" . $lastId . "',
+						21,
+						'" . $this->model->getApplicationEnglish() . "'
+					);";
+        } else if ($this->getVendor() == self::ORACLE) {
+            $sql = "
+		 	INSERT INTO	APPLICATIONTRANSLATE
+					(
+					 	APPLICATIONID,
+						LANGUAGEID,
+						APPLICATIONNATIVE
+					) VALUES (
+						'" . $lastId . "',
+						21,
+						'" . $this->model->getApplicationEnglish() . "'
+					);";
+        }
+        $this->q->create($sql);
+        if ($this->q->execute == 'fail') {
+            echo json_encode(array("success" => false, "message" => $this->q->responce));
+            exit();
+        }
         $this->q->commit();
-        echo json_encode(array("success" => true, "leafId" => $lastId, "message" => "Record Created"));
+        echo json_encode(array("success" => true, "message" => "Insert Sucess", "applicationId" => $lastId));
         exit();
     }
+
+    /* (non-PHPdoc)
+     * @see class/config::read()
+     */
 
     function read() {
         header('Content-Type:application/json; charset=utf-8');
         if ($this->isAdmin == 0) {
             if ($this->getVendor() == self::MYSQL) {
-                $this->auditFilter = "	`leaf`.`isActive`		=	1	";
+                $this->auditFilter = "	`application`.`isActive`		=	1	";
             } else if ($this->q->vendor == self::MSSQL) {
-                $this->auditFilter = "	[leaf].[isActive]		=	1	";
+                $this->auditFilter = "	[application].[isActive]		=	1	";
             } else if ($this->q->vendor == self::ORACLE) {
-                $this->auditFilter = "	LEAF.ISACTIVE	=	1	";
+                $this->auditFilter = "	APPLICATION.ISACTIVE	=	1	";
             }
         } else if ($this->isAdmin == 1) {
             if ($this->getVendor() == self::MYSQL) {
-                $this->auditFilter = "	 1 ";
+                $this->auditFilter = "	 1=1 ";
             } else if ($this->q->vendor == self::MSSQL) {
                 $this->auditFilter = "	1 = 1 ";
             } else if ($this->q->vendor == self::ORACLE) {
-                $this->auditFilter = " 1 = 1 ";
+                $this->auditFilter = "  1 = 1 ";
             }
         }
         //UTF8
         $items = array();
         if ($this->getVendor() == self::MYSQL) {
-            //UTF8
-            $sql = "SET NAMES \"utf8\"";
+            $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
-        // everything given flexibility  on todo
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			SELECT		*
-			FROM 		`leaf`
-			JOIN		`folder`
-			USING		(`folderId`,`moduleId`)
-			JOIN		`module`
-			USING		(`moduleId`)
-			LEFT JOIN	`icon`
-			ON			`leaf`.`iconId`=`icon`.`iconId`
-			WHERE 		" . $this->auditFilter . "
-			AND			`folder`.`isActive`		=	1
-			AND			`module`.`isActive`	= 1 ";
-            if ($this->model->getLeafId(0, 'single')) {
-                $sql .= " AND `" . $this->model->getModuleName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getLeafId(0, 'single') . "'";
+					SELECT	`application`.`applicationId`,
+							`application`.`iconId`,
+							`application`.`applicationSequence`,
+							`application`.`applicationCode`,
+							`application`.`applicationEnglish`,
+							`application`.`isDefault`,
+							`application`.`isNew`,
+							`application`.`isDraft`,
+							`application`.`isUpdate`,
+							`application`.`isDelete`,
+							`application`.`isActive`,
+							`application`.`isApproved`,
+							`application`.`executeBy`,
+							`application`.`executeTime`,
+							`staff`.`staffName`,
+							`icon`.`iconName`
+ 					FROM 	`application`
+					JOIN	`staff`
+					ON		`application`.`executeBy` = `staff`.`staffId`
+					LEFT 	JOIN	`icon`
+					USING			(`iconId`)
+					WHERE 	" . $this->auditFilter;
+            if ($this->model->getApplicationId(0, 'single')) {
+                $sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getApplicationId(0, 'single') . "'";
             }
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
-			SELECT		*
-			FROM 		[leaf]
-			JOIN		[folder]
-			ON			[leaf].[folderId] 			=	[folder].[folderId]
-			AND			[leaf].[moduleId] 		=	[folder].[moduleId]
-			JOIN		[module]
-			ON			[leaf].[moduleId] 		=	[module].[moduleId]
-			LEFT JOIN	[icon]
-			ON			[leaf].[iconId]				=	[icon].[iconId]
-			WHERE 		" . $this->auditFilter . "
-			AND			[folder].[isActive]			=	1
-			AND			[module].[isActive]			=	1 ";
-            if ($this->model->getLeafId(0, 'single')) {
-                $sql .= " AND [" . $this->model->getModuleName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getLeafId(0, 'single') . "'";
+					SELECT	[application].[applicationId],
+							[application].[iconId],
+							[application].[applicationSequence],
+							[application].[applicationCode],
+							[application].[applicationEnglish],
+							[application].[isDefault],
+							[application].[isNew],
+							[application].[isDraft],
+							[application].[isUpdate],
+							[application].[isDelete],
+							[application].[isActive],
+							[application].[isApproved],
+							[application].[executeBy],
+							[application].[executeTime],
+							[staff].[staffName],
+							[icon].[iconName]
+					FROM 	[application]
+					JOIN	[staff]
+					ON		[application].[executeBy] = [staff].[staffId]
+					LEFT 	JOIN	`icon`
+					ON		[iconId].[iconId] = [application].[iconId]
+					WHERE 	" . $this->auditFilter;
+            if ($this->model->getApplicationId(0, 'single')) {
+                $sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getApplicationId(0, 'single') . "'";
             }
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
-			SELECT		LEAF.LEAFID 		AS	\"leafId\",
-						LEAF.LEAFCODE 		AS 	\"leafCode\",
-						LEAF.LEAFSEQUENCE 	AS 	\"leafSequence\",
-						LEAF.LEAFNOTE 		AS 	\"leafEnglish\",
-						LEAF.LEAFFILENAME 	AS 	\"leafFilename\",
-						LEAF.ISDEFAULT 		AS 	\"isDefault\",
-						LEAF.ISNEW 			AS	\"isNew\",
-						LEAF.ISDRAFT  		AS 	\"isDraft\",
-						LEAF.ISUPDATE 		AS 	\"isUpdate\",
-						LEAF.ISDELETE 		AS 	\"isDelete\",
-						LEAF.ISACTIVE 		AS 	\"isActive\",
-						LEAF.ISAPPROVED 	AS 	\"isApproved\",
-						LEAF.EXECUTEBY 		AS 	\"executeBy\",
-						LEAF.EXECUTETIME 	AS  \"executeTime\",
-						FOLDER.FOLDERID		AS	\"folderId\",
-						FOLDER.FOLDERENGLISH	AS	\"folderEnglish\",
-						MODULE.MODULEID		AS 	\"moduleId\",		
-						MODULE.MODULEENGLISH	AS  \"moduleEnglish\",
-						LEAF.LEAFCATEGORYID AS  \"leafCategoryId\",
-						STAFF.STAFFNAME 	AS 	\"staffName\"
-			FROM 		LEAF
-			JOIN		FOLDER
-			ON			LEAF.MODULEID 	= FOLDER.MODULEID
-			AND			LEAF.FOLDERID	= FOLDER.FOLDERID
-			JOIN		MODULE
-			ON			LEAF.MODULEID 	= MODULE.MODULEID
-			LEFT JOIN	ICON
-			ON			LEAF.ICONID		= ICON.ICONID
-			JOIN		STAFF
-			ON			LEAF.EXECUTEBY = STAFF.STAFFID
-			WHERE 		" . $this->auditFilter . "
-			AND			FOLDER.ISACTIVE = 1
-			AND			MODULE.ISACTIVE = 1 ";
-            if ($this->model->getLeafId(0, 'single')) {
-                $sql .= " AND " . strtoupper($this->model->getModuleName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getLeafId(0, 'single') . "'";
+					SELECT	APPLICATION.APPLICATIONID,
+							APPLICATION.ICONID,
+							APPLICATION.APPLICATIONCODE,
+							APPLICATION.APPLICATIONSEQUENCE,
+							APPLICATION.APPLICATIONENGLISH,
+							APPLICATION.ISDEFAULT,
+							APPLICATION.ISNEW,
+							APPLICATION.ISDRAFT,
+							APPLICATION.ISUPDATE,
+							APPLICATION.ISDELETE,
+							APPLICATION.ISACTIVE,
+							APPLICATION.ISAPPROVED,
+							APPLICATION.EXECUTEBY,
+							APPLICATION.EXECUTETIME,
+							STAFF.STAFFNAME,
+							ICON.ICONNAME
+					FROM 	APPLICATION
+					JOIN	STAFF
+					ON		APPLICATION.EXECUTEBY = STAFF.STAFFID
+					LEFT 	JOIN	ICON
+					USING	(ICONID)
+					WHERE 	" . $this->auditFilter;
+            if ($this->model->getApplicationId(0, 'single')) {
+                $sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getApplicationId(0, 'single') . "'";
             }
+        } else {
+            echo json_encode(array("success" => false, "message" => "Undefine Database Vendor"));
+            exit();
         }
         /**
          * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
          * E.g  $filterArray=array('`leaf`.`leafId`');
          * @variables $filterArray;
          */
-        $filterArray = array("`leaf`.`leafFilename`");
+        $filterArray = null;
+        $filterArray = array('applicationId');
         /**
-         * filter modulele
+         * filter applicationle
          * @variables $tableArray
          */
-        $tableArray = array('module', 'moduleTranslate', 'folder', 'folderTranslate', 'leaf', 'leafTranslate');
-        if ($this->getfieldQuery()) {
+        $tableArray = null;
+        $tableArray = array('application');
+        if ($this->getFieldQuery()) {
             if ($this->getVendor() == self::MYSQL) {
                 $sql .= $this->q->quickSearch($tableArray, $filterArray);
             } else if ($this->getVendor() == self::MSSQL) {
@@ -430,19 +561,21 @@ class LeafClass extends ConfigClass {
                 $sql .= $tempSql2;
             }
         }
-        //echo $sql;
+        /** // optional debugger.uncomment if wanted to used
+
+          echo json_encode(array(
+          "success" => false,
+          "message" => $this->q->realEscapeString($sql)
+          ));
+          exit();
+
+         */
         $this->q->read($sql);
+        if ($this->q->execute == 'fail') {
+            echo json_encode(array("success" => false, "message" => $this->q->responce));
+            exit();
+        }
         $total = $this->q->numberRows();
-        if (empty($_GET ['dir'])) {
-            $dir = 'ASC';
-        } else {
-            $dir = $_GET ['dir'];
-        }
-        if (empty($_POST ['sort'])) {
-            $sortField = "leafId";
-        } else {
-            $sortField = $_POST ['sort'];
-        }
         if ($this->getOrder() && $this->getSortField()) {
             if ($this->getVendor() == self::MYSQL) {
                 $sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder() . " ";
@@ -455,93 +588,84 @@ class LeafClass extends ConfigClass {
         $_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
         $_SESSION ['start'] = $this->getStart();
         $_SESSION ['limit'] = $this->getLimit();
-        if (!($this->getGridQuery())) {
-            if ($this->getLimit()) {
-                // only mysql have limit
-                if ($this->getVendor() == self::MYSQL) {
-                    $sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
-                } else if ($this->getVendor() == self::MSSQL) {
-                    /**
-                     * Sql Server and Oracle used row_number
-                     * Parameterize Query We don't support
-                     */
-                    $sql = "
-							WITH [religionDerived] AS
+
+        if ($this->getLimit()) {
+            // only mysql have limit
+            if ($this->getVendor() == self::MYSQL) {
+                $sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
+            } else if ($this->getVendor() == self::MSSQL) {
+                /**
+                 * Sql Server and Oracle used row_number
+                 * Parameterize Query We don't support
+                 */
+                $sql = "
+							WITH [applicationDerived] AS
 							(
-								SELECT *,
-								ROW_NUMBER() OVER (ORDER BY [leafId]) AS 'RowNumber'
-							
-			FROM 		[leaf]
-			JOIN		[folder]
-			ON			[leaf].[folderId] 			=	[folder].[folderId]
-			AND			[leaf].[moduleId] 		=	[folder].[moduleId]
-			JOIN		[module]
-			ON			[leaf].[moduleId] 		=	[module].[moduleId]
-			LEFT JOIN	[icon]
-			ON			[leaf].[iconId]				=	[icon].[iconId]
-			WHERE 		" . $this->auditFilter . "
-			AND			[folder].[isActive]			=	1
-			AND			[module].[isActive]			=	1   " . $tempSql . $tempSql2 . "
+								SELECT 	[application].[applicationId],
+										[application].[iconId],
+										[application].[applicationSequence],
+										[application].[applicationCode],
+										[application].[applicationEnglish],
+										[application].[isDefault],
+										[application].[isNew],
+										[application].[isDraft],
+										[application].[isUpdate],
+										[application].[isDelete],
+										[application].[isApproved],
+										[application].[isReview],
+										[application].[isPost],
+										[application].[executeBy],
+										[application].[executeTime],
+										[staff].[staffName]
+										ROW_NUMBER() OVER (ORDER BY [applicationId]) AS 'RowNumber'
+								FROM 	[application]
+								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[religionDerived]
+							FROM 		[applicationDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart() . "
-							AND 			" . ($this->getStart() + $_POST ['limit'] - 1) . ";";
-                } else if ($this->getVendor() == self::ORACLE) {
-                    /**
-                     * Oracle using derived modulele also
-                     */
-                    $sql = "
+							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
+            } else if ($this->getVendor() == self::ORACLE) {
+                /**
+                 * Oracle using derived applicationle also
+                 */
+                $sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT		LEAF.LEAFID 		AS	\"leafId\",
-						LEAF.LEAFCODE 		AS 	\"leafCode\",
-						LEAF.LEAFSEQUENCE 	AS 	\"leafSequence\",
-						LEAF.LEAFNOTE 		AS 	\"leafEnglish\",
-						LEAF.LEAFFILENAME 	AS 	\"leafFilename\",
-						LEAF.ISDEFAULT 		AS 	\"isDefault\",
-						LEAF.ISNEW 			AS	\"isNew\",
-						LEAF.ISDRAFT  		AS 	\"isDraft\",
-						LEAF.ISUPDATE 		AS 	\"isUpdate\",
-						LEAF.ISDELETE 		AS 	\"isDelete\",
-						LEAF.ISACTIVE 		AS 	\"isActive\",
-						LEAF.ISAPPROVED 	AS 	\"isApproved\",
-						LEAF.EXECUTEBY 		AS 	\"executeBy\",
-						LEAF.EXECUTETIME 	AS  \"executeTime\",
-						FOLDER.FOLDERID		AS	\"folderId\",
-						FOLDER.FOLDERENGLISH	AS	\"folderEnglish\",
-						MODULE.MODULEID		AS 	\"moduleId\",		
-						MODULE.MODULEENGLISH	AS  \"moduleEnglish\",
-						LEAF.LEAFCATEGORYID AS  \"leafCategoryId\",
-						STAFF.STAFFNAME 	AS 	\"staffName\"
-			FROM 		LEAF
-			JOIN		FOLDER
-			ON			LEAF.MODULEID 	= FOLDER.MODULEID
-			AND			LEAF.FOLDERID	= FOLDER.FOLDERID
-			JOIN		MODULE
-			ON			LEAF.MODULEID 	= MODULE.MODULEID
-			LEFT JOIN	ICON
-			ON			LEAF.ICONID		= ICON.ICONID
-			JOIN		STAFF
-			ON			LEAF.EXECUTEBY = STAFF.STAFFID
-			WHERE 		" . $this->auditFilter . "
-			AND			FOLDER.ISACTIVE = 1
-			AND			MODULE.ISACTIVE = 1  " . $tempSql . $tempSql2 . "
+									SELECT  APPLICATION.APPLICATIONID,
+											APPLICATION.ICONID,
+											APPLICATION.APPLICATIONSEQUENCE,
+											APPLICATION.APPLICATIONCODE,
+											APPLICATION.APPLICATIONENGLISH,
+											APPLICATION.ISDEFAULT,
+											APPLICATION.ISNEW,
+											APPLICATION.ISDRAFT,
+											APPLICATION.ISUPDATE,
+											APPLICATION.ISDELETE,
+											APPLICATION.ISAPPROVED,
+											APPLICATION.ISREVIEW,
+											APPLICATION.ISPOST,
+											APPLICATION.EXECUTEBY,
+											APPLICATION.EXECUTETIME,
+											STAFF.STAFFNAME
+									FROM 	APPLICATION
+									WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
-						where rownum <= '" . ($this->getStart() + $_POST ['limit'] - 1) . "' )
+						where rownum <= '" . ($this->getStart() + $this->getLimit() - 1) . "' )
 						where r >=  '" . $this->getStart() . "'";
-                } else {
-                    echo "undefine vendor";
-                }
+            } else {
+                echo "undefine vendor";
+                exit();
             }
         }
+
         /*
          *  Only Execute One Query
          */
-        if (!($this->model->getLeafId(0, 'single'))) {
+        if (!($this->model->getApplicationId(0, 'single'))) {
             $this->q->read($sql);
             if ($this->q->execute == 'fail') {
                 echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -552,9 +676,8 @@ class LeafClass extends ConfigClass {
         while (($row = $this->q->fetchAssoc()) == TRUE) {
             $items [] = $row;
         }
-        //echo $strData;
-        if ($this->model->getLeafId(0, 'single')) {
-            $json_encode = json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+        if ($this->model->getApplicationId(0, 'single')) {
+            $json_encode = json_encode(array('success' => true, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items));
             $json_encode = str_replace("[", "", $json_encode);
             $json_encode = str_replace("]", "", $json_encode);
             echo $json_encode;
@@ -562,35 +685,20 @@ class LeafClass extends ConfigClass {
             if (count($items) == 0) {
                 $items = '';
             }
-            echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+            echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
             exit();
         }
     }
 
-    /**
-     * Return module Identification
-     */
-    function module() {
-        $this->security->module($this->model->getType(), $this->model->getTeamId());
-    }
-
-    /**
-     * Return Folder Identification
-     */
-    function folder() {
-
-        $this->security->folder($this->model->getType(), $this->model->getTeamId(), $this->model->getModuleId());
-    }
-
     /* (non-PHPdoc)
-     * @see config::update()
+     * @see ConfigClass::update()
      */
 
     function update() {
         header('Content-Type:application/json; charset=utf-8');
-        //UTF8
         if ($this->getVendor() == self::MYSQL) {
-            $sql = "SET NAMES \"utf8\"";
+            //UTF8
+            $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
         $this->q->start();
@@ -598,29 +706,29 @@ class LeafClass extends ConfigClass {
         // before updating check the id exist or not . if exist continue to update else warning the user
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-		SELECT	`" . $this->model->getPrimaryKeyName() . "`
-		FROM 	`" . $this->model->getTableName() . "`
-		WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getLeafId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "` 
+			FROM 	`" . $this->model->getTableName() . "` 
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getApplicationId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
-		SELECT	[" . $this->model->getPrimaryKeyName() . "]
-		FROM 	[" . $this->model->getTableName() . "]
-		WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getLeafId(0, 'single') . "' ";
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	[" . $this->model->getTableName() . "]
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getApplicationId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
-		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
-		FROM 	" . strtoupper($this->model->getTableName()) . "
-		WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getLeafId(0, 'single') . "' ";
+			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
+			FROM 	" . strtoupper($this->model->getTableName()) . "
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::DB2) {
             $sql = "
-		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
-		FROM 	" . strtoupper($this->model->getTableName()) . "
-				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getLeafId(0, 'single') . "' ";
+			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
+			FROM 	" . strtoupper($this->model->getTableName()) . "
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::POSTGRESS) {
             $sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getLeafId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
         }
         $result = $this->q->fast($sql);
         $total = $this->q->numberRows($result, $sql);
@@ -630,42 +738,90 @@ class LeafClass extends ConfigClass {
         } else {
             if ($this->getVendor() == self::MYSQL) {
                 $sql = "
-			UPDATE	`leaf`
-			SET		`isDefault`				=	'" . $this->model->getIsDefault(0, 'single') . "',
-					`isActive`				=	'" . $this->model->getIsActive(0, 'single') . "',
-					`isNew`					=	'" . $this->model->getIsNew(0, 'single') . "',
-					`isDraft`				=	'" . $this->model->getIsDraft(0, 'single') . "',
-					`isUpdate`				=	'" . $this->model->getIsUpdate(0, 'single') . "',
-					`isDelete`				=	'" . $this->model->getIsDelete(0, 'single') . "',
-					`isApproved`			=	'" . $this->model->getIsApproved(0, 'single') . "',
-					`executeBy`				=	'" . $this->model->getExecuteBy() . "',
-					`executeTime`			=	" . $this->model->getExecuteTime() . "
-			WHERE 	`leafId`				=	'" . $this->getLeafId(0, 'single') . "'";
+			UPDATE 	`application`
+			SET 	`applicationSequence`	= 	'" . $this->model->getApplicationSequence() . "',
+					`applicationEnglish`		=	'" . $this->model->getApplicationEnglish() . "',
+					`iconId`			=	'" . $this->model->getIconId() . "',
+					`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+					`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+					`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+					`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+					`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+					`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+					`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+					`executeTime`		=	" . $this->model->getExecuteTime() . "
+			WHERE 	`applicationId`			=	'" . $this->model->getApplicationId(0, 'single') . "'";
             } else if ($this->getVendor() == self::MSSQL) {
                 $sql = "
-			UPDATE	[leaf]
-			SET		 [isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-					[isActive]				=	'" . $this->model->getIsActive(0, 'single') . "',
-					[isNew]					=	'" . $this->model->getIsNew(0, 'single') . "',
-					[isDraft]				=	'" . $this->model->getIsDraft(0, 'single') . "',
-					[isUpdate]				=	'" . $this->model->getIsUpdate(0, 'single') . "',
-					[isDelete]				=	'" . $this->model->getIsDelete(0, 'single') . "',
-					[isApproved]			=	'" . $this->model->getIsApproved(0, 'single') . "',
-					[executeBy]				=	'" . $this->model->getExecuteBy() . "',
-					[executeTime]			=	" . $this->model->getExecuteTime() . "
-			WHERE 	[leafId]				=	'" . $this->getLeafId(0, 'single') . "'";
+			UPDATE 	[application]
+			SET 	[applicationSequence]	= 	'" . $this->model->getApplicationSequence() . "',
+					[applicationEnglish]		=	'" . $this->model->getApplicationEnglish() . "',
+					[iconId]			=	'" . $this->model->getIconId() . "',
+					[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+					[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+					[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+					[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+					[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+					[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+					[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+					[executeBy]			=	'" . $this->model->getExecuteBy() . ",
+					[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 	[applicationId]			=	'" . $this->model->getApplicationId(0, 'single') . "'";
             } else if ($this->getVendor() == self::ORACLE) {
                 $sql = "
-			UPDATE	LEAF
-			SET		ISACTIVE		=	'" . $this->model->getIsActive . "',
-					ISNEW			=	'" . $this->model->getIsNew . "',
-					ISDRAFT			=	'" . $this->model->getIsDraft . "',
-					ISUPDATE		=	'" . $this->model->getIsUpdate . "',
-					ISDELETE		=	'" . $this->model->getIsDelete . "',
-					ISAPPROVED		=	'" . $this->model->getIsApproved . "',
-					EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-					EXECUTETIME		=	" . $this->model->getTime . "
-			WHERE 	LEAFID			=	'" . $this->getLeafId(0, 'single') . "'";
+			UPDATE 	APPLICATION
+			SET 	APPLICATIONSEQUENCE		= 	'" . $this->model->getApplicationSequence() . "',
+					APPLICATIONENGLISH		=	'" . $this->model->getApplicationEnglish() . "',
+					ICONID				=	'" . $this->model->getIconId() . "',
+					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
+					ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+					EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+            } else if ($this->getVendor() == self::DB2) {
+                $sql = "
+			UPDATE 	APPLICATION
+			SET 	APPLICATIONSEQUENCE		= 	'" . $this->model->getApplicationSequence() . "',
+					APPLICATIONENGLISH		=	'" . $this->model->getApplicationEnglish() . "',
+					ICONID				=	'" . $this->model->getIconId() . "',
+					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
+					ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+					EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+            } else if ($this->getVendor() == self::POSTGRESS) {
+                $sql = "
+			UPDATE 	APPLICATION
+			SET 	APPLICATIONSEQUENCE		= 	'" . $this->model->getApplicationSequence() . "',
+					APPLICATIONENGLISH		=	'" . $this->model->getApplicationEnglish() . "',
+					ICONID				=	'" . $this->model->getIconId() . "',
+					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
+					ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+					EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
             }
             $this->q->update($sql);
             if ($this->q->execute == 'fail') {
@@ -674,15 +830,19 @@ class LeafClass extends ConfigClass {
             }
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => "Record Update", "leafId" => $this->getLeafId(0, 'single')));
+        echo json_encode(array("success" => true, "message" => "update success", "applicationId" => $this->model->getApplicationId(0, 'single')));
         exit();
     }
+
+    /* (non-PHPdoc)
+     * @see ConfigClass::delete()
+     */
 
     function delete() {
         header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
             //UTF8
-            $sql = "SET NAMES \"utf8\"";
+            $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
         $this->q->start();
@@ -692,27 +852,27 @@ class LeafClass extends ConfigClass {
             $sql = "
 		SELECT	`" . $this->model->getPrimaryKeyName() . "`
 		FROM 	`" . $this->model->getTableName() . "`
-		WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getLeafId(0, 'single') . "' ";
+		WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getApplicationId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
 		SELECT	[" . $this->model->getPrimaryKeyName() . "]
 		FROM 	[" . $this->model->getTableName() . "]
-		WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getLeafId(0, 'single') . "' ";
+		WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getApplicationId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
 		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 		FROM 	" . strtoupper($this->model->getTableName()) . "
-		WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getLeafId(0, 'single') . "' ";
+				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::DB2) {
             $sql = "
 		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 		FROM 	" . strtoupper($this->model->getTableName()) . "
-				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getLeafId(0, 'single') . "' ";
+				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::POSTGRESS) {
             $sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getLeafId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
         }
         $result = $this->q->fast($sql);
         $total = $this->q->numberRows($result, $sql);
@@ -722,43 +882,79 @@ class LeafClass extends ConfigClass {
         } else {
             if ($this->getVendor() == self::MYSQL) {
                 $sql = "
-			UPDATE	`leaf`
-			SET		`isDefault`				=	'" . $this->model->getIsDefault(0, 'single') . "',
-					`isActive`				=	'" . $this->model->getIsActive . "',
-					`isNew`					=	'" . $this->model->getIsNew . "',
-					`isDraft`				=	'" . $this->model->getIsDraft . "',
-					`isUpdate`				=	'" . $this->model->getIsUpdate . "',
-					`isDelete`				=	'" . $this->model->getIsDelete . "',
-					`isApproved`			=	'" . $this->model->getIsApproved . "',
-					`executeBy`				=	'" . $this->model->getExecuteBy() . "',
-					`executeTime`			=	" . $this->model->getExecuteTime() . "
-			WHERE 	`leafId`				=	'" . $this->model->getLeafId(0, 'single') . "'";
+			UPDATE 	`application`
+			SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+					`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+					`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+					`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+					`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+					`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+					`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+					`executeBy`			=	'" . $this->model->getBy(0, 'single') . "',
+					`executeTime		=	" . $this->model->getExecuteTime() . "
+			WHERE 	`applicationId`			=	'" . $this->model->applicationId . "'";
             } else if ($this->getVendor() == self::MSSQL) {
                 $sql = "
-			UPDATE	[leaf]
-			SET		[isDefault]				=	'" . $this->model->getIsDefault(0, 'single') . "',
-					[isActive]				=	'" . $this->model->getIsActive(0, 'single') . "',
-					[isNew]					=	'" . $this->model->getIsNew(0, 'single') . "',
-					[isDraft]				=	'" . $this->model->getIsDraft(0, 'single') . "',
-					[isUpdate]				=	'" . $this->model->getIsUpdate(0, 'single') . "',
-					[isDelete]				=	'" . $this->model->getIsDelete(0, 'single') . "',
-					[isApproved]			=	'" . $this->model->getIsApproved(0, 'single') . "',
-					[executeBy]				=	'" . $this->model->getExecuteBy() . "',
-					[executeTime]			=	" . $this->model->getExecuteTime() . "
-			WHERE 	[leafId]				=	'" . $this->getLeafId(0, 'single') . "'";
+			UPDATE 	[application]
+			SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+					[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+					[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+					[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+					[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+					[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+					[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+					[executeBy]			=	'" . $this->model->getBy(0, 'single') . "',
+					[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 	[applicationId]			=	'" . $this->model->getApplicationId(0, 'single') . "'";
             } else if ($this->getVendor() == self::ORACLE) {
                 $sql = "
-			UPDATE	LEAF
-			SET		ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-					ISACTIVE		=	'" . $this->model->getIsActive(0, 'single') . "',
-					ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
-					ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-					ISUPDATE		=	'" . $this->model->getIsUpdate(0, 'single') . "',
-					ISDELETE		=	'" . $this->model->getIsDelete(0, 'single') . "',
-					ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-					EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-					EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-			WHERE 	LEAFID			=	'" . $this->model->getLeafId(0, 'single') . "'";
+			UPDATE 	APPLICATION
+			SET 	ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
+					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
+					EXECUTEBY			=	'" . $this->model->getBy(0, 'single') . "',
+					ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+            } else if ($this->getVendor() == self::DB2) {
+                $sql = "
+			UPDATE 	APPLICATION
+			SET 	ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
+					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
+					EXECUTEBY			=	'" . $this->model->getBy(0, 'single') . "',
+					ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+            } else if ($this->getVendor() == self::POSTGRESS) {
+                $sql = "
+			UPDATE 	APPLICATION
+			SET 	ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
+					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+					ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
+					ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+					ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+					ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
+					EXECUTEBY			=	'" . $this->model->getBy(0, 'single') . "',
+					ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
             }
             $this->q->update($sql);
             if ($this->q->execute == 'fail') {
@@ -767,7 +963,7 @@ class LeafClass extends ConfigClass {
             }
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => "Record Remove"));
+        echo json_encode(array("success" => true, "message" => "Delete Succes"));
         exit();
     }
 
@@ -832,7 +1028,7 @@ class LeafClass extends ConfigClass {
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getLeafId($i, 'array') . "'
+							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -856,7 +1052,7 @@ class LeafClass extends ConfigClass {
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getLeafId($i, 'array') . "'
+							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -880,7 +1076,7 @@ class LeafClass extends ConfigClass {
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getLeafId($i, 'array') . "'
+							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -904,7 +1100,7 @@ class LeafClass extends ConfigClass {
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getLeafId($i, 'array') . "'
+							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -928,7 +1124,7 @@ class LeafClass extends ConfigClass {
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getLeafId($i, 'array') . "'
+							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -952,7 +1148,7 @@ class LeafClass extends ConfigClass {
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getLeafId($i, 'array') . "'
+							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -976,7 +1172,7 @@ class LeafClass extends ConfigClass {
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getLeafId($i, 'array') . "'
+							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1000,7 +1196,7 @@ class LeafClass extends ConfigClass {
                                 exit();
                             }
                             $sqlLooping .= "
-                            WHEN '" . $this->model->getLeafId($i, 'array') . "'
+                            WHEN '" . $this->model->getApplicationId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1024,7 +1220,7 @@ class LeafClass extends ConfigClass {
                                 exit();
                             }
                             $sqlLooping .= "
-                                WHEN '" . $this->model->getLeafId($i, 'array') . "'
+                                WHEN '" . $this->model->getApplicationId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1070,7 +1266,7 @@ class LeafClass extends ConfigClass {
         exit();
     }
     public function nextSequence() {
-        $this->security->nextSequence($this->model->getModuleId(), $this->model->getFolderId());
+        $this->recordSet->nextSequence();
     }
 
     function firstRecord($value) {
@@ -1090,14 +1286,14 @@ class LeafClass extends ConfigClass {
     }
 
     /* (non-PHPdoc)
-     * @see config::excel()
+     * @see ConfigClass::excel()
      */
 
     function excel() {
         header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
             //UTF8
-            $sql = "SET NAMES \"utf8\"";
+            $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
         if ($_SESSION ['start'] == 0) {
@@ -1123,13 +1319,12 @@ class LeafClass extends ConfigClass {
         $this->excel->getActiveSheet()->getStyle('B3:D3')->getFill()->getStartColor()->setARGB('66BBFF');
         //
         $loopRow = 4;
-        $this->q->numberRows();
         $i = 0;
         while (($row = $this->q->fetchAssoc()) == TRUE) {
             //	echo print_r($row);
             $this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-            $this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row ['leafEnglish']);
-            $this->excel->getActiveSheet()->setCellValue('D' . $loopRow, $row ['leafCode']);
+            $this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row ['applicationEnglish']);
+            $this->excel->getActiveSheet()->setCellValue('D' . $loopRow, $row ['applicationDesc']);
             $loopRow++;
             $lastRow = 'D' . $loopRow;
         }
@@ -1138,9 +1333,10 @@ class LeafClass extends ConfigClass {
         $formula = $from . ":" . $to;
         $this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
         $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-        $filename = "leaf" . rand(0, 10000000) . ".xlsx";
-        $path = $_SERVER ['document_root'] . "/" . $this->application . "/security/document/excel/" . $filename;
+        $filename = "application" . rand(0, 10000000) . ".xlsx";
+        $path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
         $objWriter->save($path);
+        $this->audit->createTrail($this->leafId, $path, $filename);
         $file = fopen($path, 'r');
         if ($file) {
             echo json_encode(array("success" => true, "message" => "File generated"));
@@ -1151,10 +1347,12 @@ class LeafClass extends ConfigClass {
 
 }
 
-//echo "string".$_GET['leafId'];
-$leafObject = new LeafClass ();
 /**
- * crud -create,read,update,delete
+ * Declare object
+ * */
+$applicationObject = new ApplicationClass ();
+/**
+ * Form Property .CRUD -create,read,update,delete
  * */
 if (isset($_POST ['method'])) {
     /*
@@ -1163,67 +1361,48 @@ if (isset($_POST ['method'])) {
     /*
      *  Leaf / Application Identification
      */
-    if (isset($_POST ['leafIdTemp'])) {
-        $leafObject->setLeafId($_POST ['leafIdTemp']);
+    if (isset($_POST ['leafId'])) {
+        $applicationObject->setLeafId($_POST ['leafId']);
     }
-    /*
-     * Admin Only
-     */
     if (isset($_POST ['isAdmin'])) {
-        $leafObject->setIsAdmin($_POST ['isAdmin']);
-    }
-    /**
-     * Paging
-     */
-    if (isset($_POST ['start'])) {
-        $leafObject->setStart($_POST ['start']);
-    }
-    if (isset($_POST ['limit'])) {
-        $leafObject->setLimit($_POST ['perPage']);
+        $applicationObject->setIsAdmin($_POST ['isAdmin']);
     }
     /*
-     *  Filtering
+     * Filtering
      */
     if (isset($_POST ['query'])) {
-        $leafObject->setFieldQuery($_POST ['query']);
+        $applicationObject->setFieldQuery($_POST ['query']);
     }
     if (isset($_POST ['filter'])) {
-        $leafObject->setGridQuery($_POST ['filter']);
+        $applicationObject->setGridQuery($_POST ['filter']);
     }
     /*
-     *  Ordering
+     * Ordering
      */
     if (isset($_POST ['order'])) {
-        $leafObject->setOrder($_POST ['order']);
+        $applicationObject->setOrder($_POST ['order']);
     }
     if (isset($_POST ['sortField'])) {
-        $leafObject->setSortField($_POST ['sortField']);
-    }
-    /*
-     * 
-     * Translation
-     */
-    if (isset($_POST ['leafTranslate'])) {
-        $leafObject->leafTranslate = $_POST ['leafTranslate'];
+        $applicationObject->setSortField($_POST ['sortField']);
     }
     /*
      *  Load the dynamic value
      */
-    $leafObject->execute();
+    $applicationObject->execute();
     /*
      *  Crud Operation (Create Read Update Delete/Destory)
      */
     if ($_POST ['method'] == 'create') {
-        $leafObject->create();
+        $applicationObject->create();
     }
     if ($_POST ['method'] == 'read') {
-        $leafObject->read();
+        $applicationObject->read();
     }
     if ($_POST ['method'] == 'save') {
-        $leafObject->update();
+        $applicationObject->update();
     }
     if ($_POST ['method'] == 'delete') {
-        $leafObject->delete();
+        $applicationObject->delete();
     }
 }
 if (isset($_GET ['method'])) {
@@ -1231,47 +1410,41 @@ if (isset($_GET ['method'])) {
      *  Initilize Value before load in the loader
      */
     /*
-     *  Leaf /Application
+     *  Leaf / Application Identification
      */
-    if (isset($_GET ['leafIdTemp'])) {
-        $leafObject->setLeafId($_GET ['leafIdTemp']);
+    if (isset($_GET ['leafId'])) {
+        $applicationObject->setLeafId($_GET ['leafId']);
     }
     /*
      * Admin Only
      */
     if (isset($_GET ['isAdmin'])) {
-        $leafObject->setIsAdmin($_GET ['isAdmin']);
+        $applicationObject->setIsAdmin($_GET ['isAdmin']);
     }
     /*
      *  Load the dynamic value
      */
-    $leafObject->execute();
+    $applicationObject->execute();
     if (isset($_GET ['field'])) {
         if ($_GET ['field'] == 'staffId') {
-            $leafObject->staff();
-        }
-        if ($_GET ['field'] == 'moduleId') {
-            $leafObject->module();
-        }
-        if ($_GET ['field'] == 'folderId') {
-            $leafObject->folder();
+            $applicationObject->staff();
         }
         if ($_GET ['field'] == 'sequence') {
-            $leafObject->nextSequence();
+            $applicationObject->nextSequence();
         }
     }
     /*
-     * Update Status of The modulele. Admin Level Only
+     * Update Status of The applicationle. Admin Level Only
      */
     if ($_GET ['method'] == 'updateStatus') {
-        $leafObject->updateStatus();
+        $applicationObject->updateStatus();
     }
     /*
      *  Checking Any Duplication  Key
      */
-    if (isset($_GET ['leafCode'])) {
-        if (strlen($_GET ['leafCode']) > 0) {
-            $leafObject->duplicate();
+    if (isset($_GET ['applicationCode'])) {
+        if (strlen($_GET ['applicationCode']) > 0) {
+            $applicationObject->duplicate();
         }
     }
     /*
@@ -1279,8 +1452,9 @@ if (isset($_GET ['method'])) {
      */
     if (isset($_GET ['mode'])) {
         if ($_GET ['mode'] == 'report') {
-            $leafObject->excel();
+            $applicationObject->excel();
         }
     }
 }
 ?>
+

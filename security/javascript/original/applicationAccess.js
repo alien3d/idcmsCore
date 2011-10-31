@@ -28,7 +28,7 @@ Ext.onReady(function() {
     } // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/religionController.php?',
+        url: '../controller/religionController.php',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -279,7 +279,7 @@ Ext.onReady(function() {
     }); // end log Request
     // start Log Advance Request
     var logAdvanceProxy = new Ext.data.HttpProxy({
-        url: '../../security/controller/logAdvanceController.php?',
+        url: '../../security/controller/logAdvanceController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -431,7 +431,7 @@ Ext.onReady(function() {
         }),
         viewConfig: {
             forceFit: true,
-            emptyText: emptyTextLabel
+            emptyText: 'No rows to display'
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -489,10 +489,9 @@ Ext.onReady(function() {
         autoScroll: true
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
-    // start additional Proxy,Reader,Store,Filter,Grid
-    // start team request
+    // start additional Proxy ,Reader,Store,Filter,Grid
     var teamProxy = new Ext.data.HttpProxy({
-        url: '../controller/moduleAccessController.php',
+        url: '../controller/applicationAccessController.php',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -530,11 +529,10 @@ Ext.onReady(function() {
             name: 'teamEnglish',
             type: 'string'
         }]
-    }); // end team request
-    // end additional Proxy,Reader,Store,Filter,Grid
+    }); // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
-    var moduleAccessProxy = new Ext.data.HttpProxy({
-        url: '../controller/moduleAccessController.php',
+    var applicationAccessProxy = new Ext.data.HttpProxy({
+        url: '../controller/applicationAccessController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -547,26 +545,25 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var moduleAccessReader = new Ext.data.JsonReader({
+    var applicationAccessReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
-        idProperty: 'moduleAccessId'
+        idProperty: 'applicationAccessId'
     });
-    var moduleAccessStore = new Ext.data.JsonStore({
-        proxy: moduleAccessProxy,
-        reader: moduleAccessReader,
+    var applicationAccessStore = new Ext.data.JsonStore({
+        proxy: applicationAccessProxy,
+        reader: applicationAccessReader,
         autoDestroy: true,
         remoteSort: true,
         root: 'data',
         baseParams: {
             method: 'read',
             mode: 'view',
-            leafId: leafId,
-            isAdmin: isAdmin
+            leafId: leafId
         },
         fields: [{
-            name: 'moduleAccessId',
+            name: 'applicationAccessId',
             type: 'int'
         },
         {
@@ -586,15 +583,15 @@ Ext.onReady(function() {
             type: 'string'
         },
         {
-            name: 'moduleAccessValue',
+            name: 'applicationAccessValue',
             type: 'boolean'
         }]
     });
-    var moduleAccessValue = new Ext.ux.grid.CheckColumn({
-        header: moduleAccessValueLabel,
-        dataIndex: 'moduleAccessValue'
+    var applicationAccessValue = new Ext.ux.grid.CheckColumn({
+        header: applicationAccessValueLabel,
+        dataIndex: 'applicationAccessValue'
     });
-    var moduleAccessColumnModel = new Ext.grid.ColumnModel({
+    var applicationAccessColumnModel = new Ext.grid.ColumnModel({
         columns: [{
             header: moduleEnglishLabel,
             hidden: false,
@@ -605,102 +602,7 @@ Ext.onReady(function() {
             hidden: true,
             dataIndex: 'teamId'
         },
-        moduleAccessValue]
-    });
-    var accessArray = ['moduleAccessValue'];
-    var gridPanel = new Ext.grid.GridPanel({
-        name: 'gridPanel',
-        id: 'gridPanel',
-        region: 'west',
-        store: moduleAccessStore,
-        cm: moduleAccessColumnModel,
-        frame: true,
-        title: 'Module Access Grid',
-        height: 200,
-        autoHeight: true,
-        autoScroll: true,
-        layout: 'anchor',
-        disabled: true,
-        selModel: moduleAccessValue,
-        iconCls: 'application_view_detail',
-        viewConfig: {
-            forceFit: true,
-            emptyText: emptyTextLabel
-        },
-        tbar: [{
-            xtype: 'button',
-            text: CheckAllLabel,
-            iconCls: 'row-check-sprite-check',
-            listeners: {
-                'click': function(button, e) {
-                    moduleAccessStore.each(function(rec) {
-                        for (var access in accessArray) {
-                            rec.set(accessArray[access], true);
-                        }
-                    });
-                }
-            }
-        },
-        {
-            xtype: 'button',
-            text: ClearAllLabel,
-            iconCls: 'row-check-sprite-uncheck',
-            listeners: {
-                'click': function(button, e) {
-                    moduleAccessStore.each(function(rec) {
-                        for (var access in accessArray) {
-                            rec.set(accessArray[access], false);
-                        }
-                    });
-                }
-            }
-        },
-        {
-            xtype: 'button',
-            text: saveButtonLabel,
-            iconCls: 'bullet_disk',
-            listeners: {
-                'click': function(button, e) {
-                    var url = '../controller/moduleAccessController.php';
-                    var sub_url = '';
-                    var modified = moduleAccessStore.getModifiedRecords();
-                    for (var i = 0; i < modified.length; i++) {
-                        var dataChanges = modified[i].getChanges();
-                        var record = moduleAccessStore.getAt(i);
-                        sub_url = sub_url + '&moduleAccessId[]=' + record.get('moduleAccessId');
-                        if (dataChanges.moduleAccessId == true || dataChanges.moduleAccessId == false) {
-                            sub_url = sub_url + '&moduleAccessValue[]=' + record.get('moduleAccessValue');
-                        }
-                    }
-                    url = url + sub_url;
-                    Ext.Ajax.request({
-                        url: url,
-                        method: 'GET',
-                        params: {
-                            leafId: leafId,
-                            isAdmin: isAdmin,
-                            method: 'update'
-                        },
-                        success: function(response, options) {
-                            jsonResponse = Ext.decode(response.responseText);
-                            moduleAccessStore.load({
-                                params: {
-                                    teamId: Ext.getCmp('teamId').getValue()
-                                }
-                            });
-                            if (jsonResponse.success == true) {
-                                Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                            } else if (jsonResponse.success == false) {
-                                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-                            }
-                        },
-                        failure: function(response, options) {
-                            Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
-                        }
-                    });
-                }
-            }
-        }]
+        applicationAccessValue]
     });
     var teamId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
@@ -734,7 +636,7 @@ Ext.onReady(function() {
                 } else {
                     gridPanel.enable();
                 }
-                moduleAccessStore.load({
+                applicationAccessStore.load({
                     params: {
                         leafId: leafId,
                         teamId: this.value
@@ -753,10 +655,137 @@ Ext.onReady(function() {
         iconCls: 'application_form',
         items: [teamId]
     });
-    var viewPort = new Ext.Viewport({
-        id: 'viewport',
-        layout: 'form',
+    var accessArray = ['applicationAccessValue'];
+    var gridPanel = new Ext.grid.GridPanel({
+        name: 'gridPanel',
+        id: 'gridPanel',
+        region: 'west',
+        store: applicationAccessStore,
+        cm: applicationAccessColumnModel,
         frame: true,
-        items: [formPanel, gridPanel]
-    });
-});
+        title: leafNative,
+        height: 200,
+        autoHeight: true,
+        autoScroll: true,
+        layout: 'anchor',
+        disabled: true,
+        selModel: applicationAccessValue,
+        iconCls: 'application_view_detail',
+        viewConfig: {
+            forceFit: true,
+            emptyText: emptyTextLabel
+        },
+        tbar: {
+            items: [{
+            	xtype:'button',
+                text: CheckAllLabel,
+                iconCls: 'row-check-sprite-check',
+                listeners: {
+                    'click': function(button,e) {
+                        applicationAccessStore.each(function(rec) {
+                            for (var access in accessArray) {
+                                rec.set(accessArray[access], true);
+                            }
+                        });
+                    }
+                }
+            },
+            {
+                xtype:'button',
+            	text: ClearAllLabel,
+                iconCls: 'row-check-sprite-uncheck',
+                listeners: {
+                    'click': function(button,e) {
+                        applicationAccessStore.each(function(rec) {
+                            for (var access in accessArray) {
+                                rec.set(accessArray[access], false);
+                            }
+                        });
+                    }
+                }
+            },
+            {
+                xtype:'button',
+            	text: saveButtonLabel,
+                iconCls: 'bullet_disk',
+                listeners: {
+                    'click': function(button,e) {
+                        var url = '../controller/applicationAccessController.php';
+												var sub_url = '';
+												var modified = applicationAccessStore.getModifiedRecords();												
+												for ( var i = 0; i < modified.length; i++) {													
+													var dataChanges = modified[i].getChanges();															
+													var record = applicationAccessStore
+															.getAt(i);
+													sub_url = sub_url
+													+ ' & applicationAccessId[] = '
+													+ record
+															.get('applicationAccessId');
+													if (dataChanges.applicationAccessId == true
+																|| dataChanges.applicationAccessId == false) {
+													
+													
+													sub_url = sub_url+ '&applicationAccessValue[]= '+ record.get('applicationAccessValue');
+													}				
+												}
+												url = url + sub_url;
+
+												Ext.Ajax
+														.request({
+															url : url,
+															method:'GET',
+															success : function(
+																	response,
+																	options) {
+																jsonResponse = Ext
+																		.decode(response.responseText);
+
+																applicationAccessStore
+																		.load({
+																			params : {
+																				teamId : Ext.getCmp('teamId').getValue()
+																			}
+																		});
+																
+
+																if (jsonResponse.success == true) {
+
+																	Ext.MessageBox
+																			.alert(
+																					systemLabel,
+																					jsonResponse.message);
+																} else if (jsonResponse.success == false) {
+
+																	Ext.MessageBox
+																			.alert(
+																					systemErrorLabel,
+																					jsonResponse.message);
+																}
+															},
+															failure : function(
+																	response,
+																	options) {
+
+																Ext.MessageBox
+																		.alert(
+																				systemErrorLabel,
+																				escape(response.status)
+																						+ ':'
+																						+ escape(response.statusText));
+															}
+														});
+											
+											}
+
+										}
+									} ]
+						}
+					});
+
+			var viewPort = new Ext.Viewport({
+				id : 'viewport ',
+				layout : 'form',
+				frame : true,
+				items : [ formPanel, gridPanel ]
+			});
+		});

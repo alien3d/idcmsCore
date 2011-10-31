@@ -45,7 +45,7 @@ class CalendarModel extends ValidationClass {
 		 *  All the $_POST enviroment.
 		 */
 		if (isset ( $_POST ['calendarId'] )) {
-			$this->setCalendarId ( $this->strict ( $_POST ['calendarId'], 'numeric' ) );
+			$this->setCalendarId ( $this->strict ( $_POST ['calendarId'], 'numeric' ),0,'single');
 		}
 		if (isset ( $_POST ['calendarColorId'] )) {
 			$this->setCalendarColorId ( $this->strict ( $_POST ['calendarTitle'], 'numeric' ) );
@@ -87,6 +87,8 @@ class CalendarModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::update()
@@ -99,6 +101,8 @@ class CalendarModel extends ValidationClass {
 		$this->setIsActive ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::delete()
@@ -111,6 +115,8 @@ class CalendarModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 1, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -123,6 +129,8 @@ class CalendarModel extends ValidationClass {
 		$this->setIsActive ( 0, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
 	 * @see ValidationClass::draft()
@@ -137,6 +145,8 @@ class CalendarModel extends ValidationClass {
 		$this->setIsApproved ( 1, 0, 'single' );
 		$this->setIsDelete ( 0, 0, 'single' );
 		$this->setIsApproved ( 0, 0, 'single' );
+		$this->setIsReview ( 0, 0, 'single' );
+		$this->setIsPost ( 0, 0, 'single' );
 	}
 	/* (non-PHPdoc)
      * @see ValidationClass::review()
@@ -173,7 +183,7 @@ class CalendarModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setCalendarId($value, $key, $type) {
-		if ($type == 'string') {
+		if ($type == 'single') {
 			$this->calendarId = $value;
 		} else if ($type == 'array') {
 			$this->calendarId [$key] = $value;
@@ -189,7 +199,7 @@ class CalendarModel extends ValidationClass {
 	 * @return int|array
 	 */
 	public function getCalendarId($key, $type) {
-		if ($type == 'string') {
+		if ($type == 'single') {
 			return $this->calendarId;
 		} else if ($type == 'array') {
 			return $this->calendarId [$key];

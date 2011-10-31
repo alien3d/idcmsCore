@@ -239,7 +239,7 @@ class EventModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
 	public function setEventId($value, $key, $type) {
-		if ($type == 'string') {
+		if ($type == 'single') {
 			$this->eventId = $value;
 		} else if ($type == 'array') {
 			$this->eventId [$key] = $value;
@@ -255,7 +255,7 @@ class EventModel extends ValidationClass {
 	 * @return int|array
 	 */
 	public function getEventId($key, $type) {
-		if ($type == 'string') {
+		if ($type == 'single') {
 			return $this->eventId;
 		} else if ($type == 'array') {
 			return $this->eventId [$key];

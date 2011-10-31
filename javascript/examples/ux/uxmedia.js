@@ -414,7 +414,7 @@
           writeMedia : function(mediaCfg, container, domPosition ){
               var ct = Ext.get(container), markup;
               if(ct){
-                markup = this.mediaMarkup(mediaCfg)
+                markup = this.mediaMarkup(mediaCfg);
                 domPosition ? Ext.DomHelper.insertHtml(domPosition, ct.dom, markup)
                   :ct.update(markup);
               }
@@ -1010,7 +1010,7 @@
                         */
                        removeAudioListeners : function(){
                           var c = [];
-                          Ext.iterate(this.audioListeners, function(audioEvent){c.push(audioEvent)});
+                          Ext.iterate(this.audioListeners, function(audioEvent){c.push(audioEvent);});
                           Ext.iterate(c, this.removeAudioListener, this);
                        },
                        

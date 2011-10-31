@@ -31,7 +31,7 @@ class DepartmentModel extends ValidationClass {
 	 * Department Note
 	 * @var string
 	 */
-	private $departmentNote;
+	private $departmentEnglish;
 	function execute() {
 		/**
 		 * Basic Information Table
@@ -50,8 +50,8 @@ class DepartmentModel extends ValidationClass {
 		if (isset ( $_POST ['departmentCode'] )) {
 			$this->setDepartmentCode ( $this->strict ( $_POST ['departmentCode'], 'memo' ) );
 		}
-		if (isset ( $_POST ['departmentNote'] )) {
-			$this->setDepartmentNote ( $this->strict ( $_POST ['departmentNote'], 'memo' ) );
+		if (isset ( $_POST ['departmentEnglish'] )) {
+			$this->setDepartmentNote ( $this->strict ( $_POST ['departmentEnglish'], 'memo' ) );
 		}
 		
 		/**
@@ -118,88 +118,69 @@ class DepartmentModel extends ValidationClass {
 				
 				$this->setDepartmentId ( $this->strict ( $_GET ['departmentId'] [$i], 'numeric' ), $i, 'array' );
 			}
-			if (isset ( $_GET ['isDefault'] )) {
-				if ($_GET ['isDefault'] [$i] == 'true') {
-					$this->setIsDefault ( 1, $i, 'array' );
-				} else {
-					$this->setIsDefault ( 0, $i, 'array' );
-				}
-
-			} else {
-				$this->setIsDefault ( 0, $i, 'array' );
-			}
-			if (isset ( $_GET ['isNew'] )) {
-				if ($_GET ['isNew'] [$i] == 'true') {
-					$this->setIsNew ( 1, $i, 'array' );
-				}else {
-					$this->setIsNew ( 0, $i, 'array' );
-				}
-			} else {
-				$this->setIsNew ( 0, $i, 'array' );
-			}
-			if (isset ( $_GET ['isDraft'] )) {
-				if ($_GET ['isDraft'] [$i] == 'true') {
-					$this->setIsDraft ( 1, $i, 'array' );
-				}else {
-					$this->setIsDraft ( 0, $i, 'array' );
-				}
-			} else {
-				$this->setIsDraft ( 0, $i, 'array' );
-			}
-			if (isset ( $_GET ['isUpdate'] )) {
-				if ($_GET ['isUpdate'] [$i] == 'true') {
-					$this->setIsUpdate ( 1, $i, 'array' );
-				}else {
-					$this->setIsUpdate ( 0, $i, 'array' );
-				}
-			} else {
-				$this->setIsUpdate ( 0, $i, 'array' );
-			}
-			if (isset ( $_GET ['isDelete'] )) {
-				if ($_GET ['isDelete'] [$i] == 'true') {
-					$this->setIsDelete ( 1, $i, 'array' );
-				}else {
-					$this->setIsDelete ( 0, $i, 'array' );
-				}
-			} else {
-				$this->setIsDelete ( 0, $i, 'array' );
-			}
-			if (isset ( $_GET ['isActive'] )) {
-				if ($_GET ['isActive'] [$i] == 'true') {
-					$this->setIsActive ( 1, $i, 'array' );
-				}else {
-					$this->setIsActive ( 0, $i, 'array' );
-				}
-			} else {
-				$this->setIsActive ( 0, $i, 'array' );
-			}
-			if (isset ( $_GET ['isApproved'] )) {
-				if ($_GET ['isApproved'] [$i] == 'true') {
-					$this->setIsApproved ( 1, $i, 'array' );
-				}else {
-					$this->setIsApproved ( 0, $i, 'array' );
-				}
-			} else {
-				$this->setIsApproved ( 0, $i, 'array' );
-			}
-			if (isset ( $_GET ['isReview'] )) {
-				if ($_GET ['isReview'] [$i] == 'true') {
-					$this->setIsReview ( 1, $i, 'array' );
-				}else {
-					$this->setIsReview ( 0, $i, 'array' );
-				}
-			} else {
-				$this->setIsReview ( 0, $i, 'array' );
-			}
-			if (isset ( $_GET ['isPost'] )) {
-				if ($_GET ['isPost'] [$i] == 'true') {
-					$this->setIsPost ( 1, $i, 'array' );
-				}	else {
-					$this->setIsPost ( 0, $i, 'array' );
-				}
-			} else {
-				$this->setIsPost ( 0, $i, 'array' );
-			}
+			if (isset($_GET ['isDefault'])) {
+                if ($_GET ['isDefault'] [$i] == 'true') {
+                    $this->setIsDefault(1, $i, 'array');
+                } else if ($_GET ['isDefault'] [$i] == 'false') {
+                    $this->setIsDefault(0, $i, 'array');
+                }
+            }
+            if (isset($_GET ['isNew'])) {
+                if ($_GET ['isNew'] [$i] == 'true') {
+                    $this->setIsNew(1, $i, 'array');
+                } else if ($_GET ['isNew'] [$i] == 'false') {
+                    $this->setIsNew(0, $i, 'array');
+                }
+            }
+            if (isset($_GET ['isDraft'])) {
+                if ($_GET ['isDraft'] [$i] == 'true') {
+                    $this->setIsDraft(1, $i, 'array');
+                } else if ($_GET ['isDraft'] [$i] == 'false') {
+                    $this->setIsDraft(0, $i, 'array');
+                }
+            }
+            if (isset($_GET ['isUpdate'])) {
+                if ($_GET ['isUpdate'] [$i] == 'true') {
+                    $this->setIsUpdate(1, $i, 'array');
+                } if ($_GET ['isUpdate'] [$i] == 'false') {
+                    $this->setIsUpdate(0, $i, 'array');
+                }
+            }
+            if (isset($_GET ['isDelete'])) {
+                if ($_GET ['isDelete'] [$i] == 'true') {
+                    $this->setIsDelete(1, $i, 'array');
+                } else if ($_GET ['isDelete'] [$i] == 'false') {
+                    $this->setIsDelete(0, $i, 'array');
+                }
+            }
+            if (isset($_GET ['isActive'])) {
+                if ($_GET ['isActive'] [$i] == 'true') {
+                    $this->setIsActive(1, $i, 'array');
+                } else if ($_GET ['isActive'] [$i] == 'false') {
+                    $this->setIsActive(0, $i, 'array');
+                }
+            }
+            if (isset($_GET ['isApproved'])) {
+                if ($_GET ['isApproved'] [$i] == 'true') {
+                    $this->setIsApproved(1, $i, 'array');
+                } else if ($_GET ['isApproved'] [$i] == 'false') {
+                    $this->setIsApproved(0, $i, 'array');
+                }
+            }
+            if (isset($_GET ['isReview'])) {
+                if ($_GET ['isReview'] [$i] == 'true') {
+                    $this->setIsReview(1, $i, 'array');
+                } else if ($_GET ['isReview'] [$i] == 'false') {
+                    $this->setIsReview(0, $i, 'array');
+                }
+            }
+            if (isset($_GET ['isPost'])) {
+                if ($_GET ['isPost'] [$i] == 'true') {
+                    $this->setIsPost(1, $i, 'array');
+                } else if ($_GET ['isPost'] [$i] == 'false') {
+                    $this->setIsPost(0, $i, 'array');
+                }
+            }
 			$primaryKeyAll .= $this->getDepartmentId ( $i, 'array' ) . ",";
 		}
 		$this->setPrimaryKeyAll ( (substr ( $primaryKeyAll, 0, - 1 )) );
@@ -408,15 +389,15 @@ class DepartmentModel extends ValidationClass {
 	 * Set  Department Description (english)
 	 * @param string $value
 	 */
-	public function setDepartmentNote($value) {
-		$this->departmentNote = $value;
+	public function setDepartmentEnglish($value) {
+		$this->departmentEnglish = $value;
 	}
 	/**
 	 * Return Department  Description (english)
 	 * @return  string
 	 */
-	public function getDepartmentNote() {
-		return $this->departmentNote;
+	public function getDepartmentEnglish() {
+		return $this->departmentEnglish;
 	}
 }
 ?>

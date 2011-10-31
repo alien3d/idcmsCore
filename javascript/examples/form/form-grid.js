@@ -91,9 +91,9 @@ Ext.onReady(function(){
     
     // render rating as "A", "B" or "C" depending upon numeric value.
     function rating(v) {
-        if (v == 0) return "A"
-        if (v == 1) return "B"
-        if (v == 2) return "C"
+        if (v == 0) return "A";
+        if (v == 1) return "B";
+        if (v == 2) return "C";
     }
 
     // the DefaultColumnModel expects this blob to define columns. It can be extended to provide
