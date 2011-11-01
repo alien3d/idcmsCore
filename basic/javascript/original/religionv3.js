@@ -809,7 +809,7 @@ Ext.onReady(function() {
         hidden: isDraftHidden
     });
     var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-        header: isUpgradeLabel,
+        header: isUpdateLabel,
         dataIndex: 'isUpdate',
         hidden: isUpdateHidden
     });

@@ -28,7 +28,7 @@ Ext.onReady(function() {
     } // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/religionController.php?',
+        url: '../controller/tableMappingController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -751,8 +751,8 @@ Ext.onReady(function() {
         }]
     },
     {
-        dataIndex: 'tableMappingTranslate',
-        header: tableMappingTranslateLabel
+        dataIndex: 'tableMappingNative',
+        header: tableMappingNativeLabel
     },
     isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid, {
         dataIndex: 'executeBy',
@@ -1164,7 +1164,7 @@ Ext.onReady(function() {
         width: 600,
         items: [{
             xtype: 'panel',
-            title: leafEnglish,
+            title: leafNative,
             bodyStyle: 'padding:5px',
             layout: 'form',
             items: [tableMappingId, tableMappingName, tableMappingColumnName, tableMappingEnglish]

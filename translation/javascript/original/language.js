@@ -28,7 +28,7 @@ Ext.onReady(function() {
     } // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/religionController.php?',
+        url: '../controller/languageController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -836,10 +836,11 @@ Ext.onReady(function() {
         iconCls: 'application_view_detail',
         tbar: {
             items: [{
+				xtype:'button',
                 iconCls: 'add',
                 id: 'add_record',
                 name: 'add_record',
-                text: newRecordLabel,
+                text: newButtonLabel,
                 listeners: {
                     'click': function(button,e) {
                     var newRecord = new languageEntity({

@@ -596,6 +596,31 @@ Ext.onReady(function() {
             dateFormat: 'Y-m-d H:i:s'
         }]
     });
+	var religionFilters = new Ext.ux.grid.GridFilters({
+        encode: encode,
+        local: local,
+        filters: [{
+            type: 'string',
+            dataIndex: 'religionDesc',
+            column: 'religionDesc',
+            table: 'religion'
+        },
+        {
+            type: 'list',
+            dataIndex: 'executeBy',
+            column: 'executeBy',
+            table: 'religion',
+            labelField: 'staffName',
+            store: staffByStore,
+            phpMode: true
+        },
+        {
+            type: 'date',
+            dataIndex: 'executeTime',
+            column: 'executeTime',
+            table: 'religion'
+        }]
+    });
     var religionDetailProxy = new Ext.data.HttpProxy({
         url: '../controller/religionDetailController.php',
         method: 'POST',
@@ -847,8 +872,10 @@ Ext.onReady(function() {
         width: 100
     }];
     var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var accessDetailArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var religionGrid = new Ext.grid.GridPanel({
+    
+	var accessDetailArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    
+	var religionGrid = new Ext.grid.GridPanel({
         border: false,
         store: religionStore,
         autoHeight: false,

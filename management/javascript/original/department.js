@@ -28,7 +28,7 @@ Ext.onReady(function() {
     } // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/religionController.php?',
+        url: '../controller/departmentController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -246,7 +246,7 @@ Ext.onReady(function() {
         height: 400,
         columns: logColumnModel,
         loadMask: true,
-        plugins: [logFilters, expander],
+        plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
         sm: new Ext.grid.RowSelectionModel({

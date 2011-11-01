@@ -28,7 +28,7 @@ Ext.onReady(function() {
     } // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/religionController.php',
+        url: '../controller/applicationAccessController.php',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
