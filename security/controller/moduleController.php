@@ -368,11 +368,33 @@ class ModuleClass extends ConfigClass {
 		 		(
 				 	`moduleId`,
 				 	`languageId`,
-					`moduleNative`
+					`moduleNative`,
+					`isDefault`,											
+					`isNew`,
+					`isDraft`,												
+					`isUpdate`,
+					`isDelete`,												
+					`isActive`,
+					`isApproved`,											
+					`isReview`,
+					`isPost`,												
+					`executeBy`,
+					`executeTime`
 				) VALUES (
 					'" . $lastId . "',
 					21,
-					'" . $this->model->getModuleEnglish() . "'
+					'" . $this->model->getModuleEnglish() . "',
+					'" . $this->model->getIsDefault(0, 'single') . "',	
+					'" . $this->model->getIsNew(0, 'single') . "',
+					'" . $this->model->getIsDraft(0, 'single') . "',		
+					'" . $this->model->getIsUpdate(0, 'single') . "',
+					'" . $this->model->getIsDelete(0, 'single') . "',	
+					'" . $this->model->getIsActive(0, 'single') . "',
+					'" . $this->model->getIsApproved(0, 'single') . "',	
+					'" . $this->model->getIsReview(0, 'single') . "',
+					'" . $this->model->getIsPost(0, 'single') . "',				
+					'" . $this->model->getExecuteBy() . "',
+					" . $this->model->getExecuteTime() . "
 				);";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
@@ -380,11 +402,33 @@ class ModuleClass extends ConfigClass {
 					(
 					 	[moduleId],
 						[languageId],
-						[moduleNative]
+						[moduleNative],
+						[isDefault],												
+						[isNew],
+						[isDraft],													
+						[isUpdate],
+						[isDelete],													
+						[isActive],
+						[isApproved],												
+						[isReview'],
+						[isPost],													
+						[executeBy],
+						[executeTime]
 					) VALUES (
 						'" . $lastId . "',
 						21,
-						'" . $this->model->getModuleEnglish() . "'
+						'" . $this->model->getModuleEnglish() . "',
+					'" . $this->model->getIsDefault(0, 'single') . "',	
+					'" . $this->model->getIsNew(0, 'single') . "',
+					'" . $this->model->getIsDraft(0, 'single') . "',		
+					'" . $this->model->getIsUpdate(0, 'single') . "',
+					'" . $this->model->getIsDelete(0, 'single') . "',	
+					'" . $this->model->getIsActive(0, 'single') . "',
+					'" . $this->model->getIsApproved(0, 'single') . "',	
+					'" . $this->model->getIsReview(0, 'single') . "',
+					'" . $this->model->getIsPost(0, 'single') . "',				
+					'" . $this->model->getExecuteBy() . "',
+					" . $this->model->getExecuteTime() . "
 					);";
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
@@ -392,11 +436,31 @@ class ModuleClass extends ConfigClass {
 					(
 					 	MODULEID,
 						LANGUAGEID,
-						MODULENATIVE
+						MODULENATIVE,
+						ISDRAFT,													
+						ISUPDATE,
+						ISDELETE,													
+						ISACTIVE,
+						ISAPPROVED,													
+						ISREVIEW,
+						ISPOST,														
+						EXECUTEBY,
+						EXECUTETIME
 					) VALUES (
 						'" . $lastId . "',
 						21,
-						'" . $this->model->getModuleEnglish() . "'
+						'" . $this->model->getModuleEnglish() . "',
+					'" . $this->model->getIsDefault(0, 'single') . "',	
+					'" . $this->model->getIsNew(0, 'single') . "',
+					'" . $this->model->getIsDraft(0, 'single') . "',		
+					'" . $this->model->getIsUpdate(0, 'single') . "',
+					'" . $this->model->getIsDelete(0, 'single') . "',	
+					'" . $this->model->getIsActive(0, 'single') . "',
+					'" . $this->model->getIsApproved(0, 'single') . "',	
+					'" . $this->model->getIsReview(0, 'single') . "',
+					'" . $this->model->getIsPost(0, 'single') . "',				
+					'" . $this->model->getExecuteBy() . "',
+					" . $this->model->getExecuteTime() . "
 					);";
         }
         $this->q->create($sql);

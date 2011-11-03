@@ -1,4 +1,4 @@
-Ext.onReady(function() {
+Ext.onReady(function () {
     Ext.QuickTips.init();
     Ext.BLANK_IMAGE_URL = "../../javascript/resources/images/s.gif";
     Ext.form.Field.prototype.msgTarget = "under";
@@ -30,14 +30,14 @@ Ext.onReady(function() {
     var staffByProxy = new Ext.data.HttpProxy({
         url: "../controller/applicationController.php?",
         method: "GET",
-        success: function(response, options) {
+        success: function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure: function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
         }
     });
@@ -61,8 +61,7 @@ Ext.onReady(function() {
         fields: [{
             name: "staffId",
             type: "int"
-        },
-        {
+        }, {
             name: "staffName",
             type: "string"
         }]
@@ -71,14 +70,14 @@ Ext.onReady(function() {
     var logProxy = new Ext.data.HttpProxy({
         url: "../../security/controller/logController.php?",
         method: "POST",
-        success: function(response, options) {
+        success: function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure: function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
         }
     });
@@ -105,33 +104,26 @@ Ext.onReady(function() {
         fields: [{
             name: 'logId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'leafId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'operation',
             type: 'string'
-        },
-        {
+        }, {
             name: 'sql',
             type: 'string'
-        },
-        {
+        }, {
             name: 'date',
             type: 'date',
             dateFormat: 'Y-m-d'
-        },
-        {
+        }, {
             name: 'staffId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'access',
             type: 'string'
-        },
-        {
+        }, {
             name: 'logError',
             type: 'string'
         }]
@@ -144,44 +136,37 @@ Ext.onReady(function() {
             dataIndex: 'logId',
             column: 'logId',
             table: 'log'
-        },
-        {
+        }, {
             type: 'numeric',
             dataIndex: 'leafId',
             column: 'leafId',
             table: 'log'
-        },
-        {
+        }, {
             type: 'string',
             dataIndex: 'operation',
             column: 'operation',
             table: 'log'
-        },
-        {
+        }, {
             type: 'string',
             dataIndex: 'sql',
             column: 'sql',
             table: 'log'
-        },
-        {
+        }, {
             type: 'date',
             dataIndex: 'date',
             column: 'date',
             table: 'log'
-        },
-        {
+        }, {
             type: 'numeric',
             dataIndex: 'staffId',
             column: 'staffId',
             table: 'log'
-        },
-        {
+        }, {
             type: 'string',
             dataIndex: 'access',
             column: 'access',
             table: 'log'
-        },
-        {
+        }, {
             type: 'string',
             dataIndex: 'logError',
             column: 'logError',
@@ -191,49 +176,43 @@ Ext.onReady(function() {
     var logExpander = new Ext.ux.grid.RowExpander({
         tpl: new Ext.Template('<br><p><b>Operation:</b> {operation}</p><br>', '<p><b>SQL STATEMENT:</b> {sql}</p><br>')
     });
-    var logColumnModel = [logExpander, new Ext.grid.RowNumberer(), {
+    var logColumnModel = [logExpander, new Ext.grid.RowNumberer(),
+    {
         dataIndex: 'logId',
         header: logIdLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'leafId',
         header: leafIdLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'operation',
         header: operationLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'sql',
         header: sqlLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'date',
         header: dateLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'staffId',
         header: staffIdLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'access',
         header: accessLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'logError',
         header: logErrorLabel,
         sortable: true,
@@ -258,7 +237,7 @@ Ext.onReady(function() {
         iconCls: 'application_view_detail',
         listeners: {
             render: {
-                fn: function() {
+                fn: function () {
                     logStore.load({
                         params: {
                             start: 0,
@@ -281,14 +260,14 @@ Ext.onReady(function() {
     var logAdvanceProxy = new Ext.data.HttpProxy({
         url: "../../security/controller/logAdvanceController.php?",
         method: "POST",
-        success: function(response, options) {
+        success: function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure: function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
         }
     });
@@ -317,24 +296,19 @@ Ext.onReady(function() {
         fields: [{
             name: 'logAdvanceId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'logAdvanceText',
             type: 'string'
-        },
-        {
+        }, {
             name: 'logAdvanceType',
             type: 'string'
-        },
-        {
+        }, {
             name: 'logAdvanceComparison',
             type: 'string'
-        },
-        {
+        }, {
             name: 'refTableName',
             type: 'int'
-        },
-        {
+        }, {
             name: 'leafId',
             type: 'int'
         }]
@@ -347,32 +321,27 @@ Ext.onReady(function() {
             dataIndex: 'logAdvanceId',
             column: 'logAdvanceId',
             table: 'logAdvance'
-        },
-        {
+        }, {
             type: 'string',
             dataIndex: 'logAdvanceText',
             column: 'logAdvanceText',
             table: 'logAdvance'
-        },
-        {
+        }, {
             type: 'string',
             dataIndex: 'logAdvanceType',
             column: 'logAdvanceType',
             table: 'logAdvance'
-        },
-        {
+        }, {
             type: 'string',
             dataIndex: 'logAdvanceComparison',
             column: 'logAdvanceComparison',
             table: 'logAdvance'
-        },
-        {
+        }, {
             type: 'numeric',
             dataIndex: 'refTableName',
             column: 'refTableName',
             table: 'logAdvance'
-        },
-        {
+        }, {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
@@ -380,39 +349,35 @@ Ext.onReady(function() {
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
-        },
-        {
+        }, {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
             table: 'logAdvance'
         }]
     });
-    var logAdvanceColumnModel = [new Ext.grid.RowNumberer(), {
+    var logAdvanceColumnModel = [new Ext.grid.RowNumberer(),
+    {
         dataIndex: 'logAdvanceId',
         header: logAdvanceIdLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'logAdvanceText',
         header: logAdvanceTextLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'logAdvanceType',
         header: logAdvanceTypeLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'logAdvanceComparision',
         header: logAdvanceComparisionLabel,
         sortable: true,
         hidden: false
-    },
-    {
+    }, {
         dataIndex: 'refTableName',
         header: refTableNameLabel,
         sortable: true,
@@ -436,7 +401,7 @@ Ext.onReady(function() {
         iconCls: 'application_view_detail',
         listeners: {
             render: {
-                fn: function() {
+                fn: function () {
                     logAdvanceStore.load({
                         params: {
                             start: 0,
@@ -476,8 +441,7 @@ Ext.onReady(function() {
                 layout: "fit",
                 title: 'Log Sql Statement',
                 items: [logGrid]
-            },
-            {
+            }, {
                 xtype: 'panel',
                 layout: "fit",
                 title: 'Log Sql Statement',
@@ -489,18 +453,61 @@ Ext.onReady(function() {
         autoScroll: true
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
-    // start application Proxy ,Reader,Store,Filter,Grid
-    var applicationProxy = new Ext.data.HttpProxy({
-        url: "../controller/applicationController.php",
-        method: 'POST',
-        success: function(response, options) {
+    // start additional Proxy ,Reader,Store,Filter,Grid
+    // start Team Request
+    var teamProxy = new Ext.data.HttpProxy({
+        url: '../controller/applicationAccessController.php',
+        method: 'GET',
+        success: function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure: function (response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var teamReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'teamId'
+    });
+    var teamStore = new Ext.data.JsonStore({
+        proxy: teamProxy,
+        reader: teamReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            field: 'teamId',
+            leafId: leafId
+        },
+        root: 'team',
+        fields: [{
+            name: 'teamId',
+            type: 'int'
+        }, {
+            name: 'teamEnglish',
+            type: 'string'
+        }]
+    }); // end team Request
+    // end additional Proxy ,Reader,Store,Filter,Grid
+    // start application Proxy ,Reader,Store,Filter,Grid
+    var applicationProxy = new Ext.data.HttpProxy({
+        url: "../controller/applicationController.php",
+        method: 'POST',
+        success: function (response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
         }
     });
@@ -527,56 +534,43 @@ Ext.onReady(function() {
         fields: [{
             name: 'applicationId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'applicationSequence',
             type: 'int'
-        },
-        {
+        }, {
             name: 'applicationEnglish',
             type: 'string'
-        },
-        {
+        }, {
             name: 'iconId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'iconName',
             type: 'string'
-        },
-        {
+        }, {
             name: "isDefault",
             type: "boolean"
-        },
-        {
+        }, {
             name: "isNew",
             type: "boolean"
-        },
-        {
+        }, {
             name: "isDraft",
             type: "boolean"
-        },
-        {
+        }, {
             name: "isUpdate",
             type: "boolean"
-        },
-        {
+        }, {
             name: "isDelete",
             type: "boolean"
-        },
-        {
+        }, {
             name: "isActive",
             type: "boolean"
-        },
-        {
+        }, {
             name: "isApproved",
             type: "boolean"
-        },
-        {
+        }, {
             name: 'executeBy',
             type: 'int'
-        },
-        {
+        }, {
             name: "executeTime",
             type: "date",
             dateFormat: "Y-m-d H:i:s"
@@ -585,14 +579,14 @@ Ext.onReady(function() {
     var applicationTranslateProxy = new Ext.data.HttpProxy({
         url: "../controller/applicationController.php",
         method: 'POST',
-        success: function(response, options) {
+        success: function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure: function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
         }
     });
@@ -616,24 +610,19 @@ Ext.onReady(function() {
         fields: [{
             name: 'applicationTranslateId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'applicationId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'languageId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'languageCode',
             type: 'string'
-        },
-        {
+        }, {
             name: 'languageDesc',
             type: 'string'
-        },
-        {
+        }, {
             name: 'applicationNative',
             type: 'string'
         }]
@@ -641,14 +630,14 @@ Ext.onReady(function() {
     var staffByProxy = new Ext.data.HttpProxy({
         url: "../controller/applicationController.php?",
         method: "GET",
-        success: function(response, options) {
+        success: function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure: function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
         }
     });
@@ -672,8 +661,7 @@ Ext.onReady(function() {
         fields: [{
             name: "staffId",
             type: "int"
-        },
-        {
+        }, {
             name: "staffName",
             type: "string"
         }]
@@ -681,14 +669,14 @@ Ext.onReady(function() {
     var teamProxy = new Ext.data.HttpProxy({
         url: "../controller/applicationAccessController.php",
         method: 'GET',
-        success: function(response, options) {
+        success: function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure: function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
         }
     });
@@ -713,8 +701,7 @@ Ext.onReady(function() {
         fields: [{
             name: 'teamId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'teamEnglish',
             type: 'string'
         }]
@@ -722,14 +709,14 @@ Ext.onReady(function() {
     var logProxy = new Ext.data.HttpProxy({
         url: "../../security/controller/logController.php?",
         method: "POST",
-        success: function(response, options) {
+        success: function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure: function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
         }
     });
@@ -756,33 +743,26 @@ Ext.onReady(function() {
         fields: [{
             name: 'logId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'leafId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'operation',
             type: 'string'
-        },
-        {
+        }, {
             name: 'sql',
             type: 'string'
-        },
-        {
+        }, {
             name: 'date',
             type: 'date',
             dateFormat: 'Y-m-d'
-        },
-        {
+        }, {
             name: 'staffId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'access',
             type: 'string'
-        },
-        {
+        }, {
             name: 'logError',
             type: 'string'
         }]
@@ -790,14 +770,14 @@ Ext.onReady(function() {
     var logAdvanceProxy = new Ext.data.HttpProxy({
         url: "../../security/controller/logAdvanceController.php?",
         method: "POST",
-        success: function(response, options) {
+        success: function (response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }
         },
-        failure: function(response, options) {
+        failure: function (response, options) {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ":" + escape(response.statusText));
         }
     });
@@ -825,24 +805,19 @@ Ext.onReady(function() {
         fields: [{
             name: 'logAdvanceId',
             type: 'int'
-        },
-        {
+        }, {
             name: 'logAdvanceText',
             type: 'string'
-        },
-        {
+        }, {
             name: 'logAdvanceType',
             type: 'string'
-        },
-        {
+        }, {
             name: 'logAdvanceComparison',
             type: 'string'
-        },
-        {
+        }, {
             name: 'refTableName',
             type: 'int'
-        },
-        {
+        }, {
             name: 'leafId',
             type: 'int'
         }]
@@ -855,26 +830,22 @@ Ext.onReady(function() {
             dataIndex: 'applicationSequence',
             column: 'applicationSequence',
             application: 'application'
-        },
-        {
+        }, {
             type: 'numeric',
             dataIndex: 'applicationCode',
             column: 'applicationCode',
             application: 'application'
-        },
-        {
+        }, {
             type: 'string',
             dataIndex: 'applicationEnglish',
             column: 'applicationEnglish',
             application: 'application'
-        },
-        {
+        }, {
             type: 'string',
             dataIndex: 'iconId',
             column: 'iconId',
             application: 'application'
-        },
-        {
+        }, {
             type: "list",
             dataIndex: "executeBy",
             column: "executeBy",
@@ -882,8 +853,7 @@ Ext.onReady(function() {
             labelField: "staffName",
             store: staffByStore,
             phpMode: true
-        },
-        {
+        }, {
             type: 'date',
             dateFormat: 'Y-m-d H:i:s',
             dataIndex: 'executeTime',
@@ -935,66 +905,63 @@ Ext.onReady(function() {
         dataIndex: 'isPost',
         hidden: isPostHidden
     });
-    var applicationColumnModel = [new Ext.grid.RowNumberer(), {
+    var applicationColumnModel = [new Ext.grid.RowNumberer(),
+    {
         dataIndex: "applicationSequence",
         header: applicationSequenceLabel,
         hidden: false,
         width: 50
-    },
-    {
+    }, {
         dataIndex: "applicationEnglish",
         header: applicationEnglishLabel,
         hidden: false,
         width: 100
-    },
-    {
+    }, {
         dataIndex: 'iconName',
         header: iconNameLabel,
         hidden: false,
         width: 50,
-        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-    	iconLength = value;
-		if(iconLength.length == 0 ){
-			value = 'cog';
-		}    
-    	return '<img src=\'../../javascript/resources/images/icon/' + value + '.png\' width=\'12\' height=\'12\'> ' + value;
+        renderer: function (value, metaData, record, rowIndex, colIndex, store) {
+            iconLength = value;
+            if (iconLength.length == 0) {
+                value = 'cog';
+            }
+            return '<img src=\'../../javascript/resources/images/icon/' + value + '.png\' width=\'12\' height=\'12\'> ' + value;
         }
     },
-    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid, {
+    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid,
+    {
         dataIndex: 'executeBy',
         header: executeByLabel,
         hidden: true,
         width: 100
-    },
-    {
+    }, {
         dataIndex: 'executeTime',
         header: executeTimeLabel,
         type: 'date',
         hidden: true,
         width: 100
     }];
-    var applicationTranslateColumnModel = [new Ext.grid.RowNumberer(), {
+    var applicationTranslateColumnModel = [new Ext.grid.RowNumberer(),
+    {
         dataIndex: "applicationEnglish",
         header: applicationSequenceLabel,
         sortable: true,
         hidden: true,
         width: 50
-    },
-    {
+    }, {
         dataIndex: "languageCode",
         header: "languageCode",
         sortable: true,
         hidden: false,
         width: 100
-    },
-    {
+    }, {
         dataIndex: "languageDesc",
         header: "languageDesc",
         sortable: true,
         hidden: false,
         width: 100
-    },
-    {
+    }, {
         dataIndex: "applicationNative",
         header: "applicationNative",
         sortable: true,
@@ -1024,7 +991,7 @@ Ext.onReady(function() {
         },
         iconCls: 'application_view_detail',
         listeners: {
-            'rowclick': function(object, rowIndex, e) {
+            'rowclick': function (object, rowIndex, e) {
                 var record = applicationStore.getAt(rowIndex);
                 formPanel.getForm().reset();
                 formPanel.form.load({
@@ -1038,50 +1005,77 @@ Ext.onReady(function() {
                         applicationId: record.data.applicationId,
                         leafId: leafId
                     },
-                    success: function(form, action) {
+                    success: function (form, action) {
+                        Ext.getCmp('firstRecord').setValue(action.result.firstRecord);
+                        Ext.getCmp('previousRecord').setValue(action.result.previousRecord);
+                        Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
+                        Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
+                        Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
+                        if (Ext.getCmp('previousRecord').getValue() == 0) {
+                            Ext.getCmp('previousButton').disable();
+                        }
+                        if (Ext.getCmp('nextRecord').getValue() == 0) {
+                            Ext.getCmp('nextButton').disable();
+                        }
                         viewPort.items.get(1).expand();
                     },
-                    failure: function(form, action) {
+                    failure: function (form, action) {
                         Ext.MessageBox.alert(systemErrorLabel, action.result.message);
+                    }
+                });
+                Ext.getCmp('applicationTranslateGrid').enable();
+                Ext.getCmp('applicationAccessGrid').enable();
+                applicationTranslateStore.load({
+                    params: {
+                        method: 'read',
+                        applicationId: record.data.applicationId,
+                        leafId: leafId,
+                        isAdmin: isAdmin
+                    }
+                });
+                applicationAccessStore.load({
+                    params: {
+                        method: 'read',
+                        applicationId: record.data.applicationId,
+                        leafId: leafId,
+                        isAdmin: isAdmin
                     }
                 });
             }
         },
         tbar: {
             items: [{
-            	xtype:'button',
+                xtype: 'button',
                 text: CheckAllLabel,
                 iconCls: 'row-check-sprite-check',
                 listeners: {
-                    'click': function(button,e) {
-                        applicationStore.each(function(rec) {
+                    'click': function (button, e) {
+                        applicationStore.each(function (rec) {
                             for (var access in accessArray) {
                                 rec.set(accessArray[access], true);
                             }
                         });
                     }
                 }
-            },
-            {
-                xtype:'button',
-            	text: ClearAllLabel,
+            }, {
+                xtype: 'button',
+                text: ClearAllLabel,
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
-                    'click': function(button,e) {
-                        applicationStore.each(function(rec) {
+                    'click': function (button, e) {
+                        applicationStore.each(function (rec) {
                             for (var access in accessArray) {
                                 rec.set(accessArray[access], false);
                             }
                         });
                     }
                 }
-            },
-            {
-                xtype:'button',
-            	text: saveButtonLabel,
+            }, {
+                xtype: 'button',
+                text: saveButtonLabel,
                 iconCls: 'bullet_disk',
                 listeners: {
-                    'click': function(button,e) {
+                    'click': function (button, e) {
                         var url = '../controller/applicationController.php?';
                         var sub_url = '';
                         var modified = applicationStore.getModifiedRecords();
@@ -1130,7 +1124,7 @@ Ext.onReady(function() {
                                 isAdmin: isAdmin,
                                 method: 'update'
                             },
-                            success: function(response, options) {
+                            success: function (response, options) {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
@@ -1139,7 +1133,7 @@ Ext.onReady(function() {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                 }
                             },
-                            failure: function(response, options) {
+                            failure: function (response, options) {
                                 Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
                             }
                         });
@@ -1152,18 +1146,101 @@ Ext.onReady(function() {
             pageSize: perPage
         })
     });
+    // end  header Application Request
+    // start detail application translate request
+    var applicationTranslateProxy = new Ext.data.HttpProxy({
+        url: '../controller/applicationTranslateController.php',
+        method: 'POST',
+        success: function (response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function (response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var applicationTranslateReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'applicationTranslateId'
+    });
+    var applicationTranslateStore = new Ext.data.JsonStore({
+        proxy: applicationTranslateProxy,
+        reader: applicationTranslateReader,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        root: 'data',
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin
+        },
+        fields: [{
+            name: 'applicationTranslateId',
+            type: 'int'
+        }, {
+            name: 'applicationId',
+            type: 'int'
+        }, {
+            name: 'languageId',
+            type: 'int'
+        }, {
+            name: 'languageCode',
+            type: 'string'
+        }, {
+            name: 'languageDesc',
+            type: 'string'
+        }, {
+            name: 'applicationNative',
+            type: 'string'
+        }]
+    });
+    var applicationTranslateColumnModel = [new Ext.grid.RowNumberer(),
+    {
+        dataIndex: 'applicationEnglish',
+        header: applicationSequenceLabel,
+        sortable: true,
+        hidden: true,
+        width: 50
+    }, {
+        dataIndex: 'languageCode',
+        header: 'languageCode',
+        sortable: true,
+        hidden: false,
+        width: 100
+    }, {
+        dataIndex: 'languageDesc',
+        header: 'languageDesc',
+        sortable: true,
+        hidden: false,
+        width: 100
+    }, {
+        dataIndex: 'applicationNative',
+        header: 'applicationNative',
+        sortable: true,
+        hidden: false,
+        width: 100,
+        editor: {
+            xtype: 'textfield',
+            id: 'applicationNative'
+        }
+    }];
     var applicationTranslateEditor = new Ext.ux.grid.RowEditor({
         saveText: saveButtonLabel,
         cancelText: cancelButtonLabel,
         listeners: {
-            cancelEdit: function(rowEditor, changes, record, rowIndex) {
+            cancelEdit: function (rowEditor, changes, record, rowIndex) {
                 applicationStore.reload();
             },
-            afteredit: function(rowEditor, changes, record, rowIndex) {
+            afteredit: function (rowEditor, changes, record, rowIndex) {
                 this.save = true;
                 var record = this.grid.getStore().getAt(rowIndex);
                 Ext.Ajax.request({
-                    url: '../controller/applicationController.php',
+                    url: '../controller/applicationTranslateController.php',
                     method: 'POST',
                     params: {
                         leafId: leafId,
@@ -1172,13 +1249,13 @@ Ext.onReady(function() {
                         applicationTranslateId: record.get('applicationTranslateId'),
                         applicationNative: Ext.getCmp('applicationNative').getValue()
                     },
-                    success: function(response, options) {
+                    success: function (response, options) {
                         jsonResponse = Ext.decode(response.responseText);
                         if (jsonResponse.success == false) {
                             Ext.MessageBox.alert(systemLabel, jsonResponse.message);
                         }
                     },
-                    failure: function(response, options) {
+                    failure: function (response, options) {
                         Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
                     }
                 });
@@ -1201,6 +1278,199 @@ Ext.onReady(function() {
         disabled: true,
         plugins: [applicationTranslateEditor]
     });
+    // end Module Translation Request
+    // start Module Access Request
+    var applicationAccessProxy = new Ext.data.HttpProxy({
+        url: '../controller/applicationAccessController.php',
+        method: 'POST',
+        success: function (response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function (response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var applicationAccessReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'applicationAccessId'
+    });
+    var applicationAccessStore = new Ext.data.JsonStore({
+        autoDestroy: true,
+        proxy: applicationAccessProxy,
+        reader: applicationAccessReader,
+        baseParams: {
+            method: 'read',
+            isAdmin: isAdmin,
+            leafId: leafId
+        },
+        root: 'data',
+        fields: [{
+            name: 'applicationId',
+            type: 'int'
+        }, {
+            name: 'applicationEnglish',
+            type: 'string'
+        }, {
+            name: 'teamId',
+            type: 'int'
+        }, {
+            name: 'teamEnglish',
+            type: 'string'
+        }, {
+            name: 'applicationId',
+            type: 'int'
+        }, {
+            name: 'applicationAccessId',
+            type: 'int'
+        }, {
+            name: 'applicationEnglish',
+            type: 'string'
+        }, {
+            name: 'applicationAccessValue',
+            type: 'boolean'
+        }]
+    });
+    var teamId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: teamIdLabel,
+        name: 'teamId',
+        hiddenName: 'teamId',
+        valueField: 'teamId',
+        hiddenId: 'team_fake',
+        id: 'teamId',
+        displayField: 'teamEnglish',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: teamStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function (value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
+        },
+        listeners: {
+            'select': function (combo, record, index) {
+                applicationAccessStore.load({
+                    params: {
+                        method: 'read',
+                        leafId: leafId,
+                        teamId: this.value,
+                        type: 2
+                    }
+                });
+                Ext.getCmp('applicationAccess').enable();
+            }
+        }
+    });
+    var applicationAccessValue = new Ext.ux.grid.CheckColumn({
+        header: 'Access',
+        dataIndex: 'applicationAccessValue'
+    });
+    var applicationAccessColumnModel = new Ext.grid.ColumnModel({
+        columns: [teamId,
+        {
+            header: applicationEnglishLabel,
+            dataIndex: 'applicationEnglish'
+        },
+        applicationAccessValue]
+    });
+    var applicationAccessArray = ['applicationAccessValue'];
+    var applicationAccessGrid = new Ext.grid.GridPanel({
+        name: 'applicationAccessGrid',
+        id: 'applicationAccessGrid',
+        region: 'west',
+        store: applicationAccessStore,
+        cm: applicationAccessColumnModel,
+        frame: true,
+        title: 'Module Access Grid',
+        autoHeight: true,
+        disabled: true,
+        selModel: applicationAccessValue,
+        iconCls: 'application_view_detail',
+        viewConfig: {
+            forceFit: true,
+            emptyText: emptyTextLabel
+        },
+        tbar: {
+            items: [{
+                xtype: 'button',
+                text: CheckAllLabel,
+                iconCls: 'row-check-sprite-check',
+                listeners: {
+                    'click': function (button, e) {
+                        applicationAccessStore.each(function (rec) {
+                            for (var access in applicationAccessArray) {
+                                rec.set(accessArray[access], true);
+                            }
+                        });
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: ClearAllLabel,
+                iconCls: 'row-check-sprite-uncheck',
+                listeners: {
+                    'click': function (button, e) {
+                        applicationAccessStore.each(function (rec) {
+                            for (var access in applicationAccessArray) {
+                                rec.set(accessArray[access], false);
+                            }
+                        });
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: saveButtonLabel,
+                iconCls: 'bullet_disk',
+                listeners: {
+                    'click': function (button, e) {
+                        var url = '../controller/applicationAccessController.php?method=update&leafId=' + leafId;
+                        var sub_url = '';
+                        var modified = applicationAccessStore.getModifiedRecords();
+                        for (var i = 0; i < modified.length; i++) {
+                            var dataChanges = modified[i].getChanges();
+                            var record = applicationAccessStore.getAt(i);
+                            sub_url = sub_url + '&applicationAccessId[]=' + record.get('applicationAccessId');
+                            if (dataChanges.applicationAccessId == true || dataChanges.applicationAccessId == false) {
+                                sub_url = sub_url + '&applicationAccessValue[]=' + record.get('applicationAccessValue');
+                            }
+                        }
+                        url = url + sub_url;
+                        Ext.Ajax.request({
+                            url: url,
+                            success: function (response, options) {
+                                jsonResponse = Ext.decode(response.responseText);
+                                if (jsonResponse == true) {
+                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                                } else if (jsonResponse == false) {
+                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+                                }
+                                applicationAccessStore.reload();
+                            },
+                            failure: function (response, options) {
+                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+                            }
+                        });
+                    }
+                }
+            }]
+        }
+    });
+
+    // end Module Access Request
     var gridPanel = new Ext.Panel({
         name: 'gridPanel',
         id: 'gridPanel',
@@ -1208,22 +1478,23 @@ Ext.onReady(function() {
         height: 50,
         layout: 'fit',
         iconCls: 'application_view_detail',
-        tbar: [' ', {
+        tbar: [' ',
+        {
             text: reloadToolbarLabel,
             iconCls: 'database_refresh',
             id: 'pageReload',
             disabled: pageReload,
-            handler: function() {
+            handler: function () {
                 applicationStore.reload();
             }
-        },
-        '-', {
+        }, '-',
+        {
             text: addToolbarLabel,
             iconCls: 'add',
             id: 'pageCreate',
             disabled: pageCreate,
             xtype: 'button',
-            handler: function() {
+            handler: function () {
                 Ext.Ajax.request({
                     url: '../controller/applicationController.php',
                     method: 'GET',
@@ -1233,7 +1504,7 @@ Ext.onReady(function() {
                         application: 'application',
                         leafId: leafId
                     },
-                    success: function(response, options) {
+                    success: function (response, options) {
                         jsonResponse = Ext.decode(response.responseText);
                         if (jsonResponse.success == false) {
                             Ext.MessageBox.alert(systemLabel, jsonResponse.message);
@@ -1241,23 +1512,23 @@ Ext.onReady(function() {
                             Ext.getCmp('applicationSequence').setValue(jsonResponse.nextSequence);
                         }
                     },
-                    failure: function(response, options) {
+                    failure: function (response, options) {
                         Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
                     }
                 });
                 viewPort.items.get(1).expand();
             }
-        },
-        '-', {
+        }, '-',
+        {
             text: excelToolbarLabel,
             iconCls: 'page_excel',
             id: 'page_excel',
             disabled: pagePrint,
-            handler: function() {
+            handler: function () {
                 Ext.Ajax.request({
                     url: '../applicationData.php?method=report&mode=excel&limit=' + perPage + '&leafId=' + leafId,
                     method: 'GET',
-                    success: function(response, options) {
+                    success: function (response, options) {
                         jsonResponse = Ext.decode(response.responseText);
                         if (jsonResponse == true) {
                             window.open("../security/document/excel/application.xlsx");
@@ -1265,13 +1536,12 @@ Ext.onReady(function() {
                             Ext.MessageBox.alert(successLabel, jsonResponse.message);
                         }
                     },
-                    failure: function(response, options) {
+                    failure: function (response, options) {
                         Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
                     }
                 });
             }
-        },
-        '->', new Ext.ux.form.SearchField({
+        }, '->', new Ext.ux.form.SearchField({
             store: applicationStore,
             width: 320
         })],
@@ -1299,7 +1569,208 @@ Ext.onReady(function() {
         id: 'applicationSequence',
         anchor: '40%'
     });
-    var iconData = [['29', 'accept'], ['31', 'acroread'], ['32', 'add'], ['34', 'aktion'], ['35', 'anchor'], ['36', 'application'], ['40', 'application_double'], ['41', 'application_edit'], ['42', 'application_error'], ['43', 'application_form'], ['48', 'application_get'], ['49', 'application_go'], ['50', 'application_home'], ['51', 'application_key'], ['52', 'application_lightning'], ['53', 'application_link'], ['54', 'application_osx'], ['55', 'application_osx_terminal'], ['56', 'application_put'], ['71', 'application_xp'], ['72', 'application_xp_terminal'], ['73', 'ark'], ['94', 'arts'], ['95', 'ascend'], ['96', 'asterisk_orange'], ['97', 'asterisk_yellow'], ['98', 'attach'], ['100', 'award_star_add'], ['101', 'award_star_bronze_1'], ['102', 'award_star_bronze_2'], ['103', 'award_star_bronze_3'], ['104', 'award_star_delete'], ['105', 'award_star_gold_1'], ['106', 'award_star_gold_2'], ['107', 'award_star_gold_3'], ['108', 'award_star_silver_1'], ['109', 'award_star_silver_2'], ['110', 'award_star_silver_3'], ['111', 'basket'], ['119', 'bell'], ['125', 'bin'], ['130', 'bomb'], ['144', 'box'], ['358', 'cursor'], ['359', 'cut'], ['361', 'daapplicationase'], ['385', 'delete'], ['386', 'descend'], ['387', 'disconnect'], ['389', 'disk_multiple'], ['391', 'document'], ['392', 'door'], ['395', 'door_out'], ['396', 'drink'], ['398', 'drive'], ['415', 'dvd'], ['423', 'email'], ['442', 'error'], ['445', 'error_go'], ['447', 'exclamation'], ['449', 'exec'], ['450', 'eye'], ['153', 'briefcase'], ['154', 'browser'], ['155', 'bug'], ['162', 'building'], ['197', 'cake'], ['198', 'calculator'], ['212', 'camera'], ['220', 'cancel'], ['221', 'car'], ['222', 'cart'], ['235', 'cd'], ['242', 'chart_bar'], ['270', 'clock'], ['281', 'cog'], ['287', 'coins'], ['290', 'colors'], ['291', 'color_swatch'], ['292', 'color_wheel'], ['300', 'compress'], ['301', 'computer'], ['309', 'connect'], ['339', 'cookie'], ['341', 'creditcards'], ['342', 'cross'], ['461', 'female'], ['481', 'find'], ['526', 'gimp'], ['491', 'application'], ['527', 'group'], ['536', 'heart'], ['539', 'help'], ['541', 'hourglass'], ['546', 'house'], ['549', 'html'], ['556', 'image'], ['560', 'image_edit'], ['561', 'image_link'], ['565', 'information'], ['566', 'ipod'], ['571', 'java'], ['572', 'java_jar'], ['573', 'joystick'], ['578', 'key'], ['579', 'keyboard'], ['586', 'kservices'], ['587', 'layers'], ['597', 'lightbulb'], ['601', 'lightning'], ['605', 'link'], ['612', 'lock'], ['619', 'lorry'], ['626', 'magifier_zoom_out'], ['627', 'magnifier'], ['628', 'magnifier_zoom_in'], ['629', 'male'], ['630', 'map'], ['651', 'mime'], ['652', 'money'], ['655', 'money_dollar'], ['656', 'money_euro'], ['657', 'money_pound'], ['658', 'money_yen'], ['659', 'monitor'], ['667', 'mouse'], ['674', 'new'], ['675', 'newspaper'], ['680', 'note'], ['685', 'note_go'], ['686', 'ooo_gulls'], ['687', 'openoffice'], ['688', 'overlays'], ['783', 'paintbrush'], ['784', 'paintcan'], ['785', 'palette'], ['789', 'pencil'], ['793', 'phone'], ['797', 'photo'], ['798', 'photos'], ['802', 'php-icon'], ['803', 'picture'], ['814', 'pilcrow'], ['815', 'pill'], ['830', 'printer'], ['837', 'quicktime'], ['838', 'rainbow'], ['839', 'realplayer'], ['841', 'report'], ['842', 'report_add'], ['843', 'report_delete'], ['844', 'report_disk'], ['845', 'report_edit'], ['846', 'report_go'], ['847', 'report_key'], ['848', 'report_link'], ['849', 'report_magnify'], ['850', 'report_picture'], ['851', 'report_user'], ['852', 'report_word'], ['857', 'rosette'], ['858', 'rpm'], ['902', 'shading'], ['928', 'shield'], ['932', 'sitemap'], ['933', 'sitemap_color'], ['934', 'sound'], ['949', 'star'], ['954', 'stop'], ['963', 'application'], ['985', 'tag'], ['986', 'tag_blue'], ['987', 'tag_blue_add'], ['988', 'tag_blue_delete'], ['989', 'tag_blue_edit'], ['990', 'tag_green'], ['991', 'tag_orange'], ['992', 'tag_pink'], ['993', 'tag_purple'], ['994', 'tag_red'], ['995', 'tag_yellow'], ['996', 'tar'], ['997', 'telephone'], ['1008', 'terminal'], ['1052', 'tgz'], ['1054', 'thumb_down'], ['1055', 'thumb_up'], ['1056', 'tick'], ['1058', 'time'], ['1062', 'time_go'], ['1063', 'transmit'], ['1070', 'tux'], ['1072', 'user'], ['1084', 'vcard'], ['1088', 'vector'], ['1091', 'video'], ['1093', 'wand'], ['1123', 'zoom'], ['1124', 'zoom_in'], ['1125', 'zoom_out']];
+    var iconData = [
+        ['29', 'accept'],
+        ['31', 'acroread'],
+        ['32', 'add'],
+        ['34', 'aktion'],
+        ['35', 'anchor'],
+        ['36', 'application'],
+        ['40', 'application_double'],
+        ['41', 'application_edit'],
+        ['42', 'application_error'],
+        ['43', 'application_form'],
+        ['48', 'application_get'],
+        ['49', 'application_go'],
+        ['50', 'application_home'],
+        ['51', 'application_key'],
+        ['52', 'application_lightning'],
+        ['53', 'application_link'],
+        ['54', 'application_osx'],
+        ['55', 'application_osx_terminal'],
+        ['56', 'application_put'],
+        ['71', 'application_xp'],
+        ['72', 'application_xp_terminal'],
+        ['73', 'ark'],
+        ['94', 'arts'],
+        ['95', 'ascend'],
+        ['96', 'asterisk_orange'],
+        ['97', 'asterisk_yellow'],
+        ['98', 'attach'],
+        ['100', 'award_star_add'],
+        ['101', 'award_star_bronze_1'],
+        ['102', 'award_star_bronze_2'],
+        ['103', 'award_star_bronze_3'],
+        ['104', 'award_star_delete'],
+        ['105', 'award_star_gold_1'],
+        ['106', 'award_star_gold_2'],
+        ['107', 'award_star_gold_3'],
+        ['108', 'award_star_silver_1'],
+        ['109', 'award_star_silver_2'],
+        ['110', 'award_star_silver_3'],
+        ['111', 'basket'],
+        ['119', 'bell'],
+        ['125', 'bin'],
+        ['130', 'bomb'],
+        ['144', 'box'],
+        ['358', 'cursor'],
+        ['359', 'cut'],
+        ['361', 'daapplicationase'],
+        ['385', 'delete'],
+        ['386', 'descend'],
+        ['387', 'disconnect'],
+        ['389', 'disk_multiple'],
+        ['391', 'document'],
+        ['392', 'door'],
+        ['395', 'door_out'],
+        ['396', 'drink'],
+        ['398', 'drive'],
+        ['415', 'dvd'],
+        ['423', 'email'],
+        ['442', 'error'],
+        ['445', 'error_go'],
+        ['447', 'exclamation'],
+        ['449', 'exec'],
+        ['450', 'eye'],
+        ['153', 'briefcase'],
+        ['154', 'browser'],
+        ['155', 'bug'],
+        ['162', 'building'],
+        ['197', 'cake'],
+        ['198', 'calculator'],
+        ['212', 'camera'],
+        ['220', 'cancel'],
+        ['221', 'car'],
+        ['222', 'cart'],
+        ['235', 'cd'],
+        ['242', 'chart_bar'],
+        ['270', 'clock'],
+        ['281', 'cog'],
+        ['287', 'coins'],
+        ['290', 'colors'],
+        ['291', 'color_swatch'],
+        ['292', 'color_wheel'],
+        ['300', 'compress'],
+        ['301', 'computer'],
+        ['309', 'connect'],
+        ['339', 'cookie'],
+        ['341', 'creditcards'],
+        ['342', 'cross'],
+        ['461', 'female'],
+        ['481', 'find'],
+        ['526', 'gimp'],
+        ['491', 'application'],
+        ['527', 'group'],
+        ['536', 'heart'],
+        ['539', 'help'],
+        ['541', 'hourglass'],
+        ['546', 'house'],
+        ['549', 'html'],
+        ['556', 'image'],
+        ['560', 'image_edit'],
+        ['561', 'image_link'],
+        ['565', 'information'],
+        ['566', 'ipod'],
+        ['571', 'java'],
+        ['572', 'java_jar'],
+        ['573', 'joystick'],
+        ['578', 'key'],
+        ['579', 'keyboard'],
+        ['586', 'kservices'],
+        ['587', 'layers'],
+        ['597', 'lightbulb'],
+        ['601', 'lightning'],
+        ['605', 'link'],
+        ['612', 'lock'],
+        ['619', 'lorry'],
+        ['626', 'magifier_zoom_out'],
+        ['627', 'magnifier'],
+        ['628', 'magnifier_zoom_in'],
+        ['629', 'male'],
+        ['630', 'map'],
+        ['651', 'mime'],
+        ['652', 'money'],
+        ['655', 'money_dollar'],
+        ['656', 'money_euro'],
+        ['657', 'money_pound'],
+        ['658', 'money_yen'],
+        ['659', 'monitor'],
+        ['667', 'mouse'],
+        ['674', 'new'],
+        ['675', 'newspaper'],
+        ['680', 'note'],
+        ['685', 'note_go'],
+        ['686', 'ooo_gulls'],
+        ['687', 'openoffice'],
+        ['688', 'overlays'],
+        ['783', 'paintbrush'],
+        ['784', 'paintcan'],
+        ['785', 'palette'],
+        ['789', 'pencil'],
+        ['793', 'phone'],
+        ['797', 'photo'],
+        ['798', 'photos'],
+        ['802', 'php-icon'],
+        ['803', 'picture'],
+        ['814', 'pilcrow'],
+        ['815', 'pill'],
+        ['830', 'printer'],
+        ['837', 'quicktime'],
+        ['838', 'rainbow'],
+        ['839', 'realplayer'],
+        ['841', 'report'],
+        ['842', 'report_add'],
+        ['843', 'report_delete'],
+        ['844', 'report_disk'],
+        ['845', 'report_edit'],
+        ['846', 'report_go'],
+        ['847', 'report_key'],
+        ['848', 'report_link'],
+        ['849', 'report_magnify'],
+        ['850', 'report_picture'],
+        ['851', 'report_user'],
+        ['852', 'report_word'],
+        ['857', 'rosette'],
+        ['858', 'rpm'],
+        ['902', 'shading'],
+        ['928', 'shield'],
+        ['932', 'sitemap'],
+        ['933', 'sitemap_color'],
+        ['934', 'sound'],
+        ['949', 'star'],
+        ['954', 'stop'],
+        ['963', 'application'],
+        ['985', 'tag'],
+        ['986', 'tag_blue'],
+        ['987', 'tag_blue_add'],
+        ['988', 'tag_blue_delete'],
+        ['989', 'tag_blue_edit'],
+        ['990', 'tag_green'],
+        ['991', 'tag_orange'],
+        ['992', 'tag_pink'],
+        ['993', 'tag_purple'],
+        ['994', 'tag_red'],
+        ['995', 'tag_yellow'],
+        ['996', 'tar'],
+        ['997', 'telephone'],
+        ['1008', 'terminal'],
+        ['1052', 'tgz'],
+        ['1054', 'thumb_down'],
+        ['1055', 'thumb_up'],
+        ['1056', 'tick'],
+        ['1058', 'time'],
+        ['1062', 'time_go'],
+        ['1063', 'transmit'],
+        ['1070', 'tux'],
+        ['1072', 'user'],
+        ['1084', 'vcard'],
+        ['1088', 'vector'],
+        ['1091', 'video'],
+        ['1093', 'wand'],
+        ['1123', 'zoom'],
+        ['1124', 'zoom_in'],
+        ['1125', 'zoom_out']
+    ];
     var iconId = new Ext.ux.form.IconCombo({
         name: 'iconId',
         hiddenName: 'iconId',
@@ -1354,21 +1825,21 @@ Ext.onReady(function() {
         width: 600,
         items: [{
             xtype: 'panel',
+            bodyStyle: 'padding:1px',
+            layout: 'form',
             items: [{
-                xtype: 'panel',
+                xtype: 'fieldset',
                 layout: 'form',
-                title: leafNative,
-                bodyStyle: "padding:5px",
+                bodyStyle: 'padding:5px;',
                 border: true,
                 frame: true,
                 items: [applicationId, applicationSequence, applicationCode, applicationEnglish, iconId, applicationId]
             }]
-        },
-        {
-            xtype: 'panel',
+        }, {
+            xtype: 'tabpanel',
             title: 'application Translation',
-            disable: true,
-            items: [applicationTranslateGrid]
+            activeTab: 0,
+            items: [applicationTranslateGrid, applicationAccessGrid]
         }],
         buttonVAlign: 'top',
         buttonAlign: 'left',
@@ -1387,22 +1858,21 @@ Ext.onReady(function() {
             type: 'button',
             iconCls: 'key',
             disabled: auditButtonLabelDisabled,
-            handler: function() { // reload the store
+            handler: function () { // reload the store
                 if (auditWindow) {
                     logStore.reload();
                     logAdvanceStore.reload();
                     auditWindow.show().center();
                 }
             }
-        },
-        {
+        }, {
             text: newButtonLabel,
             name: 'newButton',
             id: 'newButton',
             title: 'newButton',
             type: 'button',
             iconCls: 'new',
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('applicationTranslateGrid').enable();
                 Ext.getCmp('applicationAccessGrid').enable();
                 var id = Ext.getCmp('applicationId').getValue();
@@ -1413,24 +1883,46 @@ Ext.onReady(function() {
                         method: method,
                         leafId: leafId
                     },
-                    success: function(form, action) {
+                    success: function (form, action) {
                         if (action.result.success == true) {
-                            Ext.MessageBox.alert(systemLabel, action.result.message);
                             Ext.getCmp('applicationTranslateGrid').enable();
+                            Ext.getCmp('applicationAccessGrid').enable();
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').disable();
                             Ext.getCmp('deleteButton').enable();
+                            Ext.getCmp('translationButton').enable();
+                            Ext.getCmp('applicationId').setValue(action.result.applicationId);
                             applicationStore.reload({
                                 params: {
                                     leafId: leafId,
+                                    isadmin: isAdmin,
+                                    applicationId: action.result.applicationId,
                                     start: 0,
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('applicationId').setValue(action.result.applicationId);
+                            applicationTranslateStore.reload({
+                                params: {
+                                    leafId: leafId,
+                                    isAdmin: isAdmin,
+                                    applicationId: action.result.applicationId,
+                                    start: 0,
+                                    limit: perPage
+                                }
+                            });
+                            applicationAccessStore.reload({
+                                params: {
+                                    leafId: leafId,
+                                    applicationId: action.result.applicationId,
+                                    start: 0,
+                                    limit: perPage
+                                }
+                            });
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
                     },
-                    failure: function(form, action) {
+                    failure: function (form, action) {
                         if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
                             Ext.Msg.alert(systemErrorLabel, loadFailureLabel);
                         } else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
@@ -1443,14 +1935,13 @@ Ext.onReady(function() {
                     }
                 });
             }
-        },
-        {
+        }, {
             text: saveButtonLabel,
             name: 'saveButton',
             id: 'saveButton',
             iconCls: 'bullet_disk',
             disabled: true,
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('applicationTranslateGrid').disable();
                 Ext.getCmp('applicationAccessGrid').disable();
@@ -1464,24 +1955,46 @@ Ext.onReady(function() {
                         leafId: leafId,
                         isAdmin: isAdmin
                     },
-                    success: function(form, action) {
+                    success: function (form, action) {
                         if (action.result.success == true) {
-                            Ext.MessageBox.alert(systemLabel, action.result.message);
                             Ext.getCmp('applicationTranslateGrid').enable();
+                            Ext.getCmp('applicationAccessGrid').enable();
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').disable();
                             Ext.getCmp('deleteButton').enable();
+                            Ext.getCmp('translationButton').enable();
+                            Ext.getCmp('applicationId').setValue(action.result.applicationId);
                             applicationStore.reload({
                                 params: {
                                     leafId: leafId,
+                                    isadmin: isAdmin,
+                                    applicationId: action.result.applicationId,
                                     start: 0,
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('applicationId').setValue(action.result.applicationId);
+                            applicationTranslateStore.reload({
+                                params: {
+                                    leafId: leafId,
+                                    isAdmin: isAdmin,
+                                    applicationId: action.result.applicationId,
+                                    start: 0,
+                                    limit: perPage
+                                }
+                            });
+                            applicationAccessStore.reload({
+                                params: {
+                                    leafId: leafId,
+                                    applicationId: action.result.applicationId,
+                                    start: 0,
+                                    limit: perPage
+                                }
+                            });
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
                     },
-                    failure: function(form, action) {
+                    failure: function (form, action) {
                         if (action.failureType === Ext.form.Action.LOAD_FAILURE) {
                             Ext.Msg.alert(systemErrorLabel, loadFailureLabel);
                         } else if (action.failureType === Ext.form.Action.CLIENT_INVALID) {
@@ -1494,15 +2007,14 @@ Ext.onReady(function() {
                     }
                 });
             }
-        },
-        {
+        }, {
             text: deleteButtonLabel,
             type: 'button',
             name: 'deleteButton',
             id: 'deleteButton',
             iconCls: 'trash',
             disabled: true,
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('applicationTranslateGrid').disable();
                 Ext.getCmp('applicationAccessGrid').disable();
@@ -1512,7 +2024,7 @@ Ext.onReady(function() {
                     icon: Ext.Msg.QUESTION,
                     buttons: Ext.Msg.YESNO,
                     scope: this,
-                    fn: function(response) {
+                    fn: function (response) {
                         if ("yes" == response) {
                             Ext.Ajax.request({
                                 url: "../controller/applicationController.php",
@@ -1522,7 +2034,7 @@ Ext.onReady(function() {
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },
-                                success: function(response, options) {
+                                success: function (response, options) {
                                     jsonResponse = Ext.decode(response.responseText);
                                     if (jsonResponse.success == true) {
                                         Ext.MessageBox.alert(systemLabel, jsonResponse.message);
@@ -1542,7 +2054,7 @@ Ext.onReady(function() {
                                         Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
                                 },
-                                failure: function(response, options) {
+                                failure: function (response, options) {
                                     Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
                                 }
                             });
@@ -1550,52 +2062,48 @@ Ext.onReady(function() {
                     }
                 });
             }
-        },
-        {
+        }, {
             text: resetButtonLabel,
             type: 'reset',
             name: 'resetButton',
             id: 'resetButton',
             iconCls: 'database_refresh',
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('newButton').enable();
                 Ext.getCmp('applicationTranslateGrid').disable();
                 Ext.getCmp('applicationAccessGrid').disable();
                 formPanel.getForm().reset();
             }
-        },
-        {
+        }, {
             text: postButtonLabel,
             type: 'button',
             name: 'postButton',
             id: 'postButton',
             iconCls: 'lock',
             disabled: true,
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('applicationTranslateGrid').disable();
                 Ext.getCmp('applicationAccessGrid').disable();
                 formPanel.getForm().reset();
             }
-        },
-        {
+        }, {
             text: gridButtonLabel,
             type: 'button',
             name: 'gridButton',
             id: 'gridButton',
             iconCls: 'table',
-            handler: function() {
+            handler: function () {
                 formPanel.getForm().reset();
                 viewPort.items.get(0).expand();
             }
-        },
-        {
+        }, {
             text: firstButtonLabel,
             name: 'firstButton',
             id: 'firstButton',
             type: 'button',
             iconCls: 'resultset_first',
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('teamId').enable();
                 Ext.getCmp('applicationAccessGrid').enable();
@@ -1608,7 +2116,7 @@ Ext.onReady(function() {
                             leafId: leafId,
                             dataNavigation: 'firstRecord'
                         },
-                        success: function(response, options) {
+                        success: function (response, options) {
                             jsonResponse = Ext.decode(response.responseText);
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
@@ -1623,7 +2131,7 @@ Ext.onReady(function() {
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
-                                    success: function(form, action) {
+                                    success: function (form, action) {
                                         if (action.result.success == true) {
                                             if (action.result.nextRecord == 0) {
                                                 Ext.getCmp('nextButton').disable();
@@ -1656,7 +2164,7 @@ Ext.onReady(function() {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
                                     },
-                                    failure: function(form, action) {
+                                    failure: function (form, action) {
                                         Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                     }
                                 });
@@ -1664,7 +2172,7 @@ Ext.onReady(function() {
                                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                             }
                         },
-                        failure: function(response, options) {
+                        failure: function (response, options) {
                             Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
                         }
                     });
@@ -1680,7 +2188,7 @@ Ext.onReady(function() {
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
-                        success: function(form, action) {
+                        success: function (form, action) {
                             if (action.result.success == true) {
                                 if (action.result.nextRecord == 0) {
                                     Ext.getCmp('nextButton').disable();
@@ -1713,21 +2221,20 @@ Ext.onReady(function() {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
                         },
-                        failure: function(form, action) {
+                        failure: function (form, action) {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
                     });
                 }
             }
-        },
-        {
+        }, {
             text: previousButtonLabel,
             name: 'previousButton',
             id: 'previousButton',
             type: 'button',
             iconCls: 'resultset_previous',
             disabled: true,
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('applicationTranslateGrid').enable();
                 Ext.getCmp('applicationAccessGrid').enable();
@@ -1746,7 +2253,7 @@ Ext.onReady(function() {
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
-                        success: function(form, action) {
+                        success: function (form, action) {
                             if (action.result.success == true) {
                                 Ext.getCmp('firstRecord').setValue(action.result.firstRecord);
                                 Ext.getCmp('previousRecord').setValue(action.result.previousRecord);
@@ -1775,7 +2282,7 @@ Ext.onReady(function() {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
                         },
-                        failure: function(form, action) {
+                        failure: function (form, action) {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
                     });
@@ -1783,15 +2290,14 @@ Ext.onReady(function() {
                     Ext.MessageBox.alert(systemErrorLabel, 'Record Not Found');
                 }
             }
-        },
-        {
+        }, {
             text: nextButtonLabel,
             name: 'nextButton',
             id: 'nextButton',
             type: 'button',
             disabled: true,
             iconCls: 'resultset_next',
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('applicationTranslateGrid').enable();
                 Ext.getCmp('applicationAccessGrid').enable();
@@ -1810,7 +2316,7 @@ Ext.onReady(function() {
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
-                        success: function(form, action) {
+                        success: function (form, action) {
                             if (action.result.success == true) {
                                 Ext.getCmp('firstRecord').setValue(action.result.firstRecord);
                                 Ext.getCmp('previousRecord').setValue(action.result.previousRecord);
@@ -1843,7 +2349,7 @@ Ext.onReady(function() {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
                         },
-                        failure: function(form, action) {
+                        failure: function (form, action) {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
                     });
@@ -1851,14 +2357,13 @@ Ext.onReady(function() {
                     Ext.MessageBox.alert(systemErrorLabel, recordNotFoundLabel);
                 }
             }
-        },
-        {
+        }, {
             text: endButtonLabel,
             name: 'endButton',
             id: 'endButton',
             type: 'button',
             iconCls: 'resultset_last',
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('applicationTranslateGrid').enable();
                 Ext.getCmp('applicationAccessGrid').enable();
@@ -1871,7 +2376,7 @@ Ext.onReady(function() {
                             leafId: leafId,
                             dataNavigation: 'lastRecord'
                         },
-                        success: function(response, options) {
+                        success: function (response, options) {
                             jsonResponse = Ext.decode(response.responseText);
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
@@ -1886,7 +2391,7 @@ Ext.onReady(function() {
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
-                                    success: function(form, action) {
+                                    success: function (form, action) {
                                         if (action.result.success == true) {
                                             if (action.result.previousRecord == 0) {
                                                 Ext.getCmp('previousButton').disable();
@@ -1919,7 +2424,7 @@ Ext.onReady(function() {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
                                     },
-                                    failure: function(form, action) {
+                                    failure: function (form, action) {
                                         Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                     }
                                 });
@@ -1927,7 +2432,7 @@ Ext.onReady(function() {
                                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                             }
                         },
-                        failure: function(response, options) {
+                        failure: function (response, options) {
                             Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
                         }
                     });
@@ -1944,7 +2449,7 @@ Ext.onReady(function() {
                                 leafId: leafId,
                                 isAdmin: isAdmin
                             },
-                            success: function(form, action) {
+                            success: function (form, action) {
                                 if (action.result.success == true) {
                                     if (action.result.previousRecord == 0) {
                                         Ext.getCmp('previousButton').disable();
@@ -1970,7 +2475,7 @@ Ext.onReady(function() {
                                     Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                 }
                             },
-                            failure: function(form, action) {
+                            failure: function (form, action) {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
                         });
@@ -1979,13 +2484,12 @@ Ext.onReady(function() {
                     }
                 }
             }
-        },
-        {
+        }, {
             text: 'Translation',
             name: 'translation',
             id: 'translation',
             disabled: true,
-            handler: function() {
+            handler: function () {
                 Ext.getCmp('newButton').disable();
                 Ext.Ajax.request({
                     url: "../controller/applicationController.php",
@@ -1995,7 +2499,7 @@ Ext.onReady(function() {
                         method: 'translate',
                         applicationId: Ext.getCmp('applicationId').getValue()
                     },
-                    success: function(response, options) {
+                    success: function (response, options) {
                         jsonResponse = Ext.decode(response.responseText);
                         if (jsonResponse.success == true) {
                             Ext.MessageBox.alert(systemLabel, jsonResponse.message);
@@ -2004,7 +2508,7 @@ Ext.onReady(function() {
                             Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                         }
                     },
-                    failure: function(response, options) {
+                    failure: function (response, options) {
                         Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + escape(response.statusText));
                     }
                 });

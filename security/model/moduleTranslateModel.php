@@ -3,13 +3,13 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is Table Mapping Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
+ * this is Modle Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
  * @package Translation
- * @subpackage Table Translation
+ * @subpackage Module Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -19,7 +19,7 @@ class ModuleTranslateModel extends ValidationClass {
      * Module Identification
      * @var int
      */
-    private $folderTranslateId;
+    private $moduleTranslateId;
 
     /**
      * Module Identification
@@ -52,16 +52,16 @@ class ModuleTranslateModel extends ValidationClass {
          *  All the $_POST enviroment.
          */
         if (isset($_POST ['moduleId'])) {
-            $this->setmoduleId($this->strict($_POST ['moduleId'], 'numeric'), 0, 'single');
+            $this->setModuleId($this->strict($_POST ['moduleId'], 'numeric'), 0, 'single');
         }
         if (isset($_POST ['moduleSequence'])) {
-            $this->setmoduleSequence($this->strict($_POST ['moduleSequence'], 'memo'));
+            $this->setModuleSequence($this->strict($_POST ['moduleSequence'], 'memo'));
         }
         if (isset($_POST ['moduleCode'])) {
-            $this->setmoduleCode($this->strict($_POST ['moduleCode'], 'memo'));
+            $this->setModuleCode($this->strict($_POST ['moduleCode'], 'memo'));
         }
         if (isset($_POST ['moduleNote'])) {
-            $this->setmoduleNote($this->strict($_POST ['moduleNote'], 'memo'));
+            $this->setModuleNote($this->strict($_POST ['moduleNote'], 'memo'));
         }
 
         if (isset($_GET ['moduleTranslateId'])) {
@@ -357,8 +357,8 @@ class ModuleTranslateModel extends ValidationClass {
      * Set Module Identication Value
      * @param  string $value
      */
-    public function setModule($value) {
-        $this->moduled = $value;
+    public function setModuleId($value) {
+        $this->moduleId = $value;
     }
 
     /**
@@ -366,7 +366,7 @@ class ModuleTranslateModel extends ValidationClass {
      * @return string
      */
     public function getModuleId() {
-        return $this->moduled;
+        return $this->moduleId;
     }
 
     /**

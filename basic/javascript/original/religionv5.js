@@ -908,6 +908,9 @@ Ext.onReady(function() {
                         isAdmin: isAdmin
                     },
                     success: function(form, action) {
+                    	Ext.getCmp('newButton').disable();
+						Ext.getCmp('saveButton').enable();
+						Ext.getCmp('deleteButton').enable();
                         Ext.getCmp('firstRecord').setValue(action.result.firstRecord);
                         Ext.getCmp('previousRecord').setValue(action.result.previousRecord);
                         Ext.getCmp('nextRecord').setValue(action.result.nextRecord);

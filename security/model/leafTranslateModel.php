@@ -3,13 +3,13 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is Table Mapping Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
+ * this is Application Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
  * @package Translation
- * @subpackage Table Translation
+ * @subpackage Application Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

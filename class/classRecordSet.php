@@ -269,9 +269,7 @@ class RecordSet extends ConfigClass {
 				echo json_encode(array("success"=>false,"message"=>"Module Identification Not Found"));
 				exit();
 			}
-		} else {
-			echo "uiks";
-		}
+		} 
 		if ($this->getTableName() == 'leaf') {
 			if (isset ( $moduleId )) {
 				$sql .= " AND `moduleId`='" . $moduleId . "'";

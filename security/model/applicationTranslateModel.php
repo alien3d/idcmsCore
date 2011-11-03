@@ -3,13 +3,13 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is Table Mapping Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
+ * this is Application Translation model file.This is to ensure strict setting enable for all variable enter to daFolderase
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
  * @package Translation
- * @subpackage Table Translation
+ * @subpackage Application Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -19,7 +19,7 @@ class ApplicationTranslateModel extends ValidationClass {
      * Application Identification
      * @var int
      */
-    private $folderTranslateId;
+    private $applicationTranslateId;
 
     /**
      * Application Identification
@@ -52,16 +52,16 @@ class ApplicationTranslateModel extends ValidationClass {
          *  All the $_POST enviroment.
          */
         if (isset($_POST ['applicationId'])) {
-            $this->setapplicationId($this->strict($_POST ['applicationId'], 'numeric'), 0, 'single');
+            $this->setApplicationId($this->strict($_POST ['applicationId'], 'numeric'), 0, 'single');
         }
         if (isset($_POST ['applicationSequence'])) {
-            $this->setapplicationSequence($this->strict($_POST ['applicationSequence'], 'memo'));
+            $this->setApplicationSequence($this->strict($_POST ['applicationSequence'], 'memo'));
         }
         if (isset($_POST ['applicationCode'])) {
-            $this->setapplicationCode($this->strict($_POST ['applicationCode'], 'memo'));
+            $this->setApplicationCode($this->strict($_POST ['applicationCode'], 'memo'));
         }
         if (isset($_POST ['applicationNote'])) {
-            $this->setapplicationNote($this->strict($_POST ['applicationNote'], 'memo'));
+            $this->setApplicationNote($this->strict($_POST ['applicationNote'], 'memo'));
         }
 
         if (isset($_GET ['applicationTranslateId'])) {

@@ -638,8 +638,9 @@ Ext.onReady(function() {
                     },
                     success: function(form, action) {
                         if (action.result.success == true) {
-                            Ext.getCmp('newButton').disable();
-                            Ext.getCmp('saveButton').enable();
+                        	Ext.getCmp('newButton').disable();
+							Ext.getCmp('saveButton').enable();
+							Ext.getCmp('deleteButton').enable();
                             Ext.getCmp('religionDescTemp').setValue(record.data.religionDesc);
                             viewPort.items.get(1).expand();
                         } else {

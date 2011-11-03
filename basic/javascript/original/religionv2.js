@@ -704,6 +704,10 @@ Ext.onReady(function() {
                         Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                     }
                 });
+                
+            	Ext.getCmp('newButton').disable();
+				Ext.getCmp('saveButton').enable();
+				Ext.getCmp('deleteButton').enable();
             }
         },
         tbar: {

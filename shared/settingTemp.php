@@ -83,7 +83,7 @@ while (($row = $q->fetchAssoc($result))== TRUE)  {
 
 
 
-		echo "var ".$row['defaultLabel']." = '".$row['defaultLabel']."';\n";
+		echo "var ".$row['defaultLabel']." = '".$row['defaultLabelNative']."';\n";
 	  }
 
 /**
