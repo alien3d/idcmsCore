@@ -27,6 +27,7 @@ Ext.onReady(function() {
         pagePrint = true;
     } // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
+    
     var staffByProxy = new Ext.data.HttpProxy({
         url: '../controller/staffController.php?',
         method: 'GET',
@@ -66,7 +67,8 @@ Ext.onReady(function() {
             name: 'staffName',
             type: 'string'
         }]
-    }); // end Staff Request
+    }); 
+    // end Staff Request
     // start log Request
     var logProxy = new Ext.data.HttpProxy({
         url: '../../security/controller/logController.php?',
@@ -246,7 +248,7 @@ Ext.onReady(function() {
         height: 400,
         columns: logColumnModel,
         loadMask: true,
-        plugins: [logFilters, expander],
+        plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
         sm: new Ext.grid.RowSelectionModel({
@@ -696,32 +698,7 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var staffByReader = new Ext.data.JsonReader({
-        totalProperty: 'total',
-        successProperty: 'success',
-        messageProperty: 'message',
-        idProperty: 'staffId'
-    });
-    var staffByStore = new Ext.data.JsonStore({
-        proxy: staffByProxy,
-        reader: staffByReader,
-        autoLoad: true,
-        autoDestroy: true,
-        baseParams: {
-            method: 'read',
-            field: 'staffId',
-            leafId: leafId
-        },
-        root: 'staff',
-        fields: [{
-            name: 'staffId',
-            type: 'int'
-        },
-        {
-            name: 'staffName',
-            type: 'string'
-        }]
-    });
+    
     var staffFilters = new Ext.ux.grid.GridFilters({
         encode: encode,
         local: local,
@@ -832,11 +809,11 @@ Ext.onReady(function() {
     },
     {
         dataIndex: 'departmentId',
-        header: departmentNoteLabel,
+        header: departmentEnglishLabel,
         hidden: false,
         sortable: true,
         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-            return record.data.departmentNote;
+            return record.data.departmentEnglish;
         }
     },
     {
@@ -1454,7 +1431,12 @@ Ext.onReady(function() {
             allowBlank: false,
             blankText: blankTextLabel,
             anchor: '95%'
-        }); // hidden value for navigation button
+        }); 
+        var staffId = new Ext.form.Hidden({
+        	name:'staffId',
+        	id:'staffId'
+        });
+        // hidden value for navigation button
         var firstRecord = new Ext.form.Hidden({
             name: 'firstRecord',
             id: 'firstRecord',

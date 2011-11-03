@@ -610,9 +610,9 @@ class StaffClass extends ConfigClass {
 							`staff`.`executeBy`,
 							`staff`.`executeTime`
 			FROM 		`staff`
-			JOIN			`team`
+			JOIN		`team`
 			USING		(`teamId`)
-			JOIN			`department`
+			JOIN		`department`
 			USING		(`departmentId`)
 			WHERE 		" . $this->auditFilter . "
 			AND			`team`.`isActive`=1
@@ -1840,7 +1840,7 @@ if (isset ( $_GET ['method'] )) {
 	$staffObject->execute ();
 	if (isset ( $_GET ['field'] )) {
 		if ($_GET ['field'] == 'staffId') {
-			$staffObject->staff ();
+			$staffObject->staff();
 		}
 		if ($_GET ['field'] == 'team') {
 			$staffObject->team ();
@@ -1870,6 +1870,7 @@ if (isset ( $_GET ['method'] )) {
 		if ($_GET ['mode'] == 'excel') {
 			$staffObject->excel ();
 		}
+		
 	}
 }
 ?>

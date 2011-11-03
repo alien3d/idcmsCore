@@ -55,7 +55,8 @@ Ext.onReady(function() {
         baseParams: {
             method: 'read',
             field: 'staffId',
-            leafId: leafId
+            leafId: leafId,
+            isAdmin:isAdmin
         },
         root: 'staff',
         fields: [{
@@ -750,7 +751,7 @@ Ext.onReady(function() {
         store: folderAccessStore,
         cm: folderAccessColumnModel,
         frame: true,
-        title: 'Folder Access Grid',
+        title: leafNative,
         autoHeight: true,
         disabled: true,
         selModel: folderAccessValue,

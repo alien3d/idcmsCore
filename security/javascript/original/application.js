@@ -953,7 +953,11 @@ Ext.onReady(function() {
         hidden: false,
         width: 50,
         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-            return '<img src=\'../../javascript/resources/images/icon/' + value + '.png\' width=\'12\' height=\'12\'> ' + value;
+    	iconLength = value;
+		if(iconLength.length == 0 ){
+			value = 'cog';
+		}    
+    	return '<img src=\'../../javascript/resources/images/icon/' + value + '.png\' width=\'12\' height=\'12\'> ' + value;
         }
     },
     isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid, {

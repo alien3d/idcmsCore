@@ -28,7 +28,7 @@ Ext.onReady(function() {
     } // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/leafTeamaccessController.php?',
+        url: '../controller/leafTeamAccessController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -497,7 +497,7 @@ Ext.onReady(function() {
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
             if (jsonResponse.success == true) {
-                Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                //Ext.MessageBox.alert(systemLabel, jsonResponse.message);
             } else {
                 Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
             }

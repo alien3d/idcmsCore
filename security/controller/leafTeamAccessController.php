@@ -712,7 +712,7 @@ if (isset($_GET ['method'])) {
     }
     if (isset($_GET ['field'])) {
         if ($_GET ['field'] == 'staffId') {
-            $leafTeamAccessObject->staffId();
+            $leafTeamAccessObject->staff();
         }
         if ($_GET ['field'] == 'teamId') {
             $leafTeamAccessObject->team();

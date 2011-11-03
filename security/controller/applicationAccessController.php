@@ -440,7 +440,10 @@ if (isset($_GET ['method'])) {
         $applicationAccessObject->update();
     }
     if (isset($_GET ['field'])) {
-        if ($_GET ['field'] == 'teamId') {
+        if($_GET['field'] == 'staffId') {
+        	$applicationAccessObject->staff();
+        }
+    	if ($_GET ['field'] == 'teamId') {
             $applicationAccessObject->team();
         }
     }

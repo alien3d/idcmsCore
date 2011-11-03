@@ -388,7 +388,10 @@ if (isset($_GET ['method'])) {
         $moduleAccessObject->update();
     }
     if (isset($_GET ['field'])) {
-        if ($_GET ['field'] == 'teamId') {
+        if($_GET['field']=='staffId'){
+        	$moduleAccessObject->staff();
+        }
+    	if ($_GET ['field'] == 'teamId') {
             $moduleAccessObject->team();
         }
     }

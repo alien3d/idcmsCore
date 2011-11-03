@@ -909,6 +909,10 @@ Ext.onReady(function() {
         dataIndex: 'iconName',
         header: iconNameLabel,
         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+    		iconLength = value;
+    		if(iconLength.length == 0 ){
+    			value = 'cog';
+    		}
             return '<img src=\'../../javascript/resources/images/icon/' + value + '.png\' width=\'12\' height=\'12\'> ' + value;
         }
     },
