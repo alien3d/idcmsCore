@@ -341,7 +341,7 @@ Ext.onReady(function() {
             type: 'int'
         }]
     });
-    var logAdvanceFilters = new Ext.ux.grid.GridFilters({
+    var  logAdvanceFilters = new Ext.ux.grid.GridFilters({
         encode: encode,
         local: local,
         filters: [{
@@ -427,7 +427,7 @@ Ext.onReady(function() {
         height: 400,
         columns: logAdvanceColumnModel,
         loadMask: true,
-        plugins: [logAdvanceFilters],
+        plugins: [ logAdvanceFilters],
         sm: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
@@ -445,7 +445,7 @@ Ext.onReady(function() {
                             limit: perPage,
                             method: 'read',
                             mode: 'view',
-                            plugin: [logAdvanceFilters]
+                            plugin: [ logAdvanceFilters]
                         }
                     });
                 }
@@ -852,7 +852,7 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var staffFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var staffGrid = new Ext.grid.GridPanel({
         border: false,
         store: staffStore,
@@ -866,7 +866,7 @@ Ext.onReady(function() {
         }),
         viewConfig: {
             forceFit: true,
-            emptyText: emptyRowLabel
+            emptyText: emptyTextLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -937,8 +937,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button,e) {
                         staffStore.each(function(rec) {
-                            for (var access in accessArray) { // alert(access);
-                                rec.set(accessArray[access], true);
+                            for (var access in religionFlagArray) { 
+                                rec.set(religionFlagArray[access], true);
                             }
                         });
                     }
@@ -951,8 +951,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button,e) {
                         staffStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                            for (var access in religionFlagArray) {
+                                rec.set(religionFlagArray[access], false);
                             }
                         });
                     }
@@ -1191,14 +1191,14 @@ Ext.onReady(function() {
             height: 400,
             columns: logColumnModel,
             loadMask: true,
-            plugins: [logFilters, expander],
+            plugins: [logFilters, logExpander],
             collapsible: true,
             animCollapse: false,
             sm: new Ext.grid.RowSelectionModel({
                 singleSelect: true
             }),
             viewConfig: {
-                emptyText: emptyRowLabel
+                emptyText: emptyTextLabel
             },
             iconCls: 'application_view_detail',
             listeners: {
@@ -1222,7 +1222,7 @@ Ext.onReady(function() {
                 plugins: [new Ext.ux.plugins.PageComboResizer()]
             })
         }); // audit advance grid
-        var logAdvancefilters = new Ext.ux.grid.GridFilters({
+        var  logAdvanceFilters = new Ext.ux.grid.GridFilters({
             encode: encode,
             local: local,
             filters: [{
@@ -1308,7 +1308,7 @@ Ext.onReady(function() {
             height: 400,
             columns: logAdvanceColumnModel,
             loadMask: true,
-            plugins: [logAdvancefilters],
+            plugins: [ logAdvanceFilters],
             sm: new Ext.grid.RowSelectionModel({
                 singleSelect: true
             }),
@@ -1326,7 +1326,7 @@ Ext.onReady(function() {
                                 limit: perPage,
                                 method: 'read',
                                 mode: 'view',
-                                plugin: [logAdvancefilters]
+                                plugin: [ logAdvanceFilters]
                             }
                         });
                     }

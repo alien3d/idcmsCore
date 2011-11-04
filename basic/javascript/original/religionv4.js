@@ -339,7 +339,7 @@ Ext.onReady(function() {
             type: 'int'
         }]
     });
-    var logAdvanceFilters = new Ext.ux.grid.GridFilters({
+    var  logAdvanceFilters = new Ext.ux.grid.GridFilters({
         encode: encode,
         local: local,
         filters: [{
@@ -425,7 +425,7 @@ Ext.onReady(function() {
         height: 400,
         columns: logAdvanceColumnModel,
         loadMask: true,
-        plugins: [logAdvanceFilters],
+        plugins: [ logAdvanceFilters],
         sm: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
@@ -443,7 +443,7 @@ Ext.onReady(function() {
                             limit: perPage,
                             method: 'read',
                             mode: 'view',
-                            plugin: [logAdvanceFilters]
+                            plugin: [ logAdvanceFilters]
                         }
                     });
                 }
@@ -676,7 +676,7 @@ Ext.onReady(function() {
         editor: religionDesc
     },
     isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var religionFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var religionEditor = new Ext.ux.grid.RowEditor({
         saveText: saveTextLabel,
         cancelText: cancelTextLabel,
@@ -830,8 +830,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button, e) {
                         religionStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                            for (var access in religionFlagArray) {
+                                rec.set(religionFlagArray[access], true);
                             }
                         });
                     }
@@ -844,8 +844,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button, e) {
                         religionStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                            for (var access in religionFlagArray) {
+                                rec.set(religionFlagArray[access], false);
                             }
                         });
                     }

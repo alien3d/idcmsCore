@@ -339,7 +339,7 @@ Ext.onReady(function() {
             type: 'int'
         }]
     });
-    var logAdvanceFilters = new Ext.ux.grid.GridFilters({
+    var  logAdvanceFilters = new Ext.ux.grid.GridFilters({
         encode: encode,
         local: local,
         filters: [{
@@ -425,7 +425,7 @@ Ext.onReady(function() {
         height: 400,
         columns: logAdvanceColumnModel,
         loadMask: true,
-        plugins: [logAdvanceFilters],
+        plugins: [ logAdvanceFilters],
         sm: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
@@ -443,7 +443,7 @@ Ext.onReady(function() {
                             limit: perPage,
                             method: 'read',
                             mode: 'view',
-                            plugin: [logAdvanceFilters]
+                            plugin: [ logAdvanceFilters]
                         }
                     });
                 }
