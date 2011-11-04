@@ -747,7 +747,7 @@ Ext.onReady(function() {
         hidden: true,
         width: 100
     }];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var defaultLabelFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var defaultLabelGrid = new Ext.grid.GridPanel({
         name: 'defaultLabelGrid',
         id: 'defaultLabelGrid',
@@ -802,8 +802,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button,e) {
                         defaultLabelStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                            for (var access in defaultLabelFlagArray) {
+                                rec.set(defaultLabelFlagArray[access], true);
                             }
                         });
                     }
@@ -816,8 +816,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button,e) {
                         defaultLabelStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                            for (var access in defaultLabelFlagArray) {
+                                rec.set(defaultLabelFlagArray[access], false);
                             }
                         });
                     }
@@ -1037,6 +1037,8 @@ Ext.onReady(function() {
             }
         }
     });
+    var defaultLabelTranslateFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+
     var defaultLabelTranslateGrid = new Ext.grid.GridPanel({
         name: 'defaultLabelTranslateGrid',
         id: 'defaultLabelTranslateGrid',
@@ -1051,7 +1053,142 @@ Ext.onReady(function() {
             emptyTextLabel: emptyTextLabel
         },
         layout: 'fit',
-        plugins: [defaultLabelTranslateEditor]
+        plugins: [defaultLabelTranslateEditor],
+        tbar: {
+            items: [{
+                xtype: 'button',
+                iconCls: 'add',
+                id: 'add_record',
+                name: 'add_record',
+                text: newButtonLabel,
+                handler: function () {
+                    var newRecord = new defaultLabelTranslateEntity({
+                    	defaultLabelTranslateId: '',
+                    	defaultLabelId: '',
+                    	defaultLabelNative: '',
+                        languageId: '',
+                        executeBy: '',
+                        staffName: '',
+                        isDefault: '',
+                        isNew: '',
+                        isDraft: '',
+                        isUpdate: '',
+                        isReview: '',
+                        isPost: '',
+                        isDelete: '',
+                        isActive: '',
+                        isApproved: '',
+                        executeTime: ''
+                    });
+                    defaultLabelTranslateEditor.stopEditing();
+                    defaultLabelTranslateStore.insert(0, newRecord);
+                    defaultLabelTranslateGrid.getSelectionModel().getSelections();
+                    defaultLabelTranslateEditor.startEditing(0);
+                }
+            }, {
+                xtype: 'button',
+                text: CheckAllLabel,
+                iconCls: 'row-check-sprite-check',
+                listeners: {
+                    'click': function (button, e) {
+                    	defaultLabelTranslateStore.each(function (rec) {
+                            for (var access in defaultLabelTranslateFlagArray ) {
+                                rec.set(defaultLabelTranslateFlagArray [access], true);
+                            }
+                        });
+                    }
+                }
+            }, {
+                text: ClearAllLabel,
+                iconCls: 'row-check-sprite-uncheck',
+                listeners: {
+                    'click': function (button, e) {
+                    	defaultLabelTranslateStore.each(function (rec) {
+                            for (var access in defaultLabelTranslateFlagArray ) {
+                                rec.set(defaultLabelTranslateFlagArray [access], false);
+                            }
+                        });
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: saveButtonLabel,
+                iconCls: 'bullet_disk',
+                listeners: {
+                    'click': function (button, e) {
+                        var url = '../controller/defaultLabelTranslateController.php?';
+                        var sub_url = '';
+                        var modified = defaultLabelTranslateStore.getModifiedRecords();
+                        for (var i = 0; i < modified.length; i++) {
+                            var dataChanges = modified[i].getChanges();
+                            var record = defaultLabelTranslateStore.getAt(i);
+                            sub_url = sub_url + '&defaultLabelTranslateId[]=' + record.get('moduleTranslateId');
+                            if (isAdmin == 1) {
+                                if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
+                                    sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
+                                }
+                                if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
+                                    sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+                                }
+                                if (dataChanges.isNew == true || dataChanges.isNew == false) {
+                                    sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+                                }
+                                if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
+                                    sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
+                                }
+                            }
+                            if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
+                                sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
+                            }
+                            if (isAdmin == 1) {
+                                if (dataChanges.isActive == true || dataChanges.isActive == false) {
+                                    sub_url = sub_url + '&isActive[]=' + record.get('isActive');
+                                }
+                                if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
+                                    sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                                }
+                                if (dataChanges.isReview == true || dataChanges.isReview == false) {
+                                    sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                                }
+                                if (dataChanges.isPost == true || dataChanges.isPost == false) {
+                                    sub_url = sub_url + '&isPost[]=' + record.get('isPost');
+                                }
+                            }
+                        }
+                        url = url + sub_url;
+                        Ext.Ajax.request({
+                            url: url,
+                            method: 'GET',
+                            params: {
+                                leafId: leafId,
+                                isAdmin: isAdmin,
+                                method: 'updateStatus'
+                            },
+                            success: function (response, options) {
+                                jsonResponse = Ext.decode(response.responseText);
+                                if (jsonResponse.success == true) {
+                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                                    defaultLabelTranslateStore.reload();
+                                } else if (jsonResponse.success == false) {
+                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+                                }
+                            },
+                            failure: function (response, options) {
+                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+                            }
+                        }); 
+                    }
+                }
+            }]
+        },
+            bbar: new Ext.PagingToolbar({
+                store: defaultLabelTranslateStore,
+                pageSize: perPage
+            }),
+            view: new Ext.ux.grid.BufferView({
+                rowHeight: 34,
+                scrollDelay: false
+            })
     }); // End Detail Default Label Translation Request
     var gridPanel = new Ext.Panel({
         name: 'gridPanel',
@@ -1195,7 +1332,7 @@ Ext.onReady(function() {
             type: 'button',
             iconCls: 'new',
             handler: function() {
-                Ext.getCmp('defaultLabelTranslateGrid').enable();
+               
                 var id = Ext.getCmp('defaultLabelId').getValue();
                 var method = 'create';
                 formPanel.getForm().submit({

@@ -212,7 +212,7 @@ class ApplicationeAccessClass extends ConfigClass {
                 $sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
             }
             if ($this->model->getApplicationeId()) {
-                $sql .= " AND FOLDER.APPLICATIONID='" . $this->model->getApplicationeId() . "'";
+                $sql .= " AND	APPLICATION.APPLICATIONID='" . $this->model->getApplicationeId() . "'";
             }
         } else if ($this->getVendor() == self::DB2) {
             $sql = "

@@ -129,7 +129,7 @@ class ModuleAccessClass extends ConfigClass {
      */
 
     function read() {
-        header('Content-Type:application/json; charset=utf-8');
+        header('Content-Type:module/json; charset=utf-8');
         //UTF8
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
@@ -160,7 +160,7 @@ class ModuleAccessClass extends ConfigClass {
                 $sql .= " AND `team`.`teamId`='" . $this->model->getTeamId() . "'";
             }
             if ($this->model->getModuleId()) {
-                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+                $sql .= " AND module.moduleId='" . $this->model->getModuleId() . "'";
             }
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
@@ -186,9 +186,61 @@ class ModuleAccessClass extends ConfigClass {
                 $sql .= " AND [team].[teamId]		=	'" . $this->model->getTeamId() . "'";
             }
             if ($this->model->getModuleId()) {
-                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+                $sql .= " AND module.moduleId='" . $this->model->getModuleId() . "'";
             }
         } else if ($this->getVendor() == self::ORACLE) {
+            $sql = "
+				SELECT	MODULEACCESS.MODULEACCESSID,
+						MODULE.MODULEID,
+						MODULE.MODULEENGLISH,
+						TEAM.TEAMID,
+						TEAM.TEAMNOTE,
+						(CASE MODULEACCESS.MODULEACCESSVALUE
+							WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS \"moduleAccessValue\"
+				FROM 	MODULEACCESS
+				JOIN	MODULE
+				ON		MODULEACCESS.MODULEID 	= 	MODULE.MODULEID
+				JOIN 	TEAM
+				ON		MODULEACCESS.TEAMID 	= 	TEAM.TEAMID
+				WHERE 	MODULE.ISACTIVE 		=	1
+				AND		TEAM.ISACTIVE			=	1";
+            if ($this->model->getTeamId()) {
+                $sql .= " AND `team`.`teamId`	=	'" . $this->model->getTeamId() . "'";
+            }
+            if ($this->model->getModuleId()) {
+                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+            }
+        }else if ($this->getVendor() == self::DB2) {
+            $sql = "
+				SELECT	MODULEACCESS.MODULEACCESSID,
+						MODULE.MODULEID,
+						MODULE.MODULEENGLISH,
+						TEAM.TEAMID,
+						TEAM.TEAMNOTE,
+						(CASE MODULEACCESS.MODULEACCESSVALUE
+							WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS \"moduleAccessValue\"
+				FROM 	MODULEACCESS
+				JOIN	MODULE
+				ON		MODULEACCESS.MODULEID 	= 	MODULE.MODULEID
+				JOIN 	TEAM
+				ON		MODULEACCESS.TEAMID 	= 	TEAM.TEAMID
+				WHERE 	MODULE.ISACTIVE 		=	1
+				AND		TEAM.ISACTIVE			=	1";
+            if ($this->model->getTeamId()) {
+                $sql .= " AND `team`.`teamId`	=	'" . $this->model->getTeamId() . "'";
+            }
+            if ($this->model->getModuleId()) {
+                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+            }
+        }else if ($this->getVendor() == self::POSTGRESS) {
             $sql = "
 				SELECT	MODULEACCESS.MODULEACCESSID,
 						MODULE.MODULEID,
@@ -269,7 +321,7 @@ class ModuleAccessClass extends ConfigClass {
      */
 
     function update() {
-        header('Content-Type:application/json; charset=utf-8');
+        header('Content-Type:module/json; charset=utf-8');
         //UTF8
         if ($this->q->vendor == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
@@ -348,7 +400,7 @@ if (isset($_POST ['method'])) {
      *  Initilize Value before load in the loader
      */
     /*
-     *  Leaf / Application Identification
+     *  Leaf / Module Identification
      */
     if (isset($_POST ['leafId'])) {
         $moduleAccessObject->setLeafId($_POST ['leafId']);
@@ -372,7 +424,7 @@ if (isset($_GET ['method'])) {
      *  Initilize Value before load in the loader
      */
     /*
-     *  Leaf / Application Identification
+     *  Leaf / Module Identification
      */
     if (isset($_GET ['leafId'])) {
         $moduleAccessObject->setLeafId($_GET ['leafId']);

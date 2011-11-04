@@ -698,9 +698,8 @@ Ext.onReady(function () {
         hidden: true,
         width: 100
     }];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var moduleFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var moduleGrid = new Ext.grid.GridPanel({
-        title: leafNative,
         name: 'moduleGrid',
         id: 'moduleGrid',
         border: false,
@@ -755,7 +754,7 @@ Ext.onReady(function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('saveButton').enable();
                 Ext.getCmp('deleteButton').enable();
-                Ext.getCmp('translation').enable();
+                Ext.getCmp('translationButton').enable();
                 Ext.getCmp('moduleTranslateGrid').enable();
                 Ext.getCmp('moduleAccessGrid').enable();
                 moduleTranslateStore.load({
@@ -784,9 +783,9 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         moduleStore.each(function (rec) {
-                            for (var access in accessArray) {
+                            for (var access in moduleFlagArray ) {
                                 rec.set(
-                                accessArray[access], true);
+                                		moduleFlagArray[access], true);
                             }
                         });
                     }
@@ -798,9 +797,9 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         moduleStore.each(function (rec) {
-                            for (var access in accessArray) {
+                            for (var access in moduleFlagArray) {
                                 rec.set(
-                                accessArray[access], false);
+                                		moduleFlagArray[access], false);
                             }
                         });
                     }
@@ -967,6 +966,34 @@ Ext.onReady(function () {
             xtype: 'textfield',
             id: 'moduleNative'
         }
+    }, {
+        name: 'isDefault',
+        type: 'boolean'
+    }, {
+        name: 'isNew',
+        type: 'boolean'
+    }, {
+        name: 'isDraft',
+        type: 'boolean'
+    }, {
+        name: 'isUpdate',
+        type: 'boolean'
+    }, {
+        name: 'isDelete',
+        type: 'boolean'
+    }, {
+        name: 'isActive',
+        type: 'boolean'
+    }, {
+        name: 'isApproved',
+        type: 'boolean'
+    }, {
+        name: 'executeBy',
+        type: 'int'
+    }, {
+        name: 'executeTime',
+        type: 'date',
+        dateFormat: 'Y-m-d H:i:s'
     }];
     var moduleTranslateEditor = new Ext.ux.grid.RowEditor({
         saveText: saveButtonLabel,
@@ -1002,6 +1029,57 @@ Ext.onReady(function () {
             }
         }
     });
+    var moduleTranslateEntity = Ext.data.Record.create([{
+        name: 'moduleTranslateId',
+        type: 'int'
+    }, {
+        name: 'moduleId',
+        type: 'int'
+    }, {
+        name: 'moduleNative',
+        type: 'string'
+    }, {
+        name: 'languageId',
+        type: 'int'
+    }, {
+        name: 'executeBy',
+        type: 'int'
+    }, {
+        name: 'staffName',
+        type: 'string'
+    }, {
+        name: 'isDefault',
+        type: 'boolean'
+    }, {
+        name: 'isNew',
+        type: 'boolean'
+    }, {
+        name: 'isDraft',
+        type: 'boolean'
+    }, {
+        name: 'isUpdate',
+        type: 'boolean'
+    }, {
+        name: 'isDelete',
+        type: 'boolean'
+    }, {
+        name: 'isActive',
+        type: 'boolean'
+    }, {
+        name: 'isApproved',
+        type: 'boolean'
+    }, {
+        name: 'isReview',
+        type: 'boolean'
+    }, {
+        name: 'isPost',
+        type: 'boolean'
+    }, {
+        name: 'executeTime',
+        type: 'date',
+        dateFormat: 'Y-m-d H:i:s'
+    }]);
+    var moduleTranslateFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var moduleTranslateGrid = new Ext.grid.GridPanel({
         title: 'Module Translation',
         name: 'moduleTranslateGrid',
@@ -1018,7 +1096,142 @@ Ext.onReady(function () {
         },
         layout: 'fit',
         disabled: true,
-        plugins: [moduleTranslateEditor]
+        plugins: [moduleTranslateEditor],
+        tbar: {
+            items: [{
+                xtype: 'button',
+                iconCls: 'add',
+                id: 'add_record',
+                name: 'add_record',
+                text: newButtonLabel,
+                handler: function () {
+                    var newRecord = new moduleTranslateEntity({
+                        moduleTranslateId: '',
+                        moduleId: '',
+                        moduleNative: '',
+                        languageId: '',
+                        executeBy: '',
+                        staffName: '',
+                        isDefault: '',
+                        isNew: '',
+                        isDraft: '',
+                        isUpdate: '',
+                        isReview: '',
+                        isPost: '',
+                        isDelete: '',
+                        isActive: '',
+                        isApproved: '',
+                        executeTime: ''
+                    });
+                    moduleTranslateEditor.stopEditing();
+                    moduleTranslateStore.insert(0, newRecord);
+                    moduleTranslateGrid.getSelectionModel().getSelections();
+                    moduleTranslateEditor.startEditing(0);
+                }
+            }, {
+                xtype: 'button',
+                text: CheckAllLabel,
+                iconCls: 'row-check-sprite-check',
+                listeners: {
+                    'click': function (button, e) {
+                        moduleTranslateStore.each(function (rec) {
+                            for (var access in moduleTranslateFlagArray) {
+                                rec.set(moduleTranslateFlagArray[access], true);
+                            }
+                        });
+                    }
+                }
+            }, {
+                text: ClearAllLabel,
+                iconCls: 'row-check-sprite-uncheck',
+                listeners: {
+                    'click': function (button, e) {
+                        moduleTranslateStore.each(function (rec) {
+                            for (var access in moduleTranslateArray) {
+                                rec.set(moduleTranslateFlagArray[access], false);
+                            }
+                        });
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: saveButtonLabel,
+                iconCls: 'bullet_disk',
+                listeners: {
+                    'click': function (button, e) {
+                        var url = '../controller/moduleTranslateController.php?';
+                        var sub_url = '';
+                        var modified = moduleTranslateStore.getModifiedRecords();
+                        for (var i = 0; i < modified.length; i++) {
+                            var dataChanges = modified[i].getChanges();
+                            var record = moduleTranslateStore.getAt(i);
+                            sub_url = sub_url + '&moduleTranslateId[]=' + record.get('moduleTranslateId');
+                            if (isAdmin == 1) {
+                                if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
+                                    sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
+                                }
+                                if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
+                                    sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+                                }
+                                if (dataChanges.isNew == true || dataChanges.isNew == false) {
+                                    sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+                                }
+                                if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
+                                    sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
+                                }
+                            }
+                            if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
+                                sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
+                            }
+                            if (isAdmin == 1) {
+                                if (dataChanges.isActive == true || dataChanges.isActive == false) {
+                                    sub_url = sub_url + '&isActive[]=' + record.get('isActive');
+                                }
+                                if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
+                                    sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                                }
+                                if (dataChanges.isReview == true || dataChanges.isReview == false) {
+                                    sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                                }
+                                if (dataChanges.isPost == true || dataChanges.isPost == false) {
+                                    sub_url = sub_url + '&isPost[]=' + record.get('isPost');
+                                }
+                            }
+                        }
+                        url = url + sub_url;
+                        Ext.Ajax.request({
+                            url: url,
+                            method: 'GET',
+                            params: {
+                                leafId: leafId,
+                                isAdmin: isAdmin,
+                                method: 'updateStatus'
+                            },
+                            success: function (response, options) {
+                                jsonResponse = Ext.decode(response.responseText);
+                                if (jsonResponse.success == true) {
+                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                                    moduleTranslateStore.reload();
+                                } else if (jsonResponse.success == false) {
+                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+                                }
+                            },
+                            failure: function (response, options) {
+                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+                            }
+                        }); 
+                    }
+                }
+            }]
+        },
+            bbar: new Ext.PagingToolbar({
+                store: moduleTranslateStore,
+                pageSize: perPage
+            }),
+            view: new Ext.ux.grid.BufferView({
+                rowHeight: 34,
+                scrollDelay: false
+            })
     }); // end Module Translation Request
     // start Module Access Request
     var moduleAccessProxy = new Ext.data.HttpProxy({
@@ -1092,7 +1305,7 @@ Ext.onReady(function () {
         },
         moduleAccessValue]
     });
-    var moduleAccessArray = ['moduleAccessValue'];
+    var moduleAccessFlagArray = ['moduleAccessValue'];
     var moduleAccessGrid = new Ext.grid.GridPanel({
         name: 'moduleAccessGrid',
         id: 'moduleAccessGrid',
@@ -1116,9 +1329,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        moduleAccessStore.each(function (rec) {
-                            for (var access in moduleAccessArray) {
-                                rec.set(accessArray[access], true);
+                        moduleAccessStore.each(function (rec) {                            
+                        	for (var access in moduleAccessFlagArray) {
+                                rec.set(moduleAccessFlagArray[access], true);
                             }
                         });
                     }
@@ -1130,8 +1343,8 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         moduleAccessStore.each(function (rec) {
-                            for (var access in moduleAccessArray) {
-                                rec.set(accessArray[access], false);
+                            for (var access in moduleAccessFlagArray) {
+                                rec.set(moduleAccessFlagArray[access], false);
                             }
                         });
                     }
@@ -2285,8 +2498,8 @@ Ext.onReady(function () {
             }
         }, {
             text: 'Translation',
-            name: 'translation',
-            id: 'translation',
+            name: 'translationButton',
+            id: 'translationButton',
             disabled: true,
             handler: function () {
                 Ext.getCmp('newButton').disable();

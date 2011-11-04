@@ -1011,6 +1011,34 @@ Ext.onReady(function () {
             xtype: 'textfield',
             id: 'folderNative'
         }
+    }, {
+        name: 'isDefault',
+        type: 'boolean'
+    }, {
+        name: 'isNew',
+        type: 'boolean'
+    }, {
+        name: 'isDraft',
+        type: 'boolean'
+    }, {
+        name: 'isUpdate',
+        type: 'boolean'
+    }, {
+        name: 'isDelete',
+        type: 'boolean'
+    }, {
+        name: 'isActive',
+        type: 'boolean'
+    }, {
+        name: 'isApproved',
+        type: 'boolean'
+    }, {
+        name: 'executeBy',
+        type: 'int'
+    }, {
+        name: 'executeTime',
+        type: 'date',
+        dateFormat: 'Y-m-d H:i:s'
     }];
 
     var folderTranslateEditor = new Ext.ux.grid.RowEditor({
@@ -1099,6 +1127,7 @@ Ext.onReady(function () {
         type: 'date',
         dateFormat: 'Y-m-d H:i:s'
     }]);
+    var moduleTranslateFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var folderTranslateGrid = new Ext.grid.GridPanel({
         name: 'folderTranslateGrid',
         id: 'folderTranslateGrid',
@@ -1126,7 +1155,7 @@ Ext.onReady(function () {
                     var newRecord = new folderTranslateEntity({
                         folderTranslateId: '',
                         folderId: '',
-                        folderTranslateNative: '',
+                        folderNative: '',
                         languageId: '',
                         executeBy: '',
                         staffName: '',
@@ -1153,8 +1182,8 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         folderTranslateStore.each(function (rec) {
-                            for (var access in accessDetailArray) {
-                                rec.set(accessDetailArray[access], true);
+                            for (var access in moduleTranslateFlagArray) {
+                                rec.set(moduleTranslateFlagArray[access], true);
                             }
                         });
                     }
@@ -1165,8 +1194,8 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         folderTranslateStore.each(function (rec) {
-                            for (var access in accessDetailArray) {
-                                rec.set(accessDetailArray[access], false);
+                            for (var access in moduleTranslateFlagArray ) {
+                                rec.set(moduleTranslateFlagArray [access], false);
                             }
                         });
                     }
@@ -1237,7 +1266,7 @@ Ext.onReady(function () {
                             failure: function (response, options) {
                                 Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
                             }
-                        }); // refresh the store
+                        }); 
                     }
                 }
             }]
@@ -1309,51 +1338,16 @@ Ext.onReady(function () {
             type: 'boolean'
         }]
     });
-    var teamId = new Ext.ux.form.ComboBoxMatch({
-        labelAlign: 'left',
-        fieldLabel: teamIdLabel,
-        name: 'teamId',
-        hiddenName: 'teamId',
-        valueField: 'teamId',
-        hiddenId: 'team_fake',
-        id: 'teamId',
-        displayField: 'teamEnglish',
-        typeAhead: false,
-        triggerAction: 'all',
-        store: teamStore,
-        anchor: '95%',
-        selectOnFocus: true,
-        mode: 'local',
-        allowBlank: false,
-        blankText: blankTextLabel,
-        createValueMatcher: function (value) {
-            value = String(value).replace(/\s*/g, '');
-            if (Ext.isEmpty(value, false)) {
-                return new RegExp('^');
-            }
-            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-            return new RegExp('\\b(' + value + ')', 'i');
-        },
-        listeners: {
-            'select': function (combo, record, index) {
-                folderAccessStore.load({
-                    params: {
-                        method: 'read',
-                        leafId: leafId,
-                        teamId: this.value,
-                        type: 2
-                    }
-                });
-                Ext.getCmp('folderAccess').enable();
-            }
-        }
-    });
+    
     var folderAccessValue = new Ext.ux.grid.CheckColumn({
         header: 'Access',
         dataIndex: 'folderAccessValue'
     });
     var folderAccessColumnModel = new Ext.grid.ColumnModel({
-        columns: [teamId,
+        columns: [{
+            header: 'team',
+            dataIndex: 'teamEnglish'
+        },
         {
             header: moduleEnglishLabel,
             dataIndex: 'moduleEnglish'
@@ -1385,8 +1379,8 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         folderAccessStore.each(function (rec) {
-                            for (var access in folderAccessArray) {
-                                rec.set(accessArray[access], true);
+                            for (var access in folderAccessFlagArray) {
+                                rec.set(folderAccessFlagArray[access], true);
                             }
                         });
                     }
@@ -1398,8 +1392,8 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         folderAccessStore.each(function (rec) {
-                            for (var access in folderAccessArray) {
-                                rec.set(accessArray[access], false);
+                            for (var access in folderAccessFlagArray) {
+                                rec.set(folderAccessFlagArray[access], false);
                             }
                         });
                     }
@@ -2490,8 +2484,8 @@ Ext.onReady(function () {
             }
         }, {
             text: 'Translation',
-            name: 'translation',
-            id: 'translation',
+            name: 'translationButton',
+            id: 'translationButton',
             disabled: true,
             handler: function () {
                 Ext.getCmp('newButton').disable();

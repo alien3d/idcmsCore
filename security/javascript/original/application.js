@@ -1228,6 +1228,34 @@ Ext.onReady(function () {
             xtype: 'textfield',
             id: 'applicationNative'
         }
+    }, {
+        name: 'isDefault',
+        type: 'boolean'
+    }, {
+        name: 'isNew',
+        type: 'boolean'
+    }, {
+        name: 'isDraft',
+        type: 'boolean'
+    }, {
+        name: 'isUpdate',
+        type: 'boolean'
+    }, {
+        name: 'isDelete',
+        type: 'boolean'
+    }, {
+        name: 'isActive',
+        type: 'boolean'
+    }, {
+        name: 'isApproved',
+        type: 'boolean'
+    }, {
+        name: 'executeBy',
+        type: 'int'
+    }, {
+        name: 'executeTime',
+        type: 'date',
+        dateFormat: 'Y-m-d H:i:s'
     }];
     var applicationTranslateEditor = new Ext.ux.grid.RowEditor({
         saveText: saveButtonLabel,
@@ -1262,6 +1290,57 @@ Ext.onReady(function () {
             }
         }
     });
+    var applicationTranslateEntity = Ext.data.Record.create([{
+        name: 'applicationTranslateId',
+        type: 'int'
+    }, {
+        name: 'applicationId',
+        type: 'int'
+    }, {
+        name: 'aplicationNative',
+        type: 'string'
+    }, {
+        name: 'languageId',
+        type: 'int'
+    }, {
+        name: 'executeBy',
+        type: 'int'
+    }, {
+        name: 'staffName',
+        type: 'string'
+    }, {
+        name: 'isDefault',
+        type: 'boolean'
+    }, {
+        name: 'isNew',
+        type: 'boolean'
+    }, {
+        name: 'isDraft',
+        type: 'boolean'
+    }, {
+        name: 'isUpdate',
+        type: 'boolean'
+    }, {
+        name: 'isDelete',
+        type: 'boolean'
+    }, {
+        name: 'isActive',
+        type: 'boolean'
+    }, {
+        name: 'isApproved',
+        type: 'boolean'
+    }, {
+        name: 'isReview',
+        type: 'boolean'
+    }, {
+        name: 'isPost',
+        type: 'boolean'
+    }, {
+        name: 'executeTime',
+        type: 'date',
+        dateFormat: 'Y-m-d H:i:s'
+    }]);
+    var applicationTranslateFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var applicationTranslateGrid = new Ext.grid.GridPanel({
         name: 'applicationTranslateGrid',
         id: 'applicationTranslateGrid',
@@ -1276,7 +1355,142 @@ Ext.onReady(function () {
         },
         layout: 'fit',
         disabled: true,
-        plugins: [applicationTranslateEditor]
+        plugins: [applicationTranslateEditor],
+        tbar: {
+            items: [{
+                xtype: 'button',
+                iconCls: 'add',
+                id: 'add_record',
+                name: 'add_record',
+                text: newButtonLabel,
+                handler: function () {
+                    var newRecord = new applicationTranslateEntity({
+                        applicationTranslateId: '',
+                        applicationId: '',
+                        applicationNative: '',
+                        languageId: '',
+                        executeBy: '',
+                        staffName: '',
+                        isDefault: '',
+                        isNew: '',
+                        isDraft: '',
+                        isUpdate: '',
+                        isReview: '',
+                        isPost: '',
+                        isDelete: '',
+                        isActive: '',
+                        isApproved: '',
+                        executeTime: ''
+                    });
+                    applicationTranslateEditor.stopEditing();
+                    applicationTranslateStore.insert(0, newRecord);
+                    applicationTranslateGrid.getSelectionModel().getSelections();
+                    applicationTranslateEditor.startEditing(0);
+                }
+            }, {
+                xtype: 'button',
+                text: CheckAllLabel,
+                iconCls: 'row-check-sprite-check',
+                listeners: {
+                    'click': function (button, e) {
+                        applicationTranslateStore.each(function (rec) {
+                            for (var access in applicationTranslateFlagArray) {
+                                rec.set(applicationTranslateFlagArray[access], true);
+                            }
+                        });
+                    }
+                }
+            }, {
+                text: ClearAllLabel,
+                iconCls: 'row-check-sprite-uncheck',
+                listeners: {
+                    'click': function (button, e) {
+                        applicationTranslateStore.each(function (rec) {
+                            for (var access in applicationTranslateFlagArray) {
+                                rec.set(applicationTranslateFlagArray[access], false);
+                            }
+                        });
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: saveButtonLabel,
+                iconCls: 'bullet_disk',
+                listeners: {
+                    'click': function (button, e) {
+                        var url = '../controller/applicationTranslateController.php?';
+                        var sub_url = '';
+                        var modified = applicationTranslateStore.getModifiedRecords();
+                        for (var i = 0; i < modified.length; i++) {
+                            var dataChanges = modified[i].getChanges();
+                            var record = applicationTranslateStore.getAt(i);
+                            sub_url = sub_url + '&applicationTranslateId[]=' + record.get('applicationTranslateId');
+                            if (isAdmin == 1) {
+                                if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
+                                    sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
+                                }
+                                if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
+                                    sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+                                }
+                                if (dataChanges.isNew == true || dataChanges.isNew == false) {
+                                    sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+                                }
+                                if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
+                                    sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
+                                }
+                            }
+                            if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
+                                sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
+                            }
+                            if (isAdmin == 1) {
+                                if (dataChanges.isActive == true || dataChanges.isActive == false) {
+                                    sub_url = sub_url + '&isActive[]=' + record.get('isActive');
+                                }
+                                if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
+                                    sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                                }
+                                if (dataChanges.isReview == true || dataChanges.isReview == false) {
+                                    sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                                }
+                                if (dataChanges.isPost == true || dataChanges.isPost == false) {
+                                    sub_url = sub_url + '&isPost[]=' + record.get('isPost');
+                                }
+                            }
+                        }
+                        url = url + sub_url;
+                        Ext.Ajax.request({
+                            url: url,
+                            method: 'GET',
+                            params: {
+                                leafId: leafId,
+                                isAdmin: isAdmin,
+                                method: 'updateStatus'
+                            },
+                            success: function (response, options) {
+                                jsonResponse = Ext.decode(response.responseText);
+                                if (jsonResponse.success == true) {
+                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                                    applicationTranslateStore.reload();
+                                } else if (jsonResponse.success == false) {
+                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+                                }
+                            },
+                            failure: function (response, options) {
+                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+                            }
+                        }); 
+                    }
+                }
+            }]
+        },
+        bbar: new Ext.PagingToolbar({
+            store: applicationTranslateStore,
+            pageSize: perPage
+        }),
+        view: new Ext.ux.grid.BufferView({
+            rowHeight: 34,
+            scrollDelay: false
+        })
     });
     // end Module Translation Request
     // start Module Access Request
@@ -1336,51 +1550,16 @@ Ext.onReady(function () {
             type: 'boolean'
         }]
     });
-    var teamId = new Ext.ux.form.ComboBoxMatch({
-        labelAlign: 'left',
-        fieldLabel: teamIdLabel,
-        name: 'teamId',
-        hiddenName: 'teamId',
-        valueField: 'teamId',
-        hiddenId: 'team_fake',
-        id: 'teamId',
-        displayField: 'teamEnglish',
-        typeAhead: false,
-        triggerAction: 'all',
-        store: teamStore,
-        anchor: '95%',
-        selectOnFocus: true,
-        mode: 'local',
-        allowBlank: false,
-        blankText: blankTextLabel,
-        createValueMatcher: function (value) {
-            value = String(value).replace(/\s*/g, '');
-            if (Ext.isEmpty(value, false)) {
-                return new RegExp('^');
-            }
-            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-            return new RegExp('\\b(' + value + ')', 'i');
-        },
-        listeners: {
-            'select': function (combo, record, index) {
-                applicationAccessStore.load({
-                    params: {
-                        method: 'read',
-                        leafId: leafId,
-                        teamId: this.value,
-                        type: 2
-                    }
-                });
-                Ext.getCmp('applicationAccess').enable();
-            }
-        }
-    });
+    
     var applicationAccessValue = new Ext.ux.grid.CheckColumn({
         header: 'Access',
         dataIndex: 'applicationAccessValue'
     });
     var applicationAccessColumnModel = new Ext.grid.ColumnModel({
-        columns: [teamId,
+        columns: [{
+            header: 'team',
+            dataIndex: 'teamEnglish'
+        },
         {
             header: applicationEnglishLabel,
             dataIndex: 'applicationEnglish'
@@ -1413,7 +1592,7 @@ Ext.onReady(function () {
                     'click': function (button, e) {
                         applicationAccessStore.each(function (rec) {
                             for (var access in applicationAccessArray) {
-                                rec.set(accessArray[access], true);
+                                rec.set(applicationAccessArray[access], true);
                             }
                         });
                     }
@@ -1426,7 +1605,7 @@ Ext.onReady(function () {
                     'click': function (button, e) {
                         applicationAccessStore.each(function (rec) {
                             for (var access in applicationAccessArray) {
-                                rec.set(accessArray[access], false);
+                                rec.set(applicationAccessArray[access], false);
                             }
                         });
                     }
@@ -2486,8 +2665,8 @@ Ext.onReady(function () {
             }
         }, {
             text: 'Translation',
-            name: 'translation',
-            id: 'translation',
+            name: 'translationButton',
+            id: 'translationButton',
             disabled: true,
             handler: function () {
                 Ext.getCmp('newButton').disable();

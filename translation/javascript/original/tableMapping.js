@@ -1038,6 +1038,8 @@ Ext.onReady(function() {
             }
         }
     });
+    var tableMappingTranslateFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+
     var tableMappingTranslateGrid = new Ext.grid.GridPanel({
         name: 'tableMappingTranslateGrid',
         id: 'tableMappingTranslateGrid',
@@ -1048,11 +1050,149 @@ Ext.onReady(function() {
         columns: tableMappingTranslateColumnModel,
         viewConfig: {
             autoFill: true,
-            forceFit: true
+            forceFit: true,
+            emptyText : emptyTextLabel
         },
         layout: 'fit',
-        plugins: [tableMappingTranslateEditor]
-    }); // end Detail Table Mapping Translation Request
+        disable :true,
+        plugins: [tableMappingTranslateEditor],
+        tbar: {
+            items: [{
+                xtype: 'button',
+                iconCls: 'add',
+                id: 'add_record',
+                name: 'add_record',
+                text: newButtonLabel,
+                handler: function () {
+                    var newRecord = new tableMappingTranslateEntity({
+                    	tableMappingTranslateId: '',
+                    	tableMappingId: '',
+                    	tableMappingNative: '',
+                        languageId: '',
+                        executeBy: '',
+                        staffName: '',
+                        isDefault: '',
+                        isNew: '',
+                        isDraft: '',
+                        isUpdate: '',
+                        isReview: '',
+                        isPost: '',
+                        isDelete: '',
+                        isActive: '',
+                        isApproved: '',
+                        executeTime: ''
+                    });
+                    tableMappingTranslateEditor.stopEditing();
+                    tableMappingTranslateStore.insert(0, newRecord);
+                    tableMappingTranslateGrid.getSelectionModel().getSelections();
+                    tableMappingTranslateEditor.startEditing(0);
+                }
+            }, {
+                xtype: 'button',
+                text: CheckAllLabel,
+                iconCls: 'row-check-sprite-check',
+                listeners: {
+                    'click': function (button, e) {
+                    	 tableMappingTranslateStore.each(function (rec) {
+                            for (var access in tableMappingTranslateFlagArray) {
+                                rec.set(tableMappingTranslateFlagArray[access], true);
+                            }
+                        });
+                    }
+                }
+            }, {
+                text: ClearAllLabel,
+                iconCls: 'row-check-sprite-uncheck',
+                listeners: {
+                    'click': function (button, e) {
+                    	 tableMappingTranslateStore.each(function (rec) {
+                            for (var access in tableMappingTranslateFlagArray) {
+                                rec.set(tableMappingTranslateFlagArray[access], false);
+                            }
+                        });
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: saveButtonLabel,
+                iconCls: 'bullet_disk',
+                listeners: {
+                    'click': function (button, e) {
+                        var url = '../controller/tableMappingTranslateController.php?';
+                        var sub_url = '';
+                        var modified = moduleTranslateStore.getModifiedRecords();
+                        for (var i = 0; i < modified.length; i++) {
+                            var dataChanges = modified[i].getChanges();
+                            var record =  tableMappingTranslateStore.getAt(i);
+                            sub_url = sub_url + '& tableMappingTranslateId[]=' + record.get('moduleTranslateId');
+                            if (isAdmin == 1) {
+                                if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
+                                    sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
+                                }
+                                if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
+                                    sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+                                }
+                                if (dataChanges.isNew == true || dataChanges.isNew == false) {
+                                    sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+                                }
+                                if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
+                                    sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
+                                }
+                            }
+                            if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
+                                sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
+                            }
+                            if (isAdmin == 1) {
+                                if (dataChanges.isActive == true || dataChanges.isActive == false) {
+                                    sub_url = sub_url + '&isActive[]=' + record.get('isActive');
+                                }
+                                if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
+                                    sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                                }
+                                if (dataChanges.isReview == true || dataChanges.isReview == false) {
+                                    sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                                }
+                                if (dataChanges.isPost == true || dataChanges.isPost == false) {
+                                    sub_url = sub_url + '&isPost[]=' + record.get('isPost');
+                                }
+                            }
+                        }
+                        url = url + sub_url;
+                        Ext.Ajax.request({
+                            url: url,
+                            method: 'GET',
+                            params: {
+                                leafId: leafId,
+                                isAdmin: isAdmin,
+                                method: 'updateStatus'
+                            },
+                            success: function (response, options) {
+                                jsonResponse = Ext.decode(response.responseText);
+                                if (jsonResponse.success == true) {
+                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                                    tableMappingTranslateStore.reload();
+                                } else if (jsonResponse.success == false) {
+                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+                                }
+                            },
+                            failure: function (response, options) {
+                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+                            }
+                        }); 
+                    }
+                }
+            }]
+        },
+            bbar: new Ext.PagingToolbar({
+                store:  tableMappingTranslateStore,
+                pageSize: perPage
+            }),
+            view: new Ext.ux.grid.BufferView({
+                rowHeight: 34,
+                scrollDelay: false
+            })
+    });
+     // end Detail Table Mapping Translation Request
     var gridPanel = new Ext.Panel({
         title: leafNative,
         height: 50,
@@ -1236,7 +1376,8 @@ Ext.onReady(function() {
         },
         {
             text: 'Translation',
-            id: 'translation',
+            name :'translationButton',
+            id: 'translationButton',
             disabled: true,
             handler: function() {
                 Ext.Ajax.request({

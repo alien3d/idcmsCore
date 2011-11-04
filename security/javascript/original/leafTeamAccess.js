@@ -950,7 +950,7 @@ Ext.onReady(function() {
         autoScroll: true,
         items: [teamId, moduleId, folderId]
     });
-    var accessArray = ['leafTeamAccessCreateValue', 'leafTeamAccessReadValue', 'leafTeamAccessUpdateValue', 'leafTeamAccessDeleteValue', 'leafTeamAccessPrintValue', 'leafTeamAccessPostValue'];
+    var leafTeamAccessFlagArray = ['leafTeamAccessCreateValue', 'leafTeamAccessReadValue', 'leafTeamAccessUpdateValue', 'leafTeamAccessDeleteValue', 'leafTeamAccessPrintValue', 'leafTeamAccessPostValue'];
     var grid = new Ext.grid.GridPanel({
         region: 'west',
         name: 'gridPanel',
@@ -976,8 +976,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button,e) {
                         leafTeamAccessStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                            for (var access in leafTeamAccessFlagArray) {
+                                rec.set(leafTeamAccessFlagArray[access], true);
                             }
                         });
                     }
@@ -990,8 +990,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button,e) {
                         leafTeamAccessStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                            for (var access in leafTeamAccessFlagArray) {
+                                rec.set(leafTeamAccessFlagArray[access], false);
                             }
                         });
                     }

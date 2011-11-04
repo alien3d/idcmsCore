@@ -5,15 +5,15 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
-require_once ("../model/tableMappingTranslationModel.php");
+require_once ("../model/tableMappingTranslateModel.php");
 
 /**
- * this tableMappingTranslation menu creation
+ * Table Mapping Translation
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package Translation
- * @package tableMappingTranslation Translation
+ * @package Table Mapping Translation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

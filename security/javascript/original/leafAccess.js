@@ -976,7 +976,7 @@ Ext.onReady(function() {
         iconCls: 'application_form',
         items: [teamId, moduleId, folderId, staffId]
     });
-    var accessArray = ['leafAccessCreateValue', 'leafAccessReadValue', 'leafAccessUpdateValue', 'leafAccessDeleteValue', 'leafAccessPrintValue', 'leafAccessPostValue', 'leafAccessReviewValue', 'leafAccessDraftValue'];
+    var leafAccessFlagArray = ['leafAccessCreateValue', 'leafAccessReadValue', 'leafAccessUpdateValue', 'leafAccessDeleteValue', 'leafAccessPrintValue', 'leafAccessPostValue', 'leafAccessReviewValue', 'leafAccessDraftValue'];
     var gridPanel = new Ext.grid.GridPanel({
         name: 'gridPanel',
         id: 'gridPanel',
@@ -998,8 +998,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button,e) {
                         leafAccessStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                            for (var access in leafAccessFlagArray) {
+                                rec.set(leafAccessFlagArray[access], true);
                             }
                         });
                     }
@@ -1012,8 +1012,8 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button,e) {
                         leafAccessStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                            for (var access in leafAccessFlagArray) {
+                                rec.set(leafAccessFlagArray[access], false);
                             }
                         });
                     }
