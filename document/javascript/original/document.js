@@ -249,7 +249,7 @@ Ext.onReady(function() {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -426,7 +426,7 @@ Ext.onReady(function() {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -863,7 +863,7 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var documentFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var documentGrid = new Ext.grid.GridPanel({
         name: 'documentGrid',
         id: 'documentGrid',
@@ -874,7 +874,7 @@ Ext.onReady(function() {
         columns: documentColumnModel,
         loadMask: true,
         plugins: [documentFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -901,9 +901,9 @@ Ext.onReady(function() {
                 listeners: {
                     'click': function(button,e) {
                         var count = documentStore.getCount();
-                        documentStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                        documentStore.each(function(record,fn,scope) {
+                            for (var access in documentFlagArray) {
+                                record.set(documentFlagArray[access], true);
                             }
                         });
                     }
@@ -915,9 +915,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        documentStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                        documentStore.each(function(record,fn,scope) {
+                            for (var access in documentFlagArray) {
+                                record.set(documentFlagArray[access], false);
                             }
                         });
                     }
@@ -990,7 +990,7 @@ Ext.onReady(function() {
                             failure: function(response, options) {
                                 Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
                             }
-                        }); // refresh the store
+                        }); 
                     }
                 }
             }]

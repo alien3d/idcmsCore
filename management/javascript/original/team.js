@@ -249,7 +249,7 @@ Ext.onReady(function() {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -426,7 +426,7 @@ Ext.onReady(function() {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -751,7 +751,7 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var teamFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var teamEditor = new Ext.ux.grid.RowEditor({
         saveText: saveButtonLabel,
         cancelText: cancelButtonLabel,
@@ -869,7 +869,7 @@ Ext.onReady(function() {
         height: 400,
         columns: teamColumnModelGrid,
         plugins: [teamFilters, teamEditor],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -913,9 +913,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button,e) {
-                        teamStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                        teamStore.each(function(record,fn,scope) {
+                            for (var access in teamFlagArray) {
+                                record.set(teamFlagArray[access], true);
                             }
                         });
                     }
@@ -927,9 +927,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        teamStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                        teamStore.each(function(record,fn,scope) {
+                            for (var access in teamFlagArray) {
+                                record.set(teamFlagArray[access], false);
                             }
                         });
                     }

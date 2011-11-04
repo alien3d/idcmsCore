@@ -249,7 +249,7 @@ Ext.onReady(function() {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -426,7 +426,7 @@ Ext.onReady(function() {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -982,7 +982,7 @@ Ext.onReady(function() {
         id: 'gridPanel',
         region: 'west',
         store: leafAccessStore,
-        cm: leafAccessColumnModel,
+        columns: leafAccessColumnModel,
         autoHeight: false,
         height: 360,
         frame: true,
@@ -997,9 +997,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button,e) {
-                        leafAccessStore.each(function(rec) {
+                        leafAccessStore.each(function(record,fn,scope) {
                             for (var access in leafAccessFlagArray) {
-                                rec.set(leafAccessFlagArray[access], true);
+                                record.set(leafAccessFlagArray[access], true);
                             }
                         });
                     }
@@ -1011,9 +1011,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        leafAccessStore.each(function(rec) {
+                        leafAccessStore.each(function(record,fn,scope) {
                             for (var access in leafAccessFlagArray) {
-                                rec.set(leafAccessFlagArray[access], false);
+                                record.set(leafAccessFlagArray[access], false);
                             }
                         });
                     }
@@ -1088,6 +1088,6 @@ Ext.onReady(function() {
         id: 'viewport',
         layout: 'form',
         frame: true,
-        items: [formPanel, gridPanel]
+        items: [formPanel,leafAccessGrid]
     });
 });

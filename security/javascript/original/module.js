@@ -228,7 +228,7 @@ Ext.onReady(function () {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -391,7 +391,7 @@ Ext.onReady(function () {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -708,7 +708,7 @@ Ext.onReady(function () {
         columns: moduleColumnModel,
         loadMask: true,
         plugins: [moduleFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -782,9 +782,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        moduleStore.each(function (rec) {
+                        moduleStore.each(function (record,fn,scope) {
                             for (var access in moduleFlagArray ) {
-                                rec.set(
+                                record.set(
                                 		moduleFlagArray[access], true);
                             }
                         });
@@ -796,9 +796,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        moduleStore.each(function (rec) {
+                        moduleStore.each(function (record,fn,scope) {
                             for (var access in moduleFlagArray) {
-                                rec.set(
+                                record.set(
                                 		moduleFlagArray[access], false);
                             }
                         });
@@ -1096,6 +1096,9 @@ Ext.onReady(function () {
         },
         layout: 'fit',
         disabled: true,
+        selModel: new Ext.grid.RowSelectionModel({
+            singleSelect: true
+        }),
         plugins: [moduleTranslateEditor],
         tbar: {
             items: [{
@@ -1134,9 +1137,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        moduleTranslateStore.each(function (rec) {
+                        moduleTranslateStore.each(function (record,fn,scope) {
                             for (var access in moduleTranslateFlagArray) {
-                                rec.set(moduleTranslateFlagArray[access], true);
+                                record.set(moduleTranslateFlagArray[access], true);
                             }
                         });
                     }
@@ -1146,9 +1149,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        moduleTranslateStore.each(function (rec) {
+                        moduleTranslateStore.each(function (record,fn,scope) {
                             for (var access in moduleTranslateArray) {
-                                rec.set(moduleTranslateFlagArray[access], false);
+                                record.set(moduleTranslateFlagArray[access], false);
                             }
                         });
                     }
@@ -1311,12 +1314,14 @@ Ext.onReady(function () {
         id: 'moduleAccessGrid',
         region: 'west',
         store: moduleAccessStore,
-        cm: moduleAccessColumnModel,
+        columns: moduleAccessColumnModel,
         frame: true,
         title: 'Module Access Grid',
         autoHeight: true,
         disabled: true,
-        selModel: moduleAccessValue,
+        selModel: new Ext.grid.RowSelectionModel({
+            singleSelect: true
+        }),
         iconCls: 'application_view_detail',
         viewConfig: {
             forceFit: true,
@@ -1329,9 +1334,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        moduleAccessStore.each(function (rec) {                            
+                        moduleAccessStore.each(function (record,fn,scope) {                            
                         	for (var access in moduleAccessFlagArray) {
-                                rec.set(moduleAccessFlagArray[access], true);
+                                record.set(moduleAccessFlagArray[access], true);
                             }
                         });
                     }
@@ -1342,9 +1347,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        moduleAccessStore.each(function (rec) {
+                        moduleAccessStore.each(function (record,fn,scope) {
                             for (var access in moduleAccessFlagArray) {
-                                rec.set(moduleAccessFlagArray[access], false);
+                                record.set(moduleAccessFlagArray[access], false);
                             }
                         });
                     }

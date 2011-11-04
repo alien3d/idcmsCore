@@ -972,7 +972,7 @@ Ext.onReady(function () {
             id: 'applicationNative'
         }
     }];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var applicationFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var applicationGrid = new Ext.grid.GridPanel({
         name: 'applicationGrid',
         id: 'applicationGrid',
@@ -982,7 +982,7 @@ Ext.onReady(function () {
         columns: applicationColumnModel,
         loadMask: true,
         plugins: [applicationFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -1050,9 +1050,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        applicationStore.each(function (rec) {
+                        applicationStore.each(function (record,fn,scope) {
                             for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                                record.set(accessArray[access], true);
                             }
                         });
                     }
@@ -1063,9 +1063,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        applicationStore.each(function (rec) {
+                        applicationStore.each(function (record,fn,scope) {
                             for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                                record.set(accessArray[access], false);
                             }
                         });
                     }
@@ -1393,9 +1393,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        applicationTranslateStore.each(function (rec) {
+                        applicationTranslateStore.each(function (record,fn,scope) {
                             for (var access in applicationTranslateFlagArray) {
-                                rec.set(applicationTranslateFlagArray[access], true);
+                                record.set(applicationTranslateFlagArray[access], true);
                             }
                         });
                     }
@@ -1405,9 +1405,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        applicationTranslateStore.each(function (rec) {
+                        applicationTranslateStore.each(function (record,fn,scope) {
                             for (var access in applicationTranslateFlagArray) {
-                                rec.set(applicationTranslateFlagArray[access], false);
+                                record.set(applicationTranslateFlagArray[access], false);
                             }
                         });
                     }
@@ -1492,8 +1492,8 @@ Ext.onReady(function () {
             scrollDelay: false
         })
     });
-    // end Module Translation Request
-    // start Module Access Request
+    // end Application Translation Request
+    // start Application Access Request
     var applicationAccessProxy = new Ext.data.HttpProxy({
         url: '../controller/applicationAccessController.php',
         method: 'POST',
@@ -1572,9 +1572,9 @@ Ext.onReady(function () {
         id: 'applicationAccessGrid',
         region: 'west',
         store: applicationAccessStore,
-        cm: applicationAccessColumnModel,
+        columns: applicationAccessColumnModel,
         frame: true,
-        title: 'Module Access Grid',
+        title: 'Application Access Grid',
         autoHeight: true,
         disabled: true,
         selModel: applicationAccessValue,
@@ -1590,9 +1590,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        applicationAccessStore.each(function (rec) {
+                        applicationAccessStore.each(function (record,fn,scope) {
                             for (var access in applicationAccessArray) {
-                                rec.set(applicationAccessArray[access], true);
+                                record.set(applicationAccessArray[access], true);
                             }
                         });
                     }
@@ -1603,9 +1603,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        applicationAccessStore.each(function (rec) {
+                        applicationAccessStore.each(function (record,fn,scope) {
                             for (var access in applicationAccessArray) {
-                                rec.set(applicationAccessArray[access], false);
+                                record.set(applicationAccessArray[access], false);
                             }
                         });
                     }
@@ -1649,7 +1649,7 @@ Ext.onReady(function () {
         }
     });
 
-    // end Module Access Request
+    // end Application Access Request
     var gridPanel = new Ext.Panel({
         name: 'gridPanel',
         id: 'gridPanel',

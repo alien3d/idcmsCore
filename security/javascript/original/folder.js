@@ -228,7 +228,7 @@ Ext.onReady(function () {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -391,7 +391,7 @@ Ext.onReady(function () {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -763,7 +763,7 @@ Ext.onReady(function () {
         columns: folderColumnModel,
         loadMask: true,
         plugins: [folderFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -835,9 +835,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        folderStore.each(function (rec) {
+                        folderStore.each(function (record,fn,scope) {
                             for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                                record.set(accessArray[access], true);
                             }
                         });
                     }
@@ -848,9 +848,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        folderStore.each(function (rec) {
+                        folderStore.each(function (record,fn,scope) {
                             for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                                record.set(accessArray[access], false);
                             }
                         });
                     }
@@ -1143,6 +1143,9 @@ Ext.onReady(function () {
         },
         layout: 'fit',
         plugins: [folderTranslateEditor],
+        selModel: new Ext.grid.RowSelectionModel({
+            singleSelect: true
+        }),
         disabled: true,
         tbar: {
             items: [{
@@ -1181,9 +1184,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        folderTranslateStore.each(function (rec) {
+                        folderTranslateStore.each(function (record,fn,scope) {
                             for (var access in moduleTranslateFlagArray) {
-                                rec.set(moduleTranslateFlagArray[access], true);
+                                record.set(moduleTranslateFlagArray[access], true);
                             }
                         });
                     }
@@ -1193,9 +1196,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        folderTranslateStore.each(function (rec) {
+                        folderTranslateStore.each(function (record,fn,scope) {
                             for (var access in moduleTranslateFlagArray ) {
-                                rec.set(moduleTranslateFlagArray [access], false);
+                                record.set(moduleTranslateFlagArray [access], false);
                             }
                         });
                     }
@@ -1360,12 +1363,14 @@ Ext.onReady(function () {
         id: 'folderAccessGrid',
         region: 'west',
         store: folderAccessStore,
-        cm: folderAccessColumnModel,
+        columns: folderAccessColumnModel,
         frame: true,
         title: 'Folder Access Grid',
         autoHeight: true,
         disabled: true,
-        selModel: folderAccessValue,
+        selModel: new Ext.grid.RowSelectionModel({
+            singleSelect: true
+        }),
         iconCls: 'application_view_detail',
         viewConfig: {
             forceFit: true,
@@ -1378,9 +1383,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        folderAccessStore.each(function (rec) {
+                        folderAccessStore.each(function (record,fn,scope) {
                             for (var access in folderAccessFlagArray) {
-                                rec.set(folderAccessFlagArray[access], true);
+                                record.set(folderAccessFlagArray[access], true);
                             }
                         });
                     }
@@ -1391,9 +1396,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        folderAccessStore.each(function (rec) {
+                        folderAccessStore.each(function (record,fn,scope) {
                             for (var access in folderAccessFlagArray) {
-                                rec.set(folderAccessFlagArray[access], false);
+                                record.set(folderAccessFlagArray[access], false);
                             }
                         });
                     }

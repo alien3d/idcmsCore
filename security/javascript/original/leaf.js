@@ -228,7 +228,7 @@ Ext.onReady(function () {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -391,7 +391,7 @@ Ext.onReady(function () {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -833,7 +833,7 @@ Ext.onReady(function () {
         columns: leafColumnModel,
         plugins: [leafFilters],
         loadMask: true,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -1226,6 +1226,9 @@ Ext.onReady(function () {
         },
         layout: 'fit',
         disable : true,
+        selModel: new Ext.grid.RowSelectionModel({
+            singleSelect: true
+        }),
         plugins: [leafTranslateEditor],
         tbar: {
             items: [{
@@ -1264,9 +1267,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        leafTranslateStore.each(function (rec) {
+                        leafTranslateStore.each(function (record,fn,scope) {
                             for (var access in leafTranslateFlagArray) {
-                                rec.set(leafTranslateFlagArray[access], true);
+                                record.set(leafTranslateFlagArray[access], true);
                             }
                         });
                     }
@@ -1276,9 +1279,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        leafTranslateStore.each(function (rec) {
+                        leafTranslateStore.each(function (record,fn,scope) {
                             for (var access in leafTranslateFlagArray) {
-                                rec.set(leafTranslateFlagArray[access], false);
+                                record.set(leafTranslateFlagArray[access], false);
                             }
                         });
                     }
@@ -1442,12 +1445,14 @@ Ext.onReady(function () {
         id: 'leafAccessGrid',
         region: 'west',
         store: leafAccessStore,
-        cm: leafAccessColumnModel,
+        columns: leafAccessColumnModel,
         frame: true,
         title: 'leaf Access Grid',
         autoHeight: true,
         disabled: true,
-        selModel: leafAccessValue,
+        selModel: new Ext.grid.RowSelectionModel({
+            singleSelect: true
+        }),
         iconCls: 'application_view_detail',
         viewConfig: {
             forceFit: true,
@@ -1460,9 +1465,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        leafAccessStore.each(function (rec) {                            
+                        leafAccessStore.each(function (record,fn,scope) {                            
                         	for (var access in leafAccessFlagArray) {
-                                rec.set(leafAccessFlagArray[access], true);
+                                record.set(leafAccessFlagArray[access], true);
                             }
                         });
                     }
@@ -1473,9 +1478,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        leafAccessStore.each(function (rec) {
+                        leafAccessStore.each(function (record,fn,scope) {
                             for (var access in leafAccessFlagArray) {
-                                rec.set(leafAccessFlagArray[access], false);
+                                record.set(leafAccessFlagArray[access], false);
                             }
                         });
                     }
@@ -1599,12 +1604,14 @@ Ext.onReady(function () {
         id: 'leafTeamAccessGrid',
         region: 'west',
         store: leafTeamAccessStore,
-        cm: leafTeamAccessColumnModel,
+        columns: leafTeamAccessColumnModel,
         frame: true,
         title: 'leafTeam Access Grid',
         autoHeight: true,
         disabled: true,
-        selModel: leafTeamAccessValue,
+        selModel: new Ext.grid.RowSelectionModel({
+            singleSelect: true
+        }),
         iconCls: 'application_view_detail',
         viewConfig: {
             forceFit: true,
@@ -1617,9 +1624,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                        leafTeamAccessStore.each(function (rec) {                            
+                        leafTeamAccessStore.each(function (record,fn,scope) {                            
                         	for (var access in leafTeamAccessFlagArray) {
-                                rec.set(leafTeamAccessFlagArray[access], true);
+                                record.set(leafTeamAccessFlagArray[access], true);
                             }
                         });
                     }
@@ -1630,9 +1637,9 @@ Ext.onReady(function () {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                        leafTeamAccessStore.each(function (rec) {
+                        leafTeamAccessStore.each(function (record,fn,scope) {
                             for (var access in leafTeamAccessFlagArray) {
-                                rec.set(leafTeamAccessFlagArray[access], false);
+                                record.set(leafTeamAccessFlagArray[access], false);
                             }
                         });
                     }

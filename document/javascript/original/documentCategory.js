@@ -249,7 +249,7 @@ Ext.onReady(function() {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -426,7 +426,7 @@ Ext.onReady(function() {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -806,7 +806,7 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var documentCategoryFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var documentCategoryEditor = new Ext.ux.grid.RowEditor({
         saveText: saveTextLabel,
         cancelText: cancelTextLabel,
@@ -925,7 +925,7 @@ Ext.onReady(function() {
         height: 400,
         columns: documentCategoryColumnModelGrid,
         plugins: [documentCategoryFilters, documentCategoryEditor],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -970,9 +970,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button,e) {
-                        documentCategoryStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                        documentCategoryStore.each(function(record,fn,scope) {
+                            for (var access in documentCategoryFlagArray) {
+                                record.set(documentCategoryFlagArray[access], true);
                             }
                         });
                     }
@@ -984,9 +984,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        documentCategoryStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                        documentCategoryStore.each(function(record,fn,scope) {
+                            for (var access in documentCategoryFlagArray) {
+                                record.set(documentCategoryFlagArray[access], false);
                             }
                         });
                     }
@@ -1058,7 +1058,7 @@ Ext.onReady(function() {
                             failure: function(response, options) {
                                 Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
                             }
-                        }); // refresh the store
+                        });
                     }
                 }
             }]

@@ -249,7 +249,7 @@ Ext.onReady(function() {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -426,7 +426,7 @@ Ext.onReady(function() {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -769,7 +769,7 @@ Ext.onReady(function() {
         hidden: true,
         width: 100
     }];
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var tableMappingAccessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var tableMappingGrid = new Ext.grid.GridPanel({
         name: 'tableMappingGrid',
         id: 'tableMappingGrid',
@@ -779,11 +779,12 @@ Ext.onReady(function() {
         columns: tableMappingColumnModel,
         loadMask: true,
         plugins: [tableMappingFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
-            forceFit: true
+            forceFit: true,
+            emptyText :emptyTextLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -822,9 +823,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button,e) {
-                        tableMappingStore.each(function(rec) {
-                            for (var access in accessArray) {
-                                rec.set(accessArray[access], true);
+                        tableMappingStore.each(function(record,fn,scope) {
+                            for (var access in tableMappingFlagArray) {
+                                record.set(accessArray[access], true);
                             }
                         });
                     }
@@ -836,9 +837,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        tableMappingStore.each(function(rec) {
+                        tableMappingStore.each(function(record,fn,scope) {
                             for (var access in accessArray) {
-                                rec.set(accessArray[access], false);
+                                record.set(accessArray[access], false);
                             }
                         });
                     }
@@ -1055,6 +1056,9 @@ Ext.onReady(function() {
         },
         layout: 'fit',
         disable :true,
+        selModel: new Ext.grid.RowSelectionModel({
+            singleSelect: true
+        }),
         plugins: [tableMappingTranslateEditor],
         tbar: {
             items: [{
@@ -1093,9 +1097,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                    	 tableMappingTranslateStore.each(function (rec) {
+                    	 tableMappingTranslateStore.each(function (record,fn,scope) {
                             for (var access in tableMappingTranslateFlagArray) {
-                                rec.set(tableMappingTranslateFlagArray[access], true);
+                                record.set(tableMappingTranslateFlagArray[access], true);
                             }
                         });
                     }
@@ -1105,9 +1109,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                    	 tableMappingTranslateStore.each(function (rec) {
+                    	 tableMappingTranslateStore.each(function (record,fn,scope) {
                             for (var access in tableMappingTranslateFlagArray) {
-                                rec.set(tableMappingTranslateFlagArray[access], false);
+                                record.set(tableMappingTranslateFlagArray[access], false);
                             }
                         });
                     }

@@ -249,7 +249,7 @@ Ext.onReady(function() {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -426,7 +426,7 @@ Ext.onReady(function() {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -757,7 +757,7 @@ Ext.onReady(function() {
         columns: defaultLabelColumnModel,
         loadMask: true,
         plugins: [defaultLabelFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -801,9 +801,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button,e) {
-                        defaultLabelStore.each(function(rec) {
+                        defaultLabelStore.each(function(record,fn,scope) {
                             for (var access in defaultLabelFlagArray) {
-                                rec.set(defaultLabelFlagArray[access], true);
+                                record.set(defaultLabelFlagArray[access], true);
                             }
                         });
                     }
@@ -815,9 +815,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        defaultLabelStore.each(function(rec) {
+                        defaultLabelStore.each(function(record,fn,scope) {
                             for (var access in defaultLabelFlagArray) {
-                                rec.set(defaultLabelFlagArray[access], false);
+                                record.set(defaultLabelFlagArray[access], false);
                             }
                         });
                     }
@@ -1091,9 +1091,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function (button, e) {
-                    	defaultLabelTranslateStore.each(function (rec) {
+                    	defaultLabelTranslateStore.each(function (record,fn,scope) {
                             for (var access in defaultLabelTranslateFlagArray ) {
-                                rec.set(defaultLabelTranslateFlagArray [access], true);
+                                record.set(defaultLabelTranslateFlagArray [access], true);
                             }
                         });
                     }
@@ -1103,9 +1103,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function (button, e) {
-                    	defaultLabelTranslateStore.each(function (rec) {
+                    	defaultLabelTranslateStore.each(function (record,fn,scope) {
                             for (var access in defaultLabelTranslateFlagArray ) {
-                                rec.set(defaultLabelTranslateFlagArray [access], false);
+                                record.set(defaultLabelTranslateFlagArray [access], false);
                             }
                         });
                     }

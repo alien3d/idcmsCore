@@ -249,7 +249,7 @@ Ext.onReady(function() {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -426,7 +426,7 @@ Ext.onReady(function() {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -784,7 +784,7 @@ Ext.onReady(function() {
         autoScroll: true,
         columns: religionColumnModelGrid,
         plugins: [religionFilters, religionEditor],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -829,9 +829,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button, e) {
-                        religionStore.each(function(rec) {
+                        religionStore.each(function(record,fn,scope) {
                             for (var access in religionFlagArray) {
-                                rec.set(religionFlagArray[access], true);
+                                record.set(religionFlagArray[access], true);
                             }
                         });
                     }
@@ -843,9 +843,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button, e) {
-                        religionStore.each(function(rec) {
+                        religionStore.each(function(record,fn,scope) {
                             for (var access in religionFlagArray) {
-                                rec.set(religionFlagArray[access], false);
+                                record.set(religionFlagArray[access], false);
                             }
                         });
                     }

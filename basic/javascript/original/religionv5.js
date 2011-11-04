@@ -249,7 +249,7 @@ Ext.onReady(function() {
         plugins: [logFilters, logExpander],
         collapsible: true,
         animCollapse: false,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -426,7 +426,7 @@ Ext.onReady(function() {
         columns: logAdvanceColumnModel,
         loadMask: true,
         plugins: [ logAdvanceFilters],
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -873,7 +873,6 @@ Ext.onReady(function() {
     }];
     var religionFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     
-	var religionDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     
 	var religionGrid = new Ext.grid.GridPanel({
         border: false,
@@ -883,7 +882,7 @@ Ext.onReady(function() {
         loadMask: true,
         plugins: [religionFilters],
         autoScroll: true,
-        sm: new Ext.grid.RowSelectionModel({
+        selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
@@ -945,9 +944,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button,e) {
-                        religionStore.each(function(rec) {
+                        religionStore.each(function(record,fn,scope) {
                             for (var access in religionFlagArray) {
-                                rec.set(religionFlagArray[access], true);
+                                record.set(religionFlagArray[access], true);
                             }
                         });
                     }
@@ -959,9 +958,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        religionStore.each(function(rec) {
+                        religionStore.each(function(record,fn,scope) {
                             for (var access in religionFlagArray) {
-                                rec.set(religionFlagArray[access], false);
+                                record.set(religionFlagArray[access], false);
                             }
                         });
                     }
@@ -1173,6 +1172,9 @@ Ext.onReady(function() {
         type: 'date',
         dateFormat: 'Y-m-d H:i:s'
     }]);
+    
+	var religionDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+
     var religionDetailGrid = new Ext.grid.GridPanel({
         id: 'religionDetailGrid',
         border: false,
@@ -1182,11 +1184,16 @@ Ext.onReady(function() {
         frame: true,
         forceLayout: true,
         disabled: true,
+        selModel: new Ext.grid.RowSelectionModel({
+            singleSelect: true
+        }),
         viewConfig: {
-            forceFit: true
+            forceFit: true,
+            emptyText:emptyTextLabel
         },
         height: 275,
         plugins: [religionDetailEditor],
+       
         tbar: {
             items: [{
                 iconCls: 'add',
@@ -1223,9 +1230,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function() {
-                        religionDetailStore.each(function(rec) {
-                            for (var access in accessDetailArray) {
-                                rec.set(accessDetailArray[access], true);
+                        religionDetailStore.each(function(record,fn,scope) {
+                            for (var access in religionDetailFlagArray) {
+                                record.set(religionDetailFlagArray[access], true);
                             }
                         });
                     }
@@ -1236,9 +1243,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function() {
-                        religionDetailStore.each(function(rec) {
-                            for (var access in accessDetailArray) {
-                                rec.set(accessDetailArray[access], false);
+                        religionDetailStore.each(function(record,fn,scope) {
+                            for (var access in religionDetailFlagArray) {
+                                record.set(religionDetailFlagArray[access], false);
                             }
                         });
                     }
