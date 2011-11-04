@@ -753,7 +753,7 @@ Ext.onReady(function () {
         width: 100
     }];
 
-    var accessArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var folderFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var folderGrid = new Ext.grid.GridPanel({
         name: 'folderGrid',
         id: 'folderGrid',
@@ -807,7 +807,8 @@ Ext.onReady(function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('saveButton').enable();
                 Ext.getCmp('deleteButton').enable();
-                Ext.getCmp('translation').enable();
+                Ext.getCmp('postButton').enable();
+                Ext.getCmp('translationButton').enable();
                 Ext.getCmp('folderTranslateGrid').enable();
                 Ext.getCmp('folderAccessGrid').enable();
                 folderTranslateStore.load({
@@ -836,8 +837,8 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         folderStore.each(function (record,fn,scope) {
-                            for (var access in accessArray) {
-                                record.set(accessArray[access], true);
+                            for (var access in folderFlagArray) {
+                                record.set(folderFlagArray[access], true);
                             }
                         });
                     }
@@ -849,8 +850,8 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         folderStore.each(function (record,fn,scope) {
-                            for (var access in accessArray) {
-                                record.set(accessArray[access], false);
+                            for (var access in folderFlagArray) {
+                                record.set(folderFlagArray[access], false);
                             }
                         });
                     }
@@ -1127,7 +1128,7 @@ Ext.onReady(function () {
         type: 'date',
         dateFormat: 'Y-m-d H:i:s'
     }]);
-    var moduleTranslateFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var folderTranslateFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var folderTranslateGrid = new Ext.grid.GridPanel({
         name: 'folderTranslateGrid',
         id: 'folderTranslateGrid',
@@ -1185,8 +1186,8 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         folderTranslateStore.each(function (record,fn,scope) {
-                            for (var access in moduleTranslateFlagArray) {
-                                record.set(moduleTranslateFlagArray[access], true);
+                            for (var access in folderTranslateFlagArray) {
+                                record.set(folderTranslateFlagArray[access], true);
                             }
                         });
                     }
@@ -1197,8 +1198,8 @@ Ext.onReady(function () {
                 listeners: {
                     'click': function (button, e) {
                         folderTranslateStore.each(function (record,fn,scope) {
-                            for (var access in moduleTranslateFlagArray ) {
-                                record.set(moduleTranslateFlagArray [access], false);
+                            for (var access in folderTranslateFlagArray ) {
+                                record.set(folderTranslateFlagArray [access], false);
                             }
                         });
                     }
@@ -1357,7 +1358,7 @@ Ext.onReady(function () {
         },
         folderAccessValue]
     });
-    var folderAccessArray = ['folderAccessValue'];
+    var folderAccessFlagArray = ['folderAccessValue'];
     var folderAccessGrid = new Ext.grid.GridPanel({
         name: 'folderAccessGrid',
         id: 'folderAccessGrid',
@@ -1465,6 +1466,7 @@ Ext.onReady(function () {
             id: 'pageCreate',
             disabled: pageCreate,
             handler: function () {
+            	formPanel.getForm.reset();
                 viewPort.items.get(1).expand();
             }
         }, '-',
