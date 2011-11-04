@@ -1599,6 +1599,11 @@ Ext.onReady(function() {
                 type: 'reset',
                 iconCls: 'arrow_refresh',
                 handler: function() {
+                	   Ext.getCmp('newButton').enable();
+                       Ext.getCmp('saveButton').disable();
+                       Ext.getCmp('deleteButton').disable();
+                       Ext.getCmp('postButton').disable();
+                       Ext.getCmp('translationButton').disable();
                     formPanel.getForm().reset();
                 }
             },

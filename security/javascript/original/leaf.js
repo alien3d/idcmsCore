@@ -2400,7 +2400,11 @@ Ext.onReady(function () {
             id: 'resetButton',
             iconCls: 'database_refresh',
             handler: function () {
-                Ext.getCmp('newButton').enable();
+            	   Ext.getCmp('newButton').enable();
+                   Ext.getCmp('saveButton').disable();
+                   Ext.getCmp('deleteButton').disable();
+                   Ext.getCmp('postButton').disable();
+                   Ext.getCmp('translationButton').disable();
                 Ext.getCmp('leafTranslateGrid').disable();
                 Ext.getCmp('leafAccessGrid').disable();
                 formPanel.getForm().reset();
@@ -2645,7 +2649,7 @@ Ext.onReady(function () {
                             systemErrorLabel, action.result.message);
                         }
                     });
-                } else { // empty record
+                } else { 
                     Ext.MessageBox.alert(
                     systemErrorLabel, recordNotFoundLabel);
                 }

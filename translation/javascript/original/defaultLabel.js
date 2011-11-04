@@ -1485,7 +1485,7 @@ Ext.onReady(function() {
             id: 'resetButton',
             iconCls: 'database_refresh',
             handler: function() {
-                Ext.getCmp('newButton').enable();
+               
                 Ext.getCmp('defaultLabelTranslateGrid').disable();
                 formPanel.getForm().reset();
             }
@@ -1497,7 +1497,11 @@ Ext.onReady(function() {
             id: 'postButton',
             iconCls: 'lock',
             handler: function() {
-                Ext.getCmp('newButton').disable();
+            	 Ext.getCmp('newButton').enable();
+                 Ext.getCmp('saveButton').disable();
+                 Ext.getCmp('deleteButton').disable();
+                 Ext.getCmp('postButton').disable();
+                 Ext.getCmp('translationButton').disable();
                 Ext.getCmp('defaultLabelTranslateGrid').disable();
                 formPanel.getForm().reset();
             }

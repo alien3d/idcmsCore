@@ -1375,7 +1375,13 @@ Ext.onReady(function() {
             type: 'reset',
             iconCls: 'table_refresh',
             handler: function() {
-                formPanel.getForm().reset();
+            	   Ext.getCmp('newButton').enable();
+                   Ext.getCmp('saveButton').disable();
+                   Ext.getCmp('deleteButton').disable();
+                   Ext.getCmp('postButton').disable();
+                   Ext.getCmp('translationButton').disable();
+                   Ext.getCmp('tableMappingTranslateGrid').disable();
+                   formPanel.getForm().reset();
             }
         },
         {

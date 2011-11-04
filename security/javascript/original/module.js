@@ -2026,6 +2026,10 @@ Ext.onReady(function () {
             iconCls: 'database_refresh',
             handler: function () {
                 Ext.getCmp('newButton').enable();
+                Ext.getCmp('saveButton').disable();
+                Ext.getCmp('deleteButton').disable();
+                Ext.getCmp('postButton').disable();
+                Ext.getCmp('translationButton').disable();
                 Ext.getCmp('moduleTranslateGrid').disable();
                 Ext.getCmp('moduleAccessGrid').disable();
                 formPanel.getForm().reset();

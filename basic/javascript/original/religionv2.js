@@ -1218,7 +1218,10 @@ Ext.onReady(function() {
             id: 'resetButton',
             iconCls: 'database_refresh',
             handler: function() {
-                Ext.getCmp('newButton').enable();
+            	 Ext.getCmp('newButton').enable();
+                 Ext.getCmp('saveButton').disable();
+                 Ext.getCmp('deleteButton').disable();
+                 Ext.getCmp('postButton').disable();                
                 formPanel.getForm().reset();
             }
         },
