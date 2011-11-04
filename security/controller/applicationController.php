@@ -1367,6 +1367,15 @@ if (isset($_POST ['method'])) {
     if (isset($_POST ['isAdmin'])) {
         $applicationObject->setIsAdmin($_POST ['isAdmin']);
     }
+/*
+     *  Paging
+     */
+    if (isset($_POST ['start'])) {
+        $applicationObject->setStart($_POST ['start']);
+    }
+    if (isset($_POST ['perPage'])) {
+        $applicationObject->setLimit($_POST ['perPage']);
+    }
     /*
      * Filtering
      */

@@ -73,7 +73,7 @@ class TableMappingTranslateClass extends ConfigClass {
 	 * @var  string $security
 	 */
 	private $security;
-	
+
 	/**
 	 * Class Loader
 	 */
@@ -84,7 +84,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->log = 0;
 		//default translation property
 		$this->defaultLanguageId = 21;
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -94,28 +94,28 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->log;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		
+
 		$this->security = new Security ();
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
-		
+
 		$this->model = new TableMappingTranslateModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
 		$this->recordSet->execute ();
-		
+
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->execute ();
-		
+
 		$this->excel = new PHPExcel ();
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see config::create()
 	 */
@@ -125,7 +125,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		$this->q->start ();
 		$this->model->create ();
@@ -192,14 +192,14 @@ class TableMappingTranslateClass extends ConfigClass {
 		}
 		$this->q->create ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => false, 
+			echo json_encode ( array ("success" => false,
 
 			"message" => $this->q->responce ) );
 			exit ();
 		}
-		
+
 		$lastId = $this->q->lastInsertId ();
-		
+
 		$this->q->commit ();
 		echo json_encode ( array ("success" => true, "tableMappingTranslationTranslationId" => $lastId, "message" => "Record Created" ) );
 		exit ();
@@ -209,14 +209,14 @@ class TableMappingTranslateClass extends ConfigClass {
 	 */
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
-		
+
 		//UTF8
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		// everything given flexibility  on todo
 		if ($this->getVendor () == self::MYSQL) {
@@ -255,7 +255,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		 * @variables $tableArray
 		 */
 		$tableArray = array ('tableMappingTranslationTranslation' );
-		
+
 		if ($this->getFieldQuery ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );
@@ -271,7 +271,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		 * Extjs filtering mode
 		 */
 		if ($this->getGridQuery ()) {
-			
+				
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->searching ();
 			} else if ($this->getVendor () == self::MSSQL) {
@@ -289,7 +289,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			exit ();
 		}
 		$total = $this->q->numberRows ();
-		
+
 		if ($this->getOrder () && $this->getSortField ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= "	ORDER BY `" . $this->getSortField () . "` " . $this->getOrder () . " ";
@@ -302,10 +302,10 @@ class TableMappingTranslateClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		
+
 		if ($this->getStart () && $this->getLimit ()) {
 			// only mysql have limit
-			
+				
 
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
@@ -330,12 +330,12 @@ class TableMappingTranslateClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $_POST ['limit'] - 1) . ";";
-			
+					
 			} else if ($this->getVendor () == self::ORACLE) {
 				/**
 				 * Oracle using derived table also
 				 */
-				
+
 				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
@@ -348,18 +348,18 @@ class TableMappingTranslateClass extends ConfigClass {
 								 ) a
 						WHERE rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
-			
+					
 			} else {
 				echo "undefine vendor";
 			}
 		}
-		
+
 		/*
 		 *  Only Execute One Query
 		 */
-		
+
 		if (! ($this->gettableMappingTranslationTranslationId ( 0, 'single' ))) {
-			
+				
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
 				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -370,7 +370,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
 			$items [] = $row;
 		}
-		
+
 		if ($this->gettableMappingTranslationTranslationId ( 0, 'single' )) {
 			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
@@ -383,9 +383,9 @@ class TableMappingTranslateClass extends ConfigClass {
 			echo json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
 			exit ();
 		}
-	
+
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see config::update()
 	 */
@@ -395,7 +395,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		$this->q->start ();
 		$this->model->update ();
@@ -455,7 +455,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
 		exit ();
-	
+
 	}
 	/* (non-PHPdoc)
 	 * @see config::delete()
@@ -466,7 +466,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		$this->q->start ();
 		$this->model->delete ();
@@ -483,7 +483,7 @@ class TableMappingTranslateClass extends ConfigClass {
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`			=	" . $this->model->getExecuteTime () . "
 					WHERE 	`tableMappingTranslationTranslationId`		=	'" . $this->model->gettableMappingTranslationTranslationId () . "'";
-		
+
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 					UPDATE	[tableMappingTranslationTranslation]
@@ -521,24 +521,24 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
 		exit ();
-	
+
 	}
-	
+
 	/**
 	 * To Update flag Status
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
-		
+
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
-		
+
 		$loop = $this->model->getTotal ();
-		
+
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 				UPDATE `" . $this->model->getTableName () . "`
@@ -547,25 +547,25 @@ class TableMappingTranslateClass extends ConfigClass {
 			$sql = "
 			UPDATE 	[" . $this->model->getTableName () . "]
 			SET 	";
-		
+
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
 		}
-		
+
 		/**
 		 * System Validation Checking
 		 * @var $access
 		 */
 		$access = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
 		foreach ( $access as $systemCheck ) {
-			
+				
 			if ($this->getVendor () == self::MYSQL) {
 				$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName () . "`";
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
-			
+					
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . "";
 			}
@@ -582,7 +582,7 @@ class TableMappingTranslateClass extends ConfigClass {
 						$sqlLooping .= "
 							WHEN '" . $this->model->gettableMappingTranslationId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
-					
+							
 					}
 					break;
 				case 'isDraft' :
@@ -621,10 +621,10 @@ class TableMappingTranslateClass extends ConfigClass {
 					}
 					break;
 			}
-			
+				
 			$sqlLooping .= " END,";
 		}
-		
+
 		$sql .= substr ( $sqlLooping, 0, - 1 );
 		if ($this->getVendor () == self::MYSQL) {
 			$sql .= "
@@ -636,7 +636,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
 		}
-		
+
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
 			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -645,7 +645,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
-	
+
 	}
 	function firstRecord($value) {
 		$this->recordSet->firstRecord ( $value );
@@ -668,7 +668,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		if ($_SESSION ['start'] == 0) {
 			$sql = str_replace ( "LIMIT", "", $_SESSION ['sql'] );
@@ -677,7 +677,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			$sql = $_SESSION ['sql'];
 		}
 		$this->q->read ( $sql );
-		
+
 		$this->excel->setActiveSheetIndex ( 0 );
 		// check file exist or not and return response
 		$styleThinBlackBorderOutline = array ('borders' => array ('inside' => array ('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array ('argb' => '000000' ) ), 'outline' => array ('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array ('argb' => '000000' ) ) ) );
@@ -692,12 +692,12 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->excel->getActiveSheet ()->getStyle ( 'B2:D2' )->getFill ()->getStartColor ()->setARGB ( '66BBFF' );
 		$this->excel->getActiveSheet ()->getStyle ( 'B3:D3' )->getFill ()->setFillType ( PHPExcel_Style_Fill::FILL_SOLID );
 		$this->excel->getActiveSheet ()->getStyle ( 'B3:D3' )->getFill ()->getStartColor ()->setARGB ( '66BBFF' );
-		
+
 		//
 		$loopRow = 4;
 		$i = 0;
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
-			
+				
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
 			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['tableMappingTranslationTranslationNote'] );
 			$loopRow ++;
@@ -717,7 +717,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
-		
+
 		}
 	}
 
@@ -729,7 +729,7 @@ $tableMappingTranslateObject = new TableMappingTranslateClass ();
  * crud -create,read,update,delete
  **/
 if (isset ( $_POST ['method'] )) {
-	
+
 	/*
 	 *  Initilize Value before load in the loader
 	 */
@@ -745,11 +745,19 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['isAdmin'] )) {
 		$tableMappingTranslateObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
-	
+	/*
+	 *  Paging
+	 */
+	if (isset($_POST ['start'])) {
+		$tableMappingTranslateObject->setStart($_POST ['start']);
+	}
+	if (isset($_POST ['perPage'])) {
+		$tableMappingTranslateObject->setLimit($_POST ['perPage']);
+	}
 	/*
 	 *  Filtering
 	 */
-	
+
 	if (isset ( $_POST ['query'] )) {
 		$tableMappingTranslateObject->setFieldQuery ( $_POST ['query'] );
 	}
@@ -765,7 +773,7 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['sortField'] )) {
 		$tableMappingTranslateObject->setSortField ( $_POST ['sortField'] );
 	}
-	
+
 	/*
 	 *  Load the dynamic value
 	 */
@@ -777,15 +785,15 @@ if (isset ( $_POST ['method'] )) {
 		$tableMappingTranslateObject->create ();
 	}
 	if ($_POST ['method'] == 'read') {
-		
+
 		$tableMappingTranslateObject->read ();
-	
+
 	}
-	
+
 	if ($_POST ['method'] == 'save') {
-		
+
 		$tableMappingTranslateObject->update ();
-	
+
 	}
 	if ($_POST ['method'] == 'delete') {
 		$tableMappingTranslateObject->delete ();
@@ -815,10 +823,10 @@ if (isset ( $_GET ['method'] )) {
 	$tableMappingTranslateObject->execute ();
 	if (isset ( $_GET ['field'] )) {
 		if ($_GET ['field'] == 'staffId') {
-			
+				
 			$tableMappingTranslateObject->staff ();
 		}
-	
+
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only

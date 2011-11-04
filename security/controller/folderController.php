@@ -20,127 +20,129 @@ require_once ("../model/folderModel.php");
  */
 class FolderClass extends ConfigClass {
 
-    /**
-     * Connection to the database
-     * @var string
-     */
-    public $q;
+	/**
+	 * Connection to the database
+	 * @var string
+	 */
+	public $q;
 
-    /**
-     * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-     * @var string
-     */
-    private $excel;
+	/**
+	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
+	 * @var string
+	 */
+	private $excel;
 
-    /**
-     * Record Pagination
-     * @var string
-     */
-    private $recordSet;
+	/**
+	 * Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
 
-    /**
-     * Document Trail Audit.
-     * @var string 
-     */
-    private $documentTrail;
+	/**
+	 * Document Trail Audit.
+	 * @var string
+	 */
+	private $documentTrail;
 
-    /**
-     * Audit Row True or False
-     * @var bool
-     */
-    private $audit;
+	/**
+	 * Audit Row True or False
+	 * @var bool
+	 */
+	private $audit;
 
-    /**
-     * Log Sql Statement True or False
-     * @var string
-     */
-    private $log;
+	/**
+	 * Log Sql Statement True or False
+	 * @var string
+	 */
+	private $log;
 
-    /**
-     * Model
-     * @var string 
-     */
-    public $model;
+	/**
+	 * Model
+	 * @var string
+	 */
+	public $model;
 
-    /**
-     * Audit Filter
-     * @var string 
-     */
-    public $auditFilter;
+	/**
+	 * Audit Filter
+	 * @var string
+	 */
+	public $auditFilter;
 
-    /**
-     * Audit Column
-     * @var string 
-     */
-    public $auditColumn;
+	/**
+	 * Audit Column
+	 * @var string
+	 */
+	public $auditColumn;
 
-    /**
-     * Duplicate Testing either the key of table same or have been created.
-     * @var bool
-     */
-    public $duplicateTest;
+	/**
+	 * Duplicate Testing either the key of table same or have been created.
+	 * @var bool
+	 */
+	public $duplicateTest;
 
-    /**
-     * Common class function for security menu
-     * @var  string 
-     */
-    private $security;
+	/**
+	 * Common class function for security menu
+	 * @var  string
+	 */
+	private $security;
 
-    /**
-     * Class Loader
-     */
-    function execute() {
-        parent::__construct();
-        // audit property
-        $this->audit = 1;
-        $this->log = 1;
+	/**
+	 * Class Loader
+	 */
+	function execute() {
+		parent::__construct();
+		// audit property
+		$this->audit = 1;
+		$this->log = 1;
 
-        $this->q = new Vendor ();
-        $this->q->vendor = $this->getVendor();
-        $this->q->leafId = $this->getLeafId();
-        $this->q->staffId = $this->getStaffId();
-        $this->q->fieldQuery = $this->getFieldQuery();
-        $this->q->gridQuery = $this->getGridQuery();
-        $this->q->log = $this->log;
-        $this->q->audit = $this->audit;
-        $this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		$this->model = new FolderModel ();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
 
-        $this->security = new Security ();
-        $this->security->setVendor($this->getVendor());
-        $this->security->setLeafId($this->getLeafId());
-        $this->security->execute();
+		$this->q = new Vendor ();
+		$this->q->vendor = $this->getVendor();
+		$this->q->leafId = $this->getLeafId();
+		$this->q->staffId = $this->getStaffId();
+		$this->q->fieldQuery = $this->getFieldQuery();
+		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
+		$this->q->log = $this->log;
+		$this->q->audit = $this->audit;
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-        $this->model = new FolderModel ();
-        $this->model->setVendor($this->getVendor());
-        $this->model->execute();
+		$this->security = new Security ();
+		$this->security->setVendor($this->getVendor());
+		$this->security->setLeafId($this->getLeafId());
+		$this->security->execute();
 
-        $this->recordSet = new RecordSet ();
-        $this->recordSet->setTableName($this->model->getTableName());
-        $this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
-        $this->recordSet->execute();
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
 
-        $this->documentTrail = new DocumentTrailClass ();
-        $this->documentTrail->setVendor($this->getVendor());
-        $this->documentTrail->execute();
+		$this->documentTrail = new DocumentTrailClass ();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->execute();
 
-        $this->excel = new PHPExcel ();
-    }
+		$this->excel = new PHPExcel ();
+	}
 
-    /* (non-PHPdoc)
-     * @see config::create()
-     */
+	/* (non-PHPdoc)
+	 * @see config::create()
+	 */
 
-    function create() {
-        header('Content-Type:application/json; charset=utf-8');
-        if ($this->getVendor() == self::MYSQL) {
-            //UTF8
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        $this->q->start();
-        $this->model->create();
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+	function create() {
+		header('Content-Type:application/json; charset=utf-8');
+		if ($this->getVendor() == self::MYSQL) {
+			//UTF8
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		$this->q->start();
+		$this->model->create();
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 			INSERT INTO `folder`
 					(
 						`moduleId`,													`iconId`,
@@ -167,8 +169,8 @@ class FolderClass extends ConfigClass {
 						
 					
 					);";
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 			INSERT INTO [folder]
 					(
 						[moduleId],													[iconId],
@@ -194,8 +196,8 @@ class FolderClass extends ConfigClass {
 						" . $this->model->getExecuteTime() . "
 					
 					);";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 			INSERT INTO 	FOLDER
 						(
 							MODULEID,												ICONID,
@@ -218,8 +220,8 @@ class FolderClass extends ConfigClass {
 							'" . $this->model->getIsPost(0, 'single') . "',		'" . $this->model->getExecuteBy() . "',
 							" . $this->model->getExecuteTime() . "
 					)";
-        } else if ($this->getVendor() == self::DB2) {
-            $sql = "
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
 			INSERT INTO 	FOLDER
 						(
 							MODULEID,												ICONID,
@@ -242,8 +244,8 @@ class FolderClass extends ConfigClass {
 							'" . $this->model->getIsPost(0, 'single') . "',		'" . $this->model->getExecuteBy() . "',
 							" . $this->model->getExecuteTime() . "
 					)";
-        } else if ($this->getVendor() == self::POSTGRESS) {
-            $sql = "
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
 			INSERT INTO 	FOLDER
 						(
 							MODULEID,												ICONID,
@@ -266,112 +268,112 @@ class FolderClass extends ConfigClass {
 							'" . $this->model->getIsPost(0, 'single') . "',		'" . $this->model->getExecuteBy() . "',
 							" . $this->model->getExecuteTime() . "
 					)";
-        }
-        $this->q->create($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        $lastId = $this->q->lastInsertId();
-        //  create a record  in folderAccess.update no effect
-        // loop the group
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+		}
+		$this->q->create($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		$lastId = $this->q->lastInsertId();
+		//  create a record  in folderAccess.update no effect
+		// loop the group
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 					SELECT 	`teamId`
 					FROM 	`team`
 					WHERE 	`isActive`	=	1 ";
-        } else if ($this->q->vendor == self::MSSQL) {
-            $sql = "
+		} else if ($this->q->vendor == self::MSSQL) {
+			$sql = "
 					SELECT 	[teamId]
 					FROM 	[team]
 					WHERE 	[isActive]	=	1 ";
-        } else if ($this->q->vendor == self::ORACLE) {
-            $sql = "
+		} else if ($this->q->vendor == self::ORACLE) {
+			$sql = "
 					SELECT 	TEAMID		AS \"teamId\"
 					FROM 	TEAM
 					WHERE 	ISACTIVE	=	1 ";
-        } else if ($this->q->vendor == self::DB2) {
-            $sql = "
+		} else if ($this->q->vendor == self::DB2) {
+			$sql = "
 					SELECT 	TEAMID		AS \"teamId\"
 					FROM 	TEAM
 					WHERE 	ISACTIVE	=	1 ";
-        } else if ($this->q->vendor == self::POSTGRESS) {
-            $sql = "
+		} else if ($this->q->vendor == self::POSTGRESS) {
+			$sql = "
 					SELECT 	TEAMID		AS \"teamId\"
 					FROM 	TEAM
 					WHERE 	ISACTIVE	=	1 ";
-        }
-        $this->q->read($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        $data = $this->q->activeRecord();
-        $sqlLooping = '';
-        foreach ($data as $row) {
+		}
+		$this->q->read($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		$data = $this->q->activeRecord();
+		$sqlLooping = '';
+		foreach ($data as $row) {
 
-            $sqlLooping .= "(
+			$sqlLooping .= "(
 			'" . $lastId . "',
 			'" . $row ['teamId'] . "',
 			'0'
 			),";
-        }
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+		}
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 						INSERT INTO	`folderAccess`
 								(
 									`folderId`,
 									`teamId`,
 									`folderAccessValue`
 								) VALUES";
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 						INSERT INTO	[folderAccess]
 								(
 									[folderId],
 									[teamId],
 									[folderAccessValue]
 							) VALUES";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 						INSERT INTO	FOLDERACCESS
 								(
 									FOLDERID,
 									TEAMID,
 									FOLDERACCESSVALUE
 							) VALUES";
-        } else if ($this->getVendor() == self::DB2) {
-            $sql = "
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
 						INSERT INTO	FOLDERACCESS
 								(
 									FOLDERID,
 									TEAMID,
 									FOLDERACCESSVALUE
 							) VALUES";
-        } else if ($this->getVendor() == self::POSTGRESS) {
-            $sql = "
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
 						INSERT INTO	FOLDERACCESS
 								(
 									FOLDERID,
 									TEAMID,
 									FOLDERACCESSVALUE
 							) VALUES";
-        }
-        // optimize to 1 Query
-        // remove last comma
-        $sqlLooping = substr($sqlLooping, 0, - 1);
-        // combine SQL Statement
-        $sql .= $sqlLooping;
-        $this->q->update($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        /**
-         * insert default value to detail folderle .English only
-         * */
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+		}
+		// optimize to 1 Query
+		// remove last comma
+		$sqlLooping = substr($sqlLooping, 0, - 1);
+		// combine SQL Statement
+		$sql .= $sqlLooping;
+		$this->q->update($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		/**
+		 * insert default value to detail folderle .English only
+		 * */
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 				 	INSERT INTO `folderTranslate`
 				 		(
 						 	`folderId`,														`languageId`,
@@ -390,8 +392,8 @@ class FolderClass extends ConfigClass {
 							'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',										
 							'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
 					);";
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 			INSERT INTO [folderTranslate]
 					(
 						[folderId],														[languageId],
@@ -412,8 +414,8 @@ class FolderClass extends ConfigClass {
 						'" . $this->model->getIsReview(0, 'single') . "',				'" . $this->model->getIsPost(0, 'single') . "',										
 						'" . $this->model->getExecuteBy() . "',							" . $this->model->getExecuteTime() . "
 			);";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 			INSERT INTO	FOLDERTRANSLATE
 				(
 						FOLDERID,														LANGUAGEID,
@@ -432,8 +434,8 @@ class FolderClass extends ConfigClass {
 						'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',										
 						'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
 			)";
-        } else if ($this->getVendor() == self::DB2) {
-            $sql = "
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
 			INSERT INTO 	FOLDERTRANSLATE
 			(
 							FOLDERID,														LANGUAGEID,
@@ -452,8 +454,8 @@ class FolderClass extends ConfigClass {
 							'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',
 							'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
 			)";
-        } else if ($this->getVendor() == self::POSTGRESS) {
-            $sql = "
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
 			INSERT INTO	FOLDERTRANSLATE
 			(
 						FOLDERID,														LANGUAGEID,
@@ -472,50 +474,50 @@ class FolderClass extends ConfigClass {
 						'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',
 						'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
 			)";
-        }
-        $this->q->create($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        $this->q->commit();
-        echo json_encode(array("success" => true, "folderId" => $lastId, "message" => "Record Created"));
-        exit();
-    }
+		}
+		$this->q->create($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		$this->q->commit();
+		echo json_encode(array("success" => true, "folderId" => $lastId, "message" => "Record Created"));
+		exit();
+	}
 
-    /* (non-PHPdoc)
-     * @see config::read()
-     */
+	/* (non-PHPdoc)
+	 * @see config::read()
+	 */
 
-    function read() {
-        header('Content-Type:application/json; charset=utf-8');
-        if ($this->isAdmin == 0) {
-            if ($this->getVendor() == self::MYSQL) {
-                $this->auditFilter = "	`folder`.`isActive`		=	1	";
-            } else if ($this->q->vendor == self::MSSQL) {
-                $this->auditFilter = "	[folder].[isActive]		=	1	";
-            } else if ($this->q->vendor == self::ORACLE) {
-                $this->auditFilter = "	FOLDER.ISACTIVE	=	1	";
-            }
-        } else if ($this->isAdmin == 1) {
-            if ($this->getVendor() == self::MYSQL) {
-                $this->auditFilter = "	1= 1 ";
-            } else if ($this->q->vendor == self::MSSQL) {
-                $this->auditFilter = "	1= 1 ";
-            } else if ($this->q->vendor == self::ORACLE) {
-                $this->auditFilter = " 1= 1 ";
-            }
-        }
-        //UTF8
-        $items = array();
-        if ($this->getVendor() == self::MYSQL) {
-            //UTF8
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        // everything given flexibility  on todo
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+	function read() {
+		header('Content-Type:application/json; charset=utf-8');
+		if ($this->isAdmin == 0) {
+			if ($this->getVendor() == self::MYSQL) {
+				$this->auditFilter = "	`folder`.`isActive`		=	1	";
+			} else if ($this->q->vendor == self::MSSQL) {
+				$this->auditFilter = "	[folder].[isActive]		=	1	";
+			} else if ($this->q->vendor == self::ORACLE) {
+				$this->auditFilter = "	FOLDER.ISACTIVE	=	1	";
+			}
+		} else if ($this->isAdmin == 1) {
+			if ($this->getVendor() == self::MYSQL) {
+				$this->auditFilter = "	1= 1 ";
+			} else if ($this->q->vendor == self::MSSQL) {
+				$this->auditFilter = "	1= 1 ";
+			} else if ($this->q->vendor == self::ORACLE) {
+				$this->auditFilter = " 1= 1 ";
+			}
+		}
+		//UTF8
+		$items = array();
+		if ($this->getVendor() == self::MYSQL) {
+			//UTF8
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		// everything given flexibility  on todo
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 			SELECT		`folder`.`folderId`,
 						`folder`.`moduleId`,
 						`folder`.`folderPath`,
@@ -548,11 +550,11 @@ class FolderClass extends ConfigClass {
 			ON			`folder`.`iconId`=`icon`.`iconId`
 			WHERE		`module`.`isActive`	=	1
 			AND			" . $this->auditFilter;
-            if ($this->model->getFolderId(0, 'single')) {
-                $sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getFolderId(0, 'single') . "'";
-            }
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+			if ($this->model->getFolderId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getFolderId(0, 'single') . "'";
+			}
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 			SELECT 		[folder].[folderId],
 						[folder].[moduleId],
 						[folder].[folderPath],
@@ -586,11 +588,11 @@ class FolderClass extends ConfigClass {
 			ON			[folder].[iconId]	=	[icon].[iconId]
 			WHERE		[module].[isActive]	=	1 
 			AND			" . $this->auditFilter;
-            if ($this->model->getFolderId(0, 'single')) {
-                $sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getFolderId(0, 'single') . "'";
-            }
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+			if ($this->model->getFolderId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getFolderId(0, 'single') . "'";
+			}
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 			SELECT		FOLDER.FOLDERID,
 						FOLDER.MODULEID,
 						FOLDER.FOLDERPATH,
@@ -623,91 +625,91 @@ class FolderClass extends ConfigClass {
 			ON 			FOLDER.ICONID = ICON.ICONID
 			WHERE		MODULE.ISACTIVE = 1
 			AND			" . $this->auditFilter;
-            if ($this->model->getFolderId(0, 'single')) {
-                $sql .= " AND 	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "=" . $this->model->getFolderId(0, 'single') . "'";
-            }
-        }
-        /**
-         * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
-         * E.g  $filterArray=array('`leaf`.`leafId`');
-         * @variables $filterArray;
-         */
-        $filterArray = array('moduleId', 'moduleTranslateId', 'folderId', 'folderTranslateId');
-        /**
-         * filter table
-         * @variables $tableArray
-         */
-        $tableArray = array('module', 'moduleTranslate', 'folder', 'folderTranslate');
-        if ($this->getFieldQuery()) {
-            if ($this->getVendor() == self::MYSQL) {
-                $sql .= $this->q->quickSearch($tableArray, $filterArray);
-            } else if ($this->getVendor() == self::MSSQL) {
-                $tempSql = $this->q->quickSearch($tableArray, $filterArray);
-                $sql .= $tempSql;
-            } else if ($this->getVendor() == self::ORACLE) {
-                $tempSql = $this->q->quickSearch($tableArray, $filterArray);
-                $sql .= $tempSql;
-            } else if ($this->getVendor() == self::DB2) {
-                $tempSql = $this->q->quickSearch($tableArray, $filterArray);
-                $sql .= $tempSql;
-            } else if ($this->getVendor() == self::POSTGRESS) {
-                $sql .= $this->q->quickSearch($tableArray, $filterArray);
-            }
-        }
-        /**
-         * Extjs filtering mode
-         */
-        if ($this->getGridQuery()) {
-            if ($this->getVendor() == self::MYSQL) {
-                $sql .= $this->q->searching();
-            } else if ($this->getVendor() == self::MSSQL) {
-                $tempSql2 = $this->q->searching();
-                $sql .= $tempSql2;
-            } else if ($this->getVendor() == self::ORACLE) {
-                $tempSql2 = $this->q->searching();
-                $sql .= $tempSql2;
-            } else if ($this->getVendor() == self::DB2) {
-                $tempSql2 = $this->q->searching();
-                $sql .= $tempSql2;
-            } else if ($this->getVendor() == self::POSTGRESS) {
-                $sql .= $this->q->searching();
-            }
-        }
-        //echo $sql;
-        $this->q->read($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        $total = $this->q->numberRows();
-        if ($this->getOrder() && $this->getSortField()) {
-            if ($this->getVendor() == self::MYSQL) {
-                $sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder() . " ";
-            } else if ($this->getVendor() == self::MSSQL) {
-                $sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
-            } else if ($this->getVendor() == self::ORACLE) {
-                $sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
-            } else if ($this->getVendor() == self::DB2) {
-                $sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
-            } else if ($this->getVendor() == self::POSTGRESS) {
-                $sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
-            }
-        }
-        $_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
-        $_SESSION ['start'] = $this->getStart();
-        $_SESSION ['limit'] = $this->getLimit();
+			if ($this->model->getFolderId(0, 'single')) {
+				$sql .= " AND 	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "=" . $this->model->getFolderId(0, 'single') . "'";
+			}
+		}
+		/**
+		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
+		 * E.g  $filterArray=array('`leaf`.`leafId`');
+		 * @variables $filterArray;
+		 */
+		$filterArray = array('moduleId', 'moduleTranslateId', 'folderId', 'folderTranslateId');
+		/**
+		 * filter table
+		 * @variables $tableArray
+		 */
+		$tableArray = array('module', 'moduleTranslate', 'folder', 'folderTranslate');
+		if ($this->getFieldQuery()) {
+			if ($this->getVendor() == self::MYSQL) {
+				$sql .= $this->q->quickSearch($tableArray, $filterArray);
+			} else if ($this->getVendor() == self::MSSQL) {
+				$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+				$sql .= $tempSql;
+			} else if ($this->getVendor() == self::ORACLE) {
+				$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+				$sql .= $tempSql;
+			} else if ($this->getVendor() == self::DB2) {
+				$tempSql = $this->q->quickSearch($tableArray, $filterArray);
+				$sql .= $tempSql;
+			} else if ($this->getVendor() == self::POSTGRESS) {
+				$sql .= $this->q->quickSearch($tableArray, $filterArray);
+			}
+		}
+		/**
+		 * Extjs filtering mode
+		 */
+		if ($this->getGridQuery()) {
+			if ($this->getVendor() == self::MYSQL) {
+				$sql .= $this->q->searching();
+			} else if ($this->getVendor() == self::MSSQL) {
+				$tempSql2 = $this->q->searching();
+				$sql .= $tempSql2;
+			} else if ($this->getVendor() == self::ORACLE) {
+				$tempSql2 = $this->q->searching();
+				$sql .= $tempSql2;
+			} else if ($this->getVendor() == self::DB2) {
+				$tempSql2 = $this->q->searching();
+				$sql .= $tempSql2;
+			} else if ($this->getVendor() == self::POSTGRESS) {
+				$sql .= $this->q->searching();
+			}
+		}
+		//echo $sql;
+		$this->q->read($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		$total = $this->q->numberRows();
+		if ($this->getOrder() && $this->getSortField()) {
+			if ($this->getVendor() == self::MYSQL) {
+				$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder() . " ";
+			} else if ($this->getVendor() == self::MSSQL) {
+				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
+			} else if ($this->getVendor() == self::ORACLE) {
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
+			} else if ($this->getVendor() == self::DB2) {
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
+			} else if ($this->getVendor() == self::POSTGRESS) {
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
+			}
+		}
+		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
+		$_SESSION ['start'] = $this->getStart();
+		$_SESSION ['limit'] = $this->getLimit();
 
-        if ($this->getStart() && $this->getLimit()) {
-            // only mysql have limit
-            if ($this->getVendor() == self::MYSQL) {
-                $sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
-                $sqlLimit = $sql;
-            } else if ($this->getVendor() == self::MSSQL) {
-                /**
-                 * Sql Server and Oracle used row_number
-                 * Parameterize Query We don't support
-                 */
-                $sqlLimit = "
+		if ($this->getStart() && $this->getLimit()) {
+			// only mysql have limit
+			if ($this->getVendor() == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
+				$sqlLimit = $sql;
+			} else if ($this->getVendor() == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sqlLimit = "
 							WITH [folderDerived] AS
 							(
 								SELECT	*,
@@ -729,11 +731,11 @@ class FolderClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $_POST ['limit'] - 1) . ";";
-            } else if ($this->getVendor() == self::ORACLE) {
-                /**
-                 * Oracle using derived table also
-                 */
-                $sql = "
+			} else if ($this->getVendor() == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -756,87 +758,87 @@ class FolderClass extends ConfigClass {
 								 ) a
 						WHERE rownum <= '" . ($this->getStart() + $this->getLimit() - 1) . "' )
 						where r >=  '" . $this->getStart() . "'";
-            } else {
-                echo "undefine vendor";
-            }
-        }
+			} else {
+				echo "undefine vendor";
+			}
+		}
 
-        /*
-         *  Only Execute One Query
-         */
-        if (!($this->model->getFolderId(0, 'single'))) {
-            $this->q->read($sql);
-            if ($this->q->execute == 'fail') {
-                echo json_encode(array("success" => false, "message" => $this->q->responce));
-                exit();
-            }
-        }
-        $items = array();
-        while (($row = $this->q->fetchAssoc()) == true) {
-            $items [] = $row;
-        }
-        if ($this->model->getFolderId(0, 'single')) {
-            $json_encode = json_encode(array('success' => true, 'total' => $total, 'data' => $items));
-            $json_encode = str_replace("[", "", $json_encode);
-            $json_encode = str_replace("]", "", $json_encode);
-            echo $json_encode;
-        } else {
-            if (count($items) == 0) {
-                $items = '';
-            }
-            echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
-            exit();
-        }
-    }
+		/*
+		 *  Only Execute One Query
+		 */
+		if (!($this->model->getFolderId(0, 'single'))) {
+			$this->q->read($sql);
+			if ($this->q->execute == 'fail') {
+				echo json_encode(array("success" => false, "message" => $this->q->responce));
+				exit();
+			}
+		}
+		$items = array();
+		while (($row = $this->q->fetchAssoc()) == true) {
+			$items [] = $row;
+		}
+		if ($this->model->getFolderId(0, 'single')) {
+			$json_encode = json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+			$json_encode = str_replace("[", "", $json_encode);
+			$json_encode = str_replace("]", "", $json_encode);
+			echo $json_encode;
+		} else {
+			if (count($items) == 0) {
+				$items = '';
+			}
+			echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+			exit();
+		}
+	}
 
-    /* (non-PHPdoc)
-     * @see config::update()
-     */
+	/* (non-PHPdoc)
+	 * @see config::update()
+	 */
 
-    function update() {
-        header('Content-Type:application/json; charset=utf-8');
-        if ($this->getVendor() == self::MYSQL) {
-            //UTF8
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        $this->q->start();
-        $this->model->update();
-        // before updating check the id exist or not . if exist continue to update else warning the user
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+	function update() {
+		header('Content-Type:application/json; charset=utf-8');
+		if ($this->getVendor() == self::MYSQL) {
+			//UTF8
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		$this->q->start();
+		$this->model->update();
+		// before updating check the id exist or not . if exist continue to update else warning the user
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 		SELECT	`" . $this->model->getPrimaryKeyName() . "`
 		FROM 	`" . $this->model->getTableName() . "`
 		WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getModuleId(0, 'single') . "' ";
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 		SELECT	[" . $this->model->getPrimaryKeyName() . "]
 		FROM 	[" . $this->model->getTableName() . "]
 		WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getModuleId(0, 'single') . "' ";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 		FROM 	" . strtoupper($this->model->getTableName()) . "
 		WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
-        } else if ($this->getVendor() == self::DB2) {
-            $sql = "
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
 		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 		FROM 	" . strtoupper($this->model->getTableName()) . "
 				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
-        } else if ($this->getVendor() == self::POSTGRESS) {
-            $sql = "
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
-        }
-        $result = $this->q->fast($sql);
-        $total = $this->q->numberRows($result, $sql);
-        if ($total == 0) {
-            echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
-            exit();
-        } else {
-            if ($this->getVendor() == self::MYSQL) {
-                $sql = "
+		}
+		$result = $this->q->fast($sql);
+		$total = $this->q->numberRows($result, $sql);
+		if ($total == 0) {
+			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			exit();
+		} else {
+			if ($this->getVendor() == self::MYSQL) {
+				$sql = "
 					UPDATE 	`folder`
 					SET 	`moduleId`			=	'" . $this->model->getModuleId() . "',
 							`folderEnglish`		=	'" . $this->model->getfolderEnglish() . "',
@@ -856,8 +858,8 @@ class FolderClass extends ConfigClass {
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
 					WHERE 	`folderId`			=	'" . $this->model->getFolderId(0, 'single') . "'";
-            } else if ($this->getVendor() == self::MSSQL) {
-                $sql = "
+			} else if ($this->getVendor() == self::MSSQL) {
+				$sql = "
 					UPDATE 	[folder]
 					SET 	[moduleId]			=	'" . $this->model->getModuleId() . "',
 							[folderEnglish]		=	'" . $this->model->getfolderEnglish() . "',
@@ -875,8 +877,8 @@ class FolderClass extends ConfigClass {
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
 					WHERE 	[folderId]			=	'" . $this->model->getFolderId(0, 'single') . "'";
-            } else if ($this->getVendor() == self::ORACLE) {
-                $sql = "
+			} else if ($this->getVendor() == self::ORACLE) {
+				$sql = "
 					UPDATE 	FOLDER
 					SET 	MODULEID			=	'" . $this->model->getModuleId() . "',
 							FOLDERENGLISH		=	'" . $this->model->getfolderEnglish() . "',
@@ -894,8 +896,8 @@ class FolderClass extends ConfigClass {
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 					WHERE 	FOLDERID			=	'" . $this->model->getFolderId(0, 'single') . "'";
-            } else if ($this->getVendor() == self::DB2) {
-                $sql = "
+			} else if ($this->getVendor() == self::DB2) {
+				$sql = "
 					UPDATE 	FOLDER
 					SET 	MODULEID			=	'" . $this->model->getModuleId() . "',
 							FOLDERENGLISH		=	'" . $this->model->getfolderEnglish() . "',
@@ -913,8 +915,8 @@ class FolderClass extends ConfigClass {
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 					WHERE 	FOLDERID			=	'" . $this->model->getFolderId(0, 'single') . "'";
-            } else if ($this->getVendor() == self::POSTGRESS) {
-                $sql = "
+			} else if ($this->getVendor() == self::POSTGRESS) {
+				$sql = "
 					UPDATE 	FOLDER
 					SET 	MODULEID			=	'" . $this->model->getModuleId() . "',
 							FOLDERENGLISH		=	'" . $this->model->getfolderEnglish() . "',
@@ -932,66 +934,66 @@ class FolderClass extends ConfigClass {
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 					WHERE 	FOLDERID			=	'" . $this->model->getFolderId(0, 'single') . "'";
-            }
-            $this->q->update($sql);
-            if ($this->q->execute == 'fail') {
-                echo json_encode(array("success" => false, "message" => $this->q->responce));
-                exit();
-            }
-        }
-        $this->q->commit();
-        echo json_encode(array("success" => true, "message" => "Record Update", "folderId" => $this->model->getFolderId(0, 'single')));
-        exit();
-    }
+			}
+			$this->q->update($sql);
+			if ($this->q->execute == 'fail') {
+				echo json_encode(array("success" => false, "message" => $this->q->responce));
+				exit();
+			}
+		}
+		$this->q->commit();
+		echo json_encode(array("success" => true, "message" => "Record Update", "folderId" => $this->model->getFolderId(0, 'single')));
+		exit();
+	}
 
-    /* (non-PHPdoc)
-     * @see config::delete()
-     */
+	/* (non-PHPdoc)
+	 * @see config::delete()
+	 */
 
-    function delete() {
-        header('Content-Type:application/json; charset=utf-8');
-        if ($this->getVendor() == self::MYSQL) {
-            //UTF8
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        $this->q->start();
-        $this->model->delete();
-        // before updating check the id exist or not . if exist continue to update else warning the user
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+	function delete() {
+		header('Content-Type:application/json; charset=utf-8');
+		if ($this->getVendor() == self::MYSQL) {
+			//UTF8
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		$this->q->start();
+		$this->model->delete();
+		// before updating check the id exist or not . if exist continue to update else warning the user
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 		SELECT	`" . $this->model->getPrimaryKeyName() . "`
 		FROM 	`" . $this->model->getTableName() . "`
 		WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getFolderId(0, 'single') . "' ";
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 		SELECT	[" . $this->model->getPrimaryKeyName() . "]
 		FROM 	[" . $this->model->getTableName() . "]
 		WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getFolderId(0, 'single') . "' ";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 		FROM 	" . strtoupper($this->model->getTableName()) . "
 		WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getFolderId(0, 'single') . "' ";
-        } else if ($this->getVendor() == self::DB2) {
-            $sql = "
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
 		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 		FROM 	" . strtoupper($this->model->getTableName()) . "
 				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getFolderId(0, 'single') . "' ";
-        } else if ($this->getVendor() == self::POSTGRESS) {
-            $sql = "
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getFolderId(0, 'single') . "' ";
-        }
-        $result = $this->q->fast($sql);
-        $total = $this->q->numberRows($result, $sql);
-        if ($total == 0) {
-            echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
-            exit();
-        } else {
-            if ($this->getVendor() == self::MYSQL) {
-                $sql = "
+		}
+		$result = $this->q->fast($sql);
+		$total = $this->q->numberRows($result, $sql);
+		if ($total == 0) {
+			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			exit();
+		} else {
+			if ($this->getVendor() == self::MYSQL) {
+				$sql = "
 					UPDATE	`folder`
 					SET		`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
@@ -1005,8 +1007,8 @@ class FolderClass extends ConfigClass {
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
 					WHERE 	`folderId`			=	'" . $this->model->getFolderId(0, 'single') . "'";
-            } else if ($this->getVendor() == self::MSSQL) {
-                $sql = "
+			} else if ($this->getVendor() == self::MSSQL) {
+				$sql = "
 					UPDATE	[folder]
 					SET		[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
@@ -1020,8 +1022,8 @@ class FolderClass extends ConfigClass {
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
 					WHERE 	[folderId]			=	'" . $this->model->getFolderId(0, 'single') . "'";
-            } else if ($this->getVendor() == self::ORACLE) {
-                $sql = "
+			} else if ($this->getVendor() == self::ORACLE) {
+				$sql = "
 					UPDATE	FOLDER
 					SET		ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
@@ -1035,398 +1037,398 @@ class FolderClass extends ConfigClass {
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 					WHERE 	FOLDERID			=	'" . $this->model->getFolderId(0, 'single') . "'";
-            }
-            $this->q->update($sql);
-            if ($this->q->execute == 'fail') {
-                echo json_encode(array("success" => false, "message" => $this->q->responce));
-                exit();
-            }
-        }
-        $this->q->commit();
-        echo json_encode(array("success" => true, "message" => "Record Removed"));
-        exit();
-    }
+			}
+			$this->q->update($sql);
+			if ($this->q->execute == 'fail') {
+				echo json_encode(array("success" => false, "message" => $this->q->responce));
+				exit();
+			}
+		}
+		$this->q->commit();
+		echo json_encode(array("success" => true, "message" => "Record Removed"));
+		exit();
+	}
 	/**
-     * To Update flag Status
-     */
-    function updateStatus() {
+	 * To Update flag Status
+	 */
+	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
-        if ($this->getVendor() == self::MYSQL) {
-            //UTF8
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        $loop = $this->model->getTotal();
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+		if ($this->getVendor() == self::MYSQL) {
+			//UTF8
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		$loop = $this->model->getTotal();
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 			UPDATE `" . $this->model->getTableName() . "`
 			SET";
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 			UPDATE 	[" . $this->model->getTableName() . "]
 			SET 	";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
-        } else if ($this->getVendor() == self::DB2) {
-            $sql = "
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
-        } else if ($this->getVendor() == self::POSTGRESS) {
-            $sql = "
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
-        } else {
-            echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-            exit();
-        }
-        /**
-         * System Validation Checking
-         * @var $access
-         */
-        $access = array("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost");
-        foreach ($access as $systemCheck) {
+		} else {
+			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			exit();
+		}
+		/**
+		 * System Validation Checking
+		 * @var $access
+		 */
+		$access = array("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost");
+		foreach ($access as $systemCheck) {
 
-            switch ($systemCheck) {
-                case 'isDefault' :
-                    for ($i = 0; $i < $loop; $i++) {
-                        if (strlen($this->model->getIsDefault($i, 'array')) > 0) {
-                            if ($this->getVendor() == self::MYSQL) {
-                                $sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                            } else if ($this->getVendor() == self::MSSQL) {
-                                $sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                            } else if ($this->getVendor() == self::ORACLE) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::DB2) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::POSTGRESS) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else {
-                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-                                exit();
-                            }
-                            $sqlLooping .= "
+			switch ($systemCheck) {
+				case 'isDefault' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsDefault($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								exit();
+							}
+							$sqlLooping .= "
 							WHEN '" . $this->model->getFolderId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
-                            $sqlLooping .= " END,";
-                        }
-                    }
-                    break;
-                case 'isNew' :
-                    for ($i = 0; $i < $loop; $i++) {
-                        if (strlen($this->model->getIsNew($i, 'array')) > 0) {
-                            if ($this->getVendor() == self::MYSQL) {
-                                $sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                            } else if ($this->getVendor() == self::MSSQL) {
-                                $sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                            } else if ($this->getVendor() == self::ORACLE) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::DB2) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::POSTGRESS) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else {
-                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-                                exit();
-                            }
-                            $sqlLooping .= "
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'isNew' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsNew($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								exit();
+							}
+							$sqlLooping .= "
 							WHEN '" . $this->model->getFolderId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
-                            $sqlLooping .= " END,";
-                        }
-                    }
-                    break;
-                case 'isDraft' :
-                    for ($i = 0; $i < $loop; $i++) {
-                        if (strlen($this->model->getIsDraft($i, 'array')) > 0) {
-                            if ($this->getVendor() == self::MYSQL) {
-                                $sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                            } else if ($this->getVendor() == self::MSSQL) {
-                                $sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                            } else if ($this->getVendor() == self::ORACLE) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::DB2) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::POSTGRESS) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else {
-                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-                                exit();
-                            }
-                            $sqlLooping .= "
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'isDraft' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsDraft($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								exit();
+							}
+							$sqlLooping .= "
 							WHEN '" . $this->model->getFolderId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
-                            $sqlLooping .= " END,";
-                        }
-                    }
-                    break;
-                case 'isUpdate' :
-                    for ($i = 0; $i < $loop; $i++) {
-                        if (strlen($this->model->getIsUpdate($i, 'array')) > 0) {
-                            if ($this->getVendor() == self::MYSQL) {
-                                $sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                            } else if ($this->getVendor() == self::MSSQL) {
-                                $sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                            } else if ($this->getVendor() == self::ORACLE) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::DB2) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::POSTGRESS) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else {
-                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-                                exit();
-                            }
-                            $sqlLooping .= "
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'isUpdate' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsUpdate($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								exit();
+							}
+							$sqlLooping .= "
 							WHEN '" . $this->model->getFolderId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
-                            $sqlLooping .= " END,";
-                        }
-                    }
-                    break;
-                case 'isDelete' :
-                    for ($i = 0; $i < $loop; $i++) {
-                        if (strlen($this->model->getIsDelete($i, 'array')) > 0) {
-                            if ($this->getVendor() == self::MYSQL) {
-                                $sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                            } else if ($this->getVendor() == self::MSSQL) {
-                                $sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                            } else if ($this->getVendor() == self::ORACLE) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::DB2) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::POSTGRESS) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else {
-                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-                                exit();
-                            }
-                            $sqlLooping .= "
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'isDelete' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsDelete($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								exit();
+							}
+							$sqlLooping .= "
 							WHEN '" . $this->model->getFolderId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
-                            $sqlLooping .= " END,";
-                        }
-                    }
-                    break;
-                case 'isActive' :
-                    for ($i = 0; $i < $loop; $i++) {
-                        if (strlen($this->model->getIsActive($i, 'array')) > 0) {
-                            if ($this->getVendor() == self::MYSQL) {
-                                $sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                            } else if ($this->getVendor() == self::MSSQL) {
-                                $sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                            } else if ($this->getVendor() == self::ORACLE) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::DB2) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::POSTGRESS) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else {
-                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-                                exit();
-                            }
-                            $sqlLooping .= "
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'isActive' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsActive($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								exit();
+							}
+							$sqlLooping .= "
 							WHEN '" . $this->model->getFolderId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
-                            $sqlLooping .= " END,";
-                        }
-                    }
-                    break;
-                case 'isApproved' :
-                    for ($i = 0; $i < $loop; $i++) {
-                        if (strlen($this->model->getIsApproved($i, 'array')) > 0) {
-                            if ($this->getVendor() == self::MYSQL) {
-                                $sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                            } else if ($this->getVendor() == self::MSSQL) {
-                                $sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                            } else if ($this->getVendor() == self::ORACLE) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::DB2) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::POSTGRESS) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else {
-                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-                                exit();
-                            }
-                            $sqlLooping .= "
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'isApproved' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsApproved($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								exit();
+							}
+							$sqlLooping .= "
 							WHEN '" . $this->model->getFolderId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
-                            $sqlLooping .= " END,";
-                        }
-                    }
-                    break;
-                case 'isReview' :
-                    for ($i = 0; $i < $loop; $i++) {
-                        if (strlen($this->model->getIsReview($i, 'array')) > 0) {
-                            if ($this->getVendor() == self::MYSQL) {
-                                $sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                            } else if ($this->getVendor() == self::MSSQL) {
-                                $sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                            } else if ($this->getVendor() == self::ORACLE) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::DB2) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::POSTGRESS) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else {
-                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-                                exit();
-                            }
-                            $sqlLooping .= "
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'isReview' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsReview($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								exit();
+							}
+							$sqlLooping .= "
                             WHEN '" . $this->model->getFolderId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
-                            $sqlLooping .= " END,";
-                        }
-                    }
-                    break;
-                case 'isPost' :
-                    for ($i = 0; $i < $loop; $i++) {
-                        if (strlen($this->model->getIsPost($i, 'array')) > 0) {
-                            if ($this->getVendor() == self::MYSQL) {
-                                $sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-                            } else if ($this->getVendor() == self::MSSQL) {
-                                $sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-                            } else if ($this->getVendor() == self::ORACLE) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::DB2) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else if ($this->getVendor() == self::POSTGRESS) {
-                                $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-                            } else {
-                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-                                exit();
-                            }
-                            $sqlLooping .= "
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'isPost' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsPost($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								exit();
+							}
+							$sqlLooping .= "
                                 WHEN '" . $this->model->getFolderId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
-                            $sqlLooping .= " END,";
-                        }
-                    }
-                    break;
-            }
-        }
-        $sql .= substr($sqlLooping, 0, - 1);
-        if ($this->getVendor() == self::MYSQL) {
-            $sql .= "
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+			}
+		}
+		$sql .= substr($sqlLooping, 0, - 1);
+		if ($this->getVendor() == self::MYSQL) {
+			$sql .= "
 			WHERE `" . $this->model->getPrimaryKeyName() . "` IN (" . $this->model->getPrimaryKeyAll() . ")";
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql .= "
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql .= "
 			WHERE [" . $this->model->getPrimaryKeyName() . "] IN (" . $this->model->getPrimaryKeyAll() . ")";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql .= "
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
-        } else if ($this->getVendor() == self::DB2) {
-            $sql .= "
+		} else if ($this->getVendor() == self::DB2) {
+			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
-        } else if ($this->getVendor() == self::POSTGRESS) {
-            $sql .= "
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
-        } else {
-            echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
-            exit();
-        }
-        $this->q->update($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        $this->q->commit();
-        if ($this->getIsAdmin()) {
-            $message = "Updated";
-        } else {
-            $message = "deleted";
-        }
-        echo json_encode(array("success" => true, "message" => $message,
+		} else {
+			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			exit();
+		}
+		$this->q->update($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		$this->q->commit();
+		if ($this->getIsAdmin()) {
+			$message = "Updated";
+		} else {
+			$message = "deleted";
+		}
+		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
-            , "sql" => $sql)
-        );
-        exit();
-    }
+		, "sql" => $sql)
+		);
+		exit();
+	}
 
-    function module() {
-        $this->security->module($this->model->getType(), $this->model->getTeamId());
-    }
+	function module() {
+		$this->security->module($this->model->getType(), $this->model->getTeamId());
+	}
 
-    public function nextSequence() {
-        $this->recordSet->nextSequence($this->model->getModuleId());
-    }
+	public function nextSequence() {
+		$this->recordSet->nextSequence($this->model->getModuleId());
+	}
 
-    function firstRecord($value) {
+	function firstRecord($value) {
 
-        $this->recordSet->firstRecord($value);
-    }
+		$this->recordSet->firstRecord($value);
+	}
 
-    function nextRecord($value, $primaryKeyValue) {
-        $this->recordSet->nextRecord($value, $primaryKeyValue);
-    }
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord($value, $primaryKeyValue);
+	}
 
-    function previousRecord($value, $primaryKeyValue) {
-        $this->recordSet->previousRecord($value, $primaryKeyValue);
-    }
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord($value, $primaryKeyValue);
+	}
 
-    function lastRecord($value) {
-        $this->recordSet->lastRecord($value);
-    }
+	function lastRecord($value) {
+		$this->recordSet->lastRecord($value);
+	}
 
-    /* (non-PHPdoc)
-     * @see config::excel()
-     */
+	/* (non-PHPdoc)
+	 * @see config::excel()
+	 */
 
-    function excel() {
-        header('Content-Type:application/json; charset=utf-8');
-        if ($this->getVendor() == self::MYSQL) {
-            //UTF8
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        if ($_SESSION ['start'] == 0) {
-            $sql = str_replace("LIMIT", "", $_SESSION ['sql']);
-            $sql = str_replace($_SESSION ['start'] . "," . $_SESSION ['limit'], "", $sql);
-        } else {
-            $sql = $_SESSION ['sql'];
-        }
-        $this->q->read($sql);
-        $this->excel->setActiveSheetIndex(0);
-        // check file exist or not and return response
-        $styleThinBlackBorderOutline = array('borders' => array('inside' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000')), 'outline' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000'))));
-        // header all using  3 line  starting b
-        $this->excel->getActiveSheet()->setCellValue('B2', $this->title);
-        $this->excel->getActiveSheet()->setCellValue('D2', '');
-        $this->excel->getActiveSheet()->mergeCells('B2:D2');
-        $this->excel->getActiveSheet()->setCellValue('B3', 'No');
-        $this->excel->getActiveSheet()->setCellValue('C3', 'Folder');
-        $this->excel->getActiveSheet()->setCellValue('D3', 'Description');
-        $this->excel->getActiveSheet()->getStyle('B2:D2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-        $this->excel->getActiveSheet()->getStyle('B2:D2')->getFill()->getStartColor()->setARGB('66BBFF');
-        $this->excel->getActiveSheet()->getStyle('B3:D3')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-        $this->excel->getActiveSheet()->getStyle('B3:D3')->getFill()->getStartColor()->setARGB('66BBFF');
-        //
-        $loopRow = 4;
-        $i = 0;
-        while (($row = $this->q->fetchAssoc()) == true) {
-            $this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-            $this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row ['folderEnglish']);
-            $loopRow++;
-            $lastRow = 'D' . $loopRow;
-        }
-        $from = 'B2';
-        $to = $lastRow;
-        $formula = $from . ":" . $to;
-        $this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
-        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-        $filename = "folder" . rand(0, 10000000) . ".xlsx";
-        $path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
-        $objWriter->save($path);
-        $this->audit->create_trail($this->leafId, $path, $filename);
-        $file = fopen($path, 'r');
-        if ($file) {
-            echo json_encode(array("success" => true, "message" => "File generated"));
-        } else {
-            echo json_encode(array("success" => false, "message" => "File not generated"));
-        }
-    }
+	function excel() {
+		header('Content-Type:application/json; charset=utf-8');
+		if ($this->getVendor() == self::MYSQL) {
+			//UTF8
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		if ($_SESSION ['start'] == 0) {
+			$sql = str_replace("LIMIT", "", $_SESSION ['sql']);
+			$sql = str_replace($_SESSION ['start'] . "," . $_SESSION ['limit'], "", $sql);
+		} else {
+			$sql = $_SESSION ['sql'];
+		}
+		$this->q->read($sql);
+		$this->excel->setActiveSheetIndex(0);
+		// check file exist or not and return response
+		$styleThinBlackBorderOutline = array('borders' => array('inside' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000')), 'outline' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000'))));
+		// header all using  3 line  starting b
+		$this->excel->getActiveSheet()->setCellValue('B2', $this->title);
+		$this->excel->getActiveSheet()->setCellValue('D2', '');
+		$this->excel->getActiveSheet()->mergeCells('B2:D2');
+		$this->excel->getActiveSheet()->setCellValue('B3', 'No');
+		$this->excel->getActiveSheet()->setCellValue('C3', 'Folder');
+		$this->excel->getActiveSheet()->setCellValue('D3', 'Description');
+		$this->excel->getActiveSheet()->getStyle('B2:D2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$this->excel->getActiveSheet()->getStyle('B2:D2')->getFill()->getStartColor()->setARGB('66BBFF');
+		$this->excel->getActiveSheet()->getStyle('B3:D3')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$this->excel->getActiveSheet()->getStyle('B3:D3')->getFill()->getStartColor()->setARGB('66BBFF');
+		//
+		$loopRow = 4;
+		$i = 0;
+		while (($row = $this->q->fetchAssoc()) == true) {
+			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row ['folderEnglish']);
+			$loopRow++;
+			$lastRow = 'D' . $loopRow;
+		}
+		$from = 'B2';
+		$to = $lastRow;
+		$formula = $from . ":" . $to;
+		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
+		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
+		$filename = "folder" . rand(0, 10000000) . ".xlsx";
+		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
+		$objWriter->save($path);
+		$this->audit->create_trail($this->leafId, $path, $filename);
+		$file = fopen($path, 'r');
+		if ($file) {
+			echo json_encode(array("success" => true, "message" => "File generated"));
+		} else {
+			echo json_encode(array("success" => false, "message" => "File not generated"));
+		}
+	}
 
 }
 
@@ -1435,131 +1437,140 @@ $folderObject = new FolderClass ();
  * crud -create,read,update,delete
  * */
 if (isset($_POST ['method'])) {
-    /*
-     *  Initilize Value before load in the loader
-     */
-    /*
-     *  Leaf / Application Identification
-     */
-    if (isset($_POST ['leafId'])) {
-        $folderObject->setLeafId($_POST ['leafId']);
-    }
-    /*
-     * Admin Only
-     */
-    if (isset($_POST ['isAdmin'])) {
-        $folderObject->setIsAdmin($_POST ['isAdmin']);
-    }
-    /*
-     *  Filtering
-     */
-    if (isset($_POST ['query'])) {
-        $folderObject->setFieldQuery($_POST ['query']);
-    }
-    if (isset($_POST ['filter'])) {
-        $folderObject->setGridQuery($_POST ['filter']);
-    }
-    /*
-     * Ordering
-     */
-    if (isset($_POST ['order'])) {
-        $folderObject->setOrder($_POST ['order']);
-    }
-    if (isset($_POST ['sortField'])) {
-        $folderObject->setSortField($_POST ['sortField']);
-    }
-    /*
-     *  Load the dynamic value
-     */
-    $folderObject->execute();
-    /*
-     *  Crud Operation (Create Read Update Delete/Destory)
-     */
-    if ($_POST ['method'] == 'create') {
-        $folderObject->create();
-    }
-    if ($_POST ['method'] == 'read') {
-        $folderObject->read();
-    }
-    if ($_POST ['method'] == 'save') {
-        $folderObject->update();
-    }
-    if ($_POST ['method'] == 'delete') {
-        $folderObject->delete();
-    }
+	/*
+	 *  Initilize Value before load in the loader
+	 */
+	/*
+	 *  Leaf / Application Identification
+	 */
+	if (isset($_POST ['leafId'])) {
+		$folderObject->setLeafId($_POST ['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if (isset($_POST ['isAdmin'])) {
+		$folderObject->setIsAdmin($_POST ['isAdmin']);
+	}
+	/*
+	 *  Paging
+	 */
+	if (isset($_POST ['start'])) {
+		$folderObject->setStart($_POST ['start']);
+	}
+	if (isset($_POST ['perPage'])) {
+		$folderObject->setLimit($_POST ['perPage']);
+	}
+	/*
+	 *  Filtering
+	 */
+	if (isset($_POST ['query'])) {
+		$folderObject->setFieldQuery($_POST ['query']);
+	}
+	if (isset($_POST ['filter'])) {
+		$folderObject->setGridQuery($_POST ['filter']);
+	}
+	/*
+	 * Ordering
+	 */
+	if (isset($_POST ['order'])) {
+		$folderObject->setOrder($_POST ['order']);
+	}
+	if (isset($_POST ['sortField'])) {
+		$folderObject->setSortField($_POST ['sortField']);
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$folderObject->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
+	if ($_POST ['method'] == 'create') {
+		$folderObject->create();
+	}
+	if ($_POST ['method'] == 'read') {
+		$folderObject->read();
+	}
+	if ($_POST ['method'] == 'save') {
+		$folderObject->update();
+	}
+	if ($_POST ['method'] == 'delete') {
+		$folderObject->delete();
+	}
 }
 if (isset($_GET ['method'])) {
-    /*
-     *  Initilize Value before load in the loader
-     */
-    /*
-     *  Leaf / Application Identification
-     */
-    if (isset($_GET ['leafId'])) {
-        $folderObject->setLeafId($_GET ['leafId']);
-    }
-    /*
-     * Admin Only
-     */
-    if (isset($_GET ['isAdmin'])) {
-        $folderObject->setIsAdmin($_GET ['isAdmin']);
-    }
-    /*
-     *  Load the dynamic value
-     */
-    $folderObject->execute();
-    if (isset($_GET ['field'])) {
-        if ($_GET ['field'] == 'staffId') {
-            $folderObject->staff();
-        }
-        if ($_GET ['field'] == 'moduleId') {
-            $folderObject->module();
-        }
-        if ($_GET ['field'] == 'sequence') {
-            $folderObject->nextSequence();
-        }
-    }
-    /*
-     * Update Status of The Table. Admin Level Only
-     */
-    if ($_GET ['method'] == 'updateStatus') {
-        $folderObject->updateStatus();
-    }
-    /*
-     *  Checking Any Duplication  Key
-     */
-    if (isset($_GET ['folderCode'])) {
-        if (strlen($_GET ['folderCode']) > 0) {
-            $folderObject->duplicate();
-        }
-    }
-    /**
-     * Button Navigation
-     */
-    if ($_GET ['method'] == 'dataNavigationRequest') {
+	/*
+	 *  Initilize Value before load in the loader
+	 */
+	/*
+	 *  Leaf / Application Identification
+	 */
+	if (isset($_GET ['leafId'])) {
+		$folderObject->setLeafId($_GET ['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if (isset($_GET ['isAdmin'])) {
+		$folderObject->setIsAdmin($_GET ['isAdmin']);
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$folderObject->execute();
+	if (isset($_GET ['field'])) {
+		if ($_GET ['field'] == 'staffId') {
+			$folderObject->staff();
+		}
+		if ($_GET ['field'] == 'moduleId') {
+			$folderObject->module();
+		}
+		if ($_GET ['field'] == 'sequence') {
+			$folderObject->nextSequence();
+		}
+	}
+	/*
+	 * Update Status of The Table. Admin Level Only
+	 */
+	if ($_GET ['method'] == 'updateStatus') {
+		$folderObject->updateStatus();
+	}
+	/*
+	 *  Checking Any Duplication  Key
+	 */
+	if (isset($_GET ['folderCode'])) {
+		if (strlen($_GET ['folderCode']) > 0) {
+			$folderObject->duplicate();
+		}
+	}
+	/**
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
 
-        if ($_GET ['dataNavigation'] == 'firstRecord') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
 
-            $folderObject->firstRecord('json');
-        }
-        if ($_GET ['dataNavigation'] == 'previousRecord') {
-            $folderObject->previousRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'nextRecord') {
-            $folderObject->nextRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'lastRecord') {
-            $folderObject->lastRecord('json');
-        }
-    }
-    /*
-     *  Excel Reporting
-     */
-    if (isset($_GET ['mode'])) {
-        if ($_GET ['mode'] == 'excel') {
-            $folderObject->excel();
-        }
-    }
+			$folderObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$folderObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$folderObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$folderObject->lastRecord('json');
+		}
+	}
+	/*
+	 *  Excel Reporting
+	 */
+	if (isset($_GET ['mode'])) {
+		if ($_GET ['mode'] == 'excel') {
+			$folderObject->excel();
+		}
+	}
 }
 ?>
 

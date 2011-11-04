@@ -36,7 +36,7 @@ class TableMappingClass extends ConfigClass {
 	private $recordSet;
 	/**
 	 * Document Trail Audit.
-	 * @var string 
+	 * @var string
 	 */
 	private $documentTrail;
 	/**
@@ -51,17 +51,17 @@ class TableMappingClass extends ConfigClass {
 	private $log;
 	/**
 	 * Model
-	 * @var string 
+	 * @var string
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string 
+	 * @var string
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string 
+	 * @var string
 	 */
 	public $auditColumn;
 	/**
@@ -69,13 +69,13 @@ class TableMappingClass extends ConfigClass {
 	 * @var bool
 	 */
 	public $duplicateTest;
-	
+
 	/**
 	 * Common class function for security menu
-	 * @var  string 
+	 * @var  string
 	 */
 	private $security;
-	
+
 	/**
 	 * Class Loader
 	 */
@@ -84,10 +84,10 @@ class TableMappingClass extends ConfigClass {
 		//audit property
 		$this->audit = 0;
 		$this->log = 0;
-		
+
 		// default translation property
 		$this->defaultLanguageId = 21;
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -97,29 +97,29 @@ class TableMappingClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		
+
 		$this->security = new Security ();
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
-		
+
 		$this->model = new TableMappingModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
 		$this->recordSet->execute ();
-		
+
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->execute ();
-		
+
 		$this->excel = new PHPExcel ();
-	
+
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see config::create()
 	 */
@@ -129,7 +129,7 @@ class TableMappingClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		$this->q->start ();
 		$this->model->create ();
@@ -213,14 +213,14 @@ class TableMappingClass extends ConfigClass {
 		}
 		$this->q->create ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => false, 
+			echo json_encode ( array ("success" => false,
 
 			"message" => $this->q->responce ) );
 			exit ();
 		}
-		
+
 		$lastId = $this->q->lastInsertId ();
-		
+
 		/**
 		 * insert default value to detail tableMappingle .English only
 		 **/
@@ -261,9 +261,9 @@ class TableMappingClass extends ConfigClass {
 								'" . $this->model->gettableMappingNote () . "'
 							);";
 		} else if ($this->getVendor () == self::DB2) {
-		
+
 		} else if ($this->getVendor () == self::POSTGRESS) {
-		
+
 		}
 		$this->q->create ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -302,7 +302,7 @@ class TableMappingClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		// everything given flexibility  on todo
 		if ($this->getVendor () == self::MYSQL) {
@@ -341,7 +341,7 @@ class TableMappingClass extends ConfigClass {
 		 * @variables $tableArray
 		 */
 		$tableArray = array ('module', 'moduleTranslate', 'tableMapping', 'tableMappingTranslate' );
-		
+
 		if ($this->getFieldQuery ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->quickSearch ( $tableArray, $filterArray );
@@ -357,7 +357,7 @@ class TableMappingClass extends ConfigClass {
 		 * Extjs filtering mode
 		 */
 		if ($this->getGridQuery ()) {
-			
+				
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->searching ();
 			} else if ($this->getVendor () == self::MSSQL) {
@@ -375,7 +375,7 @@ class TableMappingClass extends ConfigClass {
 			exit ();
 		}
 		$total = $this->q->numberRows ();
-		
+
 		if ($this->getOrder () && $this->getSortField ()) {
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= "	ORDER BY `" . $this->getSortField () . "` " . $this->getOrder () . " ";
@@ -388,10 +388,10 @@ class TableMappingClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		
+
 		if ($this->getStart () && $this->getLimit ()) {
 			// only mysql have limit
-			
+				
 
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
@@ -423,12 +423,12 @@ class TableMappingClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $_POST ['limit'] - 1) . ";";
-			
+					
 			} else if ($this->getVendor () == self::ORACLE) {
 				/**
 				 * Oracle using derived table also
 				 */
-				
+
 				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
@@ -452,17 +452,17 @@ class TableMappingClass extends ConfigClass {
 								 ) a
 						WHERE rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
-			
+					
 			} else {
 				echo "undefine vendor";
 			}
 		}
-		
+
 		/*
 		 *  Only Execute One Query
 		 */
 		if (! ($this->model->getTableMappingId(0, 'single'))) {
-			
+				
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
 				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -473,7 +473,7 @@ class TableMappingClass extends ConfigClass {
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
 			$items [] = $row;
 		}
-		
+
 		if ($this->model->getTableMappingId(0, 'single')) {
 			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
@@ -486,9 +486,9 @@ class TableMappingClass extends ConfigClass {
 			echo json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
 			exit ();
 		}
-	
+
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see config::update()
 	 */
@@ -498,7 +498,7 @@ class TableMappingClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		$this->q->start ();
 		$this->model->update ();
@@ -558,9 +558,9 @@ class TableMappingClass extends ConfigClass {
 							EXECUTETIME					=	" . $this->model->getExecuteTime () . "
 					WHERE 	TABLEMAPPINGID				=	'" . $this->model->gettableMappingId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::DB2) {
-		
+
 		} else if ($this->getVendor () == self::POSTGRESS) {
-		
+
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -570,7 +570,7 @@ class TableMappingClass extends ConfigClass {
 		$this->q->commit ();
 		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
 		exit ();
-	
+
 	}
 	/* (non-PHPdoc)
 	 * @see config::delete()
@@ -581,7 +581,7 @@ class TableMappingClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		$this->q->start ();
 		$this->model->delete ();
@@ -598,7 +598,7 @@ class TableMappingClass extends ConfigClass {
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`		=	" . $this->model->getExecuteTime () . "
 					WHERE 	`tableMappingId`	=	'" . $this->model->gettableMappingId () . "'";
-		
+
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 					UPDATE	[tableMapping]
@@ -628,9 +628,9 @@ class TableMappingClass extends ConfigClass {
 							EXECUTETIME			=	" . $this->model->getExecuteTime () . "
 					WHERE 	TABLEMAPPINGID		=	'" . $this->model->gettableMappingId () . "'";
 		} else if ($this->getVendor () == self::DB2) {
-		
+
 		} else if ($this->getVendor () == self::POSTGRESS) {
-		
+
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -640,7 +640,7 @@ class TableMappingClass extends ConfigClass {
 		$this->q->commit ();
 		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
 		exit ();
-	
+
 	}
 	function firstRecord($value) {
 		$this->recordSet->firstRecord ( $value );
@@ -660,7 +660,7 @@ class TableMappingClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		if ($_SESSION ['start'] == 0) {
 			$sql = str_replace ( "LIMIT", "", $_SESSION ['sql'] );
@@ -669,7 +669,7 @@ class TableMappingClass extends ConfigClass {
 			$sql = $_SESSION ['sql'];
 		}
 		$this->q->read ( $sql );
-		
+
 		$this->excel->setActiveSheetIndex ( 0 );
 		// check file exist or not and return response
 		$styleThinBlackBorderOutline = array ('borders' => array ('inside' => array ('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array ('argb' => '000000' ) ), 'outline' => array ('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array ('argb' => '000000' ) ) ) );
@@ -684,12 +684,12 @@ class TableMappingClass extends ConfigClass {
 		$this->excel->getActiveSheet ()->getStyle ( 'B2:D2' )->getFill ()->getStartColor ()->setARGB ( '66BBFF' );
 		$this->excel->getActiveSheet ()->getStyle ( 'B3:D3' )->getFill ()->setFillType ( PHPExcel_Style_Fill::FILL_SOLID );
 		$this->excel->getActiveSheet ()->getStyle ( 'B3:D3' )->getFill ()->getStartColor ()->setARGB ( '66BBFF' );
-		
+
 		//
 		$loopRow = 4;
 		$i = 0;
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
-			
+				
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
 			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['tableMappingNote'] );
 			$loopRow ++;
@@ -709,7 +709,7 @@ class TableMappingClass extends ConfigClass {
 			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
-		
+
 		}
 	}
 
@@ -721,7 +721,7 @@ $tableMappingObject = new TableMappingClass ();
  * crud -create,read,update,delete
  **/
 if (isset ( $_POST ['method'] )) {
-	
+
 	/*
 	 *  Initilize Value before load in the loader
 	 */
@@ -737,11 +737,19 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['isAdmin'] )) {
 		$tableMappingObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
-	
+	/*
+	 *  Paging
+	 */
+	if (isset($_POST ['start'])) {
+		$tableMappingObject->setStart($_POST ['start']);
+	}
+	if (isset($_POST ['perPage'])) {
+		$tableMappingObject->setLimit($_POST ['perPage']);
+	}
 	/*
 	 *  Filtering
 	 */
-	
+
 	if (isset ( $_POST ['query'] )) {
 		$tableMappingObject->setFieldQuery ( $_POST ['query'] );
 	}
@@ -757,7 +765,7 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['sortField'] )) {
 		$tableMappingObject->setSortField ( $_POST ['sortField'] );
 	}
-	
+
 	/*
 	 *  Load the dynamic value
 	 */
@@ -769,15 +777,15 @@ if (isset ( $_POST ['method'] )) {
 		$tableMappingObject->create ();
 	}
 	if ($_POST ['method'] == 'read') {
-		
+
 		$tableMappingObject->read ();
-	
+
 	}
-	
+
 	if ($_POST ['method'] == 'save') {
-		
+
 		$tableMappingObject->update ();
-	
+
 	}
 	if ($_POST ['method'] == 'delete') {
 		$tableMappingObject->delete ();
@@ -807,10 +815,10 @@ if (isset ( $_GET ['method'] )) {
 	$tableMappingObject->execute ();
 	if (isset ( $_GET ['field'] )) {
 		if ($_GET ['field'] == 'staffId') {
-			
+				
 			$tableMappingObject->staff ();
 		}
-	
+
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only

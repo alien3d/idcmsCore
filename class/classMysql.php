@@ -298,28 +298,26 @@ class Vendor {
 	 * @return sql statement
 	 */
 	public function create($sql) {
-		$this->sql = NULL;
-		$this->sql = $sql;
+		$this->sql	= NULL;
+		$this->sql 	= $sql;
+		$text 		= NULL;
+		$fieldValue = array ();
 		if (strlen ( $sql ) > 0) {
 			if ($this->module ( 'leafAccessCreateValue' ) == 1) {
 				$this->query ( $this->sql );
+				if($this->audit ==1 ){
+					$this->insertId = $this->lastInsertId();
+				}
 				if ($this->audit == 1) {
-					//echo "sepatutnya tak keluar";
-					$logAdvanceType = 'C'; // aka update
+					
+					$logAdvanceType = 'C'; 
 					$sqlColumn = "SHOW COLUMNS FROM `" . $this->tableName . "`";
 					$resultColumn = mysqli_query ( $this->link, $sqlColumn );
 					if (! $resultColumn) {
 						$this->execute = 'fail';
-						$this->responce = "Error selecting table";
-					}
-					$fieldValue = array ();
-					if (! $resultColumn) {
-						$this->execute = 'fail';
-						$this->responce = mysqli_error ( $this->link ) . "Error Code" . mysqli_errno ( $this->link );
-					} else {
-						
-						while ( ($rowColumn = mysqli_fetch_array ( $resultColumn )) == TRUE ) {
-							
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlColumn."]";						
+					} else {						
+						while ( ($rowColumn = mysqli_fetch_array ( $resultColumn )) == TRUE ) {							
 							$fieldValue [] = $rowColumn ['Field'];
 						}
 					}
@@ -330,9 +328,8 @@ class Vendor {
 					$resultPrevious = mysqli_query ( $this->link, $sqlPrevious );
 					if (! $resultPrevious) {
 						$this->execute = 'fail';
-						$this->responce = mysqli_error ( $this->link ) . "Error Code" . mysqli_errno ( $this->link );
-					} else {
-						
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlPrevious."]";						
+					} else {						
 						while ( ($rowPrevious = mysqli_fetch_array ( $resultPrevious )) == TRUE ) {
 							foreach ( $fieldValue as $field ) {
 								$text .= "'" . $field . "':'" . $rowPrevious [$field] . "',";
@@ -341,14 +338,14 @@ class Vendor {
 						}
 					}
 					$text = $this->removeComa ( $text );
-					$text = "{" . $text . "}"; // using json data format ?
+					$text = "{" . $text . "}"; 
 					$sqlLogAdvance = "
 					INSERT INTO	`logAdvance`
 							(
 								`logAdvanceText`,
 								`logAdvanceType`,
 								`refTableName`,
-								`refId`,
+								`leafId`,
 								`executeBy`,
 								`executeTime`
 							)
@@ -364,8 +361,7 @@ class Vendor {
 					$resultLogAdvance = mysqli_query ( $this->link, $sqlLogAdvance );
 					if (! $resultLogAdvance) {
 						$this->execute = 'fail';
-						$this->responce = "error inserting query update insert";
-					
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlLogAdvance."]";												
 					}
 				}
 			} else {
@@ -384,30 +380,27 @@ class Vendor {
 	 * original just filter by tablename
 	 * @version 0.2 filter by program id
 	 * @version 0.3 filter by program id and added advance log to diffirenciate old value and new value + affected rows to refence how much record been updated
-	 * @return number $record_affected
+	 * @return n
+	 * umber $record_affected
 	 * To return how much record have been deleted
 	 */
 	public function update($sql) {
-		$this->sql = NULL;
-		$this->sql = $sql;
+		$this->sql 			=	NULL;
+		$this->sql 			=	$sql;
+		$text 	   			= 	NULL;
+		$textComparision 	= 	NULL;
+		$fieldValue			= 	array ();
 		if (strlen ( $sql ) > 0) {
 			if ($this->module ( 'leafAccessUpdateValue' ) == 1) {
 				if ($this->audit == 1) {
-					$logAdvanceType = 'U'; // aka update
+					$logAdvanceType = 'U'; 
 					$sqlColumn = "SHOW COLUMNS FROM `" . $this->tableName . "`";
 					$resultColumn = mysqli_query ( $this->link, $sqlColumn );
 					if (! $resultColumn) {
 						$this->execute = 'fail';
-						$this->responce = "Error selecting table";
-					}
-					$fieldValue = array ();
-					if (! $resultColumn) {
-						$this->execute = 'fail';
-						$this->responce = mysqli_error ( $this->link ) . "Error Code" . mysqli_errno ( $$this->link );
-					} else {
-						//	echo "Jumlah Rekod".mysqli_num_rows($resultColumn);
-						while ( ($rowColumn = mysqli_fetch_array ( $resultColumn )) == TRUE ) {
-							// create the field value
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlColumn."]";						
+					} else  {
+						while ( ($rowColumn = mysqli_fetch_array ( $resultColumn )) == TRUE ) {						
 							$fieldValue [] = $rowColumn ['Field'];
 						}
 					}
@@ -418,10 +411,9 @@ class Vendor {
 					$resultPrevious = mysqli_query ( $this->link, $sqlPrevious );
 					if (! $resultPrevious) {
 						$this->execute = 'fail';
-						$this->responce = mysqli_error ( $this->link ) . "Error Code" . mysqli_errno ( $this->link );
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlPrevious."]";						
+						
 					} else {
-						// successfully
-						//	echo "Jumlah Rekod ".mysqli_num_rows($resultPrevious);
 						while ( ($rowPrevious = mysqli_fetch_array ( $resultPrevious )) == TRUE ) {
 							foreach ( $fieldValue as $field ) {
 								$text .= "'" . $field . "':'" . $rowPrevious [$field] . "',";
@@ -430,14 +422,14 @@ class Vendor {
 						}
 					}
 					$text = $this->removeComa ( $text );
-					$text = "{" . $text . "}"; // using json data format ?
+					$text = "{" . $text . "}";
 					$sqlLogAdvance = "
 					INSERT INTO	`logAdvance`
 							(
 								`logAdvanceText`,
 								`logAdvanceType`,
 								`refTableName`,
-								`refId`
+								`leafId`
 							)
 					VALUES
 							(
@@ -448,36 +440,33 @@ class Vendor {
 					)";
 					$resultLogAdvance = mysqli_query ( $this->link, $sqlLogAdvance );
 					if ($resultLogAdvance) {
-						// take the last id for references
-						$logAdvanceId = mysqli_insert_id ( $this->link ); //
+						$logAdvanceId = mysqli_insert_id ( $this->link ); 
 					} else {
 						$this->execute = 'fail';
-						$this->responce = "error inserting query update insert";
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlLogAdvance."]";																		
 					}
 				}
 				$this->query ( $this->sql );
-				$record_affected = $this->affectedRows (); // direct call for can now how much record have been deleted and make error handling
+				$record_affected = $this->affectedRows (); 
 				if ($this->audit == 1) {
-					// select the current update file
 					$sqlCurrent = "
 					SELECT 	*
 					FROM 	`" . $this->tableName . "`
 					WHERE 	`" . $this->primaryKeyName . "`='" . $this->primaryKeyValue . "'";
 					$resultCurrent = mysqli_query ( $this->link, $sqlCurrent );
-					if ($resultCurrent) {
-						while ( ($rowCurrent = mysqli_fetch_array ( $resultCurrent )) == TRUE ) {
-							$textComparison .= $this->compare ( $fieldValue, $rowCurrent, $previous );
-						}
-					} else {
+					if (!$resultCurrent) {
 						$this->execute = 'fail';
-						$this->responce = "Error Query on advance select" . $sqlCurrent;
-					}
-					$textComparison = substr ( $textComparison, 0, - 1 ); // remove last coma
-					$textComparison = "{ \"tablename\":'" . $this->tableName . "',\"refId\":'" . $this->primaryKeyValue . "'," . $textComparison . "}"; // json format
-					// update back comparision the previous record
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlCurrent."]";												
+					} else {
+						while ( ($rowCurrent = mysqli_fetch_array ( $resultCurrent )) == TRUE ) {
+							$textComparision .= $this->compare ( $fieldValue, $rowCurrent, $previous );
+						}
+					} 
+					$textComparision = substr ( $textComparision, 0, - 1 ); 
+					$textComparision = "{ \"tablename\":'" . $this->tableName . "',\"leafId\":'" . $this->primaryKeyValue . "'," . $textComparision . "}";				
 					$sql = "
 					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparison`	=	'" . $this->realEscapeString ( $textComparison ) . "',
+					SET 	`logAdvanceComparision`	=	'" . $this->realEscapeString ( $textComparision ) . "',
 							`executeBy`					=   '" . $this->staffId . "',
 							`executeTime`					=	'" . date ( "Y-m-d H:i:s" ) . "'
 					WHERE 	`logAdvanceId`			=	'" . $logAdvanceId . "'";
@@ -485,7 +474,7 @@ class Vendor {
 					$result = mysqli_query ( $this->link, $sql );
 					if (! $result) {
 						$this->execute = 'fail';
-						$this->responce = "Error Query update log advance";
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sql."]";												
 					}
 				}
 				return $record_affected;
@@ -614,8 +603,10 @@ class Vendor {
 	 */
 	public function lastInsertId() {
 		// must include this before q->commit; after commit will no output
-		$this->insertId = mysqli_insert_id ( $this->link );
-		return $this->insertId;
+		if(!($this->insertId)){
+			$this->insertId = mysqli_insert_id ( $this->link );
+		}
+		return $this->insertId;		
 	}
 	/**
 	 * Get the number of affected rows by the last INSERT, UPDATE, REPLACE or DELETE query associated with link_identifier.
@@ -715,6 +706,7 @@ class Vendor {
 	 * @return string
 	 */
 	private function compare($fieldValue, $curr_value, $prev_value) {
+		$textComparision = null;
 		foreach ( $fieldValue as $field ) {
 			switch ($curr_value [$field]) {
 				case is_float ( $curr_value [$field] ) :
@@ -773,12 +765,12 @@ class Vendor {
 					break;
 			}
 			// json format ?
-			$textComparison .= "'" . $field . "':[{ \"prev\":'" . $prev_value [$field] . "'},
+			$textComparision .= "'" . $field . "':[{ \"prev\":'" . $prev_value [$field] . "'},
 														{ \"curr\":'" . $curr_value [$field] . "'},
 														{ \"type\":'" . $type . "'},
 														{ \"diff\":'" . $diff . "'}],";
 		}
-		return $textComparison;
+		return $textComparision;
 	}
 	public function realEscapeString($data) {
 		return mysqli_real_escape_string ( $this->link, $data );

@@ -20,124 +20,124 @@ require_once ("../model/applicationAccessModel.php");
  */
 class ApplicationeAccessClass extends ConfigClass {
 
-    /**
-     * Connection to the database
-     * @var string
-     */
-    public $q;
+	/**
+	 * Connection to the database
+	 * @var string
+	 */
+	public $q;
 
-    /**
-     * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-     * @var string
-     */
-    private $excel;
+	/**
+	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
+	 * @var string
+	 */
+	private $excel;
 
-    /**
-     *  Record Pagination
-     * @var string
-     */
-    private $recordSet;
+	/**
+	 *  Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
 
-    /**
-     * Document Trail Audit.
-     * @var string 
-     */
-    private $documentTrail;
+	/**
+	 * Document Trail Audit.
+	 * @var string
+	 */
+	private $documentTrail;
 
-    /**
-     * Audit Row True or False
-     * @var bool
-     */
-    private $audit;
+	/**
+	 * Audit Row True or False
+	 * @var bool
+	 */
+	private $audit;
 
-    /**
-     * Log Sql Statement True or False
-     * @var string
-     */
-    private $log;
+	/**
+	 * Log Sql Statement True or False
+	 * @var string
+	 */
+	private $log;
 
-    /**
-     * Model
-     * @var string 
-     */
-    public $model;
+	/**
+	 * Model
+	 * @var string
+	 */
+	public $model;
 
-    /**
-     * Audit Filter
-     * @var string
-     */
-    public $auditFilter;
+	/**
+	 * Audit Filter
+	 * @var string
+	 */
+	public $auditFilter;
 
-    /**
-     * Audit Column
-     * @var string 
-     */
-    public $auditColumn;
+	/**
+	 * Audit Column
+	 * @var string
+	 */
+	public $auditColumn;
 
-    /**
-     * Duplicate Testing either the key of applicationle same or have been created.
-     * @var bool
-     */
-    public $duplicateTest;
+	/**
+	 * Duplicate Testing either the key of applicationle same or have been created.
+	 * @var bool
+	 */
+	public $duplicateTest;
 
-    /**
-     * Common class function for security menu
-     * @var  string 
-     */
-    private $security;
+	/**
+	 * Common class function for security menu
+	 * @var  string
+	 */
+	private $security;
 
-    /**
-     * Class Loader
-     */
-    function execute() {
-        parent::__construct();
-        // audit property
-        $this->audit = 0;
-        $this->log = 1;
+	/**
+	 * Class Loader
+	 */
+	function execute() {
+		parent::__construct();
+		// audit property
+		$this->audit = 0;
+		$this->log = 1;
 
-        $this->q = new Vendor ();
-        $this->q->vendor = $this->getVendor();
-        $this->q->leafId = $this->getLeafId();
-        $this->q->staffId = $this->getStaffId();
-        $this->q->fieldQuery = $this->getFieldQuery();
-        $this->q->gridQuery = $this->getGridQuery();
-        $this->q->log = $this->log;
-        $this->q->audit = $this->audit;
-        $this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		$this->q = new Vendor ();
+		$this->q->vendor = $this->getVendor();
+		$this->q->leafId = $this->getLeafId();
+		$this->q->staffId = $this->getStaffId();
+		$this->q->fieldQuery = $this->getFieldQuery();
+		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->log = $this->log;
+		$this->q->audit = $this->audit;
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-        $this->security = new Security ();
-        $this->security->setVendor($this->getVendor());
-        $this->security->execute();
+		$this->security = new Security ();
+		$this->security->setVendor($this->getVendor());
+		$this->security->execute();
 
-        $this->model = new ApplicationAccessModel ();
-        $this->model->setVendor($this->getVendor());
-        $this->model->execute();
+		$this->model = new ApplicationAccessModel ();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
 
-        $this->excel = new PHPExcel ();
-    }
+		$this->excel = new PHPExcel ();
+	}
 
-    /* (non-PHPdoc)
-     * @see config::create()
-     */
+	/* (non-PHPdoc)
+	 * @see config::create()
+	 */
 
-    function create() {
-        
-    }
+	function create() {
 
-    /* (non-PHPdoc)
-     * @see config::read()
-     */
+	}
 
-    function read() {
-        header('Content-Type:application/json; charset=utf-8');
-        //UTF8
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        // by default if add new group will add access to application and folder.
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+	/* (non-PHPdoc)
+	 * @see config::read()
+	 */
+
+	function read() {
+		header('Content-Type:application/json; charset=utf-8');
+		//UTF8
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		// by default if add new group will add access to application and folder.
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 				SELECT	`applicationAccess`.`applicationAccessId`,
 						`application`.`applicationId`,
 						`application`.`applicationEnglish`,
@@ -156,14 +156,14 @@ class ApplicationeAccessClass extends ConfigClass {
 				USING 	(`teamId`)
 				WHERE 	`application`.`isActive` 	=	1
 				AND		`team`.`isActive`		=	1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND `team`.`teamId`='" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getApplicationId()) {
-                $sql .= " AND application.applicationId='" . $this->model->getApplicationId() . "'";
-            }
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+			if ($this->model->getTeamId()) {
+				$sql .= " AND `team`.`teamId`='" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getApplicationId()) {
+				$sql .= " AND application.applicationId='" . $this->model->getApplicationId() . "'";
+			}
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 				SELECT	[applicationAccess].[applicationAccessId],
 						[application].[applicationId],
 						[application].[applicationEnglish],
@@ -182,14 +182,14 @@ class ApplicationeAccessClass extends ConfigClass {
 				on		[team].[teamId]  			= 	[applicationAccess].[teamId]
 				WHERE 	[application].[isActive] 		=	1
 				AND		[team].[isActive]			=	1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND [team].[teamId]		=	'" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getApplicationId()) {
-                $sql .= " AND [application].[applicationId]='" . $this->model->getApplicationId() . "'";
-            }
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+			if ($this->model->getTeamId()) {
+				$sql .= " AND [team].[teamId]		=	'" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getApplicationId()) {
+				$sql .= " AND [application].[applicationId]='" . $this->model->getApplicationId() . "'";
+			}
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 				SELECT	APPLICATIONACCESS.APPLICATIONACCESSID AS \"applicationAccessId\",
 						APPLICATION.APPLICATIONID AS \"applicationId\",
 						APPLICATION.APPLICATIONENGLISH AS \"applicationEnglish\",
@@ -208,14 +208,14 @@ class ApplicationeAccessClass extends ConfigClass {
 				ON		APPLICATIONACCESS.TEAMID 	= 	TEAM.TEAMID
 				WHERE 	APPLICATION.ISACTIVE 		=	1
 				AND		TEAM.ISACTIVE			=	1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getApplicationeId()) {
-                $sql .= " AND	APPLICATION.APPLICATIONID='" . $this->model->getApplicationeId() . "'";
-            }
-        } else if ($this->getVendor() == self::DB2) {
-            $sql = "
+			if ($this->model->getTeamId()) {
+				$sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getApplicationeId()) {
+				$sql .= " AND	APPLICATION.APPLICATIONID='" . $this->model->getApplicationeId() . "'";
+			}
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
 				SELECT	APPLICATIONACCESS.APPLICATIONACCESSID AS \"applicationAccessId\",
 						APPLICATION.APPLICATIONID AS \"applicationId\",
 						APPLICATION.APPLICATIONENGLISH AS \"applicationEnglish\",
@@ -234,14 +234,14 @@ class ApplicationeAccessClass extends ConfigClass {
 				ON		APPLICATIONACCESS.TEAMID 	= 	TEAM.TEAMID
 				WHERE 	APPLICATION.ISACTIVE 		=	1
 				AND		TEAM.ISACTIVE			=	1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getApplicationId()) {
-                $sql .= " AND APPLICATION.APPLICATIONID='" . $this->model->getApplicationId() . "'";
-            }
-        }else if ($this->getVendor() == self::POSTGRESS) {
-            $sql = "
+			if ($this->model->getTeamId()) {
+				$sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getApplicationId()) {
+				$sql .= " AND APPLICATION.APPLICATIONID='" . $this->model->getApplicationId() . "'";
+			}
+		}else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
 				SELECT	APPLICATIONACCESS.APPLICATIONACCESSID AS \"applicationAccessId\",
 						APPLICATION.APPLICATIONID AS \"applicationId\",
 						APPLICATION.APPLICATIONENGLISH AS \"applicationEnglish\",
@@ -260,192 +260,201 @@ class ApplicationeAccessClass extends ConfigClass {
 				ON		APPLICATIONACCESS.TEAMID 	= 	TEAM.TEAMID
 				WHERE 	APPLICATION.ISACTIVE 		=	1
 				AND		TEAM.ISACTIVE				=	1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getApplicationeId()) {
-                $sql .= " AND APPLICATION.APPLICATIONID='" . $this->model->getApplicationId() . "'";
-            }
-        }
-      
-        // searching filtering
-        $sql .= $this->q->searching();
-        $this->q->read($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        $total = $this->q->numberRows();
-        //paging
-        if ($this->getStart() && $this->getLimit()) {
-            if ($this->getVendor() == self::MYSQL) {
-                $sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
-            } else if ($this->getVendor() == self::MSSQL) {
-                
-            } else if ($this->getVendor() == self::ORACLE) {
-                
-            } else if ($this->getVendor() == self::DB2) {
-                
-            } else if ($this->getVendor() == self::POSTGRESS) {
-                
-            }
+			if ($this->model->getTeamId()) {
+				$sql .= " AND	TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getApplicationeId()) {
+				$sql .= " AND APPLICATION.APPLICATIONID='" . $this->model->getApplicationId() . "'";
+			}
+		}
 
-            $this->q->read($sql);
-            if ($this->q->execute == 'fail') {
-                echo json_encode(array("success" => false, "message" => $this->q->responce));
-                exit();
-            }
-        }
+		// searching filtering
+		$sql .= $this->q->searching();
+		$this->q->read($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		$total = $this->q->numberRows();
+		//paging
+		if ($this->getStart() && $this->getLimit()) {
+			if ($this->getVendor() == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
+			} else if ($this->getVendor() == self::MSSQL) {
 
-        $items = array();
-        while (($row = $this->q->fetchAssoc()) == TRUE) {
-            $items [] = $row;
-        }
-        if ($total == 1) {
-            $json_encode = json_encode(array('success' => true, 'total' => $total, 'data' => $items));
-            $json_encode = str_replace("[", "", $json_encode);
-            $json_encode = str_replace("]", "", $json_encode);
-            echo json_encode;
-            exit();
-        } else {
-            if (count($items) == 0) {
-                $items = '';
-            }
-            echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
-            exit();
-        }
-    }
+			} else if ($this->getVendor() == self::ORACLE) {
 
-    /* (non-PHPdoc)
-     * @see config::update()
-     */
+			} else if ($this->getVendor() == self::DB2) {
 
-    function update() {
-        header('Content-Type:application/json; charset=utf-8');
-        //UTF8
-        if ($this->q->vendor == self::MYSQL) {
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        $this->model->update();
-        $loop = $this->model->getTotal();
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+			} else if ($this->getVendor() == self::POSTGRESS) {
+
+			}
+
+			$this->q->read($sql);
+			if ($this->q->execute == 'fail') {
+				echo json_encode(array("success" => false, "message" => $this->q->responce));
+				exit();
+			}
+		}
+
+		$items = array();
+		while (($row = $this->q->fetchAssoc()) == TRUE) {
+			$items [] = $row;
+		}
+		if ($total == 1) {
+			$json_encode = json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+			$json_encode = str_replace("[", "", $json_encode);
+			$json_encode = str_replace("]", "", $json_encode);
+			echo json_encode;
+			exit();
+		} else {
+			if (count($items) == 0) {
+				$items = '';
+			}
+			echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+			exit();
+		}
+	}
+
+	/* (non-PHPdoc)
+	 * @see config::update()
+	 */
+
+	function update() {
+		header('Content-Type:application/json; charset=utf-8');
+		//UTF8
+		if ($this->q->vendor == self::MYSQL) {
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		$this->model->update();
+		$loop = $this->model->getTotal();
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 			UPDATE 	`" . $this->model->getTableName() . "`
 			SET 	";
-            $sql .= "	   `applicationAccessValue`			=	case `" . $this->model->getPrimaryKeyName() . "` ";
-            for ($i = 0; $i < $loop; $i++) {
-                $sql .= "
+			$sql .= "	   `applicationAccessValue`			=	case `" . $this->model->getPrimaryKeyName() . "` ";
+			for ($i = 0; $i < $loop; $i++) {
+				$sql .= "
 				WHEN '" . $this->model->getApplicationeAccessId($i, 'array') . "'
 				THEN '" . $this->model->getApplicationeAccessValue($i, 'array') . "'";
-            }
-            $sql .= "	END ";
-            $sql .= " WHERE 	`" . $this->model->getPrimaryKeyName() . "`		IN	(" . $this->model->getPrimaryKeyAll() . ")";
-        }
-        //	echo $sql."<br>";
-        $this->q->update($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        echo json_encode(array("success" => true, "message" => "Update Success"));
-        exit();
-    }
+			}
+			$sql .= "	END ";
+			$sql .= " WHERE 	`" . $this->model->getPrimaryKeyName() . "`		IN	(" . $this->model->getPrimaryKeyAll() . ")";
+		}
+		//	echo $sql."<br>";
+		$this->q->update($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		echo json_encode(array("success" => true, "message" => "Update Success"));
+		exit();
+	}
 
-    /**
-     * Return Team Identification
-     */
-    function team() {
-        return $this->security->team();
-    }
+	/**
+	 * Return Team Identification
+	 */
+	function team() {
+		return $this->security->team();
+	}
 
-    /* (non-PHPdoc)
-     * @see config::delete()
-     */
+	/* (non-PHPdoc)
+	 * @see config::delete()
+	 */
 
-    function delete() {
-        
-    }
+	function delete() {
 
-    function firstRecord($value) {
-        $this->recordSet->firstRecord($value);
-    }
+	}
 
-    function nextRecord($value, $primaryKeyValue) {
-        $this->recordSet->nextRecord($value, $primaryKeyValue);
-    }
+	function firstRecord($value) {
+		$this->recordSet->firstRecord($value);
+	}
 
-    function previousRecord($value, $primaryKeyValue) {
-        $this->recordSet->previousRecord($value, $primaryKeyValue);
-    }
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord($value, $primaryKeyValue);
+	}
 
-    function lastRecord($value) {
-        $this->recordSet->lastRecord($value);
-    }
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord($value, $primaryKeyValue);
+	}
 
-    /* (non-PHPdoc)
-     * @see config::excel()
-     */
+	function lastRecord($value) {
+		$this->recordSet->lastRecord($value);
+	}
 
-    function excel() {
-        
-    }
+	/* (non-PHPdoc)
+	 * @see config::excel()
+	 */
+
+	function excel() {
+
+	}
 
 }
 
 $applicationAccessObject = new ApplicationeAccessClass ();
 // crud -create,read,update,delete.
 if (isset($_POST ['method'])) {
-    /*
-     *  Initilize Value before load in the loader
-     */
-    /*
-     *  Leaf / Application Identification
-     */
-    if (isset($_POST ['leafId'])) {
-        $applicationAccessObject->setLeafId($_POST ['leafId']);
-    }
-    /*
-     * Admin Only
-     */
-    if (isset($_POST ['isAdmin'])) {
-        $applicationAccessObject->setIsAdmin($_POST ['isAdmin']);
-    }
-    /*
-     *  Load the dynamic value
-     */
-    $applicationAccessObject->execute();
-    if ($_POST ['method'] == 'read') {
-        $applicationAccessObject->read();
-    }
+	/*
+	 *  Initilize Value before load in the loader
+	 */
+	/*
+	 *  Leaf / Application Identification
+	 */
+	if (isset($_POST ['leafId'])) {
+		$applicationAccessObject->setLeafId($_POST ['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if (isset($_POST ['isAdmin'])) {
+		$applicationAccessObject->setIsAdmin($_POST ['isAdmin']);
+	}
+	/*
+	 *  Paging
+	 */
+	if (isset($_POST ['start'])) {
+		$applicationAccessObject->setStart($_POST ['start']);
+	}
+	if (isset($_POST ['perPage'])) {
+		$applicationAccessObject->setLimit($_POST ['perPage']);
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$applicationAccessObject->execute();
+	if ($_POST ['method'] == 'read') {
+		$applicationAccessObject->read();
+	}
 }
 if (isset($_GET ['method'])) {
-    /*
-     *  Initilize Value before load in the loader
-     */
-    /*
-     *  Leaf / Application Identification
-     */
-    if (isset($_GET ['leafId'])) {
-        $applicationAccessObject->setLeafId($_GET ['leafId']);
-    }
-    if (isset($_GET ['isAdmin'])) {
-        $applicationAccessObject->setIsAdmin($_GET ['isAdmin']);
-    }
-    /*
-     *  Load the dynamic value
-     */
-    $applicationAccessObject->execute();
-    if ($_GET ['method'] == 'update') {
-        $applicationAccessObject->update();
-    }
-    if (isset($_GET ['field'])) {
-        if($_GET['field'] == 'staffId') {
-        	$applicationAccessObject->staff();
-        }
-    	if ($_GET ['field'] == 'teamId') {
-            $applicationAccessObject->team();
-        }
-    }
+	/*
+	 *  Initilize Value before load in the loader
+	 */
+	/*
+	 *  Leaf / Application Identification
+	 */
+	if (isset($_GET ['leafId'])) {
+		$applicationAccessObject->setLeafId($_GET ['leafId']);
+	}
+	if (isset($_GET ['isAdmin'])) {
+		$applicationAccessObject->setIsAdmin($_GET ['isAdmin']);
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$applicationAccessObject->execute();
+	if ($_GET ['method'] == 'update') {
+		$applicationAccessObject->update();
+	}
+	if (isset($_GET ['field'])) {
+		if($_GET['field'] == 'staffId') {
+			$applicationAccessObject->staff();
+		}
+		if ($_GET ['field'] == 'teamId') {
+			$applicationAccessObject->team();
+		}
+	}
 }
 ?>

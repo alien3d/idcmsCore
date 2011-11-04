@@ -564,7 +564,15 @@ if (isset($_POST ['method'])) {
     if (isset($_POST ['isAdmin'])) {
         $leafAccessObject->setIsAdmin($_POST ['isAdmin']);
     }
-
+/*
+	 *  Paging
+	 */
+	if (isset($_POST ['start'])) {
+		$leafAccessObject->setStart($_POST ['start']);
+	}
+	if (isset($_POST ['perPage'])) {
+		$leafAccessObject->setLimit($_POST ['perPage']);
+	}
     /*
      *  Load the dynamic value
      */

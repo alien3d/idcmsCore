@@ -987,13 +987,13 @@ if (isset ( $_POST ['method'] )) {
 	/*
 	 *  Paging
 	 */
-	if (isset ( $_POST ['start'] )) {
-		$languageObject->setStart ( $_POST ['start'] );
+	if (isset($_POST ['start'])) {
+		$languageObject->setStart($_POST ['start']);
 	}
-	if (isset ( $_POST ['limit'] )) {
-		$languageObject->setLimit ( $_POST ['perPage'] );
+	if (isset($_POST ['perPage'])) {
+		$languageObject->setLimit($_POST ['perPage']);
 	}
-	/**
+	/*
 	 * Filtering
 	 */
 	if (isset ( $_POST ['query'] )) {

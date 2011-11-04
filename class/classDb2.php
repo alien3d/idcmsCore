@@ -352,7 +352,7 @@ class Vendor
 								logAdvanceText,
 								logAdvanceType,
 								refTableName,
-								refId,
+								leafId,
 								executeBy,
 								executeTime
 							)
@@ -442,7 +442,7 @@ class Vendor
 								logAdvanceText,
 								logAdvanceType,
 								refTableName,
-								refId
+								leafId
 							)
 					VALUES
 							(
@@ -454,12 +454,12 @@ class Vendor
 					$resultLogAdvance = db2_exec($this->link, $sqlLogAdvance);
 					if ($resultLogAdvance) {
 						// take the last id for references
-					//	$logAdvanceId = db2_last_insert_id($this->link); //
+						//	$logAdvanceId = db2_last_insert_id($this->link); //
 						$getIdentity = "SELECT IDENTITY_VAL_LOCAL() AS LASTID FROM SYSIBM.SYSDUMMY1";
 						$stmt = db2_exec($this->link, $getIdentity);
 						$row = db2_fetch_assoc($stmt);
 						$logAdvanceId = $row['LASTID'];
-						
+
 					} else {
 						$this->execute  = 	'fail';
 						$this->responce	=	"error inserting query update insert";
@@ -476,18 +476,18 @@ class Vendor
 					$resultCurrent = db2_exec($this->link, $sqlCurrent);
 					if ($resultCurrent) {
 						while (($rowCurrent = db2_fetch_array($resultCurrent)) == TRUE) {
-							$textComparison .= $this->compare($fieldValue, $rowCurrent, $previous);
+							$textComparision .= $this->compare($fieldValue, $rowCurrent, $previous);
 						}
 					} else {
 						$this->execute     = 'fail';
 						$this->responce = "Error Query on advance select" . $sqlCurrent;
 					}
-					$textComparison = substr($textComparison, 0, -1); // remove last coma
-					$textComparison = "{ \"tablename\":'" . $this->tableName . "',\"refId\":'" . $this->primaryKeyValue . "'," . $textComparison . "}"; // json format
+					$textComparision = substr($textComparision, 0, -1); // remove last coma
+					$textComparision = "{ \"tablename\":'" . $this->tableName . "',\"leafId\":'" . $this->primaryKeyValue . "'," . $textComparision . "}"; // json format
 					// update back comparision the previous record
 					$sql             = "
 					UPDATE	logAdvance
-					SET 	logAdvanceComparison	=	'" . $this->realEscapeString($textComparison) . "',
+					SET 	logAdvanceComparision	=	'" . $this->realEscapeString($textComparision) . "',
 							executeBy					=   '".$this->staffId."',
 							executeTime					=	'".date("Y-m-d H:i:s")."'
 					WHERE 	logAdvanceId			=	'" . $logAdvanceId . "'";
@@ -611,7 +611,7 @@ class Vendor
 	public function lastInsertId()
 	{
 		// optional
-	//	$this->insertId = db2_last_insert_id($this->link);
+		//	$this->insertId = db2_last_insert_id($this->link);
 		$getIdentity = "SELECT IDENTITY_VAL_LOCAL() AS LASTID FROM SYSIBM.SYSDUMMY1";
 		$stmt = db2_exec($this->link, $getIdentity);
 		$row = db2_fetch_assoc($stmt);
@@ -725,6 +725,7 @@ class Vendor
 	 */
 	private function compare($fieldValue, $curr_value, $prev_value)
 	{
+		$textComparision= null;
 		foreach ($fieldValue as $field) {
 			switch ($curr_value[$field]) {
 				case is_float($curr_value[$field]):
@@ -783,12 +784,12 @@ class Vendor
 					break;
 			}
 			// json format ?
-			$textComparison .= "'" . $field . "':[{ \"prev\":'" . $prev_value[$field] . "'},
+			$textComparision .= "'" . $field . "':[{ \"prev\":'" . $prev_value[$field] . "'},
 														{ \"curr\":'" . $curr_value[$field] . "'},
 														{ \"type\":'" . $type . "'},
 														{ \"diff\":'" . $diff . "'}],";
 		}
-		return $textComparison;
+		return $textComparision;
 	}
 	public function realEscapeString($data)
 	{

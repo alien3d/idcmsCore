@@ -487,18 +487,18 @@ class Vendor
 					$resultCurrent = mysqli_query($this->link, $sqlCurrent);
 					if ($resultCurrent) {
 						while ($rowCurrent = mysqli_fetch_array($resultCurrent)) {
-							$textComparison .= $this->compare($fieldValue, $rowCurrent, $previous);
+							$textComparision .= $this->compare($fieldValue, $rowCurrent, $previous);
 						}
 					} else {
 						$this->execute     = 'fail';
 						$this->responce = "Error Query on advance select" . $sqlCurrent;
 					}
-					$textComparison = substr($textComparison, 0, -1); // remove last coma
-					$textComparison = "{ \"tablename\":'" . strtoupper($this->tableName) . "',\"ref_uniqueId\":'" . $this->primaryKeyValue . "'," . $textComparison . "}"; // json format
+					$textComparision = substr($textComparision, 0, -1); // remove last coma
+					$textComparision = "{ \"tablename\":'" . strtoupper($this->tableName) . "',\"ref_uniqueId\":'" . $this->primaryKeyValue . "'," . $textComparision . "}"; // json format
 					// update back comparision the previous record
 					$sql             = "
 					UPDATE	LOGADVANCE
-					SET 	LOGADVANCECOMPARISION`	=	'". addslashes($textComparison) . "'
+					SET 	LOGADVANCECOMPARISION`	=	'". addslashes($textComparision) . "'
 					WHERE 	LOGADVANCEID			=	'". $logAdvanceId . "'";
 					$result          = mysqli_query($this->link, $sql);
 					if (!$result) {
@@ -807,6 +807,7 @@ class Vendor
 	 */
 	private function compare($fieldValue, $curr_value, $prev_value)
 	{
+		$textComparision = null;
 		foreach ($fieldValue as $field) {
 			switch ($curr_value[$field]) {
 				case is_float($curr_value[$field]):
@@ -865,12 +866,12 @@ class Vendor
 					break;
 			}
 			// json format ?
-			$textComparison .= "'" . $field . "':[{ \"prev\":'" . $prev_value[$field] . "'},
+			$textComparision .= "'" . $field . "':[{ \"prev\":'" . $prev_value[$field] . "'},
 														{ \"curr\":'" . $curr_value[$field] . "'},
 														{ \"type\":'" . $type . "'},
 														{ \"diff\":'" . $diff . "'}],";
 		}
-		return $textComparison;
+		return $textComparision;
 	}
 	private function realEscapeString($data)
 	{

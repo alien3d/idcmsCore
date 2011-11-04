@@ -34,7 +34,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 	private $recordSet;
 	/**
 	 * Document Trail Audit.
-	 * @var string 
+	 * @var string
 	 */
 	private $documentTrail;
 	/**
@@ -49,17 +49,17 @@ class DefaultLabelTranslationClass extends ConfigClass {
 	private $log;
 	/**
 	 * Model
-	 * @var string 
+	 * @var string
 	 */
 	public $model;
 	/**
 	 * Audit Filter
-	 * @var string 
+	 * @var string
 	 */
 	public $auditFilter;
 	/**
 	 * Audit Column
-	 * @var string 
+	 * @var string
 	 */
 	public $auditColumn;
 	/**
@@ -80,10 +80,10 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		//audit property
 		$this->audit = 0;
 		$this->log = 0;
-		
+
 		//default translation property
 		$this->defaultLanguageId = 21;
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -93,25 +93,25 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		
+
 		$this->security = new Security ();
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
-		
+
 		$this->model = new DefaultLabelTranslateModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->recordSet =  new RecordSet();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
 		$this->recordSet->execute();
-		
+
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->execute ();
-		
+
 		$this->excel = new PHPExcel ();
 	}
 	/* (non-PHPdoc)
@@ -291,17 +291,17 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit();
-			if ( $this->getStart ()  && $this->getLimit()) {
-				// only mysql have limit
-				if ($this->getVendor () == self::MYSQL) {
-					$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit() . " ";
-					$sqlLimit = $sql;
-				} else if ($this->getVendor () == self::MSSQL) {
-					/**
-					 * Sql Server and Oracle used row_number
-					 * Parameterize Query We don't support
-					 */
-					$sqlLimit = "
+		if ( $this->getStart ()  && $this->getLimit()) {
+			// only mysql have limit
+			if ($this->getVendor () == self::MYSQL) {
+				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit() . " ";
+				$sqlLimit = $sql;
+			} else if ($this->getVendor () == self::MSSQL) {
+				/**
+				 * Sql Server and Oracle used row_number
+				 * Parameterize Query We don't support
+				 */
+				$sqlLimit = "
 							WITH [defaultLabelTranslationDerived] AS
 							(
 								SELECT	*,
@@ -316,11 +316,11 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart () . "
 							AND 			" . ($this->getStart () + $_POST ['limit'] - 1) . ";";
-				} else if ($this->getVendor () == self::ORACLE) {
-					/**
-					 * Oracle using derived table also
-					 */
-					$sql = "
+			} else if ($this->getVendor () == self::ORACLE) {
+				/**
+				 * Oracle using derived table also
+				 */
+				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
@@ -332,11 +332,11 @@ class DefaultLabelTranslationClass extends ConfigClass {
 								 ) a
 						WHERE rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
-				} else {
-					echo "undefine vendor";
-				}
+			} else {
+				echo "undefine vendor";
 			}
-		
+		}
+
 		/*
 		 *  Only Execute One Query
 		 */
@@ -516,7 +516,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
 		}
-	
+
 		/**
 		 * System Validation Checking
 		 * @var $access
@@ -534,7 +534,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isDefault' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDefault ( $i, 'array' )) {
-							
+								
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDefault ( $i, 'array' ) . "'";
@@ -544,7 +544,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsNew ( $i, 'array' )) {
-							
+								
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
@@ -554,7 +554,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDraft ( $i, 'array' )) {
-							
+								
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDraft ( $i, 'array' ) . "'";
@@ -564,7 +564,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsUpdate ( $i, 'array' )) {
-							
+								
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
@@ -574,7 +574,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDelete ( $i, 'array' )) {
-							
+								
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
@@ -584,7 +584,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isActive' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsActive ( $i, 'array' )) {
-							
+								
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsActive ( $i, 'array' ) . "'";
@@ -596,13 +596,13 @@ class DefaultLabelTranslationClass extends ConfigClass {
 						$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsApproved ( $i, 'array' ) . "'";
-					
+							
 					}
 					break;
 				case 'isReview' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsReview ( $i, 'array' )) {
-							
+								
 							$sqlLooping .= "
                             WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
                             THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
@@ -612,7 +612,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsPost ( $i, 'array' )) {
-							
+								
 							$sqlLooping .= "
                                 WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
                                 THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
@@ -738,6 +738,15 @@ if (isset ( $_POST ['method'] )) {
 	 */
 	if (isset ( $_POST ['isAdmin'] )) {
 		$defaultLabelTranslationObject->setIsAdmin ( $_POST ['isAdmin'] );
+	}
+	/*
+	 *  Paging
+	 */
+	if (isset($_POST ['start'])) {
+		$defaultLabelTranslationObject->setStart($_POST ['start']);
+	}
+	if (isset($_POST ['perPage'])) {
+		$defaultLabelTranslationObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering

@@ -2084,6 +2084,7 @@ Ext.onReady(function () {
             name: 'postButton',
             id: 'postButton',
             iconCls: 'lock',
+            disable : true,
             handler: function () {
                 Ext.getCmp('newButton').disable();
                 Ext.getCmp('folderTranslateGrid').disable();

@@ -453,7 +453,7 @@ class Vendor
 					(
 					`logAdvanceText`,
 					`logAdvanceType`,
-					`refId`
+					`leafId`
 					)
 					VALUES 		(
 					'" . $text . "',
@@ -497,7 +497,7 @@ class Vendor
                         if ($resultCurrent) {
                             while ($rowCurrent = mysql_fetch_array(
                             $resultCurrent)) {
-                                $textComparison .= $this->compare($fieldValue, 
+                                $textComparision .= $this->compare($fieldValue, 
                                 $rowCurrent, $previous);
                             }
                         } else {
@@ -511,7 +511,7 @@ class Vendor
                             if ($resultCurrent) {
                                 while ($rowCurrent = mysqli_fetch_array(
                                 $resultCurrent)) {
-                                    $textComparison .= $this->compare(
+                                    $textComparision .= $this->compare(
                                     $fieldValue, $rowCurrent, $previous);
                                 }
                             } else {
@@ -520,14 +520,14 @@ class Vendor
                                  $sqlCurrent;
                             }
                         }
-                    $textComparison = substr($textComparison, 0, - 1); // remove last coma
-                    $textComparison = "{ \"tablename\":'" .
+                    $textComparision = substr($textComparision, 0, - 1); // remove last coma
+                    $textComparision = "{ \"tablename\":'" .
                      $this->tableName . "',\"ref_uniqueId\":'" .
-                     $this->primaryKeyValue . "'," . $textComparison . "}"; // json format
+                     $this->primaryKeyValue . "'," . $textComparision . "}"; // json format
                     // update back comparision the previous record
                     $sql = "
 					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparison`='" . addslashes($textComparison) . "'
+					SET 	`logAdvanceComparision`='" . addslashes($textComparision) . "'
 					WHERE 	`logAdvanceId`='" . $logAdvanceId . "'";
                     if ($this->vendor == 'normal') {
                         $result = mysql_query($sql, $this->link);
@@ -775,7 +775,8 @@ class Vendor
      */
     private function compare ($fieldValue, $curr_value, $prev_value)
     {
-        foreach ($fieldValue as $field) {
+        $textComparision = null;
+    	foreach ($fieldValue as $field) {
             switch ($curr_value[$field]) {
                 case is_float($curr_value[$field]):
                     // $type='float';
@@ -835,13 +836,13 @@ class Vendor
                     break;
             }
             // json format ?
-            $textComparison .= "'" . $field . "':[{ \"prev\":'" .
+            $textComparision .= "'" . $field . "':[{ \"prev\":'" .
              $prev_value[$field] . "'},
 														{ \"curr\":'" . $curr_value[$field] . "'},
 														{ \"type\":'" . $type . "'},
 														{ \"diff\":'" . $diff . "'}],";
         }
-        return $textComparison;
+        return $textComparision;
     }
     /**
      * Escape string

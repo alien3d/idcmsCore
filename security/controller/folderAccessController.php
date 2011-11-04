@@ -20,115 +20,115 @@ require_once ("../model/folderAccessModel.php");
  */
 class FolderAccessClass extends ConfigClass {
 
-    /**
-     * Connection to the database
-     * @var string
-     */
-    public $q;
+	/**
+	 * Connection to the database
+	 * @var string
+	 */
+	public $q;
 
-    /**
-     * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
-     * @var string
-     */
-    private $excel;
+	/**
+	 * Php Excel Generate Microsoft Excel 2007 Output.Format : xlsx
+	 * @var string
+	 */
+	private $excel;
 
-    /**
-     * Record Pagination
-     * @var string
-     */
-    private $recordSet;
+	/**
+	 * Record Pagination
+	 * @var string
+	 */
+	private $recordSet;
 
-    /**
-     * Document Trail Audit.
-     * @var string 
-     */
-    private $documentTrail;
+	/**
+	 * Document Trail Audit.
+	 * @var string
+	 */
+	private $documentTrail;
 
-    /**
-     * Audit Row True or False
-     * @var bool
-     */
-    private $audit;
+	/**
+	 * Audit Row True or False
+	 * @var bool
+	 */
+	private $audit;
 
-    /**
-     * Log Sql Statement True or False
-     * @var string
-     */
-    private $log;
+	/**
+	 * Log Sql Statement True or False
+	 * @var string
+	 */
+	private $log;
 
-    /**
-     * Model
-     * @var string 
-     */
-    public $model;
+	/**
+	 * Model
+	 * @var string
+	 */
+	public $model;
 
-    /**
-     * Audit Filter
-     * @var string 
-     */
-    public $auditFilter;
+	/**
+	 * Audit Filter
+	 * @var string
+	 */
+	public $auditFilter;
 
-    /**
-     * Audit Column
-     * @var string 
-     */
-    public $auditColumn;
+	/**
+	 * Audit Column
+	 * @var string
+	 */
+	public $auditColumn;
 
-    /**
-     * Duplicate Testing either the key of table same or have been created.
-     * @var bool
-     */
-    public $duplicateTest;
-    /*
-     * @var  string $security
-     */
-    private $security;
+	/**
+	 * Duplicate Testing either the key of table same or have been created.
+	 * @var bool
+	 */
+	public $duplicateTest;
+	/*
+	 * @var  string $security
+	 */
+	private $security;
 
-    /**
-     * Class Loader
-     */
-    function execute() {
-        parent::__construct();
-        // audit property
-        $this->audit = 0;
-        $this->log = 1;
+	/**
+	 * Class Loader
+	 */
+	function execute() {
+		parent::__construct();
+		// audit property
+		$this->audit = 0;
+		$this->log = 1;
 
-        $this->q = new Vendor ();
-        $this->q->vendor = $this->getVendor();
-        $this->q->leafId = $this->getLeafId();
-        $this->q->staffId = $this->getStaffId();
-        $this->q->fieldQuery = $this->getFieldQuery();
-        $this->q->gridQuery = $this->getGridQuery();
-        $this->q->log = $this->log;
-        $this->q->audit = $this->audit;
-        $this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+		$this->q = new Vendor ();
+		$this->q->vendor = $this->getVendor();
+		$this->q->leafId = $this->getLeafId();
+		$this->q->staffId = $this->getStaffId();
+		$this->q->fieldQuery = $this->getFieldQuery();
+		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->log = $this->log;
+		$this->q->audit = $this->audit;
+		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-        $this->security = new Security ();
-        $this->security->setVendor($this->getVendor());
-        $this->security->execute();
+		$this->security = new Security ();
+		$this->security->setVendor($this->getVendor());
+		$this->security->execute();
 
-        $this->model = new FolderAccessModel ();
-        $this->model->setVendor($this->getVendor());
-        $this->model->execute();
+		$this->model = new FolderAccessModel ();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
 
-        $this->excel = new PHPExcel ();
-    }
+		$this->excel = new PHPExcel ();
+	}
 
-    function create() {
-        
-    }
+	function create() {
 
-    function read() {
-        header('Content-Type:application/json; charset=utf-8');
-        $items = array();
-        if ($this->getVendor() == self::MYSQL) {
-            //UTF8
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        // by default if add new group will add access to module and folder.
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+	}
+
+	function read() {
+		header('Content-Type:application/json; charset=utf-8');
+		$items = array();
+		if ($this->getVendor() == self::MYSQL) {
+			//UTF8
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		// by default if add new group will add access to module and folder.
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 				SELECT	`module`.`moduleEnglish`,
 						`module`.`moduleId`,
 						`folder`.`folderId`,
@@ -152,17 +152,17 @@ class FolderAccessClass extends ConfigClass {
 				WHERE 	`module`.`isActive` =1
 				AND		`folder`.`isActive`=1
 				AND		`team`.`isActive` =1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND `team`.`teamId`='" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getModuleId()) {
-                $sql .= " AND `folder`.`moduleId`='" . $this->model->getModuleId() . "'";
-            }
-            if ($this->model->getFolderId()) {
-                $sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
-            }
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+			if ($this->model->getTeamId()) {
+				$sql .= " AND `team`.`teamId`='" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getModuleId()) {
+				$sql .= " AND `folder`.`moduleId`='" . $this->model->getModuleId() . "'";
+			}
+			if ($this->model->getFolderId()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
+			}
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 				SELECT	[module].[moduleEnglish],
 						[module].[moduleId],
 						[folder].[folderId],
@@ -186,14 +186,14 @@ class FolderAccessClass extends ConfigClass {
 				WHERE 	[folder].[isActive]=1
 				AND		[team].[isActive]=1
 				AND		[module].[moduleId]=1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND [team].[teamId]='" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getModuleId()) {
-                $sql .= " AND [folder].[moduleId]='" . $this->model->getModuleId() . "'";
-            }
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+			if ($this->model->getTeamId()) {
+				$sql .= " AND [team].[teamId]='" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getModuleId()) {
+				$sql .= " AND [folder].[moduleId]='" . $this->model->getModuleId() . "'";
+			}
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 				SELECT	MODULE.MODULEENGLISH 			AS	\"moduleEnglish\",
 						MODULE.MODULEID 				AS 	\"moduleId\",
 						FOLDER.FOLDERID 				AS 	\"folderId\",
@@ -217,17 +217,17 @@ class FolderAccessClass extends ConfigClass {
 				WHERE 	FOLDER.ISACTIVE		=	1
 				AND		MODULE.ISACTIVE		=	1
 				AND		TEAM.ISACTIVE		=	1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getModuleId()) {
-                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
-            }
-            if ($this->model->getFolderId()) {
-                $sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
-            }
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+			if ($this->model->getTeamId()) {
+				$sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getModuleId()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+			}
+			if ($this->model->getFolderId()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
+			}
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 				SELECT	MODULE.MODULEENGLISH 			AS	\"moduleEnglish\",
 						MODULE.MODULEID 				AS 	\"moduleId\",
 						FOLDER.FOLDERID 				AS 	\"folderId\",
@@ -251,17 +251,17 @@ class FolderAccessClass extends ConfigClass {
 				WHERE 	FOLDER.ISACTIVE		=	1
 				AND		MODULE.ISACTIVE		=	1
 				AND		TEAM.ISACTIVE		=	1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getModuleId()) {
-                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
-            }
-            if ($this->model->getFolderId()) {
-                $sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
-            }
-        } else if ($this->getVendor() == self::DB2) {
-            $sql = "
+			if ($this->model->getTeamId()) {
+				$sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getModuleId()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+			}
+			if ($this->model->getFolderId()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
+			}
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
 				SELECT	MODULE.MODULEENGLISH 			AS	\"moduleEnglish\",
 						MODULE.MODULEID 				AS 	\"moduleId\",
 						FOLDER.FOLDERID 				AS 	\"folderId\",
@@ -285,17 +285,17 @@ class FolderAccessClass extends ConfigClass {
 				WHERE 	FOLDER.ISACTIVE		=	1
 				AND		MODULE.ISACTIVE		=	1
 				AND		TEAM.ISACTIVE		=	1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getModuleId()) {
-                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
-            }
-            if ($this->model->getFolderId()) {
-                $sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
-            }
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+			if ($this->model->getTeamId()) {
+				$sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getModuleId()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+			}
+			if ($this->model->getFolderId()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
+			}
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 				SELECT	MODULE.MODULEENGLISH 			AS	\"moduleEnglish\",
 						MODULE.MODULEID 				AS 	\"moduleId\",
 						FOLDER.FOLDERID 				AS 	\"folderId\",
@@ -319,261 +319,270 @@ class FolderAccessClass extends ConfigClass {
 				WHERE 	FOLDER.ISACTIVE		=	1
 				AND		MODULE.ISACTIVE		=	1
 				AND		TEAM.ISACTIVE		=	1";
-            if ($this->model->getTeamId()) {
-                $sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId() . "'";
-            }
-            if ($this->model->getModuleId()) {
-                $sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
-            }
-            if ($this->model->getFolderId()) {
-                $sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
-            }
-        }
-        //echo $sql;
-        // searching filtering
-        $sql .= $this->q->searching();
-        $this->q->read($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        $total = 0; //assign as number
-        $total = $this->q->numberRows();
-        //paging
-        if ($this->getOrder() && $this->getSortField()) {
-            if ($this->getVendor() == self::MYSQL) {
-                $sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder() . " ";
-            } else if ($this->getVendor() == self::MSSQL) {
-                $sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
-            } else if ($this->getVendor() == self::ORACLE) {
-                $sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
-            }
-        }
-        $this->q->read($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        while (($row = $this->q->fetchAssoc()) == true) {
-            // select module access
-            $items [] = $row;
+			if ($this->model->getTeamId()) {
+				$sql .= " AND TEAM.TEAMID='" . $this->model->getTeamId() . "'";
+			}
+			if ($this->model->getModuleId()) {
+				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
+			}
+			if ($this->model->getFolderId()) {
+				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
+			}
+		}
+		//echo $sql;
+		// searching filtering
+		$sql .= $this->q->searching();
+		$this->q->read($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		$total = 0; //assign as number
+		$total = $this->q->numberRows();
+		//paging
+		if ($this->getOrder() && $this->getSortField()) {
+			if ($this->getVendor() == self::MYSQL) {
+				$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder() . " ";
+			} else if ($this->getVendor() == self::MSSQL) {
+				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
+			} else if ($this->getVendor() == self::ORACLE) {
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
+			}
+		}
+		$this->q->read($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		while (($row = $this->q->fetchAssoc()) == true) {
+			// select module access
+			$items [] = $row;
 
-            // select module access
-        }
-        echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
-    }
+			// select module access
+		}
+		echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+	}
 
-    /* (non-PHPdoc)
-     * @see config::update()
-     */
+	/* (non-PHPdoc)
+	 * @see config::update()
+	 */
 
-    function update() {
-        header('Content-Type:application/json; charset=utf-8');
-        //UTF8
-        if ($this->q->vendor == self::MYSQL) {
-            $sql = "SET NAMES \"utf8\"";
-            $this->q->fast($sql);
-        }
-        $this->model->update();
-        $loop = $this->model->getTotal();
-        if ($this->getVendor() == self::MYSQL) {
-            $sql = "
+	function update() {
+		header('Content-Type:application/json; charset=utf-8');
+		//UTF8
+		if ($this->q->vendor == self::MYSQL) {
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
+		}
+		$this->model->update();
+		$loop = $this->model->getTotal();
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
 			UPDATE 	`" . $this->model->getTableName() . "`
 			SET     `folderAccessValue`			=	case `" . $this->model->getPrimaryKeyName() . "` ";
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql = "
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
 			UPDATE 	[" . $this->model->getTableName() . "]
 			SET     [folderAccessValue]			=	case [" . $this->model->getPrimaryKeyName() . "] ";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql = "
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
 			UPDATE 	" . strtoupper($this->model->getTableName()) . "
 			SET     FOLDERACCESSVALUE			=	case " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-        } else if ($this->getVendor() == self::DB2) {
-            $sql = "
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
 			UPDATE 	" . strtoupper($this->model->getTableName()) . "
 			SET     FOLDERACCESSVALUE			=	case " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-        } else if ($this->getVendor() == self::POSTGRESS) {
-            $sql = "
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
 			UPDATE 	" . strtoupper($this->model->getTableName()) . "
 			SET     FOLDERACCESSVALUE			=	case " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-        }
-        for ($i = 0; $i < $loop; $i++) {
-            $sql .= "
+		}
+		for ($i = 0; $i < $loop; $i++) {
+			$sql .= "
 				WHEN '" . $this->model->getFolderAccessId($i, 'array') . "'
 				THEN '" . $this->model->getFolderAccessValue($i, 'array') . "'";
-        }
-        $sql .= "	END ";
-        if ($this->getVendor() == self::MYSQL) {
-            $sql .= " WHERE 	`" . $this->model->getPrimaryKeyName() . "`		IN	(" . $this->model->getPrimaryKeyAll() . ")";
-        } else if ($this->getVendor() == self::MSSQL) {
-            $sql .= " WHERE 	[" . $this->model->getPrimaryKeyName() . "]		IN	(" . $this->model->getPrimaryKeyAll() . ")";
-        } else if ($this->getVendor() == self::ORACLE) {
-            $sql .= " WHERE 	" . strtoupper($this->model->getPrimaryKeyName()) . "		IN	(" . $this->model->getPrimaryKeyAll() . ")";
-        } else if ($this->getVendor() == self::DB2) {
-            $sql .= " WHERE 	" . strtoupper($this->model->getPrimaryKeyName()) . "		IN	(" . $this->model->getPrimaryKeyAll() . ")";
-        } else if ($this->getVendor() == self::POSTGRESS) {
-            $sql .= " WHERE 	" . strtoupper($this->model->getPrimaryKeyName()) . "		IN	(" . $this->model->getPrimaryKeyAll() . ")";
-        } else {
-            
-        }
+		}
+		$sql .= "	END ";
+		if ($this->getVendor() == self::MYSQL) {
+			$sql .= " WHERE 	`" . $this->model->getPrimaryKeyName() . "`		IN	(" . $this->model->getPrimaryKeyAll() . ")";
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql .= " WHERE 	[" . $this->model->getPrimaryKeyName() . "]		IN	(" . $this->model->getPrimaryKeyAll() . ")";
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql .= " WHERE 	" . strtoupper($this->model->getPrimaryKeyName()) . "		IN	(" . $this->model->getPrimaryKeyAll() . ")";
+		} else if ($this->getVendor() == self::DB2) {
+			$sql .= " WHERE 	" . strtoupper($this->model->getPrimaryKeyName()) . "		IN	(" . $this->model->getPrimaryKeyAll() . ")";
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql .= " WHERE 	" . strtoupper($this->model->getPrimaryKeyName()) . "		IN	(" . $this->model->getPrimaryKeyAll() . ")";
+		} else {
 
-        //	echo $sql."<br>";
-        $this->q->update($sql);
-        if ($this->q->execute == 'fail') {
-            echo json_encode(array("success" => false, "message" => $this->q->responce));
-            exit();
-        }
-        echo json_encode(array("success" => true, "message" => "Update Success"));
-        exit();
-    }
+		}
 
-    /* (non-PHPdoc)
-     * @see config::delete()
-     */
+		//	echo $sql."<br>";
+		$this->q->update($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		echo json_encode(array("success" => true, "message" => "Update Success"));
+		exit();
+	}
 
-    function delete() {
-        
-    }
+	/* (non-PHPdoc)
+	 * @see config::delete()
+	 */
 
-    /**
-     * Team Information
-     */
-    function team() {
-        $this->security->team();
-    }
+	function delete() {
 
-    /**
-     * Module Information
-     */
-    function module() {
-        $this->security->module($this->model->getType(), $this->model->getTeamId());
-    }
+	}
 
-    function firstRecord($value) {
-        $this->recordSet->firstRecord($value);
-    }
+	/**
+	 * Team Information
+	 */
+	function team() {
+		$this->security->team();
+	}
 
-    function nextRecord($value, $primaryKeyValue) {
-        $this->recordSet->nextRecord($value, $primaryKeyValue);
-    }
+	/**
+	 * Module Information
+	 */
+	function module() {
+		$this->security->module($this->model->getType(), $this->model->getTeamId());
+	}
 
-    function previousRecord($value, $primaryKeyValue) {
-        $this->recordSet->previousRecord($value, $primaryKeyValue);
-    }
+	function firstRecord($value) {
+		$this->recordSet->firstRecord($value);
+	}
 
-    function lastRecord($value) {
-        $this->recordSet->lastRecord($value);
-    }
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord($value, $primaryKeyValue);
+	}
 
-    /* (non-PHPdoc)
-     * @see config::excel()
-     */
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord($value, $primaryKeyValue);
+	}
 
-    function excel() {
-        
-    }
+	function lastRecord($value) {
+		$this->recordSet->lastRecord($value);
+	}
+
+	/* (non-PHPdoc)
+	 * @see config::excel()
+	 */
+
+	function excel() {
+
+	}
 
 }
 
 $folderAccessObject = new FolderAccessClass ();
 if (isset($_POST ['method'])) {
-    /*
-     *  Initilize Value before load in the loader
-     */
-    /*
-     *  Leaf / Application Identification
-     */
-    if (isset($_POST ['leafId'])) {
-        $folderAccessObject->setLeafId($_POST ['leafId']);
-    }
-    /*
-     * Admin Only
-     */
-    if (isset($_POST ['isAdmin'])) {
-        $folderAccessObject->setIsAdmin($_POST ['isAdmin']);
-    }
-    /*
-     *  Paging
-     */
-    if (isset($_POST ['start'])) {
-        $folderAccessObject->setStart($_POST ['start']);
-    }
-    if (isset($_POST ['limit'])) {
-        $folderAccessObject->setLimit($_POST ['perPage']);
-    }
-    /**
-     * Filtering
-     */
-    if (isset($_POST ['query'])) {
-        $folderAccessObject->setFieldQuery($_POST ['query']);
-    }
-    if (isset($_POST ['filter'])) {
-        $folderAccessObject->setGridQuery($_POST ['filter']);
-    }
-    /*
-     * Ordering
-     */
-    if (isset($_POST ['order'])) {
-        $folderAccessObject->setOrder($_POST ['order']);
-    }
-    if (isset($_POST ['sortField'])) {
-        $folderAccessObject->setSortField($_POST ['sortField']);
-    }
-    /*
-     *  Load the dynamic value
-     */
-    $folderAccessObject->execute();
-    /*
-     *  Crud Operation (Create Read Update Delete/Destory)
-     */
-    if ($_POST ['method'] == 'read') {
-        $folderAccessObject->read();
-    }
+	/*
+	 *  Initilize Value before load in the loader
+	 */
+	/*
+	 *  Leaf / Application Identification
+	 */
+	if (isset($_POST ['leafId'])) {
+		$folderAccessObject->setLeafId($_POST ['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if (isset($_POST ['isAdmin'])) {
+		$folderAccessObject->setIsAdmin($_POST ['isAdmin']);
+	}
+	/*
+	 *  Paging
+	 */
+	if (isset($_POST ['start'])) {
+		$folderAccessObject->setStart($_POST ['start']);
+	}
+	if (isset($_POST ['perPage'])) {
+		$folderAccessObject->setLimit($_POST ['perPage']);
+	}
+	/*
+	 *  Paging
+	 */
+	if (isset($_POST ['start'])) {
+		$religionObject->setStart($_POST ['start']);
+	}
+	if (isset($_POST ['perPage'])) {
+		$religionObject->setLimit($_POST ['perPage']);
+	}
+	/*
+	 * Filtering
+	 */
+	if (isset($_POST ['query'])) {
+		$folderAccessObject->setFieldQuery($_POST ['query']);
+	}
+	if (isset($_POST ['filter'])) {
+		$folderAccessObject->setGridQuery($_POST ['filter']);
+	}
+	/*
+	 * Ordering
+	 */
+	if (isset($_POST ['order'])) {
+		$folderAccessObject->setOrder($_POST ['order']);
+	}
+	if (isset($_POST ['sortField'])) {
+		$folderAccessObject->setSortField($_POST ['sortField']);
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$folderAccessObject->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
+	if ($_POST ['method'] == 'read') {
+		$folderAccessObject->read();
+	}
 }
 if (isset($_GET ['method'])) {
-    /*
-     *  Initilize Value before load in the loader
-     */
-    /*
-     *  Leaf / Application Identification
-     */
-    if (isset($_GET ['method'])) {
-        $folderAccessObject->setleafId($_GET ['leafId']);
-    }
-    /*
-     * Admin Only
-     */
-    if (isset($_GET ['isAdmin'])) {
-        $folderAccessObject->setIsAdmin($_GET ['isAdmin']);
-    }
-    /*
-     *  Load the dynamic value
-     */
-    $folderAccessObject->execute();
-    /*
-     *  Crud Operation (Create Read Update Delete/Destory)
-     */
-    if ($_GET ['method'] == 'update') {
-        $folderAccessObject->update();
-    }
-    if (isset($_GET ['field'])) {
-        if($_GET['field'] == 'staffId') {
-        	$folderAccessObject->staff();
-        }
-    	if ($_GET ['field'] == 'teamId') {
-            $folderAccessObject->team();
-        }
-        if ($_GET ['field'] == 'moduleId') {
-            $folderAccessObject->module();
-        }
-    }
-    /*
-     *  Excel Reporing
-     */
-    if (isset($_GET ['mode'])) {
-        if ($_GET ['mode'] == 'excel') {
-            $folderAccessObject->excel();
-        }
-    }
+	/*
+	 *  Initilize Value before load in the loader
+	 */
+	/*
+	 *  Leaf / Application Identification
+	 */
+	if (isset($_GET ['method'])) {
+		$folderAccessObject->setleafId($_GET ['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if (isset($_GET ['isAdmin'])) {
+		$folderAccessObject->setIsAdmin($_GET ['isAdmin']);
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$folderAccessObject->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
+	if ($_GET ['method'] == 'update') {
+		$folderAccessObject->update();
+	}
+	if (isset($_GET ['field'])) {
+		if($_GET['field'] == 'staffId') {
+			$folderAccessObject->staff();
+		}
+		if ($_GET ['field'] == 'teamId') {
+			$folderAccessObject->team();
+		}
+		if ($_GET ['field'] == 'moduleId') {
+			$folderAccessObject->module();
+		}
+	}
+	/*
+	 *  Excel Reporing
+	 */
+	if (isset($_GET ['mode'])) {
+		if ($_GET ['mode'] == 'excel') {
+			$folderAccessObject->excel();
+		}
+	}
 }
 ?>
