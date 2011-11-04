@@ -44,12 +44,12 @@ Ext.ux.plugins.VirtualKeyboard = Ext.extend ( Ext.util.Observable, {
 					this.alignKeyboardIcon = function(){
 						var el = this.el; 
 						this.virtualKeyboardIcon.alignTo(el, 'tl-tr', [2, 0]);
-					}
+					};
 					//Redefine alignErrorIcon to move the errorIcon (if it exist) to the right of helpIcon
 					if(this.alignErrorIcon) {
 						this.alignErrorIcon = function() {
 							this.errorIcon.alignTo(this.virtualKeyboardIcon, 'tl-tr', [2, 0]);
-						}
+						};
 					}
 					
 					this.on('resize', this.alignKeyboardIcon, this);
