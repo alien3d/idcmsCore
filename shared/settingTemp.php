@@ -144,12 +144,12 @@ $row_leafAccess 		= 	$q->fetchAssoc($result);
 
 ?>
 
-var leafIdTemp				= '<?php echo $row_leafAccess['leafId'];   ?>';
-var leafNative				= '<?php echo $row_leafAccess['leafNative'];   ?>';
-var leafAccessCreateValue	= '<?php echo $row_leafAccess['leafAccessCreateValue'];   ?>';
-var leafAccessReadValue		= '<?php echo $row_leafAccess['leafAccessReadValue'];   ?>';
-var leafAccessPrintValue	= '<?php echo $row_leafAccess['leafAccessPrintValue'];   ?>';
-var leafAccessPostValue	= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>';
+var leafIdTemp					= '<?php echo $row_leafAccess['leafId'];   ?>';
+var leafNative					= '<?php echo $row_leafAccess['leafNative']; ?>';
+var leafAccessCreateValueTemp	= '<?php echo $row_leafAccess['leafAccessCreateValue']; ?>';
+var leafAccessReadValueTemp		= '<?php echo $row_leafAccess['leafAccessReadValue']; ?>';
+var leafAccessPrintValueTemp	= '<?php echo $row_leafAccess['leafAccessPrintValue']; ?>';
+var leafAccessPostValueTemp		= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>';
 
 
 
@@ -227,4 +227,5 @@ var isActiveLabel 		= 'Active';
 var isReviewLabel		= 'Review';
 var isApprovedLabel		= 'Approved';
 var auditButtonLabel 	= 'Audit';
+
 </script>

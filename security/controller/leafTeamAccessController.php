@@ -216,6 +216,9 @@ class LeafTeamAccessClass extends ConfigClass {
 			if ($this->model->getFolderId()) {
 				$sql .= " AND `leaf`.`folderId`='" . $this->model->getFolderId() . "'";
 			}
+		if ($this->model->getLeafIdTemp()) {
+				$sql.= " AND `leaf`.`leafId`='" . $this->model->getLeafIdTemp() . "'";
+			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 				SELECT	[leaf].[moduleId],
@@ -290,6 +293,9 @@ class LeafTeamAccessClass extends ConfigClass {
 			}
 			if ($this->model->getFolderId()) {
 				$sql .= " AND [leaf].[folderId]='" . $this->model->getFolderId() . "'";
+			}
+			if ($this->model->getLeafIdTemp()) {
+				$sql.= " AND [leaf].[leafId]='" . $this->model->getLeafIdTemp() . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -366,6 +372,9 @@ class LeafTeamAccessClass extends ConfigClass {
 			if ($this->model->getFolderId()) {
 				$sql .= " AND LEAF.FOLDERID='" . $this->model->getFolderId() . "'";
 			}
+		if ($this->model->getLeafIdTemp()) {
+				$sql.= " AND LEAF.LEAFID='" . $this->model->getLeafIdTemp() . "'";
+			}
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	LEAF.MODULEID,
@@ -441,6 +450,9 @@ class LeafTeamAccessClass extends ConfigClass {
 			if ($this->model->getFolderId()) {
 				$sql .= " AND LEAF.FOLDERID='" . $this->model->getFolderId() . "'";
 			}
+			if ($this->model->getLeafIdTemp()) {
+				$sql.= " AND LEAF.LEAFID='" . $this->model->getLeafIdTemp() . "'";
+			}
 		} elseif ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	LEAF.MODULEID,
@@ -515,6 +527,9 @@ class LeafTeamAccessClass extends ConfigClass {
 			}
 			if ($this->model->getFolderId()) {
 				$sql .= " AND LEAF.FOLDERID='" . $this->model->getFolderId() . "'";
+			}
+			if ($this->model->getLeafIdTemp()) {
+				$sql.= " AND LEAF.LEAFID='" . $this->model->getLeafIdTemp() . "'";
 			}
 		}
 		//echo $sql;

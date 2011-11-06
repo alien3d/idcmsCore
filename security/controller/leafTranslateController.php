@@ -101,10 +101,14 @@ class leafTranslateClass extends ConfigClass {
 		$this->model = new LeafTranslateModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
-		$this->q->leafId = $this->getLeafId();
+		if($this->model->getLeafIdTemp()) {
+			$this->q->leafId = $this->model->getLeafIdTemp();
+		} else {
+			$this->q->leafId = $this->getLeafId();
+		}
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
@@ -118,7 +122,7 @@ class leafTranslateClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -305,8 +309,8 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
-			if ($this->model->getLeafId()) {
-				$sql.= " AND `leafId`='" . $this->model->getLeafId() . "'";
+			if ($this->model->getLeafIdTemp()) {
+				$sql.= " AND `leafTranslate`.`leafId`='" . $this->model->getLeafIdTemp() . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -336,8 +340,8 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
-			if ($this->model->getLeafId()) {
-				$sql.= " AND [leafId]='" . $this->model->getLeafId() . "'";
+			if ($this->model->getLeafIdTemp()) {
+				$sql.= " AND [leafTranslate].[leafId]='" . $this->model->getLeafIdTemp() . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -367,8 +371,8 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "=" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
-			if ($this->model->getLeafId()) {
-				$sql.= " AND LEAFID='" . $this->model->getLeafId() . "'";
+			if ($this->model->getLeafIdTemp()) {
+				$sql.= " AND LEAFTRANSLATE.LEAFID='" . $this->model->getLeafIdTemp() . "'";
 			}
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
@@ -426,8 +430,8 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "=" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
-			if ($this->model->getLeafId()) {
-				$sql.= " AND LEAFID='" . $this->model->getLeafId() . "'";
+			if ($this->model->getLeafIdTemp()) {
+				$sql.= " AND LEAFTRANSLATE.LEAFID='" .$this->model->getLeafIdTemp(). "'";
 			}
 		} else {
 			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));

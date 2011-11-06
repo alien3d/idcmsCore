@@ -95,7 +95,11 @@ class LeafAccessClass extends ConfigClass {
 		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
-		$this->q->leafId = $this->getLeafId();
+		if($this->model->getLeafIdTemp()) { 
+			$this->q->leafId = $this->model->getLeafIdTemp();	
+		} else {
+			$this->q->leafId = $this->getLeafId();
+		}
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
@@ -210,8 +214,8 @@ class LeafAccessClass extends ConfigClass {
 			if ($this->model->getStaffId()) {
 				$sql .= " AND `leafAccess`.`staffId`	=	'" . $this->model->getStaffId() . "'";
 			}
-			if ($this->model->getLeafId()) {
-				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId() . "'";
+			if ($this->model->getLeafIdTemp()) {
+				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafIdTemp() . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -290,8 +294,8 @@ class LeafAccessClass extends ConfigClass {
 			if ($this->model->getStaffId()) {
 				$sql .= " AND [leafAccess`.[staffId]	=	'" . $this->strict($this->staffId, 'numeric') . "'";
 			}
-			if ($this->model->getLeafId()) {
-				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId() . "'";
+			if ($this->model->getLeafIdTemp()) {
+				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafIdTemp(). "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -371,8 +375,8 @@ class LeafAccessClass extends ConfigClass {
 			if ($this->model->getStaffId()) {
 				$sql .= " AND LEAFACCESS.STAFFID='" . $this->model->getStaffId() . "'";
 			}
-			if ($this->model->getLeafId()) {
-				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId() . "'";
+			if ($this->model->getLeafIdTemp()) {
+				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafIdTemp() . "'";
 			}
 		}
 		//echo $sql;

@@ -2067,7 +2067,7 @@ Ext.onReady(function () {
                             Ext.getCmp('applicationTranslateGrid').enable();
                             Ext.getCmp('applicationAccessGrid').enable();
                             Ext.getCmp('newButton').disable();
-                            Ext.getCmp('saveButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             Ext.getCmp('translationButton').enable();
                             Ext.getCmp('applicationId').setValue(action.result.applicationId);
@@ -2139,7 +2139,7 @@ Ext.onReady(function () {
                             Ext.getCmp('applicationTranslateGrid').enable();
                             Ext.getCmp('applicationAccessGrid').enable();
                             Ext.getCmp('newButton').disable();
-                            Ext.getCmp('saveButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             Ext.getCmp('translationButton').enable();
                             Ext.getCmp('applicationId').setValue(action.result.applicationId);

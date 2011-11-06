@@ -1466,7 +1466,6 @@ Ext.onReady(function () {
             id: 'pageCreate',
             disabled: pageCreate,
             handler: function () {
-            	formPanel.getForm.reset();
                 viewPort.items.get(1).expand();
             }
         }, '-',
@@ -1895,7 +1894,7 @@ Ext.onReady(function () {
                             Ext.getCmp('folderTranslateGrid').enable();
                             Ext.getCmp('folderAccessGrid').enable();
                             Ext.getCmp('newButton').disable();
-                            Ext.getCmp('saveButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             Ext.getCmp('translationButton').enable();
                             Ext.getCmp('folderId').setValue(action.result.folderId);
@@ -1966,7 +1965,7 @@ Ext.onReady(function () {
                             Ext.getCmp('folderTranslateGrid').enable();
                             Ext.getCmp('folderAccessGrid').enable();
                             Ext.getCmp('newButton').disable();
-                            Ext.getCmp('saveButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             Ext.getCmp('translationButton').enable();
                             Ext.getCmp('folderId').setValue(action.result.folderId);

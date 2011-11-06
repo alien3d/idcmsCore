@@ -112,6 +112,9 @@ class LeafModel extends ValidationClass {
         if (isset($_POST ['leafSequence'])) {
             $this->setLeafSequence($this->strict($_POST ['leafSequence'], 'numeric'));
         }
+    	if (isset($_POST ['leafCode'])) {
+            $this->setLeafCode($this->strict($_POST ['leafCode'], 'string'));
+        }
         if (isset($_POST ['leafFilename'])) {
             $this->setLeafFilename($this->strict($_POST ['leafFilename'], 'memo'));
         }

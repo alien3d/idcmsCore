@@ -1111,7 +1111,8 @@ Ext.onReady(function() {
             type: 'button',
             iconCls: 'new',
             handler: function() {
-                var id = Ext.getCmp('religionId').getValue();
+                
+            	var id = Ext.getCmp('religionId').getValue();
                 var method = 'create';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
@@ -1123,6 +1124,8 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             religionStore.reload({
                                 params: {
@@ -1156,7 +1159,7 @@ Ext.onReady(function() {
             iconCls: 'bullet_disk',
             disabled: true,
             handler: function() {
-                Ext.getCmp('newButton').disable();
+                
                 var id = Ext.getCmp('religionId').getValue();
                 var method = 'save';
                 formPanel.getForm().submit({
@@ -1169,6 +1172,8 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             religionStore.reload({
                                 params: {

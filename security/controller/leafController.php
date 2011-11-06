@@ -121,6 +121,11 @@ class LeafClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
+		
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
 
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor($this->getVendor());
@@ -160,11 +165,11 @@ class LeafClass extends ConfigClass {
 						'" . $this->model->getModuleId() . "',					'" . $this->model->getFolderId() . "',
 						'" . $this->model->getLeafNote() . "',					'" . $this->model->getLeafSequence() . "',
 						'" . $this->model->getLeafCode() . "',					'" . $this->model->getLeafFilename() . "',
-						'" . $this->model->getIconId() . "',					'" . $this->model->getIsNew(0, 'single') . "',
-						'" . $this->model->getIsDraft(0, 'single') . "',		'" . $this->model->getIsUpdate(0, 'single') . "',
-						'" . $this->model->getIsDelete(0, 'single') . "',	'" . $this->model->getIsActive(0, 'single') . "',
-						'" . $this->model->getIsApproved(0, 'single') . "',	'" . $this->model->getExecuteBy() . "',
-						" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIconId() . "',					'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',		
+						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',		
+						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',		
+						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 					) ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -178,15 +183,16 @@ class LeafClass extends ConfigClass {
 						[isUpdate],												[isDelete],
 						[isActive],												[isApproved],
 						[executeBy],											[executeTime]
-			VALUES
+				VALUES
 					(
 						'" . $this->model->getModuleId() . "',					'" . $this->model->getFolderId() . "',
 						'" . $this->model->getLeafNote() . "',					'" . $this->model->getLeafSequence() . "',
 						'" . $this->model->getLeafCode() . "',					'" . $this->model->getLeafFilename() . "',
-						'" . $this->model->getIconId() . "',					'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',	'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',	'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',				" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIconId() . "',					'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',		
+						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',		
+						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',		
+						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 					)";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -201,15 +207,64 @@ class LeafClass extends ConfigClass {
 						ISACTIVE,												ISAPPROVED,
 						EXECUTEBY,												EXECUTETIME
 					)
-			VALUES
+				VALUES
 					(
 						'" . $this->model->getModuleId() . "',					'" . $this->model->getFolderId() . "',
 						'" . $this->model->getLeafNote() . "',					'" . $this->model->getLeafSequence() . "',
 						'" . $this->model->getLeafCode() . "',					'" . $this->model->getLeafFilename() . "',
-						'" . $this->model->getIconId() . "',					'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',	'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',	'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',				" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIconId() . "',					'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',		
+						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',		
+						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',		
+						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+					);";
+		}else if ($this->getVendor() == self::DB2) {
+			$sql = "
+			INSERT INTO LEAF
+					(
+						MODULEID,												FOLDERID,
+						LEAFNOTE,												LEAFSEQUENCE,
+						LEAFCODE,												LEAFFILENAME,
+						ICONID,													ISDEFAULT,
+						ISNEW,													ISDRAFT,
+						ISUPDATE,												ISDELETE,
+						ISACTIVE,												ISAPPROVED,
+						EXECUTEBY,												EXECUTETIME
+					)
+				VALUES
+					(
+						'" . $this->model->getModuleId() . "',					'" . $this->model->getFolderId() . "',
+						'" . $this->model->getLeafNote() . "',					'" . $this->model->getLeafSequence() . "',
+						'" . $this->model->getLeafCode() . "',					'" . $this->model->getLeafFilename() . "',
+						'" . $this->model->getIconId() . "',					'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',		
+						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',		
+						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',		
+						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+					);";
+		}else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
+			INSERT INTO LEAF
+					(
+						MODULEID,												FOLDERID,
+						LEAFNOTE,												LEAFSEQUENCE,
+						LEAFCODE,												LEAFFILENAME,
+						ICONID,													ISDEFAULT,
+						ISNEW,													ISDRAFT,
+						ISUPDATE,												ISDELETE,
+						ISACTIVE,												ISAPPROVED,
+						EXECUTEBY,												EXECUTETIME
+					)
+				VALUES
+					(
+						'" . $this->model->getModuleId() . "',					'" . $this->model->getFolderId() . "',
+						'" . $this->model->getLeafNote() . "',					'" . $this->model->getLeafSequence() . "',
+						'" . $this->model->getLeafCode() . "',					'" . $this->model->getLeafFilename() . "',
+						'" . $this->model->getIconId() . "',					'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',		
+						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',		
+						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',		
+						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 					);";
 		}
 		$this->q->create($sql);
@@ -221,22 +276,23 @@ class LeafClass extends ConfigClass {
 		// loop the group
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT 	*
+			SELECT 	`staffId`
 			FROM 	`staff`
 			WHERE 	`isActive`	=	1 ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT 	*
+			SELECT 	[staffId]
 			FROM 	[staff]
 			WHERE 	[isActive]	=	1 ";
 		} else if ($this->q->vendor == self::MYSQL) {
 			$sql = "
-			SELECT 	* 
+			SELECT 	STAFFID
 			FROM 	STAFF 
 			WHERE 	ISACTIVE	=	1 ";
 		}
 		$this->q->read($sql);
 		$data = $this->q->activeRecord();
+		$sqlLooping='';
 		foreach ($data as $row) {
 			// by default no access
 			$sqlLooping .= "
@@ -338,7 +394,7 @@ class LeafClass extends ConfigClass {
 			AND			`folder`.`isActive`		=	1
 			AND			`module`.`isActive`	= 1 ";
 			if ($this->model->getLeafId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getModuleName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getLeafId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getLeafId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -355,7 +411,7 @@ class LeafClass extends ConfigClass {
 			AND			[folder].[isActive]			=	1
 			AND			[module].[isActive]			=	1 ";
 			if ($this->model->getLeafId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getModuleName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getLeafId(0, 'single') . "'";
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getLeafId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -393,7 +449,7 @@ class LeafClass extends ConfigClass {
 			AND			FOLDER.ISACTIVE = 1
 			AND			MODULE.ISACTIVE = 1 ";
 			if ($this->model->getLeafId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getModuleName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getLeafId(0, 'single') . "'";
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getLeafId(0, 'single') . "'";
 			}
 		}
 		/**
@@ -1072,7 +1128,7 @@ class LeafClass extends ConfigClass {
 		exit();
 	}
 	public function nextSequence() {
-		$this->security->nextSequence($this->model->getModuleId(), $this->model->getFolderId());
+		$this->recordSet->nextSequence($this->model->getModuleId(), $this->model->getFolderId());
 	}
 
 	function firstRecord($value) {
@@ -1180,7 +1236,7 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['start'])) {
 		$leafObject->setStart($_POST ['start']);
 	}
-	if (isset($_POST ['limit'])) {
+	if (isset($_POST ['perPage'])) {
 		$leafObject->setLimit($_POST ['perPage']);
 	}
 	/*

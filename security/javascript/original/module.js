@@ -1810,8 +1810,7 @@ Ext.onReady(function () {
             type: 'button',
             iconCls: 'new',
             handler: function () {
-                Ext.getCmp('moduleTranslateGrid').enable();
-                Ext.getCmp('moduleAccessGrid').enable();
+                
                 var id = 0;
                 var id = Ext.getCmp('moduleId').getValue();
                 var method = 'create';
@@ -1827,7 +1826,7 @@ Ext.onReady(function () {
                             Ext.getCmp('moduleTranslateGrid').enable();
                             Ext.getCmp('moduleAccessGrid').enable();
                             Ext.getCmp('newButton').disable();
-                            Ext.getCmp('saveButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             Ext.getCmp('translationButton').enable();
                             Ext.getCmp('moduleId').setValue(action.result.moduleId);
@@ -1886,9 +1885,7 @@ Ext.onReady(function () {
             iconCls: 'bullet_disk',
             disabled: true,
             handler: function () {
-                Ext.getCmp('newButton').disable();
-                Ext.getCmp('moduleTranslateGrid').disable();
-                Ext.getCmp('moduleAccessGrid').disable();
+                
                 var id = 0;
                 var id = Ext.getCmp('moduleId').getValue();
                 var method = 'save';
@@ -1906,7 +1903,7 @@ Ext.onReady(function () {
                             Ext.getCmp('moduleTranslateGrid').enable();
                             Ext.getCmp('moduleAccessGrid').enable();
                             Ext.getCmp('newButton').disable();
-                            Ext.getCmp('saveButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             Ext.getCmp('translationButton').enable();
                             Ext.getCmp('moduleId').setValue(action.result.moduleId);
