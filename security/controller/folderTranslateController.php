@@ -98,12 +98,18 @@ class folderTranslateClass extends ConfigClass {
 		//default translation property
 		$this->defaultLanguageId = 21;
 
+		$this->model = new FolderTranslateModel ();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
@@ -112,10 +118,6 @@ class folderTranslateClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
-
-		$this->model = new FolderTranslateModel ();
-		$this->model->setVendor($this->getVendor());
-		$this->model->execute();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -1369,6 +1371,23 @@ if (isset($_GET ['method'])) {
 			$folderTranslateObject->duplicate();
 		}
 	}
+/*
+     * Button Navigation
+     */
+    if ($_GET ['method'] == 'dataNavigationRequest') {
+        if ($_GET ['dataNavigation'] == 'firstRecord') {
+            $folderTranslateObject->firstRecord('json');
+        }
+        if ($_GET ['dataNavigation'] == 'previousRecord') {
+            $folderTranslateObject->previousRecord('json', 0);
+        }
+        if ($_GET ['dataNavigation'] == 'nextRecord') {
+            $folderTranslateObject->nextRecord('json', 0);
+        }
+        if ($_GET ['dataNavigation'] == 'lastRecord') {
+            $folderTranslateObject->lastRecord('json');
+        }
+    }
 	/*
 	 *  Excel Reporting
 	 */

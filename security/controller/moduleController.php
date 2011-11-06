@@ -95,12 +95,18 @@ class ModuleClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 0;
 
+		$this->model = new ModuleModel ();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
@@ -109,10 +115,6 @@ class ModuleClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
-
-		$this->model = new ModuleModel ();
-		$this->model->setVendor($this->getVendor());
-		$this->model->execute();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -1520,6 +1522,23 @@ if (isset($_GET ['method'])) {
 			$moduleObject->duplicate();
 		}
 	}
+/*
+     * Button Navigation
+     */
+    if ($_GET ['method'] == 'dataNavigationRequest') {
+        if ($_GET ['dataNavigation'] == 'firstRecord') {
+            $moduleObject->firstRecord('json');
+        }
+        if ($_GET ['dataNavigation'] == 'previousRecord') {
+            $moduleObject->previousRecord('json', 0);
+        }
+        if ($_GET ['dataNavigation'] == 'nextRecord') {
+            $moduleObject->nextRecord('json', 0);
+        }
+        if ($_GET ['dataNavigation'] == 'lastRecord') {
+            $moduleObject->lastRecord('json');
+        }
+    }
 	/*
 	 *  Excel Reporting
 	 */

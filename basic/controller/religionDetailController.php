@@ -89,19 +89,21 @@ class ReligionDetailClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
+		$this->model = new ReligionDetailModel ();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-
-		$this->model = new ReligionDetailModel ();
-		$this->model->setVendor($this->getVendor());
-		$this->model->execute();
 
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor($this->getVendor());

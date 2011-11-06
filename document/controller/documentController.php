@@ -97,20 +97,22 @@ class DocumentClass extends ConfigClass {
 		$this->validFileType = "/^\\.(jpg|jpeg|gif|png|doc|docx|txt|rtf|pdf|xls|xlsx|ppt|pptx){1}$/i";
 		$this->path = $_SERVER ["DOCUMENT_ROOT"] . "idcmsCore/document/document/user/" . $this->getStaffId () . "/";
 
+		$this->model = new DocumentModel ();
+		$this->model->setVendor ( $this->getVendor () );
+		$this->model->execute ();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
 		$this->q->staffId = $this->getStaffId ();
 		$this->q->fieldQuery = $this->getFieldQuery ();
 		$this->q->gridQuery = $this->getGridQuery ();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-
-		$this->model = new DocumentModel ();
-		$this->model->setVendor ( $this->getVendor () );
-		$this->model->execute ();
-
+		
 		$this->recordSet =  new RecordSet();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -1354,6 +1356,23 @@ if (isset ( $_GET ['method'] )) {
 			$documentObject->documentCategoryId ();
 		}
 	}
+	/*
+     * Button Navigation
+     */
+    if ($_GET ['method'] == 'dataNavigationRequest') {
+        if ($_GET ['dataNavigation'] == 'firstRecord') {
+            $documentObject->firstRecord('json');
+        }
+        if ($_GET ['dataNavigation'] == 'previousRecord') {
+            $documentObject->previousRecord('json', 0);
+        }
+        if ($_GET ['dataNavigation'] == 'nextRecord') {
+            $documentObject->nextRecord('json', 0);
+        }
+        if ($_GET ['dataNavigation'] == 'lastRecord') {
+            $documentObject->lastRecord('json');
+        }
+    }
 	/*
 	 *  Excel Reporting
 	 */

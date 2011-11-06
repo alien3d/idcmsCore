@@ -1564,6 +1564,23 @@ if (isset($_GET ['method'])) {
 		}
 	}
 	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$folderObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$folderObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$folderObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$folderObject->lastRecord('json');
+		}
+	}
+	/*
 	 *  Excel Reporting
 	 */
 	if (isset($_GET ['mode'])) {

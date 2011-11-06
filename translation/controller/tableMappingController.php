@@ -88,12 +88,18 @@ class TableMappingClass extends ConfigClass {
 		// default translation property
 		$this->defaultLanguageId = 21;
 
+		$this->model = new TableMappingModel ();
+		$this->model->setVendor ( $this->getVendor () );
+		$this->model->execute ();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
 		$this->q->staffId = $this->getStaffId ();
 		$this->q->fieldQuery = $this->getFieldQuery ();
 		$this->q->gridQuery = $this->getGridQuery ();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
@@ -102,10 +108,6 @@ class TableMappingClass extends ConfigClass {
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
-
-		$this->model = new TableMappingModel ();
-		$this->model->setVendor ( $this->getVendor () );
-		$this->model->execute ();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
@@ -357,7 +359,7 @@ class TableMappingClass extends ConfigClass {
 		 * Extjs filtering mode
 		 */
 		if ($this->getGridQuery ()) {
-				
+
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->searching ();
 			} else if ($this->getVendor () == self::MSSQL) {
@@ -391,7 +393,7 @@ class TableMappingClass extends ConfigClass {
 
 		if ($this->getStart () && $this->getLimit ()) {
 			// only mysql have limit
-				
+
 
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= " LIMIT  " . $this->getStart () . "," . $this->getLimit () . " ";
@@ -462,7 +464,7 @@ class TableMappingClass extends ConfigClass {
 		 *  Only Execute One Query
 		 */
 		if (! ($this->model->getTableMappingId(0, 'single'))) {
-				
+
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
 				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -689,7 +691,7 @@ class TableMappingClass extends ConfigClass {
 		$loopRow = 4;
 		$i = 0;
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
-				
+
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
 			$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['tableMappingNote'] );
 			$loopRow ++;
@@ -815,7 +817,7 @@ if (isset ( $_GET ['method'] )) {
 	$tableMappingObject->execute ();
 	if (isset ( $_GET ['field'] )) {
 		if ($_GET ['field'] == 'staffId') {
-				
+
 			$tableMappingObject->staff ();
 		}
 
@@ -832,6 +834,23 @@ if (isset ( $_GET ['method'] )) {
 	if (isset ( $_GET ['tableMappingCode'] )) {
 		if (strlen ( $_GET ['tableMappingCode'] ) > 0) {
 			$tableMappingObject->duplicate ();
+		}
+	}
+	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$tableMappingObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$tableMappingObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$tableMappingObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$tableMappingObject->lastRecord('json');
 		}
 	}
 	/*

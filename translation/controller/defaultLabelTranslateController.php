@@ -84,12 +84,18 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		//default translation property
 		$this->defaultLanguageId = 21;
 
+		$this->model = new DefaultLabelTranslateModel ();
+		$this->model->setVendor ( $this->getVendor () );
+		$this->model->execute ();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
 		$this->q->staffId = $this->getStaffId ();
 		$this->q->fieldQuery = $this->getFieldQuery ();
 		$this->q->gridQuery = $this->getGridQuery ();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
@@ -98,10 +104,6 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
-
-		$this->model = new DefaultLabelTranslateModel ();
-		$this->model->setVendor ( $this->getVendor () );
-		$this->model->execute ();
 
 		$this->recordSet =  new RecordSet();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -534,7 +536,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isDefault' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDefault ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDefault ( $i, 'array' ) . "'";
@@ -544,7 +546,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsNew ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
@@ -554,7 +556,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDraft ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDraft ( $i, 'array' ) . "'";
@@ -564,7 +566,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsUpdate ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
@@ -574,7 +576,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDelete ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
@@ -584,7 +586,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isActive' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsActive ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsActive ( $i, 'array' ) . "'";
@@ -602,7 +604,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isReview' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsReview ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
                             WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
                             THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
@@ -612,7 +614,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsPost ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
                                 WHEN '" . $this->model->getDefaultLabelTranslateId ( $i, 'array' ) . "'
                                 THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
@@ -823,6 +825,23 @@ if (isset ( $_GET ['method'] )) {
 	if (isset ( $_GET ['defaultLabelTranslationCode'] )) {
 		if (strlen ( $_GET ['defaultLabelTranslationCode'] ) > 0) {
 			$defaultLabelTranslationObject->duplicate ();
+		}
+	}
+	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$defaultLabelTranslationObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$defaultLabelTranslationObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$defaultLabelTranslationObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$defaultLabelTranslationObject->lastRecord('json');
 		}
 	}
 	/*

@@ -86,12 +86,18 @@ class DefaultLabelClass extends ConfigClass {
 		//default translation property
 		$this->defaultLanguageId = 21;
 
+		$this->model = new DefaultLabelModel ();
+		$this->model->setVendor ( $this->getVendor () );
+		$this->model->execute ();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
 		$this->q->staffId = $this->getStaffId ();
 		$this->q->fieldQuery = $this->getFieldQuery ();
 		$this->q->gridQuery = $this->getGridQuery ();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
@@ -100,10 +106,6 @@ class DefaultLabelClass extends ConfigClass {
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
-
-		$this->model = new DefaultLabelModel ();
-		$this->model->setVendor ( $this->getVendor () );
-		$this->model->execute ();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
@@ -541,7 +543,7 @@ class DefaultLabelClass extends ConfigClass {
 			}
 			switch ($systemCheck) {
 				case 'isDefault' :
-						
+
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDefault ( $i, 'array' )) {
 							$sqlLooping .= "
@@ -553,7 +555,7 @@ class DefaultLabelClass extends ConfigClass {
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsNew ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
@@ -563,7 +565,7 @@ class DefaultLabelClass extends ConfigClass {
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDraft ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDraft ( $i, 'array' ) . "'";
@@ -573,7 +575,7 @@ class DefaultLabelClass extends ConfigClass {
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsUpdate ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
@@ -583,7 +585,7 @@ class DefaultLabelClass extends ConfigClass {
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsDelete ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
@@ -593,7 +595,7 @@ class DefaultLabelClass extends ConfigClass {
 				case 'isActive' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsActive ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsActive ( $i, 'array' ) . "'";
@@ -603,7 +605,7 @@ class DefaultLabelClass extends ConfigClass {
 				case 'isApproved' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsApproved ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
 							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsApproved ( $i, 'array' ) . "'";
@@ -613,7 +615,7 @@ class DefaultLabelClass extends ConfigClass {
 				case 'isReview' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsReview ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
                             WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
                             THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
@@ -623,7 +625,7 @@ class DefaultLabelClass extends ConfigClass {
 				case 'isPost' :
 					for($i = 0; $i < $loop; $i ++) {
 						if ($this->model->getIsPost ( $i, 'array' )) {
-								
+
 							$sqlLooping .= "
                             WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
                             THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
@@ -826,6 +828,23 @@ if (isset ( $_GET ['method'] )) {
 	if (isset ( $_GET ['defaultLabelCode'] )) {
 		if (strlen ( $_GET ['defaultLabelCode'] ) > 0) {
 			$defaultLabelObject->duplicate ();
+		}
+	}
+	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$defaultLabelObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$defaultLabelObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$defaultLabelObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$defaultLabelObject->lastRecord('json');
 		}
 	}
 	/*

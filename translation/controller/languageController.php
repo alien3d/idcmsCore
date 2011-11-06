@@ -74,9 +74,13 @@ class LanguageClass extends ConfigClass {
 		//audit property
 		$this->audit = 0;
 		$this->log = 1;
-		
+
 		// default translation property
 		$this->defaultLanguageId = 21;
+
+		$this->model = new LanguageModel ();
+		$this->model->setVendor ( $this->getVendor () );
+		$this->model->execute ();
 		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
@@ -84,40 +88,38 @@ class LanguageClass extends ConfigClass {
 		$this->q->staffId = $this->getStaffId ();
 		$this->q->fieldQuery = $this->getFieldQuery ();
 		$this->q->gridQuery = $this->getGridQuery ();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		
-		$this->model = new LanguageModel ();
-		$this->model->setVendor ( $this->getVendor () );
-		$this->model->execute ();
 		
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
 		$this->recordSet->execute ();
-		
+
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
 		$this->documentTrail->setStaffId ( $this->getStaffId () );
 		$this->documentTrail->setLanguageId ( $this->getLanguageId () );
 		$this->documentTrail->setLeafId ( $this->getLeafId () );
 		$this->documentTrail->execute ();
-		
+
 		$this->excel = new PHPExcel ();
-	
+
 	}
 	/* (non-PHPdoc)
 	 * @see config::create()
 	 */
 	function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		
+
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		$this->q->start ();
 		$this->model->create ();
@@ -181,19 +183,19 @@ class LanguageClass extends ConfigClass {
 						'" . $this->model->getIsActive ( 0, 'single' ) . "',				'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 						'" . $this->model->getExecuteBy () . "',								" . $this->model->getExecuteTime () . "
 					);";
-		
+
 		}
 		$this->q->create ( $sql );
-		
+
 		if ($this->q->execute == 'fail') {
 			echo json_encode ( array ("success" => FALSE, "message" => $this->q->responce ) );
 			exit ();
 		}
-		
+
 		$this->q->commit ();
 		echo json_encode ( array ("success" =>true, "message" => "Record Created" ) );
 		exit ();
-	
+
 	}
 	/* (non-PHPdoc)
 	 * @see config::read()
@@ -244,9 +246,9 @@ class LanguageClass extends ConfigClass {
 					WHERE 	" . $this->auditFilter;
 			if ($this->model->getLanguageId ( 0, 'single' )) {
 				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getLanguageId ( 0, 'single' ) . "'";
-			
+					
 			}
-		
+
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 					SELECT	[language].[languageId],
@@ -324,7 +326,7 @@ class LanguageClass extends ConfigClass {
 		 * Extjs filtering mode
 		 */
 		if ($this->getGridQuery ()) {
-			
+				
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->searching ();
 			} else if ($this->getVendor () == self::MSSQL) {
@@ -337,13 +339,13 @@ class LanguageClass extends ConfigClass {
 		}
 		/** // optional debugger.uncomment if wanted to used
 
-            echo json_encode(array(
-            "success" => false,
-            "message" => $this->q->realEscapeString($sql)
-            ));
-            exit();
+		echo json_encode(array(
+		"success" => false,
+		"message" => $this->q->realEscapeString($sql)
+		));
+		exit();
 
-		 */
+		*/
 		$this->q->read ( $sql );
 		if ($this->q->execute == 'fail') {
 			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -362,7 +364,7 @@ class LanguageClass extends ConfigClass {
 		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
 		$_SESSION ['start'] = $this->getStart ();
 		$_SESSION ['limit'] = $this->getLimit ();
-		
+
 		if ($this->getStart () && $this->getLimit ()) {
 			// only mysql have limit
 			if ($this->getVendor () == self::MYSQL) {
@@ -431,10 +433,10 @@ class LanguageClass extends ConfigClass {
 				exit ();
 			}
 		}
-		
+
 		/*
-             *  Only Execute One Query
-             */
+		 *  Only Execute One Query
+		 */
 		if (! ($this->model->getLanguageId ( 0, 'single' ))) {
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
@@ -458,9 +460,9 @@ class LanguageClass extends ConfigClass {
 			echo json_encode ( array ('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
 			exit ();
 		}
-	
+
 	}
-	
+
 	/* (non-PHPdoc)
 	 * @see config::update()
 	 */
@@ -470,7 +472,7 @@ class LanguageClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		$this->q->commit ();
 		$this->model->update ();
@@ -504,7 +506,7 @@ class LanguageClass extends ConfigClass {
 						[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 						[executeTime]		=	" . $this->model->getExecuteTime () . "
 				WHERE 	[languageId]		=	'" . $this->model->getLanguageId ( 0, 'single' ) . "'";
-		
+
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 				UPDATE 	LANGUAGE
@@ -522,7 +524,7 @@ class LanguageClass extends ConfigClass {
 						EXECUTEBY		=	'" . $this->model->getExecuteBy () . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime () . "
 				WHERE 	LANGUAGEID		=	'" . $this->model->getLanguageId ( 0, 'single' ) . "'";
-		
+
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -542,7 +544,7 @@ class LanguageClass extends ConfigClass {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
 		$this->q->commit ();
 		$this->model->delete ();
@@ -572,7 +574,7 @@ class LanguageClass extends ConfigClass {
 						[executeBy]		=	'" . $this->model->getExecuteBy () . "',
 						[executeTime]	=	" . $this->model->getExecuteTime () . "
 				WHERE 	[languageId]	=	'" . $this->model->getLanguageId ( 0, 'single' ) . "'";
-		
+
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 				UPDATE 	LANGUAGE
@@ -588,7 +590,7 @@ class LanguageClass extends ConfigClass {
 						EXECUTEBY	=	'" . $this->model->getExecuteBy () . "',
 						EXECUTETIME	=	" . $this->model->getExecuteTime () . "
 				WHERE 	LANGUAGEID	=	'" . $this->model->getLanguageId ( 0, 'single' ) . "'";
-		
+
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -596,26 +598,26 @@ class LanguageClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		
+
 		echo json_encode ( array ("success" => true, "message" => "Record Remove" ) );
 		exit ();
-	
+
 	}
 	/**
 	 * To Update flag Status
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
-		
+
 		if ($this->getVendor () == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
-		
+
 		}
-		
+
 		$loop = $this->model->getTotal ();
-		
+
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 				UPDATE `" . $this->model->getTableName () . "`
@@ -624,7 +626,7 @@ class LanguageClass extends ConfigClass {
 			$sql = "
 			UPDATE 	[" . $this->model->getTableName () . "]
 			SET 	";
-		
+
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
@@ -637,12 +639,12 @@ class LanguageClass extends ConfigClass {
 		 */
 		$access = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
 		foreach ( $access as $systemCheck ) {
-			
+				
 			if ($this->getVendor () == self::MYSQL) {
 				$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName () . "`";
 			} else if ($this->getVendor () == self::MSSQL) {
 				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
-			
+					
 			} else if ($this->getVendor () == self::ORACLE) {
 				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " ";
 			}
@@ -662,7 +664,7 @@ class LanguageClass extends ConfigClass {
 							$sqlLooping .= "
 							WHEN '" . $this->model->getLanguageId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
-						
+
 						}
 					}
 					break;
@@ -730,10 +732,10 @@ class LanguageClass extends ConfigClass {
 					}
 					break;
 			}
-			
+				
 			$sqlLooping .= " END,";
 		}
-		
+
 		$sql .= substr ( $sqlLooping, 0, - 1 );
 		if ($this->getVendor () == self::MYSQL) {
 			$sql .= "
@@ -745,7 +747,7 @@ class LanguageClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
 		}
-		
+
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
 			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -754,7 +756,7 @@ class LanguageClass extends ConfigClass {
 		$this->q->commit ();
 		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
-	
+
 	}
 	/**
 	 * To check if a key duplicate or not
@@ -796,7 +798,7 @@ class LanguageClass extends ConfigClass {
 			if ($this->duplicateTest == 1) {
 				return $total . "|" . $row ['languageCode'];
 			} else {
-				
+
 				echo json_encode ( array ("success" =>true, "total" => $total, "message" => "Duplicate Record", "languageCode" => $row ['languageCode'] ) );
 				exit ();
 			}
@@ -818,7 +820,7 @@ class LanguageClass extends ConfigClass {
 	 * @see config::excel()
 	 */
 	function excel() {
-		
+
 		header('Content-Type:application/json; charset=utf-8');
 		//UTF8
 		if ($this->getVendor () == self::MYSQL) {
@@ -840,7 +842,7 @@ class LanguageClass extends ConfigClass {
 		// check file exist or not and return response
 		$styleThinBlackBorderOutline = array ('borders' => array ('inside' => array ('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array ('argb' => '000000' ) ), 'outline' => array ('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array ('argb' => '000000' ) ) ) );
 		// header all using  3 line  starting b
-		
+
 
 		if ($this->isAdmin == 1) {
 			$this->excel->getActiveSheet ()->getColumnDimension ( 'B' )->setAutoSize ( true );
@@ -883,7 +885,7 @@ class LanguageClass extends ConfigClass {
 			$this->excel->getActiveSheet ()->setCellValue ( 'D3', 'Sequence' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'E3', 'Code' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'F3', 'Note' );
-			
+				
 			$this->excel->getActiveSheet ()->setCellValue ( 'G3', 'isDefault' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'H3', 'isNew' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'I3', 'isDraft' );
@@ -893,7 +895,7 @@ class LanguageClass extends ConfigClass {
 			$this->excel->getActiveSheet ()->setCellValue ( 'M3', 'isApproved' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'N3', 'By' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'O3', 'Time' );
-		
+
 		} else {
 			$this->excel->getActiveSheet ()->setCellValue ( 'B3', 'No' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'C3', 'Sequence' );
@@ -913,10 +915,10 @@ class LanguageClass extends ConfigClass {
 			$this->excel->getActiveSheet ()->setCellValue ( 'B' . $loopRow, ++ $i );
 			if ($this->isAdmin == 1) {
 				$this->excel->getActiveSheet ()->setCellValue ( 'C' . $loopRow, $row ['languageId'] );
-				
+
 				$this->excel->getActiveSheet ()->setCellValue ( 'E' . $loopRow, $row ['languageCode'] );
 				$this->excel->getActiveSheet ()->setCellValue ( 'F' . $loopRow, $row ['languageDesc'] );
-				
+
 				$this->excel->getActiveSheet ()->setCellValue ( 'G' . $loopRow, $row ['isDefault'] );
 				$this->excel->getActiveSheet ()->setCellValue ( 'H' . $loopRow, $row ['isNew'] );
 				$this->excel->getActiveSheet ()->setCellValue ( 'I' . $loopRow, $row ['isDraft'] );
@@ -927,16 +929,16 @@ class LanguageClass extends ConfigClass {
 				$this->excel->getActiveSheet ()->setCellValue ( 'N' . $loopRow, $row ['staffName'] );
 				$this->excel->getActiveSheet ()->setCellValue ( 'O' . $loopRow, $row ['Time'] );
 			} else {
-				
+
 				$this->excel->getActiveSheet ()->setCellValue ( 'D' . $loopRow, $row ['languageCode'] );
 				$this->excel->getActiveSheet ()->setCellValue ( 'E' . $loopRow, $row ['languageDesc'] );
 			}
 			$loopRow ++;
-		
+
 		}
-		
+
 		$lastRow = $end . $loopRow;
-		
+
 		$from = $start . '2';
 		$to = $lastRow;
 		$formula = $from . ":" . $to;
@@ -944,11 +946,11 @@ class LanguageClass extends ConfigClass {
 		$objWriter = PHPExcel_IOFactory::createWriter ( $this->excel, 'Excel2007' );
 		$filename = "language" . rand ( 0, 10000000 ) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . $this->getApplication () . "/management/document/excel/" . $filename;
-		
+
 		$this->documentTrail->setDocumentPath ( $path );
 		$this->documentTrail->setDocumentFilename ( $filename );
 		$this->documentTrail->create ();
-		
+
 		$objWriter->save ( $path );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
@@ -971,7 +973,7 @@ if (isset ( $_POST ['method'] )) {
 	/*
 	 *  Initilize Value before load in the loader
 	 */
-	
+
 	/*
 	 *  Leaf / Application Identification
 	 */
@@ -1000,7 +1002,7 @@ if (isset ( $_POST ['method'] )) {
 		$languageObject->setFieldQuery ( $_POST ['query'] );
 	}
 	if (isset ( $_POST ['filter'] )) {
-		
+
 		$languageObject->setGridQuery ( $_POST ['filter'] );
 	}
 	/**
@@ -1012,7 +1014,7 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['sortField'] )) {
 		$languageObject->setSortField ( $_POST ['sortField'] );
 	}
-	
+
 	/*
 	 *  Load the dynamic value
 	 */
@@ -1075,11 +1077,28 @@ if (isset ( $_GET ['method'] )) {
 		}
 	}
 	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$languageObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$languageObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$languageObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$languageObject->lastRecord('json');
+		}
+	}
+	/*
 	 *  Excel Reporing
 	 */
 	if (isset ( $_GET ['mode'] )) {
 		if ($_GET ['mode'] == 'excel') {
-			
+				
 			$languageObject->excel ();
 		}
 	}

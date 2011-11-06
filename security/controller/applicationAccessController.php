@@ -18,7 +18,7 @@ require_once ("../model/applicationAccessModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ApplicationeAccessClass extends ConfigClass {
+class ApplicationAccessClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -95,12 +95,18 @@ class ApplicationeAccessClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
+		$this->model = new ApplicationAccessModel ();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
@@ -108,10 +114,6 @@ class ApplicationeAccessClass extends ConfigClass {
 		$this->security = new Security ();
 		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
-
-		$this->model = new ApplicationAccessModel ();
-		$this->model->setVendor($this->getVendor());
-		$this->model->execute();
 
 		$this->excel = new PHPExcel ();
 	}
@@ -454,6 +456,23 @@ if (isset($_GET ['method'])) {
 		}
 		if ($_GET ['field'] == 'teamId') {
 			$applicationAccessObject->team();
+		}
+	}
+	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$applicationAccessObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$applicationAccessObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$applicationAccessObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$applicationAccessObject->lastRecord('json');
 		}
 	}
 }

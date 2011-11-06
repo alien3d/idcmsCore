@@ -94,12 +94,18 @@ class LeafTeamAccessClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
+		$this->model = new LeafTeamAccessModel ();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
@@ -108,9 +114,7 @@ class LeafTeamAccessClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
 
-		$this->model = new LeafTeamAccessModel ();
-		$this->model->setVendor($this->getVendor());
-		$this->model->execute();
+		
 
 		$this->excel = new PHPExcel ();
 	}
@@ -731,6 +735,23 @@ if (isset($_GET ['method'])) {
 		}
 		if ($_GET ['field'] == 'folderId') {
 			$leafTeamAccessObject->folder();
+		}
+	}
+	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$leafTeamAccessObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$leafTeamAccessObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$leafTeamAccessObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$leafTeamAccessObject->lastRecord('json');
 		}
 	}
 }
