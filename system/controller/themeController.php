@@ -490,8 +490,8 @@ class ThemeClass  extends ConfigClass {
 				'message' => 'Data Loaded',
                 'data' => $items, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
-            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
-            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getThemeId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getThemeId(0, 'single')), 
             			'lastRecord' => $this->recordSet->lastRecord('value')
             	));
             	$json_encode = str_replace("[", "", $json_encode);
@@ -507,8 +507,8 @@ class ThemeClass  extends ConfigClass {
 				'message'=>'data loaded',
                 'data' => $items, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
-            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
-            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getThemeId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getThemeId(0, 'single')), 
             			'lastRecord' => $this->recordSet->lastRecord('value')
             	));
             	exit();

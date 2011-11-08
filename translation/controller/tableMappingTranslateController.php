@@ -167,7 +167,7 @@ class TableMappingTranslateClass extends ConfigClass {
 				)
 			VALUES
 				(
-						'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
+						'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -185,7 +185,7 @@ class TableMappingTranslateClass extends ConfigClass {
 							ISAPPROVED,								EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
+							'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
 							'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -228,24 +228,24 @@ class TableMappingTranslateClass extends ConfigClass {
 			SELECT 		*
 			FROM 		`tableMappingTranslation`
 			WHERE 1 ";
-			if ($this->model->gettableMappingTranslationTranslationId ( 0, 'single' )) {
-				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
+			if ($this->model->getTableMappingTranslationTranslationId ( 0, 'single' )) {
+				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getTableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			SELECT 		*
 			FROM 		[tableMappingTranslation]
 			WHERE 1 ";
-			if ($this->model->gettableMappingTranslationTranslationId ( 0, 'single' )) {
-				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
+			if ($this->model->getTableMappingTranslationTranslationId ( 0, 'single' )) {
+				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getTableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT 		*
 			FROM 		TABLEMAPPINGTRANSLATION
 			WHERE 1";
-			if ($this->model->gettableMappingTranslationTranslationId ( 0, 'single' )) {
-				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
+			if ($this->model->getTableMappingTranslationTranslationId ( 0, 'single' )) {
+				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getTableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 			}
 		}
 		/**
@@ -362,7 +362,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		 *  Only Execute One Query
 		 */
 
-		if (! ($this->gettableMappingTranslationTranslationId ( 0, 'single' ))) {
+		if (! ($this->getTableMappingTranslationTranslationId ( 0, 'single' ))) {
 
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
@@ -375,7 +375,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			$items [] = $row;
 		}
 
-		if ($this->gettableMappingTranslationTranslationId ( 0, 'single' )) {
+		if ($this->getTableMappingTranslationTranslationId ( 0, 'single' )) {
 			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
@@ -406,8 +406,8 @@ class TableMappingTranslateClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 					UPDATE 	`tableMappingTranslate`
-					SET 	`tableMappingTranslationTranslationNote`	=	'" . $this->model->gettableMappingTranslationTranslationNote () . "',
-							`tableMappingTranslationTranslationEnglish`	=	'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
+					SET 	`tableMappingTranslationTranslationNote`	=	'" . $this->model->getTableMappingTranslationTranslationNote () . "',
+							`tableMappingTranslationTranslationEnglish`	=	'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
 							`isDefault`									=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							`isActive`									=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							`isNew`										=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -417,12 +417,12 @@ class TableMappingTranslateClass extends ConfigClass {
 							`isApproved`								=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							`executeBy`									=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`								=	" . $this->model->getExecuteTime () . "
-					WHERE 	`tableMappingTranslationTranslationId`		=	'" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
+					WHERE 	`tableMappingTranslationTranslationId`		=	'" . $this->model->getTableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 					UPDATE 	[tableMappingTranslate]
-					SET 	[tableMappingTranslationTranslationNote]	=	'" . $this->model->gettableMappingTranslationTranslationNote () . "',
-							[tableMappingTranslationTranslationEnglish]	=	'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
+					SET 	[tableMappingTranslationTranslationNote]	=	'" . $this->model->getTableMappingTranslationTranslationNote () . "',
+							[tableMappingTranslationTranslationEnglish]	=	'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
 							[isDefault]									=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							[isActive]									=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							[isNew]										=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -432,12 +432,12 @@ class TableMappingTranslateClass extends ConfigClass {
 							[isApproved]								=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							[executeBy]									=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]								=	" . $this->model->getExecuteTime () . "
-					WHERE 	[tableMappingTranslationTranslationId]		=	'" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
+					WHERE 	[tableMappingTranslationTranslationId]		=	'" . $this->model->getTableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 					UPDATE 	TABLEMAPPINGTRANSLATE
-					SET 	TABLEMAPPINGTRANSLATENOTE					=	'" . $this->model->gettableMappingTranslationTranslationNote () . "',
-							TABLEMAPPINGTRANSLATIONENGLISH				=	'" . $this->model->gettableMappingTranslationTranslationEnglish () . "',
+					SET 	TABLEMAPPINGTRANSLATENOTE					=	'" . $this->model->getTableMappingTranslationTranslationNote () . "',
+							TABLEMAPPINGTRANSLATIONENGLISH				=	'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
 							ISDEFAULT									=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE									=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW										=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -449,11 +449,11 @@ class TableMappingTranslateClass extends ConfigClass {
 							ISPOST										=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
 							EXECUTEBY									=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME									=	" . $this->model->getExecuteTime () . "
-					WHERE 	TABLEMAPPINGTRANSLATE						=	'" . $this->model->gettableMappingTranslationTranslationId ( 0, 'single' ) . "'";
+					WHERE 	TABLEMAPPINGTRANSLATEID						=	'" . $this->model->getTableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => FALSE, "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
 			exit ();
 		}
 		$this->q->commit ();
@@ -486,7 +486,7 @@ class TableMappingTranslateClass extends ConfigClass {
 							`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`			=	" . $this->model->getExecuteTime () . "
-					WHERE 	`tableMappingTranslationTranslationId`		=	'" . $this->model->gettableMappingTranslationTranslationId () . "'";
+					WHERE 	`tableMappingTranslationTranslationId`		=	'" . $this->model->getTableMappingTranslationTranslationId () . "'";
 
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -500,7 +500,7 @@ class TableMappingTranslateClass extends ConfigClass {
 							[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							[executeBy]		=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]	=	" . $this->model->getExecuteTime () . "
-					WHERE 	[tableMappingTranslationTranslationId]		=	'" . $this->model->gettableMappingTranslationTranslationId () . "'";
+					WHERE 	[tableMappingTranslationTranslationId]		=	'" . $this->model->getTableMappingTranslationTranslationId () . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 					UPDATE	TABLEMAPPINGTRANSLATION
@@ -515,7 +515,7 @@ class TableMappingTranslateClass extends ConfigClass {
 							ISPOST		=	'" . $this->model->getIsPost ( 0, 'single' ) . "',
 							EXECUTEBY	=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime () . "
-					WHERE 	\"tableMappingTranslationTranslationId\"	=	'" . $this->model->gettableMappingTranslationTranslationId () . "'";
+					WHERE 	TABLEMAPPINGTRANSLATIONID	=	'" . $this->model->getTableMappingTranslationTranslationId () . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -577,14 +577,14 @@ class TableMappingTranslateClass extends ConfigClass {
 				case 'isDefault' :
 					for($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
-							WHEN '" . $this->model->gettableMappingTranslationId ( $i, 'array' ) . "'
+							WHEN '" . $this->model->getTableMappingTranslationId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDefault ( $i, 'array' ) . "'";
 					}
 					break;
 				case 'isNew' :
 					for($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
-							WHEN '" . $this->model->gettableMappingTranslationId ( $i, 'array' ) . "'
+							WHEN '" . $this->model->getTableMappingTranslationId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
 							
 					}
@@ -592,35 +592,35 @@ class TableMappingTranslateClass extends ConfigClass {
 				case 'isDraft' :
 					for($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
-							WHEN '" . $this->model->gettableMappingTranslationId ( $i, 'array' ) . "'
+							WHEN '" . $this->model->getTableMappingTranslationId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDraft ( $i, 'array' ) . "'";
 					}
 					break;
 				case 'isUpdate' :
 					for($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
-							WHEN '" . $this->model->gettableMappingTranslationId ( $i, 'array' ) . "'
+							WHEN '" . $this->model->getTableMappingTranslationId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
 					}
 					break;
 				case 'isDelete' :
 					for($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
-							WHEN '" . $this->model->gettableMappingTranslationId ( $i, 'array' ) . "'
+							WHEN '" . $this->model->getTableMappingTranslationId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
 					}
 					break;
 				case 'isActive' :
 					for($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
-							WHEN '" . $this->model->gettableMappingTranslationId ( $i, 'array' ) . "'
+							WHEN '" . $this->model->getTableMappingTranslationId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsActive ( $i, 'array' ) . "'";
 					}
 					break;
 				case 'isApproved' :
 					for($i = 0; $i < $loop; $i ++) {
 						$sqlLooping .= "
-							WHEN '" . $this->model->gettableMappingTranslationId ( $i, 'array' ) . "'
+							WHEN '" . $this->model->getTableMappingTranslationId ( $i, 'array' ) . "'
 							THEN '" . $this->model->getIsApproved ( $i, 'array' ) . "'";
 					}
 					break;

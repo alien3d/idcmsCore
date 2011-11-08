@@ -2,6 +2,7 @@
 
 session_start();
 require_once ("../../class/classAbstract.php");
+require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../model/calendarModel.php");
@@ -104,6 +105,11 @@ class CalendarClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
+		$this->recordSet = new RecordSet ();
+        $this->recordSet->setTableName($this->model->getTableName());
+        $this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+        $this->recordSet->execute();
+        
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
@@ -343,8 +349,8 @@ class CalendarClass extends ConfigClass {
 						'message' => 'data loaded', 
 						'data' => $items,
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
-            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
-            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getCalendarId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getCalendarId(0, 'single')), 
             			'lastRecord' => $this->recordSet->lastRecord('value')));
 			exit();
 		}

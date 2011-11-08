@@ -51,7 +51,7 @@ class EventModel extends ValidationClass {
 	 * Event Reminder
 	 * @var bool
 	 */
-	private $reminder;
+	private $eventReminder;
 	/**
 	 * Event Url.E.g  www.idcmsCore.org
 	 * @var url

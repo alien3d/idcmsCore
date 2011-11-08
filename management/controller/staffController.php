@@ -866,8 +866,8 @@ class StaffClass extends ConfigClass {
 						'total' => $total, 
 						'message' => 'Data Loaded', 
 						'firstRecord' => $this->recordSet->firstRecord (), 
-						'nextRecord' => $this->recordSet->nextRecord ( $this->model->getStaffId ( 0, 'single' ) ), 
-						'previousRecord' => $this->recordSet->previousRecord ( $this->model->getStaffId ( 0, 'single' ) ), 
+						'nextRecord' => $this->recordSet->nextRecord ( $this->model->getStaffId( 0, 'single' ) ), 
+						'previousRecord' => $this->recordSet->previousRecord ( $this->model->getStaffId( 0, 'single' ) ), 
 						'lastRecord' => $this->recordSet->lastRecord (), 
 						'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
@@ -883,8 +883,8 @@ class StaffClass extends ConfigClass {
 						'message' => 'data loaded', 
 						'data' => $items, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
-            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
-            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getStaffId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getStaffId(0, 'single')), 
             			'lastRecord' => $this->recordSet->lastRecord('value') ) );
 			exit ();
 		}

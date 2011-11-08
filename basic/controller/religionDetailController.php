@@ -505,8 +505,8 @@ class ReligionDetailClass extends ConfigClass {
 				'message' => 'data loaded', 
 				'dataDetail' => $items, 
             	'firstRecord' => $this->recordSet->firstRecord('value'), 
-            	'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
-            	'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            	'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionDetailId(0, 'single')), 
+            	'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionDetailId(0, 'single')), 
             	'lastRecord' => $this->recordSet->lastRecord('value')));
 			exit();
 		}

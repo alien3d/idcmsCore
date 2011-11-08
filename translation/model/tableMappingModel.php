@@ -310,7 +310,7 @@ class TableMappingModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return int|array
 	 */
-	public function gettableMappingId($key, $type) {
+	public function getTableMappingId($key, $type) {
 		if ($type == 'single') {
 			return $this->tableMappingId;
 		} else if ($type == 'array') {
