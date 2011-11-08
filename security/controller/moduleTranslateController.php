@@ -595,7 +595,14 @@ class moduleTranslateClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+			echo json_encode(
+				array(	'success' => true, 
+						'total' => $total, 
+						'data' => $items, 
+            			'firstRecord' => $this->recordSet->firstRecord('value'), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'lastRecord' => $this->recordSet->lastRecord('value')));
 			exit();
 		}
 	}

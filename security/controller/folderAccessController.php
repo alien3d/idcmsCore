@@ -353,16 +353,21 @@ class FolderAccessClass extends ConfigClass {
 		}
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
-			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			echo json_encode(
+			array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 		while (($row = $this->q->fetchAssoc()) == true) {
-			// select module access
 			$items [] = $row;
-
-			// select module access
 		}
-		echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+		echo json_encode(
+			array(	'success' => true, 
+					'total' => $total, 
+					'data' => $items, 
+            		'firstRecord' => $this->recordSet->firstRecord('value'), 
+            		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            		'lastRecord' => $this->recordSet->lastRecord('value')));
 	}
 
 	/* (non-PHPdoc)

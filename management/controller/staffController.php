@@ -861,7 +861,15 @@ class StaffClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getStaffId ( 0, 'single' )) {
-			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'message' => 'Data Loaded', 'firstRecord' => $this->recordSet->firstRecord (), 'nextRecord' => $this->recordSet->nextRecord ( $this->model->getStaffId ( 0, 'single' ) ), 'previousRecord' => $this->recordSet->previousRecord ( $this->model->getStaffId ( 0, 'single' ) ), 'lastRecord' => $this->recordSet->lastRecord (), 'data' => $items ) );
+			$json_encode = json_encode ( 
+				array (	'success' => true, 
+						'total' => $total, 
+						'message' => 'Data Loaded', 
+						'firstRecord' => $this->recordSet->firstRecord (), 
+						'nextRecord' => $this->recordSet->nextRecord ( $this->model->getStaffId ( 0, 'single' ) ), 
+						'previousRecord' => $this->recordSet->previousRecord ( $this->model->getStaffId ( 0, 'single' ) ), 
+						'lastRecord' => $this->recordSet->lastRecord (), 
+						'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -869,7 +877,15 @@ class StaffClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( array ('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items ) );
+			echo json_encode ( 
+				array (	'success' => true, 
+						'total' => $total, 
+						'message' => 'data loaded', 
+						'data' => $items, 
+            			'firstRecord' => $this->recordSet->firstRecord('value'), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'lastRecord' => $this->recordSet->lastRecord('value') ) );
 			exit ();
 		}
 	}

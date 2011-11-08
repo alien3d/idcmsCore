@@ -43,7 +43,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * Leaf  Identification(** For Filtering only)
 	 * @var int
 	 */
-	private $leafTempId;
+	private $leafIdTemp;
 	/**
 	 * Leaf  Identification
 	 * @var int
@@ -344,22 +344,6 @@ class leafTeamAccessModel extends ValidationClass {
 			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getLeaGroupAccessId ?"));
 			exit();
 		}
-	}
-
-	/**
-	 * Set Leaf Identification Value
-	 * @param  int $value
-	 */
-	public function setLeafTempId($value) {
-		$this->leafTempId = $value;
-	}
-
-	/**
-	 * Return Leaf Identification Value
-	 * @return int
-	 */
-	public function getLeafTempId() {
-		return $this->leafTempId;
 	}
 
 	/**

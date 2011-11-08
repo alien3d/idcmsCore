@@ -488,7 +488,11 @@ class ThemeClass  extends ConfigClass {
                 'success' => true,
                 'total' => $total,
 				'message' => 'Data Loaded',
-                'data' => $items
+                'data' => $items, 
+            			'firstRecord' => $this->recordSet->firstRecord('value'), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'lastRecord' => $this->recordSet->lastRecord('value')
             	));
             	$json_encode = str_replace("[", "", $json_encode);
             	$json_encode = str_replace("]", "", $json_encode);
@@ -501,7 +505,11 @@ class ThemeClass  extends ConfigClass {
                 'success' => true,
                 'total' => $total,
 				'message'=>'data loaded',
-                'data' => $items
+                'data' => $items, 
+            			'firstRecord' => $this->recordSet->firstRecord('value'), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'lastRecord' => $this->recordSet->lastRecord('value')
             	));
             	exit();
             }

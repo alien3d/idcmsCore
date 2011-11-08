@@ -273,7 +273,7 @@ class leafTranslateClass extends ConfigClass {
 
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
@@ -309,9 +309,10 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
-			if ($this->model->getLeafIdTemp()) {
-				$sql.= " AND `leafTranslate`.`leafId`='" . $this->model->getLeafIdTemp() . "'";
+			if ($this->model->getLeafIdTemp() && $this->model->getLeafId()) {
+				$sql.= " AND `leafTranslate`.`leafId`='" . $this->model->getLeafId() . "'";
 			}
+				
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[leafTranslate].[leafTranslateId],
@@ -340,8 +341,8 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
-			if ($this->model->getLeafIdTemp()) {
-				$sql.= " AND [leafTranslate].[leafId]='" . $this->model->getLeafIdTemp() . "'";
+			if ($this->model->getLeafIdTemp() &&  $this->model->getLeafId()) {
+				$sql.= " AND [leafTranslate].[leafId]='" . $this->model->getLeafId() . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -371,8 +372,8 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "=" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
-			if ($this->model->getLeafIdTemp()) {
-				$sql.= " AND LEAFTRANSLATE.LEAFID='" . $this->model->getLeafIdTemp() . "'";
+			if ($this->model->getLeafIdTemp() &&  $this->model->getLeafId()) {
+				$sql.= " AND LEAFTRANSLATE.LEAFID='" .$this->model->getLeafId(). "'";
 			}
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
@@ -402,6 +403,9 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "=" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
+			if ($this->model->getLeafIdTemp() &&  $this->model->getLeafId()) {
+				$sql.= " AND LEAFTRANSLATE.LEAFID='" .$this->model->getLeafId(). "'";
+			}
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	LEAFTRANSLATE.LEAFTRANSLATEID,
@@ -430,8 +434,8 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "=" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
-			if ($this->model->getLeafIdTemp()) {
-				$sql.= " AND LEAFTRANSLATE.LEAFID='" .$this->model->getLeafIdTemp(). "'";
+			if ($this->model->getLeafIdTemp() && $this->model->getLeafId()) {
+				$sql.= " AND LEAFTRANSLATE.LEAFID='" .$this->model->getLeafId(). "'";
 			}
 		} else {
 			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
@@ -590,7 +594,14 @@ class leafTranslateClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getLeafTranslateId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+			$json_encode = json_encode(
+				array(	'success' => true, 
+						'total' => $total, 
+						'data' => $items, 
+            			'firstRecord' => $this->recordSet->firstRecord('value'), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -598,7 +609,14 @@ class leafTranslateClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+			echo json_encode(
+					array(	'success' => true, 
+							'total' => $total, 
+							'data' => $items, 
+            				'firstRecord' => $this->recordSet->firstRecord('value'), 
+            				'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            				'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            				'lastRecord' => $this->recordSet->lastRecord('value')));
 			exit();
 		}
 	}

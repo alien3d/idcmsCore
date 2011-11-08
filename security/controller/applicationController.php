@@ -679,7 +679,15 @@ class ApplicationClass extends ConfigClass {
             $items [] = $row;
         }
         if ($this->model->getApplicationId(0, 'single')) {
-            $json_encode = json_encode(array('success' => true, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items));
+            $json_encode = json_encode(
+            array(	'success' => true, 
+            		'total' => $total, 
+            		'message' => 'Data Loaded', 
+            		'data' => $items, 
+            		'firstRecord' => $this->recordSet->firstRecord('value'), 
+            		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            		'lastRecord' => $this->recordSet->lastRecord('value')));
             $json_encode = str_replace("[", "", $json_encode);
             $json_encode = str_replace("]", "", $json_encode);
             echo $json_encode;
@@ -687,7 +695,15 @@ class ApplicationClass extends ConfigClass {
             if (count($items) == 0) {
                 $items = '';
             }
-            echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
+            echo json_encode(
+            		array(	'success' => true, 
+            				'total' => $total, 
+            				'message' => 'data loaded', 
+            				'data' => $items, 
+            			'firstRecord' => $this->recordSet->firstRecord('value'), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            			'lastRecord' => $this->recordSet->lastRecord('value')));
             exit();
         }
     }

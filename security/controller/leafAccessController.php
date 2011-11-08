@@ -214,8 +214,8 @@ class LeafAccessClass extends ConfigClass {
 			if ($this->model->getStaffId()) {
 				$sql .= " AND `leafAccess`.`staffId`	=	'" . $this->model->getStaffId() . "'";
 			}
-			if ($this->model->getLeafIdTemp()) {
-				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafIdTemp() . "'";
+			if ($this->model->getLeafIdTemp() &&  $this->model->getLeafId()) {
+				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId() . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -294,8 +294,8 @@ class LeafAccessClass extends ConfigClass {
 			if ($this->model->getStaffId()) {
 				$sql .= " AND [leafAccess`.[staffId]	=	'" . $this->strict($this->staffId, 'numeric') . "'";
 			}
-			if ($this->model->getLeafIdTemp()) {
-				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafIdTemp(). "'";
+			if ($this->model->getLeafIdTemp() && $this->model->getLeafId()) {
+				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafId(). "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -375,12 +375,11 @@ class LeafAccessClass extends ConfigClass {
 			if ($this->model->getStaffId()) {
 				$sql .= " AND LEAFACCESS.STAFFID='" . $this->model->getStaffId() . "'";
 			}
-			if ($this->model->getLeafIdTemp()) {
-				$sql .= " AND `leafAccess`.`leafId`	=	'" . $this->model->getLeafIdTemp() . "'";
+			if ($this->model->getLeafIdTemp() &&  $this->model->getLeafId()) {
+				$sql .= " AND LEAFACESS.LEAFID	=	'" . $this->model->getLeafId() . "'";
 			}
 		}
-		//echo $sql;
-		// searching filtering
+		
 		$sql .= $this->q->searching();
 
 		$record_all = $this->q->read($sql);
@@ -390,9 +389,7 @@ class LeafAccessClass extends ConfigClass {
 		}
 
 		$total = $this->q->numberRows();
-		//paging
-
-
+		
 		if ($this->getStart() && $this->getLimit()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
@@ -422,7 +419,14 @@ class LeafAccessClass extends ConfigClass {
 			// select module access
 		}
 
-		echo json_encode(array('success' => true, 'total' => $total, 'data' => $items));
+		echo json_encode(array(
+			'success' => true, 
+			'total' => $total, 
+			'data' => $items, 
+            'firstRecord' => $this->recordSet->firstRecord('value'), 
+            'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
+            'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            'lastRecord' => $this->recordSet->lastRecord('value')));
 		exit();
 	}
 
