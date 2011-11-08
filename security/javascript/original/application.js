@@ -2342,7 +2342,7 @@ Ext.onReady(function () {
                                                     applicationId: action.result.data.applicationId
                                                 }
                                             });
-                                            applicationAccessGrid.enable();
+                                            
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -2399,7 +2399,7 @@ Ext.onReady(function () {
                                         applicationId: action.result.data.applicationId
                                     }
                                 });
-                                applicationAccessGrid.enable();
+                                
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -2460,7 +2460,7 @@ Ext.onReady(function () {
                                 if (Ext.getCmp('previousRecord').getValue() == 0) {
                                     Ext.getCmp('previousButton').disable();
                                 }
-                                applicationTranslateGrid.enable();
+                                
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -2527,7 +2527,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('nextButton').disable();
                                 }
                                 Ext.getCmp('previousButton').enable();
-                                applicationTranslateGrid.enable();
+                                
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -2602,7 +2602,7 @@ Ext.onReady(function () {
                                             });
                                             Ext.getCmp('nextButton').disable();
                                             Ext.getCmp('previousButton').enable();
-                                            applicationTranslateGrid.enable();
+                                            
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -2653,7 +2653,7 @@ Ext.onReady(function () {
                                     });
                                     Ext.getCmp('nextButton').disable();
                                     Ext.getCmp('previousButton').enable();
-                                    applicationTranslateGrid.enable();
+                                    
                                 } else {
                                     Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                 }

@@ -2115,7 +2115,7 @@ Ext.onReady(function () {
                                                     moduleId: action.result.data.moduleId
                                                 }
                                             });
-                                            moduleTranslateGrid.enable();
+                                            
                                             moduleAccessStore.load({
                                                 params: {
                                                     leafId: leafId,
@@ -2183,7 +2183,7 @@ Ext.onReady(function () {
                                         moduleId: action.result.data.moduleId
                                     }
                                 });
-                                moduleTranslateGrid.enable();
+                                
                                 moduleAccessStore.load({
                                     params: {
                                         leafId: leafId,
@@ -2260,7 +2260,7 @@ Ext.onReady(function () {
                                 if (Ext.getCmp('previousRecord').getValue() == 0) {
                                     Ext.getCmp('previousButton').disable();
                                 }
-                                moduleTranslateGrid.enable();
+                                
                             } else {
                                 Ext.MessageBox.alert(
                                 systemErrorLabel, action.result.message);
@@ -2336,7 +2336,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('nextButton').disable();
                                 }
                                 Ext.getCmp('previousButton').enable();
-                                moduleTranslateGrid.enable();
+                                
                             } else {
                                 Ext.MessageBox.alert(
                                 systemErrorLabel, action.result.message);
@@ -2422,7 +2422,7 @@ Ext.onReady(function () {
                                             });
                                             Ext.getCmp('nextButton').disable();
                                             Ext.getCmp('previousButton').enable();
-                                            moduleTranslateGrid.enable();
+                                            
                                         } else {
                                             Ext.MessageBox.alert(
                                             systemErrorLabel, action.result.message);
@@ -2484,7 +2484,7 @@ Ext.onReady(function () {
                                     });
                                     Ext.getCmp('nextButton').disable();
                                     Ext.getCmp('previousButton').enable();
-                                    moduleTranslateGrid.enable();
+                                    
                                 } else {
                                     Ext.MessageBox.alert(
                                     systemErrorLabel, action.result.message);

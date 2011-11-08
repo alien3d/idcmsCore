@@ -2160,7 +2160,7 @@ Ext.onReady(function () {
                                                     folderId: action.result.data.folderId
                                                 }
                                             });
-                                            folderTranslateGrid.enable();
+                                            
                                             folderAccessStore.load({
                                                 params: {
                                                     leafId: leafId,
@@ -2168,7 +2168,7 @@ Ext.onReady(function () {
                                                     folderId: action.result.data.folderId
                                                 }
                                             });
-                                            folderAccessGrid.enable();
+                                            
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -2217,7 +2217,7 @@ Ext.onReady(function () {
                                         folderId: action.result.data.folderId
                                     }
                                 });
-                                folderTranslateGrid.enable();
+                                
                                 folderAccessStore.load({
                                     params: {
                                         leafId: leafId,
@@ -2225,7 +2225,7 @@ Ext.onReady(function () {
                                         folderId: action.result.data.folderId
                                     }
                                 });
-                                folderAccessGrid.enable();
+                                
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -2286,7 +2286,7 @@ Ext.onReady(function () {
                                 if (Ext.getCmp('previousRecord').getValue() == 0) {
                                     Ext.getCmp('previousButton').disable();
                                 }
-                                folderTranslateGrid.enable();
+                                
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -2353,7 +2353,7 @@ Ext.onReady(function () {
                                     Ext.getCmp('nextButton').disable();
                                 }
                                 Ext.getCmp('previousButton').enable();
-                                folderTranslateGrid.enable();
+                                
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -2428,7 +2428,7 @@ Ext.onReady(function () {
                                             });
                                             Ext.getCmp('nextButton').disable();
                                             Ext.getCmp('previousButton').enable();
-                                            folderTranslateGrid.enable();
+                                            
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -2479,7 +2479,6 @@ Ext.onReady(function () {
                                     });
                                     Ext.getCmp('nextButton').disable();
                                     Ext.getCmp('previousButton').enable();
-                                    folderTranslateGrid.enable();
                                 } else {
                                     Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                 }

@@ -2566,6 +2566,7 @@ Ext.onReady(function () {
       iconCls: 'resultset_first',
       handler: function () {
         Ext.getCmp('newButton').disable();
+        Ext.getCmp('saveButton').enable();
         Ext.getCmp('leafTranslateGrid').enable();
         Ext.getCmp('leafAccessGrid').enable();
         Ext.getCmp('leafTeamAccessGrid').enable();
@@ -2621,7 +2622,7 @@ Ext.onReady(function () {
                           leafId: action.result.data.leafId
                         }
                       });
-                      leafTranslateGrid.enable();
+                      
                       leafAccessStore.load({
                         params: {
                           leafIdTemp: leafIdTemp,
@@ -2689,7 +2690,7 @@ Ext.onReady(function () {
                     leafId: action.result.data.leafId
                   }
                 });
-                leafTranslateGrid.enable();
+                
                 leafAccessStore.load({
                   params: {
                     leafIdTemp: leafIdTemp,
@@ -2767,7 +2768,7 @@ Ext.onReady(function () {
                 if (Ext.getCmp('previousRecord').getValue() == 0) {
                   Ext.getCmp('previousButton').disable();
                 }
-                leafTranslateGrid.enable();
+                
               } else {
                 Ext.MessageBox.alert(
                 systemErrorLabel, action.result.message);
@@ -2844,7 +2845,7 @@ Ext.onReady(function () {
                   Ext.getCmp('nextButton').disable();
                 }
                 Ext.getCmp('previousButton').enable();
-                leafTranslateGrid.enable();
+                
               } else {
                 Ext.MessageBox.alert(
                 systemErrorLabel, action.result.message);
@@ -2931,7 +2932,7 @@ Ext.onReady(function () {
                       });
                       Ext.getCmp('nextButton').disable();
                       Ext.getCmp('previousButton').enable();
-                      leafTranslateGrid.enable();
+                      Ext.getCmp('saveButton').enable();
                     } else {
                       Ext.MessageBox.alert(
                       systemErrorLabel, action.result.message);
@@ -2993,7 +2994,7 @@ Ext.onReady(function () {
                   });
                   Ext.getCmp('nextButton').disable();
                   Ext.getCmp('previousButton').enable();
-                  leafTranslateGrid.enable();
+                  Ext.getCmp('saveButton').enable();
                 } else {
                   Ext.MessageBox.alert(
                   systemErrorLabel, action.result.message);

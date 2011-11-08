@@ -485,7 +485,7 @@ class leafTranslateClass extends ConfigClass {
 				$sql .= $this->q->searching();
 			}
 		}
-		//echo $sql;
+	
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
