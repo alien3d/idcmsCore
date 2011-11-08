@@ -113,7 +113,16 @@ class LeafTeamAccessClass extends ConfigClass {
 		$this->security = new Security ();
 		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
+		
+		
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
 
+		$this->documentTrail = new DocumentTrailClass ();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->execute();
 		
 
 		$this->excel = new PHPExcel ();

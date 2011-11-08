@@ -509,7 +509,6 @@ class leafTranslateClass extends ConfigClass {
 		$_SESSION ['start'] = $this->getStart();
 		$_SESSION ['limit'] = $this->getLimit();
 		if ($this->getStart() && $this->getLimit()) {
-			// only mysql have limit
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
 			} else if ($this->getVendor() == self::MSSQL) {

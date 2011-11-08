@@ -104,6 +104,11 @@ class LogAdvanceClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName ( $this->model->getTableName () );
+		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
+		$this->recordSet->execute ();
+		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();

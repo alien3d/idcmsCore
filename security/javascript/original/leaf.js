@@ -903,6 +903,8 @@ Ext.onReady(function () {
             Ext.getCmp('leafTranslateGrid').enable();
             Ext.getCmp('leafAccessGrid').enable();
             Ext.getCmp('leafTeamAccessGrid').enable();
+            
+            Ext.getCmp('folderId').enable();
             viewPort.items.get(1).expand();
           },
           failure: function (form, action) {
@@ -2823,7 +2825,7 @@ Ext.onReady(function () {
                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
                 leafTranslateStore.load({
                   params: {
-                    leafTempd: leafIdTemp,
+                    leafIdTemp: leafIdTemp,
                     isAdmin: isAdmin,
                     leafId: action.result.data.leafId
                   }
