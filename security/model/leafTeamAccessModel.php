@@ -153,49 +153,49 @@ class leafTeamAccessModel extends ValidationClass {
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
 			if (isset($_GET ['leafTeamAccessId'])) {
-				$this->setleafTeamAccessId($this->strict($_GET ['leafTeamAccessId'] [$i], 'numeric'), $i);
+				$this->setLeafTeamAccessId($this->strict($_GET ['leafTeamAccessId'] [$i], 'numeric'), $i);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessCreateValue'] [$i] == 'true') {
-					$this->setleafTeamAccessCreateValue($i, 1);
+					$this->setLeafTeamAccessCreateValue($i, 1);
 				}
 			} else {
-				$this->setleafTeamAccessCreateValue($i, 0);
+				$this->setLeafTeamAccessCreateValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessReadValue'] [$i] == 'true') {
-					$this->setleafTeamAccessReadValue($i, 1);
+					$this->setLeafTeamAccessReadValue($i, 1);
 				}
 			} else {
-				$this->setleafTeamAccessReadValue($i, 0);
+				$this->setLeafTeamAccessReadValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessUpdateValue'] [$i] == 'true') {
-					$this->setleafTeamAccessUpdateValue($i, 1);
+					$this->setLeafTeamAccessUpdateValue($i, 1);
 				}
 			} else {
-				$this->setleafTeamAccessUpdateValue($i, 0);
+				$this->setLeafTeamAccessUpdateValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessDeleteValue'] [$i] == 'true') {
-					$this->setleafTeamAccessDeleteValue($i, 1);
+					$this->setLeafTeamAccessDeleteValue($i, 1);
 				}
 			} else {
-				$this->setleafTeamAccessDeleteValue($i, 1);
+				$this->setLeafTeamAccessDeleteValue($i, 1);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessPrintValue'] [$i] == 'true') {
-					$this->setleafTeamAccessPrintValue($i, 1);
+					$this->setLeafTeamAccessPrintValue($i, 1);
 				}
 			} else {
-				$this->setleafTeamAccessPrintValue($i, 0);
+				$this->setLeafTeamAccessPrintValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessPostValue'] [$i] == 'true') {
-					$this->setleafTeamAccessPostValue($i, 1);
+					$this->setLeafTeamAccessPostValue($i, 1);
 				}
 			} else {
-				$this->setleafTeamAccessPostValue($i, 0);
+				$this->setLeafTeamAccessPostValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessDraftValue'] [$i] == 'true') {
@@ -204,9 +204,9 @@ class leafTeamAccessModel extends ValidationClass {
 				}
 			} else {
 				$this->leafTeamAccessDraftValue [$i] = 0;
-				$this->setleafTeamAccessDraftValue($i, 0);
+				$this->setLeafTeamAccessDraftValue($i, 0);
 			}
-			$primaryKeyAll .= $this->getleafTeamAccessId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getLeafTeamAccessId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 
@@ -318,13 +318,13 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setleafTeamAccessId($value, $key, $type) {
+	public function setLeafTeamAccessId($value, $key, $type) {
 		if ($type == 'single') {
 			$this->leafTeamAccessId = $value;
 		} else if ($type == 'array') {
 			$this->leafTeamAccessId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setleafTeamAccessId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setLeafTeamAccessId ?"));
 			exit();
 		}
 	}
@@ -335,7 +335,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return int|array
 	 */
-	public function getleafTeamAccessId($key, $type) {
+	public function getLeafTeamAccessId($key, $type) {
 		if ($type == 'single') {
 			return $this->leafTeamAccessId;
 		} else if ($type == 'array') {
@@ -344,6 +344,7 @@ class leafTeamAccessModel extends ValidationClass {
 			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getLeaGroupAccessId ?"));
 			exit();
 		}
+		
 	}
 
 	/**
@@ -368,7 +369,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'e
 	 */
-	public function setleafTeamAccessCreateValue($value, $key, $type) {
+	public function setLeafTeamAccessCreateValue($value, $key, $type) {
 		$this->leafTeamAccessCreateValue [$key] = $value;
 	}
 
@@ -378,7 +379,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getleafTeamAccessCreateValue($key, $type) {
+	public function getLeafTeamAccessCreateValue($key, $type) {
 		return $this->leafTeamAccessCreateValue [$key];
 	}
 
@@ -388,7 +389,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setleafTeamAccessReadValue($value, $key, $type) {
+	public function setLeafTeamAccessReadValue($value, $key, $type) {
 		$this->leafTeamAccessReadValue [$key] = $value;
 	}
 
@@ -398,7 +399,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getleafTeamAccessReadValue($key, $type) {
+	public function getLeafTeamAccessReadValue($key, $type) {
 		return $this->leafTeamAccessReadValue [$key];
 	}
 
@@ -408,7 +409,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setleafTeamAccessUpdateValue($value, $key, $type) {
+	public function setLeafTeamAccessUpdateValue($value, $key, $type) {
 		$this->leafTeamAccessUpdateValue [$key] = $value;
 	}
 
@@ -418,7 +419,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getleafTeamAccessUpdateValue($key, $type) {
+	public function getLeafTeamAccessUpdateValue($key, $type) {
 		return $this->leafTeamAccessUpdateValue [$key];
 	}
 
@@ -428,7 +429,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setleafTeamAccessDeleteValue($value, $key, $type) {
+	public function setLeafTeamAccessDeleteValue($value, $key, $type) {
 		$this->leafTeamAccessUpdateValue [$key] = $value;
 	}
 
@@ -438,7 +439,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getleafTeamAccessDeleteValue($key, $type) {
+	public function getLeafTeamAccessDeleteValue($key, $type) {
 		return $this->leafTeamAccessDeleteValue [$key];
 	}
 
@@ -448,7 +449,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setleafTeamAccessPrintValue($value, $key, $type) {
+	public function setLeafTeamAccessPrintValue($value, $key, $type) {
 		$this->leafTeamAccessPrintValue [$key] = $value;
 	}
 
@@ -458,7 +459,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getleafTeamAccessPrintValue($key, $type) {
+	public function getLeafTeamAccessPrintValue($key, $type) {
 		return $this->leafTeamAccessPrintValue [$key];
 	}
 
@@ -468,7 +469,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setleafTeamAccessPostValue($value, $key, $type) {
+	public function setLeafTeamAccessPostValue($value, $key, $type) {
 		$this->leafTeamAccessPostValue [$key] = $value;
 	}
 
@@ -478,7 +479,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getleafTeamAccessPostValue($key, $type) {
+	public function getLeafTeamAccessPostValue($key, $type) {
 		return $this->leafTeamAccessPostValue [$key];
 	}
 
@@ -488,7 +489,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setleafTeamAccessDraftValue($value, $key, $type) {
+	public function setLeafTeamAccessDraftValue($value, $key, $type) {
 		$this->leafTeamAccessDraftValue [$key] = $value;
 	}
 
@@ -498,7 +499,7 @@ class leafTeamAccessModel extends ValidationClass {
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getleafTeamAccessDraftValue($key, $type) {
+	public function getLeafTeamAccessDraftValue($key, $type) {
 		return $this->leafTeamAccessDraftValue [$key];
 	}
 

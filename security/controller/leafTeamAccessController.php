@@ -558,13 +558,14 @@ class LeafTeamAccessClass extends ConfigClass {
 		if (count($items) == 0) {
 			$items = '';
 		}
+		
 		echo json_encode(
 			array(	'success' => true, 
 					'total' => $this->total, 
 					'data' => $items, 
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
-            		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
-            		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLeafTeamAccessId(0, 'single')), 
+            		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getLeafTeamAccessId(0, 'single')), 
             		'lastRecord' => $this->recordSet->lastRecord('value')));
 		exit();
 	}

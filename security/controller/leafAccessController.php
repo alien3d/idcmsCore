@@ -411,12 +411,7 @@ class LeafAccessClass extends ConfigClass {
 		}
 
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
-			// select module access
-
-
 			$items [] = $row;
-
-			// select module access
 		}
 
 		echo json_encode(array(
@@ -424,8 +419,8 @@ class LeafAccessClass extends ConfigClass {
 			'total' => $total, 
 			'data' => $items, 
             'firstRecord' => $this->recordSet->firstRecord('value'), 
-            'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
-            'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLeafAccessId(0, 'single')), 
+            'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getLeafAccessId(0, 'single')), 
             'lastRecord' => $this->recordSet->lastRecord('value')));
 		exit();
 	}
