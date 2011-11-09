@@ -78,7 +78,7 @@ class ThemeClass  extends ConfigClass {
 		$this->model         	= 	new ThemeModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q              	= 	new Vendor();
 		$this->q->vendor      	= 	$this->getVendor();
 		$this->q->leafId      	= 	$this->getLeafId();
@@ -90,6 +90,11 @@ class ThemeClass  extends ConfigClass {
 		$this->q->log        	= 	$this->log;
 		$this->q->audit        	=	$this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
+
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
 
 		$this->documentTrail 	= new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
@@ -106,9 +111,9 @@ class ThemeClass  extends ConfigClass {
 	 */
 	function create() 				{
 		header('Content-Type:application/json; charset=utf-8');
-
+		$start = microtime(true);
 		if($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
@@ -192,7 +197,7 @@ class ThemeClass  extends ConfigClass {
 		$this->q->create($sql);
 
 		if($this->q->execute=='fail'){
-			echo json_encode(array("success"=>FALSE,"message"=>$this->q->responce));
+			echo json_encode(array("success"=>false,"message"=>$this->q->responce));
 			exit();
 		}
 
@@ -200,7 +205,9 @@ class ThemeClass  extends ConfigClass {
 
 
 		$this->q->commit();
-		echo json_encode(array("success"=>"true","message"=>"Record Created"));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(array("success"=>true,"message"=>"Record Created","time"=>$time));
 		exit();
 
 	}
@@ -209,6 +216,7 @@ class ThemeClass  extends ConfigClass {
 	 */
 	function read() 				{
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if($this->isAdmin == 0) {
 			if($this->getVendor()==self::MYSQL) {
 				$this->auditFilter = "	`theme`.`isActive`		=	1	";
@@ -234,7 +242,7 @@ class ThemeClass  extends ConfigClass {
 
 			}
 		}
-		//UTF8
+		
 		$items=array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -484,15 +492,18 @@ class ThemeClass  extends ConfigClass {
             	$items[] = $row;
             }
             if ($this->model->getThemeId(0,'single')) {
+            	$end = microtime(true);
+            	$time = $end - $start;
             	$json_encode = json_encode(array(
-                'success' => true,
-                'total' => $total,
-				'message' => 'Data Loaded',
-                'data' => $items, 
-            			'firstRecord' => $this->recordSet->firstRecord('value'), 
-            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getThemeId(0, 'single')), 
-            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getThemeId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')
+                	'success' => true,
+                	'total' => $total,
+					'message' => 'Data Loaded',
+                	'time'=>$time,
+            		'firstRecord' => $this->recordSet->firstRecord('value'), 
+            		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getThemeId(0, 'single')), 
+            		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getThemeId(0, 'single')), 
+            		'lastRecord' => $this->recordSet->lastRecord('value'),
+            		'data' => $items, 
             	));
             	$json_encode = str_replace("[", "", $json_encode);
             	$json_encode = str_replace("]", "", $json_encode);
@@ -501,15 +512,18 @@ class ThemeClass  extends ConfigClass {
             	if (count($items) == 0) {
             		$items = '';
             	}
+            	$end = microtime(true);
+            	$time = $end - $start;
             	echo json_encode(array(
                 'success' => true,
                 'total' => $total,
 				'message'=>'data loaded',
-                'data' => $items, 
+                'time'=>$time,
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getThemeId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getThemeId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+            	'data' => $items
             	));
             	exit();
             }
@@ -522,8 +536,9 @@ class ThemeClass  extends ConfigClass {
 	 */
 	function update() 				{
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
@@ -587,7 +602,12 @@ class ThemeClass  extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success"=>true,"message"=>"Record Update"));
+		$end = microtime(true);
+        $time = $end - $start;
+		echo json_encode(
+			array(	"success"=>true,
+					"message"=>"Record Update",
+					"time"=>$time));
 		exit();
 	}
 	/* (non-PHPdoc)
@@ -595,8 +615,9 @@ class ThemeClass  extends ConfigClass {
 	 */
 	function delete()				{
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
@@ -651,8 +672,12 @@ class ThemeClass  extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-
-		echo json_encode(array("success"=>true,"message"=>"Record Remove"));
+		$end = microtime(true);
+        $time = $end - $start;
+		echo json_encode(
+			array(	"success"=>true,
+					"message"=>"Record Remove",
+					"time"=>$time));
 		exit();
 
 	}
@@ -661,8 +686,9 @@ class ThemeClass  extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -948,20 +974,22 @@ class ThemeClass  extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
-		);
+		$end = microtime(true);
+        $time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $message,
+            		"time" => $time));
 		exit();
 	}
 	/**
 	 *  To check if a key duplicate or not
 	 */
-	function duplicate()
-	{
+	function duplicate(){
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1013,9 +1041,8 @@ class ThemeClass  extends ConfigClass {
 	 * @see config::excel()
 	 */
 	function excel() {
-
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);

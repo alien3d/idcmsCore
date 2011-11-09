@@ -115,8 +115,9 @@ class DepartmentClass extends ConfigClass {
 	 */
 	function create() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -195,7 +196,12 @@ class DepartmentClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Record Created" ) );
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true,
+					 "message" => "Record Created",
+					 "time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -203,6 +209,7 @@ class DepartmentClass extends ConfigClass {
 	 */
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	`department`.`isActive`		=	1	";
@@ -220,7 +227,7 @@ class DepartmentClass extends ConfigClass {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
-		//UTF8
+		
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -460,6 +467,8 @@ class DepartmentClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getDepartmentId ( 0, 'single' )) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode ( 
 			array (	'success' => true, 
 					'total' => $total, 
@@ -473,6 +482,8 @@ class DepartmentClass extends ConfigClass {
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
 		} else {
+			$end = microtime(true);
+			$time = $end - $start;
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
@@ -493,12 +504,13 @@ class DepartmentClass extends ConfigClass {
 	 */
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
-		$this->q->commit ();
+		$this->q->start ();
 		$this->model->update ();
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
@@ -595,7 +607,12 @@ class DepartmentClass extends ConfigClass {
 			}
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => "Record Update",
+					"time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -603,12 +620,13 @@ class DepartmentClass extends ConfigClass {
 	 */
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
-		$this->q->commit ();
+		$this->q->start ();
 		$this->model->delete ();
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor () == self::MYSQL) {
@@ -697,7 +715,12 @@ class DepartmentClass extends ConfigClass {
 			}
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Record Remove" ) );
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode ( 
+			array ("success" => true, 
+					"message" => "Record Remove",
+					"time"=>$time ) );
 		exit ();
 	}
 	/**
@@ -705,11 +728,13 @@ class DepartmentClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$this->q->start();
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -992,9 +1017,12 @@ class DepartmentClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		$end = microtime(true);
+			$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $message,
+					"time"=>$time)
 		);
 		exit();
 	}
@@ -1003,11 +1031,13 @@ class DepartmentClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
+		$this->q->start();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			SELECT	*
@@ -1050,7 +1080,14 @@ class DepartmentClass extends ConfigClass {
 			if ($this->duplicateTest == 1) {
 				return $total . "|" . $row ['departmentCode'];
 			} else {
-				echo json_encode ( array ("success" => true, "total" => $total, "message" => "Duplicate Record", "departmentCode" => $row ['departmentCode'] ) );
+				$end = microtime(true);
+				$time = $end - $start;
+				echo json_encode ( 
+					array (	"success" => true, 
+							"total" => $total, 
+							"message" => "Duplicate Record", 
+							"departmentCode" => $row ['departmentCode'],
+							"time"=>$time ) );
 				exit ();
 			}
 		}
@@ -1072,7 +1109,7 @@ class DepartmentClass extends ConfigClass {
 	 */
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
@@ -1194,7 +1231,13 @@ class DepartmentClass extends ConfigClass {
 		$objWriter->save ( $path );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => true, "message" => "File generated", "filename" => $filename ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode ( 
+				array (	"success" => true, 
+						"message" => "File generated", 
+						"filename" => $filename,
+						"time"=>$time ) );
 			exit ();
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );

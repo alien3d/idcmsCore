@@ -124,8 +124,9 @@ class DocumentCategoryClass extends ConfigClass {
 
 	function create() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -210,7 +211,12 @@ class DocumentCategoryClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created"));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => "Record Created",
+					"time"=>$time));
 		exit();
 	}
 
@@ -220,6 +226,7 @@ class DocumentCategoryClass extends ConfigClass {
 
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	`documentCategory`.`isActive`		=	1	";
@@ -237,7 +244,7 @@ class DocumentCategoryClass extends ConfigClass {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
-		//UTF8
+		
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -487,6 +494,8 @@ class DocumentCategoryClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getDocumentCategoryId(0, 'single')) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
@@ -500,6 +509,8 @@ class DocumentCategoryClass extends ConfigClass {
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
 		} else {
+			$end = microtime(true);
+			$time = $end - $start;
 			if (count($items) == 0) {
 				$items = '';
 			}
@@ -522,12 +533,13 @@ class DocumentCategoryClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		$this->q->commit();
+		$this->q->start();
 		$this->model->update();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -596,7 +608,12 @@ class DocumentCategoryClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Update"));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => "Record Update",
+					"time"=>$time));
 		exit();
 	}
 
@@ -606,12 +623,13 @@ class DocumentCategoryClass extends ConfigClass {
 
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		$this->q->commit();
+		$this->q->start();
 		$this->model->delete();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -665,7 +683,12 @@ class DocumentCategoryClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Remove"));
+		$end = microtime(true);
+			$time = $end - $start;
+		echo json_encode(
+				array(	"success" => true, 
+						"message" => "Record Remove",
+						"time"=>$time));
 		exit();
 	}
 
@@ -674,11 +697,13 @@ class DocumentCategoryClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$this->q->start();
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -961,9 +986,12 @@ class DocumentCategoryClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $message,
+					"time"=>$time)
 		);
 		exit();
 	}
@@ -973,8 +1001,9 @@ class DocumentCategoryClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1008,7 +1037,14 @@ class DocumentCategoryClass extends ConfigClass {
 			if ($this->duplicateTest == 1) {
 				return $total . "|" . $row ['documentCategoryCode'];
 			} else {
-				echo json_encode(array("success" => "TRUE", "total" => $total, "message" => "Duplicate Record", "documentCategoryCode" => $row ['documentCategoryCode']));
+				$end = microtime(true);
+				$time = $end - $start;
+				echo json_encode(
+					array(	"success" => true, 
+							"total" => $total, 
+							"message" => "Duplicate Record", 
+							"documentCategoryCode" => $row ['documentCategoryCode'],
+							"time"=>$time));
 				exit();
 			}
 		}
@@ -1036,7 +1072,7 @@ class DocumentCategoryClass extends ConfigClass {
 
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -1158,7 +1194,13 @@ class DocumentCategoryClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => true, "message" => "File generated", "filename" => $filename));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+				array(	"success" => true, 
+						"message" => "File generated", 
+						"filename" => $filename,
+						"time"=>$time));
 			exit();
 		} else {
 			echo json_encode(array("success" => false, "message" => "File not generated"));

@@ -140,8 +140,9 @@ class LeafClass extends ConfigClass {
 
 	function create() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -355,6 +356,7 @@ class LeafClass extends ConfigClass {
 
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	`leaf`.`isActive`		=	1	";
@@ -372,10 +374,10 @@ class LeafClass extends ConfigClass {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
-		//UTF8
+		
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -660,7 +662,7 @@ class LeafClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -752,8 +754,9 @@ class LeafClass extends ConfigClass {
 
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -848,8 +851,9 @@ class LeafClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1167,8 +1171,9 @@ class LeafClass extends ConfigClass {
 
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

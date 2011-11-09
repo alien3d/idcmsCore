@@ -133,10 +133,9 @@ class DocumentClass extends ConfigClass {
 	 */
 	function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		//	    echo '{success:TRUE, message:'.json_encode($_FILES['documentFilename']['name']).'}';
-		//	exit();
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -310,7 +309,14 @@ class DocumentClass extends ConfigClass {
 		$source = $this->path . $this->model->getDocumentDownloadFilename ();
 		chmod ( $source, 0777 );
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Record Created", "documentId" => $documentId ) );
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => "Record Created", 
+					"documentId" => $documentId,
+					"time"=>$time
+			) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -318,6 +324,7 @@ class DocumentClass extends ConfigClass {
 	 */
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	`document`.`isActive`		=	1	";
@@ -335,7 +342,7 @@ class DocumentClass extends ConfigClass {
 				$this->auditFilter = " 1=  1 ";
 			}
 		}
-		//UTF8
+		
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -595,6 +602,8 @@ class DocumentClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getDocumentId ( 0, 'single' )) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode ( 
 				array (	'success' =>true, 
 						'total' => $total, 
@@ -608,6 +617,8 @@ class DocumentClass extends ConfigClass {
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
 		} else {
+			$end = microtime(true);
+			$time = $end - $start;
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
@@ -628,8 +639,9 @@ class DocumentClass extends ConfigClass {
 	 */
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -790,11 +802,14 @@ class DocumentClass extends ConfigClass {
 		$source = $this->path . $this->model->getDocumentExtension ();
 		chmod ( $source, 0777 );
 		$this->convert ( $source );
+		$end = microtime(true);
+		$time = $end - $start;
 	}
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -852,7 +867,12 @@ class DocumentClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Record Remove" ) );
+		$end = microtime(true);
+			$time = $end - $start;
+		echo json_encode ( 
+			array ("success" => true, 
+					"message" => "Record Remove",
+					"time"=>$time ) );
 		exit ();
 	}
 	/**
@@ -860,11 +880,13 @@ class DocumentClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$this->q->start();
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -1147,9 +1169,12 @@ class DocumentClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $message,
+					"time"=>$time)
 		);
 		exit();
 	}
@@ -1170,8 +1195,9 @@ class DocumentClass extends ConfigClass {
 	 */
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1222,7 +1248,12 @@ class DocumentClass extends ConfigClass {
 		$objWriter->save ( "/kospek/document/document/excel/" . $filename );
 		$file = fopen ( "/kospek/document/document/excel/" . $filename, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => true, "message" => "File generated" ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode ( 
+				array ("success" => true, 
+						"message" => "File generated",
+						"time"=>$time ) );
 			exit ();
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
@@ -1232,7 +1263,7 @@ class DocumentClass extends ConfigClass {
 	function documentCategoryId() {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1274,12 +1305,24 @@ class DocumentClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($total == 1) {
-			$json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'documentCategory' => $items ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			$json_encode = json_encode ( 
+				array (	'success' => true, 
+						'total' => $total, 
+						'documentCategory' => $items,
+						'time'=>$time ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo json_encode;
 		} else {
-			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'documentCategory' => $items ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode ( 
+				array ('success' =>true, 
+						'total' => $total, 
+						'documentCategory' => $items,
+						'time'=>$time ) );
 		}
 	}
 }

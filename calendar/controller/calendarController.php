@@ -123,8 +123,9 @@ class CalendarClass extends ConfigClass {
 
 	function create() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -136,8 +137,9 @@ class CalendarClass extends ConfigClass {
 
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -362,8 +364,9 @@ class CalendarClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -390,7 +393,12 @@ class CalendarClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		} else {
-			echo json_encode(array("success" => true, "message" => "update success"));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+				array(	"success" => true, 
+						"message" => "update success",
+						"time"=>$time));
 			exit();
 		}
 	}
@@ -404,8 +412,9 @@ class CalendarClass extends ConfigClass {
 
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

@@ -240,7 +240,7 @@ class RecordSet extends ConfigClass {
 		 */
 		$nextSequence = 0;
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}

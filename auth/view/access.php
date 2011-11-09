@@ -53,7 +53,7 @@ class LoginClass extends ConfigClass {
 
     public function read() {
         header('Content-Type:application/json; charset=utf-8');
-        //UTF8
+        
 
 
         if ($this->getVendor() == self::MYSQL) {

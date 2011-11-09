@@ -123,7 +123,7 @@ class PaymentClass extends ConfigClass {
 
     public function create() {
         header('Content-Type:application/json; charset=utf-8');
-        //UTF8
+        
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -339,7 +339,7 @@ class PaymentClass extends ConfigClass {
                 exit();
             }
         }
-        //UTF8
+        
         $items = array();
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
@@ -636,7 +636,7 @@ class PaymentClass extends ConfigClass {
 
     function update() {
         header('Content-Type:application/json; charset=utf-8');
-        //UTF8
+        
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -791,7 +791,7 @@ class PaymentClass extends ConfigClass {
 
     function delete() {
         header('Content-Type:application/json; charset=utf-8');
-        //UTF8
+        
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -935,7 +935,7 @@ class PaymentClass extends ConfigClass {
     function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
-            //UTF8
+            
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
@@ -1234,7 +1234,7 @@ class PaymentClass extends ConfigClass {
     function duplicate() {
         header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
-            //UTF8
+            
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
@@ -1311,7 +1311,7 @@ class PaymentClass extends ConfigClass {
 
     function excel() {
         header('Content-Type:application/json; charset=utf-8');
-        //UTF8
+        
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);

@@ -132,7 +132,7 @@ class ApplicationAccessClass extends ConfigClass {
 
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -304,6 +304,8 @@ class ApplicationAccessClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($total == 1) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(
 			array(	'success' => true, 
 					'total' => $total, 
@@ -320,6 +322,8 @@ class ApplicationAccessClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
@@ -338,11 +342,12 @@ class ApplicationAccessClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->q->vendor == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$this->q->start();
 		$this->model->update();
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
@@ -364,7 +369,12 @@ class ApplicationAccessClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
-		echo json_encode(array("success" => true, "message" => "Update Success"));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => "Update Success",
+					"time"=>$time));
 		exit();
 	}
 

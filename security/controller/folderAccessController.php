@@ -122,9 +122,10 @@ class FolderAccessClass extends ConfigClass {
 
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -331,8 +332,7 @@ class FolderAccessClass extends ConfigClass {
 				$sql .= " AND `folder`.`folderId`='" . $this->model->getFolderId() . "'";
 			}
 		}
-		//echo $sql;
-		// searching filtering
+	
 		$sql .= $this->q->searching();
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
@@ -360,10 +360,13 @@ class FolderAccessClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == true) {
 			$items [] = $row;
 		}
+		$end = microtime(true);
+		$time = $end - $start;
 		echo json_encode(
 			array(	'success' => true, 
 					'total' => $total, 
-					'data' => $items, 
+					'data' => $items,
+					'time'=>$time, 
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
             		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getFolderAccessId(0, 'single')), 
             		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getFolderAccessId(0, 'single')), 
@@ -376,11 +379,12 @@ class FolderAccessClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->q->vendor == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$this->q->start();
 		$this->model->update();
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
@@ -430,7 +434,12 @@ class FolderAccessClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
-		echo json_encode(array("success" => true, "message" => "Update Success"));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => "Update Success",
+					"time"=>$time));
 		exit();
 	}
 

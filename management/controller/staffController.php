@@ -89,7 +89,7 @@ class StaffClass extends ConfigClass {
 		$this->model = new StaffModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -125,7 +125,7 @@ class StaffClass extends ConfigClass {
 	 */
 	public function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
@@ -559,7 +559,12 @@ class StaffClass extends ConfigClass {
 			}
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Record Created" ) );
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode (
+		array (	"success" => true,
+					 "message" => "Record Created",
+					 "time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -567,6 +572,7 @@ class StaffClass extends ConfigClass {
 	 */
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	`staff`.`isActive`		=	1	";
@@ -584,7 +590,7 @@ class StaffClass extends ConfigClass {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
-		//UTF8
+
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -861,8 +867,10 @@ class StaffClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getStaffId ( 0, 'single' )) {
-			$json_encode = json_encode ( 
-				array (	'success' => true, 
+			$end = microtime(true);
+			$time = $end - $start;
+			$json_encode = json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'message' => 'Data Loaded', 
 						'firstRecord' => $this->recordSet->firstRecord (), 
@@ -874,11 +882,13 @@ class StaffClass extends ConfigClass {
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
 		} else {
+			$end = microtime(true);
+			$time = $end - $start;
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( 
-				array (	'success' => true, 
+			echo json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'message' => 'data loaded', 
 						'data' => $items, 
@@ -894,8 +904,9 @@ class StaffClass extends ConfigClass {
 	 */
 	public function update() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1233,7 +1244,12 @@ class StaffClass extends ConfigClass {
 		// if change group .All access  before will deactivated
 		// update leaf access to null
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "update success" ) );
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => "update success",
+					"time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -1241,8 +1257,9 @@ class StaffClass extends ConfigClass {
 	 */
 	public function delete() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1334,7 +1351,12 @@ class StaffClass extends ConfigClass {
 			}
 		}
 		$this->q->commit ();
-		echo json_encode ( array ("success" => true, "message" => "Removed Success" ) );
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => "Removed Success",
+					"time"=>$time ) );
 		exit ();
 	}
 	/**
@@ -1342,11 +1364,13 @@ class StaffClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$this->q->start();
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -1629,9 +1653,12 @@ class StaffClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $message,
+					"time"=>$time)
 		);
 		exit();
 	}
@@ -1640,8 +1667,9 @@ class StaffClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1687,7 +1715,14 @@ class StaffClass extends ConfigClass {
 			if ($this->duplicateTest == 1) {
 				return $total . "|" . $row ['staffNo'];
 			} else {
-				echo json_encode ( array ("success" => true, "total" => $total, "message" => "Duplicate Record", "staffNo" => $row ['staffNo'] ) );
+				$end = microtime(true);
+				$time = $end - $start;
+				echo json_encode ( 
+					array (	"success" => true, 
+							"total" => $total, 
+							"message" => "Duplicate Record", 
+							"staffNo" => $row ['staffNo'],
+							"time"=>$time ) );
 				exit ();
 			}
 		}
@@ -1719,8 +1754,9 @@ class StaffClass extends ConfigClass {
 	 * @see config::excel()
 	 */
 	public function excel() {
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1772,7 +1808,12 @@ class StaffClass extends ConfigClass {
 		$objWriter->save ( $_SERVER ['document_root'] . "/idcmsCore/management/document/excel/" . $filename );
 		$file = fopen ( $_SERVER ['document_root'] . "/idcmsCore/management/document/excel/" . $filename, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => true, "message" => "File generated" ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode ( 
+				array (	"success" => true, 
+						"message" => "File generated",
+						"time"=>$time ) );
 		} else {
 			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
 		}
@@ -1891,22 +1932,22 @@ if (isset ( $_GET ['method'] )) {
 		}
 	}
 	/*
-     * Button Navigation
-     */
-    if ($_GET ['method'] == 'dataNavigationRequest') {
-        if ($_GET ['dataNavigation'] == 'firstRecord') {
-            $documentObject->firstRecord('json');
-        }
-        if ($_GET ['dataNavigation'] == 'previousRecord') {
-            $documentObject->previousRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'nextRecord') {
-            $documentObject->nextRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'lastRecord') {
-           $documentObject->lastRecord('json');
-        }
-    }
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$documentObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$documentObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$documentObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$documentObject->lastRecord('json');
+		}
+	}
 	/*
 	 *  Excel Reporting
 	 */

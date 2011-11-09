@@ -153,7 +153,7 @@ class TreeClass extends ConfigClass {
 	 */
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -467,6 +467,8 @@ class TreeClass extends ConfigClass {
 		}
 		  $treeJsonString = preg_replace('/\s+/', '', $treeJsonString);
 		  $x = json_decode($treeJsonString);
+		  $end = microtime(true);
+		  $time = $end - $start;
 		  echo json_encode($x);
 		  exit();
 		//echo $treeJsonString;

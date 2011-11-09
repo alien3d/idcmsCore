@@ -122,8 +122,9 @@ class EventClass extends ConfigClass {
 
 	public function create() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -211,9 +212,14 @@ class EventClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
 		echo json_encode(
-		array("success" => TRUE, "message" => "Record Created", "evts" => $data,
-                    "eventId" => $eventId));
+		array(	"success" =>true, 
+				"message" => "Record Created",
+				"evts" => $data,
+                "eventId" => $eventId,
+				"time"=>$time));
 		exit();
 	}
 
@@ -223,8 +229,9 @@ class EventClass extends ConfigClass {
 
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -323,8 +330,9 @@ class EventClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -382,8 +390,10 @@ class EventClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
 		echo json_encode(
-		array("success" => TRUE, "message" => "Record updated"));
+		array("success" =>true, "message" => "Record updated","time"=>$time));
 		exit();
 	}
 
@@ -393,8 +403,9 @@ class EventClass extends ConfigClass {
 
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -421,9 +432,11 @@ class EventClass extends ConfigClass {
 			array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
+		$end = microtime(true);
+		$time = $end - $start;
 		$this->q->commit();
 		echo json_encode(
-		array("success" => TRUE, "message" => "Record updated"));
+		array("success" => true, "message" => "Record updated","time"=>$time));
 		exit();
 	}
 
@@ -449,8 +462,9 @@ class EventClass extends ConfigClass {
 
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

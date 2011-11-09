@@ -120,7 +120,7 @@ class ReligionDetailClass extends ConfigClass {
 
 	public function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -204,7 +204,13 @@ class ReligionDetailClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "religionDetailId" => $religionDetailId));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => "Record Created", 
+					"religionDetailId" => $religionDetailId,
+					"time"=>$time));
 		exit();
 	}
 
@@ -213,7 +219,8 @@ class ReligionDetailClass extends ConfigClass {
 	 */
 
 	public function read() {
-		//	header('Content-Type:application/json; charset=utf-8');
+		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
 				$this->auditFilter = "	AND `religionDetail`.`isActive`		=	1	";
@@ -231,7 +238,7 @@ class ReligionDetailClass extends ConfigClass {
 				$this->auditFilter = "	1	=	1 	";
 			}
 		}
-		//UTF8
+		
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -518,7 +525,7 @@ class ReligionDetailClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -616,13 +623,7 @@ class ReligionDetailClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getReligionDetailId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -630,7 +631,12 @@ class ReligionDetailClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => "TRUE", "message" => "Updated"));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" =>true, 
+					"message" => "Updated",
+					"time"=>$time));
 		exit();
 	}
 
@@ -640,7 +646,7 @@ class ReligionDetailClass extends ConfigClass {
 
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -738,7 +744,12 @@ class ReligionDetailClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => "Deleted",
+					"time"=>$time));
 		exit();
 	}
 
@@ -747,8 +758,9 @@ class ReligionDetailClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1034,9 +1046,10 @@ class ReligionDetailClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		echo json_encode(
+				array(	"success" => true, 
+						"message" => $message,
+						"time"=>$time)
 		);
 		exit();
 	}
@@ -1046,8 +1059,9 @@ class ReligionDetailClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1079,10 +1093,23 @@ class ReligionDetailClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => "TRUE", "total" => $total, "message" => "Duplicate Record", "religionDetailDesc" => $row ['religionDetailDesc']));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+				array(	"success" =>true, 
+						"total" => $total,
+				 		"message" => "Duplicate Record", 
+				 		"religionDetailDesc" => $row ['religionDetailDesc'],
+						"time"=>$time));
 			exit();
 		} else {
-			echo json_encode(array("success" => "TRUE", "total" => $total, "message" => "Duplicate Non"));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+				array(	"success" => true, 
+						"total" => $total, 
+						"message" => "Duplicate Non",
+						"time"=>$time));
 			exit();
 		}
 	}
@@ -1109,7 +1136,7 @@ class ReligionDetailClass extends ConfigClass {
 
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -1161,10 +1188,21 @@ class ReligionDetailClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => true, "message" => "File generated", "filename" => $filename));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+				array(	"success" => true, 
+						"message" => "File generated", 
+						"filename" => $filename,
+						"time"=>$time));
 			exit();
 		} else {
-			echo json_encode(array("success" => FALSE, "message" => "File not generated"));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+				array(	"success" => false, 
+						"message" => "File not generated",
+						"time"=>$time));
 			exit();
 		}
 	}

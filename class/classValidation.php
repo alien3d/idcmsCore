@@ -113,7 +113,7 @@ abstract class ValidationClass
                 $this->value = null;
                 return ($this->value);
             } else {
-                //UTF8 bugs
+                 bugs
                 //$this->value=trim(strtoupper($this->value)); // trim any space better for searching issue
                 $this->value = addslashes(
                 $this->value);

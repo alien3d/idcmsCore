@@ -156,7 +156,7 @@ class Security extends ConfigClass {
 	public function team() {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -225,7 +225,7 @@ class Security extends ConfigClass {
 	public function department() {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -298,7 +298,7 @@ class Security extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -452,7 +452,7 @@ class Security extends ConfigClass {
 			exit ();
 		}
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}

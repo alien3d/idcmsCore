@@ -130,8 +130,9 @@ class LogAdvanceClass extends ConfigClass {
 
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -330,15 +331,18 @@ class LogAdvanceClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getLogAdvanceId(0, 'single')) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
 						'message' => 'Data Loaded', 
-						'data' => $items, 
+						'time' => $time, 
 						'firstRecord' => $this->firstRecord('value'), 
 						'previousRecord' => $this->previousRecord('value', $this->model->getLogAdvanceId(0, 'single')), 
 						'nextRecord' => $this->nextRecord('value', $this->model->getLogAdvanceId(0, 'single')), 
-						'lastRecord' => $this->lastRecord('value')));
+						'lastRecord' => $this->lastRecord('value'), 
+						'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -346,15 +350,18 @@ class LogAdvanceClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
 						'message' => 'data loaded', 
-						'data' => $items, 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLogAdvanceId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getLogAdvanceId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')));
+            			'lastRecord' => $this->recordSet->lastRecord('value'), 
+						'data' => $items));
 			exit();
 		}
 	}
@@ -397,8 +404,9 @@ class LogAdvanceClass extends ConfigClass {
 
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -457,9 +465,13 @@ class LogAdvanceClass extends ConfigClass {
 		$this->create_trail($this->leafId, $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(array("success" => true, "message" => "File generated"));
 			exit();
 		} else {
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(array("success" => false, "message" => "File not generated"));
 			exit();
 		}

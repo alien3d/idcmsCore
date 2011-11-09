@@ -134,7 +134,7 @@ class ModuleAccessClass extends ConfigClass {
 
 	function read() {
 		header('Content-Type:module/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -340,7 +340,7 @@ class ModuleAccessClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:module/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->q->vendor == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);

@@ -130,8 +130,9 @@ class ApplicationClass extends ConfigClass {
 
     function create() {
         header('Content-Type:application/json; charset=utf-8');
+        $start = microtime(true);
         if ($this->getVendor() == self::MYSQL) {
-            //UTF8
+            
             $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
@@ -407,7 +408,13 @@ class ApplicationClass extends ConfigClass {
             exit();
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => "Insert Sucess", "applicationId" => $lastId));
+        $end = microtime(true);
+		$time = $end - $start;
+        echo json_encode(
+        	array(	"success" => true, 
+        			"message" => "Insert Sucess", 
+        			"applicationId" => $lastId,
+        			"time"=>$time));
         exit();
     }
 
@@ -417,6 +424,7 @@ class ApplicationClass extends ConfigClass {
 
     function read() {
         header('Content-Type:application/json; charset=utf-8');
+        $start = microtime(true);
         if ($this->isAdmin == 0) {
             if ($this->getVendor() == self::MYSQL) {
                 $this->auditFilter = "	`application`.`isActive`		=	1	";
@@ -434,7 +442,7 @@ class ApplicationClass extends ConfigClass {
                 $this->auditFilter = "  1 = 1 ";
             }
         }
-        //UTF8
+        
         $items = array();
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES utf8";
@@ -679,7 +687,9 @@ class ApplicationClass extends ConfigClass {
             $items [] = $row;
         }
         if ($this->model->getApplicationId(0, 'single')) {
-            $json_encode = json_encode(
+            $end = microtime(true);
+			$time = $end - $start;
+        	$json_encode = json_encode(
             array(	'success' => true, 
             		'total' => $total, 
             		'message' => 'Data Loaded', 
@@ -692,7 +702,9 @@ class ApplicationClass extends ConfigClass {
             $json_encode = str_replace("]", "", $json_encode);
             echo $json_encode;
         } else {
-            if (count($items) == 0) {
+            $end = microtime(true);
+			$time = $end - $start;
+        	if (count($items) == 0) {
                 $items = '';
             }
             echo json_encode(
@@ -714,8 +726,9 @@ class ApplicationClass extends ConfigClass {
 
     function update() {
         header('Content-Type:application/json; charset=utf-8');
+        $start = microtime(true);
         if ($this->getVendor() == self::MYSQL) {
-            //UTF8
+            
             $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
@@ -848,7 +861,14 @@ class ApplicationClass extends ConfigClass {
             }
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => "update success", "applicationId" => $this->model->getApplicationId(0, 'single')));
+        $end = microtime(true);
+		$time = $end - $start;
+        echo json_encode(
+        	array(	"success" => true, 
+        			"message" => "update success", 
+        			"applicationId" => $this->model->getApplicationId(0, 'single'),
+        			"time"=>$time
+        	));
         exit();
     }
 
@@ -858,8 +878,9 @@ class ApplicationClass extends ConfigClass {
 
     function delete() {
         header('Content-Type:application/json; charset=utf-8');
+        $start = microtime(true);
         if ($this->getVendor() == self::MYSQL) {
-            //UTF8
+            
             $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
@@ -981,7 +1002,12 @@ class ApplicationClass extends ConfigClass {
             }
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => "Delete Succes"));
+        $end = microtime(true);
+		$time = $end - $start;
+        echo json_encode(
+        	array(	"success" => true, 
+        			"message" => "Delete Succes",
+        			"time"=>$time));
         exit();
     }
 
@@ -990,11 +1016,13 @@ class ApplicationClass extends ConfigClass {
      */
     function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
         if ($this->getVendor() == self::MYSQL) {
-            //UTF8
+            
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
+        $this->q->start();
         $loop = $this->model->getTotal();
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
@@ -1277,9 +1305,12 @@ class ApplicationClass extends ConfigClass {
         } else {
             $message = "deleted";
         }
-        echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-            , "sql" => $sql)
+        $end = microtime(true);
+		$time = $end - $start;
+        echo json_encode(
+        	array(	"success" => true, 
+        			"message" => $message,
+        			"time"=>$time)
         );
         exit();
     }
@@ -1309,8 +1340,9 @@ class ApplicationClass extends ConfigClass {
 
     function excel() {
         header('Content-Type:application/json; charset=utf-8');
+        $start = microtime(true);
         if ($this->getVendor() == self::MYSQL) {
-            //UTF8
+            
             $sql = "SET NAMES utf8";
             $this->q->fast($sql);
         }
@@ -1357,9 +1389,15 @@ class ApplicationClass extends ConfigClass {
         $this->audit->createTrail($this->leafId, $path, $filename);
         $file = fopen($path, 'r');
         if ($file) {
-            echo json_encode(array("success" => true, "message" => "File generated"));
+        	$end = microtime(true);
+			$time = $end - $start;
+            echo json_encode(
+            	array(	"success" => true, 
+            			"message" => "File generated",
+            			"time"=>$time));
         } else {
-            echo json_encode(array("success" => false, "message" => "File not generated"));
+            echo json_encode(
+            	array("success" => false, "message" => "File not generated"));
         }
     }
 

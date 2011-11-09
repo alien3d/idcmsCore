@@ -91,7 +91,7 @@ class LogClass extends ConfigClass {
 		$this->model = new LogModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -103,12 +103,12 @@ class LogClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
 		$this->recordSet->execute ();
-		
+
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
@@ -130,8 +130,9 @@ class LogClass extends ConfigClass {
 
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -329,16 +330,19 @@ class LogClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
+		$end = microtime(true);
+		$time = $end - $start;
 		if ($this->model->getLogId(0, 'single')) {
 			$json_encode = json_encode(
-				array('success' => true, 
+			array('success' => true,
 				'total' => $total, 
 				'message' => 'Data Loaded', 
-				'data' => $items, 
+				'time' => $time, 
 				'firstRecord' => $this->firstRecord('value'), 
 				'previousRecord' => $this->previousRecord('value', $this->model->getLogId(0, 'single')), 
 				'nextRecord' => $this->nextRecord('value', $this->model->getLogId(0, 'single')), 
-				'lastRecord' => $this->lastRecord('value')));
+				'lastRecord' => $this->lastRecord('value'), 
+				'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -346,15 +350,18 @@ class LogClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'message' => 'data loaded', 
-						'data' => $items, 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLogId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getLogId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')));
+            			'lastRecord' => $this->recordSet->lastRecord('value'), 
+						'data' => $items));
 			exit();
 		}
 	}
@@ -397,8 +404,9 @@ class LogClass extends ConfigClass {
 
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

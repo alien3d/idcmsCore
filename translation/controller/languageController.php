@@ -114,9 +114,9 @@ class LanguageClass extends ConfigClass {
 	 */
 	function create() {
 		header('Content-Type:application/json; charset=utf-8');
-
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -193,7 +193,12 @@ class LanguageClass extends ConfigClass {
 		}
 
 		$this->q->commit ();
-		echo json_encode ( array ("success" =>true, "message" => "Record Created" ) );
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" =>true, 
+					"message" => "Record Created",
+					"time"=>$time ) );
 		exit ();
 
 	}
@@ -202,6 +207,7 @@ class LanguageClass extends ConfigClass {
 	 */
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	`language`.`isActive`		=	1	";
@@ -219,7 +225,7 @@ class LanguageClass extends ConfigClass {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
-		//UTF8
+		
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -449,15 +455,18 @@ class LanguageClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getLanguageId ( 0, 'single' )) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode ( 
 				array (	'success' => true, 
 						'total' => $total, 
 						'message' => 'Data Loaded', 
-						'data' => $items , 
+						'data' => $time , 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLanguageId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getLanguageId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')) );
+            			'lastRecord' => $this->recordSet->lastRecord('value'), 
+						'data' => $items) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -465,15 +474,18 @@ class LanguageClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode ( 
 				array (	'success' => true, 
 						'total' => $total, 
 						'message' => 'data loaded', 
-						'data' => $items , 
+						'time' => $time , 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLanguageId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getLanguageId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')) );
+            			'lastRecord' => $this->recordSet->lastRecord('value'), 
+						'data' => $items) );
 			exit ();
 		}
 
@@ -484,8 +496,9 @@ class LanguageClass extends ConfigClass {
 	 */
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -556,8 +569,9 @@ class LanguageClass extends ConfigClass {
 	 */
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -624,9 +638,9 @@ class LanguageClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
-
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -779,8 +793,9 @@ class LanguageClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			//UTF8
+			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -836,9 +851,8 @@ class LanguageClass extends ConfigClass {
 	 * @see config::excel()
 	 */
 	function excel() {
-
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );

@@ -93,11 +93,11 @@ class EventModel extends ValidationClass {
 		if (isset ( $_POST ['eventTitle'] )) {
 			$this->setEventTitle ( $this->strict ( $_POST ['eventTitle'], 'string' ) );
 		}
-		if (isset ( $_POST ['eventStart'] )) {
-			$this->setEventStart ( date ( "Y-m-d H:i:s", strtotime ( $_POST ['eventStart'] ) ) );
+		if (isset ( $_POST ['start'] )) {
+			$this->setEventStart ( date ( "Y-m-d H:i:s", strtotime ( $_POST ['start'] ) ) );
 		}
-		if (isset ( $_POST ['eventEnd'] )) {
-			$this->setEventEnd ( date ( "Y-m-d H:i:s", strtotime ( $_POST ['eventEnd'] ) ) );
+		if (isset ( $_POST ['end'] )) {
+			$this->setEventEnd ( date ( "Y-m-d H:i:s", strtotime ( $_POST ['end'] ) ) );
 		}
 		if (isset ( $_POST ['eventIsAllDay'] )) {
 			$this->setEventIsAllDay ( $this->strict ( $_POST ['eventIsAllDay'], 'numeric' ) );

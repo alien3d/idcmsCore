@@ -277,7 +277,7 @@ abstract class ConfigClass
 		$time_end = microtime(true);
 		$time = $time_end - $time_start;
 		echo json_encode(
-		array('success' => true, 'total' => $total, 'timeExecute'=>$time,'message' => 'Data loaded',
+		array('success' => true, 'total' => $total, 'time'=>$time,'message' => 'Data loaded',
         'staff' => $items));
 	}
 	/**
@@ -333,7 +333,7 @@ abstract class ConfigClass
 				$this->value = null;
 				return ($this->value);
 			} else {
-				//UTF8 bugs
+				 bugs
 				//$this->value=trim(strtoupper($this->value)); // trim any space better for searching issue
 				$this->value = addslashes(
 				$this->value);
