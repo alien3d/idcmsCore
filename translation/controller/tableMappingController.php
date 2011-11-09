@@ -274,6 +274,8 @@ class TableMappingClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "tableMappingId" => $lastId, "message" => "Record Created" ) );
 		exit ();
 	}
@@ -587,6 +589,8 @@ class TableMappingClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
 		exit ();
 
@@ -658,6 +662,8 @@ class TableMappingClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
 		exit ();
 

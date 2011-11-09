@@ -197,6 +197,8 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		}
 		$lastId = $this->q->lastInsertId ();
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "defaultLabelTranslationId" => $lastId, "message" => "Record Created" ) );
 		exit ();
 	}
@@ -443,6 +445,8 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
 		exit ();
 	}
@@ -504,6 +508,8 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
 		exit ();
 	}
@@ -662,6 +668,8 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 	}

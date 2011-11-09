@@ -350,6 +350,8 @@ class LeafClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "leafId" => $lastId, "message" => "Record Created"));
 		exit();
 	}
@@ -512,7 +514,7 @@ class LeafClass extends ConfigClass {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
 			}
 		}
-		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
+		$_SESSION ['sql'] = $sql; 
 		$_SESSION ['start'] = $this->getStart();
 		$_SESSION ['limit'] = $this->getLimit();
 		if (!($this->getGridQuery())) {
@@ -612,8 +614,10 @@ class LeafClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		//echo $strData;
+	
 		if ($this->model->getLeafId(0, 'single')) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
@@ -626,6 +630,8 @@ class LeafClass extends ConfigClass {
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
 		} else {
+			$end = microtime(true);
+			$time = $end - $start;
 			if (count($items) == 0) {
 				$items = '';
 			}
@@ -748,6 +754,8 @@ class LeafClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Record Update", "leafId" => $this->getLeafId(0, 'single')));
 		exit();
 	}
@@ -842,6 +850,8 @@ class LeafClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Record Remove"));
 		exit();
 	}
@@ -1139,6 +1149,8 @@ class LeafClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
 		, "sql" => $sql)

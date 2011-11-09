@@ -368,6 +368,8 @@ class ModuleAccessClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Update Success"));
 		exit();
 	}

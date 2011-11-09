@@ -472,6 +472,8 @@ class ModuleClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Insert Sucess", "moduleId" => $lastId));
 		exit();
 	}
@@ -915,6 +917,8 @@ class ModuleClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "update success", "moduleId" => $this->model->getModuleId(0, 'single')));
 		exit();
 	}
@@ -1049,6 +1053,8 @@ class ModuleClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Delete Succes"));
 		exit();
 	}
@@ -1348,6 +1354,8 @@ class ModuleClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
 		, "sql" => $sql)

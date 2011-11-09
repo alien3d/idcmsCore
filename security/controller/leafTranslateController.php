@@ -264,6 +264,8 @@ class leafTranslateClass extends ConfigClass {
 		}
 		$lastId = $this->q->lastInsertId();
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "leafTranslateId" => $lastId, "message" => "Record Created"));
 		exit();
 	}
@@ -767,6 +769,8 @@ class leafTranslateClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Record Update"));
 		exit();
 	}
@@ -908,6 +912,8 @@ class leafTranslateClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Record Removed"));
 		exit();
 	}
@@ -1207,6 +1213,8 @@ class leafTranslateClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
 		, "sql" => $sql)

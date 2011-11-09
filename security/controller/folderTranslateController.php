@@ -1200,6 +1200,8 @@ class folderTranslateClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
 		, "sql" => $sql)

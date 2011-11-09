@@ -206,6 +206,8 @@ class TableMappingTranslateClass extends ConfigClass {
 		$lastId = $this->q->lastInsertId ();
 
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "tableMappingTranslationTranslationId" => $lastId, "message" => "Record Created" ) );
 		exit ();
 	}
@@ -459,6 +461,8 @@ class TableMappingTranslateClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
 		exit ();
 
@@ -526,6 +530,8 @@ class TableMappingTranslateClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
 		exit ();
 
@@ -651,6 +657,8 @@ class TableMappingTranslateClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 

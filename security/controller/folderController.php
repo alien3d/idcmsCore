@@ -482,6 +482,8 @@ class FolderClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "folderId" => $lastId, "message" => "Record Created"));
 		exit();
 	}
@@ -959,6 +961,8 @@ class FolderClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Record Update", "folderId" => $this->model->getFolderId(0, 'single')));
 		exit();
 	}
@@ -1063,6 +1067,8 @@ class FolderClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Record Removed"));
 		exit();
 	}
@@ -1360,6 +1366,8 @@ class FolderClass extends ConfigClass {
 		} else {
 			$message = "deleted";
 		}
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
 		, "sql" => $sql)

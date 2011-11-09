@@ -562,6 +562,8 @@ class LanguageClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
 		exit ();
 	}
@@ -630,7 +632,8 @@ class LanguageClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
-
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => "Record Remove" ) );
 		exit ();
 
@@ -786,6 +789,8 @@ class LanguageClass extends ConfigClass {
 			exit ();
 		}
 		$this->q->commit ();
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
 		exit ();
 

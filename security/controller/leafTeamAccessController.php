@@ -636,6 +636,8 @@ class LeafTeamAccessClass extends ConfigClass {
 				exit();
 			}
 		}
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => "Update Success"));
 		exit();
 	}
