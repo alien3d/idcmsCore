@@ -543,7 +543,8 @@ class ThemeClass  extends ConfigClass {
 			$this->q->fast($sql);
 
 		}
-		$this->q->commit();
+				$this->q->start();
+		
 		$this->model->update();
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
@@ -622,7 +623,8 @@ class ThemeClass  extends ConfigClass {
 			$this->q->fast($sql);
 
 		}
-		$this->q->commit();
+				$this->q->start();
+		
 		$this->model->delete();
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
@@ -692,6 +694,8 @@ class ThemeClass  extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+				$this->q->start();
+		
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "

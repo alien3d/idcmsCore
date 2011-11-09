@@ -503,7 +503,8 @@ class LanguageClass extends ConfigClass {
 			$this->q->fast ( $sql );
 
 		}
-		$this->q->commit ();
+				$this->q->start();
+		
 		$this->model->update ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
@@ -576,7 +577,8 @@ class LanguageClass extends ConfigClass {
 			$this->q->fast ( $sql );
 
 		}
-		$this->q->commit ();
+				$this->q->start();
+		
 		$this->model->delete ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "

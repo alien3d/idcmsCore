@@ -588,6 +588,8 @@ class LeafTeamAccessClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+				$this->q->start();
+		
 		$data = explode("|", $_POST ['info']); // still using & for future reference
 		$loop = count($data);
 		for ($i = 0; $i < $loop; $i++) {

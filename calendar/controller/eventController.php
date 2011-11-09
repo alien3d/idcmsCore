@@ -91,7 +91,7 @@ class EventClass extends ConfigClass {
 		$this->model = new EventModel();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -103,12 +103,12 @@ class EventClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		
+
 		$this->recordSet = new RecordSet ();
-        $this->recordSet->setTableName($this->model->getTableName());
-        $this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
-        $this->recordSet->execute();
-        
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
+
 		$this->documentTrail = new DocumentTrailClass();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->execute();
@@ -124,12 +124,13 @@ class EventClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$this->q->start();		
 		$this->model->create();
-		$this->q->start();
+		
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			INSERT INTO `event`(
@@ -215,7 +216,7 @@ class EventClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-		array(	"success" =>true, 
+		array(	"success" =>true,
 				"message" => "Record Created",
 				"evts" => $data,
                 "eventId" => $eventId,
@@ -231,7 +232,7 @@ class EventClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -296,7 +297,7 @@ class EventClass extends ConfigClass {
 		}
 		if ($this->model->getEventId(0, 'single')) {
 			$json_encode = json_encode(
-			array(	
+			array(
 					'success' => true, 
 					'total' => $total,
                     'message' => 'Data Loaded', 
@@ -313,7 +314,7 @@ class EventClass extends ConfigClass {
 				$items = '';
 			}
 			echo json_encode(
-			array(	'success' => true, 
+			array(	'success' => true,
 					'total' => $total,
                     'message' => 'data loaded', 
                     'evts' => $items, 
@@ -332,11 +333,12 @@ class EventClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		$this->q->commit();
+		$this->q->start();
+
 		$this->model->update();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -405,7 +407,7 @@ class EventClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -464,7 +466,7 @@ class EventClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

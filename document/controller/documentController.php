@@ -100,7 +100,7 @@ class DocumentClass extends ConfigClass {
 		$this->model = new DocumentModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -112,7 +112,7 @@ class DocumentClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		
+
 		$this->recordSet =  new RecordSet();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -135,7 +135,7 @@ class DocumentClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -311,12 +311,12 @@ class DocumentClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => "Record Created", 
 					"documentId" => $documentId,
 					"time"=>$time
-			) );
+		) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -342,7 +342,7 @@ class DocumentClass extends ConfigClass {
 				$this->auditFilter = " 1=  1 ";
 			}
 		}
-		
+
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -604,8 +604,8 @@ class DocumentClass extends ConfigClass {
 		if ($this->model->getDocumentId ( 0, 'single' )) {
 			$end = microtime(true);
 			$time = $end - $start;
-			$json_encode = json_encode ( 
-				array (	'success' =>true, 
+			$json_encode = json_encode (
+			array (	'success' =>true,
 						'total' => $total, 
 						'message' => 'Data Loaded', 
 						'data' => $items, 
@@ -622,8 +622,8 @@ class DocumentClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( 
-				array (	'success' =>true, 
+			echo json_encode (
+			array (	'success' =>true,
 						'total' => $total, 
 						'message' => 'data loaded', 
 						'data' => $items, 
@@ -641,10 +641,12 @@ class DocumentClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
+				$this->q->start();
+		
 		$isFile = is_uploaded_file ( $_FILES ['documentFilename'] ['tmp_name'] );
 		if ($isFile) {
 			$safeFilename = preg_replace ( array ("/\\s+/", "/[^-\\.\\w]+/" ), array ("_", "" ), trim ( $_FILES ['documentFilename'] ['name'] ) );
@@ -809,11 +811,12 @@ class DocumentClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
-		$this->q->commit ();
+		$this->q->start();
+
 		$this->model->delete ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
@@ -868,9 +871,9 @@ class DocumentClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( 
-			array ("success" => true, 
+		$time = $end - $start;
+		echo json_encode (
+		array ("success" => true,
 					"message" => "Record Remove",
 					"time"=>$time ) );
 		exit ();
@@ -882,7 +885,7 @@ class DocumentClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1172,7 +1175,7 @@ class DocumentClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $message,
 					"time"=>$time)
 		);
@@ -1197,7 +1200,7 @@ class DocumentClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1250,8 +1253,8 @@ class DocumentClass extends ConfigClass {
 		if ($file) {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode ( 
-				array ("success" => true, 
+			echo json_encode (
+			array ("success" => true,
 						"message" => "File generated",
 						"time"=>$time ) );
 			exit ();
@@ -1263,7 +1266,7 @@ class DocumentClass extends ConfigClass {
 	function documentCategoryId() {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1307,8 +1310,8 @@ class DocumentClass extends ConfigClass {
 		if ($total == 1) {
 			$end = microtime(true);
 			$time = $end - $start;
-			$json_encode = json_encode ( 
-				array (	'success' => true, 
+			$json_encode = json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'documentCategory' => $items,
 						'time'=>$time ) );
@@ -1318,8 +1321,8 @@ class DocumentClass extends ConfigClass {
 		} else {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode ( 
-				array ('success' =>true, 
+			echo json_encode (
+			array ('success' =>true,
 						'total' => $total, 
 						'documentCategory' => $items,
 						'time'=>$time ) );
@@ -1416,22 +1419,22 @@ if (isset ( $_GET ['method'] )) {
 		}
 	}
 	/*
-     * Button Navigation
-     */
-    if ($_GET ['method'] == 'dataNavigationRequest') {
-        if ($_GET ['dataNavigation'] == 'firstRecord') {
-            $documentObject->firstRecord('json');
-        }
-        if ($_GET ['dataNavigation'] == 'previousRecord') {
-            $documentObject->previousRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'nextRecord') {
-            $documentObject->nextRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'lastRecord') {
-            $documentObject->lastRecord('json');
-        }
-    }
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$documentObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$documentObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$documentObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$documentObject->lastRecord('json');
+		}
+	}
 	/*
 	 *  Excel Reporting
 	 */
