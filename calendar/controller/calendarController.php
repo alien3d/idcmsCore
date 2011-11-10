@@ -329,10 +329,12 @@ class CalendarClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getCalendarId(0, 'single')) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(
 			array(	'success' => true,
 												'total' => $total, 
-												'message' => $this->system->getReadMessage(), 
+												'message' => $this->systemString->getReadMessage(), 
 												'time' => $time, 
 												'firstRecord' => $this->firstRecord('value'), 
 												'previousRecord' => $this->previousRecord('value', $this->model->getCalendarId(0, 'single')), 
@@ -346,10 +348,12 @@ class CalendarClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
-						'message' => $this->system->getReadMessage(), 
+						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time,
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getCalendarId(0, 'single')), 
@@ -399,7 +403,7 @@ class CalendarClass extends ConfigClass {
 			$time = $end - $start;
 			echo json_encode(
 				array(	"success" => true, 
-						"message" => $this->system->getUpdateMessage(),
+						"message" => $this->systemString->getUpdateMessage(),
 						"time"=>$time));
 			exit();
 		}

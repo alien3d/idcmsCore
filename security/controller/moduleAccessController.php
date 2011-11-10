@@ -98,7 +98,7 @@ class ModuleAccessClass extends ConfigClass {
 		$this->model = new ModuleAccessModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -115,7 +115,7 @@ class ModuleAccessClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
 
-		
+
 
 		$this->excel = new PHPExcel ();
 	}
@@ -306,8 +306,10 @@ class ModuleAccessClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($total == 1) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -323,10 +325,12 @@ class ModuleAccessClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
-						'data' => $items, 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getModuleAccessId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getModuleAccessId(0, 'single')), 
@@ -347,8 +351,8 @@ class ModuleAccessClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$this->model->update();
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
@@ -371,8 +375,8 @@ class ModuleAccessClass extends ConfigClass {
 			exit();
 		}
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->system->getUpdateMessage()));
+		$time = $end - $start;
+		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
 	}
 

@@ -415,7 +415,7 @@ class TeamClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" => true,
-				 	"message" => $this->system->getCreateMessage(),
+				 	"message" => $this->systemString->getCreateMessage(),
 					"time"=>$time ) );
 		exit ();
 	}
@@ -692,7 +692,7 @@ class TeamClass extends ConfigClass {
 			$json_encode = json_encode ( 
 				array (	'success' => true, 
 						'total' => $total, 
-						'message' => $this->system->getReadMessage(), 
+						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getTeamId(0, 'single')), 
@@ -711,7 +711,7 @@ class TeamClass extends ConfigClass {
 			echo json_encode ( 
 				array (	'success' => true, 
 						'total' => $total, 
-						'message' => $this->system->getReadMessage(), 
+						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getTeamId(0, 'single')), 
@@ -826,7 +826,7 @@ class TeamClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array ("success" => true, 
-					"message" => $this->system->getUpdateMessage(),
+					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time ) );
 		exit ();
 	}
@@ -932,7 +932,7 @@ class TeamClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" => true, 
-					"message" => $this->system->getDeleteMessage(),
+					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
 	}
@@ -970,7 +970,7 @@ class TeamClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 			exit();
 		}
 		/**
@@ -995,7 +995,7 @@ class TeamClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1019,7 +1019,7 @@ class TeamClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1043,7 +1043,7 @@ class TeamClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1067,7 +1067,7 @@ class TeamClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1091,7 +1091,7 @@ class TeamClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1115,7 +1115,7 @@ class TeamClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1139,7 +1139,7 @@ class TeamClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1163,7 +1163,7 @@ class TeamClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1187,7 +1187,7 @@ class TeamClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1216,7 +1216,7 @@ class TeamClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1226,9 +1226,9 @@ class TeamClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = $this->system->getUpdateMessage();
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = $this->system->getDeleteMessage();
+			$message = $this->systemString->getDeleteMessage();
 		}
 		$end = microtime(true);
 		$time = $end - $start;
@@ -1298,7 +1298,7 @@ class TeamClass extends ConfigClass {
 				echo json_encode ( 
 				array (	"success" => true, 
 						"total" => $total, 
-						"message" => $this->system->getDuplicateMessage(), 
+						"message" => $this->systemString->getDuplicateMessage(), 
 						"teamCode" => $row ['teamCode'],
 						"time"=>$time ) );
 				exit ();

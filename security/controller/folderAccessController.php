@@ -438,7 +438,7 @@ class FolderAccessClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode(
 			array(	"success" => true, 
-					"message" => $this->system->getUpdateMessage(),
+					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time));
 		exit();
 	}

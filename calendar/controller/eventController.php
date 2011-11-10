@@ -217,7 +217,7 @@ class EventClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode(
 		array(	"success" =>true,
-				"message" => $this->system->getCreateMessage(),
+				"message" => $this->systemString->getCreateMessage(),
 				"evts" => $data,
                 "eventId" => $eventId,
 				"time"=>$time));
@@ -296,11 +296,13 @@ class EventClass extends ConfigClass {
 			$items[] = $row;
 		}
 		if ($this->model->getEventId(0, 'single')) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(
 			array(
 					'success' => true, 
 					'total' => $total,
-                    'message' => $this->system->getReadMessage(), 
+                    'message' => $this->systemString->getReadMessage(), 
                     'time'=>$time,
                     'evts' => $items,
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -314,10 +316,12 @@ class EventClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 			array(	'success' => true,
 					'total' => $total,
-                    'message' => $this->system->getReadMessage(), 
+                    'message' => $this->systemString->getReadMessage(), 
                     'time'=>$time,
                     'evts' => $items, 
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -397,7 +401,7 @@ class EventClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-		array("success" =>true, "message" => "Record updated","time"=>$time));
+		array("success" =>true, "message" => $this->systemString->getUpdateMessage(),"time"=>$time));
 		exit();
 	}
 
@@ -440,7 +444,7 @@ class EventClass extends ConfigClass {
 		$time = $end - $start;
 		$this->q->commit();
 		echo json_encode(
-		array("success" => true, "message" => "Record updated","time"=>$time));
+		array("success" => true, "message" => $this->systemString->getUpdateMessage(),"time"=>$time));
 		exit();
 	}
 

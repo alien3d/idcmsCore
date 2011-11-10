@@ -208,7 +208,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "defaultLabelId" => $lastId, "message" => $this->system->getCreateMessage() ) );
+		echo json_encode ( array ("success" => true, "defaultLabelId" => $lastId, "message" => $this->systemString->getCreateMessage() ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -461,7 +461,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => $this->system->getUpdateMessage() ) );
+		echo json_encode ( array ("success" => true, "message" => $this->systemString->getUpdateMessage() ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -525,7 +525,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" =>true, "message" => $this->system->getDeleteMessage() ) );
+		echo json_encode ( array ("success" =>true, "message" => $this->systemString->getDeleteMessage() ) );
 		exit ();
 	}
 	/**
@@ -682,7 +682,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => $this->system->getDeleteMessage() ) );
+		echo json_encode ( array ("success" => true, "message" => $this->systemString->getDeleteMessage() ) );
 		exit ();
 	}
 	function firstRecord($value) {
@@ -749,9 +749,9 @@ class DefaultLabelClass extends ConfigClass {
 		$this->audit->create_trail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" =>true, "message" => $this->system->getFileGenerateMessage() ) );
+			echo json_encode ( array ("success" =>true, "message" => $this->systemString->getFileGenerateMessage() ) );
 		} else {
-			echo json_encode ( array ("success" => false, "message" => $this->system->getFileNotGenerateMessage() ) );
+			echo json_encode ( array ("success" => false, "message" => $this->systemString->getFileNotGenerateMessage() ) );
 		}
 	}
 }

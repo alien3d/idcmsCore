@@ -279,7 +279,7 @@ class TableMappingClass extends ConfigClass {
 		echo json_encode ( 
 			array (	"success" => true, 
 					"tableMappingId" => $lastId, 
-					"message" => $this->system->getCreateMessage(),
+					"message" => $this->systemString->getCreateMessage(),
 					"time"=>$time ) );
 		exit ();
 	}
@@ -607,7 +607,7 @@ class TableMappingClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" => true,
-					 "message" => $this->system->getUpdateMessage(),
+					 "message" => $this->systemString->getUpdateMessage(),
 					 "time"=>$time ) );
 		exit ();
 
@@ -683,7 +683,7 @@ class TableMappingClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" =>true, 
-					"message" => $this->system->getDeleteMessage(),
+					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
 
@@ -757,10 +757,10 @@ class TableMappingClass extends ConfigClass {
 			$time = $end - $start;
 			echo json_encode ( 
 				array (	"success" =>true, 
-						"message" => $this->system->getFileGenerateMessage(),
+						"message" => $this->systemString->getFileGenerateMessage(),
 						"time"=>$time ) );
 		} else {
-			echo json_encode ( array ("success" => false, "message" => $this->system->getFileNotGenerateMessage() ) );
+			echo json_encode ( array ("success" => false, "message" => $this->systemString->getFileNotGenerateMessage() ) );
 
 		}
 	}

@@ -277,7 +277,7 @@ abstract class ConfigClass
 		$time_end = microtime(true);
 		$time = $time_end - $time_start;
 		echo json_encode(
-		array('success' => true, 'total' => $total, 'time'=>$time,'message' => $this->system->getReadMessage(),
+		array('success' => true, 'total' => $total, 'time'=>$time,'message' => $this->systemString->getReadMessage(),
         'staff' => $items));
 	}
 	/**
@@ -333,10 +333,9 @@ abstract class ConfigClass
 				$this->value = null;
 				return ($this->value);
 			} else {
-				 bugs
+				
 				//$this->value=trim(strtoupper($this->value)); // trim any space better for searching issue
-				$this->value = addslashes(
-				$this->value);
+				$this->value = addslashes($this->value);
 				return $this->value;
 			}
 		} else

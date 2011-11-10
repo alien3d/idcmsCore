@@ -473,8 +473,12 @@ class ModuleClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => "Insert Sucess", "moduleId" => $lastId));
+		$time = $end - $start;
+		echo json_encode(
+		array(	"success" => true, 
+				"message" => $this->systemString->getCreateMessage(), 
+				"moduleId" => $lastId,
+				"time"=>$time));
 		exit();
 	}
 
@@ -747,16 +751,18 @@ class ModuleClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getModuleId(0, 'single')) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
-						'message' => $this->system->getReadMessage(), 
+						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getModuleId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getModuleId(0, 'single')), 
             			'lastRecord' => $this->recordSet->lastRecord('value'),
-						'data' => $items,));
+						'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -764,10 +770,12 @@ class ModuleClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
-						'message' => $this->system->getReadMessage(), 
+						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getModuleId(0, 'single')), 
@@ -921,7 +929,10 @@ class ModuleClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->system->getUpdateMessage(), "moduleId" => $this->model->getModuleId(0, 'single')));
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $this->systemString->getUpdateMessage(), 
+					"time" => $time));
 		exit();
 	}
 
@@ -1057,7 +1068,9 @@ class ModuleClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => "Delete Succes"));
+		echo json_encode(
+			array( "success" => true, 
+				   "message" => $this->systemString->getDeleteMessage()));
 		exit();
 	}
 
@@ -1096,7 +1109,7 @@ class ModuleClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 			exit();
 		}
 		/**
@@ -1121,7 +1134,7 @@ class ModuleClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1145,7 +1158,7 @@ class ModuleClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1169,7 +1182,7 @@ class ModuleClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1193,7 +1206,7 @@ class ModuleClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1217,7 +1230,7 @@ class ModuleClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1241,7 +1254,7 @@ class ModuleClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1265,7 +1278,7 @@ class ModuleClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1289,7 +1302,7 @@ class ModuleClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1313,7 +1326,7 @@ class ModuleClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1342,7 +1355,7 @@ class ModuleClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1352,15 +1365,14 @@ class ModuleClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = $this->system->getUpdateMessage();
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = $this->system->getDeleteMessage();
+			$message = $this->systemString->getDeleteMessage();
 		}
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		$time = $end - $start;
+		echo json_encode(
+		array("success" => true, "message" => $message,"time"=>$time)
 		);
 		exit();
 	}
@@ -1436,12 +1448,17 @@ class ModuleClass extends ConfigClass {
 		$filename = "module" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$objWriter->save($path);
-		$this->audit->createTrail($this->leafId, $path, $filename);
+		$this->audit->createTrail($this->getLeafId(), $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => true, "message" => $this->system->getFileGenerateMessage()));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+				array(	"success" => true, 
+						"message" => $this->systemString->getFileGenerateMessage(),
+						"time"=>$time));
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->system->getFileNotGenerateMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));
 		}
 	}
 

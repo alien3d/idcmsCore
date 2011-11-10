@@ -566,7 +566,8 @@ class LeafTeamAccessClass extends ConfigClass {
 		if (count($items) == 0) {
 			$items = '';
 		}
-		
+		$end = microtime(true);
+			$time = $end - $start;
 		echo json_encode(
 			array(	'success' => true, 
 					'total' => $this->total, 
@@ -637,7 +638,7 @@ class LeafTeamAccessClass extends ConfigClass {
 		}
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->system->getUpdateMessage()));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
 	}
 

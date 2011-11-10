@@ -209,7 +209,7 @@ class Security extends ConfigClass {
 			exit ();
 		}
 		if ($total == 1) {
-			$jsonEncode = json_encode ( array ('success' => true, 'total' => $total, 'team' => $items, 'message' => $this->system->getReadMessage() ) );
+			$jsonEncode = json_encode ( array ('success' => true, 'total' => $total, 'team' => $items, 'message' => $this->systemString->getReadMessage() ) );
 			$jsonEncode = str_replace ( "[", "", $jsonEncode );
 			$jsonEncode = str_replace ( "]", "", $jsonEncode );
 			echo $jsonEncode;

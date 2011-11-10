@@ -199,7 +199,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "defaultLabelTranslationId" => $lastId, "message" => $this->system->getCreateMessage() ) );
+		echo json_encode ( array ("success" => true, "defaultLabelTranslationId" => $lastId, "message" => $this->systemString->getCreateMessage() ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -451,7 +451,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" => true, 
-					"message" => $this->system->getUpdateMessage(),
+					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time ) );
 		exit ();
 	}
@@ -517,7 +517,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" =>true, 
-					"message" => $this->system->getDeleteMessage(),
+					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
 	}
@@ -680,7 +680,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" => true, 
-					"message" => $this->system->getDeleteMessage(),
+					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
 	}
@@ -752,11 +752,11 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			$time = $end - $start;
 			echo json_encode ( 
 				array (	"success" =>true, 
-						"message" => $this->system->getFileGenerateMessage(),
+						"message" => $this->systemString->getFileGenerateMessage(),
 						"time"=>$time ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => false, "message" => $this->system->getFileNotGenerateMessage() ) );
+			echo json_encode ( array ("success" => false, "message" => $this->systemString->getFileNotGenerateMessage() ) );
 			exit ();
 		}
 	}

@@ -283,7 +283,7 @@ class PaymentClass extends ConfigClass {
 			'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+            echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
             exit();
         }
         //advance logging future
@@ -298,7 +298,7 @@ class PaymentClass extends ConfigClass {
             exit();
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => $this->system->getCreateMessage(), "paymentId" => $paymentId));
+        echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "paymentId" => $paymentId));
         exit();
     }
 
@@ -320,7 +320,7 @@ class PaymentClass extends ConfigClass {
             } else if ($this->q->vendor == self::POSTGRESS) {
                 $this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                 exit();
             }
         } else if ($this->isAdmin == 1) {
@@ -335,7 +335,7 @@ class PaymentClass extends ConfigClass {
             } else if ($this->q->vendor == self::POSTGRESS) {
                 $this->auditFilter = "	1	=	1 	";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                 exit();
             }
         }
@@ -419,7 +419,7 @@ class PaymentClass extends ConfigClass {
         } else if ($this->q->vendor == self::POSTGRESS) {
             
         } else {
-            echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+            echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
             exit();
         }
         /**
@@ -449,7 +449,7 @@ class PaymentClass extends ConfigClass {
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql .= $this->q->quickSearch($tableArray, $filterArray);
             } else {
-                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                 exit();
             }
         }
@@ -470,7 +470,7 @@ class PaymentClass extends ConfigClass {
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql .= $this->q->searching();
             } else {
-                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                 exit();
             }
         }
@@ -501,7 +501,7 @@ class PaymentClass extends ConfigClass {
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                 exit();
             }
         }
@@ -597,7 +597,7 @@ class PaymentClass extends ConfigClass {
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                 exit();
             }
         }
@@ -617,7 +617,7 @@ class PaymentClass extends ConfigClass {
             $items [] = $row;
         }
         if ($this->model->getPaymentId(0, 'single')) {
-            $json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => $this->system->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getPaymentId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getPaymentId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+            $json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getPaymentId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getPaymentId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
             $json_encode = str_replace("[", "", $json_encode);
             $json_encode = str_replace("]", "", $json_encode);
             echo $json_encode;
@@ -625,7 +625,7 @@ class PaymentClass extends ConfigClass {
             if (count($items) == 0) {
                 $items = '';
             }
-            echo json_encode(array('success' => true, 'total' => $total, 'message' => $this->system->getReadMessage(), 'data' => $items));
+            echo json_encode(array('success' => true, 'total' => $total, 'message' => $this->systemString->getReadMessage(), 'data' => $items));
             exit();
         }
     }
@@ -674,7 +674,7 @@ class PaymentClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+            echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
             exit();
         }
         $result = $this->q->fast($sql);
@@ -764,7 +764,7 @@ class PaymentClass extends ConfigClass {
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 				WHERE 		PAYMENTID			=	'" . $this->model->getPaymentId(0, 'single') . "'";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                 exit();
             }
             /*
@@ -781,7 +781,7 @@ class PaymentClass extends ConfigClass {
             }
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => $this->system->getUpdateMessage()));
+        echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
         exit();
     }
 
@@ -825,7 +825,7 @@ class PaymentClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+            echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
             exit();
         }
         $result = $this->q->fast($sql);
@@ -910,7 +910,7 @@ class PaymentClass extends ConfigClass {
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
 				WHERE 	PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                 exit();
             }
             // advance logging future
@@ -925,7 +925,7 @@ class PaymentClass extends ConfigClass {
             }
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => $this->system->getDeleteMessage()));
+        echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
         exit();
     }
 
@@ -961,7 +961,7 @@ class PaymentClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+            echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
             exit();
         }
         /**
@@ -986,7 +986,7 @@ class PaymentClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1010,7 +1010,7 @@ class PaymentClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1034,7 +1034,7 @@ class PaymentClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1058,7 +1058,7 @@ class PaymentClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1082,7 +1082,7 @@ class PaymentClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1106,7 +1106,7 @@ class PaymentClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1130,7 +1130,7 @@ class PaymentClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1154,7 +1154,7 @@ class PaymentClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1178,7 +1178,7 @@ class PaymentClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1207,7 +1207,7 @@ class PaymentClass extends ConfigClass {
             $sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+            echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
             exit();
         }
         $this->q->update($sql);
@@ -1217,9 +1217,9 @@ class PaymentClass extends ConfigClass {
         }
         $this->q->commit();
         if ($this->getIsAdmin()) {
-            $message = $this->system->getUpdateMessage();
+            $message = $this->systemString->getUpdateMessage();
         } else {
-            $message = $this->system->getDeleteMessage();
+            $message = $this->systemString->getDeleteMessage();
         }
         echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
@@ -1269,7 +1269,7 @@ class PaymentClass extends ConfigClass {
 			WHERE 	PAYMENTDESC 	= 	'" . $this->model->getPaymentDesc() . "'
 			AND		ISACTIVE		=	1";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+            echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
             exit();
         }
         $this->q->read($sql);
@@ -1281,10 +1281,10 @@ class PaymentClass extends ConfigClass {
         }
         if ($total > 0) {
             $row = $this->q->fetchArray();
-            echo json_encode(array("success" => true, "total" => $total, "message" => $this->system->getDuplicateMessage(), "paymentDesc" => $row ['paymentDesc']));
+            echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "paymentDesc" => $row ['paymentDesc']));
             exit();
         } else {
-            echo json_encode(array("success" => true, "total" => $total, "message" => $this->system->getNotDuplicateMessage()));
+            echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNotDuplicateMessage()));
             exit();
         }
     }
@@ -1363,10 +1363,10 @@ class PaymentClass extends ConfigClass {
         $objWriter->save($path);
         $file = fopen($path, 'r');
         if ($file) {
-            echo json_encode(array("success" => 'TRUE', "message" => $this->system->getFileGenerateMessage(), "filename" => $filename));
+            echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
             exit();
         } else {
-            echo json_encode(array("success" => 'FALSE', "message" => $this->system->getFileNotGenerateMessage()));
+            echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
             exit();
         }
     }

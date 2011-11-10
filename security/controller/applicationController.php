@@ -692,7 +692,7 @@ class ApplicationClass extends ConfigClass {
         	$json_encode = json_encode(
             array(	'success' => true, 
             		'total' => $total, 
-            		'message' => $this->system->getReadMessage(), 
+            		'message' => $this->systemString->getReadMessage(), 
             		'time' => $time, 
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
             		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getApplicationId(0, 'single')), 
@@ -711,7 +711,7 @@ class ApplicationClass extends ConfigClass {
             echo json_encode(
             		array(	'success' => true, 
             				'total' => $total, 
-            				'message' => $this->system->getReadMessage(), 
+            				'message' => $this->systemString->getReadMessage(), 
             				'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getApplicationId(0, 'single')), 
@@ -867,7 +867,7 @@ class ApplicationClass extends ConfigClass {
 		$time = $end - $start;
         echo json_encode(
         	array(	"success" => true, 
-        			"message" => $this->system->getUpdateMessage(), 
+        			"message" => $this->systemString->getUpdateMessage(), 
         			"applicationId" => $this->model->getApplicationId(0, 'single'),
         			"time"=>$time
         	));
@@ -1047,7 +1047,7 @@ class ApplicationClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+            echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
             exit();
         }
         /**
@@ -1072,7 +1072,7 @@ class ApplicationClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1096,7 +1096,7 @@ class ApplicationClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1120,7 +1120,7 @@ class ApplicationClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1144,7 +1144,7 @@ class ApplicationClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1168,7 +1168,7 @@ class ApplicationClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1192,7 +1192,7 @@ class ApplicationClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1216,7 +1216,7 @@ class ApplicationClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1240,7 +1240,7 @@ class ApplicationClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1264,7 +1264,7 @@ class ApplicationClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+                                echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
                                 exit();
                             }
                             $sqlLooping .= "
@@ -1293,7 +1293,7 @@ class ApplicationClass extends ConfigClass {
             $sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
+            echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
             exit();
         }
         $this->q->update($sql);
@@ -1303,9 +1303,9 @@ class ApplicationClass extends ConfigClass {
         }
         $this->q->commit();
         if ($this->getIsAdmin()) {
-            $message = $this->system->getUpdateMessage();
+            $message = $this->systemString->getUpdateMessage();
         } else {
-            $message = $this->system->getDeleteMessage();
+            $message = $this->systemString->getDeleteMessage();
         }
         $end = microtime(true);
 		$time = $end - $start;
@@ -1395,11 +1395,11 @@ class ApplicationClass extends ConfigClass {
 			$time = $end - $start;
             echo json_encode(
             	array(	"success" => true, 
-            			"message" => $this->system->getFileGenerateMessage(),
+            			"message" => $this->systemString->getFileGenerateMessage(),
             			"time"=>$time));
         } else {
             echo json_encode(
-            	array("success" => false, "message" => $this->system->getFileNotGenerateMessage()));
+            	array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));
         }
     }
 
