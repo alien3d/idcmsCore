@@ -277,7 +277,7 @@ abstract class ConfigClass
 		$time_end = microtime(true);
 		$time = $time_end - $time_start;
 		echo json_encode(
-		array('success' => true, 'total' => $total, 'time'=>$time,'message' => 'Data loaded',
+		array('success' => true, 'total' => $total, 'time'=>$time,'message' => $this->system->getReadMessage(),
         'staff' => $items));
 	}
 	/**

@@ -208,7 +208,7 @@ class ReligionDetailClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode(
 			array(	"success" => true, 
-					"message" => "Record Created", 
+					"message" => $this->system->getCreateMessage(), 
 					"religionDetailId" => $religionDetailId,
 					"time"=>$time));
 		exit();
@@ -493,7 +493,7 @@ class ReligionDetailClass extends ConfigClass {
 			$json_encode = json_encode(array(
 					'success' => true, 
 					'total' => $total, 
-					'message' => 'Data Loaded', 
+					'message' => $this->system->getReadMessage(), 
 					'dataDetail' => $items, 
 					'firstRecord' => $this->firstRecord('value'), 
 					'previousRecord' => $this->previousRecord('value', $this->model->getReligionDetailId(0, 'single')), 
@@ -509,7 +509,7 @@ class ReligionDetailClass extends ConfigClass {
 			echo json_encode(array(
 				'success' =>true, 
 				'total' => $total, 
-				'message' => 'data loaded', 
+				'message' => $this->system->getReadMessage(), 
 				'dataDetail' => $items, 
             	'firstRecord' => $this->recordSet->firstRecord('value'), 
             	'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionDetailId(0, 'single')), 
@@ -635,7 +635,7 @@ class ReligionDetailClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode(
 			array(	"success" =>true, 
-					"message" => "Updated",
+					"message" => $this->system->getUpdateMessage(),
 					"time"=>$time));
 		exit();
 	}
@@ -748,7 +748,7 @@ class ReligionDetailClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode(
 			array(	"success" => true, 
-					"message" => "Deleted",
+					"message" => $this->system->getDeleteMessage(),
 					"time"=>$time));
 		exit();
 	}
@@ -787,7 +787,7 @@ class ReligionDetailClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 			exit();
 		}
 		/**
@@ -812,7 +812,7 @@ class ReligionDetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -836,7 +836,7 @@ class ReligionDetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -860,7 +860,7 @@ class ReligionDetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -884,7 +884,7 @@ class ReligionDetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -908,7 +908,7 @@ class ReligionDetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -932,7 +932,7 @@ class ReligionDetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -956,7 +956,7 @@ class ReligionDetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -980,7 +980,7 @@ class ReligionDetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1004,7 +1004,7 @@ class ReligionDetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1033,7 +1033,7 @@ class ReligionDetailClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1043,9 +1043,9 @@ class ReligionDetailClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->system->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->system->getDeleteMessage();
 		}
 		echo json_encode(
 				array(	"success" => true, 
@@ -1099,7 +1099,7 @@ class ReligionDetailClass extends ConfigClass {
 			echo json_encode(
 				array(	"success" =>true, 
 						"total" => $total,
-				 		"message" => "Duplicate Record", 
+				 		"message" => $this->system->getDuplicateMessage(), 
 				 		"religionDetailDesc" => $row ['religionDetailDesc'],
 						"time"=>$time));
 			exit();
@@ -1109,7 +1109,7 @@ class ReligionDetailClass extends ConfigClass {
 			echo json_encode(
 				array(	"success" => true, 
 						"total" => $total, 
-						"message" => "Duplicate Non",
+						"message" => $this->system->getNotDuplicateMessage(),
 						"time"=>$time));
 			exit();
 		}
@@ -1193,7 +1193,7 @@ class ReligionDetailClass extends ConfigClass {
 			$time = $end - $start;
 			echo json_encode(
 				array(	"success" => true, 
-						"message" => "File generated", 
+						"message" => $this->system->getFileGenerateMessage(), 
 						"filename" => $filename,
 						"time"=>$time));
 			exit();
@@ -1202,7 +1202,7 @@ class ReligionDetailClass extends ConfigClass {
 			$time = $end - $start;
 			echo json_encode(
 				array(	"success" => false, 
-						"message" => "File not generated",
+						"message" => $this->system->getFileNotGenerateMessage(),
 						"time"=>$time));
 			exit();
 		}

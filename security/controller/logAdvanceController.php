@@ -336,7 +336,7 @@ class LogAdvanceClass extends ConfigClass {
 			$json_encode = json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
-						'message' => 'Data Loaded', 
+						'message' => $this->system->getReadMessage(), 
 						'time' => $time, 
 						'firstRecord' => $this->firstRecord('value'), 
 						'previousRecord' => $this->previousRecord('value', $this->model->getLogAdvanceId(0, 'single')), 
@@ -355,7 +355,7 @@ class LogAdvanceClass extends ConfigClass {
 			echo json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
-						'message' => 'data loaded', 
+						'message' => $this->system->getReadMessage(), 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLogAdvanceId(0, 'single')), 
@@ -467,12 +467,12 @@ class LogAdvanceClass extends ConfigClass {
 		if ($file) {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode(array("success" => true, "message" => "File generated"));
+			echo json_encode(array("success" => true, "message" => $this->system->getFileGenerateMessage()));
 			exit();
 		} else {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode(array("success" => false, "message" => "File not generated"));
+			echo json_encode(array("success" => false, "message" => $this->system->getFileNotGenerateMessage()));
 			exit();
 		}
 	}

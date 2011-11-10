@@ -141,7 +141,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getdefaultLabelTranslation () . "',			'" . $this->model->getdefaultLabelTranslationEnglish () . "'
+						'" . $this->model->getDefaultLabelTranslation () . "',			'" . $this->model->getDefaultLabelTranslationEnglish () . "'
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -162,7 +162,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 				)
 			VALUES
 				(
-						'" . $this->model->getdefaultLabelTranslation () . "',		    '" . $this->model->getdefaultLabelTranslationEnglish () . "'
+						'" . $this->model->getDefaultLabelTranslation () . "',		    '" . $this->model->getDefaultLabelTranslationEnglish () . "'
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -181,7 +181,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							ISAPPROVED,							    EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							'" . $this->model->getdefaultLabelTranslation () . "',		'" . $this->model->getdefaultLabelTranslationEnglish () . "'
+							'" . $this->model->getDefaultLabelTranslation () . "',		'" . $this->model->getDefaultLabelTranslationEnglish () . "'
 							'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -199,7 +199,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "defaultLabelTranslationId" => $lastId, "message" => "Record Created" ) );
+		echo json_encode ( array ("success" => true, "defaultLabelTranslationId" => $lastId, "message" => $this->system->getCreateMessage() ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -219,24 +219,24 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			SELECT 		*
 			FROM 		`defaultLabelTranslation`
 			WHERE 1 ";
-			if ($this->model->getdefaultLabelTranslationId ( 0, 'single' )) {
-				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+			if ($this->model->getDefaultLabelTranslationId ( 0, 'single' )) {
+				$sql .= " AND `" . $this->model->getTableName () . "`.`" . $this->model->getPrimaryKeyName () . "`='" . $this->model->getDefaultLabelTranslationId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			SELECT 		*
 			FROM 		[defaultLabelTranslation]
 			WHERE 1 ";
-			if ($this->model->getdefaultLabelTranslationId ( 0, 'single' )) {
-				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+			if ($this->model->getDefaultLabelTranslationId ( 0, 'single' )) {
+				$sql .= " AND [" . $this->model->getTableName () . "].[" . $this->model->getPrimaryKeyName () . "]='" . $this->model->getDefaultLabelTranslationId ( 0, 'single' ) . "'";
 			}
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT 		*
 			FROM 		DEFAULTLABELTRANSLATION
 			WHERE 1";
-			if ($this->model->getdefaultLabelTranslationId ( 0, 'single' )) {
-				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "=" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+			if ($this->model->getDefaultLabelTranslationId ( 0, 'single' )) {
+				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "=" . $this->model->getDefaultLabelTranslationId ( 0, 'single' ) . "'";
 			}
 		}
 		/**
@@ -343,7 +343,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (! ($this->getdefaultLabelTranslationId ( 0, 'single' ))) {
+		if (! ($this->getDefaultLabelTranslationId ( 0, 'single' ))) {
 			$this->q->read ( $sql );
 			if ($this->q->execute == 'fail') {
 				echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
@@ -354,7 +354,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		while ( ($row = $this->q->fetchAssoc ()) == true ) {
 			$items [] = $row;
 		}
-		if ($this->getdefaultLabelTranslationId ( 0, 'single' )) {
+		if ($this->getDefaultLabelTranslationId ( 0, 'single' )) {
 			$json_encode = json_encode ( 
 				array (	'success' => true, 
 						'total' => $total, 
@@ -396,8 +396,8 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 					UPDATE 	`defaultLabelTranslation`
-					SET 	`defaultLabelTranslationNote`		=	'" . $this->model->getdefaultLabelTranslationNote () . "',
-							`defaultLabelTranslationEnglish`	=	'" . $this->model->getdefaultLabelTranslationEnglish () . "',
+					SET 	`defaultLabelTranslationNote`		=	'" . $this->model->getDefaultLabelTranslationNote () . "',
+							`defaultLabelTranslationEnglish`	=	'" . $this->model->getDefaultLabelTranslationEnglish () . "',
 							`isDefault`		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							`isActive`		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							`isNew`			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -407,12 +407,12 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`			=	" . $this->model->getExecuteTime () . "
-					WHERE 	`defaultLabelTranslationId`			=	'" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+					WHERE 	`defaultLabelTranslationId`			=	'" . $this->model->getDefaultLabelTranslationId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 					UPDATE 	[defaultLabelTranslation]
-					SET 	[defaultLabelTranslationNote]		=	'" . $this->model->getdefaultLabelTranslationNote () . "',
-							[defaultLabelTranslationEnglish]	=	'" . $this->model->getdefaultLabelTranslationEnglish () . "',
+					SET 	[defaultLabelTranslationNote]		=	'" . $this->model->getDefaultLabelTranslationNote () . "',
+							[defaultLabelTranslationEnglish]	=	'" . $this->model->getDefaultLabelTranslationEnglish () . "',
 							[isDefault]		=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							[isActive]		=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							[isNew]			=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -422,12 +422,12 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							[isApproved]	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]			=	" . $this->model->getExecuteTime () . "
-					WHERE 	[defaultLabelTranslationId]			=	'" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+					WHERE 	[defaultLabelTranslationId]			=	'" . $this->model->getDefaultLabelTranslationId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 					UPDATE 	DEFAULTLABELTRANSLATION
-					SET 	DEFAULTLABELTRANSLATIONNOTE		=	'" . $this->model->getdefaultLabelTranslationNote () . "',
-							DEFAULTLABELTRANSLATIONENGLISH	=	'" . $this->model->getdefaultLabelTranslationEnglish () . "',
+					SET 	DEFAULTLABELTRANSLATIONNOTE		=	'" . $this->model->getDefaultLabelTranslationNote () . "',
+							DEFAULTLABELTRANSLATIONENGLISH	=	'" . $this->model->getDefaultLabelTranslationEnglish () . "',
 							ISDEFAULT						=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE						=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW							=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -437,7 +437,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							ISAPPROVED						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY						=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME						=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getdefaultLabelTranslationId ( 0, 'single' ) . "'";
+					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getDefaultLabelTranslationId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -446,8 +446,11 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => $this->system->getUpdateMessage(),
+					"time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -474,7 +477,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							`isApproved`	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy () . "',
 							`executeTime`			=	" . $this->model->getExecuteTime () . "
-					WHERE 	`defaultLabelTranslationId`		=	'" . $this->model->getdefaultLabelTranslationId () . "'";
+					WHERE 	`defaultLabelTranslationId`		=	'" . $this->model->getDefaultLabelTranslationId () . "'";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 					UPDATE	[defaultLabelTranslation]
@@ -487,7 +490,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							[isApproved]					=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							[executeBy]						=	'" . $this->model->getExecuteBy () . "',
 							[executeTime]					=	" . $this->model->getExecuteTime () . "
-					WHERE 	[defaultLabelTranslationId]		=	'" . $this->model->getdefaultLabelTranslationId () . "'";
+					WHERE 	[defaultLabelTranslationId]		=	'" . $this->model->getDefaultLabelTranslationId () . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 					UPDATE	DEFAULTLABELTRANSLATION
@@ -500,7 +503,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 							ISAPPROVED						=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY						=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME						=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getdefaultLabelTranslationId () . "'";
+					WHERE 	DEFAULTLABELTRANSLATIONID		=	'" . $this->model->getDefaultLabelTranslationId () . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -509,8 +512,11 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" =>true, 
+					"message" => $this->system->getRemoveMessage(),
+					"time"=>$time ) );
 		exit ();
 	}
 	/**
@@ -669,8 +675,11 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => $this->system->getDeleteMessage(),
+					"time"=>$time ) );
 		exit ();
 	}
 	function firstRecord($value) {
@@ -737,10 +746,15 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$this->audit->create_trail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode ( 
+				array (	"success" =>true, 
+						"message" => $this->system->getFileGenerateMessage(),
+						"time"=>$time ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => $this->system->getFileNotGenerateMessage() ) );
 			exit ();
 		}
 	}

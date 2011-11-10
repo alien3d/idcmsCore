@@ -207,8 +207,12 @@ class TableMappingTranslateClass extends ConfigClass {
 
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "tableMappingTranslationTranslationId" => $lastId, "message" => "Record Created" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"tableMappingTranslationTranslationId" => $lastId, 
+					"message" => $this->system->getCreateMessage(),
+					"time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -379,7 +383,13 @@ class TableMappingTranslateClass extends ConfigClass {
 		}
 
 		if ($this->getTableMappingTranslationTranslationId ( 0, 'single' )) {
-			$json_encode = json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			$json_encode = json_encode ( 
+				array (	'success' => true, 
+						'total' => $total, 
+						'time'=>$time,
+						'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -387,7 +397,13 @@ class TableMappingTranslateClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( array ('success' => true, 'total' => $total, 'data' => $items ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode ( 
+				array (	'success' => true, 
+						'total' => $total,
+						'time'=>$time, 
+						'data' => $items ) );
 			exit ();
 		}
 
@@ -463,7 +479,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
+		echo json_encode ( array ("success" => true, "message" => $this->system->getUpdateMessage(),"time"=>$time ) );
 		exit ();
 
 	}
@@ -531,8 +547,8 @@ class TableMappingTranslateClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
+		$time = $end - $start;
+		echo json_encode ( array ("success" =>true, "message" => $this->system->getRemoveMessage(),"time"=>$time ) );
 		exit ();
 
 	}
@@ -659,7 +675,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => $this->system->getDeleteMessage(),"time"=>$time ) );
 		exit ();
 
 	}
@@ -731,9 +747,14 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->audit->create_trail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode ( 
+				array (	"success" =>true, 
+						"message" => $this->system->getFileGenerateMessage(),
+						"time"=>$time ) );
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => $this->system->getFileNotGenerateMessage() ) );
 
 		}
 	}

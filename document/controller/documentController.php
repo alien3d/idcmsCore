@@ -313,7 +313,7 @@ class DocumentClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode (
 		array (	"success" => true,
-					"message" => "Record Created", 
+					"message" => $this->system->getCreateMessage(), 
 					"documentId" => $documentId,
 					"time"=>$time
 		) );
@@ -607,7 +607,7 @@ class DocumentClass extends ConfigClass {
 			$json_encode = json_encode (
 			array (	'success' =>true,
 						'total' => $total, 
-						'message' => 'Data Loaded', 
+						'message' => $this->system->getReadMessage(), 
 						'data' => $items, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getDocumentId(0, 'single')), 
@@ -625,7 +625,7 @@ class DocumentClass extends ConfigClass {
 			echo json_encode (
 			array (	'success' =>true,
 						'total' => $total, 
-						'message' => 'data loaded', 
+						'message' => $this->system->getReadMessage(), 
 						'data' => $items, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getDocumentId(0, 'single')), 
@@ -912,7 +912,7 @@ class DocumentClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 			exit();
 		}
 		/**
@@ -937,7 +937,7 @@ class DocumentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -961,7 +961,7 @@ class DocumentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -985,7 +985,7 @@ class DocumentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1009,7 +1009,7 @@ class DocumentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1033,7 +1033,7 @@ class DocumentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1057,7 +1057,7 @@ class DocumentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1081,7 +1081,7 @@ class DocumentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1105,7 +1105,7 @@ class DocumentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1129,7 +1129,7 @@ class DocumentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1158,7 +1158,7 @@ class DocumentClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->system->getUnsupportedMessage()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1168,9 +1168,9 @@ class DocumentClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->system->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->system->getDeleteMessage();
 		}
 		$end = microtime(true);
 		$time = $end - $start;
@@ -1255,11 +1255,11 @@ class DocumentClass extends ConfigClass {
 			$time = $end - $start;
 			echo json_encode (
 			array ("success" => true,
-						"message" => "File generated",
+						"message" => $this->system->getFileGenerateMessage(),
 						"time"=>$time ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => $this->system->getFileNotGenerateMessage() ) );
 			exit ();
 		}
 	}

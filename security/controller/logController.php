@@ -336,7 +336,7 @@ class LogClass extends ConfigClass {
 			$json_encode = json_encode(
 			array('success' => true,
 				'total' => $total, 
-				'message' => 'Data Loaded', 
+				'message' => $this->system->getReadMessage(), 
 				'time' => $time, 
 				'firstRecord' => $this->firstRecord('value'), 
 				'previousRecord' => $this->previousRecord('value', $this->model->getLogId(0, 'single')), 
@@ -355,7 +355,7 @@ class LogClass extends ConfigClass {
 			echo json_encode(
 			array(	'success' => true,
 						'total' => $total, 
-						'message' => 'data loaded', 
+						'message' => $this->system->getReadMessage(), 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLogId(0, 'single')), 
@@ -465,10 +465,10 @@ class LogClass extends ConfigClass {
 		$this->create_trail($this->leafId, $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => true, "message" => "File generated"));
+			echo json_encode(array("success" => true, "message" => $this->system->getFileGenerateMessage()));
 			exit();
 		} else {
-			echo json_encode(array("success" => false, "message" => "File not generated"));
+			echo json_encode(array("success" => false, "message" => $this->system->getFileNotGenerateMessage()));
 			exit();
 		}
 	}

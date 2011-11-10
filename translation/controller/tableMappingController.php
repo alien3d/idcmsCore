@@ -275,8 +275,12 @@ class TableMappingClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "tableMappingId" => $lastId, "message" => "Record Created" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"tableMappingId" => $lastId, 
+					"message" => $this->system->getCreateMessage(),
+					"time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -481,14 +485,18 @@ class TableMappingClass extends ConfigClass {
 		}
 
 		if ($this->model->getTableMappingId(0, 'single')) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode ( 
 				array (	'success' => true, 
-						'total' => $total, 
-						'data' => $items, 
-            			'firstRecord' => $this->recordSet->firstRecord('value'), 
+						'total' => $total,
+						'time'=>$time, 
+						'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getTableMappingId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getTableMappingId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value') ) );
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items, 
+            			 ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -496,14 +504,17 @@ class TableMappingClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode ( 
 				array (	'success' => true, 
-						'total' => $total, 
-						'data' => $items, 
+						'total' => $total,
+						'time'=>$time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getTableMappingId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getTableMappingId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value') ) );
+            			'lastRecord' => $this->recordSet->lastRecord('value'), 
+						'data' => $items ) );
 			exit ();
 		}
 
@@ -585,13 +596,19 @@ class TableMappingClass extends ConfigClass {
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => FALSE, "message" => $this->q->responce ) );
+			echo json_encode ( 
+				array (	"success" => false, 
+						"message" => $this->q->responce
+			 ) );
 			exit ();
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true,
+					 "message" => $this->system->getUpdateMessage(),
+					 "time"=>$time ) );
 		exit ();
 
 	}
@@ -663,8 +680,11 @@ class TableMappingClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" =>true, 
+					"message" => $this->system->getRemoveMessage(),
+					"time"=>$time ) );
 		exit ();
 
 	}
@@ -733,9 +753,14 @@ class TableMappingClass extends ConfigClass {
 		$this->audit->create_trail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode ( 
+				array (	"success" =>true, 
+						"message" => $this->system->getFileGenerateMessage(),
+						"time"=>$time ) );
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => $this->system->getFileNotGenerateMessage() ) );
 
 		}
 	}

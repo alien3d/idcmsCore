@@ -208,7 +208,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "defaultLabelId" => $lastId, "message" => "Record Created" ) );
+		echo json_encode ( array ("success" => true, "defaultLabelId" => $lastId, "message" => $this->system->getCreateMessage() ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -459,7 +459,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
+		echo json_encode ( array ("success" => true, "message" => $this->system->getUpdateMessage() ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -523,7 +523,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" =>true, "message" => "Record Removed" ) );
+		echo json_encode ( array ("success" =>true, "message" => $this->system->getRemoveMessage() ) );
 		exit ();
 	}
 	/**
@@ -680,7 +680,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
+		echo json_encode ( array ("success" => true, "message" => $this->system->getDeleteMessage() ) );
 		exit ();
 	}
 	function firstRecord($value) {
@@ -747,9 +747,9 @@ class DefaultLabelClass extends ConfigClass {
 		$this->audit->create_trail ( $this->leafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" =>true, "message" => "File generated" ) );
+			echo json_encode ( array ("success" =>true, "message" => $this->system->getFileGenerateMessage() ) );
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => $this->system->getFileNotGenerateMessage() ) );
 		}
 	}
 }

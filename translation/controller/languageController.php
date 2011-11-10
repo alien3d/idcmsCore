@@ -197,7 +197,7 @@ class LanguageClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" =>true, 
-					"message" => "Record Created",
+					"message" => $this->system->getCreateMessage(),
 					"time"=>$time ) );
 		exit ();
 
@@ -460,7 +460,7 @@ class LanguageClass extends ConfigClass {
 			$json_encode = json_encode ( 
 				array (	'success' => true, 
 						'total' => $total, 
-						'message' => 'Data Loaded', 
+						'message' => $this->system->getReadMessage(), 
 						'data' => $time , 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLanguageId(0, 'single')), 
@@ -479,7 +479,7 @@ class LanguageClass extends ConfigClass {
 			echo json_encode ( 
 				array (	'success' => true, 
 						'total' => $total, 
-						'message' => 'data loaded', 
+						'message' => $this->system->getReadMessage(), 
 						'time' => $time , 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLanguageId(0, 'single')), 
@@ -558,13 +558,16 @@ class LanguageClass extends ConfigClass {
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => FALSE, "message" => $this->q->responce ) );
+			echo json_encode ( array ("success" =>false, "message" => $this->q->responce ) );
 			exit ();
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Record Update" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => $this->system->getUpdateMessage(),
+					"time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -633,8 +636,11 @@ class LanguageClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Record Remove" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => "Record Remove",
+					"time"=>$time ) );
 		exit ();
 
 	}
@@ -650,7 +656,7 @@ class LanguageClass extends ConfigClass {
 			$this->q->fast ( $sql );
 
 		}
-
+		$this->q->start();
 		$loop = $this->model->getTotal ();
 
 		if ($this->getVendor () == self::MYSQL) {
@@ -667,7 +673,6 @@ class LanguageClass extends ConfigClass {
 			UPDATE  " . strtoupper ( $this->model->getTableName () ) . "
 			SET    ";
 		}
-		//	echo "arnab[".$this->model->getLanguageId(0,'array')."]";
 		/**
 		 * System Validation Checking
 		 * @var $access
@@ -790,8 +795,11 @@ class LanguageClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => "Deleted" ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => $this->system->getDeleteMessage(),
+					"time"=>$time ) );
 		exit ();
 
 	}
@@ -836,8 +844,14 @@ class LanguageClass extends ConfigClass {
 			if ($this->duplicateTest == 1) {
 				return $total . "|" . $row ['languageCode'];
 			} else {
-
-				echo json_encode ( array ("success" =>true, "total" => $total, "message" => "Duplicate Record", "languageCode" => $row ['languageCode'] ) );
+				$end = microtime(true);
+				$time = $end - $start;
+				echo json_encode ( 
+					array (	"success" =>true, 
+							"total" => $total, 
+							"message" => $this->system->getDuplicateMessage(), 
+							"languageCode" => $row ['languageCode'],
+							"time"=>$time ) );
 				exit ();
 			}
 		}
@@ -991,10 +1005,16 @@ class LanguageClass extends ConfigClass {
 		$objWriter->save ( $path );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" => true, "message" => "File generated", "filename" => $filename ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode ( 
+				array (	"success" => true, 
+						"message" => $this->system->getFileGenerateMessage(), 
+						"filename" => $filename,
+						"time"=>$time ) );
 			exit ();
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "File not generated" ) );
+			echo json_encode ( array ("success" => false, "message" => $this->system->getFileNotGenerateMessage() ) );
 			exit ();
 		}
 	}

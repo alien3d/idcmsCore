@@ -217,7 +217,7 @@ class EventClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode(
 		array(	"success" =>true,
-				"message" => "Record Created",
+				"message" => $this->system->getCreateMessage(),
 				"evts" => $data,
                 "eventId" => $eventId,
 				"time"=>$time));
@@ -300,7 +300,7 @@ class EventClass extends ConfigClass {
 			array(
 					'success' => true, 
 					'total' => $total,
-                    'message' => 'Data Loaded', 
+                    'message' => $this->system->getReadMessage(), 
                     'evts' => $items,
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
             		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getEventId(0, 'single')), 
@@ -316,7 +316,7 @@ class EventClass extends ConfigClass {
 			echo json_encode(
 			array(	'success' => true,
 					'total' => $total,
-                    'message' => 'data loaded', 
+                    'message' => $this->system->getReadMessage(), 
                     'evts' => $items, 
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
             		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getEventId(0, 'single')), 

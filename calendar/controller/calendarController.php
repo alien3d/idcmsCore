@@ -332,7 +332,7 @@ class CalendarClass extends ConfigClass {
 			$json_encode = json_encode(
 			array(	'success' => true,
 												'total' => $total, 
-												'message' => 'Data Loaded', 
+												'message' => $this->system->getReadMessage(), 
 												'data' => $items, 
 												'firstRecord' => $this->firstRecord('value'), 
 												'previousRecord' => $this->previousRecord('value', $this->model->getCalendarId(0, 'single')), 
@@ -348,7 +348,7 @@ class CalendarClass extends ConfigClass {
 			echo json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
-						'message' => 'data loaded', 
+						'message' => $this->system->getReadMessage(), 
 						'data' => $items,
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getCalendarId(0, 'single')), 
