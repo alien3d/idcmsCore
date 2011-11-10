@@ -428,11 +428,12 @@ class LeafAccessClass extends ConfigClass {
 		echo json_encode(array(
 			'success' => true, 
 			'total' => $total, 
-			'data' => $items, 
+			'time' => $time, 
             'firstRecord' => $this->recordSet->firstRecord('value'), 
             'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLeafAccessId(0, 'single')), 
             'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getLeafAccessId(0, 'single')), 
-            'lastRecord' => $this->recordSet->lastRecord('value')));
+            'lastRecord' => $this->recordSet->lastRecord('value'),
+			'data' => $items));
 		exit();
 	}
 
@@ -527,7 +528,7 @@ class LeafAccessClass extends ConfigClass {
 		} else {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode(array("success" => true, "message" => "Update Success"));
+			echo json_encode(array("success" => true, "message" => $this->system->getUpdateMessage(),"time"=>$time));
 			exit();
 		}
 	}

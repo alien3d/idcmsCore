@@ -751,11 +751,12 @@ class ModuleClass extends ConfigClass {
 				array(	'success' => true, 
 						'total' => $total, 
 						'message' => $this->system->getReadMessage(), 
-						'data' => $items, 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getModuleId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getModuleId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')));
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items,));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -767,11 +768,12 @@ class ModuleClass extends ConfigClass {
 				array(	'success' => true, 
 						'total' => $total, 
 						'message' => $this->system->getReadMessage(), 
-						'data' => $items, 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getModuleId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getModuleId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')));
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items));
 			exit();
 		}
 	}
@@ -919,7 +921,7 @@ class ModuleClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => "update success", "moduleId" => $this->model->getModuleId(0, 'single')));
+		echo json_encode(array("success" => true, "message" => $this->system->getUpdateMessage(), "moduleId" => $this->model->getModuleId(0, 'single')));
 		exit();
 	}
 

@@ -333,11 +333,12 @@ class CalendarClass extends ConfigClass {
 			array(	'success' => true,
 												'total' => $total, 
 												'message' => $this->system->getReadMessage(), 
-												'data' => $items, 
+												'time' => $time, 
 												'firstRecord' => $this->firstRecord('value'), 
 												'previousRecord' => $this->previousRecord('value', $this->model->getCalendarId(0, 'single')), 
 												'nextRecord' => $this->nextRecord('value', $this->model->getCalendarId(0, 'single')), 
-												'lastRecord' => $this->lastRecord('value')));
+												'lastRecord' => $this->lastRecord('value'),
+			'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -349,11 +350,12 @@ class CalendarClass extends ConfigClass {
 				array(	'success' => true, 
 						'total' => $total, 
 						'message' => $this->system->getReadMessage(), 
-						'data' => $items,
+						'time' => $time,
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getCalendarId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getCalendarId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')));
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items));
 			exit();
 		}
 	}
@@ -397,7 +399,7 @@ class CalendarClass extends ConfigClass {
 			$time = $end - $start;
 			echo json_encode(
 				array(	"success" => true, 
-						"message" => "update success",
+						"message" => $this->system->getUpdateMessage(),
 						"time"=>$time));
 			exit();
 		}

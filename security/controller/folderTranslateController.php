@@ -590,11 +590,12 @@ class folderTranslateClass extends ConfigClass {
 			$json_encode = json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
-						'data' => $items, 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getFolderTranslateId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getFolderTranslateId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')));
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -605,11 +606,12 @@ class folderTranslateClass extends ConfigClass {
 			echo json_encode(array(
 					'success' => true, 
 					'total' => $total, 
-					'data' => $items, 
+					'time' => $time, 
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
             		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getFolderTranslateId(0, 'single')), 
             		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getFolderTranslateId(0, 'single')), 
-            		'lastRecord' => $this->recordSet->lastRecord('value')));
+            		'lastRecord' => $this->recordSet->lastRecord('value'),
+					'data' => $items));
 			exit();
 		}
 	}
@@ -901,7 +903,7 @@ class folderTranslateClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => $this->system->getRemoveMessage()));
+		echo json_encode(array("success" => true, "message" => $this->system->getDeleteMessage()));
 		exit();
 	}
 

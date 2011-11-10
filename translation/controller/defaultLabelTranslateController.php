@@ -517,7 +517,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" =>true, 
-					"message" => $this->system->getRemoveMessage(),
+					"message" => $this->system->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
 	}

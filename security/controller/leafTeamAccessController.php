@@ -148,9 +148,7 @@ class LeafTeamAccessClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		// by default if add new group will add access to module and leaf.
-		// just checking
-		//	$this->checkLeaf();
+		
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				SELECT	`leaf`.`moduleId`,
@@ -572,11 +570,12 @@ class LeafTeamAccessClass extends ConfigClass {
 		echo json_encode(
 			array(	'success' => true, 
 					'total' => $this->total, 
-					'data' => $items, 
+					'time' => $time, 
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
             		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLeafTeamAccessId(0, 'single')), 
             		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getLeafTeamAccessId(0, 'single')), 
-            		'lastRecord' => $this->recordSet->lastRecord('value')));
+            		'lastRecord' => $this->recordSet->lastRecord('value'),
+					'data' => $items));
 		exit();
 	}
 
@@ -638,7 +637,7 @@ class LeafTeamAccessClass extends ConfigClass {
 		}
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => "Update Success"));
+		echo json_encode(array("success" => true, "message" => $this->system->getUpdateMessage()));
 		exit();
 	}
 

@@ -309,11 +309,12 @@ class ModuleAccessClass extends ConfigClass {
 			$json_encode = json_encode(
 				array(	'success' => true, 
 						'total' => $total, 
-						'data' => $items, 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getModuleAccessId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getModuleAccessId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')));
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo json_encode;
@@ -329,7 +330,8 @@ class ModuleAccessClass extends ConfigClass {
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getModuleAccessId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getModuleAccessId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')));
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items));
 			exit();
 		}
 	}
@@ -370,7 +372,7 @@ class ModuleAccessClass extends ConfigClass {
 		}
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => "Update Success"));
+		echo json_encode(array("success" => true, "message" => $this->system->getUpdateMessage()));
 		exit();
 	}
 

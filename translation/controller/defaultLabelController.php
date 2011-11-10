@@ -525,7 +525,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode ( array ("success" =>true, "message" => $this->system->getRemoveMessage() ) );
+		echo json_encode ( array ("success" =>true, "message" => $this->system->getDeleteMessage() ) );
 		exit ();
 	}
 	/**

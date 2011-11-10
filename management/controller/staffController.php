@@ -1250,7 +1250,7 @@ class StaffClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode ( 
 			array (	"success" => true, 
-					"message" => "update success",
+					"message" => $this->system->getUpdateMessage(),
 					"time"=>$time ) );
 		exit ();
 	}

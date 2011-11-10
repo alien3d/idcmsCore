@@ -494,11 +494,12 @@ class ReligionDetailClass extends ConfigClass {
 					'success' => true, 
 					'total' => $total, 
 					'message' => $this->system->getReadMessage(), 
-					'dataDetail' => $items, 
+					'time' => $time, 
 					'firstRecord' => $this->firstRecord('value'), 
 					'previousRecord' => $this->previousRecord('value', $this->model->getReligionDetailId(0, 'single')), 
 					'nextRecord' => $this->nextRecord('value', $this->model->getReligionDetailId(0, 'single')), 
-					'lastRecord' => $this->lastRecord('value')));
+					'lastRecord' => $this->lastRecord('value'),
+					'dataDetail' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -510,11 +511,12 @@ class ReligionDetailClass extends ConfigClass {
 				'success' =>true, 
 				'total' => $total, 
 				'message' => $this->system->getReadMessage(), 
-				'dataDetail' => $items, 
+				'time' => $time, 
             	'firstRecord' => $this->recordSet->firstRecord('value'), 
             	'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionDetailId(0, 'single')), 
             	'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionDetailId(0, 'single')), 
-            	'lastRecord' => $this->recordSet->lastRecord('value')));
+            	'lastRecord' => $this->recordSet->lastRecord('value'),
+			'dataDetail' => $items));
 			exit();
 		}
 	}
