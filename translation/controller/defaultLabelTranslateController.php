@@ -358,11 +358,12 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			$json_encode = json_encode ( 
 				array (	'success' => true, 
 						'total' => $total, 
-						'data' => $items, 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getDefaultLabelTranslateId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getDefaultLabelTranslateId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value') ) );
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+							'data' => $items ) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -373,11 +374,12 @@ class DefaultLabelTranslationClass extends ConfigClass {
 			echo json_encode ( 
 				array (	'success' => true, 
 						'total' => $total, 
-						'data' => $items , 
+						'time' => $time , 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getDefaultLabelTranslateId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getDefaultLabelTranslateId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value')) );
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items) );
 			exit ();
 		}
 	}

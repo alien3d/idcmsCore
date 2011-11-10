@@ -461,7 +461,7 @@ class LanguageClass extends ConfigClass {
 				array (	'success' => true, 
 						'total' => $total, 
 						'message' => $this->system->getReadMessage(), 
-						'data' => $time , 
+						'time' => $time , 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getLanguageId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getLanguageId(0, 'single')), 

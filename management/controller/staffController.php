@@ -872,6 +872,7 @@ class StaffClass extends ConfigClass {
 			$json_encode = json_encode (
 			array (	'success' => true,
 						'total' => $total, 
+						'time'=>$time,
 						'message' => $this->system->getReadMessage(), 
 						'firstRecord' => $this->recordSet->firstRecord (), 
 						'nextRecord' => $this->recordSet->nextRecord ( $this->model->getStaffId( 0, 'single' ) ), 
@@ -891,11 +892,12 @@ class StaffClass extends ConfigClass {
 			array (	'success' => true,
 						'total' => $total, 
 						'message' => $this->system->getReadMessage(), 
-						'data' => $items, 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
             			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getStaffId(0, 'single')), 
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getStaffId(0, 'single')), 
-            			'lastRecord' => $this->recordSet->lastRecord('value') ) );
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items ) );
 			exit ();
 		}
 	}
