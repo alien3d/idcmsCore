@@ -964,7 +964,7 @@ class FolderClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage(), "folderId" => $this->model->getFolderId(0, 'single')));
 		exit();
 	}
@@ -1456,7 +1456,12 @@ class FolderClass extends ConfigClass {
 		$this->audit->create_trail($this->leafId, $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage()));
+				$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+				array(	"success" => true, 
+						"message" => $this->systemString->getFileGenerateMessage(),
+						"time"=>$time));
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));
 		}

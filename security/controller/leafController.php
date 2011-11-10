@@ -758,7 +758,10 @@ class LeafClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage(), "leafId" => $this->getLeafId(0, 'single')));
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $this->systemString->getUpdateMessage(), 
+					"time"=>$time));
 		exit();
 	}
 
@@ -854,7 +857,10 @@ class LeafClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => "Record Remove"));
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $this->systemString->getDeleteMessage(),
+					"time"=>$time));
 		exit();
 	}
 
@@ -1153,9 +1159,10 @@ class LeafClass extends ConfigClass {
 		}
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $message,
+					"time"=>$time)
 		);
 		exit();
 	}

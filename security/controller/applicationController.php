@@ -412,7 +412,7 @@ class ApplicationClass extends ConfigClass {
 		$time = $end - $start;
         echo json_encode(
         	array(	"success" => true, 
-        			"message" => "Insert Sucess", 
+        			"message" => $this->systemString->getCreateMessage(), 
         			"applicationId" => $lastId,
         			"time"=>$time));
         exit();
@@ -1008,7 +1008,7 @@ class ApplicationClass extends ConfigClass {
 		$time = $end - $start;
         echo json_encode(
         	array(	"success" => true, 
-        			"message" => "Delete Succes",
+        			"message" => $this->systemString->getDeleteMessage(),
         			"time"=>$time));
         exit();
     }

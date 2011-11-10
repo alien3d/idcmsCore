@@ -776,8 +776,11 @@ class leafTranslateClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
+		$time = $end - $start;
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $this->systemString->getUpdateMessage(),
+					"time"=>$time));
 		exit();
 	}
 
@@ -920,7 +923,10 @@ class leafTranslateClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
+		echo json_encode(
+			array("success" => true, 
+					"message" => $this->systemString->getDeleteMessage(),
+					"time"=>$time));
 		exit();
 	}
 
@@ -1221,9 +1227,10 @@ class leafTranslateClass extends ConfigClass {
 		}
 		$end = microtime(true);
 			$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		echo json_encode(
+			array("success" => true, 
+					"message" => $message,
+					"time"=>$time)
 		);
 		exit();
 	}
@@ -1297,6 +1304,8 @@ class leafTranslateClass extends ConfigClass {
 		$this->audit->create_trail($this->leafId, $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
+				$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage()));
 			exit();
 		} else {

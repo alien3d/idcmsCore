@@ -528,7 +528,10 @@ class LeafAccessClass extends ConfigClass {
 		} else {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage(),"time"=>$time));
+			echo json_encode(
+				array(	"success" => true, 
+						"message" => $this->systemString->getUpdateMessage(),
+						"time"=>$time));
 			exit();
 		}
 	}

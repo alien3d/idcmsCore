@@ -874,7 +874,7 @@ class DocumentClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode (
 		array ("success" => true,
-					"message" => "Record Remove",
+					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
 	}

@@ -365,12 +365,12 @@ class FolderAccessClass extends ConfigClass {
 		echo json_encode(
 			array(	'success' => true, 
 					'total' => $total, 
-					'data' => $items,
 					'time'=>$time, 
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
             		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getFolderAccessId(0, 'single')), 
             		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getFolderAccessId(0, 'single')), 
-            		'lastRecord' => $this->recordSet->lastRecord('value')));
+            		'lastRecord' => $this->recordSet->lastRecord('value'),
+					'data' => $items));
 	}
 
 	/* (non-PHPdoc)
@@ -428,7 +428,6 @@ class FolderAccessClass extends ConfigClass {
 
 		}
 
-		//	echo $sql."<br>";
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
