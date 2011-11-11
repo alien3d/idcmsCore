@@ -112,7 +112,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -136,7 +136,7 @@ class DefaultLabelClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -219,7 +219,11 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( array ("success" => true, "defaultLabelId" => $lastId, "message" => $this->systemString->getCreateMessage() ) );
+		echo json_encode (
+		array (	"success" => true,
+					"defaultLabelId" => $lastId, 
+					"message" => $this->systemString->getCreateMessage(),
+					"time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -230,7 +234,7 @@ class DefaultLabelClass extends ConfigClass {
 		$start = microtime(true);
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -377,6 +381,8 @@ class DefaultLabelClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getDefaultLabelId ( 0, 'single' )) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode (
 			array (	'success' => true,
 					'total' => $total, 
@@ -393,6 +399,8 @@ class DefaultLabelClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode (
 			array (	'success' => true,
 						'total' => $total, 
@@ -412,7 +420,7 @@ class DefaultLabelClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -472,7 +480,10 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => $this->systemString->getUpdateMessage() ) );
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => $this->systemString->getUpdateMessage(),
+					"time"=>$time ) );
 		exit ();
 	}
 	/* (non-PHPdoc)
@@ -482,7 +493,7 @@ class DefaultLabelClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -536,165 +547,313 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( array ("success" =>true, "message" => $this->systemString->getDeleteMessage() ) );
+		echo json_encode ( 
+			array (	"success" =>true, 
+					"message" => $this->systemString->getDeleteMessage(),
+					"time"=>$time ) );
 		exit ();
 	}
-	/**
+/**
 	 * To Update flag Status
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		if ($this->getVendor () == self::MYSQL) {
-				
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
-			$this->q->fast ( $sql );
+			$this->q->fast($sql);
 		}
 		$this->q->start();
-
-		$loop = $this->model->getTotal ();
-		if ($this->getVendor () == self::MYSQL) {
+		$loop = $this->model->getTotal();
+		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-				UPDATE `" . $this->model->getTableName () . "`
-				SET";
-		} else if ($this->getVendor () == self::MSSQL) {
+			UPDATE `" . $this->model->getTableName() . "`
+			SET";
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName () . "]
+			UPDATE 	[" . $this->model->getTableName() . "]
 			SET 	";
-		} else if ($this->getVendor () == self::ORACLE) {
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			UPDATE " . strtoupper ( $this->model->getTableName () ) . "
+			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
+			UPDATE " . strtoupper($this->model->getTableName()) . "
+			SET    ";
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
+			UPDATE " . strtoupper($this->model->getTableName()) . "
+			SET    ";
+		} else {
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+			exit();
 		}
-
 		/**
 		 * System Validation Checking
 		 * @var $access
 		 */
-		$access = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
-		foreach ( $access as $systemCheck ) {
-			if ($this->getVendor () == self::MYSQL) {
-				$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName () . "`";
-			} else if ($this->getVendor () == self::MSSQL) {
-				$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName () . "]";
-			} else if ($this->getVendor () == self::ORACLE) {
-				$sqlLooping .= "	" . strtoupper ( $systemCheck ) . " = CASE " . $this->model->getPrimaryKeyName () . " ";
-			}
+		$access = array("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost");
+		foreach ($access as $systemCheck) {
+
 			switch ($systemCheck) {
 				case 'isDefault' :
-
-					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDefault ( $i, 'array' )) {
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsDefault($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
-							THEN '" . $this->model->getIsDefault ( $i, 'array' ) . "'";
+							WHEN '" . $this->model->getDefaultLabelId($i, 'array') . "'
+							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
+							$sqlLooping .= " END,";
 						}
 					}
 					break;
 				case 'isNew' :
-					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsNew ( $i, 'array' )) {
-
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsNew($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
-							THEN '" . $this->model->getIsNew ( $i, 'array' ) . "'";
+							WHEN '" . $this->model->getDefaultLabelId($i, 'array') . "'
+							THEN '" . $this->model->getIsNew($i, 'array') . "'";
+							$sqlLooping .= " END,";
 						}
 					}
 					break;
 				case 'isDraft' :
-					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDraft ( $i, 'array' )) {
-
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsDraft($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
-							THEN '" . $this->model->getIsDraft ( $i, 'array' ) . "'";
+							WHEN '" . $this->model->getDefaultLabelId($i, 'array') . "'
+							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
+							$sqlLooping .= " END,";
 						}
 					}
 					break;
 				case 'isUpdate' :
-					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsUpdate ( $i, 'array' )) {
-
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsUpdate($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
-							THEN '" . $this->model->getIsUpdate ( $i, 'array' ) . "'";
+							WHEN '" . $this->model->getDefaultLabelId($i, 'array') . "'
+							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
+							$sqlLooping .= " END,";
 						}
 					}
 					break;
 				case 'isDelete' :
-					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsDelete ( $i, 'array' )) {
-
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsDelete($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
-							THEN '" . $this->model->getIsDelete ( $i, 'array' ) . "'";
+							WHEN '" . $this->model->getDefaultLabelId($i, 'array') . "'
+							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
+							$sqlLooping .= " END,";
 						}
 					}
 					break;
 				case 'isActive' :
-					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsActive ( $i, 'array' )) {
-
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsActive($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
-							THEN '" . $this->model->getIsActive ( $i, 'array' ) . "'";
+							WHEN '" . $this->model->getDefaultLabelId($i, 'array') . "'
+							THEN '" . $this->model->getIsActive($i, 'array') . "'";
+							$sqlLooping .= " END,";
 						}
 					}
 					break;
 				case 'isApproved' :
-					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsApproved ( $i, 'array' )) {
-
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsApproved($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
-							THEN '" . $this->model->getIsApproved ( $i, 'array' ) . "'";
+							WHEN '" . $this->model->getDefaultLabelId($i, 'array') . "'
+							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
+							$sqlLooping .= " END,";
 						}
 					}
 					break;
 				case 'isReview' :
-					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsReview ( $i, 'array' )) {
-
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsReview($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
-                            THEN '" . $this->model->getIsReview ( $i, 'array' ) . "'";
+                            WHEN '" . $this->model->getDefaultLabelId($i, 'array') . "'
+                            THEN '" . $this->model->getIsReview($i, 'array') . "'";
+							$sqlLooping .= " END,";
 						}
 					}
 					break;
 				case 'isPost' :
-					for($i = 0; $i < $loop; $i ++) {
-						if ($this->model->getIsPost ( $i, 'array' )) {
-
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsPost($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getDefaultLabelId ( $i, 'array' ) . "'
-                            THEN '" . $this->model->getIsPost ( $i, 'array' ) . "'";
+                                WHEN '" . $this->model->getDefaultLabelId($i, 'array') . "'
+                                THEN '" . $this->model->getIsPost($i, 'array') . "'";
+							$sqlLooping .= " END,";
 						}
 					}
 					break;
 			}
-			$sqlLooping .= " END,";
 		}
-		$sql .= substr ( $sqlLooping, 0, - 1 );
-		if ($this->getVendor () == self::MYSQL) {
+		$sql .= substr($sqlLooping, 0, - 1);
+		if ($this->getVendor() == self::MYSQL) {
 			$sql .= "
-			WHERE `" . $this->model->getPrimaryKeyName () . "` IN (" . $this->model->getPrimaryKeyAll () . ")";
-		} else if ($this->getVendor () == self::MSSQL) {
+			WHERE `" . $this->model->getPrimaryKeyName() . "` IN (" . $this->model->getPrimaryKeyAll() . ")";
+		} else if ($this->getVendor() == self::MSSQL) {
 			$sql .= "
-			WHERE [" . $this->model->getPrimaryKeyName () . "] IN (" . $this->model->getPrimaryKeyAll () . ")";
-		} else if ($this->getVendor () == self::ORACLE) {
+			WHERE [" . $this->model->getPrimaryKeyName() . "] IN (" . $this->model->getPrimaryKeyAll() . ")";
+		} else if ($this->getVendor() == self::ORACLE) {
 			$sql .= "
-			WHERE   " . strtoupper ( $this->model->getPrimaryKeyName () ) . " IN (" . $this->model->getPrimaryKeyAll () . ")";
+			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
+		} else if ($this->getVendor() == self::DB2) {
+			$sql .= "
+			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql .= "
+			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
+		} else {
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+			exit();
 		}
-		$this->q->update ( $sql );
+		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( array ("success" => false, "message" => $this->q->responce ) );
-			exit ();
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
 		}
-		$this->q->commit ();
+		$this->q->commit();
+		if ($this->getIsAdmin()) {
+			$message = $this->systemString->getUpdateMessage();
+		} else {
+			$message = $this->systemString->getDeleteMessage();
+		}
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => $this->systemString->getDeleteMessage() ) );
-		exit ();
+		echo json_encode(
+		array(	"success" => true,
+        			"message" => $message,
+            		"time"=>$time)
+		);
+		exit();
 	}
 	function firstRecord($value) {
 		$this->recordSet->firstRecord ( $value );
@@ -715,7 +874,7 @@ class DefaultLabelClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}

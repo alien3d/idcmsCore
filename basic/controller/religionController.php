@@ -114,7 +114,7 @@ class ReligionClass extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -244,7 +244,7 @@ class ReligionClass extends ConfigClass {
 			'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 
@@ -284,7 +284,7 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	AND RELIGION.ISACTIVE	=	1	";
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		} else if ($this->isAdmin == 1) {
@@ -299,7 +299,7 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	1	=	1 	";
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -383,7 +383,7 @@ class ReligionClass extends ConfigClass {
 		} else if ($this->q->vendor == self::POSTGRESS) {
 
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -413,8 +413,9 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
+
 			}
 		}
 		/**
@@ -434,7 +435,7 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->searching();
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -465,7 +466,7 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -561,7 +562,7 @@ class ReligionClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -661,13 +662,13 @@ class ReligionClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getReligionId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
@@ -751,16 +752,10 @@ class ReligionClass extends ConfigClass {
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 				WHERE 		RELIGIONID			=	'" . $this->model->getReligionId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getReligionId(0, 'single');
-			$this->q->audit = $this->audit;
+
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -817,13 +812,13 @@ class ReligionClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getReligionId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
@@ -902,10 +897,10 @@ class ReligionClass extends ConfigClass {
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
 				WHERE 	RELIGIONID		=	'" . $this->model->getReligionId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			 
+
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -955,7 +950,7 @@ class ReligionClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -980,7 +975,7 @@ class ReligionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1004,7 +999,7 @@ class ReligionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1028,7 +1023,7 @@ class ReligionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1052,8 +1047,9 @@ class ReligionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
+
 							}
 							$sqlLooping .= "
 							WHEN '" . $this->model->getReligionId($i, 'array') . "'
@@ -1076,7 +1072,7 @@ class ReligionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1100,7 +1096,7 @@ class ReligionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1124,7 +1120,7 @@ class ReligionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1148,7 +1144,7 @@ class ReligionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1172,7 +1168,7 @@ class ReligionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1201,7 +1197,7 @@ class ReligionClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1267,7 +1263,7 @@ class ReligionClass extends ConfigClass {
 			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc() . "'
 			AND		ISACTIVE		=	1";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->read($sql);

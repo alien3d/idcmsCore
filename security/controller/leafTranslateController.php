@@ -264,7 +264,7 @@ class leafTranslateClass extends ConfigClass {
 							'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->create($sql);
@@ -451,7 +451,7 @@ class leafTranslateClass extends ConfigClass {
 				$sql.= " AND LEAFTRANSLATE.LEAFID='" .$this->model->getLeafId(). "'";
 			}
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -586,7 +586,7 @@ class leafTranslateClass extends ConfigClass {
 						WHERE rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
 						where r >=  '" . ($this->getStart() + 1) . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -680,13 +680,13 @@ class leafTranslateClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
@@ -775,7 +775,7 @@ class leafTranslateClass extends ConfigClass {
 							EXECUTETIME						=	" . $this->model->getExecuteTime() . "
 					WHERE 	LEAFTRANSLATEID				=	'" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 			$this->q->update($sql);
@@ -835,13 +835,13 @@ class leafTranslateClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
@@ -921,7 +921,7 @@ class leafTranslateClass extends ConfigClass {
 						EXECUTETIME						=	" . $this->model->getExecuteTime() . "
 				WHERE 	LEAFTRANSLATEID				=	'" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 			$this->q->update($sql);
@@ -975,7 +975,7 @@ class leafTranslateClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -1000,7 +1000,7 @@ class leafTranslateClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1024,7 +1024,7 @@ class leafTranslateClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1048,7 +1048,7 @@ class leafTranslateClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1072,7 +1072,7 @@ class leafTranslateClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1096,7 +1096,7 @@ class leafTranslateClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1120,7 +1120,7 @@ class leafTranslateClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1144,7 +1144,7 @@ class leafTranslateClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1168,7 +1168,7 @@ class leafTranslateClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1192,7 +1192,7 @@ class leafTranslateClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1221,7 +1221,7 @@ class leafTranslateClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getUnsupportedMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);

@@ -378,8 +378,8 @@ class ApplicationAccessClass extends ConfigClass {
 			$sql .= "	   `applicationAccessValue`			=	case `" . $this->model->getPrimaryKeyName() . "` ";
 			for ($i = 0; $i < $loop; $i++) {
 				$sql .= "
-				WHEN '" . $this->model->getApplicationeAccessId($i, 'array') . "'
-				THEN '" . $this->model->getApplicationeAccessValue($i, 'array') . "'";
+				WHEN '" . $this->model->getApplicationAccessId($i, 'array') . "'
+				THEN '" . $this->model->getApplicationAccessValue($i, 'array') . "'";
 			}
 			$sql .= "	END ";
 			$sql .= " WHERE 	`" . $this->model->getPrimaryKeyName() . "`		IN	(" . $this->model->getPrimaryKeyAll() . ")";

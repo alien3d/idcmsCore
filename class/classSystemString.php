@@ -55,6 +55,12 @@ class SystemString  extends ConfigClass {
 	 * @var string
 	 */
 	private $fileNotFound;
+	/**
+	 * Record Not Found Message
+	 * @var string
+	 */
+	private $recordNotFound;
+	
 	// end basic access database
 	public function execute() {
 		$this->q = new Vendor ();
@@ -93,6 +99,9 @@ class SystemString  extends ConfigClass {
 				case 'nonSupportedDatabase':
 					$this->setNonSupportedDatabase($row['systemStringNative']);
 					break;
+				case 'recordNotFound':
+					$this->setRecordNotFound($row['systemStringNative']);
+				break;	
 			}
 		}
 	}
@@ -281,5 +290,15 @@ class SystemString  extends ConfigClass {
 	public function setFileNotFound($fileNotFound)
 	{
 		$this->fileNotFound = $fileNotFound;
+	}
+
+	public function getRecordNotFound()
+	{
+	    return $this->recordNotFound;
+	}
+
+	public function setRecordNotFound($recordNotFound)
+	{
+	    $this->recordNotFound = $recordNotFound;
 	}
 }
