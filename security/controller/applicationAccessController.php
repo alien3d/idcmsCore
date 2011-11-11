@@ -6,6 +6,7 @@ require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/applicationAccessModel.php");
 
 /**
@@ -43,7 +44,11 @@ class ApplicationAccessClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -98,7 +103,7 @@ class ApplicationAccessClass extends ConfigClass {
 		$this->model = new ApplicationAccessModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -114,6 +119,20 @@ class ApplicationAccessClass extends ConfigClass {
 		$this->security = new Security ();
 		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
+
+		$this->documentTrail = new DocumentTrailClass ();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->execute();
 
 		$this->excel = new PHPExcel ();
 	}
@@ -307,7 +326,7 @@ class ApplicationAccessClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			$json_encode = json_encode(
-			array(	'success' => true, 
+			array(	'success' => true,
 					'total' => $total, 
 					'time' => $time, 
             		'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -326,7 +345,7 @@ class ApplicationAccessClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -374,7 +393,7 @@ class ApplicationAccessClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time));
 		exit();

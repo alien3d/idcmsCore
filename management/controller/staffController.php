@@ -5,6 +5,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/staffModel.php");
 /**
  * this is main setting files
@@ -37,6 +38,11 @@ class StaffClass extends ConfigClass {
 	 * @var string $documentTrail;
 	 */
 	private $documentTrail;
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row TRUE or False
 	 * @var bool
@@ -102,6 +108,12 @@ class StaffClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+		
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
@@ -112,11 +124,7 @@ class StaffClass extends ConfigClass {
 		$this->documentTrail->setStaffId ( $this->getStaffId () );
 		$this->documentTrail->setLanguageId ( $this->getLanguageId () );
 
-		$this->security = new Security ();
-		$this->security->setVendor ( $this->getVendor () );
-		$this->security->setStaffId ( $this->getStaffId () );
-		$this->security->setLanguageId ( $this->getLanguageId () );
-		$this->security->execute ();
+		
 
 		$this->excel = new PHPExcel ();
 	}
@@ -908,7 +916,7 @@ class StaffClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1248,8 +1256,8 @@ class StaffClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -1261,7 +1269,7 @@ class StaffClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1355,8 +1363,8 @@ class StaffClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => "Removed Success",
 					"time"=>$time ) );
 		exit ();
@@ -1368,7 +1376,7 @@ class StaffClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1658,7 +1666,7 @@ class StaffClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $message,
 					"time"=>$time)
 		);
@@ -1671,7 +1679,7 @@ class StaffClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1719,8 +1727,8 @@ class StaffClass extends ConfigClass {
 			} else {
 				$end = microtime(true);
 				$time = $end - $start;
-				echo json_encode ( 
-					array (	"success" => true, 
+				echo json_encode (
+				array (	"success" => true,
 							"total" => $total, 
 							"message" => $this->systemString->getDuplicateMessage(), 
 							"staffNo" => $row ['staffNo'],
@@ -1758,7 +1766,7 @@ class StaffClass extends ConfigClass {
 	public function excel() {
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1812,8 +1820,8 @@ class StaffClass extends ConfigClass {
 		if ($file) {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode ( 
-				array (	"success" => true, 
+			echo json_encode (
+			array (	"success" => true,
 						"message" => $this->systemString->getFileGenerateMessage(),
 						"time"=>$time ) );
 		} else {

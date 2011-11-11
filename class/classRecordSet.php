@@ -23,23 +23,23 @@ class RecordSet extends ConfigClass {
 	public function create() {
 	}
 	/* (non-PHPdoc)
-																* @see config::read()
-																*/
+	 * @see config::read()
+	 */
 	public function read() {
 	}
 	/* (non-PHPdoc)
-																* @see config::update()
-																	*/
+	 * @see config::update()
+	 */
 	public function update() {
 	}
 	/* (non-PHPdoc)
-																* @see config::delete()
-																*/
+	 * @see config::delete()
+	 */
 	public function delete() {
 	}
 	/* (non-PHPdoc)
-																	* @see config::excel()
-																*/
+	 * @see config::excel()
+	 */
 	public function excel() {
 	}
 	/**
@@ -70,7 +70,7 @@ class RecordSet extends ConfigClass {
 			SELECT 	MIN(" . strtoupper ( $this->getPrimaryKeyName () ) . ") AS \"firstRecord\"
 			FROM 	" . strtoupper ( $this->getTableName () ) . " ";
 		}
-		
+
 		$result = $this->q->fast ( $sql );
 		$total = $this->q->numberRows($result);
 		if ($total > 0) {
@@ -111,7 +111,7 @@ class RecordSet extends ConfigClass {
 							WHERE 	" . strtoupper ( $this->getPrimaryKeyName () ) . " > " . $primaryKeyValue . "
 			AND		ROWNUM = 1";
 		} else if ($this->getVendor () == self::DB2) {
-		
+
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			SELECT (`" . $this->getPrimaryKeyName () . "`) AS `nextRecord`
@@ -161,14 +161,14 @@ class RecordSet extends ConfigClass {
 										AND 	ROWNUM  = 1
 										";
 		} else if ($this->getVendor () == self::DB2) {
-		
+
 		} else if ($this->getVendor () == self::POSTGRESS) {
 			$sql = "
 			SELECT (`" . $this->getPrimaryKeyName () . "`) AS `previousRecord`
 			FROM 	`" . $this->getTableName () . "`
 			WHERE 	`" . $this->getPrimaryKeyName () . "` < " . $primaryKeyValue . "
 			LIMIT 	1";
-		
+
 		}
 		$result = $this->q->fast ( $sql );
 		$total = $this->q->numberRows ( $result );
@@ -240,11 +240,11 @@ class RecordSet extends ConfigClass {
 		 */
 		$nextSequence = 0;
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
-		
+
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			SELECT 	(MAX(`" . $this->getTableName() . "Sequence`)+1) AS `nextSequence`
@@ -262,14 +262,14 @@ class RecordSet extends ConfigClass {
 			WHERE	ISACTIVE=1";
 		}
 		if ($this->getTableName()  == 'folder') {
-		
+
 			if (isset ( $moduleId )) {
 				$sql .= " AND `moduleId`='" . $moduleId . "'";
 			} else {
 				echo json_encode(array("success"=>false,"message"=>"Module Identification Not Found"));
 				exit();
 			}
-		} 
+		}
 		if ($this->getTableName() == 'leaf') {
 			if (isset ( $moduleId )) {
 				$sql .= " AND `moduleId`='" . $moduleId . "'";
@@ -284,11 +284,11 @@ class RecordSet extends ConfigClass {
 				exit();
 			}
 		}
-	
+
 		$result = $this->q->fast ( $sql );
 		if ($this->q->execute == 'fail') {
 			echo json_encode ( array ('success' => false, 'message' => $this->q->responce ) );
-				
+
 			exit ();
 		}
 		$row = $this->q->fetchAssoc ( $result );
@@ -305,21 +305,21 @@ class RecordSet extends ConfigClass {
 	public function getPrimaryKeyName() {
 		return $this->PrimaryKeyName;
 	}
-	
+
 	/**
 	 * @return the $TableName
 	 */
 	public function getTableName() {
 		return $this->TableName;
 	}
-	
+
 	/**
 	 * @param field_type $PrimaryKeyName
 	 */
 	public function setPrimaryKeyName($PrimaryKeyName) {
 		$this->PrimaryKeyName = $PrimaryKeyName;
 	}
-	
+
 	/**
 	 * @param field_type $TableName
 	 */

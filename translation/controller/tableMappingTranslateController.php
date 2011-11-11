@@ -5,6 +5,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/tableMappingTranslateModel.php");
 
 /**
@@ -38,6 +39,11 @@ class TableMappingTranslateClass extends ConfigClass {
 	 * @var string $documentTrail;
 	 */
 	private $documentTrail;
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
@@ -106,8 +112,11 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
 
-		
-
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+	
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
@@ -478,8 +487,11 @@ class TableMappingTranslateClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => $this->systemString->getUpdateMessage(),"time"=>$time ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => $this->systemString->getUpdateMessage(),
+					"time"=>$time ) );
 		exit ();
 
 	}
@@ -548,7 +560,10 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( array ("success" =>true, "message" => $this->systemString->getDeleteMessage(),"time"=>$time ) );
+		echo json_encode ( 
+			array ("success" =>true, 
+					"message" => $this->systemString->getDeleteMessage(),
+					"time"=>$time ) );
 		exit ();
 
 	}
@@ -674,8 +689,11 @@ class TableMappingTranslateClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
-		echo json_encode ( array ("success" => true, "message" => $this->systemString->getDeleteMessage(),"time"=>$time ) );
+		$time = $end - $start;
+		echo json_encode ( 
+			array (	"success" => true, 
+					"message" => $this->systemString->getDeleteMessage(),
+					"time"=>$time ) );
 		exit ();
 
 	}
@@ -744,7 +762,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$filename = "tableMappingTranslationTranslation" . rand ( 0, 10000000 ) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
 		$objWriter->save ( $path );
-		$this->audit->create_trail ( $this->leafId, $path, $filename );
+		$this->audit->create_trail ( $this->getLeafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
 			$end = microtime(true);

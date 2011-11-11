@@ -5,6 +5,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/defaultLabelModel.php");
 /**
  * this defaultLabel menu creation
@@ -37,6 +38,11 @@ class DefaultLabelClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -89,7 +95,7 @@ class DefaultLabelClass extends ConfigClass {
 		$this->model = new DefaultLabelModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -106,6 +112,11 @@ class DefaultLabelClass extends ConfigClass {
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
@@ -125,7 +136,7 @@ class DefaultLabelClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -207,7 +218,7 @@ class DefaultLabelClass extends ConfigClass {
 		$lastId = $this->q->lastInsertId ();
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode ( array ("success" => true, "defaultLabelId" => $lastId, "message" => $this->systemString->getCreateMessage() ) );
 		exit ();
 	}
@@ -219,7 +230,7 @@ class DefaultLabelClass extends ConfigClass {
 		$start = microtime(true);
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -366,8 +377,8 @@ class DefaultLabelClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getDefaultLabelId ( 0, 'single' )) {
-			$json_encode = json_encode ( 
-			array (	'success' => true, 
+			$json_encode = json_encode (
+			array (	'success' => true,
 					'total' => $total, 
 					'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -382,8 +393,8 @@ class DefaultLabelClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( 
-				array (	'success' => true, 
+			echo json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -401,7 +412,7 @@ class DefaultLabelClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -460,7 +471,7 @@ class DefaultLabelClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => $this->systemString->getUpdateMessage() ) );
 		exit ();
 	}
@@ -471,7 +482,7 @@ class DefaultLabelClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -524,7 +535,7 @@ class DefaultLabelClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode ( array ("success" =>true, "message" => $this->systemString->getDeleteMessage() ) );
 		exit ();
 	}
@@ -535,12 +546,12 @@ class DefaultLabelClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$loop = $this->model->getTotal ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
@@ -681,7 +692,7 @@ class DefaultLabelClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => $this->systemString->getDeleteMessage() ) );
 		exit ();
 	}
@@ -704,7 +715,7 @@ class DefaultLabelClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -746,7 +757,7 @@ class DefaultLabelClass extends ConfigClass {
 		$filename = "defaultLabel" . rand ( 0, 10000000 ) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
 		$objWriter->save ( $path );
-		$this->audit->create_trail ( $this->leafId, $path, $filename );
+		$this->audit->create_trail ( $this->getLeafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
 			echo json_encode ( array ("success" =>true, "message" => $this->systemString->getFileGenerateMessage() ) );

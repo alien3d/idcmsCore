@@ -4,6 +4,7 @@ require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/languageModel.php");
 /**
  * this is main setting files
@@ -36,6 +37,11 @@ class LanguageClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -81,7 +87,7 @@ class LanguageClass extends ConfigClass {
 		$this->model = new LanguageModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -93,11 +99,23 @@ class LanguageClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
+
+		
+		$this->security = new Security ();
+		$this->security->setVendor ( $this->getVendor () );
+		$this->security->setLeafId ( $this->getLeafId () );
+		$this->security->execute ();
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
 		
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
 		$this->recordSet->execute ();
+		
 
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor ( $this->getVendor () );
@@ -116,7 +134,7 @@ class LanguageClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -195,8 +213,8 @@ class LanguageClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" =>true, 
+		echo json_encode (
+		array (	"success" =>true,
 					"message" => $this->systemString->getCreateMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -225,7 +243,7 @@ class LanguageClass extends ConfigClass {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
-		
+
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -332,7 +350,7 @@ class LanguageClass extends ConfigClass {
 		 * Extjs filtering mode
 		 */
 		if ($this->getGridQuery ()) {
-				
+
 			if ($this->getVendor () == self::MYSQL) {
 				$sql .= $this->q->searching ();
 			} else if ($this->getVendor () == self::MSSQL) {
@@ -457,8 +475,8 @@ class LanguageClass extends ConfigClass {
 		if ($this->model->getLanguageId ( 0, 'single' )) {
 			$end = microtime(true);
 			$time = $end - $start;
-			$json_encode = json_encode ( 
-				array (	'success' => true, 
+			$json_encode = json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time , 
@@ -476,8 +494,8 @@ class LanguageClass extends ConfigClass {
 			}
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode ( 
-				array (	'success' => true, 
+			echo json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time , 
@@ -498,13 +516,13 @@ class LanguageClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$this->model->update ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
@@ -564,8 +582,8 @@ class LanguageClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -577,13 +595,13 @@ class LanguageClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$this->model->delete ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
@@ -637,8 +655,8 @@ class LanguageClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -651,7 +669,7 @@ class LanguageClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -679,7 +697,7 @@ class LanguageClass extends ConfigClass {
 		 */
 		$access = array ("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost" );
 		foreach ( $access as $systemCheck ) {
-				
+
 			if ($this->getVendor () == self::MYSQL) {
 				$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName () . "`";
 			} else if ($this->getVendor () == self::MSSQL) {
@@ -772,7 +790,7 @@ class LanguageClass extends ConfigClass {
 					}
 					break;
 			}
-				
+
 			$sqlLooping .= " END,";
 		}
 
@@ -796,8 +814,8 @@ class LanguageClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -810,7 +828,7 @@ class LanguageClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -846,8 +864,8 @@ class LanguageClass extends ConfigClass {
 			} else {
 				$end = microtime(true);
 				$time = $end - $start;
-				echo json_encode ( 
-					array (	"success" =>true, 
+				echo json_encode (
+				array (	"success" =>true,
 							"total" => $total, 
 							"message" => $this->systemString->getDuplicateMessage(), 
 							"languageCode" => $row ['languageCode'],
@@ -936,7 +954,7 @@ class LanguageClass extends ConfigClass {
 			$this->excel->getActiveSheet ()->setCellValue ( 'D3', 'Sequence' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'E3', 'Code' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'F3', 'Note' );
-				
+
 			$this->excel->getActiveSheet ()->setCellValue ( 'G3', 'isDefault' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'H3', 'isNew' );
 			$this->excel->getActiveSheet ()->setCellValue ( 'I3', 'isDraft' );
@@ -1007,8 +1025,8 @@ class LanguageClass extends ConfigClass {
 		if ($file) {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode ( 
-				array (	"success" => true, 
+			echo json_encode (
+			array (	"success" => true,
 						"message" => $this->systemString->getFileGenerateMessage(), 
 						"filename" => $filename,
 						"time"=>$time ) );
@@ -1155,7 +1173,7 @@ if (isset ( $_GET ['method'] )) {
 	 */
 	if (isset ( $_GET ['mode'] )) {
 		if ($_GET ['mode'] == 'excel') {
-				
+
 			$languageObject->excel ();
 		}
 	}

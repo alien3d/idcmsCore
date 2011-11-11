@@ -6,6 +6,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/moduleTranslateModel.php");
 
 /**
@@ -43,6 +44,11 @@ class moduleTranslateClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 
 	/**
 	 * Audit Row True or False
@@ -101,7 +107,7 @@ class moduleTranslateClass extends ConfigClass {
 		$this->model = new ModuleTranslateModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -118,6 +124,11 @@ class moduleTranslateClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -139,7 +150,7 @@ class moduleTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -261,7 +272,7 @@ class moduleTranslateClass extends ConfigClass {
 		$lastId = $this->q->lastInsertId();
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "moduleTranslateId" => $lastId, "message" => $this->systemString->getCreateMessage()));
 		exit();
 	}
@@ -275,7 +286,7 @@ class moduleTranslateClass extends ConfigClass {
 		$start = microtime(true);
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -593,7 +604,7 @@ class moduleTranslateClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			$json_encode = json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -611,7 +622,7 @@ class moduleTranslateClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -631,7 +642,7 @@ class moduleTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -770,7 +781,7 @@ class moduleTranslateClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
 	}
@@ -783,7 +794,7 @@ class moduleTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -913,7 +924,7 @@ class moduleTranslateClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
 		exit();
 	}
@@ -925,12 +936,12 @@ class moduleTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -1214,7 +1225,7 @@ class moduleTranslateClass extends ConfigClass {
 			$message = $this->systemString->getDeleteMessage();
 		}
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
 		, "sql" => $sql)
@@ -1246,7 +1257,7 @@ class moduleTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

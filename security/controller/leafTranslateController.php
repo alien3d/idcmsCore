@@ -6,6 +6,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/leafTranslateModel.php");
 
 /**
@@ -43,7 +44,11 @@ class leafTranslateClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -122,6 +127,11 @@ class leafTranslateClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -143,7 +153,7 @@ class leafTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -265,7 +275,7 @@ class leafTranslateClass extends ConfigClass {
 		$lastId = $this->q->lastInsertId();
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "leafTranslateId" => $lastId, "message" => $this->systemString->getCreateMessage()));
 		exit();
 	}
@@ -279,7 +289,7 @@ class leafTranslateClass extends ConfigClass {
 		$start = microtime(true);
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-			
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -315,7 +325,7 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafIdTemp() && $this->model->getLeafId()) {
 				$sql.= " AND `leafTranslate`.`leafId`='" . $this->model->getLeafId() . "'";
 			}
-				
+
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[leafTranslate].[leafTranslateId],
@@ -488,7 +498,7 @@ class leafTranslateClass extends ConfigClass {
 				$sql .= $this->q->searching();
 			}
 		}
-	
+
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -599,7 +609,7 @@ class leafTranslateClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			$json_encode = json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -617,7 +627,7 @@ class leafTranslateClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-					array(	'success' => true, 
+			array(	'success' => true,
 							'total' => $total, 
 							'time' => $time, 
             				'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -637,7 +647,7 @@ class leafTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -778,7 +788,7 @@ class leafTranslateClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time));
 		exit();
@@ -792,7 +802,7 @@ class leafTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -922,9 +932,9 @@ class leafTranslateClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array("success" => true, 
+		array("success" => true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time));
 		exit();
@@ -937,12 +947,12 @@ class leafTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -1226,9 +1236,9 @@ class leafTranslateClass extends ConfigClass {
 			$message = $this->systemString->getDeleteMessage();
 		}
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array("success" => true, 
+		array("success" => true,
 					"message" => $message,
 					"time"=>$time)
 		);
@@ -1259,7 +1269,7 @@ class leafTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1304,7 +1314,7 @@ class leafTranslateClass extends ConfigClass {
 		$this->audit->create_trail($this->leafId, $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
-				$end = microtime(true);
+			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage()));
 			exit();

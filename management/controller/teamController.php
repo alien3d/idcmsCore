@@ -4,6 +4,7 @@ require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/teamModel.php");
 /**
  * this is main setting files
@@ -36,6 +37,11 @@ class TeamClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row TRUE or False
 	 * @var bool
@@ -91,6 +97,12 @@ class TeamClass extends ConfigClass {
 		$this->q->audit = $this->log;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+		
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
@@ -112,7 +124,7 @@ class TeamClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -413,8 +425,8 @@ class TeamClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true,
+		echo json_encode (
+		array (	"success" => true,
 				 	"message" => $this->systemString->getCreateMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -442,7 +454,7 @@ class TeamClass extends ConfigClass {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
-		
+
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -689,8 +701,8 @@ class TeamClass extends ConfigClass {
 		if ($this->model->getTeamId ( 0, 'single' )) {
 			$end = microtime(true);
 			$time = $end - $start;
-			$json_encode = json_encode ( 
-				array (	'success' => true, 
+			$json_encode = json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time, 
@@ -708,8 +720,8 @@ class TeamClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( 
-				array (	'success' => true, 
+			echo json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time, 
@@ -728,7 +740,7 @@ class TeamClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -824,8 +836,8 @@ class TeamClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array ("success" => true, 
+		echo json_encode (
+		array ("success" => true,
 					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -930,8 +942,8 @@ class TeamClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -943,7 +955,7 @@ class TeamClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1233,7 +1245,7 @@ class TeamClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $message,
 					"time"=>$time)
 		);
@@ -1246,7 +1258,7 @@ class TeamClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -1295,8 +1307,8 @@ class TeamClass extends ConfigClass {
 			} else {
 				$end = microtime(true);
 				$time = $end - $start;
-				echo json_encode ( 
-				array (	"success" => true, 
+				echo json_encode (
+				array (	"success" => true,
 						"total" => $total, 
 						"message" => $this->systemString->getDuplicateMessage(), 
 						"teamCode" => $row ['teamCode'],

@@ -6,6 +6,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/folderTranslateModel.php");
 
 /**
@@ -43,7 +44,11 @@ class folderTranslateClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -101,7 +106,7 @@ class folderTranslateClass extends ConfigClass {
 		$this->model = new FolderTranslateModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -119,6 +124,11 @@ class folderTranslateClass extends ConfigClass {
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
 
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+		
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -139,7 +149,7 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -273,7 +283,7 @@ class folderTranslateClass extends ConfigClass {
 		$start = microtime(true);
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -588,7 +598,7 @@ class folderTranslateClass extends ConfigClass {
 		}
 		if ($this->model->getFolderTranslateId(0, 'single')) {
 			$json_encode = json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -624,7 +634,7 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -774,7 +784,7 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -914,12 +924,12 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -1203,7 +1213,7 @@ class folderTranslateClass extends ConfigClass {
 			$message = $this->systemString->getDeleteMessage();
 		}
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
 		, "sql" => $sql)
@@ -1235,7 +1245,7 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1396,23 +1406,23 @@ if (isset($_GET ['method'])) {
 			$folderTranslateObject->duplicate();
 		}
 	}
-/*
-     * Button Navigation
-     */
-    if ($_GET ['method'] == 'dataNavigationRequest') {
-        if ($_GET ['dataNavigation'] == 'firstRecord') {
-            $folderTranslateObject->firstRecord('json');
-        }
-        if ($_GET ['dataNavigation'] == 'previousRecord') {
-            $folderTranslateObject->previousRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'nextRecord') {
-            $folderTranslateObject->nextRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'lastRecord') {
-            $folderTranslateObject->lastRecord('json');
-        }
-    }
+	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$folderTranslateObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$folderTranslateObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$folderTranslateObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$folderTranslateObject->lastRecord('json');
+		}
+	}
 	/*
 	 *  Excel Reporting
 	 */

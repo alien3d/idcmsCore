@@ -6,6 +6,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/tableMappingModel.php");
 
 /**
@@ -39,6 +40,11 @@ class TableMappingClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -91,7 +97,7 @@ class TableMappingClass extends ConfigClass {
 		$this->model = new TableMappingModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -108,6 +114,11 @@ class TableMappingClass extends ConfigClass {
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
+
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
@@ -129,7 +140,7 @@ class TableMappingClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -276,8 +287,8 @@ class TableMappingClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"tableMappingId" => $lastId, 
 					"message" => $this->systemString->getCreateMessage(),
 					"time"=>$time ) );
@@ -306,10 +317,10 @@ class TableMappingClass extends ConfigClass {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
-		
+
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -345,12 +356,12 @@ class TableMappingClass extends ConfigClass {
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
 		 * @variables $filterArray;
 		 */
-		$filterArray = array ('moduleId', 'tabTranslateId', 'tableMappingId', 'tableMappingTranslateId' );
+		$filterArray = array ( 'tableMappingId', 'tableMappingTranslateId' );
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
-		$tableArray = array ('module', 'moduleTranslate', 'tableMapping', 'tableMappingTranslate' );
+		$tableArray = array ( 'tableMapping', 'tableMappingTranslate' );
 
 		if ($this->getFieldQuery ()) {
 			if ($this->getVendor () == self::MYSQL) {
@@ -487,8 +498,8 @@ class TableMappingClass extends ConfigClass {
 		if ($this->model->getTableMappingId(0, 'single')) {
 			$end = microtime(true);
 			$time = $end - $start;
-			$json_encode = json_encode ( 
-				array (	'success' => true, 
+			$json_encode = json_encode (
+			array (	'success' => true,
 						'total' => $total,
 						'time'=>$time, 
 						'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -496,7 +507,7 @@ class TableMappingClass extends ConfigClass {
             			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getTableMappingId(0, 'single')), 
             			'lastRecord' => $this->recordSet->lastRecord('value'),
 						'data' => $items, 
-            			 ) );
+			) );
 			$json_encode = str_replace ( "[", "", $json_encode );
 			$json_encode = str_replace ( "]", "", $json_encode );
 			echo $json_encode;
@@ -506,8 +517,8 @@ class TableMappingClass extends ConfigClass {
 			}
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode ( 
-				array (	'success' => true, 
+			echo json_encode (
+			array (	'success' => true,
 						'total' => $total,
 						'time'=>$time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -527,7 +538,7 @@ class TableMappingClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -596,17 +607,17 @@ class TableMappingClass extends ConfigClass {
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
-			echo json_encode ( 
-				array (	"success" => false, 
+			echo json_encode (
+			array (	"success" => false,
 						"message" => $this->q->responce
-			 ) );
+			) );
 			exit ();
 		}
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true,
+		echo json_encode (
+		array (	"success" => true,
 					 "message" => $this->systemString->getUpdateMessage(),
 					 "time"=>$time ) );
 		exit ();
@@ -619,7 +630,7 @@ class TableMappingClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -681,8 +692,8 @@ class TableMappingClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" =>true, 
+		echo json_encode (
+		array (	"success" =>true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -704,7 +715,7 @@ class TableMappingClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -750,13 +761,13 @@ class TableMappingClass extends ConfigClass {
 		$filename = "tableMapping" . rand ( 0, 10000000 ) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
 		$objWriter->save ( $path );
-		$this->audit->create_trail ( $this->leafId, $path, $filename );
+		$this->audit->create_trail ( $this->getLeafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode ( 
-				array (	"success" =>true, 
+			echo json_encode (
+			array (	"success" =>true,
 						"message" => $this->systemString->getFileGenerateMessage(),
 						"time"=>$time ) );
 		} else {

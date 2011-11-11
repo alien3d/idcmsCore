@@ -6,6 +6,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/leafModel.php");
 
 /**
@@ -49,7 +50,11 @@ class LeafClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -104,7 +109,7 @@ class LeafClass extends ConfigClass {
 		$this->model = new LeafModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -122,6 +127,11 @@ class LeafClass extends ConfigClass {
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
 		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -142,7 +152,7 @@ class LeafClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -351,7 +361,7 @@ class LeafClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "leafId" => $lastId, "message" => $this->systemString->getCreateMessage()));
 		exit();
 	}
@@ -376,10 +386,10 @@ class LeafClass extends ConfigClass {
 				$this->auditFilter = " 1 = 1 ";
 			}
 		}
-		
+
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -514,7 +524,7 @@ class LeafClass extends ConfigClass {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
 			}
 		}
-		$_SESSION ['sql'] = $sql; 
+		$_SESSION ['sql'] = $sql;
 		$_SESSION ['start'] = $this->getStart();
 		$_SESSION ['limit'] = $this->getLimit();
 		if (!($this->getGridQuery())) {
@@ -614,12 +624,12 @@ class LeafClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-	
+
 		if ($this->model->getLeafId(0, 'single')) {
 			$end = microtime(true);
 			$time = $end - $start;
 			$json_encode = json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -637,7 +647,7 @@ class LeafClass extends ConfigClass {
 				$items = '';
 			}
 			echo json_encode(
-					array(	'success' => true, 
+			array(	'success' => true,
 							'total' => $total, 
 							'time' => $time, 
             				'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -757,9 +767,9 @@ class LeafClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getUpdateMessage(), 
 					"time"=>$time));
 		exit();
@@ -769,7 +779,7 @@ class LeafClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -856,9 +866,9 @@ class LeafClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time));
 		exit();
@@ -871,7 +881,7 @@ class LeafClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1158,9 +1168,9 @@ class LeafClass extends ConfigClass {
 			$message = $this->systemString->getDeleteMessage();
 		}
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $message,
 					"time"=>$time)
 		);
@@ -1194,7 +1204,7 @@ class LeafClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

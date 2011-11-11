@@ -5,6 +5,7 @@ require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/religionDetailModel.php");
 
 /**
@@ -42,7 +43,11 @@ class ReligionDetailClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row TRUE or False
 	 * @var bool
@@ -92,7 +97,7 @@ class ReligionDetailClass extends ConfigClass {
 		$this->model = new ReligionDetailModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -105,6 +110,16 @@ class ReligionDetailClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+		
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
+		
 		$this->documentTrail = new DocumentTrailClass ();
 		$this->documentTrail->setVendor($this->getVendor());
 		$this->documentTrail->setStaffId($this->getStaffId());
@@ -207,7 +222,7 @@ class ReligionDetailClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getCreateMessage(), 
 					"religionDetailId" => $religionDetailId,
 					"time"=>$time));
@@ -238,7 +253,7 @@ class ReligionDetailClass extends ConfigClass {
 				$this->auditFilter = "	1	=	1 	";
 			}
 		}
-		
+
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -629,7 +644,7 @@ class ReligionDetailClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -640,7 +655,7 @@ class ReligionDetailClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" =>true, 
+		array(	"success" =>true,
 					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time));
 		exit();
@@ -753,7 +768,7 @@ class ReligionDetailClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time));
 		exit();
@@ -766,7 +781,7 @@ class ReligionDetailClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1054,7 +1069,7 @@ class ReligionDetailClass extends ConfigClass {
 			$message = $this->systemString->getDeleteMessage();
 		}
 		echo json_encode(
-				array(	"success" => true, 
+		array(	"success" => true,
 						"message" => $message,
 						"time"=>$time)
 		);
@@ -1068,7 +1083,7 @@ class ReligionDetailClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1103,7 +1118,7 @@ class ReligionDetailClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	"success" =>true, 
+			array(	"success" =>true,
 						"total" => $total,
 				 		"message" => $this->systemString->getDuplicateMessage(), 
 				 		"religionDetailDesc" => $row ['religionDetailDesc'],
@@ -1113,7 +1128,7 @@ class ReligionDetailClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	"success" => true, 
+			array(	"success" => true,
 						"total" => $total, 
 						"message" => $this->systemString->getNotDuplicateMessage(),
 						"time"=>$time));
@@ -1198,7 +1213,7 @@ class ReligionDetailClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	"success" => true, 
+			array(	"success" => true,
 						"message" => $this->systemString->getFileGenerateMessage(), 
 						"filename" => $filename,
 						"time"=>$time));
@@ -1207,7 +1222,7 @@ class ReligionDetailClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	"success" => false, 
+			array(	"success" => false,
 						"message" => $this->systemString->getFileNotGenerateMessage(),
 						"time"=>$time));
 			exit();

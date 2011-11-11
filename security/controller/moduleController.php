@@ -6,6 +6,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/moduleModel.php");
 
 /**
@@ -43,7 +44,11 @@ class ModuleClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -98,7 +103,7 @@ class ModuleClass extends ConfigClass {
 		$this->model = new ModuleModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -115,6 +120,11 @@ class ModuleClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -132,7 +142,7 @@ class ModuleClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES utf8";
 			$this->q->fast($sql);
 		}
@@ -475,7 +485,7 @@ class ModuleClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-		array(	"success" => true, 
+		array(	"success" => true,
 				"message" => $this->systemString->getCreateMessage(), 
 				"moduleId" => $lastId,
 				"time"=>$time));
@@ -506,7 +516,7 @@ class ModuleClass extends ConfigClass {
 				$this->auditFilter = "  1 = 1 ";
 			}
 		}
-		
+
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES utf8";
@@ -754,7 +764,7 @@ class ModuleClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			$json_encode = json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time, 
@@ -773,7 +783,7 @@ class ModuleClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	'success' => true, 
+			array(	'success' => true,
 						'total' => $total, 
 						'message' => $this->systemString->getReadMessage(), 
 						'time' => $time, 
@@ -794,7 +804,7 @@ class ModuleClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES utf8";
 			$this->q->fast($sql);
 		}
@@ -928,9 +938,9 @@ class ModuleClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getUpdateMessage(), 
 					"time" => $time));
 		exit();
@@ -944,7 +954,7 @@ class ModuleClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES utf8";
 			$this->q->fast($sql);
 		}
@@ -1067,9 +1077,9 @@ class ModuleClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array( "success" => true, 
+		array( "success" => true,
 				   "message" => $this->systemString->getDeleteMessage()));
 		exit();
 	}
@@ -1081,12 +1091,12 @@ class ModuleClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -1404,7 +1414,7 @@ class ModuleClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES utf8";
 			$this->q->fast($sql);
 		}
@@ -1454,7 +1464,7 @@ class ModuleClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	"success" => true, 
+			array(	"success" => true,
 						"message" => $this->systemString->getFileGenerateMessage(),
 						"time"=>$time));
 		} else {
@@ -1573,23 +1583,23 @@ if (isset($_GET ['method'])) {
 			$moduleObject->duplicate();
 		}
 	}
-/*
-     * Button Navigation
-     */
-    if ($_GET ['method'] == 'dataNavigationRequest') {
-        if ($_GET ['dataNavigation'] == 'firstRecord') {
-            $moduleObject->firstRecord('json');
-        }
-        if ($_GET ['dataNavigation'] == 'previousRecord') {
-            $moduleObject->previousRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'nextRecord') {
-            $moduleObject->nextRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'lastRecord') {
-            $moduleObject->lastRecord('json');
-        }
-    }
+	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$moduleObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$moduleObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$moduleObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$moduleObject->lastRecord('json');
+		}
+	}
 	/*
 	 *  Excel Reporting
 	 */

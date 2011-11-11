@@ -6,6 +6,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/applicationTranslateModel.php");
 
 /**
@@ -43,7 +44,11 @@ class applicationTranslateClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -101,7 +106,7 @@ class applicationTranslateClass extends ConfigClass {
 		$this->model = new ApplicationTranslateModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -118,6 +123,11 @@ class applicationTranslateClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -139,7 +149,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -263,7 +273,7 @@ class applicationTranslateClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"applicationTranslateId" => $lastId, 
 					"message" => $this->systemString->getCreateMessage(),
 					"time"=>$time));
@@ -279,7 +289,7 @@ class applicationTranslateClass extends ConfigClass {
 		$start = microtime(true);
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -596,7 +606,7 @@ class applicationTranslateClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			$json_encode = json_encode(
-			array('success' => true, 
+			array('success' => true,
 			'total' => $total, 'time' => $time, 
             'firstRecord' => $this->recordSet->firstRecord('value'), 
             'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getApplicationTranslateId(0, 'single')), 
@@ -613,7 +623,7 @@ class applicationTranslateClass extends ConfigClass {
 				$items = '';
 			}
 			echo json_encode(
-				array('success' => true, 
+			array('success' => true,
 				     'total' => $total, 
 				     'time' => $time, 
             		 'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -633,7 +643,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -774,7 +784,7 @@ class applicationTranslateClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true,
+		array(	"success" => true,
 					 "message" => $this->systemString->getUpdateMessage(),
 					 "time"=>$time));
 		exit();
@@ -788,7 +798,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -920,7 +930,7 @@ class applicationTranslateClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time));
 		exit();
@@ -933,7 +943,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1223,11 +1233,11 @@ class applicationTranslateClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(
+		array(
 				"success" => true, 
 				"message" => $message,
 				"time"=>$time
-			)
+		)
 		);
 		exit();
 	}
@@ -1256,7 +1266,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1304,7 +1314,7 @@ class applicationTranslateClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	"success" => true, 
+			array(	"success" => true,
 						"message" => $this->systemString->getFileGenerateMessage(),
 						"time"=>$time));
 			exit();
@@ -1422,23 +1432,23 @@ if (isset($_GET ['method'])) {
 			$applicationTranslateObject->duplicate();
 		}
 	}
-/*
-     * Button Navigation
-     */
-    if ($_GET ['method'] == 'dataNavigationRequest') {
-        if ($_GET ['dataNavigation'] == 'firstRecord') {
-            $applicationTranslateObject->firstRecord('json');
-        }
-        if ($_GET ['dataNavigation'] == 'previousRecord') {
-            $applicationTranslateObject->previousRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'nextRecord') {
-            $applicationTranslateObject->nextRecord('json', 0);
-        }
-        if ($_GET ['dataNavigation'] == 'lastRecord') {
-            $applicationTranslateObject->lastRecord('json');
-        }
-    }
+	/*
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$applicationTranslateObject->firstRecord('json');
+		}
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$applicationTranslateObject->previousRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$applicationTranslateObject->nextRecord('json', 0);
+		}
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$applicationTranslateObject->lastRecord('json');
+		}
+	}
 	/*
 	 *  Excel Reporting
 	 */

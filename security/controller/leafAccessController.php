@@ -6,6 +6,7 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/leafAccessModel.php");
 
 /**
@@ -43,7 +44,11 @@ class LeafAccessClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -92,11 +97,11 @@ class LeafAccessClass extends ConfigClass {
 		$this->model = new LeafAccessModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
-		if($this->model->getLeafIdTemp()) { 
-			$this->q->leafId = $this->model->getLeafIdTemp();	
+		if($this->model->getLeafIdTemp()) {
+			$this->q->leafId = $this->model->getLeafIdTemp();
 		} else {
 			$this->q->leafId = $this->getLeafId();
 		}
@@ -112,8 +117,12 @@ class LeafAccessClass extends ConfigClass {
 		$this->security = new Security ();
 		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
-		
-		
+	
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -142,7 +151,7 @@ class LeafAccessClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -390,7 +399,7 @@ class LeafAccessClass extends ConfigClass {
 				$sql .= " AND LEAFACESS.LEAFID	=	'" . $this->model->getLeafId() . "'";
 			}
 		}
-		
+
 		$sql .= $this->q->searching();
 
 		$record_all = $this->q->read($sql);
@@ -400,7 +409,7 @@ class LeafAccessClass extends ConfigClass {
 		}
 
 		$total = $this->q->numberRows();
-		
+
 		if ($this->getStart() && $this->getLimit()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= " LIMIT  " . $this->getStart() . "," . $this->getLimit() . " ";
@@ -466,12 +475,12 @@ class LeafAccessClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$this->model->update();
 		$loop = count($_GET ['leafAccessId']);
 		// @todo  repair this code !!!
@@ -529,7 +538,7 @@ class LeafAccessClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	"success" => true, 
+			array(	"success" => true,
 						"message" => $this->systemString->getUpdateMessage(),
 						"time"=>$time));
 			exit();

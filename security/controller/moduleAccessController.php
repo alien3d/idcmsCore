@@ -6,6 +6,7 @@ require_once("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/moduleAccessModel.php");
 
 /**
@@ -43,7 +44,11 @@ class ModuleAccessClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	private $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -114,6 +119,20 @@ class ModuleAccessClass extends ConfigClass {
 		$this->security = new Security ();
 		$this->security->setVendor($this->getVendor());
 		$this->security->execute();
+		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+		
+		$this->recordSet = new RecordSet ();
+		$this->recordSet->setTableName($this->model->getTableName());
+		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->execute();
+
+		$this->documentTrail = new DocumentTrailClass ();
+		$this->documentTrail->setVendor($this->getVendor());
+		$this->documentTrail->execute();
 
 
 
