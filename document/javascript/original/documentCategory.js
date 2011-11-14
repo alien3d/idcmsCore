@@ -11,21 +11,7 @@ Ext.onReady(function() {
     var local = false;
     var jsonResponse;
     var duplicate = 0;
-    if (leafAccessReadValue == 1) {
-        pageCreate = false;
-    } else {
-        pageCreate = true;
-    }
-    if (leafAccessReadValue == 1) {
-        pageReload = false;
-    } else {
-        pageReload = true;
-    }
-    if (leafAccessPrintValue == 1) {
-        pagePrint = false;
-    } else {
-        pagePrint = true;
-    } // common Proxy,Reader,Store,Filter,Grid
+    // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
         url: '../controller/documentCategoryController.php?',
@@ -1076,7 +1062,7 @@ Ext.onReady(function() {
             text: reloadToolbarLabel,
             iconCls: 'database_refresh',
             id: 'pageReload',
-            disabled: pageReload,
+            
             handler: function() {
                 documentCategoryStore.reload();
             }
@@ -1085,7 +1071,7 @@ Ext.onReady(function() {
             text: excelToolbarLabel,
             iconCls: 'page_excel',
             id: 'page_excel',
-            disabled: pagePrint,
+            
             handler: function() {
                 Ext.Ajax.request({
                     url: '../controller/documentCategoryController.php',

@@ -123,10 +123,7 @@ if($q->vendor==sharedx::MYSQL) {
 
 	$sql	=
 "	SELECT	LEAF.LEAFID 				 		AS	\"leafId\",
-			LEAFTRANSLATE.LEAFTRANSLATE	 		AS	\"leafTranslate\",
-			LEAFACCESS.leafAccessCreateValue 	AS	\"leafAccessCreateValue\",
-			LEAFACCESS.leafAccessReadValue 		AS	\"leafAccessReadValue\",
-			LEAFACCESS.leafAccessPrintValue 	AS	\"leafAccessPrintValue\"
+			LEAFTRANSLATE.LEAFTRANSLATE	 		AS	\"leafTranslate\"
 	FROM	LEAF
 	JOIN	LEAFACCESS
 	ON 		LEAF.LEAFID					= 	LEAFACCESS.LEAFID
@@ -146,10 +143,6 @@ $row_leafAccess 		= 	$q->fetchAssoc($result);
 
 var leafIdTemp					= '<?php echo $row_leafAccess['leafId'];   ?>';
 var leafNative					= '<?php echo $row_leafAccess['leafNative']; ?>';
-var leafAccessCreateValueTemp	= '<?php echo $row_leafAccess['leafAccessCreateValue']; ?>';
-var leafAccessReadValueTemp		= '<?php echo $row_leafAccess['leafAccessReadValue']; ?>';
-var leafAccessPrintValueTemp	= '<?php echo $row_leafAccess['leafAccessPrintValue']; ?>';
-var leafAccessPostValueTemp		= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>';
 
 
 

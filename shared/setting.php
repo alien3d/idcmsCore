@@ -114,10 +114,7 @@ if ($q->vendor == sharedx::MYSQL) {
 } else if ($q->vendor == sharedx::ORACLE) {
 	
 	$sql = "	SELECT	LEAF.LEAFID 						AS  \"leafId\",
-                        LEAFTRANSLATE.LEAFNATIVE 		AS	\"leafNative\",
-                        LEAFACCESS.LEAFACCESSCREATEVALUE 	AS 	\"leafAccessCreateValue\",
-                        LEAFACCESS.LEAFACCESSREADVALUE		AS  \"leafAccessReadValue\",
-                        LEAFACCESS.LEAFACCESSPRINTVALUE 	AS 	\"leafAccessPrintValue\"
+                        LEAFTRANSLATE.LEAFNATIVE 		AS	\"leafNative\"
         FROM	LEAF
         JOIN	LEAFACCESS
         ON		LEAF.LEAFID 				= 	LEAFACCESS.LEAFID
@@ -137,10 +134,6 @@ $row_leafAccess = $q->fetchAssoc ( $result );
 
     var leafId					= '<?php echo $row_leafAccess['leafId']; ?>';
     var leafNative				= '<?php echo $row_leafAccess['leafNative']; ?>';
-    var leafAccessCreateValue	= '<?php echo $row_leafAccess['leafAccessCreateValue']; ?>';
-    var leafAccessReadValue		= '<?php echo $row_leafAccess['leafAccessReadValue']; ?>';
-    var leafAccessPrintValue	= '<?php echo $row_leafAccess['leafAccessPrintValue']; ?>';
-    var leafAccessPostValue		= '<?php echo $row_leafAccess['leafAccessPostValue']; ?>';
 <?php
 if ($q->vendor == sharedx::MYSQL) {
 	$sql = "

@@ -858,7 +858,7 @@ Ext.onReady(function() {
             text: reloadToolbarLabel,
             iconCls: 'database_refresh',
             id: 'pageReload',
-            disabled: pageReload,
+            
             handler: function() {
                 religionStore.reload();
             }
@@ -867,7 +867,7 @@ Ext.onReady(function() {
             text: addToolbarLabel,
             iconCls: 'add',
             id: 'pageCreate',
-            disabled: pageCreate,
+            
             handler: function() {
                 viewPort.items.get(1).expand();
             }
@@ -876,7 +876,7 @@ Ext.onReady(function() {
             text: excelToolbarLabel,
             iconCls: 'page_excel',
             id: 'page_excel',
-            disabled: pagePrint,
+            
             handler: function() {
                 Ext.Ajax.request({
                     url: '../controller/religionController.php',

@@ -11,23 +11,7 @@ Ext.onReady(function () {
   var local = false;
   var jsonResponse;
   var duplicate = 0;
-  if (leafAccessCreateValueTemp == 1) {
-    pageCreate = false;
-  } else {
-    pageCreate = true;
-  }
-
-  if (leafAccessReadValueTemp == 1) {
-    pageReload = false;
-  } else {
-    pageReload = true;
-  }
-
-  if (leafAccessPrintValueTemp == 1) {
-    pagePrint = false;
-  } else {
-    pagePrint = true;
-  } // common Proxy,Reader,Store,Filter,Grid
+  // common Proxy,Reader,Store,Filter,Grid
   // start Staff Request
   var staffByProxy = new Ext.data.HttpProxy({
     url: '../controller/leafController.php?',
@@ -1747,7 +1731,7 @@ Ext.onReady(function () {
       text: reloadToolbarLabel,
       iconCls: 'database_refresh',
       id: 'pageReload',
-      disabled: pageReload,
+      
       handler: function () {
         leafStore.reload();
       }
@@ -1755,7 +1739,7 @@ Ext.onReady(function () {
       text: addToolbarLabel,
       iconCls: 'add',
       id: 'pageCreate',
-      disabled: pageCreate,
+      
       handler: function () {
         viewPort.items.get(1).expand();
       }
@@ -1763,7 +1747,7 @@ Ext.onReady(function () {
       text: excelToolbarLabel,
       iconCls: 'page_excel',
       id: 'page_excel',
-      disabled: pagePrint,
+      
       handler: function () {
         Ext.Ajax.request({
           url: '../controller/leafController.php',

@@ -3,29 +3,12 @@ Ext.onReady(function () {
     Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
     Ext.form.Field.prototype.msgTarget = 'under';
     Ext.Ajax.timeout = 90000;
-    var pageCreate;
-    var pageReload;
-    var pagePrint;
     var perPage = 15;
     var encode = false;
     var local = false;
     var jsonResponse;
     var duplicate = 0;
-    if (leafAccessCreateValue == 1) {
-        pageCreate = false;
-    } else {
-        pageCreate = true;
-    }
-    if (leafAccessReadValue == 1) {
-        pageReload = false;
-    } else {
-        pageReload = true;
-    }
-    if (leafAccessPrintValue == 1) {
-        pagePrint = false;
-    } else {
-        pagePrint = true;
-    } // common Proxy,Reader,Store,Filter,Grid
+    // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
         url: '../controller/folderController.php?',
@@ -1455,7 +1438,7 @@ Ext.onReady(function () {
             text: reloadToolbarLabel,
             iconCls: 'database_refresh',
             id: 'pageReload',
-            disabled: pageReload,
+            
             handler: function () {
                 folderStore.reload();
             }
@@ -1464,7 +1447,7 @@ Ext.onReady(function () {
             text: addToolbarLabel,
             iconCls: 'add',
             id: 'pageCreate',
-            disabled: pageCreate,
+            
             handler: function () {
                 viewPort.items.get(1).expand();
             }
@@ -1473,7 +1456,7 @@ Ext.onReady(function () {
             text: excelToolbarLabel,
             iconCls: 'page_excel',
             id: 'page_excel',
-            disabled: pagePrint,
+            
             handler: function () {
                 Ext.Ajax.request({
                     url: '../controller/folderController.php?method=report&mode=excel&limit=' + perPage + '&leafId=' + leafId,

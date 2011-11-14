@@ -197,12 +197,12 @@ class LeafAccessClass extends ConfigClass {
 								''
 						END) AS `leafAccessDeleteValue` ,
 
-						(CASE `leafAccess`.`leafAccessPrintValue`
+						(CASE `leafAccess`.`leafAccessApprovedValue`
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafAccessPrintValue`,
+						END) AS `leafAccessApprovedValue`,
 
 						(CASE `leafAccess`.`leafAccessPostValue`
 						 	WHEN '1' THEN
@@ -278,12 +278,12 @@ class LeafAccessClass extends ConfigClass {
 								''
 						END) AS [leafAccessDeleteValue] ,
 
-						(CASE [leafAccess].[leafAccessPrintValue]
+						(CASE [leafAccess].[leafAccessApprovedValue]
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafAccessPrintValue],
+						END) AS [leafAccessApprovedValue],
 
 						(CASE [leafAccess].[leafAccessPostValue]
 						 	WHEN '1' THEN
@@ -358,12 +358,12 @@ class LeafAccessClass extends ConfigClass {
 								''
 						END) AS leafAccessDeleteValue ,
 
-						(CASE LEAFACCESS.LEAFACCESSPRINTVALUE
+						(CASE LEAFACCESS.LEAFACCESSAPPROVEDVALUE
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS leafAccessPrintValue,
+						END) AS leafAccessApprovedValue,
 
 						(CASE LEAFACCESS.LEAFACCESSPOSTVALUE
 						 	WHEN '1' THEN
@@ -404,7 +404,7 @@ class LeafAccessClass extends ConfigClass {
 
 		$record_all = $this->q->read($sql);
 		if ($this->q->execute == 'fail') {
-			echo json_encode(array("success" => FALSE, "message" => $this->q->responce));
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 
