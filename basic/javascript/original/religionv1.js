@@ -922,9 +922,15 @@ Ext.onReady(function() {
         style: {
             textTransform: 'uppercase'
         },
-        anchor: '95%',
-        listeners: {
-            blur: function() {
+        width : '250'
+    });
+    
+    var checkDuplicateCode = new Ext.Button ({
+    	name :'checkDuplicateCode',
+    	id :'checkDuplicateCode',
+    	text:checkDuplicateCodeLabel,
+    	listeners: {
+            'click': function(button,e) {
                 if (Ext.getCmp('religionDesc').getValue().length > 0) {
                     Ext.Ajax.request({
                         url: '../controller/religionController.php',
@@ -943,6 +949,8 @@ Ext.onReady(function() {
                                         duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('religionDesc').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.religionDesc);
                                         Ext.MessageBox.alert(systemErrorLabel, duplicateMessageLabel);
                                         Ext.getCmp('religionDesc').setValue('');
+                                    } else {
+                                    	Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
                                 }
                             } else {
@@ -953,10 +961,14 @@ Ext.onReady(function() {
                             Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
                         }
                     });
+                } else {
+                	Ext.MessageBox.alert(systemLabel, emptyTextLabel);
                 }
             }
-        }
+    	}
     });
+    
+    
     var religionId = new Ext.form.Hidden({
         name: 'religionId',
         id: 'religionId'
@@ -1055,7 +1067,11 @@ Ext.onReady(function() {
         items: [{
             xtype: 'fieldset',
             title: 'Form Entry',
-            items: [religionId, religionDesc, religionDescTemp]
+            items: [religionId,{
+            						xtype:'compositefield',
+            						items:[religionDesc,checkDuplicateCode]
+            }, religionDescTemp]
+            
         },
         {
             xtype: 'fieldset',
@@ -1134,6 +1150,8 @@ Ext.onReady(function() {
                                 }
                             });
                             Ext.getCmp('religionId').setValue(action.result.religionId);
+                            Ext.getCmp('isNew').setValue(1);
+                            Ext.getCmp('isActive').setValue(1);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -1181,6 +1199,8 @@ Ext.onReady(function() {
                                     limit: perPage
                                 }
                             });
+                            Ext.getCmp('isNew').setValue(0);
+                            Ext.getCmp('isUpdate').setValue(1);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -1220,7 +1240,7 @@ Ext.onReady(function() {
                                 url: '../controller/religionController.php',
                                 params: {
                                     method: 'delete',
-                                    religionId: record.data.religionId,
+                                    religionId: Ext.getCmp('religionId').getValue(),
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },
@@ -1234,9 +1254,12 @@ Ext.onReady(function() {
                                                 limit: perPage
                                             }
                                         });
+                                        Ext.getCmp('deleteButton').enable();
                                         Ext.getCmp('saveButton').disable();
+                                        Ext.getCmp('deleteButton').disable();
                                         Ext.getCmp('nextButton').disable();
                                         Ext.getCmp('previousButton').disable();
+                                        formPanel.getForm().reset();
                                     } else {
                                         Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }

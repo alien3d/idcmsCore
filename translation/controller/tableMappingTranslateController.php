@@ -43,7 +43,7 @@ class TableMappingTranslateClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var boolean $audit
@@ -370,7 +370,7 @@ class TableMappingTranslateClass extends ConfigClass {
 						where r >=  '" . $this->getStart () . "'";
 					
 			} else {
-				echo "undefine vendor";
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			}
 		}
 

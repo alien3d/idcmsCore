@@ -47,7 +47,7 @@ class LogAdvanceClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -321,7 +321,7 @@ class LogAdvanceClass extends ConfigClass {
 
 				} else {
 
-					echo "undefine vendor";
+					echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 					exit();
 				}
 			}
@@ -477,7 +477,7 @@ class LogAdvanceClass extends ConfigClass {
 		if ($file) {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage()));
+			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage(),"time"=>$time));
 			exit();
 		} else {
 			$end = microtime(true);

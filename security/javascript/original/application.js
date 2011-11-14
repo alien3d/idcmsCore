@@ -2334,7 +2334,7 @@ Ext.onReady(function () {
                                                     applicationId: action.result.data.applicationId
                                                 }
                                             });
-                                            applicationTranslateGrid.enable();
+                                            
                                             applicationAccessStore.load({
                                                 params: {
                                                     leafId: leafId,
@@ -2391,7 +2391,6 @@ Ext.onReady(function () {
                                         applicationId: action.result.data.applicationId
                                     }
                                 });
-                                applicationTranslateGrid.enable();
                                 applicationAccessStore.load({
                                     params: {
                                         leafId: leafId,

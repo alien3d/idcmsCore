@@ -47,7 +47,7 @@ class ReligionDetailClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row TRUE or False
 	 * @var bool
@@ -481,7 +481,7 @@ class ReligionDetailClass extends ConfigClass {
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
 						where r >=  '" . ($this->getStart() + 1) . "'";
 			} else {
-				echo "undefine vendor";
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -1122,7 +1122,7 @@ class ReligionDetailClass extends ConfigClass {
 			echo json_encode(
 			array(	"success" => true,
 						"total" => $total, 
-						"message" => $this->systemString->getNotDuplicateMessage(),
+						"message" => $this->systemString->getNonDuplicateMessage(),
 						"time"=>$time));
 			exit();
 		}

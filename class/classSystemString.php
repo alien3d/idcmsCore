@@ -1,6 +1,6 @@
 <?php
 /**
- * Response Message if any error
+ * Response  if any error
  * @name IDCMS
  * @version 2
  * @author hafizan
@@ -11,32 +11,32 @@
 class SystemString  extends ConfigClass {
 	private $q;
 	/**
-	 * Create New Record Message
+	 * Create New Record
 	 * @var string
 	 */
 	private $createMessage;
 	/**
-	 * Read / Load Message
+	 * Read / Load
 	 * @var string
 	 */
 	private $readMessage;
 	/**
-	 * Update Message
+	 * Update
 	 * @var string
 	 */
 	private $updateMessage;
 	/**
-	 * Delete Message
+	 * Delete
 	 * @var string
 	 */
 	private $deleteMessage;
 	/**
-	 * Duplicate Code MEssage
+	 * Duplicate Code Message
 	 * @var string
 	 */
 	private $duplicateMessage;
 	/**
-	 * Non Duplicate Code Message
+	 * Non Duplicate Code
 	 * @var string
 	 */
 	private $nonDuplicateMessage;
@@ -44,23 +44,28 @@ class SystemString  extends ConfigClass {
 	 * Not Supported Database
 	 * @var string
 	 */
-	private $nonSupportedDatabase;
+	private $nonSupportedDatabaseMessage;
 	/**
-	 * File Found Message
+	 * File Found
 	 * @var string
 	 */
-	private $fileFound;
+	private $fileFoundMessage;
 	/**
-	 * File Not Found Message
+	 * File Not Found
 	 * @var string
 	 */
-	private $fileNotFound;
+	private $fileNotFoundMessage;
 	/**
-	 * Record Not Found Message
+	 * Record Not Found
 	 * @var string
 	 */
-	private $recordNotFound;
-	
+	private $recordFoundMessage;
+	/**
+	 * Record Not Found
+	 * @var string
+	 */
+	private $recordNotFoundMessage;
+
 	// end basic access database
 	public function execute() {
 		$this->q = new Vendor ();
@@ -68,8 +73,43 @@ class SystemString  extends ConfigClass {
 		$this->q->leafId = $this->getLeafId ();
 		$this->q->staffId = $this->getStaffId ();
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		$sql="SELECT * FROM `systemStringTranslate` WHERE `languageId`='".$this->getLanguageId()."'";
+		if($this->getVendor()==self::MYSQL){
+			$sql="
+			SELECT  `systemStringTranslate`.`systemStringCode`,
+					`systemStringTranslate`.`systemStringNative`
+			FROM 	`systemStringTranslate`
+			WHERE	`systemStringTranslate`.`languageId`='".$this->getLanguageId()."'";
+		} else if ($this->getVendor()==self::MSSQL){
+			$sql="
+			SELECT  [systemStringTranslate].[systemStringCode],
+					[systemStringTranslate].[systemStringNative]
+			FROM 	[systemStringTranslate]
+			WHERE	[systemStringTranslate].[languageId]='".$this->getLanguageId()."'";
+		} else if ($this->getVendor()==self::ORACLE){
+			$sql="
+			SELECT  SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGCODE,
+					SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGNATIVE
+			FROM 	SYSTEMSTRINGTRANSLATE
+			ON		SYSTEMSTRING.SYSTEMSTRINGID=SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGID 
+			WHERE	SYSTEMSTRINGTRANSLATE.LANGUAGEID='".$this->getLanguageId()."'";
+		} else if ($this->getVendor()==self::DB2){
+			$sql="
+			SELECT  SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGCODE,
+					SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGNATIVE
+			FROM 	SYSTEMSTRINGTRANSLATE
+			WHERE	SYSTEMSTRINGTRANSLATE.LANGUAGEID='".$this->getLanguageId()."'";
+		} else if ($this->getVendor()==self::POSTGRESS){
+			$sql="
+			SELECT  SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGCODE,
+					SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGNATIVE
+			FROM 	SYSTEMSTRINGTRANSLATE
+			WHERE	SYSTEMSTRINGTRANSLATE.LANGUAGEID='".$this->getLanguageId()."'";
+		}
 		$result = $this->q->fast($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
 		while ($row = $this->q->fetchArray($result)) {
 			switch($row['systemStringCode']){
 				case 'create':
@@ -91,20 +131,25 @@ class SystemString  extends ConfigClass {
 					$this->setNonDuplicateMessage($row['systemStringNative']);
 					break;
 				case 'fileFound':
-					$this->setFileFound($row['systemStringNative']);
+					$this->setFileFoundMessage($row['systemStringNative']);
 					break;
 				case 'fileNotFound':
-					$this->setFileFound($row['systemStringNative']);
+					$this->setFileFoundMessage($row['systemStringNative']);
 					break;
-				case 'nonSupportedDatabase':
-					$this->setNonSupportedDatabase($row['systemStringNative']);
+				case 'recordFound':
+					$this->setRecordFoundMessage($row['systemStringNative']);
 					break;
 				case 'recordNotFound':
-					$this->setRecordNotFound($row['systemStringNative']);
-				break;	
+					$this->setRecordNotFoundMessage($row['systemStringNative']);
+					break;
+				case 'nonSupportedDatabase':
+					$this->setNonSupportedDatabaseMessage($row['systemStringNative']);
+					break;
+
 			}
 		}
 	}
+
 	public function create() {
 	}
 	/* (non-PHPdoc)
@@ -131,7 +176,7 @@ class SystemString  extends ConfigClass {
 
 
 	/**
-	 * Return Create Message
+	 * Return Create
 	 * @return string
 	 */
 	public function getCreateMessage()
@@ -140,7 +185,7 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Set Create Message
+	 * Set Create
 	 * @param string $createMessage
 	 */
 	public function setCreateMessage($createMessage)
@@ -149,7 +194,7 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Return Read Message
+	 * Return Read
 	 * @return string
 	 */
 	public function getReadMessage()
@@ -158,7 +203,7 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Set Read Message
+	 * Set Read
 	 * @param string $readMessage
 	 */
 	public function setReadMessage($readMessage)
@@ -167,7 +212,7 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Return Update Message
+	 * Return Update
 	 * @return string
 	 */
 	public function getUpdateMessage()
@@ -176,7 +221,7 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Set Update Message
+	 * Set Update
 	 * @param string $updateMessage
 	 */
 	public function setUpdateMessage($updateMessage)
@@ -185,7 +230,7 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Return  Delete Message
+	 * Return  Delete
 	 * @return string
 	 */
 	public function getDeleteMessage()
@@ -194,7 +239,7 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Set Delete Message
+	 * Set Delete
 	 * @param string $deleteMessage
 	 */
 	public function setDeleteMessage($deleteMessage)
@@ -203,7 +248,7 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Set Duplicate Code Message
+	 * Set Duplicate Code
 	 * @return string
 	 */
 	public function getDuplicateMessage()
@@ -212,8 +257,8 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Set Duplicate Code Message
-	 * @param string $duplicateMessage
+	 * Set Duplicate Code
+	 * @param string $duplicate
 	 */
 	public function setDuplicateMessage($duplicateMessage)
 	{
@@ -221,7 +266,7 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Return Non  Duplicate Code Message
+	 * Return Non  Duplicate Code
 	 * @return string
 	 */
 	public function getNonDuplicateMessage()
@@ -230,8 +275,8 @@ class SystemString  extends ConfigClass {
 	}
 
 	/**
-	 * Set Non Duplicate Code Message
-	 * @param string $nonDuplicateMessage
+	 * Set Non Duplicate Code
+	 * @param string $nonDuplicate
 	 */
 	public function setNonDuplicateMessage($nonDuplicateMessage)
 	{
@@ -242,63 +287,86 @@ class SystemString  extends ConfigClass {
 	 * Return Non Supported Database
 	 * @return string
 	 */
-	public function getNonSupportedDatabase()
+	public function getNonSupportedDatabaseMessage()
 	{
-		return $this->nonSupportedDatabase;
+		return $this->nonSupportedDatabaseMessage;
 	}
 
 	/**
 	 * Set Non Supported Database
 	 * @param string $nonSupportedDatabase
 	 */
-	public function setNonSupportedDatabase($nonSupportedDatabase)
+	public function setNonSupportedDatabaseMessage($nonSupportedDatabaseMessage)
 	{
-		$this->nonSupportedDatabase = $nonSupportedDatabase;
+		$this->nonSupportedDatabaseMessage = $nonSupportedDatabaseMessage;
 	}
 
 	/**
-	 * Return File Not Found Message
+	 * Return File Not Found
 	 * @return string
 	 */
-	public function getFileFound()
+	public function getFileFoundMessage()
 	{
-		return $this->fileFound;
+		return $this->fileFoundMessage;
 	}
 
 	/**
-	 * Set File  Found Message
-	 * @param string $fileFound
+	 * Set File  Found
+	 * @param string $fileFoundMessage
 	 */
-	public function setFileFound($fileFound)
+	public function setFileFoundMessage($fileFoundMessage)
 	{
-		$this->fileFound = $fileFound;
+		$this->fileFoundMessage = $fileFoundMessage;
 	}
 
 	/**
-	 * Return File Not Found Message
+	 * Return File Not Found
 	 * @return string
 	 */
-	public function getFileNotFound()
+	public function getFileNotFoundMessage()
 	{
-		return $this->fileNotFound;
+		return $this->fileNotFoundMessage;
 	}
 
 	/**
-	 * Set File Not Found Message
-	 * @param string $fileNotFound
+	 * Set File Not Found
+	 * @param string $fileNotFoundMessage
 	 */
-	public function setFileNotFound($fileNotFound)
+	public function setFileNotFoundMessage($fileNotFoundMessage)
 	{
-		$this->fileNotFound = $fileNotFound;
+		$this->fileNotFoundMessage = $fileNotFoundMessage;
+	}
+	/**
+	 * Return Record Found
+	 * @return string
+	 */
+	public function getRecordFoundMessage()
+	{
+		return $this->recordFoundMessage;
 	}
 
-	public function getRecordNotFound()
+	/**
+	 * Set Record  Found
+	 * @param string $recordFoundMessage
+	 */
+	public function setRecordFoundMessage($recordFoundMessage)
 	{
-	    return $this->recordNotFound;
+		$this->recordFoundMessage = $recordFoundMessage;
 	}
-
-	public function setRecordNotFound($recordNotFound)
+	/**
+	 * Return Record Not Found
+	 * @return string
+	 */
+	public function getRecordNotFoundMessage()
 	{
-	    $this->recordNotFound = $recordNotFound;
+		return $this->recordNotFoundMessage;
+	}
+	/**
+	 * Set Record Not Found
+	 * @param string $recordNotFoundMessage
+	 */
+	public function setRecordNotFoundMessage($recordNotFoundMessage)
+	{
+		$this->recordNotFoundMessage = $recordNotFoundMessage;
 	}
 }

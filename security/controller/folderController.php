@@ -48,7 +48,7 @@ class FolderClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -125,7 +125,7 @@ class FolderClass extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -146,7 +146,7 @@ class FolderClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -494,7 +494,11 @@ class FolderClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "folderId" => $lastId, "message" => $this->systemString->getCreateMessage()));
+		echo json_encode(
+		array(	"success" => true,
+					"folderId" => $lastId, 
+					"message" => $this->systemString->getCreateMessage(),
+					"time"=>$time));
 		exit();
 	}
 
@@ -525,7 +529,7 @@ class FolderClass extends ConfigClass {
 
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -773,7 +777,7 @@ class FolderClass extends ConfigClass {
 						WHERE rownum <= '" . ($this->getStart() + $this->getLimit() - 1) . "' )
 						where r >=  '" . $this->getStart() . "'";
 			} else {
-				echo "undefine vendor";
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			}
 		}
 
@@ -792,6 +796,8 @@ class FolderClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getFolderId(0, 'single')) {
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(
 			array(	'success' => true,
 					'total' => $total, 
@@ -808,6 +814,8 @@ class FolderClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 			array(	'success' => true,
 						'total' => $total, 
@@ -829,7 +837,7 @@ class FolderClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -975,7 +983,10 @@ class FolderClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage(), "folderId" => $this->model->getFolderId(0, 'single')));
+		echo json_encode(
+		array(	"success" => true,
+					"message" => $this->systemString->getUpdateMessage(), 
+					"time"=>$time));
 		exit();
 	}
 
@@ -987,7 +998,7 @@ class FolderClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1421,7 +1432,7 @@ class FolderClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1463,7 +1474,7 @@ class FolderClass extends ConfigClass {
 		$filename = "folder" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
 		$objWriter->save($path);
-		$this->audit->create_trail($this->leafId, $path, $filename);
+		$this->audit->create_trail($this->getLeafId(), $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
 			$end = microtime(true);

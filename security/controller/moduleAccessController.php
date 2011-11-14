@@ -48,7 +48,7 @@ class ModuleAccessClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -284,13 +284,13 @@ class ModuleAccessClass extends ConfigClass {
 				WHERE 	MODULE.ISACTIVE 		=	1
 				AND		TEAM.ISACTIVE			=	1";
 			if ($this->model->getTeamId()) {
-				$sql .= " AND `team`.`teamId`	=	'" . $this->model->getTeamId() . "'";
+				$sql .= " AND TEAM.TEAMID	=	'" . $this->model->getTeamId() . "'";
 			}
 			if ($this->model->getModuleId()) {
 				$sql .= " AND FOLDER.MODULEID='" . $this->model->getModuleId() . "'";
 			}
 		}
-		//echo $sql;
+	
 		// searching filtering
 		$sql .= $this->q->searching();
 		$this->q->read($sql);
@@ -371,7 +371,6 @@ class ModuleAccessClass extends ConfigClass {
 			$this->q->fast($sql);
 		}
 		$this->q->start();
-
 		$this->model->update();
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
@@ -395,7 +394,7 @@ class ModuleAccessClass extends ConfigClass {
 		}
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage(),"time"=>$time));
 		exit();
 	}
 

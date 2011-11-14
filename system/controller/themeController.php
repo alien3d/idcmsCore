@@ -469,7 +469,7 @@ class ThemeClass  extends ConfigClass {
 						where rownum <= '". ($this->getStart() + $this->getLimit() - 1) . "' )
 						where r >=  '". $this->getStart() . "'";
             		} else {
-            			echo "undefine vendor";
+            			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
             			exit();
             		}
             	}

@@ -54,7 +54,7 @@ class LeafClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -606,7 +606,7 @@ class LeafClass extends ConfigClass {
 						where rownum <= '" . ($this->getStart() + $_POST ['limit'] - 1) . "' )
 						where r >=  '" . $this->getStart() . "'";
 				} else {
-					echo "undefine vendor";
+					echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				}
 			}
 		}
@@ -1251,7 +1251,7 @@ class LeafClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage()));
+			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage(),"time"=>$time));
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));
 		}

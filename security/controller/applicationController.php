@@ -48,7 +48,7 @@ class ApplicationClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -677,7 +677,7 @@ class ApplicationClass extends ConfigClass {
 						where rownum <= '" . ($this->getStart() + $this->getLimit() - 1) . "' )
 						where r >=  '" . $this->getStart() . "'";
 			} else {
-				echo "undefine vendor";
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -713,11 +713,12 @@ class ApplicationClass extends ConfigClass {
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
 		} else {
-			$end = microtime(true);
-			$time = $end - $start;
+			
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 			array(	'success' => true,
             				'total' => $total, 

@@ -47,7 +47,7 @@ class EventClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row TRUE or False
 	 * @var bool

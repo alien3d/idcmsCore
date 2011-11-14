@@ -48,7 +48,7 @@ class moduleTranslateClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 
 	/**
 	 * Audit Row True or False
@@ -273,7 +273,11 @@ class moduleTranslateClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "moduleTranslateId" => $lastId, "message" => $this->systemString->getCreateMessage()));
+		echo json_encode(
+			array(	"success" => true, 
+					"moduleTranslateId" => $lastId, 
+					"message" => $this->systemString->getCreateMessage(),
+					"time"=>$time));
 		exit();
 	}
 
@@ -782,7 +786,7 @@ class moduleTranslateClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage(),"time"=>$time));
 		exit();
 	}
 
@@ -925,7 +929,10 @@ class moduleTranslateClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $this->systemString->getDeleteMessage(),
+					"time"=>$time));
 		exit();
 	}
 
@@ -1226,9 +1233,7 @@ class moduleTranslateClass extends ConfigClass {
 		}
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		echo json_encode(array("success" => true, "message" => $message,"time"=>$time)
 		);
 		exit();
 	}
@@ -1299,10 +1304,12 @@ class moduleTranslateClass extends ConfigClass {
 		$filename = "moduleTranslate" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
 		$objWriter->save($path);
-		$this->audit->create_trail($this->leafId, $path, $filename);
+		$this->audit->create_trail($this->getLeafId(), $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage()));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage(),"time"=>$time));
 			exit();
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));

@@ -47,7 +47,7 @@ class ReligionClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row TRUE or False
 	 * @var bool
@@ -109,7 +109,7 @@ class ReligionClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-
+		
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -1290,7 +1290,7 @@ class ReligionClass extends ConfigClass {
 			echo json_encode(
 			array(	"success" => true,
             			"total" => $total, 
-            			"message" => $this->systemString->getNotDuplicateMessage(),
+            			"message" => $this->systemString->getNonDuplicateMessage(),
             			"time"=>$time));
 			exit();
 		}

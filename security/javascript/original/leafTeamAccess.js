@@ -769,8 +769,7 @@ Ext.onReady(function() {
         id: 'leafTeamAccessDraftValue',
         width: 55
     });
-    var leafTeamAccessColumnModel = new Ext.grid.ColumnModel({
-        columns: [{
+    var leafTeamAccessColumnModel =  [{
             header: moduleEnglishLabel,
             dataIndex: 'moduleNative'
         },
@@ -790,8 +789,8 @@ Ext.onReady(function() {
             header: staffNameLabel,
             dataIndex: 'staffName'
         },
-        leafTeamAccessDraftValue, leafTeamAccessCreateValue, leafTeamAccessReadValue, leafTeamAccessUpdateValue, leafTeamAccessDeleteValue, leafTeamAccessPrintValue, leafTeamAccessReviewValue, leafTeamAccessPostValue]
-    });
+        leafTeamAccessDraftValue, leafTeamAccessCreateValue, leafTeamAccessReadValue, leafTeamAccessUpdateValue, leafTeamAccessDeleteValue, leafTeamAccessPrintValue, leafTeamAccessReviewValue, leafTeamAccessPostValue];
+    
     var teamId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
         fieldLabel: teamIdLabel,
@@ -829,7 +828,7 @@ Ext.onReady(function() {
                     }
                 });
                 Ext.getCmp('moduleId').enable();
-                Ext.getCmp('gridPanel').enable();
+                Ext.getCmp('leafTeamAccessGrid').enable();
                 leafTeamAccessStore.load({
                     params: {
                         teamId: Ext.getCmp('teamId').getValue(),
@@ -880,7 +879,7 @@ Ext.onReady(function() {
                     }
                 });
                 Ext.getCmp('folderId').enable();
-                Ext.getCmp('gridPanel').enable();
+                Ext.getCmp('leafTeamAccessGrid').enable();
                 leafTeamAccessStore.load({
                     params: {
                         teamId: Ext.getCmp('teamId').getValue(),
@@ -922,9 +921,9 @@ Ext.onReady(function() {
         listeners: {
             'select': function(combo, record, index) {
                 if (this.value == '') {
-                    Ext.getCmp('gridPanel').disable();
+                    Ext.getCmp('leafTeamAccessGrid').disable();
                 } else {
-                    Ext.getCmp('gridPanel').enable();
+                    Ext.getCmp('leafTeamAccessGrid').enable();
                 }
                 leafTeamAccessStore.load({
                     params: {

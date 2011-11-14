@@ -48,7 +48,7 @@ class leafTranslateClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -276,7 +276,11 @@ class leafTranslateClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "leafTranslateId" => $lastId, "message" => $this->systemString->getCreateMessage()));
+		echo json_encode(
+			array(	"success" => true, 
+					"leafTranslateId" => $lastId, 
+					"message" => $this->systemString->getCreateMessage(),
+					"time"=>$time));
 		exit();
 	}
 
@@ -1311,12 +1315,12 @@ class leafTranslateClass extends ConfigClass {
 		$filename = "leafTranslate" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
 		$objWriter->save($path);
-		$this->audit->create_trail($this->leafId, $path, $filename);
+		$this->audit->create_trail($this->getLeafId(), $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage()));
+			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage(),"time"=>$time));
 			exit();
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));

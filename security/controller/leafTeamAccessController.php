@@ -48,7 +48,7 @@ class LeafTeamAccessClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -153,7 +153,7 @@ class LeafTeamAccessClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -282,7 +282,7 @@ class LeafTeamAccessClass extends ConfigClass {
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafAccessPrintValue],
+						END) AS [leafTeamAccessPrintValue],
 
 						(CASE [leafTeamAccess].[leafTeamAccessPostValue]
 							WHEN '1' THEN
@@ -593,56 +593,266 @@ class LeafTeamAccessClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
+		$total = $this->model->getTotal();
 
-		$data = explode("|", $_POST ['info']); // still using & for future reference
-		$loop = count($data);
-		for ($i = 0; $i < $loop; $i++) {
-			// explode again
-			// mysql doesn't support bolean expression
-			$data_array = explode(",", $data [$i]);
-			//echo print_r($data_array);
-			if ($this->getVendor() == self::MYSQL) {
-				$sql = "
-					UPDATE 	`leafTeamAccess`
-					SET 	`leafAccessCreateValue`	=	'" . $this->strict($data_array [2], 'boolean') . "',
-							`leafAccessReadValue`	=	'" . $this->strict($data_array [2], 'boolean') . "',
-							`leafAccessUpdateValue`	=	'" . $this->strict($data_array [3], 'boolean') . "',
-							`leafAccessDeleteValue`	=	'" . $this->strict($data_array [4], 'boolean') . "',
-							`leafAccessPrintValue`	=	'" . $this->strict($data_array [5], 'boolean') . "',
-							`leafAccessPostValue`	=	'" . $this->strict($data_array [6], 'boolean') . "'
-					WHERE 	`leafTeamAccessId`	=	'" . $this->strict($data_array [0], 'numeric') . "'";
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
+			UPDATE `" . $this->model->getTableName() . "`
+			SET";
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
+			UPDATE 	[" . $this->model->getTableName() . "]
+			SET 	";
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
+			UPDATE " . strtoupper($this->model->getTableName()) . "
+			SET    ";
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
+			UPDATE " . strtoupper($this->model->getTableName()) . "
+			SET    ";
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
+			UPDATE " . strtoupper($this->model->getTableName()) . "
+			SET    ";
+		} else {
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+			exit();
+		}
+		$access = array("leafTeamAccessDefaultValue",
+		                "leafTeamAccessNewValue", 
+		                "leafTeamAccessDraftValue", 
+		                "leafTeamAccessUpdateValue", 
+		                "leafTeamAccessDeleteValue", 
+		                "leafTeamAccessActiveValue", 
+		                "leafTeamAccessApprovedValue", 
+		                "leafTeamAccessReviewValue", 
+		                "leafTeamAccessPostValue");
+		foreach ($access as $systemCheck) {
 
-				//echo $sql."<br>";
-			} else if ($this->getVendor() == self::MSSQL) {
-				$sql = "
-					UPDATE 	[leafTeamAccess]
-					SET 	[leafAccessCreateValue]	=	'" . $this->strict($data_array [2], 'boolean') . "',
-							[leafAccessReadValue]	=	'" . $this->strict($data_array [2], 'boolean') . "',
-							[leafAccessUpdateValue]	=	'" . $this->strict($data_array [3], 'boolean') . "',
-							[leafAccessDeleteValue]	=	'" . $this->strict($data_array [4], 'boolean') . "',
-							[leafAccessPrintValue]	=	'" . $this->strict($data_array [5], 'boolean') . "',
-							[leafAccessPostValue]	=	'" . $this->strict($data_array [6], 'boolean') . "'
-					WHERE 	[leafTeamAccessId]	=	'" . $this->strict($data_array [0], 'numeric') . "'";
-			} else if ($this->getVendor() == self::ORACLE) {
-				$sql = "
-					UPDATE 	LEAFTEAMACCESS
-					SET 	leafAccessCreateValue	=	'" . $this->strict($data_array [2], 'boolean') . "',
-							leafAccessReadValue		=	'" . $this->strict($data_array [2], 'boolean') . "',
-							leafAccessUpdateValue	=	'" . $this->strict($data_array [3], 'boolean') . "',
-							leafAccessDeleteValue	=	'" . $this->strict($data_array [4], 'boolean') . "',
-							leafAccessPrintValue	=	'" . $this->strict($data_array [5], 'boolean') . "',
-							leafAccessPostValue		=	'" . $this->strict($data_array [6], 'boolean') . "'
-					WHERE 	LEAFTEAMACCESSID		=	'" . $this->strict($data_array [0], 'numeric') . "'";
-			}
-			$this->q->update($sql);
-			if ($this->q->execute == 'fail') {
-				echo json_encode(array("success" => false, "message" => $this->q->responce));
-				exit();
+			switch ($systemCheck) {
+				case 'leafTeamAccessDefaultValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsDefault($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
+							$sqlLooping .= "
+							WHEN '" . $this->model->getLeafTeamAccessId($i, 'array') . "'
+							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'leafTeamAccessNewValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsNew($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
+							$sqlLooping .= "
+							WHEN '" . $this->model->getLeafTeamAccessId($i, 'array') . "'
+							THEN '" . $this->model->getIsNew($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'leafTeamAccessDraftValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsDraft($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
+							$sqlLooping .= "
+							WHEN '" . $this->model->getLeafTeamAccessId($i, 'array') . "'
+							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'leafTeamAccessUpdateValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsUpdate($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+
+							}
+							$sqlLooping .= "
+							WHEN '" . $this->model->getLeafTeamAccessId($i, 'array') . "'
+							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'leafTeamAccessDeleteValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsDelete($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
+							$sqlLooping .= "
+							WHEN '" . $this->model->getLeafTeamAccessId($i, 'array') . "'
+							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'leafTeamAccessActiveValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsActive($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
+							$sqlLooping .= "
+							WHEN '" . $this->model->getLeafTeamAccessId($i, 'array') . "'
+							THEN '" . $this->model->getIsActive($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'leafTeamAccessApprovedValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsApproved($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
+							$sqlLooping .= "
+							WHEN '" . $this->model->getLeafTeamAccessId($i, 'array') . "'
+							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'leafTeamAccessReviewValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsReview($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
+							$sqlLooping .= "
+                            WHEN '" . $this->model->getLeafTeamAccessId($i, 'array') . "'
+                            THEN '" . $this->model->getIsReview($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
+				case 'leafTeamAccessPostValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getIsPost($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
+							$sqlLooping .= "
+                                WHEN '" . $this->model->getLeafTeamAccessId($i, 'array') . "'
+                                THEN '" . $this->model->getIsPost($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
 			}
 		}
 		$end = microtime(true);
@@ -805,6 +1015,7 @@ if (isset($_GET ['method'])) {
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
 			$leafTeamAccessObject->lastRecord('json');
 		}
+		
 	}
 }
 ?>

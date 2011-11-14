@@ -42,7 +42,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -347,7 +347,7 @@ class DefaultLabelTranslationClass extends ConfigClass {
 						WHERE rownum <= '" . ($this->getStart () + $this->getLimit () - 1) . "' )
 						where r >=  '" . $this->getStart () . "'";
 			} else {
-				echo "undefine vendor";
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			}
 		}
 

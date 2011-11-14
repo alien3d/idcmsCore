@@ -1284,7 +1284,7 @@ class PaymentClass extends ConfigClass {
             echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "paymentDesc" => $row ['paymentDesc']));
             exit();
         } else {
-            echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNotDuplicateMessage()));
+            echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
             exit();
         }
     }

@@ -47,7 +47,7 @@ class LogClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -326,7 +326,7 @@ class LogClass extends ConfigClass {
 
 			} else {
 
-				echo "undefine vendor";
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -480,7 +480,9 @@ class LogClass extends ConfigClass {
 		$this->create_trail($this->leafId, $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage()));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage(),"time"=>$time));
 			exit();
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));

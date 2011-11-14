@@ -48,7 +48,7 @@ class applicationTranslateClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -494,7 +494,7 @@ class applicationTranslateClass extends ConfigClass {
 				$sql .= $this->q->searching();
 			}
 		}
-		//echo $sql;
+		
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -514,7 +514,7 @@ class applicationTranslateClass extends ConfigClass {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
 			}
 		}
-		$_SESSION ['sql'] = $sql; // push to session so can make report via excel and pdf
+		$_SESSION ['sql'] = $sql; 
 		$_SESSION ['start'] = $this->getStart();
 		$_SESSION ['limit'] = $this->getLimit();
 		if ($this->getStart() && $this->getLimit()) {
@@ -617,11 +617,11 @@ class applicationTranslateClass extends ConfigClass {
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
 		} else {
-			$end = microtime(true);
-			$time = $end - $start;
 			if (count($items) == 0) {
 				$items = '';
 			}
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 			array('success' => true,
 				     'total' => $total, 
@@ -1308,7 +1308,7 @@ class applicationTranslateClass extends ConfigClass {
 		$filename = "applicationTranslate" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/security/document/excel/" . $filename;
 		$objWriter->save($path);
-		$this->audit->create_trail($this->leafId, $path, $filename);
+		$this->audit->create_trail($this->getLeafId(), $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
 			$end = microtime(true);

@@ -42,7 +42,7 @@ class DefaultLabelClass extends ConfigClass {
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -362,7 +362,7 @@ class DefaultLabelClass extends ConfigClass {
 			} else if ($this->getVendor () == self::DB2) {
 			} else if ($this->getVendor () == self::POSTGRESS) {
 			} else {
-				echo "undefine vendor";
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			}
 		}
 
@@ -919,7 +919,9 @@ class DefaultLabelClass extends ConfigClass {
 		$this->audit->create_trail ( $this->getLeafId, $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			echo json_encode ( array ("success" =>true, "message" => $this->systemString->getFileGenerateMessage() ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage(),"time"=>$time));
 		} else {
 			echo json_encode ( array ("success" => false, "message" => $this->systemString->getFileNotGenerateMessage() ) );
 		}

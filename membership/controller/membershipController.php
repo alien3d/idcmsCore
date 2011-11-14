@@ -1233,7 +1233,7 @@ class ReligionClass extends ConfigClass {
             echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "religionDesc" => $row ['religionDesc']));
             exit();
         } else {
-            echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNotDuplicateMessage()));
+            echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
             exit();
         }
     }

@@ -21,7 +21,7 @@ class SystemStringModel extends ValidationClass {
 	 * Default Label
 	 * @var string
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Default Label English
 	 * @var string

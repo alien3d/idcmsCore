@@ -38,11 +38,11 @@ class SystemStringClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-		/**
+	/**
 	 * System String Message.
 	 * @var string $systemString;
 	 */
-	private $systemString;
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -95,7 +95,7 @@ class SystemStringClass extends ConfigClass {
 		$this->model = new SystemStringModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -112,7 +112,7 @@ class SystemStringClass extends ConfigClass {
 		$this->security->setVendor ( $this->getVendor () );
 		$this->security->setLeafId ( $this->getLeafId () );
 		$this->security->execute ();
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -136,7 +136,7 @@ class SystemStringClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -191,9 +191,9 @@ class SystemStringClass extends ConfigClass {
 			);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-			INSERT INTO 	DEFAULTLABEL
+			INSERT INTO 	SYSTEMSTRING
 						(
-							DEFAULTLABEL,													DEFAULTLABELENGLISH,
+							SYSTEMSTRING,													SYSTEMSTRINGENGLISH,
 							ISDEFAULT,														ISNEW,
 							ISDRAFT,														ISUPDATE,
 							ISDELETE,														ISACTIVE,
@@ -218,7 +218,7 @@ class SystemStringClass extends ConfigClass {
 		$lastId = $this->q->lastInsertId ();
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode ( array ("success" => true, "systemStringId" => $lastId, "message" => $this->systemString->getCreateMessage() ) );
 		exit ();
 	}
@@ -230,7 +230,7 @@ class SystemStringClass extends ConfigClass {
 		$start = microtime(true);
 		$items = array ();
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -254,7 +254,7 @@ class SystemStringClass extends ConfigClass {
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			SELECT 		*
-			FROM 		DEFAULTLABEL
+			FROM 		SYSTEMSTRING
 			WHERE 1";
 			if ($this->model->getSystemStringId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "`." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getSystemStringId ( 0, 'single' ) . "'";
@@ -349,7 +349,7 @@ class SystemStringClass extends ConfigClass {
 												rownum r
 						FROM (
 									SELECT 		*
-									FROM 		DEFAULTLABEL
+									FROM 		SYSTEMSTRING
 									WHERE		1
 									AND 		" . $tempSql . $tempSql2 . "
 								 ) a
@@ -358,7 +358,7 @@ class SystemStringClass extends ConfigClass {
 			} else if ($this->getVendor () == self::DB2) {
 			} else if ($this->getVendor () == self::POSTGRESS) {
 			} else {
-				echo "undefine vendor";
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			}
 		}
 
@@ -377,8 +377,8 @@ class SystemStringClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getSystemStringId ( 0, 'single' )) {
-			$json_encode = json_encode ( 
-			array (	'success' => true, 
+			$json_encode = json_encode (
+			array (	'success' => true,
 					'total' => $total, 
 					'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -393,8 +393,8 @@ class SystemStringClass extends ConfigClass {
 			if (count ( $items ) == 0) {
 				$items = '';
 			}
-			echo json_encode ( 
-				array (	'success' => true, 
+			echo json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
@@ -412,7 +412,7 @@ class SystemStringClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -450,9 +450,9 @@ class SystemStringClass extends ConfigClass {
 					WHERE 	[systemStringId]		=	'" . $this->model->getSystemStringId ( 0, 'single' ) . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					UPDATE 	DEFAULTLABEL
-					SET     DEFAULTLABELNOTE		=	'" . $this->model->getSystemStringNote () . "',
-							DEFAULTLABELENGLISH		=	'" . $this->model->getSystemStringEnglish () . "',
+					UPDATE 	SYSTEMSTRING
+					SET     SYSTEMSTRINGNOTE		=	'" . $this->model->getSystemStringNote () . "',
+							SYSTEMSTRINGENGLISH		=	'" . $this->model->getSystemStringEnglish () . "',
 							ISDEFAULT				=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE				=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW					=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -462,7 +462,7 @@ class SystemStringClass extends ConfigClass {
 							ISAPPROVED				=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY				=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME				=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELID			=	'" . $this->model->getSystemStringId ( 0, 'single' ) . "'";
+					WHERE 	SYSTEMSTRINGID			=	'" . $this->model->getSystemStringId ( 0, 'single' ) . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -471,7 +471,7 @@ class SystemStringClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => $this->systemString->getUpdateMessage() ) );
 		exit ();
 	}
@@ -482,7 +482,7 @@ class SystemStringClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -516,7 +516,7 @@ class SystemStringClass extends ConfigClass {
 					WHERE 	[systemStringId]	='" . $this->model->getSystemStringId () . "'";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
-					UPDATE	DEFAULTLABEL
+					UPDATE	SYSTEMSTRING
 					SET		ISDEFAULT			=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE			=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW				=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -526,7 +526,7 @@ class SystemStringClass extends ConfigClass {
 							ISAPPROVED	      	=	'" . $this->model->getIsApproved ( 0, 'single' ) . "',
 							EXECUTEBY		  	=	'" . $this->model->getExecuteBy () . "',
 							EXECUTETIME		  	=	" . $this->model->getExecuteTime () . "
-					WHERE 	DEFAULTLABELID    	=	'" . $this->model->getSystemStringId () . "'";
+					WHERE 	SYSTEMSTRINGID    	=	'" . $this->model->getSystemStringId () . "'";
 		}
 		$this->q->update ( $sql );
 		if ($this->q->execute == 'fail') {
@@ -535,7 +535,7 @@ class SystemStringClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode ( array ("success" =>true, "message" => $this->systemString->getDeleteMessage() ) );
 		exit ();
 	}
@@ -546,12 +546,12 @@ class SystemStringClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$loop = $this->model->getTotal ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
@@ -692,7 +692,7 @@ class SystemStringClass extends ConfigClass {
 		}
 		$this->q->commit ();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode ( array ("success" => true, "message" => $this->systemString->getDeleteMessage() ) );
 		exit ();
 	}
@@ -715,7 +715,7 @@ class SystemStringClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 		}
@@ -760,8 +760,9 @@ class SystemStringClass extends ConfigClass {
 		$this->audit->create_trail ( $this->getLeafId(), $path, $filename );
 		$file = fopen ( $path, 'r' );
 		if ($file) {
-			
-			echo json_encode ( array ("success" =>true, "message" => $this->systemString->getFileGenerateMessage() ) );
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage(),"time"=>$time));
 		} else {
 			echo json_encode ( array ("success" => false, "message" => $this->systemString->getFileNotGenerateMessage() ) );
 		}

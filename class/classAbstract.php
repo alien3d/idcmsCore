@@ -226,8 +226,6 @@ abstract class ConfigClass
 		header('Content-Type:application/json; charset=utf-8');
 		$time_start = microtime(true);
 
-
-
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT 	`staffId`,
