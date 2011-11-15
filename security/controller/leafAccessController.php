@@ -101,8 +101,10 @@ class LeafAccessClass extends ConfigClass {
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		if($this->model->getLeafIdTemp()) {
+			
 			$this->q->leafId = $this->model->getLeafIdTemp();
 		} else {
+			
 			$this->q->leafId = $this->getLeafId();
 		}
 		$this->q->staffId = $this->getStaffId();
@@ -222,7 +224,13 @@ class LeafAccessClass extends ConfigClass {
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS `leafAccessPostValue`
+						END) AS `leafAccessPostValue`,
+						(CASE `leafAccess`.`leafAccessPrintValue`
+						 	WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS `leafAccessPrintValue`
 				FROM 	`leafAccess`
 				JOIN	`leaf`
 				USING	(`leafId`)
@@ -262,7 +270,13 @@ class LeafAccessClass extends ConfigClass {
 						[leafAccess].[leafId],
 						[leafAccess].[staffId],
 						[leafAccess].[leafAccessId],
-						 (CASE [leafAccess].[leafAccessCreateValue]
+						(CASE [leafAccess].[leafAccessDraftValue]
+						 	WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS [leafAccessDraftValue], 
+						(CASE [leafAccess].[leafAccessCreateValue]
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
@@ -290,7 +304,12 @@ class LeafAccessClass extends ConfigClass {
 							WHEN '0' THEN
 								''
 						END) AS [leafAccessDeleteValue] ,
-
+						(CASE [leafAccess].[leafAccessReviewValue]
+						 	WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS [leafAccessReviewValue],
 						(CASE [leafAccess].[leafAccessApprovedValue]
 						 	WHEN '1' THEN
 								'true'
@@ -303,7 +322,13 @@ class LeafAccessClass extends ConfigClass {
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS [leafAccessPostValue]
+						END) AS [leafAccessPostValue],
+						(CASE [leafAccess].[leafAccessPrintValue]
+						 	WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS [leafAccessPrintValue]
 				FROM 	[leafAccess]
 				JOIN	[leaf]
 				ON		[leafAccess].[leafId] = [leaf].[leafId]
@@ -342,48 +367,60 @@ class LeafAccessClass extends ConfigClass {
 						LEAFACCESS.LEAFID,
 						LEAFACCESS.STAFFID,
 						LEAFACCESS.LEAFACCESSID,
-						 (CASE LEAFACCESS.leafAccessCreateValue
+						(CASE LEAFACCESS.LEAFACCESSDRAFTVALUE
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS leafAccessCreateValue,
-
-
-						 (CASE LEAFACCESS.leafAccessReadValue
+						END) AS \"leafAccessDraftValue\",
+						 (CASE LEAFACCESS.LEAFACCESSCREATEVALUE
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS leafAccessReadValue,
+						END) AS \"leafAccessCreateValue\",
+
+
+						 (CASE LEAFACCESS.lEAFACCESSREADVALUE
+						 	WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS \"leafAccessReadValue\",
 
 						(CASE LEAFACCESS.LEAFACCESSUPDATEVALUE
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS leafAccessUpdateValue,
+						END) AS \"leafAccessUpdateValue\",
 
 						(CASE LEAFACCESS.LEAFACCESSDELETEVALUE
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS leafAccessDeleteValue ,
+						END) AS \"leafAccessDeleteValue\",
 
 						(CASE LEAFACCESS.LEAFACCESSAPPROVEDVALUE
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS leafAccessApprovedValue,
+						END) AS \"leafAccessApprovedValue\",
 
 						(CASE LEAFACCESS.LEAFACCESSPOSTVALUE
 						 	WHEN '1' THEN
 								'true'
 							WHEN '0' THEN
 								''
-						END) AS leafAccessPostValue
+						END) AS \"leafAcessPostValue\",
+							(CASE LEAFACCESS.LEAFACCESSPRINTVALUE
+						 	WHEN '1' THEN
+								'true'
+							WHEN '0' THEN
+								''
+						END) AS \"leafAccessPrintValue\"
 				FROM 	LEAFACCESS
 				JOIN	LEAF
 				USING	(LEAFID)
@@ -529,7 +566,8 @@ class LeafAccessClass extends ConfigClass {
 		                "leafAccessReviewValue", 
 		                "leafAccessApprovedValue", 		           
 		                "leafAccessReviewValue", 
-		                "leafAccessPostValue");
+		                "leafAccessPostValue",
+						"leafAccessPrintValue"	);
 		$sqlLooping='';
 		foreach ($access as $systemCheck) {
 
@@ -728,6 +766,30 @@ class LeafAccessClass extends ConfigClass {
 						}
 					}
 					break;
+					case 'leafAccessPrintValue' :
+					for ($i = 0; $i < $loop; $i++) {
+						if (strlen($this->model->getLeafAccessPrintValue($i, 'array')) > 0) {
+							if ($this->getVendor() == self::MYSQL) {
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+							} else if ($this->getVendor() == self::MSSQL) {
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+							} else if ($this->getVendor() == self::ORACLE) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::DB2) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else if ($this->getVendor() == self::POSTGRESS) {
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+							} else {
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+								exit();
+							}
+							$sqlLooping .= "
+                                WHEN '" . $this->model->getLeafAccessId($i, 'array') . "'
+                                THEN '" . $this->model->getLeafAccessPrintValue($i, 'array') . "'";
+							$sqlLooping .= " END,";
+						}
+					}
+					break;
 			}
 		}
 		$sql .= substr($sqlLooping, 0, - 1);
@@ -763,7 +825,7 @@ class LeafAccessClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode(
 		array("success" => true,
-			      "message" => $this->systemString->getUpdateMessage().$sql,
+			      "message" => $this->systemString->getUpdateMessage(),
 				  "time"=>$time,
 				  "sql"=>$sql				
 		));

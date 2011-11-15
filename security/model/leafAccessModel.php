@@ -100,6 +100,11 @@ class LeafAccessModel extends ValidationClass {
 	 * @var bool
 	 */
 	private $leafAccessPostValue;
+	/**
+	 * Leaf Print Access Value
+	 * @var bool
+	 */
+	private $leafAccessPrintValue;
 
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type
@@ -154,6 +159,12 @@ class LeafAccessModel extends ValidationClass {
 		}
 		if (isset($_GET ['folderId'])) {
 			$this->setFolderId($this->strict($_GET ['folderId'], 'numeric'));
+		}
+		if (isset($_GET ['leafIdTemp'])) {
+			$this->setLeafIdTemp($this->strict($_GET ['leafIdTemp'], 'numeric'));
+		}
+		if (isset($_GET ['leafId'])) {
+			$this->setLeafId($this->strict($_GET ['leafId'], 'numeric'));
 		}
 		if (isset($_GET ['staffId'])) {
 			$this->setStafId($this->strict($_GET ['staffId'], 'numeric'));
@@ -222,6 +233,13 @@ class LeafAccessModel extends ValidationClass {
 					$this->setLeafAccessPostValue(1, $i,'array');
 				} else {
 					$this->setLeafAccessPostValue(0, $i,'array');
+				}
+			}
+			if (isset($_GET ['leafAccessPrintValue'])) {
+				if ($_GET ['leafAccessPrintValue'] [$i] == 'true') {
+					$this->setLeafAccessPrintValue(1, $i,'array');
+				} else {
+					$this->setLeafAccessPrintValue(0, $i,'array');
 				}
 			}
 			$primaryKeyAll .= $this->getLeafAccessId($i, 'array') . ",";

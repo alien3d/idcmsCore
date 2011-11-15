@@ -702,8 +702,13 @@ Ext.onReady(function() {
             name: 'leafAccessApprovedValue',
             type: 'boolean'
         },
+        
         {
             name: 'leafAccessPostValue',
+            type: 'boolean'
+        },
+        {
+            name: 'leafAccessPrintValue',
             type: 'boolean'
         }]
     });
@@ -755,6 +760,12 @@ Ext.onReady(function() {
         id: 'leafAccessPostValue',
         width: 55
     });
+    var leafAccessPrintValue = new Ext.grid.CheckColumn({
+        header: leafAccessPrintValueLabel,
+        dataIndex: 'leafAccessPrintValue',
+        id: 'leafAccessPrintValue',
+        width: 55
+    });
     
     var leafAccessColumnModel =  [{
             header: moduleEnglishLabel,
@@ -775,7 +786,7 @@ Ext.onReady(function() {
         {
             header: staffNameLabel,
             dataIndex: 'staffName'
-        },leafAccessDraftValue, leafAccessCreateValue, leafAccessReadValue, leafAccessUpdateValue, leafAccessDeleteValue, leafAccessReviewValue, leafAccessApprovedValue, leafAccessPostValue];
+        },leafAccessDraftValue, leafAccessCreateValue, leafAccessReadValue, leafAccessUpdateValue, leafAccessDeleteValue, leafAccessReviewValue, leafAccessApprovedValue, leafAccessPostValue, leafAccessPrintValue];
     var teamId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
         fieldLabel: teamIdLabel,
@@ -949,9 +960,11 @@ Ext.onReady(function() {
         listeners: {
             'select': function(combo, record, index) {
                 if (this.value == '') {
-                    leafAccessGriddisable();
+                   
+                    Ext.getCmp('leafAccessGrid').disable();
                 } else {
-                    leafAccessGridenable();
+                    
+                    Ext.getCmp('leafAccessGrid').enable();
                 }
                 folderStore.load({
                     params: {
@@ -992,7 +1005,8 @@ Ext.onReady(function() {
     	 'leafAccessDeleteValue', 
     	 'leafAccessApprovedValue',
     	 'leafAccessReviewValue', 
-    	 'leafAccessPostValue'];
+    	 'leafAccessPostValue',
+    	 'leafAccessPrintValue'];
     var leafAccessGrid = new Ext.grid.GridPanel({
         name: 'leafAccessGrid',
         id: 'leafAccessGrid',
@@ -1008,7 +1022,7 @@ Ext.onReady(function() {
         viewConfig : {
         	emptyText: emptyRowLabel
         },
-        plugins: [ leafAccessDraftValue,leafAccessCreateValue, leafAccessReadValue, leafAccessUpdateValue, leafAccessDeleteValue, leafAccessReviewValue, leafAccessApprovedValue, leafAccessPostValue],
+        plugins: [ leafAccessDraftValue,leafAccessCreateValue, leafAccessReadValue, leafAccessUpdateValue, leafAccessDeleteValue, leafAccessReviewValue, leafAccessApprovedValue, leafAccessPostValue,leafAccessPrintValue,],
         tbar: {
             items: [{
             	xtype:'button',
@@ -1073,6 +1087,9 @@ Ext.onReady(function() {
                             }
                             if (dataChanges.leafAccessPostValue == true || dataChanges.leafAccessPostValue == false) {
                                 sub_url = sub_url + '&leafAccessPostValue[]=' + modified[i].get('leafAccessPostValue');
+                            }
+                            if (dataChanges.leafAccessPrintValue == true || dataChanges.leafAccessPrintValue == false) {
+                                sub_url = sub_url + '&leafAccessPrintValue[]=' + modified[i].get('leafAccessPrintValue');
                             }
                         }
                         

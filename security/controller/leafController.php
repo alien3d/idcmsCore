@@ -126,7 +126,7 @@ class LeafClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -152,7 +152,7 @@ class LeafClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -312,6 +312,7 @@ class LeafClass extends ConfigClass {
 					'0',							'0',
 					'0',							'0',
 					'0',							'0',
+					'0',							'0',
 					'0'
 				),";
 		}
@@ -321,10 +322,11 @@ class LeafClass extends ConfigClass {
 			INSERT INTO	`leafAccess`
 					(
 						`leafId`,					`staffId`,
-						`leafAccessReadValue`,		`leafAccessCreateValue`,
-						`leafAccessUpdateValue`,	`leafAccessDeleteValue`,
-						`leafAccessPrintValue`,		`leafAccessPostValue`,
-						`leafAccessDraftValue`
+						`leafAccessDraftValue`,		`leafAccessCreateValue`,
+						`leafAccessReadValue`,		`leafAccessUpdateValue`,
+						`leafAccessDeleteValue`,	`leafAccessReviewValue`,
+						`leafAccessApprovedValue`,	`leafAccessPostValue`,
+						`leafAccessPrintValue`
 					)
 			VALUES";
 		} else if ($this->getVendor() == self::MSSQL) {
@@ -332,21 +334,23 @@ class LeafClass extends ConfigClass {
 			INSERT INTO	[leafAccess]
 				(
 					[leafId],					[staffId],
-					[leafAccessReadValue],		[leafAccessCreateValue],
-					[leafAccessUpdateValue],	[leafAccessDeleteValue],
-					[leafAccessPrintValue],		[leafAccessPostValue],
-					[leafAccessDraftValue]
+					[leafAccessDraftValue],		[leafAccessCreateValue],
+					[leafAccessReadValue],		[leafAccessUpdateValue],
+					[leafAccessDeleteValue],	[leafAccessReviewValue],
+					[leafAccessApprovedValue],	[leafAccessPostValue],
+					[leafAccessPrintValue]
 				)
 			VALUES";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			INSERT INTO 	LEAFACCESS
 						(
-							LEAFID,					STAFFID,
-							LEAFACCESSREADVALUE,	LEAFACCESSCREATEVALUE,
-							LEAFACCESSUPDATEVALUE,	LEAFACCESSDELETEVALUE,
-							LEAFACCESSPRINTVALUE,	LEAFACCESSPOSTVALUE,
-							LEAFACCESSDRAFTVALUE
+							LEAFID,						STAFFID,
+							LEAFACCESSDRAFT,			LEAFACCESSCREATEVALUE,
+							LEAFACCESSREADVALUE,		LEAFACCESSUPDATEVALUE,
+							LEAFACCESSDELETEVALUE,		LEAFACCESSREVIEWVALUE,
+							LEAFACCESSAPPROVEDVALUE,	LEAFACCESSPOSTVALUE,
+							LEAFACCESSPRINTVALUE
 						)
 			VALUES";
 		}
@@ -355,6 +359,117 @@ class LeafClass extends ConfigClass {
 		// combine SQL Statement
 		$sql .= $sqlLooping;
 		$this->q->update($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		/**
+		 * insert default value to detail leaf.English only
+		 * */
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "
+				 	INSERT INTO `leafTranslate`
+				 		(
+						 	`leafId`,														`languageId`,
+							`leafNative`,													`isDefault`,							
+							`isNew`,														`isDraft`,								
+							`isUpdate`,														`isDelete`,								
+							`isActive`,														`isApproved`,							
+							`isReview`,														`isPost`,
+							`executeBy`,													`executeTime`
+						) VALUES (
+							'" . $lastId . "',												'" . $this->getDefaultLanguageId() . "',
+							'" . $this->model->getLeafEnglish() . "',					'" . $this->model->getIsDefault(0, 'single') . "',			
+							'" . $this->model->getIsNew(0, 'single') . "',					'" . $this->model->getIsDraft(0, 'single') . "',				
+							'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',			
+							'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',			
+							'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',										
+							'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
+					);";
+		} else if ($this->getVendor() == self::MSSQL) {
+			$sql = "
+			INSERT INTO [leafTranslate]
+					(
+						[leafId],														[languageId],
+						[leafNative],													[isDefault],
+						[isNew],														[isDraft],
+						[isUpdate],														[isDelete],
+						[isActive],														[isApproved],
+						[isReview],														[isPost],
+						[executeBy],													[executeTime]
+				)
+			VALUES
+				(
+						'" . $lastId . "',													'" . $this->getDefaultLanguageId() . "',
+						'" . $this->model->getLeafEnglish() . "',						'" . $this->model->getIsDefault(0, 'single') . "',			
+						'" . $this->model->getIsNew(0, 'single') . "',					'" . $this->model->getIsDraft(0, 'single') . "',				
+						'" . $this->model->getIsUpdate(0, 'single') . "',				'" . $this->model->getIsDelete(0, 'single') . "',			
+						'" . $this->model->getIsActive(0, 'single') . "',				'" . $this->model->getIsApproved(0, 'single') . "',			
+						'" . $this->model->getIsReview(0, 'single') . "',				'" . $this->model->getIsPost(0, 'single') . "',										
+						'" . $this->model->getExecuteBy() . "',							" . $this->model->getExecuteTime() . "
+			);";
+		} else if ($this->getVendor() == self::ORACLE) {
+			$sql = "
+			INSERT INTO	LEAFTRANSLATE
+				(
+						LEAFID,														LANGUAGEID,
+						LEAFNATIVE,													ISDEFAULT,							
+						ISNEW,															ISDRAFT,								
+						ISUPDATE,														ISDELETE,								
+						ISACTIVE,														ISAPPROVED,							
+						ISREVIEW,														ISPOST,
+						EXECUTEBY,														EXECUTETIME
+			)VALUES	(
+						'" . $lastId . "',												'" . $this->getDefaultLanguageId() . "',
+						'" . $this->model->geLeafEnglish() . "',						'" . $this->model->getIsDefault(0, 'single') . "',	
+						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',				
+						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',			
+						'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',			
+						'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',										
+						'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
+			)";
+		} else if ($this->getVendor() == self::DB2) {
+			$sql = "
+			INSERT INTO 	LEAFTRANSLATE
+			(
+							LEAFID,														LANGUAGEID,
+							LEAFNATIVE,													ISDEFAULT,
+							ISNEW,															ISDRAFT,
+							ISUPDATE,														ISDELETE,
+							ISACTIVE,														ISAPPROVED,
+							ISREVIEW,														ISPOST,
+							EXECUTEBY,														EXECUTETIME
+			)VALUES	(
+							'" . $lastId . "',												'" . $this->getDefaultLanguageId() . "',
+							'" . $this->model->getLeafNative() . "',						'" . $this->model->getIsDefault(0, 'single') . "',
+							'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
+							'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
+							'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',
+							'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',
+							'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
+			)";
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
+			INSERT INTO	FOLDERTRANSLATE
+			(
+						LEAFID,														LANGUAGEID,
+						LEAFNATIVE,													ISDEFAULT,
+						ISNEW,															ISDRAFT,
+						ISUPDATE,														ISDELETE,
+						ISACTIVE,														ISAPPROVED,
+						ISREVIEW,														ISPOST,
+						EXECUTEBY,														EXECUTETIME
+			)VALUES	(
+						'" . $lastId . "',												'" . $this->getDefaultLanguageId() . "',
+						'" . $this->model->getLeafNative() . "',						'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
+			)";
+		}
+		$this->q->create($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
@@ -389,7 +504,7 @@ class LeafClass extends ConfigClass {
 
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -779,7 +894,7 @@ class LeafClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -881,7 +996,7 @@ class LeafClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1204,7 +1319,7 @@ class LeafClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

@@ -121,6 +121,9 @@ class LeafModel extends ValidationClass {
 		if (isset($_POST ['leafEnglish'])) {
 			$this->setLeafNote($this->strict($_POST ['leafEnglish'], 'memo'));
 		}
+		if(isset($_POST['leafCategoryId'])){
+			$this->setLeafCategoryId($this->strict($_POST['leafCategoryId'],'numeric'));
+		}
 		/**
 		 * All the $_GET enviroment.
 		 */
@@ -590,6 +593,42 @@ class LeafModel extends ValidationClass {
 
 
 
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getLeafCategoryId()
+	{
+	    return $this->leafCategoryId;
+	}
+
+	/**
+	 * 
+	 * @param $leafCategoryId
+	 */
+	public function setLeafCategoryId($leafCategoryId)
+	{
+	    $this->leafCategoryId = $leafCategoryId;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getLeafEnglish()
+	{
+	    return $this->leafEnglish;
+	}
+
+	/**
+	 * 
+	 * @param $leafEnglish
+	 */
+	public function setLeafEnglish($leafEnglish)
+	{
+	    $this->leafEnglish = $leafEnglish;
+	}
 }
 
 ?>
