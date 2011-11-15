@@ -5,19 +5,19 @@ require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
-require_once ("../model/paymentModel.php");
+require_once ("../model/invoicesModel.php");
 
 /**
- * this is payment setting files.This sample template file for master record
+ * this is invoices setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package payment
- * @subpackage paymentv1,v2,v3,v4,v5
+ * @package invoices
+ * @subpackage invoicesv1,v2,v3,v4,v5
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class PaymentClass extends ConfigClass {
+class InvoicesClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -99,7 +99,7 @@ class PaymentClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-		$this->model = new PaymentModel ();
+		$this->model = new InvoicesModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -133,13 +133,15 @@ class PaymentClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `payment`
+			INSERT INTO `invoices`
 					(
-						`receiptNo`,												
-						`membershipId`,
-						`paymentType`,
-						`paymentDate`,
-						`paymentAmount`,
+						`ordersId`,												
+						`invoicesDate`,
+						`invoicesDueDate`,
+						`invoicesTax`,
+						`invoicesShipping`,
+						`invoicesAmtDue`,
+
 						`isDefault`,
 						`isNew`,													`isDraft`,
 						`isUpdate`,													`isDelete`,
@@ -149,11 +151,12 @@ class PaymentClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
+						'" . $this->model->getOrdersId() . "',
+						'" . $this->model->getInvoicesDate() . "',
+						'" . $this->model->getInvoicesDueDate() . "',
+						'" . $this->model->getInvoicesTax() . "',
+						'" . $this->model->getInvoicesShipping() . "',
+						'" . $this->model->getInvoicesAmtDue() . "',					
 															
 												'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -164,13 +167,14 @@ class PaymentClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [payment]
+			INSERT INTO [invoices]
 					(
-						[receiptNo],												
-						[membershipId],
-						[paymentType],
-						[paymentDate],
-						[paymentAmount],													
+						[ordersId],												
+						[invoicesDate],
+						[invoicesDueDate],
+						[invoicesTax],
+						[invoicesShipping],													
+						[invoicesAmtDue],
 						
 						[isDefault],
 						[isNew],														[isDraft],
@@ -181,12 +185,14 @@ class PaymentClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
-												'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getOrdersId() . "',
+						'" . $this->model->getInvoicesDate() . "',
+						'" . $this->model->getInvoicesDueDate() . "',
+						'" . $this->model->getInvoicesTax() . "',
+						'" . $this->model->getInvoicesShipping() . "',
+						'" . $this->model->getInvoicesAmtDue() . "',					
+						
+						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',
@@ -196,14 +202,16 @@ class PaymentClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	PAYMENT
+			INSERT INTO	INVOICES
 					(
-						RECEIPTNO,												
-						MEMBERSHIPID,
-						PAYMENTTYPE,
-						PAYMENTDATE,
-						PAYMENTAMOUNT,
-																		ISDEFAULT,
+						ORDERSID,
+						INVOICESDATE,
+						INVOICESDUEDATE,
+						INVOICESTAX,
+						INVOICESSHIPPING,
+						INVOICESAMTDUE,
+						
+						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
 						ISACTIVE,													ISAPPROVED,
@@ -212,12 +220,14 @@ class PaymentClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
-											'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getOrdersId() . "',
+						'" . $this->model->getInvoicesDate() . "',
+						'" . $this->model->getInvoicesDueDate() . "',
+						'" . $this->model->getInvoicesTax() . "',
+						'" . $this->model->getInvoicesShipping() . "',
+						'" . $this->model->getInvoicesAmtDue() . "',
+
+						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
@@ -226,61 +236,71 @@ class PaymentClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	PAYMENT
+			INSERT INTO	INVOICES
 			(
-						RECEIPTNO,												
-						MEMBERSHIPID,
-						PAYMENTTYPE,
-						PAYMENTDATE,
-						PAYMENTAMOUNT,												ISDEFAULT,
-			ISNEW,														ISDRAFT,
-			ISUPDATE,													ISDELETE,
-			ISACTIVE,													ISAPPROVED,
-			ISREVIEW,													ISPOST,
-			EXECUTEBY,													EXECUTETIME
+						ORDERSID,
+						INVOICESDATE,
+						INVOICESDUEDATE,
+						INVOICESTAX,
+						INVOICESSHIPPING,
+						INVOICESAMTDUE,
+						
+						ISDEFAULT,
+						ISNEW,														ISDRAFT,
+						ISUPDATE,													ISDELETE,
+						ISACTIVE,													ISAPPROVED,
+						ISREVIEW,													ISPOST,
+						EXECUTEBY,													EXECUTETIME
 			)
 			VALUES
 			(
-			'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
-											'" . $this->model->getIsDefault(0, 'single') . "',
-			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-			'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-			'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-			'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-			'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getOrdersId() . "',
+						'" . $this->model->getInvoicesDate() . "',
+						'" . $this->model->getInvoicesDueDate() . "',
+						'" . $this->model->getInvoicesTax() . "',
+						'" . $this->model->getInvoicesShipping() . "',
+						'" . $this->model->getInvoicesAmtDue() . "',
+						
+						'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	PAYMENT
+			INSERT INTO	INVOICES
 			(
-			RECEIPTNO,												
-						MEMBERSHIPID,
-						PAYMENTTYPE,
-						PAYMENTDATE,
-						PAYMENTAMOUNT,												ISDEFAULT,
-			ISNEW,														ISDRAFT,
-			ISUPDATE,													ISDELETE,
-			ISACTIVE,													ISAPPROVED,
-			ISREVIEW,													ISPOST,
-			EXECUTEBY,													EXECUTETIME
+						ORDERSID,
+						INVOICESDATE,
+						INVOICESDUEDATE,
+						INVOICESTAX,
+						INVOICESSHIPPING,
+						INVOICESAMTDUE,											
+						
+						ISDEFAULT,
+						ISNEW,														ISDRAFT,
+						ISUPDATE,													ISDELETE,
+						ISACTIVE,													ISAPPROVED,
+						ISREVIEW,													ISPOST,
+						EXECUTEBY,													EXECUTETIME
 			)
 			VALUES
 			(
-			'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
-											'" . $this->model->getIsDefault(0, 'single') . "',
-			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-			'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-			'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-			'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-			'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getOrdersId() . "',
+						'" . $this->model->getInvoicesDate() . "',
+						'" . $this->model->getInvoicesDueDate() . "',
+						'" . $this->model->getInvoicesTax() . "',
+						'" . $this->model->getInvoicesShipping() . "',
+						'" . $this->model->getInvoicesAmtDue() . "',
+						
+						'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else {
 			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
@@ -292,13 +312,13 @@ class PaymentClass extends ConfigClass {
 
 		$this->q->audit = $this->audit;
 		$this->q->create($sql);
-		$paymentId = $this->q->lastInsertId();
+		$invoicesId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "paymentId" => $paymentId));
+		echo json_encode(array("success" => true, "message" => "Record Created", "invoicesId" => $invoicesId));
 		exit();
 	}
 
@@ -310,15 +330,15 @@ class PaymentClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `payment`.`isActive`		=	1	";
+				$this->auditFilter = "	AND `invoices`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [payment].[isActive]		=	1	";
+				$this->auditFilter = "	AND [invoices].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
+				$this->auditFilter = "	AND INVOICES.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
+				$this->auditFilter = "	AND INVOICES.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
+				$this->auditFilter = "	AND INVOICES.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 				exit();
@@ -347,84 +367,89 @@ class PaymentClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`payment`.`paymentId`,
-						`payment`.`receiptNo`,
-						`payment`.`membershipId`,
-						`payment`.`paymentType`,
-						`payment`.`paymentDate`,
-						`payment`.`paymentAmount`,
-						`payment`.`isDefault`,
-						`payment`.`isNew`,
-						`payment`.`isDraft`,
-						`payment`.`isUpdate`,
-						`payment`.`isDelete`,
-						`payment`.`isActive`,
-						`payment`.`isApproved`,
-						`payment`.`isReview`,
-						`payment`.`isPost`,
-						`payment`.`executeBy`,
-						`payment`.`executeTime`,
+			SELECT		`invoices`.`invoicesId`,
+						`invoices`.`ordersId`,
+						`invoices`.`invoicesDate`,
+						`invoices`.`invoicesDueDate`,
+						`invoices`.`invoicesTax`,
+						`invoices`.`invoicesShipping`,
+						`invoices`.`invoicesAmtDue`,
+						
+						`invoices`.`isDefault`,
+						`invoices`.`isNew`,
+						`invoices`.`isDraft`,
+						`invoices`.`isUpdate`,
+						`invoices`.`isDelete`,
+						`invoices`.`isActive`,
+						`invoices`.`isApproved`,
+						`invoices`.`isReview`,
+						`invoices`.`isPost`,
+						`invoices`.`executeBy`,
+						`invoices`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`payment`
+			FROM 	`invoices`
 			JOIN	`staff`
-			ON		`payment`.`executeBy` = `staff`.`staffId`
+			ON		`invoices`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getPaymentId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getPaymentId(0, 'single') . "'";
+			if ($this->model->getInvoicesId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getInvoicesId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[payment].[paymentId],
-						[payment].[receiptNo],
-						[payment].[membershipId],
-						[payment].[paymentType],
-						[payment].[paymentDate],
-						[payment].[paymentAmount],
-						[payment].[isDefault],
-						[payment].[isNew],
-						[payment].[isDraft],
-						[payment].[isUpdate],
-						[payment].[isDelete],
-						[payment].[isActive],
-						[payment].[isApproved],
-						[payment].[isReview],
-						[payment].[isPost],
-						[payment].[executeBy],
-						[payment].[executeTime],
+			SELECT	[invoices].[invoicesId],
+						[invoices].[ordersId],
+						[invoices].[invoicesDate],
+						[invoices].[invoicesDueDate],
+						[invoices].[invoicesTax],
+						[invoices].[invoicesShipping],
+						[invoices].[invoicesAmtDue],
+						[invoices].[isDefault],
+						[invoices].[isNew],
+						[invoices].[isDraft],
+						[invoices].[isUpdate],
+						[invoices].[isDelete],
+						[invoices].[isActive],
+						[invoices].[isApproved],
+						[invoices].[isReview],
+						[invoices].[isPost],
+						[invoices].[executeBy],
+						[invoices].[executeTime],
 						[staff].[staffName]
-			FROM 	[payment]
+			FROM 	[invoices]
 			JOIN		[staff]
-			ON		[payment].[executeBy] = [staff].[staffId]
+			ON		[invoices].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getPaymentId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getPaymentId(0, 'single') . "'";
+			if ($this->model->getInvoicesId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getInvoicesId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		PAYMENT.PAYMENTID   		 	AS 	\"paymentId\",
-						PAYMENT.RECEIPTNO 				AS 	\"receiptNo\",
-						PAYMENT.MEMBERSHIPID 			AS 	\"membershipId\",
-						PAYMENT.PAYMENTTYPE 			AS 	\"paymentType\",
-						PAYMENT.PAYMENTDATE 			AS 	\"paymentDate\",
-						PAYMENT.PAYMENTAMOUNT 			AS 	\"paymentAmount\",
-						PAYMENT.ISDEFAULT    			AS	\"isDefault\",
-						PAYMENT.ISNEW		  			AS	\"isNew\",
-						PAYMENT.ISDRAFT	  				AS	\"isDraft\",
-						PAYMENT.ISUPDATE     			AS	\"isUpdate\",
-						PAYMENT.ISDELETE	  			AS	\"isDelete\",
-						PAYMENT.ISACTIVE	  			AS	\"isActive\",
-						PAYMENT.ISAPPROVED   			AS	\"isApproved\",
-						PAYMENT.ISREVIEW	  			AS	\"isReview\",
-						PAYMENT.ISPOST  	  			AS	\"isPost\",
-						PAYMENT.EXECUTEBY    			AS	\"executeBy\",
-						PAYMENT.EXECUTETIME  			AS	\"executeTime\",
+			SELECT		INVOICES.INVOICESID   		 	AS 	\"invoicesId\",
+						INVOICES.ORDERSID 				AS 	\"ordersId\",
+						INVOICES.INVOICESDATE			AS 	\"invoicesDate\",
+						INVOICES.INVOICESDUEDATE 		AS 	\"invoicesDueDate\",
+						INVOICES.INVOICESTAX 			AS 	\"invoicesTax\",
+						INVOICES.INVOICESSHIPPING 		AS 	\"invoicesShipping\",
+						INVOICES.INVOICESAMTDUE 		AS 	\"invoicesAmtDue\",
+						
+						INVOICES.ISDEFAULT    			AS	\"isDefault\",
+						INVOICES.ISNEW		  			AS	\"isNew\",
+						INVOICES.ISDRAFT	  			AS	\"isDraft\",
+						INVOICES.ISUPDATE     			AS	\"isUpdate\",
+						INVOICES.ISDELETE	  			AS	\"isDelete\",
+						INVOICES.ISACTIVE	  			AS	\"isActive\",
+						INVOICES.ISAPPROVED   			AS	\"isApproved\",
+						INVOICES.ISREVIEW	  			AS	\"isReview\",
+						INVOICES.ISPOST  	  			AS	\"isPost\",
+						INVOICES.EXECUTEBY    			AS	\"executeBy\",
+						INVOICES.EXECUTETIME  			AS	\"executeTime\",
 						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		PAYMENT
+			FROM 		INVOICES
 			JOIN		STAFF
-			ON			PAYMENT.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			INVOICES.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getPaymentId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getPaymentId(0, 'single') . "'";
+			if ($this->model->getInvoicesId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getInvoicesId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -440,13 +465,13 @@ class PaymentClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('paymentId');
+		$filterArray = array('invoicesId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('payment');
+		$tableArray = array('invoices');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -537,33 +562,35 @@ class PaymentClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [paymentDerived] AS
+							WITH [invoicesDerived] AS
 							(
-								SELECT 		[payment].[paymentId],
-											[payment].[receiptNo],
-											[payment].[membershipId],
-											[payment].[paymentType],
-											[payment].[paymentDate],
-											[payment].[paymentAmount],
-											[payment].[isDefault],
-											[payment].[isNew],
-											[payment].[isDraft],
-											[payment].[isUpdate],
-											[payment].[isDelete],
-											[payment].[isApproved],
-											[payment].[isReview],
-											[payment].[isPost],
-											[payment].[executeBy],
-											[payment].[executeTime],
+								SELECT 		[invoices].[invoicesId],
+											[invoices].[ordersId],
+											[invoices].[invoicesDate],
+											[invoices].[invoicesDueDate],
+											[invoices].[invoicesTax],
+											[invoices].[invoicesShipping],
+											[invoices].[invoicesAmtDue],
+											
+											[invoices].[isDefault],
+											[invoices].[isNew],
+											[invoices].[isDraft],
+											[invoices].[isUpdate],
+											[invoices].[isDelete],
+											[invoices].[isApproved],
+											[invoices].[isReview],
+											[invoices].[isPost],
+											[invoices].[executeBy],
+											[invoices].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [paymentId]) AS 'RowNumber'
-								FROM 	[payment]
+								ROW_NUMBER() OVER (ORDER BY [invoicesId]) AS 'RowNumber'
+								FROM 	[invoices]
 								JOIN		[staff]
-								ON		[payment].[executeBy] = [staff].[staffId]
+								ON		[invoices].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[paymentDerived]
+							FROM 		[invoicesDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -576,27 +603,29 @@ class PaymentClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	PAYMENT.PAYMENTID   		AS 	\"paymentId\",
-										PAYMENT.RECEIPTNO 			AS 	\"receiptNo\",
-										PAYMENT.MEMBERSHIPID 		AS 	\"membershipId\",
-										PAYMENT.PAYMENTTYPE 		AS 	\"paymentType\",
-										PAYMENT.PAYMENTDATE 		AS 	\"paymentDate\",
-										PAYMENT.PAYMENTAMOUNT 		AS 	\"paymentAmount\",
-										PAYMENT.ISDEFAULT    		AS	\"isDefault\",
-										PAYMENT.ISNEW		  		AS	\"isNew\",
-										PAYMENT.ISDRAFT	 			AS	\"isDraft\",
-										PAYMENT.ISUPDATE     		AS	\"isUpdate\",
-										PAYMENT.ISDELETE	  		AS	\"isDelete\",
-										PAYMENT.ISACTIVE	  		AS	\"isActive\",
-										PAYMENT.ISAPPROVED   		AS	\"isApproved\",
-										PAYMENT.ISREVIEW	  		AS 	\"isReview\",
-										PAYMENT.ISPOST		  		AS	\"isPost\",
-										PAYMENT.EXECUTEBY    		AS	\"executeBy\",
-										PAYMENT.EXECUTETIME  		AS	\"executeTime\",
+								SELECT	INVOICES.INVOICESID   		AS 	\"invoicesId\",
+										INVOICES.ORDERSID 			AS 	\"ordersId\",
+										INVOICES.INVOICESDATE 		AS 	\"invoicesDate\",
+										INVOICES.INVOICESDUEDATE 	AS 	\"invoicesDueDate\",
+										INVOICES.INVOICESTAX 		AS 	\"invoicesTax\",
+										INVOICES.INVOICESSHIPPING 	AS 	\"invoicesShipping\",
+										INVOICES.INVOICESAMTDUE 	AS 	\"invoicesAmtDue\",
+										
+										INVOICES.ISDEFAULT    		AS	\"isDefault\",
+										INVOICES.ISNEW		  		AS	\"isNew\",
+										INVOICES.ISDRAFT	 		AS	\"isDraft\",
+										INVOICES.ISUPDATE     		AS	\"isUpdate\",
+										INVOICES.ISDELETE	  		AS	\"isDelete\",
+										INVOICES.ISACTIVE	  		AS	\"isActive\",
+										INVOICES.ISAPPROVED   		AS	\"isApproved\",
+										INVOICES.ISREVIEW	  		AS 	\"isReview\",
+										INVOICES.ISPOST		  		AS	\"isPost\",
+										INVOICES.EXECUTEBY    		AS	\"executeBy\",
+										INVOICES.EXECUTETIME  		AS	\"executeTime\",
 										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	PAYMENT
+								FROM 	INVOICES
 								JOIN	STAFF
-								ON		PAYMENT.EXECUTEBY 	  	=	STAFF.STAFFID
+								ON		INVOICES.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -625,7 +654,7 @@ class PaymentClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getPaymentId(0, 'single'))) {
+		if (!($this->model->getInvoicesId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -636,8 +665,8 @@ class PaymentClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getPaymentId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getPaymentId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getPaymentId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getInvoicesId(0, 'single')) {
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getInvoicesId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getInvoicesId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -672,27 +701,27 @@ class PaymentClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 			exit();
@@ -705,12 +734,14 @@ class PaymentClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`payment`
-				SET 		`receiptNo`		=	'" . $this->model->getReceiptNo() . "',
-							`membershipId`		=	'" . $this->model->getMembershipId() . "',
-							`paymentType`		=	'" . $this->model->getPaymentType() . "',
-							`paymentDate`		=	'" . $this->model->getPaymentDate() . "',
-							`paymentAmount`		=	'" . $this->model->getPaymentAmount() . "',				
+				UPDATE		`invoices`
+				SET 		`ordersId`			=	'" . $this->model->getOrdersId() . "',
+							`invoicesDate`		=	'" . $this->model->getInvoicesDate() . "',
+							`invoicesDueDate`	=	'" . $this->model->getInvoicesDueDate() . "',
+							`invoicesTax`		=	'" . $this->model->getInvoicesTax() . "',
+							`invoicesShipping`	=	'" . $this->model->getInvoicesShipping() . "',
+							`invoicesAmtDue`	=	'" . $this->model->getInvoicesAmtDue() . "',
+							
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -722,15 +753,17 @@ class PaymentClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`paymentId`		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 		`invoicesId`		=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[payment]
-				SET 		[receiptNo]		=	'" . $this->model->getReceiptNo() . "',
-							[membershipId]		=	'" . $this->model->getMembershipId() . "',
-							[paymentType]		=	'" . $this->model->getPaymentType() . "',
-							[paymentDate]		=	'" . $this->model->getPaymentDate() . "',
-							[paymentAmount]		=	'" . $this->model->getPaymentAmount() . "',	
+				UPDATE 		[invoices]
+				SET 		[ordersId]			=	'" . $this->model->getOrdersId() . "',
+							[invoicesDate]		=	'" . $this->model->getInvoicesDate() . "',
+							[invoicesDueDate]	=	'" . $this->model->getInvoicesDueDate() . "',
+							[invoicesTax]		=	'" . $this->model->getInvoicesTax() . "',
+							[invoicesShipping]	=	'" . $this->model->getInvoicesShipping() . "',
+							[invoicesAmtDue]	=	'" . $this->model->getInvoicesAmtDue() . "',
+							
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -742,15 +775,17 @@ class PaymentClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[paymentId]			=	'" . $this->model->getPaymentId(0, 'single') . "'";
+			WHERE 		[invoicesId]			=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		PAYMENT
-				SET 		RECEIPTNO	=	'" . $this->model->getReceiptNo() . "',
-							MEMBERSHIPID		=	'" . $this->model->getMembershipId() . "',
-							PAYMENTTYPE		=	'" . $this->model->getPaymentType() . "',
-							PAYMENTDATE		=	'" . $this->model->getPaymentDate() . "',
-							PAYMENTAMOUNT		=	'" . $this->model->getPaymentAmount() . "',									
+				UPDATE		INVOICES
+				SET 		ORDERSID			=	'" . $this->model->getOrdersId() . "',
+							INVOICESDATE		=	'" . $this->model->getInvoicesDate() . "',
+							INVOICESDUEDATE		=	'" . $this->model->getInvoicesDueDate() . "',
+							INVOICESTAX			=	'" . $this->model->getInvoicesTax() . "',
+							INVOICESSHIPPING	=	'" . $this->model->getInvoicesShipping() . "',
+							INVOICESAMTDUE		=	'" . $this->model->getInvoicesAmtDue() . "',
+							
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -762,15 +797,17 @@ class PaymentClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+			WHERE 		INVOICESID		=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE	PAYMENT
-			SET 			RECEIPTNO	=	'" . $this->model->getReceiptNo() . "',
-							MEMBERSHIPID		=	'" . $this->model->getMembershipId() . "',
-							PAYMENTTYPE		=	'" . $this->model->getPaymentType() . "',
-							PAYMENTDATE		=	'" . $this->model->getPaymentDate() . "',
-							PAYMENTAMOUNT		=	'" . $this->model->getPaymentAmount() . "',
+				UPDATE	INVOICES
+				SET 	ORDERSID			=	'" . $this->model->getOrdersId() . "',
+							INVOICESDATE		=	'" . $this->model->getInvoicesDate() . "',
+							INVOICESDUEDATE		=	'" . $this->model->getInvoicesDueDate() . "',
+							INVOICESTAX			=	'" . $this->model->getInvoicesTax() . "',
+							INVOICESSHIPPING	=	'" . $this->model->getInvoicesShipping() . "',
+							INVOICESAMTDUE		=	'" . $this->model->getInvoicesAmtDue() . "',
+								
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -782,15 +819,17 @@ class PaymentClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+			WHERE 		INVOICESID		=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE		PAYMENT
-				SET 		RECEIPTNO	=	'" . $this->model->getReceiptNo() . "',
-							MEMBERSHIPID		=	'" . $this->model->getMembershipId() . "',
-							PAYMENTTYPE		=	'" . $this->model->getPaymentType() . "',
-							PAYMENTDATE		=	'" . $this->model->getPaymentDate() . "',
-							PAYMENTAMOUNT		=	'" . $this->model->getPaymentAmount() . "',
+				UPDATE		INVOICES
+				SET 		ORDERSID			=	'" . $this->model->getOrdersId() . "',
+							INVOICESDATE		=	'" . $this->model->getInvoicesDate() . "',
+							INVOICESDUEDATE		=	'" . $this->model->getInvoicesDueDate() . "',
+							INVOICESTAX			=	'" . $this->model->getInvoicesTax() . "',
+							INVOICESSHIPPING	=	'" . $this->model->getInvoicesShipping() . "',
+							INVOICESAMTDUE		=	'" . $this->model->getInvoicesAmtDue() . "',
+							
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -802,7 +841,7 @@ class PaymentClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		PAYMENTID			=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 		INVOICESID			=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 				exit();
@@ -812,7 +851,7 @@ class PaymentClass extends ConfigClass {
 			 */
 			$this->q->tableName = $this->model->getTableName();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getPaymentId(0, 'single');
+			$this->q->primaryKeyValue = $this->model->getInvoicesId(0, 'single');
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -843,27 +882,27 @@ class PaymentClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getInvoicesId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 			exit();
@@ -876,7 +915,7 @@ class PaymentClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`payment`
+				UPDATE 	`invoices`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -888,10 +927,10 @@ class PaymentClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`paymentId`		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	`invoicesId`		=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[payment]
+				UPDATE 	[invoices]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -903,10 +942,10 @@ class PaymentClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[paymentId]		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	[invoicesId]		=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE 	PAYMENT
+				UPDATE 	INVOICES
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -918,10 +957,10 @@ class PaymentClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	INVOICESID		=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE 	PAYMENT
+				UPDATE 	INVOICES
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -933,10 +972,10 @@ class PaymentClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	INVOICESID		=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE 	PAYMENT
+				UPDATE 	INVOICES
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -948,7 +987,7 @@ class PaymentClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	INVOICESID		=	'" . $this->model->getInvoicesId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 				exit();
@@ -956,7 +995,7 @@ class PaymentClass extends ConfigClass {
 			// advance logging future
 			$this->q->tableName = $this->model->getTableName();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getPaymentId(0, 'single');
+			$this->q->primaryKeyValue = $this->model->getInvoicesId(0, 'single');
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -1032,7 +1071,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getInvoicesId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1056,7 +1095,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getInvoicesId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1080,7 +1119,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getInvoicesId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1104,7 +1143,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getInvoicesId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1128,7 +1167,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getInvoicesId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1152,7 +1191,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getInvoicesId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1176,7 +1215,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getInvoicesId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1200,7 +1239,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+                            WHEN '" . $this->model->getInvoicesId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1224,7 +1263,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+                                WHEN '" . $this->model->getInvoicesId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1282,33 +1321,33 @@ class PaymentClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`receiptNo`
-			FROM 	`payment`
-			WHERE 	`receiptNo` 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	`ordersId`
+			FROM 	`invoices`
+			WHERE 	`ordersId` 	= 	'" . $this->model->getOrdersId() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[receiptNo]
-			FROM 	[payment]
-			WHERE 	[receiptNo] 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	[ordersId]
+			FROM 	[invoices]
+			WHERE 	[ordersId] 	= 	'" . $this->model->getOrdersId() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	RECEIPTNO
-			FROM 	PAYMENT
-			WHERE 	RECEIPTNO 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	ORDERSID
+			FROM 	INVOICES
+			WHERE 	ORDERSID 	= 	'" . $this->model->getOrdersId() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			SELECT	RECEIPTNO
-			FROM 	PAYMENT
-			WHERE 	RECEIPTNO 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	ORDERSID
+			FROM 	INVOICES
+			WHERE 	ORDERSID 	= 	'" . $this->model->getOrdersId() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			SELECT	RECEIPTNO
-			FROM 	PAYMENT
-			WHERE 	RECEIPTNO 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	ORDERSID
+			FROM 	INVOICES
+			WHERE 	ORDERSID 	= 	'" . $this->model->getOrdersId() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
@@ -1323,7 +1362,7 @@ class PaymentClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "paymentDesc" => $row ['paymentDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "invoicesDesc" => $row ['invoicesDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
@@ -1390,7 +1429,7 @@ class PaymentClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['paymentDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['invoicesDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1399,7 +1438,7 @@ class PaymentClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "payment" . rand(0, 10000000) . ".xlsx";
+		$filename = "invoices" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1415,7 +1454,7 @@ class PaymentClass extends ConfigClass {
 
 }
 
-$paymentObject = new PaymentClass ();
+$invoicesObject = new InvoicesClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1425,59 +1464,59 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$paymentObject->setLeafId($_POST ['leafId']);
+		$invoicesObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$paymentObject->setIsAdmin($_POST ['isAdmin']);
+		$invoicesObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$paymentObject->setStart($_POST ['start']);
+		$invoicesObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$paymentObject->setLimit($_POST ['perPage']);
+		$invoicesObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$paymentObject->setFieldQuery($_POST ['query']);
+		$invoicesObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$paymentObject->setGridQuery($_POST ['filter']);
+		$invoicesObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$paymentObject->setOrder($_POST ['order']);
+		$invoicesObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$paymentObject->setSortField($_POST ['sortField']);
+		$invoicesObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$paymentObject->execute();
+	$invoicesObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$paymentObject->create();
+		$invoicesObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$paymentObject->update();
+		$invoicesObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$paymentObject->read();
+		$invoicesObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$paymentObject->delete();
+		$invoicesObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1485,35 +1524,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$paymentObject->setLeafId($_GET ['leafId']);
+		$invoicesObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$paymentObject->setIsAdmin($_GET ['isAdmin']);
+		$invoicesObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$paymentObject->execute();
+	$invoicesObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$paymentObject->staff();
+			$invoicesObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$paymentObject->updateStatus();
+		$invoicesObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['paymentDesc'])) {
-		if (strlen($_GET ['paymentDesc']) > 0) {
-			$paymentObject->duplicate();
+	if (isset($_GET ['invoicesDesc'])) {
+		if (strlen($_GET ['invoicesDesc']) > 0) {
+			$invoicesObject->duplicate();
 		}
 	}
 	/**
@@ -1521,16 +1560,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$paymentObject->firstRecord('json');
+			$invoicesObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$paymentObject->previousRecord('json', 0);
+			$invoicesObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$paymentObject->nextRecord('json', 0);
+			$invoicesObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$paymentObject->lastRecord('json');
+			$invoicesObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1538,7 +1577,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$paymentObject->excel();
+			$invoicesObject->excel();
 		}
 	}
 }

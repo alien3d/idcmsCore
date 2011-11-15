@@ -17,12 +17,12 @@ class InventorytransactiontypesModel extends ValidationClass {
     /**
      * @var int 
      */
-    private $typesId;
+    private $inventoryTransactionTypesId;
 
     /**
      * @var string
      */
-    private $typesName;
+    private $inventoryTransactionTypesName;
 	
 	/* (non-PHPdoc)
      * @see ValidationClass::execute()
@@ -33,22 +33,22 @@ class InventorytransactiontypesModel extends ValidationClass {
          *  Basic Information Table
          */
         $this->setTableName('inventorytransactiontypes');
-        $this->setPrimaryKeyName('typesId');
+        $this->setPrimaryKeyName('inventoryTransactionTypesId');
         /**
          * All the $_POST enviroment.
          */
-        if (isset($_POST ['typesId'])) {
-            $this->setTypesId($this->strict($_POST ['typesId'], 'numeric'), 0, 'single');
+        if (isset($_POST ['inventoryTransactionTypesId'])) {
+            $this->setTypesId($this->strict($_POST ['inventoryTransactionTypesId'], 'numeric'), 0, 'single');
         }
-    	if (isset($_POST ['typesName'])) {
-            $this->setTypesName($this->strict($_POST ['typesName'], 'memo'));
+    	if (isset($_POST ['inventoryTransactionTypesName'])) {
+            $this->setTypesName($this->strict($_POST ['inventoryTransactionTypesName'], 'memo'));
         }
 
         /**
          * All the $_GET enviroment.
          */
-        if (isset($_GET ['typesId'])) {
-            $this->setTotal(count($_GET ['typesId']));
+        if (isset($_GET ['inventoryTransactionTypesId'])) {
+            $this->setTotal(count($_GET ['inventoryTransactionTypesId']));
         }
     
         if (isset($_GET ['isDefault'])) {
@@ -98,8 +98,8 @@ class InventorytransactiontypesModel extends ValidationClass {
         }
         $primaryKeyAll = '';
         for ($i = 0; $i < $this->getTotal(); $i++) {
-            if (isset($_GET ['typesId'])) {
-                $this->setInventorytransactiontypesId($this->strict($_GET ['typesId'] [$i], 'numeric'), $i, 'array');
+            if (isset($_GET ['inventoryTransactionTypesId'])) {
+                $this->setInventorytransactiontypesId($this->strict($_GET ['inventoryTransactionTypesId'] [$i], 'numeric'), $i, 'array');
             }
             if (isset($_GET ['isDefault'])) {
                 if ($_GET ['isDefault'] [$i] == 'true') {
@@ -303,7 +303,7 @@ class InventorytransactiontypesModel extends ValidationClass {
      * @param array[int]int $key List Of Primary Key.
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      */
-    public function setInventorytransactiontypesId($value, $key, $type) {
+    public function setInventoryTransactionTypesId($value, $key, $type) {
         if ($type == 'single') {
             $this->typesId = $value;
         } else if ($type == 'array') {
@@ -320,7 +320,7 @@ class InventorytransactiontypesModel extends ValidationClass {
      * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
      * @return bool|array
      */
-    public function getInventorytransactiontypesId($key, $type) {
+    public function getInventoryTransactionTypesId($key, $type) {
         if ($type == 'single') {
             return $this->typesId;
         } else if ($type == 'array') {
@@ -331,23 +331,23 @@ class InventorytransactiontypesModel extends ValidationClass {
         }
     }
 
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getTypesName()
-	{
-	    return $this->typesName;
-	}
+    /**
+     * 
+     * @return 
+     */
+    public function getInventoryTransactionTypesName()
+    {
+        return $this->inventoryTransactionTypesName;
+    }
 
-	/**
-	 * 
-	 * @param $typesName
-	 */
-	public function setTypesName($typesName)
-	{
-	    $this->typesName = $typesName;
-	}
+    /**
+     * 
+     * @param $inventoryTransactionTypesName
+     */
+    public function setInventoryTransactionTypesName($inventoryTransactionTypesName)
+    {
+        $this->inventoryTransactionTypesName = $inventoryTransactionTypesName;
+    }
 }
 
 ?>

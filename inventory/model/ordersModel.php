@@ -41,6 +41,11 @@ class OrdersModel extends ValidationClass {
 	 */
 	private $ordersShippedDate;
 	/**
+	 * ShippersID
+	 * @var string
+	 */
+	private $shipperId;
+	/**
 	 * ordersShipName
 	 * @var string
 	 */
@@ -135,6 +140,9 @@ class OrdersModel extends ValidationClass {
 		}
 		if (isset($_POST ['ordersDate'])) {
 			$this->setOrdersDate($this->strict($_POST ['ordersDate'], 'string'));
+		}
+		if (isset($_POST ['ordersShippedDate'])) {
+			$this->setOrdersShippedDate($this->strict($_POST ['ordersShippedDate'], 'string'));
 		}
 		if (isset($_POST ['ordersShippedDate'])) {
 			$this->setOrdersShippedDate($this->strict($_POST ['ordersShippedDate'], 'string'));
@@ -475,327 +483,345 @@ class OrdersModel extends ValidationClass {
 
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getEmployeeId()
 	{
-	    return $this->employeeId;
+		return $this->employeeId;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $employeeId
 	 */
 	public function setEmployeeId($employeeId)
 	{
-	    $this->employeeId = $employeeId;
+		$this->employeeId = $employeeId;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getCustomerId()
 	{
-	    return $this->customerId;
+		return $this->customerId;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $customerId
 	 */
 	public function setCustomerId($customerId)
 	{
-	    $this->customerId = $customerId;
+		$this->customerId = $customerId;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersDate()
 	{
-	    return $this->ordersDate;
+		return $this->ordersDate;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersDate
 	 */
 	public function setOrdersDate($ordersDate)
 	{
-	    $this->ordersDate = $ordersDate;
+		$this->ordersDate = $ordersDate;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersShippedDate()
 	{
-	    return $this->ordersShippedDate;
+		return $this->ordersShippedDate;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersShippedDate
 	 */
 	public function setOrdersShippedDate($ordersShippedDate)
 	{
-	    $this->ordersShippedDate = $ordersShippedDate;
+		$this->ordersShippedDate = $ordersShippedDate;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersShipName()
 	{
-	    return $this->ordersShipName;
+		return $this->ordersShipName;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersShipName
 	 */
 	public function setOrdersShipName($ordersShipName)
 	{
-	    $this->ordersShipName = $ordersShipName;
+		$this->ordersShipName = $ordersShipName;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersShipAddress()
 	{
-	    return $this->ordersShipAddress;
+		return $this->ordersShipAddress;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersShipAddress
 	 */
 	public function setOrdersShipAddress($ordersShipAddress)
 	{
-	    $this->ordersShipAddress = $ordersShipAddress;
+		$this->ordersShipAddress = $ordersShipAddress;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersShipCity()
 	{
-	    return $this->ordersShipCity;
+		return $this->ordersShipCity;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersShipCity
 	 */
 	public function setOrdersShipCity($ordersShipCity)
 	{
-	    $this->ordersShipCity = $ordersShipCity;
+		$this->ordersShipCity = $ordersShipCity;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersShipState()
 	{
-	    return $this->ordersShipState;
+		return $this->ordersShipState;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersShipState
 	 */
 	public function setOrdersShipState($ordersShipState)
 	{
-	    $this->ordersShipState = $ordersShipState;
+		$this->ordersShipState = $ordersShipState;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersShipPostCode()
 	{
-	    return $this->ordersShipPostCode;
+		return $this->ordersShipPostCode;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersShipPostCode
 	 */
 	public function setOrdersShipPostCode($ordersShipPostCode)
 	{
-	    $this->ordersShipPostCode = $ordersShipPostCode;
+		$this->ordersShipPostCode = $ordersShipPostCode;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersShipCountry()
 	{
-	    return $this->ordersShipCountry;
+		return $this->ordersShipCountry;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersShipCountry
 	 */
 	public function setOrdersShipCountry($ordersShipCountry)
 	{
-	    $this->ordersShipCountry = $ordersShipCountry;
+		$this->ordersShipCountry = $ordersShipCountry;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersShippingFee()
 	{
-	    return $this->ordersShippingFee;
+		return $this->ordersShippingFee;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersShippingFee
 	 */
 	public function setOrdersShippingFee($ordersShippingFee)
 	{
-	    $this->ordersShippingFee = $ordersShippingFee;
+		$this->ordersShippingFee = $ordersShippingFee;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersTaxes()
 	{
-	    return $this->ordersTaxes;
+		return $this->ordersTaxes;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersTaxes
 	 */
 	public function setOrdersTaxes($ordersTaxes)
 	{
-	    $this->ordersTaxes = $ordersTaxes;
+		$this->ordersTaxes = $ordersTaxes;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersPaymentType()
 	{
-	    return $this->ordersPaymentType;
+		return $this->ordersPaymentType;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersPaymentType
 	 */
 	public function setOrdersPaymentType($ordersPaymentType)
 	{
-	    $this->ordersPaymentType = $ordersPaymentType;
+		$this->ordersPaymentType = $ordersPaymentType;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersPaidDate()
 	{
-	    return $this->ordersPaidDate;
+		return $this->ordersPaidDate;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersPaidDate
 	 */
 	public function setOrdersPaidDate($ordersPaidDate)
 	{
-	    $this->ordersPaidDate = $ordersPaidDate;
+		$this->ordersPaidDate = $ordersPaidDate;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersNotes()
 	{
-	    return $this->ordersNotes;
+		return $this->ordersNotes;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersNotes
 	 */
 	public function setOrdersNotes($ordersNotes)
 	{
-	    $this->ordersNotes = $ordersNotes;
+		$this->ordersNotes = $ordersNotes;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersTaxRate()
 	{
-	    return $this->ordersTaxRate;
+		return $this->ordersTaxRate;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersTaxRate
 	 */
 	public function setOrdersTaxRate($ordersTaxRate)
 	{
-	    $this->ordersTaxRate = $ordersTaxRate;
+		$this->ordersTaxRate = $ordersTaxRate;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getOrdersTaxStatusId()
 	{
-	    return $this->ordersTaxStatusId;
+		return $this->ordersTaxStatusId;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $ordersTaxStatusId
 	 */
 	public function setOrdersTaxStatusId($ordersTaxStatusId)
 	{
-	    $this->ordersTaxStatusId = $ordersTaxStatusId;
+		$this->ordersTaxStatusId = $ordersTaxStatusId;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getOrdersStatusId()
+	{
+		return $this->ordersStatusId;
+	}
+
+	/**
+	 *
+	 * @param $ordersStatusId
+	 */
+	public function setOrdersStatusId($ordersStatusId)
+	{
+		$this->ordersStatusId = $ordersStatusId;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getOrdersStatusId()
+	public function getShipperId()
 	{
-	    return $this->ordersStatusId;
+	    return $this->shipperId;
 	}
 
 	/**
 	 * 
-	 * @param $ordersStatusId
+	 * @param $shipperId
 	 */
-	public function setOrdersStatusId($ordersStatusId)
+	public function setShipperId($shipperId)
 	{
-	    $this->ordersStatusId = $ordersStatusId;
+	    $this->shipperId = $shipperId;
 	}
 }
 
