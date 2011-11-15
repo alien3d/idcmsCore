@@ -78,6 +78,7 @@ Ext.onReady(function () {
     reader: logReader,
     autoLoad: true,
     autoDestroy: true,
+    pruneModifiedRecords: true,
     baseParams: {
       method: 'read',
       leafId: leafIdTemp,
@@ -507,6 +508,7 @@ Ext.onReady(function () {
     reader: moduleReader,
     autoLoad: true,
     autoDestroy: true,
+    pruneModifiedRecords: true,
     baseParams: {
       method: 'read',
       field: 'moduleId',
@@ -548,6 +550,7 @@ Ext.onReady(function () {
     reader: folderReader,
     autoLoad: true,
     autoDestroy: true,
+    pruneModifiedRecords: true,
     baseParams: {
       method: 'read',
       field: 'folderId',
@@ -876,17 +879,10 @@ Ext.onReady(function () {
                 isAdmin: isAdmin
               }
             });
-            leafTeamAccessStore.load({
-                params: {
-                  method: 'read',
-                  leafId: record.data.leafId,
-                  leafIdTemp : leafIdTemp,
-                  isAdmin: isAdmin
-                }
-             });
+            
             Ext.getCmp('leafTranslateGrid').enable();
             Ext.getCmp('leafAccessGrid').enable();
-            Ext.getCmp('leafTeamAccessGrid').enable();
+            
             
             Ext.getCmp('folderId').enable();
             viewPort.items.get(1).expand();
@@ -938,37 +934,36 @@ Ext.onReady(function () {
             var modified = leafStore.getModifiedRecords();
             for (var i = 0; i < modified.length; i++) {
               var dataChanges = modified[i].getChanges();
-              var record = leafStore.getAt(i);
-              sub_url = sub_url + '&leafId[]=' + record.get('leafId');
+              sub_url = sub_url + '&leafId[]=' + modified[i].get('leafId');
               if (isAdmin == 1) {
                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
-                  sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
+                  sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
                 }
                 if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
-                  sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+                  sub_url = sub_url + '&isDraft[]=' +modified[i].get('isDraft');
                 }
                 if (dataChanges.isNew == true || dataChanges.isNew == false) {
-                  sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+                  sub_url = sub_url + '&isNew[]=' +modified[i].get('isNew');
                 }
                 if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
-                  sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
+                  sub_url = sub_url + '&isUpdate[]=' +modified[i].get('isUpdate');
                 }
               }
               if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
-                sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
+                sub_url = sub_url + '&isDelete[]=' +modified[i].get('isDelete');
               }
               if (isAdmin == 1) {
                 if (dataChanges.isActive == true || dataChanges.isActive == false) {
-                  sub_url = sub_url + '&isActive[]=' + record.get('isActive');
+                  ssub_url = sub_url + '&isActive[]=' +modified[i].get('isActive');
                 }
                 if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
-                  sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                  sub_url = sub_url + '&isApproved[]=' +modified[i].get('isApproved');
                 }
                 if (dataChanges.isReview == true || dataChanges.isReview == false) {
-                  sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                  sub_url = sub_url + '&isReview[]=' +modified[i].get('isReview');
                 }
                 if (dataChanges.isPost == true || dataChanges.isPost == false) {
-                  sub_url = sub_url + '&isPost[]=' + record.get('isPost');
+                  sub_url = sub_url + '&isPost[]=' +modified[i].get('isPost');
                 }
               }
             }
@@ -1296,37 +1291,36 @@ Ext.onReady(function () {
             var modified = leafTranslateStore.getModifiedRecords();
             for (var i = 0; i < modified.length; i++) {
               var dataChanges = modified[i].getChanges();
-              var record = leafTranslateStore.getAt(i);
-              sub_url = sub_url + '&leafTranslateId[]=' + record.get('leafTranslateId');
+              sub_url = sub_url + '&leafTranslateId[]=' + modified[i].get('leafTranslateId');
               if (isAdmin == 1) {
                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
-                  sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
+                  sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
                 }
                 if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
-                  sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+                  sub_url = sub_url + '&isDraft[]=' +modified[i].get('isDraft');
                 }
                 if (dataChanges.isNew == true || dataChanges.isNew == false) {
-                  sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+                  sub_url = sub_url + '&isNew[]=' +modified[i].get('isNew');
                 }
                 if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
-                  sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
+                  sub_url = sub_url + '&isUpdate[]=' +modified[i].get('isUpdate');
                 }
               }
               if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
-                sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
+                sub_url = sub_url + '&isDelete[]=' +modified[i].get('isDelete');
               }
               if (isAdmin == 1) {
                 if (dataChanges.isActive == true || dataChanges.isActive == false) {
-                  sub_url = sub_url + '&isActive[]=' + record.get('isActive');
+                  ssub_url = sub_url + '&isActive[]=' +modified[i].get('isActive');
                 }
                 if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
-                  sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                  sub_url = sub_url + '&isApproved[]=' +modified[i].get('isApproved');
                 }
                 if (dataChanges.isReview == true || dataChanges.isReview == false) {
-                  sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                  sub_url = sub_url + '&isReview[]=' +modified[i].get('isReview');
                 }
                 if (dataChanges.isPost == true || dataChanges.isPost == false) {
-                  sub_url = sub_url + '&isPost[]=' + record.get('isPost');
+                  sub_url = sub_url + '&isPost[]=' +modified[i].get('isPost');
                 }
               }
             }
@@ -1392,6 +1386,7 @@ Ext.onReady(function () {
     autoDestroy: true,
     proxy: leafAccessProxy,
     reader: leafAccessReader,
+    pruneModifiedRecords: true,
     baseParams: {
       method: 'read',
       isAdmin: isAdmin,
@@ -1565,160 +1560,7 @@ Ext.onReady(function () {
   });
 
   // end leaf Access Request
-  // start leafTeam Access Request
-  var leafTeamAccessProxy = new Ext.data.HttpProxy({
-    url: '../controller/leafTeamAccessController.php',
-    method: 'POST',
-    success: function (response, options) {
-      jsonResponse = Ext.decode(response.responseText);
-      if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-      } else {
-        Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-      }
-    },
-    failure: function (response, options) {
-      Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
-    }
-  });
-  var leafTeamAccessReader = new Ext.data.JsonReader({
-    totalProperty: 'total',
-    successProperty: 'success',
-    messageProperty: 'message',
-    idProperty: 'leafTeamAccessId'
-  });
-  var leafTeamAccessStore = new Ext.data.JsonStore({
-    autoDestroy: true,
-    proxy: leafTeamAccessProxy,
-    reader: leafTeamAccessReader,
-    baseParams: {
-      method: 'read',
-      isAdmin: isAdmin,
-      leafId: leafIdTemp
-    },
-    root: 'data',
-    fields: [{
-      name: 'leafTeamId',
-      type: 'int'
-    }, {
-      name: 'leafTeamEnglish',
-      type: 'string'
-    }, {
-      name: 'teamId',
-      type: 'int'
-    }, {
-      name: 'teamEnglish',
-      type: 'string'
-    }, {
-      name: 'leafTeamId',
-      type: 'int'
-    }, {
-      name: 'leafTeamAccessId',
-      type: 'int'
-    }, {
-      name: 'leafTeamEnglish',
-      type: 'string'
-    }, {
-      name: 'leafTeamAccessValue',
-      type: 'boolean'
-    }]
-  });
-
-  var leafTeamAccessValue = new Ext.ux.grid.CheckColumn({
-    header: 'Access',
-    dataIndex: 'leafTeamAccessValue'
-  });
-  var leafTeamAccessColumnModel =  [{
-      header: 'team',
-      dataIndex: 'teamEnglish'
-    },leafTeamAccessValue];
- 
-  var leafTeamAccessFlagArray = ['leafTeamAccessCreateValue', 'leafTeamAccessReadValue', 'leafTeamAccessUpdateValue', 'leafTeamAccessDeleteValue', 'leafTeamAccessPrintValue', 'leafTeamAccessPostValue'];
-
-  var leafTeamAccessGrid = new Ext.grid.GridPanel({
-    name: 'leafTeamAccessGrid',
-    id: 'leafTeamAccessGrid',
-    region: 'west',
-    store: leafTeamAccessStore,
-    columns: leafTeamAccessColumnModel,
-    frame: true,
-    title: 'leafTeam Access Grid',
-    autoHeight: true,
-    disabled: true,
-    selModel: new Ext.grid.RowSelectionModel({
-      singleSelect: true
-    }),
-    iconCls: 'application_view_detail',
-    viewConfig: {
-      forceFit: true,
-      emptyText: emptyTextLabel
-    },
-    tbar: {
-      items: [{
-        xtype: 'button',
-        text: CheckAllLabel,
-        iconCls: 'row-check-sprite-check',
-        listeners: {
-          'click': function (button, e) {
-            leafTeamAccessStore.each(function (record, fn, scope) {
-              for (var access in leafTeamAccessFlagArray) {
-                record.set(leafTeamAccessFlagArray[access], true);
-              }
-            });
-          }
-        }
-      }, {
-        xtype: 'button',
-        text: ClearAllLabel,
-        iconCls: 'row-check-sprite-uncheck',
-        listeners: {
-          'click': function (button, e) {
-            leafTeamAccessStore.each(function (record, fn, scope) {
-              for (var access in leafTeamAccessFlagArray) {
-                record.set(leafTeamAccessFlagArray[access], false);
-              }
-            });
-          }
-        }
-      }, {
-        xtype: 'button',
-        text: saveButtonLabel,
-        iconCls: 'bullet_disk',
-        listeners: {
-          'click': function (button, e) {
-            var url = '../controller/leafTeamAccessController.php?method=update&leafTeamId=' + leafTeamId;
-            var sub_url = '';
-            var modified = leafTeamAccessStore.getModifiedRecords();
-            for (var i = 0; i < modified.length; i++) {
-              var dataChanges = modified[i].getChanges();
-              var record = leafTeamAccessStore.getAt(i);
-              sub_url = sub_url + '&leafTeamAccessId[]=' + record.get('leafTeamAccessId');
-              if (dataChanges.leafTeamAccessId == true || dataChanges.leafTeamAccessId == false) {
-                sub_url = sub_url + '&leafTeamAccessValue[]=' + record.get('leafTeamAccessValue');
-              }
-            }
-            url = url + sub_url;
-            Ext.Ajax.request({
-              url: url,
-              success: function (response, options) {
-                jsonResponse = Ext.decode(response.responseText);
-                if (jsonResponse == true) {
-                  Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                } else if (jsonResponse == false) {
-                  Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-                }
-                leafTeamAccessStore.reload();
-              },
-              failure: function (response, options) {
-                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
-              }
-            });
-          }
-        }
-      }]
-    }
-  });
-
-  // end leafTeam Access Request
+  
   // start building form and grid
   var gridPanel = new Ext.Panel({
     name: 'gridPanel',
@@ -2233,7 +2075,7 @@ Ext.onReady(function () {
     }, {
       xtype: 'tabpanel',
       activeTab: 0,
-      items: [leafTranslateGrid, leafAccessGrid, leafTeamAccessGrid]
+      items: [leafTranslateGrid, leafAccessGrid]
     }],
     buttonVAlign: 'top',
     buttonAlign: 'left',
@@ -2284,7 +2126,7 @@ Ext.onReady(function () {
               Ext.MessageBox.alert(systemLabel, action.result.message);
               Ext.getCmp('leafTranslateGrid').enable();
               Ext.getCmp('leafAccessGrid').enable();
-              Ext.getCmp('leafTeamAccessGrid').enable();
+              
               Ext.getCmp('newButton').disable();
               Ext.getCmp('saveButton').enable();
               Ext.getCmp('deleteButton').enable();
@@ -2319,15 +2161,8 @@ Ext.onReady(function () {
                   limit: perPage
                 }
               });
-              leafTeamAccessStore.reload({
-                params: {
-                  leafIdTemp: leafIdTemp,
-                  isAdmin: isAdmin,
-                  leafId: action.result.leafId,
-                  start: 0,
-                  limit: perPage
-                }
-              });
+             
+               
             } else {
               Ext.MessageBox.alert(
               systemErrorLabel, action.result.message);
@@ -2374,7 +2209,7 @@ Ext.onReady(function () {
               Ext.MessageBox.alert(systemLabel, action.result.message);
               Ext.getCmp('leafTranslateGrid').enable();
               Ext.getCmp('leafAccessGrid').enable();
-              Ext.getCmp('leafTeamAccessGrid').enable();
+              
               Ext.getCmp('newButton').disable();
               Ext.getCmp('saveButton').enable();
               Ext.getCmp('deleteButton').enable();
@@ -2407,15 +2242,7 @@ Ext.onReady(function () {
                   limit: perPage
                 }
               });
-              leafTeamAccessStore.reload({
-                params: {
-                  leafIdTemp: leafIdTemp,
-                  isAdmin: isAdmin,
-                  leafId: action.result.leafId,
-                  start: 0,
-                  limit: perPage
-                }
-              });
+              
             } else {
               Ext.MessageBox.alert(
               systemErrorLabel, action.result.message);
@@ -2480,7 +2307,7 @@ Ext.onReady(function () {
                     Ext.getCmp('newButton').disable();
                     Ext.getCmp('leafTranslateGrid').disable();
                     Ext.getCmp('leafAccessGrid').disable();
-                    Ext.getCmp('leafTeamAccessGrid').disable();
+                    
                     Ext.getCmp('saveButton').disable();
                     Ext.getCmp('nextButton').disable();
                     Ext.getCmp('previousButton').disable();
@@ -2515,7 +2342,7 @@ Ext.onReady(function () {
         Ext.getCmp('newButton').disable();
         Ext.getCmp('leafTranslateGrid').disable();
         Ext.getCmp('leafAccessGrid').disable();
-        Ext.getCmp('leafTeamAccessGrid').disable();
+        
 
         formPanel.getForm().reset();
       }
@@ -2553,7 +2380,7 @@ Ext.onReady(function () {
         Ext.getCmp('saveButton').enable();
         Ext.getCmp('leafTranslateGrid').enable();
         Ext.getCmp('leafAccessGrid').enable();
-        Ext.getCmp('leafTeamAccessGrid').enable();
+        
 
         if (Ext.getCmp('firstRecord').getValue() == '' || Ext.getCmp('firstRecord').getValue() == undefined) {
           Ext.Ajax.request({
@@ -2707,7 +2534,7 @@ Ext.onReady(function () {
         Ext.getCmp('newButton').disable();
         Ext.getCmp('leafTranslateGrid').enable();
         Ext.getCmp('leafAccessGrid').enable();
-        Ext.getCmp('leafTeamAccessGrid').enable();
+        
         if (Ext.getCmp('previousRecord').getValue() == '' || Ext.getCmp('previousRecord').getValue() == undefined) {
           Ext.MessageBox.alert('Please Pick A Record First Ya');
         }
@@ -2780,7 +2607,7 @@ Ext.onReady(function () {
         Ext.getCmp('newButton').disable();
         Ext.getCmp('leafTranslateGrid').enable();
         Ext.getCmp('leafAccessGrid').enable();
-        Ext.getCmp('leafTeamAccessGrid').enable();
+        
         if (Ext.getCmp('nextRecord').getValue() == '' || Ext.getCmp('nextRecord').getValue() == undefined) {
           Ext.MessageBox.alert('Please Pick A Record First Ya');
         }
@@ -2856,7 +2683,7 @@ Ext.onReady(function () {
         Ext.getCmp('newButton').disable();
         Ext.getCmp('leafTranslateGrid').enable();
         Ext.getCmp('leafAccessGrid').enable();
-        Ext.getCmp('leafTeamAccessGrid').enable();
+        
         if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
           Ext.Ajax.request({
             url: '../controller/leafController.php',

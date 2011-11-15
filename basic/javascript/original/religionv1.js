@@ -35,6 +35,7 @@ Ext.onReady(function() {
         reader: staffByReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             field: 'staffId',
@@ -76,6 +77,7 @@ Ext.onReady(function() {
         reader: logReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -236,7 +238,7 @@ Ext.onReady(function() {
             singleSelect: true
         }),
         viewConfig: {
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -414,7 +416,7 @@ Ext.onReady(function() {
         }),
         viewConfig: {
             forceFit: true,
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -500,6 +502,7 @@ Ext.onReady(function() {
         reader: religionReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -824,7 +827,7 @@ Ext.onReady(function() {
             singleSelect: true
         }),
         viewConfig: {
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         bbar: new Ext.PagingToolbar({

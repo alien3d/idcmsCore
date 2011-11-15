@@ -99,12 +99,6 @@ class LanguageClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-
-		
-		$this->security = new Security ();
-		$this->security->setVendor ( $this->getVendor () );
-		$this->security->setLeafId ( $this->getLeafId () );
-		$this->security->execute ();
 		
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());

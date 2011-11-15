@@ -158,53 +158,53 @@ class leafTeamAccessModel extends ValidationClass {
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessCreateValue'] [$i] == 'true') {
 					$this->setLeafTeamAccessCreateValue($i, 1);
+				}else {
+					$this->setLeafTeamAccessCreateValue($i, 0);
 				}
-			} else {
-				$this->setLeafTeamAccessCreateValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessReadValue'] [$i] == 'true') {
 					$this->setLeafTeamAccessReadValue($i, 1);
+				}else {
+					$this->setLeafTeamAccessReadValue($i, 0);
 				}
-			} else {
-				$this->setLeafTeamAccessReadValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessUpdateValue'] [$i] == 'true') {
 					$this->setLeafTeamAccessUpdateValue($i, 1);
+				} else {
+					$this->setLeafTeamAccessUpdateValue($i, 0);
 				}
-			} else {
-				$this->setLeafTeamAccessUpdateValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessDeleteValue'] [$i] == 'true') {
 					$this->setLeafTeamAccessDeleteValue($i, 1);
+				} else {
+					$this->setLeafTeamAccessDeleteValue($i, 1);
 				}
-			} else {
-				$this->setLeafTeamAccessDeleteValue($i, 1);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessPrintValue'] [$i] == 'true') {
 					$this->setLeafTeamAccessPrintValue($i, 1);
+				}else {
+					$this->setLeafTeamAccessPrintValue($i, 0);
 				}
-			} else {
-				$this->setLeafTeamAccessPrintValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessPostValue'] [$i] == 'true') {
 					$this->setLeafTeamAccessPostValue($i, 1);
+				} else {
+					$this->setLeafTeamAccessPostValue($i, 0);
 				}
-			} else {
-				$this->setLeafTeamAccessPostValue($i, 0);
 			}
 			if (isset($_GET ['leafTeamAccessCreateValue'])) {
 				if ($_GET ['leafTeamAccessDraftValue'] [$i] == 'true') {
 					$this->leafTeamAccessDraftValue [$i] = 1;
 					$this->setLeafAccessDraftValue($i, 1);
+				}else {
+					$this->leafTeamAccessDraftValue [$i] = 0;
+					$this->setLeafTeamAccessDraftValue($i, 0);
 				}
-			} else {
-				$this->leafTeamAccessDraftValue [$i] = 0;
-				$this->setLeafTeamAccessDraftValue($i, 0);
 			}
 			$primaryKeyAll .= $this->getLeafTeamAccessId($i, 'array') . ",";
 		}
@@ -344,7 +344,7 @@ class leafTeamAccessModel extends ValidationClass {
 			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getLeaGroupAccessId ?"));
 			exit();
 		}
-		
+
 	}
 
 	/**
@@ -566,7 +566,7 @@ class leafTeamAccessModel extends ValidationClass {
 	public function getStaffId() {
 		return $this->staffId;
 	}
-/**
+	/**
 	 * Set Leaf Identification Value
 	 * @param  int $value
 	 */

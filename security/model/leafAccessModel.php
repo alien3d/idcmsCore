@@ -55,7 +55,11 @@ class LeafAccessModel extends ValidationClass {
 	 * @var int
 	 */
 	private $staffId;
-
+	/**
+	 * Leaf Draft Access Value
+	 * @var bool
+	 */
+	private $leafAccessDraftValue;
 	/**
 	 * Leaf Create Access Value
 	 * @var bool
@@ -81,10 +85,15 @@ class LeafAccessModel extends ValidationClass {
 	private $leafAccessDeleteValue;
 
 	/**
+	 * Leaf Review Access Value
+	 * @var bool
+	 */
+	private $leafAccessReviewValue;
+	/**
 	 * Leaf Print Access Value
 	 * @var bool
 	 */
-	private $leafAccessPrintValue;
+	private $leafAccessApprovedValue;
 
 	/**
 	 * Leaf Posting Access Value
@@ -120,10 +129,10 @@ class LeafAccessModel extends ValidationClass {
 			$this->setFolderId($this->strict($_POST ['folderId'], 'numeric'));
 		}
 		if (isset($_POST ['leafIdTemp'])) {
-			$this->setleafIdTemp($this->strict($_POST ['leafIdTemp'], 'numeric'));
+			$this->setLeafIdTemp($this->strict($_POST ['leafIdTemp'], 'numeric'));
 		}
 		if (isset($_POST ['leafId'])) {
-			$this->setleafId($this->strict($_POST ['leafId'], 'numeric'));
+			$this->setLeafId($this->strict($_POST ['leafId'], 'numeric'));
 		}
 		if (isset($_POST ['staffId'])) {
 			$this->setStaffId($this->strict($_POST ['staffId'], 'numeric'));
@@ -149,62 +158,71 @@ class LeafAccessModel extends ValidationClass {
 		if (isset($_GET ['staffId'])) {
 			$this->setStafId($this->strict($_GET ['staffId'], 'numeric'));
 		}
+
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
 			if (isset($_GET ['leafAccessId'])) {
-				$this->setLeafAccessId($this->strict($_GET ['leafAccessId'] [$i], 'numeric'), $i);
-			}
-			if (isset($_GET ['leafAccessCreateValue'])) {
-				if ($_GET ['leafAccessCreateValue'] [$i] == 'true') {
-					$this->setleafAccessCreateValue($i, 1);
-				}
-			} else {
-				$this->setleafAccessCreateValue($i, 0);
-			}
-			if (isset($_GET ['leafAccessReadValue'])) {
-				if ($_GET ['leafAccessReadValue'] [$i] == 'true') {
-					$this->setleafAccessReadValue($i, 1);
-				}
-			} else {
-				$this->setleafAccessReadValue($i, 0);
-			}
-			if (isset($_GET ['leafAccessReadValue'])) {
-
-				if ($_GET ['leafAccessUpdateValue'] [$i] == 'true') {
-					$this->setleafAccessUpdateValue($i, 1);
-				}
-			} else {
-				$this->setleafAccessUpdateValue($i, 0);
-			}
-			if (isset($_GET ['leafAccessDeleteValue'])) {
-				if ($_GET ['leafAccessDeleteValue'] [$i] == 'true') {
-					$this->setleafAccessDeleteValue($i, 1);
-				}
-			} else {
-				$this->setleafAccessDeleteValue($i, 1);
-			}
-			if (isset($_GET ['leafAccessReadValue'])) {
-				if ($_GET ['leafAccessPrintValue'] [$i] == 'true') {
-					$this->setleafAccessPrintValue($i, 1);
-				}
-			} else {
-				$this->setleafAccessPrintValue($i, 0);
-			}
-			if (isset($_GET ['leafAccessReadValue'])) {
-				if ($_GET ['leafAccessPostValue'] [$i] == 'true') {
-					$this->setleafAccessPostValue($i, 1);
-				}
-			} else {
-				$this->setleafAccessPostValue($i, 0);
+				$this->setLeafAccessId($this->strict($_GET ['leafAccessId'] [$i], 'numeric'), $i,'array');
 			}
 			if (isset($_GET ['leafAccessDraftValue'])) {
 				if ($_GET ['leafAccessDraftValue'] [$i] == 'true') {
-					$this->leafAccessDraftValue [$i] = 1;
-					$this->setleafAccessDraftValue($i, 1);
+
+					$this->setLeafAccessDraftValue(1, $i,'array');
+				}else {
+					$this->setLeafAccessDraftValue(0, $i,'array');
 				}
-			} else {
-				$this->leafAccessDraftValue [$i] = 0;
-				$this->setleafAccessDraftValue($i, 0);
+
+			}
+			if (isset($_GET ['leafAccessCreateValue'])) {
+				if ($_GET ['leafAccessCreateValue'] [$i] == 'true') {
+					$this->setLeafAccessCreateValue(1, $i,'array');
+				}else {
+					$this->setLeafAccessCreateValue(0, $i,'array');
+				}
+			}
+			if (isset($_GET ['leafAccessReadValue'])) {
+				if ($_GET ['leafAccessReadValue'] [$i] == 'true') {
+					$this->setLeafAccessReadValue(1, $i,'array');
+				}else {
+					$this->setLeafAccessReadValue(0, $i,'array');
+				}
+			}
+			if (isset($_GET ['leafAccessUpdateValue'])) {
+
+				if ($_GET ['leafAccessUpdateValue'] [$i] == 'true') {
+					$this->setLeafAccessUpdateValue(1, $i,'array');
+				}else {
+					$this->setLeafAccessUpdateValue(0, $i,'array');
+				}
+			}
+			if (isset($_GET ['leafAccessDeleteValue'])) {
+
+				if ($_GET ['leafAccessDeleteValue'] [$i] == 'true') {
+					$this->setLeafAccessDeleteValue(1, $i,'array');
+				}else {
+					$this->setLeafAccessDeleteValue(0, $i,'array');
+				}
+			}
+			if (isset($_GET ['leafAccessReviewValue'])) {
+				if ($_GET ['leafAccessReviewValue'] [$i] == 'true') {
+					$this->setLeafAccessReviewValue(1, $i,'array');
+				}else {
+					$this->setLeafAccessReviewValue(0, $i,'array');
+				}
+			}
+			if (isset($_GET ['leafAccessApprovedValue'])) {
+				if ($_GET ['leafAccessApprovedValue'] [$i] == 'true') {
+					$this->setLeafAccessApprovedValue(1, $i,'array');
+				}else {
+					$this->setLeafAccessApprovedValue(0, $i,'array');
+				}
+			}
+			if (isset($_GET ['leafAccessPostValue'])) {
+				if ($_GET ['leafAccessPostValue'] [$i] == 'true') {
+					$this->setLeafAccessPostValue(1, $i,'array');
+				} else {
+					$this->setLeafAccessPostValue(0, $i,'array');
+				}
 			}
 			$primaryKeyAll .= $this->getLeafAccessId($i, 'array') . ",";
 		}
@@ -264,6 +282,8 @@ class LeafAccessModel extends ValidationClass {
 		$this->setIsActive(0, 0, 'single');
 		$this->setIsDelete(0, 0, 'single');
 		$this->setIsApproved(0, 0, 'single');
+		$this->setIsReview(0, 0, 'single');
+		$this->setIsPost(0, 0, 'single');
 	}
 
 	/* (non-PHPdoc)
@@ -278,6 +298,8 @@ class LeafAccessModel extends ValidationClass {
 		$this->setIsActive(0, 0, 'single');
 		$this->setIsDelete(0, 0, 'single');
 		$this->setIsApproved(1, 0, 'single');
+		$this->setIsReview(0, 0, 'single');
+		$this->setIsPost(0, 0, 'single');
 	}
 
 	/* (non-PHPdoc)
@@ -457,6 +479,182 @@ class LeafAccessModel extends ValidationClass {
 		return $this->type;
 	}
 
+	/**
+	 * Set Leaf Draft Access  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLeafAccessDraftValue($value, $key, $type) {
+		$this->leafAccessDraftValue [$key] = $value;
+	}
+
+	/**
+	 * Return Leaf Draft Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLeafAccessDraftValue($key, $type) {
+		return $this->leafAccessDraftValue [$key];
+	}
+	/**
+	 * Set Leaf Create Access  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'e
+	 */
+	public function setLeafAccessCreateValue($value, $key, $type) {
+		$this->leafAccessCreateValue [$key] = $value;
+	}
+
+	/**
+	 * Return Leaf Create Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLeafAccessCreateValue($key, $type) {
+		return $this->leafAccessCreateValue [$key];
+	}
+
+	/**
+	 * Set Leaf Read Access  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLeafAccessReadValue($value, $key, $type) {
+		$this->leafAccessReadValue [$key] = $value;
+	}
+
+	/**
+	 * Return Leaf Read Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLeafAccessReadValue($key, $type) {
+		return $this->leafAccessReadValue [$key];
+	}
+
+	/**
+	 * Set Leaf Update Access  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLeafAccessUpdateValue($value, $key, $type) {
+		$this->leafAccessUpdateValue [$key] = $value;
+	}
+
+	/**
+	 * Return Leaf Update Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLeafAccessUpdateValue($key, $type) {
+		return $this->leafAccessUpdateValue [$key];
+	}
+
+	/**
+	 * Set Leaf Update Access  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLeafAccessDeleteValue($value, $key, $type) {
+		$this->leafAccessDeleteValue [$key] = $value;
+	}
+
+	/**
+	 * Return Leaf Delete Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLeafAccessDeleteValue($key, $type) {
+		return $this->leafAccessDeleteValue [$key];
+	}
+
+	/**
+	 * Set Leaf Approved Access  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLeafAccessApprovedValue($value, $key, $type) {
+		$this->leafAccessApprovedValue [$key] = $value;
+	}
+
+	/**
+	 * Return Leaf Approved Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLeafAccessApprovedValue($key, $type) {
+		return $this->leafAccessApprovedValue [$key];
+	}
+	/**
+	 * Set Leaf Review Access  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLeafAccessReviewValue($value, $key, $type) {
+		$this->leafAccessReviewValue [$key] = $value;
+	}
+
+	/**
+	 * Return Leaf Review Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLeafAccessReviewValue($key, $type) {
+		return $this->leafAccessReviewValue [$key];
+	}
+	/**
+	 * Set Leaf Print Access  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLeafAccessPrintValue($value, $key, $type) {
+		$this->leafAccessPrintValue [$key] = $value;
+	}
+
+	/**
+	 * Return Leaf Print Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLeafAccessPrintValue($key, $type) {
+		return $this->leafAccessPrintValue [$key];
+	}
+
+	/**
+	 * Set Leaf Post Access  Value
+	 * @param bool|array $value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function setLeafAccessPostValue($value, $key, $type) {
+		$this->leafAccessPostValue [$key] = $value;
+	}
+
+	/**
+	 * Return Leaf Post  Access Value
+	 * @param array[int]int $key List Of Primary Key.
+	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function getLeafAccessPostValue($key, $type) {
+		return $this->leafAccessPostValue [$key];
+	}
 }
 
 ?>

@@ -35,6 +35,7 @@ Ext.onReady(function() {
         reader: staffByReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             field: 'staffId',
@@ -77,6 +78,7 @@ Ext.onReady(function() {
         reader: logReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -288,7 +290,6 @@ Ext.onReady(function() {
         autoLoad: true,
         autoDestroy: true,
         pruneModifiedRecords: true,
-        method: 'POST',
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -542,6 +543,7 @@ Ext.onReady(function() {
         autoDestroy: true,
         proxy: moduleProxy,
         reader: moduleReader,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -584,6 +586,7 @@ Ext.onReady(function() {
         autoDestroy: true,
         proxy: folderAccessProxy,
         reader: folderAccessReader,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             isAdmin: isAdmin,
@@ -729,8 +732,10 @@ Ext.onReady(function() {
         items: [teamId, moduleId]
     });
     var folderAccessArray = ['folderAccessValue'];
-    var gridPanel = new Ext.grid.GridPanel({
-        region: 'west',
+    var folderAccessGrid = new Ext.grid.GridPanel({
+        name :'folderAccessGrid',
+        id:'FolderAccessGrid',
+    	region: 'west',
         store: folderAccessStore,
         columns: folderAccessColumnModel,
         frame: true,
@@ -743,7 +748,7 @@ Ext.onReady(function() {
         iconCls: 'application_view_detail',
         viewConfig: {
             forceFit: true,
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         tbar: {
             items: [{
@@ -785,12 +790,11 @@ Ext.onReady(function() {
                         var modified = folderAccessStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            var record = folderAccessStore.getAt(i);
                             sub_url = sub_url + '&teamId=' + Ext.getCmp('teamId').getValue();
                             sub_url = sub_url + '&moduleId=' + Ext.getCmp('moduleId').value();
-                            sub_url = sub_url + '&folderAccessId[]=' + record.get('folderAccessId');
+                            sub_url = sub_url + '&folderAccessId[]=' + modified[i].get('folderAccessId');
                             if (dataChanges.folderAccessId == true || dataChanges.folderAccessId == false) {
-                                sub_url = sub_url + '&folderAccessValue[]=' + record.get('folderAccessValue');
+                                sub_url = sub_url + '&folderAccessValue[]=' + modified[i].get('folderAccessValue');
                             }
                         }
                         url = url + sub_url;

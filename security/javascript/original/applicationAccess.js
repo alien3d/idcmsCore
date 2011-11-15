@@ -35,6 +35,7 @@ Ext.onReady(function() {
         reader: staffByReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             field: 'staffId',
@@ -76,6 +77,7 @@ Ext.onReady(function() {
         reader: logReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -699,18 +701,17 @@ Ext.onReady(function() {
 												var sub_url = '';
 												var modified = applicationAccessStore.getModifiedRecords();												
 												for ( var i = 0; i < modified.length; i++) {													
-													var dataChanges = modified[i].getChanges();															
-													var record = applicationAccessStore
+													var dataChanges = modified[i].getChanges();	
 															.getAt(i);
 													sub_url = sub_url
 													+ ' & applicationAccessId[] = '
-													+ record
+													+ modified[i]
 															.get('applicationAccessId');
 													if (dataChanges.applicationAccessId == true
 																|| dataChanges.applicationAccessId == false) {
 													
 													
-													sub_url = sub_url+ '&applicationAccessValue[]= '+ record.get('applicationAccessValue');
+													sub_url = sub_url+ '&applicationAccessValue[]= '+ modified[i].get('applicationAccessValue');
 													}				
 												}
 												url = url + sub_url;

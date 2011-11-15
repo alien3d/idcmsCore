@@ -76,6 +76,7 @@ Ext.onReady(function() {
         reader: logReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -499,6 +500,7 @@ Ext.onReady(function() {
         reader: teamReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -539,6 +541,7 @@ Ext.onReady(function() {
     var moduleAccessStore = new Ext.data.JsonStore({
         proxy: moduleAccessProxy,
         reader: moduleAccessReader,
+        pruneModifiedRecords: true,
         autoDestroy: true,
         remoteSort: true,
         root: 'data',
@@ -650,10 +653,9 @@ Ext.onReady(function() {
                     var modified = moduleAccessStore.getModifiedRecords();
                     for (var i = 0; i < modified.length; i++) {
                         var dataChanges = modified[i].getChanges();
-                        var record = moduleAccessStore.getAt(i);
-                        sub_url = sub_url + '&moduleAccessId[]=' + record.get('moduleAccessId');
+                        sub_url = sub_url + '&moduleAccessId[]=' + modified[i].get('moduleAccessId');
                         if (dataChanges.moduleAccessId == true || dataChanges.moduleAccessId == false) {
-                            sub_url = sub_url + '&moduleAccessValue[]=' + record.get('moduleAccessValue');
+                            sub_url = sub_url + '&moduleAccessValue[]=' + modified[i].get('moduleAccessValue');
                         }
                     }
                     url = url + sub_url;

@@ -75,6 +75,7 @@ Ext.onReady(function() {
         reader: logReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -539,6 +540,7 @@ Ext.onReady(function() {
         autoDestroy: true,
         proxy: moduleProxy,
         reader: moduleReader,
+        pruneModifiedRecords: true,
         root: 'module',
         baseParams: {
             method: 'read',
@@ -580,6 +582,7 @@ Ext.onReady(function() {
         autoDestroy: true,
         proxy: folderProxy,
         reader: folderReader,
+        pruneModifiedRecords: true,
         root: 'folder',
         baseParams: {
             method: 'read',
@@ -622,6 +625,7 @@ Ext.onReady(function() {
         autoDestroy: true,
         proxy: leafAccessProxy,
         reader: leafAccessReader,
+        pruneModifiedRecords: true,
         root: 'data',
         baseParams: {
             method: 'read',
@@ -671,6 +675,10 @@ Ext.onReady(function() {
             type: 'string'
         },
         {
+            name: 'leafAccessDraftValue',
+            type: 'boolean'
+        },
+        {
             name: 'leafAccessCreateValue',
             type: 'boolean'
         },
@@ -687,6 +695,10 @@ Ext.onReady(function() {
             type: 'boolean'
         },
         {
+            name: 'leafAccessReviewValue',
+            type: 'boolean'
+        },
+        {
             name: 'leafAccessApprovedValue',
             type: 'boolean'
         },
@@ -694,6 +706,12 @@ Ext.onReady(function() {
             name: 'leafAccessPostValue',
             type: 'boolean'
         }]
+    });
+    var leafAccessDraftValue = new Ext.grid.CheckColumn({
+        header: leafAccessDraftValueLabel,
+        dataIndex: 'leafAccessDraftValue',
+        id: 'leafAccessDraftValue',
+        width: 55
     });
     var leafAccessCreateValue = new Ext.grid.CheckColumn({
         header: leafAccessCreateValueLabel,
@@ -717,6 +735,12 @@ Ext.onReady(function() {
         header: leafAccessDeleteValueLabel,
         dataIndex: 'leafAccessDeleteValue',
         id: 'leafAccessDeleteValue',
+        width: 55
+    });
+    var leafAccessReviewValue = new Ext.grid.CheckColumn({
+        header: leafAccessReviewValueLabel,
+        dataIndex: 'leafAccessReviewValue',
+        id: 'leafAccessReviewValue',
         width: 55
     });
     var leafAccessApprovedValue = new Ext.grid.CheckColumn({
@@ -751,7 +775,7 @@ Ext.onReady(function() {
         {
             header: staffNameLabel,
             dataIndex: 'staffName'
-        }, leafAccessCreateValue, leafAccessReadValue, leafAccessUpdateValue, leafAccessDeleteValue,  leafAccessApprovedValue, leafAccessPostValue];
+        },leafAccessDraftValue, leafAccessCreateValue, leafAccessReadValue, leafAccessUpdateValue, leafAccessDeleteValue, leafAccessReviewValue, leafAccessApprovedValue, leafAccessPostValue];
     var teamId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
         fieldLabel: teamIdLabel,
@@ -960,11 +984,14 @@ Ext.onReady(function() {
         items: [teamId, moduleId, folderId, staffId]
     });
     var leafAccessFlagArray = 
-    	['leafAccessCreateValue', 
+    	[
+    	 'leafAccessDraftValue', 
+    	 'leafAccessCreateValue', 
     	 'leafAccessReadValue', 
     	 'leafAccessUpdateValue', 
     	 'leafAccessDeleteValue', 
-    	 'leafAccessApprovedValue', 
+    	 'leafAccessApprovedValue',
+    	 'leafAccessReviewValue', 
     	 'leafAccessPostValue'];
     var leafAccessGrid = new Ext.grid.GridPanel({
         name: 'leafAccessGrid',
@@ -978,7 +1005,10 @@ Ext.onReady(function() {
         title: leafNative,
         disabled: true,
         iconCls: 'application_view_detail',
-        plugins: [ leafAccessCreateValue, leafAccessReadValue, leafAccessUpdateValue, leafAccessDeleteValue,  leafAccessApprovedValue, leafAccessPostValue],
+        viewConfig : {
+        	emptyText: emptyRowLabel
+        },
+        plugins: [ leafAccessDraftValue,leafAccessCreateValue, leafAccessReadValue, leafAccessUpdateValue, leafAccessDeleteValue, leafAccessReviewValue, leafAccessApprovedValue, leafAccessPostValue],
         tbar: {
             items: [{
             	xtype:'button',
@@ -1014,33 +1044,35 @@ Ext.onReady(function() {
                 iconCls: 'bullet_disk',
                 listeners: {
                     'click': function(button,e) {
-                        var url = '../controller/leafAccessController.php';
+                        var url = '../controller/leafAccessController.php?securityCode='+Math.floor(Math.random()*11);
                         var sub_url = '';
                         var modified = leafAccessStore.getModifiedRecords();
-                        for (var i = 0; i < modified.length; i++) {
+                        for (var i = 0; i < modified.length; i++) {                        	
                             var dataChanges = modified[i].getChanges();
-                            var record = leafAccessStore.getAt(i);
-                            sub_url = sub_url + '&leafAccessId[]=' + record.get('leafAccessId');
+                            sub_url = sub_url + '&leafAccessId[]=' + modified[i].get('leafAccessId');
                             if (dataChanges.leafAccessDraftValue == true || dataChanges.leafAccessDraftValue == false) {
-                                sub_url = sub_url + '&leafAccessDraftValue[]=' + record.get('leafAccessDraftValue');
+                                sub_url = sub_url + '&leafAccessDraftValue[]=' + modified[i].get('leafAccessDraftValue');
                             }
                             if (dataChanges.leafAccessCreateValue == true || dataChanges.leafAccessCreateValue == false) {
-                                sub_url = sub_url + '&leafAccessCreateValue[]=' + record.get('leafAccessCreateValue');
+                                sub_url = sub_url + '&leafAccessCreateValue[]=' + modified[i].get('leafAccessCreateValue');
                             }
                             if (dataChanges.leafAccessReadValue == true || dataChanges.leafAccessReadValue == false) {
-                                sub_url = sub_url + '&leafAccessReadValue[]=' + record.get('leafAccessReadValue');
+                                sub_url = sub_url + '&leafAccessReadValue[]=' + modified[i].get('leafAccessReadValue');
                             }
                             if (dataChanges.leafAccessUpdateValue == true || dataChanges.leafAccessUpdateValue == false) {
-                                sub_url = sub_url + '&leafAccessUpdateValue[]=' + record.get('leafAccessUpdateValue');
+                                sub_url = sub_url + '&leafAccessUpdateValue[]=' + modified[i].get('leafAccessUpdateValue');
                             }
                             if (dataChanges.leafAccessDeleteValue == true || dataChanges.leafAccessDeleteValue == false) {
-                                sub_url = sub_url + '&leafAccessDeleteValue[]=' + record.get('leafAccessDeleteValue');
+                                sub_url = sub_url + '&leafAccessDeleteValue[]=' + modified[i].get('leafAccessDeleteValue');
+                            }
+                            if (dataChanges.leafAccessReviewValue == true || dataChanges.leafAccessReviewValue == false) {
+                                sub_url = sub_url + '&leafAccessReviewValue[]=' + modified[i].get('leafAccessReviewValue');
                             }
                             if (dataChanges.leafAccessApprovedValue == true || dataChanges.leafAccessApprovedValue == false) {
-                                sub_url = sub_url + '&leafAccessApprovedValue[]=' + record.get('leafAccessApprovedValue');
+                                sub_url = sub_url + '&leafAccessApprovedValue[]=' + modified[i].get('leafAccessApprovedValue');
                             }
                             if (dataChanges.leafAccessPostValue == true || dataChanges.leafAccessPostValue == false) {
-                                sub_url = sub_url + '&leafAccessPostValue[]=' + record.get('leafAccessPostValue');
+                                sub_url = sub_url + '&leafAccessPostValue[]=' + modified[i].get('leafAccessPostValue');
                             }
                         }
                         
@@ -1055,12 +1087,22 @@ Ext.onReady(function() {
                             },
                             success: function(response, options) {
                                 jsonResponse = Ext.decode(response.responseText);
-                                if (jsonResponse.message == true) {
+                                if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                } else if (jsonResponse.message == false) {
+                                    leafAccessStore.removeAll();
+                                    leafAccessStore.load({
+                                    	params:{
+                                    		leafId:leafId,
+                                    		teamId : Ext.getCmp('teamId').getValue(),
+                                    		moduleId : Ext.getCmp('moduleId').getValue(),
+                                    		folderId : Ext.getCmp('folderId').getValue(),
+                                    		staffId : Ext.getCmp('staffId').getValue()                                    		
+                                    	}
+                                    });
+                                } else if (jsonResponse.success == false) {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                 }
-                                leafAccessStore.reload();
+                               
                             },
                             failure: function(response, options) {
                                 Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));

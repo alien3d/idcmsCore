@@ -4,6 +4,7 @@ require_once("../../class/classAbstract.php");
 require_once("../../class/classRecordSet.php");
 require_once("../../document/class/classDocumentTrail.php");
 require_once("../../document/model/documentModel.php");
+require_once ("../../class/classSystemString.php");
 require_once("../model/themeModel.php");
 /**
  * this is main setting files
@@ -36,6 +37,11 @@ class ThemeClass  extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	public $systemString;
 	/**
 	 * Audit Row True or False
 	 * @var bool
@@ -91,6 +97,11 @@ class ThemeClass  extends ConfigClass {
 		$this->q->audit        	=	$this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+		
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());

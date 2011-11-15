@@ -35,6 +35,7 @@ Ext.onReady(function() {
         reader: staffByReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             field: 'staffId',
@@ -76,6 +77,7 @@ Ext.onReady(function() {
         reader: logReader,
         autoLoad: true,
         autoDestroy: true,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             leafId: leafId,
@@ -817,37 +819,36 @@ Ext.onReady(function() {
                         var modified = defaultLabelStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            var record = defaultLabelStore.getAt(i);
-                            sub_url = sub_url + '&defaultLabelId[]=' + record.get('defaultLabelId');
+                            sub_url = sub_url + '&defaultLabelId[]=' + modified[i].get('defaultLabelId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
-                                    sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
+                                    sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
                                 }
                                 if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
-                                    sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+                                    sub_url = sub_url + '&isDraft[]=' +modified[i].get('isDraft');
                                 }
                                 if (dataChanges.isNew == true || dataChanges.isNew == false) {
-                                    sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+                                    sub_url = sub_url + '&isNew[]=' +modified[i].get('isNew');
                                 }
                                 if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
-                                    sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
+                                    sub_url = sub_url + '&isUpdate[]=' +modified[i].get('isUpdate');
                                 }
                             }
                             if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
-                                sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
+                                sub_url = sub_url + '&isDelete[]=' +modified[i].get('isDelete');
                             }
                             if (isAdmin == 1) {
                                 if (dataChanges.isActive == true || dataChanges.isActive == false) {
-                                    sub_url = sub_url + '&isActive[]=' + record.get('isActive');
+                                    ssub_url = sub_url + '&isActive[]=' +modified[i].get('isActive');
                                 }
                                 if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
-                                    sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                                    sub_url = sub_url + '&isApproved[]=' +modified[i].get('isApproved');
                                 }
                                 if (dataChanges.isReview == true || dataChanges.isReview == false) {
-                                    sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                                    sub_url = sub_url + '&isReview[]=' +modified[i].get('isReview');
                                 }
                                 if (dataChanges.isPost == true || dataChanges.isPost == false) {
-                                    sub_url = sub_url + '&isPost[]=' + record.get('isPost');
+                                    sub_url = sub_url + '&isPost[]=' +modified[i].get('isPost');
                                 }
                             }
                         }
@@ -907,6 +908,7 @@ Ext.onReady(function() {
         autoDestroy: true,
         proxy: defaultLabelTranslateProxy,
         reader: defaultLabelTranslateReader,
+        pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
             page: 'detail',
@@ -1104,37 +1106,36 @@ Ext.onReady(function() {
                         var modified = defaultLabelTranslateStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            var record = defaultLabelTranslateStore.getAt(i);
-                            sub_url = sub_url + '&defaultLabelTranslateId[]=' + record.get('moduleTranslateId');
+                            sub_url = sub_url + '&defaultLabelTranslateId[]=' + modified[i].get('moduleTranslateId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
-                                    sub_url = sub_url + '&isDefault[]=' + record.get('isDefault');
+                                    sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
                                 }
                                 if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
-                                    sub_url = sub_url + '&isDraft[]=' + record.get('isDraft');
+                                    sub_url = sub_url + '&isDraft[]=' +modified[i].get('isDraft');
                                 }
                                 if (dataChanges.isNew == true || dataChanges.isNew == false) {
-                                    sub_url = sub_url + '&isNew[]=' + record.get('isNew');
+                                    sub_url = sub_url + '&isNew[]=' +modified[i].get('isNew');
                                 }
                                 if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
-                                    sub_url = sub_url + '&isUpdate[]=' + record.get('isUpdate');
+                                    sub_url = sub_url + '&isUpdate[]=' +modified[i].get('isUpdate');
                                 }
                             }
                             if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
-                                sub_url = sub_url + '&isDelete[]=' + record.get('isDelete');
+                                sub_url = sub_url + '&isDelete[]=' +modified[i].get('isDelete');
                             }
                             if (isAdmin == 1) {
                                 if (dataChanges.isActive == true || dataChanges.isActive == false) {
-                                    sub_url = sub_url + '&isActive[]=' + record.get('isActive');
+                                    ssub_url = sub_url + '&isActive[]=' +modified[i].get('isActive');
                                 }
                                 if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
-                                    sub_url = sub_url + '&isApproved[]=' + record.get('isApproved');
+                                    sub_url = sub_url + '&isApproved[]=' +modified[i].get('isApproved');
                                 }
                                 if (dataChanges.isReview == true || dataChanges.isReview == false) {
-                                    sub_url = sub_url + '&isReview[]=' + record.get('isReview');
+                                    sub_url = sub_url + '&isReview[]=' +modified[i].get('isReview');
                                 }
                                 if (dataChanges.isPost == true || dataChanges.isPost == false) {
-                                    sub_url = sub_url + '&isPost[]=' + record.get('isPost');
+                                    sub_url = sub_url + '&isPost[]=' +modified[i].get('isPost');
                                 }
                             }
                         }
