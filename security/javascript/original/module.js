@@ -479,6 +479,55 @@ Ext.onReady(function () {
             type: 'string'
         }]
     }); // end team Request
+ // start Language Request
+    var languageProxy = new Ext.data.HttpProxy({
+        url: '../../translation/controller/languageController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message); uncommen for testing purpose
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var languageReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'languageId'
+    });
+    var languageStore = new Ext.data.JsonStore({
+        proxy: languageProxy,
+        reader: languageReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            field: 'languageId',
+            leafId: leafIdTemp
+        },
+        root: 'data',
+        fields: [{
+            name: 'languageId',
+            type: 'int'
+        },
+        
+        {
+            name: 'languageCode',
+            type: 'string'
+        },
+        
+        {
+            name: 'languageDesc',
+            type: 'string'
+        }]
+    });
+    // end Language Request
     // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
     // start Header Mapping request
@@ -799,8 +848,7 @@ Ext.onReady(function () {
                         var modified = moduleStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            var record = moduleStore.getAt(i);
-                            sub_url = sub_url + '&moduleId[]=' + record.get('moduleId');
+                            sub_url = sub_url + '&moduleId[]=' + modified[i].get('moduleId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
                                     sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
@@ -921,7 +969,56 @@ Ext.onReady(function () {
             type: 'string'
         }]
     });
-    var moduleTranslateColumnModel = [new Ext.grid.RowNumberer(),
+    Ext.util.Format.comboRenderer = function(combo) {
+		return function(value) {
+			var record = combo.findRecord(combo.valueField
+					|| combo.displayField, value);
+			if (record) {
+				// remove special character
+
+				res = record.get(combo.displayField);
+				// res = res.replace(/[^a-zA-Z 0-9]+/g, '-');
+			} else {
+				// res = ("hmm, not found:" + value);
+				res = (value);
+			}
+			return res;
+		};
+	};
+    var languageId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: languageIdLabel,
+        name: 'languageId',
+        hiddenName: 'languageId',
+        valueField: 'languageId',
+        hiddenId: 'language_fake',
+        id: 'languageId',
+        displayField: 'languageDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: languageStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
+        }
+    });
+    var moduleTranslateColumnModel = [new Ext.grid.RowNumberer(),{
+		header : 'language',
+		width : 100,
+		sortable : true,
+		dataIndex : 'languageId',
+		editor : languageId,
+		renderer : Ext.util.Format.comboRenderer(languageId),
+		hidden : false
+	},
     {
         dataIndex: 'moduleEnglish',
         header: moduleSequenceLabel,
@@ -990,6 +1087,19 @@ Ext.onReady(function () {
                 this.save = true;
                 var record = this.grid.getStore().getAt(
                 rowIndex);
+                var record = this.grid.getStore().getAt(
+						rowIndex);
+				if (parseInt(record.get('moduleTranslateId')) == 'NaN') {
+                    method = 'create';
+                } else if (record.get('moduleTranslateId') == '') {
+                    method = 'create';
+                } else if (record.get('moduleTranslateId') == undefined) {
+                    method = 'create';
+                } else if (record.get('moduleTranslateId') > 0) {
+                    method = 'save';
+                } else {
+                    method = 'create';
+                }
                 Ext.Ajax.request({
                     url: '../controller/moduleTranslateController.php',
                     method: 'POST',
@@ -998,7 +1108,8 @@ Ext.onReady(function () {
                         isAdmin: isAdmin,
                         method: method,
                         moduleTranslateId: record.get('moduleTranslateId'),
-                        moduleNative: Ext.getCmp('moduleNative').getValue()
+                        languageId:record.get('languageId'),
+                        moduleNative: Erecord.get('moduleNative')
                     },
                     success: function (response, options) {
                         jsonResponse = Ext.decode(response.responseText);

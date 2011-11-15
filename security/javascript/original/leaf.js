@@ -1256,7 +1256,8 @@ Ext.onReady(function() {
                         leafId:Ext.getCmp('leafId').getValue(),
                         method: method,
                         leafTranslateId: record.get('leafTranslateId'),
-                        leafTranslate: Ext.getCmp('leafTranslate').getValue()
+                        languageId : record.get('languageId'),
+                        leafNative: record.get('leafNative')
                     },
                     success: function(response, options) {
                         jsonResponse = Ext.decode(response.responseText);

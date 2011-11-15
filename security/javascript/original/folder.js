@@ -522,6 +522,55 @@ Ext.onReady(function () {
             type: 'string'
         }]
     }); // end team Request
+ // start Language Request
+    var languageProxy = new Ext.data.HttpProxy({
+        url: '../../translation/controller/languageController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message); uncommen for testing purpose
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var languageReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'languageId'
+    });
+    var languageStore = new Ext.data.JsonStore({
+        proxy: languageProxy,
+        reader: languageReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            field: 'languageId',
+            leafId: leafIdTemp
+        },
+        root: 'data',
+        fields: [{
+            name: 'languageId',
+            type: 'int'
+        },
+        
+        {
+            name: 'languageCode',
+            type: 'string'
+        },
+        
+        {
+            name: 'languageDesc',
+            type: 'string'
+        }]
+    });
+    // end Language Request
     // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
     // Start Header Folder Request
@@ -968,8 +1017,57 @@ Ext.onReady(function () {
             name: 'folderNative',
             type: 'string'
         }]
-    }); // end Folder Translate Request
-    var folderTranslateColumnModel = [new Ext.grid.RowNumberer(),
+    }); 
+    Ext.util.Format.comboRenderer = function(combo) {
+		return function(value) {
+			var record = combo.findRecord(combo.valueField
+					|| combo.displayField, value);
+			if (record) {
+				// remove special character
+
+				res = record.get(combo.displayField);
+				// res = res.replace(/[^a-zA-Z 0-9]+/g, '-');
+			} else {
+				// res = ("hmm, not found:" + value);
+				res = (value);
+			}
+			return res;
+		};
+	};
+    var languageId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: languageIdLabel,
+        name: 'languageId',
+        hiddenName: 'languageId',
+        valueField: 'languageId',
+        hiddenId: 'language_fake',
+        id: 'languageId',
+        displayField: 'languageDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: languageStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
+        }
+    });
+    var folderTranslateColumnModel = [new Ext.grid.RowNumberer(),{
+		header : 'language',
+		width : 100,
+		sortable : true,
+		dataIndex : 'languageId',
+		editor : languageId,
+		renderer : Ext.util.Format.comboRenderer(languageId),
+		hidden : false
+	},
     {
         dataIndex: 'folderEnglish',
         header: folderSequenceLabel,
@@ -1038,6 +1136,19 @@ Ext.onReady(function () {
             afteredit: function (rowEditor, changes, record, rowIndex) {
                 this.save = true;
                 var record = this.grid.getStore().getAt(rowIndex);
+                var record = this.grid.getStore().getAt(
+						rowIndex);
+				if (parseInt(record.get('folderTranslateId')) == 'NaN') {
+                    method = 'create';
+                } else if (record.get('folderTranslateId') == '') {
+                    method = 'create';
+                } else if (record.get('folderTranslateId') == undefined) {
+                    method = 'create';
+                } else if (record.get('folderTranslateId') > 0) {
+                    method = 'save';
+                } else {
+                    method = 'create';
+                }
                 Ext.Ajax.request({
                     url: '../controller/folderTranslateController.php',
                     method: 'POST',
@@ -1046,7 +1157,8 @@ Ext.onReady(function () {
                         leafId: leafId,
                         method: 'save',
                         folderTranslateId: record.get('folderTranslateId'),
-                        folderNative: Ext.getCmp('folderNative').getValue()
+                        languageId:record.get('languageId'),
+                        folderNative: record.get('folderNative')
                     },
                     success: function (response, options) {
                         jsonResponse = Ext.decode(response.responseText);
