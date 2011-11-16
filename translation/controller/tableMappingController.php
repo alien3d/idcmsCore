@@ -318,13 +318,14 @@ class TableMappingClass extends ConfigClass {
 			}
 		}
 
-		$items = array ();
+		
 		if ($this->getVendor () == self::MYSQL) {
 				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
 		}
+		$items = array();
 		// everything given flexibility  on todo
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "

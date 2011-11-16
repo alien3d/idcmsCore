@@ -25,7 +25,7 @@ class ApplicationTranslateModel extends ValidationClass {
      * Application Identification
      * @var int
      */
-    private $applicationd;
+    private $applicationId;
 
     /**
      * Language Identification

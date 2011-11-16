@@ -291,13 +291,13 @@ class leafTranslateClass extends ConfigClass {
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		$items = array();
+		
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		// everything given flexibility  on todo
+		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`leafTranslate`.`leafTranslateId`,
@@ -326,6 +326,7 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
+			
 			if ($this->model->getLeafIdTemp() && $this->model->getLeafId()) {
 				$sql.= " AND `leafTranslate`.`leafId`='" . $this->model->getLeafId() . "'";
 			}
@@ -458,6 +459,7 @@ class leafTranslateClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
+		
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
@@ -955,6 +957,8 @@ class leafTranslateClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$sql='';
+		$sqlLooping='';
 		$this->q->start();
 
 		$loop = $this->model->getTotal();
@@ -982,6 +986,7 @@ class leafTranslateClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
+		
 		/**
 		 * System Validation Checking
 		 * @var $access

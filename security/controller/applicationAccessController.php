@@ -156,6 +156,7 @@ class ApplicationAccessClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$items= array();
 		// by default if add new group will add access to application and folder.
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "

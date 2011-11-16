@@ -157,6 +157,7 @@ class LeafAccessClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$items= array();
 		// by default if add new group will add access to module and leaf.
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "

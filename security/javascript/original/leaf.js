@@ -417,7 +417,7 @@ Ext.onReady(function() {
         }),
         viewConfig: {
             forceFit: true,
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -1091,7 +1091,8 @@ Ext.onReady(function() {
         pruneModifiedRecords: true,
         baseParams: {
             method: 'read',
-            leafId: leafIdTemp
+            leafId: leafIdTemp,
+            isAdmin:isAdmin
         },
         root: 'data',
         fields: [{
@@ -1117,6 +1118,47 @@ Ext.onReady(function() {
         {
             name: 'leafNative',
             type: 'string'
+        },
+        {
+            name: 'isDefault',
+            type: 'boolean'
+        },
+        {
+            name: 'isNew',
+            type: 'boolean'
+        },
+        {
+            name: 'isDraft',
+            type: 'boolean'
+        },
+        {
+            name: 'isUpdate',
+            type: 'boolean'
+        },
+        {
+            name: 'isDelete',
+            type: 'boolean'
+        },
+        {
+            name: 'isActive',
+            type: 'boolean'
+        },
+        {
+            name: 'isApproved',
+            type: 'boolean'
+        },
+        {
+            name: 'isReview',
+            type: 'boolean'
+        },
+        {
+            name: 'isPost',
+            type: 'boolean'
+        },
+        {
+            name: 'executeTime',
+            type: 'date',
+            dateFormat: 'Y-m-d H:i:s'
         }]
     });
     Ext.util.Format.comboRenderer = function(combo) {
@@ -1160,6 +1202,51 @@ Ext.onReady(function() {
             return new RegExp('\\b(' + value + ')', 'i');
         }
     });
+    
+    var isDefaultDetailGrid = new Ext.ux.grid.CheckColumn({
+        header: isDefaultLabel,
+        dataIndex: 'isDefault',
+        hidden: isDefaultHidden
+    });
+    var isNewDetailGrid = new Ext.ux.grid.CheckColumn({
+        header: 'New',
+        dataIndex: 'isNew',
+        hidden: isNewHidden
+    });
+    var isDraftDetailGrid = new Ext.ux.grid.CheckColumn({
+        header: isDraftLabel,
+        dataIndex: 'isDraft',
+        hidden: isDraftHidden
+    });
+    var isUpdateDetailGrid = new Ext.ux.grid.CheckColumn({
+        header: isUpdateLabel,
+        dataIndex: 'isUpdate',
+        hidden: isUpdateHidden
+    });
+    var isDeleteDetailGrid = new Ext.ux.grid.CheckColumn({
+        header: isDeleteLabel,
+        dataIndex: 'isDelete'
+    });
+    var isActiveDetailGrid = new Ext.ux.grid.CheckColumn({
+        header: isActiveLabel,
+        dataIndex: 'isActive',
+        hidden: isActiveHidden
+    });
+    var isApprovedDetailGrid = new Ext.ux.grid.CheckColumn({
+        header: isApprovedLabel,
+        dataIndex: 'isApproved',
+        hidden: isApprovedHidden
+    });
+    var isReviewDetailGrid = new Ext.ux.grid.CheckColumn({
+        header: isReviewLabel,
+        dataIndex: 'isReview',
+        hidden: isReviewHidden
+    });
+    var isPostDetailGrid = new Ext.ux.grid.CheckColumn({
+        header: 'Post',
+        dataIndex: 'isPost',
+        hidden: isPostHidden
+    });
     var leafTranslateColumnModel = [new Ext.grid.RowNumberer(), {
 		header : 'language',
 		width : 100,
@@ -1193,43 +1280,28 @@ Ext.onReady(function() {
             xtype: 'textfield',
             id: 'leafNative'
         }
+    },isDefaultDetailGrid, 
+      isNewDetailGrid, 
+      isDraftDetailGrid, 
+      isUpdateDetailGrid, 
+      isDeleteDetailGrid, 
+      isActiveDetailGrid, 
+      isApprovedDetailGrid, 
+      isReviewDetailGrid, 
+      isPostDetailGrid, {
+        dataIndex: 'executeBy',
+        header: executeByLabel,
+        sortable: true,
+        hidden: true,
+        width: 100
     },
     {
-        name: 'isDefault',
-        type: 'boolean'
-    },
-    {
-        name: 'isNew',
-        type: 'boolean'
-    },
-    {
-        name: 'isDraft',
-        type: 'boolean'
-    },
-    {
-        name: 'isUpdate',
-        type: 'boolean'
-    },
-    {
-        name: 'isDelete',
-        type: 'boolean'
-    },
-    {
-        name: 'isActive',
-        type: 'boolean'
-    },
-    {
-        name: 'isApproved',
-        type: 'boolean'
-    },
-    {
-        name: 'executeBy',
-        type: 'int'
-    },
-    {
-        name: 'executeTime',
+        dataIndex: 'executeTime',
+        header: executeTimeLabel,
         type: 'date',
-        dateFormat: 'Y-m-d H:i:s'
+        sortable: true,
+        hidden: true,
+        width: 100
     }];
     var leafTranslateEditor = new Ext.ux.grid.RowEditor({
         saveText: saveButtonLabel,
@@ -1353,7 +1425,7 @@ Ext.onReady(function() {
         viewConfig: {
             autoFill: true,
             forceFit: true,
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         layout: 'fit',
         disabled: true,
@@ -1450,8 +1522,9 @@ Ext.onReady(function() {
                                 sub_url = sub_url + '&isDelete[]=' + modified[i].get('isDelete');
                             }
                             if (isAdmin == 1) {
+                            	
                                 if (dataChanges.isActive == true || dataChanges.isActive == false) {
-                                    ssub_url = sub_url + '&isActive[]=' + modified[i].get('isActive');
+                                    sub_url = sub_url + '&isActive[]=' + modified[i].get('isActive');
                                 }
                                 if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
                                     sub_url = sub_url + '&isApproved[]=' + modified[i].get('isApproved');
@@ -1469,7 +1542,7 @@ Ext.onReady(function() {
                             url: url,
                             method: 'GET',
                             params: {
-                                leafId: leafId,
+                                leafId: leafIdTemp,
                                 isAdmin: isAdmin,
                                 method: 'updateStatus'
                             },
@@ -2768,6 +2841,13 @@ Ext.onReady(function() {
                                     Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                     Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
                                     leafTranslateStore.load({
+                                        params: {
+                                            leafIdTemp: leafIdTemp,
+                                            isAdmin: isAdmin,
+                                            leafId: action.result.data.leafId
+                                        }
+                                    });
+                                    leafAccessStore.load({
                                         params: {
                                             leafIdTemp: leafIdTemp,
                                             isAdmin: isAdmin,

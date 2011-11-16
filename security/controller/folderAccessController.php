@@ -148,7 +148,7 @@ class FolderAccessClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		// by default if add new group will add access to module and folder.
+		$items= array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 				SELECT	`module`.`moduleEnglish`,

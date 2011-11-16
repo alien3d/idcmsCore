@@ -230,15 +230,14 @@ class TableMappingTranslateClass extends ConfigClass {
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		
-		$items = array ();
+	
 		if ($this->getVendor () == self::MYSQL) {
 			
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
 		}
-		// everything given flexibility  on todo
+		$items = array();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			SELECT 		*

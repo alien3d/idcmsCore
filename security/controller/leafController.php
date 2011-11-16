@@ -502,13 +502,13 @@ class LeafClass extends ConfigClass {
 			}
 		}
 
-		$items = array();
+		
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-		// everything given flexibility  on todo
+		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT		*

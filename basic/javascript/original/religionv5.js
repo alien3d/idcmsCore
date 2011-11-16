@@ -873,7 +873,7 @@ Ext.onReady(function() {
         }),
         viewConfig: {
             forceFit: true,
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         listeners: {

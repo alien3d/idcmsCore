@@ -20,12 +20,11 @@ class LeafTranslateModel extends ValidationClass {
 	 * @var int
 	 */
 	private $leafTranslateId;
-
 	/**
-	 * Leaf Text Identification
+	 * Leaf Native Translation
 	 * @var string
 	 */
-	private $LeafText;
+	private $LeafNative;
 	/**
 	 * Leaf  Identification(** For Filtering only)
 	 * @var int
@@ -50,16 +49,19 @@ class LeafTranslateModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('leaf');
-		$this->setPrimaryKeyName('leafId');
+		$this->setTableName('leafTranslate');
+		$this->setPrimaryKeyName('leafTranslateId');
 		/*
 		 *  All the $_POST enviroment.
 		 */
+		if (isset($_POST ['leafTranslateId'])) {
+			$this->setLeafTranslateId($this->strict($_POST ['leafTranslateId'], 'numeric'), 0, 'single');
+		}
 		if (isset($_POST ['leafIdTemp'])) {
-			$this->setLeafIdTemp($this->strict($_POST ['leafIdTemp'], 'numeric'), 0, 'single');
+			$this->setLeafIdTemp($this->strict($_POST ['leafIdTemp'], 'numeric'));
 		}
 		if (isset($_POST ['leafId'])) {
-			$this->setLeafId($this->strict($_POST ['leafId'], 'numeric'), 0, 'single');
+			$this->setLeafId($this->strict($_POST ['leafId'], 'numeric'));
 		}
 		if (isset($_POST ['leafSequence'])) {
 			$this->setLeafSequence($this->strict($_POST ['leafSequence'], 'memo'));
@@ -67,8 +69,8 @@ class LeafTranslateModel extends ValidationClass {
 		if (isset($_POST ['LeafCode'])) {
 			$this->setLeafCode($this->strict($_POST ['leafCode'], 'memo'));
 		}
-		if (isset($_POST ['leafNote'])) {
-			$this->setLeafNote($this->strict($_POST ['leafNote'], 'memo'));
+		if (isset($_POST ['leafNative'])) {
+			$this->setLeafNative($this->strict($_POST ['leafNative'], 'memo'));
 		}
 		/*
 		 *  All the $_GET enviroment.
@@ -76,53 +78,53 @@ class LeafTranslateModel extends ValidationClass {
 		if (isset($_GET ['leafTranslateId'])) {
 			$this->setTotal(count($_GET ['leafTranslateId']));
 		}
-	
+
 		if (isset($_GET ['leafTranslateId'])) {
 			if (is_array($_GET ['leafTranslateId'])) {
-				$this->LeafTranslateId = array();
+				$this->leafTranslateId = array();
 			}
 		}
 		if (isset($_GET ['isDefault'])) {
-			if (is_array($_GET ['isDefault'])) {
+			if (is_array($_GET ['isDefault']) ) {
 				$this->isDefault = array();
 			}
 		}
-		if (isset($_GET ['isNew'])) {
+		if (isset($_GET ['isNew']) ) {
 			if (is_array($_GET ['isNew'])) {
 				$this->isNew = array();
 			}
 		}
-		if (isset($_GET ['isDraft'])) {
+		if (isset($_GET ['isDraft']) ) {
 			if (is_array($_GET ['isDraft'])) {
 				$this->isDraft = array();
 			}
 		}
-		if (isset($_GET ['isUpdate'])) {
+		if (isset($_GET ['isUpdate']) ) {
 			if (is_array($_GET ['isUpdate'])) {
 				$this->isUpdate = array();
 			}
 		}
-		if (isset($_GET ['isDelete'])) {
+		if (isset($_GET ['isDelete']) ) {
 			if (is_array($_GET ['isDelete'])) {
 				$this->isDelete = array();
 			}
 		}
-		if (isset($_GET ['isActive'])) {
+		if (isset($_GET ['isActive']) ) {
 			if (is_array($_GET ['isActive'])) {
 				$this->isActive = array();
 			}
 		}
-		if (isset($_GET ['isApproved'])) {
+		if (isset($_GET ['isApproved']) ) {
 			if (is_array($_GET ['isApproved'])) {
 				$this->isApproved = array();
 			}
 		}
-		if (isset($_GET ['isReview'])) {
+		if (isset($_GET ['isReview']) ) {
 			if (is_array($_GET ['isReview'])) {
 				$this->isReview = array();
 			}
 		}
-		if (isset($_GET ['isPost'])) {
+		if (isset($_GET ['isPost']) ) {
 			if (is_array($_GET ['isPost'])) {
 				$this->isPost = array();
 			}
@@ -133,14 +135,14 @@ class LeafTranslateModel extends ValidationClass {
 				$this->setLeafTranslateId($this->strict($_GET ['leafTranslateId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
-				if ($_GET ['isDefault'] [$i] == 'true') {
+				if ($_GET ['isDefault'] [$i] == 'true' ) {
 					$this->setIsDefault(1, $i, 'array');
 				} else if ($_GET ['isDefault'] [$i] == 'false') {
 					$this->setIsDefault(0, $i, 'array');
 				}
 			}
 			if (isset($_GET ['isNew'])) {
-				if ($_GET ['isNew'] [$i] == 'true') {
+				if ($_GET ['isNew'] [$i] == 'true' ) {
 					$this->setIsNew(1, $i, 'array');
 				} else if ($_GET ['isNew'] [$i] == 'false') {
 					$this->setIsNew(0, $i, 'array');
@@ -154,7 +156,7 @@ class LeafTranslateModel extends ValidationClass {
 				}
 			}
 			if (isset($_GET ['isUpdate'])) {
-				if ($_GET ['isUpdate'] [$i] == 'true') {
+				if ($_GET ['isUpdate'] [$i] == 'true' ) {
 					$this->setIsUpdate(1, $i, 'array');
 				} if ($_GET ['isUpdate'] [$i] == 'false') {
 					$this->setIsUpdate(0, $i, 'array');
@@ -163,12 +165,12 @@ class LeafTranslateModel extends ValidationClass {
 			if (isset($_GET ['isDelete'])) {
 				if ($_GET ['isDelete'] [$i] == 'true') {
 					$this->setIsDelete(1, $i, 'array');
-				} else if ($_GET ['isDelete'] [$i] == 'false') {
+				} else if ($_GET ['isDelete'] [$i] == 'false' ) {
 					$this->setIsDelete(0, $i, 'array');
 				}
 			}
 			if (isset($_GET ['isActive'])) {
-				if ($_GET ['isActive'] [$i] == 'true') {
+				if ($_GET ['isActive'] [$i] == 'true' ) {
 					$this->setIsActive(1, $i, 'array');
 				} else if ($_GET ['isActive'] [$i] == 'false') {
 					$this->setIsActive(0, $i, 'array');
@@ -188,14 +190,14 @@ class LeafTranslateModel extends ValidationClass {
 					$this->setIsReview(0, $i, 'array');
 				}
 			}
-			if (isset($_GET ['isPost'])) {
+			if (isset($_GET ['isPost']) || isset($_GET ['isPostDetail']) ) {
 				if ($_GET ['isPost'] [$i] == 'true') {
 					$this->setIsPost(1, $i, 'array');
 				} else if ($_GET ['isPost'] [$i] == 'false') {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getLeafId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getLeafTranslateId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -381,7 +383,7 @@ class LeafTranslateModel extends ValidationClass {
 	 * @param  string $value
 	 */
 	public function setLeafId($value) {
-		$this->leafd = $value;
+		$this->leafId = $value;
 	}
 
 	/**
@@ -389,7 +391,7 @@ class LeafTranslateModel extends ValidationClass {
 	 * @return string
 	 */
 	public function getLeafId() {
-		return $this->leafd;
+		return $this->leafId;
 	}
 
 	/**
@@ -397,7 +399,7 @@ class LeafTranslateModel extends ValidationClass {
 	 * @param  string $value
 	 */
 	public function setLeafNative($value) {
-		$this->LeafNative = $value;
+		$this->leafNative = $value;
 	}
 
 	/**
@@ -405,7 +407,7 @@ class LeafTranslateModel extends ValidationClass {
 	 * @return string
 	 */
 	public function getLeafNative() {
-		return $this->LeafNative;
+		return $this->leafNative;
 	}
 
 	/**

@@ -146,6 +146,7 @@ class LogAdvanceClass extends ConfigClass {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	*
