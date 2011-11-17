@@ -466,6 +466,7 @@ class ApplicationClass extends ConfigClass {
 							`application`.`applicationSequence`,
 							`application`.`applicationCode`,
 							`application`.`applicationEnglish`,
+							`application`.`applicationFilename`,
 							`application`.`isDefault`,
 							`application`.`isNew`,
 							`application`.`isDraft`,
@@ -494,6 +495,7 @@ class ApplicationClass extends ConfigClass {
 							[application].[applicationSequence],
 							[application].[applicationCode],
 							[application].[applicationEnglish],
+							[application].[applicationEnglish],
 							[application].[isDefault],
 							[application].[isNew],
 							[application].[isDraft],
@@ -521,6 +523,7 @@ class ApplicationClass extends ConfigClass {
 							APPLICATION.APPLICATIONCODE,
 							APPLICATION.APPLICATIONSEQUENCE,
 							APPLICATION.APPLICATIONENGLISH,
+							APPLICATION.APPLICATIONFILENAME,
 							APPLICATION.ISDEFAULT,
 							APPLICATION.ISNEW,
 							APPLICATION.ISDRAFT,
@@ -541,7 +544,63 @@ class ApplicationClass extends ConfigClass {
 			if ($this->model->getApplicationId(0, 'single')) {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getApplicationId(0, 'single') . "'";
 			}
-		} else {
+		}  else if ($this->getVendor() == self::DB2) {
+			$sql = "
+					SELECT	APPLICATION.APPLICATIONID,
+							APPLICATION.ICONID,
+							APPLICATION.APPLICATIONCODE,
+							APPLICATION.APPLICATIONSEQUENCE,
+							APPLICATION.APPLICATIONENGLISH,
+							APPLICATION.APPLICATIONFILENAME,
+							APPLICATION.ISDEFAULT,
+							APPLICATION.ISNEW,
+							APPLICATION.ISDRAFT,
+							APPLICATION.ISUPDATE,
+							APPLICATION.ISDELETE,
+							APPLICATION.ISACTIVE,
+							APPLICATION.ISAPPROVED,
+							APPLICATION.EXECUTEBY,
+							APPLICATION.EXECUTETIME,
+							STAFF.STAFFNAME,
+							ICON.ICONNAME
+					FROM 	APPLICATION
+					JOIN	STAFF
+					ON		APPLICATION.EXECUTEBY = STAFF.STAFFID
+					LEFT 	JOIN	ICON
+					USING	(ICONID)
+					WHERE 	" . $this->auditFilter;
+			if ($this->model->getApplicationId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getApplicationId(0, 'single') . "'";
+			}
+		} else if ($this->getVendor() == self::POSTGRESS) {
+			$sql = "
+					SELECT	APPLICATION.APPLICATIONID,
+							APPLICATION.ICONID,
+							APPLICATION.APPLICATIONCODE,
+							APPLICATION.APPLICATIONSEQUENCE,
+							APPLICATION.APPLICATIONENGLISH,
+							APPLICATION.APPLICATIONFILENAME,
+							APPLICATION.ISDEFAULT,
+							APPLICATION.ISNEW,
+							APPLICATION.ISDRAFT,
+							APPLICATION.ISUPDATE,
+							APPLICATION.ISDELETE,
+							APPLICATION.ISACTIVE,
+							APPLICATION.ISAPPROVED,
+							APPLICATION.EXECUTEBY,
+							APPLICATION.EXECUTETIME,
+							STAFF.STAFFNAME,
+							ICON.ICONNAME
+					FROM 	APPLICATION
+					JOIN	STAFF
+					ON		APPLICATION.EXECUTEBY = STAFF.STAFFID
+					LEFT 	JOIN	ICON
+					USING	(ICONID)
+					WHERE 	" . $this->auditFilter;
+			if ($this->model->getApplicationId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getApplicationId(0, 'single') . "'";
+			}
+		}else {
 			echo json_encode(array("success" => false, "message" => "Undefine Database Vendor"));
 			exit();
 		}

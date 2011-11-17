@@ -217,7 +217,7 @@ Ext.onReady(function () {
             singleSelect: true
         }),
         viewConfig: {
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -510,7 +510,7 @@ Ext.onReady(function () {
         baseParams: {
             method: 'read',
             field: 'languageId',
-            leafId: leafIdTemp
+            leafId: leafId
         },
         root: 'data',
         fields: [{

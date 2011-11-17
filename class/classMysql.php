@@ -221,6 +221,7 @@ class Vendor {
 	private function module($operation) {
 		// for more secure option must SET at mysql access grant level
 		// if 1 access granted which mean 1 record if null no mean no access to the db level
+		/**
 		$result_row = NULL;
 		$this->operation = NULL;
 		$sql = "
@@ -242,9 +243,7 @@ class Vendor {
 		} elseif ($result_row == 0) {
 			$access = 'Denied';
 		}
-		/*
-		 *  Only disable and Error Sql Statement will be log
-		 */
+		
 		if ($result_row == 0 || $this->log == 1) {
 			$logError = $this->responce;
 			$sql_log = "
@@ -268,6 +267,8 @@ class Vendor {
 				$this->responce = $sql_log . "[" . mysqli_error ( $this->link ) . "]";
 			}
 		}
+		**/
+		$result_row=1;
 		return ($result_row);
 	}
 	/**

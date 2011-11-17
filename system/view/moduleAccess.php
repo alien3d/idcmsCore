@@ -7,7 +7,8 @@ if (strlen($_SESSION[$staffId])==0) {
 	print"<script>parent.location.replace('".$page."')</script>";
 }
 include('../../Connections/main.php');	?>
-<html><meta http-equiv="X-UA-Compatible" content="IE=8" />
+<html>
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <head>
 <link rel="stylesheet" type="text/css"
@@ -25,14 +26,8 @@ include('../../Connections/main.php');	?>
 <?php // only execute when exist
 if(isset($_SESSION[$theme])) { ?>
 <link rel="stylesheet" href="<?php echo $_SESSION['theme']; ?>">
-
 <?php } ?>
 </head>
-<style>
-x-grid3-row-alt {
-	background-color: red !important;
-}
-</style>
 <body>
 </body>
 <?php require_once("../../shared/setting.php"); ?>
@@ -73,5 +68,7 @@ x-grid3-row-alt {
 <script type="text/javascript"
 	src="../../javascript/examples/ux/RowExpander.js"></script>
 <script  type="text/javascript"
-	src="../javascript/original/extLabel.js?<?php echo time(); ?>"></script>
+	src="../javascript/original/moduleAccess.js?<?php echo time(); ?>"></script>
 </html>
+
+

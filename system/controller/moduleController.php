@@ -7,22 +7,22 @@ require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSecurity.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/applicationModel.php");
+require_once ("../model/moduleModel.php");
 
 /**
- * this is application  files
+ * this is module  files
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package Security
- * @subpackage application
+ * @subpackage module
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ApplicationClass extends ConfigClass {
+class ModuleClass extends ConfigClass {
 
 	/**
-	 * Connection to the daapplicationase
+	 * Connection to the damodulease
 	 * @var string
 	 */
 	public $q;
@@ -80,7 +80,7 @@ class ApplicationClass extends ConfigClass {
 	public $auditColumn;
 
 	/**
-	 * Duplicate Testing either the key of applicationle same or have been created.
+	 * Duplicate Testing either the key of modulele same or have been created.
 	 * @var bool
 	 */
 	public $duplicateTest;
@@ -100,7 +100,7 @@ class ApplicationClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 0;
 
-		$this->model = new ApplicationModel ();
+		$this->model = new ModuleModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -142,7 +142,7 @@ class ApplicationClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-
+				
 			$sql = "SET NAMES utf8";
 			$this->q->fast($sql);
 		}
@@ -153,10 +153,10 @@ class ApplicationClass extends ConfigClass {
 		 */
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			INSERT INTO `application`
+			INSERT INTO `module`
 					(
-						`iconId`,												`applicationSequence`,
-						`applicationCode`,											`applicationEnglish`,
+						`iconId`,												`moduleSequence`,
+						`moduleCode`,											`moduleEnglish`,
 						`isDefault`,											`isNew`,
 						`isDraft`,												`isUpdate`,
 						`isDelete`,												`isActive`,
@@ -166,8 +166,8 @@ class ApplicationClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',					'" . $this->model->getApplicationSequence() . "',
-						'" . $this->model->getApplicationCode() . "',				'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIconId() . "',					'" . $this->model->getModuleSequence() . "',
+						'" . $this->model->getModuleCode() . "',				'" . $this->model->getModuleEnglish() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',	'" . $this->model->getIsNew(0, 'single') . "',
 						'" . $this->model->getIsDraft(0, 'single') . "',		'" . $this->model->getIsUpdate(0, 'single') . "',
 						'" . $this->model->getIsDelete(0, 'single') . "',	'" . $this->model->getIsActive(0, 'single') . "',
@@ -177,10 +177,10 @@ class ApplicationClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [application]
+			INSERT INTO [module]
 					(
-						[iconId],													[applicationSequence],
-						[applicationCode],												[applicationEnglish],
+						[iconId],													[moduleSequence],
+						[moduleCode],												[moduleEnglish],
 						[isDefault],												[isNew],
 						[isDraft],													[isUpdate],
 						[isDelete],													[isActive],
@@ -190,8 +190,8 @@ class ApplicationClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',						'" . $this->model->getApplicationSequence() . "',
-						'" . $this->model->getApplicationCode() . "',					'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIconId() . "',						'" . $this->model->getModuleSequence() . "',
+						'" . $this->model->getModuleCode() . "',					'" . $this->model->getModuleEnglish() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',		'" . $this->model->getIsNew(0, 'single') . "',
 						'" . $this->model->getIsDraft(0, 'single') . "',			'" . $this->model->getIsUpdate(0, 'single') . "',
 						'" . $this->model->getIsDelete(0, 'single') . "',		'" . $this->model->getIsActive(0, 'single') . "',
@@ -201,10 +201,10 @@ class ApplicationClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			INSERT INTO APPLICATION
+			INSERT INTO MODULE
 					(
-						ICONID,														APPLICATIONSEQUENCE,
-						APPLICATIONCODE,													APPLICATIONENGLISH,
+						ICONID,														MODULESEQUENCE,
+						MODULECODE,													MODULEENGLISH,
 						ISDEFAULT,													ISNEW,
 						ISDRAFT,													ISUPDATE,
 						ISDELETE,													ISACTIVE,
@@ -214,8 +214,8 @@ class ApplicationClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',						'" . $this->model->getApplicationSequence() . "',
-						'" . $this->model->getApplicationCode() . "',					'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIconId() . "',						'" . $this->model->getModuleSequence() . "',
+						'" . $this->model->getModuleCode() . "',					'" . $this->model->getModuleEnglish() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',		'" . $this->model->getIsNew(0, 'single') . "',
 						'" . $this->model->getIsDraft(0, 'single') . "',			'" . $this->model->getIsUpdate(0, 'single') . "',
 						'" . $this->model->getIsDelete(0, 'single') . "',		'" . $this->model->getIsActive(0, 'single') . "',
@@ -225,10 +225,10 @@ class ApplicationClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO APPLICATION
+			INSERT INTO MODULE
 					(
-						ICONID,														APPLICATIONSEQUENCE,
-						APPLICATIONCODE,													APPLICATIONENGLISH,
+						ICONID,														MODULESEQUENCE,
+						MODULECODE,													MODULEENGLISH,
 						ISDEFAULT,													ISNEW,
 						ISDRAFT,													ISUPDATE,
 						ISDELETE,													ISACTIVE,
@@ -238,8 +238,8 @@ class ApplicationClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',						'" . $this->model->getApplicationSequence() . "',
-						'" . $this->model->getApplicationCode() . "',					'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIconId() . "',						'" . $this->model->getModuleSequence() . "',
+						'" . $this->model->getModuleCode() . "',					'" . $this->model->getModuleEnglish() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',		'" . $this->model->getIsNew(0, 'single') . "',
 						'" . $this->model->getIsDraft(0, 'single') . "',			'" . $this->model->getIsUpdate(0, 'single') . "',
 						'" . $this->model->getIsDelete(0, 'single') . "',		'" . $this->model->getIsActive(0, 'single') . "',
@@ -249,10 +249,10 @@ class ApplicationClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO APPLICATION
+			INSERT INTO MODULE
 					(
-						ICONID,														APPLICATIONSEQUENCE,
-						APPLICATIONCODE,													APPLICATIONENGLISH,
+						ICONID,														MODULESEQUENCE,
+						MODULECODE,													MODULEENGLISH,
 						ISDEFAULT,													ISNEW,
 						ISDRAFT,													ISUPDATE,
 						ISDELETE,													ISACTIVE,
@@ -262,8 +262,8 @@ class ApplicationClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getIconId() . "',						'" . $this->model->getApplicationSequence() . "',
-						'" . $this->model->getApplicationCode() . "',					'" . $this->model->getApplicationEnglish() . "',
+						'" . $this->model->getIconId() . "',						'" . $this->model->getModuleSequence() . "',
+						'" . $this->model->getModuleCode() . "',					'" . $this->model->getModuleEnglish() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',		'" . $this->model->getIsNew(0, 'single') . "',
 						'" . $this->model->getIsDraft(0, 'single') . "',			'" . $this->model->getIsUpdate(0, 'single') . "',
 						'" . $this->model->getIsDelete(0, 'single') . "',		'" . $this->model->getIsActive(0, 'single') . "',
@@ -278,7 +278,7 @@ class ApplicationClass extends ConfigClass {
 			exit();
 		}
 		$lastId = $this->q->lastInsertId();
-		//  create a record  in applicationAccess.update no effect
+		//  create a record  in moduleAccess.update no effect
 		// loop the group
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -323,43 +323,43 @@ class ApplicationClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-				INSERT INTO	`applicationAccess`
+				INSERT INTO	`moduleAccess`
 						(
-							`applicationId`,
+							`moduleId`,
 							`teamId`,
-							`applicationAccessValue`
+							`moduleAccessValue`
 						) VALUES";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-				INSERT INTO	[applicationAccess]
+				INSERT INTO	[moduleAccess]
 						(
-							[applicationId],
+							[moduleId],
 							[teamId],
-							[applicationAccessValue]
+							[moduleAccessValue]
 					) VALUES";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-				INSERT INTO	APPLICATIONACCESS
+				INSERT INTO	MODULEACCESS
 						(
-							APPLICATIONID,
+							MODULEID,
 							TEAMID,
-							APPLICATIONACCESSVALUE
+							MODULEACCESSVALUE
 					) VALUES";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-				INSERT INTO	APPLICATIONACCESS
+				INSERT INTO	MODULEACCESS
 						(
-							APPLICATIONID,
+							MODULEID,
 							TEAMID,
-							APPLICATIONACCESSVALUE
+							MODULEACCESSVALUE
 					) VALUES";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-				INSERT INTO	APPLICATIONACCESS
+				INSERT INTO	MODULEACCESS
 						(
-							APPLICATIONID,
+							MODULEID,
 							TEAMID,
-							APPLICATIONACCESSVALUE
+							MODULEACCESSVALUE
 					) VALUES";
 		}
 		// optimize to 1 Query
@@ -373,43 +373,107 @@ class ApplicationClass extends ConfigClass {
 			exit();
 		}
 		/**
-		 * insert default value to detail applicationle .English only
+		 * insert default value to detail modulele .English only
 		 * */
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-		 	INSERT INTO `applicationTranslate`
+		 	INSERT INTO `moduleTranslate`
 		 		(
-				 	`applicationId`,
+				 	`moduleId`,
 				 	`languageId`,
-					`applicationNative`
+					`moduleNative`,
+					`isDefault`,											
+					`isNew`,
+					`isDraft`,												
+					`isUpdate`,
+					`isDelete`,												
+					`isActive`,
+					`isApproved`,											
+					`isReview`,
+					`isPost`,												
+					`executeBy`,
+					`executeTime`
 				) VALUES (
 					'" . $lastId . "',
 					21,
-					'" . $this->model->getApplicationEnglish() . "'
+					'" . $this->model->getModuleEnglish() . "',
+					'" . $this->model->getIsDefault(0, 'single') . "',	
+					'" . $this->model->getIsNew(0, 'single') . "',
+					'" . $this->model->getIsDraft(0, 'single') . "',		
+					'" . $this->model->getIsUpdate(0, 'single') . "',
+					'" . $this->model->getIsDelete(0, 'single') . "',	
+					'" . $this->model->getIsActive(0, 'single') . "',
+					'" . $this->model->getIsApproved(0, 'single') . "',	
+					'" . $this->model->getIsReview(0, 'single') . "',
+					'" . $this->model->getIsPost(0, 'single') . "',				
+					'" . $this->model->getExecuteBy() . "',
+					" . $this->model->getExecuteTime() . "
 				);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-		 	INSERT INTO  [applicationTranslate]
+		 	INSERT INTO  [moduleTranslate]
 					(
-					 	[applicationId],
+					 	[moduleId],
 						[languageId],
-						[applicationNative]
+						[moduleNative],
+						[isDefault],												
+						[isNew],
+						[isDraft],													
+						[isUpdate],
+						[isDelete],													
+						[isActive],
+						[isApproved],												
+						[isReview'],
+						[isPost],													
+						[executeBy],
+						[executeTime]
 					) VALUES (
 						'" . $lastId . "',
 						21,
-						'" . $this->model->getApplicationEnglish() . "'
+						'" . $this->model->getModuleEnglish() . "',
+					'" . $this->model->getIsDefault(0, 'single') . "',	
+					'" . $this->model->getIsNew(0, 'single') . "',
+					'" . $this->model->getIsDraft(0, 'single') . "',		
+					'" . $this->model->getIsUpdate(0, 'single') . "',
+					'" . $this->model->getIsDelete(0, 'single') . "',	
+					'" . $this->model->getIsActive(0, 'single') . "',
+					'" . $this->model->getIsApproved(0, 'single') . "',	
+					'" . $this->model->getIsReview(0, 'single') . "',
+					'" . $this->model->getIsPost(0, 'single') . "',				
+					'" . $this->model->getExecuteBy() . "',
+					" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-		 	INSERT INTO	APPLICATIONTRANSLATE
+		 	INSERT INTO	MODULETRANSLATE
 					(
-					 	APPLICATIONID,
+					 	MODULEID,
 						LANGUAGEID,
-						APPLICATIONNATIVE
+						MODULENATIVE,
+						ISDRAFT,													
+						ISUPDATE,
+						ISDELETE,													
+						ISACTIVE,
+						ISAPPROVED,													
+						ISREVIEW,
+						ISPOST,														
+						EXECUTEBY,
+						EXECUTETIME
 					) VALUES (
 						'" . $lastId . "',
 						21,
-						'" . $this->model->getApplicationEnglish() . "'
+						'" . $this->model->getModuleEnglish() . "',
+					'" . $this->model->getIsDefault(0, 'single') . "',	
+					'" . $this->model->getIsNew(0, 'single') . "',
+					'" . $this->model->getIsDraft(0, 'single') . "',		
+					'" . $this->model->getIsUpdate(0, 'single') . "',
+					'" . $this->model->getIsDelete(0, 'single') . "',	
+					'" . $this->model->getIsActive(0, 'single') . "',
+					'" . $this->model->getIsApproved(0, 'single') . "',	
+					'" . $this->model->getIsReview(0, 'single') . "',
+					'" . $this->model->getIsPost(0, 'single') . "',				
+					'" . $this->model->getExecuteBy() . "',
+					" . $this->model->getExecuteTime() . "
 					);";
 		}
 		$this->q->create($sql);
@@ -422,9 +486,9 @@ class ApplicationClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode(
 		array(	"success" => true,
-        			"message" => $this->systemString->getCreateMessage(), 
-        			"applicationId" => $lastId,
-        			"time"=>$time));
+				"message" => $this->systemString->getCreateMessage(), 
+				"moduleId" => $lastId,
+				"time"=>$time));
 		exit();
 	}
 
@@ -437,11 +501,11 @@ class ApplicationClass extends ConfigClass {
 		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->getVendor() == self::MYSQL) {
-				$this->auditFilter = "	`application`.`isActive`		=	1	";
+				$this->auditFilter = "	`module`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	[application].[isActive]		=	1	";
+				$this->auditFilter = "	[module].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	APPLICATION.ISACTIVE	=	1	";
+				$this->auditFilter = "	MODULE.ISACTIVE	=	1	";
 			}
 		} else if ($this->isAdmin == 1) {
 			if ($this->getVendor() == self::MYSQL) {
@@ -458,88 +522,87 @@ class ApplicationClass extends ConfigClass {
 			$sql = "SET NAMES utf8";
 			$this->q->fast($sql);
 		}
-		$items= array();
+		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-					SELECT	`application`.`applicationId`,
-							`application`.`iconId`,
-							`application`.`applicationSequence`,
-							`application`.`applicationCode`,
-							`application`.`applicationEnglish`,
-							`application`.`isDefault`,
-							`application`.`isNew`,
-							`application`.`isDraft`,
-							`application`.`isUpdate`,
-							`application`.`isDelete`,
-							`application`.`isActive`,
-							`application`.`isApproved`,
-							`application`.`executeBy`,
-							`application`.`executeTime`,
+					SELECT	`module`.`moduleId`,
+							`module`.`iconId`,
+							`module`.`moduleSequence`,
+							`module`.`moduleCode`,
+							`module`.`moduleEnglish`,
+							`module`.`isDefault`,
+							`module`.`isNew`,
+							`module`.`isDraft`,
+							`module`.`isUpdate`,
+							`module`.`isDelete`,
+							`module`.`isActive`,
+							`module`.`isApproved`,
+							`module`.`executeBy`,
+							`module`.`executeTime`,
 							`staff`.`staffName`,
 							`icon`.`iconName`
- 					FROM 	`application`
+ 					FROM 	`module`
 					JOIN	`staff`
-					ON		`application`.`executeBy` = `staff`.`staffId`
+					ON		`module`.`executeBy` = `staff`.`staffId`
 					LEFT 	JOIN	`icon`
 					USING			(`iconId`)
 					WHERE 	" . $this->auditFilter;
-			if ($this->model->getApplicationId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getApplicationId(0, 'single') . "'";
+			if ($this->model->getModuleId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getModuleId(0, 'single') . "'";
 			}
-			
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-					SELECT	[application].[applicationId],
-							[application].[iconId],
-							[application].[applicationSequence],
-							[application].[applicationCode],
-							[application].[applicationEnglish],
-							[application].[isDefault],
-							[application].[isNew],
-							[application].[isDraft],
-							[application].[isUpdate],
-							[application].[isDelete],
-							[application].[isActive],
-							[application].[isApproved],
-							[application].[executeBy],
-							[application].[executeTime],
+					SELECT	[module].[moduleId],
+							[module].[iconId],
+							[module].[moduleSequence],
+							[module].[moduleCode],
+							[module].[moduleEnglish],
+							[module].[isDefault],
+							[module].[isNew],
+							[module].[isDraft],
+							[module].[isUpdate],
+							[module].[isDelete],
+							[module].[isActive],
+							[module].[isApproved],
+							[module].[executeBy],
+							[module].[executeTime],
 							[staff].[staffName],
 							[icon].[iconName]
-					FROM 	[application]
+					FROM 	[module]
 					JOIN	[staff]
-					ON		[application].[executeBy] = [staff].[staffId]
+					ON		[module].[executeBy] = [staff].[staffId]
 					LEFT 	JOIN	`icon`
-					ON		[iconId].[iconId] = [application].[iconId]
+					ON		[iconId].[iconId] = [module].[iconId]
 					WHERE 	" . $this->auditFilter;
-			if ($this->model->getApplicationId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getApplicationId(0, 'single') . "'";
+			if ($this->model->getModuleId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getModuleId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-					SELECT	APPLICATION.APPLICATIONID,
-							APPLICATION.ICONID,
-							APPLICATION.APPLICATIONCODE,
-							APPLICATION.APPLICATIONSEQUENCE,
-							APPLICATION.APPLICATIONENGLISH,
-							APPLICATION.ISDEFAULT,
-							APPLICATION.ISNEW,
-							APPLICATION.ISDRAFT,
-							APPLICATION.ISUPDATE,
-							APPLICATION.ISDELETE,
-							APPLICATION.ISACTIVE,
-							APPLICATION.ISAPPROVED,
-							APPLICATION.EXECUTEBY,
-							APPLICATION.EXECUTETIME,
+					SELECT	MODULE.MODULEID,
+							MODULE.ICONID,
+							MODULE.MODULECODE,
+							MODULE.MODULESEQUENCE,
+							MODULE.MODULEENGLISH,
+							MODULE.ISDEFAULT,
+							MODULE.ISNEW,
+							MODULE.ISDRAFT,
+							MODULE.ISUPDATE,
+							MODULE.ISDELETE,
+							MODULE.ISACTIVE,
+							MODULE.ISAPPROVED,
+							MODULE.EXECUTEBY,
+							MODULE.EXECUTETIME,
 							STAFF.STAFFNAME,
 							ICON.ICONNAME
-					FROM 	APPLICATION
+					FROM 	MODULE
 					JOIN	STAFF
-					ON		APPLICATION.EXECUTEBY = STAFF.STAFFID
+					ON		MODULE.EXECUTEBY = STAFF.STAFFID
 					LEFT 	JOIN	ICON
 					USING	(ICONID)
 					WHERE 	" . $this->auditFilter;
-			if ($this->model->getApplicationId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getApplicationId(0, 'single') . "'";
+			if ($this->model->getModuleId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getModuleId(0, 'single') . "'";
 			}
 		} else {
 			echo json_encode(array("success" => false, "message" => "Undefine Database Vendor"));
@@ -551,13 +614,13 @@ class ApplicationClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('applicationId');
+		$filterArray = array('moduleId');
 		/**
-		 * filter applicationle
+		 * filter modulele
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('application');
+		$tableArray = array('module');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -621,59 +684,59 @@ class ApplicationClass extends ConfigClass {
 				 * Parameterize Query We don't support
 				 */
 				$sql = "
-							WITH [applicationDerived] AS
+							WITH [moduleDerived] AS
 							(
-								SELECT 	[application].[applicationId],
-										[application].[iconId],
-										[application].[applicationSequence],
-										[application].[applicationCode],
-										[application].[applicationEnglish],
-										[application].[isDefault],
-										[application].[isNew],
-										[application].[isDraft],
-										[application].[isUpdate],
-										[application].[isDelete],
-										[application].[isApproved],
-										[application].[isReview],
-										[application].[isPost],
-										[application].[executeBy],
-										[application].[executeTime],
+								SELECT 	[module].[moduleId],
+										[module].[iconId],
+										[module].[moduleSequence],
+										[module].[moduleCode],
+										[module].[moduleEnglish],
+										[module].[isDefault],
+										[module].[isNew],
+										[module].[isDraft],
+										[module].[isUpdate],
+										[module].[isDelete],
+										[module].[isApproved],
+										[module].[isReview],
+										[module].[isPost],
+										[module].[executeBy],
+										[module].[executeTime],
 										[staff].[staffName]
-										ROW_NUMBER() OVER (ORDER BY [applicationId]) AS 'RowNumber'
-								FROM 	[application]
+										ROW_NUMBER() OVER (ORDER BY [moduleId]) AS 'RowNumber'
+								FROM 	[module]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[applicationDerived]
+							FROM 		[moduleDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . $this->getStart() . "
 							AND 			" . ($this->getStart() + $this->getLimit() - 1) . ";";
 			} else if ($this->getVendor() == self::ORACLE) {
 				/**
-				 * Oracle using derived applicationle also
+				 * Oracle using derived modulele also
 				 */
 				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-									SELECT  APPLICATION.APPLICATIONID,
-											APPLICATION.ICONID,
-											APPLICATION.APPLICATIONSEQUENCE,
-											APPLICATION.APPLICATIONCODE,
-											APPLICATION.APPLICATIONENGLISH,
-											APPLICATION.ISDEFAULT,
-											APPLICATION.ISNEW,
-											APPLICATION.ISDRAFT,
-											APPLICATION.ISUPDATE,
-											APPLICATION.ISDELETE,
-											APPLICATION.ISAPPROVED,
-											APPLICATION.ISREVIEW,
-											APPLICATION.ISPOST,
-											APPLICATION.EXECUTEBY,
-											APPLICATION.EXECUTETIME,
+									SELECT  MODULE.MODULEID,
+											MODULE.ICONID,
+											MODULE.MODULESEQUENCE,
+											MODULE.MODULECODE,
+											MODULE.MODULEENGLISH,
+											MODULE.ISDEFAULT,
+											MODULE.ISNEW,
+											MODULE.ISDRAFT,
+											MODULE.ISUPDATE,
+											MODULE.ISDELETE,
+											MODULE.ISAPPROVED,
+											MODULE.ISREVIEW,
+											MODULE.ISPOST,
+											MODULE.EXECUTEBY,
+											MODULE.EXECUTETIME,
 											STAFF.STAFFNAME
-									FROM 	APPLICATION
+									FROM 	MODULE
 									WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit() - 1) . "' )
@@ -687,7 +750,7 @@ class ApplicationClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getApplicationId(0, 'single'))) {
+		if (!($this->model->getModuleId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -698,24 +761,23 @@ class ApplicationClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getApplicationId(0, 'single')) {
+		if ($this->model->getModuleId(0, 'single')) {
 			$end = microtime(true);
 			$time = $end - $start;
 			$json_encode = json_encode(
 			array(	'success' => true,
-            		'total' => $total, 
-            		'message' => $this->systemString->getReadMessage(), 
-            		'time' => $time, 
-            		'firstRecord' => $this->recordSet->firstRecord('value'), 
-            		'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getApplicationId(0, 'single')), 
-            		'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getApplicationId(0, 'single')), 
-            		'lastRecord' => $this->recordSet->lastRecord('value'),
-			'data' => $items));
+						'total' => $total, 
+						'message' => $this->systemString->getReadMessage(), 
+						'time' => $time, 
+            			'firstRecord' => $this->recordSet->firstRecord('value'), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getModuleId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getModuleId(0, 'single')), 
+            			'lastRecord' => $this->recordSet->lastRecord('value'),
+						'data' => $items));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
 		} else {
-			
 			if (count($items) == 0) {
 				$items = '';
 			}
@@ -723,14 +785,14 @@ class ApplicationClass extends ConfigClass {
 			$time = $end - $start;
 			echo json_encode(
 			array(	'success' => true,
-            				'total' => $total, 
-            				'message' => $this->systemString->getReadMessage(), 
-            				'time' => $time, 
+						'total' => $total, 
+						'message' => $this->systemString->getReadMessage(), 
+						'time' => $time, 
             			'firstRecord' => $this->recordSet->firstRecord('value'), 
-            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getApplicationId(0, 'single')), 
-            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getApplicationId(0, 'single')), 
+            			'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getModuleId(0, 'single')), 
+            			'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getModuleId(0, 'single')), 
             			'lastRecord' => $this->recordSet->lastRecord('value'),
-			'data' => $items));
+						'data' => $items));
 			exit();
 		}
 	}
@@ -743,7 +805,7 @@ class ApplicationClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-
+				
 			$sql = "SET NAMES utf8";
 			$this->q->fast($sql);
 		}
@@ -754,27 +816,27 @@ class ApplicationClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "` 
 			FROM 	`" . $this->model->getTableName() . "` 
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getApplicationId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getApplicationId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
@@ -784,9 +846,9 @@ class ApplicationClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-			UPDATE 	`application`
-			SET 	`applicationSequence`	= 	'" . $this->model->getApplicationSequence() . "',
-					`applicationEnglish`		=	'" . $this->model->getApplicationEnglish() . "',
+			UPDATE 	`module`
+			SET 	`moduleSequence`	= 	'" . $this->model->getModuleSequence() . "',
+					`moduleEnglish`		=	'" . $this->model->getModuleEnglish() . "',
 					`iconId`			=	'" . $this->model->getIconId() . "',
 					`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
 					`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -798,12 +860,12 @@ class ApplicationClass extends ConfigClass {
 					`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 					`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 					`executeTime`		=	" . $this->model->getExecuteTime() . "
-			WHERE 	`applicationId`			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+			WHERE 	`moduleId`			=	'" . $this->model->getModuleId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-			UPDATE 	[application]
-			SET 	[applicationSequence]	= 	'" . $this->model->getApplicationSequence() . "',
-					[applicationEnglish]		=	'" . $this->model->getApplicationEnglish() . "',
+			UPDATE 	[module]
+			SET 	[moduleSequence]	= 	'" . $this->model->getModuleSequence() . "',
+					[moduleEnglish]		=	'" . $this->model->getModuleEnglish() . "',
 					[iconId]			=	'" . $this->model->getIconId() . "',
 					[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 					[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
@@ -816,12 +878,12 @@ class ApplicationClass extends ConfigClass {
 					[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 					[executeBy]			=	'" . $this->model->getExecuteBy() . ",
 					[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 	[applicationId]			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+			WHERE 	[moduleId]			=	'" . $this->model->getModuleId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-			UPDATE 	APPLICATION
-			SET 	APPLICATIONSEQUENCE		= 	'" . $this->model->getApplicationSequence() . "',
-					APPLICATIONENGLISH		=	'" . $this->model->getApplicationEnglish() . "',
+			UPDATE 	MODULE
+			SET 	MODULESEQUENCE		= 	'" . $this->model->getModuleSequence() . "',
+					MODULEENGLISH		=	'" . $this->model->getModuleEnglish() . "',
 					ICONID				=	'" . $this->model->getIconId() . "',
 					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
 					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -833,12 +895,12 @@ class ApplicationClass extends ConfigClass {
 					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 					EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE 	APPLICATION
-			SET 	APPLICATIONSEQUENCE		= 	'" . $this->model->getApplicationSequence() . "',
-					APPLICATIONENGLISH		=	'" . $this->model->getApplicationEnglish() . "',
+			UPDATE 	MODULE
+			SET 	MODULESEQUENCE		= 	'" . $this->model->getModuleSequence() . "',
+					MODULEENGLISH		=	'" . $this->model->getModuleEnglish() . "',
 					ICONID				=	'" . $this->model->getIconId() . "',
 					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
 					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -850,12 +912,12 @@ class ApplicationClass extends ConfigClass {
 					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 					EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-			UPDATE 	APPLICATION
-			SET 	APPLICATIONSEQUENCE		= 	'" . $this->model->getApplicationSequence() . "',
-					APPLICATIONENGLISH		=	'" . $this->model->getApplicationEnglish() . "',
+			UPDATE 	MODULE
+			SET 	MODULESEQUENCE		= 	'" . $this->model->getModuleSequence() . "',
+					MODULEENGLISH		=	'" . $this->model->getModuleEnglish() . "',
 					ICONID				=	'" . $this->model->getIconId() . "',
 					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
 					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -867,7 +929,7 @@ class ApplicationClass extends ConfigClass {
 					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 					EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId(0, 'single') . "'";
 			}
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -880,10 +942,8 @@ class ApplicationClass extends ConfigClass {
 		$time = $end - $start;
 		echo json_encode(
 		array(	"success" => true,
-        			"message" => $this->systemString->getUpdateMessage(), 
-        			"applicationId" => $this->model->getApplicationId(0, 'single'),
-        			"time"=>$time
-		));
+					"message" => $this->systemString->getUpdateMessage(), 
+					"time" => $time));
 		exit();
 	}
 
@@ -895,7 +955,7 @@ class ApplicationClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-
+				
 			$sql = "SET NAMES utf8";
 			$this->q->fast($sql);
 		}
@@ -906,27 +966,27 @@ class ApplicationClass extends ConfigClass {
 			$sql = "
 		SELECT	`" . $this->model->getPrimaryKeyName() . "`
 		FROM 	`" . $this->model->getTableName() . "`
-		WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getApplicationId(0, 'single') . "' ";
+		WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 		SELECT	[" . $this->model->getPrimaryKeyName() . "]
 		FROM 	[" . $this->model->getTableName() . "]
-		WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getApplicationId(0, 'single') . "' ";
+		WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 		FROM 	" . strtoupper($this->model->getTableName()) . "
-				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
+				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 		SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 		FROM 	" . strtoupper($this->model->getTableName()) . "
-				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
+				WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getApplicationId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getModuleId(0, 'single') . "' ";
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
@@ -936,7 +996,7 @@ class ApplicationClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-			UPDATE 	`application`
+			UPDATE 	`module`
 			SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 					`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
 					`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -948,10 +1008,10 @@ class ApplicationClass extends ConfigClass {
 					`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 					`executeBy`			=	'" . $this->model->getBy(0, 'single') . "',
 					`executeTime		=	" . $this->model->getExecuteTime() . "
-			WHERE 	`applicationId`			=	'" . $this->model->applicationId . "'";
+			WHERE 	`moduleId`			=	'" . $this->model->moduleId . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-			UPDATE 	[application]
+			UPDATE 	[module]
 			SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 					[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
 					[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -963,10 +1023,10 @@ class ApplicationClass extends ConfigClass {
 					[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 					[executeBy]			=	'" . $this->model->getBy(0, 'single') . "',
 					[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 	[applicationId]			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+			WHERE 	[moduleId]			=	'" . $this->model->getModuleId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-			UPDATE 	APPLICATION
+			UPDATE 	MODULE
 			SET 	ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
 					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -978,10 +1038,10 @@ class ApplicationClass extends ConfigClass {
 					ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
 					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE 	APPLICATION
+			UPDATE 	MODULE
 			SET 	ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
 					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -993,10 +1053,10 @@ class ApplicationClass extends ConfigClass {
 					ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
 					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-			UPDATE 	APPLICATION
+			UPDATE 	MODULE
 			SET 	ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 					ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
 					ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -1008,7 +1068,7 @@ class ApplicationClass extends ConfigClass {
 					ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
 					ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 	APPLICATIONID			=	'" . $this->model->getApplicationId(0, 'single') . "'";
+			WHERE 	MODULEID			=	'" . $this->model->getModuleId(0, 'single') . "'";
 			}
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -1020,9 +1080,8 @@ class ApplicationClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-		array(	"success" => true,
-        			"message" => $this->systemString->getDeleteMessage(),
-        			"time"=>$time));
+		array( "success" => true,
+				   "message" => $this->systemString->getDeleteMessage()));
 		exit();
 	}
 
@@ -1033,11 +1092,12 @@ class ApplicationClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
+
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -1089,7 +1149,7 @@ class ApplicationClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
+							WHEN '" . $this->model->getModuleId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1113,7 +1173,7 @@ class ApplicationClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
+							WHEN '" . $this->model->getModuleId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1137,7 +1197,7 @@ class ApplicationClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
+							WHEN '" . $this->model->getModuleId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1161,7 +1221,7 @@ class ApplicationClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
+							WHEN '" . $this->model->getModuleId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1185,7 +1245,7 @@ class ApplicationClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
+							WHEN '" . $this->model->getModuleId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1209,7 +1269,7 @@ class ApplicationClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
+							WHEN '" . $this->model->getModuleId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1233,7 +1293,7 @@ class ApplicationClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getApplicationId($i, 'array') . "'
+							WHEN '" . $this->model->getModuleId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1257,7 +1317,7 @@ class ApplicationClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getApplicationId($i, 'array') . "'
+                            WHEN '" . $this->model->getModuleId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1281,7 +1341,7 @@ class ApplicationClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getApplicationId($i, 'array') . "'
+                                WHEN '" . $this->model->getModuleId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1323,9 +1383,7 @@ class ApplicationClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-		array(	"success" => true,
-        			"message" => $message,
-        			"time"=>$time)
+		array("success" => true, "message" => $message,"time"=>$time)
 		);
 		exit();
 	}
@@ -1357,7 +1415,7 @@ class ApplicationClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-
+				
 			$sql = "SET NAMES utf8";
 			$this->q->fast($sql);
 		}
@@ -1388,8 +1446,8 @@ class ApplicationClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row ['applicationEnglish']);
-			$this->excel->getActiveSheet()->setCellValue('D' . $loopRow, $row ['applicationDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row ['moduleEnglish']);
+			$this->excel->getActiveSheet()->setCellValue('D' . $loopRow, $row ['moduleDesc']);
 			$loopRow++;
 			$lastRow = 'D' . $loopRow;
 		}
@@ -1398,21 +1456,20 @@ class ApplicationClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "application" . rand(0, 10000000) . ".xlsx";
+		$filename = "module" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$objWriter->save($path);
-		$this->audit->createTrail($this->leafId, $path, $filename);
+		$this->audit->createTrail($this->getLeafId(), $path, $filename);
 		$file = fopen($path, 'r');
 		if ($file) {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
 			array(	"success" => true,
-            			"message" => $this->systemString->getFileGenerateMessage(),
-            			"time"=>$time));
+						"message" => $this->systemString->getFileGenerateMessage(),
+						"time"=>$time));
 		} else {
-			echo json_encode(
-			array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));
 		}
 	}
 
@@ -1421,7 +1478,7 @@ class ApplicationClass extends ConfigClass {
 /**
  * Declare object
  * */
-$applicationObject = new ApplicationClass ();
+$moduleObject = new ModuleClass ();
 /**
  * Form Property .CRUD -create,read,update,delete
  * */
@@ -1433,56 +1490,56 @@ if (isset($_POST ['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_POST ['leafId'])) {
-		$applicationObject->setLeafId($_POST ['leafId']);
+		$moduleObject->setLeafId($_POST ['leafId']);
 	}
 	if (isset($_POST ['isAdmin'])) {
-		$applicationObject->setIsAdmin($_POST ['isAdmin']);
+		$moduleObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$applicationObject->setStart($_POST ['start']);
+		$moduleObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$applicationObject->setLimit($_POST ['perPage']);
+		$moduleObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 * Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$applicationObject->setFieldQuery($_POST ['query']);
+		$moduleObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$applicationObject->setGridQuery($_POST ['filter']);
+		$moduleObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$applicationObject->setOrder($_POST ['order']);
+		$moduleObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$applicationObject->setSortField($_POST ['sortField']);
+		$moduleObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$applicationObject->execute();
+	$moduleObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$applicationObject->create();
+		$moduleObject->create();
 	}
 	if ($_POST ['method'] == 'read') {
-		$applicationObject->read();
+		$moduleObject->read();
 	}
 	if ($_POST ['method'] == 'save') {
-		$applicationObject->update();
+		$moduleObject->update();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$applicationObject->delete();
+		$moduleObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1493,38 +1550,38 @@ if (isset($_GET ['method'])) {
 	 *  Leaf / Application Identification
 	 */
 	if (isset($_GET ['leafId'])) {
-		$applicationObject->setLeafId($_GET ['leafId']);
+		$moduleObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$applicationObject->setIsAdmin($_GET ['isAdmin']);
+		$moduleObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$applicationObject->execute();
+	$moduleObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$applicationObject->staff();
+			$moduleObject->staff();
 		}
 		if ($_GET ['field'] == 'sequence') {
-			$applicationObject->nextSequence();
+			$moduleObject->nextSequence();
 		}
 	}
 	/*
-	 * Update Status of The applicationle. Admin Level Only
+	 * Update Status of The modulele. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$applicationObject->updateStatus();
+		$moduleObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['applicationCode'])) {
-		if (strlen($_GET ['applicationCode']) > 0) {
-			$applicationObject->duplicate();
+	if (isset($_GET ['moduleCode'])) {
+		if (strlen($_GET ['moduleCode']) > 0) {
+			$moduleObject->duplicate();
 		}
 	}
 	/*
@@ -1532,16 +1589,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$applicationObject->firstRecord('json');
+			$moduleObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$applicationObject->previousRecord('json', 0);
+			$moduleObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$applicationObject->nextRecord('json', 0);
+			$moduleObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$applicationObject->lastRecord('json');
+			$moduleObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1549,7 +1606,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'report') {
-			$applicationObject->excel();
+			$moduleObject->excel();
 		}
 	}
 }

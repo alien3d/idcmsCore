@@ -130,7 +130,7 @@ class TreeClass extends ConfigClass {
 		//audit property
 		$this->audit 			= 	0;
 		$this->log 				= 	1;
-		
+
 		$this->q 				= 	new Vendor ();
 		$this->q->vendor 		=	$this->getVendor ();
 		$this->q->leafId 		= 	$this->getLeafId ();
@@ -140,7 +140,7 @@ class TreeClass extends ConfigClass {
 		$this->q->log 			= 	$this->log;
 		$this->q->audit 		= 	$this->audit;
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
-		
+
 		$this->excel = new PHPExcel ();
 	}
 	/* (non-PHPdoc)
@@ -182,11 +182,12 @@ class TreeClass extends ConfigClass {
 		      WHERE   	`moduleAccess`.`teamId`			=	'" . $_SESSION ['teamId'] . "'
 		      AND   	`moduleAccess`.`moduleAccessValue`	=  	1
 		      AND    	`moduleTranslate`.`languageId`		=	'" . $_SESSION ['languageId'] . "'
+		      AND		`module`.`applicationId`			=	'".$_SESSION['applicationId']."'
 		      AND		`module`.`isActive`					=	1
 		      AND		`team`.`isActive`					=	1
 		      ORDER BY  `module`.`moduleSequence`   ";
-		
-		//	print"<br><br>";
+
+
 		} elseif ($this->getVendor () == self::MSSQL) {
 			$sqlModule = "
 		      SELECT    [moduleAccessId],
@@ -270,6 +271,8 @@ class TreeClass extends ConfigClass {
 					      AND     	`folderAccess`.`teamId`				=	'" . $_SESSION ['teamId'] . "'
 					      AND   	`folderAccess`.`folderAccessValue`	=  	1
 					      AND    	`folderTranslate`.`languageId`		=	'" . $_SESSION ['languageId'] . "'
+					      AND		`folder`.`applicationId`			=	'".$_SESSION['applicationId']."'
+					      
 					      AND		`team`.`isActive`					=	1	
 					      ORDER BY   `folder`.`folderSequence`  ";
 				} elseif ($this->getVendor () == self::MSSQL) {
@@ -358,9 +361,12 @@ class TreeClass extends ConfigClass {
 					          AND      `moduleId`					=	'" . $moduleId . "'
 					          AND      `leafAccess`.`staffId`		=	'" . $_SESSION ['staffId'] . "'
 					          AND      `leafTranslate`.`languageId`	=	'" . $_SESSION ['languageId'] . "'
+					          AND		`leaf`.`applicationId`		=	'".$_SESSION['applicationId']."'
+					          AND		`leaf`.`isActive`			=	1
+					          AND		`leafTranslate`.`isActive`  =   1			          
 					          ORDER BY  `leaf`.`leafSequence`  ";
-						
-		//	print"<br><br>";
+
+							//print"<br>".$sqlLeaf."<br>";
 						} elseif ($this->getVendor () == self::MSSQL) {
 							$sqlLeaf = "
 					          SELECT   	[leafAccessId],
@@ -465,23 +471,23 @@ class TreeClass extends ConfigClass {
 									\"expanded\"	:	true 
 								}]";
 		}
-		  $treeJsonString = preg_replace('/\s+/', '', $treeJsonString);
-		  $x = json_decode($treeJsonString);
-		  $end = microtime(true);
-		  $time = $end - $start;
-		  echo json_encode($x);
-		  exit();
+//		$treeJsonString = preg_replace('/\s+/', '', $treeJsonString);
+		$x = json_decode($treeJsonString);
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode($x);
+		exit();
 		//echo $treeJsonString;
 	}
 	/*
 	 (non-PHPdoc) * @see config::update() */	function update() {
-	}
-	/*
-	 (non-PHPdoc) * @see config::delete() */	function delete() {
-	}
-	/*
-	 (non-PHPdoc) * @see config::excel() */	function excel() {
-	}
+	 }
+	 /*
+	  (non-PHPdoc) * @see config::delete() */	function delete() {
+	  }
+	  /*
+	   (non-PHPdoc) * @see config::excel() */	function excel() {
+	   }
 }
 $treeObject = new TreeClass ();
 /** * crud
