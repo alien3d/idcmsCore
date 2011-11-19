@@ -184,6 +184,7 @@ class TreeClass extends ConfigClass {
 		      AND    	`moduleTranslate`.`languageId`		=	'" . $_SESSION ['languageId'] . "'
 		      AND		`module`.`applicationId`			=	'".$_SESSION['applicationId']."'
 		      AND		`module`.`isActive`					=	1
+		      AND		`moduleTranslate`.`isActive`		=	1
 		      AND		`team`.`isActive`					=	1
 		      ORDER BY  `module`.`moduleSequence`   ";
 
@@ -206,10 +207,12 @@ class TreeClass extends ConfigClass {
 		      ON      	[icon].[iconId]=[module].[iconId]
 		      JOIN		[team]
 		      ON		[team].[teamId] = [moduleAccess].[teamId]
-		      WHERE     [moduleAccess].[teamId]			=	'" . $_SESSION ['teamId'] . "'
+		      WHERE     [moduleAccess].[teamId]				=	'" . $_SESSION ['teamId'] . "'
 		      AND   	[moduleAccess].[moduleAccessValue]	=  	1
 		      AND    	[moduleTranslate].[languageId]		=	'" . $_SESSION ['languageId'] . "'
-		      AND		[team].[isActive]=1
+		      AND		[module].[isActive]					=	1
+		      AND		[moduleTranslate].[isActive]		=	1
+		      AND		[team].[isActive]					=	1
 		      ORDER BY  [module].[moduleSequence]  ";
 		} elseif ($this->getVendor () == self::ORACLE) {
 			$sqlModule = "
@@ -228,11 +231,13 @@ class TreeClass extends ConfigClass {
 		      LEFT	JOIN    	ICON
 		      ON		ICON.ICONID						= 	MODULE.ICONID	 
 		      JOIN		TEAM
-		      ON		TEAM.TEAMID					= 	MODULEACCESS.TEAMID
-		      WHERE    	MODULEACCESS.TEAMID			=	'" . $_SESSION ['teamId'] . "'
+		      ON		TEAM.TEAMID						= 	MODULEACCESS.TEAMID
+		      WHERE    	MODULEACCESS.TEAMID				=	'" . $_SESSION ['teamId'] . "'
 		      AND     	MODULEACCESS.MODULEACCESSVALUE	=  	1
 		      AND      	MODULETRANSLATE.LANGUAGEID		=	'" . $_SESSION ['languageId'] . "'
-		      AND		TEAM.ISACTIVE 				=	1
+		      AND		TEAM.ISACTIVE 					=	1
+		      AND		MODULE.ISACTIVE`				=	1
+		      AND		MODULETRANSLATE.ISACTIVE`		=	1
 		      ORDER BY  MODULE.MODULESEQUENCE  ";
 		}
 		$resultModule = $this->q->fast ( $sqlModule );
@@ -273,7 +278,9 @@ class TreeClass extends ConfigClass {
 					      AND    	`folderTranslate`.`languageId`		=	'" . $_SESSION ['languageId'] . "'
 					      AND		`folder`.`applicationId`			=	'".$_SESSION['applicationId']."'
 					      
-					      AND		`team`.`isActive`					=	1	
+					      AND		`team`.`isActive`					=	1
+					      AND		`folderTranslate`.`isActive`		=   1
+					      AND		`folder`.`isActive`					=	1 		
 					      ORDER BY   `folder`.`folderSequence`  ";
 				} elseif ($this->getVendor () == self::MSSQL) {
 					$sqlFolder = "
@@ -298,6 +305,8 @@ class TreeClass extends ConfigClass {
 				      AND   	[folderAccess].[folderAccessValue]	=   1
 				      AND    	[folderTranslate].[languageId]		=	'" . $_SESSION ['languageId'] . "'
 				      AND		[team].[isActive]					=	1
+				      AND		[folderTranslate].[isActive]		=   1
+					  AND		[folder].[isActive`					=	1 	
 				      ORDER BY	[folder].[folderSequence]  	";
 				} elseif ($this->getVendor () == self::ORACLE) {
 					$sqlFolder = "
@@ -316,12 +325,14 @@ class TreeClass extends ConfigClass {
 				      LEFT JOIN	ICON
 				      ON		ICON.ICONID						= 	FOLDER.ICONID
 				      JOIN      TEAM
-				      ON		TEAM.TEAMID					= 	FOLDERACCESS.TEAMID
+				      ON		TEAM.TEAMID						= 	FOLDERACCESS.TEAMID
 				      WHERE     FOLDER.MODULEID					=	'" . $moduleId . "'
-				      AND       FOLDERACCESS.TEAMID			=	'" . $_SESSION ['teamId'] . "'
+				      AND       FOLDERACCESS.TEAMID				=	'" . $_SESSION ['teamId'] . "'
 				      AND     	FOLDERACCESS.FOLDERACCESSVALUE	=  	1
 				      AND      	FOLDERTRANSLATE.LANGUAGEID		=	'" . $_SESSION ['languageId'] . "'
-				      AND		TEAM.ISACTIVE 				=	1
+				      AND		TEAM.ISACTIVE 					=	1
+				      AND		FOLDERTRANSLATE.ISACTIVE`		=   1
+					  AND		FOLDER.ISACTIVE					=	1 	
 				      ORDER BY  FOLDER.FOLDERSEQUENCE  ";
 				}
 				$resultFolder = $this->q->fast ( $sqlFolder );

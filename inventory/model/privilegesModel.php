@@ -3,27 +3,27 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is privilege model file.This is to ensure strict setting enable for all variable enter to database
+ * this is privileges model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package privilege
+ * @package privileges
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class PrivilegeModel extends ValidationClass {
+class PrivilegesModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $privilegeId;
+	private $privilegesId;
 
 
 	/**
 	 * @var string
 	 */
-	private $privilegeName;
+	private $privilegesName;
 
 
 	/* (non-PHPdoc)
@@ -34,23 +34,23 @@ class PrivilegeModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('privilege');
-		$this->setPrimaryKeyName('privilegeId');
+		$this->setTableName('privileges');
+		$this->setPrimaryKeyName('privilegesId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['privilegeId'])) {
-			$this->setPrivilegeId($this->strict($_POST ['privilegeId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['privilegesId'])) {
+			$this->setPrivilegesId($this->strict($_POST ['privilegesId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['privilegeName'])) {
-			$this->setPrivilegeName($this->strict($_POST ['privilegeName'], 'string'));
+		if (isset($_POST ['privilegesName'])) {
+			$this->setPrivilegesName($this->strict($_POST ['privilegesName'], 'string'));
 		}
 
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['privilegeId'])) {
-			$this->setTotal(count($_GET ['privilegeId']));
+		if (isset($_GET ['privilegesId'])) {
+			$this->setTotal(count($_GET ['privilegesId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -100,8 +100,8 @@ class PrivilegeModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['privilegeId'])) {
-				$this->setPrivilegeId($this->strict($_GET ['privilegeId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['privilegesId'])) {
+				$this->setPrivilegesId($this->strict($_GET ['privilegesId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -166,7 +166,7 @@ class PrivilegeModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getPrivilegeId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getPrivilegesId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -300,35 +300,35 @@ class PrivilegeModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Privilege Identification  Value
+	 * Set Privileges Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setPrivilegeId($value, $key, $type) {
+	public function setPrivilegesId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->privilegeId = $value;
+			$this->privilegesId = $value;
 		} else if ($type == 'array') {
-			$this->privilegeId [$key] = $value;
+			$this->privilegesId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setPrivilegeId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setPrivilegesId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Privilege Identification  Value
+	 * Return Privileges Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getPrivilegeId($key, $type) {
+	public function getPrivilegesId($key, $type) {
 		if ($type == 'single') {
-			return $this->privilegeId;
+			return $this->privilegesId;
 		} else if ($type == 'array') {
-			return $this->privilegeId [$key];
+			return $this->privilegesId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getPrivilegeId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getPrivilegesId ?"));
 			exit();
 		}
 	}
@@ -337,18 +337,18 @@ class PrivilegeModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getPrivilegeName()
+	public function getPrivilegesName()
 	{
-	    return $this->privilegeName;
+	    return $this->privilegesName;
 	}
 
 	/**
 	 * 
-	 * @param $privilegeName
+	 * @param $privilegesName
 	 */
-	public function setPrivilegeName($privilegeName)
+	public function setPrivilegesName($privilegesName)
 	{
-	    $this->privilegeName = $privilegeName;
+	    $this->privilegesName = $privilegesName;
 	}
 }
 

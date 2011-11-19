@@ -3,21 +3,21 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is OrderDetails model file.This is to ensure strict setting enable for all variable enter to database
+ * this is OrdersDetails model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package OrderDetails
+ * @package OrdersDetails
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class OrderDetailsModel extends ValidationClass {
+class OrdersDetailsModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $orderDetailsId;
+	private $ordersDetailsId;
 
 	/**
 	 * @var int
@@ -30,23 +30,23 @@ class OrderDetailsModel extends ValidationClass {
 	/**
 	 * @var decimal
 	 */
-	private $orderDetailsQty;
+	private $ordersDetailsQty;
 	/**
 	 * @var date
 	 */
-	private $orderDetailsUnitPrice;
+	private $ordersDetailsUnitPrice;
 	/**
 	 * @var date
 	 */
-	private $orderDetailsDiscount;
+	private $ordersDetailsDiscount;
 	/**
 	 * @var date
 	 */
-	private $orderDetailsStatusId;
+	private $ordersDetailsStatusId;
 	/**
 	 * @var date
 	 */
-	private $orderDetailsDateAllocated;
+	private $ordersDetailsDateAllocated;
 	/**
 	 * @var date
 	 */
@@ -64,13 +64,13 @@ class OrderDetailsModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('orderDetails');
-		$this->setPrimaryKeyName('orderDetailsId');
+		$this->setTableName('ordersDetails');
+		$this->setPrimaryKeyName('ordersDetailsId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['orderDetailsId'])) {
-			$this->setOrderDetailsId($this->strict($_POST ['orderDetailsId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['ordersDetailsId'])) {
+			$this->setOrdersDetailsId($this->strict($_POST ['ordersDetailsId'], 'numeric'), 0, 'single');
 		}
 		if (isset($_POST ['ordersId'])) {
 			$this->setOrdersId($this->strict($_POST ['ordersId'], 'numeric'),0,'single');
@@ -78,20 +78,20 @@ class OrderDetailsModel extends ValidationClass {
 		if (isset($_POST ['productsId'])) {
 			$this->setProductsId($this->strict($_POST ['productsId'], 'numeric'),0,'single');
 		}
-		if (isset($_POST ['orderDetailsQty'])) {
-			$this->setOrderDetailsQty($this->strict($_POST ['orderDetailsQty'], 'float'));
+		if (isset($_POST ['ordersDetailsQty'])) {
+			$this->setOrdersDetailsQty($this->strict($_POST ['ordersDetailsQty'], 'float'));
 		}
-		if (isset($_POST ['orderDetailsUnitPrice'])) {
-			$this->setOrderDetailsUnitPrice($this->strict($_POST ['orderDetailsUnitPrice'], 'date'));
+		if (isset($_POST ['ordersDetailsUnitPrice'])) {
+			$this->setOrdersDetailsUnitPrice($this->strict($_POST ['ordersDetailsUnitPrice'], 'date'));
 		}
-		if (isset($_POST ['orderDetailsDiscount'])) {
-			$this->setOrderDetailsDiscount($this->strict($_POST ['orderDetailsDiscount'], 'float'));
+		if (isset($_POST ['ordersDetailsDiscount'])) {
+			$this->setOrdersDetailsDiscount($this->strict($_POST ['ordersDetailsDiscount'], 'float'));
 		}
-		if (isset($_POST ['orderDetailsStatusId'])) {
-			$this->setOrderDetailsStatusId($this->strict($_POST ['orderDetailsStatusId'], 'numeric'),0,'single');
+		if (isset($_POST ['ordersDetailsStatusId'])) {
+			$this->setOrdersDetailsStatusId($this->strict($_POST ['ordersDetailsStatusId'], 'numeric'),0,'single');
 		}
-		if (isset($_POST ['orderDetailsDateAllocated'])) {
-			$this->setOrderDetailsDateAllocated($this->strict($_POST ['orderDetailsDateAllocated'], 'date'));
+		if (isset($_POST ['ordersDetailsDateAllocated'])) {
+			$this->setOrdersDetailsDateAllocated($this->strict($_POST ['ordersDetailsDateAllocated'], 'date'));
 		}
 		if (isset($_POST ['purchaseOrdersId'])) {
 			$this->sePurchaseOrdersId($this->strict($_POST ['purchaseOrdersId'], 'numeric'),0,'single');
@@ -103,8 +103,8 @@ class OrderDetailsModel extends ValidationClass {
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['orderDetailsId'])) {
-			$this->setTotal(count($_GET ['orderDetailsId']));
+		if (isset($_GET ['ordersDetailsId'])) {
+			$this->setTotal(count($_GET ['ordersDetailsId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -154,8 +154,8 @@ class OrderDetailsModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['orderDetailsId'])) {
-				$this->setOrderDetailsId($this->strict($_GET ['orderDetailsId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['ordersDetailsId'])) {
+				$this->setOrdersDetailsId($this->strict($_GET ['ordersDetailsId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -220,7 +220,7 @@ class OrderDetailsModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getOrderDetailsId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getOrdersDetailsId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -354,35 +354,35 @@ class OrderDetailsModel extends ValidationClass {
 	}
 
 	/**
-	 * Set OrderDetails Identification  Value
+	 * Set OrdersDetails Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setOrderDetailsId($value, $key, $type) {
+	public function setOrdersDetailsId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->OrderDetailsId = $value;
+			$this->OrdersDetailsId = $value;
 		} else if ($type == 'array') {
-			$this->OrderDetailsId [$key] = $value;
+			$this->OrdersDetailsId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setOrderDetailsId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setOrdersDetailsId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return OrderDetails Identification  Value
+	 * Return OrdersDetails Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getOrderDetailsId($key, $type) {
+	public function getOrdersDetailsId($key, $type) {
 		if ($type == 'single') {
-			return $this->OrderDetailsId;
+			return $this->OrdersDetailsId;
 		} else if ($type == 'array') {
-			return $this->OrderDetailsId [$key];
+			return $this->OrdersDetailsId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getOrderDetailsId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getOrdersDetailsId ?"));
 			exit();
 		}
 	}
@@ -428,90 +428,90 @@ class OrderDetailsModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getOrderDetailsQty()
+	public function getOrdersDetailsQty()
 	{
-	    return $this->orderDetailsQty;
+	    return $this->ordersDetailsQty;
 	}
 
 	/**
 	 * 
-	 * @param $orderDetailsQty
+	 * @param $ordersDetailsQty
 	 */
-	public function setOrderDetailsQty($orderDetailsQty)
+	public function setOrdersDetailsQty($ordersDetailsQty)
 	{
-	    $this->orderDetailsQty = $orderDetailsQty;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getOrderDetailsUnitPrice()
-	{
-	    return $this->orderDetailsUnitPrice;
-	}
-
-	/**
-	 * 
-	 * @param $orderDetailsUnitPrice
-	 */
-	public function setOrderDetailsUnitPrice($orderDetailsUnitPrice)
-	{
-	    $this->orderDetailsUnitPrice = $orderDetailsUnitPrice;
+	    $this->ordersDetailsQty = $ordersDetailsQty;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getOrderDetailsDiscount()
+	public function getOrdersDetailsUnitPrice()
 	{
-	    return $this->orderDetailsDiscount;
+	    return $this->ordersDetailsUnitPrice;
 	}
 
 	/**
 	 * 
-	 * @param $orderDetailsDiscount
+	 * @param $ordersDetailsUnitPrice
 	 */
-	public function setOrderDetailsDiscount($orderDetailsDiscount)
+	public function setOrdersDetailsUnitPrice($ordersDetailsUnitPrice)
 	{
-	    $this->orderDetailsDiscount = $orderDetailsDiscount;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getOrderDetailsStatusId()
-	{
-	    return $this->orderDetailsStatusId;
-	}
-
-	/**
-	 * 
-	 * @param $orderDetailsStatusId
-	 */
-	public function setOrderDetailsStatusId($statusId)
-	{
-	    $this->statusId = $orderDetailsStatusId;
+	    $this->ordersDetailsUnitPrice = $ordersDetailsUnitPrice;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getOrderDetailsDateAllocated()
+	public function getOrdersDetailsDiscount()
 	{
-	    return $this->orderDetailsDateAllocated;
+	    return $this->ordersDetailsDiscount;
 	}
 
 	/**
 	 * 
-	 * @param $orderDetailsDateAllocated
+	 * @param $ordersDetailsDiscount
 	 */
-	public function setOrderDetailsDateAllocated($orderDetailsDateAllocated)
+	public function setOrdersDetailsDiscount($ordersDetailsDiscount)
 	{
-	    $this->orderDetailsDateAllocated = $orderDetailsDateAllocated;
+	    $this->ordersDetailsDiscount = $ordersDetailsDiscount;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getOrdersDetailsStatusId()
+	{
+	    return $this->ordersDetailsStatusId;
+	}
+
+	/**
+	 * 
+	 * @param $ordersDetailsStatusId
+	 */
+	public function setOrdersDetailsStatusId($statusId)
+	{
+	    $this->statusId = $ordersDetailsStatusId;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getOrdersDetailsDateAllocated()
+	{
+	    return $this->ordersDetailsDateAllocated;
+	}
+
+	/**
+	 * 
+	 * @param $ordersDetailsDateAllocated
+	 */
+	public function setOrdersDetailsDateAllocated($ordersDetailsDateAllocated)
+	{
+	    $this->ordersDetailsDateAllocated = $ordersDetailsDateAllocated;
 	}
 
 	/**

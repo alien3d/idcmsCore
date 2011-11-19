@@ -5,19 +5,19 @@ require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
-require_once ("../model/paymentModel.php");
+require_once ("../model/privilegesModel.php");
 
 /**
- * this is payment setting files.This sample template file for master record
+ * this is privileges setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package payment
- * @subpackage paymentv1,v2,v3,v4,v5
+ * @package privileges
+ * @subpackage privilegesv1,v2,v3,v4,v5
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class PaymentClass extends ConfigClass {
+class PrivilegesClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -99,7 +99,7 @@ class PaymentClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-		$this->model = new PaymentModel ();
+		$this->model = new PrivilegesModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -133,13 +133,10 @@ class PaymentClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `payment`
+			INSERT INTO `privileges`
 					(
-						`receiptNo`,												
-						`membershipId`,
-						`paymentType`,
-						`paymentDate`,
-						`paymentAmount`,
+						`privilegesName`,												
+
 						`isDefault`,
 						`isNew`,													`isDraft`,
 						`isUpdate`,													`isDelete`,
@@ -149,11 +146,7 @@ class PaymentClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
+						'" . $this->model->getPrivilegesName() . "',			
 															
 												'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -164,13 +157,9 @@ class PaymentClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [payment]
+			INSERT INTO [privileges]
 					(
-						[receiptNo],												
-						[membershipId],
-						[paymentType],
-						[paymentDate],
-						[paymentAmount],													
+						[privilegesName],																							
 						
 						[isDefault],
 						[isNew],														[isDraft],
@@ -181,11 +170,8 @@ class PaymentClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
+						'" . $this->model->getPrivilegesName() . "',
+				
 												'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
@@ -196,14 +182,11 @@ class PaymentClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	PAYMENT
+			INSERT INTO	PRIVELEGES
 					(
-						RECEIPTNO,												
-						MEMBERSHIPID,
-						PAYMENTTYPE,
-						PAYMENTDATE,
-						PAYMENTAMOUNT,
-																		ISDEFAULT,
+						PRIVELEGESNAME,												
+
+						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
 						ISACTIVE,													ISAPPROVED,
@@ -212,11 +195,8 @@ class PaymentClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
+						'" . $this->model->getPrivilegesName() . "',
+											
 											'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -226,13 +206,10 @@ class PaymentClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	PAYMENT
+			INSERT INTO	PRIVELEGES
 			(
-						RECEIPTNO,												
-						MEMBERSHIPID,
-						PAYMENTTYPE,
-						PAYMENTDATE,
-						PAYMENTAMOUNT,												ISDEFAULT,
+						PRIVELEGESNAME,												
+												ISDEFAULT,
 			ISNEW,														ISDRAFT,
 			ISUPDATE,													ISDELETE,
 			ISACTIVE,													ISAPPROVED,
@@ -241,11 +218,7 @@ class PaymentClass extends ConfigClass {
 			)
 			VALUES
 			(
-			'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
+						'" . $this->model->getPrivilegesName() . "',					
 											'" . $this->model->getIsDefault(0, 'single') . "',
 			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 			'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -255,13 +228,10 @@ class PaymentClass extends ConfigClass {
 			)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	PAYMENT
+			INSERT INTO	PRIVELEGES
 			(
-			RECEIPTNO,												
-						MEMBERSHIPID,
-						PAYMENTTYPE,
-						PAYMENTDATE,
-						PAYMENTAMOUNT,												ISDEFAULT,
+			PRIVELEGESNAME,												
+											ISDEFAULT,
 			ISNEW,														ISDRAFT,
 			ISUPDATE,													ISDELETE,
 			ISACTIVE,													ISAPPROVED,
@@ -270,11 +240,8 @@ class PaymentClass extends ConfigClass {
 			)
 			VALUES
 			(
-			'" . $this->model->getReceiptNo() . "',
-						'" . $this->model->getMembershipId() . "',
-						'" . $this->model->getPaymentType() . "',
-						'" . $this->model->getPaymentDate() . "',
-						'" . $this->model->getPaymentAmount() . "',					
+						'" . $this->model->getPrivilegesName() . "',
+											
 											'" . $this->model->getIsDefault(0, 'single') . "',
 			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 			'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -292,13 +259,13 @@ class PaymentClass extends ConfigClass {
 
 		$this->q->audit = $this->audit;
 		$this->q->create($sql);
-		$paymentId = $this->q->lastInsertId();
+		$privilegesId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "paymentId" => $paymentId));
+		echo json_encode(array("success" => true, "message" => "Record Created", "privilegesId" => $privilegesId));
 		exit();
 	}
 
@@ -310,15 +277,15 @@ class PaymentClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `payment`.`isActive`		=	1	";
+				$this->auditFilter = "	AND `privileges`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [payment].[isActive]		=	1	";
+				$this->auditFilter = "	AND [privileges].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
+				$this->auditFilter = "	AND PRIVELEGES.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
+				$this->auditFilter = "	AND PRIVELEGES.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
+				$this->auditFilter = "	AND PRIVELEGES.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 				exit();
@@ -347,84 +314,73 @@ class PaymentClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`payment`.`paymentId`,
-						`payment`.`receiptNo`,
-						`payment`.`membershipId`,
-						`payment`.`paymentType`,
-						`payment`.`paymentDate`,
-						`payment`.`paymentAmount`,
-						`payment`.`isDefault`,
-						`payment`.`isNew`,
-						`payment`.`isDraft`,
-						`payment`.`isUpdate`,
-						`payment`.`isDelete`,
-						`payment`.`isActive`,
-						`payment`.`isApproved`,
-						`payment`.`isReview`,
-						`payment`.`isPost`,
-						`payment`.`executeBy`,
-						`payment`.`executeTime`,
+			SELECT		`privileges`.`privilegesId`,
+						`privileges`.`privilegesName`,
+						`privileges`.`isDefault`,
+						`privileges`.`isNew`,
+						`privileges`.`isDraft`,
+						`privileges`.`isUpdate`,
+						`privileges`.`isDelete`,
+						`privileges`.`isActive`,
+						`privileges`.`isApproved`,
+						`privileges`.`isReview`,
+						`privileges`.`isPost`,
+						`privileges`.`executeBy`,
+						`privileges`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`payment`
+			FROM 	`privileges`
 			JOIN	`staff`
-			ON		`payment`.`executeBy` = `staff`.`staffId`
+			ON		`privileges`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getPaymentId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getPaymentId(0, 'single') . "'";
+			if ($this->model->getPrivilegesId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getPrivilegesId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[payment].[paymentId],
-						[payment].[receiptNo],
-						[payment].[membershipId],
-						[payment].[paymentType],
-						[payment].[paymentDate],
-						[payment].[paymentAmount],
-						[payment].[isDefault],
-						[payment].[isNew],
-						[payment].[isDraft],
-						[payment].[isUpdate],
-						[payment].[isDelete],
-						[payment].[isActive],
-						[payment].[isApproved],
-						[payment].[isReview],
-						[payment].[isPost],
-						[payment].[executeBy],
-						[payment].[executeTime],
+			SELECT	[privileges].[privilegesId],
+						[privileges].[privilegesName],
+						[privileges].[isDefault],
+						[privileges].[isNew],
+						[privileges].[isDraft],
+						[privileges].[isUpdate],
+						[privileges].[isDelete],
+						[privileges].[isActive],
+						[privileges].[isApproved],
+						[privileges].[isReview],
+						[privileges].[isPost],
+						[privileges].[executeBy],
+						[privileges].[executeTime],
 						[staff].[staffName]
-			FROM 	[payment]
+			FROM 	[privileges]
 			JOIN		[staff]
-			ON		[payment].[executeBy] = [staff].[staffId]
+			ON		[privileges].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getPaymentId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getPaymentId(0, 'single') . "'";
+			if ($this->model->getPrivilegesId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getPrivilegesId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		PAYMENT.PAYMENTID   		 	AS 	\"paymentId\",
-						PAYMENT.RECEIPTNO 				AS 	\"receiptNo\",
-						PAYMENT.MEMBERSHIPID 			AS 	\"membershipId\",
-						PAYMENT.PAYMENTTYPE 			AS 	\"paymentType\",
-						PAYMENT.PAYMENTDATE 			AS 	\"paymentDate\",
-						PAYMENT.PAYMENTAMOUNT 			AS 	\"paymentAmount\",
-						PAYMENT.ISDEFAULT    			AS	\"isDefault\",
-						PAYMENT.ISNEW		  			AS	\"isNew\",
-						PAYMENT.ISDRAFT	  				AS	\"isDraft\",
-						PAYMENT.ISUPDATE     			AS	\"isUpdate\",
-						PAYMENT.ISDELETE	  			AS	\"isDelete\",
-						PAYMENT.ISACTIVE	  			AS	\"isActive\",
-						PAYMENT.ISAPPROVED   			AS	\"isApproved\",
-						PAYMENT.ISREVIEW	  			AS	\"isReview\",
-						PAYMENT.ISPOST  	  			AS	\"isPost\",
-						PAYMENT.EXECUTEBY    			AS	\"executeBy\",
-						PAYMENT.EXECUTETIME  			AS	\"executeTime\",
+			SELECT		PRIVELEGES.PRIVELEGESID   		 	AS 	\"privilegesId\",
+						PRIVELEGESNAME 					AS 	\"privilegesName\",
+
+						PRIVELEGES.ISDEFAULT    			AS	\"isDefault\",
+						PRIVELEGES.ISNEW		  			AS	\"isNew\",
+						PRIVELEGES.ISDRAFT	  				AS	\"isDraft\",
+						PRIVELEGES.ISUPDATE     			AS	\"isUpdate\",
+						PRIVELEGES.ISDELETE	  			AS	\"isDelete\",
+						PRIVELEGES.ISACTIVE	  			AS	\"isActive\",
+						PRIVELEGES.ISAPPROVED   			AS	\"isApproved\",
+						PRIVELEGES.ISREVIEW	  			AS	\"isReview\",
+						PRIVELEGES.ISPOST  	  			AS	\"isPost\",
+						PRIVELEGES.EXECUTEBY    			AS	\"executeBy\",
+						PRIVELEGES.EXECUTETIME  			AS	\"executeTime\",
 						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		PAYMENT
+			FROM 		PRIVELEGES
 			JOIN		STAFF
-			ON			PAYMENT.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			PRIVELEGES.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getPaymentId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getPaymentId(0, 'single') . "'";
+			if ($this->model->getPrivilegesId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getPrivilegesId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -440,13 +396,13 @@ class PaymentClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('paymentId');
+		$filterArray = array('privilegesId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('payment');
+		$tableArray = array('privileges');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -537,33 +493,29 @@ class PaymentClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [paymentDerived] AS
+							WITH [privilegesDerived] AS
 							(
-								SELECT 		[payment].[paymentId],
-											[payment].[receiptNo],
-											[payment].[membershipId],
-											[payment].[paymentType],
-											[payment].[paymentDate],
-											[payment].[paymentAmount],
-											[payment].[isDefault],
-											[payment].[isNew],
-											[payment].[isDraft],
-											[payment].[isUpdate],
-											[payment].[isDelete],
-											[payment].[isApproved],
-											[payment].[isReview],
-											[payment].[isPost],
-											[payment].[executeBy],
-											[payment].[executeTime],
+								SELECT 		[privileges].[privilegesId],
+											[privileges].[privilegesName],
+											[privileges].[isDefault],
+											[privileges].[isNew],
+											[privileges].[isDraft],
+											[privileges].[isUpdate],
+											[privileges].[isDelete],
+											[privileges].[isApproved],
+											[privileges].[isReview],
+											[privileges].[isPost],
+											[privileges].[executeBy],
+											[privileges].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [paymentId]) AS 'RowNumber'
-								FROM 	[payment]
+								ROW_NUMBER() OVER (ORDER BY [privilegesId]) AS 'RowNumber'
+								FROM 	[privileges]
 								JOIN		[staff]
-								ON		[payment].[executeBy] = [staff].[staffId]
+								ON		[privileges].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[paymentDerived]
+							FROM 		[privilegesDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -576,27 +528,23 @@ class PaymentClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	PAYMENT.PAYMENTID   		AS 	\"paymentId\",
-										PAYMENT.RECEIPTNO 			AS 	\"receiptNo\",
-										PAYMENT.MEMBERSHIPID 		AS 	\"membershipId\",
-										PAYMENT.PAYMENTTYPE 		AS 	\"paymentType\",
-										PAYMENT.PAYMENTDATE 		AS 	\"paymentDate\",
-										PAYMENT.PAYMENTAMOUNT 		AS 	\"paymentAmount\",
-										PAYMENT.ISDEFAULT    		AS	\"isDefault\",
-										PAYMENT.ISNEW		  		AS	\"isNew\",
-										PAYMENT.ISDRAFT	 			AS	\"isDraft\",
-										PAYMENT.ISUPDATE     		AS	\"isUpdate\",
-										PAYMENT.ISDELETE	  		AS	\"isDelete\",
-										PAYMENT.ISACTIVE	  		AS	\"isActive\",
-										PAYMENT.ISAPPROVED   		AS	\"isApproved\",
-										PAYMENT.ISREVIEW	  		AS 	\"isReview\",
-										PAYMENT.ISPOST		  		AS	\"isPost\",
-										PAYMENT.EXECUTEBY    		AS	\"executeBy\",
-										PAYMENT.EXECUTETIME  		AS	\"executeTime\",
+								SELECT	PRIVELEGES.PRIVELEGESID   		AS 	\"privilegesId\",
+										PRIVELEGES.PRIVELEGESNAME			AS 	\"privilegesName\",
+										PRIVELEGES.ISDEFAULT    		AS	\"isDefault\",
+										PRIVELEGES.ISNEW		  		AS	\"isNew\",
+										PRIVELEGES.ISDRAFT	 			AS	\"isDraft\",
+										PRIVELEGES.ISUPDATE     		AS	\"isUpdate\",
+										PRIVELEGES.ISDELETE	  		AS	\"isDelete\",
+										PRIVELEGES.ISACTIVE	  		AS	\"isActive\",
+										PRIVELEGES.ISAPPROVED   		AS	\"isApproved\",
+										PRIVELEGES.ISREVIEW	  		AS 	\"isReview\",
+										PRIVELEGES.ISPOST		  		AS	\"isPost\",
+										PRIVELEGES.EXECUTEBY    		AS	\"executeBy\",
+										PRIVELEGES.EXECUTETIME  		AS	\"executeTime\",
 										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	PAYMENT
+								FROM 	PRIVELEGES
 								JOIN	STAFF
-								ON		PAYMENT.EXECUTEBY 	  	=	STAFF.STAFFID
+								ON		PRIVELEGES.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -625,7 +573,7 @@ class PaymentClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getPaymentId(0, 'single'))) {
+		if (!($this->model->getPrivilegesId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -636,8 +584,8 @@ class PaymentClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getPaymentId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getPaymentId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getPaymentId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getPrivilegesId(0, 'single')) {
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getPrivilegesId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getPrivilegesId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -672,27 +620,27 @@ class PaymentClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 			exit();
@@ -705,12 +653,8 @@ class PaymentClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`payment`
-				SET 		`receiptNo`		=	'" . $this->model->getReceiptNo() . "',
-							`membershipId`		=	'" . $this->model->getMembershipId() . "',
-							`paymentType`		=	'" . $this->model->getPaymentType() . "',
-							`paymentDate`		=	'" . $this->model->getPaymentDate() . "',
-							`paymentAmount`		=	'" . $this->model->getPaymentAmount() . "',				
+				UPDATE		`privileges`
+				SET			`privilegesName`		=	'" . $this->model->getPrivilegesName() . "',				
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -722,15 +666,12 @@ class PaymentClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`paymentId`		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 		`privilegesId`		=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[payment]
-				SET 		[receiptNo]		=	'" . $this->model->getReceiptNo() . "',
-							[membershipId]		=	'" . $this->model->getMembershipId() . "',
-							[paymentType]		=	'" . $this->model->getPaymentType() . "',
-							[paymentDate]		=	'" . $this->model->getPaymentDate() . "',
-							[paymentAmount]		=	'" . $this->model->getPaymentAmount() . "',	
+				UPDATE 		[privileges]
+				SET
+							[privilegesName]		=	'" . $this->model->getPrivilegesName() . "',	
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -742,15 +683,12 @@ class PaymentClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[paymentId]			=	'" . $this->model->getPaymentId(0, 'single') . "'";
+			WHERE 		[privilegesId]			=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		PAYMENT
-				SET 		RECEIPTNO	=	'" . $this->model->getReceiptNo() . "',
-							MEMBERSHIPID		=	'" . $this->model->getMembershipId() . "',
-							PAYMENTTYPE		=	'" . $this->model->getPaymentType() . "',
-							PAYMENTDATE		=	'" . $this->model->getPaymentDate() . "',
-							PAYMENTAMOUNT		=	'" . $this->model->getPaymentAmount() . "',									
+				UPDATE		PRIVELEGES
+				SET 
+							PRIVELEGESNAME		=	'" . $this->model->getPrivilegesName() . "',									
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -762,15 +700,11 @@ class PaymentClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+			WHERE 		PRIVELEGESID		=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE	PAYMENT
-			SET 			RECEIPTNO	=	'" . $this->model->getReceiptNo() . "',
-							MEMBERSHIPID		=	'" . $this->model->getMembershipId() . "',
-							PAYMENTTYPE		=	'" . $this->model->getPaymentType() . "',
-							PAYMENTDATE		=	'" . $this->model->getPaymentDate() . "',
-							PAYMENTAMOUNT		=	'" . $this->model->getPaymentAmount() . "',
+			UPDATE	PRIVELEGES
+			SET 			PRIVELEGESNAME		=	'" . $this->model->getPrivilegesName() . "',	
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -782,15 +716,11 @@ class PaymentClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+			WHERE 		PRIVELEGESID		=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE		PAYMENT
-				SET 		RECEIPTNO	=	'" . $this->model->getReceiptNo() . "',
-							MEMBERSHIPID		=	'" . $this->model->getMembershipId() . "',
-							PAYMENTTYPE		=	'" . $this->model->getPaymentType() . "',
-							PAYMENTDATE		=	'" . $this->model->getPaymentDate() . "',
-							PAYMENTAMOUNT		=	'" . $this->model->getPaymentAmount() . "',
+				UPDATE		PRIVELEGES
+				SET 		PRIVELEGESNAME		=	'" . $this->model->getPrivilegesName() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -802,7 +732,7 @@ class PaymentClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		PAYMENTID			=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 		PRIVELEGESID			=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 				exit();
@@ -812,7 +742,7 @@ class PaymentClass extends ConfigClass {
 			 */
 			$this->q->tableName = $this->model->getTableName();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getPaymentId(0, 'single');
+			$this->q->primaryKeyValue = $this->model->getPrivilegesId(0, 'single');
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -843,27 +773,27 @@ class PaymentClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPaymentId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPrivilegesId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 			exit();
@@ -876,7 +806,7 @@ class PaymentClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`payment`
+				UPDATE 	`privileges`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -888,10 +818,10 @@ class PaymentClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`paymentId`		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	`privilegesId`		=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[payment]
+				UPDATE 	[privileges]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -903,10 +833,10 @@ class PaymentClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[paymentId]		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	[privilegesId]		=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE 	PAYMENT
+				UPDATE 	PRIVELEGES
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -918,10 +848,10 @@ class PaymentClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	PRIVELEGESID		=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE 	PAYMENT
+				UPDATE 	PRIVELEGES
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -933,10 +863,10 @@ class PaymentClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	PRIVELEGESID		=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE 	PAYMENT
+				UPDATE 	PRIVELEGES
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -948,7 +878,7 @@ class PaymentClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	PAYMENTID		=	'" . $this->model->getPaymentId(0, 'single') . "'";
+				WHERE 	PRIVELEGESID		=	'" . $this->model->getPrivilegesId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
 				exit();
@@ -956,7 +886,7 @@ class PaymentClass extends ConfigClass {
 			// advance logging future
 			$this->q->tableName = $this->model->getTableName();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getPaymentId(0, 'single');
+			$this->q->primaryKeyValue = $this->model->getPrivilegesId(0, 'single');
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -1032,7 +962,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getPrivilegesId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1056,7 +986,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getPrivilegesId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1080,7 +1010,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getPrivilegesId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1104,7 +1034,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getPrivilegesId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1128,7 +1058,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getPrivilegesId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1152,7 +1082,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getPrivilegesId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1176,7 +1106,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+							WHEN '" . $this->model->getPrivilegesId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1200,7 +1130,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+                            WHEN '" . $this->model->getPrivilegesId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1224,7 +1154,7 @@ class PaymentClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getPaymentId($i, 'array') . "'
+                                WHEN '" . $this->model->getPrivilegesId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1282,33 +1212,33 @@ class PaymentClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`receiptNo`
-			FROM 	`payment`
-			WHERE 	`receiptNo` 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	`privilegesName`
+			FROM 	`privileges`
+			WHERE 	`privilegesName` 	= 	'" . $this->model->getPrivilegesName() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[receiptNo]
-			FROM 	[payment]
-			WHERE 	[receiptNo] 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	[privilegesName]
+			FROM 	[privileges]
+			WHERE 	[privilegesName] 	= 	'" . $this->model->getPrivilegesName() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	RECEIPTNO
-			FROM 	PAYMENT
-			WHERE 	RECEIPTNO 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	PRIVELEGESNAME
+			FROM 	PRIVELEGES
+			WHERE 	PRIVELEGESNAME 	= 	'" . $this->model->getPrivilegesName() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			SELECT	RECEIPTNO
-			FROM 	PAYMENT
-			WHERE 	RECEIPTNO 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	PRIVELEGESNAME
+			FROM 	PRIVELEGES
+			WHERE 	PRIVELEGESNAME 	= 	'" . $this->model->getPrivilegesName() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			SELECT	RECEIPTNO
-			FROM 	PAYMENT
-			WHERE 	RECEIPTNO 	= 	'" . $this->model->getReceiptNo() . "'
+			SELECT	PRIVELEGESNAME
+			FROM 	PRIVELEGES
+			WHERE 	PRIVELEGESNAME 	= 	'" . $this->model->getPrivilegesName() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
@@ -1323,7 +1253,7 @@ class PaymentClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "paymentDesc" => $row ['paymentDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "privilegesDesc" => $row ['privilegesDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
@@ -1390,7 +1320,7 @@ class PaymentClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['paymentDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['privilegesDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1399,7 +1329,7 @@ class PaymentClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "payment" . rand(0, 10000000) . ".xlsx";
+		$filename = "privileges" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1415,7 +1345,7 @@ class PaymentClass extends ConfigClass {
 
 }
 
-$paymentObject = new PaymentClass ();
+$privilegesObject = new PrivilegesClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1425,59 +1355,59 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$paymentObject->setLeafId($_POST ['leafId']);
+		$privilegesObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$paymentObject->setIsAdmin($_POST ['isAdmin']);
+		$privilegesObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$paymentObject->setStart($_POST ['start']);
+		$privilegesObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$paymentObject->setLimit($_POST ['perPage']);
+		$privilegesObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$paymentObject->setFieldQuery($_POST ['query']);
+		$privilegesObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$paymentObject->setGridQuery($_POST ['filter']);
+		$privilegesObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$paymentObject->setOrder($_POST ['order']);
+		$privilegesObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$paymentObject->setSortField($_POST ['sortField']);
+		$privilegesObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$paymentObject->execute();
+	$privilegesObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$paymentObject->create();
+		$privilegesObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$paymentObject->update();
+		$privilegesObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$paymentObject->read();
+		$privilegesObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$paymentObject->delete();
+		$privilegesObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1485,35 +1415,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$paymentObject->setLeafId($_GET ['leafId']);
+		$privilegesObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$paymentObject->setIsAdmin($_GET ['isAdmin']);
+		$privilegesObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$paymentObject->execute();
+	$privilegesObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$paymentObject->staff();
+			$privilegesObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$paymentObject->updateStatus();
+		$privilegesObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['paymentDesc'])) {
-		if (strlen($_GET ['paymentDesc']) > 0) {
-			$paymentObject->duplicate();
+	if (isset($_GET ['privilegesDesc'])) {
+		if (strlen($_GET ['privilegesDesc']) > 0) {
+			$privilegesObject->duplicate();
 		}
 	}
 	/**
@@ -1521,16 +1451,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$paymentObject->firstRecord('json');
+			$privilegesObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$paymentObject->previousRecord('json', 0);
+			$privilegesObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$paymentObject->nextRecord('json', 0);
+			$privilegesObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$paymentObject->lastRecord('json');
+			$privilegesObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1538,7 +1468,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$paymentObject->excel();
+			$privilegesObject->excel();
 		}
 	}
 }
