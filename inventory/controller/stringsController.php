@@ -250,7 +250,7 @@ class StringsClass extends ConfigClass {
 			'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		//advance logging future
@@ -265,7 +265,7 @@ class StringsClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "stringsId" => $stringsId));
+		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "stringsId" => $stringsId));
 		exit();
 	}
 
@@ -287,7 +287,7 @@ class StringsClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	AND STRINGS.ISACTIVE	=	1	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		} else if ($this->isAdmin == 1) {
@@ -302,7 +302,7 @@ class StringsClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	1	=	1 	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -389,7 +389,7 @@ class StringsClass extends ConfigClass {
 		} else if ($this->q->vendor == self::POSTGRESS) {
 
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -419,7 +419,7 @@ class StringsClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -440,7 +440,7 @@ class StringsClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->searching();
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -471,7 +471,7 @@ class StringsClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -569,7 +569,7 @@ class StringsClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -646,13 +646,13 @@ class StringsClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getStringsId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
@@ -741,7 +741,7 @@ class StringsClass extends ConfigClass {
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 				WHERE 		STRINGSID			=	'" . $this->model->getStringsId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 			/*
@@ -758,7 +758,7 @@ class StringsClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Updated"));
+		echo json_encode(array(	"success" => true,"message" => $this->systemString->getUpdateMessage(),"time"=>$time));
 		exit();
 	}
 
@@ -802,13 +802,13 @@ class StringsClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getStringsId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
@@ -887,7 +887,7 @@ class StringsClass extends ConfigClass {
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
 				WHERE 	STRINGSID		=	'" . $this->model->getStringsId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 			// advance logging future
@@ -938,7 +938,7 @@ class StringsClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		
@@ -965,7 +965,7 @@ class StringsClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -989,7 +989,7 @@ class StringsClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1013,7 +1013,7 @@ class StringsClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1037,7 +1037,7 @@ class StringsClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1061,7 +1061,7 @@ class StringsClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1085,7 +1085,7 @@ class StringsClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1109,7 +1109,7 @@ class StringsClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1133,7 +1133,7 @@ class StringsClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1157,7 +1157,7 @@ class StringsClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1186,7 +1186,7 @@ class StringsClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1248,7 +1248,7 @@ class StringsClass extends ConfigClass {
 			WHERE 	STRINGSDATA 	= 	'" . $this->model->getStringsData() . "'
 			AND		ISACTIVE		=	1";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->read($sql);

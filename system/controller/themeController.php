@@ -101,7 +101,7 @@ class ThemeClass  extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -124,7 +124,7 @@ class ThemeClass  extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if($this->getVendor() == self::MYSQL) {
-			
+
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
@@ -253,7 +253,7 @@ class ThemeClass  extends ConfigClass {
 
 			}
 		}
-		
+
 		$items=array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
@@ -549,13 +549,13 @@ class ThemeClass  extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if($this->getVendor() == self::MYSQL) {
-			
+
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$this->model->update();
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
@@ -615,9 +615,9 @@ class ThemeClass  extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-        $time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array(	"success"=>true,
+		array(	"success"=>true,
 					"message"=>$this->systemString->getUpdateMessage(),
 					"time"=>$time));
 		exit();
@@ -629,13 +629,13 @@ class ThemeClass  extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if($this->getVendor() == self::MYSQL) {
-			
+
 			$sql="SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$this->model->delete();
 		if($this->getVendor() == self::MYSQL) {
 			$sql="
@@ -686,9 +686,9 @@ class ThemeClass  extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-        $time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array(	"success"=>true,
+		array(	"success"=>true,
 					"message"=>$this->systemString->getDeleteMessage(),
 					"time"=>$time));
 		exit();
@@ -701,12 +701,12 @@ class ThemeClass  extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
@@ -990,9 +990,9 @@ class ThemeClass  extends ConfigClass {
 			$message = $this->systemString->getDeleteMessage();
 		}
 		$end = microtime(true);
-        $time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $message,
             		"time" => $time));
 		exit();
@@ -1004,7 +1004,7 @@ class ThemeClass  extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1208,6 +1208,9 @@ class ThemeClass  extends ConfigClass {
                         $objWriter->save($path);
                         $file = fopen($path, 'r');
                         if ($file) {
+                        	$this->q->commit();
+                        	$end = microtime(true);
+                        	$time = $end - $start;
                         	echo json_encode(array(
                 "success" => true,
                 "message" => $this->systemString->getFileGenerateMessage(),
@@ -1215,11 +1218,14 @@ class ThemeClass  extends ConfigClass {
                         	));
                         	exit();
                         } else {
+                        	$this->q->commit();
+                        	$end = microtime(true);
+                        	$time = $end - $start;
                         	echo json_encode(array(
                 "success" => false,
                 "message" => $this->systemString->getFileNotGenerateMessage()
-                ));
-                exit();
+                        	));
+                        	exit();
                         }
 	}
 

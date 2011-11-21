@@ -161,8 +161,8 @@ class TableMappingTranslateClass extends ConfigClass {
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
 						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getIsReview ( 0, 'single' ) . "',
-						'" . $this->model->getIsPost ( 0, 'single' ) . "',				'" . $this->model->getExecuteBy () . "',
-						" . $this->model->getExecuteTime () . "
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',				2,
+						'".date("Y-m-d H:i:s")."'
 					);";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
@@ -200,8 +200,8 @@ class TableMappingTranslateClass extends ConfigClass {
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							'" . $this->model->getIsApproved ( 0, 'single' ) . "',			'" . $this->model->getIsReview ( 0, 'single' ) . "',
-						'" . $this->model->getIsPost ( 0, 'single' ) . "',					'" . $this->model->getExecuteBy () . "',
-							" . $this->model->getExecuteTime () . "
+							'" . $this->model->getIsPost ( 0, 'single' ) . "',					2,
+							'".date("Y-m-d H:i:s")."'
 			)";
 		}
 		$this->q->create ( $sql );

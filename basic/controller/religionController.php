@@ -109,7 +109,7 @@ class ReligionClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -304,7 +304,7 @@ class ReligionClass extends ConfigClass {
 			}
 		}
 
-		
+
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -1367,10 +1367,13 @@ class ReligionClass extends ConfigClass {
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
 		$filename = "religion" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
-		$this->documentTrail->create_trail($this->leafId, $path, $filename);
+		$this->documentTrail->create_trail($this->getLeafId(), $path, $filename);
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
+			$this->q->commit();
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 			array(	"success" =>true,
             			"message" => $this->systemString->getFileGenerateMessage(), 
@@ -1378,6 +1381,9 @@ class ReligionClass extends ConfigClass {
             			"time"=>$time));
 			exit();
 		} else {
+			$this->q->commit();
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(
 			array(	"success" => false,
             				"message" => $this->systemString->getFileNotGenerateMessage(),

@@ -19,6 +19,26 @@ class MembershipModel extends ValidationClass {
 	 */
 	private $membershipId;
 
+	/**
+	 * @var int
+	 */
+	private $religionId;
+	/**
+	 * @var int
+	 */
+	private $raceId;
+	/**
+	 * @var int
+	 */
+	private $departmentId;
+		/**
+	 * @var int
+	 */
+	private $divisionId;
+	/**
+	 * @var int
+	 */
+	private $teamId;
 
 	/**
 	 * @var float
@@ -76,6 +96,7 @@ class MembershipModel extends ValidationClass {
 	 * @var string
 	 */
 	private $membershipEmail;
+	
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -92,6 +113,19 @@ class MembershipModel extends ValidationClass {
 		 */
 		if (isset($_POST ['membershipId'])) {
 			$this->setMembershipId($this->strict($_POST ['membershipId'], 'numeric'), 0, 'single');
+		}
+		if (isset($_POST ['raceId'])) {
+			$this->setRaceId($this->strict($_POST ['raceId'], 'numeric'));
+		}
+
+		if (isset($_POST ['religionId'])) {
+			$this->setReligionId($this->strict($_POST ['religionId'], 'numeric'));
+		}
+		if (isset($_POST ['departmentId'])) {
+			$this->setDepartmentId($this->strict($_POST ['departmentId'], 'numeric'));
+		}
+		if (isset($_POST ['divisionId'])) {
+			$this->setDivisionId($this->strict($_POST ['divisionId'], 'numeric'));
 		}
 		if (isset($_POST ['membershipDesc'])) {
 			$this->setMembershipDesc($this->strict($_POST ['membershipDesc'], 'memo'));

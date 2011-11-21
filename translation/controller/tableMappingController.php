@@ -151,25 +151,26 @@ class TableMappingClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `tableMapping`
 					(
-						`moduleId`,							`iconId`,
-						`tableMappingSequence`,					`tableMappingCode`,
-						`tableMappingPath`,						`tableMappingNote`,
-						`isDefault`,						`isNew`,
-						`isDraft`,							`isUpdate`,
-						`isDelete`,							`isActive`,
-						`isApproved`,						`executeBy`,
+						
+						INSERT INTO `tablemapping`(
+						`tableMappingId`, 											`tableMappingName`, 
+						`tableMappingColumnName`, 									`tableMappingEnglish`, 
+						`isDefault`, 												`isNew`, 
+						`isDraft`, 													`isUpdate`, 
+						`isDelete`, 												`isActive`, 
+						`isApproved`, 												`isReview`, 
+						`isPost`, 													`executeBy`, 
 						`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getModuleId () . "',						'" . $this->model->getIconId () . "',
-						'" . $this->model->gettableMappingSequence () . "', 				'" . $this->model->gettableMappingCode () . "',
-						'" . $this->model->gettableMappingPath () . "'	,				'" . $this->model->gettableMappingNote () . "',
+						null,														'" . $this->model->getTableMappingName() . "',
+						'" . $this->model->getTableMappingColumnName() . "', 		'" . $this->model->getTableMappingEnglish() . "',
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
-						'" . $this->model->getIsDraft ( 0, 'single' ) . "',		'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
+						'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
-						'" . $this->model->getIsApproved ( 0, 'single' ) . "',	'" . $this->model->getIsReview ( 0, 'single' ) . "',
-						'" . $this->model->getIsPost ( 0, 'single' ) . "',		'" . $this->model->getExecuteBy () . "',
+						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getIsReview ( 0, 'single' ) . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',			'" . $this->model->getExecuteBy () . "',
 						" . $this->model->getExecuteTime () . "
 
 
@@ -178,49 +179,47 @@ class TableMappingClass extends ConfigClass {
 			$sql = "
 			INSERT INTO [tableMapping]
 					(
-						[moduleId],							[iconId],
-						[tableMappingSequence],					[tableMappingCode],
-						[tableMappingPath],						[tableMappingNote],
-						[isDefault],						[isNew],
-						[isDraft],							[isUpdate],
-						[isDelete],							[isActive],
-						[isApproved],						[executeBy],
+						[tableMappingId], 											[tableMappingName], 
+						[tableMappingColumnName], 									[tableMappingEnglish], 
+						[isDefault], 												[isNew], 
+						[isDraft], 													[isUpdate], 
+						[isDelete], 												[isActive], 
+						[isApproved], 												[isReview], 
+						[isPost], 													[executeBy], 
 						[executeTime]
 				)
 			VALUES
 				(
-						'" . $this->model->getModuleId () . "',						'" . $this->model->getIconId () . "',
-						'" . $this->model->gettableMappingSequence () . "', 			'" . $this->model->gettableMappingCode () . "',
-						'" . $this->model->gettableMappingPath () . "'	,			'" . $this->model->gettableMappingNote () . "',
-						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
+						null,														'" . $this->model->getTableMappingName() . "',
+						'" . $this->model->getTableMappingColumnName() . "', 		'" . $this->model->getTableMappingEnglish() . "',
+						'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
 						'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getIsReview ( 0, 'single' ) . "',
-						'" . $this->model->getIsPost ( 0, 'single' ) . "',		'" . $this->model->getExecuteBy () . "',
+						'" . $this->model->getIsPost ( 0, 'single' ) . "',			'" . $this->model->getExecuteBy () . "',
 						" . $this->model->getExecuteTime () . "
-
-					);";
+				
+				);";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 			INSERT INTO 	TABLEMAPPING
 						(
-							MODULEID,							ICONID,
-							TABLEMAPPINGSEQUENCE,			TABLEMAPPINNGCODE,
-							TABLEMAPPINGPATH,				TABLEMAPPINGNOTE,
-							ISDEFAULT,						ISNEW,
-							ISDRAFT,						ISUPDATE,
-							ISDELETE,						ISACTIVE,
-							ISAPPROVED,						EXECUTEBY,
+							TABLEMAPPINGID, 											TABLEMAPPINGNAME, 
+							TABLEMAPPINGCOLUMNNAME, 									TABLEMAPPINGENGLISH, 
+							ISDEFAULT, 													ISNEW, 
+							ISDRAFT, 													ISUPDATE, 
+							ISDELETE, 													ISACTIVE, 
+							ISAPPROVED, 												ISREVIEW, 
+							ISPOST, 													EXECUTEBY, 
 							EXECUTETIME
 				VALUES	(
-							'" . $this->model->getModuleId () . "',						'" . $this->model->getIconId () . "',
-							'" . $this->model->gettableMappingSequence () . "', 			'" . $this->model->gettableMappingCode () . "',
-							'" . $this->model->gettableMappingPath () . "'	,			'" . $this->model->gettableMappingNote () . "',
-							'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
+							null,														'" . $this->model->getTableMappingName() . "',
+							'" . $this->model->getTableMappingColumnName() . "', 		'" . $this->model->getTableMappingEnglish() . "',
+							'" . $this->model->getIsDefault ( 0, 'single' ) . "',		'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',			'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							'" . $this->model->getIsDelete ( 0, 'single' ) . "',		'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							'" . $this->model->getIsApproved ( 0, 'single' ) . "',		'" . $this->model->getIsReview ( 0, 'single' ) . "',
-							'" . $this->model->getIsPost ( 0, 'single' ) . "',		'" . $this->model->getExecuteBy () . "',
+							'" . $this->model->getIsPost ( 0, 'single' ) . "',			'" . $this->model->getExecuteBy () . "',
 							" . $this->model->getExecuteTime () . "
 
 					)";
