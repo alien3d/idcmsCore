@@ -43,6 +43,7 @@ Ext.onReady(function() {
             leafId: leafIdTemp
         },
         root: 'staff',
+        id:'staffId',
         fields: [{
             name: 'staffId',
             type: 'int'

@@ -1018,7 +1018,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+				echo json_encode(array(	"success" => true,"message" => $this->systemString->getDeleteMessage(),"time"=>$time));
 		exit();
 	}
 

@@ -12,7 +12,7 @@ require_once ("../../class/classValidation.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ReligionModel extends ValidationClass {
+class ReligionSampleModel extends ValidationClass {
 
     /**
      * @var int 

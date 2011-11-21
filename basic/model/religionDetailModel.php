@@ -8,11 +8,12 @@ require_once ("../../class/classValidation.php");
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package religionDetail
+ * @package sample
+ * @subpackage religionDetail
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ReligionDetailModel extends ValidationClass {
+class ReligionDetailSampleModel extends ValidationClass {
 
     /**
      * @var int

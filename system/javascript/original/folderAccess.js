@@ -43,6 +43,7 @@ Ext.onReady(function() {
             isAdmin:isAdmin
         },
         root: 'staff',
+        id:'staffId',
         fields: [{
             name: 'staffId',
             type: 'int'

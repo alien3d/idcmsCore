@@ -147,7 +147,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `tableMappingTranslate`
 					(
-						`defautlLabel`,														`tableMappingTranslationTranslationEnglish`
+						`defautlLabel`,														`tableMappingNative`
 						`isDefault`,															`isNew`,
 						`isDraft`,																`isUpdate`,
 						`isDelete`,															`isActive`,
@@ -156,7 +156,7 @@ class TableMappingTranslateClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDefaultLabelText () . "',				'" . $this->model->getTableMappingTranslationTranslationEnglish () . "'
+						'" . $this->model->getDefaultLabelText () . "',				'" . $this->model->gettableMappingNative () . "'
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',			'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -168,7 +168,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			$sql = "
 			INSERT INTO [tableMappingTranslate]
 					(
-						[tableMappingTranslationTranslation],							[tableMappingTranslationTranslationEnglish]
+						[tableMappingTranslationTranslation],							[tableMappingNative]
 						[isDefault],
 						[isNew],							[isDraft],
 						[isUpdate],							[isDelete],
@@ -177,7 +177,7 @@ class TableMappingTranslateClass extends ConfigClass {
 				)
 			VALUES
 				(
-						'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
+						'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingNative () . "',
 						'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
 						'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 						'" . $this->model->getIsDelete ( 0, 'single' ) . "',				'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -195,7 +195,7 @@ class TableMappingTranslateClass extends ConfigClass {
 							ISAPPROVED,								EXECUTEBY,
 							EXECUTETIME
 				VALUES	(
-							'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
+							'" . $this->model->getTableMappingTranslationTranslation () . "',						'" . $this->model->gettableMappingNative () . "',
 							'" . $this->model->getIsDefault ( 0, 'single' ) . "',				'" . $this->model->getIsNew ( 0, 'single' ) . "',
 							'" . $this->model->getIsDraft ( 0, 'single' ) . "',				'" . $this->model->getIsUpdate ( 0, 'single' ) . "',
 							'" . $this->model->getIsDelete ( 0, 'single' ) . "',			'" . $this->model->getIsActive ( 0, 'single' ) . "',
@@ -435,7 +435,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			$sql = "
 					UPDATE 	`tableMappingTranslate`
 					SET 	`tableMappingTranslationTranslationNote`	=	'" . $this->model->getTableMappingTranslationTranslationNote () . "',
-							`tableMappingTranslationTranslationEnglish`	=	'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
+							`tableMappingNative`	=	'" . $this->model->gettableMappingNative () . "',
 							`isDefault`									=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							`isActive`									=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							`isNew`										=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -450,7 +450,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			$sql = "
 					UPDATE 	[tableMappingTranslate]
 					SET 	[tableMappingTranslationTranslationNote]	=	'" . $this->model->getTableMappingTranslationTranslationNote () . "',
-							[tableMappingTranslationTranslationEnglish]	=	'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
+							[tableMappingNative]	=	'" . $this->model->gettableMappingNative () . "',
 							[isDefault]									=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							[isActive]									=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							[isNew]										=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
@@ -465,7 +465,7 @@ class TableMappingTranslateClass extends ConfigClass {
 			$sql = "
 					UPDATE 	TABLEMAPPINGTRANSLATE
 					SET 	TABLEMAPPINGTRANSLATENOTE					=	'" . $this->model->getTableMappingTranslationTranslationNote () . "',
-							TABLEMAPPINGTRANSLATIONENGLISH				=	'" . $this->model->getTableMappingTranslationTranslationEnglish () . "',
+							TABLEMAPPINGTRANSLATIONENGLISH				=	'" . $this->model->gettableMappingNative () . "',
 							ISDEFAULT									=	'" . $this->model->getIsDefault ( 0, 'single' ) . "',
 							ISACTIVE									=	'" . $this->model->getIsActive ( 0, 'single' ) . "',
 							ISNEW										=	'" . $this->model->getIsNew ( 0, 'single' ) . "',
