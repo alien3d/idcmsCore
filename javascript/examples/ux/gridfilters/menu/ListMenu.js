@@ -55,9 +55,18 @@ Ext.ux.menu.ListMenu = Ext.extend(Ext.menu.Menu, {
             for(var i=0, len=cfg.options.length; i<len; i++){
                 var value = cfg.options[i];
                 switch(Ext.type(value)){
-                    case 'array':  options.push(value); break;
-                    case 'object': options.push([value.id, value[this.labelField]]); break;
-                    case 'string': options.push([value, value]); break;
+                    case 'array':  
+					
+						options.push(value); 
+					break;
+                    case 'object': 
+					
+						options.push([value.id, value[this.labelField]]); 
+					break;
+                    case 'string': 
+						
+						options.push([value, value]); 
+					break;
                 }
             }
             

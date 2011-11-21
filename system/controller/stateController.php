@@ -1288,231 +1288,232 @@ class StateClass extends ConfigClass {
             			"total" => $total, 
             			"message" => $this->systemString->getNonDuplicateMessage(),
             			"time"=>$time));
-
 		}
 
-		function firstRecord($value) {
-			$this->recordSet->firstRecord($value);
+	}
+
+	function firstRecord($value) {
+		$this->recordSet->firstRecord($value);
+	}
+
+	function nextRecord($value, $primaryKeyValue) {
+		$this->recordSet->nextRecord($value, $primaryKeyValue);
+	}
+
+	function previousRecord($value, $primaryKeyValue) {
+		$this->recordSet->previousRecord($value, $primaryKeyValue);
+	}
+
+	function lastRecord($value) {
+		$this->recordSet->lastRecord($value);
+	}
+
+	/* (non-PHPdoc)
+	 * @see config::excel()
+	 */
+
+	function excel() {
+		header('Content-Type:application/json; charset=utf-8');
+		//UTF8
+		if ($this->getVendor() == self::MYSQL) {
+			$sql = "SET NAMES \"utf8\"";
+			$this->q->fast($sql);
 		}
-
-		function nextRecord($value, $primaryKeyValue) {
-			$this->recordSet->nextRecord($value, $primaryKeyValue);
+		if ($_SESSION ['start'] == 0) {
+			$sql = str_replace("LIMIT", "", $_SESSION ['sql']);
+			$sql = str_replace($_SESSION ['start'] . "," . $_SESSION ['limit'], "", $sql);
+		} else {
+			$sql = $_SESSION ['sql'];
 		}
-
-		function previousRecord($value, $primaryKeyValue) {
-			$this->recordSet->previousRecord($value, $primaryKeyValue);
+		$this->q->read($sql);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
 		}
-
-		function lastRecord($value) {
-			$this->recordSet->lastRecord($value);
+		$this->excel->setActiveSheetIndex(0);
+		// check file exist or not and return response
+		$styleThinBlackBorderOutline = array('borders' => array('inside' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000')), 'outline' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000'))));
+		// header all using  3 line  starting b
+		$this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(TRUE);
+		$this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(TRUE);
+		$this->excel->getActiveSheet()->setCellValue('B2', $this->title);
+		$this->excel->getActiveSheet()->setCellValue('C2', '');
+		$this->excel->getActiveSheet()->mergeCells('B2:C2');
+		$this->excel->getActiveSheet()->setCellValue('B3', 'No');
+		$this->excel->getActiveSheet()->setCellValue('C3', 'Penerangan');
+		$this->excel->getActiveSheet()->getStyle('B2:C2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$this->excel->getActiveSheet()->getStyle('B2:C2')->getFill()->getStartColor()->setARGB('66BBFF');
+		$this->excel->getActiveSheet()->getStyle('B3:C3')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$this->excel->getActiveSheet()->getStyle('B3:C3')->getFill()->getStartColor()->setARGB('66BBFF');
+		//
+		$loopRow = 4;
+		$i = 0;
+		while (($row = $this->q->fetchAssoc()) == TRUE) {
+			//	echo print_r($row);
+			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['stateDesc']);
+			$loopRow++;
+			$lastRow = 'C' . $loopRow;
 		}
-
-		/* (non-PHPdoc)
-		 * @see config::excel()
-		 */
-
-		function excel() {
-			header('Content-Type:application/json; charset=utf-8');
-			//UTF8
-			if ($this->getVendor() == self::MYSQL) {
-				$sql = "SET NAMES \"utf8\"";
-				$this->q->fast($sql);
-			}
-			if ($_SESSION ['start'] == 0) {
-				$sql = str_replace("LIMIT", "", $_SESSION ['sql']);
-				$sql = str_replace($_SESSION ['start'] . "," . $_SESSION ['limit'], "", $sql);
-			} else {
-				$sql = $_SESSION ['sql'];
-			}
-			$this->q->read($sql);
-			if ($this->q->execute == 'fail') {
-				echo json_encode(array("success" => false, "message" => $this->q->responce));
-				exit();
-			}
-			$this->excel->setActiveSheetIndex(0);
-			// check file exist or not and return response
-			$styleThinBlackBorderOutline = array('borders' => array('inside' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000')), 'outline' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000'))));
-			// header all using  3 line  starting b
-			$this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(TRUE);
-			$this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(TRUE);
-			$this->excel->getActiveSheet()->setCellValue('B2', $this->title);
-			$this->excel->getActiveSheet()->setCellValue('C2', '');
-			$this->excel->getActiveSheet()->mergeCells('B2:C2');
-			$this->excel->getActiveSheet()->setCellValue('B3', 'No');
-			$this->excel->getActiveSheet()->setCellValue('C3', 'Penerangan');
-			$this->excel->getActiveSheet()->getStyle('B2:C2')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-			$this->excel->getActiveSheet()->getStyle('B2:C2')->getFill()->getStartColor()->setARGB('66BBFF');
-			$this->excel->getActiveSheet()->getStyle('B3:C3')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-			$this->excel->getActiveSheet()->getStyle('B3:C3')->getFill()->getStartColor()->setARGB('66BBFF');
-			//
-			$loopRow = 4;
-			$i = 0;
-			while (($row = $this->q->fetchAssoc()) == TRUE) {
-				//	echo print_r($row);
-				$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-				$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['stateDesc']);
-				$loopRow++;
-				$lastRow = 'C' . $loopRow;
-			}
-			$from = 'B2';
-			$to = $lastRow;
-			$formula = $from . ":" . $to;
-			$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
-			$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-			$filename = "state" . rand(0, 10000000) . ".xlsx";
-			$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
-			$this->documentTrail->create_trail($this->getLeafId(), $path, $filename);
-			$objWriter->save($path);
-			$file = fopen($path, 'r');
-			if ($file) {
-				$this->q->commit();
-				$end = microtime(true);
-				$time = $end - $start;
-				echo json_encode(
-				array(	"success" =>true,
+		$from = 'B2';
+		$to = $lastRow;
+		$formula = $from . ":" . $to;
+		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
+		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
+		$filename = "state" . rand(0, 10000000) . ".xlsx";
+		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
+		$this->documentTrail->create_trail($this->getLeafId(), $path, $filename);
+		$objWriter->save($path);
+		$file = fopen($path, 'r');
+		if ($file) {
+			$this->q->commit();
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+			array(	"success" =>true,
             			"message" => $this->systemString->getFileGenerateMessage(), 
             			"filename" => $filename,
             			"time"=>$time));
-				exit();
-			} else {
-				$this->q->commit();
-				$end = microtime(true);
-				$time = $end - $start;
-				echo json_encode(
-				array(	"success" => false,
+			exit();
+		} else {
+			$this->q->commit();
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+			array(	"success" => false,
             				"message" => $this->systemString->getFileNotGenerateMessage(),
             				"time"=>$time));
-				exit();
-			}
+			exit();
 		}
-
 	}
 
-	$stateObject = new StateClass ();
+}
 
+$stateObject = new StateClass ();
+
+/**
+ * crud -create,read,update,delete
+ * */
+if (isset($_POST ['method'])) {
+	/*
+	 *  Initilize Value before load in the loader
+	 */
+	if (isset($_POST ['leafId'])) {
+		$stateObject->setLeafId($_POST ['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if (isset($_POST ['isAdmin'])) {
+		$stateObject->setIsAdmin($_POST ['isAdmin']);
+	}
+	/*
+	 *  Paging
+	 */
+	if (isset($_POST ['start'])) {
+		$stateObject->setStart($_POST ['start']);
+	}
+	if (isset($_POST ['perPage'])) {
+		$stateObject->setLimit($_POST ['perPage']);
+	}
+	/*
+	 *  Filtering
+	 */
+	if (isset($_POST ['query'])) {
+		$stateObject->setFieldQuery($_POST ['query']);
+	}
+	if (isset($_POST ['filter'])) {
+		$stateObject->setGridQuery($_POST ['filter']);
+	}
+	/*
+	 * Ordering
+	 */
+	if (isset($_POST ['order'])) {
+		$stateObject->setOrder($_POST ['order']);
+	}
+	if (isset($_POST ['sortField'])) {
+		$stateObject->setSortField($_POST ['sortField']);
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$stateObject->execute();
+	/*
+	 *  Crud Operation (Create Read Update Delete/Destory)
+	 */
+	if ($_POST ['method'] == 'create') {
+		$stateObject->create();
+	}
+	if ($_POST ['method'] == 'save') {
+		$stateObject->update();
+	}
+	if ($_POST ['method'] == 'read') {
+		$stateObject->read();
+	}
+	if ($_POST ['method'] == 'delete') {
+		$stateObject->delete();
+	}
+}
+if (isset($_GET ['method'])) {
+	/*
+	 *  Initilize Value before load in the loader
+	 */
+	if (isset($_GET ['leafId'])) {
+		$stateObject->setLeafId($_GET ['leafId']);
+	}
+	/*
+	 * Admin Only
+	 */
+	if (isset($_GET ['isAdmin'])) {
+		$stateObject->setIsAdmin($_GET ['isAdmin']);
+	}
+	/*
+	 *  Load the dynamic value
+	 */
+	$stateObject->execute();
+	if (isset($_GET ['field'])) {
+		if ($_GET ['field'] == 'staffId') {
+			$stateObject->staff();
+		}
+	}
+	/*
+	 * Update Status of The Table. Admin Level Only
+	 */
+	if ($_GET ['method'] == 'updateStatus') {
+		$stateObject->updateStatus();
+	}
+	/*
+	 *  Checking Any Duplication  Key
+	 */
+	if (isset($_GET ['stateDesc'])) {
+		if (strlen($_GET ['stateDesc']) > 0) {
+			$stateObject->duplicate();
+		}
+	}
 	/**
-	 * crud -create,read,update,delete
-	 * */
-	if (isset($_POST ['method'])) {
-		/*
-		 *  Initilize Value before load in the loader
-		 */
-		if (isset($_POST ['leafId'])) {
-			$stateObject->setLeafId($_POST ['leafId']);
+	 * Button Navigation
+	 */
+	if ($_GET ['method'] == 'dataNavigationRequest') {
+		if ($_GET ['dataNavigation'] == 'firstRecord') {
+			$stateObject->firstRecord('json');
 		}
-		/*
-		 * Admin Only
-		 */
-		if (isset($_POST ['isAdmin'])) {
-			$stateObject->setIsAdmin($_POST ['isAdmin']);
+		if ($_GET ['dataNavigation'] == 'previousRecord') {
+			$stateObject->previousRecord('json', 0);
 		}
-		/*
-		 *  Paging
-		 */
-		if (isset($_POST ['start'])) {
-			$stateObject->setStart($_POST ['start']);
+		if ($_GET ['dataNavigation'] == 'nextRecord') {
+			$stateObject->nextRecord('json', 0);
 		}
-		if (isset($_POST ['perPage'])) {
-			$stateObject->setLimit($_POST ['perPage']);
-		}
-		/*
-		 *  Filtering
-		 */
-		if (isset($_POST ['query'])) {
-			$stateObject->setFieldQuery($_POST ['query']);
-		}
-		if (isset($_POST ['filter'])) {
-			$stateObject->setGridQuery($_POST ['filter']);
-		}
-		/*
-		 * Ordering
-		 */
-		if (isset($_POST ['order'])) {
-			$stateObject->setOrder($_POST ['order']);
-		}
-		if (isset($_POST ['sortField'])) {
-			$stateObject->setSortField($_POST ['sortField']);
-		}
-		/*
-		 *  Load the dynamic value
-		 */
-		$stateObject->execute();
-		/*
-		 *  Crud Operation (Create Read Update Delete/Destory)
-		 */
-		if ($_POST ['method'] == 'create') {
-			$stateObject->create();
-		}
-		if ($_POST ['method'] == 'save') {
-			$stateObject->update();
-		}
-		if ($_POST ['method'] == 'read') {
-			$stateObject->read();
-		}
-		if ($_POST ['method'] == 'delete') {
-			$stateObject->delete();
+		if ($_GET ['dataNavigation'] == 'lastRecord') {
+			$stateObject->lastRecord('json');
 		}
 	}
-	if (isset($_GET ['method'])) {
-		/*
-		 *  Initilize Value before load in the loader
-		 */
-		if (isset($_GET ['leafId'])) {
-			$stateObject->setLeafId($_GET ['leafId']);
-		}
-		/*
-		 * Admin Only
-		 */
-		if (isset($_GET ['isAdmin'])) {
-			$stateObject->setIsAdmin($_GET ['isAdmin']);
-		}
-		/*
-		 *  Load the dynamic value
-		 */
-		$stateObject->execute();
-		if (isset($_GET ['field'])) {
-			if ($_GET ['field'] == 'staffId') {
-				$stateObject->staff();
-			}
-		}
-		/*
-		 * Update Status of The Table. Admin Level Only
-		 */
-		if ($_GET ['method'] == 'updateStatus') {
-			$stateObject->updateStatus();
-		}
-		/*
-		 *  Checking Any Duplication  Key
-		 */
-		if (isset($_GET ['stateDesc'])) {
-			if (strlen($_GET ['stateDesc']) > 0) {
-				$stateObject->duplicate();
-			}
-		}
-		/**
-		 * Button Navigation
-		 */
-		if ($_GET ['method'] == 'dataNavigationRequest') {
-			if ($_GET ['dataNavigation'] == 'firstRecord') {
-				$stateObject->firstRecord('json');
-			}
-			if ($_GET ['dataNavigation'] == 'previousRecord') {
-				$stateObject->previousRecord('json', 0);
-			}
-			if ($_GET ['dataNavigation'] == 'nextRecord') {
-				$stateObject->nextRecord('json', 0);
-			}
-			if ($_GET ['dataNavigation'] == 'lastRecord') {
-				$stateObject->lastRecord('json');
-			}
-		}
-		/*
-		 * Excel Reporting
-		 */
-		if (isset($_GET ['mode'])) {
-			if ($_GET ['mode'] == 'excel') {
-				$stateObject->excel();
-			}
+	/*
+	 * Excel Reporting
+	 */
+	if (isset($_GET ['mode'])) {
+		if ($_GET ['mode'] == 'excel') {
+			$stateObject->excel();
 		}
 	}
-	?>
+}
+?>

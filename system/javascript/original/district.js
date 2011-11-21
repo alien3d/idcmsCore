@@ -42,6 +42,7 @@ Ext.onReady(function() {
             leafId: leafId
         },
         root: 'staff',
+        id:'staffId',
         fields: [{
             name: 'staffId',
             type: 'int'
@@ -474,6 +475,52 @@ Ext.onReady(function() {
         autoScroll: true
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
+    // atart additional Proxy ,Reader,Store,Filter,Grid
+    var stateProxy = new Ext.data.HttpProxy({
+        url: '../controller/stateController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var stateReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'stateId'
+    });
+    var stateStore = new Ext.data.JsonStore({
+        proxy: stateProxy,
+        reader: stateReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: 'data',
+        id:'stateId',
+        fields: [{
+            name: 'stateId',
+            type: 'int'
+        },
+        {
+            name: 'stateDesc',
+            type: 'string'
+        }]
+    });
+    // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
     var districtProxy = new Ext.data.HttpProxy({
         url: '../controller/districtController.php',
@@ -512,6 +559,12 @@ Ext.onReady(function() {
         fields: [{
             name: 'districtId',
             type: 'int'
+        },{
+        	name :'stateId',
+        	type :'int'
+        },{
+        	name :'stateDesc',
+        	type :'string'
         },
         {
             name: 'districtDesc',
@@ -572,9 +625,17 @@ Ext.onReady(function() {
         }]
     });
     var districtFilters = new Ext.ux.grid.GridFilters({
-        encode: encode,
-        local: local,
-        filters: [{
+        encode: false,
+        local: false,
+        filters: [ {
+            type: 'list',
+            dataIndex: 'stateId',
+            column: 'stateId',
+            table: 'district',
+            labelField: 'stateDesc',
+            store: stateStore,
+            phpMode: true
+        },{
             type: 'string',
             dataIndex: 'districtDesc',
             column: 'districtDesc',
@@ -641,12 +702,40 @@ Ext.onReady(function() {
         hidden: isPostHidden
     });
     var districtColumnModel = [new Ext.grid.RowNumberer(), {
+    	 dataIndex: 'stateId',
+         header: stateDescLabel,
+         sortable: true,
+         hidden: false,
+         width : 200,
+         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+             return record.data.stateDesc;
+         }
+    },{
         dataIndex: 'districtDesc',
         header: districtDescLabel,
         sortable: true,
-        hidden: false
+        hidden: false,
+        width : 200
     },
-    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid];
+    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid,
+    {
+        dataIndex: 'executeBy',
+        header: executeByLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return record.data.staffName;
+        }
+    },
+    {
+        dataIndex: 'executeTime',
+        header: executeTimeLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+        }
+    }];
     var districtFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var districtGrid = new Ext.grid.GridPanel({
         name: 'districtGrid',
@@ -661,7 +750,7 @@ Ext.onReady(function() {
             singleSelect: true
         }),
         viewConfig: {
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -795,7 +884,8 @@ Ext.onReady(function() {
         },
         bbar: new Ext.PagingToolbar({
             store: districtStore,
-            pageSize: perPage
+            pageSize: perPage,
+            plugins:[districtFilters]
         })
     });
     var gridPanel = new Ext.Panel({
@@ -805,8 +895,7 @@ Ext.onReady(function() {
         tbar: [{
             text: reloadToolbarLabel,
             iconCls: 'database_refresh',
-            id: 'pageReload',
-            
+            id: 'pageReload',            
             handler: function() {
                 districtStore.reload();
             }

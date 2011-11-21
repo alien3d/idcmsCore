@@ -271,7 +271,6 @@ class DistrictClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "districtId" => $districtId));
@@ -285,22 +284,22 @@ class DistrictClass extends ConfigClass {
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		if ($this->isAdmin == 0) {
+		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `district`.`isActive`		=	1	";
+				$this->auditFilter = "	`district`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [district].[isActive]		=	1	";
+				$this->auditFilter = "	[district].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND DISTRICT.ISACTIVE	=	1	";
+				$this->auditFilter = "	DISTRICT.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND DISTRICT.ISACTIVE	=	1	";
+				$this->auditFilter = "	DISTRICT.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND DISTRICT.ISACTIVE	=	1	";
+				$this->auditFilter = "	DISTRICT.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-		} else if ($this->isAdmin == 1) {
+		} else if ($this->getIsAdmin() == 1) {
 			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	1	=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
@@ -339,9 +338,13 @@ class DistrictClass extends ConfigClass {
 					`district`.`isPost`,
 					`district`.`executeBy`,
 					`district`.`executeTime`,
+					`state`.`stateId`,
+					`state`.`stateDesc`,
 					`staff`.`staffName`
 			FROM 	`district`
-			JOIN		`staff`
+			JOIN	`state`
+			USING	(`stateId`)
+			JOIN	`staff`
 			ON		`district`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getDistrictId(0, 'single')) {
@@ -364,8 +367,12 @@ class DistrictClass extends ConfigClass {
 						[district].[isPost],
 						[district].[executeBy],
 						[district].[executeTime],
+						[state].[stateId],
+						[state].[stateDesc],
 						[staff].[staffName]
 			FROM 		[district]
+			JOIN		[state]
+			ON			[district].[stateId] = [state].[stateId]
 			JOIN		[staff]
 			ON			[district].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
@@ -389,9 +396,13 @@ class DistrictClass extends ConfigClass {
 						DISTRICT.ISPOST  	  			AS	\"isPost\",
 						DISTRICT.EXECUTEBY    			AS	\"executeBy\",
 						DISTRICT.EXECUTETIME  			AS	\"executeTime\",
+						STATE.STATEID					AS  \"stateId\",
+						STATE.STATEDESC					AS  \"stateDesc\",
 						STAFF.STAFFNAME		  			AS	\"staffName\"	
 			FROM 		DISTRICT
 			JOIN		STAFF
+			JOIN		STATE
+			ON			DISTRICT.STATEID = STATE.STATEID
 			ON			DISTRICT.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getDistrictId(0, 'single')) {
@@ -1237,7 +1248,7 @@ class DistrictClass extends ConfigClass {
 			$sql = "
 			SELECT	`districtCode`
 			FROM 	`district`
-			WHERE 	`districtCode` 	= 	'" . $this->model->getDistrictNam() . "'
+			WHERE 	`districtCode` 	= 	'" . $this->model->getDistrictCode() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
