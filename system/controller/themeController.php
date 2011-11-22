@@ -228,7 +228,7 @@ class ThemeClass  extends ConfigClass {
 	function read() 				{
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		if($this->isAdmin == 0) {
+		if($this->getIsAdmin() == 0) {
 			if($this->getVendor()==self::MYSQL) {
 				$this->auditFilter = "	`theme`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self :: mssql) {
@@ -240,7 +240,7 @@ class ThemeClass  extends ConfigClass {
 			}else if ($this->getVendor()== self::POSTGRESS){
 
 			}
-		} else if($this->isAdmin ==1) {
+		} else if($this->getIsAdmin() ==1) {
 			if($this->getVendor()==self::MYSQL) {
 				$this->auditFilter = "	 1 = 1 ";
 			} else if ($this->q->vendor == self :: mssql) {
@@ -1096,7 +1096,7 @@ class ThemeClass  extends ConfigClass {
                         );
                         // header all using  3 line  starting b
 
-                        if($this->isAdmin==1){
+                        if($this->getIsAdmin()==1){
                         	$this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
                         	$this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
                         	$this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
@@ -1118,7 +1118,7 @@ class ThemeClass  extends ConfigClass {
                         	$this->excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
                         	$this->excel->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
                         }
-                        if($this->isAdmin==1){
+                        if($this->getIsAdmin()==1){
                         	$start='B';
                         	$end='0';
                         } else {
@@ -1130,7 +1130,7 @@ class ThemeClass  extends ConfigClass {
                         $this->excel->getActiveSheet()->setCellValue($end.'2', '');
                         $this->excel->getActiveSheet()->mergeCells($start.'2:'.$end.'3');
                         // header of the row
-                        if($this->isAdmin==1){
+                        if($this->getIsAdmin()==1){
                         	// future should take from table mapping table
                         	$this->excel->getActiveSheet()->setCellValue('B3', 'No');
                         	$this->excel->getActiveSheet()->setCellValue('C3', 'theme Id');
@@ -1166,7 +1166,7 @@ class ThemeClass  extends ConfigClass {
                         while (($row = $this->q->fetchAssoc()) == true) {
                         	//	echo print_r($row);
                         	$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-                        	if($this->isAdmin==1){
+                        	if($this->getIsAdmin()==1){
                         		$this->excel->getActiveSheet()->setCellValue('C' . $loopRow,$row['themeId']);
                         		$this->excel->getActiveSheet()->setCellValue('D' . $loopRow,$row['themeSequence']);
                         		$this->excel->getActiveSheet()->setCellValue('E' . $loopRow,$row['themeCode']);

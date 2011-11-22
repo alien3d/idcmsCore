@@ -308,7 +308,7 @@ class PaymentClass extends ConfigClass {
 
     public function read() {
         header('Content-Type:application/json; charset=utf-8');
-        if ($this->isAdmin == 0) {
+        if ($this->getIsAdmin() == 0) {
             if ($this->q->vendor == self::MYSQL) {
                 $this->auditFilter = "	AND `payment`.`isActive`		=	1	";
             } else if ($this->q->vendor == self::MSSQL) {
@@ -323,7 +323,7 @@ class PaymentClass extends ConfigClass {
                 echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
                 exit();
             }
-        } else if ($this->isAdmin == 1) {
+        } else if ($this->getIsAdmin() == 1) {
             if ($this->getVendor() == self::MYSQL) {
                 $this->auditFilter = "	1	=	1	";
             } else if ($this->q->vendor == self::MSSQL) {

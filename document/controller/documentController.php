@@ -336,7 +336,7 @@ class DocumentClass extends ConfigClass {
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		if ($this->isAdmin == 0) {
+		if ($this->getIsAdmin() == 0) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	`document`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
@@ -344,7 +344,7 @@ class DocumentClass extends ConfigClass {
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	DOCUMENT.ISACTIVE	=	1	";
 			}
-		} else if ($this->isAdmin == 1) {
+		} else if ($this->getIsAdmin() == 1) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	1= 1 ";
 			} else if ($this->q->vendor == self::MSSQL) {

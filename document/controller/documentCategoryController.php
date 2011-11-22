@@ -237,7 +237,7 @@ class DocumentCategoryClass extends ConfigClass {
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		if ($this->isAdmin == 0) {
+		if ($this->getIsAdmin() == 0) {
 			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	`documentCategory`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
@@ -245,7 +245,7 @@ class DocumentCategoryClass extends ConfigClass {
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	DOCUMENTCATEGORY.ISACTIVE	=	1	";
 			}
-		} else if ($this->isAdmin == 1) {
+		} else if ($this->getIsAdmin() == 1) {
 			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	1 =	 1 ";
 			} else if ($this->q->vendor == self::MSSQL) {
@@ -1103,7 +1103,7 @@ class DocumentCategoryClass extends ConfigClass {
 		// check file exist or not and return response
 		$styleThinBlackBorderOutline = array('borders' => array('inside' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000')), 'outline' => array('style' => PHPExcel_Style_Border::BORDER_THIN, 'color' => array('argb' => '000000'))));
 		// header all using  3 line  starting b
-		if ($this->isAdmin == 1) {
+		if ($this->getIsAdmin() == 1) {
 			$this->excel->getActiveSheet()->getColumnDimension('B')->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()->getColumnDimension('C')->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()->getColumnDimension('D')->setAutoSize(TRUE);
@@ -1125,7 +1125,7 @@ class DocumentCategoryClass extends ConfigClass {
 			$this->excel->getActiveSheet()->getColumnDimension('E')->setAutoSize(TRUE);
 			$this->excel->getActiveSheet()->getColumnDimension('F')->setAutoSize(TRUE);
 		}
-		if ($this->isAdmin == 1) {
+		if ($this->getIsAdmin() == 1) {
 			$start = 'B';
 			$end = '0';
 		} else {
@@ -1137,7 +1137,7 @@ class DocumentCategoryClass extends ConfigClass {
 		$this->excel->getActiveSheet()->setCellValue($end . '2', '');
 		$this->excel->getActiveSheet()->mergeCells($start . '2:' . $end . '3');
 		// header of the row
-		if ($this->isAdmin == 1) {
+		if ($this->getIsAdmin() == 1) {
 			// future should take from table mapping table
 			$this->excel->getActiveSheet()->setCellValue('B3', 'No');
 			$this->excel->getActiveSheet()->setCellValue('C3', 'documentCategory Id');
@@ -1170,7 +1170,7 @@ class DocumentCategoryClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			if ($this->isAdmin == 1) {
+			if ($this->getIsAdmin() == 1) {
 				$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, $row ['documentCategoryId']);
 				$this->excel->getActiveSheet()->setCellValue('D' . $loopRow, $row ['documentCategorySequence']);
 				$this->excel->getActiveSheet()->setCellValue('E' . $loopRow, $row ['documentCategoryCode']);

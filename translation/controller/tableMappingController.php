@@ -299,7 +299,7 @@ class TableMappingClass extends ConfigClass {
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		if ($this->isAdmin == 0) {
+		if ($this->getIsAdmin() == 0) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	`tableMapping`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::mssql) {
@@ -307,7 +307,7 @@ class TableMappingClass extends ConfigClass {
 			} else if ($this->q->vendor == self::oracle) {
 				$this->auditFilter = "	TABLEMAPPING.ISACTIVE	=	1	";
 			}
-		} else if ($this->isAdmin == 1) {
+		} else if ($this->getIsAdmin() == 1) {
 			if ($this->getVendor () == self::MYSQL) {
 				$this->auditFilter = "	 1 = 1 ";
 			} else if ($this->q->vendor == self::mssql) {

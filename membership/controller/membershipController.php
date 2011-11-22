@@ -17,7 +17,7 @@ require_once ("../model/religionModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ReligionClass extends ConfigClass {
+class MembershipClass extends ConfigClass {
 
     /**
      * Connection to the database
@@ -89,7 +89,11 @@ class ReligionClass extends ConfigClass {
         $this->audit = 0;
         $this->log = 1;
 
-        $this->q = new Vendor ();
+        $this->model = new ReligionModel ();
+        $this->model->setVendor($this->getVendor());
+        $this->model->execute();
+		$this->q = new Vendor ();
+		
         $this->q->vendor = $this->getVendor();
         $this->q->leafId = $this->getLeafId();
         $this->q->staffId = $this->getStaffId();
@@ -99,9 +103,7 @@ class ReligionClass extends ConfigClass {
         $this->q->audit = $this->audit;
         $this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-        $this->model = new ReligionModel ();
-        $this->model->setVendor($this->getVendor());
-        $this->model->execute();
+        
 
         $this->recordSet = new RecordSet ();
         $this->recordSet->setTableName($this->model->getTableName());

@@ -1305,7 +1305,7 @@ class ReligionClass extends ConfigClass {
             			"total" => $total, 
             			"message" => $this->systemString->getNonDuplicateMessage(),
             			"time"=>$time));
-			
+		}		
 	}
 
 	function firstRecord($value) {

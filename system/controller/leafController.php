@@ -484,7 +484,7 @@ class LeafClass extends ConfigClass {
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		if ($this->isAdmin == 0) {
+		if ($this->getIsAdmin() == 0) {
 			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	`leaf`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
@@ -492,7 +492,7 @@ class LeafClass extends ConfigClass {
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	LEAF.ISACTIVE	=	1	";
 			}
-		} else if ($this->isAdmin == 1) {
+		} else if ($this->getIsAdmin() == 1) {
 			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	 1 ";
 			} else if ($this->q->vendor == self::MSSQL) {
