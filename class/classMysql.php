@@ -268,7 +268,7 @@ class Vendor {
 			}
 		}
 	
-	//	$result_row=1;
+		$result_row=1;
 		return ($result_row);
 	}
 	/**

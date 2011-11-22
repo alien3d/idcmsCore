@@ -11,7 +11,7 @@ Ext.onReady(function() {
     // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/raceController.php?',
+        url: '../controller/districtController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -475,9 +475,9 @@ Ext.onReady(function() {
         autoScroll: true
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
-    // start application Proxy ,Reader,Store,Filter,Grid
-    var raceProxy = new Ext.data.HttpProxy({
-        url: '../controller/raceController.php',
+    // atart additional Proxy ,Reader,Store,Filter,Grid
+    var stateProxy = new Ext.data.HttpProxy({
+        url: '../controller/stateController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -490,15 +490,61 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var raceReader = new Ext.data.JsonReader({
+    var stateReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
-        idProperty: 'raceId'
+        idProperty: 'stateId'
     });
-    var raceStore = new Ext.data.JsonStore({
-        proxy: raceProxy,
-        reader: raceReader,
+    var stateStore = new Ext.data.JsonStore({
+        proxy: stateProxy,
+        reader: stateReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: 'data',
+        id:'stateId',
+        fields: [{
+            name: 'stateId',
+            type: 'int'
+        },
+        {
+            name: 'stateDesc',
+            type: 'string'
+        }]
+    });
+    // end additional Proxy ,Reader,Store,Filter,Grid
+    // start application Proxy ,Reader,Store,Filter,Grid
+    var districtProxy = new Ext.data.HttpProxy({
+        url: '../controller/districtController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var districtReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'districtId'
+    });
+    var districtStore = new Ext.data.JsonStore({
+        proxy: districtProxy,
+        reader: districtReader,
         autoLoad: true,
         autoDestroy: true,
         pruneModifiedRecords: true,
@@ -511,11 +557,17 @@ Ext.onReady(function() {
         },
         root: 'data',
         fields: [{
-            name: 'raceId',
+            name: 'districtId',
             type: 'int'
+        },{
+        	name :'stateId',
+        	type :'int'
+        },{
+        	name :'stateDesc',
+        	type :'string'
         },
         {
-            name: 'raceDesc',
+            name: 'districtDesc',
             type: 'string'
         },
         {
@@ -572,20 +624,28 @@ Ext.onReady(function() {
             dateFormat: 'Y-m-d H:i:s'
         }]
     });
-    var raceFilters = new Ext.ux.grid.GridFilters({
-        encode: encode,
-        local: local,
-        filters: [{
+    var districtFilters = new Ext.ux.grid.GridFilters({
+        encode: false,
+        local: false,
+        filters: [ {
+            type: 'list',
+            dataIndex: 'stateId',
+            column: 'stateId',
+            table: 'district',
+            labelField: 'stateDesc',
+            store: stateStore,
+            phpMode: true
+        },{
             type: 'string',
-            dataIndex: 'raceDesc',
-            column: 'raceDesc',
-            table: 'race'
+            dataIndex: 'districtDesc',
+            column: 'districtDesc',
+            table: 'district'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'race',
+            table: 'district',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -594,7 +654,7 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'race'
+            table: 'district'
         }]
     });
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({
@@ -641,48 +701,76 @@ Ext.onReady(function() {
         dataIndex: 'isPost',
         hidden: isPostHidden
     });
-    var raceColumnModel = [new Ext.grid.RowNumberer(), {
-        dataIndex: 'raceDesc',
-        header: raceDescLabel,
+    var districtColumnModel = [new Ext.grid.RowNumberer(), {
+    	 dataIndex: 'stateId',
+         header: stateDescLabel,
+         sortable: true,
+         hidden: false,
+         width : 200,
+         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+             return record.data.stateDesc;
+         }
+    },{
+        dataIndex: 'districtDesc',
+        header: districtDescLabel,
         sortable: true,
-        hidden: false
+        hidden: false,
+        width : 200
     },
-    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid];
-    var raceFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var raceGrid = new Ext.grid.GridPanel({
-        name: 'raceGrid',
-        id: 'raceGrid',
+    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid,
+    {
+        dataIndex: 'executeBy',
+        header: executeByLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return record.data.staffName;
+        }
+    },
+    {
+        dataIndex: 'executeTime',
+        header: executeTimeLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+        }
+    }];
+    var districtFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var districtGrid = new Ext.grid.GridPanel({
+        name: 'districtGrid',
+        id: 'districtGrid',
         border: false,
-        store: raceStore,
+        store: districtStore,
         autoHeight: false,
         height: 400,
-        columns: raceColumnModel,
-        plugins: [raceFilters],
+        columns: districtColumnModel,
+        plugins: [districtFilters],
         selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
         viewConfig: {
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
             'rowclick': function(object, rowIndex, e) {
-                var record = raceStore.getAt(rowIndex);
+                var record = districtStore.getAt(rowIndex);
                 formPanel.getForm().reset();
                 formPanel.form.load({
-                    url: '../controller/raceController.php',
+                    url: '../controller/districtController.php',
                     method: 'POST',
                     waitTitle: systemLabel,
                     waitMsg: waitMessageLabel,
                     params: {
                         method: 'read',
                         mode: 'update',
-                        raceId: record.data.raceId,
+                        districtId: record.data.districtId,
                         leafId: leafId,
                         isAdmin: isAdmin
                     },
                     success: function(form, action) {
-                        Ext.getCmp('raceDescTemp').setValue(record.data.raceDesc);
+                        Ext.getCmp('districtDescTemp').setValue(record.data.districtDesc);
                         Ext.getCmp('deleteButton').enable();
                         viewPort.items.get(1).expand();
                     },
@@ -702,9 +790,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button,e) {
-                        raceStore.each(function(record,fn,scope) {
-                            for (var access in raceFlagArray) {
-                                record.set(raceFlagArray[access], true);
+                        districtStore.each(function(record,fn,scope) {
+                            for (var access in districtFlagArray) {
+                                record.set(districtFlagArray[access], true);
                             }
                         });
                     }
@@ -716,9 +804,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        raceStore.each(function(record,fn,scope) {
-                            for (var access in raceFlagArray) {
-                                record.set(raceFlagArray[access], false);
+                        districtStore.each(function(record,fn,scope) {
+                            for (var access in districtFlagArray) {
+                                record.set(districtFlagArray[access], false);
                             }
                         });
                     }
@@ -730,12 +818,12 @@ Ext.onReady(function() {
                 iconCls: 'bullet_disk',
                 listeners: {
                     'click': function(button,e) {
-                        var url = '../controller/raceController.php?';
+                        var url = '../controller/districtController.php?';
                         var sub_url = '';
-                        var modified = raceStore.getModifiedRecords();
+                        var modified = districtStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            sub_url = sub_url + '&raceId[]=' + modified[i].get('raceId');
+                            sub_url = sub_url + '&districtId[]=' + modified[i].get('districtId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
                                     sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
@@ -781,7 +869,7 @@ Ext.onReady(function() {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    raceStore.reload();
+                                    districtStore.reload();
                                 } else if (jsonResponse.success == false) {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                 }
@@ -795,8 +883,9 @@ Ext.onReady(function() {
             }]
         },
         bbar: new Ext.PagingToolbar({
-            store: raceStore,
-            pageSize: perPage
+            store: districtStore,
+            pageSize: perPage,
+            plugins:[districtFilters]
         })
     });
     var gridPanel = new Ext.Panel({
@@ -806,10 +895,9 @@ Ext.onReady(function() {
         tbar: [{
             text: reloadToolbarLabel,
             iconCls: 'database_refresh',
-            id: 'pageReload',
-            
+            id: 'pageReload',            
             handler: function() {
-                raceStore.reload();
+                districtStore.reload();
             }
         },
         '-', {
@@ -828,7 +916,7 @@ Ext.onReady(function() {
             
             handler: function() {
                 Ext.Ajax.request({
-                    url: '../controller/raceController.php',
+                    url: '../controller/districtController.php',
                     method: 'GET',
                     params: {
                         method: 'report',
@@ -851,47 +939,82 @@ Ext.onReady(function() {
             }
         },
         '-', new Ext.ux.form.SearchField({
-            store: raceStore,
+            store: districtStore,
             width: 320
         })],
-        items: [raceGrid]
+        items: [districtGrid]
     });
-    var raceDescTemp = new Ext.form.Hidden({
-        name: 'raceDescTemp',
-        id: 'raceDescTemp'
-    }); // form entry
-    var raceDesc = new Ext.form.TextField({
+     // form entry
+    var stateId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
-        fieldLabel: raceDescLabel + '<span style=\'color: red;\'>*</span>',
-        hiddenName: 'raceDesc',
-        name: 'raceDesc',
-        id: 'raceDesc',
+        fieldLabel: stateIdLabel,
+        name: 'stateId',
+        hiddenName: 'stateId',
+        valueField: 'stateId',
+        hiddenId: 'state_fake',
+        id: 'stateId',
+        displayField: 'stateDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: stateStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
+        }
+    });
+    var districtDesc = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: districtDescLabel + '<span style=\'color: red;\'>*</span>',
+        hiddenName: 'districtDesc',
+        name: 'districtDesc',
+        id: 'districtDesc',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
             textTransform: 'uppercase'
         },
-        anchor: '95%',
-        listeners: {
-            blur: function() {
-                if (Ext.getCmp('raceDesc').getValue().length > 0) {
+        anchor: '95%'
+    });
+    
+    var districtCodeTemp = new Ext.form.Hidden({
+        name: 'districtCodeTemp',
+        id: 'districtCodeTemp'
+    });
+    var checkDuplicateCode = new Ext.Button ({
+    	name :'checkDuplicateCode',
+    	id :'checkDuplicateCode',
+    	text:checkDuplicateCodeLabel,
+    	listeners: {
+            'click': function(button,e) {
+                if (Ext.getCmp('districtCode').getValue().length > 0) {
                     Ext.Ajax.request({
-                        url: '../controller/raceController.php',
+                        url: '../controller/religionController.php',
                         method: 'GET',
                         params: {
                             method: 'duplicate',
                             leafId: leafId,
-                            raceDesc: Ext.getCmp('raceDesc').getValue()
+                            districtCode	: Ext.getCmp('districtCode').getValue()
                         },
                         success: function(response, options) {
                             jsonResponse = Ext.decode(response.responseText);
                             if (jsonResponse.success == true) {
                                 if (jsonResponse.total > 0) {
-                                    if (Ext.getCmp('raceDescTemp').getValue() != Ext.getCmp('raceDesc').getValue()) {
+                                    if (Ext.getCmp('districtCodeTemp').getValue() != Ext.getCmp('districtCode').getValue()) {
                                         duplicate = 1;
-                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('raceDesc').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.raceDesc);
+                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('districtCode').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.religionDesc);
                                         Ext.MessageBox.alert(systemErrorLabel, duplicateMessageLabel);
-                                        Ext.getCmp('raceDesc').setValue('');
+                                        Ext.getCmp('districtCode').setValue('');
+                                    } else {
+                                    	Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
                                 }
                             } else {
@@ -902,13 +1025,15 @@ Ext.onReady(function() {
                             Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
                         }
                     });
+                } else {
+                	Ext.MessageBox.alert(systemLabel, emptyTextLabel);
                 }
             }
-        }
+    	}
     });
-    var raceId = new Ext.form.Hidden({
-        name: 'raceId',
-        id: 'raceId'
+    var districtId = new Ext.form.Hidden({
+        name: 'districtId',
+        id: 'districtId'
     }); // end form entry
     // start System Validation
     var isDefault = new Ext.form.Checkbox({
@@ -919,7 +1044,7 @@ Ext.onReady(function() {
     });
     var isNew = new Ext.form.Checkbox({
         name: 'isNew',
-        id: 'isNew',
+        id: 'isNew',	
         fieldLabel: isNewLabel,
         hidden: isNewHidden
     });
@@ -992,7 +1117,7 @@ Ext.onReady(function() {
     }); // end of hidden value for navigation button
     // end System Validation
     var formPanel = new Ext.form.FormPanel({
-        url: '../controller/raceController.php',
+        url: '../controller/districtController.php',
         name: 'formPanel',
         id: 'formPanel',
         method: 'post',
@@ -1004,7 +1129,10 @@ Ext.onReady(function() {
         items: [{
             xtype: 'fieldset',
             title: 'Form Entry',
-            items: [raceId, raceDesc, raceDescTemp]
+            items: [districtId,stateId	 ,{
+				xtype:'compositefield',
+				items:[districtDesc,checkDuplicateCode]
+}, districtCodeTemp]
         },
         {
             xtype: 'fieldset',
@@ -1048,7 +1176,7 @@ Ext.onReady(function() {
             disabled: auditButtonLabelDisabled,
             handler: function() {
                 if (auditWindow) {
-                    raceStore.reload();
+                    districtStore.reload();
                     auditWindow.show().center();
                 }
             }
@@ -1060,7 +1188,7 @@ Ext.onReady(function() {
             type: 'button',
             iconCls: 'new',
             handler: function() {
-                var id = Ext.getCmp('raceId').getValue();
+                var id = Ext.getCmp('districtId').getValue();
                 var method = 'create';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
@@ -1072,15 +1200,17 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            raceStore.reload({
+                            districtStore.reload({
                                 params: {
-                                    leafId: leafId,
+                                    leafId: leafId,	
                                     start: 0,
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('raceId').setValue(action.result.raceId);
+                            Ext.getCmp('districtId').setValue(action.result.districtId);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -1107,7 +1237,7 @@ Ext.onReady(function() {
             disabled: true,
             handler: function() {
                 Ext.getCmp('newButton').disable();
-                var id = Ext.getCmp('raceId').getValue();
+                var id = Ext.getCmp('districtId').getValue();
                 var method = 'save';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
@@ -1119,8 +1249,10 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            raceStore.reload({
+                            districtStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
@@ -1163,10 +1295,10 @@ Ext.onReady(function() {
                     fn: function(response) {
                         if ('yes' == response) {
                             Ext.Ajax.request({
-                                url: '../controller/raceController.php',
+                                url: '../controller/districtController.php',
                                 params: {
                                     method: 'delete',
-                                    raceId: record.data.raceId,
+                                    districtId: Ext.getCmp('districtId').getValue(),
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },
@@ -1174,7 +1306,7 @@ Ext.onReady(function() {
                                     jsonResponse = Ext.decode(response.responseText);
                                     if (jsonResponse.success == true) {
                                         Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                        raceStore.reload({
+                                        districtStore.reload({
                                             params: {
                                                 leafId: leafId,
                                                 start: 0,
@@ -1244,7 +1376,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('firstRecord').getValue() == '') {
                     Ext.Ajax.request({
-                        url: '../controller/raceController.php',
+                        url: '../controller/districtController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -1256,13 +1388,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
                                 formPanel.form.load({
-                                    url: '../controller/raceController.php',
+                                    url: '../controller/districtController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        raceId: Ext.getCmp('firstRecord').getValue(),
+                                        districtId: Ext.getCmp('firstRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -1297,13 +1429,13 @@ Ext.onReady(function() {
                     });
                 } else {
                     formPanel.form.load({
-                        url: '../controller/raceController.php',
+                        url: '../controller/districtController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            raceId: Ext.getCmp('firstRecord').getValue(),
+                            districtId: Ext.getCmp('firstRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1345,13 +1477,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('firstRecord').getValue() >= 1) {
                     formPanel.form.load({
-                        url: '../controller/raceController.php',
+                        url: '../controller/districtController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            raceId: Ext.getCmp('previousRecord').getValue(),
+                            districtId: Ext.getCmp('previousRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1392,13 +1524,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('nextRecord').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/raceController.php',
+                        url: '../controller/districtController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            raceId: Ext.getCmp('nextRecord').getValue(),
+                            districtId: Ext.getCmp('nextRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1439,7 +1571,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
                     Ext.Ajax.request({
-                        url: '../controller/raceController.php',
+                        url: '../controller/districtController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -1451,13 +1583,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
                                 formPanel.form.load({
-                                    url: '../controller/raceController.php',
+                                    url: '../controller/districtController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        raceId: Ext.getCmp('lastRecord').getValue(),
+                                        districtId: Ext.getCmp('lastRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -1492,15 +1624,15 @@ Ext.onReady(function() {
                         }
                     });
                 }
-                if (Ext.getCmp('raceId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
+                if (Ext.getCmp('districtId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/raceController.php',
+                        url: '../controller/districtController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            raceId: Ext.getCmp('lastRecord').getValue(),
+                            districtId: Ext.getCmp('lastRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },

@@ -475,6 +475,52 @@ Ext.onReady(function() {
         autoScroll: true
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
+    // atart additional Proxy ,Reader,Store,Filter,Grid
+    var stateProxy = new Ext.data.HttpProxy({
+        url: '../controller/stateController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var stateReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'stateId'
+    });
+    var stateStore = new Ext.data.JsonStore({
+        proxy: stateProxy,
+        reader: stateReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: 'data',
+        id:'stateId',
+        fields: [{
+            name: 'stateId',
+            type: 'int'
+        },
+        {
+            name: 'stateDesc',
+            type: 'string'
+        }]
+    });
+    // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
     var raceProxy = new Ext.data.HttpProxy({
         url: '../controller/raceController.php',
@@ -513,6 +559,12 @@ Ext.onReady(function() {
         fields: [{
             name: 'raceId',
             type: 'int'
+        },{
+        	name :'stateId',
+        	type :'int'
+        },{
+        	name :'stateDesc',
+        	type :'string'
         },
         {
             name: 'raceDesc',
@@ -573,9 +625,17 @@ Ext.onReady(function() {
         }]
     });
     var raceFilters = new Ext.ux.grid.GridFilters({
-        encode: encode,
-        local: local,
-        filters: [{
+        encode: false,
+        local: false,
+        filters: [ {
+            type: 'list',
+            dataIndex: 'stateId',
+            column: 'stateId',
+            table: 'race',
+            labelField: 'stateDesc',
+            store: stateStore,
+            phpMode: true
+        },{
             type: 'string',
             dataIndex: 'raceDesc',
             column: 'raceDesc',
@@ -642,12 +702,37 @@ Ext.onReady(function() {
         hidden: isPostHidden
     });
     var raceColumnModel = [new Ext.grid.RowNumberer(), {
+        dataIndex: 'raceCode',
+        header: raceCodeLabel,
+        sortable: true,
+        hidden: false,
+        width : 200
+    },{
         dataIndex: 'raceDesc',
         header: raceDescLabel,
         sortable: true,
-        hidden: false
+        hidden: false,
+        width : 200
     },
-    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid];
+    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid,
+    {
+        dataIndex: 'executeBy',
+        header: executeByLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return record.data.staffName;
+        }
+    },
+    {
+        dataIndex: 'executeTime',
+        header: executeTimeLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+        }
+    }];
     var raceFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var raceGrid = new Ext.grid.GridPanel({
         name: 'raceGrid',
@@ -662,7 +747,7 @@ Ext.onReady(function() {
             singleSelect: true
         }),
         viewConfig: {
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -796,7 +881,8 @@ Ext.onReady(function() {
         },
         bbar: new Ext.PagingToolbar({
             store: raceStore,
-            pageSize: perPage
+            pageSize: perPage,
+            plugins:[raceFilters]
         })
     });
     var gridPanel = new Ext.Panel({
@@ -806,8 +892,7 @@ Ext.onReady(function() {
         tbar: [{
             text: reloadToolbarLabel,
             iconCls: 'database_refresh',
-            id: 'pageReload',
-            
+            id: 'pageReload',            
             handler: function() {
                 raceStore.reload();
             }
@@ -856,10 +941,20 @@ Ext.onReady(function() {
         })],
         items: [raceGrid]
     });
-    var raceDescTemp = new Ext.form.Hidden({
-        name: 'raceDescTemp',
-        id: 'raceDescTemp'
-    }); // form entry
+     // form entry
+    var raceCode = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: raceCodeLabel + '<span style=\'color: red;\'>*</span>',
+        hiddenName: 'raceCode',
+        name: 'raceCode',
+        id: 'raceCode',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '40%'
+    });
     var raceDesc = new Ext.form.TextField({
         labelAlign: 'left',
         fieldLabel: raceDescLabel + '<span style=\'color: red;\'>*</span>',
@@ -871,27 +966,39 @@ Ext.onReady(function() {
         style: {
             textTransform: 'uppercase'
         },
-        anchor: '95%',
-        listeners: {
-            blur: function() {
-                if (Ext.getCmp('raceDesc').getValue().length > 0) {
+        anchor: '95%'
+    });
+    
+    var raceCodeTemp = new Ext.form.Hidden({
+        name: 'raceCodeTemp',
+        id: 'raceCodeTemp'
+    });
+    var checkDuplicateCode = new Ext.Button ({
+    	name :'checkDuplicateCode',
+    	id :'checkDuplicateCode',
+    	text:checkDuplicateCodeLabel,
+    	listeners: {
+            'click': function(button,e) {
+                if (Ext.getCmp('raceCode').getValue().length > 0) {
                     Ext.Ajax.request({
-                        url: '../controller/raceController.php',
+                        url: '../controller/religionController.php',
                         method: 'GET',
                         params: {
                             method: 'duplicate',
                             leafId: leafId,
-                            raceDesc: Ext.getCmp('raceDesc').getValue()
+                            raceCode	: Ext.getCmp('raceCode').getValue()
                         },
                         success: function(response, options) {
                             jsonResponse = Ext.decode(response.responseText);
                             if (jsonResponse.success == true) {
                                 if (jsonResponse.total > 0) {
-                                    if (Ext.getCmp('raceDescTemp').getValue() != Ext.getCmp('raceDesc').getValue()) {
+                                    if (Ext.getCmp('raceCodeTemp').getValue() != Ext.getCmp('raceCode').getValue()) {
                                         duplicate = 1;
-                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('raceDesc').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.raceDesc);
+                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('raceCode').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.religionDesc);
                                         Ext.MessageBox.alert(systemErrorLabel, duplicateMessageLabel);
-                                        Ext.getCmp('raceDesc').setValue('');
+                                        Ext.getCmp('raceCode').setValue('');
+                                    } else {
+                                    	Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
                                 }
                             } else {
@@ -902,9 +1009,11 @@ Ext.onReady(function() {
                             Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
                         }
                     });
+                } else {
+                	Ext.MessageBox.alert(systemLabel, emptyTextLabel);
                 }
             }
-        }
+    	}
     });
     var raceId = new Ext.form.Hidden({
         name: 'raceId',
@@ -919,7 +1028,7 @@ Ext.onReady(function() {
     });
     var isNew = new Ext.form.Checkbox({
         name: 'isNew',
-        id: 'isNew',
+        id: 'isNew',	
         fieldLabel: isNewLabel,
         hidden: isNewHidden
     });
@@ -1004,7 +1113,10 @@ Ext.onReady(function() {
         items: [{
             xtype: 'fieldset',
             title: 'Form Entry',
-            items: [raceId, raceDesc, raceDescTemp]
+            items: [raceId,{
+				xtype:'compositefield',
+				items:[raceCode,checkDuplicateCode]
+}, raceDesc,raceCodeTemp]
         },
         {
             xtype: 'fieldset',
@@ -1072,10 +1184,12 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             raceStore.reload({
                                 params: {
-                                    leafId: leafId,
+                                    leafId: leafId,	
                                     start: 0,
                                     limit: perPage
                                 }
@@ -1119,6 +1233,8 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             raceStore.reload({
                                 params: {
@@ -1166,7 +1282,7 @@ Ext.onReady(function() {
                                 url: '../controller/raceController.php',
                                 params: {
                                     method: 'delete',
-                                    raceId: record.data.raceId,
+                                    raceId: Ext.getCmp('raceId').getValue(),
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },

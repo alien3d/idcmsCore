@@ -142,7 +142,7 @@ class DistrictClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `district`
 					(
-						`districCode`,											`disctrictDesc`,
+						`districtCode`,											`districtDesc`,
 						`stateId`,				
 						`isDefault`,
 						`isNew`,													`isDraft`,

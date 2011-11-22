@@ -711,6 +711,12 @@ Ext.onReady(function() {
              return record.data.stateDesc;
          }
     },{
+        dataIndex: 'districtCode',
+        header: districtCodeLabel,
+        sortable: true,
+        hidden: false,
+        width : 200
+    },{
         dataIndex: 'districtDesc',
         header: districtDescLabel,
         sortable: true,
@@ -944,10 +950,47 @@ Ext.onReady(function() {
         })],
         items: [districtGrid]
     });
-    var districtDescTemp = new Ext.form.Hidden({
-        name: 'districtDescTemp',
-        id: 'districtDescTemp'
-    }); // form entry
+     // form entry
+    var stateId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: stateIdLabel,
+        name: 'stateId',
+        hiddenName: 'stateId',
+        valueField: 'stateId',
+        hiddenId: 'state_fake',
+        id: 'stateId',
+        displayField: 'stateDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: stateStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
+        }
+    });
+	
+	var districtCode = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: familyCodeLabel + '<span style=\'color: red;\'>*</span>',
+        hiddenName: 'districtCode',
+        name: 'districtCode',
+        id: 'districtCode',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '40%'
+    });
     var districtDesc = new Ext.form.TextField({
         labelAlign: 'left',
         fieldLabel: districtDescLabel + '<span style=\'color: red;\'>*</span>',
@@ -959,27 +1002,39 @@ Ext.onReady(function() {
         style: {
             textTransform: 'uppercase'
         },
-        anchor: '95%',
-        listeners: {
-            blur: function() {
-                if (Ext.getCmp('districtDesc').getValue().length > 0) {
+        anchor: '95%'
+    });
+    
+    var districtCodeTemp = new Ext.form.Hidden({
+        name: 'districtCodeTemp',
+        id: 'districtCodeTemp'
+    });
+    var checkDuplicateCode = new Ext.Button ({
+    	name :'checkDuplicateCode',
+    	id :'checkDuplicateCode',
+    	text:checkDuplicateCodeLabel,
+    	listeners: {
+            'click': function(button,e) {
+                if (Ext.getCmp('districtCode').getValue().length > 0) {
                     Ext.Ajax.request({
-                        url: '../controller/districtController.php',
+                        url: '../controller/religionController.php',
                         method: 'GET',
                         params: {
                             method: 'duplicate',
                             leafId: leafId,
-                            districtDesc: Ext.getCmp('districtDesc').getValue()
+                            districtCode	: Ext.getCmp('districtCode').getValue()
                         },
                         success: function(response, options) {
                             jsonResponse = Ext.decode(response.responseText);
                             if (jsonResponse.success == true) {
                                 if (jsonResponse.total > 0) {
-                                    if (Ext.getCmp('districtDescTemp').getValue() != Ext.getCmp('districtDesc').getValue()) {
+                                    if (Ext.getCmp('districtCodeTemp').getValue() != Ext.getCmp('districtCode').getValue()) {
                                         duplicate = 1;
-                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('districtDesc').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.districtDesc);
+                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('districtCode').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.religionDesc);
                                         Ext.MessageBox.alert(systemErrorLabel, duplicateMessageLabel);
-                                        Ext.getCmp('districtDesc').setValue('');
+                                        Ext.getCmp('districtCode').setValue('');
+                                    } else {
+                                    	Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
                                 }
                             } else {
@@ -990,9 +1045,11 @@ Ext.onReady(function() {
                             Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
                         }
                     });
+                } else {
+                	Ext.MessageBox.alert(systemLabel, emptyTextLabel);
                 }
             }
-        }
+    	}
     });
     var districtId = new Ext.form.Hidden({
         name: 'districtId',
@@ -1007,7 +1064,7 @@ Ext.onReady(function() {
     });
     var isNew = new Ext.form.Checkbox({
         name: 'isNew',
-        id: 'isNew',
+        id: 'isNew',	
         fieldLabel: isNewLabel,
         hidden: isNewHidden
     });
@@ -1092,7 +1149,10 @@ Ext.onReady(function() {
         items: [{
             xtype: 'fieldset',
             title: 'Form Entry',
-            items: [districtId, districtDesc, districtDescTemp]
+            items: [districtId,stateId	,{
+				xtype:'compositefield',
+				items:[districtCode	,checkDuplicateCode]
+} ,districtDesc, districtCodeTemp]
         },
         {
             xtype: 'fieldset',
@@ -1160,10 +1220,12 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             districtStore.reload({
                                 params: {
-                                    leafId: leafId,
+                                    leafId: leafId,	
                                     start: 0,
                                     limit: perPage
                                 }
@@ -1207,6 +1269,8 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             districtStore.reload({
                                 params: {
@@ -1254,7 +1318,7 @@ Ext.onReady(function() {
                                 url: '../controller/districtController.php',
                                 params: {
                                     method: 'delete',
-                                    districtId: record.data.districtId,
+                                    districtId: Ext.getCmp('districtId').getValue(),
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },

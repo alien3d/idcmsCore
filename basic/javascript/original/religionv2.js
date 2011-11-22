@@ -1072,6 +1072,8 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             religionStore.reload({
                                 params: {
@@ -1119,6 +1121,8 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             religionStore.reload({
                                 params: {
@@ -1166,7 +1170,7 @@ Ext.onReady(function() {
                                 url: '../controller/religionController.php',
                                 params: {
                                     method: 'delete',
-                                    religionId: record.data.religionId,
+                                    religionId: Ext.getCmp('religionId').getValue(),
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },

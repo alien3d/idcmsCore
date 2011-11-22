@@ -475,6 +475,52 @@ Ext.onReady(function() {
         autoScroll: true
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
+    // atart additional Proxy ,Reader,Store,Filter,Grid
+    var stateProxy = new Ext.data.HttpProxy({
+        url: '../controller/stateController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var stateReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'stateId'
+    });
+    var stateStore = new Ext.data.JsonStore({
+        proxy: stateProxy,
+        reader: stateReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: 'data',
+        id:'stateId',
+        fields: [{
+            name: 'stateId',
+            type: 'int'
+        },
+        {
+            name: 'stateDesc',
+            type: 'string'
+        }]
+    });
+    // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
     var stateProxy = new Ext.data.HttpProxy({
         url: '../controller/stateController.php',
@@ -513,6 +559,12 @@ Ext.onReady(function() {
         fields: [{
             name: 'stateId',
             type: 'int'
+        },{
+        	name :'stateId',
+        	type :'int'
+        },{
+        	name :'stateDesc',
+        	type :'string'
         },
         {
             name: 'stateDesc',
@@ -573,9 +625,17 @@ Ext.onReady(function() {
         }]
     });
     var stateFilters = new Ext.ux.grid.GridFilters({
-        encode: encode,
-        local: local,
-        filters: [{
+        encode: false,
+        local: false,
+        filters: [ {
+            type: 'list',
+            dataIndex: 'stateId',
+            column: 'stateId',
+            table: 'state',
+            labelField: 'stateDesc',
+            store: stateStore,
+            phpMode: true
+        },{
             type: 'string',
             dataIndex: 'stateDesc',
             column: 'stateDesc',
@@ -641,13 +701,38 @@ Ext.onReady(function() {
         dataIndex: 'isPost',
         hidden: isPostHidden
     });
-    var stateColumnModel = [new Ext.grid.RowNumberer(), {
+    var stateColumnModel = [new Ext.grid.RowNumberer(),{
+        dataIndex: 'stateCode',
+        header: stateCodeLabel,
+        sortable: true,
+        hidden: false,
+        width : 200
+    },{
         dataIndex: 'stateDesc',
         header: stateDescLabel,
         sortable: true,
-        hidden: false
+        hidden: false,
+        width : 200
     },
-    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid];
+    isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid,
+    {
+        dataIndex: 'executeBy',
+        header: executeByLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return record.data.staffName;
+        }
+    },
+    {
+        dataIndex: 'executeTime',
+        header: executeTimeLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+        }
+    }];
     var stateFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
     var stateGrid = new Ext.grid.GridPanel({
         name: 'stateGrid',
@@ -662,7 +747,7 @@ Ext.onReady(function() {
             singleSelect: true
         }),
         viewConfig: {
-            emptyText: emptyTextLabel
+            emptyText: emptyRowLabel
         },
         iconCls: 'application_view_detail',
         listeners: {
@@ -796,7 +881,8 @@ Ext.onReady(function() {
         },
         bbar: new Ext.PagingToolbar({
             store: stateStore,
-            pageSize: perPage
+            pageSize: perPage,
+            plugins:[stateFilters]
         })
     });
     var gridPanel = new Ext.Panel({
@@ -806,8 +892,7 @@ Ext.onReady(function() {
         tbar: [{
             text: reloadToolbarLabel,
             iconCls: 'database_refresh',
-            id: 'pageReload',
-            
+            id: 'pageReload',            
             handler: function() {
                 stateStore.reload();
             }
@@ -856,10 +941,20 @@ Ext.onReady(function() {
         })],
         items: [stateGrid]
     });
-    var stateDescTemp = new Ext.form.Hidden({
-        name: 'stateDescTemp',
-        id: 'stateDescTemp'
-    }); // form entry
+     // form entry
+    var stateCode = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: familyCodeLabel + '<span style=\'color: red;\'>*</span>',
+        hiddenName: 'stateCode',
+        name: 'stateCode',
+        id: 'stateCode',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '40%'
+    });
     var stateDesc = new Ext.form.TextField({
         labelAlign: 'left',
         fieldLabel: stateDescLabel + '<span style=\'color: red;\'>*</span>',
@@ -871,27 +966,39 @@ Ext.onReady(function() {
         style: {
             textTransform: 'uppercase'
         },
-        anchor: '95%',
-        listeners: {
-            blur: function() {
-                if (Ext.getCmp('stateDesc').getValue().length > 0) {
+        anchor: '95%'
+    });
+    
+    var stateCodeTemp = new Ext.form.Hidden({
+        name: 'stateCodeTemp',
+        id: 'stateCodeTemp'
+    });
+    var checkDuplicateCode = new Ext.Button ({
+    	name :'checkDuplicateCode',
+    	id :'checkDuplicateCode',
+    	text:checkDuplicateCodeLabel,
+    	listeners: {
+            'click': function(button,e) {
+                if (Ext.getCmp('stateCode').getValue().length > 0) {
                     Ext.Ajax.request({
-                        url: '../controller/stateController.php',
+                        url: '../controller/religionController.php',
                         method: 'GET',
                         params: {
                             method: 'duplicate',
                             leafId: leafId,
-                            stateDesc: Ext.getCmp('stateDesc').getValue()
+                            stateCode	: Ext.getCmp('stateCode').getValue()
                         },
                         success: function(response, options) {
                             jsonResponse = Ext.decode(response.responseText);
                             if (jsonResponse.success == true) {
                                 if (jsonResponse.total > 0) {
-                                    if (Ext.getCmp('stateDescTemp').getValue() != Ext.getCmp('stateDesc').getValue()) {
+                                    if (Ext.getCmp('stateCodeTemp').getValue() != Ext.getCmp('stateCode').getValue()) {
                                         duplicate = 1;
-                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('stateDesc').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.stateDesc);
+                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('stateCode').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.religionDesc);
                                         Ext.MessageBox.alert(systemErrorLabel, duplicateMessageLabel);
-                                        Ext.getCmp('stateDesc').setValue('');
+                                        Ext.getCmp('stateCode').setValue('');
+                                    } else {
+                                    	Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
                                 }
                             } else {
@@ -902,9 +1009,11 @@ Ext.onReady(function() {
                             Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
                         }
                     });
+                } else {
+                	Ext.MessageBox.alert(systemLabel, emptyTextLabel);
                 }
             }
-        }
+    	}
     });
     var stateId = new Ext.form.Hidden({
         name: 'stateId',
@@ -919,7 +1028,7 @@ Ext.onReady(function() {
     });
     var isNew = new Ext.form.Checkbox({
         name: 'isNew',
-        id: 'isNew',
+        id: 'isNew',	
         fieldLabel: isNewLabel,
         hidden: isNewHidden
     });
@@ -1004,7 +1113,10 @@ Ext.onReady(function() {
         items: [{
             xtype: 'fieldset',
             title: 'Form Entry',
-            items: [stateId, stateDesc, stateDescTemp]
+            items: [stateId,{
+				xtype:'compositefield',
+				items:[stateCode,checkDuplicateCode]
+}, stateDesc,stateCodeTemp]
         },
         {
             xtype: 'fieldset',
@@ -1072,10 +1184,12 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             stateStore.reload({
                                 params: {
-                                    leafId: leafId,
+                                    leafId: leafId,	
                                     start: 0,
                                     limit: perPage
                                 }
@@ -1119,6 +1233,8 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             stateStore.reload({
                                 params: {
@@ -1166,7 +1282,7 @@ Ext.onReady(function() {
                                 url: '../controller/stateController.php',
                                 params: {
                                     method: 'delete',
-                                    stateId: record.data.stateId,
+                                    stateId: Ext.getCmp('stateId').getValue(),
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },
