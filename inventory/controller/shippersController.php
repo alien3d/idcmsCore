@@ -5,15 +5,16 @@ require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/shippersModel.php");
 
 /**
  * this is shippers setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
- * @author hafizan
- * @package shippers
- * @subpackage shippersv1,v2,v3,v4,v5
+ * @author Maq,hafizan
+ * @package account receivable
+ * @subpackage shippers
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

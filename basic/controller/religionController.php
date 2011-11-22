@@ -274,15 +274,15 @@ class ReligionSampleClass extends ConfigClass {
 		$start = microtime(true);
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `religionSample`.`isActive`		=	1	";
+				$this->auditFilter = "	`religionSample`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [religionSample].[isActive]		=	1	";
+				$this->auditFilter = "	[religionSample].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND RELIGIONSAMPLE.ISACTIVE	=	1	";
+				$this->auditFilter = "	RELIGIONSAMPLE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND RELIGIONSAMPLE.ISACTIVE	=	1	";
+				$this->auditFilter = "	RELIGIONSAMPLE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND RELIGIONSAMPLE.ISACTIVE	=	1	";
+				$this->auditFilter = "	RELIGIONSAMPLE.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();

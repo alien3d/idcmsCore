@@ -234,11 +234,11 @@ class ReligionDetailSampleClass extends ConfigClass {
 		$start = microtime(true);
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `religionDetailSample`.`isActive`		=	1	";
+				$this->auditFilter = "	`religionDetailSample`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [religionDetailSample].[isActive]		=	1	";
+				$this->auditFilter = "	[religionDetailSample].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND RELIGIONDETAIL.ISACTIVE	=	1	";
+				$this->auditFilter = "	RELIGIONDETAIL.ISACTIVE	=	1	";
 			}
 		} else if ($this->getIsAdmin() == 1) {
 			if ($this->getVendor() == self::MYSQL) {

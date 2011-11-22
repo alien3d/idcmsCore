@@ -5,15 +5,16 @@ require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
-require_once ("../model/inventorytransactiontypesModel.php");
+require_once ("../../class/classSystemString.php");
+require_once ("../model/inventorytransactionstypesModel.php");
 
 /**
  * this is inventoryTransactionTypes setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package inventoryTransactionTypes
- * @subpackage inventoryTransactionTypesv1,v2,v3,v4,v5
+ * @package inventory
+ * @subpackage inventoryTransactionTypes
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

@@ -5,6 +5,7 @@ require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
+require_once ("../../class/classSystemString.php");
 require_once ("../model/orderdetailsstatusModel.php");
 
 /**
@@ -12,8 +13,8 @@ require_once ("../model/orderdetailsstatusModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package orderDetailsStatus
- * @subpackage orderDetailsStatusv1,v2,v3,v4,v5
+ * @package account receivable
+ * @subpackage orderDetailsStatus
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
