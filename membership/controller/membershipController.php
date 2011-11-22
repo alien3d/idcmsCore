@@ -5,15 +5,15 @@ require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
-require_once ("../model/religionModel.php");
+require_once ("../model/membershipModel.php");
 
 /**
- * this is religion setting files.This sample template file for master record
+ * this is membership setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package religion
- * @subpackage religionv1,v2,v3,v4,v5
+ * @package membership
+ * @subpackage membershipv1,v2,v3,v4,v5
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -89,11 +89,7 @@ class MembershipClass extends ConfigClass {
         $this->audit = 0;
         $this->log = 1;
 
-        $this->model = new ReligionModel ();
-        $this->model->setVendor($this->getVendor());
-        $this->model->execute();
-		$this->q = new Vendor ();
-		
+        $this->q = new Vendor ();
         $this->q->vendor = $this->getVendor();
         $this->q->leafId = $this->getLeafId();
         $this->q->staffId = $this->getStaffId();
@@ -103,7 +99,9 @@ class MembershipClass extends ConfigClass {
         $this->q->audit = $this->audit;
         $this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-        
+        $this->model = new MembershipModel ();
+        $this->model->setVendor($this->getVendor());
+        $this->model->execute();
 
         $this->recordSet = new RecordSet ();
         $this->recordSet->setTableName($this->model->getTableName());
@@ -125,7 +123,7 @@ class MembershipClass extends ConfigClass {
 
     public function create() {
         header('Content-Type:application/json; charset=utf-8');
-        
+        //UTF8
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -134,9 +132,23 @@ class MembershipClass extends ConfigClass {
         $this->model->create();
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			INSERT INTO `religion`
+			INSERT INTO `membership`
 					(
-						`religionDesc`,												`isDefault`,
+						`membershipSalary`,
+						`membershipRegisterDate`,
+						`membershipName`,
+						`membershipNumber`,
+						`staffNumber`,
+						`membershipDesignation`,
+						`membershipIC`,
+						`membershipBirthday`,
+						`membershipPhone`,
+						`membershipHP`,
+						`membershipAddress`,
+						`membershipPostcode`,
+						`membershipExt`,
+						`membershipEmail`,				
+						`isDefault`,
 						`isNew`,													`isDraft`,
 						`isUpdate`,													`isDelete`,
 						`isActive`,													`isApproved`,
@@ -145,7 +157,22 @@ class MembershipClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getReligionDesc() . "',					'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getMembershipSalary() . "',					
+						'" . $this->model->getMembershipRegisterDate() . "',
+						'" . $this->model->getMembershipName() . "',
+						'" . $this->model->getMembershipNumber() . "',
+						'" . $this->model->getStaffNumber() . "',
+						'" . $this->model->getMembershipDesignation() . "',
+						'" . $this->model->getMembershipIC() . "',
+						'" . $this->model->getMembershipBirthday() . "',
+						'" . $this->model->getMembershipPhone() . "',
+						'" . $this->model->getMembershipHP() . "',
+						'" . $this->model->getMembershipAddress() . "',
+						'" . $this->model->getMembershipPostcode() . "',
+						'" . $this->model->getMembershipExt() . "',
+						'" . $this->model->getMembershipEmail() . "',	
+
+						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
@@ -154,9 +181,23 @@ class MembershipClass extends ConfigClass {
 					);";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
-			INSERT INTO [religion]
+			INSERT INTO [membership]
 					(
-						[religionDesc],													[isDefault],
+						[membershipSalary],
+						[membershipRegisterDate],
+						[membershipName],
+						[membershipNumber],
+						[staffNumber],
+						[membershipDesignation],
+						[membershipIC],
+						[membershipBirthday],
+						[membershipPhone],
+						[membershipHP],
+						[membershipAddress],
+						[membershipPostcode],
+						[membershipExt],
+						[membershipEmail],														
+						[isDefault],
 						[isNew],														[isDraft],
 						[isUpdate],														[isDelete],
 						[isActive],														[isApproved],
@@ -165,7 +206,22 @@ class MembershipClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getReligionDesc() . "',						'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getMembershipSalary() . "',				
+						'" . $this->model->getMembershipRegisterDate() . "',
+						'" . $this->model->getMembershipName() . "',
+						'" . $this->model->getMembershipNumber() . "',
+						'" . $this->model->getStaffNumber() . "',
+						'" . $this->model->getMembershipDesignation() . "',
+						'" . $this->model->getMembershipIC() . "',
+						'" . $this->model->getMembershipBirthday() . "',
+						'" . $this->model->getMembershipPhone() . "',
+						'" . $this->model->getMembershipHP() . "',
+						'" . $this->model->getMembershipAddress() . "',
+						'" . $this->model->getMembershipPostcode() . "',
+						'" . $this->model->getMembershipExt() . "',
+						'" . $this->model->getMembershipEmail() . "',
+						
+						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',
@@ -175,9 +231,24 @@ class MembershipClass extends ConfigClass {
         } else if ($this->getVendor() == self::ORACLE) {
 
             $sql = "
-			INSERT INTO	RELIGION
+			INSERT INTO	MEMBERSHIP
 					(
-						RELIGIONDESC,												ISDEFAULT,
+						MEMBERSHIPSALARY,
+						MEMBERSHIPREGISTERDATE,
+						MEMBERSHIPNAME,
+						MEMBERSHIPNUMBER,
+						STAFFNUMBER,
+						MEMBERSHIPDESIGNATION,
+						MEMBERSHIPIC,
+						MEMBERSHIPBIRTHDAY,
+						MEMBERSHIPPHONE,
+						MEMBERSHIPHP,
+						MEMBERSHIPADDRESS,
+						MEMBERSHIPPOSTCODE,
+						MEMBERSHIPEXT,
+						MEMBERSHIPEMAIL,
+						
+						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
 						ISACTIVE,													ISAPPROVED,
@@ -186,7 +257,22 @@ class MembershipClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getReligionDesc() . "',					'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getMembershipSalary() . "',				
+						'" . $this->model->getMembershipRegisterDate() . "',
+						'" . $this->model->getMembershipName() . "',
+						'" . $this->model->getMembershipNumber() . "',
+						'" . $this->model->getStaffNumber() . "',
+						'" . $this->model->getMembershipDesignation() . "',
+						'" . $this->model->getMembershipIC() . "',
+						'" . $this->model->getMembershipBirthday() . "',
+						'" . $this->model->getMembershipPhone() . "',
+						'" . $this->model->getMembershipHP() . "',
+						'" . $this->model->getMembershipAddress() . "',
+						'" . $this->model->getMembershipPostcode() . "',
+						'" . $this->model->getMembershipExt() . "',
+						'" . $this->model->getMembershipEmail() . "',	
+				
+						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
@@ -195,9 +281,9 @@ class MembershipClass extends ConfigClass {
 					)";
         } else if ($this->getVendor() == self::DB2) {
             $sql = "
-			INSERT INTO	RELIGION
+			INSERT INTO	MEMBERSHIP
 			(
-			RELIGIONDESC,												ISDEFAULT,
+			MEMBERSHIPDESC,												ISDEFAULT,
 			ISNEW,														ISDRAFT,
 			ISUPDATE,													ISDELETE,
 			ISACTIVE,													ISAPPROVED,
@@ -206,7 +292,23 @@ class MembershipClass extends ConfigClass {
 			)
 			VALUES
 			(
-			'" . $this->model->getReligionDesc() . "',					'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getMembershipSalary() . "',				
+						'" . $this->model->getMembershipRegisterDate() . "',
+						'" . $this->model->getMembershipName() . "',
+						'" . $this->model->getMembershipNumber() . "',
+						'" . $this->model->getStaffNumber() . "',
+						'" . $this->model->getMembershipDesignation() . "',
+						'" . $this->model->getMembershipIC() . "',
+						'" . $this->model->getMembershipBirthday() . "',
+						'" . $this->model->getMembershipPhone() . "',
+						'" . $this->model->getMembershipHP() . "',
+						'" . $this->model->getMembershipAddress() . "',
+						'" . $this->model->getMembershipPostcode() . "',
+						'" . $this->model->getMembershipExt() . "',
+						'" . $this->model->getMembershipEmail() . "',	
+
+						
+			'" . $this->model->getIsDefault(0, 'single') . "',
 			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 			'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
 			'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
@@ -215,9 +317,24 @@ class MembershipClass extends ConfigClass {
 			)";
         } else if ($this->getVendor() == self::POSTGRESS) {
             $sql = "
-			INSERT INTO	RELIGION
+			INSERT INTO	MEMBERSHIP
 			(
-			RELIGIONDESC,												ISDEFAULT,
+						MEMBERSHIPSALARY,
+						MEMBERSHIPREGISTERDATE,
+						MEMBERSHIPNAME,
+						MEMBERSHIPNUMBER,
+						STAFFNUMBER,
+						MEMBERSHIPDESIGNATION,
+						MEMBERSHIPIC,
+						MEMBERSHIPBIRTHDAY,
+						MEMBERSHIPPHONE,
+						MEMBERSHIPHP,
+						MEMBERSHIPADDRESS,
+						MEMBERSHIPPOSTCODE,
+						MEMBERSHIPEXT,
+						MEMBERSHIPEMAIL,
+
+			ISDEFAULT,
 			ISNEW,														ISDRAFT,
 			ISUPDATE,													ISDELETE,
 			ISACTIVE,													ISAPPROVED,
@@ -226,7 +343,22 @@ class MembershipClass extends ConfigClass {
 			)
 			VALUES
 			(
-			'" . $this->model->getReligionDesc() . "',					'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getMembershipSalary() . "',				
+						'" . $this->model->getMembershipRegisterDate() . "',
+						'" . $this->model->getMembershipName() . "',
+						'" . $this->model->getMembershipNumber() . "',
+						'" . $this->model->getStaffNumber() . "',
+						'" . $this->model->getMembershipDesignation() . "',
+						'" . $this->model->getMembershipIC() . "',
+						'" . $this->model->getMembershipBirthday() . "',
+						'" . $this->model->getMembershipPhone() . "',
+						'" . $this->model->getMembershipHP() . "',
+						'" . $this->model->getMembershipAddress() . "',
+						'" . $this->model->getMembershipPostcode() . "',
+						'" . $this->model->getMembershipExt() . "',
+						'" . $this->model->getMembershipEmail() . "',			
+			
+			'" . $this->model->getIsDefault(0, 'single') . "',
 			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 			'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
 			'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
@@ -234,7 +366,7 @@ class MembershipClass extends ConfigClass {
 			'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+            echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
             exit();
         }
         //advance logging future
@@ -243,13 +375,13 @@ class MembershipClass extends ConfigClass {
 
         $this->q->audit = $this->audit;
         $this->q->create($sql);
-        $religionId = $this->q->lastInsertId();
+        $membershipId = $this->q->lastInsertId();
         if ($this->q->execute == 'fail') {
             echo json_encode(array("success" => false, "message" => $this->q->responce));
             exit();
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "religionId" => $religionId));
+        echo json_encode(array("success" => true, "message" => "Record Created", "membershipId" => $membershipId));
         exit();
     }
 
@@ -261,17 +393,17 @@ class MembershipClass extends ConfigClass {
         header('Content-Type:application/json; charset=utf-8');
         if ($this->isAdmin == 0) {
             if ($this->q->vendor == self::MYSQL) {
-                $this->auditFilter = "	AND `religion`.`isActive`		=	1	";
+                $this->auditFilter = "	AND `membership`.`isActive`		=	1	";
             } else if ($this->q->vendor == self::MSSQL) {
-                $this->auditFilter = "	AND [religion].[isActive]		=	1	";
+                $this->auditFilter = "	AND [membership].[isActive]		=	1	";
             } else if ($this->q->vendor == self::ORACLE) {
-                $this->auditFilter = "	AND RELIGION.ISACTIVE	=	1	";
+                $this->auditFilter = "	AND MEMBERSHIP.ISACTIVE	=	1	";
             } else if ($this->q->vendor == self::DB2) {
-                $this->auditFilter = "	AND RELIGION.ISACTIVE	=	1	";
+                $this->auditFilter = "	AND MEMBERSHIP.ISACTIVE	=	1	";
             } else if ($this->q->vendor == self::POSTGRESS) {
-                $this->auditFilter = "	AND RELIGION.ISACTIVE	=	1	";
+                $this->auditFilter = "	AND MEMBERSHIP.ISACTIVE	=	1	";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                 exit();
             }
         } else if ($this->isAdmin == 1) {
@@ -286,11 +418,11 @@ class MembershipClass extends ConfigClass {
             } else if ($this->q->vendor == self::POSTGRESS) {
                 $this->auditFilter = "	1	=	1 	";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                 exit();
             }
         }
-        
+        //UTF8
         $items = array();
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
@@ -298,79 +430,124 @@ class MembershipClass extends ConfigClass {
         }
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			SELECT	`religion`.`religionId`,
-						`religion`.`religionDesc`,
-						`religion`.`isDefault`,
-						`religion`.`isNew`,
-						`religion`.`isDraft`,
-						`religion`.`isUpdate`,
-						`religion`.`isDelete`,
-						`religion`.`isActive`,
-						`religion`.`isApproved`,
-						`religion`.`isReview`,
-						`religion`.`isPost`,
-						`religion`.`executeBy`,
-						`religion`.`executeTime`,
+			SELECT	`membership`.`membershipId`,
+
+						`membership`.`membershipSalary`,
+						`membership`.`membershipRegisterDate`,
+						`membership`.`membershipName`,
+						`membership`.`membershipNumber`,
+						`membership`.`staffNumber`,
+						`membership`.`membershipDesignation`,
+						`membership`.`membershipIC`,
+						`membership`.`membershipBirthday`,
+						`membership`.`membershipPhone`,
+						`membership`.`membershipHP`,
+						`membership`.`membershipAddress`,
+						`membership`.`membershipPostcode`,
+						`membership`.`membershipExt`,
+						`membership`.`membershipEmail`,
+												
+						`membership`.`isDefault`,
+						`membership`.`isNew`,
+						`membership`.`isDraft`,
+						`membership`.`isUpdate`,
+						`membership`.`isDelete`,
+						`membership`.`isActive`,
+						`membership`.`isApproved`,
+						`membership`.`isReview`,
+						`membership`.`isPost`,
+						`membership`.`executeBy`,
+						`membership`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`religion`
+			FROM 	`membership`
 			JOIN		`staff`
-			ON		`religion`.`executeBy` = `staff`.`staffId`
+			ON		`membership`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-            if ($this->model->getReligionId(0, 'single')) {
-                $sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getReligionId(0, 'single') . "'";
+            if ($this->model->getMembershipId(0, 'single')) {
+                $sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getMembershipId(0, 'single') . "'";
             }
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
-			SELECT	[religion].[religionId],
-						[religion].[religionDesc],
-						[religion].[isDefault],
-						[religion].[isNew],
-						[religion].[isDraft],
-						[religion].[isUpdate],
-						[religion].[isDelete],
-						[religion].[isActive],
-						[religion].[isApproved],
-						[religion].[isReview],
-						[religion].[isPost],
-						[religion].[executeBy],
-						[religion].[executeTime],
+			SELECT	[membership].[membershipId],
+						[membership].[membershipDesc],
+						[membership].[membershipSalary],
+						[membership].[membershipRegisterDate],
+						[membership].[membershipName],
+						[membership].[membershipNumber],
+						[membership].[staffNumber],
+						[membership].[membershipDesignation],
+						[membership].[membershipIC],
+						[membership].[membershipBirthday],
+						[membership].[membershipPhone],
+						[membership].[membershipHP],
+						[membership].[membershipAddress],
+						[membership].[membershipPostcode],
+						[membership].[membershipExt],
+						[membership].[membershipEmail],
+						
+						
+						[membership].[isDefault],
+						[membership].[isNew],
+						[membership].[isDraft],
+						[membership].[isUpdate],
+						[membership].[isDelete],
+						[membership].[isActive],
+						[membership].[isApproved],
+						[membership].[isReview],
+						[membership].[isPost],
+						[membership].[executeBy],
+						[membership].[executeTime],
 						[staff].[staffName]
-			FROM 	[religion]
+			FROM 	[membership]
 			JOIN		[staff]
-			ON		[religion].[executeBy] = [staff].[staffId]
+			ON		[membership].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-            if ($this->model->getReligionId(0, 'single')) {
-                $sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getReligionId(0, 'single') . "'";
+            if ($this->model->getMembershipId(0, 'single')) {
+                $sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getMembershipId(0, 'single') . "'";
             }
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
-			SELECT		RELIGION.RELIGIONID   		 	AS 	\"religionId\",
-						RELIGION.RELIGIONDESC 			AS 	\"religionDesc\",
-						RELIGION.ISDEFAULT    			AS	\"isDefault\",
-						RELIGION.ISNEW		  			AS	\"isNew\",
-						RELIGION.ISDRAFT	  			AS	\"isDraft\",
-						RELIGION.ISUPDATE     			AS	\"isUpdate\",
-						RELIGION.ISDELETE	  			AS	\"isDelete\",
-						RELIGION.ISACTIVE	  			AS	\"isActive\",
-						RELIGION.ISAPPROVED   			AS	\"isApproved\",
-						RELIGION.ISREVIEW	  			AS	\"isReview\",
-						RELIGION.ISPOST  	  			AS	\"isPost\",
-						RELIGION.EXECUTEBY    			AS	\"executeBy\",
-						RELIGION.EXECUTETIME  			AS	\"executeTime\",
+			SELECT		MEMBERSHIP.MEMBERSHIPID   		 	AS 	\"membershipId\",
+						MEMBERSHIP.MEMBERSHIPSALARY			AS 	\"membershipSalary\",
+						MEMBERSHIP.MEMBERSHIPREGISTERDATE	AS 	\"membershipRegisterDate\",
+						MEMBERSHIP.MEMBERSHIPNAME			AS 	\"membershipName\",
+						MEMBERSHIP.MEMBERSHIPNUMBER			AS 	\"membershipNumber\",
+						MEMBERSHIP.STAFFNUMBER				AS 	\"staffNumber\",
+						MEMBERSHIP.MEMBERSHIPDESIGNATION	AS 	\"membershipDesignation\",
+						MEMBERSHIP.MEMBERSHIPIC				AS 	\"membershipIC\",
+						MEMBERSHIP.MEMBERSHIPBIRTHDAY		AS 	\"membershipBirthday\",
+						MEMBERSHIP.MEMBERSHIPPHONE			AS 	\"membershipPhone\",
+						MEMBERSHIP.MEMBERSHIPHP				AS 	\"membershipHP\",
+						MEMBERSHIP.MEMBERSHIPADDRESS		AS 	\"membershipAddress\",
+						MEMBERSHIP.MEMBERSHIPPOSTCODE		AS 	\"membershipPostcode\",
+						MEMBERSHIP.MEMBERSHIPEXT			AS 	\"membershipExt\",
+						MEMBERSHIP.MEMBERSHIPEMAIL			AS 	\"membershipEmail\",
+												
+						MEMBERSHIP.ISDEFAULT    			AS	\"isDefault\",
+						MEMBERSHIP.ISNEW		  			AS	\"isNew\",
+						MEMBERSHIP.ISDRAFT	  			AS	\"isDraft\",
+						MEMBERSHIP.ISUPDATE     			AS	\"isUpdate\",
+						MEMBERSHIP.ISDELETE	  			AS	\"isDelete\",
+						MEMBERSHIP.ISACTIVE	  			AS	\"isActive\",
+						MEMBERSHIP.ISAPPROVED   			AS	\"isApproved\",
+						MEMBERSHIP.ISREVIEW	  			AS	\"isReview\",
+						MEMBERSHIP.ISPOST  	  			AS	\"isPost\",
+						MEMBERSHIP.EXECUTEBY    			AS	\"executeBy\",
+						MEMBERSHIP.EXECUTETIME  			AS	\"executeTime\",
 						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		RELIGION
+			FROM 		MEMBERSHIP
 			JOIN		STAFF
-			ON			RELIGION.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			MEMBERSHIP.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-            if ($this->model->getReligionId(0, 'single')) {
-                $sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getReligionId(0, 'single') . "'";
+            if ($this->model->getMembershipId(0, 'single')) {
+                $sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getMembershipId(0, 'single') . "'";
             }
         } else if ($this->q->vendor == self::DB2) {
             
         } else if ($this->q->vendor == self::POSTGRESS) {
             
         } else {
-            echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+            echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
             exit();
         }
         /**
@@ -379,13 +556,13 @@ class MembershipClass extends ConfigClass {
          * @variables $filterArray;
          */
         $filterArray = null;
-        $filterArray = array('religionId');
+        $filterArray = array('membershipId');
         /**
          * filter table
          * @variables $tableArray
          */
         $tableArray = null;
-        $tableArray = array('religion');
+        $tableArray = array('membership');
         if ($this->getFieldQuery()) {
             if ($this->getVendor() == self::MYSQL) {
                 $sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -400,7 +577,7 @@ class MembershipClass extends ConfigClass {
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql .= $this->q->quickSearch($tableArray, $filterArray);
             } else {
-                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                 exit();
             }
         }
@@ -421,7 +598,7 @@ class MembershipClass extends ConfigClass {
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql .= $this->q->searching();
             } else {
-                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                 exit();
             }
         }
@@ -452,7 +629,7 @@ class MembershipClass extends ConfigClass {
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                 exit();
             }
         }
@@ -476,29 +653,43 @@ class MembershipClass extends ConfigClass {
                  * 
                  */
                 $sql = "
-							WITH [religionDerived] AS
+							WITH [membershipDerived] AS
 							(
-								SELECT [religion].[religionId],
-											[religion].[religionDesc],
-											[religion].[isDefault],
-											[religion].[isNew],
-											[religion].[isDraft],
-											[religion].[isUpdate],
-											[religion].[isDelete],
-											[religion].[isApproved],
-											[religion].[isReview],
-											[religion].[isPost],
-											[religion].[executeBy],
-											[religion].[executeTime],
+								SELECT [membership].[membershipId],
+						[membership].[membershipDesc],
+						[membership].[membershipSalary],
+						[membership].[membershipRegisterDate],
+						[membership].[membershipName],
+						[membership].[membershipNumber],
+						[membership].[staffNumber],
+						[membership].[membershipDesignation],
+						[membership].[membershipIC],
+						[membership].[membershipBirthday],
+						[membership].[membershipPhone],
+						[membership].[membershipHP],
+						[membership].[membershipAddress],
+						[membership].[membershipPostcode],
+						[membership].[membershipExt],
+						[membership].[membershipEmail],
+											[membership].[isDefault],
+											[membership].[isNew],
+											[membership].[isDraft],
+											[membership].[isUpdate],
+											[membership].[isDelete],
+											[membership].[isApproved],
+											[membership].[isReview],
+											[membership].[isPost],
+											[membership].[executeBy],
+											[membership].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [religionId]) AS 'RowNumber'
-								FROM 	[religion]
+								ROW_NUMBER() OVER (ORDER BY [membershipId]) AS 'RowNumber'
+								FROM 	[membership]
 								JOIN		[staff]
-								ON		[religion].[executeBy] = [staff].[staffId]
+								ON		[membership].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[religionDerived]
+							FROM 		[membershipDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -511,23 +702,39 @@ class MembershipClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	RELIGION.RELIGIONID   		AS 	\"religionId\",
-										RELIGION.RELIGIONDESC 		AS 	\"religionDesc\",
-										RELIGION.ISDEFAULT    		AS	\"isDefault\",
-										RELIGION.ISNEW		  		AS	\"isNew\",
-										RELIGION.ISDRAFT	 		AS	\"isDraft\",
-										RELIGION.ISUPDATE     		AS	\"isUpdate\",
-										RELIGION.ISDELETE	  		AS	\"isDelete\",
-										RELIGION.ISACTIVE	  		AS	\"isActive\",
-										RELIGION.ISAPPROVED   		AS	\"isApproved\",
-										RELIGION.ISREVIEW	  		AS 	\"isReview\",
-										RELIGION.ISPOST		  		AS	\"isPost\",
-										RELIGION.EXECUTEBY    		AS	\"executeBy\",
-										RELIGION.EXECUTETIME  		AS	\"executeTime\",
+								SELECT	MEMBERSHIP.MEMBERSHIPID   		AS 	\"membershipId\",
+										MEMBERSHIP.MEMBERSHIPSALARY			AS 	\"membershipSalary\",
+						MEMBERSHIP.MEMBERSHIPREGISTERDATE	AS 	\"membershipRegisterDate\",
+						MEMBERSHIP.MEMBERSHIPNAME			AS 	\"membershipName\",
+						MEMBERSHIP.MEMBERSHIPNUMBER			AS 	\"membershipNumber\",
+						MEMBERSHIP.STAFFNUMBER				AS 	\"staffNumber\",
+						MEMBERSHIP.MEMBERSHIPDESIGNATION	AS 	\"membershipDesignation\",
+						MEMBERSHIP.MEMBERSHIPIC				AS 	\"membershipIC\",
+						MEMBERSHIP.MEMBERSHIPBIRTHDAY		AS 	\"membershipBirthday\",
+						MEMBERSHIP.MEMBERSHIPPHONE			AS 	\"membershipPhone\",
+						MEMBERSHIP.MEMBERSHIPHP				AS 	\"membershipHP\",
+						MEMBERSHIP.MEMBERSHIPADDRESS		AS 	\"membershipAddress\",
+						MEMBERSHIP.MEMBERSHIPPOSTCODE		AS 	\"membershipPostcode\",
+						MEMBERSHIP.MEMBERSHIPEXT			AS 	\"membershipExt\",
+						MEMBERSHIP.MEMBERSHIPEMAIL			AS 	\"membershipEmail\",
+								
+								
+										
+										MEMBERSHIP.ISDEFAULT    		AS	\"isDefault\",
+										MEMBERSHIP.ISNEW		  		AS	\"isNew\",
+										MEMBERSHIP.ISDRAFT	 		AS	\"isDraft\",
+										MEMBERSHIP.ISUPDATE     		AS	\"isUpdate\",
+										MEMBERSHIP.ISDELETE	  		AS	\"isDelete\",
+										MEMBERSHIP.ISACTIVE	  		AS	\"isActive\",
+										MEMBERSHIP.ISAPPROVED   		AS	\"isApproved\",
+										MEMBERSHIP.ISREVIEW	  		AS 	\"isReview\",
+										MEMBERSHIP.ISPOST		  		AS	\"isPost\",
+										MEMBERSHIP.EXECUTEBY    		AS	\"executeBy\",
+										MEMBERSHIP.EXECUTETIME  		AS	\"executeTime\",
 										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	RELIGION
+								FROM 	MEMBERSHIP
 								JOIN	STAFF
-								ON		RELIGION.EXECUTEBY 	  	=	STAFF.STAFFID
+								ON		MEMBERSHIP.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -548,7 +755,7 @@ class MembershipClass extends ConfigClass {
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                 exit();
             }
         }
@@ -556,7 +763,7 @@ class MembershipClass extends ConfigClass {
         /*
          *  Only Execute One Query
          */
-        if (!($this->model->getReligionId(0, 'single'))) {
+        if (!($this->model->getMembershipId(0, 'single'))) {
             $this->q->read($sql);
             if ($this->q->execute == 'fail') {
                 echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -567,8 +774,8 @@ class MembershipClass extends ConfigClass {
         while (($row = $this->q->fetchAssoc()) == TRUE) {
             $items [] = $row;
         }
-        if ($this->model->getReligionId(0, 'single')) {
-            $json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+        if ($this->model->getMembershipId(0, 'single')) {
+            $json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getMembershipId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getMembershipId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
             $json_encode = str_replace("[", "", $json_encode);
             $json_encode = str_replace("]", "", $json_encode);
             echo $json_encode;
@@ -576,7 +783,7 @@ class MembershipClass extends ConfigClass {
             if (count($items) == 0) {
                 $items = '';
             }
-            echo json_encode(array('success' => true, 'total' => $total, 'message' => $this->systemString->getReadMessage(), 'data' => $items));
+            echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
             exit();
         }
     }
@@ -587,7 +794,7 @@ class MembershipClass extends ConfigClass {
 
     function update() {
         header('Content-Type:application/json; charset=utf-8');
-        
+        //UTF8
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -603,41 +810,55 @@ class MembershipClass extends ConfigClass {
             $sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::DB2) {
             $sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::POSTGRESS) {
             $sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+            echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
             exit();
         }
         $result = $this->q->fast($sql);
         $total = $this->q->numberRows($result, $sql);
         if ($total == 0) {
-            echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
+            echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
             exit();
         } else {
             if ($this->getVendor() == self::MYSQL) {
                 $sql = "
-				UPDATE		`religion`
-				SET 		`religionDesc`		=	'" . $this->model->getReligionDesc() . "',
+				UPDATE		`membership`
+				SET 		`membershipSalary`			=	'" . $this->model->getMembershipSalary() . "',
+							`membershipRegisterDate`	=	'" . $this->model->getMembershipRegisterDate() . "',
+							`membershipName`			=	'" . $this->model->getMembershipName() . "',
+							`membershipNumber`			=	'" . $this->model->getMembershipNumber() . "',
+							`staffNumber`				=	'" . $this->model->getStaffNumber() . "',
+							`membershipDesignation`		=	'" . $this->model->getMembershipDesignation() . "',
+							`membershipIC`				=	'" . $this->model->getMembershipIC() . "',
+							`membershipBirthday`		=	'" . $this->model->getMembershipBirthday() . "',
+							`membershipPhone`			=	'" . $this->model->getMembershipPhone() . "',
+							`membershipHP`				=	'" . $this->model->getMembershipHP() . "',
+							`membershipAddress`			=	'" . $this->model->getMembershipAddress() . "',
+							`membershipPostcode`		=	'" . $this->model->getMembershipPostcode() . "',
+							`membershipExt`				=	'" . $this->model->getMembershipExt() . "',
+							`membershipEmail`			=	'" . $this->model->getMembershipEmail() . "',				
+				
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -649,11 +870,25 @@ class MembershipClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`religionId`		=	'" . $this->model->getReligionId(0, 'single') . "'";
+				WHERE 		`membershipId`		=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else if ($this->getVendor() == self::MSSQL) {
                 $sql = "
-				UPDATE 		[religion]
-				SET 		[religionDesc]		=	'" . $this->model->getReligionDesc() . "',
+				UPDATE 		[membership]
+				SET 		[membershipSalary]			=	'" . $this->model->getMembershipSalary() . "',
+							[membershipRegisterDate]	=	'" . $this->model->getMembershipRegisterDate() . "',
+							[membershipName]			=	'" . $this->model->getMembershipName() . "',
+							[membershipNumber]			=	'" . $this->model->getMembershipNumber() . "',
+							[staffNumber]				=	'" . $this->model->getStaffNumber() . "',
+							[membershipDesignation]		=	'" . $this->model->getMembershipDesignation() . "',
+							[membershipIC]				=	'" . $this->model->getMembershipIC() . "',
+							[membershipBirthday]		=	'" . $this->model->getMembershipBirthday() . "',
+							[membershipPhone]			=	'" . $this->model->getMembershipPhone() . "',
+							[membershipHP]				=	'" . $this->model->getMembershipHP() . "',
+							[membershipAddress]			=	'" . $this->model->getMembershipAddress() . "',
+							[membershipPostcode]		=	'" . $this->model->getMembershipPostcode() . "',
+							[membershipExt]				=	'" . $this->model->getMembershipExt() . "',
+							[membershipEmail]			=	'" . $this->model->getMembershipEmail() . "',				
+				
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -665,11 +900,26 @@ class MembershipClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[religionId]			=	'" . $this->model->getReligionId(0, 'single') . "'";
+			WHERE 		[membershipId]			=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else if ($this->getVendor() == self::ORACLE) {
                 $sql = "
-				UPDATE		RELIGION
-				SET 		RELIGIONDESC	=	'" . $this->model->getReligionDesc() . "',
+				UPDATE		MEMBERSHIP
+				SET 	MEMBERSHIPSALARY 		=	'" . $this->model->getMembershipSalary() . "',	
+						MEMBERSHIPREGISTERDATE	=	'" . $this->model->getMembershipRegisterDate() . "',
+						MEMBERSHIPNAME			=	'" . $this->model->getMembershipName() . "',
+						MEMBERSHIPNUMBER		=	'" . $this->model->getMembershipNumber() . "',
+						STAFFNUMBER				=	'" . $this->model->getStaffNumber() . "',
+						MEMBERSHIPDESIGNATION	=	'" . $this->model->getMembershipDesignation() . "',
+						MEMBERSHIPIC			=	'" . $this->model->getMembershipIC() . "',
+						MEMBERSHIPBIRTHDAY		=	'" . $this->model->getMembershipBirthday() . "',
+						MEMBERSHIPPHONE			=	'" . $this->model->getMembershipPhone() . "',
+						MEMBERSHIPHP			=	'" . $this->model->getMembershipHP() . "',
+						MEMBERSHIPADDRESS		=	'" . $this->model->getMembershipAddress() . "',
+						MEMBERSHIPPOSTCODE		=	'" . $this->model->getMembershipPostcode() . "',
+						MEMBERSHIPEXT			=	'" . $this->model->getMembershipExt() . "',
+						MEMBERSHIPEMAIL			=	'" . $this->model->getMembershipEmail() . "',
+				
+						
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -681,11 +931,25 @@ class MembershipClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		RELIGIONID		=	'" . $this->model->getReligionId(0, 'single') . "'";
+			WHERE 		MEMBERSHIPID		=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else if ($this->getVendor() == self::DB2) {
                 $sql = "
-			UPDATE	RELIGION
-			SET 			RELIGIONDESC	=	'" . $this->model->getReligionDesc() . "',
+			UPDATE	MEMBERSHIP
+			SET 			MEMBERSHIPSALARY 		=	'" . $this->model->getMembershipSalary() . "',	
+						MEMBERSHIPREGISTERDATE	=	'" . $this->model->getMembershipRegisterDate() . "',
+						MEMBERSHIPNAME			=	'" . $this->model->getMembershipName() . "',
+						MEMBERSHIPNUMBER		=	'" . $this->model->getMembershipNumber() . "',
+						STAFFNUMBER				=	'" . $this->model->getStaffNumber() . "',
+						MEMBERSHIPDESIGNATION	=	'" . $this->model->getMembershipDesignation() . "',
+						MEMBERSHIPIC			=	'" . $this->model->getMembershipIC() . "',
+						MEMBERSHIPBIRTHDAY		=	'" . $this->model->getMembershipBirthday() . "',
+						MEMBERSHIPPHONE			=	'" . $this->model->getMembershipPhone() . "',
+						MEMBERSHIPHP			=	'" . $this->model->getMembershipHP() . "',
+						MEMBERSHIPADDRESS		=	'" . $this->model->getMembershipAddress() . "',
+						MEMBERSHIPPOSTCODE		=	'" . $this->model->getMembershipPostcode() . "',
+						MEMBERSHIPEXT			=	'" . $this->model->getMembershipExt() . "',
+						MEMBERSHIPEMAIL			=	'" . $this->model->getMembershipEmail() . "',
+						
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -697,11 +961,25 @@ class MembershipClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		RELIGIONID		=	'" . $this->model->getReligionId(0, 'single') . "'";
+			WHERE 		MEMBERSHIPID		=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql = "
-				UPDATE		RELIGION
-				SET 		RELIGIONDESC		=	'" . $this->model->getReligionDesc() . "',
+				UPDATE		MEMBERSHIP
+				SET 		MEMBERSHIPSALARY 		=	'" . $this->model->getMembershipSalary() . "',	
+						MEMBERSHIPREGISTERDATE	=	'" . $this->model->getMembershipRegisterDate() . "',
+						MEMBERSHIPNAME			=	'" . $this->model->getMembershipName() . "',
+						MEMBERSHIPNUMBER		=	'" . $this->model->getMembershipNumber() . "',
+						STAFFNUMBER				=	'" . $this->model->getStaffNumber() . "',
+						MEMBERSHIPDESIGNATION	=	'" . $this->model->getMembershipDesignation() . "',
+						MEMBERSHIPIC			=	'" . $this->model->getMembershipIC() . "',
+						MEMBERSHIPBIRTHDAY		=	'" . $this->model->getMembershipBirthday() . "',
+						MEMBERSHIPPHONE			=	'" . $this->model->getMembershipPhone() . "',
+						MEMBERSHIPHP			=	'" . $this->model->getMembershipHP() . "',
+						MEMBERSHIPADDRESS		=	'" . $this->model->getMembershipAddress() . "',
+						MEMBERSHIPPOSTCODE		=	'" . $this->model->getMembershipPostcode() . "',
+						MEMBERSHIPEXT			=	'" . $this->model->getMembershipExt() . "',
+						MEMBERSHIPEMAIL			=	'" . $this->model->getMembershipEmail() . "',
+						
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -713,9 +991,9 @@ class MembershipClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		RELIGIONID			=	'" . $this->model->getReligionId(0, 'single') . "'";
+				WHERE 		MEMBERSHIPID			=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                 exit();
             }
             /*
@@ -723,7 +1001,7 @@ class MembershipClass extends ConfigClass {
              */
             $this->q->tableName = $this->model->getTableName();
             $this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-            $this->q->primaryKeyValue = $this->model->getReligionId(0, 'single');
+            $this->q->primaryKeyValue = $this->model->getMembershipId(0, 'single');
             $this->q->audit = $this->audit;
             $this->q->update($sql);
             if ($this->q->execute == 'fail') {
@@ -732,7 +1010,7 @@ class MembershipClass extends ConfigClass {
             }
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
+        echo json_encode(array("success" => true, "message" => "Updated"));
         exit();
     }
 
@@ -742,7 +1020,7 @@ class MembershipClass extends ConfigClass {
 
     function delete() {
         header('Content-Type:application/json; charset=utf-8');
-        
+        //UTF8
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -754,40 +1032,40 @@ class MembershipClass extends ConfigClass {
             $sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::DB2) {
             $sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else if ($this->getVendor() == self::POSTGRESS) {
             $sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getReligionId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getMembershipId(0, 'single') . "' ";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+            echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
             exit();
         }
         $result = $this->q->fast($sql);
         $total = $this->q->numberRows($result, $sql);
         if ($total == 0) {
-            echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
+            echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
             exit();
         } else {
             if ($this->getVendor() == self::MYSQL) {
                 $sql = "
-				UPDATE 	`religion`
+				UPDATE 	`membership`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -799,10 +1077,10 @@ class MembershipClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`religionId`		=	'" . $this->model->getReligionId(0, 'single') . "'";
+				WHERE 	`membershipId`		=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else if ($this->getVendor() == self::MSSQL) {
                 $sql = "
-				UPDATE 	[religion]
+				UPDATE 	[membership]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -814,10 +1092,10 @@ class MembershipClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[religionId]		=	'" . $this->model->getReligionId(0, 'single') . "'";
+				WHERE 	[membershipId]		=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else if ($this->getVendor() == self::ORACLE) {
                 $sql = "
-				UPDATE 	RELIGION
+				UPDATE 	MEMBERSHIP
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -829,10 +1107,10 @@ class MembershipClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	RELIGIONID		=	'" . $this->model->getReligionId(0, 'single') . "'";
+				WHERE 	MEMBERSHIPID		=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else if ($this->getVendor() == self::DB2) {
                 $sql = "
-				UPDATE 	RELIGION
+				UPDATE 	MEMBERSHIP
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -844,10 +1122,10 @@ class MembershipClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	RELIGIONID		=	'" . $this->model->getReligionId(0, 'single') . "'";
+				WHERE 	MEMBERSHIPID		=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else if ($this->getVendor() == self::POSTGRESS) {
                 $sql = "
-				UPDATE 	RELIGION
+				UPDATE 	MEMBERSHIP
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -859,15 +1137,15 @@ class MembershipClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	RELIGIONID		=	'" . $this->model->getReligionId(0, 'single') . "'";
+				WHERE 	MEMBERSHIPID		=	'" . $this->model->getMembershipId(0, 'single') . "'";
             } else {
-                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                 exit();
             }
             // advance logging future
             $this->q->tableName = $this->model->getTableName();
             $this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-            $this->q->primaryKeyValue = $this->model->getReligionId(0, 'single');
+            $this->q->primaryKeyValue = $this->model->getMembershipId(0, 'single');
             $this->q->audit = $this->audit;
             $this->q->update($sql);
             if ($this->q->execute == 'fail') {
@@ -876,7 +1154,7 @@ class MembershipClass extends ConfigClass {
             }
         }
         $this->q->commit();
-        echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
+        echo json_encode(array("success" => true, "message" => "Deleted"));
         exit();
     }
 
@@ -886,7 +1164,7 @@ class MembershipClass extends ConfigClass {
     function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
-            
+            //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
@@ -912,7 +1190,7 @@ class MembershipClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+            echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
             exit();
         }
         /**
@@ -937,11 +1215,11 @@ class MembershipClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getMembershipId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -961,11 +1239,11 @@ class MembershipClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getMembershipId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -985,11 +1263,11 @@ class MembershipClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getMembershipId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1009,11 +1287,11 @@ class MembershipClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getMembershipId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1033,11 +1311,11 @@ class MembershipClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getMembershipId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1057,11 +1335,11 @@ class MembershipClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getMembershipId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1081,11 +1359,11 @@ class MembershipClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                                 exit();
                             }
                             $sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getMembershipId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1105,11 +1383,11 @@ class MembershipClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                                 exit();
                             }
                             $sqlLooping .= "
-                            WHEN '" . $this->model->getReligionId($i, 'array') . "'
+                            WHEN '" . $this->model->getMembershipId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1129,11 +1407,11 @@ class MembershipClass extends ConfigClass {
                             } else if ($this->getVendor() == self::POSTGRESS) {
                                 $sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
                             } else {
-                                echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+                                echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
                                 exit();
                             }
                             $sqlLooping .= "
-                                WHEN '" . $this->model->getReligionId($i, 'array') . "'
+                                WHEN '" . $this->model->getMembershipId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
                             $sqlLooping .= " END,";
                         }
@@ -1158,7 +1436,7 @@ class MembershipClass extends ConfigClass {
             $sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+            echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
             exit();
         }
         $this->q->update($sql);
@@ -1168,9 +1446,9 @@ class MembershipClass extends ConfigClass {
         }
         $this->q->commit();
         if ($this->getIsAdmin()) {
-            $message = $this->systemString->getUpdateMessage();
+            $message = "Updated";
         } else {
-            $message = $this->systemString->getDeleteMessage();
+            $message = "deleted";
         }
         echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
@@ -1185,42 +1463,42 @@ class MembershipClass extends ConfigClass {
     function duplicate() {
         header('Content-Type:application/json; charset=utf-8');
         if ($this->getVendor() == self::MYSQL) {
-            
+            //UTF8
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
         }
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			SELECT	`religionDesc`
-			FROM 	`religion`
-			WHERE 	`religionDesc` 	= 	'" . $this->model->getReligionDesc() . "'
+			SELECT	`membershipDesc`
+			FROM 	`membership`
+			WHERE 	`membershipDesc` 	= 	'" . $this->model->getMembershipDesc() . "'
 			AND		`isActive`		=	1";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
-			SELECT	[religionDesc]
-			FROM 	[religion]
-			WHERE 	[religionDesc] 	= 	'" . $this->model->getReligionDesc() . "'
+			SELECT	[membershipDesc]
+			FROM 	[membership]
+			WHERE 	[membershipDesc] 	= 	'" . $this->model->getMembershipDesc() . "'
 			AND		[isActive]		=	1";
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
-			SELECT	RELIGIONDESC
-			FROM 	RELIGION
-			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc() . "'
+			SELECT	MEMBERSHIPDESC
+			FROM 	MEMBERSHIP
+			WHERE 	MEMBERSHIPDESC 	= 	'" . $this->model->getMembershipDesc() . "'
 			AND		ISACTIVE		=	1";
         } else if ($this->getVendor() == self::DB2) {
             $sql = "
-			SELECT	RELIGIONDESC
-			FROM 	RELIGION
-			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc() . "'
+			SELECT	MEMBERSHIPDESC
+			FROM 	MEMBERSHIP
+			WHERE 	MEMBERSHIPDESC 	= 	'" . $this->model->getMembershipDesc() . "'
 			AND		ISACTIVE		=	1";
         } else if ($this->getVendor() == self::POSTGRESS) {
             $sql = "
-			SELECT	RELIGIONDESC
-			FROM 	RELIGION
-			WHERE 	RELIGIONDESC 	= 	'" . $this->model->getReligionDesc() . "'
+			SELECT	MEMBERSHIPDESC
+			FROM 	MEMBERSHIP
+			WHERE 	MEMBERSHIPDESC 	= 	'" . $this->model->getMembershipDesc() . "'
 			AND		ISACTIVE		=	1";
         } else {
-            echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+            echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
             exit();
         }
         $this->q->read($sql);
@@ -1232,10 +1510,10 @@ class MembershipClass extends ConfigClass {
         }
         if ($total > 0) {
             $row = $this->q->fetchArray();
-            echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "religionDesc" => $row ['religionDesc']));
+            echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "membershipDesc" => $row ['membershipDesc']));
             exit();
         } else {
-            echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
+            echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
             exit();
         }
     }
@@ -1262,7 +1540,7 @@ class MembershipClass extends ConfigClass {
 
     function excel() {
         header('Content-Type:application/json; charset=utf-8');
-        
+        //UTF8
         if ($this->getVendor() == self::MYSQL) {
             $sql = "SET NAMES \"utf8\"";
             $this->q->fast($sql);
@@ -1299,7 +1577,7 @@ class MembershipClass extends ConfigClass {
         while (($row = $this->q->fetchAssoc()) == TRUE) {
             //	echo print_r($row);
             $this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-            $this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['religionDesc']);
+            $this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['membershipDesc']);
             $loopRow++;
             $lastRow = 'C' . $loopRow;
         }
@@ -1308,23 +1586,23 @@ class MembershipClass extends ConfigClass {
         $formula = $from . ":" . $to;
         $this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
         $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-        $filename = "religion" . rand(0, 10000000) . ".xlsx";
+        $filename = "membership" . rand(0, 10000000) . ".xlsx";
         $path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
         $this->documentTrail->create_trail($this->leafId, $path, $filename);
         $objWriter->save($path);
         $file = fopen($path, 'r');
         if ($file) {
-            echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
+            echo json_encode(array("success" => 'TRUE', "message" => "File generated", "filename" => $filename));
             exit();
         } else {
-            echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
+            echo json_encode(array("success" => 'FALSE', "message" => "File not generated"));
             exit();
         }
     }
 
 }
 
-$religionObject = new ReligionClass ();
+$membershipObject = new MembershipClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1334,59 +1612,59 @@ if (isset($_POST ['method'])) {
      *  Initilize Value before load in the loader
      */
     if (isset($_POST ['leafId'])) {
-        $religionObject->setLeafId($_POST ['leafId']);
+        $membershipObject->setLeafId($_POST ['leafId']);
     }
     /*
      * Admin Only
      */
     if (isset($_POST ['isAdmin'])) {
-        $religionObject->setIsAdmin($_POST ['isAdmin']);
+        $membershipObject->setIsAdmin($_POST ['isAdmin']);
     }
     /*
      *  Paging
      */
     if (isset($_POST ['start'])) {
-        $religionObject->setStart($_POST ['start']);
+        $membershipObject->setStart($_POST ['start']);
     }
     if (isset($_POST ['perPage'])) {
-        $religionObject->setLimit($_POST ['perPage']);
+        $membershipObject->setLimit($_POST ['perPage']);
     }
     /*
      *  Filtering
      */
     if (isset($_POST ['query'])) {
-        $religionObject->setFieldQuery($_POST ['query']);
+        $membershipObject->setFieldQuery($_POST ['query']);
     }
     if (isset($_POST ['filter'])) {
-        $religionObject->setGridQuery($_POST ['filter']);
+        $membershipObject->setGridQuery($_POST ['filter']);
     }
     /*
      * Ordering
      */
     if (isset($_POST ['order'])) {
-        $religionObject->setOrder($_POST ['order']);
+        $membershipObject->setOrder($_POST ['order']);
     }
     if (isset($_POST ['sortField'])) {
-        $religionObject->setSortField($_POST ['sortField']);
+        $membershipObject->setSortField($_POST ['sortField']);
     }
     /*
      *  Load the dynamic value
      */
-    $religionObject->execute();
+    $membershipObject->execute();
     /*
      *  Crud Operation (Create Read Update Delete/Destory)
      */
     if ($_POST ['method'] == 'create') {
-        $religionObject->create();
+        $membershipObject->create();
     }
     if ($_POST ['method'] == 'save') {
-        $religionObject->update();
+        $membershipObject->update();
     }
     if ($_POST ['method'] == 'read') {
-        $religionObject->read();
+        $membershipObject->read();
     }
     if ($_POST ['method'] == 'delete') {
-        $religionObject->delete();
+        $membershipObject->delete();
     }
 }
 if (isset($_GET ['method'])) {
@@ -1394,35 +1672,35 @@ if (isset($_GET ['method'])) {
      *  Initilize Value before load in the loader
      */
     if (isset($_GET ['leafId'])) {
-        $religionObject->setLeafId($_GET ['leafId']);
+        $membershipObject->setLeafId($_GET ['leafId']);
     }
     /*
      * Admin Only
      */
     if (isset($_GET ['isAdmin'])) {
-        $religionObject->setIsAdmin($_GET ['isAdmin']);
+        $membershipObject->setIsAdmin($_GET ['isAdmin']);
     }
     /*
      *  Load the dynamic value
      */
-    $religionObject->execute();
+    $membershipObject->execute();
     if (isset($_GET ['field'])) {
         if ($_GET ['field'] == 'staffId') {
-            $religionObject->staff();
+            $membershipObject->staff();
         }
     }
     /*
      * Update Status of The Table. Admin Level Only
      */
     if ($_GET ['method'] == 'updateStatus') {
-        $religionObject->updateStatus();
+        $membershipObject->updateStatus();
     }
     /*
      *  Checking Any Duplication  Key
      */
-    if (isset($_GET ['religionDesc'])) {
-        if (strlen($_GET ['religionDesc']) > 0) {
-            $religionObject->duplicate();
+    if (isset($_GET ['membershipDesc'])) {
+        if (strlen($_GET ['membershipDesc']) > 0) {
+            $membershipObject->duplicate();
         }
     }
     /**
@@ -1430,16 +1708,16 @@ if (isset($_GET ['method'])) {
      */
     if ($_GET ['method'] == 'dataNavigationRequest') {
         if ($_GET ['dataNavigation'] == 'firstRecord') {
-            $religionObject->firstRecord('json');
+            $membershipObject->firstRecord('json');
         }
         if ($_GET ['dataNavigation'] == 'previousRecord') {
-            $religionObject->previousRecord('json', 0);
+            $membershipObject->previousRecord('json', 0);
         }
         if ($_GET ['dataNavigation'] == 'nextRecord') {
-            $religionObject->nextRecord('json', 0);
+            $membershipObject->nextRecord('json', 0);
         }
         if ($_GET ['dataNavigation'] == 'lastRecord') {
-            $religionObject->lastRecord('json');
+            $membershipObject->lastRecord('json');
         }
     }
     /*
@@ -1447,7 +1725,7 @@ if (isset($_GET ['method'])) {
      */
     if (isset($_GET ['mode'])) {
         if ($_GET ['mode'] == 'excel') {
-            $religionObject->excel();
+            $membershipObject->excel();
         }
     }
 }

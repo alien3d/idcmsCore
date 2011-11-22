@@ -549,7 +549,7 @@ abstract class ConfigClass
 	 */
 	public function setIsAdmin ($value)
 	{
-		$this->IsAdmin() = $value;
+		$this->isAdmin = $value;
 	}
 	/**
 	 * Return Is Admin
@@ -557,7 +557,7 @@ abstract class ConfigClass
 	 */
 	public function getIsAdmin ()
 	{
-		return $this->isAdmin();
+		return $this->isAdmin;
 	}
 	/**
 	 * Set Filter Query

@@ -162,7 +162,7 @@ class TreeClass extends ConfigClass {
 		$counterModule = 0;
 		$treeJsonString = " [";
 		if ($this->getVendor () == self::MYSQL) {
-			$sqlModule = "
+			  $sqlModule = "
 		      SELECT    `moduleAccessId`,
 		      			`moduleId`,
 		      			`teamId`,

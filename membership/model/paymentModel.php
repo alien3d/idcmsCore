@@ -23,7 +23,6 @@ class PaymentModel extends ValidationClass {
      * @var string
      */
     private $receiptNo;
-    const receiptNo='receiptNo';
     /**
      * @var int
      */

@@ -3,79 +3,46 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is membership model file.This is to ensure strict setting enable for all variable enter to database
+ * this is Bank model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package membership
+ * @package Bank
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class MembershipModel extends ValidationClass {
+class BankModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $membershipId;
+	private $bankId;
+	/**
+	 * @var string
+	 */
+	private $bankCode;
+	/**
+	 * @var string
+	 */
+	private $bankSwiftCode;
+	/**
+	 * @var string
+	 */
+	private $bankSwiftCodeCity;
+	/**
+	 * @var string
+	 */
+	private $bankSwiftCodeBranch;
+	/**
+	 * @var string
+	 */
+	private $bankMepsCode;
+	/**
+	 * @var string
+	 */
+	private $bankDesc;
 
-
-	/**
-	 * @var float
-	 */
-	private $membershipSalary;
-	/**
-	 * @var date
-	 */
-	private $membershipRegisterDate;
-	/**
-	 * @var string
-	 */
-	private $membershipName;
-	/**
-	 * @var int
-	 */
-	private $membershipNumber;
-	/**
-	 * @var int
-	 */
-	private $staffNumber;
-	/**
-	 * @var string
-	 */
-	private $membershipDesignation;
-	/**
-	 * @var string
-	 */
-	private $membershipIC;
-	/**
-	 * @var date
-	 */
-	private $membershipBirthday;
-	/**
-	 * @var string
-	 */
-	private $membershipPhone;
-	/**
-	 * @var string
-	 */
-	private $membershipHP;
-	/**
-	 * @var string
-	 */
-	private $membershipAddress;
-	/**
-	 * @var string
-	 */
-	private $membershipPostcode;
-	/**
-	 * @var string
-	 */
-	private $membershipExt;
-	/**
-	 * @var string
-	 */
-	private $membershipEmail;
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -85,66 +52,46 @@ class MembershipModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('membership');
-		$this->setPrimaryKeyName('membershipId');
+		$this->setTableName('bank');
+		$this->setPrimaryKeyName('bankId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['membershipId'])) {
-			$this->setMembershipId($this->strict($_POST ['membershipId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['bankId'])) {
+			$this->setBankId($this->strict($_POST ['bankId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['membershipDesc'])) {
-			$this->setMembershipDesc($this->strict($_POST ['membershipDesc'], 'memo'));
+		if (isset($_POST ['bankCode'])) {
+			$this->setBankCode($this->strict($_POST ['bankCode'], 'memo'));
 		}
-		if(isset($_POST['membershipSalary'])){
-			$this->setMembershipSalary($this->strict($_POST['membershipSalary'],'float'));
+		if (isset($_POST ['bankSwiftCode'])) {
+			$this->setBankSwiftCode($this->strict($_POST ['bankSwiftCode'], 'memo'));
 		}
-
-		if(isset($_POST['membershipRegisterDate'])){
-			$this->setMembershipRegisterDate ($this->strict($_POST['membershipRegisterDate'],'date'));
+		if (isset($_POST ['bankSwiftCodeCity'])) {
+			$this->setBankSwiftCodeCity($this->strict($_POST ['bankSwiftCodeCity'], 'memo'));
 		}
-		if(isset($_POST['membershipName'])){
-			$this->setMembershipName($this->strict($_POST['membershipName'],'string'));
+		if (isset($_POST ['bankSwiftCodeBranch'])) {
+			$this->setBankSwiftCodeBranch($this->strict($_POST ['bankSwiftCodeBranch'], 'memo'));
 		}
-
-		if(isset($_POST['membershipNumber'])){
-			$this->setMembershipNumber($this->strict($_POST['membershipNumber'],'numeric'));
+		if (isset($_POST ['bankMepsCode'])) {
+			$this->setBankMepsCodeCity($this->strict($_POST ['bankMepsCode'], 'memo'));
 		}
-		if(isset($_POST['staffNumber'])){
-			$this->setStaffNumber($this->strict($_POST['staffNumber'],'numeric'));
+		if (isset($_POST ['bankCode'])) {
+			$this->setBankCode($this->strict($_POST ['bankCode'], 'memo'));
 		}
-		if(isset($_POST['membershipDesignation'])){
-			$this->setMembershipDesignation($this->strict($_POST['membershipDesignation'],'string'));
+		if (isset($_POST ['bankCode'])) {
+			$this->setBankCode($this->strict($_POST ['bankCode'], 'memo'));
 		}
-		if(isset($_POST['membershipIC'])){
-			$this->setMembershipIC($this->strict($_POST['membershipIC'],'string'));
+		if (isset($_POST ['bankCode'])) {
+			$this->setBankCode($this->strict($_POST ['bankCode'], 'memo'));
 		}
-		if(isset($_POST['membershipBirthday'])){
-			$this->setMembershipBirthday($this->strict($_POST['membershipBirthday'],'date'));
-		}
-		if(isset($_POST['membershipPhone'])){
-			$this->setMembershipPhone($this->strict($_POST['membershipPhone'],'string'));
-		}
-		if(isset($_POST['membershipHP'])){
-			$this->setMembershipHP($this->strict($_POST['membershipHP'],'string'));
-		}
-		if(isset($_POST['membershipAddress'])){
-			$this->setMembershipAddress($this->strict($_POST['membershipAddress'],'string'));
-		}
-		if(isset($_POST['membershipPostcode'])){
-			$this->setMembershipPostcode($this->strict($_POST['membershipPostcode'],'string'));
-		}
-		if(isset($_POST['membershipExt'])){
-			$this->setMembershipExt($this->strict($_POST['membershipExt'],'string'));
-		}
-		if(isset($_POST['membershipEmail'])){
-			$this->setMembershipEmail($this->strict($_POST['membershipEmail'],'string'));
+		if (isset($_POST ['bankDesc'])) {
+			$this->setBankDesc($this->strict($_POST ['bankDesc'], 'memo'));
 		}
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['membershipId'])) {
-			$this->setTotal(count($_GET ['membershipId']));
+		if (isset($_GET ['bankId'])) {
+			$this->setTotal(count($_GET ['bankId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -194,8 +141,8 @@ class MembershipModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['membershipId'])) {
-				$this->setMembershipId($this->strict($_GET ['membershipId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['bankId'])) {
+				$this->setBankId($this->strict($_GET ['bankId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -260,7 +207,7 @@ class MembershipModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getMembershipId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getBankId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -394,35 +341,35 @@ class MembershipModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Membership Identification  Value
+	 * Set Bank Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setMembershipId($value, $key, $type) {
+	public function setBankId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->membershipId = $value;
+			$this->bankId = $value;
 		} else if ($type == 'array') {
-			$this->membershipId [$key] = $value;
+			$this->bankId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setMembershipId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setBankId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Membership Identification  Value
+	 * Return Bank Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getMembershipId($key, $type) {
+	public function getBankId($key, $type) {
 		if ($type == 'single') {
-			return $this->membershipId;
+			return $this->bankId;
 		} else if ($type == 'array') {
-			return $this->membershipId [$key];
+			return $this->bankId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getMembershipId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getBankId ?"));
 			exit();
 		}
 	}
@@ -430,144 +377,113 @@ class MembershipModel extends ValidationClass {
 
 
 
-	public function getMembershipSalary()
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getBankCode()
 	{
-		return $this->membershipSalary;
+	    return $this->bankCode;
 	}
 
-	public function setMembershipSalary($membershipSalary)
+	/**
+	 * 
+	 * @param $bankCode
+	 */
+	public function setBankCode($bankCode)
 	{
-		$this->membershipSalary = $membershipSalary;
+	    $this->bankCode = $bankCode;
 	}
 
-	public function getMembershipRegisterDate()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getBankDesc()
 	{
-		return $this->membershipRegisterDate;
+	    return $this->bankDesc;
 	}
 
-	public function setMembershipRegisterDate($membershipRegisterDate)
+	/**
+	 * 
+	 * @param $bankDesc
+	 */
+	public function setBankDesc($bankDesc)
 	{
-		$this->membershipRegisterDate = $membershipRegisterDate;
+	    $this->bankDesc = $bankDesc;
 	}
 
-	public function getMembershipName()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getBankSwiftCode()
 	{
-		return $this->membershipName;
+	    return $this->bankSwiftCode;
 	}
 
-	public function setMembershipName($membershipName)
+	/**
+	 * 
+	 * @param $bankSwiftCode
+	 */
+	public function setBankSwiftCode($bankSwiftCode)
 	{
-		$this->membershipName = $membershipName;
+	    $this->bankSwiftCode = $bankSwiftCode;
 	}
 
-	public function getMembershipNumber()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getBankSwiftCodeCity()
 	{
-		return $this->membershipNumber;
+	    return $this->bankSwiftCodeCity;
 	}
 
-	public function setMembershipNumber($membershipNumber)
+	/**
+	 * 
+	 * @param $bankSwiftCodeCity
+	 */
+	public function setBankSwiftCodeCity($bankSwiftCodeCity)
 	{
-		$this->membershipNumber = $membershipNumber;
+	    $this->bankSwiftCodeCity = $bankSwiftCodeCity;
 	}
 
-	public function getStaffNumber()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getBankSwiftCodeBranch()
 	{
-		return $this->staffNumber;
+	    return $this->bankSwiftCodeBranch;
 	}
 
-	public function setStaffNumber($staffNumber)
+	/**
+	 * 
+	 * @param $bankSwiftCodeBranch
+	 */
+	public function setBankSwiftCodeBranch($bankSwiftCodeBranch)
 	{
-		$this->staffNumber = $staffNumber;
+	    $this->bankSwiftCodeBranch = $bankSwiftCodeBranch;
 	}
 
-	public function getMembershipDesignation()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getBankMepsCode()
 	{
-		return $this->membershipDesignation;
+	    return $this->bankMepsCode;
 	}
 
-	public function setMembershipDesignation($membershipDesignation)
+	/**
+	 * 
+	 * @param $bankMepsCode
+	 */
+	public function setBankMepsCode($bankMepsCode)
 	{
-		$this->membershipDesignation = $membershipDesignation;
-	}
-
-	public function getMembershipIC()
-	{
-		return $this->membershipIC;
-	}
-
-	public function setMembershipIC($membershipIC)
-	{
-		$this->membershipIC = $membershipIC;
-	}
-
-	public function getMembershipBirthday()
-	{
-		return $this->membershipBirthday;
-	}
-
-	public function setMembershipBirthday($membershipBirthday)
-	{
-		$this->membershipBirthday = $membershipBirthday;
-	}
-
-	public function getMembershipPhone()
-	{
-		return $this->membershipPhone;
-	}
-
-	public function setMembershipPhone($membershipPhone)
-	{
-		$this->membershipPhone = $membershipPhone;
-	}
-
-	public function getMembershipHP()
-	{
-		return $this->membershipHP;
-	}
-
-	public function setMembershipHP($membershipHP)
-	{
-		$this->membershipHP = $membershipHP;
-	}
-
-	public function getMembershipAddress()
-	{
-		return $this->membershipAddress;
-	}
-
-	public function setMembershipAddress($membershipAddress)
-	{
-		$this->membershipAddress = $membershipAddress;
-	}
-
-	public function getMembershipPostcode()
-	{
-		return $this->membershipPostcode;
-	}
-
-	public function setMembershipPostcode($membershipPostcode)
-	{
-		$this->membershipPostcode = $membershipPostcode;
-	}
-
-	public function getMembershipExt()
-	{
-		return $this->membershipExt;
-	}
-
-	public function setMembershipExt($membershipExt)
-	{
-		$this->membershipExt = $membershipExt;
-	}
-
-	public function getMembershipEmail()
-	{
-		return $this->membershipEmail;
-	}
-
-	public function setMembershipEmail($membershipEmail)
-	{
-		$this->membershipEmail = $membershipEmail;
+	    $this->bankMepsCode = $bankMepsCode;
 	}
 }
 
