@@ -446,8 +446,9 @@ Ext.onReady(function () {
 		}); // end popup window for normal log and advance log
 	// end common Proxy ,Reader,Store,Filter,Grid
 	// atart additional Proxy ,Reader,Store,Filter,Grid
+	// start request state
 	var stateProxy = new Ext.data.HttpProxy({
-			url : '../controller/stateController.php',
+			url : '../../system/controller/stateController.php',
 			method : 'POST',
 			success : function (response, options) {
 				jsonResponse = Ext.decode(response.responseText);
@@ -490,6 +491,284 @@ Ext.onReady(function () {
 				}
 			]
 		});
+	//end request state
+	// start request religion
+	var religionProxy = new Ext.data.HttpProxy({
+		url : '../../system/controller/religionController.php',
+		method : 'POST',
+		success : function (response, options) {
+			jsonResponse = Ext.decode(response.responseText);
+			if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+			} else {
+				Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+			}
+		},
+		failure : function (response, options) {
+			Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+		}
+	});
+var religionReader = new Ext.data.JsonReader({
+		totalProperty : 'total',
+		successProperty : 'success',
+		messageProperty : 'message',
+		idProperty : 'religionId'
+	});
+var religionStore = new Ext.data.JsonStore({
+		proxy : religionProxy,
+		reader : religionReader,
+		autoLoad : true,
+		autoDestroy : true,
+		pruneModifiedRecords : true,
+		baseParams : {
+			method : 'read',
+			leafId : leafId,
+			isAdmin : isAdmin,
+			start : 0,
+			perPage : perPage
+		},
+		root : 'data',
+		id : 'religionId',
+		fields : [{
+				name : 'religionId',
+				type : 'int'
+			}, {
+				name : 'religionDesc',
+				type : 'string'
+			}
+		]
+	});
+	// end request religion
+	// start request race
+var raceProxy = new Ext.data.HttpProxy({
+	url : '../../system/controller/raceController.php',
+	method : 'POST',
+	success : function (response, options) {
+		jsonResponse = Ext.decode(response.responseText);
+		if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+		} else {
+			Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		}
+	},
+	failure : function (response, options) {
+		Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+	}
+});
+var raceReader = new Ext.data.JsonReader({
+	totalProperty : 'total',
+	successProperty : 'success',
+	messageProperty : 'message',
+	idProperty : 'raceId'
+});
+var raceStore = new Ext.data.JsonStore({
+	proxy : raceProxy,
+	reader : raceReader,
+	autoLoad : true,
+	autoDestroy : true,
+	pruneModifiedRecords : true,
+	baseParams : {
+		method : 'read',
+		leafId : leafId,
+		isAdmin : isAdmin,
+		start : 0,
+		perPage : perPage
+	},
+	root : 'data',
+	id : 'raceId',
+	fields : [{
+			name : 'raceId',
+			type : 'int'
+		}, {
+			name : 'raceDesc',
+			type : 'string'
+		}
+	]
+});
+	// end request race
+	// start request marriage
+var marriageProxy = new Ext.data.HttpProxy({
+	url : '../../system/controller/marriageController.php',
+	method : 'POST',
+	success : function (response, options) {
+		jsonResponse = Ext.decode(response.responseText);
+		if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+		} else {
+			Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		}
+	},
+	failure : function (response, options) {
+		Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+	}
+});
+var marriageReader = new Ext.data.JsonReader({
+	totalProperty : 'total',
+	successProperty : 'success',
+	messageProperty : 'message',
+	idProperty : 'marriageId'
+});
+var marriageStore = new Ext.data.JsonStore({
+	proxy : marriageProxy,
+	reader : marriageReader,
+	autoLoad : true,
+	autoDestroy : true,
+	pruneModifiedRecords : true,
+	baseParams : {
+		method : 'read',
+		leafId : leafId,
+		isAdmin : isAdmin,
+		start : 0,
+		perPage : perPage
+	},
+	root : 'data',
+	id : 'marriageId',
+	fields : [{
+			name : 'marriageId',
+			type : 'int'
+		}, {
+			name : 'marriageDesc',
+			type : 'string'
+		}
+	]
+});
+	// end request marriage
+// start gender request
+var genderProxy = new Ext.data.HttpProxy({
+	url : '../../system/controller/genderController.php',
+	method : 'POST',
+	success : function (response, options) {
+		jsonResponse = Ext.decode(response.responseText);
+		if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+		} else {
+			Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		}
+	},
+	failure : function (response, options) {
+		Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+	}
+});
+var genderReader = new Ext.data.JsonReader({
+	totalProperty : 'total',
+	successProperty : 'success',
+	messageProperty : 'message',
+	idProperty : 'genderId'
+});
+var genderStore = new Ext.data.JsonStore({
+	proxy : genderProxy,
+	reader : genderReader,
+	autoLoad : true,
+	autoDestroy : true,
+	pruneModifiedRecords : true,
+	baseParams : {
+		method : 'read',
+		leafId : leafId,
+		isAdmin : isAdmin,
+		start : 0,
+		perPage : perPage
+	},
+	root : 'data',
+	id : 'genderId',
+	fields : [{
+			name : 'genderId',
+			type : 'int'
+		}, {
+			name : 'genderDesc',
+			type : 'string'
+		}
+	]
+});
+// end gender request
+// start family request
+var familyProxy = new Ext.data.HttpProxy({
+	url : '../../system/controller/familyController.php',
+	method : 'POST',
+	success : function (response, options) {
+		jsonResponse = Ext.decode(response.responseText);
+		if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+		} else {
+			Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		}
+	},
+	failure : function (response, options) {
+		Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+	}
+});
+var familyReader = new Ext.data.JsonReader({
+	totalProperty : 'total',
+	successProperty : 'success',
+	messageProperty : 'message',
+	idProperty : 'familyId'
+});
+var familyStore = new Ext.data.JsonStore({
+	proxy : familyProxy,
+	reader : familyReader,
+	autoLoad : true,
+	autoDestroy : true,
+	pruneModifiedRecords : true,
+	baseParams : {
+		method : 'read',
+		leafId : leafId,
+		isAdmin : isAdmin,
+		start : 0,
+		perPage : perPage
+	},
+	root : 'data',
+	id : 'familyId',
+	fields : [{
+			name : 'familyId',
+			type : 'int'
+		}, {
+			name : 'familyDesc',
+			type : 'string'
+		}
+	]
+});
+// end family request
+// start request department
+var departmentProxy = new Ext.data.HttpProxy({
+	url : '../../management/controller/departmentController.php',
+	method : 'POST',
+	success : function (response, options) {
+		jsonResponse = Ext.decode(response.responseText);
+		if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+		} else {
+			Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+		}
+	},
+	failure : function (response, options) {
+		Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+	}
+});
+var departmentReader = new Ext.data.JsonReader({
+	totalProperty : 'total',
+	successProperty : 'success',
+	messageProperty : 'message',
+	idProperty : 'departmentId'
+});
+var departmentStore = new Ext.data.JsonStore({
+	proxy : departmentProxy,
+	reader : departmentReader,
+	autoLoad : true,
+	autoDestroy : true,
+	pruneModifiedRecords : true,
+	baseParams : {
+		method : 'read',
+		leafId : leafId,
+		isAdmin : isAdmin,
+		start : 0,
+		perPage : perPage
+	},
+	root : 'data',
+	id : 'departmentId',
+	fields : [{
+			name : 'departmentId',
+			type : 'int'
+		}, {
+			name : 'departmentDesc',
+			type : 'string'
+		}
+	]
+});
+	// end request department
+	
 	// end additional Proxy ,Reader,Store,Filter,Grid
 	// start application Proxy ,Reader,Store,Filter,Grid
 	var membershipProxy = new Ext.data.HttpProxy({
@@ -665,20 +944,8 @@ Ext.onReady(function () {
 			hidden : false,
 			width : 50
 		}, {
-			dataIndex : 'membershipno',
-			header : memberNoLabel,
-			sortable : true,
-			hidden : false,
-			width : 50
-		}, {
-			dataIndex : 'staffNo',
-			header : staffNoLabel,
-			sortable : true,
-			hidden : false,
-			width : 50
-		}, {
-			dataIndex : 'designationDesc',
-			header : designationDescLabel,
+			dataIndex : 'membershipDesignation',
+			header : membershipDesignationLabel,
 			sortable : true,
 			hidden : true
 		}, {
@@ -996,7 +1263,7 @@ Ext.onReady(function () {
 	
 	var raceId = new Ext.ux.form.ComboBoxMatch({
 			labelAlign : 'left',
-			fieldLabel : raceIdlabel,
+			fieldLabel : raceIdLabel,
 			name : 'raceId',
 			valueField : 'raceId',
 			hiddenName : 'raceId',
@@ -1008,7 +1275,7 @@ Ext.onReady(function () {
 			anchor : '90%',
 			selectOnFocus : true,
 			allowBlank : false,
-			blankText : 'Sila isi Bangsa',
+			blankText : blankTextLabel,
 			style : {
 				textTransform : "uppercase"
 			},
@@ -1033,72 +1300,10 @@ Ext.onReady(function () {
 			typeAhead : false,
 			triggerAction : 'all',
 			mode : 'local',
-			store : depStore,
+			store : departmentStore,
 			anchor : '90%',
 			selectOnFocus : true,
 			allowBlank : false,
-			blankText : blankTextLabel,
-			style : {
-				textTransform : "uppercase"
-			},
-			listeners : {
-				'select' : function () {
-					divId.reset();
-					divId.enable();
-					
-					divStore.proxy = new Ext.data.HttpProxy({
-							url : 'application_data.php?method=read&field=divId&depId='
-							 + this.store.getAt(this.selectedIndex).data.depId
-							 + '&leafId=' + leafId,
-							method : 'GET',
-							
-							listeners : {
-								exception : function (DataProxy, type, action, options,
-									response, arg) {
-									
-									if (Ext.util.JSON.decode(response.responseText) !== null) {
-										var serverMessage = Ext.util.JSON
-											.decode(response.responseText);
-										// exception only support create record response
-										// only and read .. oodddd
-										if (serverMessage.success == 'false') {
-											Ext.MessageBox.alert("System Error",
-												serverMessage.message);
-										}
-									}
-								}
-								
-							}
-						});
-					divStore.load();
-				}
-			},
-			createValueMatcher : function (value) {
-				value = String(value).replace(/\s*/g, '');
-				if (Ext.isEmpty(value, false)) {
-					return new RegExp('^');
-				}
-				value = Ext.escapeRe(value.split('').join('\\s*')).replace(
-						/\\\\s\\\*/g, '\\s*');
-				return new RegExp('\\b(' + value + ')', 'i');
-			}
-		});
-	
-	var divisionId = new Ext.ux.form.ComboBoxMatch({
-			labelAlign : 'left',
-			fieldLabel : divisionIdLabel,
-			name : 'divisionId',
-			valueField : 'divisionId',
-			hiddenName : 'divisionId',
-			displayField : 'divisionDesc',
-			typeAhead : false,
-			triggerAction : 'all',
-			mode : 'local',
-			store : divisionStore,
-			anchor : '90%',
-			selectOnFocus : true,
-			allowBlank : false,
-			disabled : true,
 			blankText : blankTextLabel,
 			style : {
 				textTransform : "uppercase"
@@ -1113,6 +1318,8 @@ Ext.onReady(function () {
 				return new RegExp('\\b(' + value + ')', 'i');
 			}
 		});
+	
+
 	
 	var genderId = new Ext.ux.form.ComboBoxMatch({
 			labelAlign : 'left',
@@ -1144,6 +1351,36 @@ Ext.onReady(function () {
 			}
 		});
 	
+	var marriageId = new Ext.ux.form.ComboBoxMatch({
+		labelAlign : 'left',
+		fieldLabel : marriageIdLabel,
+		name : 'marriageId',
+		valueField : 'marriageId',
+		hiddenName : 'marriageId',
+		displayField : 'marriageDesc',
+		typeAhead : false,
+		triggerAction : 'all',
+		mode : 'local',
+		store : marriageStore,
+		anchor : '90%',
+		selectOnFocus : true,
+		allowBlank : false,
+		disabled : true,
+		blankText : blankTextLabel,
+		style : {
+			textTransform : "uppercase"
+		},
+		createValueMatcher : function (value) {
+			value = String(value).replace(/\s*/g, '');
+			if (Ext.isEmpty(value, false)) {
+				return new RegExp('^');
+			}
+			value = Ext.escapeRe(value.split('').join('\\s*')).replace(
+					/\\\\s\\\*/g, '\\s*');
+			return new RegExp('\\b(' + value + ')', 'i');
+		}
+	});
+	
 	var membershipName = new Ext.form.TextField({
 			labelAlign : 'left',
 			fieldLabel : membershipNameLabel,
@@ -1167,105 +1404,12 @@ Ext.onReady(function () {
 			},
 			anchor : '90%'
 		});
-	
-	var staffNo = new Ext.form.NumberField({
+		
+	var membershipIC = new Ext.form.TextField({
 			labelAlign : 'left',
-			fieldLabel : staffNoLabel,
-			hiddenName : 'staffNo',
-			name : 'staff_no',
-			id : 'staff_no',
-			allowBlank : false,
-			blankText : blankTextLabel,
-			autoCreate : {
-				tag : 'input',
-				type : 'text',
-				maxlength : '4',
-				autocomplete : 'off'
-			},
-			anchor : '90%',
-			listeners : {
-				blur : function () {
-					Ext.Ajax.request({
-						url : 'application_data.php?method=duplicate&leafId='
-						 + leafId
-						 + '&staff_no='
-						 + Ext.getCmp('staff_no').getValue(),
-						method : 'GET',
-						success : function (response) {
-							x = Ext.decode(response.responseText);
-							if (x.total > 0) {
-								Ext.MessageBox.alert('System',
-									' No. Pekerja ada di dalam sistem :  '
-									 + Ext.getCmp('staff_no').getValue()
-									 + ' . Sila isi No. Pekerja lain  ');
-								Ext.getCmp('staff_no').setValue('');
-							} else {
-								// nothing to do here just contin
-								
-							}
-						},
-						failure : function (response, options) {
-							status_code = response.status;
-							status_message = response.statusText;
-							Ext.MessageBox.alert('system', escape(status_code)
-								 + ":" + status_message);
-						}
-					});
-				}
-			}
-		});
-	
-	var membershipNo = new Ext.form.NumberField({
-			labelAlign : 'left',
-			fieldLabel : membershipNoLabel,
-			hiddenName : 'membershipNo',
-			name : 'membershipNo',
-			id : 'membershipNo',
-			
-			blankText : blankTextLabel,
-			autoCreate : {
-				tag : 'input',
-				type : 'text',
-				maxlength : '4',
-				autocomplete : 'off'
-			},
-			anchor : '90%',
-			listeners : {
-				blur : function () {
-					Ext.Ajax.request({
-						url : '../controller/membershipController.php?method=duplicate&leafId='
-						 + leafId
-						 + '&membershipno='
-						 + Ext.getCmp('membershipNo').getValue(),
-						method : 'GET',
-						success : function (response) {
-							x = Ext.decode(response.responseText);
-							if (x.total > 0) {
-								Ext.MessageBox.alert('System',
-									' No. Ahli Kospek ada di dalam sistem :  '
-									 + Ext.getCmp('membershipno').getValue()
-									 + ' . Sila isi No. Ahli Kospek lain  ');
-								Ext.getCmp('membershipno').setValue('');
-							} else {
-								// nothing to do here just contin
-								
-							}
-						},
-						failure : function (response, options) {
-							status_code = response.status;
-							status_message = response.statusText;
-							Ext.MessageBox.alert('system', escape(status_code)
-								 + ":" + status_message);
-						}
-					});
-				}
-			}
-		});
-	var membershipIc = new Ext.form.TextField({
-			labelAlign : 'left',
-			fieldLabel : membershipIcLabel,
-			hiddenName : 'membershipIc',
-			name : 'membershipIc',
+			fieldLabel : membershipICLabel,
+			hiddenName : 'membershipIC',
+			name : 'membershipIC',
 			allowBlank : false,
 			anchor : '90%'
 		});
@@ -1292,7 +1436,7 @@ Ext.onReady(function () {
 									});
 								var membershipExt = new Ext.form.TextField({
 										labelAlign : ' left ',
-										fieldLabel : membershipExtensionLabel,
+										fieldLabel : membershipExtLabel,
 										hiddenName : ' membershipExt ',
 										name : ' membershipExt ',
 										anchor : ' 90 % '
@@ -1328,41 +1472,41 @@ Ext.onReady(function () {
 								// using normal form instead of grid for other membership and inheritance
 			
 								// other membership
-								var other_membership_one = new Ext.form.TextField({
+								var othermembershipOne = new Ext.form.TextField({
 										labelAlign : ' left ',
-										fieldLabel : otherMembershipOneLabel,
-										hiddenName : ' otherMembershipOne ',
-										name : ' otherMembershipOne ',
+										fieldLabel : 'othermembershipOneLabel',
+										hiddenName : ' othermembershipOne ',
+										name : ' othermembershipOne ',
 										style : {
 											textTransform : "uppercase"
 										},
 										anchor : ' 90 % '
 									});
-								var otherMembershipTwo = new Ext.form.TextField({
+								var othermembershipTwo = new Ext.form.TextField({
 										labelAlign : ' left ',
-										fieldLabel : otherMembershipTwoLabel,
-										hiddenName : ' otherMembershipTwo ',
-										name : ' other_membership_two ',
+										fieldLabel : 'othermembershipTwoLabel',
+										hiddenName : ' othermembershipTwo',
+										name : ' other_membershipTwo',
 										style : {
 											textTransform : "uppercase"
 										},
 										anchor : ' 90 % '
 									});
-								var otherMembershipThree = new Ext.form.TextField({
+								var othermembershipThree = new Ext.form.TextField({
 										labelAlign : ' left ',
-										fieldLabel : otherMembershipThreeLabel,
-										hiddenName : ' otherMembershipThree ',
-										name : ' otherMembershipThree ',
+										fieldLabel : 'othermembershipThreeLabel',
+										hiddenName : ' othermembershipThree ',
+										name : ' othermembershipThree ',
 										style : {
 											textTransform : "uppercase"
 										},
 										anchor : ' 90 % '
 									});
-								var otherMembershipFour = new Ext.form.TextField({
+								var othermembershipFour = new Ext.form.TextField({
 										labelAlign : ' left ',
-										fieldLabel : otherMembershipFourLabel,
-										hiddenName : ' otherMembershipFour ',
-										name : ' otherMembershipFour ',
+										fieldLabel : 'othermembershipFourLabel',
+										hiddenName : ' othermembershipFour ',
+										name : ' othermembershipFour ',
 										style : {
 											textTransform : "uppercase"
 										},
@@ -1456,8 +1600,8 @@ Ext.onReady(function () {
 									});
 								// end form entry
 								// hidden id for updated
-								var membershipuniqueId = new Ext.form.Hidden({
-										name : ' membershipuniqueId '
+								var membershipId = new Ext.form.Hidden({
+										name : ' membershipId '
 									});
 			
 								// start System Validation
@@ -1542,7 +1686,7 @@ Ext.onReady(function () {
 									}); // end of hidden value for navigation button
 								// end System Validation
 								var formPanel = new Ext.form.FormPanel({
-										url : '.. / controller / membershipController.php ',
+										url : '../controller/membershipController.php',
 										name : ' formPanel ',
 										id : ' formPanel ',
 										method : ' post ',
@@ -1554,63 +1698,63 @@ Ext.onReady(function () {
 										items : [{
 			
 												frame : true,
-												xtype : ' tabpanel ',
+												xtype : 'tabpanel',
 												title : ' Borang Permohonan ',
 												deferredRender : false,
 												activeTab : 0,
 												height : 300,
 												items : [{
-														layout : ' column ',
-														xtype : ' panel ',
+														layout : 'column',
+														xtype : 'panel',
 														frame : true,
 														title : ' Maklumat Asas ',
 														items : [{
 																columnWidth : 0.5,
-																layout : ' form ',
+																layout : 'form',
 																items : [membershipId, membershipName, religionId,
-																	membershipPhone, genderId, marrigeStatusId]
+																	membershipPhone, genderId, marriageId]
 															}, {
 																columnWidth : 0.5,
-																layout : ' form ',
-																items : [membershipIc, raceId, membershipMobile,
+																layout : 'form',
+																items : [membershipIC, raceId, membershipMobile,
 																	membershipEmail, membershipSalary]
 															}
 														]
 			
 													}, {
-														xtype : ' panel ',
+														xtype : 'panel',
 														title : ' Alamat ',
 														frame : true,
-														layout : ' form ',
+														layout : 'form',
 														bodyStyle : ' padding : 15px ',
 														items : [membershipAddress, membershipPostcode, stateId]
 													}, {
-														layout : ' column ',
-														xtype : ' panel ',
+														layout : 'column',
+														xtype : 'panel',
 														frame : true,
 														title : ' Pejabat ',
 														items : [{
 																columnWidth : 0.5,
-																layout : ' form ',
-																items : [membershipExt, staffNo]
+																layout : 'form',
+																items : [membershipExt]
 															}, {
 																columnWidth : 0.5,
-																layout : ' form ',
-																items : [membershipDesignation, departmentId, membershipNo]
+																layout : 'form',
+																items : [membershipDesignation, departmentId]
 															}
 														]
 			
 													}, {
-														xtype : ' panel ',
+														xtype : 'panel',
 														title : ' Keahlian Dalam Koperasi dan Pertubuhan Lain ',
-														layout : ' form ',
+														layout : 'form',
 														frame : true,
-														items : [otherMembershipOne, otherMembershipTwo,
-															otherMembershipThree, otherMembershipFour]
+														items : [othermembershipOne, othermembershipTwo,
+															othermembershipThree, othermembershipFour]
 													}, {
-														xtype : ' panel ',
+														xtype : 'panel',
 														title : ' Pewaris ',
-														layout : ' form ',
+														layout : 'form',
 														frame : true,
 														items : [inheritanceName, inheritanceIc, familyId,
 															inheritancePhone, inheritanceMobile, inheritanceAddress]
@@ -1753,7 +1897,7 @@ Ext.onReady(function () {
 														fn : function (response) {
 															if (' yes ' == response) {
 																Ext.Ajax.request({
-																	url : '.. / controller / membershipController.php ',
+																	url : '../controller/membershipController.php',
 																	params : {
 																		method : ' delete ',
 																		membershipId : Ext.getCmp(' membershipId ').getValue(),
@@ -1842,7 +1986,7 @@ Ext.onReady(function () {
 																if (jsonResponse.success == true) {
 																	Ext.getCmp(' firstRecord ').setValue(jsonResponse.firstRecord);
 																	formPanel.form.load({
-																		url : '.. / controller / membershipController.php ',
+																		url : '../controller/membershipController.php',
 																		method : ' POST ',
 																		waitTitle : systemLabel,
 																		waitMsg : waitMessageLabel,

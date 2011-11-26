@@ -703,7 +703,7 @@ Ext.onReady(function() {
     });
     var impairColumnModel = [new Ext.grid.RowNumberer(), {
         dataIndex: 'impairCode',
-        header: impairCpdeLabel,
+        header: impairCodeLabel,
         sortable: true,
         hidden: false,
         width : 200

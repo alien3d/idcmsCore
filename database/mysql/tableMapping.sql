@@ -1,0 +1,2 @@
+truncate tableMapping;
+truncate tableMappingTranslate;

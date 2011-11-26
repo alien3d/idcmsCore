@@ -104,6 +104,7 @@ class FamilyClass extends ConfigClass {
 		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
+		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
 		$this->systemString = new SystemString();
@@ -317,6 +318,7 @@ class FamilyClass extends ConfigClass {
 			$sql = "
 			SELECT		`family`.`familyId`,
 						`family`.`familyCode`,
+						`family`.`familyDesc`,
 						`family`.`isDefault`,
 						`family`.`isNew`,
 						`family`.`isDraft`,
@@ -340,6 +342,7 @@ class FamilyClass extends ConfigClass {
 			$sql = "
 			SELECT	[family].[familyId],
 						[family].[familyCode],
+						[family].[familyDesc],
 						[family].[isDefault],
 						[family].[isNew],
 						[family].[isDraft],
@@ -363,6 +366,7 @@ class FamilyClass extends ConfigClass {
 			$sql = "
 			SELECT		FAMILY.FAMILYID   		 	AS 	\"familyId\",
 						FAMILY.FAMILYCODE 				AS 	\"familyCode\",
+						FAMILY.FAMILYDESC 			AS 	\"familyDesc\",
 						FAMILY.ISDEFAULT    			AS	\"isDefault\",
 						FAMILY.ISNEW		  			AS	\"isNew\",
 						FAMILY.ISDRAFT	  				AS	\"isDraft\",
@@ -497,6 +501,7 @@ class FamilyClass extends ConfigClass {
 							(
 								SELECT 		[family].[familyId],
 											[family].[familyCode],
+												[family].[familyDesc],
 											[family].[isDefault],
 											[family].[isNew],
 											[family].[isDraft],
@@ -530,6 +535,7 @@ class FamilyClass extends ConfigClass {
 						FROM (
 								SELECT	FAMILY.FAMILYID   		AS 	\"familyId\",
 										FAMILY.FAMILYCODE 			AS 	\"familyCode\",
+										FAMILY.FAMILYDESC 			AS 	\"familyDesc\",
 										FAMILY.ISDEFAULT    		AS	\"isDefault\",
 										FAMILY.ISNEW		  		AS	\"isNew\",
 										FAMILY.ISDRAFT	 			AS	\"isDraft\",

@@ -580,7 +580,7 @@ Ext.extend (Ext.ux.form.LoginDialog, Ext.util.Observable, {
             
            
 			if(action.result.success===true || action.result.success=="true"){
-				window.location.replace("./main/view/main.php");
+				window.location.replace("./main/view/listViewApplication.php");
 			}	
 			 this.hide();
 			}

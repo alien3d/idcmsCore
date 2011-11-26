@@ -109,6 +109,11 @@ abstract class ConfigClass
 	 */
 	private $application;
 	/**
+	 * Request Database
+	 * @var string
+	 */
+	private $requestDatabase;
+	/**
 	 * Mysql Database (open Core)
 	 * @var const string
 	 */
@@ -669,6 +674,19 @@ abstract class ConfigClass
 		$this->defaultLanguageId = $defaultLanguageId;
 	}
 
+	/**
+	 * @return the $requestDatabase
+	 */
+	public function getRequestDatabase) {
+		return $this->requestDatabase;
+	}
+
+	/**
+	 * @param number $defaultLanguageId
+	 */
+	public function setRequestDatabase($requestDatabase) {
+		$this->requestDatabase = $requestDatabase;
+	}
 
 }
 ?>

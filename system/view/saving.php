@@ -75,6 +75,6 @@ if (isset($_SESSION['theme'])) { ?>
     src="../../javascript/examples/ux/BufferView.js"></script>	
     <script type="text/javascript"
     src="../../javascript/examples/ux/RowExpander.js"></script>
-    <script  type="text/javascript"
-    src="../javascript/original/membership.js?<?php echo time(); ?>"></script>
+<script  type="text/javascript"
+	src="../javascript/original/saving.js?<?php echo time(); ?>"></script>
 </html>

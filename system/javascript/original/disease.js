@@ -11,7 +11,7 @@ Ext.onReady(function() {
     // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/sicknessController.php?',
+        url: '../controller/diseaseController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -522,8 +522,8 @@ Ext.onReady(function() {
     });
     // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
-    var sicknessProxy = new Ext.data.HttpProxy({
-        url: '../controller/sicknessController.php',
+    var diseaseProxy = new Ext.data.HttpProxy({
+        url: '../controller/diseaseController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -536,15 +536,15 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var sicknessReader = new Ext.data.JsonReader({
+    var diseaseReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
-        idProperty: 'sicknessId'
+        idProperty: 'diseaseId'
     });
-    var sicknessStore = new Ext.data.JsonStore({
-        proxy: sicknessProxy,
-        reader: sicknessReader,
+    var diseaseStore = new Ext.data.JsonStore({
+        proxy: diseaseProxy,
+        reader: diseaseReader,
         autoLoad: true,
         autoDestroy: true,
         pruneModifiedRecords: true,
@@ -557,7 +557,7 @@ Ext.onReady(function() {
         },
         root: 'data',
         fields: [{
-            name: 'sicknessId',
+            name: 'diseaseId',
             type: 'int'
         },{
         	name :'stateId',
@@ -567,7 +567,7 @@ Ext.onReady(function() {
         	type :'string'
         },
         {
-            name: 'sicknessDesc',
+            name: 'diseaseDesc',
             type: 'string'
         },
         {
@@ -624,28 +624,28 @@ Ext.onReady(function() {
             dateFormat: 'Y-m-d H:i:s'
         }]
     });
-    var sicknessFilters = new Ext.ux.grid.GridFilters({
+    var diseaseFilters = new Ext.ux.grid.GridFilters({
         encode: false,
         local: false,
         filters: [ {
             type: 'list',
             dataIndex: 'stateId',
             column: 'stateId',
-            table: 'sickness',
+            table: 'disease',
             labelField: 'stateDesc',
             store: stateStore,
             phpMode: true
         },{
             type: 'string',
-            dataIndex: 'sicknessDesc',
-            column: 'sicknessDesc',
-            table: 'sickness'
+            dataIndex: 'diseaseDesc',
+            column: 'diseaseDesc',
+            table: 'disease'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'sickness',
+            table: 'disease',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -654,7 +654,7 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'sickness'
+            table: 'disease'
         }]
     });
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({
@@ -701,15 +701,15 @@ Ext.onReady(function() {
         dataIndex: 'isPost',
         hidden: isPostHidden
     });
-    var sicknessColumnModel = [new Ext.grid.RowNumberer(), {
-        dataIndex: 'sicknessCode',
-        header: sicknessCodeLabel,
+    var diseaseColumnModel = [new Ext.grid.RowNumberer(), {
+        dataIndex: 'diseaseCode',
+        header: diseaseCodeLabel,
         sortable: true,
         hidden: false,
         width : 200
     },{
-        dataIndex: 'sicknessDesc',
-        header: sicknessDescLabel,
+        dataIndex: 'diseaseDesc',
+        header: diseaseDescLabel,
         sortable: true,
         hidden: false,
         width : 200
@@ -733,16 +733,16 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var sicknessFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var sicknessGrid = new Ext.grid.GridPanel({
-        name: 'sicknessGrid',
-        id: 'sicknessGrid',
+    var diseaseFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var diseaseGrid = new Ext.grid.GridPanel({
+        name: 'diseaseGrid',
+        id: 'diseaseGrid',
         border: false,
-        store: sicknessStore,
+        store: diseaseStore,
         autoHeight: false,
         height: 400,
-        columns: sicknessColumnModel,
-        plugins: [sicknessFilters],
+        columns: diseaseColumnModel,
+        plugins: [diseaseFilters],
         selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
@@ -752,22 +752,22 @@ Ext.onReady(function() {
         iconCls: 'application_view_detail',
         listeners: {
             'rowclick': function(object, rowIndex, e) {
-                var record = sicknessStore.getAt(rowIndex);
+                var record = diseaseStore.getAt(rowIndex);
                 formPanel.getForm().reset();
                 formPanel.form.load({
-                    url: '../controller/sicknessController.php',
+                    url: '../controller/diseaseController.php',
                     method: 'POST',
                     waitTitle: systemLabel,
                     waitMsg: waitMessageLabel,
                     params: {
                         method: 'read',
                         mode: 'update',
-                        sicknessId: record.data.sicknessId,
+                        diseaseId: record.data.diseaseId,
                         leafId: leafId,
                         isAdmin: isAdmin
                     },
                     success: function(form, action) {
-                        Ext.getCmp('sicknessDescTemp').setValue(record.data.sicknessDesc);
+                        Ext.getCmp('diseaseDescTemp').setValue(record.data.diseaseDesc);
                         Ext.getCmp('deleteButton').enable();
                         viewPort.items.get(1).expand();
                     },
@@ -787,9 +787,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button,e) {
-                        sicknessStore.each(function(record,fn,scope) {
-                            for (var access in sicknessFlagArray) {
-                                record.set(sicknessFlagArray[access], true);
+                        diseaseStore.each(function(record,fn,scope) {
+                            for (var access in diseaseFlagArray) {
+                                record.set(diseaseFlagArray[access], true);
                             }
                         });
                     }
@@ -801,9 +801,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        sicknessStore.each(function(record,fn,scope) {
-                            for (var access in sicknessFlagArray) {
-                                record.set(sicknessFlagArray[access], false);
+                        diseaseStore.each(function(record,fn,scope) {
+                            for (var access in diseaseFlagArray) {
+                                record.set(diseaseFlagArray[access], false);
                             }
                         });
                     }
@@ -815,12 +815,12 @@ Ext.onReady(function() {
                 iconCls: 'bullet_disk',
                 listeners: {
                     'click': function(button,e) {
-                        var url = '../controller/sicknessController.php?';
+                        var url = '../controller/diseaseController.php?';
                         var sub_url = '';
-                        var modified = sicknessStore.getModifiedRecords();
+                        var modified = diseaseStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            sub_url = sub_url + '&sicknessId[]=' + modified[i].get('sicknessId');
+                            sub_url = sub_url + '&diseaseId[]=' + modified[i].get('diseaseId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
                                     sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
@@ -866,7 +866,7 @@ Ext.onReady(function() {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    sicknessStore.reload();
+                                    diseaseStore.reload();
                                 } else if (jsonResponse.success == false) {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                 }
@@ -880,9 +880,9 @@ Ext.onReady(function() {
             }]
         },
         bbar: new Ext.PagingToolbar({
-            store: sicknessStore,
+            store: diseaseStore,
             pageSize: perPage,
-            plugins:[sicknessFilters]
+            plugins:[diseaseFilters]
         })
     });
     var gridPanel = new Ext.Panel({
@@ -894,7 +894,7 @@ Ext.onReady(function() {
             iconCls: 'database_refresh',
             id: 'pageReload',            
             handler: function() {
-                sicknessStore.reload();
+                diseaseStore.reload();
             }
         },
         '-', {
@@ -913,7 +913,7 @@ Ext.onReady(function() {
             
             handler: function() {
                 Ext.Ajax.request({
-                    url: '../controller/sicknessController.php',
+                    url: '../controller/diseaseController.php',
                     method: 'GET',
                     params: {
                         method: 'report',
@@ -936,18 +936,18 @@ Ext.onReady(function() {
             }
         },
         '-', new Ext.ux.form.SearchField({
-            store: sicknessStore,
+            store: diseaseStore,
             width: 320
         })],
-        items: [sicknessGrid]
+        items: [diseaseGrid]
     });
      // form entry
-    var sicknessCode = new Ext.form.TextField({
+    var diseaseCode = new Ext.form.TextField({
         labelAlign: 'left',
         fieldLabel: familyCodeLabel + '<span style=\'color: red;\'>*</span>',
-        hiddenName: 'sicknessCode',
-        name: 'sicknessCode',
-        id: 'sicknessCode',
+        hiddenName: 'diseaseCode',
+        name: 'diseaseCode',
+        id: 'diseaseCode',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -955,12 +955,12 @@ Ext.onReady(function() {
         },
         anchor: '40%'
     });
-    var sicknessDesc = new Ext.form.TextField({
+    var diseaseDesc = new Ext.form.TextField({
         labelAlign: 'left',
-        fieldLabel: sicknessDescLabel + '<span style=\'color: red;\'>*</span>',
-        hiddenName: 'sicknessDesc',
-        name: 'sicknessDesc',
-        id: 'sicknessDesc',
+        fieldLabel: diseaseDescLabel + '<span style=\'color: red;\'>*</span>',
+        hiddenName: 'diseaseDesc',
+        name: 'diseaseDesc',
+        id: 'diseaseDesc',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -969,9 +969,9 @@ Ext.onReady(function() {
         anchor: '95%'
     });
     
-    var sicknessCodeTemp = new Ext.form.Hidden({
-        name: 'sicknessCodeTemp',
-        id: 'sicknessCodeTemp'
+    var diseaseCodeTemp = new Ext.form.Hidden({
+        name: 'diseaseCodeTemp',
+        id: 'diseaseCodeTemp'
     });
     var checkDuplicateCode = new Ext.Button ({
     	name :'checkDuplicateCode',
@@ -979,24 +979,24 @@ Ext.onReady(function() {
     	text:checkDuplicateCodeLabel,
     	listeners: {
             'click': function(button,e) {
-                if (Ext.getCmp('sicknessCode').getValue().length > 0) {
+                if (Ext.getCmp('diseaseCode').getValue().length > 0) {
                     Ext.Ajax.request({
                         url: '../controller/religionController.php',
                         method: 'GET',
                         params: {
                             method: 'duplicate',
                             leafId: leafId,
-                            sicknessCode	: Ext.getCmp('sicknessCode').getValue()
+                            diseaseCode	: Ext.getCmp('diseaseCode').getValue()
                         },
                         success: function(response, options) {
                             jsonResponse = Ext.decode(response.responseText);
                             if (jsonResponse.success == true) {
                                 if (jsonResponse.total > 0) {
-                                    if (Ext.getCmp('sicknessCodeTemp').getValue() != Ext.getCmp('sicknessCode').getValue()) {
+                                    if (Ext.getCmp('diseaseCodeTemp').getValue() != Ext.getCmp('diseaseCode').getValue()) {
                                         duplicate = 1;
-                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('sicknessCode').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.religionDesc);
+                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('diseaseCode').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.religionDesc);
                                         Ext.MessageBox.alert(systemErrorLabel, duplicateMessageLabel);
-                                        Ext.getCmp('sicknessCode').setValue('');
+                                        Ext.getCmp('diseaseCode').setValue('');
                                     } else {
                                     	Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
@@ -1015,9 +1015,9 @@ Ext.onReady(function() {
             }
     	}
     });
-    var sicknessId = new Ext.form.Hidden({
-        name: 'sicknessId',
-        id: 'sicknessId'
+    var diseaseId = new Ext.form.Hidden({
+        name: 'diseaseId',
+        id: 'diseaseId'
     }); // end form entry
     // start System Validation
     var isDefault = new Ext.form.Checkbox({
@@ -1101,7 +1101,7 @@ Ext.onReady(function() {
     }); // end of hidden value for navigation button
     // end System Validation
     var formPanel = new Ext.form.FormPanel({
-        url: '../controller/sicknessController.php',
+        url: '../controller/diseaseController.php',
         name: 'formPanel',
         id: 'formPanel',
         method: 'post',
@@ -1113,10 +1113,10 @@ Ext.onReady(function() {
         items: [{
             xtype: 'fieldset',
             title: 'Form Entry',
-            items: [sicknessId,{
+            items: [diseaseId,{
 				xtype:'compositefield',
-				items:[sicknessCode,checkDuplicateCode]
-}, sicknessDesc,sicknessCodeTemp]
+				items:[diseaseCode,checkDuplicateCode]
+}, diseaseDesc,diseaseCodeTemp]
         },
         {
             xtype: 'fieldset',
@@ -1160,7 +1160,7 @@ Ext.onReady(function() {
             disabled: auditButtonLabelDisabled,
             handler: function() {
                 if (auditWindow) {
-                    sicknessStore.reload();
+                    diseaseStore.reload();
                     auditWindow.show().center();
                 }
             }
@@ -1172,7 +1172,7 @@ Ext.onReady(function() {
             type: 'button',
             iconCls: 'new',
             handler: function() {
-                var id = Ext.getCmp('sicknessId').getValue();
+                var id = Ext.getCmp('diseaseId').getValue();
                 var method = 'create';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
@@ -1187,14 +1187,14 @@ Ext.onReady(function() {
                             Ext.getCmp('newButton').disable();
                             Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            sicknessStore.reload({
+                            diseaseStore.reload({
                                 params: {
                                     leafId: leafId,	
                                     start: 0,
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('sicknessId').setValue(action.result.sicknessId);
+                            Ext.getCmp('diseaseId').setValue(action.result.diseaseId);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -1221,7 +1221,7 @@ Ext.onReady(function() {
             disabled: true,
             handler: function() {
                 Ext.getCmp('newButton').disable();
-                var id = Ext.getCmp('sicknessId').getValue();
+                var id = Ext.getCmp('diseaseId').getValue();
                 var method = 'save';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
@@ -1236,7 +1236,7 @@ Ext.onReady(function() {
                             Ext.getCmp('newButton').disable();
                             Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            sicknessStore.reload({
+                            diseaseStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
@@ -1279,10 +1279,10 @@ Ext.onReady(function() {
                     fn: function(response) {
                         if ('yes' == response) {
                             Ext.Ajax.request({
-                                url: '../controller/sicknessController.php',
+                                url: '../controller/diseaseController.php',
                                 params: {
                                     method: 'delete',
-                                    sicknessId: Ext.getCmp('sicknessId').getValue(),
+                                    diseaseId: Ext.getCmp('diseaseId').getValue(),
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },
@@ -1290,7 +1290,7 @@ Ext.onReady(function() {
                                     jsonResponse = Ext.decode(response.responseText);
                                     if (jsonResponse.success == true) {
                                         Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                        sicknessStore.reload({
+                                        diseaseStore.reload({
                                             params: {
                                                 leafId: leafId,
                                                 start: 0,
@@ -1360,7 +1360,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('firstRecord').getValue() == '') {
                     Ext.Ajax.request({
-                        url: '../controller/sicknessController.php',
+                        url: '../controller/diseaseController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -1372,13 +1372,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
                                 formPanel.form.load({
-                                    url: '../controller/sicknessController.php',
+                                    url: '../controller/diseaseController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        sicknessId: Ext.getCmp('firstRecord').getValue(),
+                                        diseaseId: Ext.getCmp('firstRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -1413,13 +1413,13 @@ Ext.onReady(function() {
                     });
                 } else {
                     formPanel.form.load({
-                        url: '../controller/sicknessController.php',
+                        url: '../controller/diseaseController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            sicknessId: Ext.getCmp('firstRecord').getValue(),
+                            diseaseId: Ext.getCmp('firstRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1461,13 +1461,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('firstRecord').getValue() >= 1) {
                     formPanel.form.load({
-                        url: '../controller/sicknessController.php',
+                        url: '../controller/diseaseController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            sicknessId: Ext.getCmp('previousRecord').getValue(),
+                            diseaseId: Ext.getCmp('previousRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1508,13 +1508,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('nextRecord').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/sicknessController.php',
+                        url: '../controller/diseaseController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            sicknessId: Ext.getCmp('nextRecord').getValue(),
+                            diseaseId: Ext.getCmp('nextRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1555,7 +1555,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
                     Ext.Ajax.request({
-                        url: '../controller/sicknessController.php',
+                        url: '../controller/diseaseController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -1567,13 +1567,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
                                 formPanel.form.load({
-                                    url: '../controller/sicknessController.php',
+                                    url: '../controller/diseaseController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        sicknessId: Ext.getCmp('lastRecord').getValue(),
+                                        diseaseId: Ext.getCmp('lastRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -1608,15 +1608,15 @@ Ext.onReady(function() {
                         }
                     });
                 }
-                if (Ext.getCmp('sicknessId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
+                if (Ext.getCmp('diseaseId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/sicknessController.php',
+                        url: '../controller/diseaseController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            sicknessId: Ext.getCmp('lastRecord').getValue(),
+                            diseaseId: Ext.getCmp('lastRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },

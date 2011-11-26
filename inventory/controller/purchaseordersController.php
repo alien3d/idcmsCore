@@ -90,6 +90,10 @@ class PaymentClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
+		$this->model = new PaymentModel ();
+		$this->model->setVendor($this->getVendor());
+		$this->model->execute();
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -98,11 +102,10 @@ class PaymentClass extends ConfigClass {
 		$this->q->gridQuery = $this->getGridQuery();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
+		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-		$this->model = new PaymentModel ();
-		$this->model->setVendor($this->getVendor());
-		$this->model->execute();
+		
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());

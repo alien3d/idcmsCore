@@ -560,10 +560,10 @@ Ext.onReady(function() {
             name: 'familyId',
             type: 'int'
         },{
-        	name :'stateId',
+        	name :'familyCode',
         	type :'int'
         },{
-        	name :'stateDesc',
+        	name :'familyDesc',
         	type :'string'
         },
         {

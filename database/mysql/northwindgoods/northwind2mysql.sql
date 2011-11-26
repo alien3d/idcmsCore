@@ -203,38 +203,24 @@ CREATE TABLE `employees extended` (
 
 # Dumping structure for view northwindgood.inventory on hold
 DROP VIEW IF EXISTS `inventory on hold`;
-# Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `inventory on hold` (
-	`productsId` INT(10) NOT NULL DEFAULT '',
-	`Quantity On Hold` DECIMAL(31,0) NULL DEFAULT NULL
-) ENGINE=MyISAM;
+
 
 
 # Dumping structure for view northwindgood.inventory on order
 DROP VIEW IF EXISTS `inventory on order`;
-# Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `inventory on order` (
-	`productsId` INT(10) NULL DEFAULT NULL,
-	`Quantity On Order` DECIMAL(40,4) NULL DEFAULT NULL
-) ENGINE=MyISAM;
+
 
 
 # Dumping structure for view northwindgood.inventory purchased
 DROP VIEW IF EXISTS `inventory purchased`;
 # Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `inventory purchased` (
-	`productsId` INT(10) NOT NULL DEFAULT '',
-	`Quantity Purchased` DECIMAL(31,0) NULL DEFAULT NULL
-) ENGINE=MyISAM;
+
 
 
 # Dumping structure for view northwindgood.inventory sold
 DROP VIEW IF EXISTS `inventory sold`;
 # Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `inventory sold` (
-	`productsId` INT(10) NOT NULL DEFAULT '',
-	`Quantity Sold` DECIMAL(31,0) NULL DEFAULT NULL
-) ENGINE=MyISAM;
+
 
 
 # Dumping structure for table northwindgood.inventorytransactions
@@ -372,21 +358,21 @@ INSERT INTO `inventorytransactions` (`inventoryTransactionsId`, `inventoryTransa
 
 
 # Dumping structure for table northwindgood.inventorytransactiontypes
-DROP TABLE IF EXISTS `inventorytransactiontypes`;
-CREATE TABLE IF NOT EXISTS `inventorytransactiontypes` (
-  `inventoryTransactionTypesId` int(10) NOT NULL,
-  `inventoryTransactionTypesName` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`inventoryTransactionTypesId`)
+DROP TABLE IF EXISTS `inventorytransactionstypes`;
+CREATE TABLE IF NOT EXISTS `inventorytransactionstypes` (
+  `inventorytransactionstypesId` int(10) NOT NULL,
+  `inventorytransactionstypesName` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`inventorytransactionstypesId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-# Dumping data for table northwindgood.inventorytransactiontypes: ~4 rows (approximately)
-/*!40000 ALTER TABLE `inventorytransactiontypes` DISABLE KEYS */;
-INSERT INTO `inventorytransactiontypes` (`inventoryTransactionTypesId`, `inventoryTransactionTypesName`) VALUES
+# Dumping data for table northwindgood.inventorytransactionstypes: ~4 rows (approximately)
+/*!40000 ALTER TABLE `inventorytransactionstypes` DISABLE KEYS */;
+INSERT INTO `inventorytransactionstypes` (`inventorytransactionstypesId`, `inventorytransactionstypesName`) VALUES
 	(1, 'Purchased'),
 	(2, 'Sold'),
 	(3, 'On Hold'),
 	(4, 'Waste');
-/*!40000 ALTER TABLE `inventorytransactiontypes` ENABLE KEYS */;
+/*!40000 ALTER TABLE `inventorytransactionstypes` ENABLE KEYS */;
 
 
 # Dumping structure for table northwindgood.invoices
@@ -712,60 +698,25 @@ INSERT INTO `privileges` (`privilegeId`, `privilegeName`) VALUES
 # Dumping structure for view northwindgood.product orders
 DROP VIEW IF EXISTS `product orders`;
 # Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `product orders` (
-	`productsId` INT(10) NULL DEFAULT NULL,
-	`ordersId` INT(10) NOT NULL DEFAULT '0',
-	`ordersDate` TIMESTAMP NULL DEFAULT NULL,
-	`ordersShippedDate` DATETIME NULL DEFAULT NULL,
-	`customersId` INT(10) NULL DEFAULT NULL,
-	`ordersdetailsQuantity` DECIMAL(18,4) NOT NULL DEFAULT '0.0000',
-	`ordersdetailsUnitPrice` DECIMAL(19,4) NULL DEFAULT NULL,
-	`ordersdetailsDiscount` DOUBLE NOT NULL DEFAULT '0',
-	`Company Name` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`ordersdetailsStatusId` INT(10) NULL DEFAULT NULL
-) ENGINE=MyISAM;
+
 
 
 # Dumping structure for view northwindgood.product purchases
 DROP VIEW IF EXISTS `product purchases`;
 # Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `product purchases` (
-	`productsId` INT(10) NULL DEFAULT NULL,
-	`purchaseOrdersId` INT(10) NOT NULL DEFAULT '0',
-	`purchaseOrdersCreationDate` TIMESTAMP NULL DEFAULT NULL,
-	`purchaseOrderDetailsQuantity` DECIMAL(18,4) NOT NULL DEFAULT '',
-	`purchaseOrderDetailsUnitCost` DECIMAL(19,4) NOT NULL DEFAULT '',
-	`Company Name` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`postedToInventory` TINYINT(4) NOT NULL DEFAULT ''
-) ENGINE=MyISAM;
+
 
 
 # Dumping structure for view northwindgood.product sales by category
 DROP VIEW IF EXISTS `product sales by category`;
 # Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `product sales by category` (
-	`productsId` INT(10) NULL DEFAULT NULL,
-	`ordersId` INT(10) NOT NULL DEFAULT '0',
-	`ordersDate` TIMESTAMP NULL DEFAULT NULL,
-	`ordersShippedDate` DATETIME NULL DEFAULT NULL,
-	`customersId` INT(10) NULL DEFAULT NULL,
-	`ordersdetailsQuantity` DECIMAL(18,4) NOT NULL DEFAULT '0.0000',
-	`ordersdetailsUnitPrice` DECIMAL(19,4) NULL DEFAULT NULL,
-	`ordersdetailsDiscount` DOUBLE NOT NULL DEFAULT '0',
-	`Company Name` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`ordersdetailsStatusId` INT(10) NULL DEFAULT NULL
-) ENGINE=MyISAM;
+
 
 
 # Dumping structure for view northwindgood.product sales quantity by employee and date
 DROP VIEW IF EXISTS `product sales quantity by employee and date`;
 # Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `product sales quantity by employee and date` (
-	`ordersDate` TIMESTAMP NULL DEFAULT NULL,
-	`Employee Name` VARCHAR(103) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`SumOfQuantity` DECIMAL(40,4) NULL DEFAULT NULL,
-	`productsName` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci'
-) ENGINE=MyISAM;
+
 
 
 # Dumping structure for table northwindgood.products
@@ -841,18 +792,18 @@ INSERT INTO `products` (`supplierId`, `productsId`, `productsCode`, `productsNam
 
 
 # Dumping structure for table northwindgood.purchaseorderdetails
-DROP TABLE IF EXISTS `purchaseorderdetails`;
-CREATE TABLE IF NOT EXISTS `purchaseorderdetails` (
-  `purchaseOrderDetailsId` int(10) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `purchaseordersdetails`;
+CREATE TABLE IF NOT EXISTS `purchaseordersdetails` (
+  `purchaseordersdetailsId` int(10) NOT NULL AUTO_INCREMENT,
   `purchaseOrdersId` int(10) NOT NULL,
   `productsId` int(10) DEFAULT NULL,
-  `purchaseOrderDetailsQuantity` decimal(18,4) NOT NULL,
-  `purchaseOrderDetailsUnitCost` decimal(19,4) NOT NULL,
-  `purchaseOrderDetailsDateRec` datetime DEFAULT NULL,
+  `purchaseordersdetailsQuantity` decimal(18,4) NOT NULL,
+  `purchaseordersdetailsUnitCost` decimal(19,4) NOT NULL,
+  `purchaseordersdetailsDateRec` datetime DEFAULT NULL,
   `postedToInventory` tinyint(4) NOT NULL,
   `inventoryId` int(10) DEFAULT NULL,
-  PRIMARY KEY (`purchaseOrderDetailsId`),
-  KEY `ID` (`purchaseOrderDetailsId`),
+  PRIMARY KEY (`purchaseordersdetailsId`),
+  KEY `ID` (`purchaseordersdetailsId`),
   KEY `Inventory ID` (`inventoryId`),
   KEY `InventoryTransactionsOnPurchase` (`inventoryId`),
   KEY `New_InventoryTransactionsOnPurc` (`inventoryId`),
@@ -860,13 +811,13 @@ CREATE TABLE IF NOT EXISTS `purchaseorderdetails` (
   KEY `New_PurchaseOrderDeatilsOnPurch` (`purchaseOrdersId`),
   KEY `OrderID` (`purchaseOrdersId`),
   KEY `ProductID` (`productsId`),
-  KEY `ProductOnPurchaseOrderDetails` (`productsId`),
+  KEY `ProductOnpurchaseordersdetails` (`productsId`),
   KEY `PurchaseOrderDeatilsOnPurchaseO` (`purchaseOrdersId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=296 DEFAULT CHARSET=latin1;
 
-# Dumping data for table northwindgood.purchaseorderdetails: ~55 rows (approximately)
-/*!40000 ALTER TABLE `purchaseorderdetails` DISABLE KEYS */;
-INSERT INTO `purchaseorderdetails` (`purchaseOrderDetailsId`, `purchaseOrdersId`, `productsId`, `purchaseOrderDetailsQuantity`, `purchaseOrderDetailsUnitCost`, `purchaseOrderDetailsDateRec`, `postedToInventory`, `inventoryId`) VALUES
+# Dumping data for table northwindgood.purchaseordersdetails: ~55 rows (approximately)
+/*!40000 ALTER TABLE `purchaseordersdetails` DISABLE KEYS */;
+INSERT INTO `purchaseordersdetails` (`purchaseordersdetailsId`, `purchaseOrdersId`, `productsId`, `purchaseordersdetailsQuantity`, `purchaseordersdetailsUnitCost`, `purchaseordersdetailsDateRec`, `postedToInventory`, `inventoryId`) VALUES
 	(238, 90, 1, 40.0000, 14.0000, '2006-01-22 00:00:00', 1, 59),
 	(239, 91, 3, 100.0000, 8.0000, '2006-01-22 00:00:00', 1, 54),
 	(240, 91, 4, 40.0000, 16.0000, '2006-01-22 00:00:00', 1, 55),
@@ -922,7 +873,7 @@ INSERT INTO `purchaseorderdetails` (`purchaseOrderDetailsId`, `purchaseOrdersId`
 	(293, 146, 51, 40.0000, 39.0000, NULL, 0, NULL),
 	(294, 147, 40, 120.0000, 13.0000, NULL, 0, NULL),
 	(295, 148, 72, 40.0000, 26.0000, NULL, 0, NULL);
-/*!40000 ALTER TABLE `purchaseorderdetails` ENABLE KEYS */;
+/*!40000 ALTER TABLE `purchaseordersdetails` ENABLE KEYS */;
 
 
 # Dumping structure for table northwindgood.purchaseorders
@@ -1072,28 +1023,7 @@ INSERT INTO `shippers` (`shippersId`, `shippersCompany`, `shippersLastName`, `sh
 # Dumping structure for view northwindgood.shippers extended
 DROP VIEW IF EXISTS `shippers extended`;
 # Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `shippers extended` (
-	`File As` VARCHAR(103) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`Contact Name` VARCHAR(103) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersId` INT(10) NOT NULL DEFAULT '0',
-	`shippersCompany` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersLastName` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersFirstName` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersEmail` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersJobTitle` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersBusinessPhone` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersHomePhone` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersMobilePhone` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersFaxNum` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersAddress` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersCity` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersState` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersPostCode` VARCHAR(15) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersCountry` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersWebPage` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersNotes` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`shippersAttachments` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci'
-) ENGINE=MyISAM;
+
 
 
 # Dumping structure for table northwindgood.strings
@@ -1221,28 +1151,6 @@ INSERT INTO `suppliers` (`suppliersId`, `suppliersCompany`, `suppliersLastName`,
 # Dumping structure for view northwindgood.suppliers extended
 DROP VIEW IF EXISTS `suppliers extended`;
 # Creating temporary table to overcome VIEW dependency errors
-CREATE TABLE `suppliers extended` (
-	`File As` VARCHAR(103) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`Contact Name` VARCHAR(103) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersId` INT(10) NOT NULL DEFAULT '0',
-	`suppliersCompany` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersLastName` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersFirstName` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersEmail` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersJobTitle` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersBusinessPhone` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersHomePhone` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersMobilePhone` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersFaxNum` VARCHAR(25) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersAddress` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersCity` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersState` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersPostCode` VARCHAR(15) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersCountry` VARCHAR(50) NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersWebPage` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersNotes` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci',
-	`suppliersAttachments` LONGTEXT NULL DEFAULT NULL COLLATE 'utf8_unicode_ci'
-) ENGINE=MyISAM;
 
 
 # Dumping structure for view northwindgood.customers extended
@@ -1270,7 +1178,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP VIEW IF EXISTS `inventory on order`;
 # Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `inventory on order`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `inventory on order` AS select `purchaseorderdetails`.`productsId` AS `productsId`,sum(`purchaseorderdetails`.`purchaseOrderDetailsQuantity`) AS `Quantity On Order` from `purchaseorderdetails` where (`purchaseorderdetails`.`postedToInventory` = 0) group by `purchaseorderdetails`.`productsId`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `inventory on order` AS select `purchaseordersdetails`.`productsId` AS `productsId`,sum(`purchaseordersdetails`.`purchaseordersdetailsQuantity`) AS `Quantity On Order` from `purchaseordersdetails` where (`purchaseordersdetails`.`postedToInventory` = 0) group by `purchaseordersdetails`.`productsId`;
 
 
 # Dumping structure for view northwindgood.inventory purchased
@@ -1291,21 +1199,21 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP VIEW IF EXISTS `product orders`;
 # Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `product orders`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `product orders` AS select `ordersdetails`.`productsId` AS `productsId`,`orders`.`ordersId` AS `ordersId`,`orders`.`ordersDate` AS `ordersDate`,`orders`.`ordersShippedDate` AS `ordersShippedDate`,`orders`.`customersId` AS `customersId`,`ordersdetails`.`ordersDetailsQuantity` AS `ordersdetailsQuantity`,`ordersdetails`.`ordersDetailsUnitPrice` AS `ordersdetailsUnitPrice`,`ordersdetails`.`ordersDetailsDiscount` AS `ordersdetailsDiscount`,`customers extended`.`customersCompany` AS `Company Name`,`ordersdetails`.`ordersDetailsStatusId` AS `ordersdetailsStatusId` from ((`customers extended` join `orders` on((`customers extended`.`customersId` = `orders`.`customersId`))) join `ordersdetails` on((`orders`.`ordersId` = `ordersdetails`.`ordersId`))) order by `orders`.`ordersDate`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `product orders` AS select `ordersdetails`.`productsId` AS `productsId`,`orders`.`ordersId` AS `ordersId`,`orders`.`ordersDate` AS `ordersDate`,`orders`.`ordersShippedDate` AS `ordersShippedDate`,`orders`.`customersId` AS `customersId`,`ordersdetails`.`ordersDetailsQuantity` AS `ordersdetailsQuantity`,`ordersdetails`.`ordersDetailsUnitPrice` AS `ordersdetailsUnitPrice`,`ordersdetails`.`ordersDetailsDiscount` AS `ordersdetailsDiscount`,`customers extended`.`customersCompany` AS `Company Name`,`ordersdetails`.`ordersDetailsStatusId` AS `ordersdetailsStatusId` from ((`customers extended` join `orders` on((`customers extended`.`customersId` = `orders`.`customersId`))) join `ordersdetails` on((`orders`.`ordersId` = `ordersdetails`.`ordersId`))) order by `orders`.`ordersDate`;
 
 
 # Dumping structure for view northwindgood.product purchases
 DROP VIEW IF EXISTS `product purchases`;
 # Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `product purchases`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `product purchases` AS select `purchaseorderdetails`.`productsId` AS `productsId`,`purchaseorders`.`purchaseOrdersId` AS `purchaseOrdersId`,`purchaseorders`.`purchaseOrdersCreationDate` AS `purchaseOrdersCreationDate`,`purchaseorderdetails`.`purchaseOrderDetailsQuantity` AS `purchaseOrderDetailsQuantity`,`purchaseorderdetails`.`purchaseOrderDetailsUnitCost` AS `purchaseOrderDetailsUnitCost`,`suppliers`.`suppliersCompany` AS `Company Name`,`purchaseorderdetails`.`postedToInventory` AS `postedToInventory` from ((`suppliers` join `purchaseorders` on((`suppliers`.`suppliersId` = `purchaseorders`.`suppliersId`))) join `purchaseorderdetails` on((`purchaseorders`.`purchaseOrdersId` = `purchaseorderdetails`.`purchaseOrdersId`))) where (`purchaseorderdetails`.`postedToInventory` = 1) order by `purchaseorders`.`purchaseOrdersCreationDate`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `product purchases` AS select `purchaseordersdetails`.`productsId` AS `productsId`,`purchaseorders`.`purchaseOrdersId` AS `purchaseOrdersId`,`purchaseorders`.`purchaseOrdersCreationDate` AS `purchaseOrdersCreationDate`,`purchaseordersdetails`.`purchaseordersdetailsQuantity` AS `purchaseordersdetailsQuantity`,`purchaseordersdetails`.`purchaseordersdetailsUnitCost` AS `purchaseordersdetailsUnitCost`,`suppliers`.`suppliersCompany` AS `Company Name`,`purchaseordersdetails`.`postedToInventory` AS `postedToInventory` from ((`suppliers` join `purchaseorders` on((`suppliers`.`suppliersId` = `purchaseorders`.`suppliersId`))) join `purchaseordersdetails` on((`purchaseorders`.`purchaseOrdersId` = `purchaseordersdetails`.`purchaseOrdersId`))) where (`purchaseordersdetails`.`postedToInventory` = 1) order by `purchaseorders`.`purchaseOrdersCreationDate`;
 
 
 # Dumping structure for view northwindgood.product sales by category
 DROP VIEW IF EXISTS `product sales by category`;
 # Removing temporary table and create final VIEW structure
 DROP TABLE IF EXISTS `product sales by category`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`%` SQL SECURITY DEFINER VIEW `product sales by category` AS select `ordersdetails`.`productsId` AS `productsId`,`orders`.`ordersId` AS `ordersId`,`orders`.`ordersDate` AS `ordersDate`,`orders`.`ordersShippedDate` AS `ordersShippedDate`,`orders`.`customersId` AS `customersId`,`ordersdetails`.`ordersDetailsQuantity` AS `ordersdetailsQuantity`,`ordersdetails`.`ordersDetailsUnitPrice` AS `ordersdetailsUnitPrice`,`ordersdetails`.`ordersDetailsDiscount` AS `ordersdetailsDiscount`,`customers extended`.`customersCompany` AS `Company Name`,`ordersdetails`.`ordersDetailsStatusId` AS `ordersdetailsStatusId` from ((`customers extended` join `orders` on((`customers extended`.`customersId` = `orders`.`customersId`))) join `ordersdetails` on((`orders`.`ordersId` = `ordersdetails`.`ordersId`))) order by `orders`.`ordersDate`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `product sales by category` AS select `ordersdetails`.`productsId` AS `productsId`,`orders`.`ordersId` AS `ordersId`,`orders`.`ordersDate` AS `ordersDate`,`orders`.`ordersShippedDate` AS `ordersShippedDate`,`orders`.`customersId` AS `customersId`,`ordersdetails`.`ordersDetailsQuantity` AS `ordersdetailsQuantity`,`ordersdetails`.`ordersDetailsUnitPrice` AS `ordersdetailsUnitPrice`,`ordersdetails`.`ordersDetailsDiscount` AS `ordersdetailsDiscount`,`customers extended`.`customersCompany` AS `Company Name`,`ordersdetails`.`ordersDetailsStatusId` AS `ordersdetailsStatusId` from ((`customers extended` join `orders` on((`customers extended`.`customersId` = `orders`.`customersId`))) join `ordersdetails` on((`orders`.`ordersId` = `ordersdetails`.`ordersId`))) order by `orders`.`ordersDate`;
 
 
 # Dumping structure for view northwindgood.product sales quantity by employee and date

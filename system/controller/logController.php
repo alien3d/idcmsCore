@@ -107,6 +107,7 @@ class LogClass extends ConfigClass {
 		$this->q->gridQuery = $this->getGridQuery();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
+		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
 		$this->recordSet = new RecordSet ();

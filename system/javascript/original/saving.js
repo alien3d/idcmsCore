@@ -707,7 +707,7 @@ Ext.onReady(function() {
         sortable: true,
         hidden: false,
         width : 200
-    }},{
+    },{
         dataIndex: 'savingDesc',
         header: savingDescLabel,
         sortable: true,

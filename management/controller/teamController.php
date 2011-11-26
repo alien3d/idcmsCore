@@ -95,6 +95,7 @@ class TeamClass extends ConfigClass {
 		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->log;
+		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 
 		

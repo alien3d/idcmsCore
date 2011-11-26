@@ -59,7 +59,7 @@ class MembershipModel extends ValidationClass {
 	/**
 	 * @var string
 	 */
-	private $membershipHP;
+	private $membershipMobile;
 	/**
 	 * @var string
 	 */
@@ -125,8 +125,8 @@ class MembershipModel extends ValidationClass {
 		if(isset($_POST['membershipPhone'])){
 			$this->setMembershipPhone($this->strict($_POST['membershipPhone'],'string'));
 		}
-		if(isset($_POST['membershipHP'])){
-			$this->setMembershipHP($this->strict($_POST['membershipHP'],'string'));
+		if(isset($_POST['membershipMobile'])){
+			$this->setMembershipMobile($this->strict($_POST['membershipMobile'],'string'));
 		}
 		if(isset($_POST['membershipAddress'])){
 			$this->setMembershipAddress($this->strict($_POST['membershipAddress'],'string'));
@@ -520,14 +520,14 @@ class MembershipModel extends ValidationClass {
 		$this->membershipPhone = $membershipPhone;
 	}
 
-	public function getMembershipHP()
+	public function getMembershipMobile()
 	{
-		return $this->membershipHP;
+		return $this->membershipMobile;
 	}
 
-	public function setMembershipHP($membershipHP)
+	public function setMembershipMobile($membershipMobile)
 	{
-		$this->membershipHP = $membershipHP;
+		$this->membershipMobile = $membershipMobile;
 	}
 
 	public function getMembershipAddress()

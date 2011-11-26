@@ -114,7 +114,42 @@ class Vendor {
 	 * predefine commit constructor for oracle database extension
 	 */
 	public $oracleCommit = 0;
+	/***
+	 *  @var int
+	 */
 	public $insertId;
+	/**
+	 *  Core database 
+	 *  @var string
+	 */
+	 public $coreDatabase
+	 /**
+	  *  Financial Database
+	  *  @var string
+	  */
+	  public $financialDatabase;
+	  /**
+	  *  Fix Asset Database
+	  *  @var string
+	  */
+	  public $fixAssetDatabase;
+	  /**
+	  *  Payroll Database
+	  *  @var string
+	  */
+	  public $payrollDatabase;
+	  /**
+	  *  Human Resources Database
+	  *  @var string
+	  */
+	  public $humanResourcesDatabase;
+	  /**
+	  *  Common Database
+	  *  @var string
+	  */
+	  public $commonDatabase;
+	  
+	
 	
 	public function __construct() {
 	}
@@ -136,7 +171,20 @@ class Vendor {
 	public function connect($connection, $username, $database, $password) {
 		$this->connection = $connection;
 		$this->username = $username;
-		$this->databaseName = $database;
+		/**
+		 * @depreciated
+		 */ 
+		//$this->databaseName = $database;
+		/**
+		 * Overide above using core database.
+		 */ 
+		 $this->coreDatabase = 'iCore';
+		 $this->financialDatabase = 'iFinancial';
+		 $this->fixAssetDatabase= 'iFixAsset';
+		 $this->payrollDatabase='iPayroll';
+		 $this->humanResourceDatabase = 'iHumanResources';
+		 $this->commonDatabase ='iCommon';
+		 $this->databaseName  = $this->coreDatabase;  // overide above
 		$this->password = $password;
 		$this->link = mysqli_connect ( $this->connection, $this->username, $this->password, $this->databaseName, $this->port, $this->socket );
 		if (! $this->link) {
@@ -787,7 +835,7 @@ class Vendor {
 		$strSearch = null;
 		$strSearch = "AND ( ";
 		foreach ( $tableArray as $tableSearch ) {
-			$sql = "DESCRIBE	`" . $tableSearch . "`";
+			$sql = "DESCRIBE	`".$this->databaseRequest."`.`" . $tableSearch . "`";
 			$result = mysqli_query ( $this->link, $sql );
 			if (mysqli_num_rows ( $result ) > 0) {
 				while ( ($row = mysqli_fetch_array ( $result )) == TRUE ) {
@@ -819,7 +867,7 @@ class Vendor {
 			for($i = 0; $i < count ( $filter ); $i ++) {
 				switch ($filter [$i] ['data'] ['type']) {
 					case 'string' :
-						$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` LIKE '%" . $this->realEscapeString ( $filter [$i] ['data'] ['value'] ) . "%'";
+						$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` LIKE '%" . $this->realEscapeString ( $filter [$i] ['data'] ['value'] ) . "%'";
 						break;
 					case 'list' :
 						$split = explode ( ",", $filter [$i] ['data'] ['value'] );
@@ -828,41 +876,41 @@ class Vendor {
 						}
 						$str = $this->removeComa ( $str );
 						if (count ( $split ) > 0 && strlen ( $filter [$i] ['data'] ['value'] ) > 0) {
-							$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "`  IN ($str)";
+							$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "`  IN ($str)";
 						}
 						break;
 					case 'boolean' :
-						$qs .= " AND `" . $filter [$i] ['column'] . "` = " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
+						$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` = " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
 						break;
 					case 'numeric' :
 						switch ($filter [$i] ['data'] ['comparison']) {
 							case 'ne' :
-								$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` != " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
+								$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` != " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
 								break;
 							case 'eq' :
-								$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` = " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
+								$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` = " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
 								break;
 							case 'lt' :
-								$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` < " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
+								$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` < " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
 								break;
 							case 'gt' :
-								$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` > " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
+								$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` > " . $this->realEscapeString ( $filter [$i] ['data'] ['value'] );
 								break;
 						}
 						break;
 					case 'date' :
 						switch ($filter [$i] ['data'] ['comparison']) {
 							case 'ne' :
-								$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` != '" . date ( 'Y-m-d', strtotime ( $filter [$i] ['data'] ['value'] ) ) . "'";
+								$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` != '" . date ( 'Y-m-d', strtotime ( $filter [$i] ['data'] ['value'] ) ) . "'";
 								break;
 							case 'eq' :
-								$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` = '" . date ( 'Y-m-d', strtotime ( $filter [$i] ['data'] ['value'] ) ) . "'";
+								$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` = '" . date ( 'Y-m-d', strtotime ( $filter [$i] ['data'] ['value'] ) ) . "'";
 								break;
 							case 'lt' :
-								$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` < '" . date ( 'Y-m-d', strtotime ( $filter [$i] ['data'] ['value'] ) ) . "'";
+								$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` < '" . date ( 'Y-m-d', strtotime ( $filter [$i] ['data'] ['value'] ) ) . "'";
 								break;
 							case 'gt' :
-								$qs .= " AND `" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` > '" . date ( 'Y-m-d', strtotime ( $filter [$i] ['data'] ['value'] ) ) . "'";
+								$qs .= " AND `" . $filter [$i] ['database'] . "`.`" . $filter [$i] ['table'] . "`.`" . $filter [$i] ['column'] . "` > '" . date ( 'Y-m-d', strtotime ( $filter [$i] ['data'] ['value'] ) ) . "'";
 								break;
 						}
 						break;
@@ -896,6 +944,19 @@ class Vendor {
 	 */
 	public function removeComa($str) {
 		return substr ( $str, 0, - 1 );
+	}
+	/**
+	 * @return the $requestDatabase
+	 */
+	public function getRequestDatabase) {
+		return $this->requestDatabase;
+	}
+
+	/**
+	 * @param number $defaultLanguageId
+	 */
+	public function setRequestDatabase($requestDatabase) {
+		$this->requestDatabase = $requestDatabase;
 	}
 }
 ?>
