@@ -897,43 +897,43 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		exit();
 	}
 
-	/**
+
+/**
 	 * To Update flag Status
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
+		$this->q->start();
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `iCore`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[" . $this->model->getTableName() . "]
+			UPDATE 	[iCore].[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			UPDATE " . strtoupper($this->model->getTableName()) . "
+			UPDATE ICORE." . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			UPDATE " . strtoupper($this->model->getTableName()) . "
+			UPDATE ICORE." . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			UPDATE " . strtoupper($this->model->getTableName()) . "
+			UPDATE ICORE." . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
-
 		/**
 		 * System Validation Checking
 		 * @var $access
@@ -950,7 +950,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 							} else if ($this->getVendor() == self::MSSQL) {
 								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." .strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
@@ -960,7 +960,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersStatusId($i, 'array') . "'
+							WHEN '" . $this->model->getReligionId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -970,21 +970,21 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsNew($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`.`" . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`."  . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
 								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersStatusId($i, 'array') . "'
+							WHEN '" . $this->model->getReligionId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -998,17 +998,17 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 							} else if ($this->getVendor() == self::MSSQL) {
 								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersStatusId($i, 'array') . "'
+							WHEN '" . $this->model->getReligionId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1022,17 +1022,18 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 							} else if ($this->getVendor() == self::MSSQL) {
 								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
+
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersStatusId($i, 'array') . "'
+							WHEN '" . $this->model->getReligionId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1048,15 +1049,15 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 							} else if ($this->getVendor() == self::ORACLE) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersStatusId($i, 'array') . "'
+							WHEN '" . $this->model->getReligionId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1080,7 +1081,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersStatusId($i, 'array') . "'
+							WHEN '" . $this->model->getReligionId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1104,7 +1105,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersStatusId($i, 'array') . "'
+							WHEN '" . $this->model->getReligionId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1128,7 +1129,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getPurchaseOrdersStatusId($i, 'array') . "'
+                            WHEN '" . $this->model->getReligionId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1152,7 +1153,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getPurchaseOrdersStatusId($i, 'array') . "'
+                                WHEN '" . $this->model->getReligionId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1187,17 +1188,19 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->systemString->getDeleteMessage();
 		}
-		echo json_encode(array("success" => true, "message" => $message,
-            "isAdmin" => $this->getIsAdmin()
-		, "sql" => $sql)
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+		array(	"success" => true,
+        			"message" => $message,
+            		"time"=>$time)
 		);
 		exit();
 	}
-
 	/**
 	 * To check if a key duplicate or not
 	 */
