@@ -93,14 +93,14 @@ class EventModel extends ValidationClass {
 		if (isset ( $_POST ['eventTitle'] )) {
 			$this->setEventTitle ( $this->strict ( $_POST ['eventTitle'], 'string' ) );
 		}
-		if (isset ( $_POST ['start'] )) {
-			$this->setEventStart ( date ( "Y-m-d H:i:s", strtotime ( $_POST ['start'] ) ) );
+		if (isset ( $_POST ['eventStart'] )) {
+			$this->setEventStart ( date ( "Y-m-d H:i:s", strtotime ( $_POST ['eventStart'] ) ) );
 		}
-		if (isset ( $_POST ['end'] )) {
-			$this->setEventEnd ( date ( "Y-m-d H:i:s", strtotime ( $_POST ['end'] ) ) );
+		if (isset ( $_POST ['eventEnd'] )) {
+			$this->setEventEnd ( date ( "Y-m-d H:i:s", strtotime ( $_POST ['eventEnd'] ) ) );
 		}
 		if (isset ( $_POST ['eventIsAllDay'] )) {
-			$this->setEventIsAllDay ( $this->strict ( $_POST ['eventIsAllDay'], 'numeric' ) );
+			$this->setEventIsAllDay ( $this->strict ( $_POST ['eventIsAllDay'], 'boolean' ) );
 		}
 		if (isset ( $_POST ['eventNotes'] )) {
 			$this->setEventNotes ( $this->strict ( $_POST ['eventNotes'], 'memo' ) );
@@ -109,10 +109,10 @@ class EventModel extends ValidationClass {
 			$this->setEventUrl ( $this->strict ( $_POST ['eventUrl'], 'string' ) );
 		}
 		if (isset ( $_POST ['eventLocation'] )) {
-			$this->setEventLocation ( $this->strict ( $_POST ['eventLocation'], 'numeric' ) );
+			$this->setEventLocation ( $this->strict ( $_POST ['eventLocation'], 'string' ) );
 		}
 		if (isset ( $_POST ['eventIsNew'] )) {
-			$this->setEventIsNew ( $this->strict ( $_POST ['eventIsNew'], 'numeric' ) );
+			$this->setEventIsNew ( $this->strict ( $_POST ['eventIsNew'], 'boolean' ) );
 		}
 		/**
 		 * All the $_GET enviroment.

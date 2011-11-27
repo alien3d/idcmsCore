@@ -323,9 +323,9 @@ abstract class ConfigClass
 				return (intval($this->value));
 			}
 		} elseif ($this->type == 'boolean' || $this->type == 'b') {
-			if ($this->value == 'TRUE') {
+			if ($this->value == 'true' || $this->value == 'TRUE' ||  $this->value == true  || $this->value  == TRUE ) {
 				return 1;
-			} elseif ($this->value) {
+			} elseif ($this->value == 'false' || $this->value == 'FALSE' ||  $this->value == false   || $this->value  == FALSE ) {
 				return 0;
 			}
 		} elseif ($this->type == 'string' || $this->type == 's') {

@@ -114,7 +114,7 @@ class EventClass extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -144,20 +144,20 @@ class EventClass extends ConfigClass {
 
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			INSERT INTO `event`(
-						`calendarId`,		`eventTitle`,
-						`eventStart`,		`eventEnd`,
-						`eventIsAllDay`,	`eventNotes`,
-						`eventReminder`,	`eventUrl`,
-						`eventLocation`,	`eventIsNew`,
-						`staffId`,			`executeTime`
+			INSERT INTO `icalendar`.`event`(
+						`icalendar`.`event`.`calendarId`,		`icalendar`.`event`.`eventTitle`,
+						`icalendar`.`event`.`eventStart`,		`icalendar`.`event`.`eventEnd`,
+						`icalendar`.`event`.`eventIsAllDay`,	`icalendar`.`event`.`eventNotes`,
+						`icalendar`.`event`.`eventReminder`,	`icalendar`.`event`.`eventUrl`,
+						`icalendar`.`event`.`eventLocation`,	`icalendar`.`event`.`eventIsNew`,
+						`icalendar`.`event`.`staffId`,			`icalendar`.`event`.`executeTime`
 			)VALUES	(
-				'" . $this->model->getCalendarId() . "',		'" .
-			$this->model->getEventTitle() . "',
-				'" . $this->model->getEventStart() . "',		'" .
-			$this->model->getEventEnd() . "',
-				'" . $this->model->geteventIsAllDay() . "',	'" .
-			$this->model->getEventNotes() . "',
+				'" . $this->model->getCalendarId() . "',		
+				'" .$this->model->getEventTitle() . "',
+				'" . $this->model->getEventStart() . "',		
+				'" .$this->model->getEventEnd() . "',
+				'" . $this->model->geteventIsAllDay() . "',	
+				'" .$this->model->getEventNotes() . "',
 				'" . $this->model->getEventReminder() . "',	'" .
 			$this->model->getEventUrl() . "',
 				'" . $this->model->getEventLocation() . "',	'" .
@@ -169,13 +169,13 @@ class EventClass extends ConfigClass {
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [event`(
-						[calendarId],		[eventTitle],
-						[eventStart],		[eventEnd],
-						[eventIsAllDay],	[eventNotes],
-						[eventReminder],	[eventUrl],
-						[eventLocation],	[eventIsNew],
-						[staffId],			[executeTime]
+			INSERT INTO [icalendar].[event](
+						[icalendar].[event].[calendarId],		[icalendar].[event].[eventTitle],
+						[icalendar].[event].[eventStart],		[icalendar].[event].[eventEnd],
+						[icalendar].[event].[eventIsAllDay],	[icalendar].[event].[eventNotes],
+						[icalendar].[event].[eventReminder],	[icalendar].[event].[eventUrl],
+						[icalendar].[event].[eventLocation],	[icalendar].[event].[eventIsNew],
+						[icalendar].[event].[staffId],			[icalendar].[event].[executeTime]
 			)VALUES	(
 				'" . $this->model->getCalendarId() . "',		'" .
 			$this->model->getEventTitle() . "',
@@ -191,13 +191,13 @@ class EventClass extends ConfigClass {
 							);";
 		} elseif ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			INSERT INTO EVENT (
-						CALENDARID,			EVENTTITLE,
-						EVENTSTART,			EVENTEND,
-						EVENTISALLDAY,		EVENTNOTES,
-						EVENTREMINDER,		EVENTURL,
-						EVENTLOCATION,		EVENTISNEW,
-						STAFFID,			EXECUTETIME
+			INSERT INTO ICALENDAR.EVENT (
+						ICALENDAR.EVENT.CALENDARID,			ICALENDAR.EVENT.EVENTTITLE,
+						ICALENDAR.EVENT.EVENTSTART,			ICALENDAR.EVENT.EVENTEND,
+						ICALENDAR.EVENT.EVENTISALLDAY,		ICALENDAR.EVENT.EVENTNOTES,
+						ICALENDAR.EVENT.EVENTREMINDER,		ICALENDAR.EVENT.EVENTURL,
+						ICALENDAR.EVENT.EVENTLOCATION,		ICALENDAR.EVENT.EVENTISNEW,
+						ICALENDAR.EVENTSTAFFID,				ICALENDAR.EVENT.EXECUTETIME
 			)VALUES	(
 				'" . $this->model->getCalendarId() . "',		'" .
 			$this->model->getEventTitle() . "',
@@ -251,49 +251,49 @@ class EventClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	`event`
-			JOIN    `calendar`
+			FROM 	`icalendar`.`event`
+			JOIN    `icalendar`.`calendar`
 			USING	(`calendarId`,`staffId`)
-			JOIN	`calendarColor`
+			JOIN	`icalendar`.`calendarColor`
 			USING   (`calendarColorId`)
-			WHERE 	`calendar`.`staffId` = '" . $this->model->getExecuteBy() . "'";
+			WHERE 	`icalendar`.`calendar`.`staffId` = '" . $this->model->getExecuteBy() . "'";
 			if ($this->model->getEventStart() && $this->model->getEventEnd()) {
 				$sql .= "
-				AND	`event`.`eventStart`	>= 	'" . $this->model->getEventStart() . "'
-				AND	`event`.`eventEnd` 		<=	'" . $this->model->getEventEnd() . "'";
+				AND	`icalendar`.`event`.`eventStart`	>= 	'" . $this->model->getEventStart() . "'
+				AND	`icalendar`.`event`.`eventEnd` 		<=	'" . $this->model->getEventEnd() . "'";
 			}
 		} else
 		if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	[event]
-			JOIN    [calendar]
-			ON		[event].[calendarId]				= 	[calendar].[calendarId]
-			AND		[event].[staffId] 					=	[calendar].[staffId]
-			JOIN	[calendarColor]
-			ON		[calendarColor].[calendarColorId]	=	[calendar].[calendarColorId]
-			WHERE 	[calendar].[staffId] 				= 	'" . $this->model->getExecuteBy() . "'";
+			FROM 	[icalendar].[event]
+			JOIN    [icalendar].[calendar]
+			ON		[icalendar].[event].[calendarId]				= 	[icalendar].[calendar].[calendarId]
+			AND		[event].[staffId] 								=	[icalendar].[calendar].[staffId]
+			JOIN	[icalendar].[calendarColor]
+			ON		[icalendar].[calendarColor].[calendarColorId]	=	[icalendar].[calendar].[calendarColorId]
+			WHERE 	[icalendar].[calendar].[staffId] 				= 	'" . $this->model->getExecuteBy() . "'";
 			if ($this->model->getEventStart() && $this->model->getEventEnd()) {
 				$sql .= "
-				AND	[event].[eventStart]	>= 	'" . $this->model->getEventStart() . "'
-				AND	[event].[eventEnd] 		<=	'" . $this->model->getEventEnd() . "'";
+				AND	[icalendar].[event].[eventStart]	>= 	'" . $this->model->getEventStart() . "'
+				AND	[icalendar].[event].[eventEnd] 		<=	'" . $this->model->getEventEnd() . "'";
 			}
 		} else
 		if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	*
-			FROM 	EVENT
-			JOIN	CALENDAR
-			ON		CALENDAR.CALENDARID 			= 	EVENT.CALENDARID
-			AND		CALENDAR.STAFFID				= 	EVENT.STAFFID
-			JOIN    CALENDARCOLOR
-			ON		CALENDARCOLOR.CALENDARCOLORID	=	CALENDAR.CALENDARCOLORID
-			WHERE 	CALENDAR.STAFFID 				= 	'" . $this->model->getExecuteBy() . "'";
+			FROM 	ICALENDAR.EVENT
+			JOIN	ICALENDAR.CALENDAR
+			ON		ICALENDAR.CALENDAR.CALENDARID 			= 	ICALENDAR.EVENT.CALENDARID
+			AND		CALENDAR.STAFFID				= 	ICALENDAR.EVENT.STAFFID
+			JOIN    ICALENDAR.CALENDARCOLOR
+			ON		ICALENDAR.CALENDARCOLOR.CALENDARCOLORID	=	ICALENDAR.CALENDAR.CALENDARCOLORID
+			WHERE 	ICALENDAR.CALENDAR.STAFFID 				= 	'" . $this->model->getExecuteBy() . "'";
 			if ($this->model->getEventStart() &&
 			$this->model->getEventEnd()) {
 				$sql .= "
-				AND	EVENT.EVENTSTART 	>=	'" . $this->model->getEventStart() . "'
-				AND	EVENT.EVENTEND 		<= 	'" . $this->model->getEventEnd() . "'";
+				AND	ICALENDAR.EVENT.EVENTSTART 	>=	'" . $this->model->getEventStart() . "'
+				AND	ICALENDAR.EVENT.EVENTEND 		<= 	'" . $this->model->getEventEnd() . "'";
 			}
 		}
 		$this->q->read($sql);
@@ -360,48 +360,48 @@ class EventClass extends ConfigClass {
 		$this->model->update();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE	`event`
-			SET		`calendarId`		=	'" . $this->model->getCalendarId() . "',
-					`eventTitle`		=	'" . $this->model->getEventTitle() . "',
-					`eventStart`		=	'" . $this->model->getEventStart() . "',
-					`eventEnd`			=	'" . $this->model->getEventEnd() . "',
-					`eventIsAllDay`  	= 	'" . $this->model->geteventIsAllDay() . "',
-					`eventNotes` 		= 	'" . $this->model->getEventNotes() . "',
-					`eventReminder`		=	'" . $this->model->getEventReminder() . "',
-					`eventUrl`			=	'" . $this->model->getEventUrl() . "',
-					`eventLocation`		=	'" . $this->model->getEventLocation() . "',
-					`eventIsNew`		=	'" . $this->model->getEventIsNew() . "'
-			WHERE 	`eventId`			=	'" . $this->model->getEventId(0, 'single') . "'";
+			UPDATE	`icalendar`.`event`
+			SET		`icalendar`.`event`.`calendarId`		=	'" . $this->model->getCalendarId() . "',
+					`icalendar`.`event`.`eventTitle`		=	'" . $this->model->getEventTitle() . "',
+					`icalendar`.`event`.`eventStart`		=	'" . $this->model->getEventStart() . "',
+					`icalendar`.`event`.`eventEnd`			=	'" . $this->model->getEventEnd() . "',
+					`icalendar`.`event`.`eventIsAllDay`  	= 	'" . $this->model->geteventIsAllDay() . "',
+					`icalendar`.`event`.`eventNotes` 		= 	'" . $this->model->getEventNotes() . "',
+					`icalendar`.`event`.`eventReminder`		=	'" . $this->model->getEventReminder() . "',
+					`icalendar`.`event`.`eventUrl`			=	'" . $this->model->getEventUrl() . "',
+					`icalendar`.`event`.`eventLocation`		=	'" . $this->model->getEventLocation() . "',
+					`icalendar`.`event`.`eventIsNew`		=	'" . $this->model->getEventIsNew() . "'
+			WHERE 	`icalendar`.`event`.`eventId`			=	'" . $this->model->getEventId(0, 'single') . "'";
 		} else
 		if ($this->q->vendor == self::MSSQL) {
 			$sql = "
-			UPDATE	[event]
-			SET		[calendarId]		=	'" . $this->model->getCalendarId() . "',
-					[eventTitle]		=	'" . $this->model->getEventTitle() . "',
-					[eventStart]		=	'" . $this->model->getEventStart() . "',
-					[eventEnd]			=	'" . $this->model->getEventEnd() . "',
-					[eventIsAllDay]  	= 	'" . $this->model->geteventIsAllDay() . "',
-					[eventNotes] 		= 	'" . $this->model->getEventNotes() . "',
-					[eventReminder]		=	'" . $this->model->getEventReminder() . "',
-					[eventUrl]			=	'" . $this->model->getEventUrl() . "',
-					[eventLocation]		=	'" . $this->model->getEventLocation() . "',
-					[eventIsNew]		=	'" . $this->model->getEventIsNew() . "'
-			WHERE 	[eventId]			=	'" . $this->model->getEventId(0, 'single') . "'";
+			UPDATE	[icalendar].[event]
+			SET		[icalendar].[event].[calendarId]		=	'" . $this->model->getCalendarId() . "',
+					[icalendar].[event].[eventTitle]		=	'" . $this->model->getEventTitle() . "',
+					[icalendar].[event].[eventStart]		=	'" . $this->model->getEventStart() . "',
+					[icalendar].[event].[eventEnd]			=	'" . $this->model->getEventEnd() . "',
+					[icalendar].[event].[eventIsAllDay]  	= 	'" . $this->model->geteventIsAllDay() . "',
+					[icalendar].[event].[eventNotes] 		= 	'" . $this->model->getEventNotes() . "',
+					[icalendar].[event].[eventReminder]		=	'" . $this->model->getEventReminder() . "',
+					[icalendar].[event].[eventUrl]			=	'" . $this->model->getEventUrl() . "',
+					[icalendar].[event].[eventLocation]		=	'" . $this->model->getEventLocation() . "',
+					[icalendar].[event].[eventIsNew]		=	'" . $this->model->getEventIsNew() . "'
+			WHERE 	[icalendar].[event].[eventId]			=	'" . $this->model->getEventId(0, 'single') . "'";
 		} else
 		if ($this->q->vendor == self::ORACLE) {
 			$sql = "
-			UPDATE	EVENT
-			SET		CALENDARID		=	'" . $this->model->getCalendarId() . "',
-					EVENTTITLE		=	'" . $this->model->getEventTitle() . "',
-					EVENTSTART		=	'" . $this->model->getEventStart() . "',
-					EVENTEND		=	'" . $this->model->getEventEnd() . "',
-					EVENTISALLDAY  	= 	'" . $this->model->geteventIsAllDay() . "',
-					EVENTNOTES 		= 	'" . $this->model->getEventNotes() . "',
-					EVENTREMINDER	=	'" . $this->model->getEventReminder() . "',
-					EVENTURL		=	'" . $this->model->getEventUrl() . "',
-					EVENTLOCATION	=	'" . $this->model->getEventLocation() . "',
-					EVENTISNEW		=	'" . $this->model->getEventIsNew() . "'
-			WHERE 	EVENTID			=	'" . $this->model->getEventId(0, 'single') . "'";
+			UPDATE	ICALENDAR.EVENT
+			SET		ICALENDAR.EVENT.CALENDARID		=	'" . $this->model->getCalendarId() . "',
+					ICALENDAR.EVENT.EVENTTITLE		=	'" . $this->model->getEventTitle() . "',
+					ICALENDAR.EVENT.EVENTSTART		=	'" . $this->model->getEventStart() . "',
+					ICALENDAR.EVENT.EVENTEND		=	'" . $this->model->getEventEnd() . "',
+					ICALENDAR.EVENT.EVENTISALLDAY  	= 	'" . $this->model->geteventIsAllDay() . "',
+					ICALENDAR.EVENT.EVENTNOTES 		= 	'" . $this->model->getEventNotes() . "',
+					ICALENDAR.EVENT.EVENTREMINDER	=	'" . $this->model->getEventReminder() . "',
+					ICALENDAR.EVENT.EVENTURL		=	'" . $this->model->getEventUrl() . "',
+					ICALENDAR.EVENT.EVENTLOCATION	=	'" . $this->model->getEventLocation() . "',
+					ICALENDAR.EVENT.EVENTISNEW		=	'" . $this->model->getEventIsNew() . "'
+			WHERE 	ICALENDAR.EVENT.EVENTID			=	'" . $this->model->getEventId(0, 'single') . "'";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -433,18 +433,18 @@ class EventClass extends ConfigClass {
 		$this->q->start();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			DELETE 	FROM	`event`
-			WHERE 			`eventId`		=	'" . $this->model->getEventId(0, 'single') . "'";
+			DELETE 	FROM	`icalendar`.`event`
+			WHERE 			`icalendar`.`event`.`eventId`		=	'" . $this->model->getEventId(0, 'single') . "'";
 		} else
 		if ($this->q->vendor == self::MSSQL) {
 			$sql = "
-			DELETE 	FROM	[event]
-			WHERE 			[eventId]		=	'" . $this->model->getEventId(0, 'single') . "'";
+			DELETE 	FROM	[icalendar].[event]
+			WHERE 			[icalendar].[event].[eventId]		=	'" . $this->model->getEventId(0, 'single') . "'";
 		} else
 		if ($this->q->vendor == self::ORACLE) {
 			$sql = "
-			DELETE 	FROM	EVENT
-			WHERE 			EVENT		=	'" . $this->model->getEventId(0, 'single') . "'";
+			DELETE 	FROM	ICALENDAR.EVENT
+			WHERE 			ICALENDAR.EVENT.EVENTID		=	'" . $this->model->getEventId(0, 'single') . "'";
 		}
 		$this->q->update($sql);
 		if ($this->q->execute == 'fail') {
@@ -456,7 +456,7 @@ class EventClass extends ConfigClass {
 		$time = $end - $start;
 		$this->q->commit();
 		echo json_encode(
-		array("success" => true, "message" => $this->systemString->getUpdateMessage(),"time"=>$time));
+		array("success" => true, "message" => $this->systemString->getDeleteMessage(),"time"=>$time));
 		exit();
 	}
 
@@ -512,7 +512,7 @@ if (isset($_POST['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_POST ['databaseRequest'])) {
+	if (isset($_POST ['databaseRequest'])) {
 		$eventObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*

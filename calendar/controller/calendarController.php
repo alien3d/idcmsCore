@@ -115,7 +115,7 @@ class CalendarClass extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -136,7 +136,7 @@ class CalendarClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -150,50 +150,50 @@ class CalendarClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`calendar`.`calendarId`,
-					`calendar`.`calendarColorId`,
-					`calendar`.`calendarTitle`,
-					`calendar`.`calendarDesc`,
-					`calendar`.`isHidden`,
-					`calendar`.`staffId`,
-					`calendarcolor`.`calendarColorId`
-			FROM	`calendar`
-			JOIN 	`calendarcolor` 
-			ON 		`calendarcolor`.`calendarColorId` = `calendar`.`calendarColorId`	
-			WHERE 	`calendar`.`staffId` = '" . $this->model->getExecuteBy() . "' ";
+			SELECT	`icalendar`.`calendar`.`calendarId`,
+					`icalendar`.`calendar`.`calendarColorId`,
+					`icalendar`.`calendar`.`calendarTitle`,
+					`icalendar`.`calendar`.`calendarDesc`,
+					`icalendar`.`calendar`.`isHidden`,
+					`icalendar`.`calendar`.`staffId`,
+					`icalendar`.`calendarcolor`.`calendarColorId`
+			FROM	`icalendar`.`calendar`
+			JOIN 	`icalendar`.`calendarcolor` 
+			ON 		`icalendar`.`calendarcolor`.`calendarColorId` = `icalendar`.`calendar`.`calendarColorId`	
+			WHERE 	`icalendar`.`calendar`.`staffId` = '" . $this->model->getExecuteBy() . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[calendar].[calendarId],
-					[calendar].[calendarColorId],
-					[calendar].[calendarTitle],
-					[calendar].[calendarDesc],
-					[calendar].[isHidden],
-					[calendar].[staffId],
-					[calendarcolor].[calendarColorId]
-			FROM	[calendar]
-			JOIN 	[calendarcolor] 
-			ON 		[calendarcolor].[calendarColorId] = [calendar].[calendarColorId] 
-			WHERE 	[staff].[staffId]= '" . $this->model->getExecuteBy() . "' ";
+			SELECT	[icalendar].[calendar].[calendarId],
+					[icalendar].[calendar].[calendarColorId],
+					[icalendar].[calendar].[calendarTitle],
+					[icalendar].[calendar].[calendarDesc],
+					[icalendar].[calendar].[isHidden],
+					[icalendar].[calendar].[staffId],
+					[icalendar].[calendarcolor].[calendarColorId]
+			FROM	[icalendar].[calendar]
+			JOIN 	[icalendar].[calendarcolor] 
+			ON 		[icalendar].[calendarcolor].[calendarColorId] = [icalendar].[calendar].[calendarColorId] 
+			WHERE 	[icalendar].[staff].[staffId]= '" . $this->model->getExecuteBy() . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	CALENDAR.CALENDARID,
-					CALENDAR.CALENDARCOLORID,
-					CALENDAR.CALENDARTITLE,
-					CALENDAR.CALENDARDESC,
-					CALENDAR.ISHIDDEN,
-					CALENDAR.STAFFID,
-					CALENDARCOLOR.CALENDARCOLORID
-			FROM	CALENDAR
-			JOIN 	CALENDARCOLOR 
-			ON 		CALENDARCOLOR.CALENDARCOLORID = CALENDAR.CALENDARCOLORID
-			WHERE 	STAFFID = '" . $this->model->getExecuteBy() . "'";
+			SELECT	ICALENDAR.CALENDAR.CALENDARID,
+					ICALENDAR.CALENDAR.CALENDARCOLORID,
+					ICALENDAR.CALENDAR.CALENDARTITLE,
+					ICALENDAR.CALENDAR.CALENDARDESC,
+					ICALENDAR.CALENDAR.ISHIDDEN,
+					ICALENDAR.CALENDAR.STAFFID,
+					ICALENDAR.CALENDARCOLOR.CALENDARCOLORID
+			FROM	ICALENDAR.CALENDAR
+			JOIN 	ICALENDAR.CALENDARCOLOR 
+			ON 		ICALENDAR.CALENDARCOLOR.CALENDARCOLORID = ICALENDAR.CALENDAR.CALENDARCOLORID
+			WHERE 	ICALENDAR.CALENDAR.STAFFID = '" . $this->model->getExecuteBy() . "'";
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -279,18 +279,18 @@ class CalendarClass extends ConfigClass {
 				$sql = "
 				WITH [calendarDerived] AS
 				(
-					SELECT	[calendar].[calendarId],
-							[calendar].[calendarColorId],
-							[calendar].[calendarTitle],
-							[calendar].[calendarDesc],
-							[calendar].[isHidden],
-							[calendar].[staffId],
-							[calendarcolor].[calendarColorId]
-							ROW_NUMBER() OVER (ORDER BY [calendarId]) AS 'RowNumber'
-					FROM	[calendar]
-					JOIN 	[calendarcolor] 
-					ON 		[calendarcolor].[calendarColorId] = [calendar].[calendarColorId] 
-					WHERE 	[staff].[staffId]= '" . $this->model->getExecuteBy() . "' ". $tempSql . $tempSql2 . "
+					SELECT	[icalendar].[calendar].[calendarId],
+							[icalendar].[calendar].[calendarColorId],
+							[icalendar].[calendar].[calendarTitle],
+							[icalendar].[calendar].[calendarDesc],
+							[icalendar].[calendar].[isHidden],
+							[icalendar].[calendar].[staffId],
+							[icalendar].[calendarcolor].[calendarColorId]
+							ROW_NUMBER() OVER (ORDER BY [icalendar].[calendar].[calendarId]) AS 'RowNumber'
+					FROM	[icalendar].[calendar]
+					JOIN 	[icalendar].[calendarcolor] 
+					ON 		[icalendar].[calendarcolor].[calendarColorId] = [icalendar].[calendar].[calendarColorId] 
+					WHERE 	[icalendar].[staff].[staffId]= '" . $this->model->getExecuteBy() . "' ". $tempSql . $tempSql2 . "
 					)
 					SELECT		*
 					FROM 		[calendarDerived]
@@ -306,17 +306,17 @@ class CalendarClass extends ConfigClass {
 				FROM ( SELECT	a.*,
 				rownum r
 				FROM (
-						SELECT	CALENDAR.CALENDARID,
-								CALENDAR.CALENDARCOLORID,
-								CALENDAR.CALENDARTITLE,
-								CALENDAR.CALENDARDESC,
-								CALENDAR.ISHIDDEN,
-								CALENDAR.STAFFID,
-								CALENDARCOLOR.CALENDARCOLORID
-						FROM		CALENDAR
-						JOIN 	CALENDARCOLOR 
-						ON 		CALENDARCOLOR.CALENDARCOLORID = CALENDAR.CALENDARCOLORID
-						WHERE 	STAFFID = '" . $this->model->getExecuteBy() . "' ". $tempSql . $tempSql2 . "
+						SELECT	ICALENDAR.CALENDAR.CALENDARID,
+								ICALENDAR.CALENDAR.CALENDARCOLORID,
+								ICALENDAR.CALENDAR.CALENDARTITLE,
+								ICALENDAR.CALENDAR.CALENDARDESC,
+								ICALENDAR.CALENDAR.ISHIDDEN,
+								ICALENDAR.CALENDAR.STAFFID,
+								ICALENDAR.CALENDARCOLOR.CALENDARCOLORID
+						FROM	ICALENDAR.CALENDAR
+						JOIN 	ICALENDAR.CALENDARCOLOR 
+						ON 		ICALENDAR.CALENDARCOLOR.CALENDARCOLORID = ICALENDAR.CALENDAR.CALENDARCOLORID
+						WHERE 	ICALENDAR.STAFFID = '" . $this->model->getExecuteBy() . "' ". $tempSql . $tempSql2 . "
 					) a
 					WHERE rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
 				WHERE r >=  '" . ($this->getStart() + 1) . "'";
@@ -384,26 +384,26 @@ class CalendarClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		$this->q->start();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-					UPDATE 	`calendar`
-					SET 			`calendarTitle`		=	'" . $this->strict($_POST ['cal_title'], 's') . "'
-					WHERE 		`calendarId`			=	'" . $this->strict($_POST ['calendarId'], 'n') . "'";
+					UPDATE 	`icalendar`.`calendar`
+					SET 	`icalendar`.`calendar`.`calendarTitle`		=	'" . $this->strict($_POST ['cal_title'], 's') . "'
+					WHERE 	`icalendar`.`calendar`.`calendarId`			=	'" . $this->strict($_POST ['calendarId'], 'n') . "'";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-					UPDATE 	[calendar]
-					SET 			[calendarTitle]		=	'" . $this->strict($_POST ['cal_title'], 's') . "'
-					WHERE 		[calendarId]			=	'" . $this->strict($_POST ['calendarId'], 'n') . "'";
+					UPDATE 	[icalendar].[calendar]
+					SET 	[icalendar].[calendar].[calendarTitle]		=	'" . $this->strict($_POST ['cal_title'], 's') . "'
+					WHERE 	[icalendar].[calendar].[calendarId]			=	'" . $this->strict($_POST ['calendarId'], 'n') . "'";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-					UPDATE 	CALENDAR
-					SET 			CALENDARTITLE	=	'" . $this->strict($_POST ['cal_title'], 's') . "'
-					WHERE 		CALENDARID			=	'" . $this->strict($_POST ['calendarId'], 'n') . "'";
+					UPDATE 	ICALENDAR.CALENDAR
+					SET 	ICALENDAR.CALENDAR.CALENDARTITLE	=	'" . $this->strict($_POST ['cal_title'], 's') . "'
+					WHERE 	ICALENDAR.CALENDAR.CALENDARID			=	'" . $this->strict($_POST ['calendarId'], 'n') . "'";
 		}
 		$this->q->update($sql);
 		$this->q->commit();
@@ -432,7 +432,7 @@ class CalendarClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -484,7 +484,7 @@ if (isset($_POST ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_POST ['databaseRequest'])) {
+	if (isset($_POST ['databaseRequest'])) {
 		$calendarObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
@@ -519,6 +519,12 @@ if (isset($_GET ['method'])) {
 	}
 	if (isset($_GET ['isAdmin'])) {
 		$calendarObject->setIsAdmin($_GET ['isAdmin']);
+	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_GET ['databaseRequest'])) {
+		$calendarObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*
 	 *  Load the dynamic value
