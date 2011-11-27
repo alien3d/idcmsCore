@@ -14,7 +14,7 @@ require_once ("../model/invoicesModel.php");
  * @version 2
  * @author hafizan
  * @package account receivable
- * @package invoices
+ * @subpackage invoices
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -100,6 +100,8 @@ class InvoicesClass extends ConfigClass {
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->setRequestDatabase($this->getRequestDatabase());

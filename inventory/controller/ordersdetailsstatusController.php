@@ -102,6 +102,8 @@ class OrdersDetailsStatusClass extends ConfigClass {
 		$this->q->gridQuery = $this->getGridQuery();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 

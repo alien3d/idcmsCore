@@ -6,14 +6,14 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/religionSampleSampleModel.php");
+require_once ("../model/religionSampleModel.php");
 
 /**
  * this is religionSample setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package religionSample
+ * @package sample
  * @subpackage religionSamplev1,v2,v3,v4,v5
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
@@ -94,7 +94,7 @@ class ReligionSampleClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 0;
 
-		$this->model = new ReligionModel ();
+		$this->model = new ReligionSampleModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
