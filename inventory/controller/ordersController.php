@@ -135,34 +135,34 @@ class OrdersClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `orders`
+			INSERT INTO `northwindgood`.`orders`
 					(
-						`employeesId`,	 	 
-						`customersId`,	 	 
-						`ordersDate`, 	 	 
-						`ordersShippedDate`, 	 
-						`shipperId`,
-						`ordersShipName`,	 	 
-						`ordersShipAddress`,	 	 
-						`ordersShipCity`, 
-						`ordersShipState`, 	 
-						`ordersShipPostCode`,	 	 
-						`ordersShipCountry`, 	 
-						`ordersShippingFee`, 	 
-						`ordersTaxes`,
-						`ordersPaymentType`,	 	 
-						`ordersPaidDate`, 
-						`ordersNotes`, 
-						`ordersTaxRate`, 	 
-						`ordersTaxStatusId`,	 	 
-						`ordersStatusId`,
+						`northwindgood`.`orders`.`employeesId`,	 	 
+						`northwindgood`.`orders`.`customersId`,	 	 
+						`northwindgood`.`orders`.`ordersDate`, 	 	 
+						`northwindgood`.`orders`.`ordersShippedDate`, 	 
+						`northwindgood`.`orders`.`shipperId`,
+						`northwindgood`.`orders`.`ordersShipName`,	 	 
+						`northwindgood`.`orders`.`ordersShipAddress`,	 	 
+						`northwindgood`.`orders`.`ordersShipCity`, 
+						`northwindgood`.`orders`.`ordersShipState`, 	 
+						`northwindgood`.`orders`.`ordersShipPostCode`,	 	 
+						`northwindgood`.`orders`.`ordersShipCountry`, 	 
+						`northwindgood`.`orders`.`ordersShippingFee`, 	 
+						`northwindgood`.`orders`.`ordersTaxes`,
+						`northwindgood`.`orders`.`ordersPaymentType`,	 	 
+						`northwindgood`.`orders`.`ordersPaidDate`, 
+						`northwindgood`.`orders`.`ordersNotes`, 
+						`northwindgood`.`orders`.`ordersTaxRate`, 	 
+						`northwindgood`.`orders`.`ordersTaxStatusId`,	 	 
+						`northwindgood`.`orders`.`ordersStatusId`,
 						
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`orders`.`isDefault`,
+						`northwindgood`.`orders`.`isNew`,													`northwindgood`.`orders`.`isDraft`,
+						`northwindgood`.`orders`.`isUpdate`,													`northwindgood`.`orders`.`isDelete`,
+						`northwindgood`.`orders`.`isActive`,													`northwindgood`.`orders`.`isApproved`,
+						`northwindgood`.`orders`.`isReview`,                      		  	 				`northwindgood`.`orders`.`isPost`,
+						`northwindgood`.`orders`.`executeBy`,												`northwindgood`.`orders`.`executeTime`
 					)
 			VALUES
 					(
@@ -453,15 +453,15 @@ class OrdersClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `orders`.`isActive`		=	1	";
+				$this->auditFilter = "	`orders`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [orders].[isActive]		=	1	";
+				$this->auditFilter = "	[orders].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND ORDERS.ISACTIVE	=	1	";
+				$this->auditFilter = "	ORDERS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND ORDERS.ISACTIVE	=	1	";
+				$this->auditFilter = "	ORDERS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND ORDERS.ISACTIVE	=	1	";
+				$this->auditFilter = "	ORDERS.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();

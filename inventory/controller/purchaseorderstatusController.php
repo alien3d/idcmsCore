@@ -137,16 +137,21 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `purchaseOrdersStatus`
+			INSERT INTO `northwindgood`.`purchaseOrdersStatus`
 					(
-						`purchaseOrdersStatus`,												
+						`northwindgood`.`purchaseOrdersStatus`.`purchaseOrdersStatus`,												
 
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`purchaseOrdersStatus`.`isDefault`,
+						
+						`northwindgood`.`purchaseOrdersStatus`.`isNew`,
+						`northwindgood`.`purchaseOrdersStatus`.`isDraft`,
+						`northwindgood`.`purchaseOrdersStatus`.`isUpdate`,													`isDelete`,
+						`northwindgood`.`purchaseOrdersStatus`.`isActive`,	
+						`northwindgood`.`purchaseOrdersStatus`.`isApproved`,
+						`northwindgood`.`purchaseOrdersStatus`.`isReview`,
+						`northwindgood`.`purchaseOrdersStatus`.`isPost`,
+						`northwindgood`.`purchaseOrdersStatus`.`executeBy`,	
+						`northwindgood`.`purchaseOrdersStatus`.`executeTime`
 					)
 			VALUES
 					(
@@ -280,15 +285,15 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `purchaseOrdersStatus`.`isActive`		=	1	";
+				$this->auditFilter = "	`purchaseOrdersStatus`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [purchaseOrdersStatus].[isActive]		=	1	";
+				$this->auditFilter = "	[purchaseOrdersStatus].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND PURCHASEORDERSSTATUS.ISACTIVE	=	1	";
+				$this->auditFilter = "	PURCHASEORDERSSTATUS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND PURCHASEORDERSSTATUS.ISACTIVE	=	1	";
+				$this->auditFilter = "	PURCHASEORDERSSTATUS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND PURCHASEORDERSSTATUS.ISACTIVE	=	1	";
+				$this->auditFilter = "	PURCHASEORDERSSTATUS.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -663,18 +668,18 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 				UPDATE		`purchaseOrdersStatus`
 				SET 		`purchaseOrdersStatus`		=	'" . $this->model->getPurchaseOrdersStatus() . "',
 			
-							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`purchaseOrdersStatusId`		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
+							`northwindgood`.`purchaseOrdersStatus`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`northwindgood`.`purchaseOrdersStatus`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`northwindgood`.`purchaseOrdersStatus`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`northwindgood`.`purchaseOrdersStatus`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`northwindgood`.`purchaseOrdersStatus`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`northwindgood`.`purchaseOrdersStatus`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`northwindgood`.`purchaseOrdersStatus`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`northwindgood`.`purchaseOrdersStatus`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`northwindgood`.`purchaseOrdersStatus`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`northwindgood`.`purchaseOrdersStatus`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`northwindgood`.`purchaseOrdersStatus`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`northwindgood`.`purchaseOrdersStatus`.`purchaseOrdersStatusId`		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[purchaseOrdersStatus]
@@ -817,18 +822,18 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE 	`purchaseOrdersStatus`
-				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`purchaseOrdersStatusId`		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
+				SET 	`northwindgood`.`purchaseOrdersStatus`.`isDefault`					=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`northwindgood`.`purchaseOrdersStatus`.`isNew`						=	'" . $this->model->getIsNew(0, 'single') . "',
+						`northwindgood`.`purchaseOrdersStatus`.`isDraft`					=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`northwindgood`.`purchaseOrdersStatus`.`isUpdate`					=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`northwindgood`.`purchaseOrdersStatus`.`isDelete`					=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`northwindgood`.`purchaseOrdersStatus`.`isActive`					=	'" . $this->model->getIsActive(0, 'single') . "',
+						`northwindgood`.`purchaseOrdersStatus`.`isApproved`					=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`northwindgood`.`purchaseOrdersStatus`.`isReview`					=	'" . $this->model->getIsReview(0, 'single') . "',
+						`northwindgood`.`purchaseOrdersStatus`.`isPost`						=	'" . $this->model->getIsPost(0, 'single') . "',
+						`northwindgood`.`purchaseOrdersStatus`.`executeBy`					=	'" . $this->model->getExecuteBy() . "',
+						`northwindgood`.`purchaseOrdersStatus`.`executeTime`				=	" . $this->model->getExecuteTime() . "
+				WHERE 	`northwindgood`.`purchaseOrdersStatus`.`purchaseOrdersStatusId`		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	[purchaseOrdersStatus]
@@ -1224,8 +1229,8 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 			$sql = "
 			SELECT	`purchaseOrdersStatus`
 			FROM 	`purchaseOrdersStatus`
-			WHERE 	`purchaseOrdersStatus` 	= 	'" . $this->model->getPurchaseOrdersStatus() . "'
-			AND		`isActive`		=	1";
+			WHERE 	`northwindgood`.`purchaseOrdersStatus`.`purchaseOrdersStatus` 	= 	'" . $this->model->getPurchaseOrdersStatus() . "'
+			AND		`northwindgood`.`purchaseOrdersStatus`.`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[purchaseOrdersStatus]

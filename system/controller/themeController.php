@@ -236,8 +236,10 @@ class ThemeClass  extends ConfigClass {
 			} else if  ($this->q->vendor == self :: oracle) {
 				$this->auditFilter = "	THEME.ISACTIVE	=	1	";
 			} else if ($this->getVendor() == self::DB2){
+				$this->auditFilter = "	THEME.ISACTIVE	=	1	";
 
 			}else if ($this->getVendor()== self::POSTGRESS){
+				$this->auditFilter = "	THEME.ISACTIVE	=	1	";
 
 			}
 		} else if($this->getIsAdmin() ==1) {
@@ -1330,11 +1332,11 @@ if(isset($_GET['method'])) {
 	if(isset($_GET['isAdmin'])){
 		$themeObject->setIsAdmin($_GET['isAdmin']);
 	}
-	
+
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$themeObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

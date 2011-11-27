@@ -137,23 +137,27 @@ class InventoryTransactionsClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `inventoryTransactions`
+			INSERT INTO `northwindgood`.`inventoryTransactions`
 					(
-						`inventoryTransactionsTypesId`,
-						`inventoryTransactionsCreatedDate`,
-						`inventoryTransactionsModifiedDate`,
-						`productsId`,
-						`inventoryTransactionsQty`,
-						`purchaseOrdersId`,
-						`customerOrdersId`,
-						`inventoryTransactionsComments`,
-						
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsTypesId`,
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsCreatedDate`,
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsModifiedDate`,
+						`northwindgood`.`inventoryTransactions`.`productsId`,
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsQuantity`,
+						`northwindgood`.`inventoryTransactions`.`purchaseOrdersId`,
+						`northwindgood`.`inventoryTransactions`.`customerOrdersId`,
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsComments`,						
+						`northwindgood`.`inventoryTransactions`.`isDefault`,
+						`northwindgood`.`inventoryTransactions`.`isNew`,													
+						`northwindgood`.`inventoryTransactions`.`isDraft`,
+						`northwindgood`.`inventoryTransactions`.`isUpdate`,													
+						`northwindgood`.`inventoryTransactions`.`isDelete`,
+						`northwindgood`.`inventoryTransactions`.`isActive`,													
+						`northwindgood`.`inventoryTransactions`.`isApproved`,
+						`northwindgood`.`inventoryTransactions`.`isReview`,                      		  	 				
+						`northwindgood`.`inventoryTransactions`.`isPost`,
+						`northwindgood`.`inventoryTransactions`.`executeBy`,												
+						`northwindgood`.`inventoryTransactions`.`executeTime`
 					)
 			VALUES
 					(
@@ -348,15 +352,15 @@ class InventoryTransactionsClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `inventoryTransactions`.`isActive`		=	1	";
+				$this->auditFilter = "	`inventoryTransactions`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [inventoryTransactions].[isActive]		=	1	";
+				$this->auditFilter = "  [isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND INVENTORYTRANSACTIONS.ISACTIVE	=	1	";
+				$this->auditFilter = "	INVENTORYTRANSACTIONS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND INVENTORYTRANSACTIONS.ISACTIVE	=	1	";
+				$this->auditFilter = "	INVENTORYTRANSACTIONS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND INVENTORYTRANSACTIONS.ISACTIVE	=	1	";
+				$this->auditFilter = "	INVENTORYTRANSACTIONS.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -385,31 +389,30 @@ class InventoryTransactionsClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`inventoryTransactions`.`inventoryTransactionsId`,
-						`inventoryTransactions`.`inventoryTransactionsTypesId`,
-						`inventoryTransactions`.`inventoryTransactionsCreatedDate`,
-						`inventoryTransactions`.`inventoryTransactionsModifiedDate`,
-						`inventoryTransactions`.`productsId`,
-						`inventoryTransactions`.`inventoryTransactionsQty`,
-						`inventoryTransactions`.`purchaseOrdersId`,
-						`inventoryTransactions`.`customerOrdersId`,
-						`inventoryTransactions`.`inventoryTransactionsComments`,
-						
-						`inventoryTransactions`.`isDefault`,
-						`inventoryTransactions`.`isNew`,
-						`inventoryTransactions`.`isDraft`,
-						`inventoryTransactions`.`isUpdate`,
-						`inventoryTransactions`.`isDelete`,
-						`inventoryTransactions`.`isActive`,
-						`inventoryTransactions`.`isApproved`,
-						`inventoryTransactions`.`isReview`,
-						`inventoryTransactions`.`isPost`,
-						`inventoryTransactions`.`executeBy`,
-						`inventoryTransactions`.`executeTime`,
-						`staff`.`staffName`
-			FROM 	`inventoryTransactions`
-			JOIN	`staff`
-			ON		`inventoryTransactions`.`executeBy` = `staff`.`staffId`
+			SELECT		`northwindgood`.`inventoryTransactions`.`inventoryTransactionsId`,
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsTypesId`,
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsCreatedDate`,
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsModifiedDate`,
+						`northwindgood`.`inventoryTransactions`.`productsId`,
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsQty`,
+						`northwindgood`.`inventoryTransactions`.`purchaseOrdersId`,
+						`northwindgood`.`inventoryTransactions`.`customerOrdersId`,
+						`northwindgood`.`inventoryTransactions`.`inventoryTransactionsComments`,						
+						`northwindgood`.`inventoryTransactions`.`isDefault`,
+						`northwindgood`.`inventoryTransactions`.`isNew`,
+						`northwindgood`.`inventoryTransactions`.`isDraft`,
+						`northwindgood`.`inventoryTransactions`.`isUpdate`,
+						`northwindgood`.`inventoryTransactions`.`isDelete`,
+						`northwindgood`.`inventoryTransactions`.`isActive`,
+						`northwindgood`.`inventoryTransactions`.`isApproved`,
+						`northwindgood`.`inventoryTransactions`.`isReview`,
+						`northwindgood`.`inventoryTransactions`.`isPost`,
+						`northwindgood`.`inventoryTransactions`.`executeBy`,
+						`northwindgood`.`inventoryTransactions`.`executeTime`,
+						`northwindgood`.`staff`.`staffName`
+			FROM 		`northwindgood`.`inventoryTransactions`
+			JOIN		`icore`.staff`
+			ON			`northwindgood`.`inventoryTransactions`.`executeBy` = `icore`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getInventoryTransactionsId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getInventoryTransactionsId(0, 'single') . "'";
@@ -728,9 +731,9 @@ class InventoryTransactionsClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInventoryTransactionsId(0, 'single') . "' ";
+			SELECT	`northwindgood`.`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`northwindgood`.`" . $this->model->getTableName() . "`
+			WHERE  	`northwindgood`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInventoryTransactionsId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
@@ -763,29 +766,27 @@ class InventoryTransactionsClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`inventoryTransactions`
-				SET 		
-							`inventoryTransactions`.`inventoryTransactionsTypesId`		=	'" . $this->model->getInventoryTransactionsTypesId() . "',
-							`inventoryTransactions`.`inventoryTransactionsCreatedDate`  =	'" . $this->model->getInventoryTransactionsCreatedDate() . "',
-							`inventoryTransactions`.`inventoryTransactionsModifiedDate`	=	'" . $this->model->getInventoryTransactionsModifiedDate() . "',
-							`inventoryTransactions`.`productsId`						=	'" . $this->model->getProductsId() . "',
-							`inventoryTransactions`.`inventoryTransactionsQty`			=	'" . $this->model->getInventoryTransactionsQty() . "',
-							`inventoryTransactions`.`purchaseOrdersId`					=	'" . $this->model->getPurchaseOrdersId() . "',
-							`inventoryTransactions`.`customerOrdersId`					=	'" . $this->model->getCustomerOrdersId() . "',
-							`inventoryTransactions`.`inventoryTransactionsComments`		=	'" . $this->model->getInventoryTransactionsComments() . "',
-							
-							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`inventoryTransactionsId`		=	'" . $this->model->getInventoryTransactionsId(0, 'single') . "'";
+				UPDATE		`northwindgood`.`inventoryTransactions`
+				SET 		`northwindgood`.`inventoryTransactions`.`inventoryTransactionsTypesId`		=	'" . $this->model->getInventoryTransactionsTypesId() . "',
+							`northwindgood`.`inventoryTransactions`.`inventoryTransactionsCreatedDate`  =	'" . $this->model->getInventoryTransactionsCreatedDate() . "',
+							`northwindgood`.`inventoryTransactions`.`inventoryTransactionsModifiedDate`	=	'" . $this->model->getInventoryTransactionsModifiedDate() . "',
+							`northwindgood`.`inventoryTransactions`.`productsId`						=	'" . $this->model->getProductsId() . "',
+							`northwindgood`.`inventoryTransactions`.`inventoryTransactionsQty`			=	'" . $this->model->getInventoryTransactionsQty() . "',
+							`northwindgood`.`inventoryTransactions`.`purchaseOrdersId`					=	'" . $this->model->getPurchaseOrdersId() . "',
+							`northwindgood`.`inventoryTransactions`.`customerOrdersId`					=	'" . $this->model->getCustomerOrdersId() . "',
+							`northwindgood`.`inventoryTransactions`.`inventoryTransactionsComments`		=	'" . $this->model->getInventoryTransactionsComments() . "',							
+							`northwindgood`.`inventoryTransactions`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`northwindgood`.`inventoryTransactions`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`northwindgood`.`inventoryTransactions`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`northwindgood`.`inventoryTransactions`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`northwindgood`.`inventoryTransactions`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`northwindgood`.`inventoryTransactions`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`northwindgood`.`inventoryTransactions`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`northwindgood`.`inventoryTransactions`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`northwindgood`.`inventoryTransactions`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`northwindgood`.`inventoryTransactions`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`northwindgood`.`inventoryTransactions`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`northwindgood`.`inventoryTransactions`.`inventoryTransactionsId`		=	'" . $this->model->getInventoryTransactionsId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[inventoryTransactions]
@@ -921,9 +922,9 @@ class InventoryTransactionsClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInventoryTransactionsId(0, 'single') . "' ";
+			SELECT	`northwindgood`.`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`northwindgood`.`" . $this->model->getTableName() . "`
+			WHERE  	`northwindgood`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getInventoryTransactionsId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
@@ -956,19 +957,19 @@ class InventoryTransactionsClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`inventoryTransactions`
-				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`inventoryTransactionsId`		=	'" . $this->model->getInventoryTransactionsId(0, 'single') . "'";
+				UPDATE 	`northwindgood`.`inventoryTransactions`
+				SET 	`northwindgood`.`inventoryTransactions`.`isDefault`						=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`northwindgood`.`inventoryTransactions`.`isNew`							=	'" . $this->model->getIsNew(0, 'single') . "',
+						`northwindgood`.`inventoryTransactions`.`isDraft`						=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`northwindgood`.`inventoryTransactions`.`isUpdate`						=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`northwindgood`.`inventoryTransactions`.`isDelete`						=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`northwindgood`.`inventoryTransactions`.`isActive`						=	'" . $this->model->getIsActive(0, 'single') . "',
+						`northwindgood`.`inventoryTransactions`.`isApproved`					=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`northwindgood`.`inventoryTransactions`.`isReview`						=	'" . $this->model->getIsReview(0, 'single') . "',
+						`northwindgood`.`inventoryTransactions`.`isPost`						=	'" . $this->model->getIsPost(0, 'single') . "',
+						`northwindgood`.`inventoryTransactions`.`executeBy`						=	'" . $this->model->getExecuteBy() . "',
+						`northwindgood`.`inventoryTransactions`.`executeTime`					=	" . $this->model->getExecuteTime() . "
+				WHERE 	`northwindgood`.`inventoryTransactions`.`inventoryTransactionsId`		=	'" . $this->model->getInventoryTransactionsId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	[inventoryTransactions]
@@ -1033,11 +1034,7 @@ class InventoryTransactionsClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			// advance logging future
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getInventoryTransactionsId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1362,10 +1359,10 @@ class InventoryTransactionsClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`inventoryTransactionsTypesId`
-			FROM 	`inventoryTransactions`
-			WHERE 	`inventoryTransactionsTypesId` 	= 	'" . $this->model->getInventoryTransactionsTypesId() . "'
-			AND		`isActive`		=	1";
+			SELECT	`northwindgood`.`inventoryTransactionsTypesId`
+			FROM 	`northwindgood`.`inventoryTransactions`
+			WHERE 	`northwindgood`.`inventoryTransactions`.`inventoryTransactionsTypesId` 	= 	'" . $this->model->getInventoryTransactionsTypesId() . "'
+			AND		`northwindgood`.`inventoryTransactions`.`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[inventoryTransactionsTypesId]

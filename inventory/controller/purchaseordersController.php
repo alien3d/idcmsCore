@@ -314,15 +314,15 @@ class PaymentClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `payment`.`isActive`		=	1	";
+				$this->auditFilter = "	`payment`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [payment].[isActive]		=	1	";
+				$this->auditFilter = "	[payment].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
+				$this->auditFilter = "	PAYMENT.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
+				$this->auditFilter = "	PAYMENT.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND PAYMENT.ISACTIVE	=	1	";
+				$this->auditFilter = "	PAYMENT.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();

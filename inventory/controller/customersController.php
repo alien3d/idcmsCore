@@ -134,31 +134,36 @@ class CustomersClass extends ConfigClass {
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			INSERT INTO `customers`
+			INSERT INTO `northwindgood`.`customers`
 					(
-						`customersCompany`,
-						`customersLastName`,
-						`customersFirstName`,
-						`customersEmail`,
-						`customersJobTitle`,
-						`customersBusinessPhone`,
-						`customersHomePhone`,
-						`customersMobilePhone`,
-						`customersFaxNum`,
-						`customersAddress`,
-						`customersCity`,
-						`customersState`,
-						`customersPostcode`,
-						`customersCountry`,
-						`customersWebPage`,
-						`customersNotes`,
-						`customersAttachments,				
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`customers`.`customersCompany`,
+						`northwindgood`.`customers`.`customersLastName`,
+						`northwindgood`.`customers`.`customersFirstName`,
+						`northwindgood`.`customers`.`customersEmail`,
+						`northwindgood`.`customers`.`customersJobTitle`,
+						`northwindgood`.`customers`.`customersBusinessPhone`,
+						`northwindgood`.`customers`.`customersHomePhone`,
+						`northwindgood`.`customers`.`customersMobilePhone`,
+						`northwindgood`.`customers`.`customersFaxNum`,
+						`northwindgood`.`customers`.`customersAddress`,
+						`northwindgood`.`customers`.`customersCity`,
+						`northwindgood`.`customers`.`customersState`,
+						`northwindgood`.`customers`.`customersPostcode`,
+						`northwindgood`.`customers`.`customersCountry`,
+						`northwindgood`.`customers`.`customersWebPage`,
+						`northwindgood`.`customers`.`customersNotes`,
+						`northwindgood`.`customers`.`customersAttachments,				
+						`northwindgood`.`customers`.`isDefault`,
+						`northwindgood`.`customers`.`isNew`,													
+						`northwindgood`.`customers`.`isDraft`,
+						`northwindgood`.`customers`.`isUpdate`,													
+						`northwindgood`.`customers`.`isDelete`,
+						`northwindgood`.`customers`.`isActive`,													
+						`northwindgood`.`customers`.`isApproved`,
+						`northwindgood`.`customers`.`isReview`,                      		  	 				
+						`northwindgood`.`customers`.`isPost`,
+						`northwindgood`.`customers`.`executeBy`,												
+						`northwindgood`.`customers`.`executeTime`
 					)
 			VALUES
 					(
@@ -431,15 +436,15 @@ class CustomersClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `customers`.`isActive`		=	1	";
+				$this->auditFilter = "	`customers`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [customers].[isActive]		=	1	";
+				$this->auditFilter = "	[customers].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND CUSTOMERS.ISACTIVE	=	1	";
+				$this->auditFilter = " CUSTOMERS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND CUSTOMERS.ISACTIVE	=	1	";
+				$this->auditFilter = "	CUSTOMERS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND CUSTOMERS.ISACTIVE	=	1	";
+				$this->auditFilter = "	CUSTOMERS.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -886,36 +891,36 @@ class CustomersClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`customers`
-				SET 		`customersCompany`			=	'" . $this->model->getCustomersCompany() . "',
-							`customersLastName`			=	'" . $this->model->getCustomersLastName() . "',
-							`customersFirstName`		=	'" . $this->model->getCustomersFirstName() . "',
-							`customersEmail`			=	'" . $this->model->getCustomersEmail() . "',
-							`customersJobTitle`			=	'" . $this->model->getCustomersJobTitle() . "',
-							`customersBusinessPhone`	=	'" . $this->model->getCustomersBusinessPhone() . "',
-							`customersHomePhone`		=	'" . $this->model->getCustomersHomePhone() . "',
-							`customersMobilePhone`		=	'" . $this->model->getCustomersMobilePhone() . "',
-							`customersFaxNum`			=	'" . $this->model->getCustomersFaxNum() . "',
-							`customersAddress`			=	'" . $this->model->getCustomersAddress() . "',
-							`customersCity`				=	'" . $this->model->getCustomersCity() . "',
-							`customersState`			=	'" . $this->model->getCustomersState() . "',
-							`customersPostcode`			=	'" . $this->model->getCustomersPostcode() . "',
-							`customersCountry`			=	'" . $this->model->getCustomersCountry() . "',
-							`customersWebPage`			=	'" . $this->model->getCustomersWebPage() . "',
-							`customersNotes`			=	'" . $this->model->getCustomersNotes() . "',
-							`customersAttachments`		=	'" . $this->model->getCustomersAttachments() . "',								
-							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`customersId`		=	'" . $this->model->getCustomersId(0, 'single') . "'";
+				UPDATE		`northwindgood`.`customers`
+				SET 		`northwindgood`.`customers`.`customersCompany`			=	'" . $this->model->getCustomersCompany() . "',
+							`northwindgood`.`customers`.`customersLastName`			=	'" . $this->model->getCustomersLastName() . "',
+							`northwindgood`.`customers`.`customersFirstName`		=	'" . $this->model->getCustomersFirstName() . "',
+							`northwindgood`.`customers`.`customersEmail`			=	'" . $this->model->getCustomersEmail() . "',
+							`northwindgood`.`customers`.`customersJobTitle`			=	'" . $this->model->getCustomersJobTitle() . "',
+							`northwindgood`.`customers`.`customersBusinessPhone`	=	'" . $this->model->getCustomersBusinessPhone() . "',
+							`northwindgood`.`customers`.`customersHomePhone`		=	'" . $this->model->getCustomersHomePhone() . "',
+							`northwindgood`.`customers`.`customersMobilePhone`		=	'" . $this->model->getCustomersMobilePhone() . "',
+							`northwindgood`.`customers`.`customersFaxNum`			=	'" . $this->model->getCustomersFaxNum() . "',
+							`northwindgood`.`customers`.`customersAddress`			=	'" . $this->model->getCustomersAddress() . "',
+							`northwindgood`.`customers`.`customersCity`				=	'" . $this->model->getCustomersCity() . "',
+							`northwindgood`.`customers`.`customersState`			=	'" . $this->model->getCustomersState() . "',
+							`northwindgood`.`customers`.`customersPostcode`			=	'" . $this->model->getCustomersPostcode() . "',
+							`northwindgood`.`customers`.`customersCountry`			=	'" . $this->model->getCustomersCountry() . "',
+							`northwindgood`.`customers`.`customersWebPage`			=	'" . $this->model->getCustomersWebPage() . "',
+							`northwindgood`.`customers`.`customersNotes`			=	'" . $this->model->getCustomersNotes() . "',
+							`northwindgood`.`customers`.`customersAttachments`		=	'" . $this->model->getCustomersAttachments() . "',								
+							`northwindgood`.`customers`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`northwindgood`.`customers`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`northwindgood`.`customers`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`northwindgood`.`customers`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`northwindgood`.`customers`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`northwindgood`.`customers`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`northwindgood`.`customers`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`northwindgood`.`customers`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`northwindgood`.`customers`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`northwindgood`.`customers`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`northwindgood`.`customers`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`northwindgood`.`customers`.`customersId`		=	'" . $this->model->getCustomersId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[customers]
@@ -1117,19 +1122,19 @@ class CustomersClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`customers`
-				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`customersId`		=	'" . $this->model->getCustomersId(0, 'single') . "'";
+				UPDATE 	`northwindgood`.`customers`
+				SET 	`northwindgood`.`customers`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`northwindgood`.`customers`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`northwindgood`.`customers`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`northwindgood`.`customers`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`northwindgood`.`customers`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`northwindgood`.`customers`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`northwindgood`.`customers`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`northwindgood`.`customers`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`northwindgood`.`customers`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`northwindgood`.`customers`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`northwindgood`.`customers`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`northwindgood`.`customers`.`customersId`		=	'" . $this->model->getCustomersId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	[customers]
@@ -1223,7 +1228,7 @@ class CustomersClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `" . $this->model->getTableName() . "`
+			UPDATE `northwindgood`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -1521,10 +1526,10 @@ class CustomersClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`customersId`
-			FROM 	`customers`
-			WHERE 	`customersId` 	= 	'" . $this->model->getCustomersId() . "'
-			AND		`isActive`		=	1";
+			SELECT	`northwindgood`.`customers`.`customersId`
+			FROM 	`northwindgood`.`customers`
+			WHERE 	`northwindgood`.`customers`.`customersId` 	= 	'" . $this->model->getCustomersId() . "'
+			AND		`northwindgood`.`customers`.`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[customersId]

@@ -402,15 +402,15 @@ class ProductsClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `products`.`isActive`		=	1	";
+				$this->auditFilter = "	`products`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [products].[isActive]		=	1	";
+				$this->auditFilter = "	[products].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND PRODUCTS.ISACTIVE	=	1	";
+				$this->auditFilter = "	PRODUCTS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND PRODUCTS.ISACTIVE	=	1	";
+				$this->auditFilter = "	PRODUCTS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND PRODUCTS.ISACTIVE	=	1	";
+				$this->auditFilter = "	PRODUCTS.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();

@@ -440,15 +440,15 @@ class ShippersClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `shippers`.`isActive`		=	1	";
+				$this->auditFilter = "	`shippers`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [shippers].[isActive]		=	1	";
+				$this->auditFilter = "	[shippers].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND SHIPPERS.ISACTIVE	=	1	";
+				$this->auditFilter = "	SHIPPERS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND SHIPPERS.ISACTIVE	=	1	";
+				$this->auditFilter = "	SHIPPERS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND SHIPPERS.ISACTIVE	=	1	";
+				$this->auditFilter = "	SHIPPERS.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -477,40 +477,39 @@ class ShippersClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`shippers`.`shippersId`,
-						`shippers`.`shippersCompany`,	 
-						`shippers`.`shippersLastName`,
-						`shippers`.`shippersFirstName`, 
-						`shippers`.`shippersEmail`,
-						`shippers`.`shippersJobTitle`,
-						`shippers`.`shippersBusinessPhone`,
-						`shippers`.`shippersHomePhone`,
-						`shippers`.`shippersMobilePhone`,
-						`shippers`.`shippersFaxNum`,
-						`shippers`.`shippersAddress`,
-						`shippers`.`shippersCity`,
-						`shippers`.`shippersState`,
-						`shippers`.`shippersPostCode`,
-						`shippers`.`shippersCountry`,
-						`shippers`.`shippersWebPage`,
-						`shippers`.`shippersNotes`,
-						`shippers`.`shippersAttachments`,
-						
-						`shippers`.`isDefault`,
-						`shippers`.`isNew`,
-						`shippers`.`isDraft`,
-						`shippers`.`isUpdate`,
-						`shippers`.`isDelete`,
-						`shippers`.`isActive`,
-						`shippers`.`isApproved`,
-						`shippers`.`isReview`,
-						`shippers`.`isPost`,
-						`shippers`.`executeBy`,
-						`shippers`.`executeTime`,
-						`staff`.`staffName`
-			FROM 	`shippers`
-			JOIN	`staff`
-			ON		`shippers`.`executeBy` = `staff`.`staffId`
+			SELECT		`northwindgood`.`shippers`.`shippersId`,
+						`northwindgood`.`shippers`.`shippersCompany`,	 
+						`northwindgood`.`shippers`.`shippersLastName`,
+						`northwindgood`.`shippers`.`shippersFirstName`, 
+						`northwindgood`.`shippers`.`shippersEmail`,
+						`northwindgood`.`shippers`.`shippersJobTitle`,
+						`northwindgood`.`shippers`.`shippersBusinessPhone`,
+						`northwindgood`.`shippers`.`shippersHomePhone`,
+						`northwindgood`.`shippers`.`shippersMobilePhone`,
+						`northwindgood`.`shippers`.`shippersFaxNum`,
+						`northwindgood`.`shippers`.`shippersAddress`,
+						`northwindgood`.`shippers`.`shippersCity`,
+						`northwindgood`.`shippers`.`shippersState`,
+						`northwindgood`.`shippers`.`shippersPostCode`,
+						`northwindgood`.`shippers`.`shippersCountry`,
+						`northwindgood`.`shippers`.`shippersWebPage`,
+						`northwindgood`.`shippers`.`shippersNotes`,
+						`northwindgood`.`shippers`.`shippersAttachments`,						
+						`northwindgood`.`shippers`.`isDefault`,
+						`northwindgood`.`shippers`.`isNew`,
+						`northwindgood`.`shippers`.`isDraft`,
+						`northwindgood`.`shippers`.`isUpdate`,
+						`northwindgood`.`shippers`.`isDelete`,
+						`northwindgood`.`shippers`.`isActive`,
+						`northwindgood`.`shippers`.`isApproved`,
+						`northwindgood`.`shippers`.`isReview`,
+						`northwindgood`.`shippers`.`isPost`,
+						`northwindgood`.`shippers`.`executeBy`,
+						`northwindgood`.`shippers`.`executeTime`,
+						`icore`.`staff`.`staffName`
+			FROM 	`northwindgood`.`shippers`
+			JOIN	`icore`.`staff`
+			ON		`northwindgood`.`shippers`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getShippersId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getShippersId(0, 'single') . "'";
@@ -865,9 +864,9 @@ class ShippersClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getShippersId(0, 'single') . "' ";
+			SELECT	`northwindgood`.`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`northwindgood`.`" . $this->model->getTableName() . "`
+			WHERE  	`northwindgood`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getShippersId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
@@ -1002,13 +1001,7 @@ class ShippersClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getShippersId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1036,9 +1029,9 @@ class ShippersClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getShippersId(0, 'single') . "' ";
+			SELECT	`northwindgood`.`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`northwindgood`.`" . $this->model->getTableName() . "`
+			WHERE  	`northwindgood`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getShippersId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
