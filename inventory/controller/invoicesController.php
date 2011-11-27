@@ -308,11 +308,7 @@ class InvoicesClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		//advance logging future
-		$this->q->tableName = $this->model->getTableName();
-		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-
-		$this->q->audit = $this->audit;
+		
 		$this->q->create($sql);
 		$invoicesId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {

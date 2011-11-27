@@ -140,12 +140,11 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 			INSERT INTO `northwindgood`.`purchaseOrdersStatus`
 					(
 						`northwindgood`.`purchaseOrdersStatus`.`purchaseOrdersStatus`,												
-
-						`northwindgood`.`purchaseOrdersStatus`.`isDefault`,
-						
+						`northwindgood`.`purchaseOrdersStatus`.`isDefault`,						
 						`northwindgood`.`purchaseOrdersStatus`.`isNew`,
 						`northwindgood`.`purchaseOrdersStatus`.`isDraft`,
-						`northwindgood`.`purchaseOrdersStatus`.`isUpdate`,													`isDelete`,
+						`northwindgood`.`purchaseOrdersStatus`.`isUpdate`,													
+						`northwindgood`.`purchaseOrdersStatus`.`isDelete`,
 						`northwindgood`.`purchaseOrdersStatus`.`isActive`,	
 						`northwindgood`.`purchaseOrdersStatus`.`isApproved`,
 						`northwindgood`.`purchaseOrdersStatus`.`isReview`,
@@ -261,11 +260,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		//advance logging future
-		$this->q->tableName = $this->model->getTableName();
-		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-
-		$this->q->audit = $this->audit;
+		
 		$this->q->create($sql);
 		$purchaseOrdersStatusId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -371,8 +366,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT		PURCHASEORDERSSTATUS.PURCHASEORDERSSTATUSID  AS 	\"purchaseOrdersStatusId\",
-						PURCHASEORDERSSTATUS.PURCHASEORDERSSTATUS 	AS 	\"purchaseOrdersStatus\",
-						
+						PURCHASEORDERSSTATUS.PURCHASEORDERSSTATUS 	AS 	\"purchaseOrdersStatus\",						
 						PURCHASEORDERSSTATUS.ISDEFAULT    			AS	\"isDefault\",
 						PURCHASEORDERSSTATUS.ISNEW		  			AS	\"isNew\",
 						PURCHASEORDERSSTATUS.ISDRAFT	  				AS	\"isDraft\",
@@ -665,9 +659,8 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`purchaseOrdersStatus`
-				SET 		`purchaseOrdersStatus`		=	'" . $this->model->getPurchaseOrdersStatus() . "',
-			
+				UPDATE		`northwindgood`.`purchaseOrdersStatus`
+				SET 		`northwindgood`.`purchaseOrdersStatus`.`purchaseOrdersStatus`		=	'" . $this->model->getPurchaseOrdersStatus() . "',			
 							`northwindgood`.`purchaseOrdersStatus`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`northwindgood`.`purchaseOrdersStatus`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`northwindgood`.`purchaseOrdersStatus`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -752,13 +745,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getPurchaseOrdersStatusId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -898,11 +885,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			// advance logging future
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getPurchaseOrdersStatusId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
