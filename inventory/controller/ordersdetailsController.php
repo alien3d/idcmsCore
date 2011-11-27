@@ -137,24 +137,28 @@ class OrdersDetailsClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `ordersdetails`
+			INSERT INTO `northwindgood`.`ordersdetails`
 					(
-						`ordersId`,												
-						`productsId`,
-						`ordersDetailsQty`,
-						`ordersDetailsUnitPrice`,
-						`ordersDetailsDiscount`,
-						`ordersDetailsStatusId`,
-						`ordersDetailsDateAllocated`,
-						`purchaseOrdersId`,
-						`inventoryId`,
-						
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`ordersdetails`.`ordersId`,												
+						`northwindgood`.`ordersdetails`.`productsId`,
+						`northwindgood`.`ordersdetails`.`ordersDetailsQty`,
+						`northwindgood`.`ordersdetails`.`ordersDetailsUnitPrice`,
+						`northwindgood`.`ordersdetails`.`ordersDetailsDiscount`,
+						`northwindgood`.`ordersdetails`.`ordersDetailsStatusId`,
+						`northwindgood`.`ordersdetails`.`ordersDetailsDateAllocated`,
+						`northwindgood`.`ordersdetails`.`purchaseOrdersId`,
+						`northwindgood`.`ordersdetails`.`inventoryId`,						
+						`northwindgood`.`ordersdetails`.`isDefault`,
+						`northwindgood`.`ordersdetails`.`isNew`,													
+						`northwindgood`.`ordersdetails`.`isDraft`,
+						`northwindgood`.`ordersdetails`.`isUpdate`,													
+						`northwindgood`.`ordersdetails`.`isDelete`,
+						`northwindgood`.`ordersdetails`.`isActive`,													
+						`northwindgood`.`ordersdetails`.`isApproved`,
+						`northwindgood`.`ordersdetails`.`isReview`,                      		  	 				
+						`northwindgood`.`ordersdetails`.`isPost`,
+						`northwindgood`.`ordersdetails`.`executeBy`,												
+						`northwindgood`.`ordersdetails`.`executeTime`
 					)
 			VALUES
 					(

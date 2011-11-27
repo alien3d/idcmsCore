@@ -135,32 +135,36 @@ class ShippersClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `shippers`
+			INSERT INTO `northwindgood`.`shippers`
 					(	 	 
-						`shippersCompany`,	 
-						`shippersLastName`,
-						`shippersFirstName`, 
-						`shippersEmail`,
-						`shippersJobTitle`,
-						`shippersBusinessPhone`,
-						`shippersHomePhone`,
-						`shippersMobilePhone`,
-						`shippersFaxNum`,
-						`shippersAddress`,
-						`shippersCity`,
-						`shippersState`,
-						`shippersPostCode`,
-						`shippersCountry`,
-						`shippersWebPage`,
-						`shippersNotes`,
-						`shippersAttachments`,
-						
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`shippers`.`shippersCompany`,	 
+						`northwindgood`.`shippers`.`shippersLastName`,
+						`northwindgood`.`shippers`.`shippersFirstName`, 
+						`northwindgood`.`shippers`.`shippersEmail`,
+						`northwindgood`.`shippers`.`shippersJobTitle`,
+						`northwindgood`.`shippers`.`shippersBusinessPhone`,
+						`northwindgood`.`shippers`.`shippersHomePhone`,
+						`northwindgood`.`shippers`.`shippersMobilePhone`,
+						`northwindgood`.`shippers`.`shippersFaxNum`,
+						`northwindgood`.`shippers`.`shippersAddress`,
+						`northwindgood`.`shippers`.`shippersCity`,
+						`northwindgood`.`shippers`.`shippersState`,
+						`northwindgood`.`shippers`.`shippersPostCode`,
+						`northwindgood`.`shippers`.`shippersCountry`,
+						`northwindgood`.`shippers`.`shippersWebPage`,
+						`northwindgood`.`shippers`.`shippersNotes`,
+						`northwindgood`.`shippers`.`shippersAttachments`,						
+						`northwindgood`.`shippers`.`isDefault`,
+						`northwindgood`.`shippers`.`isNew`,													
+						`northwindgood`.`shippers`.`isDraft`,
+						`northwindgood`.`shippers`.`isUpdate`,												
+						`northwindgood`.`shippers`.`isDelete`,
+						`northwindgood`.`shippers`.`isActive`,												
+						`northwindgood`.`shippers`.`isApproved`,
+						`northwindgood`.`shippers`.`isReview`,                      		  	 			
+						`northwindgood`.`shippers`.`isPost`,
+						`northwindgood`.`shippers`.`executeBy`,												
+						`northwindgood`.`shippers`.`executeTime`
 					)
 			VALUES
 					(

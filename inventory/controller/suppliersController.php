@@ -137,32 +137,36 @@ class SuppliersClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `suppliers`
+			INSERT INTO `northwindgood`.`suppliers`
 					(	 	 
-						`suppliersCompany`,	 
-						`suppliersLastName`,
-						`suppliersFirstName`, 
-						`suppliersEmail`,
-						`suppliersJobTitle`,
-						`suppliersBusinessPhone`,
-						`suppliersHomePhone`,
-						`suppliersMobilePhone`,
-						`suppliersFaxNum`,
-						`suppliersAddress`,
-						`suppliersCity`,
-						`suppliersState`,
-						`suppliersPostCode`,
-						`suppliersCountry`,
-						`suppliersWebPage`,
-						`suppliersNotes`,
-						`suppliersAttachments`,
-						
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`suppliers`.`suppliersCompany`,	 
+						`northwindgood`.`suppliers`.`suppliersLastName`,
+						`northwindgood`.`suppliers`.`suppliersFirstName`, 
+						`northwindgood`.`suppliers`.`suppliersEmail`,
+						`northwindgood`.`suppliers`.`suppliersJobTitle`,
+						`northwindgood`.`suppliers`.`suppliersBusinessPhone`,
+						`northwindgood`.`suppliers`.`suppliersHomePhone`,
+						`northwindgood`.`suppliers`.`suppliersMobilePhone`,
+						`northwindgood`.`suppliers`.`suppliersFaxNum`,
+						`northwindgood`.`suppliers`.`suppliersAddress`,
+						`northwindgood`.`suppliers`.`suppliersCity`,
+						`northwindgood`.`suppliers`.`suppliersState`,
+						`northwindgood`.`suppliers`.`suppliersPostCode`,
+						`northwindgood`.`suppliers`.`suppliersCountry`,
+						`northwindgood`.`suppliers`.`suppliersWebPage`,
+						`northwindgood`.`suppliers`.`suppliersNotes`,
+						`northwindgood`.`suppliers`.`suppliersAttachments`,						
+						`northwindgood`.`suppliers`.`isDefault`,
+						`northwindgood`.`suppliers`.`isNew`,													
+						`northwindgood`.`suppliers`.`isDraft`,
+						`northwindgood`.`suppliers`.`isUpdate`,													
+						`northwindgood`.`suppliers`.`isDelete`,
+						`northwindgood`.`suppliers`.`isActive`,													
+						`northwindgood`.`suppliers`.`isApproved`,
+						`northwindgood`.`suppliers`.`isReview`,                      		  	 				
+						`northwindgood`.`suppliers`.`isPost`,
+						`northwindgood`.`suppliers`.`executeBy`,												
+						`northwindgood`.`suppliers`.`executeTime`
 					)
 			VALUES
 					(

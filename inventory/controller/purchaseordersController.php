@@ -137,14 +137,14 @@ class PaymentClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `payment`
+			INSERT INTO `northwindgood`.`payment`
 					(
-						`receiptNo`,												
-						`membershipId`,
-						`paymentType`,
-						`paymentDate`,
-						`paymentAmount`,
-						`isDefault`,
+						`northwindgood`.`payment`.`receiptNo`,												
+						`northwindgood`.`payment`.`membershipId`,
+						`northwindgood`.`payment`.`paymentType`,
+						`northwindgood`.`payment`.`paymentDate`,
+						`northwindgood`.`payment`.`paymentAmount`,
+						`northwindgood`.`payment`.`isDefault`,
 						`isNew`,													`isDraft`,
 						`isUpdate`,													`isDelete`,
 						`isActive`,													`isApproved`,

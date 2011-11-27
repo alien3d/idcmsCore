@@ -135,21 +135,21 @@ class InvoicesClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `invoices`
+			INSERT INTO `northwindgood`.`invoices`
 					(
-						`ordersId`,												
-						`invoicesDate`,
-						`invoicesDueDate`,
-						`invoicesTax`,
-						`invoicesShipping`,
-						`invoicesAmtDue`,
+						`northwindgood`.`invoices`.`ordersId`,												
+						`northwindgood`.`invoices`.`invoicesDate`,
+						`northwindgood`.`invoices`.`invoicesDueDate`,
+						`northwindgood`.`invoices`.`invoicesTax`,
+						`northwindgood`.`invoices`.`invoicesShipping`,
+						`northwindgood`.`invoices`.`invoicesAmtDue`,
 
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`invoices`.`isDefault`,
+						`northwindgood`.`invoices`.`isNew`,													`northwindgood`.`invoices`.`isDraft`,
+						`northwindgood`.`invoices`.`isUpdate`,												`northwindgood`.`invoices`.`isDelete`,
+						`northwindgood`.`invoices`.`isActive`,												`northwindgood`.`invoices`.`isApproved`,
+						`northwindgood`.`invoices`.`isReview`,                      		  	 			`northwindgood`.`invoices`.`isPost`,
+						`northwindgood`.`invoices`.`executeBy`,												`northwindgood`.`invoices`.`executeTime`
 					)
 			VALUES
 					(

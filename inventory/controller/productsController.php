@@ -137,28 +137,32 @@ class ProductsClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `products`
+			INSERT INTO `northwindgood`.`products`
 					(
-						`supplierId`,
-						`productsCode`,
-						`productsName`,
-						`productsDescription`,
-						`productsStdCost`,
-						`productsListPrice`,
-						`productsReorderLevel`,
-						`productsTargetLevel`,
-						`productsQtyPerUnit`,
-						`productsDiscontinued`,
-						`productsMinReorderQty`,
-						`productsCategory`,
-						`productsAttachments`,
-						
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`products`.`supplierId`,
+						`northwindgood`.`products`.`productsCode`,
+						`northwindgood`.`products`.`productsName`,
+						`northwindgood`.`products`.`productsDescription`,
+						`northwindgood`.`products`.`productsStdCost`,
+						`northwindgood`.`products`.`productsListPrice`,
+						`northwindgood`.`products`.`productsReorderLevel`,
+						`northwindgood`.`products`.`productsTargetLevel`,
+						`northwindgood`.`products`.`productsQtyPerUnit`,
+						`northwindgood`.`products`.`productsDiscontinued`,
+						`northwindgood`.`products`.`productsMinReorderQty`,
+						`northwindgood`.`products`.`productsCategory`,
+						`northwindgood`.`products`.`productsAttachments`,						
+						`northwindgood`.`products`.`isDefault`,
+						`northwindgood`.`products`.`isNew`,												
+						`northwindgood`.`products`.`isDraft`,
+						`northwindgood`.`products`.`isUpdate`,											  
+						`northwindgood`.`products`.`isDelete`,
+						`northwindgood`.`products`.`isActive`,											   
+						`northwindgood`.`products`.`isApproved`,
+						`northwindgood`.`products`.`isReview`,                      		  	 			
+						`northwindgood`.`products`.`isPost`,
+						`northwindgood`.`products`.`executeBy`,												
+						`northwindgood`.`products`.`executeTime`
 					)
 			VALUES
 					(

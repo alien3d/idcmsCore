@@ -135,16 +135,20 @@ class OrdersDetailsStatusClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `ordersDetailsStatus`
+			INSERT INTO `northwindgood`.`ordersDetailsStatus`
 					(
-						`ordersDetailsStatusName`,												
-
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`ordersDetailsStatus`.`ordersDetailsStatusName`,												
+						`northwindgood`.`ordersDetailsStatus`.`isDefault`,
+						`northwindgood`.`ordersDetailsStatus`.`isNew`,													
+						`northwindgood`.`ordersDetailsStatus`.`isDraft`,
+						`northwindgood`.`ordersDetailsStatus`.`isUpdate`,											   
+						`northwindgood`.`ordersDetailsStatus`.`isDelete`,
+						`northwindgood`.`ordersDetailsStatus`.`isActive`,												
+						`northwindgood`.`ordersDetailsStatus`.`isApproved`,
+						`northwindgood`.`ordersDetailsStatus`.`isReview`,                      		  	 				
+						`northwindgood`.`ordersDetailsStatus`.`isPost`,
+						`northwindgood`.`ordersDetailsStatus`.`executeBy`,												
+						`northwindgood`.`ordersDetailsStatus`.`executeTime`
 					)
 			VALUES
 					(

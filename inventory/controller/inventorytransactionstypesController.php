@@ -135,16 +135,20 @@ class InventoryTransactionsTypesClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `inventorytransactiontypes`
+			INSERT INTO `northwindgood`.`inventorytransactiontypes`
 					(
-						`inventoryTransactionsTypesName`,												
-
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`northwindgood`.`inventorytransactiontypes`.`inventoryTransactionsTypesName`,												
+						`northwindgood`.`inventorytransactiontypes`.`isDefault`,
+						`northwindgood`.`inventorytransactiontypes`.`isNew`,													
+						`northwindgood`.`inventorytransactiontypes`.`isDraft`,
+						`northwindgood`.`inventorytransactiontypes`.`isUpdate`,													
+						`northwindgood`.`inventorytransactiontypes`.`isDelete`,
+						`northwindgood`.`inventorytransactiontypes`.`isActive`,													
+						`northwindgood`.`inventorytransactiontypes`.`isApproved`,
+						`northwindgood`.`inventorytransactiontypes`.`isReview`,                      		  	 				
+						`northwindgood`.`inventorytransactiontypes`.`isPost`,
+						`northwindgood`.`inventorytransactiontypes`.`executeBy`,												
+						`northwindgood`.`inventorytransactiontypes`.`executeTime`
 					)
 			VALUES
 					(
