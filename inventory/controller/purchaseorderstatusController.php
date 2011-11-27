@@ -6,15 +6,15 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/purchaseordersstatusModel.php");
+require_once ("../model/purchaseOrdersStatusModel.php");
 
 /**
- * this is purchaseordersstatus setting files.This sample template file for master record
+ * this is purchaseOrdersStatus setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author Maq,hafizan
  * @package account payable or purchase order
- * @subpackage purchaseordersstatus
+ * @subpackage purchaseOrdersStatus
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -137,7 +137,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `purchaseordersstatus`
+			INSERT INTO `purchaseOrdersStatus`
 					(
 						`purchaseOrdersStatus`,												
 
@@ -161,9 +161,9 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [purchaseordersstatus]
+			INSERT INTO [purchaseOrdersStatus]
 					(
-						[purchaseordersstatus],																							
+						[purchaseOrdersStatus],																							
 						
 						[isDefault],
 						[isNew],														[isDraft],
@@ -262,13 +262,13 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 
 		$this->q->audit = $this->audit;
 		$this->q->create($sql);
-		$purchaseordersstatusId = $this->q->lastInsertId();
+		$purchaseOrdersStatusId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "purchaseordersstatusId" => $purchaseordersstatusId));
+		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "purchaseOrdersStatusId" => $purchaseOrdersStatusId));
 		exit();
 	}
 
@@ -280,9 +280,9 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `purchaseordersstatus`.`isActive`		=	1	";
+				$this->auditFilter = "	AND `purchaseOrdersStatus`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [purchaseordersstatus].[isActive]		=	1	";
+				$this->auditFilter = "	AND [purchaseOrdersStatus].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	AND PURCHASEORDERSSTATUS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
@@ -317,48 +317,48 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`purchaseordersstatus`.`purchaseordersstatusId`,
-						`purchaseordersstatus`.`purchaseOrdersStatus`,
+			SELECT		`purchaseOrdersStatus`.`purchaseOrdersStatusId`,
+						`purchaseOrdersStatus`.`purchaseOrdersStatus`,
 						
-						`purchaseordersstatus`.`isDefault`,
-						`purchaseordersstatus`.`isNew`,
-						`purchaseordersstatus`.`isDraft`,
-						`purchaseordersstatus`.`isUpdate`,
-						`purchaseordersstatus`.`isDelete`,
-						`purchaseordersstatus`.`isActive`,
-						`purchaseordersstatus`.`isApproved`,
-						`purchaseordersstatus`.`isReview`,
-						`purchaseordersstatus`.`isPost`,
-						`purchaseordersstatus`.`executeBy`,
-						`purchaseordersstatus`.`executeTime`,
+						`purchaseOrdersStatus`.`isDefault`,
+						`purchaseOrdersStatus`.`isNew`,
+						`purchaseOrdersStatus`.`isDraft`,
+						`purchaseOrdersStatus`.`isUpdate`,
+						`purchaseOrdersStatus`.`isDelete`,
+						`purchaseOrdersStatus`.`isActive`,
+						`purchaseOrdersStatus`.`isApproved`,
+						`purchaseOrdersStatus`.`isReview`,
+						`purchaseOrdersStatus`.`isPost`,
+						`purchaseOrdersStatus`.`executeBy`,
+						`purchaseOrdersStatus`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`purchaseordersstatus`
+			FROM 	`purchaseOrdersStatus`
 			JOIN	`staff`
-			ON		`purchaseordersstatus`.`executeBy` = `staff`.`staffId`
+			ON		`purchaseOrdersStatus`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getPurchaseOrdersStatusId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[purchaseordersstatus].[purchaseordersstatusId],
-						[purchaseordersstatus].[purchaseOrdersStatus],
+			SELECT	[purchaseOrdersStatus].[purchaseOrdersStatusId],
+						[purchaseOrdersStatus].[purchaseOrdersStatus],
 
-						[purchaseordersstatus].[isDefault],
-						[purchaseordersstatus].[isNew],
-						[purchaseordersstatus].[isDraft],
-						[purchaseordersstatus].[isUpdate],
-						[purchaseordersstatus].[isDelete],
-						[purchaseordersstatus].[isActive],
-						[purchaseordersstatus].[isApproved],
-						[purchaseordersstatus].[isReview],
-						[purchaseordersstatus].[isPost],
-						[purchaseordersstatus].[executeBy],
-						[purchaseordersstatus].[executeTime],
+						[purchaseOrdersStatus].[isDefault],
+						[purchaseOrdersStatus].[isNew],
+						[purchaseOrdersStatus].[isDraft],
+						[purchaseOrdersStatus].[isUpdate],
+						[purchaseOrdersStatus].[isDelete],
+						[purchaseOrdersStatus].[isActive],
+						[purchaseOrdersStatus].[isApproved],
+						[purchaseOrdersStatus].[isReview],
+						[purchaseOrdersStatus].[isPost],
+						[purchaseOrdersStatus].[executeBy],
+						[purchaseOrdersStatus].[executeTime],
 						[staff].[staffName]
-			FROM 	[purchaseordersstatus]
+			FROM 	[purchaseOrdersStatus]
 			JOIN		[staff]
-			ON		[purchaseordersstatus].[executeBy] = [staff].[staffId]
+			ON		[purchaseOrdersStatus].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getPurchaseOrdersStatusId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
@@ -407,7 +407,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('purchaseordersstatus');
+		$tableArray = array('purchaseOrdersStatus');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -498,30 +498,30 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [purchaseordersstatusDerived] AS
+							WITH [purchaseOrdersStatusDerived] AS
 							(
-								SELECT 		[purchaseordersstatus].[purchaseOrdersStatusId],
-											[purchaseordersstatus].[purchaseOrdersStatus],
+								SELECT 		[purchaseOrdersStatus].[purchaseOrdersStatusId],
+											[purchaseOrdersStatus].[purchaseOrdersStatus],
 
-											[purchaseordersstatus].[isDefault],
-											[purchaseordersstatus].[isNew],
-											[purchaseordersstatus].[isDraft],
-											[purchaseordersstatus].[isUpdate],
-											[purchaseordersstatus].[isDelete],
-											[purchaseordersstatus].[isApproved],
-											[purchaseordersstatus].[isReview],
-											[purchaseordersstatus].[isPost],
-											[purchaseordersstatus].[executeBy],
-											[purchaseordersstatus].[executeTime],
+											[purchaseOrdersStatus].[isDefault],
+											[purchaseOrdersStatus].[isNew],
+											[purchaseOrdersStatus].[isDraft],
+											[purchaseOrdersStatus].[isUpdate],
+											[purchaseOrdersStatus].[isDelete],
+											[purchaseOrdersStatus].[isApproved],
+											[purchaseOrdersStatus].[isReview],
+											[purchaseOrdersStatus].[isPost],
+											[purchaseOrdersStatus].[executeBy],
+											[purchaseOrdersStatus].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [purchaseordersstatusId]) AS 'RowNumber'
-								FROM 	[purchaseordersstatus]
+								ROW_NUMBER() OVER (ORDER BY [purchaseOrdersStatusId]) AS 'RowNumber'
+								FROM 	[purchaseOrdersStatus]
 								JOIN		[staff]
-								ON		[purchaseordersstatus].[executeBy] = [staff].[staffId]
+								ON		[purchaseOrdersStatus].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[purchaseordersstatusDerived]
+							FROM 		[purchaseOrdersStatusDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -660,7 +660,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`purchaseordersstatus`
+				UPDATE		`purchaseOrdersStatus`
 				SET 		`purchaseOrdersStatus`		=	'" . $this->model->getPurchaseOrdersStatus() . "',
 			
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -674,10 +674,10 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`purchaseordersstatusId`		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
+				WHERE 		`purchaseOrdersStatusId`		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[purchaseordersstatus]
+				UPDATE 		[purchaseOrdersStatus]
 				SET 		[purchaseOrdersStatus]		=	'" . $this->model->getPurchaseOrdersStatus() . "',
 	
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -691,7 +691,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[purchaseordersstatusId]			=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
+			WHERE 		[purchaseOrdersStatusId]			=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		PURCHASEORDERSSTATUS
@@ -816,7 +816,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`purchaseordersstatus`
+				UPDATE 	`purchaseOrdersStatus`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -828,10 +828,10 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`purchaseordersstatusId`		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
+				WHERE 	`purchaseOrdersStatusId`		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[purchaseordersstatus]
+				UPDATE 	[purchaseOrdersStatus]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -843,7 +843,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[purchaseordersstatusId]		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
+				WHERE 	[purchaseOrdersStatusId]		=	'" . $this->model->getPurchaseOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	PURCHASEORDERSSTATUS
@@ -1223,13 +1223,13 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`purchaseOrdersStatus`
-			FROM 	`purchaseordersstatus`
+			FROM 	`purchaseOrdersStatus`
 			WHERE 	`purchaseOrdersStatus` 	= 	'" . $this->model->getPurchaseOrdersStatus() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[purchaseOrdersStatus]
-			FROM 	[purchaseordersstatus]
+			FROM 	[purchaseOrdersStatus]
 			WHERE 	[purchaseOrdersStatus] 	= 	'" . $this->model->getPurchaseOrdersStatus() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
@@ -1263,7 +1263,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "purchaseordersstatusDesc" => $row ['purchaseordersstatusDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "purchaseOrdersStatusDesc" => $row ['purchaseOrdersStatusDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
@@ -1330,7 +1330,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['purchaseordersstatusDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['purchaseOrdersStatusDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1339,7 +1339,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "purchaseordersstatus" . rand(0, 10000000) . ".xlsx";
+		$filename = "purchaseOrdersStatus" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1355,7 +1355,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 
 }
 
-$purchaseordersstatusObject = new PurchaseOrdersStatusClass ();
+$purchaseOrdersStatusObject = new PurchaseOrdersStatusClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1365,59 +1365,65 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$purchaseordersstatusObject->setLeafId($_POST ['leafId']);
+		$purchaseOrdersStatusObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$purchaseordersstatusObject->setIsAdmin($_POST ['isAdmin']);
+		$purchaseOrdersStatusObject->setIsAdmin($_POST ['isAdmin']);
+	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_POST ['databaseRequest'])) {
+		$purchaseOrdersStatusObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$purchaseordersstatusObject->setStart($_POST ['start']);
+		$purchaseOrdersStatusObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$purchaseordersstatusObject->setLimit($_POST ['perPage']);
+		$purchaseOrdersStatusObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$purchaseordersstatusObject->setFieldQuery($_POST ['query']);
+		$purchaseOrdersStatusObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$purchaseordersstatusObject->setGridQuery($_POST ['filter']);
+		$purchaseOrdersStatusObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$purchaseordersstatusObject->setOrder($_POST ['order']);
+		$purchaseOrdersStatusObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$purchaseordersstatusObject->setSortField($_POST ['sortField']);
+		$purchaseOrdersStatusObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$purchaseordersstatusObject->execute();
+	$purchaseOrdersStatusObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$purchaseordersstatusObject->create();
+		$purchaseOrdersStatusObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$purchaseordersstatusObject->update();
+		$purchaseOrdersStatusObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$purchaseordersstatusObject->read();
+		$purchaseOrdersStatusObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$purchaseordersstatusObject->delete();
+		$purchaseOrdersStatusObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1425,35 +1431,41 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$purchaseordersstatusObject->setLeafId($_GET ['leafId']);
+		$purchaseOrdersStatusObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$purchaseordersstatusObject->setIsAdmin($_GET ['isAdmin']);
+		$purchaseOrdersStatusObject->setIsAdmin($_GET ['isAdmin']);
+	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_GET ['databaseRequest'])) {
+		$purchaseOrdersStatusObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$purchaseordersstatusObject->execute();
+	$purchaseOrdersStatusObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$purchaseordersstatusObject->staff();
+			$purchaseOrdersStatusObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$purchaseordersstatusObject->updateStatus();
+		$purchaseOrdersStatusObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['purchaseordersstatusDesc'])) {
-		if (strlen($_GET ['purchaseordersstatusDesc']) > 0) {
-			$purchaseordersstatusObject->duplicate();
+	if (isset($_GET ['purchaseOrdersStatusDesc'])) {
+		if (strlen($_GET ['purchaseOrdersStatusDesc']) > 0) {
+			$purchaseOrdersStatusObject->duplicate();
 		}
 	}
 	/**
@@ -1461,16 +1473,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$purchaseordersstatusObject->firstRecord('json');
+			$purchaseOrdersStatusObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$purchaseordersstatusObject->previousRecord('json', 0);
+			$purchaseOrdersStatusObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$purchaseordersstatusObject->nextRecord('json', 0);
+			$purchaseOrdersStatusObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$purchaseordersstatusObject->lastRecord('json');
+			$purchaseOrdersStatusObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1478,7 +1490,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$purchaseordersstatusObject->excel();
+			$purchaseOrdersStatusObject->excel();
 		}
 	}
 }

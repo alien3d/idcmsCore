@@ -1424,6 +1424,12 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['isAdmin'])) {
 		$raceObject->setIsAdmin($_POST ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$raceObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */
@@ -1483,6 +1489,12 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['isAdmin'])) {
 		$raceObject->setIsAdmin($_GET ['isAdmin']);
+	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$raceObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*
 	 *  Load the dynamic value

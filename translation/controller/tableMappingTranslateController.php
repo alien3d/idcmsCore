@@ -801,6 +801,12 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['isAdmin'] )) {
 		$tableMappingTranslateObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$religionSampleObject->setDatabaseRequest($_GET ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */
@@ -872,6 +878,12 @@ if (isset ( $_GET ['method'] )) {
 	 */
 	if (isset ( $_GET ['isAdmin'] )) {
 		$tableMappingTranslateObject->setIsAdmin ( $_GET ['isAdmin'] );
+	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$tableMappingTranslateObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
 	 *  Load the dynamic value

@@ -639,13 +639,15 @@ Ext.onReady(function() {
             type: 'string',
             dataIndex: 'impairDesc',
             column: 'impairDesc',
-            table: 'impair'
+            table: 'impair',
+			database :'iCommon'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
             table: 'impair',
+			database :'iCommon',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -654,7 +656,8 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'impair'
+            table: 'impair',
+			database :'iCommon'
         }]
     });
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({

@@ -27,7 +27,7 @@ class LoginClass extends ConfigClass {
         $this->q = new Vendor ();
 
         $this->q->vendor = $this->getVendor();
-
+		$this->q->setRequestDatabase($this->q->idcmsCore);
         $this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
         $this->model = new StaffModel ();

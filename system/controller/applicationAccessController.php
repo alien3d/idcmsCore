@@ -460,6 +460,12 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['isAdmin'])) {
 		$applicationAccessObject->setIsAdmin($_POST ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$applicationAccessObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */

@@ -481,6 +481,12 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['isAdmin'])) {
 		$calendarObject->setIsAdmin($_POST ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_POST ['databaseRequest'])) {
+		$calendarObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Load the dynamic value
 	 */

@@ -632,6 +632,7 @@ Ext.onReady(function() {
             dataIndex: 'stateId',
             column: 'stateId',
             table: 'saving',
+			database :'iCommon',
             labelField: 'stateDesc',
             store: stateStore,
             phpMode: true
@@ -639,13 +640,15 @@ Ext.onReady(function() {
             type: 'string',
             dataIndex: 'savingDesc',
             column: 'savingDesc',
-            table: 'saving'
+            table: 'saving',
+			database :'iCommon'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
             table: 'saving',
+			database :'iCommon',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -654,7 +657,8 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'saving'
+            table: 'saving',
+			database :'iCommon'
         }]
     });
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({

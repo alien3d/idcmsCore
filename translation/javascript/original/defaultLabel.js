@@ -332,37 +332,43 @@ Ext.onReady(function() {
             type: 'numeric',
             dataIndex: 'logAdvanceId',
             column: 'logAdvanceId',
-            table: 'logAdvance'
+            table: 'logAdvance',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'logAdvanceText',
             column: 'logAdvanceText',
-            table: 'logAdvance'
+            table: 'logAdvance',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'logAdvanceType',
             column: 'logAdvanceType',
-            table: 'logAdvance'
+            table: 'logAdvance',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'logAdvanceComparison',
             column: 'logAdvanceComparison',
-            table: 'logAdvance'
+            table: 'logAdvance',
+			database :'iCore'
         },
         {
             type: 'numeric',
             dataIndex: 'refTableName',
             column: 'refTableName',
-            table: 'logAdvance'
+            table: 'logAdvance',
+			database :'iCore'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
             table: 'logAdvance',
+			database :'iCore',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -371,7 +377,8 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'logAdvance'
+            table: 'logAdvance',
+			database :'iCore'
         }]
     });
     var logAdvanceColumnModel = [new Ext.grid.RowNumberer(), {
@@ -614,19 +621,22 @@ Ext.onReady(function() {
             type: 'string',
             dataIndex: 'defaultLabel',
             column: 'defaultLabel',
-            table: 'defaultLabel'
+            table: 'defaultLabel',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'defaultLabelEnglish',
             column: 'defaultLabelEnglish',
-            table: 'defaultLabel'
+            table: 'defaultLabel',
+			database :'iCore'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
             table: 'defaultLabel',
+			database :'iCore',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -636,7 +646,8 @@ Ext.onReady(function() {
             dateFormat: 'Y-m-d H:i:s',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'defaultLabel'
+            table: 'defaultLabel',
+			database :'iCore'
         }]
     });
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({

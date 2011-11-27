@@ -509,6 +509,12 @@ if (isset($_POST['method'])) {
 	if (isset($_POST['isAdmin'])) {
 		$eventObject->setIsAdmin($_POST['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_POST ['databaseRequest'])) {
+		$eventObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Load the dynamic value
 	 */

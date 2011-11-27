@@ -640,38 +640,45 @@ Ext.onReady(function() {
             type: 'string',
             dataIndex: 'bankCode',
             column: 'bankCode',
-            table: 'bank'
+            table: 'bank',
+			database :'iCommon'
         } ,{
             type: 'string',
             dataIndex: 'bankSwiftCode',
             column: 'bankSwiftCode',
-            table: 'bank'
+            table: 'bank',
+			database :'iCommon'
         },{
             type: 'string',
             dataIndex: 'bankSwiftCodeCity',
             column: 'bankSwiftCodeCity',
-            table: 'bank'
+            table: 'bank',
+			database :'iCommon'
         },{
             type: 'string',
             dataIndex: 'bankSwiftCodeBranch',
             column: 'bankSwiftCodeBranch',
-            table: 'bank'
+            table: 'bank',
+			database :'iCommon'
         },{
             type: 'string',
             dataIndex: 'bankMepsCode',
             column: 'bankMepsCode',
-            table: 'bank'
+            table: 'bank',
+			database :'iCommon'
         },{
             type: 'string',
             dataIndex: 'bankDesc',
             column: 'bankDesc',
-            table: 'bank'
+            table: 'bank',
+			database :'iCommon'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
             table: 'bank',
+			database :'iCommon',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -680,7 +687,8 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'bank'
+            table: 'bank',
+			database :'iCommon'
         }]
     });
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({

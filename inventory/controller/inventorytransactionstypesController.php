@@ -9,16 +9,16 @@ require_once ("../../class/classSystemString.php");
 require_once ("../model/inventorytransactionstypesModel.php");
 
 /**
- * this is inventoryTransactionTypes setting files.This sample template file for master record
+ * this is inventoryTransactionsTypes setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package inventory
- * @subpackage inventoryTransactionTypes
+ * @subpackage inventoryTransactionsTypes
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class InventoryTransactionTypesClass extends ConfigClass {
+class InventoryTransactionsTypesClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -90,7 +90,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new inventoryTransactionTypesModel ();
+		$this->model = new inventoryTransactionsTypesModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 		
@@ -137,7 +137,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `inventorytransactiontypes`
 					(
-						`inventoryTransactionTypesName`,												
+						`inventoryTransactionsTypesName`,												
 
 						`isDefault`,
 						`isNew`,													`isDraft`,
@@ -148,7 +148,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getInventoryTransactionTypesName() . "',		
+						'" . $this->model->getInventoryTransactionsTypesName() . "',		
 															
 												'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -161,7 +161,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 			$sql = "
 			INSERT INTO [inventorytransactiontypes]
 					(
-						`inventoryTransactionTypesName`,												
+						`inventoryTransactionsTypesName`,												
 																							
 						[isDefault],
 						[isNew],														[isDraft],
@@ -172,7 +172,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getInventoryTransactionTypesName() . "',	
+						'" . $this->model->getInventoryTransactionsTypesName() . "',	
 										
 												'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
@@ -184,9 +184,9 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	INVENTORYTRANSACTIONTYPES
+			INSERT INTO	INVENTORYTRANSACTIONSTYPES
 					(
-						INVENTORYTRANSACTIONTYPESNAME,
+						INVENTORYTRANSACTIONSTYPESNAME,
 
 						ISDEFAULT,
 						ISNEW,														ISDRAFT,
@@ -197,7 +197,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getInventoryTransactionTypesName() . "',
+						'" . $this->model->getInventoryTransactionsTypesName() . "',
 				
 											'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -208,9 +208,9 @@ class InventoryTransactionTypesClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	INVENTORYTRANSACTIONTYPES
+			INSERT INTO	INVENTORYTRANSACTIONSTYPES
 			(
-						INVENTORYTRANSACTIONTYPESNAME,
+						INVENTORYTRANSACTIONSTYPESNAME,
 											ISDEFAULT,
 			ISNEW,														ISDRAFT,
 			ISUPDATE,													ISDELETE,
@@ -220,7 +220,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 			)
 			VALUES
 			(
-						'" . $this->model->getInventoryTransactionTypesName() . "',
+						'" . $this->model->getInventoryTransactionsTypesName() . "',
 				
 											'" . $this->model->getIsDefault(0, 'single') . "',
 			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -231,9 +231,9 @@ class InventoryTransactionTypesClass extends ConfigClass {
 			)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	INVENTORYTRANSACTIONTYPES
+			INSERT INTO	INVENTORYTRANSACTIONSTYPES
 			(
-						INVENTORYTRANSACTIONTYPESNAME,
+						INVENTORYTRANSACTIONSTYPESNAME,
 												
 						ISDEFAULT,
 			ISNEW,														ISDRAFT,
@@ -244,7 +244,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 			)
 			VALUES
 			(
-						'" . $this->model->getInventoryTransactionTypesName() . "',
+						'" . $this->model->getInventoryTransactionsTypesName() . "',
 				
 											'" . $this->model->getIsDefault(0, 'single') . "',
 			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -263,13 +263,13 @@ class InventoryTransactionTypesClass extends ConfigClass {
 
 		$this->q->audit = $this->audit;
 		$this->q->create($sql);
-		$inventoryTransactionTypesId = $this->q->lastInsertId();
+		$inventoryTransactionsTypesId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "inventoryTransactionTypesId" => $inventoryTransactionTypesId));
+		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "inventoryTransactionsTypesId" => $inventoryTransactionsTypesId));
 		exit();
 	}
 
@@ -281,15 +281,15 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `inventoryTransactionTypes`.`isActive`		=	1	";
+				$this->auditFilter = "	AND `inventoryTransactionsTypes`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [inventoryTransactionTypes].[isActive]		=	1	";
+				$this->auditFilter = "	AND [inventoryTransactionsTypes].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND INVENTORYTRANSACTIONTYPES.ISACTIVE	=	1	";
+				$this->auditFilter = "	AND INVENTORYTRANSACTIONSTYPES.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND INVENTORYTRANSACTIONTYPES.ISACTIVE	=	1	";
+				$this->auditFilter = "	AND INVENTORYTRANSACTIONSTYPES.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND INVENTORYTRANSACTIONTYPES.ISACTIVE	=	1	";
+				$this->auditFilter = "	AND INVENTORYTRANSACTIONSTYPES.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -318,75 +318,75 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`inventoryTransactionTypes`.`inventoryTransactionTypesId`,
-						`inventoryTransactionTypes`.`inventoryTransactionTypesName`,
+			SELECT		`inventoryTransactionsTypes`.`inventoryTransactionsTypesId`,
+						`inventoryTransactionsTypes`.`inventoryTransactionsTypesName`,
 
-						`inventoryTransactionTypes`.`isDefault`,
-						`inventoryTransactionTypes`.`isNew`,
-						`inventoryTransactionTypes`.`isDraft`,
-						`inventoryTransactionTypes`.`isUpdate`,
-						`inventoryTransactionTypes`.`isDelete`,
-						`inventoryTransactionTypes`.`isActive`,
-						`inventoryTransactionTypes`.`isApproved`,
-						`inventoryTransactionTypes`.`isReview`,
-						`inventoryTransactionTypes`.`isPost`,
-						`inventoryTransactionTypes`.`executeBy`,
-						`inventoryTransactionTypes`.`executeTime`,
+						`inventoryTransactionsTypes`.`isDefault`,
+						`inventoryTransactionsTypes`.`isNew`,
+						`inventoryTransactionsTypes`.`isDraft`,
+						`inventoryTransactionsTypes`.`isUpdate`,
+						`inventoryTransactionsTypes`.`isDelete`,
+						`inventoryTransactionsTypes`.`isActive`,
+						`inventoryTransactionsTypes`.`isApproved`,
+						`inventoryTransactionsTypes`.`isReview`,
+						`inventoryTransactionsTypes`.`isPost`,
+						`inventoryTransactionsTypes`.`executeBy`,
+						`inventoryTransactionsTypes`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`inventoryTransactionTypes`
+			FROM 	`inventoryTransactionsTypes`
 			JOIN	`staff`
-			ON		`inventoryTransactionTypes`.`executeBy` = `staff`.`staffId`
+			ON		`inventoryTransactionsTypes`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getinventoryTransactionTypesId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+			if ($this->model->getinventoryTransactionsTypesId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[inventoryTransactionTypes].[inventoryTransactionTypesId],
-						[inventoryTransactionTypes].[inventoryTransactionTypesName],
+			SELECT	[inventoryTransactionsTypes].[inventoryTransactionsTypesId],
+						[inventoryTransactionsTypes].[inventoryTransactionsTypesName],
 
-						[inventoryTransactionTypes].[isDefault],
-						[inventoryTransactionTypes].[isNew],
-						[inventoryTransactionTypes].[isDraft],
-						[inventoryTransactionTypes].[isUpdate],
-						[inventoryTransactionTypes].[isDelete],
-						[inventoryTransactionTypes].[isActive],
-						[inventoryTransactionTypes].[isApproved],
-						[inventoryTransactionTypes].[isReview],
-						[inventoryTransactionTypes].[isPost],
-						[inventoryTransactionTypes].[executeBy],
-						[inventoryTransactionTypes].[executeTime],
+						[inventoryTransactionsTypes].[isDefault],
+						[inventoryTransactionsTypes].[isNew],
+						[inventoryTransactionsTypes].[isDraft],
+						[inventoryTransactionsTypes].[isUpdate],
+						[inventoryTransactionsTypes].[isDelete],
+						[inventoryTransactionsTypes].[isActive],
+						[inventoryTransactionsTypes].[isApproved],
+						[inventoryTransactionsTypes].[isReview],
+						[inventoryTransactionsTypes].[isPost],
+						[inventoryTransactionsTypes].[executeBy],
+						[inventoryTransactionsTypes].[executeTime],
 						[staff].[staffName]
-			FROM 	[inventoryTransactionTypes]
+			FROM 	[inventoryTransactionsTypes]
 			JOIN		[staff]
-			ON		[inventoryTransactionTypes].[executeBy] = [staff].[staffId]
+			ON		[inventoryTransactionsTypes].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getinventoryTransactionTypesId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+			if ($this->model->getinventoryTransactionsTypesId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		INVENTORYTRANSACTIONTYPES.INVENTORYTRANSACTIONTYPESID   		 	AS 	\"inventoryTransactionTypesId\",
-						INVENTORYTRANSACTIONTYPES.INVENTORYTRANSACTIONTYPESTYPE 			AS 	\"inventoryTransactionTypesName\",
+			SELECT		INVENTORYTRANSACTIONSTYPES.INVENTORYTRANSACTIONSTYPESID   		 	AS 	\"inventoryTransactionsTypesId\",
+						INVENTORYTRANSACTIONSTYPES.INVENTORYTRANSACTIONSTYPESTYPE 			AS 	\"inventoryTransactionsTypesName\",
 
-						INVENTORYTRANSACTIONTYPES.ISDEFAULT    			AS	\"isDefault\",
-						INVENTORYTRANSACTIONTYPES.ISNEW		  			AS	\"isNew\",
-						INVENTORYTRANSACTIONTYPES.ISDRAFT	  				AS	\"isDraft\",
-						INVENTORYTRANSACTIONTYPES.ISUPDATE     			AS	\"isUpdate\",
-						INVENTORYTRANSACTIONTYPES.ISDELETE	  			AS	\"isDelete\",
-						INVENTORYTRANSACTIONTYPES.ISACTIVE	  			AS	\"isActive\",
-						INVENTORYTRANSACTIONTYPES.ISAPPROVED   			AS	\"isApproved\",
-						INVENTORYTRANSACTIONTYPES.ISREVIEW	  			AS	\"isReview\",
-						INVENTORYTRANSACTIONTYPES.ISPOST  	  			AS	\"isPost\",
-						INVENTORYTRANSACTIONTYPES.EXECUTEBY    			AS	\"executeBy\",
-						INVENTORYTRANSACTIONTYPES.EXECUTETIME  			AS	\"executeTime\",
+						INVENTORYTRANSACTIONSTYPES.ISDEFAULT    			AS	\"isDefault\",
+						INVENTORYTRANSACTIONSTYPES.ISNEW		  			AS	\"isNew\",
+						INVENTORYTRANSACTIONSTYPES.ISDRAFT	  				AS	\"isDraft\",
+						INVENTORYTRANSACTIONSTYPES.ISUPDATE     			AS	\"isUpdate\",
+						INVENTORYTRANSACTIONSTYPES.ISDELETE	  			AS	\"isDelete\",
+						INVENTORYTRANSACTIONSTYPES.ISACTIVE	  			AS	\"isActive\",
+						INVENTORYTRANSACTIONSTYPES.ISAPPROVED   			AS	\"isApproved\",
+						INVENTORYTRANSACTIONSTYPES.ISREVIEW	  			AS	\"isReview\",
+						INVENTORYTRANSACTIONSTYPES.ISPOST  	  			AS	\"isPost\",
+						INVENTORYTRANSACTIONSTYPES.EXECUTEBY    			AS	\"executeBy\",
+						INVENTORYTRANSACTIONSTYPES.EXECUTETIME  			AS	\"executeTime\",
 						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		INVENTORYTRANSACTIONTYPES
+			FROM 		INVENTORYTRANSACTIONSTYPES
 			JOIN		STAFF
-			ON			INVENTORYTRANSACTIONTYPES.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			INVENTORYTRANSACTIONSTYPES.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getinventoryTransactionTypesId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+			if ($this->model->getinventoryTransactionsTypesId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -402,7 +402,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('inventoryTransactionTypesId');
+		$filterArray = array('inventoryTransactionsTypesId');
 		/**
 		 * filter table
 		 * @variables $tableArray
@@ -499,30 +499,30 @@ class InventoryTransactionTypesClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [inventoryTransactionTypesDerived] AS
+							WITH [inventoryTransactionsTypesDerived] AS
 							(
-								SELECT 		[inventoryTransactionTypes].[inventoryTransactionTypesId],
-											[inventoryTransactionTypes].[inventoryTransactionTypesName],
+								SELECT 		[inventoryTransactionsTypes].[inventoryTransactionsTypesId],
+											[inventoryTransactionsTypes].[inventoryTransactionsTypesName],
 
-											[inventoryTransactionTypes].[isDefault],
-											[inventoryTransactionTypes].[isNew],
-											[inventoryTransactionTypes].[isDraft],
-											[inventoryTransactionTypes].[isUpdate],
-											[inventoryTransactionTypes].[isDelete],
-											[inventoryTransactionTypes].[isApproved],
-											[inventoryTransactionTypes].[isReview],
-											[inventoryTransactionTypes].[isPost],
-											[inventoryTransactionTypes].[executeBy],
-											[inventoryTransactionTypes].[executeTime],
+											[inventoryTransactionsTypes].[isDefault],
+											[inventoryTransactionsTypes].[isNew],
+											[inventoryTransactionsTypes].[isDraft],
+											[inventoryTransactionsTypes].[isUpdate],
+											[inventoryTransactionsTypes].[isDelete],
+											[inventoryTransactionsTypes].[isApproved],
+											[inventoryTransactionsTypes].[isReview],
+											[inventoryTransactionsTypes].[isPost],
+											[inventoryTransactionsTypes].[executeBy],
+											[inventoryTransactionsTypes].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [inventoryTransactionTypesId]) AS 'RowNumber'
-								FROM 	[inventoryTransactionTypes]
+								ROW_NUMBER() OVER (ORDER BY [inventoryTransactionsTypesId]) AS 'RowNumber'
+								FROM 	[inventoryTransactionsTypes]
 								JOIN		[staff]
-								ON		[inventoryTransactionTypes].[executeBy] = [staff].[staffId]
+								ON		[inventoryTransactionsTypes].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[inventoryTransactionTypesDerived]
+							FROM 		[inventoryTransactionsTypesDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -535,24 +535,24 @@ class InventoryTransactionTypesClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	INVENTORYTRANSACTIONTYPES.INVENTORYTRANSACTIONTYPESID   		AS 	\"inventoryTransactionTypesId\",
-										INVENTORYTRANSACTIONTYPES.INVENTORYTRANSACTIONTYPESNAME		AS 	\"inventoryTransactionTypesName\",
+								SELECT	INVENTORYTRANSACTIONSTYPES.INVENTORYTRANSACTIONSTYPESID   		AS 	\"inventoryTransactionsTypesId\",
+										INVENTORYTRANSACTIONSTYPES.INVENTORYTRANSACTIONSTYPESNAME		AS 	\"inventoryTransactionsTypesName\",
 
-										INVENTORYTRANSACTIONTYPES.ISDEFAULT    		AS	\"isDefault\",
-										INVENTORYTRANSACTIONTYPES.ISNEW		  		AS	\"isNew\",
-										INVENTORYTRANSACTIONTYPES.ISDRAFT	 			AS	\"isDraft\",
-										INVENTORYTRANSACTIONTYPES.ISUPDATE     		AS	\"isUpdate\",
-										INVENTORYTRANSACTIONTYPES.ISDELETE	  		AS	\"isDelete\",
-										INVENTORYTRANSACTIONTYPES.ISACTIVE	  		AS	\"isActive\",
-										INVENTORYTRANSACTIONTYPES.ISAPPROVED   		AS	\"isApproved\",
-										INVENTORYTRANSACTIONTYPES.ISREVIEW	  		AS 	\"isReview\",
-										INVENTORYTRANSACTIONTYPES.ISPOST		  		AS	\"isPost\",
-										INVENTORYTRANSACTIONTYPES.EXECUTEBY    		AS	\"executeBy\",
-										INVENTORYTRANSACTIONTYPES.EXECUTETIME  		AS	\"executeTime\",
+										INVENTORYTRANSACTIONSTYPES.ISDEFAULT    		AS	\"isDefault\",
+										INVENTORYTRANSACTIONSTYPES.ISNEW		  		AS	\"isNew\",
+										INVENTORYTRANSACTIONSTYPES.ISDRAFT	 			AS	\"isDraft\",
+										INVENTORYTRANSACTIONSTYPES.ISUPDATE     		AS	\"isUpdate\",
+										INVENTORYTRANSACTIONSTYPES.ISDELETE	  		AS	\"isDelete\",
+										INVENTORYTRANSACTIONSTYPES.ISACTIVE	  		AS	\"isActive\",
+										INVENTORYTRANSACTIONSTYPES.ISAPPROVED   		AS	\"isApproved\",
+										INVENTORYTRANSACTIONSTYPES.ISREVIEW	  		AS 	\"isReview\",
+										INVENTORYTRANSACTIONSTYPES.ISPOST		  		AS	\"isPost\",
+										INVENTORYTRANSACTIONSTYPES.EXECUTEBY    		AS	\"executeBy\",
+										INVENTORYTRANSACTIONSTYPES.EXECUTETIME  		AS	\"executeTime\",
 										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	INVENTORYTRANSACTIONTYPES
+								FROM 	INVENTORYTRANSACTIONSTYPES
 								JOIN	STAFF
-								ON		INVENTORYTRANSACTIONTYPES.EXECUTEBY 	  	=	STAFF.STAFFID
+								ON		INVENTORYTRANSACTIONSTYPES.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -581,7 +581,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getinventoryTransactionTypesId(0, 'single'))) {
+		if (!($this->model->getinventoryTransactionsTypesId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -592,8 +592,8 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getinventoryTransactionTypesId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getinventoryTransactionTypesId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getinventoryTransactionTypesId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getinventoryTransactionsTypesId(0, 'single')) {
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getinventoryTransactionsTypesId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getinventoryTransactionsTypesId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -628,27 +628,27 @@ class InventoryTransactionTypesClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -661,9 +661,9 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`inventoryTransactionTypes`
+				UPDATE		`inventoryTransactionsTypes`
 				SET 		
-							`inventoryTransactionTypesName`		=	'" . $this->model->getInventoryTransactionTypesName() . "',
+							`inventoryTransactionsTypesName`		=	'" . $this->model->getInventoryTransactionsTypesName() . "',
 										
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -676,12 +676,12 @@ class InventoryTransactionTypesClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`inventoryTransactionTypesId`		=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+				WHERE 		`inventoryTransactionsTypesId`		=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[inventoryTransactionTypes]
+				UPDATE 		[inventoryTransactionsTypes]
 				SET 		
-							[inventoryTransactionTypesName]		=	'" . $this->model->getInventoryTransactionTypesName() . "',
+							[inventoryTransactionsTypesName]		=	'" . $this->model->getInventoryTransactionsTypesName() . "',
 
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -694,11 +694,11 @@ class InventoryTransactionTypesClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[inventoryTransactionTypesId]			=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+			WHERE 		[inventoryTransactionsTypesId]			=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		INVENTORYTRANSACTIONTYPES
-				SET 		INVENTORYTRANSACTIONTYPESNAME		=	'" . $this->model->getInventoryTransactionTypesName() . "',
+				UPDATE		INVENTORYTRANSACTIONSTYPES
+				SET 		INVENTORYTRANSACTIONSTYPESNAME		=	'" . $this->model->getInventoryTransactionsTypesName() . "',
 									
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -711,11 +711,11 @@ class InventoryTransactionTypesClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		INVENTORYTRANSACTIONTYPESID		=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+			WHERE 		INVENTORYTRANSACTIONSTYPESID		=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE	INVENTORYTRANSACTIONTYPES
-			SET 	INVENTORYTRANSACTIONTYPESNAME		=	'" . $this->model->getInventoryTransactionTypesName() . "',
+			UPDATE	INVENTORYTRANSACTIONSTYPES
+			SET 	INVENTORYTRANSACTIONSTYPESNAME		=	'" . $this->model->getInventoryTransactionsTypesName() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -727,11 +727,11 @@ class InventoryTransactionTypesClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		INVENTORYTRANSACTIONTYPESID		=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+			WHERE 		INVENTORYTRANSACTIONSTYPESID		=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE		INVENTORYTRANSACTIONTYPES
-				SET 		INVENTORYTRANSACTIONTYPESNAME		=	'" . $this->model->getInventoryTransactionTypesName() . "',
+				UPDATE		INVENTORYTRANSACTIONSTYPES
+				SET 		INVENTORYTRANSACTIONSTYPESNAME		=	'" . $this->model->getInventoryTransactionsTypesName() . "',
 				
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -744,7 +744,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		INVENTORYTRANSACTIONTYPESID			=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+				WHERE 		INVENTORYTRANSACTIONSTYPESID			=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -754,7 +754,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 			 */
 			$this->q->tableName = $this->model->getTableName();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getinventoryTransactionTypesId(0, 'single');
+			$this->q->primaryKeyValue = $this->model->getinventoryTransactionsTypesId(0, 'single');
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -785,27 +785,27 @@ class InventoryTransactionTypesClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionTypesId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -818,7 +818,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`inventoryTransactionTypes`
+				UPDATE 	`inventoryTransactionsTypes`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -830,10 +830,10 @@ class InventoryTransactionTypesClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`inventoryTransactionTypesId`		=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+				WHERE 	`inventoryTransactionsTypesId`		=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[inventoryTransactionTypes]
+				UPDATE 	[inventoryTransactionsTypes]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -845,10 +845,10 @@ class InventoryTransactionTypesClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[inventoryTransactionTypesId]		=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+				WHERE 	[inventoryTransactionsTypesId]		=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE 	INVENTORYTRANSACTIONTYPES
+				UPDATE 	INVENTORYTRANSACTIONSTYPES
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -860,10 +860,10 @@ class InventoryTransactionTypesClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	INVENTORYTRANSACTIONTYPESID		=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+				WHERE 	INVENTORYTRANSACTIONSTYPESID		=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE 	INVENTORYTRANSACTIONTYPES
+				UPDATE 	INVENTORYTRANSACTIONSTYPES
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -875,10 +875,10 @@ class InventoryTransactionTypesClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	INVENTORYTRANSACTIONTYPESID		=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+				WHERE 	INVENTORYTRANSACTIONSTYPESID		=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE 	INVENTORYTRANSACTIONTYPES
+				UPDATE 	INVENTORYTRANSACTIONSTYPES
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -890,7 +890,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	INVENTORYTRANSACTIONTYPESID		=	'" . $this->model->getinventoryTransactionTypesId(0, 'single') . "'";
+				WHERE 	INVENTORYTRANSACTIONSTYPESID		=	'" . $this->model->getinventoryTransactionsTypesId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -898,7 +898,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 			// advance logging future
 			$this->q->tableName = $this->model->getTableName();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getinventoryTransactionTypesId(0, 'single');
+			$this->q->primaryKeyValue = $this->model->getinventoryTransactionsTypesId(0, 'single');
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -974,7 +974,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getinventoryTransactionTypesId($i, 'array') . "'
+							WHEN '" . $this->model->getinventoryTransactionsTypesId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -998,7 +998,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getinventoryTransactionTypesId($i, 'array') . "'
+							WHEN '" . $this->model->getinventoryTransactionsTypesId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1022,7 +1022,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getinventoryTransactionTypesId($i, 'array') . "'
+							WHEN '" . $this->model->getinventoryTransactionsTypesId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1046,7 +1046,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getinventoryTransactionTypesId($i, 'array') . "'
+							WHEN '" . $this->model->getinventoryTransactionsTypesId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1070,7 +1070,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getinventoryTransactionTypesId($i, 'array') . "'
+							WHEN '" . $this->model->getinventoryTransactionsTypesId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1094,7 +1094,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getinventoryTransactionTypesId($i, 'array') . "'
+							WHEN '" . $this->model->getinventoryTransactionsTypesId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1118,7 +1118,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getinventoryTransactionTypesId($i, 'array') . "'
+							WHEN '" . $this->model->getinventoryTransactionsTypesId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1142,7 +1142,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getinventoryTransactionTypesId($i, 'array') . "'
+                            WHEN '" . $this->model->getinventoryTransactionsTypesId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1166,7 +1166,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getinventoryTransactionTypesId($i, 'array') . "'
+                                WHEN '" . $this->model->getinventoryTransactionsTypesId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1224,33 +1224,33 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`inventoryTransactionTypesName`
-			FROM 	`inventoryTransactionTypes`
-			WHERE 	`inventoryTransactionTypesName` 	= 	'" . $this->model->getInventoryTransactionTypesName() . "'
+			SELECT	`inventoryTransactionsTypesName`
+			FROM 	`inventoryTransactionsTypes`
+			WHERE 	`inventoryTransactionsTypesName` 	= 	'" . $this->model->getInventoryTransactionsTypesName() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[inventoryTransactionTypesName]
-			FROM 	[inventoryTransactionTypes]
-			WHERE 	[inventoryTransactionTypesName] 	= 	'" . $this->model->getInventoryTransactionTypesName() . "'
+			SELECT	[inventoryTransactionsTypesName]
+			FROM 	[inventoryTransactionsTypes]
+			WHERE 	[inventoryTransactionsTypesName] 	= 	'" . $this->model->getInventoryTransactionsTypesName() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	INVENTORYTRANSACTIONTYPESNAME
-			FROM 	INVENTORYTRANSACTIONTYPES
-			WHERE 	INVENTORYTRANSACTIONTYPESNAME 	= 	'" . $this->model->getInventoryTransactionTypesName() . "'
+			SELECT	INVENTORYTRANSACTIONSTYPESNAME
+			FROM 	INVENTORYTRANSACTIONSTYPES
+			WHERE 	INVENTORYTRANSACTIONSTYPESNAME 	= 	'" . $this->model->getInventoryTransactionsTypesName() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			SELECT	INVENTORYTRANSACTIONTYPESNAME
-			FROM 	INVENTORYTRANSACTIONTYPES
-			WHERE 	INVENTORYTRANSACTIONTYPESNAME 	= 	'" . $this->model->getInventoryTransactionTypesName() . "'
+			SELECT	INVENTORYTRANSACTIONSTYPESNAME
+			FROM 	INVENTORYTRANSACTIONSTYPES
+			WHERE 	INVENTORYTRANSACTIONSTYPESNAME 	= 	'" . $this->model->getInventoryTransactionsTypesName() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			SELECT	INVENTORYTRANSACTIONTYPESNAME
-			FROM 	INVENTORYTRANSACTIONTYPES
-			WHERE 	INVENTORYTRANSACTIONTYPESNAME 	= 	'" . $this->model->getInventoryTransactionTypesName() . "'
+			SELECT	INVENTORYTRANSACTIONSTYPESNAME
+			FROM 	INVENTORYTRANSACTIONSTYPES
+			WHERE 	INVENTORYTRANSACTIONSTYPESNAME 	= 	'" . $this->model->getInventoryTransactionsTypesName() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1265,7 +1265,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "inventoryTransactionTypesDesc" => $row ['inventoryTransactionTypesDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "inventoryTransactionsTypesDesc" => $row ['inventoryTransactionsTypesDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
@@ -1332,7 +1332,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['inventoryTransactionTypesDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['inventoryTransactionsTypesDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1341,7 +1341,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "inventoryTransactionTypes" . rand(0, 10000000) . ".xlsx";
+		$filename = "inventoryTransactionsTypes" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1357,7 +1357,7 @@ class InventoryTransactionTypesClass extends ConfigClass {
 
 }
 
-$inventoryTransactionTypesObject = new inventoryTransactionTypesClass ();
+$inventoryTransactionsTypesObject = new inventoryTransactionsTypesClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1367,59 +1367,65 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$inventoryTransactionTypesObject->setLeafId($_POST ['leafId']);
+		$inventoryTransactionsTypesObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$inventoryTransactionTypesObject->setIsAdmin($_POST ['isAdmin']);
+		$inventoryTransactionsTypesObject->setIsAdmin($_POST ['isAdmin']);
+	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_POST ['databaseRequest'])) {
+		$inventoryTransactionsTypesObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$inventoryTransactionTypesObject->setStart($_POST ['start']);
+		$inventoryTransactionsTypesObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$inventoryTransactionTypesObject->setLimit($_POST ['perPage']);
+		$inventoryTransactionsTypesObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$inventoryTransactionTypesObject->setFieldQuery($_POST ['query']);
+		$inventoryTransactionsTypesObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$inventoryTransactionTypesObject->setGridQuery($_POST ['filter']);
+		$inventoryTransactionsTypesObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$inventoryTransactionTypesObject->setOrder($_POST ['order']);
+		$inventoryTransactionsTypesObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$inventoryTransactionTypesObject->setSortField($_POST ['sortField']);
+		$inventoryTransactionsTypesObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$inventoryTransactionTypesObject->execute();
+	$inventoryTransactionsTypesObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$inventoryTransactionTypesObject->create();
+		$inventoryTransactionsTypesObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$inventoryTransactionTypesObject->update();
+		$inventoryTransactionsTypesObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$inventoryTransactionTypesObject->read();
+		$inventoryTransactionsTypesObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$inventoryTransactionTypesObject->delete();
+		$inventoryTransactionsTypesObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1427,35 +1433,41 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$inventoryTransactionTypesObject->setLeafId($_GET ['leafId']);
+		$inventoryTransactionsTypesObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$inventoryTransactionTypesObject->setIsAdmin($_GET ['isAdmin']);
+		$inventoryTransactionsTypesObject->setIsAdmin($_GET ['isAdmin']);
+	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$inventoryTransactionsTypesObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$inventoryTransactionTypesObject->execute();
+	$inventoryTransactionsTypesObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$inventoryTransactionTypesObject->staff();
+			$inventoryTransactionsTypesObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$inventoryTransactionTypesObject->updateStatus();
+		$inventoryTransactionsTypesObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['inventoryTransactionTypesDesc'])) {
-		if (strlen($_GET ['inventoryTransactionTypesDesc']) > 0) {
-			$inventoryTransactionTypesObject->duplicate();
+	if (isset($_GET ['inventoryTransactionsTypesDesc'])) {
+		if (strlen($_GET ['inventoryTransactionsTypesDesc']) > 0) {
+			$inventoryTransactionsTypesObject->duplicate();
 		}
 	}
 	/**
@@ -1463,16 +1475,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$inventoryTransactionTypesObject->firstRecord('json');
+			$inventoryTransactionsTypesObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$inventoryTransactionTypesObject->previousRecord('json', 0);
+			$inventoryTransactionsTypesObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$inventoryTransactionTypesObject->nextRecord('json', 0);
+			$inventoryTransactionsTypesObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$inventoryTransactionTypesObject->lastRecord('json');
+			$inventoryTransactionsTypesObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1480,7 +1492,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$inventoryTransactionTypesObject->excel();
+			$inventoryTransactionsTypesObject->excel();
 		}
 	}
 }

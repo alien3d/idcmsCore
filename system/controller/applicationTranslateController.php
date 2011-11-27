@@ -1410,6 +1410,12 @@ if (isset($_GET ['method'])) {
 	if (isset($_GET ['isAdmin'])) {
 		$applicationTranslateObject->setIsAdmin($_GET ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$applicationTranslateObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Load the dynamic value
 	 */

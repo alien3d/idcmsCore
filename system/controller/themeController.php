@@ -1258,6 +1258,12 @@ if(isset($_POST['method']))	{
 		$themeObject->setIsAdmin($_POST['isAdmin']);
 	}
 	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$themeObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
+	/**
 	 *  Paging
 	 */
 	if(isset($_POST['start'])){
@@ -1323,6 +1329,13 @@ if(isset($_GET['method'])) {
 	 */
 	if(isset($_GET['isAdmin'])){
 		$themeObject->setIsAdmin($_GET['isAdmin']);
+	}
+	
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$themeObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*
 	 *  Load the dynamic value

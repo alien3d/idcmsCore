@@ -1418,6 +1418,12 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['isAdmin'])) {
 		$genderObject->setIsAdmin($_POST ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$genderObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */

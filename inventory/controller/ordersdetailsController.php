@@ -1538,6 +1538,12 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['isAdmin'])) {
 		$ordersdetailsObject->setIsAdmin($_POST ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$ordersDetailsObject->setDatabaseRequest($_GET ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */

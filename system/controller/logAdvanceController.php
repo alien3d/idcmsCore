@@ -506,6 +506,12 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['isAdmin'])) {
 		$logAdvanceObject->setIsAdmin($_POST ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$logAdvanceObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */

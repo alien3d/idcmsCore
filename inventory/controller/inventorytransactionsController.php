@@ -1513,6 +1513,12 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['isAdmin'])) {
 		$inventoryTransactionsObject->setIsAdmin($_POST ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_POST ['databaseRequest'])) {
+		$inventoryTransactionsObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */
@@ -1572,6 +1578,12 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['isAdmin'])) {
 		$inventoryTransactionsObject->setIsAdmin($_GET ['isAdmin']);
+	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$inventoryTransactionsObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*
 	 *  Load the dynamic value

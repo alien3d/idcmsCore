@@ -592,27 +592,32 @@ Ext
 					type : 'numeric',
 					dataIndex : 'tableMappingName',
 					column : 'tableMappingName',
-					table : 'tableMapping'
+					table : 'tableMapping',
+					database :'iCore'
 				}, {
 					type : 'string',
 					dataIndex : 'tableMappingColumnName',
 					column : 'tableMappingColumnName',
-					table : 'tableMapping'
+					table : 'tableMapping',
+					database :'iCore'
 				}, {
 					type : 'string',
 					dataIndex : 'tableMappingEnglish',
 					column : 'tableMappingEnglish',
-					table : 'tableMapping'
+					table : 'tableMapping',
+					database :'iCore'
 				}, {
 					type : 'string',
 					dataIndex : 'languageId',
 					column : 'languageId',
-					table : 'tableMapping'
+					table : 'tableMapping',
+					database :'iCore'
 				}, {
 					type : 'list',
 					dataIndex : 'executeBy',
 					column : 'executeBy',
 					table : 'tableMapping',
+					database :'iCore',
 					labelField : 'staffName',
 					store : staffByStore,
 					phpMode : true
@@ -621,7 +626,8 @@ Ext
 					dateFormat : 'Y-m-d H:i:s',
 					dataIndex : 'executeTime',
 					column : 'executeTime',
-					table : 'tableMapping'
+					table : 'tableMapping',
+					database :'iCore'
 				} ]
 			});
 			var isDefaultGrid = new Ext.ux.grid.CheckColumn({

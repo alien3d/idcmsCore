@@ -1362,6 +1362,12 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['isAdmin'] )) {
 		$documentObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_POST ['databaseRequest'])) {
+		$documentObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */

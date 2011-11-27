@@ -1914,6 +1914,12 @@ if (isset ( $_GET ['method'] )) {
 	if (isset ( $_GET ['isAdmin'] )) {
 		$staffObject->setIsAdmin ( $_GET ['isAdmin'] );
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$staffObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Load the dynamic value
 	 */

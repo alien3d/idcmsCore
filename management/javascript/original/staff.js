@@ -691,6 +691,7 @@ Ext.onReady(function() {
             dataIndex: 'teamId',
             column: 'teamId',
             table: 'staff',
+			database :'iCore',
             labelField: 'teamEnglish',
             store: teamStore,
             phpMode: true
@@ -700,6 +701,7 @@ Ext.onReady(function() {
             dataIndex: 'departmentId',
             column: 'departmentId',
             table: 'staff',
+			database :'iCore',
             labelField: 'departmentNote',
             store: departmentStore,
             phpMode: true
@@ -708,25 +710,29 @@ Ext.onReady(function() {
             type: 'string',
             dataIndex: 'staffName',
             column: 'staffName',
-            table: 'staff'
+            table: 'staff',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'staffIc',
             column: 'staffIc',
-            table: 'staff'
+            table: 'staff',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'staffNo',
             column: 'staffNo',
-            table: 'staff'
+            table: 'staff',
+			database :'iCore'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
             table: 'staff',
+			database :'iCore',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -735,7 +741,8 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'staff'
+            table: 'staff',
+			database :'iCore'
         }]
     });
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({

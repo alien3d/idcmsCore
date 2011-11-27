@@ -1397,6 +1397,12 @@ if (isset($_POST ['method'])) {
 		$leafObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$leafObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
+	/**
 	 * Paging
 	 */
 	if (isset($_POST ['start'])) {

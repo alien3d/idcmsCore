@@ -582,19 +582,22 @@ Ext.onReady(function() {
             type: 'string',
             dataIndex: 'languageCode',
             column: 'languageCode',
-            table: 'language'
+            table: 'language',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'languageDesc',
             column: 'languageDesc',
-            table: 'language'
+            table: 'language',
+			database :'iCore'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
             table: 'language',
+			database :'iCore',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -603,7 +606,8 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'excuteTime',
-            table: 'language'
+            table: 'language',
+			database :'iCore'
         }]
     });
     var languageCode = new Ext.form.TextField({

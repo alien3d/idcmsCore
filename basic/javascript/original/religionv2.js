@@ -579,13 +579,15 @@ Ext.onReady(function() {
             type: 'string',
             dataIndex: 'religionDesc',
             column: 'religionDesc',
-            table: 'religion'
+            table: 'religion',
+			database :'iCore'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'religion',
+            table: 'religion',,
+			database :'iCore'
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -593,7 +595,8 @@ Ext.onReady(function() {
         {
             type: 'date',
             dataIndex: 'executeTime',
-            column: 'executeTime',
+            column: 'executeTime',,
+			database :'iCore'
             table: 'religion'
         }]
     });

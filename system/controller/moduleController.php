@@ -1493,8 +1493,17 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['leafId'])) {
 		$moduleObject->setLeafId($_POST ['leafId']);
 	}
+	/*
+	 * Admin Only
+	 */
 	if (isset($_POST ['isAdmin'])) {
 		$moduleObject->setIsAdmin($_POST ['isAdmin']);
+	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$moduleObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
 	 *  Paging

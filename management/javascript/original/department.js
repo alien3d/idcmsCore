@@ -127,37 +127,43 @@ Ext.onReady(function() {
             type: 'numeric',
             dataIndex: 'logId',
             column: 'logId',
-            table: 'log'
+            table: 'log',
+			database :'iCore'
         },
         {
             type: 'numeric',
             dataIndex: 'leafId',
             column: 'leafId',
-            table: 'log'
+            table: 'log',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'operation',
             column: 'operation',
-            table: 'log'
+            table: 'log',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'sql',
             column: 'sql',
-            table: 'log'
+            table: 'log',
+			database :'iCore'
         },
         {
             type: 'date',
             dataIndex: 'date',
             column: 'date',
-            table: 'log'
+            table: 'log',
+			database :'iCore'
         },
         {
             type: 'numeric',
             dataIndex: 'staffId',
             column: 'staffId',
-            table: 'log'
+            table: 'log',
+			database :'iCore'
         },
         {
             type: 'string',
@@ -583,25 +589,29 @@ Ext.onReady(function() {
             type: 'string',
             dataIndex: 'departmentSequence',
             column: 'departmentSequence',
-            table: 'department'
+            table: 'department',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'departmentCode',
             column: 'departmentCode',
-            table: 'department'
+            table: 'department',
+			database :'iCore'
         },
         {
             type: 'string',
             dataIndex: 'departmentEnglish',
             column: 'departmentEnglish',
-            table: 'department'
+            table: 'department',
+			database :'iCore'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
             table: 'department',
+			database :'iCore',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -610,7 +620,8 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'department'
+            table: 'department',
+			database :'iCore'
         }]
     });
     var departmentSequence = new Ext.form.TextField({

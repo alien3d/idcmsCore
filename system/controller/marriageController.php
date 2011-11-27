@@ -1478,6 +1478,12 @@ if (isset($_GET ['method'])) {
 	if (isset($_GET ['isAdmin'])) {
 		$marriageObject->setIsAdmin($_GET ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$marriageObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Load the dynamic value
 	 */

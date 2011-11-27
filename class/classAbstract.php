@@ -677,7 +677,7 @@ abstract class ConfigClass
 	/**
 	 * @return the $requestDatabase
 	 */
-	public function getRequestDatabase) {
+	public function getRequestDatabase() {
 		return $this->requestDatabase;
 	}
 

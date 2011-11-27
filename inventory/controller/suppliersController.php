@@ -1690,6 +1690,12 @@ if (isset($_GET ['method'])) {
 	if (isset($_GET ['isAdmin'])) {
 		$suppliersObject->setIsAdmin($_GET ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$suppliersObject->setDatabaseRequest($_GET ['databaseRequest']);
+	}
 	/*
 	 *  Load the dynamic value
 	 */

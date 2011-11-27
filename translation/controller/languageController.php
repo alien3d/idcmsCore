@@ -1057,6 +1057,12 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['isAdmin'] )) {
 		$languageObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$languageObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */
@@ -1124,6 +1130,14 @@ if (isset ( $_GET ['method'] )) {
 	if (isset ( $_GET ['isAdmin'] )) {
 		$languageObject->setIsAdmin ( $_GET ['isAdmin'] );
 	}
+	
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$languageObject->setDatabaseRequest($_GET ['databaseRequest']);
+	}
+	
 	/*
 	 *  Load the dynamic value
 	 */

@@ -793,6 +793,12 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['isAdmin'] )) {
 		$systemStringTranslationObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$systemStringTranslationObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */
@@ -856,6 +862,14 @@ if (isset ( $_GET ['method'] )) {
 	if (isset ( $_GET ['isAdmin'] )) {
 		$systemStringTranslationObject->setIsAdmin ( $_GET ['isAdmin'] );
 	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$religionSampleObject->setDatabaseRequest($_GET ['databaseRequest']);
+	}
+	
+	
 	/*
 	 *  Load the dynamic value
 	 */
@@ -871,6 +885,7 @@ if (isset ( $_GET ['method'] )) {
 	if ($_GET ['method'] == 'updateStatus') {
 		$systemStringTranslationObject->updateStatus ();
 	}
+	
 	/*
 	 *  Checking Any Duplication  Key
 	 */

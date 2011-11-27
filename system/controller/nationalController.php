@@ -1467,6 +1467,12 @@ if (isset($_GET ['method'])) {
 	if (isset($_GET ['isAdmin'])) {
 		$nationalObject->setIsAdmin($_GET ['isAdmin']);
 	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$nationalObject->setDatabaseRequest($_GET ['databaseRequest']);
+	}
 	/*
 	 *  Load the dynamic value
 	 */

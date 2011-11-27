@@ -10,11 +10,35 @@
  */
 class Vendor {
 	// private property
+	/**
+	 * Connection
+	 * @var string
+	 */
 	private $connection;
+	/**
+	 * Username
+	 * @var string
+	 */
 	private $username;
+	/**
+	 * Database Name
+	 * @var string
+	 */
 	private $databaseName;
+	/**
+	 * Sql Statement Operation
+	 * @var string
+	 */
 	private $operation;
+	/**
+	 * Database Port .Default 3306
+	 * @var string
+	 */
 	private $port;
+	/**
+	 * sql statement
+	 * @var string
+	 */
 	private $socket;
 	// public property
 	
@@ -122,7 +146,7 @@ class Vendor {
 	 *  Core database 
 	 *  @var string
 	 */
-	 public $coreDatabase
+	 public $coreDatabase;
 	 /**
 	  *  Financial Database
 	  *  @var string
@@ -948,7 +972,7 @@ class Vendor {
 	/**
 	 * @return the $requestDatabase
 	 */
-	public function getRequestDatabase) {
+	public function getRequestDatabase() {
 		return $this->requestDatabase;
 	}
 

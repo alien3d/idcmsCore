@@ -948,6 +948,12 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['isAdmin'] )) {
 		$defaultLabelObject->setIsAdmin ( $_POST ['isAdmin'] );
 	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$defaultLabelObject->setDatabaseRequest($_POST ['databaseRequest']);
+	}
 	/*
 	 *  Paging
 	 */
@@ -1004,6 +1010,12 @@ if (isset ( $_GET ['method'] )) {
 	 */
 	if (isset ( $_GET ['leafId'] )) {
 		$defaultLabelObject->setLeafId ( $_GET ['leafId'] );
+	}
+	/**
+	 * Database Request
+	 */
+	 if (isset($_GET ['databaseRequest'])) {
+		$languageObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*
 	 * Admin Only

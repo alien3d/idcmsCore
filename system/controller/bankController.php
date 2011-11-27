@@ -741,7 +741,7 @@ class BankClass extends ConfigClass {
 				SET		 	BANKCODE 				=	'" . $this->model->getBankCode() . "',	
 							BANKSWIFTCODE			=	'" . $this->model->getBankSwiftCode() . "'	,
 							BANKSWIFTCODECITY		=	'" . $this->model->getBankSwiftCodeCity() . "',
-							BANKSWIFTCODEBRANCH`	=	'" . $this->model->getBankSwiftCodeBranch() . "',
+							BANKSWIFTCODEBRANCH		=	'" . $this->model->getBankSwiftCodeBranch() . "',
 							BANKMEPSCODE			=	'" . $this->model->getBankMepsCode() . "',
 							BANKDESC				=	'" . $this->model->getBankDesc() . "',
 							ISDEFAULT				=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -763,7 +763,7 @@ class BankClass extends ConfigClass {
 							BANKDESC				=	'" . $this->model->getBankDesc() . "',
 							BANKSWIFTCODE			=	'" . $this->model->getBankSwiftCode() . "'	,
 							BANKSWIFTCODECITY		=	'" . $this->model->getBankSwiftCodeCity() . "',
-							BANKSWIFTCODEBRANCH`	=	'" . $this->model->getBankSwiftCodeBranch() . "',
+							BANKSWIFTCODEBRANCH		=	'" . $this->model->getBankSwiftCodeBranch() . "',
 							BANKMEPSCODE			=	'" . $this->model->getBankMepsCode() . "',
 							BANKDESC				=	'" . $this->model->getBankDesc() . "',
 							ISDEFAULT				=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -784,7 +784,7 @@ class BankClass extends ConfigClass {
 				SET 		BANKCODE 				=	'" . $this->model->getBankCode() . "',	
 							BANKSWIFTCODE			=	'" . $this->model->getBankSwiftCode() . "'	,
 							BANKSWIFTCODECITY		=	'" . $this->model->getBankSwiftCodeCity() . "',
-							BANKSWIFTCODEBRANCH`	=	'" . $this->model->getBankSwiftCodeBranch() . "',
+							BANKSWIFTCODEBRANCH		=	'" . $this->model->getBankSwiftCodeBranch() . "',
 							BANKMEPSCODE			=	'" . $this->model->getBankMepsCode() . "',
 							BANKDESC				=	'" . $this->model->getBankDesc() . "',
 							BANKDESC				=	'" . $this->model->getBankDesc() . "',
@@ -1455,6 +1455,12 @@ if (isset($_POST ['method'])) {
 	 */
 	if (isset($_POST ['isAdmin'])) {
 		$bankObject->setIsAdmin($_POST ['isAdmin']);
+	}
+	/**
+	 * Database Request
+	 */
+	if (isset($_POST ['databaseRequest'])) {
+		$bankObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
 	 *  Paging
