@@ -11,7 +11,7 @@ Ext.onReady(function() {
     // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/districtController.php?',
+        url: '../controller/generalLedgerChartOfAccountController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -76,7 +76,7 @@ Ext.onReady(function() {
     var logStore = new Ext.data.JsonStore({
         proxy: logProxy,
         reader: logReader,
-        autoLoad: true,
+        autoLoad: false,
         autoDestroy: true,
         pruneModifiedRecords: true,
         baseParams: {
@@ -287,7 +287,7 @@ Ext.onReady(function() {
     var logAdvanceStore = new Ext.data.JsonStore({
         proxy: logAdvanceProxy,
         reader: logAdvanceReader,
-        autoLoad: true,
+        autoLoad: false,
         autoDestroy: true,
         pruneModifiedRecords: true,
         method: 'POST',
@@ -475,9 +475,10 @@ Ext.onReady(function() {
         autoScroll: true
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
-    // atart additional Proxy ,Reader,Store,Filter,Grid
-    var stateProxy = new Ext.data.HttpProxy({
-        url: '../controller/stateController.php',
+    // start additional Proxy ,Reader,Store,Filter,Grid
+    // start request generalLedgerChartAccountType
+	var generalLedgerChartAccountTypeProxy = new Ext.data.HttpProxy({
+        url: '../controller/generalLedgerChartAccountTypeController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -490,15 +491,15 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var stateReader = new Ext.data.JsonReader({
+    var generalLedgerChartAccountTypeReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
         idProperty: 'stateId'
     });
-    var stateStore = new Ext.data.JsonStore({
-        proxy: stateProxy,
-        reader: stateReader,
+    var generalLedgerChartAccountTypeStore = new Ext.data.JsonStore({
+        proxy: generalLedgerChartAccountTypeProxy,
+        reader: generalLedgerChartAccountTypeReader,
         autoLoad: true,
         autoDestroy: true,
         pruneModifiedRecords: true,
@@ -510,20 +511,21 @@ Ext.onReady(function() {
             perPage: perPage
         },
         root: 'data',
-        id:'stateId',
+        id:'generalLedgerChartAccountTypeId',
         fields: [{
-            name: 'stateId',
+            name: 'generalLedgerChartAccountTypeId',
             type: 'int'
         },
         {
-            name: 'stateDesc',
+            name: 'generalLedgerChartAccountTypeDesc',
             type: 'string'
         }]
     });
+	// end request generalLedgerChartAccountType
     // end additional Proxy ,Reader,Store,Filter,Grid
     // start application Proxy ,Reader,Store,Filter,Grid
-    var districtProxy = new Ext.data.HttpProxy({
-        url: '../controller/districtController.php',
+    var generalLedgerChartOfAccountProxy = new Ext.data.HttpProxy({
+        url: '../controller/generalLedgerChartOfAccountController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -536,15 +538,15 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var districtReader = new Ext.data.JsonReader({
+    var generalLedgerChartOfAccountReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
-        idProperty: 'districtId'
+        idProperty: 'generalLedgerChartOfAccountId'
     });
-    var districtStore = new Ext.data.JsonStore({
-        proxy: districtProxy,
-        reader: districtReader,
+    var generalLedgerChartOfAccountStore = new Ext.data.JsonStore({
+        proxy: generalLedgerChartOfAccountProxy,
+        reader: generalLedgerChartOfAccountReader,
         autoLoad: true,
         autoDestroy: true,
         pruneModifiedRecords: true,
@@ -557,17 +559,26 @@ Ext.onReady(function() {
         },
         root: 'data',
         fields: [{
-            name: 'districtId',
+            name: 'generalLedgerChartOfAccountId',
             type: 'int'
         },{
-        	name :'stateId',
-        	type :'int'
+        	name :'generalLedgerChartOfAccountCode',
+        	type :'string'
         },{
-        	name :'stateDesc',
+        	name :'generalLedgerChartOfAccountSwiftCode',
+        	type :'string'
+        },{
+        	name :'generalLedgerChartOfAccountSwiftCodeCity',
+        	type :'string'
+        },{
+        	name :'generalLedgerChartOfAccountSwiftCodeBranch',
+        	type :'string'
+        },{
+        	name :'generalLedgerChartOfAccountMepsCode',
         	type :'string'
         },
         {
-            name: 'districtDesc',
+            name: 'generalLedgerChartOfAccountDesc',
             type: 'string'
         },
         {
@@ -624,30 +635,51 @@ Ext.onReady(function() {
             dateFormat: 'Y-m-d H:i:s'
         }]
     });
-    var districtFilters = new Ext.ux.grid.GridFilters({
+    var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters({
         encode: false,
         local: false,
-        filters: [ {
-            type: 'list',
-            dataIndex: 'stateId',
-            column: 'stateId',
-            table: 'district',
-			database :'iCommon',
-            labelField: 'stateDesc',
-            store: stateStore,
-            phpMode: true
+        filters: [{
+            type: 'string',
+            dataIndex: 'generalLedgerChartOfAccountCode',
+            column: 'generalLedgerChartOfAccountCode',
+            table: 'generalLedgerChartOfAccount',
+			database :'iCommon'
+        } ,{
+            type: 'string',
+            dataIndex: 'generalLedgerChartOfAccountSwiftCode',
+            column: 'generalLedgerChartOfAccountSwiftCode',
+            table: 'generalLedgerChartOfAccount',
+			database :'iCommon'
         },{
             type: 'string',
-            dataIndex: 'districtDesc',
-            column: 'districtDesc',
-            table: 'district',
+            dataIndex: 'generalLedgerChartOfAccountSwiftCodeCity',
+            column: 'generalLedgerChartOfAccountSwiftCodeCity',
+            table: 'generalLedgerChartOfAccount',
+			database :'iCommon'
+        },{
+            type: 'string',
+            dataIndex: 'generalLedgerChartOfAccountSwiftCodeBranch',
+            column: 'generalLedgerChartOfAccountSwiftCodeBranch',
+            table: 'generalLedgerChartOfAccount',
+			database :'iCommon'
+        },{
+            type: 'string',
+            dataIndex: 'generalLedgerChartOfAccountMepsCode',
+            column: 'generalLedgerChartOfAccountMepsCode',
+            table: 'generalLedgerChartOfAccount',
+			database :'iCommon'
+        },{
+            type: 'string',
+            dataIndex: 'generalLedgerChartOfAccountDesc',
+            column: 'generalLedgerChartOfAccountDesc',
+            table: 'generalLedgerChartOfAccount',
 			database :'iCommon'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'district',
+            table: 'generalLedgerChartOfAccount',
 			database :'iCommon',
             labelField: 'staffName',
             store: staffByStore,
@@ -657,7 +689,7 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'district',
+            table: 'generalLedgerChartOfAccount',
 			database :'iCommon'
         }]
     });
@@ -705,24 +737,40 @@ Ext.onReady(function() {
         dataIndex: 'isPost',
         hidden: isPostHidden
     });
-    var districtColumnModel = [new Ext.grid.RowNumberer(), {
-    	 dataIndex: 'stateId',
-         header: stateDescLabel,
-         sortable: true,
-         hidden: false,
-         width : 200,
-         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
-             return record.data.stateDesc;
-         }
-    },{
-        dataIndex: 'districtCode',
-        header: districtCodeLabel,
+    var generalLedgerChartOfAccountColumnModel = [new Ext.grid.RowNumberer(),{
+        dataIndex: 'generalLedgerChartOfAccountCode',
+        header: generalLedgerChartOfAccountCodeLabel,
         sortable: true,
         hidden: false,
-        width : 200
+        width : 50
     },{
-        dataIndex: 'districtDesc',
-        header: districtDescLabel,
+        dataIndex: 'generalLedgerChartOfAccountSwiftCode',
+        header: generalLedgerChartOfAccountSwiftCodeLabel,
+        sortable: true,
+        hidden: false,
+        width : 50
+    } ,{
+        dataIndex: 'generalLedgerChartOfAccountSwiftCodeCity',
+        header: generalLedgerChartOfAccountSwiftCodeCityLabel,
+        sortable: true,
+        hidden: false,
+        width : 100
+    }
+    ,{
+        dataIndex: 'generalLedgerChartOfAccountSwiftCodeBranch',
+        header: generalLedgerChartOfAccountSwiftCodeBranchLabel,
+        sortable: true,
+        hidden: false,
+        width : 100
+    },{
+        dataIndex: 'generalLedgerChartOfAccountMepsCode',
+        header: generalLedgerChartOfAccountMepsCodeLabel,
+        sortable: true,
+        hidden: false,
+        width : 50
+    },{
+        dataIndex: 'generalLedgerChartOfAccountDesc',
+        header: generalLedgerChartOfAccountDescLabel,
         sortable: true,
         hidden: false,
         width : 200
@@ -746,16 +794,16 @@ Ext.onReady(function() {
             return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
     }];
-    var districtFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var districtGrid = new Ext.grid.GridPanel({
-        name: 'districtGrid',
-        id: 'districtGrid',
+    var generalLedgerChartOfAccountFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var generalLedgerChartOfAccountGrid = new Ext.grid.GridPanel({
+        name: 'generalLedgerChartOfAccountGrid',
+        id: 'generalLedgerChartOfAccountGrid',
         border: false,
-        store: districtStore,
+        store: generalLedgerChartOfAccountStore,
         autoHeight: false,
         height: 400,
-        columns: districtColumnModel,
-        plugins: [districtFilters],
+        columns: generalLedgerChartOfAccountColumnModel,
+        plugins: [generalLedgerChartOfAccountFilters],
         selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
@@ -765,23 +813,22 @@ Ext.onReady(function() {
         iconCls: 'application_view_detail',
         listeners: {
             'rowclick': function(object, rowIndex, e) {
-                var record = districtStore.getAt(rowIndex);
+                var record = generalLedgerChartOfAccountStore.getAt(rowIndex);
                 formPanel.getForm().reset();
                 formPanel.form.load({
-                    url: '../controller/districtController.php',
+                    url: '../controller/generalLedgerChartOfAccountController.php',
                     method: 'POST',
                     waitTitle: systemLabel,
                     waitMsg: waitMessageLabel,
                     params: {
                         method: 'read',
                         mode: 'update',
-                        districtId: record.data.districtId,
+                        generalLedgerChartOfAccountId: record.data.generalLedgerChartOfAccountId,
                         leafId: leafId,
                         isAdmin: isAdmin
                     },
                     success: function(form, action) {
-                        Ext.getCmp('districtDescTemp').setValue(record.data.districtDesc);
-                        Ext.getCmp('deleteButton').enable();
+                        Ext.getCmp('generalLedgerChartOfAccountCodeTemp').setValue(record.data.generalLedgerChartOfAccountDesc);                        
                         viewPort.items.get(1).expand();
                     },
                     failure: function(form, action) {
@@ -800,9 +847,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-check',
                 listeners: {
                     'click': function(button,e) {
-                        districtStore.each(function(record,fn,scope) {
-                            for (var access in districtFlagArray) {
-                                record.set(districtFlagArray[access], true);
+                        generalLedgerChartOfAccountStore.each(function(record,fn,scope) {
+                            for (var access in generalLedgerChartOfAccountFlagArray) {
+                                record.set(generalLedgerChartOfAccountFlagArray[access], true);
                             }
                         });
                     }
@@ -814,9 +861,9 @@ Ext.onReady(function() {
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
                     'click': function(button,e) {
-                        districtStore.each(function(record,fn,scope) {
-                            for (var access in districtFlagArray) {
-                                record.set(districtFlagArray[access], false);
+                        generalLedgerChartOfAccountStore.each(function(record,fn,scope) {
+                            for (var access in generalLedgerChartOfAccountFlagArray) {
+                                record.set(generalLedgerChartOfAccountFlagArray[access], false);
                             }
                         });
                     }
@@ -828,12 +875,12 @@ Ext.onReady(function() {
                 iconCls: 'bullet_disk',
                 listeners: {
                     'click': function(button,e) {
-                        var url = '../controller/districtController.php?';
+                        var url = '../controller/generalLedgerChartOfAccountController.php?';
                         var sub_url = '';
-                        var modified = districtStore.getModifiedRecords();
+                        var modified = generalLedgerChartOfAccountStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            sub_url = sub_url + '&districtId[]=' + modified[i].get('districtId');
+                            sub_url = sub_url + '&generalLedgerChartOfAccountId[]=' + modified[i].get('generalLedgerChartOfAccountId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
                                     sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
@@ -879,7 +926,7 @@ Ext.onReady(function() {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    districtStore.reload();
+                                    generalLedgerChartOfAccountStore.reload();
                                 } else if (jsonResponse.success == false) {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                 }
@@ -893,9 +940,9 @@ Ext.onReady(function() {
             }]
         },
         bbar: new Ext.PagingToolbar({
-            store: districtStore,
+            store: generalLedgerChartOfAccountStore,
             pageSize: perPage,
-            plugins:[districtFilters]
+            plugins:[generalLedgerChartOfAccountFilters]
         })
     });
     var gridPanel = new Ext.Panel({
@@ -907,7 +954,7 @@ Ext.onReady(function() {
             iconCls: 'database_refresh',
             id: 'pageReload',            
             handler: function() {
-                districtStore.reload();
+                generalLedgerChartOfAccountStore.reload();
             }
         },
         '-', {
@@ -926,7 +973,7 @@ Ext.onReady(function() {
             
             handler: function() {
                 Ext.Ajax.request({
-                    url: '../controller/districtController.php',
+                    url: '../controller/generalLedgerChartOfAccountController.php',
                     method: 'GET',
                     params: {
                         method: 'report',
@@ -949,24 +996,25 @@ Ext.onReady(function() {
             }
         },
         '-', new Ext.ux.form.SearchField({
-            store: districtStore,
+            store: generalLedgerChartOfAccountStore,
             width: 320
         })],
-        items: [districtGrid]
+        items: [generalLedgerChartOfAccountGrid]
     });
      // form entry
-    var countryId = new Ext.ux.form.ComboBoxMatch({
+	 
+	 var generalLedgerChartAccountTypeId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
         fieldLabel: stateIdLabel,
-        name: 'countryId',
-        hiddenName: 'countryId',
-        valueField: 'countryId',
-        hiddenId: 'country_fake',
-        id: 'countryId',
-        displayField: 'countryDesc',
+        name: 'generalLedgerChartAccountTypeId',
+        hiddenName: 'generalLedgerChartAccountTypeId',
+        valueField: 'generalLedgerChartAccountTypeId',
+        hiddenId: 'generalLedgerChartAccountTypeId_fake',
+        id: 'generalLedgerChartAccountTypeId',
+        displayField: 'generalLedgerChartAccountTypeDesc',
         typeAhead: false,
         triggerAction: 'all',
-        store: countryStore,
+        store: generalLedgerChartAccountTypeStore,
         anchor: '95%',
         selectOnFocus: true,
         mode: 'local',
@@ -981,18 +1029,50 @@ Ext.onReady(function() {
             return new RegExp('\\b(' + value + ')', 'i');
         }
     });
-	var stateId = new Ext.ux.form.ComboBoxMatch({
+	 
+    var generalLedgerChartOfAccountTitle = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: generalLedgerChartOfAccountTitleLabel + '<span style=\'color: red;\'>*</span>',
+        hiddenName: 'generalLedgerChartOfAccountTitle',
+        name: 'generalLedgerChartOfAccountTitle',
+        id: 'generalLedgerChartOfAccountTitle',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '40%'
+    });
+	
+	var generalLedgerChartOfAccountDesc = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: generalLedgerChartOfAccountDescLabel + '<span style=\'color: red;\'>*</span>',
+        hiddenName: 'generalLedgerChartOfAccountDesc',
+        name: 'generalLedgerChartOfAccountDesc',
+        id: 'generalLedgerChartOfAccountDesc',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '40%'
+    });
+	
+	
+	var generalLedgerChartAccountReportType = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
         fieldLabel: stateIdLabel,
-        name: 'stateId',
-        hiddenName: 'stateId',
-        valueField: 'stateId',
-        hiddenId: 'state_fake',
-        id: 'stateId',
-        displayField: 'stateDesc',
+        name: 'generalLedgerChartAccountReportType',
+        hiddenName: 'generalLedgerChartAccountType',
+        valueField: 'generalLedgerChartAccountType',
+        hiddenId: 'generalLedgerChartAccountType_fake',
+        id: 'generalLedgerChartAccountTypeId',        
         typeAhead: false,
         triggerAction: 'all',
-        store: stateStore,
+        store: [
+			['Balance Sheet','Balance Sheet'],
+			['P&L Statement','P&L Statement']
+		],
         anchor: '95%',
         selectOnFocus: true,
         mode: 'local',
@@ -1008,12 +1088,12 @@ Ext.onReady(function() {
         }
     });
 	
-	var districtCode = new Ext.form.TextField({
+	var generalLedgerChartOfAccountNo = new Ext.form.TextField({
         labelAlign: 'left',
-        fieldLabel: familyCodeLabel + '<span style=\'color: red;\'>*</span>',
-        hiddenName: 'districtCode',
-        name: 'districtCode',
-        id: 'districtCode',
+        fieldLabel: generalLedgerChartOfAccountNoLabel + '<span style=\'color: red;\'>*</span>',
+        hiddenName: 'generalLedgerChartOfAccountNo',
+        name: 'generalLedgerChartOfAccountNo',
+        id: 'generalLedgerChartOfAccountNo',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -1021,48 +1101,32 @@ Ext.onReady(function() {
         },
         anchor: '40%'
     });
-    var districtDesc = new Ext.form.TextField({
-        labelAlign: 'left',
-        fieldLabel: districtDescLabel + '<span style=\'color: red;\'>*</span>',
-        hiddenName: 'districtDesc',
-        name: 'districtDesc',
-        id: 'districtDesc',
-        allowBlank: false,
-        blankText: blankTextLabel,
-        style: {
-            textTransform: 'uppercase'
-        },
-        anchor: '95%'
-    });
     
-    var districtCodeTemp = new Ext.form.Hidden({
-        name: 'districtCodeTemp',
-        id: 'districtCodeTemp'
-    });
+    
     var checkDuplicateCode = new Ext.Button ({
     	name :'checkDuplicateCode',
     	id :'checkDuplicateCode',
     	text:checkDuplicateCodeLabel,
     	listeners: {
             'click': function(button,e) {
-                if (Ext.getCmp('districtCode').getValue().length > 0) {
+                if (Ext.getCmp('generalLedgerChartOfAccountNo').getValue().length > 0) {
                     Ext.Ajax.request({
-                        url: '../controller/religionController.php',
+                        url: '../controller/generalLedgerChartOfAccountController.php',
                         method: 'GET',
                         params: {
                             method: 'duplicate',
                             leafId: leafId,
-                            districtCode	: Ext.getCmp('districtCode').getValue()
+                            generalLedgerChartOfAccountNo	: Ext.getCmp('generalLedgerChartOfAccountNo').getValue()
                         },
                         success: function(response, options) {
                             jsonResponse = Ext.decode(response.responseText);
                             if (jsonResponse.success == true) {
                                 if (jsonResponse.total > 0) {
-                                    if (Ext.getCmp('districtCodeTemp').getValue() != Ext.getCmp('districtCode').getValue()) {
+                                    if (Ext.getCmp('generalLedgerChartOfAccountNoTemp').getValue() != Ext.getCmp('generalLedgerChartOfAccountNo').getValue()) {
                                         duplicate = 1;
-                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('districtCode').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.religionDesc);
+                                        duplicateMessageLabel = duplicateMessageLabel + Ext.util.Format.uppercase(Ext.getCmp('generalLedgerChartOfAccountNo').getValue()) + ':' + +Ext.util.Format.uppercase(jsonResponse.generalLedgerChartOfAccountNo);
                                         Ext.MessageBox.alert(systemErrorLabel, duplicateMessageLabel);
-                                        Ext.getCmp('districtCode').setValue('');
+                                        Ext.getCmp('generalLedgerChartOfAccountNo').setValue('');
                                     } else {
                                     	Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
@@ -1081,9 +1145,9 @@ Ext.onReady(function() {
             }
     	}
     });
-    var districtId = new Ext.form.Hidden({
-        name: 'districtId',
-        id: 'districtId'
+    var generalLedgerChartOfAccountId = new Ext.form.Hidden({
+        name: 'generalLedgerChartOfAccountId',
+        id: 'generalLedgerChartOfAccountId'
     }); // end form entry
     // start System Validation
     var isDefault = new Ext.form.Checkbox({
@@ -1167,7 +1231,7 @@ Ext.onReady(function() {
     }); // end of hidden value for navigation button
     // end System Validation
     var formPanel = new Ext.form.FormPanel({
-        url: '../controller/districtController.php',
+        url: '../controller/generalLedgerChartOfAccountController.php',
         name: 'formPanel',
         id: 'formPanel',
         method: 'post',
@@ -1179,10 +1243,15 @@ Ext.onReady(function() {
         items: [{
             xtype: 'fieldset',
             title: 'Form Entry',
-            items: [districtId,stateId	,{
+            items: [generalLedgerChartOfAccountId,
+					generalLedgerChartAccountTypeId,
+					generalLedgerChartOfAccountTitle,
+					generalLedgerChartOfAccountDesc,
+					generalLedgerChartOfAccountReportType,
+					{
 				xtype:'compositefield',
-				items:[districtCode	,checkDuplicateCode]
-} ,districtDesc, districtCodeTemp]
+				items:[generalLedgerChartOfAccountNo,checkDuplicateCode]
+},generalLedgerChartOfAccountNoTemp]
         },
         {
             xtype: 'fieldset',
@@ -1226,7 +1295,7 @@ Ext.onReady(function() {
             disabled: auditButtonLabelDisabled,
             handler: function() {
                 if (auditWindow) {
-                    districtStore.reload();
+                    generalLedgerChartOfAccountStore.reload();
                     auditWindow.show().center();
                 }
             }
@@ -1238,7 +1307,7 @@ Ext.onReady(function() {
             type: 'button',
             iconCls: 'new',
             handler: function() {
-                var id = Ext.getCmp('districtId').getValue();
+                var id = Ext.getCmp('generalLedgerChartOfAccountId').getValue();
                 var method = 'create';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
@@ -1253,14 +1322,14 @@ Ext.onReady(function() {
                             Ext.getCmp('newButton').disable();
                             Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            districtStore.reload({
+                            generalLedgerChartOfAccountStore.reload({
                                 params: {
                                     leafId: leafId,	
                                     start: 0,
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('districtId').setValue(action.result.districtId);
+                            Ext.getCmp('generalLedgerChartOfAccountId').setValue(action.result.generalLedgerChartOfAccountId);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -1287,7 +1356,7 @@ Ext.onReady(function() {
             disabled: true,
             handler: function() {
                 Ext.getCmp('newButton').disable();
-                var id = Ext.getCmp('districtId').getValue();
+                var id = Ext.getCmp('generalLedgerChartOfAccountId').getValue();
                 var method = 'save';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
@@ -1302,7 +1371,7 @@ Ext.onReady(function() {
                             Ext.getCmp('newButton').disable();
                             Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            districtStore.reload({
+                            generalLedgerChartOfAccountStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
@@ -1345,10 +1414,10 @@ Ext.onReady(function() {
                     fn: function(response) {
                         if ('yes' == response) {
                             Ext.Ajax.request({
-                                url: '../controller/districtController.php',
+                                url: '../controller/generalLedgerChartOfAccountController.php',
                                 params: {
                                     method: 'delete',
-                                    districtId: Ext.getCmp('districtId').getValue(),
+                                    generalLedgerChartOfAccountId: Ext.getCmp('generalLedgerChartOfAccountId').getValue(),
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },
@@ -1356,7 +1425,7 @@ Ext.onReady(function() {
                                     jsonResponse = Ext.decode(response.responseText);
                                     if (jsonResponse.success == true) {
                                         Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                        districtStore.reload({
+                                        generalLedgerChartOfAccountStore.reload({
                                             params: {
                                                 leafId: leafId,
                                                 start: 0,
@@ -1364,6 +1433,7 @@ Ext.onReady(function() {
                                             }
                                         });
                                         Ext.getCmp('saveButton').disable();
+                                        Ext.getCmp('deleteButton').disable();
                                         Ext.getCmp('nextButton').disable();
                                         Ext.getCmp('previousButton').disable();
                                     } else {
@@ -1426,7 +1496,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('firstRecord').getValue() == '') {
                     Ext.Ajax.request({
-                        url: '../controller/districtController.php',
+                        url: '../controller/generalLedgerChartOfAccountController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -1438,13 +1508,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
                                 formPanel.form.load({
-                                    url: '../controller/districtController.php',
+                                    url: '../controller/generalLedgerChartOfAccountController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        districtId: Ext.getCmp('firstRecord').getValue(),
+                                        generalLedgerChartOfAccountId: Ext.getCmp('firstRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -1479,13 +1549,13 @@ Ext.onReady(function() {
                     });
                 } else {
                     formPanel.form.load({
-                        url: '../controller/districtController.php',
+                        url: '../controller/generalLedgerChartOfAccountController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            districtId: Ext.getCmp('firstRecord').getValue(),
+                            generalLedgerChartOfAccountId: Ext.getCmp('firstRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1527,13 +1597,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('firstRecord').getValue() >= 1) {
                     formPanel.form.load({
-                        url: '../controller/districtController.php',
+                        url: '../controller/generalLedgerChartOfAccountController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            districtId: Ext.getCmp('previousRecord').getValue(),
+                            generalLedgerChartOfAccountId: Ext.getCmp('previousRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1574,13 +1644,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('nextRecord').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/districtController.php',
+                        url: '../controller/generalLedgerChartOfAccountController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            districtId: Ext.getCmp('nextRecord').getValue(),
+                            generalLedgerChartOfAccountId: Ext.getCmp('nextRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1621,7 +1691,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
                     Ext.Ajax.request({
-                        url: '../controller/districtController.php',
+                        url: '../controller/generalLedgerChartOfAccountController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -1633,13 +1703,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
                                 formPanel.form.load({
-                                    url: '../controller/districtController.php',
+                                    url: '../controller/generalLedgerChartOfAccountController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        districtId: Ext.getCmp('lastRecord').getValue(),
+                                        generalLedgerChartOfAccountId: Ext.getCmp('lastRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -1674,15 +1744,15 @@ Ext.onReady(function() {
                         }
                     });
                 }
-                if (Ext.getCmp('districtId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
+                if (Ext.getCmp('generalLedgerChartOfAccountId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/districtController.php',
+                        url: '../controller/generalLedgerChartOfAccountController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            districtId: Ext.getCmp('lastRecord').getValue(),
+                            generalLedgerChartOfAccountId: Ext.getCmp('lastRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },

@@ -3,95 +3,29 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is customers model file.This is to ensure strict setting enable for all variable enter to database
+ * this is salutation model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @subpackage customers
+ * @package salutation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class CustomersModel extends ValidationClass {
+class SalutationModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $customersId;
+	private $salutationId;
 	/**
 	 * @var string
 	 */
-	private $customersCompany;
+	private $salutationCode;
 	/**
-	 * @var string
+	 * @var text
 	 */
-	private $customersLastName;
-	/**
-	 * @var string
-	 */
-	private $customersFirstName;
-	/**
-	 * @var string
-	 */
-	private $customersEmail;
-	/**
-	 * @var int
-	 */
-	private $customersJobTitle;
-	/**
-	 * @var string
-	 */
-	private $customersBusinessPhone;
-	/**
-	 * @var string
-	 */
-	private $customersHomePhone;
-	/**
-	 * @var string
-	 */
-	private $customersMobilePhone;
-	/**
-	 * @var date
-	 */
-	private $customersBirthday;
-	/**
-	 * @var string
-	 */
-	private $customersFaxNum;
-	/**
-	 * @var string
-	 */
-	private $customersAddress;
-	/**
-	 * @var string
-	 */
-	private $customersCity;
-	/**
-	 * @var string
-	 */
-	private $customersState;
-	/**
-	 * @var string
-	 */
-	private $customersPostcode;
-	/**
-	 * @var string
-	 */
-	private $customersCountry;
-	/**
-	 * @var string
-	 */
-	private $customersWebPage;
-	/**
-	 * @var string
-	 */
-	private $customersNotes;
-	/**
-	 * @var string
-	 */
-	private $customersAttachments;
-
-
+	private $salutationDesc;
 
 
 	/* (non-PHPdoc)
@@ -102,70 +36,26 @@ class CustomersModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('customers');
-		$this->setPrimaryKeyName('customersId');
+		$this->setTableName('salutation');
+		$this->setPrimaryKeyName('salutationId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['customersId'])) {
-			$this->setCustomersId($this->strict($_POST ['customersId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['salutationId'])) {
+			$this->setSalutationId($this->strict($_POST ['salutationId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['customersCompany'])) {
-			$this->setCustomersCompany($this->strict($_POST ['customersCompany'], 'string'));
+		if(isset($_POST['salutationCode'])){
+			$this->setSalutationCode($this->strict($_POST['salutationCode'],'string'));
 		}
-		if(isset($_POST['customersLastName'])){
-			$this->setCustomersLastName($this->strict($_POST['customersLastName'],'string'));
+		if(isset($_POST['salutationDesc'])){
+			$this->setSalutationDesc($this->strict($_POST['salutationDesc'],'string'));
 		}
-		if(isset($_POST['customersFirstName'])){
-			$this->setCustomersFirstName($this->strict($_POST['customersFirstName'],'string'));
-		}
-		if(isset($_POST['customersEmail'])){
-			$this->setCustomersEmail($this->strict($_POST['customersEmail'],'string'));
-		}
-		if(isset($_POST['customersJobTitle'])){
-			$this->setCustomersJobTitle($this->strict($_POST['customersJobTitle'],'string'));
-		}
-		if(isset($_POST['customersBusinessPhone'])){
-			$this->setCustomersBusinessPhone($this->strict($_POST['customersBusinessPhone'],'string'));
-		}
-		if(isset($_POST['customersMobilePhone'])){
-			$this->setCustomersMobilePhone($this->strict($_POST['customersHomePhone'],'string'));
-		}
-		if(isset($_POST['customersFaxNum'])){
-			$this->setCustomersFaxNum($this->strict($_POST['customersFaxNum'],'string'));
-		}
-		if(isset($_POST['customersAddress'])){
-			$this->setCustomersAddress($this->strict($_POST['customersAddress'],'string'));
-		}
-		if(isset($_POST['customersCity'])){
-			$this->setCustomersCity($this->strict($_POST['customersCity'],'string'));
-		}
-		if(isset($_POST['customersState'])){
-			$this->setCustomersState($this->strict($_POST['customersState'],'string'));
-		}
-		if(isset($_POST['customersPostcode'])){
-			$this->setCustomersPostcode($this->strict($_POST['customersPostcode'],'string'));
-		}
-		if(isset($_POST['customersCountry'])){
-			$this->setCustomersCountry($this->strict($_POST['customersCountry'],'string'));
-		}
-		if(isset($_POST['customersWebPage'])){
-			$this->setCustomersWebPage($this->strict($_POST['customersWebPage'],'string'));
-		}
-		if(isset($_POST['customersNotes'])){
-			$this->setCustomersNotes($this->strict($_POST['customersNotes'],'string'));
-		}
-		if(isset($_POST['customersAttachments'])){
-			$this->setCustomersCountry($this->strict($_POST['customersAttachments'],'string'));
-		}
-		if(isset($_POST['customersAttachments'])){
-			$this->setCustomersAttachments($this->strict($_POST['customersAttachments'],'string'));
-		}
+
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['customersId'])) {
-			$this->setTotal(count($_GET ['customersId']));
+		if (isset($_GET ['salutationId'])) {
+			$this->setTotal(count($_GET ['salutationId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -215,8 +105,8 @@ class CustomersModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['customersId'])) {
-				$this->setCustomersId($this->strict($_GET ['customersId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['salutationId'])) {
+				$this->setSalutationId($this->strict($_GET ['salutationId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -281,7 +171,7 @@ class CustomersModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getCustomersId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getSalutationId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -415,208 +305,74 @@ class CustomersModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Customers Identification  Value
+	 * Set Salutation Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setCustomersId($value, $key, $type) {
+	public function setSalutationId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->customersId = $value;
+			$this->salutationId = $value;
 		} else if ($type == 'array') {
-			$this->customersId [$key] = $value;
+			$this->salutationId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setCustomersId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setSalutationId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Customers Identification  Value
+	 * Return Salutation Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getCustomersId($key, $type) {
+	public function getSalutationId($key, $type) {
 		if ($type == 'single') {
-			return $this->customersId;
+			return $this->salutationId;
 		} else if ($type == 'array') {
-			return $this->customersId [$key];
+			return $this->salutationId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getCustomersId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getSalutationId ?"));
 			exit();
 		}
 	}
 
 
-	public function getCustomersAddress()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getSalutationCode()
 	{
-		return $this->customersAddress;
+	    return $this->salutationCode;
 	}
 
-	public function setCustomersAddress($customersAddress)
+	/**
+	 * 
+	 * @param $salutationCode
+	 */
+	public function setSalutationCode($salutationCode)
 	{
-		$this->customersAddress = $customersAddress;
+	    $this->salutationCode = $salutationCode;
 	}
 
-	public function getCustomersPostcode()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getSalutationDescription()
 	{
-		return $this->customersPostcode;
+	    return $this->salutationDesc;
 	}
 
-	public function setCustomersPostcode($customersPostcode)
+	/**
+	 * 
+	 * @param $salutationDesc
+	 */
+	public function setSalutationDesc($salutationDesc)
 	{
-		$this->customersPostcode = $customersPostcode;
-	}
-
-	public function getCustomersEmail()
-	{
-		return $this->customersEmail;
-	}
-
-	public function setCustomersEmail($customersEmail)
-	{
-		$this->customersEmail = $customersEmail;
-	}
-
-	public function getCustomersCompany()
-	{
-	    return $this->customersCompany;
-	}
-
-	public function setCustomersCompany($customersCompany)
-	{
-	    $this->customersCompany = $customersCompany;
-	}
-
-	public function getCustomersLastName()
-	{
-	    return $this->customersLastName;
-	}
-
-	public function setCustomersLastName($customersLastName)
-	{
-	    $this->customersLastName = $customersLastName;
-	}
-
-	public function getCustomersFirstName()
-	{
-	    return $this->customersFirstName;
-	}
-
-	public function setCustomersFirstName($customersFirstName)
-	{
-	    $this->customersFirstName = $customersFirstName;
-	}
-
-	public function getCustomersJobTitle()
-	{
-	    return $this->customersJobTitle;
-	}
-
-	public function setCustomersJobTitle($customersJobTitle)
-	{
-	    $this->customersJobTitle = $customersJobTitle;
-	}
-
-	public function getCustomersBusinessPhone()
-	{
-	    return $this->customersBusinessPhone;
-	}
-
-	public function setCustomersBusinessPhone($customersBusinessPhone)
-	{
-	    $this->customersBusinessPhone = $customersBusinessPhone;
-	}
-
-	public function getCustomersHomePhone()
-	{
-	    return $this->customersHomePhone;
-	}
-
-	public function setCustomersHomePhone($customersHomePhone)
-	{
-	    $this->customersHomePhone = $customersHomePhone;
-	}
-
-	public function getCustomersMobilePhone()
-	{
-	    return $this->customersMobilePhone;
-	}
-
-	public function setCustomersMobilePhone($customersMobilePhone)
-	{
-	    $this->customersMobilePhone = $customersMobilePhone;
-	}
-
-	public function getCustomersFaxNum()
-	{
-	    return $this->customersFaxNum;
-	}
-
-	public function setCustomersFaxNum($customersFaxNum)
-	{
-	    $this->customersFaxNum = $customersFaxNum;
-	}
-
-	public function getCustomersCity()
-	{
-	    return $this->customersCity;
-	}
-
-	public function setCustomersCity($customersCity)
-	{
-	    $this->customersCity = $customersCity;
-	}
-
-	public function getCustomersState()
-	{
-	    return $this->customersState;
-	}
-
-	public function setCustomersState($customersState)
-	{
-	    $this->customersState = $customersState;
-	}
-
-	public function getCustomersCountry()
-	{
-	    return $this->customersCountry;
-	}
-
-	public function setCustomersCountry($customersCountry)
-	{
-	    $this->customersCountry = $customersCountry;
-	}
-
-	public function getCustomersWebPage()
-	{
-	    return $this->customersWebPage;
-	}
-
-	public function setCustomersWebPage($customersWebPage)
-	{
-	    $this->customersWebPage = $customersWebPage;
-	}
-
-	public function getCustomersNotes()
-	{
-	    return $this->customersNotes;
-	}
-
-	public function setCustomersNotes($customersNotes)
-	{
-	    $this->customersNotes = $customersNotes;
-	}
-
-	public function getCustomersAttachments()
-	{
-	    return $this->customersAttachments;
-	}
-
-	public function setCustomersAttachments($customersAttachments)
-	{
-	    $this->customersAttachments = $customersAttachments;
+	    $this->salutationDesc = $salutationDesc;
 	}
 }
 

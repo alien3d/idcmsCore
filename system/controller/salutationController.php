@@ -6,19 +6,19 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/stateModel.php");
+require_once ("../model/salutationModel.php");
 
 /**
- * this is state setting files.This sample template file for master record
+ * this is salutation setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author Maq,hafizan
  * @package common application
- * @subpackage state
+ * @subpackage salutation
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class StateClass extends ConfigClass {
+class SalutationClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -90,7 +90,7 @@ class StateClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new StateModel ();
+		$this->model = new SalutationModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -106,7 +106,7 @@ class StateClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-			
+		 
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -142,9 +142,10 @@ class StateClass extends ConfigClass {
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			INSERT INTO `state`
+			INSERT INTO `salutation`
 					(
-						`stateCode`,												`stateDesc`,	
+						`salutationCode`,
+						`salutationDesc`,				
 						`isDefault`,
 						`isNew`,													`isDraft`,
 						`isUpdate`,													`isDelete`,
@@ -154,7 +155,8 @@ class StateClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getStateCode() . "',					'" . $this->model->getStateDesc() . "',					
+						'" . $this->model->getSalutationCode() . "',
+						'" . $this->model->getSalutationDesc() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -164,9 +166,10 @@ class StateClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [state]
+			INSERT INTO [salutation]
 					(
-						[stateCode],													[stateDesc],
+						[salutationCode],
+						[salutationDesc],														
 						[isDefault],
 						[isNew],														[isDraft],
 						[isUpdate],														[isDelete],
@@ -176,7 +179,8 @@ class StateClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getStateCode() . "',						'" . $this->model->getStateDesc() . "',	
+						'" . $this->model->getSalutationCode() . "',
+						'" . $this->model->getSalutationDesc() . "',			
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
@@ -187,9 +191,10 @@ class StateClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	STATE
+			INSERT INTO	SALUTATION
 					(
-						STATECODE,													STATEDESC	
+						SALUTATIONCODE,
+						SALUTATIONDESC,
 						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
@@ -199,7 +204,8 @@ class StateClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getStateCode() . "',					'" . $this->model->getStateDesc() . "',
+						'" . $this->model->getSalutationCode() . "',
+						'" . $this->model->getSalutationDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -209,9 +215,10 @@ class StateClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	STATE
+			INSERT INTO	SALUTATION
 			(
-						STATECODE,													STATEDESC
+						SALUTATIONCODE,
+						SALUTATIONDESC,									
 						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
@@ -221,7 +228,8 @@ class StateClass extends ConfigClass {
 			)
 			VALUES
 			(
-						'" . $this->model->getStateCode() . "',					'" . $this->model->getStateDesc() . "',		
+						'" . $this->model->getSalutationCode() . "',
+						'" . $this->model->getSalutationDesc() . "',			
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -231,9 +239,10 @@ class StateClass extends ConfigClass {
 			)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	STATE
+			INSERT INTO	SALUTATION
 			(
-						STATECODE,													STATEDESC
+						SALUTATIONCODE,
+						SALUTATIONDESC,
 						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
@@ -243,7 +252,8 @@ class StateClass extends ConfigClass {
 			)
 			VALUES
 			(
-						'" . $this->model->getStateCode() . "',					'" . $this->model->getStateDesc() . "',
+						'" . $this->model->getSalutationCode() . "',
+						'" . $this->model->getSalutationDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -261,7 +271,7 @@ class StateClass extends ConfigClass {
 
 		$this->q->audit = $this->audit;
 		$this->q->create($sql);
-		$stateId = $this->q->lastInsertId();
+		$salutationId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
@@ -270,7 +280,7 @@ class StateClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "stateId" => $stateId));
+		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "salutationId" => $salutationId));
 		exit();
 	}
 
@@ -281,22 +291,22 @@ class StateClass extends ConfigClass {
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		if ($this->getIsAdmin() == 0) {
+		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	`state`.`isActive`		=	1	";
+				$this->auditFilter = "	`salutation`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	[state].[isActive]		=	1	";
+				$this->auditFilter = "	[salutation].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	STATE.ISACTIVE	=	1	";
+				$this->auditFilter = "  SALUTATION.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	STATE.ISACTIVE	=	1	";
+				$this->auditFilter = "	SALUTATION.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	STATE.ISACTIVE	=	1	";
+				$this->auditFilter = "	SALUTATION.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-		} else if ($this->getIsAdmin() == 1) {
+		} else if ($this->isAdmin == 1) {
 			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	1	=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
@@ -320,75 +330,75 @@ class StateClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`state`.`stateId`,
-					`state`.`stateCode`,
-					`state`.`stateDesc`,					
-					`state`.`isDefault`,
-					`state`.`isNew`,
-					`state`.`isDraft`,
-					`state`.`isUpdate`,
-					`state`.`isDelete`,
-					`state`.`isActive`,
-					`state`.`isApproved`,
-					`state`.`isReview`,
-					`state`.`isPost`,
-					`state`.`executeBy`,
-					`state`.`executeTime`,
+			SELECT	`salutation`.`salutationId`,
+					`salutation`.`salutationCode`,
+					`salutation`.`salutationDesc`,					
+					`salutation`.`isDefault`,
+					`salutation`.`isNew`,
+					`salutation`.`isDraft`,
+					`salutation`.`isUpdate`,
+					`salutation`.`isDelete`,
+					`salutation`.`isActive`,
+					`salutation`.`isApproved`,
+					`salutation`.`isReview`,
+					`salutation`.`isPost`,
+					`salutation`.`executeBy`,
+					`salutation`.`executeTime`,
 					`staff`.`staffName`
-			FROM 	`state`
+			FROM 	`salutation`
 			JOIN		`staff`
-			ON		`state`.`executeBy` = `staff`.`staffId`
+			ON		`salutation`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getStateId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getStateId(0, 'single') . "'";
+			if ($this->model->getSalutationId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getSalutationId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[state].[stateId],
-						[state].[stateCode],
-						[state].[stateDesc],			
-						[state].[isDefault],
-						[state].[isNew],
-						[state].[isDraft],
-						[state].[isUpdate],
-						[state].[isDelete],
-						[state].[isActive],
-						[state].[isApproved],
-						[state].[isReview],
-						[state].[isPost],
-						[state].[executeBy],
-						[state].[executeTime],
+			SELECT		[salutation].[salutationId],
+						[salutation].[salutationCode],
+						[salutation].[salutationDesc],			
+						[salutation].[isDefault],
+						[salutation].[isNew],
+						[salutation].[isDraft],
+						[salutation].[isUpdate],
+						[salutation].[isDelete],
+						[salutation].[isActive],
+						[salutation].[isApproved],
+						[salutation].[isReview],
+						[salutation].[isPost],
+						[salutation].[executeBy],
+						[salutation].[executeTime],
 						[staff].[staffName]
-			FROM 		[state]
+			FROM 		[salutation]
 			JOIN		[staff]
-			ON			[state].[executeBy] = [staff].[staffId]
+			ON			[salutation].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getStateId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getStateId(0, 'single') . "'";
+			if ($this->model->getSalutationId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getSalutationId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		STATE.STATEID   		 	AS 	\"stateId\",
-						STATE.STATECODE				AS 	\"stateCode\",
-						STATE.STATEDESC				AS  \"stateDesc\",							
-						STATE.ISDEFAULT    			AS	\"isDefault\",
-						STATE.ISNEW		  			AS	\"isNew\",
-						STATE.ISDRAFT	  			AS	\"isDraft\",
-						STATE.ISUPDATE     			AS	\"isUpdate\",
-						STATE.ISDELETE	  			AS	\"isDelete\",
-						STATE.ISACTIVE	  			AS	\"isActive\",
-						STATE.ISAPPROVED   			AS	\"isApproved\",
-						STATE.ISREVIEW	  			AS	\"isReview\",
-						STATE.ISPOST  	  			AS	\"isPost\",
-						STATE.EXECUTEBY    			AS	\"executeBy\",
-						STATE.EXECUTETIME  			AS	\"executeTime\",
+			SELECT		SALUTATION.SALUTATIONID   		 	AS 	\"salutationId\",
+						SALUTATION.SALUTATIONCODE			AS 	\"salutationCode\",
+						SALUTATION.SALUTATIONDESC	AS 	\"salutationDesc\",							
+						SALUTATION.ISDEFAULT    			AS	\"isDefault\",
+						SALUTATION.ISNEW		  			AS	\"isNew\",
+						SALUTATION.ISDRAFT	  			AS	\"isDraft\",
+						SALUTATION.ISUPDATE     			AS	\"isUpdate\",
+						SALUTATION.ISDELETE	  			AS	\"isDelete\",
+						SALUTATION.ISACTIVE	  			AS	\"isActive\",
+						SALUTATION.ISAPPROVED   			AS	\"isApproved\",
+						SALUTATION.ISREVIEW	  			AS	\"isReview\",
+						SALUTATION.ISPOST  	  			AS	\"isPost\",
+						SALUTATION.EXECUTEBY    			AS	\"executeBy\",
+						SALUTATION.EXECUTETIME  			AS	\"executeTime\",
 						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		STATE
+			FROM 		SALUTATION
 			JOIN		STAFF
-			ON			STATE.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			SALUTATION.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getStateId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getStateId(0, 'single') . "'";
+			if ($this->model->getSalutationId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getSalutationId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -404,13 +414,13 @@ class StateClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('stateId');
+		$filterArray = array('salutationId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('state');
+		$tableArray = array('salutation');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -501,30 +511,30 @@ class StateClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [stateDerived] AS
+							WITH [salutationDerived] AS
 							(
-								SELECT 		[state].[stateId],
-											[state].[stateCode],
-											[state].[stateDesc],
-											[state].[isDefault],
-											[state].[isNew],
-											[state].[isDraft],
-											[state].[isUpdate],
-											[state].[isDelete],
-											[state].[isApproved],
-											[state].[isReview],
-											[state].[isPost],
-											[state].[executeBy],
-											[state].[executeTime],
+								SELECT 		[salutation].[salutationId],
+											[salutation].[salutationCode],
+											[salutation].[salutationDesc],
+											[salutation].[isDefault],
+											[salutation].[isNew],
+											[salutation].[isDraft],
+											[salutation].[isUpdate],
+											[salutation].[isDelete],
+											[salutation].[isApproved],
+											[salutation].[isReview],
+											[salutation].[isPost],
+											[salutation].[executeBy],
+											[salutation].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [stateId]) AS 'RowNumber'
-								FROM 	[state]
+								ROW_NUMBER() OVER (ORDER BY [salutationId]) AS 'RowNumber'
+								FROM 	[salutation]
 								JOIN		[staff]
-								ON		[state].[executeBy] = [staff].[staffId]
+								ON		[salutation].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[stateDerived]
+							FROM 		[salutationDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -537,24 +547,24 @@ class StateClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	STATE.STATEID   		AS 	\"stateId\",
-										STATE.STATECODE			AS 	\"stateCode\",
-										STATE.STATEDESC			AS 	\"stateDesc\",		
-										STATE.ISDEFAULT    		AS	\"isDefault\",
-										STATE.ISNEW		  		AS	\"isNew\",
-										STATE.ISDRAFT	 		AS	\"isDraft\",
-										STATE.ISUPDATE     		AS	\"isUpdate\",
-										STATE.ISDELETE	  		AS	\"isDelete\",
-										STATE.ISACTIVE	  		AS	\"isActive\",
-										STATE.ISAPPROVED   		AS	\"isApproved\",
-										STATE.ISREVIEW	  		AS 	\"isReview\",
-										STATE.ISPOST		  		AS	\"isPost\",
-										STATE.EXECUTEBY    		AS	\"executeBy\",
-										STATE.EXECUTETIME  		AS	\"executeTime\",
+								SELECT	SALUTATION.SALUTATIONID   		AS 	\"salutationId\",
+										SALUTATION.SALUTATIONCODE		AS 	\"salutationCode\",
+										SALUTATION.SALUTATIONDESC		AS 	\"salutationDesc\",		
+										SALUTATION.ISDEFAULT    		AS	\"isDefault\",
+										SALUTATION.ISNEW		  		AS	\"isNew\",
+										SALUTATION.ISDRAFT	 		AS	\"isDraft\",
+										SALUTATION.ISUPDATE     		AS	\"isUpdate\",
+										SALUTATION.ISDELETE	  		AS	\"isDelete\",
+										SALUTATION.ISACTIVE	  		AS	\"isActive\",
+										SALUTATION.ISAPPROVED   		AS	\"isApproved\",
+										SALUTATION.ISREVIEW	  		AS 	\"isReview\",
+										SALUTATION.ISPOST		  		AS	\"isPost\",
+										SALUTATION.EXECUTEBY    		AS	\"executeBy\",
+										SALUTATION.EXECUTETIME  		AS	\"executeTime\",
 										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	STATE
+								FROM 	SALUTATION
 								JOIN	STAFF
-								ON		STATE.EXECUTEBY 	  	=	STAFF.STAFFID
+								ON		SALUTATION.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -583,7 +593,7 @@ class StateClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getStateId(0, 'single'))) {
+		if (!($this->model->getSalutationId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -594,11 +604,11 @@ class StateClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getStateId(0, 'single')) {
+		if ($this->model->getSalutationId(0, 'single')) {
 			$this->q->commit();
-			$end = microtime(true);
-			$time = $end - $start;
-			$json_encode = json_encode(array('success' =>true, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getStateId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getStateId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		$end = microtime(true);
+		$time = $end - $start;
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getSalutationId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getSalutationId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -607,8 +617,8 @@ class StateClass extends ConfigClass {
 				$items = '';
 			}
 			$this->q->commit();
-			$end = microtime(true);
-			$time = $end - $start;
+		$end = microtime(true);
+		$time = $end - $start;
 			echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
 			exit();
 		}
@@ -636,27 +646,27 @@ class StateClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -669,9 +679,9 @@ class StateClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`state`
-				SET 		`stateCode`			=	'" . $this->model->getStateCode() . "',
-							`stateDesc`			=	'".$this->model->getStateDesc()."',
+				UPDATE		`salutation`
+				SET 		`salutationCode`		=	'" . $this->model->getSalutationCode() . "',
+							`salutationDesc`			=	'" . $this->model->getSalutationDesc() . "',
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -683,12 +693,12 @@ class StateClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`stateId`			=	'" . $this->model->getStateId(0, 'single') . "'";
+				WHERE 		`salutationId`		=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[state]
-				SET 		[stateCode]			=	'" . $this->model->getStateCode() . "',
-							[stateDesc]			=	'".$this->model->getStateDesc()."',
+				UPDATE 		[salutation]
+				SET 		[salutationCode]			=	'" . $this->model->getSalutationCode() . "',
+							[salutationDesc]				=	'" . $this->model->getSalutationDesc() . "',
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -700,12 +710,12 @@ class StateClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[stateId]			=	'" . $this->model->getStateId(0, 'single') . "'";
+			WHERE 		[salutationId]			=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		STATE
-				SET		 	STATECODE 			=	'" . $this->model->getStateCode() . "',	
-							STATEDESC 			=	'" . $this->model->getStateDesc() . "',	
+				UPDATE		SALUTATION
+				SET		 	SALUTATIONCODE 		=	'" . $this->model->getSalutationCode() . "',	
+							SALUTATIONDESC				=	'" . $this->model->getSalutationDesc() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -717,12 +727,12 @@ class StateClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 			STATEID			=	'" . $this->model->getStateId(0, 'single') . "'";
+			WHERE 			SALUTATIONID			=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE			STATE
-			SET 			STATECODE 			=	'" . $this->model->getStateCode() . "',	
-							STATEDESC 			=	'" . $this->model->getStateDesc() . "',	
+			UPDATE			SALUTATION
+			SET 			SALUTATIONCODE 		=	'" . $this->model->getSalutationCode() . "',	
+							SALUTATIONDESC				=	'" . $this->model->getSalutationDesc() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -734,12 +744,12 @@ class StateClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-			WHERE 			STATEID				=	'" . $this->model->getStateId(0, 'single') . "'";
+			WHERE 			SALUTATIONID			=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE		STATE
-				SET 		STATECODE 			=	'" . $this->model->getStateCode() . "',
-							STATEDESC 			=	'" . $this->model->getStateDesc() . "',		
+				UPDATE		SALUTATION
+				SET 		SALUTATIONCODE 		=	'" . $this->model->getSalutationCode() . "',	
+							SALUTATIONDESC				=	'" . $this->model->getSalutationDesc() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -751,12 +761,18 @@ class StateClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		STATEID				=	'" . $this->model->getStateId(0, 'single') . "'";
+				WHERE 		SALUTATIONID			=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-
+			/*
+			 *  require three variable below to track  table audit
+			 */
+			$this->q->tableName = $this->model->getTableName();
+			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
+			$this->q->primaryKeyValue = $this->model->getSalutationId(0, 'single');
+			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -789,27 +805,27 @@ class StateClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getStateId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSalutationId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -822,7 +838,7 @@ class StateClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`state`
+				UPDATE 	`salutation`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -834,10 +850,10 @@ class StateClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`stateId`		=	'" . $this->model->getStateId(0, 'single') . "'";
+				WHERE 	`salutationId`		=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[state]
+				UPDATE 	[salutation]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -849,10 +865,10 @@ class StateClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[stateId]		=	'" . $this->model->getStateId(0, 'single') . "'";
+				WHERE 	[salutationId]		=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE 	STATE
+				UPDATE 	SALUTATION
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -864,10 +880,10 @@ class StateClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	STATEID		=	'" . $this->model->getStateId(0, 'single') . "'";
+				WHERE 	SALUTATIONID		=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE 	STATE
+				UPDATE 	SALUTATION
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -879,10 +895,10 @@ class StateClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	STATEID		=	'" . $this->model->getStateId(0, 'single') . "'";
+				WHERE 	SALUTATIONID		=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE 	STATE
+				UPDATE 	SALUTATION
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -894,11 +910,12 @@ class StateClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	STATEID		=	'" . $this->model->getStateId(0, 'single') . "'";
+				WHERE 	SALUTATIONID		=	'" . $this->model->getSalutationId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -977,7 +994,7 @@ class StateClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getStateId($i, 'array') . "'
+							WHEN '" . $this->model->getSalutationId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1001,7 +1018,7 @@ class StateClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getStateId($i, 'array') . "'
+							WHEN '" . $this->model->getSalutationId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1025,7 +1042,7 @@ class StateClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getStateId($i, 'array') . "'
+							WHEN '" . $this->model->getSalutationId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1050,7 +1067,7 @@ class StateClass extends ConfigClass {
 
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getStateId($i, 'array') . "'
+							WHEN '" . $this->model->getSalutationId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1074,7 +1091,7 @@ class StateClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getStateId($i, 'array') . "'
+							WHEN '" . $this->model->getSalutationId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1098,7 +1115,7 @@ class StateClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getStateId($i, 'array') . "'
+							WHEN '" . $this->model->getSalutationId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1122,7 +1139,7 @@ class StateClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getStateId($i, 'array') . "'
+							WHEN '" . $this->model->getSalutationId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1146,7 +1163,7 @@ class StateClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getStateId($i, 'array') . "'
+                            WHEN '" . $this->model->getSalutationId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1170,7 +1187,7 @@ class StateClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getStateId($i, 'array') . "'
+                                WHEN '" . $this->model->getSalutationId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1226,39 +1243,38 @@ class StateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`stateCode`
-			FROM 	`state`
-			WHERE 	`stateCode` 	= 	'" . $this->model->getStateCode() . "'
+			SELECT	`salutationCode`
+			FROM 	`salutation`
+			WHERE 	`salutationCode` 	= 	'" . $this->model->getSalutationCode() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[stateCode]
-			FROM 	[state]
-			WHERE 	[stateCode] 	= 	'" . $this->model->getStateCode() . "'
+			SELECT	[salutationCode]
+			FROM 	[salutation]
+			WHERE 	[salutationCode] 	= 	'" . $this->model->getSalutationCode() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	STATECODE
-			FROM 	STATE
-			WHERE 	STATECODE 	= 	'" . $this->model->getStateCode() . "'
+			SELECT	SALUTATIONCODE
+			FROM 	SALUTATION
+			WHERE 	SALUTATIONCODE 	= 	'" . $this->model->getSalutationCode() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			SELECT	STATECODE
-			FROM 	STATE
-			WHERE 	STATECODE 	= 	'" . $this->model->getStateCode() . "'
+			SELECT	SALUTATIONCODE
+			FROM 	SALUTATION
+			WHERE 	SALUTATIONCODE 	= 	'" . $this->model->getSalutationCode() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			SELECT	STATECODE
-			FROM 	STATE
-			WHERE 	STATECODE 	= 	'" . $this->model->getStateCode() . "'
+			SELECT	SALUTATIONCODE
+			FROM 	SALUTATION
+			WHERE 	SALUTATIONCODE 	= 	'" . $this->model->getSalutationCode() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1279,7 +1295,7 @@ class StateClass extends ConfigClass {
 			array(	"success" => true,
             				"total" => $total, 
             				"message" => $this->systemString->getDuplicateMessage(), 
-            				"stateCode" => $row ['stateCode'],
+            				"salutationCode" => $row ['familyCode'],
             				"time"=>$time));
 			exit();
 		} else {
@@ -1290,8 +1306,7 @@ class StateClass extends ConfigClass {
             			"total" => $total, 
             			"message" => $this->systemString->getNonDuplicateMessage(),
             			"time"=>$time));
-		}
-
+		}		
 	}
 
 	function firstRecord($value) {
@@ -1353,7 +1368,7 @@ class StateClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['stateDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['salutationDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1362,15 +1377,12 @@ class StateClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "state" . rand(0, 10000000) . ".xlsx";
+		$filename = "salutation" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->getLeafId(), $path, $filename);
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			$this->q->commit();
-			$end = microtime(true);
-			$time = $end - $start;
 			echo json_encode(
 			array(	"success" =>true,
             			"message" => $this->systemString->getFileGenerateMessage(), 
@@ -1378,9 +1390,6 @@ class StateClass extends ConfigClass {
             			"time"=>$time));
 			exit();
 		} else {
-			$this->q->commit();
-			$end = microtime(true);
-			$time = $end - $start;
 			echo json_encode(
 			array(	"success" => false,
             				"message" => $this->systemString->getFileNotGenerateMessage(),
@@ -1391,7 +1400,7 @@ class StateClass extends ConfigClass {
 
 }
 
-$stateObject = new StateClass ();
+$salutationObject = new SalutationClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1401,65 +1410,65 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$stateObject->setLeafId($_POST ['leafId']);
+		$salutationObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$stateObject->setIsAdmin($_POST ['isAdmin']);
+		$salutationObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/**
 	 * Database Request
 	 */
 	if (isset($_POST ['databaseRequest'])) {
-		$stateObject->setDatabaseRequest($_POST ['databaseRequest']);
+		$salutationObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$stateObject->setStart($_POST ['start']);
+		$salutationObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$stateObject->setLimit($_POST ['perPage']);
+		$salutationObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$stateObject->setFieldQuery($_POST ['query']);
+		$salutationObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$stateObject->setGridQuery($_POST ['filter']);
+		$salutationObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$stateObject->setOrder($_POST ['order']);
+		$salutationObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$stateObject->setSortField($_POST ['sortField']);
+		$salutationObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$stateObject->execute();
+	$salutationObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$stateObject->create();
+		$salutationObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$stateObject->update();
+		$salutationObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$stateObject->read();
+		$salutationObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$stateObject->delete();
+		$salutationObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1467,41 +1476,41 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$stateObject->setLeafId($_GET ['leafId']);
+		$salutationObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$stateObject->setIsAdmin($_GET ['isAdmin']);
+		$salutationObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/**
 	 * Database Request
 	 */
 	 if (isset($_GET ['databaseRequest'])) {
-		$stateObject->setDatabaseRequest($_GET ['databaseRequest']);
+		$salutationObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$stateObject->execute();
+	$salutationObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$stateObject->staff();
+			$salutationObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$stateObject->updateStatus();
+		$salutationObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['stateDesc'])) {
-		if (strlen($_GET ['stateDesc']) > 0) {
-			$stateObject->duplicate();
+	if (isset($_GET ['salutationDesc'])) {
+		if (strlen($_GET ['salutationDesc']) > 0) {
+			$salutationObject->duplicate();
 		}
 	}
 	/**
@@ -1509,16 +1518,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$stateObject->firstRecord('json');
+			$salutationObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$stateObject->previousRecord('json', 0);
+			$salutationObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$stateObject->nextRecord('json', 0);
+			$salutationObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$stateObject->lastRecord('json');
+			$salutationObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1526,7 +1535,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$stateObject->excel();
+			$salutationObject->excel();
 		}
 	}
 }

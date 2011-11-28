@@ -162,31 +162,31 @@ class TreeClass extends ConfigClass {
 		$counterModule = 0;
 		$treeJsonString = " [";
 		if ($this->getVendor () == self::MYSQL) {
-			  $sqlModule = "
-		      SELECT    `moduleAccessId`,
-		      			`moduleId`,
-		      			`teamId`,
-		      			`moduleAccessValue`,
-		      			`moduleId`,
-		      			`moduleNative`,
-		      			`iconName`
-		      FROM		`moduleAccess`
-		      JOIN    	`module`
+			 $sqlModule = "
+		      SELECT    `iCore`.`moduleAccess`.`moduleAccessId`,
+		      			`iCore`.`moduleAccess`.`moduleId`,
+		      			`iManagement`.`team`.`teamId`,
+		      			`iCore`.`moduleAccess`.`moduleAccessValue`,
+		      			`iCore`.`moduleAccess`.`moduleId`,
+		      			`iCore`.`moduleTranslate`.`moduleNative`,
+		      			`iCore`.`icon`.`iconName`
+		      FROM		`iCore`.`moduleAccess`
+		      JOIN    	`iCore`.`module`
 		      USING    	(`moduleId`)
-		      JOIN    	`moduleTranslate`
+		      JOIN    	`iCore`.`moduleTranslate`
 		      USING    	(`moduleId`)
 		      LEFT JOIN `icon`
 		      USING    	(`iconId`)
-		      JOIN		`team`
+		      JOIN		`iManagement`.`team`
 		      USING  	(`teamId`)
-		      WHERE   	`moduleAccess`.`teamId`			=	'" . $_SESSION ['teamId'] . "'
-		      AND   	`moduleAccess`.`moduleAccessValue`	=  	1
-		      AND    	`moduleTranslate`.`languageId`		=	'" . $_SESSION ['languageId'] . "'
-		      AND		`module`.`applicationId`			=	'".$_SESSION['applicationId']."'
-		      AND		`module`.`isActive`					=	1
-		      AND		`moduleTranslate`.`isActive`		=	1
-		      AND		`team`.`isActive`					=	1
-		      ORDER BY  `module`.`moduleSequence`   ";
+		      WHERE   	`iCore`.`moduleAccess`.`teamId`			=	'" . $_SESSION ['teamId'] . "'
+		      AND   	`iCore`.`moduleAccess`.`moduleAccessValue`	=  	1
+		      AND    	`iCore`.`moduleTranslate`.`languageId`		=	'" . $_SESSION ['languageId'] . "'
+		      AND		`iCore`.`module`.`applicationId`			=	'".$_SESSION['applicationId']."'
+		      AND		`iCore`.`module`.`isActive`					=	1
+		      AND		`iCore`.`moduleTranslate`.`isActive`		=	1
+		      AND		`iManagement`.`team`.`isActive`							=	1
+		      ORDER BY  `iCore`.`module`.`moduleSequence`   ";
 
 
 		} elseif ($this->getVendor () == self::MSSQL) {
@@ -255,33 +255,32 @@ class TreeClass extends ConfigClass {
 					    \"iconCls\"	:	\"" . $iconName . "\",
 					    \"expanded\":	true,";
 				if ($this->getVendor () == self::MYSQL) {
-					$sqlFolder = "
-					      SELECT    `folderAccessId`,
-				      				`teamId`,
-				      				`folderAccessValue`,
-				      				`folderId`,
-				      				`folderPath`,
-				      				`folderNative`,
-				      				`iconName`	
-					      FROM    	`folderAccess`
-					      JOIN    	`folder`
+							$sqlFolder = "
+					      SELECT    `iCore`.`folderAccess`.`folderAccessId`,
+				      				`iCore`.`folderAccess`.`folderAccessValue`,									
+				      				`iCore`.`folder`.`folderId`,
+				      				`iCore`.`folder`.`folderPath`,
+				      				`iCore`.`folderTranslate`.`folderNative`,
+				      				`iManagement`.`team`.`teamId`,
+									`iCore`.`icon`.`iconName`	
+					      FROM    	`iCore`.`folderAccess`
+					      JOIN    	`iCore`.`folder`
 					      USING    	(`folderId`)
-					      JOIN    	`folderTranslate`
+					      JOIN    	`iCore`.`folderTranslate`
 					      USING    	(`folderId`)
-					      JOIN    	`icon`
+					      JOIN    	`iCore`.`icon`
 					      USING    	(`iconId`)
-					      JOIN		`team`
+					      JOIN		`iManagement`.`team`
 					      USING		(`teamId`)
-					      WHERE     `moduleId`							=	'" . $moduleId . "'
-					      AND     	`folderAccess`.`teamId`				=	'" . $_SESSION ['teamId'] . "'
-					      AND   	`folderAccess`.`folderAccessValue`	=  	1
-					      AND    	`folderTranslate`.`languageId`		=	'" . $_SESSION ['languageId'] . "'
-					      AND		`folder`.`applicationId`			=	'".$_SESSION['applicationId']."'
-					      
-					      AND		`team`.`isActive`					=	1
-					      AND		`folderTranslate`.`isActive`		=   1
-					      AND		`folder`.`isActive`					=	1 		
-					      ORDER BY   `folder`.`folderSequence`  ";
+					      WHERE     `iCore`.`folder`.`moduleId`					=	'" . $moduleId . "'
+					      AND     	`iCore`.`folderAccess`.`teamId`				=	'" . $_SESSION ['teamId'] . "'
+					      AND   	`iCore`.`folderAccess`.`folderAccessValue`	=  	1
+					      AND    	`iCore`.`folderTranslate`.`languageId`		=	'" . $_SESSION ['languageId'] . "'
+					      AND		`iCore`.`folder`.`applicationId`			=	'".$_SESSION['applicationId']."'					      
+					      AND		`iManagement`.`team`.`isActive`				=	1
+					      AND		`iCore`.`folderTranslate`.`isActive`		=   1
+					      AND		`iCore`.`folder`.`isActive`					=	1 		
+					      ORDER BY  `iCore`.`folder`.`folderSequence`  ";
 				} elseif ($this->getVendor () == self::MSSQL) {
 					$sqlFolder = "
 				      SELECT    [folderAccessId],
@@ -353,29 +352,29 @@ class TreeClass extends ConfigClass {
               						\"iconCls\"		:	\"" . $iconName . "\",";
 						$counter_leaf = 0;
 						if ($this->getVendor () == self::MYSQL) {
-							$sqlLeaf = "
-					          SELECT   	`leafAccessId`,
-						      			`staffId`,
-						      			`leafAccessReadValue`,
-						      			`leafId`,
-						      			`leafFilename`,
-						      			`leafNative`,
-						      			`iconName`
-					          FROM    `leafAccess`
-					          JOIN    `leaf`
+							  $sqlLeaf = "
+					          SELECT   	`iCore`.`leafAccess`.`leafAccessId`,
+						      			`iCore`.`leafAccess`.`staffId`,
+						      			`iCore`.`leafAccess`.`leafAccessReadValue`,
+						      			`iCore`.`leaf`.`leafId`,
+						      			`iCore`.`leaf`.`leafFilename`,
+						      			`iCore`.`leafTranslate`.`leafNative`,
+						      			`iCore`.`icon`.`iconName`
+					          FROM    	`iCore`.`leafAccess`
+					          JOIN    	`iCore`.`leaf`
 					          USING    (`leafId`)
-					          JOIN    `leafTranslate`
+					          JOIN    	`iCore`.`leafTranslate`
 					          USING    (`leafId`)
-					          JOIN    `icon`
+					          JOIN    	`iCore`.`icon`
 					          USING    (`iconId`)
-					          WHERE     `folderId`					=	'" . $folderId . "'
-					          AND      `moduleId`					=	'" . $moduleId . "'
-					          AND      `leafAccess`.`staffId`		=	'" . $_SESSION ['staffId'] . "'
-					          AND      `leafTranslate`.`languageId`	=	'" . $_SESSION ['languageId'] . "'
-					          AND		`leaf`.`applicationId`		=	'".$_SESSION['applicationId']."'
-					          AND		`leaf`.`isActive`			=	1
-					          AND		`leafTranslate`.`isActive`  =   1			          
-					          ORDER BY  `leaf`.`leafSequence`  ";
+					          WHERE    	`iCore`.`leaf`.`folderId`					=	'" . $folderId . "'
+					          AND      	`iCore`.`leaf`.`moduleId`					=	'" . $moduleId . "'
+					          AND      	`iCore`.`leafAccess`.`staffId`		=	'" . $_SESSION ['staffId'] . "'
+					          AND      	`iCore`.`leafTranslate`.`languageId`	=	'" . $_SESSION ['languageId'] . "'
+					          AND		`iCore`.`leaf`.`applicationId`		=	'".$_SESSION['applicationId']."'
+					          AND		`iCore`.`leaf`.`isActive`			=	1
+					          AND		`iCore`.`leafTranslate`.`isActive`  =   1			          
+					          ORDER BY  `iCore`.`leaf`.`leafSequence`  ";
 
 							//print"<br>".$sqlLeaf."<br>";
 						} elseif ($this->getVendor () == self::MSSQL) {

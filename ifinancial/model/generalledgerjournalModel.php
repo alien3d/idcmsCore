@@ -3,96 +3,41 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is customers model file.This is to ensure strict setting enable for all variable enter to database
+ * this is generalledgerjournal model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @subpackage customers
+ * @package generalledgerjournal
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class CustomersModel extends ValidationClass {
+class GeneralledgerjournalModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $customersId;
+	private $generalLedgerJournalId;
 	/**
-	 * @var string
-	 */
-	private $customersCompany;
+	* @var string
+	*/
+	private $documentNo;
 	/**
-	 * @var string
-	 */
-	private $customersLastName;
+	* @var string
+	*/
+	private $generalLedgerJournalTitle;
 	/**
-	 * @var string
-	 */
-	private $customersFirstName;
+	* @var string
+	*/
+	private $generalLedgerJournalDesc;
 	/**
-	 * @var string
-	 */
-	private $customersEmail;
+	* @var date
+	*/
+	private $generalLedgerJournalDate;
 	/**
-	 * @var int
-	 */
-	private $customersJobTitle;
-	/**
-	 * @var string
-	 */
-	private $customersBusinessPhone;
-	/**
-	 * @var string
-	 */
-	private $customersHomePhone;
-	/**
-	 * @var string
-	 */
-	private $customersMobilePhone;
-	/**
-	 * @var date
-	 */
-	private $customersBirthday;
-	/**
-	 * @var string
-	 */
-	private $customersFaxNum;
-	/**
-	 * @var string
-	 */
-	private $customersAddress;
-	/**
-	 * @var string
-	 */
-	private $customersCity;
-	/**
-	 * @var string
-	 */
-	private $customersState;
-	/**
-	 * @var string
-	 */
-	private $customersPostcode;
-	/**
-	 * @var string
-	 */
-	private $customersCountry;
-	/**
-	 * @var string
-	 */
-	private $customersWebPage;
-	/**
-	 * @var string
-	 */
-	private $customersNotes;
-	/**
-	 * @var string
-	 */
-	private $customersAttachments;
-
-
-
+	* @var float
+	*/
+	private $generalLedgerJournalAmount;
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
@@ -102,70 +47,35 @@ class CustomersModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('customers');
-		$this->setPrimaryKeyName('customersId');
+		$this->setTableName('generalledgerjournal');
+		$this->setPrimaryKeyName('generalLedgerJournalId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['customersId'])) {
-			$this->setCustomersId($this->strict($_POST ['customersId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['generalLedgerJournalId'])) {
+			$this->setGeneralLedgerJournalId($this->strict($_POST ['generalLedgerJournalId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['customersCompany'])) {
-			$this->setCustomersCompany($this->strict($_POST ['customersCompany'], 'string'));
+		if (isset($_POST ['documentNo'])) {
+			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
 		}
-		if(isset($_POST['customersLastName'])){
-			$this->setCustomersLastName($this->strict($_POST['customersLastName'],'string'));
+		if (isset($_POST ['generalLedgerJournalTitle'])) {
+			$this->setGeneralLedgerJournalTitle($this->strict($_POST ['generalLedgerJournalTitle'], 'string'));
 		}
-		if(isset($_POST['customersFirstName'])){
-			$this->setCustomersFirstName($this->strict($_POST['customersFirstName'],'string'));
+		if (isset($_POST ['generalLedgerJournalDesc'])) {
+			$this->setGeneralLedgerJournalDesc($this->strict($_POST ['generalLedgerJournalDesc'], 'string'));
 		}
-		if(isset($_POST['customersEmail'])){
-			$this->setCustomersEmail($this->strict($_POST['customersEmail'],'string'));
+		if (isset($_POST ['generalLedgerJournalDate'])) {
+			$this->setGeneralLedgerJournalDate($this->strict($_POST ['generalLedgerJournalDate'], 'date'));
 		}
-		if(isset($_POST['customersJobTitle'])){
-			$this->setCustomersJobTitle($this->strict($_POST['customersJobTitle'],'string'));
+		if (isset($_POST ['generalLedgerJournalAmount'])) {
+			$this->setGeneralLedgerJournalAmount($this->strict($_POST ['generalLedgerJournalAmount'], 'float'));
 		}
-		if(isset($_POST['customersBusinessPhone'])){
-			$this->setCustomersBusinessPhone($this->strict($_POST['customersBusinessPhone'],'string'));
-		}
-		if(isset($_POST['customersMobilePhone'])){
-			$this->setCustomersMobilePhone($this->strict($_POST['customersHomePhone'],'string'));
-		}
-		if(isset($_POST['customersFaxNum'])){
-			$this->setCustomersFaxNum($this->strict($_POST['customersFaxNum'],'string'));
-		}
-		if(isset($_POST['customersAddress'])){
-			$this->setCustomersAddress($this->strict($_POST['customersAddress'],'string'));
-		}
-		if(isset($_POST['customersCity'])){
-			$this->setCustomersCity($this->strict($_POST['customersCity'],'string'));
-		}
-		if(isset($_POST['customersState'])){
-			$this->setCustomersState($this->strict($_POST['customersState'],'string'));
-		}
-		if(isset($_POST['customersPostcode'])){
-			$this->setCustomersPostcode($this->strict($_POST['customersPostcode'],'string'));
-		}
-		if(isset($_POST['customersCountry'])){
-			$this->setCustomersCountry($this->strict($_POST['customersCountry'],'string'));
-		}
-		if(isset($_POST['customersWebPage'])){
-			$this->setCustomersWebPage($this->strict($_POST['customersWebPage'],'string'));
-		}
-		if(isset($_POST['customersNotes'])){
-			$this->setCustomersNotes($this->strict($_POST['customersNotes'],'string'));
-		}
-		if(isset($_POST['customersAttachments'])){
-			$this->setCustomersCountry($this->strict($_POST['customersAttachments'],'string'));
-		}
-		if(isset($_POST['customersAttachments'])){
-			$this->setCustomersAttachments($this->strict($_POST['customersAttachments'],'string'));
-		}
+		
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['customersId'])) {
-			$this->setTotal(count($_GET ['customersId']));
+		if (isset($_GET ['generalledgerjournalId'])) {
+			$this->setTotal(count($_GET ['generalLedgerJournalId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -215,8 +125,8 @@ class CustomersModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['customersId'])) {
-				$this->setCustomersId($this->strict($_GET ['customersId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['generalLedgerJournalId'])) {
+				$this->setGeneralLedgerJournalId($this->strict($_GET ['generalLedgerJournalId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -281,7 +191,7 @@ class CustomersModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getCustomersId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getGeneralledgerjournalId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -415,209 +325,184 @@ class CustomersModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Customers Identification  Value
+	 * Set Generalledgerjournal Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setCustomersId($value, $key, $type) {
+	public function setGeneralLedgerJournalId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->customersId = $value;
+			$this->generalLedgerJournalId = $value;
 		} else if ($type == 'array') {
-			$this->customersId [$key] = $value;
+			$this->generalLedgerJournalId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setCustomersId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setGeneralledgerjournalId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Customers Identification  Value
+	 * Return Generalledgerjournal Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getCustomersId($key, $type) {
+	public function getGeneralLedgerJournalId($key, $type) {
 		if ($type == 'single') {
-			return $this->customersId;
+			return $this->generalLedgerJournalId;
 		} else if ($type == 'array') {
-			return $this->customersId [$key];
+			return $this->generalLedgerJournalId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getCustomersId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getGeneralledgerjournalId ?"));
 			exit();
 		}
 	}
 
 
-	public function getCustomersAddress()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getDocumentNo()
 	{
-		return $this->customersAddress;
+	    return $this->documentNo;
 	}
 
-	public function setCustomersAddress($customersAddress)
+	/**
+	 * 
+	 * @param $documentNo
+	 */
+	public function setDocumentNo($documentNo)
 	{
-		$this->customersAddress = $customersAddress;
+	    $this->documentNo = $documentNo;
 	}
 
-	public function getCustomersPostcode()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerJournalTitle()
 	{
-		return $this->customersPostcode;
+	    return $this->generalLedgerJournalTitle;
 	}
 
-	public function setCustomersPostcode($customersPostcode)
+	/**
+	 * 
+	 * @param $generalLedgerJournalTitle
+	 */
+	public function setGeneralLedgerJournalTitle($generalLedgerJournalTitle)
 	{
-		$this->customersPostcode = $customersPostcode;
+	    $this->generalLedgerJournalTitle = $generalLedgerJournalTitle;
 	}
 
-	public function getCustomersEmail()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerJournalDesc()
 	{
-		return $this->customersEmail;
+	    return $this->generalLedgerJournalDesc;
 	}
 
-	public function setCustomersEmail($customersEmail)
+	/**
+	 * 
+	 * @param $generalLedgerJournalDesc
+	 */
+	public function setGeneralLedgerJournalDesc($generalLedgerJournalDesc)
 	{
-		$this->customersEmail = $customersEmail;
+	    $this->generalLedgerJournalDesc = $generalLedgerJournalDesc;
 	}
 
-	public function getCustomersCompany()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerJournalDate()
 	{
-	    return $this->customersCompany;
+	    return $this->generalLedgerJournalDate;
 	}
 
-	public function setCustomersCompany($customersCompany)
+	/**
+	 * 
+	 * @param $generalLedgerJournalDate
+	 */
+	public function setGeneralLedgerJournalDate($generalLedgerJournalDate)
 	{
-	    $this->customersCompany = $customersCompany;
+	    $this->generalLedgerJournalDate = $generalLedgerJournalDate;
 	}
 
-	public function getCustomersLastName()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerJournalAmount()
 	{
-	    return $this->customersLastName;
+	    return $this->generalLedgerJournalAmount;
 	}
 
-	public function setCustomersLastName($customersLastName)
+	/**
+	 * 
+	 * @param $generalLedgerJournalAmount
+	 */
+	public function setGeneralLedgerJournalAmount($generalLedgerJournalAmount)
 	{
-	    $this->customersLastName = $customersLastName;
+	    $this->generalLedgerJournalAmount = $generalLedgerJournalAmount;
 	}
 
-	public function getCustomersFirstName()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerJournalDesc()
 	{
-	    return $this->customersFirstName;
+	    return $this->generalLedgerJournalDesc;
 	}
 
-	public function setCustomersFirstName($customersFirstName)
+	/**
+	 * 
+	 * @param $generalLedgerJournalDesc
+	 */
+	public function setGeneralLedgerJournalDesc($generalLedgerJournalDesc)
 	{
-	    $this->customersFirstName = $customersFirstName;
+	    $this->generalLedgerJournalDesc = $generalLedgerJournalDesc;
 	}
 
-	public function getCustomersJobTitle()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerJournalDate()
 	{
-	    return $this->customersJobTitle;
+	    return $this->generalLedgerJournalDate;
 	}
 
-	public function setCustomersJobTitle($customersJobTitle)
+	/**
+	 * 
+	 * @param $generalLedgerJournalDate
+	 */
+	public function setGeneralLedgerJournalDate($generalLedgerJournalDate)
 	{
-	    $this->customersJobTitle = $customersJobTitle;
+	    $this->generalLedgerJournalDate = $generalLedgerJournalDate;
 	}
 
-	public function getCustomersBusinessPhone()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerJournalAmount()
 	{
-	    return $this->customersBusinessPhone;
+	    return $this->generalLedgerJournalAmount;
 	}
 
-	public function setCustomersBusinessPhone($customersBusinessPhone)
+	/**
+	 * 
+	 * @param $generalLedgerJournalAmount
+	 */
+	public function setGeneralLedgerJournalAmount($generalLedgerJournalAmount)
 	{
-	    $this->customersBusinessPhone = $customersBusinessPhone;
+	    $this->generalLedgerJournalAmount = $generalLedgerJournalAmount;
 	}
 
-	public function getCustomersHomePhone()
-	{
-	    return $this->customersHomePhone;
-	}
-
-	public function setCustomersHomePhone($customersHomePhone)
-	{
-	    $this->customersHomePhone = $customersHomePhone;
-	}
-
-	public function getCustomersMobilePhone()
-	{
-	    return $this->customersMobilePhone;
-	}
-
-	public function setCustomersMobilePhone($customersMobilePhone)
-	{
-	    $this->customersMobilePhone = $customersMobilePhone;
-	}
-
-	public function getCustomersFaxNum()
-	{
-	    return $this->customersFaxNum;
-	}
-
-	public function setCustomersFaxNum($customersFaxNum)
-	{
-	    $this->customersFaxNum = $customersFaxNum;
-	}
-
-	public function getCustomersCity()
-	{
-	    return $this->customersCity;
-	}
-
-	public function setCustomersCity($customersCity)
-	{
-	    $this->customersCity = $customersCity;
-	}
-
-	public function getCustomersState()
-	{
-	    return $this->customersState;
-	}
-
-	public function setCustomersState($customersState)
-	{
-	    $this->customersState = $customersState;
-	}
-
-	public function getCustomersCountry()
-	{
-	    return $this->customersCountry;
-	}
-
-	public function setCustomersCountry($customersCountry)
-	{
-	    $this->customersCountry = $customersCountry;
-	}
-
-	public function getCustomersWebPage()
-	{
-	    return $this->customersWebPage;
-	}
-
-	public function setCustomersWebPage($customersWebPage)
-	{
-	    $this->customersWebPage = $customersWebPage;
-	}
-
-	public function getCustomersNotes()
-	{
-	    return $this->customersNotes;
-	}
-
-	public function setCustomersNotes($customersNotes)
-	{
-	    $this->customersNotes = $customersNotes;
-	}
-
-	public function getCustomersAttachments()
-	{
-	    return $this->customersAttachments;
-	}
-
-	public function setCustomersAttachments($customersAttachments)
-	{
-	    $this->customersAttachments = $customersAttachments;
-	}
 }
 
 ?>

@@ -258,14 +258,14 @@ class Vendor {
 		if ($error == 1) {
 			
 			$sql_log = "
-			INSERT	INTO	`log`
+			INSERT	INTO	`ilog`.`log`
 					(
-							`leafId`,
-							`operation`,
-							`sql`,
-							`date`,
-							`staffId`,
-							`logError`
+							`iLog`.`log`.`leafId`,
+							`iLog`.`log`.`operation`,
+							`iLog`.`log`.`sql`,
+							`iLog`.`log`.`date`,
+							`iLog`.`log`.`staffId`,
+							`iLog`.`log`.`logError`
 					)
 			values
 					(
@@ -319,12 +319,15 @@ class Vendor {
 		if ($result_row == 0 || $this->log == 1) {
 			$logError = $this->responce;
 			$sql_log = "
-			INSERT INTO `log`
+			INSERT INTO `iLog`.`log`
 					(
-						`leafId`,		`operation`,
-						`sql`,			`date`,
-						`staffId`,		`access`,
-						`logError`
+						`iLog`.`log`.`leafId`,		
+						`iLog`.`log`.`operation`,
+						`iLog`.`log`.`sql`,			
+						`iLog`.`log`.`date`,
+						`iLog`.`log`.`staffId`,		
+						`iLog`.`log`.`access`,
+						`iLog`.`log`.`logError`
 					)
 			values
 					(
@@ -413,14 +416,14 @@ class Vendor {
 					$text = $this->removeComa ( $text );
 					$text = "{" . $text . "}"; 
 					$sqlLogAdvance = "
-					INSERT INTO	`logAdvance`
+					INSERT INTO	`iLog`.`logAdvance`
 							(
-								`logAdvanceText`,
-								`logAdvanceType`,
-								`refTableName`,
-								`leafId`,
-								`executeBy`,
-								`executeTime`
+								`iLog`.`logAdvance`.`logAdvanceText`,
+								`iLog`.`logAdvance`.`logAdvanceType`,
+								`iLog`.`logAdvance`.`refTableName`,
+								`iLog`.`logAdvance`.`leafId`,
+								`iLog`.`logAdvance`.`executeBy`,
+								`iLog`.`logAdvance`.`executeTime`
 							)
 					VALUES
 							(
@@ -497,12 +500,12 @@ class Vendor {
 					$text = $this->removeComa ( $text );
 					$text = "{" . $text . "}";
 					$sqlLogAdvance = "
-					INSERT INTO	`logAdvance`
+					INSERT INTO	`iLog`.`logAdvance`
 							(
-								`logAdvanceText`,
-								`logAdvanceType`,
-								`refTableName`,
-								`leafId`
+								`iLog`.`logAdvance`.`logAdvanceText`,
+								`iLog`.`logAdvance`.`logAdvanceType`,
+								`iLog`.`logAdvance`.`refTableName`,
+								`iLog`.`logAdvance`.`leafId`
 							)
 					VALUES
 							(
@@ -520,7 +523,7 @@ class Vendor {
 					}
 				}
 				$this->query ( $this->sql );
-				$record_affected = $this->affectedRows (); 
+				$recordAffected = $this->affectedRows (); 
 				if ($this->audit == 1) {
 					$sqlCurrent = "
 					SELECT 	*
@@ -538,11 +541,11 @@ class Vendor {
 					$textComparision = substr ( $textComparision, 0, - 1 ); 
 					$textComparision = "{ \"tablename\":'" . $this->tableName . "',\"leafId\":'" . $this->primaryKeyValue . "'," . $textComparision . "}";				
 					$sql = "
-					UPDATE	`logAdvance`
-					SET 	`logAdvanceComparision`	=	'" . $this->realEscapeString ( $textComparision ) . "',
-							`executeBy`					=   '" . $this->staffId . "',
-							`executeTime`					=	'" . date ( "Y-m-d H:i:s" ) . "'
-					WHERE 	`logAdvanceId`			=	'" . $logAdvanceId . "'";
+					UPDATE	`iLog`.`logAdvance`
+					SET 	`iLog`.`logAdvance`.`logAdvanceComparision`	=	'" . $this->realEscapeString ( $textComparision ) . "',
+							`iLog`.`logAdvance`.`executeBy`					=   '" . $this->staffId . "',
+							`iLog`.`logAdvance`.`executeTime`					=	'" . date ( "Y-m-d H:i:s" ) . "'
+					WHERE 	`iLog`.`logAdvance`.`logAdvanceId`			=	'" . $logAdvanceId . "'";
 					
 					$result = mysqli_query ( $this->link, $sql );
 					if (! $result) {
@@ -550,7 +553,7 @@ class Vendor {
 						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sql."]";												
 					}
 				}
-				return $record_affected;
+				return $recordAffected;
 			} else {
 				$this->execute = 'fail';
 				$this->responce = 'access denied lol';

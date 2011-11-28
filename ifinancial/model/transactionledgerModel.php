@@ -3,95 +3,49 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is customers model file.This is to ensure strict setting enable for all variable enter to database
+ * this is transactionLedger model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @subpackage customers
+ * @package transactionLedger
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class CustomersModel extends ValidationClass {
+class TransactionledgerModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $customersId;
+	private $transactionLedgerId;
 	/**
-	 * @var string
-	 */
-	private $customersCompany;
+	* @var float
+	*/
+	private $documentNo;
 	/**
-	 * @var string
-	 */
-	private $customersLastName;
+	* @var float
+	*/
+	private $transactionLedgerTitle;
 	/**
-	 * @var string
-	 */
-	private $customersFirstName;
+	* @var int
+	*/
+	private $transactionLedgerDesc;
 	/**
-	 * @var string
-	 */
-	private $customersEmail;
+	* @var int
+	*/
+	private $transactionLedgerAmount;
 	/**
-	 * @var int
-	 */
-	private $customersJobTitle;
+	* @var int
+	*/
+	private $transactionLedgerDate;
 	/**
-	 * @var string
-	 */
-	private $customersBusinessPhone;
+	* @var int
+	*/
+	private $businessPartnerId;
 	/**
-	 * @var string
-	 */
-	private $customersHomePhone;
-	/**
-	 * @var string
-	 */
-	private $customersMobilePhone;
-	/**
-	 * @var date
-	 */
-	private $customersBirthday;
-	/**
-	 * @var string
-	 */
-	private $customersFaxNum;
-	/**
-	 * @var string
-	 */
-	private $customersAddress;
-	/**
-	 * @var string
-	 */
-	private $customersCity;
-	/**
-	 * @var string
-	 */
-	private $customersState;
-	/**
-	 * @var string
-	 */
-	private $customersPostcode;
-	/**
-	 * @var string
-	 */
-	private $customersCountry;
-	/**
-	 * @var string
-	 */
-	private $customersWebPage;
-	/**
-	 * @var string
-	 */
-	private $customersNotes;
-	/**
-	 * @var string
-	 */
-	private $customersAttachments;
-
-
+	* @var int
+	*/
+	private $isReconciled;
 
 
 	/* (non-PHPdoc)
@@ -102,72 +56,46 @@ class CustomersModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('customers');
-		$this->setPrimaryKeyName('customersId');
+		$this->setTableName('transactionledger');
+		$this->setPrimaryKeyName('transactionLedgerId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['customersId'])) {
-			$this->setCustomersId($this->strict($_POST ['customersId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['transactionLedgerId'])) {
+			$this->setTransactionLedgerId($this->strict($_POST ['transactionLedgerId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['customersCompany'])) {
-			$this->setCustomersCompany($this->strict($_POST ['customersCompany'], 'string'));
+		if (isset($_POST ['documentNo'])) {
+			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'numeric'));
 		}
-		if(isset($_POST['customersLastName'])){
-			$this->setCustomersLastName($this->strict($_POST['customersLastName'],'string'));
+		if (isset($_POST ['transactionLedgerTitle'])) {
+			$this->setTransactionLedgerTitle($this->strict($_POST ['transactionLedgerId'], 'string'));
 		}
-		if(isset($_POST['customersFirstName'])){
-			$this->setCustomersFirstName($this->strict($_POST['customersFirstName'],'string'));
+		if (isset($_POST ['transactionLedgerDesc'])) {
+			$this->setTransactionLedgerDesc($this->strict($_POST ['transactionLedgerDesc'], 'string'));
 		}
-		if(isset($_POST['customersEmail'])){
-			$this->setCustomersEmail($this->strict($_POST['customersEmail'],'string'));
+		if (isset($_POST ['transactionLedgerAmount'])) {
+			$this->setTransactionLedgerAmount($this->strict($_POST ['transactionLedgerAmount'], 'float'));
 		}
-		if(isset($_POST['customersJobTitle'])){
-			$this->setCustomersJobTitle($this->strict($_POST['customersJobTitle'],'string'));
+		if (isset($_POST ['transactionLedgerDate'])) {
+			$this->setTransactionLedgerAmount($this->strict($_POST ['transactionLedgerAmount'], 'date'));
 		}
-		if(isset($_POST['customersBusinessPhone'])){
-			$this->setCustomersBusinessPhone($this->strict($_POST['customersBusinessPhone'],'string'));
+		if (isset($_POST ['businessPartnerId'])) {
+			$this->setBusinessPartnerId($this->strict($_POST ['businessPartnerId'], 'numeric'));
 		}
-		if(isset($_POST['customersMobilePhone'])){
-			$this->setCustomersMobilePhone($this->strict($_POST['customersHomePhone'],'string'));
-		}
-		if(isset($_POST['customersFaxNum'])){
-			$this->setCustomersFaxNum($this->strict($_POST['customersFaxNum'],'string'));
-		}
-		if(isset($_POST['customersAddress'])){
-			$this->setCustomersAddress($this->strict($_POST['customersAddress'],'string'));
-		}
-		if(isset($_POST['customersCity'])){
-			$this->setCustomersCity($this->strict($_POST['customersCity'],'string'));
-		}
-		if(isset($_POST['customersState'])){
-			$this->setCustomersState($this->strict($_POST['customersState'],'string'));
-		}
-		if(isset($_POST['customersPostcode'])){
-			$this->setCustomersPostcode($this->strict($_POST['customersPostcode'],'string'));
-		}
-		if(isset($_POST['customersCountry'])){
-			$this->setCustomersCountry($this->strict($_POST['customersCountry'],'string'));
-		}
-		if(isset($_POST['customersWebPage'])){
-			$this->setCustomersWebPage($this->strict($_POST['customersWebPage'],'string'));
-		}
-		if(isset($_POST['customersNotes'])){
-			$this->setCustomersNotes($this->strict($_POST['customersNotes'],'string'));
-		}
-		if(isset($_POST['customersAttachments'])){
-			$this->setCustomersCountry($this->strict($_POST['customersAttachments'],'string'));
-		}
-		if(isset($_POST['customersAttachments'])){
-			$this->setCustomersAttachments($this->strict($_POST['customersAttachments'],'string'));
-		}
+
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['customersId'])) {
-			$this->setTotal(count($_GET ['customersId']));
+		if (isset($_GET ['transactionLedgerId'])) {
+			$this->setTotal(count($_GET ['transactionLedgerId']));
 		}
 
+		if (isset($_GET ['isReconciled'])) {
+			if (is_array($_GET ['isReconciled'])) {
+				$this->isDefault = array();
+			}
+		}
+		
 		if (isset($_GET ['isDefault'])) {
 			if (is_array($_GET ['isDefault'])) {
 				$this->isDefault = array();
@@ -215,8 +143,15 @@ class CustomersModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['customersId'])) {
-				$this->setCustomersId($this->strict($_GET ['customersId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['transactionLedgerId'])) {
+				$this->setBankBalanceId($this->strict($_GET ['transactionLedgerId'] [$i], 'numeric'), $i, 'array');
+			}
+			if (isset($_GET ['isReconciled'])) {
+				if ($_GET ['isReconciled'] [$i] == 'true') {
+					$this->setIsReconciled(1, $i, 'array');
+				} else if ($_GET ['isDefault'] [$i] == 'false') {
+					$this->setIsReconciled(0, $i, 'array');
+				}
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -281,7 +216,7 @@ class CustomersModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getCustomersId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getBankBalanceId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -415,208 +350,166 @@ class CustomersModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Customers Identification  Value
+	 * Set BankBalance Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setCustomersId($value, $key, $type) {
+	public function setTransactionLedgerId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->customersId = $value;
+			$this->transactionLedgerId = $value;
 		} else if ($type == 'array') {
-			$this->customersId [$key] = $value;
+			$this->transactionLedgerId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setCustomersId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setBankBalanceId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Customers Identification  Value
+	 * Return BankBalance Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getCustomersId($key, $type) {
+	public function getTransactionLedgerId($key, $type) {
 		if ($type == 'single') {
-			return $this->customersId;
+			return $this->transactionLedgerId;
 		} else if ($type == 'array') {
-			return $this->customersId [$key];
+			return $this->transactionLedgerId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getCustomersId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getBankBalanceId ?"));
 			exit();
 		}
 	}
 
 
-	public function getCustomersAddress()
+
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getDocumentNo()
 	{
-		return $this->customersAddress;
+	    return $this->documentNo;
 	}
 
-	public function setCustomersAddress($customersAddress)
+	/**
+	 * 
+	 * @param $documentNo
+	 */
+	public function setDocumentNo($documentNo)
 	{
-		$this->customersAddress = $customersAddress;
+	    $this->documentNo = $documentNo;
 	}
 
-	public function getCustomersPostcode()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getTransactionLedgerTitle()
 	{
-		return $this->customersPostcode;
+	    return $this->transactionLedgerTitle;
 	}
 
-	public function setCustomersPostcode($customersPostcode)
+	/**
+	 * 
+	 * @param $transactionLedgerTitle
+	 */
+	public function setTransactionLedgerTitle($transactionLedgerTitle)
 	{
-		$this->customersPostcode = $customersPostcode;
+	    $this->transactionLedgerTitle = $transactionLedgerTitle;
 	}
 
-	public function getCustomersEmail()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getTransactionLedgerDesc()
 	{
-		return $this->customersEmail;
+	    return $this->transactionLedgerDesc;
 	}
 
-	public function setCustomersEmail($customersEmail)
+	/**
+	 * 
+	 * @param $transactionLedgerDesc
+	 */
+	public function setTransactionLedgerDesc($transactionLedgerDesc)
 	{
-		$this->customersEmail = $customersEmail;
+	    $this->transactionLedgerDesc = $transactionLedgerDesc;
 	}
 
-	public function getCustomersCompany()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getTransactionLedgerAmount()
 	{
-	    return $this->customersCompany;
+	    return $this->transactionLedgerAmount;
 	}
 
-	public function setCustomersCompany($customersCompany)
+	/**
+	 * 
+	 * @param $transactionLedgerAmount
+	 */
+	public function setTransactionLedgerAmount($transactionLedgerAmount)
 	{
-	    $this->customersCompany = $customersCompany;
+	    $this->transactionLedgerAmount = $transactionLedgerAmount;
 	}
 
-	public function getCustomersLastName()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getTransactionLedgerDate()
 	{
-	    return $this->customersLastName;
+	    return $this->transactionLedgerDate;
 	}
 
-	public function setCustomersLastName($customersLastName)
+	/**
+	 * 
+	 * @param $transactionLedgerDate
+	 */
+	public function setTransactionLedgerDate($transactionLedgerDate)
 	{
-	    $this->customersLastName = $customersLastName;
+	    $this->transactionLedgerDate = $transactionLedgerDate;
 	}
 
-	public function getCustomersFirstName()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getBusinessPartnerId()
 	{
-	    return $this->customersFirstName;
+	    return $this->businessPartnerId;
 	}
 
-	public function setCustomersFirstName($customersFirstName)
+	/**
+	 * 
+	 * @param $businessPartnerId
+	 */
+	public function setBusinessPartnerId($businessPartnerId)
 	{
-	    $this->customersFirstName = $customersFirstName;
+	    $this->businessPartnerId = $businessPartnerId;
 	}
 
-	public function getCustomersJobTitle()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getIsReconciled()
 	{
-	    return $this->customersJobTitle;
+	    return $this->isReconciled;
 	}
 
-	public function setCustomersJobTitle($customersJobTitle)
+	/**
+	 * 
+	 * @param $reconciled
+	 */
+	public function setIsReconciled($isReconciled)
 	{
-	    $this->customersJobTitle = $customersJobTitle;
-	}
-
-	public function getCustomersBusinessPhone()
-	{
-	    return $this->customersBusinessPhone;
-	}
-
-	public function setCustomersBusinessPhone($customersBusinessPhone)
-	{
-	    $this->customersBusinessPhone = $customersBusinessPhone;
-	}
-
-	public function getCustomersHomePhone()
-	{
-	    return $this->customersHomePhone;
-	}
-
-	public function setCustomersHomePhone($customersHomePhone)
-	{
-	    $this->customersHomePhone = $customersHomePhone;
-	}
-
-	public function getCustomersMobilePhone()
-	{
-	    return $this->customersMobilePhone;
-	}
-
-	public function setCustomersMobilePhone($customersMobilePhone)
-	{
-	    $this->customersMobilePhone = $customersMobilePhone;
-	}
-
-	public function getCustomersFaxNum()
-	{
-	    return $this->customersFaxNum;
-	}
-
-	public function setCustomersFaxNum($customersFaxNum)
-	{
-	    $this->customersFaxNum = $customersFaxNum;
-	}
-
-	public function getCustomersCity()
-	{
-	    return $this->customersCity;
-	}
-
-	public function setCustomersCity($customersCity)
-	{
-	    $this->customersCity = $customersCity;
-	}
-
-	public function getCustomersState()
-	{
-	    return $this->customersState;
-	}
-
-	public function setCustomersState($customersState)
-	{
-	    $this->customersState = $customersState;
-	}
-
-	public function getCustomersCountry()
-	{
-	    return $this->customersCountry;
-	}
-
-	public function setCustomersCountry($customersCountry)
-	{
-	    $this->customersCountry = $customersCountry;
-	}
-
-	public function getCustomersWebPage()
-	{
-	    return $this->customersWebPage;
-	}
-
-	public function setCustomersWebPage($customersWebPage)
-	{
-	    $this->customersWebPage = $customersWebPage;
-	}
-
-	public function getCustomersNotes()
-	{
-	    return $this->customersNotes;
-	}
-
-	public function setCustomersNotes($customersNotes)
-	{
-	    $this->customersNotes = $customersNotes;
-	}
-
-	public function getCustomersAttachments()
-	{
-	    return $this->customersAttachments;
-	}
-
-	public function setCustomersAttachments($customersAttachments)
-	{
-	    $this->customersAttachments = $customersAttachments;
+	    $this->isReconciled = $isReconciled;
 	}
 }
 

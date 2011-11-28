@@ -65,49 +65,65 @@ class LoginClass extends ConfigClass {
          * */
         if ($this->getVendor() == self::MYSQL) {
             $sql = "
-			SELECT	*
-			FROM 	`staff`
-			JOIN	`team`
+			SELECT	`iManagement`.`staff`.`staffId`,
+					`iManagement`.`staff`.`staffNo`,
+					`iManagement`.`staff`.`staffName`,
+					`iManagement`.`staff`.`languageId`,
+					`iManagement`.`team`.`teamId`,
+					`iManagement`.`team`.`teamDesc`,
+					`iManagement`.`team`.`isAdmin`,
+					`iManagement`.`department`.`departmentDesc`					
+			FROM 	`iManagement`.`staff`
+			JOIN	`iManagement`.`team`
 			USING	(`teamId`)
-			JOIN	`department`
+			JOIN	`iManagement`.`department`
 			USING	(`departmentId`)
-			WHERE 	`staff`.`staffName`			=	'" . $this->model->getStaffName() . "'
-			AND		`staff`.`staffPassword`		=	'" . md5($this->model->getStaffPassword()) . "'
-			AND		`staff`.`isActive`			=	1
-			AND		`team`.`isActive`			=	1
-			AND		`department`.`isActive`		=	1";
+			WHERE 	`iManagement`.`staff`.`staffName`			=	'" . $this->model->getStaffName() . "'
+			AND		`iManagement`.`staff`.`staffPassword`		=	'" . md5($this->model->getStaffPassword()) . "'
+			AND		`iManagement`.`staff`.`isActive`			=	1
+			AND		`iManagement`.`team`.`isActive`			=	1
+			AND		`iManagement`.`department`.`isActive`		=	1";
         } else if ($this->getVendor() == self::MSSQL) {
             $sql = "
-			SELECT	*
-			FROM 	[staff]
-			JOIN	[team]	
-			ON		[staff].[teamId]  			= 	[team].[teamId]
-			JOIN	[department]
-			ON		[department].[departmentId] = 	[staff].[departmentId]
-			WHERE 	[staff].[staffName]			=	'" . $this->model->getStaffName() . "'
-			AND		[staff].[staffPassword]		=	'" . md5($this->model->getStaffPassword()) . "'
-			AND		[staff].[isActive]			=	1
-			AND		[team].[isActive]			=	1
-			AND		[department].[isActive]		=	1";
+			SELECT	[iManagement].[staff].[staffId],
+					[iManagement].[staff].[staffNo],
+					[iManagement].[staff].[staffName],
+					[iManagement].[staff].[languageId],
+					[iManagement].[team].[teamId],
+					[iManagement].[team].[teamDesc],
+					[iManagement].[team].[isAdmin],
+					[iManagement].[department].[departmentId]	
+					[iManagement].[department].[departmentDesc]	
+			FROM 	[iManagement].[staff]
+			JOIN	[iManagement].[team]	
+			ON		[iManagement].[staff].[teamId]  			= 	[team].[teamId]
+			JOIN	[iManagement].[department]
+			ON		[iManagement].[department].[departmentId] = 	[staff].[departmentId]
+			WHERE 	[iManagement].[staff].[staffName]			=	'" . $this->model->getStaffName() . "'
+			AND		[iManagement].[staff].[staffPassword]		=	'" . md5($this->model->getStaffPassword()) . "'
+			AND		[iManagement].[staff].[isActive]			=	1
+			AND		[iManagement].[team].[isActive]			=	1
+			AND		[iManagement].[department].[isActive]		=	1";
         } else if ($this->getVendor() == self::ORACLE) {
             $sql = "
-			SELECT	STAFF.STAFFID 			AS	\"staffId\",
-					STAFF.STAFFNO 			AS 	\"staffNo\",
-					STAFF.STAFFNAME 		AS 	\"staffName\",
-					STAFF.LANGUAGEID 		AS 	\"languageId\",
-					TEAM.TEAMID 			AS  \"teamId\",
-					DEPARTMENT.DEPARTMENTID AS 	\"departmentId\"
-						
-			FROM 	STAFF
-			JOIN	TEAM
-			ON		TEAM.TEAMID			= 	STAFF.TEAMID
-			JOIN	DEPARTMENT
-			ON		DEPARTMENT.DEPARTMENTID	= 	STAFF.DEPARTMENTID
-			WHERE 	STAFF.STAFFNAME			=	'" . $this->model->getStaffName() . "'
-			AND		STAFF.STAFFPASSWORD		=	'" . md5($this->model->getStaffPassword()) . "'
-			AND		STAFF.ISACTIVE			=  1
-			AND		TEAM.ISACTIVE 			=  1
-			AND		DEPARTMENT.ISACTIVE	 	=  1";
+			SELECT	IMANAGEMENT.STAFF.STAFFID 				AS	\"staffId\",
+					IMANAGEMENT.STAFF.STAFFNO 				AS 	\"staffNo\",
+					IMANAGEMENT.STAFF.STAFFNAME 			AS 	\"staffName\",
+					IMANAGEMENT.STAFF.LANGUAGEID 			AS 	\"languageId\",
+					IMANAGEMENT.TEAM.TEAMID 				AS  \"teamId\",
+					IMANAGEMENT.TEAM.TEAMDESC 				AS  \"teamDesc\",
+					IMANAGEMENT.DEPARTMENT.DEPARTMENTID 	AS 	\"departmentId\",
+					IMANAGEMENT.DEPARTMENT.DEPARTMENTDESC	AS 	\"departmentDesc\"	
+			FROM 	IMANAGEMENT.STAFF
+			JOIN	IMANAGEMENT.TEAM
+			ON		IMANAGEMENT.TEAM.TEAMID			= 	STAFF.TEAMID
+			JOIN	IMANAGEMENT.DEPARTMENT
+			ON		IMANAGEMENT.DEPARTMENT.DEPARTMENTID	= 	STAFF.DEPARTMENTID
+			WHERE 	IMANAGEMENT.STAFF.STAFFNAME			=	'" . $this->model->getStaffName() . "'
+			AND		IMANAGEMENT.STAFF.STAFFPASSWORD		=	'" . md5($this->model->getStaffPassword()) . "'
+			AND		IMANAGEMENT.STAFF.ISACTIVE			=  1
+			AND		IMANAGEMENT.TEAM.ISACTIVE 			=  1
+			AND		IMANAGEMENT.DEPARTMENT.ISACTIVE	 	=  1";
         } else if ($this->getVendor() == self::DB2) {
             $sql = "
 			SELECT	STAFF.STAFFID 			AS	\"staffId\",
@@ -166,7 +182,10 @@ class LoginClass extends ConfigClass {
             $_SESSION ['staffName'] = $row ['staffName'];
             $_SESSION ['languageId'] = $row ['languageId'];
             $_SESSION ['teamId'] = $row ['teamId'];
+			$_SESSION ['isAdmin'] = $row ['isAdmin'];
+			$_SESSION ['teamDesc'] = $row ['teamDesc'];
             $_SESSION ['departmentId'] = $row ['departmentId'];
+			$_SESSION ['departmentDesc'] = $row ['departmentDesc'];
             $_SESSION ['database'] = $_POST ['database'];
             $_SESSION ['vendor'] = $_POST ['vendor'];
 
@@ -175,10 +194,10 @@ class LoginClass extends ConfigClass {
             // audit Log Time In
             if ($this->getVendor() == self::MYSQL) {
                 $sql = "
-				INSERT INTO `staffWebAccess`
+				INSERT INTO `iManagement`.`staffWebAccess`
 						(
-							`staffId`,
-							`staffWebAccessLogIn`
+							`iManagement`.`staffWebAccess`.`staffId`,
+							`iManagement`.`staffWebAccess`.`staffWebAccessLogIn`
 						)
 				VALUES (
 							'" . $this->staffWebAceess->getStaffId() . "',
@@ -186,10 +205,10 @@ class LoginClass extends ConfigClass {
 						)";
             } else if ($this->getVendor() == self::MSSQL) {
                 $sql = "
-				INSERT INTO [staffWebAccess]
+				INSERT INTO [iCore].[staffWebAccess]
 						(
-							[staffId],
-							[staffWebAccessLogIn]
+							[iCore].[staffWebAccess].[staffId],
+							[iCore].[staffWebAccess].[staffWebAccessLogIn]
 						)
 				VALUES (
 							'" . $this->staffWebAceess->getStaffId() . "',
@@ -197,10 +216,32 @@ class LoginClass extends ConfigClass {
 						)";
             } else if ($this->getVendor() == self::ORACLE) {
                 $sql = "
-				INSERT INTO STAFFWEBACCESS
+				INSERT INTO ICORE.STAFFWEBACCESS
 						(
-							STAFFID,
-							STAFFWEBACCESSLOGIN
+							ICORE.STAFFWEBACCESS.STAFFID,
+							ICORE.STAFFWEBACCESS.STAFFWEBACCESSLOGIN
+						)
+				VALUES (
+							'" . $this->staffWebAceess->getStaffId() . "',
+							" . $this->staffWebAceess->getStaffWebAccessLogIn() . "
+						)";
+            }else if ($this->getVendor() == self::DB2) {
+                $sql = "
+				INSERT INTO ICORE.STAFFWEBACCESS
+						(
+							ICORE.STAFFWEBACCESS.STAFFID,
+							ICORE.STAFFWEBACCESS.STAFFWEBACCESSLOGIN
+						)
+				VALUES (
+							'" . $this->staffWebAceess->getStaffId() . "',
+							" . $this->staffWebAceess->getStaffWebAccessLogIn() . "
+						)";
+            }else if ($this->getVendor() == self::POSTGRESS) {
+                $sql = "
+				INSERT INTO ICORE.STAFFWEBACCESS
+						(
+							ICORE.STAFFWEBACCESS.STAFFID,
+							ICORE.STAFFWEBACCESS.STAFFWEBACCESSLOGIN
 						)
 				VALUES (
 							'" . $this->staffWebAceess->getStaffId() . "',

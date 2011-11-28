@@ -3,94 +3,37 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is customers model file.This is to ensure strict setting enable for all variable enter to database
+ * this is generalledgerchartofaccountdimension model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @subpackage customers
+ * @package generalledgerchartofaccountdimension
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class CustomersModel extends ValidationClass {
+class GeneralledgerchartofaccountdimensionModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $customersId;
+	private $generalLedgerChartOfAccountDimensionId;
 	/**
 	 * @var string
 	 */
-	private $customersCompany;
+	private $generalLedgerChartOfAccountDimensionTitle;
 	/**
 	 * @var string
 	 */
-	private $customersLastName;
+	private $generalLedgerChartOfAccountDimensionDesc;
 	/**
-	 * @var string
+	 * @var varchar
 	 */
-	private $customersFirstName;
+	private $generalLedgerChartAccountNoRangeOne;
 	/**
-	 * @var string
+	 * @var varchar
 	 */
-	private $customersEmail;
-	/**
-	 * @var int
-	 */
-	private $customersJobTitle;
-	/**
-	 * @var string
-	 */
-	private $customersBusinessPhone;
-	/**
-	 * @var string
-	 */
-	private $customersHomePhone;
-	/**
-	 * @var string
-	 */
-	private $customersMobilePhone;
-	/**
-	 * @var date
-	 */
-	private $customersBirthday;
-	/**
-	 * @var string
-	 */
-	private $customersFaxNum;
-	/**
-	 * @var string
-	 */
-	private $customersAddress;
-	/**
-	 * @var string
-	 */
-	private $customersCity;
-	/**
-	 * @var string
-	 */
-	private $customersState;
-	/**
-	 * @var string
-	 */
-	private $customersPostcode;
-	/**
-	 * @var string
-	 */
-	private $customersCountry;
-	/**
-	 * @var string
-	 */
-	private $customersWebPage;
-	/**
-	 * @var string
-	 */
-	private $customersNotes;
-	/**
-	 * @var string
-	 */
-	private $customersAttachments;
-
+	private $generalLedgerChartAccountNoRangeTwo;
 
 
 
@@ -102,70 +45,32 @@ class CustomersModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('customers');
-		$this->setPrimaryKeyName('customersId');
+		$this->setTableName('generalledgerchartofaccountdimension');
+		$this->setPrimaryKeyName('generalLedgerChartOfAccountDimensionId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['customersId'])) {
-			$this->setCustomersId($this->strict($_POST ['customersId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['generalLedgerChartOfAccountDimensionId'])) {
+			$this->setGeneralLedgerChartOfAccountDimensionId($this->strict($_POST ['generalLedgerChartOfAccountDimensionId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['customersCompany'])) {
-			$this->setCustomersCompany($this->strict($_POST ['customersCompany'], 'string'));
+		if (isset($_POST ['generalLedgerChartOfAccountDimensionTitle'])) {
+			$this->setGeneralLedgerChartOfAccountDimensionTitle($this->strict($_POST ['generalLedgerChartOfAccountDimensionTitle'], 'string'));
 		}
-		if(isset($_POST['customersLastName'])){
-			$this->setCustomersLastName($this->strict($_POST['customersLastName'],'string'));
+		if (isset($_POST ['generalLedgerChartOfAccountDimensionDesc'])) {
+			$this->setGeneralLedgerChartOfAccountDimensionDesc($this->strict($_POST ['generalLedgerChartOfAccountDimensionDesc'], 'string'));
 		}
-		if(isset($_POST['customersFirstName'])){
-			$this->setCustomersFirstName($this->strict($_POST['customersFirstName'],'string'));
+		if (isset($_POST ['generalLedgerChartAccountNoRangeOne'])) {
+			$this->setGeneralLedgerChartOfAccountNoRangeOne($this->strict($_POST ['generalLedgerChartAccountNoRangeOne'], 'string'));
 		}
-		if(isset($_POST['customersEmail'])){
-			$this->setCustomersEmail($this->strict($_POST['customersEmail'],'string'));
+		if (isset($_POST ['generalLedgerChartAccountNoRangeTwo'])) {
+			$this->setGeneralLedgerChartOfAccountNoRangeTwo($this->strict($_POST ['generalLedgerChartAccountNoRangeTwo'], 'string'));
 		}
-		if(isset($_POST['customersJobTitle'])){
-			$this->setCustomersJobTitle($this->strict($_POST['customersJobTitle'],'string'));
-		}
-		if(isset($_POST['customersBusinessPhone'])){
-			$this->setCustomersBusinessPhone($this->strict($_POST['customersBusinessPhone'],'string'));
-		}
-		if(isset($_POST['customersMobilePhone'])){
-			$this->setCustomersMobilePhone($this->strict($_POST['customersHomePhone'],'string'));
-		}
-		if(isset($_POST['customersFaxNum'])){
-			$this->setCustomersFaxNum($this->strict($_POST['customersFaxNum'],'string'));
-		}
-		if(isset($_POST['customersAddress'])){
-			$this->setCustomersAddress($this->strict($_POST['customersAddress'],'string'));
-		}
-		if(isset($_POST['customersCity'])){
-			$this->setCustomersCity($this->strict($_POST['customersCity'],'string'));
-		}
-		if(isset($_POST['customersState'])){
-			$this->setCustomersState($this->strict($_POST['customersState'],'string'));
-		}
-		if(isset($_POST['customersPostcode'])){
-			$this->setCustomersPostcode($this->strict($_POST['customersPostcode'],'string'));
-		}
-		if(isset($_POST['customersCountry'])){
-			$this->setCustomersCountry($this->strict($_POST['customersCountry'],'string'));
-		}
-		if(isset($_POST['customersWebPage'])){
-			$this->setCustomersWebPage($this->strict($_POST['customersWebPage'],'string'));
-		}
-		if(isset($_POST['customersNotes'])){
-			$this->setCustomersNotes($this->strict($_POST['customersNotes'],'string'));
-		}
-		if(isset($_POST['customersAttachments'])){
-			$this->setCustomersCountry($this->strict($_POST['customersAttachments'],'string'));
-		}
-		if(isset($_POST['customersAttachments'])){
-			$this->setCustomersAttachments($this->strict($_POST['customersAttachments'],'string'));
-		}
+
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['customersId'])) {
-			$this->setTotal(count($_GET ['customersId']));
+		if (isset($_GET ['generalledgerchartofaccountdimensionId'])) {
+			$this->setTotal(count($_GET ['generalLedgerChartOfAccountDimensionId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -215,8 +120,8 @@ class CustomersModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['customersId'])) {
-				$this->setCustomersId($this->strict($_GET ['customersId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['generalLedgerChartOfAccountDimensionId'])) {
+				$this->setGeneralLedgerChartOfAccountId($this->strict($_GET ['generalLedgerChartOfAccountDimensionId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -281,7 +186,7 @@ class CustomersModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getCustomersId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getGeneralledgerId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -415,208 +320,111 @@ class CustomersModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Customers Identification  Value
+	 * Set Generalledger Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setCustomersId($value, $key, $type) {
+	public function setGeneralLedgerChartOfAccountDimensionId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->customersId = $value;
+			$this->generalLedgerChartOfAccountDimensionId = $value;
 		} else if ($type == 'array') {
-			$this->customersId [$key] = $value;
+			$this->generalLedgerChartOfAccountDimensionId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setCustomersId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setGeneralledgerId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Customers Identification  Value
+	 * Return Generalledger Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getCustomersId($key, $type) {
+	public function getGeneralLedgerChartOfAccountDimensionId($key, $type) {
 		if ($type == 'single') {
-			return $this->customersId;
+			return $this->generalLedgerChartOfAccountDimensionId;
 		} else if ($type == 'array') {
-			return $this->customersId [$key];
+			return $this->generalLedgerChartOfAccountDimensionId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getCustomersId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getGeneralledgerId ?"));
 			exit();
 		}
 	}
 
 
-	public function getCustomersAddress()
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerChartOfAccountDimensionTitle()
 	{
-		return $this->customersAddress;
+	    return $this->generalLedgerChartOfAccountDimensionTitle;
 	}
 
-	public function setCustomersAddress($customersAddress)
+	/**
+	 * 
+	 * @param $generalLedgerChartOfAccountDimensionTitle
+	 */
+	public function setGeneralLedgerChartOfAccountDimensionTitle($generalLedgerChartOfAccountDimensionTitle)
 	{
-		$this->customersAddress = $customersAddress;
+	    $this->generalLedgerChartOfAccountDimensionTitle = $generalLedgerChartOfAccountDimensionTitle;
 	}
 
-	public function getCustomersPostcode()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerChartOfAccountDimensionDesc()
 	{
-		return $this->customersPostcode;
+	    return $this->generalLedgerChartOfAccountDimensionDesc;
 	}
 
-	public function setCustomersPostcode($customersPostcode)
+	/**
+	 * 
+	 * @param $generalLedgerChartOfAccountDimensionDesc
+	 */
+	public function setGeneralLedgerChartOfAccountDimensionDesc($generalLedgerChartOfAccountDimensionDesc)
 	{
-		$this->customersPostcode = $customersPostcode;
+	    $this->generalLedgerChartOfAccountDimensionDesc = $generalLedgerChartOfAccountDimensionDesc;
 	}
 
-	public function getCustomersEmail()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerChartAccountNoRangeOne()
 	{
-		return $this->customersEmail;
+	    return $this->generalLedgerChartAccountNoRangeOne;
 	}
 
-	public function setCustomersEmail($customersEmail)
+	/**
+	 * 
+	 * @param $generalLedgerChartAccountNoRangeOne
+	 */
+	public function setGeneralLedgerChartAccountNoRangeOne($generalLedgerChartAccountNoRangeOne)
 	{
-		$this->customersEmail = $customersEmail;
+	    $this->generalLedgerChartAccountNoRangeOne = $generalLedgerChartAccountNoRangeOne;
 	}
 
-	public function getCustomersCompany()
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerChartAccountNoRangeTwo()
 	{
-	    return $this->customersCompany;
+	    return $this->generalLedgerChartAccountNoRangeTwo;
 	}
 
-	public function setCustomersCompany($customersCompany)
+	/**
+	 * 
+	 * @param $generalLedgerChartAccountNoRangeTwo
+	 */
+	public function setGeneralLedgerChartAccountNoRangeTwo($generalLedgerChartAccountNoRangeTwo)
 	{
-	    $this->customersCompany = $customersCompany;
-	}
-
-	public function getCustomersLastName()
-	{
-	    return $this->customersLastName;
-	}
-
-	public function setCustomersLastName($customersLastName)
-	{
-	    $this->customersLastName = $customersLastName;
-	}
-
-	public function getCustomersFirstName()
-	{
-	    return $this->customersFirstName;
-	}
-
-	public function setCustomersFirstName($customersFirstName)
-	{
-	    $this->customersFirstName = $customersFirstName;
-	}
-
-	public function getCustomersJobTitle()
-	{
-	    return $this->customersJobTitle;
-	}
-
-	public function setCustomersJobTitle($customersJobTitle)
-	{
-	    $this->customersJobTitle = $customersJobTitle;
-	}
-
-	public function getCustomersBusinessPhone()
-	{
-	    return $this->customersBusinessPhone;
-	}
-
-	public function setCustomersBusinessPhone($customersBusinessPhone)
-	{
-	    $this->customersBusinessPhone = $customersBusinessPhone;
-	}
-
-	public function getCustomersHomePhone()
-	{
-	    return $this->customersHomePhone;
-	}
-
-	public function setCustomersHomePhone($customersHomePhone)
-	{
-	    $this->customersHomePhone = $customersHomePhone;
-	}
-
-	public function getCustomersMobilePhone()
-	{
-	    return $this->customersMobilePhone;
-	}
-
-	public function setCustomersMobilePhone($customersMobilePhone)
-	{
-	    $this->customersMobilePhone = $customersMobilePhone;
-	}
-
-	public function getCustomersFaxNum()
-	{
-	    return $this->customersFaxNum;
-	}
-
-	public function setCustomersFaxNum($customersFaxNum)
-	{
-	    $this->customersFaxNum = $customersFaxNum;
-	}
-
-	public function getCustomersCity()
-	{
-	    return $this->customersCity;
-	}
-
-	public function setCustomersCity($customersCity)
-	{
-	    $this->customersCity = $customersCity;
-	}
-
-	public function getCustomersState()
-	{
-	    return $this->customersState;
-	}
-
-	public function setCustomersState($customersState)
-	{
-	    $this->customersState = $customersState;
-	}
-
-	public function getCustomersCountry()
-	{
-	    return $this->customersCountry;
-	}
-
-	public function setCustomersCountry($customersCountry)
-	{
-	    $this->customersCountry = $customersCountry;
-	}
-
-	public function getCustomersWebPage()
-	{
-	    return $this->customersWebPage;
-	}
-
-	public function setCustomersWebPage($customersWebPage)
-	{
-	    $this->customersWebPage = $customersWebPage;
-	}
-
-	public function getCustomersNotes()
-	{
-	    return $this->customersNotes;
-	}
-
-	public function setCustomersNotes($customersNotes)
-	{
-	    $this->customersNotes = $customersNotes;
-	}
-
-	public function getCustomersAttachments()
-	{
-	    return $this->customersAttachments;
-	}
-
-	public function setCustomersAttachments($customersAttachments)
-	{
-	    $this->customersAttachments = $customersAttachments;
+	    $this->generalLedgerChartAccountNoRangeTwo = $generalLedgerChartAccountNoRangeTwo;
 	}
 }
 

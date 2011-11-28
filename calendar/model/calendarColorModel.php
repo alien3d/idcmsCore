@@ -12,10 +12,29 @@ require_once ("../../class/classValidation.php");
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class CalendarModel extends ValidationClass {
-	// table field
+	/**
+	 * Enter description here ...
+	 * @var unknown_type
+	 */
+	
 	private $calendarId;
+	
+	/**
+	 * Enter description here ...
+	 * @var int
+	 */
 	private $calendarColorId;
+	/**
+	 * Enter description here ...
+	 * @var string
+	 */
+	
 	private $calendarTitle;
+	/**
+	 * Enter description here ...
+	 * @var int
+	 */
+	
 	private $staffId;
 	/**
 	 * Class Loader to load outside variable and test it suppose variable type

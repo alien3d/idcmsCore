@@ -93,7 +93,7 @@ class CustomersClass extends ConfigClass {
 		$this->model = new CustomersModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -414,7 +414,7 @@ class CustomersClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$customersId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -1051,7 +1051,7 @@ class CustomersClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1191,7 +1191,7 @@ class CustomersClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1203,7 +1203,7 @@ class CustomersClass extends ConfigClass {
 		exit();
 	}
 
-/**
+	/**
 	 * To Update flag Status
 	 */
 	function updateStatus() {
@@ -1673,7 +1673,7 @@ if (isset($_POST ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_POST ['databaseRequest'])) {
+	if (isset($_POST ['databaseRequest'])) {
 		$customersObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
@@ -1739,7 +1739,7 @@ if (isset($_GET ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$customersObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

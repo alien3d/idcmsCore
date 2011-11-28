@@ -146,7 +146,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->model->create ();
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
-			INSERT INTO `tableMappingTranslate`
+			INSERT INTO `icore`.tableMappingTranslate`
 					(
 						`defautlLabel`,														`tableMappingNative`
 						`isDefault`,															`isNew`,

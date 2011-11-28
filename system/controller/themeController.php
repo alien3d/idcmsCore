@@ -11,7 +11,7 @@ require_once("../model/themeModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package System
+ * @package system
  * @subpackage theme
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
