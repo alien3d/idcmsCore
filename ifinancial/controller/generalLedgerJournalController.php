@@ -217,19 +217,24 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	GENERALLEDGERJOURNAL
+			INSERT INTO	IFINANCIAL.GENERALLEDGERJOURNAL
 					(
-						DOCUMENTNO,												
-						GENERALLEDGERJOURNALTITLE,
-						GENERALLEDGERJOURNALDESC,
-						GENERALLEDGERJOURNALDATE,
-						GENERALLEDGERJOURNALAMOUNT,
-						ISDEFAULT,
-						ISNEW,														ISDRAFT,
-						ISUPDATE,													ISDELETE,
-						ISACTIVE,													ISAPPROVED,
-						ISREVIEW,													ISPOST,
-						EXECUTEBY,													EXECUTETIME
+						IFINANCIAL.GENERALLEDGERJOURNAL.DOCUMENTNO,												
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALTITLE,
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALDESC,
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALDATE,
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALAMOUNT,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISNEW,														
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISDELETE,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISPOST,
+						IFINANCIAL.GENERALLEDGERJOURNAL.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.EXECUTETIME
 					)
 			VALUES
 					(
@@ -247,22 +252,27 @@ class GeneralLedgerJournalClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERJOURNAL
-			(
-						DOCUMENTNO,												
-						GENERALLEDGERJOURNALTITLE,
-						GENERALLEDGERJOURNALDESC,
-						GENERALLEDGERJOURNALDATE,
-						GENERALLEDGERJOURNALAMOUNT,
-						ISDEFAULT,
-						ISNEW,														ISDRAFT,
-						ISUPDATE,													ISDELETE,
-						ISACTIVE,													ISAPPROVED,
-						ISREVIEW,													ISPOST,
-						EXECUTEBY,													EXECUTETIME
-			)
+			INSERT INTO	IFINANCIAL.GENERALLEDGERJOURNAL
+					(
+						IFINANCIAL.GENERALLEDGERJOURNAL.DOCUMENTNO,												
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALTITLE,
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALDESC,
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALDATE,
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALAMOUNT,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISNEW,														
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISDELETE,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISPOST,
+						IFINANCIAL.GENERALLEDGERJOURNAL.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.EXECUTETIME
+					)
 			VALUES
-			(
+					(
 						'" . $this->model->getDocumentNo() . "',
 						'" . $this->model->getGeneralLedgerJournalTitle() . "',
 						'" . $this->model->getGeneralLedgerJournalDesc() . "',
@@ -272,27 +282,32 @@ class GeneralLedgerJournalClass extends ConfigClass {
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
 						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
-			)";
+					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERJOURNAL
-			(
-						DOCUMENTNO,												
-						GENERALLEDGERJOURNALTITLE,
-						GENERALLEDGERJOURNALDESC,
-						GENERALLEDGERJOURNALDATE,
-						GENERALLEDGERJOURNALAMOUNT,
-						ISDEFAULT,
-						ISNEW,														ISDRAFT,
-						ISUPDATE,													ISDELETE,
-						ISACTIVE,													ISAPPROVED,
-						ISREVIEW,													ISPOST,
-						EXECUTEBY,													EXECUTETIME
-			)
+			INSERT INTO	IFINANCIAL.GENERALLEDGERJOURNAL
+					(
+						IFINANCIAL.GENERALLEDGERJOURNAL.DOCUMENTNO,												
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALTITLE,
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALDESC,
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALDATE,
+						IFINANCIAL.GENERALLEDGERJOURNAL.GENERALLEDGERJOURNALAMOUNT,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISNEW,														
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISDELETE,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.ISPOST,
+						IFINANCIAL.GENERALLEDGERJOURNAL.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERJOURNAL.EXECUTETIME
+					)
 			VALUES
-			(
+					(
 						'" . $this->model->getDocumentNo() . "',
 						'" . $this->model->getGeneralLedgerJournalTitle() . "',
 						'" . $this->model->getGeneralLedgerJournalDesc() . "',
@@ -302,9 +317,9 @@ class GeneralLedgerJournalClass extends ConfigClass {
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
 						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
-			)";
+					)";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -319,7 +334,11 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerJournalId" => $generalLedgerJournalId));
+		echo json_encode(
+			array("success" => true, 
+			      "message" => $this->systemString->getCreateMessage(), 
+			      "generalLedgerJournalId" => $generalLedgerJournalId,
+        		  "time"=>$time));
 		exit();
 	}
 

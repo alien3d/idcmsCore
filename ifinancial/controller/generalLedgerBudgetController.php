@@ -353,7 +353,10 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerBudgetId" => $generalLedgerBudgetId));
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $this->systemString->getCreateMessage(), 
+					"generalLedgerBudgetId" => $generalLedgerBudgetId));
 		exit();
 	}
 

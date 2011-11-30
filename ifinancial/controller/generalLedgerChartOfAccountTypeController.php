@@ -208,17 +208,22 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTTYPE
+			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE
 					(
-						GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
-						GENERALLEDGERCHARTOFACCOUNTTYPECODE,
-						GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
-						ISDEFAULT,
-						ISNEW,														ISDRAFT,
-						ISUPDATE,													ISDELETE,
-						ISACTIVE,													ISAPPROVED,
-						ISREVIEW,													ISPOST,
-						EXECUTEBY,													EXECUTETIME
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
 					)
 			VALUES
 					(
@@ -226,64 +231,89 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',			
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		
+						'" . $this->model->getIsPost(0, 'single') . "',						
+						'" . $this->model->getExecuteBy() . "',					
+						" . $this->model->getExecuteTime() . "
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTTYPE
-			(
-						GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
-						GENERALLEDGERCHARTOFACCOUNTTYPECODE,
-						GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
-						ISDEFAULT,
-						ISNEW,														ISDRAFT,
-						ISUPDATE,													ISDELETE,
-						ISACTIVE,													ISAPPROVED,
-						ISREVIEW,													ISPOST,
-						EXECUTEBY,													EXECUTETIME
-			)
+			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE
+					(
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
+					)
 			VALUES
-			(
+					(
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
-			)";
+						'" . $this->model->getIsNew(0, 'single') . "',			
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		
+						'" . $this->model->getIsPost(0, 'single') . "',						
+						'" . $this->model->getExecuteBy() . "',					
+						" . $this->model->getExecuteTime() . "
+					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTTYPE
-			(
-						GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
-						GENERALLEDGERCHARTOFACCOUNTTYPECODE,
-						GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
-						ISDEFAULT,
-						ISNEW,														ISDRAFT,
-						ISUPDATE,													ISDELETE,
-						ISACTIVE,													ISAPPROVED,
-						ISREVIEW,													ISPOST,
-						EXECUTEBY,													EXECUTETIME
-			)
+			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE
+					(
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
+					)
 			VALUES
-			(
+					(
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
-			)";
+						'" . $this->model->getIsNew(0, 'single') . "',			
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		
+						'" . $this->model->getIsPost(0, 'single') . "',						
+						'" . $this->model->getExecuteBy() . "',					
+						" . $this->model->getExecuteTime() . "
+					)";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -298,7 +328,11 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerChartOfAccountTypeId" => $generalLedgerChartOfAccountTypeId));
+		echo json_encode(
+			array(	"success" => true, 
+					"message" => $this->systemString->getCreateMessage(), 
+					"generalLedgerChartOfAccountTypeId" => $generalLedgerChartOfAccountTypeId,
+        			"time"=>$time));
 		exit();
 	}
 

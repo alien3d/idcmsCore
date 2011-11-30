@@ -314,7 +314,11 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerJournalDetailId" => $generalLedgerJournalDetailId));
+		echo json_encode(
+			array("success" => true, 
+			      "message" => $this->systemString->getCreateMessage(), 
+			      "generalLedgerJournalDetailId" => $generalLedgerJournalDetailId,
+        		  "time"=>$time));
 		exit();
 	}
 
