@@ -2,7 +2,7 @@ Ext.onReady(function () {
 	Ext.QuickTips.init();
 	Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
 	Ext.form.Field.prototype.msgTarget = 'under';
-	Ext.Ajax.timeout = 90000;
+	Ext.Ajax.timeout = 95000;
 	var perPage = 15;
 	var encode = false;
 	var local = false;
@@ -446,7 +446,49 @@ Ext.onReady(function () {
 		}); // end popup window for normal log and advance log
 	// end common Proxy ,Reader,Store,Filter,Grid
 	// start additional Proxy ,Reader,Store,Filter,Grid
-	
+	// start Business Partner Category
+	var businessPartnerCategoryProxy = new Ext.data.HttpProxy({
+			url : '../controller/businessPartnerCategoryController.php?',
+			method : 'GET',
+			success : function (response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+				}
+			},
+			failure : function (response, options) {
+				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+			}
+		});
+	var businessPartnerCategoryReader = new Ext.data.JsonReader({
+			totalProperty : 'total',
+			successProperty : 'success',
+			messageProperty : 'message',
+			idProperty : 'businessPartnerCategoryId'
+		});
+	var businessPartnerCategoryStore = new Ext.data.JsonStore({
+			proxy : businessPartnerCategoryProxy,
+			reader : businessPartnerCategoryReader,
+			autoLoad : false,
+			autoDestroy : true,
+			pruneModifiedRecords : true,
+			baseParams : {
+				method : 'read',
+				field : 'businessPartnerCategoryId',
+				leafId : leafId
+			},
+			root : 'staff',
+			id : 'businessPartnerCategoryId',
+			fields : [{
+					name : 'businessPartnerCategoryId',
+					type : 'int'
+				}, {
+					name : 'businessPartnerCategoryDesc',
+					type : 'string'
+				}
+			]
+		}); // end Business Partner Category Request
 	// end additional Proxy ,Reader,Store,Filter,Grid
 	// start application Proxy ,Reader,Store,Filter,Grid
 	var businessPartnerProxy = new Ext.data.HttpProxy({
@@ -581,32 +623,182 @@ Ext.onReady(function () {
 			encode : false,
 			local : false,
 			filters : [{
-					type : 'string',
-					dataIndex : 'businessPartnerTitle',
-					column : 'businessPartnerTitle',
+					type : 'int',
+					dataIndex : 'businessPartnerId',
+					column : 'businessPartnerId',
 					table : 'businessPartner',
-					database : 'iFinancial'
+					database : 'ifinancial'
 				}, {
 					type : 'string',
-					dataIndex : 'businessPartnerDesc',
-					column : 'businessPartnerDesc',
+					dataIndex : 'businessPartnerCompany',
+					column : 'businessPartnerCompany',
 					table : 'businessPartner',
-					database : 'iFinancial'
+					database : 'ifinancial'
 				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerLastName',
+					column : 'businessPartnerLastName',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerFirstName',
+					column : 'businessPartnerFirstName',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerEmail',
+					column : 'businessPartnerEmail',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerJobTitle',
+					column : 'businessPartnerJobTitle',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerBusinessPhone',
+					column : 'businessPartnerBusinessPhone',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerHomePhone',
+					column : 'businessPartnerHomePhone',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerMobilePhone',
+					column : 'businessPartnerMobilePhone',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerFaxNum',
+					column : 'businessPartnerFaxNum',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerAddress',
+					column : 'businessPartnerAddress',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerCity',
+					column : 'businessPartnerCity',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerState',
+					column : 'businessPartnerState',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerPostCode',
+					column : 'businessPartnerPostCode',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerCountry',
+					column : 'businessPartnerCountry',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerWebPage',
+					column : 'businessPartnerWebPage',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerNotes',
+					column : 'businessPartnerNotes',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'businessPartnerAttachments',
+					column : 'businessPartnerAttachments',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, , {
 					type : 'list',
-					dataIndex : 'generalLedgerChartAccountIdStart',
-					column : 'generalLedgerChartAccountIdStart',
+					dataIndex : 'businessPartnerCategoryId',
+					column : 'businessPartnerCategoryId',
 					table : 'businessPartner',
-					database : 'iFinancial',
-					labelField : 'staffName',
-					store : staffByStore,
+					database : 'ifinancial',
+					labelField : 'businessPartnerCategoryDesc',
+					store : businessPartnerCategoryStore,
 					phpMode : true
 				}, {
-					type : 'list',
-					dataIndex : 'generalLedgerChartAccountIdEnd',
-					column : 'generalLedgerChartAccountIdEnd',
+					type : 'boolean',
+					dataIndex : 'isDefault',
+					column : 'isDefault',
 					table : 'businessPartner',
-					database : 'iFinancial',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isNew',
+					column : 'isNew',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isDraft',
+					column : 'isDraft',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isUpdate',
+					column : 'isUpdate',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isDelete',
+					column : 'isDelete',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isActive',
+					column : 'isActive',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isApproved',
+					column : 'isApproved',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isReview',
+					column : 'isReview',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isPost',
+					column : 'isPost',
+					table : 'businessPartner',
+					database : 'ifinancial'
+				}, {
+					type : 'list',
+					dataIndex : 'executeBy',
+					column : 'executeBy',
+					table : 'businessPartner',
+					database : 'ifinancial',
 					labelField : 'staffName',
 					store : staffByStore,
 					phpMode : true
@@ -615,7 +807,7 @@ Ext.onReady(function () {
 					dataIndex : 'executeTime',
 					column : 'executeTime',
 					table : 'businessPartner',
-					database : 'iFinancial'
+					database : 'ifinancial'
 				}
 			]
 		});
@@ -664,41 +856,100 @@ Ext.onReady(function () {
 			hidden : isPostHidden
 		});
 	var businessPartnerColumnModel = [new Ext.grid.RowNumberer(), {
-			dataIndex : 'documentNo',
-			header : documentNoLabel,
+			dataIndex : 'businessPartnerId',
+			header : businessPartnerIdLabel,
 			sortable : true,
-			hidden : false,
-			width : 50
+			hidden : false
 		}, {
-			dataIndex : 'businessPartnerTitle',
-			header : businessPartnerTitleLabel,
+			dataIndex : 'businessPartnerCompany',
+			header : businessPartnerCompanyLabel,
 			sortable : true,
-			hidden : false,
-			width : 50
+			hidden : false
 		}, {
-			dataIndex : 'businessPartnerDesc',
-			header : businessPartnerDescLabel,
+			dataIndex : 'businessPartnerLastName',
+			header : businessPartnerLastNameLabel,
 			sortable : true,
-			hidden : false,
-			width : 50
+			hidden : false
 		}, {
-			dataIndex : 'generalLedgerChartOfAccountIdStart',
-			header : generalLedgerChartOfAccountIdLabel,
+			dataIndex : 'businessPartnerFirstName',
+			header : businessPartnerFirstNameLabel,
 			sortable : true,
-			hidden : false,
-			width : 50,
-			renderer : function (value, metaData, record, rowIndex, colIndex, store) {
-				return record.data.generalLedgerChartOfAccountStartDesc;
-			}
+			hidden : false
 		}, {
-			dataIndex : 'generalLedgerChartOfAccountIdEnd',
-			header : generalLedgerChartOfAccountIdLabel,
+			dataIndex : 'businessPartnerEmail',
+			header : businessPartnerEmailLabel,
 			sortable : true,
-			hidden : false,
-			width : 50,
-			renderer : function (value, metaData, record, rowIndex, colIndex, store) {
-				return record.data.generalLedgerChartOfAccountDescEnd;
-			}
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerJobTitle',
+			header : businessPartnerJobTitleLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerBusinessPhone',
+			header : businessPartnerBusinessPhoneLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerHomePhone',
+			header : businessPartnerHomePhoneLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerMobilePhone',
+			header : businessPartnerMobilePhoneLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerFaxNum',
+			header : businessPartnerFaxNumLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerAddress',
+			header : businessPartnerAddressLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerCity',
+			header : businessPartnerCityLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerState',
+			header : businessPartnerStateLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerPostCode',
+			header : businessPartnerPostCodeLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerCountry',
+			header : businessPartnerCountryLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerWebPage',
+			header : businessPartnerWebPageLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerNotes',
+			header : businessPartnerNotesLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerAttachments',
+			header : businessPartnerAttachmentsLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'businessPartnerCategoryId',
+			header : businessPartnerCategoryIdLabel,
+			sortable : true,
+			hidden : false
 		},
 		isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid, {
 			dataIndex : 'executeBy',
@@ -752,7 +1003,6 @@ Ext.onReady(function () {
 							isAdmin : isAdmin
 						},
 						success : function (form, action) {
-							Ext.getCmp('businessPartnerCodeTemp').setValue(record.data.businessPartnerDesc);
 							viewPort.items.get(1).expand();
 						},
 						failure : function (form, action) {
@@ -767,7 +1017,47 @@ Ext.onReady(function () {
 			},
 			tbar : {
 				items : [{
-						text : CheckAllLabel,
+					xtype:'button',
+					text: ' ',
+					tooltip:excelToolbarLabel,
+					iconCls : 'page_excel',
+					id : 'page_excel',
+					
+					handler : function () {
+						Ext.Ajax.request({
+							url : '../controller/businessPartnerController.php',
+							method : 'GET',
+							params : {
+								method : 'report',
+								mode : 'excel',
+								limit : perPage,
+								leafId : leafId
+							},
+							success : function (response, options) {
+								jsonResponse = Ext.decode(response.responseText);
+								if (jsonResponse.success == true) {
+									window.open('../../basic/document/excel/' + jsonResponse.filename);
+								} else {
+									Ext.MessageBox.alert(successLabel, jsonResponse.message);
+								}
+							},
+							failure : function (response, options) {
+								Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+							}
+						});
+					}
+				},'-',{
+					xtype:'button',
+					text : '',
+					tooltip:addToolbarLabel,
+					iconCls : 'add',
+					id : 'pageCreate',
+					
+					handler : function (button,e) {
+						viewPort.items.get(1).expand();
+					}},'-',{
+						text:' ',
+						tooltip:CheckAllLabel,
 						iconCls : 'row-check-sprite-check',
 						listeners : {
 							'click' : function (button, e) {
@@ -778,9 +1068,10 @@ Ext.onReady(function () {
 								});
 							}
 						}
-					}, {
+					}, '-',{
+						text:' ',
+						tooltip:ClearAllLabel,
 						xtype : 'button',
-						text : ClearAllLabel,
 						iconCls : 'row-check-sprite-uncheck',
 						listeners : {
 							'click' : function (button, e) {
@@ -791,9 +1082,9 @@ Ext.onReady(function () {
 								});
 							}
 						}
-					}, {
+					},'-', {
 						xtype : 'button',
-						text : saveButtonLabel,
+						tooltip : saveButtonLabel,
 						iconCls : 'bullet_disk',
 						listeners : {
 							'click' : function (button, e) {
@@ -859,8 +1150,63 @@ Ext.onReady(function () {
 								});
 							}
 						}
-					}
-				]
+					},'-',{ xtype:'button', text:'A', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'A' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'B', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'B' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'C', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'C' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'D', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'D' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'E', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'E' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'F', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'F' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'G', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'G' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'H', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'H' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'I', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'I' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'J', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'J' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'K', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'K' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'L', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'L' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'M', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'M' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'N', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'N' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'O', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'O' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'P', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'P' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'Q', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'Q' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'R', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'R' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'S', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'S' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'T', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'T' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'U', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'U' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'V', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'V' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'W', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'W' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'X', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'X' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'Y', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'Y' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-',
+
+{ xtype:'button', text:'Z', handler: function (button,e) { Ext.Ajax.request({ url :'../controller/businessPartnerController.php', method :'GET', params :{ leafId:leafId, isAdmin :isAdmin, method:'character', filter : 'Z' }, success : function (response, options) { jsonResponse = Ext.decode(response.responseText); if (jsonResponse.success == true) { Ext.MessageBox.alert(systemLabel, jsonResponse.message); businessPartnerStore.reload(); } else if (jsonResponse.success == false) { Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message); } }, failure : function (response, options) { Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText)); } }); } },'-'
+
+
+				,'->', new Ext.ux.form.SearchField({
+					store : businessPartnerStore,
+					width : 200
+				})]
 			},
 			bbar : new Ext.PagingToolbar({
 				store : businessPartnerStore,
@@ -872,138 +1218,286 @@ Ext.onReady(function () {
 			title : leafNative,
 			iconCls : 'application_view_detail',
 			layout : 'fit',
-			tbar : [{
-					text : reloadToolbarLabel,
-					iconCls : 'database_refresh',
-					id : 'pageReload',
-					handler : function () {
-						businessPartnerStore.reload();
-					}
-				},
-				'-', {
-					text : addToolbarLabel,
-					iconCls : 'add',
-					id : 'pageCreate',
-					
-					handler : function () {
-						viewPort.items.get(1).expand();
-					}
-				},
-				'-', {
-					text : excelToolbarLabel,
-					iconCls : 'page_excel',
-					id : 'page_excel',
-					
-					handler : function () {
-						Ext.Ajax.request({
-							url : '../controller/businessPartnerController.php',
-							method : 'GET',
-							params : {
-								method : 'report',
-								mode : 'excel',
-								limit : perPage,
-								leafId : leafId
-							},
-							success : function (response, options) {
-								jsonResponse = Ext.decode(response.responseText);
-								if (jsonResponse.success == true) {
-									window.open('../../basic/document/excel/' + jsonResponse.filename);
-								} else {
-									Ext.MessageBox.alert(successLabel, jsonResponse.message);
-								}
-							},
-							failure : function (response, options) {
-								Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
-							}
-						});
-					}
-				},
-				'-', new Ext.ux.form.SearchField({
-					store : businessPartnerStore,
-					width : 320
-				})],
+		
 			items : [businessPartnerGrid]
 		});
 	// form entry
-	var businessPartnerTitle = new Ext.form.TextField({
+	var businessPartnerId = new Ext.form.NumberField({
 			labelAlign : 'left',
-			fieldLabel : businessPartnerTitleLabel + '<span style=\'color: red;\'>*</span>',
-			hiddenName : 'generalLedgerDDesc',
-			name : 'businessPartnerDesc',
-			id : 'businessPartnerDesc',
-			allowBlank : false,
+			fieldLabel : businessPartnerIdLabel ,
+			hiddenName : 'businessPartnerId',
+			name : 'businessPartnerId',
+			id : 'businessPartnerId',
+			
 			blankText : blankTextLabel,
 			style : {
 				textTransform : 'uppercase'
 			},
-			anchor : '40%'
+			anchor : '100%'
 		});
 	
-	var businessPartnerDesc = new Ext.form.TextField({
+	var businessPartnerCompany = new Ext.form.TextField({
 			labelAlign : 'left',
-			fieldLabel : businessPartnerDescLabel + '<span style=\'color: red;\'>*</span>',
-			hiddenName : 'businessPartnerDesc',
-			name : 'businessPartnerDesc',
-			id : 'businessPartnerDesc',
+			fieldLabel : businessPartnerCompanyLabel ,
+			hiddenName : 'businessPartnerCompany',
+			name : 'businessPartnerCompany',
+			id : 'businessPartnerCompany',
 			allowBlank : false,
 			blankText : blankTextLabel,
 			style : {
 				textTransform : 'uppercase'
 			},
-			anchor : '40%'
-	});
+			anchor : '100%'
+		});
 	
-	var generalLedgerlChartOfAccountIdStart = new Ext.ux.form.ComboBoxMatch({
+	var businessPartnerLastName = new Ext.form.TextField({
 			labelAlign : 'left',
-			fieldLabel : stateIdLabel,
-			name : ' generalLedgerlChartOfAccountIdStart',
-			hiddenName : ' generalLedgerlChartOfAccountIdStart',
-			valueField : 'generalLedgerlChartOfAccountId',
-			hiddenId : 'g generalLedgerlChartOfAccountIdStart_fake',
-			id : ' generalLedgerlChartOfAccountIdStart',
-			displayField : 'generalLedgerlChartOfAccountDesc',
+			fieldLabel : businessPartnerLastNameLabel ,
+			hiddenName : 'businessPartnerLastName',
+			name : 'businessPartnerLastName',
+			id : 'businessPartnerLastName',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerFirstName = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerFirstNameLabel ,
+			hiddenName : 'businessPartnerFirstName',
+			name : 'businessPartnerFirstName',
+			id : 'businessPartnerFirstName',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerEmail = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerEmailLabel ,
+			hiddenName : 'businessPartnerEmail',
+			name : 'businessPartnerEmail',
+			id : 'businessPartnerEmail',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerJobTitle = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerJobTitleLabel ,
+			hiddenName : 'businessPartnerJobTitle',
+			name : 'businessPartnerJobTitle',
+			id : 'businessPartnerJobTitle',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerBusinessPhone = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerBusinessPhoneLabel ,
+			hiddenName : 'businessPartnerBusinessPhone',
+			name : 'businessPartnerBusinessPhone',
+			id : 'businessPartnerBusinessPhone',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerHomePhone = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerHomePhoneLabel ,
+			hiddenName : 'businessPartnerHomePhone',
+			name : 'businessPartnerHomePhone',
+			id : 'businessPartnerHomePhone',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerMobilePhone = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerMobilePhoneLabel ,
+			hiddenName : 'businessPartnerMobilePhone',
+			name : 'businessPartnerMobilePhone',
+			id : 'businessPartnerMobilePhone',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerFaxNum = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerFaxNumLabel ,
+			hiddenName : 'businessPartnerFaxNum',
+			name : 'businessPartnerFaxNum',
+			id : 'businessPartnerFaxNum',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerAddress = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerAddressLabel ,
+			hiddenName : 'businessPartnerAddress',
+			name : 'businessPartnerAddress',
+			id : 'businessPartnerAddress',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerCity = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerCityLabel ,
+			hiddenName : 'businessPartnerCity',
+			name : 'businessPartnerCity',
+			id : 'businessPartnerCity',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerState = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerStateLabel ,
+			hiddenName : 'businessPartnerState',
+			name : 'businessPartnerState',
+			id : 'businessPartnerState',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerPostCode = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerPostCodeLabel ,
+			hiddenName : 'businessPartnerPostCode',
+			name : 'businessPartnerPostCode',
+			id : 'businessPartnerPostCode',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerCountry = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerCountryLabel ,
+			hiddenName : 'businessPartnerCountry',
+			name : 'businessPartnerCountry',
+			id : 'businessPartnerCountry',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerWebPage = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerWebPageLabel ,
+			hiddenName : 'businessPartnerWebPage',
+			name : 'businessPartnerWebPage',
+			id : 'businessPartnerWebPage',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerNotes = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerNotesLabel ,
+			hiddenName : 'businessPartnerNotes',
+			name : 'businessPartnerNotes',
+			id : 'businessPartnerNotes',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerAttachments = new Ext.form.TextField({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerAttachmentsLabel ,
+			hiddenName : 'businessPartnerAttachments',
+			name : 'businessPartnerAttachments',
+			id : 'businessPartnerAttachments',
+			
+			blankText : blankTextLabel,
+			style : {
+				textTransform : 'uppercase'
+			},
+			anchor : '100%'
+		});
+	
+	var businessPartnerCategoryId = new Ext.ux.form.ComboBoxMatch({
+			labelAlign : 'left',
+			fieldLabel : businessPartnerCategoryIdLabel,
+			name : 'stateId',
+			hiddenName : 'businessPartnerCategoryId',
+			valueField : 'businessPartnerCategoryId',
+			hiddenId : 'businessPartnerCategoryId_fake',
+			id : 'businessPartnerCategoryId',
+			displayField : 'businessPartnerCategoryDesc',
 			typeAhead : false,
 			triggerAction : 'all',
-			store : countryStore,
-			anchor : '95%',
+			store : businessPartnerCategoryStore,
+			anchor : '100%',
 			selectOnFocus : true,
 			mode : 'local',
-			allowBlank : false,
+			
 			blankText : blankTextLabel,
 			createValueMatcher : function (value) {
 				value = String(value).replace(/\s*/g, '');
 				if (Ext.isEmpty(value, false)) {
 					return new RegExp('^');
 				}
-				value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-				return new RegExp('\\b(' + value + ')', 'i');
-			}
-		});
-	
-	var generalLedgerlChartOfAccountIdEnd = new Ext.ux.form.ComboBoxMatch({
-			labelAlign : 'left',
-			fieldLabel : stateIdLabel,
-			name : 'generalLedgerlChartOfAccountIdEnd',
-			hiddenName : 'generalLedgerlChartOfAccountIdEnd',
-			valueField : 'generalLedgerlChartOfAccountIdEnd',
-			hiddenId : 'generalLedgerlChartOfAccountIdEnd_fake',
-			id : 'generalLedgerlChartOfAccountIdEnd',
-			displayField : 'generalLedgerlChartOfAccountDesc',
-			typeAhead : false,
-			triggerAction : 'all',
-			store : countryStore,
-			anchor : '95%',
-			selectOnFocus : true,
-			mode : 'local',
-			allowBlank : false,
-			blankText : blankTextLabel,
-			createValueMatcher : function (value) {
-				value = String(value).replace(/\s*/g, '');
-				if (Ext.isEmpty(value, false)) {
-					return new RegExp('^');
-				}
-				value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-				return new RegExp('\\b(' + value + ')', 'i');
+				value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+				return new RegExp('\b(' + value + ')', 'i');
 			}
 		});
 	
@@ -1100,31 +1594,64 @@ Ext.onReady(function () {
 			frame : true,
 			title : leafNative,
 			border : false,
-			bodyStyle : 'padding:5px',
-			width : 600,
-			items : [{
+			bodyStyle : 'padding:1px',
+		
+			items : [ {
 					xtype : 'fieldset',
-					title : 'Form Entry',
-					items : [businessPartnerId,businessPartnerCompany,businessPartnerLastName,businessPartnerFirstName,businessPartnerEmail,businessPartnerJobTitle,businessPartnerBusinessPhone,businessPartnerHomePhone,businessPartnerMobilePhone,businessPartnerFaxNum,businessPartnerAddress,businessPartnerCity,businessPartnerState,businessPartnerPostCode,businessPartnerCountry,businessPartnerWebPage,businessPartnerNotes,businessPartnerAttachments,businessPartnerCategoryId ]
-				}, {
-					xtype : 'fieldset',
-					title : 'System Administration',
+					title : 'General ',
 					layout : 'column',
-					items : [{
-							columnWidth : 0.3,
+					bodyStyle : 'padding:1px',
+					items : [businessPartnerId, 
+					         
+					         {
+							columnWidth : 0.5,
 							layout : 'form',
 							border : false,
-							items : [isDefault, isNew, isDraft]
+							bodyStyle : 'padding:10px',
+							items : [businessPartnerCompany, businessPartnerCategoryId,{
+								xtype:'fieldset',
+								title:'Primary Contact',
+								items :[
+businessPartnerFirstName,
+businessPartnerLastName,
+businessPartnerJobTitle
+							    ]
+								
+							},{
+								xtype:'fieldset',
+								title:'Phone Number',
+								items :[
+								        businessPartnerHomePhone,
+businessPartnerBusinessPhone,
+businessPartnerMobilePhone,
+businessPartnerFaxNum
+							    ]
+								
+							} ]
 						}, {
-							columnWidth : 0.3,
+							columnWidth : 0.5,
 							layout : 'form',
 							border : false,
-							items : [isUpdate, isDelete, isActive]
-						}, {
-							columnWidth : 0.3,
-							layout : 'form',
-							border : false,
-							items : [isApproved, isReview, isPost]
+							items : [ {
+								xtype:'fieldset',
+								title:'Address',
+								items :[
+								        businessPartnerAddress, 
+								        businessPartnerCity,
+								        businessPartnerState, 
+								        businessPartnerPostCode, 
+								        businessPartnerCountry
+							    ]
+								
+							},{
+								xtype:'fieldset',
+								title:'Internet',
+								items :[
+								        	businessPartnerEmail,   
+								        	businessPartnerWebPage
+							    ]
+								
+							},businessPartnerNotes ]
 						}
 					]
 				}
@@ -1132,13 +1659,7 @@ Ext.onReady(function () {
 			buttonVAlign : 'top',
 			buttonAlign : 'left',
 			iconCls : 'application_form',
-			bbar : new Ext.ux.StatusBar({
-				id : 'form-statusbar',
-				defaultText : defaultTextLabel,
-				plugins : new Ext.ux.ValidationStatus({
-					form : 'formPanel'
-				})
-			}),
+			
 			buttons : [{
 					text : auditButtonLabel,
 					name : 'auditButtonLabel',

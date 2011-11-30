@@ -6,19 +6,19 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/generalledgerbudgetModel.php");
+require_once ("../model/businessPartnerModel.php");
 
 /**
- * this is generalledgerbudget setting files.This sample template file for master record
+ * this is businessPartner setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package generalledgerbudget
- * @subpackage generalledgerbudgetv1,v2,v3,v4,v5
+ *  @package account receivable
+ * @subpackage businessPartner
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralledgerbudgetClass extends ConfigClass {
+class BusinesspartnerClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -43,7 +43,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 	 * @var string
 	 */
 	private $documentTrail;
-
+	/**
+	 * System String Message.
+	 * @var string $systemString;
+	 */
+	public $systemString;
 	/**
 	 * Audit Row TRUE or False
 	 * @var bool
@@ -89,21 +93,23 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		// audit property
 		$this->audit = 0;
 		$this->log = 1;
-
-		$this->model = new GeneralledgerbudgetModel ();
+		
+		$this->model = new BusinessPartnerModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-
+		
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -137,15 +143,26 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		$this->q->start();
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
-			 
 			$sql = "
-			INSERT INTO `generalledgerbudget`
+			INSERT INTO `businessPartner`
 					(
-						`documentNo`,												
-						`generalLedgerChartOfAccountNo`,
-						`generalLedgerBudgetMonth`,
-						`generalLedgerBudgetYear`,
-						`generalLedgerBudgetAmount`,
+						`businessPartnerCompany`,
+						`businessPartnerLastName`,
+						`businessPartnerFirstName`,
+						`businessPartnerEmail`,
+						`businessPartnerJobTitle`,
+						`businessPartnerBusinessPhone`,
+						`businessPartnerHomePhone`,
+						`businessPartnerMobilePhone`,
+						`businessPartnerFaxNum`,
+						`businessPartnerAddress`,
+						`businessPartnerCity`,
+						`businessPartnerState`,
+						`businessPartnerPostcode`,
+						`businessPartnerCountry`,
+						`businessPartnerWebPage`,
+						`businessPartnerNotes`,
+						`businessPartnerAttachments,				
 						`isDefault`,
 						`isNew`,													`isDraft`,
 						`isUpdate`,													`isDelete`,
@@ -155,11 +172,23 @@ class GeneralledgerbudgetClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-						'" . $this->model->getGeneralLedgerBudgetYear() . "',
-						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
+						'" . $this->model->getBusinessPartnerCompany() . "',					
+						'" . $this->model->getBusinessPartnerLastName() . "',
+						'" . $this->model->getBusinessPartnerFirstName() . "',
+						'" . $this->model->getBusinessPartnerEmail() . "',
+						'" . $this->model->getBusinessPartnerJobTitle() . "',
+						'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+						'" . $this->model->getBusinessPartnerHomePhone() . "',
+						'" . $this->model->getBusinessPartnerMobilePhone() . "',
+						'" . $this->model->getBusinessPartnerFaxNum() . "',
+						'" . $this->model->getBusinessPartnerAddress() . "',
+						'" . $this->model->getBusinessPartnerCity() . "',
+						'" . $this->model->getBusinessPartnerState() . "',
+						'" . $this->model->getBusinessPartnerPostcode() . "',
+						'" . $this->model->getBusinessPartnerCountry() . "',
+						'" . $this->model->getBusinessPartnerWebPage() . "',
+						'" . $this->model->getBusinessPartnerNotes() . "',
+						'" . $this->model->getBusinessPartnerAttachments() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -169,13 +198,25 @@ class GeneralledgerbudgetClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [generalledgerbudget]
+			INSERT INTO [businessPartner]
 					(
-						[documentNo],												
-						[generalLedgerChartOfAccountNo],
-						[generalLedgerBudgetMonth],
-						[generalLedgerBudgetYear],
-						[generalLedgerBudgetAmount],													
+						[businessPartnerCompany],
+						[businessPartnerLastName],
+						[businessPartnerFirstName],
+						[businessPartnerEmail],
+						[businessPartnerJobTitle],
+						[businessPartnerBusinessPhone],
+						[businessPartnerHomePhone],
+						[businessPartnerMobilePhone],
+						[businessPartnerFaxNum],
+						[businessPartnerAddress],
+						[businessPartnerCity],
+						[businessPartnerState],
+						[businessPartnerPostcode],
+						[businessPartnerCountry],
+						[businessPartnerWebPage],
+						[businessPartnerNotes],
+						[businessPartnerAttachments],	
 						[isDefault],
 						[isNew],														[isDraft],
 						[isUpdate],														[isDelete],
@@ -185,11 +226,23 @@ class GeneralledgerbudgetClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-						'" . $this->model->getGeneralLedgerBudgetYear() . "',
-						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
+						'" . $this->model->getBusinessPartnerCompany() . "',					
+						'" . $this->model->getBusinessPartnerLastName() . "',
+						'" . $this->model->getBusinessPartnerFirstName() . "',
+						'" . $this->model->getBusinessPartnerEmail() . "',
+						'" . $this->model->getBusinessPartnerJobTitle() . "',
+						'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+						'" . $this->model->getBusinessPartnerHomePhone() . "',
+						'" . $this->model->getBusinessPartnerMobilePhone() . "',
+						'" . $this->model->getBusinessPartnerFaxNum() . "',
+						'" . $this->model->getBusinessPartnerAddress() . "',
+						'" . $this->model->getBusinessPartnerCity() . "',
+						'" . $this->model->getBusinessPartnerState() . "',
+						'" . $this->model->getBusinessPartnerPostcode() . "',
+						'" . $this->model->getBusinessPartnerCountry() . "',
+						'" . $this->model->getBusinessPartnerWebPage() . "',
+						'" . $this->model->getBusinessPartnerNotes() . "',
+						'" . $this->model->getBusinessPartnerAttachments() . "',				
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
@@ -200,13 +253,25 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	GENERALLEDGERBUDGET
+			INSERT INTO	BUSINESSPARTNER
 					(
-						DOCUMENTNO,												
-						GENERALLEDGERCHARTOFACCOUNTNO,
-						GENERALLEDGERBUDGETMONTH,
-						GENERALLEDGERBUDGETYEAR,
-						GENERALLEDGERBUDGETAMOUNT,
+						BUSINESSPARTNERCOMPANY,
+						BUSINESSPARTNERLASTNAME,
+						BUSINESSPARTNERFIRSTNAME,
+						BUSINESSPARTNEREMAIL,
+						BUSINESSPARTNERJOBTITLE,
+						BUSINESSPARTNERBUISNESSPHONE,
+						BUSINESSPARTNERHOMEPHONE,
+						BUSINESSPARTNERMOBILEPHONE,
+						BUSINESSPARTNERFAXNUM,
+						BUSINESSPARTNERADDRESS,
+						BUSINESSPARTNERCITY,
+						BUSINESSPARTNERSTATE,
+						BUSINESSPARTNERPOSTCODE,
+						BUSINESSPARTNERCOUNTRY,
+						BUSINESSPARTNERWEBPAGE,
+						BUSINESSPARTNERNOTES,
+						BUSINESSPARTNERATTACHMENTS,	
 						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
@@ -216,11 +281,23 @@ class GeneralledgerbudgetClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-						'" . $this->model->getGeneralLedgerBudgetYear() . "',
-						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
+						'" . $this->model->getBusinessPartnerCompany() . "',					
+						'" . $this->model->getBusinessPartnerLastName() . "',
+						'" . $this->model->getBusinessPartnerFirstName() . "',
+						'" . $this->model->getBusinessPartnerEmail() . "',
+						'" . $this->model->getBusinessPartnerJobTitle() . "',
+						'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+						'" . $this->model->getBusinessPartnerHomePhone() . "',
+						'" . $this->model->getBusinessPartnerMobilePhone() . "',
+						'" . $this->model->getBusinessPartnerFaxNum() . "',
+						'" . $this->model->getBusinessPartnerAddress() . "',
+						'" . $this->model->getBusinessPartnerCity() . "',
+						'" . $this->model->getBusinessPartnerState() . "',
+						'" . $this->model->getBusinessPartnerPostcode() . "',
+						'" . $this->model->getBusinessPartnerCountry() . "',
+						'" . $this->model->getBusinessPartnerWebPage() . "',
+						'" . $this->model->getBusinessPartnerNotes() . "',
+						'" . $this->model->getBusinessPartnerAttachments() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -230,13 +307,25 @@ class GeneralledgerbudgetClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERBUDGET
-			(
-						DOCUMENTNO,												
-						GENERALLEDGERCHARTOFACCOUNTNO,
-						GENERALLEDGERBUDGETMONTH,
-						GENERALLEDGERBUDGETYEAR,
-						GENERALLEDGERBUDGETAMOUNT,
+			INSERT INTO	BUSINESSPARTNER
+			(					
+						BUSINESSPARTNERCOMPANY,
+						BUSINESSPARTNERLASTNAME,
+						BUSINESSPARTNERFIRSTNAME,
+						BUSINESSPARTNEREMAIL,
+						BUSINESSPARTNERJOBTITLE,
+						BUSINESSPARTNERBUISNESSPHONE,
+						BUSINESSPARTNERHOMEPHONE,
+						BUSINESSPARTNERMOBILEPHONE,
+						BUSINESSPARTNERFAXNUM,
+						BUSINESSPARTNERADDRESS,
+						BUSINESSPARTNERCITY,
+						BUSINESSPARTNERSTATE,
+						BUSINESSPARTNERPOSTCODE,
+						BUSINESSPARTNERCOUNTRY,
+						BUSINESSPARTNERWEBPAGE,
+						BUSINESSPARTNERNOTES,
+						BUSINESSPARTNERATTACHMENTS,
 						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
@@ -246,11 +335,23 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			)
 			VALUES
 			(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-						'" . $this->model->getGeneralLedgerBudgetYear() . "',
-						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
+						'" . $this->model->getBusinessPartnerCompany() . "',					
+						'" . $this->model->getBusinessPartnerLastName() . "',
+						'" . $this->model->getBusinessPartnerFirstName() . "',
+						'" . $this->model->getBusinessPartnerEmail() . "',
+						'" . $this->model->getBusinessPartnerJobTitle() . "',
+						'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+						'" . $this->model->getBusinessPartnerHomePhone() . "',
+						'" . $this->model->getBusinessPartnerMobilePhone() . "',
+						'" . $this->model->getBusinessPartnerFaxNum() . "',
+						'" . $this->model->getBusinessPartnerAddress() . "',
+						'" . $this->model->getBusinessPartnerCity() . "',
+						'" . $this->model->getBusinessPartnerState() . "',
+						'" . $this->model->getBusinessPartnerPostcode() . "',
+						'" . $this->model->getBusinessPartnerCountry() . "',
+						'" . $this->model->getBusinessPartnerWebPage() . "',
+						'" . $this->model->getBusinessPartnerNotes() . "',
+						'" . $this->model->getBusinessPartnerAttachments() . "',							
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -260,13 +361,25 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERBUDGET
+			INSERT INTO	BUSINESSPARTNER
 			(
-						DOCUMENTNO,												
-						GENERALLEDGERCHARTOFACCOUNTNO,
-						GENERALLEDGERBUDGETMONTH,
-						GENERALLEDGERBUDGETYEAR,
-						GENERALLEDGERBUDGETAMOUNT,
+						BUSINESSPARTNERCOMPANY,
+						BUSINESSPARTNERLASTNAME,
+						BUSINESSPARTNERFIRSTNAME,
+						BUSINESSPARTNEREMAIL,
+						BUSINESSPARTNERJOBTITLE,
+						BUSINESSPARTNERBUISNESSPHONE,
+						BUSINESSPARTNERHOMEPHONE,
+						BUSINESSPARTNERMOBILEPHONE,
+						BUSINESSPARTNERFAXNUM,
+						BUSINESSPARTNERADDRESS,
+						BUSINESSPARTNERCITY,
+						BUSINESSPARTNERSTATE,
+						BUSINESSPARTNERPOSTCODE,
+						BUSINESSPARTNERCOUNTRY,
+						BUSINESSPARTNERWEBPAGE,
+						BUSINESSPARTNERNOTES,
+						BUSINESSPARTNERATTACHMENTS,
 						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
@@ -276,11 +389,23 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			)
 			VALUES
 			(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-						'" . $this->model->getGeneralLedgerBudgetYear() . "',
-						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
+						'" . $this->model->getBusinessPartnerCompany() . "',					
+						'" . $this->model->getBusinessPartnerLastName() . "',
+						'" . $this->model->getBusinessPartnerFirstName() . "',
+						'" . $this->model->getBusinessPartnerEmail() . "',
+						'" . $this->model->getBusinessPartnerJobTitle() . "',
+						'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+						'" . $this->model->getBusinessPartnerHomePhone() . "',
+						'" . $this->model->getBusinessPartnerMobilePhone() . "',
+						'" . $this->model->getBusinessPartnerFaxNum() . "',
+						'" . $this->model->getBusinessPartnerAddress() . "',
+						'" . $this->model->getBusinessPartnerCity() . "',
+						'" . $this->model->getBusinessPartnerState() . "',
+						'" . $this->model->getBusinessPartnerPostcode() . "',
+						'" . $this->model->getBusinessPartnerCountry() . "',
+						'" . $this->model->getBusinessPartnerWebPage() . "',
+						'" . $this->model->getBusinessPartnerNotes() . "',
+						'" . $this->model->getBusinessPartnerAttachments() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -289,7 +414,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		//advance logging future
@@ -298,13 +423,13 @@ class GeneralledgerbudgetClass extends ConfigClass {
 
 		$this->q->audit = $this->audit;
 		$this->q->create($sql);
-		$generalLedgerBudgetId = $this->q->lastInsertId();
+		$businessPartnerId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "generalLedgerBudgetId" => $generalLedgerBudgetId));
+		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "businessPartnerId" => $businessPartnerId));
 		exit();
 	}
 
@@ -314,22 +439,22 @@ class GeneralledgerbudgetClass extends ConfigClass {
 
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
-		if ($this->isAdmin == 0) {
+		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `generalledgerbudget`.`isActive`		=	1	";
+				$this->auditFilter = "	`iFinancial`.`businessPartner`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [generalledgerbudget].[isActive]		=	1	";
+				$this->auditFilter = "	[businessPartner].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND GENERALLEDGERBUDGET.ISACTIVE	=	1	";
+				$this->auditFilter = "	BUSINESSPARTNER.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND GENERALLEDGERBUDGET.ISACTIVE	=	1	";
+				$this->auditFilter = "	BUSINESSPARTNER.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND GENERALLEDGERBUDGET.ISACTIVE	=	1	";
+				$this->auditFilter = "	BUSINESSPARTNER.ISACTIVE	=	1	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-		} else if ($this->isAdmin == 1) {
+		} else if ($this->getIsAdmin() == 1) {
 			if ($this->getVendor() == self::MYSQL) {
 				$this->auditFilter = "	1	=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
@@ -341,7 +466,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	1	=	1 	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -353,91 +478,128 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalledgerbudget`.`generalLedgerBudgetId`,
-						`generalledgerbudget`.`documentNo`,
-						`generalledgerbudget`.`generalLedgerChartOfAccountNo`,
-						`generalledgerbudget`.`generalLedgerBudgetMonth`,
-						`generalledgerbudget`.`generalLedgerBudgetYear`,
-						`generalledgerbudget`.`generalLedgerBudgetAmount`,
-						`generalledgerbudget`.`isDefault`,
-						`generalledgerbudget`.`isNew`,
-						`generalledgerbudget`.`isDraft`,
-						`generalledgerbudget`.`isUpdate`,
-						`generalledgerbudget`.`isDelete`,
-						`generalledgerbudget`.`isActive`,
-						`generalledgerbudget`.`isApproved`,
-						`generalledgerbudget`.`isReview`,
-						`generalledgerbudget`.`isPost`,
-						`generalledgerbudget`.`executeBy`,
-						`generalledgerbudget`.`executeTime`,
-						`staff`.`staffName`
-			FROM 	`generalledgerbudget`
-			JOIN	`staff`
-			ON		`generalledgerbudget`.`executeBy` = `staff`.`staffId`
+			SELECT	`iFinancial`.`businessPartner`.`businessPartnerId`,
+					`iFinancial`.`businessPartner`.`businessPartnerCompany`,
+					`iFinancial`.`businessPartner`.`businessPartnerLastName`,
+					`iFinancial`.`businessPartner`.`businessPartnerFirstName`,
+					`iFinancial`.`businessPartner`.`businessPartnerEmail`,
+					`iFinancial`.`businessPartner`.`businessPartnerJobTitle`,
+					`iFinancial`.`businessPartner`.`businessPartnerBusinessPhone`,
+					`iFinancial`.`businessPartner`.`businessPartnerHomePhone`,
+					`iFinancial`.`businessPartner`.`businessPartnerMobilePhone`,
+					`iFinancial`.`businessPartner`.`businessPartnerFaxNum`,
+					`iFinancial`.`businessPartner`.`businessPartnerAddress`,
+					`iFinancial`.`businessPartner`.`businessPartnerCity`,
+					`iFinancial`.`businessPartner`.`businessPartnerState`,
+					`iFinancial`.`businessPartner`.`businessPartnerPostcode`,
+					`iFinancial`.`businessPartner`.`businessPartnerCountry`,
+					`iFinancial`.`businessPartner`.`businessPartnerWebPage`,
+					`iFinancial`.`businessPartner`.`businessPartnerNotes`,
+					`iFinancial`.`businessPartner`.`businessPartnerAttachments`,						
+					`iFinancial`.`businessPartner`.`isDefault`,
+					`iFinancial`.`businessPartner`.`isNew`,
+					`iFinancial`.`businessPartner`.`isDraft`,
+					`iFinancial`.`businessPartner`.`isUpdate`,
+					`iFinancial`.`businessPartner`.`isDelete`,
+					`iFinancial`.`businessPartner`.`isActive`,
+					`iFinancial`.`businessPartner`.`isApproved`,
+					`iFinancial`.`businessPartner`.`isReview`,
+					`iFinancial`.`businessPartner`.`isPost`,
+					`iFinancial`.`businessPartner`.`executeBy`,
+					`iFinancial`.`businessPartner`.`executeTime`,
+					`iManagement`.`staff`.`staffName`
+			FROM 	`iFinancial`.`businessPartner`
+			JOIN	`iManagement`.`staff`
+			ON		`iFinancial`.`businessPartner`.`executeBy` = `iManagement`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getGeneralLedgerBudgetId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+			if ($this->model->getBusinessPartnerId(0, 'single')) {
+				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			}
+			
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[generalledgerbudget].[generalLedgerBudgetId],
-						[generalledgerbudget].[documentNo],
-						[generalledgerbudget].[generalLedgerChartOfAccountNo],
-						[generalledgerbudget].[generalLedgerBudgetMonth],
-						[generalledgerbudget].[generalLedgerBudgetYear],
-						[generalledgerbudget].[generalLedgerBudgetAmount],
-						[generalledgerbudget].[isDefault],
-						[generalledgerbudget].[isNew],
-						[generalledgerbudget].[isDraft],
-						[generalledgerbudget].[isUpdate],
-						[generalledgerbudget].[isDelete],
-						[generalledgerbudget].[isActive],
-						[generalledgerbudget].[isApproved],
-						[generalledgerbudget].[isReview],
-						[generalledgerbudget].[isPost],
-						[generalledgerbudget].[executeBy],
-						[generalledgerbudget].[executeTime],
-						[staff].[staffName]
-			FROM 	[generalledgerbudget]
-			JOIN		[staff]
-			ON		[generalledgerbudget].[executeBy] = [staff].[staffId]
+			SELECT	[businessPartner].[businessPartnerId],
+					[businessPartner].[businessPartnerCompany],
+					[businessPartner].[businessPartnerLastName],
+					[businessPartner].[businessPartnerFirstName],
+					[businessPartner].[businessPartnerEmail],
+					[businessPartner].[businessPartnerJobTitle],
+					[businessPartner].[businessPartnerBusinessPhone],
+					[businessPartner].[businessPartnerHomePhone],
+					[businessPartner].[businessPartnerMobilePhone],
+					[businessPartner].[businessPartnerFaxNum],
+					[businessPartner].[businessPartnerAddress],
+					[businessPartner].[businessPartnerCity],
+					[businessPartner].[businessPartnerState],
+					[businessPartner].[businessPartnerPostcode],
+					[businessPartner].[businessPartnerCountry],
+					[businessPartner].[businessPartnerWebPage],
+					[businessPartner].[businessPartnerNotes],
+					[businessPartner].[businessPartnerAttachments],
+					[businessPartner].[isDefault],
+					[businessPartner].[isNew],
+					[businessPartner].[isDraft],
+					[businessPartner].[isUpdate],
+					[businessPartner].[isDelete],
+					[businessPartner].[isActive],
+					[businessPartner].[isApproved],
+					[businessPartner].[isReview],
+					[businessPartner].[isPost],
+					[businessPartner].[executeBy],
+					[businessPartner].[executeTime],
+					[staff].[staffName]
+			FROM 	[businessPartner]
+			JOIN	[staff]
+			ON		[businessPartner].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getGeneralLedgerBudgetId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+			if ($this->model->getBusinessPartnerId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		GENERALLEDGERBUDGET.GENERALLEDGERBUDGETID   		 	AS 	\"generalLedgerBudgetId\",
-						GENERALLEDGERBUDGET.DOCUMENTNO 							AS 	\"documentNo\",
-						GENERALLEDGERBUDGET.GENERALLEDGERCHARTOFACCOUNTNO 		AS 	\"generalLedgerChartOfAccountNo\",
-						GENERALLEDGERBUDGET.GENERALLEDGERBUDGETMONTH 			AS 	\"generalLedgerBudgetMonth\",
-						GENERALLEDGERBUDGET.GENERALLEDGERBUDGETYEAR 			AS 	\"generalLedgerBudgetYear\",
-						GENERALLEDGERBUDGET.GENERALLEDGERBUDGETAMOUNT 			AS 	\"generalLedgerBudgetAmount\",
-						GENERALLEDGERBUDGET.ISDEFAULT    			AS	\"isDefault\",
-						GENERALLEDGERBUDGET.ISNEW		  			AS	\"isNew\",
-						GENERALLEDGERBUDGET.ISDRAFT	  				AS	\"isDraft\",
-						GENERALLEDGERBUDGET.ISUPDATE     			AS	\"isUpdate\",
-						GENERALLEDGERBUDGET.ISDELETE	  			AS	\"isDelete\",
-						GENERALLEDGERBUDGET.ISACTIVE	  			AS	\"isActive\",
-						GENERALLEDGERBUDGET.ISAPPROVED   			AS	\"isApproved\",
-						GENERALLEDGERBUDGET.ISREVIEW	  			AS	\"isReview\",
-						GENERALLEDGERBUDGET.ISPOST  	  			AS	\"isPost\",
-						GENERALLEDGERBUDGET.EXECUTEBY    			AS	\"executeBy\",
-						GENERALLEDGERBUDGET.EXECUTETIME  			AS	\"executeTime\",
-						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		GENERALLEDGERBUDGET
+			SELECT		BUSINESSPARTNER.BUSINESSPARTNERID   		 	AS 	\"businessPartnerId\",
+						BUSINESSPARTNER.BUSINESSPARTNERCOMPANY			AS 	\"businessPartnerCompany\",
+						BUSINESSPARTNER.BUSINESSPARTNERLASTNAME			AS 	\"businessPartnerLastName\",
+						BUSINESSPARTNER.BUSINESSPARTNERFIRSTNAME		AS 	\"businessPartnerFirstName\",
+						BUSINESSPARTNER.BUSINESSPARTNEREMAIL			AS 	\"businessPartnerEmail\",
+						BUSINESSPARTNER.BUSINESSPARTNERJOBTITLE			AS 	\"businessPartnerJobTitle\",
+						BUSINESSPARTNER.BUSINESSPARTNERBUISNESSPHONE	AS 	\"businessPartnerBusinessPhone\",
+						BUSINESSPARTNER.BUSINESSPARTNERHOMEPHONE		AS 	\"businessPartnerHomePhone\",
+						BUSINESSPARTNER.BUSINESSPARTNERMOBILEPHONE		AS 	\"businessPartnerMobilePhone\",
+						BUSINESSPARTNER.BUSINESSPARTNERFAXNUM			AS 	\"businessPartnerFaxNum\",
+						BUSINESSPARTNER.BUSINESSPARTNERADDRESS			AS 	\"businessPartnerAddress\",
+						BUSINESSPARTNER.BUSINESSPARTNERCITY				AS 	\"businessPartnerCity\",
+						BUSINESSPARTNER.BUSINESSPARTNERSTATE			AS 	\"businessPartnerState\",
+						BUSINESSPARTNER.BUSINESSPARTNERPOSTCODE			AS 	\"businessPartnerPostcode\",
+						BUSINESSPARTNER.BUSINESSPARTNERCOUNTRY			AS 	\"businessPartnerCountry\",
+						BUSINESSPARTNER.BUSINESSPARTNERWEBPAGE			AS 	\"businessPartnerWebPage\",
+						BUSINESSPARTNER.BUSINESSPARTNERNOTES			AS 	\"businessPartnerNotes\",
+						BUSINESSPARTNER.BUSINESSPARTNERATTACHMENTS		AS 	\"businessPartnerAttachments\",					
+						BUSINESSPARTNER.ISDEFAULT    				AS	\"isDefault\",
+						BUSINESSPARTNER.ISNEW		  				AS	\"isNew\",
+						BUSINESSPARTNER.ISDRAFT	  				AS	\"isDraft\",
+						BUSINESSPARTNER.ISUPDATE     				AS	\"isUpdate\",
+						BUSINESSPARTNER.ISDELETE	  				AS	\"isDelete\",
+						BUSINESSPARTNER.ISACTIVE	  				AS	\"isActive\",
+						BUSINESSPARTNER.ISAPPROVED   				AS	\"isApproved\",
+						BUSINESSPARTNER.ISREVIEW	  				AS	\"isReview\",
+						BUSINESSPARTNER.ISPOST  	  				AS	\"isPost\",
+						BUSINESSPARTNER.EXECUTEBY    				AS	\"executeBy\",
+						BUSINESSPARTNER.EXECUTETIME  				AS	\"executeTime\",
+						STAFF.STAFFNAME		  				AS	\"staffName\"	
+			FROM 		BUSINESSPARTNER
 			JOIN		STAFF
-			ON			GENERALLEDGERBUDGET.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			BUSINESSPARTNER.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getGeneralLedgerBudgetId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+			if ($this->model->getBusinessPartnerId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
 		} else if ($this->q->vendor == self::POSTGRESS) {
 
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -446,13 +608,13 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('generalLedgerBudgetId');
+		$filterArray = array('businessPartnerId','businessPartnerCategoryId','staff');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('generalledgerbudget');
+		$tableArray = array('businessPartner','businessPartner','staff');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -467,7 +629,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -488,7 +650,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->searching();
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -519,7 +681,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -543,33 +705,45 @@ class GeneralledgerbudgetClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [generalledgerbudgetDerived] AS
+							WITH [businessPartnerDerived] AS
 							(
-								SELECT 		[generalledgerbudget].[generalLedgerBudgetId],
-											[generalledgerbudget].[documentNo],
-											[generalledgerbudget].[generalLedgerChartOfAccountNo],
-											[generalledgerbudget].[generalLedgerBudgetMonth],
-											[generalledgerbudget].[generalLedgerBudgetYear],
-											[generalledgerbudget].[generalLedgerBudgetAmount],
-											[generalledgerbudget].[isDefault],
-											[generalledgerbudget].[isNew],
-											[generalledgerbudget].[isDraft],
-											[generalledgerbudget].[isUpdate],
-											[generalledgerbudget].[isDelete],
-											[generalledgerbudget].[isApproved],
-											[generalledgerbudget].[isReview],
-											[generalledgerbudget].[isPost],
-											[generalledgerbudget].[executeBy],
-											[generalledgerbudget].[executeTime],
+								SELECT 		[businessPartner].[businessPartnerId],
+											[businessPartner].[businessPartnerCompany],
+											[businessPartner].[businessPartnerLastName],
+											[businessPartner].[businessPartnerFirstName],
+											[businessPartner].[businessPartnerEmail],
+											[businessPartner].[businessPartnerJobTitle],
+											[businessPartner].[businessPartnerBusinessPhone],
+											[businessPartner].[businessPartnerHomePhone],
+											[businessPartner].[businessPartnerMobilePhone],
+											[businessPartner].[businessPartnerFaxNum],
+											[businessPartner].[businessPartnerAddress],
+											[businessPartner].[businessPartnerCity],
+											[businessPartner].[businessPartnerState],
+											[businessPartner].[businessPartnerPostcode],
+											[businessPartner].[businessPartnerCountry],
+											[businessPartner].[businessPartnerWebPage],
+											[businessPartner].[businessPartnerNotes],
+											[businessPartner].[businessPartnerAttachments],					
+											[businessPartner].[isDefault],
+											[businessPartner].[isNew],
+											[businessPartner].[isDraft],
+											[businessPartner].[isUpdate],
+											[businessPartner].[isDelete],
+											[businessPartner].[isApproved],
+											[businessPartner].[isReview],
+											[businessPartner].[isPost],
+											[businessPartner].[executeBy],
+											[businessPartner].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [generalLedgerBudgetId]) AS 'RowNumber'
-								FROM 	[generalledgerbudget]
+								ROW_NUMBER() OVER (ORDER BY [businessPartnerId]) AS 'RowNumber'
+								FROM 	[businessPartner]
 								JOIN		[staff]
-								ON		[generalledgerbudget].[executeBy] = [staff].[staffId]
+								ON		[businessPartner].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[generalledgerbudgetDerived]
+							FROM 		[businessPartnerDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -582,27 +756,39 @@ class GeneralledgerbudgetClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	GENERALLEDGERBUDGET.GENERALLEDGERBUDGETID   		AS 	\"generalLedgerBudgetId\",
-										GENERALLEDGERBUDGET.DOCUMENTNO 						AS 	\"documentNo\",
-										GENERALLEDGERBUDGET.GENERALLEDGERCHARTOFACCOUNTNO 	AS 	\"generalLedgerChartOfAccountNo\",
-										GENERALLEDGERBUDGET.GENERALLEDGERBUDGETMONTH 		AS 	\"generalLedgerBudgetMonth\",
-										GENERALLEDGERBUDGET.GENERALLEDGERBUDGETYEAR 		AS 	\"generalLedgerBudgetYear\",
-										GENERALLEDGERBUDGET.GENERALLEDGERBUDGETAMOUNT 		AS 	\"generalLedgerBudgetAmount\",
-										GENERALLEDGERBUDGET.ISDEFAULT    		AS	\"isDefault\",
-										GENERALLEDGERBUDGET.ISNEW		  		AS	\"isNew\",
-										GENERALLEDGERBUDGET.ISDRAFT	 			AS	\"isDraft\",
-										GENERALLEDGERBUDGET.ISUPDATE     		AS	\"isUpdate\",
-										GENERALLEDGERBUDGET.ISDELETE	  		AS	\"isDelete\",
-										GENERALLEDGERBUDGET.ISACTIVE	  		AS	\"isActive\",
-										GENERALLEDGERBUDGET.ISAPPROVED   		AS	\"isApproved\",
-										GENERALLEDGERBUDGET.ISREVIEW	  		AS 	\"isReview\",
-										GENERALLEDGERBUDGET.ISPOST		  		AS	\"isPost\",
-										GENERALLEDGERBUDGET.EXECUTEBY    		AS	\"executeBy\",
-										GENERALLEDGERBUDGET.EXECUTETIME  		AS	\"executeTime\",
+								SELECT	BUSINESSPARTNER.BUSINESSPARTNERID   			AS 	\"businessPartnerId\",
+										BUSINESSPARTNER.BUSINESSPARTNERCOMPANY			AS 	\"businessPartnerCompany\",
+										BUSINESSPARTNER.BUSINESSPARTNERLASTNAME			AS 	\"businessPartnerLastName\",
+										BUSINESSPARTNER.BUSINESSPARTNERFIRSTNAME		AS 	\"businessPartnerFirstName\",
+										BUSINESSPARTNER.BUSINESSPARTNEREMAIL			AS 	\"businessPartnerEmail\",
+										BUSINESSPARTNER.BUSINESSPARTNERJOBTITLE			AS 	\"businessPartnerJobTitle\",
+										BUSINESSPARTNER.BUSINESSPARTNERBUISNESSPHONE	AS 	\"businessPartnerBusinessPhone\",
+										BUSINESSPARTNER.BUSINESSPARTNERHOMEPHONE		AS 	\"businessPartnerHomePhone\",
+										BUSINESSPARTNER.BUSINESSPARTNERMOBILEPHONE		AS 	\"businessPartnerMobilePhone\",
+										BUSINESSPARTNER.BUSINESSPARTNERFAXNUM			AS 	\"businessPartnerFaxNum\",
+										BUSINESSPARTNER.BUSINESSPARTNERADDRESS			AS 	\"businessPartnerAddress\",
+										BUSINESSPARTNER.BUSINESSPARTNERCITY				AS 	\"businessPartnerCity\",
+										BUSINESSPARTNER.BUSINESSPARTNERSTATE			AS 	\"businessPartnerState\",
+										BUSINESSPARTNER.BUSINESSPARTNERPOSTCODE			AS 	\"businessPartnerPostcode\",
+										BUSINESSPARTNER.BUSINESSPARTNERCOUNTRY			AS 	\"businessPartnerCountry\",
+										BUSINESSPARTNER.BUSINESSPARTNERWEBPAGE			AS 	\"businessPartnerWebPage\",
+										BUSINESSPARTNER.BUSINESSPARTNERNOTES			AS 	\"businessPartnerNotes\",
+										BUSINESSPARTNER.BUSINESSPARTNERATTACHMENTS		AS 	\"businessPartnerAttachments\",										
+										BUSINESSPARTNER.ISDEFAULT    		AS	\"isDefault\",
+										BUSINESSPARTNER.ISNEW		  		AS	\"isNew\",
+										BUSINESSPARTNER.ISDRAFT	 		AS	\"isDraft\",
+										BUSINESSPARTNER.ISUPDATE     		AS	\"isUpdate\",
+										BUSINESSPARTNER.ISDELETE	  		AS	\"isDelete\",
+										BUSINESSPARTNER.ISACTIVE	  		AS	\"isActive\",
+										BUSINESSPARTNER.ISAPPROVED   		AS	\"isApproved\",
+										BUSINESSPARTNER.ISREVIEW	  		AS 	\"isReview\",
+										BUSINESSPARTNER.ISPOST		  		AS	\"isPost\",
+										BUSINESSPARTNER.EXECUTEBY    		AS	\"executeBy\",
+										BUSINESSPARTNER.EXECUTETIME  		AS	\"executeTime\",
 										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	GENERALLEDGERBUDGET
+								FROM 	BUSINESSPARTNER
 								JOIN	STAFF
-								ON		GENERALLEDGERBUDGET.EXECUTEBY 	  	=	STAFF.STAFFID
+								ON		BUSINESSPARTNER.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -623,7 +809,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -631,7 +817,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getGeneralLedgerBudgetId(0, 'single'))) {
+		if (!($this->model->getBusinessPartnerId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -642,8 +828,8 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getGeneralLedgerBudgetId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerBudgetId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerBudgetId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getBusinessPartnerId(0, 'single')) {
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getBusinessPartnerId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getBusinessPartnerId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -678,45 +864,57 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalledgerbudget`
-				SET 		`documentNo`		=	'" . $this->model->getDocumentNo() . "',
-							`generalLedgerChartOfAccountNo`		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							`generalLedgerBudgetMonth`		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-							`generalLedgerBudgetYear`		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
-							`generalLedgerBudgetAmount`		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',				
+				UPDATE		`businessPartner`
+				SET 		`businessPartnerCompany`			=	'" . $this->model->getBusinessPartnerCompany() . "',
+							`businessPartnerLastName`			=	'" . $this->model->getBusinessPartnerLastName() . "',
+							`businessPartnerFirstName`		=	'" . $this->model->getBusinessPartnerFirstName() . "',
+							`businessPartnerEmail`			=	'" . $this->model->getBusinessPartnerEmail() . "',
+							`businessPartnerJobTitle`			=	'" . $this->model->getBusinessPartnerJobTitle() . "',
+							`businessPartnerBusinessPhone`	=	'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+							`businessPartnerHomePhone`		=	'" . $this->model->getBusinessPartnerHomePhone() . "',
+							`businessPartnerMobilePhone`		=	'" . $this->model->getBusinessPartnerMobilePhone() . "',
+							`businessPartnerFaxNum`			=	'" . $this->model->getBusinessPartnerFaxNum() . "',
+							`businessPartnerAddress`			=	'" . $this->model->getBusinessPartnerAddress() . "',
+							`businessPartnerCity`				=	'" . $this->model->getBusinessPartnerCity() . "',
+							`businessPartnerState`			=	'" . $this->model->getBusinessPartnerState() . "',
+							`businessPartnerPostcode`			=	'" . $this->model->getBusinessPartnerPostcode() . "',
+							`businessPartnerCountry`			=	'" . $this->model->getBusinessPartnerCountry() . "',
+							`businessPartnerWebPage`			=	'" . $this->model->getBusinessPartnerWebPage() . "',
+							`businessPartnerNotes`			=	'" . $this->model->getBusinessPartnerNotes() . "',
+							`businessPartnerAttachments`		=	'" . $this->model->getBusinessPartnerAttachments() . "',								
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -728,15 +926,27 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`generalLedgerBudgetId`		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				WHERE 		`businessPartnerId`		=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalledgerbudget]
-				SET 		[documentNo]		=	'" . $this->model->getDocumentNo() . "',
-							[generalLedgerChartOfAccountNo]		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							[generalLedgerBudgetMonth]		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-							[generalLedgerBudgetYear]		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
-							[generalLedgerBudgetAmount]		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',	
+				UPDATE 		[businessPartner]
+				SET 		[businessPartnerCompany]			=	'" . $this->model->getBusinessPartnerCompany() . "',
+							[businessPartnerLastName]			=	'" . $this->model->getBusinessPartnerLastName() . "',
+							[businessPartnerFirstName]		=	'" . $this->model->getBusinessPartnerFirstName() . "',
+							[businessPartnerEmail]			=	'" . $this->model->getBusinessPartnerEmail() . "',
+							[businessPartnerJobTitle]			=	'" . $this->model->getBusinessPartnerJobTitle() . "',
+							[businessPartnerBusinessPhone]	=	'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+							[businessPartnerHomePhone]		=	'" . $this->model->getBusinessPartnerHomePhone() . "',
+							[businessPartnerMobilePhone]		=	'" . $this->model->getBusinessPartnerMobilePhone() . "',
+							[businessPartnerFaxNum]			=	'" . $this->model->getBusinessPartnerFaxNum() . "',
+							[businessPartnerAddress]			=	'" . $this->model->getBusinessPartnerAddress() . "',
+							[businessPartnerCity]				=	'" . $this->model->getBusinessPartnerCity() . "',
+							[businessPartnerState]			=	'" . $this->model->getBusinessPartnerState() . "',
+							[businessPartnerPostcode]			=	'" . $this->model->getBusinessPartnerPostcode() . "',
+							[businessPartnerCountry]			=	'" . $this->model->getBusinessPartnerCountry() . "',
+							[businessPartnerWebPage]			=	'" . $this->model->getBusinessPartnerWebPage() . "',
+							[businessPartnerNotes]			=	'" . $this->model->getBusinessPartnerNotes() . "',
+							[businessPartnerAttachments]		=	'" . $this->model->getBusinessPartnerAttachments() . "',								
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -748,15 +958,27 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[generalLedgerBudgetId]			=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+			WHERE 		[businessPartnerId]			=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		GENERALLEDGERBUDGET
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							GENERALLEDGERBUDGETMONTH		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-							GENERALLEDGERBUDGETYEAR		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
-							GENERALLEDGERBUDGETAMOUNT		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',									
+				UPDATE		BUSINESSPARTNER
+				SET 		BUSINESSPARTNERCOMPANY 			=	'" . $this->model->getBusinessPartnerCompany() . "',	
+							BUSINESSPARTNERLASTNAME			=	'" . $this->model->getBusinessPartnerLastName() . "',
+							BUSINESSPARTNERFIRSTNAME			=	'" . $this->model->getBusinessPartnerFirstName() . "',
+							BUSINESSPARTNEREMAIL				=	'" . $this->model->getBusinessPartnerEmail() . "',
+							BUSINESSPARTNERJOBTITLE			=	'" . $this->model->getBusinessPartnerJobTitle() . "',
+							BUSINESSPARTNERBUISNESSPHONE		=	'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+							BUSINESSPARTNERHOMEPHONE			=	'" . $this->model->getBusinessPartnerHomePhone() . "',
+							BUSINESSPARTNERMOBILEPHONE		=	'" . $this->model->getBusinessPartnerBirthday() . "',
+							BUSINESSPARTNERFAXNUM				=	'" . $this->model->getBusinessPartnerFaxNum() . "',
+							BUSINESSPARTNERADDRESS			=	'" . $this->model->getBusinessPartnerAddress() . "',
+							BUSINESSPARTNERCITY				=	'" . $this->model->getBusinessPartnerCity() . "',
+							BUSINESSPARTNERSTATE				=	'" . $this->model->getBusinessPartnerState() . "',
+							BUSINESSPARTNERPOSTCODE			=	'" . $this->model->getBusinessPartnerPostcode() . "',
+							BUSINESSPARTNERCOUNTRY			=	'" . $this->model->getBusinessPartnerCountry() . "',
+							BUSINESSPARTNERWEBPAGE			=	'" . $this->model->getBusinessPartnerWebPage() . "',
+							BUSINESSPARTNERNOTES				=	'" . $this->model->getBusinessPartnerNotes() . "',
+							BUSINESSPARTNERATTACHMENTS		=	'" . $this->model->getBusinessPartnerAttachments() . "',						
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -768,15 +990,27 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERBUDGETID		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+			WHERE 		BUSINESSPARTNERID		=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE	GENERALLEDGERBUDGET
-			SET 			DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							GENERALLEDGERBUDGETMONTH		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-							GENERALLEDGERBUDGETYEAR		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
-							GENERALLEDGERBUDGETAMOUNT		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',
+			UPDATE	BUSINESSPARTNER
+			SET 			BUSINESSPARTNERCOMPANY 			=	'" . $this->model->getBusinessPartnerCompany() . "',	
+							BUSINESSPARTNERLASTNAME			=	'" . $this->model->getBusinessPartnerLastName() . "',
+							BUSINESSPARTNERFIRSTNAME			=	'" . $this->model->getBusinessPartnerFirstName() . "',
+							BUSINESSPARTNEREMAIL				=	'" . $this->model->getBusinessPartnerEmail() . "',
+							BUSINESSPARTNERJOBTITLE			=	'" . $this->model->getBusinessPartnerJobTitle() . "',
+							BUSINESSPARTNERBUISNESSPHONE		=	'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+							BUSINESSPARTNERHOMEPHONE			=	'" . $this->model->getBusinessPartnerHomePhone() . "',
+							BUSINESSPARTNERMOBILEPHONE		=	'" . $this->model->getBusinessPartnerBirthday() . "',
+							BUSINESSPARTNERFAXNUM				=	'" . $this->model->getBusinessPartnerFaxNum() . "',
+							BUSINESSPARTNERADDRESS			=	'" . $this->model->getBusinessPartnerAddress() . "',
+							BUSINESSPARTNERCITY				=	'" . $this->model->getBusinessPartnerCity() . "',
+							BUSINESSPARTNERSTATE				=	'" . $this->model->getBusinessPartnerState() . "',
+							BUSINESSPARTNERPOSTCODE			=	'" . $this->model->getBusinessPartnerPostcode() . "',
+							BUSINESSPARTNERCOUNTRY			=	'" . $this->model->getBusinessPartnerCountry() . "',
+							BUSINESSPARTNERWEBPAGE			=	'" . $this->model->getBusinessPartnerWebPage() . "',
+							BUSINESSPARTNERNOTES				=	'" . $this->model->getBusinessPartnerNotes() . "',
+							BUSINESSPARTNERATTACHMENTS		=	'" . $this->model->getBusinessPartnerAttachments() . "',						
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -788,15 +1022,27 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERBUDGETID		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+			WHERE 		BUSINESSPARTNERID		=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE		GENERALLEDGERBUDGET
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							GENERALLEDGERBUDGETMONTH		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-							GENERALLEDGERBUDGETYEAR		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
-							GENERALLEDGERBUDGETAMOUNT		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',
+				UPDATE		BUSINESSPARTNER
+					SET 	BUSINESSPARTNERCOMPANY 			=	'" . $this->model->getBusinessPartnerCompany() . "',	
+							BUSINESSPARTNERLASTNAME			=	'" . $this->model->getBusinessPartnerLastName() . "',
+							BUSINESSPARTNERFIRSTNAME			=	'" . $this->model->getBusinessPartnerFirstName() . "',
+							BUSINESSPARTNEREMAIL				=	'" . $this->model->getBusinessPartnerEmail() . "',
+							BUSINESSPARTNERJOBTITLE			=	'" . $this->model->getBusinessPartnerJobTitle() . "',
+							BUSINESSPARTNERBUISNESSPHONE		=	'" . $this->model->getBusinessPartnerBusinessPhone() . "',
+							BUSINESSPARTNERHOMEPHONE			=	'" . $this->model->getBusinessPartnerHomePhone() . "',
+							BUSINESSPARTNERMOBILEPHONE		=	'" . $this->model->getBusinessPartnerBirthday() . "',
+							BUSINESSPARTNERFAXNUM				=	'" . $this->model->getBusinessPartnerFaxNum() . "',
+							BUSINESSPARTNERADDRESS			=	'" . $this->model->getBusinessPartnerAddress() . "',
+							BUSINESSPARTNERCITY				=	'" . $this->model->getBusinessPartnerCity() . "',
+							BUSINESSPARTNERSTATE				=	'" . $this->model->getBusinessPartnerState() . "',
+							BUSINESSPARTNERPOSTCODE			=	'" . $this->model->getBusinessPartnerPostcode() . "',
+							BUSINESSPARTNERCOUNTRY			=	'" . $this->model->getBusinessPartnerCountry() . "',
+							BUSINESSPARTNERWEBPAGE			=	'" . $this->model->getBusinessPartnerWebPage() . "',
+							BUSINESSPARTNERNOTES				=	'" . $this->model->getBusinessPartnerNotes() . "',
+							BUSINESSPARTNERATTACHMENTS		=	'" . $this->model->getBusinessPartnerAttachments() . "',						
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -808,9 +1054,9 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		GENERALLEDGERBUDGETID			=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				WHERE 		BUSINESSPARTNERID			=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 			/*
@@ -818,7 +1064,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			 */
 			$this->q->tableName = $this->model->getTableName();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerBudgetId(0, 'single');
+			$this->q->primaryKeyValue = $this->model->getBusinessPartnerId(0, 'single');
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -827,7 +1073,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Updated"));
+		echo json_encode(array(	"success" => true,"message" => $this->systemString->getUpdateMessage(),"time"=>$time));
 		exit();
 	}
 
@@ -849,40 +1095,40 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBusinessPartnerId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalledgerbudget`
+				UPDATE 	`businessPartner`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -894,10 +1140,10 @@ class GeneralledgerbudgetClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`generalLedgerBudgetId`		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				WHERE 	`businessPartnerId`		=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalledgerbudget]
+				UPDATE 	[businessPartner]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -909,10 +1155,10 @@ class GeneralledgerbudgetClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[generalLedgerBudgetId]		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				WHERE 	[businessPartnerId]		=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE 	GENERALLEDGERBUDGET
+				UPDATE 	BUSINESSPARTNER
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -924,10 +1170,10 @@ class GeneralledgerbudgetClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERBUDGETID		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				WHERE 	BUSINESSPARTNERID		=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE 	GENERALLEDGERBUDGET
+				UPDATE 	BUSINESSPARTNER
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -939,10 +1185,10 @@ class GeneralledgerbudgetClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERBUDGETID		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				WHERE 	BUSINESSPARTNERID		=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE 	GENERALLEDGERBUDGET
+				UPDATE 	BUSINESSPARTNER
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -954,15 +1200,15 @@ class GeneralledgerbudgetClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERBUDGETID		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				WHERE 	BUSINESSPARTNERID		=	'" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 			// advance logging future
 			$this->q->tableName = $this->model->getTableName();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerBudgetId(0, 'single');
+			$this->q->primaryKeyValue = $this->model->getBusinessPartnerId(0, 'single');
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -971,7 +1217,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		echo json_encode(array(	"success" => true,"message" => $this->systemString->getDeleteMessage(),"time"=>$time));
 		exit();
 	}
 
@@ -1007,11 +1253,9 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
-
 		/**
 		 * System Validation Checking
 		 * @var $access
@@ -1034,11 +1278,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerBudgetId($i, 'array') . "'
+							WHEN '" . $this->model->getBusinessPartnerId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1058,11 +1302,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerBudgetId($i, 'array') . "'
+							WHEN '" . $this->model->getBusinessPartnerId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1082,11 +1326,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerBudgetId($i, 'array') . "'
+							WHEN '" . $this->model->getBusinessPartnerId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1106,11 +1350,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerBudgetId($i, 'array') . "'
+							WHEN '" . $this->model->getBusinessPartnerId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1130,11 +1374,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerBudgetId($i, 'array') . "'
+							WHEN '" . $this->model->getBusinessPartnerId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1154,11 +1398,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerBudgetId($i, 'array') . "'
+							WHEN '" . $this->model->getBusinessPartnerId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1178,11 +1422,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerBudgetId($i, 'array') . "'
+							WHEN '" . $this->model->getBusinessPartnerId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1202,11 +1446,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getGeneralLedgerBudgetId($i, 'array') . "'
+                            WHEN '" . $this->model->getBusinessPartnerId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1226,11 +1470,11 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getGeneralLedgerBudgetId($i, 'array') . "'
+                                WHEN '" . $this->model->getBusinessPartnerId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1255,7 +1499,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1288,36 +1532,36 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`documentNo`
-			FROM 	`generalledgerbudget`
-			WHERE 	`documentNo` 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	`businessPartnerId`
+			FROM 	`businessPartner`
+			WHERE 	`businessPartnerId` 	= 	'" . $this->model->getBusinessPartnerId() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[documentNo]
-			FROM 	[generalledgerbudget]
-			WHERE 	[documentNo] 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	[businessPartnerId]
+			FROM 	[businessPartner]
+			WHERE 	[businessPartnerId] 	= 	'" . $this->model->getBusinessPartnerId() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	DOCUMENTNO
-			FROM 	GENERALLEDGERBUDGET
-			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	BUSINESSPARTNERID
+			FROM 	BUSINESSPARTNER
+			WHERE 	BUSINESSPARTNERID 	= 	'" . $this->model->getBusinessPartnerId() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			SELECT	DOCUMENTNO
-			FROM 	GENERALLEDGERBUDGET
-			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	BUSINESSPARTNERID
+			FROM 	BUSINESSPARTNER
+			WHERE 	BUSINESSPARTNERID 	= 	'" . $this->model->getBusinessPartnerId() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			SELECT	DOCUMENTNO
-			FROM 	GENERALLEDGERBUDGET
-			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	BUSINESSPARTNERID
+			FROM 	BUSINESSPARTNER
+			WHERE 	BUSINESSPARTNERID 	= 	'" . $this->model->getBusinessPartnerId() . "'
 			AND		ISACTIVE		=	1";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->read($sql);
@@ -1329,7 +1573,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "generalledgerbudgetDesc" => $row ['generalledgerbudgetDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "businessPartnerDesc" => $row ['businessPartnerDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
@@ -1396,7 +1640,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalledgerbudgetDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['businessPartnerDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1405,7 +1649,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "generalledgerbudget" . rand(0, 10000000) . ".xlsx";
+		$filename = "businessPartner" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1421,7 +1665,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 
 }
 
-$generalledgerbudgetObject = new GeneralledgerbudgetClass ();
+$businessPartnerObject = new BusinessPartnerClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1431,59 +1675,59 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$generalledgerbudgetObject->setLeafId($_POST ['leafId']);
+		$businessPartnerObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$generalledgerbudgetObject->setIsAdmin($_POST ['isAdmin']);
+		$businessPartnerObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$generalledgerbudgetObject->setStart($_POST ['start']);
+		$businessPartnerObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$generalledgerbudgetObject->setLimit($_POST ['perPage']);
+		$businessPartnerObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$generalledgerbudgetObject->setFieldQuery($_POST ['query']);
+		$businessPartnerObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$generalledgerbudgetObject->setGridQuery($_POST ['filter']);
+		$businessPartnerObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$generalledgerbudgetObject->setOrder($_POST ['order']);
+		$businessPartnerObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$generalledgerbudgetObject->setSortField($_POST ['sortField']);
+		$businessPartnerObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerbudgetObject->execute();
+	$businessPartnerObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$generalledgerbudgetObject->create();
+		$businessPartnerObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$generalledgerbudgetObject->update();
+		$businessPartnerObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$generalledgerbudgetObject->read();
+		$businessPartnerObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$generalledgerbudgetObject->delete();
+		$businessPartnerObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1491,35 +1735,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$generalledgerbudgetObject->setLeafId($_GET ['leafId']);
+		$businessPartnerObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$generalledgerbudgetObject->setIsAdmin($_GET ['isAdmin']);
+		$businessPartnerObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerbudgetObject->execute();
+	$businessPartnerObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$generalledgerbudgetObject->staff();
+			$businessPartnerObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$generalledgerbudgetObject->updateStatus();
+		$businessPartnerObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['generalledgerbudgetDesc'])) {
-		if (strlen($_GET ['generalledgerbudgetDesc']) > 0) {
-			$generalledgerbudgetObject->duplicate();
+	if (isset($_GET ['businessPartnerDesc'])) {
+		if (strlen($_GET ['businessPartnerDesc']) > 0) {
+			$businessPartnerObject->duplicate();
 		}
 	}
 	/**
@@ -1527,16 +1771,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$generalledgerbudgetObject->firstRecord('json');
+			$businessPartnerObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$generalledgerbudgetObject->previousRecord('json', 0);
+			$businessPartnerObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$generalledgerbudgetObject->nextRecord('json', 0);
+			$businessPartnerObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$generalledgerbudgetObject->lastRecord('json');
+			$businessPartnerObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1544,7 +1788,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$generalledgerbudgetObject->excel();
+			$businessPartnerObject->excel();
 		}
 	}
 }

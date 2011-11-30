@@ -25,7 +25,7 @@ class GeneralledgerforecastModel extends ValidationClass {
 	/**
 	* @var string
 	*/
-	private $generalLedgerChartAccountDimensionNo;
+	private $generalLedgerChartOfAccountDimensionId;
 	/**
 	* @var int
 	*/
@@ -58,8 +58,8 @@ class GeneralledgerforecastModel extends ValidationClass {
 		if (isset($_POST ['documentNo'])) {
 			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
 		}
-		if (isset($_POST ['generalLedgerChartAccountDimensionNo'])) {
-			$this->setGeneralLedgerChartAccountDimensionNo($this->strict($_POST ['generalLedgerChartAccountDimensionNo'], 'string'));
+		if (isset($_POST ['generalLedgerChartOfAccountDimensionId'])) {
+			$this->setGeneralLedgerChartAccountDimensionNo($this->strict($_POST ['generalLedgerChartOfAccountDimensionId'], 'string'));
 		}
 		if (isset($_POST ['generalLedgerForecastMonth'])) {
 			$this->setGeneralLedgerForecastMonth($this->strict($_POST ['generalLedgerForecastMonth'], 'numeric'));
@@ -383,18 +383,18 @@ class GeneralledgerforecastModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getGeneralLedgerChartAccountDimensionNo()
+	public function getGeneralLedgerChartOfAccountDimensionId()
 	{
-	    return $this->generalLedgerChartAccountDimensionNo;
+	    return $this->generalLedgerChartOfAccountDimensionId;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartAccountDimensionNo
+	 * @param $generalLedgerChartOfAccountDimensionId
 	 */
-	public function setGeneralLedgerChartAccountDimensionNo($generalLedgerChartAccountDimensionNo)
+	public function setGeneralLedgerChartOfAccountDimensionId($generalLedgerChartOfAccountDimensionId)
 	{
-	    $this->generalLedgerChartAccountDimensionNo = $generalLedgerChartAccountDimensionNo;
+	    $this->generalLedgerChartOfAccountDimensionId = $generalLedgerChartOfAccountDimensionId;
 	}
 
 	/**

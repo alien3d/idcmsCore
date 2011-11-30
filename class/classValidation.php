@@ -13,6 +13,9 @@ abstract class ValidationClass
     private $primaryKeyAll;
     private $masterForeignKeyName;
     private $total;
+    // filter field
+    private $filterCharacter;
+    private $filterDate;
     // common field value
     private $isDefault;
     private $isNew;
@@ -671,5 +674,25 @@ abstract class ValidationClass
     public function getExecuteTime ()
     {
         return $this->executeTime;
+    }
+
+    public function getFilterCharacter()
+    {
+        return $this->filterCharacter;
+    }
+
+    public function setFilterCharacter($filterCharacter)
+    {
+        $this->filterCharacter = $filterCharacter;
+    }
+
+    public function getFilterDate()
+    {
+        return $this->filterDate;
+    }
+
+    public function setFilterDate($filterDate)
+    {
+        $this->filterDate = $filterDate;
     }
 }

@@ -3,42 +3,21 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is generalledgerchartofaccount model file.This is to ensure strict setting enable for all variable enter to database
+ * this is adjustment model file.This is to ensure strict setting enable for all variable enter to database
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package generalledgerchartofaccount
+ * @package adjustment
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralledgerchartofaccountModel extends ValidationClass {
+class BusinesspartnercategoryModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
-	private $generalLedgerChartOfAccountId;
-	/**
-	 * @var string
-	 */
-	private $generalLedgerChartOfAccountTitle;
-	/**
-	 * @var string
-	 */
-	private $generalLedgerChartOfAccountDesc;
-	/**
-	 * @var string
-	 */
-	private $generalLedgerChartOfAccountNo;
-	/**
-	 * @var int
-	 */
-	private $generalLedgerChartOfAccountTypeId;
-	/**
-	 * @var string
-	 */
-	private $generalLedgerChartOfAccountReportType;
-
+	private $templateId;
 
 
 	/* (non-PHPdoc)
@@ -49,35 +28,19 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 		/*
 		 *  Basic Information Table
 		 */
-		$this->setTableName('generalledgerchartofaccount');
-		$this->setPrimaryKeyName('generalLedgerChartOfAccountId');
+		$this->setTableName('businesspartnercategory');
+		$this->setPrimaryKeyName('templateId');
 		/**
 		 * All the $_POST enviroment.
 		 */
-		if (isset($_POST ['generalLedgerChartOfAccountId'])) {
-			$this->setGeneralLedgerChartOfAccountId($this->strict($_POST ['generalLedgerChartOfAccountId'], 'numeric'), 0, 'single');
+		if (isset($_POST ['templateId'])) {
+			$this->setTemplateId($this->strict($_POST ['templateId'], 'numeric'), 0, 'single');
 		}
-		if (isset($_POST ['generalLedgerChartOfAccountTitle'])) {
-			$this->setGeneralLedgerChartOfAccountTitle($this->strict($_POST ['generalLedgerChartOfAccountTitle'], 'string'));
-		}
-		if (isset($_POST ['generalLedgerChartOfAccountDesc'])) {
-			$this->setGeneralLedgerChartOfAccountDesc($this->strict($_POST ['generalLedgerChartOfAccountDesc'], 'string'));
-		}
-		if (isset($_POST ['generalLedgerChartOfAccountNo'])) {
-			$this->setGeneralLedgerChartOfAccountNo($this->strict($_POST ['generalLedgerChartOfAccountNo'], 'string'));
-		}
-		if (isset($_POST ['generalLedgerChartOfAccountTypeId'])) {
-			$this->setGeneralLedgerChartOfAccountDate($this->strict($_POST ['generalLedgerChartOfAccountTypeId'], 'numeric'));
-		}
-		if (isset($_POST ['generalLedgerChartOfAccountReportType'])) {
-			$this->setGeneralLedgerChartOfAccountAmount($this->strict($_POST ['generalLedgerChartOfAccountReportType'], 'string'));
-		}
-
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['generalledgerchartofaccountId'])) {
-			$this->setTotal(count($_GET ['generalLedgerChartOfAccountId']));
+		if (isset($_GET ['adjustmentId'])) {
+			$this->setTotal(count($_GET ['adjustmentId']));
 		}
 
 		if (isset($_GET ['isDefault'])) {
@@ -127,8 +90,8 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 		}
 		$primaryKeyAll = '';
 		for ($i = 0; $i < $this->getTotal(); $i++) {
-			if (isset($_GET ['generalLedgerChartOfAccountId'])) {
-				$this->setGeneralLedgerChartOfAccountId($this->strict($_GET ['generalLedgerChartOfAccountId'] [$i], 'numeric'), $i, 'array');
+			if (isset($_GET ['templateId'])) {
+				$this->setTemplateId($this->strict($_GET ['templateId'] [$i], 'numeric'), $i, 'array');
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -193,7 +156,7 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getGeneralledgerId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getTemplateId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -327,130 +290,39 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Generalledger Identification  Value
+	 * Set Adjustment Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 */
-	public function setGeneralLedgerChartOfAccountId($value, $key, $type) {
+	public function setTemplateId($value, $key, $type) {
 		if ($type == 'single') {
-			$this->generalLedgerChartOfAccountId = $value;
+			$this->templateId = $value;
 		} else if ($type == 'array') {
-			$this->generalLedgerChartOfAccountId [$key] = $value;
+			$this->templateId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setGeneralledgerId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setAdjustmentId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Generalledger Identification  Value
+	 * Return Adjustment Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
 	 */
-	public function getGeneralLedgerChartOfAccountId($key, $type) {
+	public function getTemplateId($key, $type) {
 		if ($type == 'single') {
-			return $this->generalLedgerChartOfAccountId;
+			return $this->templateId;
 		} else if ($type == 'array') {
-			return $this->generalLedgerChartOfAccountId [$key];
+			return $this->templateId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getGeneralledgerId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getAdjustmentId ?"));
 			exit();
 		}
 	}
 
-
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getGeneralLedgerChartOfAccountTitle()
-	{
-	    return $this->generalLedgerChartOfAccountTitle;
-	}
-
-	/**
-	 * 
-	 * @param $generalLedgerChartOfAccountTitle
-	 */
-	public function setGeneralLedgerChartOfAccountTitle($generalLedgerChartOfAccountTitle)
-	{
-	    $this->generalLedgerChartOfAccountTitle = $generalLedgerChartOfAccountTitle;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getGeneralLedgerChartOfAccountDesc()
-	{
-	    return $this->generalLedgerChartOfAccountDesc;
-	}
-
-	/**
-	 * 
-	 * @param $generalLedgerChartOfAccountDesc
-	 */
-	public function setGeneralLedgerChartOfAccountDesc($generalLedgerChartOfAccountDesc)
-	{
-	    $this->generalLedgerChartOfAccountDesc = $generalLedgerChartOfAccountDesc;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getGeneralLedgerChartOfAccountNo()
-	{
-	    return $this->generalLedgerChartOfAccountNo;
-	}
-
-	/**
-	 * 
-	 * @param $generalLedgerChartOfAccountNo
-	 */
-	public function setGeneralLedgerChartOfAccountNo($generalLedgerChartOfAccountNo)
-	{
-	    $this->generalLedgerChartOfAccountNo = $generalLedgerChartOfAccountNo;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getGeneralLedgerChartOfAccountTypeId()
-	{
-	    return $this->generalLedgerChartOfAccountTypeId;
-	}
-
-	/**
-	 * 
-	 * @param $generalLedgerChartOfAccountTypeId
-	 */
-	public function setGeneralLedgerChartOfAccountTypeId($generalLedgerChartOfAccountTypeId)
-	{
-	    $this->generalLedgerChartOfAccountTypeId = $generalLedgerChartOfAccountTypeId;
-	}
-
-	/**
-	 * 
-	 * @return 
-	 */
-	public function getGeneralLedgerChartOfAccountReportType()
-	{
-	    return $this->generalLedgerChartOfAccountReportType;
-	}
-
-	/**
-	 * 
-	 * @param $generalLedgerChartOfAccountReportType
-	 */
-	public function setGeneralLedgerChartOfAccountReportType($generalLedgerChartOfAccountReportType)
-	{
-	    $this->generalLedgerChartOfAccountReportType = $generalLedgerChartOfAccountReportType;
-	}
 }
 
 ?>
