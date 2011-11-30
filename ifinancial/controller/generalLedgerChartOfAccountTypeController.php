@@ -6,19 +6,19 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/generalledgerchartofaccounttypeModel.php");
+require_once ("../model/generalLedgerChartOfAccountTypeModel.php");
 
 /**
- * this is generalledgerchartofaccounttype setting files.This sample template file for master record
+ * this is generalLedgerChartOfAccountType setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package generalledgerchartofaccounttype
- * @subpackage generalledgerchartofaccounttypev1,v2,v3,v4,v5
+ * @package generalLedgerChartOfAccountType
+ * @subpackage generalLedgerChartOfAccountTypev1,v2,v3,v4,v5
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralledgerchartofaccounttypeClass extends ConfigClass {
+class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -90,7 +90,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new GeneralledgerchartofaccounttypeModel ();
+		$this->model = new GeneralLedgerChartOfAccountTypeModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -100,6 +100,8 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
@@ -139,7 +141,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "
-			INSERT INTO `generalledgerchartofaccounttype`
+			INSERT INTO `generalLedgerChartOfAccountType`
 					(
 						`generalLedgerChartOfAccountTypeSequence`,												
 						`generalLedgerChartOfAccountTypeCode`,
@@ -165,7 +167,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [generalledgerchartofaccounttype]
+			INSERT INTO [generalLedgerChartOfAccountType]
 					(
 						[generalLedgerChartOfAccountTypeSequence],												
 						[generalLedgerChartOfAccountTypeCode],
@@ -269,14 +271,10 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		//advance logging future
-		$this->q->tableName = $this->model->getTableName();
-		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-
-		$this->q->audit = $this->audit;
+		
 		$this->q->create($sql);
 		$generalLedgerChartOfAccountTypeId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -284,7 +282,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "generalLedgerChartOfAccountTypeId" => $generalLedgerChartOfAccountTypeId));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerChartOfAccountTypeId" => $generalLedgerChartOfAccountTypeId));
 		exit();
 	}
 
@@ -296,17 +294,17 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `generalledgerchartofaccounttype`.`isActive`		=	1	";
+				$this->auditFilter = "  `generalLedgerChartOfAccountType`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [generalledgerchartofaccounttype].[isActive]		=	1	";
+				$this->auditFilter = "  [generalLedgerChartOfAccountType].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
+				$this->auditFilter = " GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
+				$this->auditFilter = "  GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
+				$this->auditFilter = "	GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		} else if ($this->isAdmin == 1) {
@@ -321,7 +319,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	1	=	1 	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -333,50 +331,50 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalledgerchartofaccounttype`.`generalLedgerChartOfAccountTypeId`,
-						`generalledgerchartofaccounttype`.`generalLedgerChartOfAccountTypeSequence`,
-						`generalledgerchartofaccounttype`.`generalLedgerChartOfAccountTypeCode`,
-						`generalledgerchartofaccounttype`.`generalLedgerChartOfAccountTypeDesc`,
-						`generalledgerchartofaccounttype`.`isDefault`,
-						`generalledgerchartofaccounttype`.`isNew`,
-						`generalledgerchartofaccounttype`.`isDraft`,
-						`generalledgerchartofaccounttype`.`isUpdate`,
-						`generalledgerchartofaccounttype`.`isDelete`,
-						`generalledgerchartofaccounttype`.`isActive`,
-						`generalledgerchartofaccounttype`.`isApproved`,
-						`generalledgerchartofaccounttype`.`isReview`,
-						`generalledgerchartofaccounttype`.`isPost`,
-						`generalledgerchartofaccounttype`.`executeBy`,
-						`generalledgerchartofaccounttype`.`executeTime`,
+			SELECT		`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeId`,
+						`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeSequence`,
+						`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeCode`,
+						`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc`,
+						`generalLedgerChartOfAccountType`.`isDefault`,
+						`generalLedgerChartOfAccountType`.`isNew`,
+						`generalLedgerChartOfAccountType`.`isDraft`,
+						`generalLedgerChartOfAccountType`.`isUpdate`,
+						`generalLedgerChartOfAccountType`.`isDelete`,
+						`generalLedgerChartOfAccountType`.`isActive`,
+						`generalLedgerChartOfAccountType`.`isApproved`,
+						`generalLedgerChartOfAccountType`.`isReview`,
+						`generalLedgerChartOfAccountType`.`isPost`,
+						`generalLedgerChartOfAccountType`.`executeBy`,
+						`generalLedgerChartOfAccountType`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`generalledgerchartofaccounttype`
+			FROM 	`generalLedgerChartOfAccountType`
 			JOIN	`staff`
-			ON		`generalledgerchartofaccounttype`.`executeBy` = `staff`.`staffId`
+			ON		`generalLedgerChartOfAccountType`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[generalledgerchartofaccounttype].[generalLedgerChartOfAccountTypeId],
-						[generalledgerchartofaccounttype].[generalLedgerChartOfAccountTypeSequence],
-						[generalledgerchartofaccounttype].[generalLedgerChartOfAccountTypeCode],
-						[generalledgerchartofaccounttype].[generalLedgerChartOfAccountTypeDesc],
-						[generalledgerchartofaccounttype].[isDefault],
-						[generalledgerchartofaccounttype].[isNew],
-						[generalledgerchartofaccounttype].[isDraft],
-						[generalledgerchartofaccounttype].[isUpdate],
-						[generalledgerchartofaccounttype].[isDelete],
-						[generalledgerchartofaccounttype].[isActive],
-						[generalledgerchartofaccounttype].[isApproved],
-						[generalledgerchartofaccounttype].[isReview],
-						[generalledgerchartofaccounttype].[isPost],
-						[generalledgerchartofaccounttype].[executeBy],
-						[generalledgerchartofaccounttype].[executeTime],
+			SELECT	[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeId],
+						[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeSequence],
+						[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeCode],
+						[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeDesc],
+						[generalLedgerChartOfAccountType].[isDefault],
+						[generalLedgerChartOfAccountType].[isNew],
+						[generalLedgerChartOfAccountType].[isDraft],
+						[generalLedgerChartOfAccountType].[isUpdate],
+						[generalLedgerChartOfAccountType].[isDelete],
+						[generalLedgerChartOfAccountType].[isActive],
+						[generalLedgerChartOfAccountType].[isApproved],
+						[generalLedgerChartOfAccountType].[isReview],
+						[generalLedgerChartOfAccountType].[isPost],
+						[generalLedgerChartOfAccountType].[executeBy],
+						[generalLedgerChartOfAccountType].[executeTime],
 						[staff].[staffName]
-			FROM 	[generalledgerchartofaccounttype]
+			FROM 	[generalLedgerChartOfAccountType]
 			JOIN		[staff]
-			ON		[generalledgerchartofaccounttype].[executeBy] = [staff].[staffId]
+			ON		[generalLedgerChartOfAccountType].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
@@ -411,7 +409,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		} else if ($this->q->vendor == self::POSTGRESS) {
 
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -426,7 +424,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('generalledgerchartofaccounttype');
+		$tableArray = array('generalLedgerChartOfAccountType');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -441,7 +439,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -462,7 +460,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->searching();
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -493,7 +491,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -517,31 +515,31 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [generalledgerchartofaccounttypeDerived] AS
+							WITH [generalLedgerChartOfAccountTypeDerived] AS
 							(
-								SELECT 		[generalledgerchartofaccounttype].[generalLedgerChartOfAccountTypeId],
-											[generalledgerchartofaccounttype].[generalLedgerChartOfAccountTypeSequence],
-											[generalledgerchartofaccounttype].[generalLedgerChartOfAccountTypeCode],
-											[generalledgerchartofaccounttype].[generalLedgerChartOfAccountTypeDesc],
-											[generalledgerchartofaccounttype].[isDefault],
-											[generalledgerchartofaccounttype].[isNew],
-											[generalledgerchartofaccounttype].[isDraft],
-											[generalledgerchartofaccounttype].[isUpdate],
-											[generalledgerchartofaccounttype].[isDelete],
-											[generalledgerchartofaccounttype].[isApproved],
-											[generalledgerchartofaccounttype].[isReview],
-											[generalledgerchartofaccounttype].[isPost],
-											[generalledgerchartofaccounttype].[executeBy],
-											[generalledgerchartofaccounttype].[executeTime],
+								SELECT 		[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeId],
+											[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeSequence],
+											[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeCode],
+											[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeDesc],
+											[generalLedgerChartOfAccountType].[isDefault],
+											[generalLedgerChartOfAccountType].[isNew],
+											[generalLedgerChartOfAccountType].[isDraft],
+											[generalLedgerChartOfAccountType].[isUpdate],
+											[generalLedgerChartOfAccountType].[isDelete],
+											[generalLedgerChartOfAccountType].[isApproved],
+											[generalLedgerChartOfAccountType].[isReview],
+											[generalLedgerChartOfAccountType].[isPost],
+											[generalLedgerChartOfAccountType].[executeBy],
+											[generalLedgerChartOfAccountType].[executeTime],
 											[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountTypeId]) AS 'RowNumber'
-								FROM 	[generalledgerchartofaccounttype]
+								FROM 	[generalLedgerChartOfAccountType]
 								JOIN		[staff]
-								ON		[generalledgerchartofaccounttype].[executeBy] = [staff].[staffId]
+								ON		[generalLedgerChartOfAccountType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[generalledgerchartofaccounttypeDerived]
+							FROM 		[generalLedgerChartOfAccountTypeDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -593,7 +591,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -613,7 +611,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -621,7 +619,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
+			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
 			exit();
 		}
 	}
@@ -670,7 +668,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -681,7 +679,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalledgerchartofaccounttype`
+				UPDATE		`generalLedgerChartOfAccountType`
 				SET 		`generalLedgerChartOfAccountTypeSequence`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
 							`generalLedgerChartOfAccountTypeCode`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
 							`generalLedgerChartOfAccountTypeDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
@@ -699,7 +697,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 				WHERE 		`generalLedgerChartOfAccountTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalledgerchartofaccounttype]
+				UPDATE 		[generalLedgerChartOfAccountType]
 				SET 		[generalLedgerChartOfAccountTypeSequence]		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "',
 							[generalLedgerChartOfAccountTypeCode]		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
 							[generalLedgerChartOfAccountTypeDesc]		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
@@ -770,16 +768,10 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 				WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID			=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -787,7 +779,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Updated"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
 	}
 
@@ -831,7 +823,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -842,7 +834,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalledgerchartofaccounttype`
+				UPDATE 	`generalLedgerChartOfAccountType`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -857,7 +849,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 				WHERE 	`generalLedgerChartOfAccountTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalledgerchartofaccounttype]
+				UPDATE 	[generalLedgerChartOfAccountType]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -916,13 +908,10 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
 				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			// advance logging future
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single');
+			
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -931,7 +920,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
 		exit();
 	}
 
@@ -967,7 +956,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 
@@ -994,7 +983,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1018,7 +1007,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1042,7 +1031,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1066,7 +1055,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1090,7 +1079,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1114,7 +1103,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1138,7 +1127,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1162,7 +1151,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1186,7 +1175,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1215,7 +1204,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1225,9 +1214,9 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->systemString->getDeleteMessage();
 		}
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
@@ -1249,13 +1238,13 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`generalLedgerChartOfAccountTypeSequence`
-			FROM 	`generalledgerchartofaccounttype`
+			FROM 	`generalLedgerChartOfAccountType`
 			WHERE 	`generalLedgerChartOfAccountTypeSequence` 	= 	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[generalLedgerChartOfAccountTypeSequence]
-			FROM 	[generalledgerchartofaccounttype]
+			FROM 	[generalLedgerChartOfAccountType]
 			WHERE 	[generalLedgerChartOfAccountTypeSequence] 	= 	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
@@ -1277,7 +1266,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerChartOfAccountTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->read($sql);
@@ -1289,7 +1278,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "generalledgerchartofaccounttypeDesc" => $row ['generalledgerchartofaccounttypeDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "generalLedgerChartOfAccountTypeDesc" => $row ['generalLedgerChartOfAccountTypeDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
@@ -1356,7 +1345,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalledgerchartofaccounttypeDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerChartOfAccountTypeDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1365,7 +1354,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "generalledgerchartofaccounttype" . rand(0, 10000000) . ".xlsx";
+		$filename = "generalLedgerChartOfAccountType" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1381,7 +1370,7 @@ class GeneralledgerchartofaccounttypeClass extends ConfigClass {
 
 }
 
-$generalledgerchartofaccounttypeObject = new GeneralledgerchartofaccounttypeClass ();
+$generalLedgerChartOfAccountTypeObject = new GeneralLedgerChartOfAccountTypeClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1391,59 +1380,59 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$generalledgerchartofaccounttypeObject->setLeafId($_POST ['leafId']);
+		$generalLedgerChartOfAccountTypeObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$generalledgerchartofaccounttypeObject->setIsAdmin($_POST ['isAdmin']);
+		$generalLedgerChartOfAccountTypeObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$generalledgerchartofaccounttypeObject->setStart($_POST ['start']);
+		$generalLedgerChartOfAccountTypeObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$generalledgerchartofaccounttypeObject->setLimit($_POST ['perPage']);
+		$generalLedgerChartOfAccountTypeObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$generalledgerchartofaccounttypeObject->setFieldQuery($_POST ['query']);
+		$generalLedgerChartOfAccountTypeObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$generalledgerchartofaccounttypeObject->setGridQuery($_POST ['filter']);
+		$generalLedgerChartOfAccountTypeObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$generalledgerchartofaccounttypeObject->setOrder($_POST ['order']);
+		$generalLedgerChartOfAccountTypeObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$generalledgerchartofaccounttypeObject->setSortField($_POST ['sortField']);
+		$generalLedgerChartOfAccountTypeObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerchartofaccounttypeObject->execute();
+	$generalLedgerChartOfAccountTypeObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$generalledgerchartofaccounttypeObject->create();
+		$generalLedgerChartOfAccountTypeObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$generalledgerchartofaccounttypeObject->update();
+		$generalLedgerChartOfAccountTypeObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$generalledgerchartofaccounttypeObject->read();
+		$generalLedgerChartOfAccountTypeObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$generalledgerchartofaccounttypeObject->delete();
+		$generalLedgerChartOfAccountTypeObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1451,35 +1440,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$generalledgerchartofaccounttypeObject->setLeafId($_GET ['leafId']);
+		$generalLedgerChartOfAccountTypeObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$generalledgerchartofaccounttypeObject->setIsAdmin($_GET ['isAdmin']);
+		$generalLedgerChartOfAccountTypeObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerchartofaccounttypeObject->execute();
+	$generalLedgerChartOfAccountTypeObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$generalledgerchartofaccounttypeObject->staff();
+			$generalLedgerChartOfAccountTypeObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$generalledgerchartofaccounttypeObject->updateStatus();
+		$generalLedgerChartOfAccountTypeObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['generalledgerchartofaccounttypeDesc'])) {
-		if (strlen($_GET ['generalledgerchartofaccounttypeDesc']) > 0) {
-			$generalledgerchartofaccounttypeObject->duplicate();
+	if (isset($_GET ['generalLedgerChartOfAccountTypeDesc'])) {
+		if (strlen($_GET ['generalLedgerChartOfAccountTypeDesc']) > 0) {
+			$generalLedgerChartOfAccountTypeObject->duplicate();
 		}
 	}
 	/**
@@ -1487,16 +1476,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$generalledgerchartofaccounttypeObject->firstRecord('json');
+			$generalLedgerChartOfAccountTypeObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$generalledgerchartofaccounttypeObject->previousRecord('json', 0);
+			$generalLedgerChartOfAccountTypeObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$generalledgerchartofaccounttypeObject->nextRecord('json', 0);
+			$generalLedgerChartOfAccountTypeObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$generalledgerchartofaccounttypeObject->lastRecord('json');
+			$generalLedgerChartOfAccountTypeObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1504,7 +1493,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$generalledgerchartofaccounttypeObject->excel();
+			$generalLedgerChartOfAccountTypeObject->excel();
 		}
 	}
 }

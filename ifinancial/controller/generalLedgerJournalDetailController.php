@@ -6,19 +6,19 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/generalledgerjournaldetailModel.php");
+require_once ("../model/generalLedgerJournalDetailModel.php");
 
 /**
- * this is generalledgerjournaldetail setting files.This sample template file for master record
+ * this is generalLedgerJournalDetail setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package generalledgerjournaldetail
- * @subpackage generalledgerjournaldetailv1,v2,v3,v4,v5
+ * @package General Ledger
+ * @subpackage General Ledger Journal Detail
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralledgerjournaldetailClass extends ConfigClass {
+class GeneralLedgerJournalDetailClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -100,6 +100,8 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
@@ -139,11 +141,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "
-			INSERT INTO `generalledgerjournaldetail`
+			INSERT INTO `generalLedgerJournalDetail`
 					(
 						`generalLedgerJournalId`,												
 						`generalLedgerChartOfAccountNo`,
-						`generalLedgerJournalDetailAmount`,
+						`gAmount`,
 						`isDefault`,
 						`isNew`,													`isDraft`,
 						`isUpdate`,													`isDelete`,
@@ -155,7 +157,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 					(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+						'" . $this->model->getGAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -165,11 +167,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [generalledgerjournaldetail]
+			INSERT INTO [generalLedgerJournalDetail]
 					(
 						[generalLedgerJournalId],												
 						[generalLedgerChartOfAccountNo],
-						[generalLedgerJournalDetailAmount],
+						[gAmount],
 						[isDefault],
 						[isNew],														[isDraft],
 						[isUpdate],														[isDelete],
@@ -181,7 +183,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 					(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+						'" . $this->model->getGAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
@@ -208,7 +210,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 					(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+						'" . $this->model->getGAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -234,7 +236,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+						'" . $this->model->getGAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -260,7 +262,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+						'" . $this->model->getGAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
@@ -269,22 +271,18 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		//advance logging future
-		$this->q->tableName = $this->model->getTableName();
-		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-
-		$this->q->audit = $this->audit;
+		
 		$this->q->create($sql);
-		$generalLedgerJournalDetailId = $this->q->lastInsertId();
+		$gId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "generalLedgerJournalDetailId" => $generalLedgerJournalDetailId));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "gId" => $gId));
 		exit();
 	}
 
@@ -296,9 +294,9 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `generalledgerjournaldetail`.`isActive`		=	1	";
+				$this->auditFilter = "	AND `generalLedgerJournalDetail`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [generalledgerjournaldetail].[isActive]		=	1	";
+				$this->auditFilter = "	AND [generalLedgerJournalDetail].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	AND GENERALLEDGERJOURNALDETAIL.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
@@ -306,7 +304,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	AND GENERALLEDGERJOURNALDETAIL.ISACTIVE	=	1	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		} else if ($this->isAdmin == 1) {
@@ -321,7 +319,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	1	=	1 	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -333,60 +331,60 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalledgerjournaldetail`.`generalLedgerJournalDetailId`,
-						`generalledgerjournaldetail`.`generalLedgerJournalId`,
-						`generalledgerjournaldetail`.`generalLedgerChartOfAccountNo`,
-						`generalledgerjournaldetail`.`generalLedgerJournalDetailAmount`,
-						`generalledgerjournaldetail`.`isDefault`,
-						`generalledgerjournaldetail`.`isNew`,
-						`generalledgerjournaldetail`.`isDraft`,
-						`generalledgerjournaldetail`.`isUpdate`,
-						`generalledgerjournaldetail`.`isDelete`,
-						`generalledgerjournaldetail`.`isActive`,
-						`generalledgerjournaldetail`.`isApproved`,
-						`generalledgerjournaldetail`.`isReview`,
-						`generalledgerjournaldetail`.`isPost`,
-						`generalledgerjournaldetail`.`executeBy`,
-						`generalledgerjournaldetail`.`executeTime`,
+			SELECT		`generalLedgerJournalDetail`.`gId`,
+						`generalLedgerJournalDetail`.`generalLedgerJournalId`,
+						`generalLedgerJournalDetail`.`generalLedgerChartOfAccountNo`,
+						`generalLedgerJournalDetail`.`gAmount`,
+						`generalLedgerJournalDetail`.`isDefault`,
+						`generalLedgerJournalDetail`.`isNew`,
+						`generalLedgerJournalDetail`.`isDraft`,
+						`generalLedgerJournalDetail`.`isUpdate`,
+						`generalLedgerJournalDetail`.`isDelete`,
+						`generalLedgerJournalDetail`.`isActive`,
+						`generalLedgerJournalDetail`.`isApproved`,
+						`generalLedgerJournalDetail`.`isReview`,
+						`generalLedgerJournalDetail`.`isPost`,
+						`generalLedgerJournalDetail`.`executeBy`,
+						`generalLedgerJournalDetail`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`generalledgerjournaldetail`
+			FROM 	`generalLedgerJournalDetail`
 			JOIN	`staff`
-			ON		`generalledgerjournaldetail`.`executeBy` = `staff`.`staffId`
+			ON		`generalLedgerJournalDetail`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getGeneralLedgerJournalDetailId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[generalledgerjournaldetail].[generalLedgerJournalDetailId],
-						[generalledgerjournaldetail].[generalLedgerJournalId],
-						[generalledgerjournaldetail].[generalLedgerChartOfAccountNo],
-						[generalledgerjournaldetail].[generalLedgerJournalDetailAmount],
-						[generalledgerjournaldetail].[isDefault],
-						[generalledgerjournaldetail].[isNew],
-						[generalledgerjournaldetail].[isDraft],
-						[generalledgerjournaldetail].[isUpdate],
-						[generalledgerjournaldetail].[isDelete],
-						[generalledgerjournaldetail].[isActive],
-						[generalledgerjournaldetail].[isApproved],
-						[generalledgerjournaldetail].[isReview],
-						[generalledgerjournaldetail].[isPost],
-						[generalledgerjournaldetail].[executeBy],
-						[generalledgerjournaldetail].[executeTime],
+			SELECT	[generalLedgerJournalDetail].[gId],
+						[generalLedgerJournalDetail].[generalLedgerJournalId],
+						[generalLedgerJournalDetail].[generalLedgerChartOfAccountNo],
+						[generalLedgerJournalDetail].[gAmount],
+						[generalLedgerJournalDetail].[isDefault],
+						[generalLedgerJournalDetail].[isNew],
+						[generalLedgerJournalDetail].[isDraft],
+						[generalLedgerJournalDetail].[isUpdate],
+						[generalLedgerJournalDetail].[isDelete],
+						[generalLedgerJournalDetail].[isActive],
+						[generalLedgerJournalDetail].[isApproved],
+						[generalLedgerJournalDetail].[isReview],
+						[generalLedgerJournalDetail].[isPost],
+						[generalLedgerJournalDetail].[executeBy],
+						[generalLedgerJournalDetail].[executeTime],
 						[staff].[staffName]
-			FROM 	[generalledgerjournaldetail]
+			FROM 	[generalLedgerJournalDetail]
 			JOIN		[staff]
-			ON		[generalledgerjournaldetail].[executeBy] = [staff].[staffId]
+			ON		[generalLedgerJournalDetail].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getGeneralLedgerJournalDetailId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILID   		 	AS 	\"generalLedgerJournalDetailId\",
+			SELECT		GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILID   		 	AS 	\"gId\",
 						GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALID 				AS 	\"generalLedgerJournalId\",
 						GENERALLEDGERJOURNALDETAIL.GENERALLEDGERCHARTOFACCOUNTNO 			AS 	\"generalLedgerChartOfAccountNo\",
-						GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILAMOUNT 			AS 	\"generalLedgerJournalDetailAmount\",
+						GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILAMOUNT 			AS 	\"gAmount\",
 						GENERALLEDGERJOURNALDETAIL.ISDEFAULT    			AS	\"isDefault\",
 						GENERALLEDGERJOURNALDETAIL.ISNEW		  			AS	\"isNew\",
 						GENERALLEDGERJOURNALDETAIL.ISDRAFT	  				AS	\"isDraft\",
@@ -403,15 +401,15 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			JOIN		STAFF
 			ON			GENERALLEDGERJOURNALDETAIL.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getGeneralLedgerJournalDetailId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
 		} else if ($this->q->vendor == self::POSTGRESS) {
 
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -420,13 +418,13 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('generalLedgerJournalDetailId');
+		$filterArray = array('gId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('generalledgerjournaldetail');
+		$tableArray = array('generalLedgerJournalDetail');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -441,7 +439,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -462,7 +460,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->searching();
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -493,7 +491,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -517,31 +515,31 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [generalledgerjournaldetailDerived] AS
+							WITH [generalLedgerJournalDetailDerived] AS
 							(
-								SELECT 		[generalledgerjournaldetail].[generalLedgerJournalDetailId],
-											[generalledgerjournaldetail].[generalLedgerJournalId],
-											[generalledgerjournaldetail].[generalLedgerChartOfAccountNo],
-											[generalledgerjournaldetail].[generalLedgerJournalDetailAmount],
-											[generalledgerjournaldetail].[isDefault],
-											[generalledgerjournaldetail].[isNew],
-											[generalledgerjournaldetail].[isDraft],
-											[generalledgerjournaldetail].[isUpdate],
-											[generalledgerjournaldetail].[isDelete],
-											[generalledgerjournaldetail].[isApproved],
-											[generalledgerjournaldetail].[isReview],
-											[generalledgerjournaldetail].[isPost],
-											[generalledgerjournaldetail].[executeBy],
-											[generalledgerjournaldetail].[executeTime],
+								SELECT 		[generalLedgerJournalDetail].[gId],
+											[generalLedgerJournalDetail].[generalLedgerJournalId],
+											[generalLedgerJournalDetail].[generalLedgerChartOfAccountNo],
+											[generalLedgerJournalDetail].[gAmount],
+											[generalLedgerJournalDetail].[isDefault],
+											[generalLedgerJournalDetail].[isNew],
+											[generalLedgerJournalDetail].[isDraft],
+											[generalLedgerJournalDetail].[isUpdate],
+											[generalLedgerJournalDetail].[isDelete],
+											[generalLedgerJournalDetail].[isApproved],
+											[generalLedgerJournalDetail].[isReview],
+											[generalLedgerJournalDetail].[isPost],
+											[generalLedgerJournalDetail].[executeBy],
+											[generalLedgerJournalDetail].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [generalLedgerJournalDetailId]) AS 'RowNumber'
-								FROM 	[generalledgerjournaldetail]
+								ROW_NUMBER() OVER (ORDER BY [gId]) AS 'RowNumber'
+								FROM 	[generalLedgerJournalDetail]
 								JOIN		[staff]
-								ON		[generalledgerjournaldetail].[executeBy] = [staff].[staffId]
+								ON		[generalLedgerJournalDetail].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[generalledgerjournaldetailDerived]
+							FROM 		[generalLedgerJournalDetailDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -554,10 +552,10 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILID   		AS 	\"generalLedgerJournalDetailId\",
+								SELECT	GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILID   		AS 	\"gId\",
 										GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALID 			AS 	\"generalLedgerJournalId\",
 										GENERALLEDGERJOURNALDETAIL.GENERALLEDGERCHARTOFACCOUNTNO 		AS 	\"generalLedgerChartOfAccountNo\",
-										GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILAMOUNT 		AS 	\"generalLedgerJournalDetailAmount\",
+										GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILAMOUNT 		AS 	\"gAmount\",
 										GENERALLEDGERJOURNALDETAIL.ISDEFAULT    		AS	\"isDefault\",
 										GENERALLEDGERJOURNALDETAIL.ISNEW		  		AS	\"isNew\",
 										GENERALLEDGERJOURNALDETAIL.ISDRAFT	 			AS	\"isDraft\",
@@ -593,7 +591,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -601,7 +599,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getGeneralLedgerJournalDetailId(0, 'single'))) {
+		if (!($this->model->getGeneralLedgerJournalId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -612,8 +610,8 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getGeneralLedgerJournalDetailId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerJournalDetailId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerJournalDetailId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -621,7 +619,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
+			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
 			exit();
 		}
 	}
@@ -648,29 +646,29 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -681,10 +679,10 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalledgerjournaldetail`
+				UPDATE		`generalLedgerJournalDetail`
 				SET 		`generalLedgerJournalId`		=	'" . $this->model->getGeneralLedgerJournalId() . "',
 							`generalLedgerChartOfAccountNo`		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							`generalLedgerJournalDetailAmount`		=	'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+							`gAmount`		=	'" . $this->model->getGAmount() . "',
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -696,13 +694,13 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`generalLedgerJournalDetailId`		=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+				WHERE 		`gId`		=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalledgerjournaldetail]
+				UPDATE 		[generalLedgerJournalDetail]
 				SET 		[generalLedgerJournalId]		=	'" . $this->model->getGeneralLedgerJournalId() . "',
 							[generalLedgerChartOfAccountNo]		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							[generalLedgerJournalDetailAmount]		=	'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+							[gAmount]		=	'" . $this->model->getGAmount() . "',
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -714,13 +712,13 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[generalLedgerJournalDetailId]			=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+			WHERE 		[gId]			=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERJOURNALDETAIL
 				SET 		GENERALLEDGERJOURNALID	=	'" . $this->model->getGeneralLedgerJournalId() . "',
 							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							GENERALLEDGERJOURNALDETAILAMOUNT		=	'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+							GENERALLEDGERJOURNALDETAILAMOUNT		=	'" . $this->model->getGAmount() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -732,13 +730,13 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 			UPDATE			GENERALLEDGERJOURNALDETAIL
 			SET 			GENERALLEDGERJOURNALID	=	'" . $this->model->getGeneralLedgerJournalId() . "',
 							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							GENERALLEDGERJOURNALDETAILAMOUNT		=	'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+							GENERALLEDGERJOURNALDETAILAMOUNT		=	'" . $this->model->getGAmount() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -750,13 +748,13 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE		GENERALLEDGERJOURNALDETAIL
 				SET 		GENERALLEDGERJOURNALID	=	'" . $this->model->getGeneralLedgerJournalId() . "',
 							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							GENERALLEDGERJOURNALDETAILAMOUNT		=	'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
+							GENERALLEDGERJOURNALDETAILAMOUNT		=	'" . $this->model->getGAmount() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -768,17 +766,12 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		GENERALLEDGERJOURNALDETAILID			=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+				WHERE 		GENERALLEDGERJOURNALDETAILID			=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerJournalDetailId(0, 'single');
+			
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -787,7 +780,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Updated"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
 	}
 
@@ -809,29 +802,29 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -842,7 +835,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalledgerjournaldetail`
+				UPDATE 	`generalLedgerJournalDetail`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -854,10 +847,10 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`generalLedgerJournalDetailId`		=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+				WHERE 	`gId`		=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalledgerjournaldetail]
+				UPDATE 	[generalLedgerJournalDetail]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -869,7 +862,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[generalLedgerJournalDetailId]		=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+				WHERE 	[gId]		=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERJOURNALDETAIL
@@ -884,7 +877,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 				UPDATE 	GENERALLEDGERJOURNALDETAIL
@@ -899,7 +892,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE 	GENERALLEDGERJOURNALDETAIL
@@ -914,15 +907,15 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERJOURNALDETAILID		=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 			// advance logging future
 			$this->q->tableName = $this->model->getTableName();
 			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerJournalDetailId(0, 'single');
+			$this->q->primaryKeyValue = $this->model->getGeneralLedgerJournalId(0, 'single');
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -931,7 +924,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
 		exit();
 	}
 
@@ -967,7 +960,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 
@@ -994,11 +987,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerJournalDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1018,11 +1011,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerJournalDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1042,11 +1035,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerJournalDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1066,11 +1059,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerJournalDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1090,11 +1083,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerJournalDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1114,11 +1107,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerJournalDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1138,11 +1131,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerJournalDetailId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1162,11 +1155,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getGeneralLedgerJournalDetailId($i, 'array') . "'
+                            WHEN '" . $this->model->getGeneralLedgerJournalId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1186,11 +1179,11 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getGeneralLedgerJournalDetailId($i, 'array') . "'
+                                WHEN '" . $this->model->getGeneralLedgerJournalId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1215,7 +1208,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1225,9 +1218,9 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->systemString->getDeleteMessage();
 		}
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
@@ -1249,13 +1242,13 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`generalLedgerJournalId`
-			FROM 	`generalledgerjournaldetail`
+			FROM 	`generalLedgerJournalDetail`
 			WHERE 	`generalLedgerJournalId` 	= 	'" . $this->model->getGeneralLedgerJournalId() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[generalLedgerJournalId]
-			FROM 	[generalledgerjournaldetail]
+			FROM 	[generalLedgerJournalDetail]
 			WHERE 	[generalLedgerJournalId] 	= 	'" . $this->model->getGeneralLedgerJournalId() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
@@ -1277,7 +1270,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 			WHERE 	GENERALLEDGERJOURNALID 	= 	'" . $this->model->getGeneralLedgerJournalId() . "'
 			AND		ISACTIVE		=	1";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->read($sql);
@@ -1289,7 +1282,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "generalledgerjournaldetailDesc" => $row ['generalledgerjournaldetailDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "generalLedgerJournalDetailDesc" => $row ['generalLedgerJournalDetailDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
@@ -1356,7 +1349,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalledgerjournaldetailDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerJournalDetailDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1365,7 +1358,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "generalledgerjournaldetail" . rand(0, 10000000) . ".xlsx";
+		$filename = "generalLedgerJournalDetail" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1381,7 +1374,7 @@ class GeneralledgerjournaldetailClass extends ConfigClass {
 
 }
 
-$generalledgerjournaldetailObject = new GeneralledgerjournaldetailClass ();
+$generalLedgerJournalDetailObject = new GeneralledgerjournaldetailClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1391,59 +1384,59 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$generalledgerjournaldetailObject->setLeafId($_POST ['leafId']);
+		$generalLedgerJournalDetailObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$generalledgerjournaldetailObject->setIsAdmin($_POST ['isAdmin']);
+		$generalLedgerJournalDetailObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$generalledgerjournaldetailObject->setStart($_POST ['start']);
+		$generalLedgerJournalDetailObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$generalledgerjournaldetailObject->setLimit($_POST ['perPage']);
+		$generalLedgerJournalDetailObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$generalledgerjournaldetailObject->setFieldQuery($_POST ['query']);
+		$generalLedgerJournalDetailObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$generalledgerjournaldetailObject->setGridQuery($_POST ['filter']);
+		$generalLedgerJournalDetailObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$generalledgerjournaldetailObject->setOrder($_POST ['order']);
+		$generalLedgerJournalDetailObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$generalledgerjournaldetailObject->setSortField($_POST ['sortField']);
+		$generalLedgerJournalDetailObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerjournaldetailObject->execute();
+	$generalLedgerJournalDetailObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$generalledgerjournaldetailObject->create();
+		$generalLedgerJournalDetailObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$generalledgerjournaldetailObject->update();
+		$generalLedgerJournalDetailObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$generalledgerjournaldetailObject->read();
+		$generalLedgerJournalDetailObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$generalledgerjournaldetailObject->delete();
+		$generalLedgerJournalDetailObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1451,35 +1444,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$generalledgerjournaldetailObject->setLeafId($_GET ['leafId']);
+		$generalLedgerJournalDetailObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$generalledgerjournaldetailObject->setIsAdmin($_GET ['isAdmin']);
+		$generalLedgerJournalDetailObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerjournaldetailObject->execute();
+	$generalLedgerJournalDetailObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$generalledgerjournaldetailObject->staff();
+			$generalLedgerJournalDetailObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$generalledgerjournaldetailObject->updateStatus();
+		$generalLedgerJournalDetailObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['generalledgerjournaldetailDesc'])) {
-		if (strlen($_GET ['generalledgerjournaldetailDesc']) > 0) {
-			$generalledgerjournaldetailObject->duplicate();
+	if (isset($_GET ['generalLedgerJournalDetailDesc'])) {
+		if (strlen($_GET ['generalLedgerJournalDetailDesc']) > 0) {
+			$generalLedgerJournalDetailObject->duplicate();
 		}
 	}
 	/**
@@ -1487,16 +1480,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$generalledgerjournaldetailObject->firstRecord('json');
+			$generalLedgerJournalDetailObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$generalledgerjournaldetailObject->previousRecord('json', 0);
+			$generalLedgerJournalDetailObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$generalledgerjournaldetailObject->nextRecord('json', 0);
+			$generalLedgerJournalDetailObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$generalledgerjournaldetailObject->lastRecord('json');
+			$generalLedgerJournalDetailObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1504,7 +1497,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$generalledgerjournaldetailObject->excel();
+			$generalLedgerJournalDetailObject->excel();
 		}
 	}
 }

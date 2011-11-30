@@ -829,7 +829,7 @@ class BusinesspartnerClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getBusinessPartnerId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getBusinessPartnerId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getBusinessPartnerId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getBusinessPartnerId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getBusinessPartnerId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -837,7 +837,7 @@ class BusinesspartnerClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
+			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
 			exit();
 		}
 	}
@@ -1509,9 +1509,9 @@ class BusinesspartnerClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->systemString->getDeleteMessage();
 		}
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()

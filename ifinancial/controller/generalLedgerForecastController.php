@@ -6,19 +6,19 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/generalledgerforecastModel.php");
+require_once ("../model/generalLedgerForecastModel.php");
 
 /**
- * this is generalledgerforecast setting files.This sample template file for master record
+ * this is generalLedgerForecast setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package generalledgerforecast
- * @subpackage generalledgerforecastv1,v2,v3,v4,v5
+ * @package generalLedgerForecast
+ * @subpackage generalLedgerForecastv1,v2,v3,v4,v5
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralledgerforecastClass extends ConfigClass {
+class GeneralLedgerForecastClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -90,7 +90,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new GeneralledgerforecastModel ();
+		$this->model = new GeneralLedgerForecastModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 		
@@ -100,6 +100,8 @@ class GeneralledgerforecastClass extends ConfigClass {
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
@@ -139,10 +141,9 @@ class GeneralledgerforecastClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `generalledgerforecast`
+			INSERT INTO `generalLedgerForecast`
 					(
-						`documentNo`,												
-						`generalLedgerChartOfAccountDimensionId`,
+						
 						`generalLedgerForecastMonth`,
 						`generalLedgerForecastYear`,
 						`generalLedgerForecastAmount`,
@@ -169,10 +170,9 @@ class GeneralledgerforecastClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [generalledgerforecast]
+			INSERT INTO [generalLedgerForecast]
 					(
-						[documentNo],												
-						[generalLedgerChartOfAccountDimensionId],
+						
 						[generalLedgerForecastMonth],
 						[generalLedgerForecastYear],
 						[generalLedgerForecastAmount],													
@@ -202,8 +202,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	GENERALLEDGERFORECAST
 					(
-						DOCUMENTNO,												
-						GENERALLEDGERCHARTOFACCOUNTDIMENSIONID,
+						
 						GENERALLEDGERFORECASTMONTH,
 						GENERALLEDGERFORECASTYEAR,
 						GENERALLEDGERFORECASTAMOUNT,
@@ -232,8 +231,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	GENERALLEDGERFORECAST
 			(
-						DOCUMENTNO,												
-						GENERALLEDGERCHARTOFACCOUNTDIMENSIONID,
+						
 						GENERALLEDGERFORECASTMONTH,
 						GENERALLEDGERFORECASTYEAR,
 						GENERALLEDGERFORECASTAMOUNT,
@@ -262,8 +260,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			$sql = "
 			INSERT INTO	GENERALLEDGERFORECAST
 			(
-						DOCUMENTNO,												
-						GENERALLEDGERCHARTOFACCOUNTDIMENSIONID,
+						
 						GENERALLEDGERFORECASTMONTH,
 						GENERALLEDGERFORECASTYEAR,
 						GENERALLEDGERFORECASTAMOUNT,
@@ -289,7 +286,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		//advance logging future
@@ -304,7 +301,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "generalLedgerForecastId" => $generalLedgerForecastId));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerForecastId" => $generalLedgerForecastId));
 		exit();
 	}
 
@@ -316,17 +313,17 @@ class GeneralledgerforecastClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `generalledgerforecast`.`isActive`		=	1	";
+				$this->auditFilter = "	`generalLedgerForecast`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [generalledgerforecast].[isActive]		=	1	";
+				$this->auditFilter = "	[generalLedgerForecast].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND GENERALLEDGERFORECAST.ISACTIVE	=	1	";
+				$this->auditFilter = "	GENERALLEDGERFORECAST.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND GENERALLEDGERFORECAST.ISACTIVE	=	1	";
+				$this->auditFilter = "	GENERALLEDGERFORECAST.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND GENERALLEDGERFORECAST.ISACTIVE	=	1	";
+				$this->auditFilter = "	GENERALLEDGERFORECAST.ISACTIVE	=	1	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		} else if ($this->isAdmin == 1) {
@@ -341,7 +338,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	1	=	1 	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -353,54 +350,54 @@ class GeneralledgerforecastClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalledgerforecast`.`generalLedgerForecastId`,
-						`generalledgerforecast`.`documentNo`,
-						`generalledgerforecast`.`generalLedgerChartOfAccountDimensionId`,
-						`generalledgerforecast`.`generalLedgerForecastMonth`,
-						`generalledgerforecast`.`generalLedgerForecastYear`,
-						`generalledgerforecast`.`generalLedgerForecastAmount`,
-						`generalledgerforecast`.`isDefault`,
-						`generalledgerforecast`.`isNew`,
-						`generalledgerforecast`.`isDraft`,
-						`generalledgerforecast`.`isUpdate`,
-						`generalledgerforecast`.`isDelete`,
-						`generalledgerforecast`.`isActive`,
-						`generalledgerforecast`.`isApproved`,
-						`generalledgerforecast`.`isReview`,
-						`generalledgerforecast`.`isPost`,
-						`generalledgerforecast`.`executeBy`,
-						`generalledgerforecast`.`executeTime`,
+			SELECT		`generalLedgerForecast`.`generalLedgerForecastId`,
+						`generalLedgerForecast`.`documentNo`,
+						`generalLedgerForecast`.`generalLedgerChartOfAccountDimensionId`,
+						`generalLedgerForecast`.`generalLedgerForecastMonth`,
+						`generalLedgerForecast`.`generalLedgerForecastYear`,
+						`generalLedgerForecast`.`generalLedgerForecastAmount`,
+						`generalLedgerForecast`.`isDefault`,
+						`generalLedgerForecast`.`isNew`,
+						`generalLedgerForecast`.`isDraft`,
+						`generalLedgerForecast`.`isUpdate`,
+						`generalLedgerForecast`.`isDelete`,
+						`generalLedgerForecast`.`isActive`,
+						`generalLedgerForecast`.`isApproved`,
+						`generalLedgerForecast`.`isReview`,
+						`generalLedgerForecast`.`isPost`,
+						`generalLedgerForecast`.`executeBy`,
+						`generalLedgerForecast`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`generalledgerforecast`
+			FROM 	`generalLedgerForecast`
 			JOIN	`staff`
-			ON		`generalledgerforecast`.`executeBy` = `staff`.`staffId`
+			ON		`generalLedgerForecast`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[generalledgerforecast].[generalLedgerForecastId],
-						[generalledgerforecast].[documentNo],
-						[generalledgerforecast].[generalLedgerChartOfAccountDimensionId],
-						[generalledgerforecast].[generalLedgerForecastMonth],
-						[generalledgerforecast].[generalLedgerForecastYear],
-						[generalledgerforecast].[generalLedgerForecastAmount],
-						[generalledgerforecast].[isDefault],
-						[generalledgerforecast].[isNew],
-						[generalledgerforecast].[isDraft],
-						[generalledgerforecast].[isUpdate],
-						[generalledgerforecast].[isDelete],
-						[generalledgerforecast].[isActive],
-						[generalledgerforecast].[isApproved],
-						[generalledgerforecast].[isReview],
-						[generalledgerforecast].[isPost],
-						[generalledgerforecast].[executeBy],
-						[generalledgerforecast].[executeTime],
+			SELECT	[generalLedgerForecast].[generalLedgerForecastId],
+						[generalLedgerForecast].[documentNo],
+						[generalLedgerForecast].[generalLedgerChartOfAccountDimensionId],
+						[generalLedgerForecast].[generalLedgerForecastMonth],
+						[generalLedgerForecast].[generalLedgerForecastYear],
+						[generalLedgerForecast].[generalLedgerForecastAmount],
+						[generalLedgerForecast].[isDefault],
+						[generalLedgerForecast].[isNew],
+						[generalLedgerForecast].[isDraft],
+						[generalLedgerForecast].[isUpdate],
+						[generalLedgerForecast].[isDelete],
+						[generalLedgerForecast].[isActive],
+						[generalLedgerForecast].[isApproved],
+						[generalLedgerForecast].[isReview],
+						[generalLedgerForecast].[isPost],
+						[generalLedgerForecast].[executeBy],
+						[generalLedgerForecast].[executeTime],
 						[staff].[staffName]
-			FROM 	[generalledgerforecast]
+			FROM 	[generalLedgerForecast]
 			JOIN		[staff]
-			ON		[generalledgerforecast].[executeBy] = [staff].[staffId]
+			ON		[generalLedgerForecast].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
@@ -437,7 +434,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 		} else if ($this->q->vendor == self::POSTGRESS) {
 
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -452,7 +449,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('generalledgerforecast');
+		$tableArray = array('generalLedgerForecast');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -467,7 +464,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -488,7 +485,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->searching();
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -519,7 +516,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -543,33 +540,33 @@ class GeneralledgerforecastClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [generalledgerforecastDerived] AS
+							WITH [generalLedgerForecastDerived] AS
 							(
-								SELECT 		[generalledgerforecast].[generalLedgerForecastId],
-											[generalledgerforecast].[documentNo],
-											[generalledgerforecast].[generalLedgerChartOfAccountDimensionId],
-											[generalledgerforecast].[generalLedgerForecastMonth],
-											[generalledgerforecast].[generalLedgerForecastYear],
-											[generalledgerforecast].[generalLedgerForecastAmount],
-											[generalledgerforecast].[isDefault],
-											[generalledgerforecast].[isNew],
-											[generalledgerforecast].[isDraft],
-											[generalledgerforecast].[isUpdate],
-											[generalledgerforecast].[isDelete],
-											[generalledgerforecast].[isApproved],
-											[generalledgerforecast].[isReview],
-											[generalledgerforecast].[isPost],
-											[generalledgerforecast].[executeBy],
-											[generalledgerforecast].[executeTime],
+								SELECT 		[generalLedgerForecast].[generalLedgerForecastId],
+											[generalLedgerForecast].[documentNo],
+											[generalLedgerForecast].[generalLedgerChartOfAccountDimensionId],
+											[generalLedgerForecast].[generalLedgerForecastMonth],
+											[generalLedgerForecast].[generalLedgerForecastYear],
+											[generalLedgerForecast].[generalLedgerForecastAmount],
+											[generalLedgerForecast].[isDefault],
+											[generalLedgerForecast].[isNew],
+											[generalLedgerForecast].[isDraft],
+											[generalLedgerForecast].[isUpdate],
+											[generalLedgerForecast].[isDelete],
+											[generalLedgerForecast].[isApproved],
+											[generalLedgerForecast].[isReview],
+											[generalLedgerForecast].[isPost],
+											[generalLedgerForecast].[executeBy],
+											[generalLedgerForecast].[executeTime],
 											[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [generalLedgerForecastId]) AS 'RowNumber'
-								FROM 	[generalledgerforecast]
+								FROM 	[generalLedgerForecast]
 								JOIN		[staff]
-								ON		[generalledgerforecast].[executeBy] = [staff].[staffId]
+								ON		[generalLedgerForecast].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[generalledgerforecastDerived]
+							FROM 		[generalLedgerForecastDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -623,7 +620,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -643,7 +640,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerForecastId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerForecastId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerForecastId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerForecastId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -651,7 +648,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
+			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
 			exit();
 		}
 	}
@@ -700,7 +697,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -711,7 +708,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalledgerforecast`
+				UPDATE		`generalLedgerForecast`
 				SET 		`documentNo`		=	'" . $this->model->getDocumentNo() . "',
 							`generalLedgerChartOfAccountDimensionId`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
 							`generalLedgerForecastMonth`		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
@@ -731,7 +728,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 				WHERE 		`generalLedgerForecastId`		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalledgerforecast]
+				UPDATE 		[generalLedgerForecast]
 				SET 		[documentNo]		=	'" . $this->model->getDocumentNo() . "',
 							[generalLedgerChartOfAccountDimensionId]		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
 							[generalLedgerForecastMonth]		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
@@ -810,16 +807,11 @@ class GeneralledgerforecastClass extends ConfigClass {
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 				WHERE 		GENERALLEDGERFORECASTID			=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerForecastId(0, 'single');
-			$this->q->audit = $this->audit;
+	
+		
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -827,7 +819,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Updated"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
 	}
 
@@ -871,7 +863,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -882,7 +874,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalledgerforecast`
+				UPDATE 	`generalLedgerForecast`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -897,7 +889,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 				WHERE 	`generalLedgerForecastId`		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalledgerforecast]
+				UPDATE 	[generalLedgerForecast]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -956,14 +948,11 @@ class GeneralledgerforecastClass extends ConfigClass {
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
 				WHERE 	GENERALLEDGERFORECASTID		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			// advance logging future
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerForecastId(0, 'single');
-			$this->q->audit = $this->audit;
+			
+		
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -971,7 +960,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
 		exit();
 	}
 
@@ -1007,7 +996,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		
@@ -1034,7 +1023,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1058,7 +1047,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1082,7 +1071,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1106,7 +1095,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1130,7 +1119,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1154,7 +1143,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1178,7 +1167,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1202,7 +1191,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1226,7 +1215,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1255,7 +1244,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1265,9 +1254,9 @@ class GeneralledgerforecastClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->systemString->getDeleteMessage();
 		}
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
@@ -1289,13 +1278,13 @@ class GeneralledgerforecastClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`documentNo`
-			FROM 	`generalledgerforecast`
+			FROM 	`generalLedgerForecast`
 			WHERE 	`documentNo` 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[documentNo]
-			FROM 	[generalledgerforecast]
+			FROM 	[generalLedgerForecast]
 			WHERE 	[documentNo] 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
@@ -1317,7 +1306,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		ISACTIVE		=	1";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->read($sql);
@@ -1329,7 +1318,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "generalledgerforecastDesc" => $row ['generalledgerforecastDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "generalLedgerForecastDesc" => $row ['generalLedgerForecastDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
@@ -1396,7 +1385,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalledgerforecastDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerForecastDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1405,7 +1394,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "generalledgerforecast" . rand(0, 10000000) . ".xlsx";
+		$filename = "generalLedgerForecast" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1421,7 +1410,7 @@ class GeneralledgerforecastClass extends ConfigClass {
 
 }
 
-$generalledgerforecastObject = new GeneralledgerforecastClass ();
+$generalLedgerForecastObject = new GeneralLedgerForecastClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1431,59 +1420,59 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$generalledgerforecastObject->setLeafId($_POST ['leafId']);
+		$generalLedgerForecastObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$generalledgerforecastObject->setIsAdmin($_POST ['isAdmin']);
+		$generalLedgerForecastObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$generalledgerforecastObject->setStart($_POST ['start']);
+		$generalLedgerForecastObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$generalledgerforecastObject->setLimit($_POST ['perPage']);
+		$generalLedgerForecastObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$generalledgerforecastObject->setFieldQuery($_POST ['query']);
+		$generalLedgerForecastObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$generalledgerforecastObject->setGridQuery($_POST ['filter']);
+		$generalLedgerForecastObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$generalledgerforecastObject->setOrder($_POST ['order']);
+		$generalLedgerForecastObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$generalledgerforecastObject->setSortField($_POST ['sortField']);
+		$generalLedgerForecastObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerforecastObject->execute();
+	$generalLedgerForecastObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$generalledgerforecastObject->create();
+		$generalLedgerForecastObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$generalledgerforecastObject->update();
+		$generalLedgerForecastObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$generalledgerforecastObject->read();
+		$generalLedgerForecastObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$generalledgerforecastObject->delete();
+		$generalLedgerForecastObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1491,35 +1480,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$generalledgerforecastObject->setLeafId($_GET ['leafId']);
+		$generalLedgerForecastObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$generalledgerforecastObject->setIsAdmin($_GET ['isAdmin']);
+		$generalLedgerForecastObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerforecastObject->execute();
+	$generalLedgerForecastObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$generalledgerforecastObject->staff();
+			$generalLedgerForecastObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$generalledgerforecastObject->updateStatus();
+		$generalLedgerForecastObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['generalledgerforecastDesc'])) {
-		if (strlen($_GET ['generalledgerforecastDesc']) > 0) {
-			$generalledgerforecastObject->duplicate();
+	if (isset($_GET ['generalLedgerForecastDesc'])) {
+		if (strlen($_GET ['generalLedgerForecastDesc']) > 0) {
+			$generalLedgerForecastObject->duplicate();
 		}
 	}
 	/**
@@ -1527,16 +1516,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$generalledgerforecastObject->firstRecord('json');
+			$generalLedgerForecastObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$generalledgerforecastObject->previousRecord('json', 0);
+			$generalLedgerForecastObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$generalledgerforecastObject->nextRecord('json', 0);
+			$generalLedgerForecastObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$generalledgerforecastObject->lastRecord('json');
+			$generalLedgerForecastObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1544,7 +1533,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$generalledgerforecastObject->excel();
+			$generalLedgerForecastObject->excel();
 		}
 	}
 }

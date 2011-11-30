@@ -6,19 +6,19 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/generalledgerbudgetModel.php");
+require_once ("../model/generalLedgerBudgetModel.php");
 
 /**
- * this is generalledgerbudget setting files.This sample template file for master record
+ * this is generalLedgerBudget setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package generalledgerbudget
- * @subpackage generalledgerbudgetv1,v2,v3,v4,v5
+ * @package General Ledger
+ * @subpackage General Ledger Budget
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralledgerbudgetClass extends ConfigClass {
+class GeneralLedgerbudgetClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -90,7 +90,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new GeneralledgerbudgetModel ();
+		$this->model = new GeneralLedgerBudgetModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 		
@@ -100,6 +100,8 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		$this->q->staffId = $this->getStaffId();
 		$this->q->fieldQuery = $this->getFieldQuery();
 		$this->q->gridQuery = $this->getGridQuery();
+		$this->q->tableName = $this->model->getTableName();
+		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
@@ -139,164 +141,209 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `generalledgerbudget`
+			INSERT INTO `iFinancial`.`generalLedgerBudget`
 					(
-						`documentNo`,												
-						`generalLedgerChartOfAccountNo`,
-						`generalLedgerBudgetMonth`,
-						`generalLedgerBudgetYear`,
-						`generalLedgerBudgetAmount`,
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`iFinancial`.`generalLedgerBudget`.`generalLedgerChartOfAccountId`,
+						`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetMonth`,
+						`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetYear`,
+						`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetAmount`,
+						`iFinancial`.`generalLedgerBudget`.`isDefault`,
+						`iFinancial`.`generalLedgerBudget`.`isNew`,													
+						`iFinancial`.`generalLedgerBudget`.`isDraft`,
+						`iFinancial`.`generalLedgerBudget`.`isUpdate`,													
+						`iFinancial`.`generalLedgerBudget`.`isDelete`,
+						`iFinancial`.`generalLedgerBudget`.`isActive`,													
+						`iFinancial`.`generalLedgerBudget`.`isApproved`,
+						`iFinancial`.`generalLedgerBudget`.`isReview`,                      		  	 				
+						`iFinancial`.`generalLedgerBudget`.`isPost`,
+						`iFinancial`.`generalLedgerBudget`.`executeBy`,												
+						`iFinancial`.`generalLedgerBudget`.`executeTime`
 					)
 			VALUES
 					(
 						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
 						'" . $this->model->getGeneralLedgerBudgetYear() . "',
 						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-             			'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',			
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		
+						'" . $this->model->getIsApproved(0, 'single') . "',
+             			'" . $this->model->getIsReview(0, 'single') . "',		
+             			'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',					
+						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [generalledgerbudget]
+			INSERT INTO [iFinancial].[generalLedgerBudget]
 					(
-						[documentNo],												
-						[generalLedgerChartOfAccountNo],
-						[generalLedgerBudgetMonth],
-						[generalLedgerBudgetYear],
-						[generalLedgerBudgetAmount],													
-						[isDefault],
-						[isNew],														[isDraft],
-						[isUpdate],														[isDelete],
-						[isActive],														[isApproved],
-						[isReview],														[isPost],
-						[executeBy],													[executeTime]
+																		
+						[iFinancial].[generalLedgerBudget].[generalLedgerChartOfAccountId],
+						[iFinancial].[generalLedgerBudget].[generalLedgerBudgetMonth],
+						[iFinancial].[generalLedgerBudget].[generalLedgerBudgetYear],
+						[iFinancial].[generalLedgerBudget].[generalLedgerBudgetAmount],													
+						[iFinancial].[generalLedgerBudget].[isDefault],
+						[iFinancial].[generalLedgerBudget].[isNew],														
+						[iFinancial].[generalLedgerBudget].[isDraft],
+						[iFinancial].[generalLedgerBudget].[isUpdate],														
+						[iFinancial].[generalLedgerBudget].[isDelete],
+						[iFinancial].[generalLedgerBudget].[isActive],														
+						[iFinancial].[generalLedgerBudget].[isApproved],
+						[iFinancial].[generalLedgerBudget].[isReview],														
+						[iFinancial].[generalLedgerBudget].[isPost],
+						[iFinancial].[generalLedgerBudget].[executeBy],													
+						[iFinancial].[generalLedgerBudget].[executeTime]
 					)
 			VALUES
 					(
 						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
 						'" . $this->model->getGeneralLedgerBudgetYear() . "',
 						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',				
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',			
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',			
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',			
+						'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',						
+						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	GENERALLEDGERBUDGET
+			INSERT INTO	IFINANCIAL.GENERALLEDGERBUDGET
 					(
-						DOCUMENTNO,												
-						GENERALLEDGERCHARTOFACCOUNTNO,
-						GENERALLEDGERBUDGETMONTH,
-						GENERALLEDGERBUDGETYEAR,
-						GENERALLEDGERBUDGETAMOUNT,
-						ISDEFAULT,
-						ISNEW,														ISDRAFT,
-						ISUPDATE,													ISDELETE,
-						ISACTIVE,													ISAPPROVED,
-						ISREVIEW,													ISPOST,
-						EXECUTEBY,													EXECUTETIME
+																	
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERCHARTOFACCOUNTID,
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERBUDGETMONTH,
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERBUDGETYEAR,
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERBUDGETAMOUNT,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISNEW,														
+						IFINANCIAL.GENERALLEDGERBUDGET.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERBUDGET.ISDELETE,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERBUDGET.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERBUDGET.ISPOST,
+						IFINANCIAL.GENERALLEDGERBUDGET.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERBUDGET.EXECUTETIME
 					)
 			VALUES
 					(
 						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
 						'" . $this->model->getGeneralLedgerBudgetYear() . "',
 						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',						
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',			
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		
+						'" . $this->model->getIsPost(0, 'single') . "',						
+						'" . $this->model->getExecuteBy() . "',					
+						" . $this->model->getExecuteTime() . "
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERBUDGET
-			(
-						DOCUMENTNO,												
-						GENERALLEDGERCHARTOFACCOUNTNO,
-						GENERALLEDGERBUDGETMONTH,
-						GENERALLEDGERBUDGETYEAR,
-						GENERALLEDGERBUDGETAMOUNT,
-						ISDEFAULT,
-						ISNEW,														ISDRAFT,
-						ISUPDATE,													ISDELETE,
-						ISACTIVE,													ISAPPROVED,
-						ISREVIEW,													ISPOST,
-						EXECUTEBY,													EXECUTETIME
-			)
+			INSERT INTO	IFINANCIAL.GENERALLEDGERBUDGET
+					(
+																	
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERCHARTOFACCOUNTID,
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERBUDGETMONTH,
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERBUDGETYEAR,
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERBUDGETAMOUNT,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISNEW,														
+						IFINANCIAL.GENERALLEDGERBUDGET.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERBUDGET.ISDELETE,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERBUDGET.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERBUDGET.ISPOST,
+						IFINANCIAL.GENERALLEDGERBUDGET.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERBUDGET.EXECUTETIME
+					)
 			VALUES
-			(
+					(
 						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
 						'" . $this->model->getGeneralLedgerBudgetYear() . "',
 						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
-			)";
+						'" . $this->model->getIsNew(0, 'single') . "',			
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		
+						'" . $this->model->getIsPost(0, 'single') . "',						
+						'" . $this->model->getExecuteBy() . "',					
+						" . $this->model->getExecuteTime() . "
+					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERBUDGET
-			(
-						DOCUMENTNO,												
-						GENERALLEDGERCHARTOFACCOUNTNO,
-						GENERALLEDGERBUDGETMONTH,
-						GENERALLEDGERBUDGETYEAR,
-						GENERALLEDGERBUDGETAMOUNT,
-						ISDEFAULT,
-						ISNEW,														ISDRAFT,
-						ISUPDATE,													ISDELETE,
-						ISACTIVE,													ISAPPROVED,
-						ISREVIEW,													ISPOST,
-						EXECUTEBY,													EXECUTETIME
-			)
+			INSERT INTO	IFINANCIAL.GENERALLEDGERBUDGET
+					(
+																	
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERCHARTOFACCOUNTID,
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERBUDGETMONTH,
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERBUDGETYEAR,
+						IFINANCIAL.GENERALLEDGERBUDGET.GENERALLEDGERBUDGETAMOUNT,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISNEW,														
+						IFINANCIAL.GENERALLEDGERBUDGET.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERBUDGET.ISDELETE,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERBUDGET.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERBUDGET.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERBUDGET.ISPOST,
+						IFINANCIAL.GENERALLEDGERBUDGET.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERBUDGET.EXECUTETIME
+					)
 			VALUES
-			(
+					(
 						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						'" . $this->model->getGeneralLedgerBudgetMonth() . "',
 						'" . $this->model->getGeneralLedgerBudgetYear() . "',
 						'" . $this->model->getGeneralLedgerBudgetAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
-			)";
+						'" . $this->model->getIsNew(0, 'single') . "',			
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		
+						'" . $this->model->getIsPost(0, 'single') . "',						
+						'" . $this->model->getExecuteBy() . "',					
+						" . $this->model->getExecuteTime() . "
+					)";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		//advance logging future
-		$this->q->tableName = $this->model->getTableName();
-		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-
-		$this->q->audit = $this->audit;
+		
 		$this->q->create($sql);
 		$generalLedgerBudgetId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -304,7 +351,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "generalLedgerBudgetId" => $generalLedgerBudgetId));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerBudgetId" => $generalLedgerBudgetId));
 		exit();
 	}
 
@@ -316,17 +363,17 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	AND `generalledgerbudget`.`isActive`		=	1	";
+				$this->auditFilter = "	`generalLedgerBudget`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	AND [generalledgerbudget].[isActive]		=	1	";
+				$this->auditFilter = "	[generalLedgerBudget].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	AND GENERALLEDGERBUDGET.ISACTIVE	=	1	";
+				$this->auditFilter = "	GENERALLEDGERBUDGET.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	AND GENERALLEDGERBUDGET.ISACTIVE	=	1	";
+				$this->auditFilter = "	GENERALLEDGERBUDGET.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	AND GENERALLEDGERBUDGET.ISACTIVE	=	1	";
+				$this->auditFilter = "	GENERALLEDGERBUDGET.ISACTIVE	=	1	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		} else if ($this->isAdmin == 1) {
@@ -341,7 +388,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	1	=	1 	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -353,54 +400,54 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalledgerbudget`.`generalLedgerBudgetId`,
-						`generalledgerbudget`.`documentNo`,
-						`generalledgerbudget`.`generalLedgerChartOfAccountNo`,
-						`generalledgerbudget`.`generalLedgerBudgetMonth`,
-						`generalledgerbudget`.`generalLedgerBudgetYear`,
-						`generalledgerbudget`.`generalLedgerBudgetAmount`,
-						`generalledgerbudget`.`isDefault`,
-						`generalledgerbudget`.`isNew`,
-						`generalledgerbudget`.`isDraft`,
-						`generalledgerbudget`.`isUpdate`,
-						`generalledgerbudget`.`isDelete`,
-						`generalledgerbudget`.`isActive`,
-						`generalledgerbudget`.`isApproved`,
-						`generalledgerbudget`.`isReview`,
-						`generalledgerbudget`.`isPost`,
-						`generalledgerbudget`.`executeBy`,
-						`generalledgerbudget`.`executeTime`,
+			SELECT		`generalLedgerBudget`.`generalLedgerBudgetId`,
+						`generalLedgerBudget`.`documentNo`,
+						`generalLedgerBudget`.`generalLedgerChartOfAccountId`,
+						`generalLedgerBudget`.`generalLedgerBudgetMonth`,
+						`generalLedgerBudget`.`generalLedgerBudgetYear`,
+						`generalLedgerBudget`.`generalLedgerBudgetAmount`,
+						`generalLedgerBudget`.`isDefault`,
+						`generalLedgerBudget`.`isNew`,
+						`generalLedgerBudget`.`isDraft`,
+						`generalLedgerBudget`.`isUpdate`,
+						`generalLedgerBudget`.`isDelete`,
+						`generalLedgerBudget`.`isActive`,
+						`generalLedgerBudget`.`isApproved`,
+						`generalLedgerBudget`.`isReview`,
+						`generalLedgerBudget`.`isPost`,
+						`generalLedgerBudget`.`executeBy`,
+						`generalLedgerBudget`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`generalledgerbudget`
+			FROM 	`generalLedgerBudget`
 			JOIN	`staff`
-			ON		`generalledgerbudget`.`executeBy` = `staff`.`staffId`
+			ON		`generalLedgerBudget`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerBudgetId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[generalledgerbudget].[generalLedgerBudgetId],
-						[generalledgerbudget].[documentNo],
-						[generalledgerbudget].[generalLedgerChartOfAccountNo],
-						[generalledgerbudget].[generalLedgerBudgetMonth],
-						[generalledgerbudget].[generalLedgerBudgetYear],
-						[generalledgerbudget].[generalLedgerBudgetAmount],
-						[generalledgerbudget].[isDefault],
-						[generalledgerbudget].[isNew],
-						[generalledgerbudget].[isDraft],
-						[generalledgerbudget].[isUpdate],
-						[generalledgerbudget].[isDelete],
-						[generalledgerbudget].[isActive],
-						[generalledgerbudget].[isApproved],
-						[generalledgerbudget].[isReview],
-						[generalledgerbudget].[isPost],
-						[generalledgerbudget].[executeBy],
-						[generalledgerbudget].[executeTime],
+			SELECT	[generalLedgerBudget].[generalLedgerBudgetId],
+						[generalLedgerBudget].[documentNo],
+						[generalLedgerBudget].[generalLedgerChartOfAccountId],
+						[generalLedgerBudget].[generalLedgerBudgetMonth],
+						[generalLedgerBudget].[generalLedgerBudgetYear],
+						[generalLedgerBudget].[generalLedgerBudgetAmount],
+						[generalLedgerBudget].[isDefault],
+						[generalLedgerBudget].[isNew],
+						[generalLedgerBudget].[isDraft],
+						[generalLedgerBudget].[isUpdate],
+						[generalLedgerBudget].[isDelete],
+						[generalLedgerBudget].[isActive],
+						[generalLedgerBudget].[isApproved],
+						[generalLedgerBudget].[isReview],
+						[generalLedgerBudget].[isPost],
+						[generalLedgerBudget].[executeBy],
+						[generalLedgerBudget].[executeTime],
 						[staff].[staffName]
-			FROM 	[generalledgerbudget]
+			FROM 	[generalLedgerBudget]
 			JOIN		[staff]
-			ON		[generalledgerbudget].[executeBy] = [staff].[staffId]
+			ON		[generalLedgerBudget].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerBudgetId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
@@ -409,7 +456,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			$sql = "
 			SELECT		GENERALLEDGERBUDGET.GENERALLEDGERBUDGETID   		 	AS 	\"generalLedgerBudgetId\",
 						GENERALLEDGERBUDGET.DOCUMENTNO 							AS 	\"documentNo\",
-						GENERALLEDGERBUDGET.GENERALLEDGERCHARTOFACCOUNTNO 		AS 	\"generalLedgerChartOfAccountNo\",
+						GENERALLEDGERBUDGET.GENERALLEDGERCHARTOFACCOUNTNO 		AS 	\"generalLedgerChartOfAccountId\",
 						GENERALLEDGERBUDGET.GENERALLEDGERBUDGETMONTH 			AS 	\"generalLedgerBudgetMonth\",
 						GENERALLEDGERBUDGET.GENERALLEDGERBUDGETYEAR 			AS 	\"generalLedgerBudgetYear\",
 						GENERALLEDGERBUDGET.GENERALLEDGERBUDGETAMOUNT 			AS 	\"generalLedgerBudgetAmount\",
@@ -437,7 +484,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		} else if ($this->q->vendor == self::POSTGRESS) {
 
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -452,7 +499,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('generalledgerbudget');
+		$tableArray = array('generalLedgerBudget');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -467,7 +514,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -488,7 +535,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->searching();
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -519,7 +566,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -543,33 +590,33 @@ class GeneralledgerbudgetClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [generalledgerbudgetDerived] AS
+							WITH [generalLedgerBudgetDerived] AS
 							(
-								SELECT 		[generalledgerbudget].[generalLedgerBudgetId],
-											[generalledgerbudget].[documentNo],
-											[generalledgerbudget].[generalLedgerChartOfAccountNo],
-											[generalledgerbudget].[generalLedgerBudgetMonth],
-											[generalledgerbudget].[generalLedgerBudgetYear],
-											[generalledgerbudget].[generalLedgerBudgetAmount],
-											[generalledgerbudget].[isDefault],
-											[generalledgerbudget].[isNew],
-											[generalledgerbudget].[isDraft],
-											[generalledgerbudget].[isUpdate],
-											[generalledgerbudget].[isDelete],
-											[generalledgerbudget].[isApproved],
-											[generalledgerbudget].[isReview],
-											[generalledgerbudget].[isPost],
-											[generalledgerbudget].[executeBy],
-											[generalledgerbudget].[executeTime],
+								SELECT 		[generalLedgerBudget].[generalLedgerBudgetId],
+											[generalLedgerBudget].[documentNo],
+											[generalLedgerBudget].[generalLedgerChartOfAccountId],
+											[generalLedgerBudget].[generalLedgerBudgetMonth],
+											[generalLedgerBudget].[generalLedgerBudgetYear],
+											[generalLedgerBudget].[generalLedgerBudgetAmount],
+											[generalLedgerBudget].[isDefault],
+											[generalLedgerBudget].[isNew],
+											[generalLedgerBudget].[isDraft],
+											[generalLedgerBudget].[isUpdate],
+											[generalLedgerBudget].[isDelete],
+											[generalLedgerBudget].[isApproved],
+											[generalLedgerBudget].[isReview],
+											[generalLedgerBudget].[isPost],
+											[generalLedgerBudget].[executeBy],
+											[generalLedgerBudget].[executeTime],
 											[staff].[staffName],
 								ROW_NUMBER() OVER (ORDER BY [generalLedgerBudgetId]) AS 'RowNumber'
-								FROM 	[generalledgerbudget]
+								FROM 	[generalLedgerBudget]
 								JOIN		[staff]
-								ON		[generalledgerbudget].[executeBy] = [staff].[staffId]
+								ON		[generalLedgerBudget].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[generalledgerbudgetDerived]
+							FROM 		[generalLedgerBudgetDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -584,7 +631,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 						FROM (
 								SELECT	GENERALLEDGERBUDGET.GENERALLEDGERBUDGETID   		AS 	\"generalLedgerBudgetId\",
 										GENERALLEDGERBUDGET.DOCUMENTNO 						AS 	\"documentNo\",
-										GENERALLEDGERBUDGET.GENERALLEDGERCHARTOFACCOUNTNO 	AS 	\"generalLedgerChartOfAccountNo\",
+										GENERALLEDGERBUDGET.GENERALLEDGERCHARTOFACCOUNTNO 	AS 	\"generalLedgerChartOfAccountId\",
 										GENERALLEDGERBUDGET.GENERALLEDGERBUDGETMONTH 		AS 	\"generalLedgerBudgetMonth\",
 										GENERALLEDGERBUDGET.GENERALLEDGERBUDGETYEAR 		AS 	\"generalLedgerBudgetYear\",
 										GENERALLEDGERBUDGET.GENERALLEDGERBUDGETAMOUNT 		AS 	\"generalLedgerBudgetAmount\",
@@ -623,7 +670,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -643,7 +690,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getGeneralLedgerBudgetId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerBudgetId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerBudgetId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerBudgetId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerBudgetId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -651,7 +698,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
+			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
 			exit();
 		}
 	}
@@ -700,7 +747,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -711,33 +758,30 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalledgerbudget`
-				SET 		`documentNo`		=	'" . $this->model->getDocumentNo() . "',
-							`generalLedgerChartOfAccountNo`		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							`generalLedgerBudgetMonth`		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-							`generalLedgerBudgetYear`		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
-							`generalLedgerBudgetAmount`		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',				
-							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`generalLedgerBudgetId`		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				UPDATE		`iFinancial`.`generalLedgerBudget`
+				SET 		`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetMonth`		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
+							`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetYear`		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
+							`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetAmount`		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',				
+							`iFinancial`.`generalLedgerBudget`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`iFinancial`.`generalLedgerBudget`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`iFinancial`.`generalLedgerBudget`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`iFinancial`.`generalLedgerBudget`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`iFinancial`.`generalLedgerBudget`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`iFinancial`.`generalLedgerBudget`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`iFinancial`.`generalLedgerBudget`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`iFinancial`.`generalLedgerBudget`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`iFinancial`.`generalLedgerBudget`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`iFinancial`.`generalLedgerBudget`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`iFinancial`.`generalLedgerBudget`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetId`		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalledgerbudget]
-				SET 		[documentNo]		=	'" . $this->model->getDocumentNo() . "',
-							[generalLedgerChartOfAccountNo]		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							[generalLedgerBudgetMonth]		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-							[generalLedgerBudgetYear]		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
-							[generalLedgerBudgetAmount]		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',	
-							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+				UPDATE 		[generalLedgerBudget]
+				SET 		[generalLedgerChartOfAccountId]		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
+							[generalLedgerBudgetMonth]			=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
+							[generalLedgerBudgetYear]			=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
+							[generalLedgerBudgetAmount]			=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',	
+							[isDefault]						=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
 							[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
@@ -748,12 +792,12 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[generalLedgerBudgetId]			=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+			WHERE 			[generalLedgerBudgetId]			=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERBUDGET
 				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 							GENERALLEDGERBUDGETMONTH		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
 							GENERALLEDGERBUDGETYEAR		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
 							GENERALLEDGERBUDGETAMOUNT		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',									
@@ -773,7 +817,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 				$sql = "
 			UPDATE	GENERALLEDGERBUDGET
 			SET 			DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 							GENERALLEDGERBUDGETMONTH		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
 							GENERALLEDGERBUDGETYEAR		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
 							GENERALLEDGERBUDGETAMOUNT		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',
@@ -793,7 +837,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 				$sql = "
 				UPDATE		GENERALLEDGERBUDGET
 				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+							GENERALLEDGERCHARTOFACCOUNTNO		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 							GENERALLEDGERBUDGETMONTH		=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
 							GENERALLEDGERBUDGETYEAR		=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
 							GENERALLEDGERBUDGETAMOUNT		=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',
@@ -810,16 +854,10 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 				WHERE 		GENERALLEDGERBUDGETID			=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerBudgetId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -827,7 +865,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Updated"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
 	}
 
@@ -871,7 +909,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -882,7 +920,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalledgerbudget`
+				UPDATE 	`generalLedgerBudget`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -897,7 +935,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 				WHERE 	`generalLedgerBudgetId`		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalledgerbudget]
+				UPDATE 	[generalLedgerBudget]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -956,14 +994,10 @@ class GeneralledgerbudgetClass extends ConfigClass {
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
 				WHERE 	GENERALLEDGERBUDGETID		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			// advance logging future
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerBudgetId(0, 'single');
-			$this->q->audit = $this->audit;
+			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -971,7 +1005,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
 		exit();
 	}
 
@@ -1007,7 +1041,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		
@@ -1034,7 +1068,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1058,7 +1092,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1082,7 +1116,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1106,7 +1140,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1130,7 +1164,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1154,7 +1188,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1178,7 +1212,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1202,7 +1236,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1226,7 +1260,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1255,7 +1289,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1265,9 +1299,9 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->systemString->getDeleteMessage();
 		}
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
@@ -1281,6 +1315,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
+		/*
 		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1289,13 +1324,13 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`documentNo`
-			FROM 	`generalledgerbudget`
+			FROM 	`generalLedgerBudget`
 			WHERE 	`documentNo` 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[documentNo]
-			FROM 	[generalledgerbudget]
+			FROM 	[generalLedgerBudget]
 			WHERE 	[documentNo] 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
@@ -1317,7 +1352,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		ISACTIVE		=	1";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->read($sql);
@@ -1329,12 +1364,13 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "generalledgerbudgetDesc" => $row ['generalledgerbudgetDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "generalLedgerBudgetDesc" => $row ['generalLedgerBudgetDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
 			exit();
 		}
+		*/
 	}
 
 	function firstRecord($value) {
@@ -1396,7 +1432,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalledgerbudgetDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerBudgetDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1405,7 +1441,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "generalledgerbudget" . rand(0, 10000000) . ".xlsx";
+		$filename = "generalLedgerBudget" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1421,7 +1457,7 @@ class GeneralledgerbudgetClass extends ConfigClass {
 
 }
 
-$generalledgerbudgetObject = new GeneralledgerbudgetClass ();
+$generalLedgerBudgetObject = new GeneralLedgerBudgetClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1431,59 +1467,59 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$generalledgerbudgetObject->setLeafId($_POST ['leafId']);
+		$generalLedgerBudgetObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$generalledgerbudgetObject->setIsAdmin($_POST ['isAdmin']);
+		$generalLedgerBudgetObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$generalledgerbudgetObject->setStart($_POST ['start']);
+		$generalLedgerBudgetObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$generalledgerbudgetObject->setLimit($_POST ['perPage']);
+		$generalLedgerBudgetObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$generalledgerbudgetObject->setFieldQuery($_POST ['query']);
+		$generalLedgerBudgetObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$generalledgerbudgetObject->setGridQuery($_POST ['filter']);
+		$generalLedgerBudgetObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$generalledgerbudgetObject->setOrder($_POST ['order']);
+		$generalLedgerBudgetObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$generalledgerbudgetObject->setSortField($_POST ['sortField']);
+		$generalLedgerBudgetObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerbudgetObject->execute();
+	$generalLedgerBudgetObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$generalledgerbudgetObject->create();
+		$generalLedgerBudgetObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$generalledgerbudgetObject->update();
+		$generalLedgerBudgetObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$generalledgerbudgetObject->read();
+		$generalLedgerBudgetObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$generalledgerbudgetObject->delete();
+		$generalLedgerBudgetObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1491,35 +1527,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$generalledgerbudgetObject->setLeafId($_GET ['leafId']);
+		$generalLedgerBudgetObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$generalledgerbudgetObject->setIsAdmin($_GET ['isAdmin']);
+		$generalLedgerBudgetObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalledgerbudgetObject->execute();
+	$generalLedgerBudgetObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$generalledgerbudgetObject->staff();
+			$generalLedgerBudgetObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$generalledgerbudgetObject->updateStatus();
+		$generalLedgerBudgetObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['generalledgerbudgetDesc'])) {
-		if (strlen($_GET ['generalledgerbudgetDesc']) > 0) {
-			$generalledgerbudgetObject->duplicate();
+	if (isset($_GET ['generalLedgerBudgetDesc'])) {
+		if (strlen($_GET ['generalLedgerBudgetDesc']) > 0) {
+			$generalLedgerBudgetObject->duplicate();
 		}
 	}
 	/**
@@ -1527,16 +1563,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$generalledgerbudgetObject->firstRecord('json');
+			$generalLedgerBudgetObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$generalledgerbudgetObject->previousRecord('json', 0);
+			$generalLedgerBudgetObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$generalledgerbudgetObject->nextRecord('json', 0);
+			$generalLedgerBudgetObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$generalledgerbudgetObject->lastRecord('json');
+			$generalLedgerBudgetObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1544,7 +1580,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$generalledgerbudgetObject->excel();
+			$generalLedgerBudgetObject->excel();
 		}
 	}
 }

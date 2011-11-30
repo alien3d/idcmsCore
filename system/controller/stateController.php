@@ -598,7 +598,7 @@ class StateClass extends ConfigClass {
 			$this->q->commit();
 			$end = microtime(true);
 			$time = $end - $start;
-			$json_encode = json_encode(array('success' =>true, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getStateId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getStateId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+			$json_encode = json_encode(array('success' =>true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getStateId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getStateId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -609,7 +609,7 @@ class StateClass extends ConfigClass {
 			$this->q->commit();
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
+			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
 			exit();
 		}
 	}
