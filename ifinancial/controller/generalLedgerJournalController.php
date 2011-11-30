@@ -131,7 +131,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 
 	public function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -141,19 +141,24 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `generalLedgerJournal`
+			INSERT INTO `iFinancial`.`generalLedgerJournal`
 					(
-						`documentNo`,												
-						`generalLedgerJournalTitle`,
-						`generalLedgerJournalDesc`,
-						`generalLedgerJournalDate`,
-						`generalLedgerJournalAmount`,
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`iFinancial`.`generalLedgerJournal`.`documentNo`,												
+						`iFinancial`.`generalLedgerJournal`.`generalLedgerJournalTitle`,
+						`iFinancial`.`generalLedgerJournal`.`generalLedgerJournalDesc`,
+						`iFinancial`.`generalLedgerJournal`.`generalLedgerJournalDate`,
+						`iFinancial`.`generalLedgerJournal`.`generalLedgerJournalAmount`,
+						`iFinancial`.`generalLedgerJournal`.`isDefault`,
+						`iFinancial`.`generalLedgerJournal`.`isNew`,													
+						`iFinancial`.`generalLedgerJournal`.`isDraft`,
+						`iFinancial`.`generalLedgerJournal`.`isUpdate`,													
+						`iFinancial`.`generalLedgerJournal`.`isDelete`,
+						`iFinancial`.`generalLedgerJournal`.`isActive`,													
+						`iFinancial`.`generalLedgerJournal`.`isApproved`,
+						`iFinancial`.`generalLedgerJournal`.`isReview`,                      		  	 				
+						`iFinancial`.`generalLedgerJournal`.`isPost`,
+						`iFinancial`.`generalLedgerJournal`.`executeBy`,												
+						`iFinancial`.`generalLedgerJournal`.`executeTime`
 					)
 			VALUES
 					(
@@ -171,19 +176,24 @@ class GeneralLedgerJournalClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [generalLedgerJournal]
+			INSERT INTO [iFinancial].[generalLedgerJournal]
 					(
-						[documentNo],												
-						[generalLedgerJournalTitle],
-						[generalLedgerJournalDesc],
-						[generalLedgerJournalDate],
-						[generalLedgerJournalAmount],													
-						[isDefault],
-						[isNew],														[isDraft],
-						[isUpdate],														[isDelete],
-						[isActive],														[isApproved],
-						[isReview],														[isPost],
-						[executeBy],													[executeTime]
+						[iFinancial].[generalLedgerJournal].[documentNo],												
+						[iFinancial].[generalLedgerJournal].[generalLedgerJournalTitle],
+						[iFinancial].[generalLedgerJournal].[generalLedgerJournalDesc],
+						[iFinancial].[generalLedgerJournal].[generalLedgerJournalDate],
+						[iFinancial].[generalLedgerJournal].[generalLedgerJournalAmount],													
+						[iFinancial].[generalLedgerJournal].[isDefault],
+						[iFinancial].[generalLedgerJournal].[isNew],														
+						[iFinancial].[generalLedgerJournal].[isDraft],
+						[iFinancial].[generalLedgerJournal].[isUpdate],														
+						[iFinancial].[generalLedgerJournal].[isDelete],
+						[iFinancial].[generalLedgerJournal].[isActive],														
+						[iFinancial].[generalLedgerJournal].[isApproved],
+						[iFinancial].[generalLedgerJournal].[isReview],														
+						[iFinancial].[generalLedgerJournal].[isPost],
+						[iFinancial].[generalLedgerJournal].[executeBy],													
+						[iFinancial].[generalLedgerJournal].[executeTime]
 					)
 			VALUES
 					(
@@ -193,11 +203,16 @@ class GeneralLedgerJournalClass extends ConfigClass {
 						'" . $this->model->getGeneralLedgerJournalDate() . "',
 						'" . $this->model->getGeneralLedgerJournalAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',				
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',			
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',			
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',			
+						'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',						
+						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::ORACLE) {
 
@@ -294,11 +309,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		//advance logging future
-		$this->q->tableName = $this->model->getTableName();
-		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-
-		$this->q->audit = $this->audit;
+		
 		$this->q->create($sql);
 		$generalLedgerJournalId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -306,6 +317,8 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerJournalId" => $generalLedgerJournalId));
 		exit();
 	}

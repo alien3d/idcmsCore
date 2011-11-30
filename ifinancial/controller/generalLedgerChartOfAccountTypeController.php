@@ -131,7 +131,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 
 	public function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -141,17 +141,22 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "
-			INSERT INTO `generalLedgerChartOfAccountType`
+			INSERT INTO `iFinancial`.`generalLedgerChartOfAccountType`
 					(
-						`generalLedgerChartOfAccountTypeSequence`,												
-						`generalLedgerChartOfAccountTypeCode`,
-						`generalLedgerChartOfAccountTypeDesc`,
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`iFinancial`.`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeSequence`,												
+						`iFinancial`.`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeCode`,
+						`iFinancial`.`generalLedgerChartOfAccountType`.`generalLedgerChartOfAccountTypeDesc`,
+						`iFinancial`.`generalLedgerChartOfAccountType`.`isDefault`,
+						`iFinancial`.`generalLedgerChartOfAccountType`.`isNew`,													
+						`iFinancial`.`generalLedgerChartOfAccountType`.`isDraft`,
+						`iFinancial`.`generalLedgerChartOfAccountType`.`isUpdate`,													
+						`iFinancial`.`generalLedgerChartOfAccountType`.`isDelete`,
+						`iFinancial`.`generalLedgerChartOfAccountType`.`isActive`,													
+						`iFinancial`.`generalLedgerChartOfAccountType`.`isApproved`,
+						`iFinancial`.`generalLedgerChartOfAccountType`.`isReview`,                      		  	 				
+						`iFinancial`.`generalLedgerChartOfAccountType`.`isPost`,
+						`iFinancial`.`generalLedgerChartOfAccountType`.`executeBy`,												
+						`iFinancial`.`generalLedgerChartOfAccountType`.`executeTime`
 					)
 			VALUES
 					(
@@ -159,25 +164,34 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeCode() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-             			'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',			
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		
+						'" . $this->model->getIsApproved(0, 'single') . "',
+             			'" . $this->model->getIsReview(0, 'single') . "',		
+             			'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',					
+						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [generalLedgerChartOfAccountType]
+			INSERT INTO [iFinancial].[generalLedgerChartOfAccountType]
 					(
-						[generalLedgerChartOfAccountTypeSequence],												
-						[generalLedgerChartOfAccountTypeCode],
-						[generalLedgerChartOfAccountTypeDesc],
-						[isDefault],
-						[isNew],														[isDraft],
-						[isUpdate],														[isDelete],
-						[isActive],														[isApproved],
-						[isReview],														[isPost],
-						[executeBy],													[executeTime]
+						[iFinancial].[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeSequence],												
+						[iFinancial].[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeCode],
+						[iFinancial].[generalLedgerChartOfAccountType].[generalLedgerChartOfAccountTypeDesc],
+						[iFinancial].[generalLedgerChartOfAccountType].[isDefault],
+						[iFinancial].[generalLedgerChartOfAccountType].[isNew],														
+						[iFinancial].[generalLedgerChartOfAccountType].[isDraft],
+						[iFinancial].[generalLedgerChartOfAccountType].[isUpdate],														
+						[iFinancial].[generalLedgerChartOfAccountType].[isDelete],
+						[iFinancial].[generalLedgerChartOfAccountType].[isActive],														
+						[iFinancial].[generalLedgerChartOfAccountType].[isApproved],
+						[iFinancial].[generalLedgerChartOfAccountType].[isReview],														
+						[iFinancial].[generalLedgerChartOfAccountType].[isPost],
+						[iFinancial].[generalLedgerChartOfAccountType].[executeBy],													[executeTime]
 					)
 			VALUES
 					(
@@ -282,6 +296,8 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerChartOfAccountTypeId" => $generalLedgerChartOfAccountTypeId));
 		exit();
 	}

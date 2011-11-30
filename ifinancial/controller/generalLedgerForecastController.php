@@ -131,7 +131,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 
 	public function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -141,18 +141,23 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `generalLedgerForecast`
+			INSERT INTO `iFinancial`.`generalLedgerForecast`
 					(
 						
-						`generalLedgerForecastMonth`,
-						`generalLedgerForecastYear`,
-						`generalLedgerForecastAmount`,
-						`isDefault`,
-						`isNew`,													`isDraft`,
-						`isUpdate`,													`isDelete`,
-						`isActive`,													`isApproved`,
-						`isReview`,                      		  	 				`isPost`,
-						`executeBy`,												`executeTime`
+						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastMonth`,
+						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastYear`,
+						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastAmount`,
+						`iFinancial`.`generalLedgerForecast`.`isDefault`,
+						`iFinancial`.`generalLedgerForecast`.`isNew`,													
+						`iFinancial`.`generalLedgerForecast`.`isDraft`,
+						`iFinancial`.`generalLedgerForecast`.`isUpdate`,													
+						`iFinancial`.`generalLedgerForecast`.`isDelete`,
+						`iFinancial`.`generalLedgerForecast`.`isActive`,													
+						`iFinancial`.`generalLedgerForecast`.`isApproved`,
+						`iFinancial`.`generalLedgerForecast`.`isReview`,                      		  	 				
+						`iFinancial`.`generalLedgerForecast`.`isPost`,
+						`iFinancial`.`generalLedgerForecast`.`executeBy`,												
+						`iFinancial`.`generalLedgerForecast`.`executeTime`
 					)
 			VALUES
 					(
@@ -170,18 +175,23 @@ class GeneralLedgerForecastClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [generalLedgerForecast]
+			INSERT INTO [iFinancial].[generalLedgerForecast]
 					(
 						
-						[generalLedgerForecastMonth],
-						[generalLedgerForecastYear],
-						[generalLedgerForecastAmount],													
-						[isDefault],
-						[isNew],														[isDraft],
-						[isUpdate],														[isDelete],
-						[isActive],														[isApproved],
-						[isReview],														[isPost],
-						[executeBy],													[executeTime]
+						[iFinancial].[generalLedgerForecast].[generalLedgerForecastMonth],
+						[iFinancial].[generalLedgerForecast].[generalLedgerForecastYear],
+						[iFinancial].[generalLedgerForecast].[generalLedgerForecastAmount],													
+						[iFinancial].[generalLedgerForecast].[isDefault],
+						[iFinancial].[generalLedgerForecast].[isNew],														
+						[iFinancial].[generalLedgerForecast].[isDraft],
+						[iFinancial].[generalLedgerForecast].[isUpdate],														
+						[iFinancial].[generalLedgerForecast].[isDelete],
+						[iFinancial].[generalLedgerForecast].[isActive],														
+						[iFinancial].[generalLedgerForecast].[isApproved],
+						[iFinancial].[generalLedgerForecast].[isReview],														
+						[iFinancial].[generalLedgerForecast].[isPost],
+						[iFinancial].[generalLedgerForecast].[executeBy],													
+						[iFinancial].[generalLedgerForecast].[executeTime]
 					)
 			VALUES
 					(
@@ -191,11 +201,16 @@ class GeneralLedgerForecastClass extends ConfigClass {
 						'" . $this->model->getGeneralLedgerForecastYear() . "',
 						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',				
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',			
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',			
+						'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',			
+						'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',						
+						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::ORACLE) {
 
@@ -301,6 +316,8 @@ class GeneralLedgerForecastClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerForecastId" => $generalLedgerForecastId));
 		exit();
 	}

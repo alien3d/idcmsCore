@@ -131,7 +131,7 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 
 	public function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -351,6 +351,8 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
 		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerBudgetId" => $generalLedgerBudgetId));
 		exit();
 	}
