@@ -76,7 +76,7 @@ Ext.onReady(function () {
 	var logStore = new Ext.data.JsonStore({
 			proxy : logProxy,
 			reader : logReader,
-			autoLoad : true,
+			autoLoad : false,
 			autoDestroy : true,
 			pruneModifiedRecords : true,
 			baseParams : {
@@ -269,7 +269,7 @@ Ext.onReady(function () {
 	var logAdvanceStore = new Ext.data.JsonStore({
 			proxy : logAdvanceProxy,
 			reader : logAdvanceReader,
-			autoLoad : true,
+			autoLoad : false,
 			autoDestroy : true,
 			pruneModifiedRecords : true,
 			method : 'POST',
@@ -446,9 +446,144 @@ Ext.onReady(function () {
 		}); // end popup window for normal log and advance log
 	// end common Proxy ,Reader,Store,Filter,Grid
 	// start additional Proxy ,Reader,Store,Filter,Grid
+	// start chart of account request
+	var generalLedgerChartOfAccountProxy = new Ext.data.HttpProxy({
+			url : '../controller/generalLedgerChartOfAccountController.php',
+			method : 'POST',
+			success : function (response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+				}
+			},
+			failure : function (response, options) {
+				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+			}
+		});
+	var generalLedgerChartOfAccountReader = new Ext.data.JsonReader({
+			totalProperty : 'total',
+			successProperty : 'success',
+			messageProperty : 'message',
+			idProperty : 'generalLedgerChartOfAccountId'
+		});
+	var generalLedgerChartOfAccountStore = new Ext.data.JsonStore({
+			proxy : generalLedgerChartOfAccountProxy,
+			reader : generalLedgerChartOfAccountReader,
+			autoLoad : true,
+			autoDestroy : true,
+			pruneModifiedRecords : true,
+			baseParams : {
+				method : 'read',
+				leafId : leafId,
+				isAdmin : isAdmin,
+				start : 0,
+				perPage : perPage
+			},
+			root : 'data',
+			fields : [{
+					key : 'PRI',
+					foreignKey : 'no',
+					name : 'generalLedgerChartOfAccountId',
+					type : 'int'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'generalLedgerChartOfAccountTitle',
+					type : 'string'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'generalLedgerChartOfAccountDesc',
+					type : 'string'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'generalLedgerChartOfAccountNo',
+					type : 'string'
+				}, {
+					key : 'MUL',
+					foreignKey : 'yes',
+					name : 'generalLedgerChartOfAccountTypeId',
+					type : 'int'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'generalLedgerChartOfAccountReportType',
+					type : 'string'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isDefault',
+					type : 'boolean'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isNew',
+					type : 'boolean'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isDraft',
+					type : 'boolean'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isUpdate',
+					type : 'boolean'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isDelete',
+					type : 'boolean'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isActive',
+					type : 'boolean'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isApproved',
+					type : 'boolean'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isReview',
+					type : 'boolean'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isPost',
+					type : 'boolean'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isConsolidation',
+					type : 'int'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'isSeperated',
+					type : 'int'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'executeBy',
+					type : 'int'
+				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'executeTime',
+					type : 'date',
+					dateFormat : 'Y-m-d H:i:s'
+				}
+			]
+		});
+	// end General Ledger Chart of account request
 	// start currency code request
 	var countryProxy = new Ext.data.HttpProxy({
-			url : '../../system/controller/generalLedgerChartAccountController.php',
+			url : '../../system/controller/countryController.php',
 			method : 'POST',
 			success : function (response, options) {
 				jsonResponse = Ext.decode(response.responseText);
@@ -465,7 +600,7 @@ Ext.onReady(function () {
 			totalProperty : 'total',
 			successProperty : 'success',
 			messageProperty : 'message',
-			idProperty : 'countryCurrencyCode'
+			idProperty : 'countryId'
 		});
 	var countryStore = new Ext.data.JsonStore({
 			proxy : countryProxy,
@@ -483,16 +618,136 @@ Ext.onReady(function () {
 			root : 'data',
 			id : 'countryCurrencyCode',
 			fields : [{
+					name : 'countryId',
+					type : 'string'
+				}, {
 					name : 'countryCurrencyCode',
 					type : 'string'
 				}, {
-					name : 'countryDesc',
+					name : 'countryCurrencyCodeDesc',
 					type : 'string'
 				}
 			]
 		});
 	
 	// end currency code request
+	// start generalLedgerJournalType request
+var generalLedgerJournalTypeProxy = new Ext.data.HttpProxy({
+		url : '../../iFinancial/controller/generalLedgerJournalTypeController.php',
+		method : 'POST',
+		success : function (response, options) {
+			jsonResponse = Ext.decode(response.responseText);
+			if (jsonResponse.success == true) {
+				// Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+			} else {
+				Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+			}
+		},
+		failure : function (response, options) {
+			Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+		}
+	});
+var generalLedgerJournalTypeReader = new Ext.data.JsonReader({
+		totalProperty : 'total',
+		successProperty : 'success',
+		messageProperty : 'message',
+		idProperty : 'generalLedgerJournalTypeId'
+	});
+var generalLedgerJournalTypeStore = new Ext.data.JsonStore({
+		proxy : generalLedgerJournalTypeProxy,
+		reader : generalLedgerJournalTypeReader,
+		autoLoad : true,
+		autoDestroy : true,
+		pruneModifiedRecords : true,
+		baseParams : {
+			method : 'read',
+			leafId : leafId,
+			isAdmin : isAdmin,
+			start : 0,
+			perPage : perPage
+		},
+		root : 'data',
+		id : 'generalLedgerJournalTypeId',
+		fields : [{
+				key : 'PRI',
+				foreignKey : 'no',
+				name : 'generalLedgerJournalTypeId',
+				type : 'int'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'generalLedgerJournalTypeSequence',
+				type : 'int'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'generalLedgerJournalCode',
+				type : 'string'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'generalLedgerJournalTypeDesc',
+				type : 'string'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'isDefault',
+				type : 'boolean'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'isNew',
+				type : 'boolean'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'isDraft',
+				type : 'boolean'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'isUpdate',
+				type : 'boolean'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'isDelete',
+				type : 'boolean'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'isActive',
+				type : 'boolean'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'isApproved',
+				type : 'boolean'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'isReview',
+				type : 'boolean'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'isPost',
+				type : 'boolean'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'executeBy',
+				type : 'int'
+			}, {
+				key : '',
+				foreignKey : 'no',
+				name : 'executeTime',
+				type : 'date',
+				dateFormat : 'Y-m-d H:i:s'
+			}
+		]
+	});
+	// end of  general ledger journal type
 	// end additional Proxy ,Reader,Store,Filter,Grid
 	// start application Proxy ,Reader,Store,Filter,Grid
 	var generalLedgerJournalProxy = new Ext.data.HttpProxy({
@@ -531,117 +786,231 @@ Ext.onReady(function () {
 			},
 			root : 'data',
 			fields : [{
+					key : 'PRI',
+					foreignKey : 'no',
 					name : 'generalLedgerJournalId',
 					type : 'int'
 				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'generalLedgerJournalTypeId',
+					type : 'int'
+				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'documentNo',
 					type : 'string'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'generalLedgerJournalTitle',
-					type : 'int'
+					type : 'string'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'generalLedgerJournalDesc',
 					type : 'string'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'generalLedgerJournalDate',
-					type : 'string'
+					type : 'date',
+					dateFormat : 'Y-m-d'
 				}, {
-					name : 'countryCurrencyCode',
-					type : 'string'
+					key : '',
+					foreignKey : 'no',
+					name : 'generalLedgerJournalStartDate',
+					type : 'date',
+					dateFormat : 'Y-m-d'
 				}, {
+					key : '',
+					foreignKey : 'no',
+					name : 'generalLedgerJournalEndDate',
+					type : 'date',
+					dateFormat : 'Y-m-d'
+				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'generalLedgerJournalAmount',
-					type : 'string'
+					type : 'date',
+					dateFormat : 'Y-m-d'
 				}, {
-					name : 'executeBy',
-					type : 'int'
-				}, {
-					name : 'staffName',
-					type : 'string'
-				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'isDefault',
 					type : 'boolean'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'isNew',
 					type : 'boolean'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'isDraft',
 					type : 'boolean'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'isUpdate',
 					type : 'boolean'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'isDelete',
 					type : 'boolean'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'isActive',
 					type : 'boolean'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'isApproved',
 					type : 'boolean'
 				}, {
-					name : 'isActive',
-					type : 'boolean'
-				}, {
-					name : 'isApproved',
-					type : 'boolean'
-				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'isReview',
 					type : 'boolean'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'isPost',
 					type : 'boolean'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'executeBy',
 					type : 'int'
 				}, {
+					key : '',
+					foreignKey : 'no',
 					name : 'executeTime',
 					type : 'date',
 					dateFormat : 'Y-m-d H:i:s'
 				}
-			]
-		});
+				
+				]
+	});
 	var generalLedgerJournalFilters = new Ext.ux.grid.GridFilters({
 			encode : encode,
 			local : local,
 			filters : [{
+					type : 'int',
+					dataIndex : 'generalLedgerJournalId',
+					column : 'generalLedgerJournalId',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'int',
+					dataIndex : 'generalLedgerJournalTypeId',
+					column : 'generalLedgerJournalTypeId',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'string',
+					dataIndex : 'documentNo',
+					column : 'documentNo',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
 					type : 'string',
 					dataIndex : 'generalLedgerJournalTitle',
 					column : 'generalLedgerJournalTitle',
 					table : 'generalLedgerJournal',
-					database : 'iFinancial'
+					database : 'ifinancial'
 				}, {
 					type : 'string',
 					dataIndex : 'generalLedgerJournalDesc',
 					column : 'generalLedgerJournalDesc',
 					table : 'generalLedgerJournal',
-					database : 'iFinancial'
+					database : 'ifinancial'
 				}, {
 					type : 'date',
 					dataIndex : 'generalLedgerJournalDate',
 					column : 'generalLedgerJournalDate',
 					table : 'generalLedgerJournal',
-					database : 'iFinancial'
+					database : 'ifinancial'
 				}, {
-					type : 'list',
-					dataIndex : 'countryCurrencyCode',
-					column : 'countryCurrencyCode',
-					table : 'currencyDesc',
-					database : 'iFinancial',
-					labelField : 'staffName',
-					store : staffByStore,
-					phpMode : true
+					type : 'date',
+					dataIndex : 'generalLedgerJournalStartDate',
+					column : 'generalLedgerJournalStartDate',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
 				}, {
-					type : 'numeric',
+					type : 'date',
+					dataIndex : 'generalLedgerJournalEndDate',
+					column : 'generalLedgerJournalEndDate',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'date',
 					dataIndex : 'generalLedgerJournalAmount',
 					column : 'generalLedgerJournalAmount',
 					table : 'generalLedgerJournal',
-					database : 'iFinancial'
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isDefault',
+					column : 'isDefault',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isNew',
+					column : 'isNew',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isDraft',
+					column : 'isDraft',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isUpdate',
+					column : 'isUpdate',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isDelete',
+					column : 'isDelete',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isActive',
+					column : 'isActive',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isApproved',
+					column : 'isApproved',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isReview',
+					column : 'isReview',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
+				}, {
+					type : 'boolean',
+					dataIndex : 'isPost',
+					column : 'isPost',
+					table : 'generalLedgerJournal',
+					database : 'ifinancial'
 				}, {
 					type : 'list',
 					dataIndex : 'executeBy',
 					column : 'executeBy',
 					table : 'generalLedgerJournal',
-					database : 'iFinancial',
+					database : 'ifinancial',
 					labelField : 'staffName',
 					store : staffByStore,
 					phpMode : true
@@ -650,7 +1019,7 @@ Ext.onReady(function () {
 					dataIndex : 'executeTime',
 					column : 'executeTime',
 					table : 'generalLedgerJournal',
-					database : 'iFinancial'
+					database : 'ifinancial'
 				}
 			]
 		});
@@ -1384,28 +1753,144 @@ Ext.onReady(function () {
 			items : [generalLedgerJournalGrid]
 		}); // viewport just save information,items will do separate
 	// start form entry
-	var generalLedgerJournalDescTemp = new Ext.form.Hidden({
-			name : 'generalLedgerJournalDescTemp',
-			id : 'generalLedgerJournalDescTemp'
-		});
-	var generalLedgerJournalDesc = new Ext.form.TextField({
-			labelAlign : 'left',
-			fieldLabel : generalLedgerJournalDescLabel + '<span style=\'color: red;\'>*</span>',
-			hiddenName : 'generalLedgerJournalDesc',
-			name : 'generalLedgerJournalDesc',
-			id : 'generalLedgerJournalDesc',
-			allowBlank : false,
-			blankText : blankTextLabel,
-			style : {
-				textTransform : 'uppercase'
-			},
-			anchor : '95%'
-		});
+	var documentNoTemp = new Ext.form.Hidden({
+			name : 'documentNoTemp',
+			id : 'documentNoTemp'
+	});
 	var generalLedgerJournalId = new Ext.form.Hidden({
-			name : 'generalLedgerJournalId',
-			id : 'generalLedgerJournalId',
-			value : ''
-		}); // hidden value for navigation button
+		name : 'generalLedgerJournalId',
+		id : 'generalLedgerJournalId'
+	});
+var generalLedgerJournalTypeId = new Ext.ux.form.ComboBoxMatch({
+		labelAlign : 'left',
+		fieldLabel : generalLedgerJournalTypeIdLabel,
+		name : 'stateId',
+		hiddenName : 'generalLedgerJournalTypeId',
+		valueField : 'generalLedgerJournalTypeId',
+		hiddenId : 'generalLedgerJournalTypeId_fake',
+		id : 'generalLedgerJournalTypeId',
+		displayField : 'generalLedgerJournalTypeDesc',
+		typeAhead : false,
+		triggerAction : 'all',
+		store : generalLedgerJournalTypeStore,
+		anchor : '95%',
+		selectOnFocus : true,
+		mode : 'local',
+		allowBlank : false,
+		blankText : blankTextLabel,
+		createValueMatcher : function (value) {
+			value = String(value).replace(/\s*/g, '');
+			if (Ext.isEmpty(value, false)) {
+				return new RegExp('^');
+			}
+			value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+			return new RegExp('\b(' + value + ')', 'i');
+		}
+	});
+var documentNo = new Ext.form.TextField({
+		labelAlign : 'left',
+		fieldLabel : documentNoLabel + '*',
+		hiddenName : 'documentNo',
+		name : 'documentNo',
+		id : 'documentNo',
+		allowBlank : false,
+		blankText : blankTextLabel,
+		style : {
+			textTransform : 'uppercase'
+		},
+		anchor : '40%'
+	});
+var generalLedgerJournalTitle = new Ext.form.TextField({
+		labelAlign : 'left',
+		fieldLabel : generalLedgerJournalTitleLabel + '*',
+		hiddenName : 'generalLedgerJournalTitle',
+		name : 'generalLedgerJournalTitle',
+		id : 'generalLedgerJournalTitle',
+		allowBlank : false,
+		blankText : blankTextLabel,
+		style : {
+			textTransform : 'uppercase'
+		},
+		anchor : '40%'
+	});
+var generalLedgerJournalDesc = new Ext.form.TextField({
+		labelAlign : 'left',
+		fieldLabel : generalLedgerJournalDescLabel + '*',
+		hiddenName : 'generalLedgerJournalDesc',
+		name : 'generalLedgerJournalDesc',
+		id : 'generalLedgerJournalDesc',
+		allowBlank : false,
+		blankText : blankTextLabel,
+		style : {
+			textTransform : 'uppercase'
+		},
+		anchor : '40%'
+	});
+var generalLedgerJournalDate = new Ext.form.DateField({
+		labelAlign : 'left',
+		fieldLabel : generalLedgerJournalDateLabel + '*',
+		hiddenName : 'generalLedgerJournalDate',
+		name : 'generalLedgerJournalDate',
+		id : 'generalLedgerJournalDate',
+		allowBlank : false,
+		blankText : blankTextLabel,
+		style : {
+			textTransform : 'uppercase'
+		},
+		anchor : '40%'
+	});
+var generalLedgerJournalStartDate = new Ext.form.DateField({
+		labelAlign : 'left',
+		fieldLabel : generalLedgerJournalStartDateLabel + '*',
+		hiddenName : 'generalLedgerJournalStartDate',
+		name : 'generalLedgerJournalStartDate',
+		id : 'generalLedgerJournalStartDate',
+		allowBlank : false,
+		blankText : blankTextLabel,
+		style : {
+			textTransform : 'uppercase'
+		},
+		anchor : '40%'
+	});
+var generalLedgerJournalEndDate = new Ext.form.DateField({
+		labelAlign : 'left',
+		fieldLabel : generalLedgerJournalEndDateLabel + '*',
+		hiddenName : 'generalLedgerJournalEndDate',
+		name : 'generalLedgerJournalEndDate',
+		id : 'generalLedgerJournalEndDate',
+		allowBlank : false,
+		blankText : blankTextLabel,
+		style : {
+			textTransform : 'uppercase'
+		},
+		anchor : '40%'
+	});
+var generalLedgerJournalAmount = new Ext.form.TextField({
+		labelAlign : 'left',
+		fieldLabel : generalLedgerJournalAmountLabel + '*',
+		hiddenName : 'generalLedgerJournalAmount',
+		name : 'generalLedgerJournalAmount',
+		id : 'generalLedgerJournalAmount',
+		allowBlank : false,
+		blankText : blankTextLabel,
+		style : {
+			textTransform : 'uppercase'
+		},
+		anchor : '40%',
+		decimalPrecision : 2,
+		vtype : 'dollar',
+		listeners : {
+			blur : function () {
+				var value = Ext.getCmp('generalLedgerJournalAmount').getValue();
+				value = value.replace(",", "");
+				value = value.replace(" ", "");
+				Ext.getCmp('generalLedgerJournalAmount').setValue(value);
+			}
+		}
+	});
+
+	
+	
 	var firstRecord = new Ext.form.Hidden({
 			name : 'firstRecord',
 			id : 'firstRecord',
@@ -1449,11 +1934,7 @@ Ext.onReady(function () {
 							border : true,
 							frame : true,
 							items : [
-							generalLedgerJournalId,
-							generalLedgerJournalTitle,
-							generalLedgerJournalDesc, 
-							generalLedgerJournalDate,
-							generalLedgerJournalAmount]
+								generalLedgerJournalId,generalLedgerJournalTypeId,documentNo,generalLedgerJournalTitle,generalLedgerJournalDesc,generalLedgerJournalDate,generalLedgerJournalStartDate,generalLedgerJournalEndDate,generalLedgerJournalAmount ]
 						}
 					]
 				},
@@ -2018,4 +2499,4 @@ Ext.onReady(function () {
 			},
 			items : [gridPanel, formPanel]
 		});
-});
+	});

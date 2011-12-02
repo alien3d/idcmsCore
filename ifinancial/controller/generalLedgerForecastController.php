@@ -161,8 +161,6 @@ class GeneralLedgerForecastClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
 						'" . $this->model->getGeneralLedgerForecastMonth() . "',
 						'" . $this->model->getGeneralLedgerForecastYear() . "',
 						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
@@ -195,8 +193,6 @@ class GeneralLedgerForecastClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
 						'" . $this->model->getGeneralLedgerForecastMonth() . "',
 						'" . $this->model->getGeneralLedgerForecastYear() . "',
 						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
@@ -235,8 +231,6 @@ class GeneralLedgerForecastClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
 						'" . $this->model->getGeneralLedgerForecastMonth() . "',
 						'" . $this->model->getGeneralLedgerForecastYear() . "',
 						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
@@ -274,8 +268,6 @@ class GeneralLedgerForecastClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
 						'" . $this->model->getGeneralLedgerForecastMonth() . "',
 						'" . $this->model->getGeneralLedgerForecastYear() . "',
 						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
@@ -313,8 +305,6 @@ class GeneralLedgerForecastClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getDocumentNo() . "',
-						'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
 						'" . $this->model->getGeneralLedgerForecastMonth() . "',
 						'" . $this->model->getGeneralLedgerForecastYear() . "',
 						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
@@ -358,6 +348,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
 				$this->auditFilter = "	`generalLedgerForecast`.`isActive`		=	1	";
@@ -397,63 +388,57 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalLedgerForecast`.`generalLedgerForecastId`,
-						`generalLedgerForecast`.`documentNo`,
-						`generalLedgerForecast`.`generalLedgerChartOfAccountDimensionId`,
-						`generalLedgerForecast`.`generalLedgerForecastMonth`,
-						`generalLedgerForecast`.`generalLedgerForecastYear`,
-						`generalLedgerForecast`.`generalLedgerForecastAmount`,
-						`generalLedgerForecast`.`isDefault`,
-						`generalLedgerForecast`.`isNew`,
-						`generalLedgerForecast`.`isDraft`,
-						`generalLedgerForecast`.`isUpdate`,
-						`generalLedgerForecast`.`isDelete`,
-						`generalLedgerForecast`.`isActive`,
-						`generalLedgerForecast`.`isApproved`,
-						`generalLedgerForecast`.`isReview`,
-						`generalLedgerForecast`.`isPost`,
-						`generalLedgerForecast`.`executeBy`,
-						`generalLedgerForecast`.`executeTime`,
-						`staff`.`staffName`
-			FROM 	`generalLedgerForecast`
-			JOIN	`staff`
-			ON		`generalLedgerForecast`.`executeBy` = `staff`.`staffId`
+			SELECT		`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastId`,
+						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastMonth`,
+						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastYear`,
+						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastAmount`,
+						`iFinancial`.`generalLedgerForecast`.`isDefault`,
+						`iFinancial`.`generalLedgerForecast`.`isNew`,
+						`iFinancial`.`generalLedgerForecast`.`isDraft`,
+						`iFinancial`.`generalLedgerForecast`.`isUpdate`,
+						`iFinancial`.`generalLedgerForecast`.`isDelete`,
+						`iFinancial`.`generalLedgerForecast`.`isActive`,
+						`iFinancial`.`generalLedgerForecast`.`isApproved`,
+						`iFinancial`.`generalLedgerForecast`.`isReview`,
+						`iFinancial`.`generalLedgerForecast`.`isPost`,
+						`iFinancial`.`generalLedgerForecast`.`executeBy`,
+						`iFinancial`.`generalLedgerForecast`.`executeTime`,
+						`iManagement`.`staff`.`staffName`
+			FROM 	`iFinancial`.`generalLedgerForecast`
+			JOIN	`iManagement`.`staff`
+			ON		`generalLedgerForecast`.`executeBy` =`iManagement`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[generalLedgerForecast].[generalLedgerForecastId],
-						[generalLedgerForecast].[documentNo],
-						[generalLedgerForecast].[generalLedgerChartOfAccountDimensionId],
-						[generalLedgerForecast].[generalLedgerForecastMonth],
-						[generalLedgerForecast].[generalLedgerForecastYear],
-						[generalLedgerForecast].[generalLedgerForecastAmount],
-						[generalLedgerForecast].[isDefault],
-						[generalLedgerForecast].[isNew],
-						[generalLedgerForecast].[isDraft],
-						[generalLedgerForecast].[isUpdate],
-						[generalLedgerForecast].[isDelete],
-						[generalLedgerForecast].[isActive],
-						[generalLedgerForecast].[isApproved],
-						[generalLedgerForecast].[isReview],
-						[generalLedgerForecast].[isPost],
-						[generalLedgerForecast].[executeBy],
-						[generalLedgerForecast].[executeTime],
-						[staff].[staffName]
-			FROM 	[generalLedgerForecast]
-			JOIN		[staff]
-			ON		[generalLedgerForecast].[executeBy] = [staff].[staffId]
+			SELECT		[iFinancial].[generalLedgerForecast].[generalLedgerForecastId],
+						[iFinancial].[generalLedgerForecast].[generalLedgerForecastMonth],
+						[iFinancial].[generalLedgerForecast].[generalLedgerForecastYear],
+						[iFinancial].[generalLedgerForecast].[generalLedgerForecastAmount],
+						[iFinancial].[generalLedgerForecast].[isDefault],
+						[iFinancial].[generalLedgerForecast].[isNew],
+						[iFinancial].[generalLedgerForecast].[isDraft],
+						[iFinancial].[generalLedgerForecast].[isUpdate],
+						[iFinancial].[generalLedgerForecast].[isDelete],
+						[iFinancial].[generalLedgerForecast].[isActive],
+						[iFinancial].[generalLedgerForecast].[isApproved],
+						[iFinancial].[generalLedgerForecast].[isReview],
+						[iFinancial].[generalLedgerForecast].[isPost],
+						[iFinancial].[generalLedgerForecast].[executeBy],
+						[iFinancial].[generalLedgerForecast].[executeTime],
+						[iManagement].[staff].[staffName]
+			FROM 	[iFinancial].[generalLedgerForecast]
+			JOIN	[iManagement].[staff]
+			ON		[iFinancial].[generalLedgerForecast].[executeBy] = [iManagement].[staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				$sql .= " AND [iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT		GENERALLEDGERFORECAST.GENERALLEDGERFORECASTID   		 	AS 	\"generalLedgerForecastId\",
-						GENERALLEDGERFORECAST.DOCUMENTNO 							AS 	\"documentNo\",
-						GENERALLEDGERFORECAST.GENERALLEDGERCHARTOFACCOUNTDIMENSIONID 		AS 	\"generalLedgerChartOfAccountDimensionId\",
 						GENERALLEDGERFORECAST.GENERALLEDGERFORECASTMONTH 			AS 	\"generalLedgerForecastMonth\",
 						GENERALLEDGERFORECAST.GENERALLEDGERFORECASTYEAR 			AS 	\"generalLedgerForecastYear\",
 						GENERALLEDGERFORECAST.GENERALLEDGERFORECASTAMOUNT 			AS 	\"generalLedgerForecastAmount\",
@@ -589,27 +574,25 @@ class GeneralLedgerForecastClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerForecastDerived] AS
 							(
-								SELECT 		[generalLedgerForecast].[generalLedgerForecastId],
-											[generalLedgerForecast].[documentNo],
-											[generalLedgerForecast].[generalLedgerChartOfAccountDimensionId],
-											[generalLedgerForecast].[generalLedgerForecastMonth],
-											[generalLedgerForecast].[generalLedgerForecastYear],
-											[generalLedgerForecast].[generalLedgerForecastAmount],
-											[generalLedgerForecast].[isDefault],
-											[generalLedgerForecast].[isNew],
-											[generalLedgerForecast].[isDraft],
-											[generalLedgerForecast].[isUpdate],
-											[generalLedgerForecast].[isDelete],
-											[generalLedgerForecast].[isApproved],
-											[generalLedgerForecast].[isReview],
-											[generalLedgerForecast].[isPost],
-											[generalLedgerForecast].[executeBy],
-											[generalLedgerForecast].[executeTime],
-											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [generalLedgerForecastId]) AS 'RowNumber'
-								FROM 	[generalLedgerForecast]
-								JOIN		[staff]
-								ON		[generalLedgerForecast].[executeBy] = [staff].[staffId]
+								SELECT 		[iFinancial].[generalLedgerForecast].[generalLedgerForecastId],
+											[iFinancial].[generalLedgerForecast].[generalLedgerForecastMonth],
+											[iFinancial].[generalLedgerForecast].[generalLedgerForecastYear],
+											[iFinancial].[generalLedgerForecast].[generalLedgerForecastAmount],
+											[iFinancial].[generalLedgerForecast].[isDefault],
+											[iFinancial].[generalLedgerForecast].[isNew],
+											[iFinancial].[generalLedgerForecast].[isDraft],
+											[iFinancial].[generalLedgerForecast].[isUpdate],
+											[iFinancial].[generalLedgerForecast].[isDelete],
+											[iFinancial].[generalLedgerForecast].[isApproved],
+											[iFinancial].[generalLedgerForecast].[isReview],
+											[iFinancial].[generalLedgerForecast].[isPost],
+											[iFinancial].[generalLedgerForecast].[executeBy],
+											[iFinancial].[generalLedgerForecast].[executeTime],
+											[iManagement].[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerForecast].[generalLedgerForecastId]) AS 'RowNumber'
+								FROM 	[iFinancial].[generalLedgerForecast]
+								JOIN		[iManagement].[staff]
+								ON		[iFinancial].[generalLedgerForecast].[executeBy] = [iManagement].[staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -627,8 +610,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 												rownum r
 						FROM (
 								SELECT	GENERALLEDGERFORECAST.GENERALLEDGERFORECASTID   		AS 	\"generalLedgerForecastId\",
-										GENERALLEDGERFORECAST.DOCUMENTNO 						AS 	\"documentNo\",
-										GENERALLEDGERFORECAST.GENERALLEDGERCHARTOFACCOUNTDIMENSIONID 	AS 	\"generalLedgerChartOfAccountDimensionId\",
+										GENERALLEDGERFORECAST.GENERALLEDGERFORECASTMONTH 		AS 	\"generalLedgerForecastMonth\",
 										GENERALLEDGERFORECAST.GENERALLEDGERFORECASTMONTH 		AS 	\"generalLedgerForecastMonth\",
 										GENERALLEDGERFORECAST.GENERALLEDGERFORECASTYEAR 		AS 	\"generalLedgerForecastYear\",
 										GENERALLEDGERFORECAST.GENERALLEDGERFORECASTAMOUNT 		AS 	\"generalLedgerForecastAmount\",
@@ -706,7 +688,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -720,9 +702,9 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
@@ -756,49 +738,43 @@ class GeneralLedgerForecastClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE		`generalLedgerForecast`
-				SET 		`documentNo`		=	'" . $this->model->getDocumentNo() . "',
-							`generalLedgerChartOfAccountDimensionId`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
-							`generalLedgerForecastMonth`		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
-							`generalLedgerForecastYear`		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
-							`generalLedgerForecastAmount`		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',				
-							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`generalLedgerForecastId`		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				SET 		`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastMonth`		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
+							`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastYear`		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
+							`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastAmount`		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',				
+							`iFinancial`.`generalLedgerForecast`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`iFinancial`.`generalLedgerForecast`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`iFinancial`.`generalLedgerForecast`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`iFinancial`.`generalLedgerForecast`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`iFinancial`.`generalLedgerForecast`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`iFinancial`.`generalLedgerForecast`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`iFinancial`.`generalLedgerForecast`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`iFinancial`.`generalLedgerForecast`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`iFinancial`.`generalLedgerForecast`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`iFinancial`.`generalLedgerForecast`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`iFinancial`.`generalLedgerForecast`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastId`		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[generalLedgerForecast]
-				SET 		[documentNo]		=	'" . $this->model->getDocumentNo() . "',
-							[generalLedgerChartOfAccountDimensionId]		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
-							[generalLedgerForecastMonth]		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
-							[generalLedgerForecastYear]		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
-							[generalLedgerForecastAmount]		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',	
-							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							[executeTime]		=	" . $this->model->getExecuteTime() . "
+				SET 		[iFinancial].[generalLedgerForecast].[generalLedgerForecastMonth]		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
+							[iFinancial].[generalLedgerForecast].[generalLedgerForecastYear]		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
+							[iFinancial].[generalLedgerForecast].[generalLedgerForecastAmount]		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',	
+							[iFinancial].[generalLedgerForecast].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[iFinancial].[generalLedgerForecast].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+							[iFinancial].[generalLedgerForecast].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[iFinancial].[generalLedgerForecast].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[iFinancial].[generalLedgerForecast].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[iFinancial].[generalLedgerForecast].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+							[iFinancial].[generalLedgerForecast].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[iFinancial].[generalLedgerForecast].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+							[iFinancial].[generalLedgerForecast].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[iFinancial].[generalLedgerForecast].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+							[iFinancial].[generalLedgerForecast].[executeTime]		=	" . $this->model->getExecuteTime() . "
 			WHERE 		[generalLedgerForecastId]			=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERFORECAST
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							GENERALLEDGERCHARTOFACCOUNTDIMENSIONID		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
-							GENERALLEDGERFORECASTMONTH		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
+				SET 		GENERALLEDGERFORECASTMONTH		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
 							GENERALLEDGERFORECASTYEAR		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
 							GENERALLEDGERFORECASTAMOUNT		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',									
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -816,9 +792,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 			UPDATE	GENERALLEDGERFORECAST
-			SET 			DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							GENERALLEDGERCHARTOFACCOUNTDIMENSIONID		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
-							GENERALLEDGERFORECASTMONTH		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
+			SET 			GENERALLEDGERFORECASTMONTH		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
 							GENERALLEDGERFORECASTYEAR		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
 							GENERALLEDGERFORECASTAMOUNT		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -836,9 +810,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE		GENERALLEDGERFORECAST
-				SET 		DOCUMENTNO	=	'" . $this->model->getDocumentNo() . "',
-							GENERALLEDGERCHARTOFACCOUNTDIMENSIONID		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId() . "',
-							GENERALLEDGERFORECASTMONTH		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
+				SET 		GENERALLEDGERFORECASTMONTH		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
 							GENERALLEDGERFORECASTYEAR		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
 							GENERALLEDGERFORECASTAMOUNT		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -876,7 +848,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -921,34 +893,34 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalLedgerForecast`
-				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`generalLedgerForecastId`		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				UPDATE 	`iFinancial`.`generalLedgerForecast`.`generalLedgerForecast`
+				SET 	`iFinancial`.`generalLedgerForecast`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`iFinancial`.`generalLedgerForecast`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`iFinancial`.`generalLedgerForecast`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`iFinancial`.`generalLedgerForecast`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`iFinancial`.`generalLedgerForecast`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`iFinancial`.`generalLedgerForecast`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`iFinancial`.`generalLedgerForecast`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`iFinancial`.`generalLedgerForecast`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`iFinancial`.`generalLedgerForecast`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`iFinancial`.`generalLedgerForecast`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`iFinancial`.`generalLedgerForecast`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastId`		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	[generalLedgerForecast]
-				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[generalLedgerForecastId]		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				SET 	[iFinancial].[generalLedgerForecast].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[iFinancial].[generalLedgerForecast].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[iFinancial].[generalLedgerForecast].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[iFinancial].[generalLedgerForecast].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[iFinancial].[generalLedgerForecast].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[iFinancial].[generalLedgerForecast].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[iFinancial].[generalLedgerForecast].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[iFinancial].[generalLedgerForecast].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[iFinancial].[generalLedgerForecast].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[iFinancial].[generalLedgerForecast].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[iFinancial].[generalLedgerForecast].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[iFinancial].[generalLedgerForecast].[generalLedgerForecastId]		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERFORECAST
@@ -1016,6 +988,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1317,8 +1290,8 @@ class GeneralLedgerForecastClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}

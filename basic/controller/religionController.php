@@ -14,7 +14,7 @@ require_once ("../model/religionSampleModel.php");
  * @version 2
  * @author hafizan
  * @package sample
- * @subpackage religionSamplev1,v2,v3,v4,v5
+ * @subpackage religionSample v1,v2,v3,v4,v5
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -358,6 +358,11 @@ class ReligionSampleClass extends ConfigClass {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getReligionId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
+			/**
+				SELECT local_a.col1, local_a.col2, rmt_a.col5
+				FROM local_table local_a, remote_table@<name of link> rmt_a
+				WHERE local_a.key = rmt_a.key;
+			*/
 			$sql = "
 			SELECT		RELIGIONSAMPLE.RELIGIONSAMPLEID   		 	AS 	\"religionSampleId\",
 						RELIGIONSAMPLE.RELIGIONSAMPLEDESC 			AS 	\"religionSampleDesc\",
@@ -521,7 +526,12 @@ class ReligionSampleClass extends ConfigClass {
 			} else if ($this->getVendor() == self::ORACLE) {
 				/**
 				 * Oracle using derived table also
-				 */
+				 *	CREATE DATABASE LINK dblink_name 
+				 *	CONNECT TO username IDENTIFIED BY password
+				 *	USING 'service_name';
+				 *  SELECT host_name, instance_nmame FROM v$instance@dblink_name;				
+				*/
+				
 				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,

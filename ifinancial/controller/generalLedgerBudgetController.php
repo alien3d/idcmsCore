@@ -405,57 +405,56 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`generalLedgerBudget`.`generalLedgerBudgetId`,
-						`generalLedgerBudget`.`documentNo`,
-						`generalLedgerBudget`.`generalLedgerChartOfAccountId`,
-						`generalLedgerBudget`.`generalLedgerBudgetMonth`,
-						`generalLedgerBudget`.`generalLedgerBudgetYear`,
-						`generalLedgerBudget`.`generalLedgerBudgetAmount`,
-						`generalLedgerBudget`.`isDefault`,
-						`generalLedgerBudget`.`isNew`,
-						`generalLedgerBudget`.`isDraft`,
-						`generalLedgerBudget`.`isUpdate`,
-						`generalLedgerBudget`.`isDelete`,
-						`generalLedgerBudget`.`isActive`,
-						`generalLedgerBudget`.`isApproved`,
-						`generalLedgerBudget`.`isReview`,
-						`generalLedgerBudget`.`isPost`,
-						`generalLedgerBudget`.`executeBy`,
-						`generalLedgerBudget`.`executeTime`,
-						`staff`.`staffName`
-			FROM 	`generalLedgerBudget`
-			JOIN	`staff`
-			ON		`generalLedgerBudget`.`executeBy` = `staff`.`staffId`
+			SELECT		`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetId`,
+						`iFinancial`.`generalLedgerBudget`.`generalLedgerChartOfAccountId`,
+						`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetMonth`,
+						`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetYear`,
+						`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetAmount`,
+						`iFinancial`.`generalLedgerBudget`.`isDefault`,
+						`iFinancial`.`generalLedgerBudget`.`isNew`,
+						`iFinancial`.`generalLedgerBudget`.`isDraft`,
+						`iFinancial`.`generalLedgerBudget`.`isUpdate`,
+						`iFinancial`.`generalLedgerBudget`.`isDelete`,
+						`iFinancial`.`generalLedgerBudget`.`isActive`,
+						`iFinancial`.`generalLedgerBudget`.`isApproved`,
+						`iFinancial`.`generalLedgerBudget`.`isReview`,
+						`iFinancial`.`generalLedgerBudget`.`isPost`,
+						`iFinancial`.`generalLedgerBudget`.`executeBy`,
+						`iFinancial`.`generalLedgerBudget`.`executeTime`,
+						`iManagement`.`staff`.`staffName`
+			FROM 	`iFinancial`.`generalLedgerBudget`
+			JOIN	`iManagement`.`staff`
+			ON		`iFinancial`.`generalLedgerBudget`.`executeBy` = `iManagement`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerBudgetId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[generalLedgerBudget].[generalLedgerBudgetId],
-						[generalLedgerBudget].[documentNo],
-						[generalLedgerBudget].[generalLedgerChartOfAccountId],
-						[generalLedgerBudget].[generalLedgerBudgetMonth],
-						[generalLedgerBudget].[generalLedgerBudgetYear],
-						[generalLedgerBudget].[generalLedgerBudgetAmount],
-						[generalLedgerBudget].[isDefault],
-						[generalLedgerBudget].[isNew],
-						[generalLedgerBudget].[isDraft],
-						[generalLedgerBudget].[isUpdate],
-						[generalLedgerBudget].[isDelete],
-						[generalLedgerBudget].[isActive],
-						[generalLedgerBudget].[isApproved],
-						[generalLedgerBudget].[isReview],
-						[generalLedgerBudget].[isPost],
-						[generalLedgerBudget].[executeBy],
-						[generalLedgerBudget].[executeTime],
-						[staff].[staffName]
-			FROM 	[generalLedgerBudget]
-			JOIN		[staff]
-			ON		[generalLedgerBudget].[executeBy] = [staff].[staffId]
+			SELECT		[iFinancial].[generalLedgerBudget].[generalLedgerBudgetId],
+						[iFinancial].[generalLedgerBudget].[documentNo],
+						[iFinancial].[generalLedgerBudget].[generalLedgerChartOfAccountId],
+						[iFinancial].[generalLedgerBudget].[generalLedgerBudgetMonth],
+						[iFinancial].[generalLedgerBudget].[generalLedgerBudgetYear],
+						[iFinancial].[generalLedgerBudget].[generalLedgerBudgetAmount],
+						[iFinancial].[generalLedgerBudget].[isDefault],
+						[iFinancial].[generalLedgerBudget].[isNew],
+						[iFinancial].[generalLedgerBudget].[isDraft],
+						[iFinancial].[generalLedgerBudget].[isUpdate],
+						[iFinancial].[generalLedgerBudget].[isDelete],
+						[iFinancial].[generalLedgerBudget].[isActive],
+						[iFinancial].[generalLedgerBudget].[isApproved],
+						[iFinancial].[generalLedgerBudget].[isReview],
+						[iFinancial].[generalLedgerBudget].[isPost],
+						[iFinancial].[generalLedgerBudget].[executeBy],
+						[iFinancial].[generalLedgerBudget].[executeTime],
+						[iManagement].[staff].[staffName]
+			FROM 	[iFinancial].[generalLedgerBudget]
+			JOIN	[iManagement].[staff]
+			ON		[iFinancial].[generalLedgerBudget].[executeBy] = [iManagement].[staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerBudgetId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				$sql .= " AND [iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -597,27 +596,27 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerBudgetDerived] AS
 							(
-								SELECT 		[generalLedgerBudget].[generalLedgerBudgetId],
-											[generalLedgerBudget].[documentNo],
-											[generalLedgerBudget].[generalLedgerChartOfAccountId],
-											[generalLedgerBudget].[generalLedgerBudgetMonth],
-											[generalLedgerBudget].[generalLedgerBudgetYear],
-											[generalLedgerBudget].[generalLedgerBudgetAmount],
-											[generalLedgerBudget].[isDefault],
-											[generalLedgerBudget].[isNew],
-											[generalLedgerBudget].[isDraft],
-											[generalLedgerBudget].[isUpdate],
-											[generalLedgerBudget].[isDelete],
-											[generalLedgerBudget].[isApproved],
-											[generalLedgerBudget].[isReview],
-											[generalLedgerBudget].[isPost],
-											[generalLedgerBudget].[executeBy],
-											[generalLedgerBudget].[executeTime],
-											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [generalLedgerBudgetId]) AS 'RowNumber'
-								FROM 	[generalLedgerBudget]
-								JOIN		[staff]
-								ON		[generalLedgerBudget].[executeBy] = [staff].[staffId]
+								SELECT 		[iFinancial].[generalLedgerBudget].[generalLedgerBudgetId],
+											[iFinancial].[generalLedgerBudget].[documentNo],
+											[iFinancial].[generalLedgerBudget].[generalLedgerChartOfAccountId],
+											[iFinancial].[generalLedgerBudget].[generalLedgerBudgetMonth],
+											[iFinancial].[generalLedgerBudget].[generalLedgerBudgetYear],
+											[iFinancial].[generalLedgerBudget].[generalLedgerBudgetAmount],
+											[iFinancial].[generalLedgerBudget].[isDefault],
+											[iFinancial].[generalLedgerBudget].[isNew],
+											[iFinancial].[generalLedgerBudget].[isDraft],
+											[iFinancial].[generalLedgerBudget].[isUpdate],
+											[iFinancial].[generalLedgerBudget].[isDelete],
+											[iFinancial].[generalLedgerBudget].[isApproved],
+											[iFinancial].[generalLedgerBudget].[isReview],
+											[iFinancial].[generalLedgerBudget].[isPost],
+											[iFinancial].[generalLedgerBudget].[executeBy],
+											[iFinancial].[generalLedgerBudget].[executeTime],
+											[iManagement].[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerBudget].[generalLedgerBudgetId]) AS 'RowNumber'
+								FROM 	[iFinancial].[generalLedgerBudget]
+								JOIN	[iManagement].[staff]
+								ON		[iFinancial].[generalLedgerBudget].[executeBy] = [iManagement].[staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -728,14 +727,14 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
+			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -782,22 +781,22 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[generalLedgerBudget]
-				SET 		[generalLedgerChartOfAccountId]		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
-							[generalLedgerBudgetMonth]			=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
-							[generalLedgerBudgetYear]			=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
-							[generalLedgerBudgetAmount]			=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',	
-							[isDefault]						=	'" . $this->model->getIsDefault(0, 'single') . "',
-							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 			[generalLedgerBudgetId]			=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				SET 		[iFinancial].[generalLedgerBudget].[generalLedgerChartOfAccountId]		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
+							[iFinancial].[generalLedgerBudget].[generalLedgerBudgetMonth]			=	'" . $this->model->getGeneralLedgerBudgetMonth() . "',
+							[iFinancial].[generalLedgerBudget].[generalLedgerBudgetYear]			=	'" . $this->model->getGeneralLedgerBudgetYear() . "',
+							[iFinancial].[generalLedgerBudget].[generalLedgerBudgetAmount]			=	'" . $this->model->getGeneralLedgerBudgetAmount() . "',	
+							[iFinancial].[generalLedgerBudget].[isDefault]						=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[iFinancial].[generalLedgerBudget].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+							[iFinancial].[generalLedgerBudget].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[iFinancial].[generalLedgerBudget].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[iFinancial].[generalLedgerBudget].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[iFinancial].[generalLedgerBudget].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+							[iFinancial].[generalLedgerBudget].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[iFinancial].[generalLedgerBudget].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+							[iFinancial].[generalLedgerBudget].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[iFinancial].[generalLedgerBudget].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+							[iFinancial].[generalLedgerBudget].[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 			[iFinancial].[generalLedgerBudget].[generalLedgerBudgetId]			=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERBUDGET
@@ -890,14 +889,14 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
+			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -925,34 +924,34 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalLedgerBudget`
-				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`generalLedgerBudgetId`		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				UPDATE 	`iFinancial`.`generalLedgerBudget`.`generalLedgerBudget`
+				SET 	`iFinancial`.`generalLedgerBudget`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`iFinancial`.`generalLedgerBudget`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`iFinancial`.`generalLedgerBudget`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`iFinancial`.`generalLedgerBudget`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`iFinancial`.`generalLedgerBudget`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`iFinancial`.`generalLedgerBudget`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`iFinancial`.`generalLedgerBudget`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`iFinancial`.`generalLedgerBudget`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`iFinancial`.`generalLedgerBudget`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`iFinancial`.`generalLedgerBudget`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`iFinancial`.`generalLedgerBudget`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetId`		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalLedgerBudget]
-				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[generalLedgerBudgetId]		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				UPDATE 	[iFinancial].[generalLedgerBudget].[generalLedgerBudget]
+				SET 	[iFinancial].[generalLedgerBudget].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[iFinancial].[generalLedgerBudget].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[iFinancial].[generalLedgerBudget].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[iFinancial].[generalLedgerBudget].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[iFinancial].[generalLedgerBudget].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[iFinancial].[generalLedgerBudget].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[iFinancial].[generalLedgerBudget].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[iFinancial].[generalLedgerBudget].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[iFinancial].[generalLedgerBudget].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[iFinancial].[generalLedgerBudget].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[iFinancial].[generalLedgerBudget].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[iFinancial].[generalLedgerBudget].[generalLedgerBudgetId]		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERBUDGET

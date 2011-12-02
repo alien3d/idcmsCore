@@ -356,6 +356,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
 				$this->auditFilter = "	`generalLedgerChartOfAccountDimension`.`isActive`		=	1	";
@@ -398,8 +399,8 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			SELECT		`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionId`,
 						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionTitle`,
 						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionDesc`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`GENERALLEDGERCHARTACCOUNTIDSTART`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartAccountNoRangeTwo`,
+						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountIdStart`,
+						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountIdEnd`,
 						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDefault`,
 						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isNew`,
 						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDraft`,
@@ -411,47 +412,47 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isPost`,
 						`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeBy`,
 						`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeTime`,
-						`staff`.`staffName`
+						`iManagement`.`staff`.`staffName`
 			FROM 	`iFinancial`.`generalLedgerChartOfAccountDimension`
-			JOIN	`staff`
-			ON		`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeBy` = `staff`.`staffId`
+			JOIN	`iManagement`.`staff`
+			ON		`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeBy` = `iManagement`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
+				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionId],
-						[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionTitle],
-						[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionDesc],
-						[generalLedgerChartOfAccountDimension].[GENERALLEDGERCHARTACCOUNTIDSTART],
-						[generalLedgerChartOfAccountDimension].[generalLedgerChartAccountNoRangeTwo],
-						[generalLedgerChartOfAccountDimension].[isDefault],
-						[generalLedgerChartOfAccountDimension].[isNew],
-						[generalLedgerChartOfAccountDimension].[isDraft],
-						[generalLedgerChartOfAccountDimension].[isUpdate],
-						[generalLedgerChartOfAccountDimension].[isDelete],
-						[generalLedgerChartOfAccountDimension].[isActive],
-						[generalLedgerChartOfAccountDimension].[isApproved],
-						[generalLedgerChartOfAccountDimension].[isReview],
-						[generalLedgerChartOfAccountDimension].[isPost],
-						[generalLedgerChartOfAccountDimension].[executeBy],
-						[generalLedgerChartOfAccountDimension].[executeTime],
-						[staff].[staffName]
-			FROM 	[generalLedgerChartOfAccountDimension]
-			JOIN		[staff]
-			ON		[generalLedgerChartOfAccountDimension].[executeBy] = [staff].[staffId]
+			SELECT		[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionId],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionTitle],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionDesc],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountIdStart],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountIdEnd],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[isDefault],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[isNew],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[isDraft],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[isUpdate],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[isDelete],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[isActive],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[isApproved],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[isReview],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[isPost],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy],
+						[iFinancial].[generalLedgerChartOfAccountDimension].[executeTime],
+						[iManagement].[staff].[staffName]
+			FROM 		[iFinancial].[generalLedgerChartOfAccountDimension]
+			JOIN		[iManagement].[staff]
+			ON			[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy] = [iManagement].[staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
+				$sql .= " AND [iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		GeneralLedgerChartOfAccountDimension.GeneralLedgerChartOfAccountDimensionID   		 	AS 	\"generalLedgerChartOfAccountDimensionId\",
+			SELECT		GeneralLedgerChartOfAccountDimension.GENERALLEDGERCHARTOFACCOUNTDIMENSIONID   		 	AS 	\"generalLedgerChartOfAccountDimensionId\",
 						GeneralLedgerChartOfAccountDimension.GENERALLEDGERCHARTOFACCOUNTDIMENSIONTITLE 				AS 	\"generalLedgerChartOfAccountDimensionTitle\",
 						GeneralLedgerChartOfAccountDimension.GeneralLedgerChartOfAccountDimensionDESC 			AS 	\"generalLedgerChartOfAccountDimensionDesc\",
-						GeneralLedgerChartOfAccountDimension.GENERALLEDGERCHARTACCOUNTIDSTART 			AS 	\"GENERALLEDGERCHARTACCOUNTIDSTART\",
-						GeneralLedgerChartOfAccountDimension.GeneralLedgerCHARTACCOUNTNORANGETWO 			AS 	\"generalLedgerChartAccountNoRangeTwo\",
+						GeneralLedgerChartOfAccountDimension.GENERALLEDGERCHARTACCOUNTIDSTART 			AS 	\"generalLedgerChartOfAccountIdStart\",
+						GeneralLedgerChartOfAccountDimension.GENERALLEDGERCHARTACCOUNTIDEND  			AS 	\"generalLedgerChartOfAccountIdEnd\",
 						GeneralLedgerChartOfAccountDimension.ISDEFAULT    			AS	\"isDefault\",
 						GeneralLedgerChartOfAccountDimension.ISNEW		  			AS	\"isNew\",
 						GeneralLedgerChartOfAccountDimension.ISDRAFT	  				AS	\"isDraft\",
@@ -584,26 +585,26 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerChartOfAccountDimensionDerived] AS
 							(
-								SELECT 		[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionId],
-											[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionTitle],
-											[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionDesc],
-											[generalLedgerChartOfAccountDimension].[GENERALLEDGERCHARTACCOUNTIDSTART],
-											[generalLedgerChartOfAccountDimension].[generalLedgerChartAccountNoRangeTwo],
-											[generalLedgerChartOfAccountDimension].[isDefault],
-											[generalLedgerChartOfAccountDimension].[isNew],
-											[generalLedgerChartOfAccountDimension].[isDraft],
-											[generalLedgerChartOfAccountDimension].[isUpdate],
-											[generalLedgerChartOfAccountDimension].[isDelete],
-											[generalLedgerChartOfAccountDimension].[isApproved],
-											[generalLedgerChartOfAccountDimension].[isReview],
-											[generalLedgerChartOfAccountDimension].[isPost],
-											[generalLedgerChartOfAccountDimension].[executeBy],
-											[generalLedgerChartOfAccountDimension].[executeTime],
-											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountDimensionId]) AS 'RowNumber'
-								FROM 	[generalLedgerChartOfAccountDimension]
-								JOIN		[staff]
-								ON		[generalLedgerChartOfAccountDimension].[executeBy] = [staff].[staffId]
+								SELECT 		[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionId],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionTitle],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionDesc],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[GENERALLEDGERCHARTACCOUNTIDSTART],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountIdEnd],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[isDefault],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[isNew],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[isDraft],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[isUpdate],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[isDelete],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[isApproved],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[isReview],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[isPost],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy],
+											[iFinancial].[generalLedgerChartOfAccountDimension].[executeTime],
+											[iManagement].[staff].[staffName],
+								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionId]) AS 'RowNumber'
+								FROM 	[iFinancial].[generalLedgerChartOfAccountDimension]
+								JOIN	[iManagement].[staff]
+								ON		[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy] = [iManagement].[staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -624,7 +625,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 										GeneralLedgerChartOfAccountDimension.GENERALLEDGERCHARTOFACCOUNTDIMENSIONTITLE 			AS 	\"generalLedgerChartOfAccountDimensionTitle\",
 										GeneralLedgerChartOfAccountDimension.GeneralLedgerChartOfAccountDimensionDESC 		AS 	\"generalLedgerChartOfAccountDimensionDesc\",
 										GeneralLedgerChartOfAccountDimension.GENERALLEDGERCHARTACCOUNTIDSTART 		AS 	\"GENERALLEDGERCHARTACCOUNTIDSTART\",
-										GeneralLedgerChartOfAccountDimension.GeneralLedgerCHARTACCOUNTNORANGETWO 		AS 	\"generalLedgerChartAccountNoRangeTwo\",
+										GeneralLedgerChartOfAccountDimension.GeneralLedgerCHARTACCOUNTNORANGETWO 		AS 	\"generalLedgerChartOfAccountIdEnd\",
 										GeneralLedgerChartOfAccountDimension.ISDEFAULT    		AS	\"isDefault\",
 										GeneralLedgerChartOfAccountDimension.ISNEW		  		AS	\"isNew\",
 										GeneralLedgerChartOfAccountDimension.ISDRAFT	 			AS	\"isDraft\",
@@ -699,7 +700,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -718,9 +719,9 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
+			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
+			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -752,7 +753,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 				SET 		`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionTitle`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionTitle() . "',
 							`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionDesc() . "',
 							`iFinancial`.`generalLedgerChartOfAccountDimension`.`GENERALLEDGERCHARTACCOUNTIDSTART`		=	'" . $this->model->getGeneralLedgerChartOfAccountIdStart() . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartAccountNoRangeTwo`		=	'" . $this->model->getGeneralLedgerChartOfAccountIdEnd() . "',				
+							`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountIdEnd`		=	'" . $this->model->getGeneralLedgerChartOfAccountIdEnd() . "',				
 							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -771,7 +772,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 				SET 		[generalLedgerChartOfAccountDimensionTitle]		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionTitle() . "',
 							[generalLedgerChartOfAccountDimensionDesc]		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionDesc() . "',
 							[GENERALLEDGERCHARTACCOUNTIDSTART]		=	'" . $this->model->getGeneralLedgerChartOfAccountIdStart() . "',
-							[generalLedgerChartAccountNoRangeTwo]		=	'" . $this->model->getGeneralLedgerChartOfAccountIdEnd() . "',
+							[generalLedgerChartOfAccountIdEnd]		=	'" . $this->model->getGeneralLedgerChartOfAccountIdEnd() . "',
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[iFinancial].[generalLedgerChartOfAccountDimension].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -864,7 +865,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -879,9 +880,9 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
+			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
+			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -1004,7 +1005,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor() == self::MYSQL) {
-			//UTF8
+		
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1304,6 +1305,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1382,7 +1384,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);

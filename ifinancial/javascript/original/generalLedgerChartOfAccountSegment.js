@@ -931,60 +931,7 @@ Ext.onReady(function () {
 			anchor : '40%'
 	});
 	
-	var generalLedgerlChartOfAccountIdStart = new Ext.ux.form.ComboBoxMatch({
-        labelAlign: 'left',
-        fieldLabel: generalLedgerlChartOfAccountIdStartLabel,
-        name: 'generalLedgerlChartOfAccountStart',
-        hiddenName: 'generalLedgerlChartOfAccountStart',
-        valueField: 'generalLedgerlChartOfAccountId',
-        hiddenId: 'generalLedgerlChartOfAccountStart_fake',
-        id: 'generalLedgerlChartOfAccountIdStart',
-        displayField: 'generalLedgerlChartOfAccountDesc',
-        typeAhead: false,
-        triggerAction: 'all',
-        store: countryStore,
-        anchor: '95%',
-        selectOnFocus: true,
-        mode: 'local',
-        allowBlank: false,
-        blankText: blankTextLabel,
-        createValueMatcher: function(value) {
-            value = String(value).replace(/\s*/g, '');
-            if (Ext.isEmpty(value, false)) {
-                return new RegExp('^');
-            }
-            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-            return new RegExp('\\b(' + value + ')', 'i');
-        }
-    });
 	
-	
-	var generalLedgerlChartOfAccountEnd = new Ext.ux.form.ComboBoxMatch({
-        labelAlign: 'left',
-        fieldLabel: generalLedgerlChartOfAccountEndLabel,
-        name: 'generalLedgerlChartOfAccountEnd',
-        hiddenName: 'generalLedgerlChartOfAccountEnd',
-        valueField: 'generalLedgerlChartOfAccountId',
-        hiddenId: 'generalLedgerlChartOfAccountEnd_fake',
-        id: 'generalLedgerlChartOfAccountEnd',
-        displayField: 'generalLedgerlChartOfAccountEnd',
-        typeAhead: false,
-        triggerAction: 'all',
-        store: countryStore,
-        anchor: '95%',
-        selectOnFocus: true,
-        mode: 'local',
-        allowBlank: false,
-        blankText: blankTextLabel,
-        createValueMatcher: function(value) {
-            value = String(value).replace(/\s*/g, '');
-            if (Ext.isEmpty(value, false)) {
-                return new RegExp('^');
-            }
-            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-            return new RegExp('\\b(' + value + ')', 'i');
-        }
-    });
 		
 	var generalLedgerChartOfAccountSegmentId = new Ext.form.Hidden({
 			name : 'generalLedgerChartOfAccountSegmentId',
@@ -1089,27 +1036,6 @@ Ext.onReady(function () {
 						generalLedgerChartOfAccountSegmentLength,
 						generalLedgerChartOfAccountSegmentTitle,
 						generalLedgerChartOfAccountSegmentDesc]
-				}, {
-					xtype : 'fieldset',
-					title : 'System Administration',
-					layout : 'column',
-					items : [{
-							columnWidth : 0.3,
-							layout : 'form',
-							border : false,
-							items : [isDefault, isNew, isDraft]
-						}, {
-							columnWidth : 0.3,
-							layout : 'form',
-							border : false,
-							items : [isUpdate, isDelete, isActive]
-						}, {
-							columnWidth : 0.3,
-							layout : 'form',
-							border : false,
-							items : [isApproved, isReview, isPost]
-						}
-					]
 				}
 			],
 			buttonVAlign : 'top',
