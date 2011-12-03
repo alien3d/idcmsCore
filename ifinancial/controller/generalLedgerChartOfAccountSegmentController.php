@@ -14,7 +14,7 @@ require_once ("../model/generalLedgerChartOfAccountSegmentModel.php");
  * @version 2
  * @author hafizan
  * @package General Ledger
- * @subpackage General Ledger Chart Of AccountSegment
+ * @subpackage Chart Of Account Segment
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -102,6 +102,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 		$this->q->gridQuery = $this->getGridQuery();
 		$this->q->tableName = $this->model->getTableName();
 		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
+		$this->q->setRequestDatabase($this->getDatabase());
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
@@ -131,7 +132,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 
 	public function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -163,6 +164,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			VALUES
 					(
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentLength() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTitle() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentDesc() . "',					
@@ -202,6 +204,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			VALUES
 					(
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentLength() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTitle() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentDesc() . "',					
@@ -242,6 +245,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			VALUES
 					(
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentLength() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTitle() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentDesc() . "',
@@ -281,6 +285,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			VALUES
 			(
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentLength() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTitle() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentDesc() . "',
@@ -320,6 +325,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			VALUES
 			(
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentNo() . "',
+						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentLength() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentTitle() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountSegmentDesc() . "',
@@ -336,10 +342,10 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 						" . $this->model->getExecuteTime() . "
 			)";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$generalLedgerChartOfAccountSegmentId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -347,7 +353,12 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "generalLedgerChartOfAccountSegmentId" => $generalLedgerChartOfAccountSegmentId));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+		array(	"success" => true,
+					"message" => $this->systemString->getCreateMessage(), 
+					"generalLedgerChartOfAccountSegmentId" => $generalLedgerChartOfAccountSegmentId));
 		exit();
 	}
 
@@ -369,7 +380,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	GENERALLEDGERCHARTOFACCOUNTSEGMENT.ISACTIVE	=	1	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		} else if ($this->isAdmin == 1) {
@@ -384,7 +395,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	1	=	1 	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -398,6 +409,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			$sql = "
 			SELECT		`generalLedgerChartOfAccountSegment`.`generalLedgerChartOfAccountSegmentId`,
 						`generalLedgerChartOfAccountSegment`.`generalLedgerChartOfAccountSegmentNo`,
+						`generalLedgerChartOfAccountSegment`.`generalLedgerChartOfAccountSegmentTypeId`,
 						`generalLedgerChartOfAccountSegment`.`generalLedgerChartOfAccountSegmentLength`,
 						`generalLedgerChartOfAccountSegment`.`generalLedgerChartOfAccountSegmentTitle`,
 						`generalLedgerChartOfAccountSegment`.`generalLedgerChartOfAccountSegmentDesc`,
@@ -414,6 +426,8 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 						`generalLedgerChartOfAccountSegment`.`executeTime`,
 						`staff`.`staffName`
 			FROM 	`iFinancial`.`generalLedgerChartOfAccountSegment`
+			JOIN	`iFinancial`.`generalLedgerChartOfAccountSegmentType`
+			USING	(`generalLedgerChartOfAccountSegmentTypeId`)
 			JOIN	`iManagement`.`staff`
 			ON		`generalLedgerChartOfAccountSegment`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
@@ -424,6 +438,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			$sql = "
 			SELECT	[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentId],
 					[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentNo],
+					[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentTypeId],
 					[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentLength],
 					[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentTitle],
 					[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentDesc],
@@ -525,7 +540,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 				$sql .= " AND IFINANCIAL." . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "'";
 			}
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -534,7 +549,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('generalLedgerChartOfAccountSegmentId','generalLedgerChartOfAccountSegmentTypeId');
+		$filterArray = array('`generalLedgerChartOfAccountSegment`.`generalLedgerChartOfAccountSegmentId`','`generalLedgerChartOfAccountSegmentType`.`generalLedgerChartOfAccountSegmentTypeId`');
 		/**
 		 * filter table
 		 * @variables $tableArray
@@ -555,7 +570,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -576,7 +591,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->searching();
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -591,7 +606,10 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 		// end of optional debugger
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
-			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			echo json_encode(
+				array(	"success" => false, 
+						"message" => $this->q->responce,
+						"sql"=>$sql));
 			exit();
 		}
 		$total = $this->q->numberRows();
@@ -607,7 +625,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -636,8 +654,8 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 								SELECT 		[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentId],
 											[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentNo],
 											[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentLength],
-											[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentNoTitle],
-											[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentNoDesc],
+											[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentTitle],
+											[generalLedgerChartOfAccountSegment].[generalLedgerChartOfAccountSegmentDesc],
 											[generalLedgerChartOfAccountSegment].[isDefault],
 											[generalLedgerChartOfAccountSegment].[isNew],
 											[generalLedgerChartOfAccountSegment].[isDraft],
@@ -672,8 +690,8 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 								SELECT	GENERALLEDGERCHARTOFACCOUNTSEGMENT.GENERALLEDGERCHARTOFACCOUNTSEGMENTID   		AS 	\"generalLedgerChartOfAccountSegmentId\",
 										GENERALLEDGERCHARTOFACCOUNTSEGMENT.GENERALLEDGERCHARTOFACCOUNTSEGMENTNO 			AS 	\"generalLedgerChartOfAccountSegmentNo\",
 										GENERALLEDGERCHARTOFACCOUNTSEGMENT.GENERALLEDGERCHARTOFACCOUNTSEGMENTLENGTH 		AS 	\"generalLedgerChartOfAccountSegmentLength\",
-										GENERALLEDGERCHARTOFACCOUNTSEGMENT.GENERALLEDGERCHARTOFACCOUNTSEGMENTTITLE 		AS 	\"generalLedgerChartOfAccountSegmentNoTitle\",
-										GENERALLEDGERCHARTOFACCOUNTSEGMENT.GENERALLEDGERCHARTOFACCOUNTSEGMENTDESC 		AS 	\"generalLedgerChartOfAccountSegmentNoDesc\",
+										GENERALLEDGERCHARTOFACCOUNTSEGMENT.GENERALLEDGERCHARTOFACCOUNTSEGMENTTITLE 		AS 	\"generalLedgerChartOfAccountSegmentTitle\",
+										GENERALLEDGERCHARTOFACCOUNTSEGMENT.GENERALLEDGERCHARTOFACCOUNTSEGMENTDESC 		AS 	\"generalLedgerChartOfAccountSegmentDesc\",
 										GENERALLEDGERCHARTOFACCOUNTSEGMENT.ISDEFAULT    		AS	\"isDefault\",
 										GENERALLEDGERCHARTOFACCOUNTSEGMENT.ISNEW		  		AS	\"isNew\",
 										GENERALLEDGERCHARTOFACCOUNTSEGMENT.ISDRAFT	 			AS	\"isDraft\",
@@ -709,7 +727,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -748,7 +766,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -763,12 +781,12 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
+			FROM 	`iFinancial`.`" . $this->model->getTableName() . "`
 			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[" . $this->model->getTableName() . "]
+			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
 			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -786,7 +804,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -797,11 +815,12 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalLedgerChartOfAccountSegment`
-				SET 		`generalLedgerChartOfAccountSegmentNo`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentNo() . "',
+				UPDATE		`iFinancial`.`generalLedgerChartOfAccountSegment`
+				SET 		`generalLedgerChartOfAccountSegmentNo`			=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentNo() . "',
+							`generalLedgerChartOfAccountSegmentTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTypeId() . "',				
 							`generalLedgerChartOfAccountSegmentLength`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentLength() . "',
-							`generalLedgerChartOfAccountSegmentNoTitle`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTitle() . "',
-							`generalLedgerChartOfAccountSegmentNoDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentDesc() . "',				
+							`generalLedgerChartOfAccountSegmentTitle`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTitle() . "',
+							`generalLedgerChartOfAccountSegmentDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentDesc() . "',				
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -816,11 +835,11 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 				WHERE 		`generalLedgerChartOfAccountSegmentId`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalLedgerChartOfAccountSegment]
+				UPDATE 		[iFinancial].[generalLedgerChartOfAccountSegment]
 				SET 		[generalLedgerChartOfAccountSegmentNo]		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentNo() . "',
 							[generalLedgerChartOfAccountSegmentLength]		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentLength() . "',
-							[generalLedgerChartOfAccountSegmentNoTitle]		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTitle() . "',
-							[generalLedgerChartOfAccountSegmentNoDesc]		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentDesc() . "',
+							[generalLedgerChartOfAccountSegmentTitle]		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentTitle() . "',
+							[generalLedgerChartOfAccountSegmentDesc]		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentDesc() . "',
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -891,24 +910,24 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 				WHERE 		GENERALLEDGERCHARTOFACCOUNTSEGMENTID			=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single');
-			$this->q->audit = $this->audit;
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
 				exit();
 			}
 		}
+
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Updated"));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+		array("success" => true,
+			      "message" => $this->systemString->getUpdateMessage(),
+			      "time"=>$time));
 		exit();
 	}
 
@@ -918,7 +937,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -929,17 +948,17 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
+			FROM 	`iFinancial`.`" . $this->model->getTableName() . "`
 			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[" . $this->model->getTableName() . "]
+			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
 			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
-			FROM 	" . strtoupper($this->model->getTableName()) . "
+			FROM 	IFINANCIAL." . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
@@ -952,18 +971,21 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => 'Cannot find the record'));
+			echo json_encode(
+			array(	"success" => false,
+						"message" => 'Cannot find the record',
+						"idRefer"=>$this->model->getGeneralLedgerChartOfAccountSegmentId(0,'single')));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`generalLedgerChartOfAccountSegment`
+				UPDATE 	`iFinancial`.`generalLedgerChartOfAccountSegment`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -978,7 +1000,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 				WHERE 	`generalLedgerChartOfAccountSegmentId`		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalLedgerChartOfAccountSegment]
+				UPDATE 	[iFinancial].[generalLedgerChartOfAccountSegment]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1037,14 +1059,11 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
 				WHERE 	GENERALLEDGERCHARTOFACCOUNTSEGMENTID		=	'" . $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			// advance logging future
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single');
-			$this->q->audit = $this->audit;
+				
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1052,7 +1071,12 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+		array(	"success" => true,
+					"message" => $this->systemString->getDeleteMessage(),
+					"time"=>$time));
 		exit();
 	}
 
@@ -1088,7 +1112,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 
@@ -1115,7 +1139,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1139,7 +1163,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1163,7 +1187,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1187,7 +1211,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1211,7 +1235,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1235,7 +1259,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1259,7 +1283,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1283,7 +1307,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1307,7 +1331,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1336,7 +1360,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1346,9 +1370,9 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->systemString->getDeleteMessage();
 		}
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
@@ -1398,7 +1422,7 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 			WHERE 	GENERALLEDGERCHARTOFACCOUNTSEGMENTNO 	= 	'" . $this->model->getGeneralLedgerChartOfAccountSegmentNo() . "'
 			AND		ISACTIVE		=	1";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->read($sql);
@@ -1521,6 +1545,12 @@ if (isset($_POST ['method'])) {
 		$generalLedgerChartOfAccountSegmentObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
+	 * Database Request
+	 */
+	if (isset($_POST ['database'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDatabase($_POST['database']);
+	}
+	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
@@ -1579,6 +1609,12 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['isAdmin'])) {
 		$generalLedgerChartOfAccountSegmentObject->setIsAdmin($_GET ['isAdmin']);
+	}
+/*
+	 * Database Request
+	 */
+	if (isset($_GET ['database'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDatabase($_GET['database']);
 	}
 	/*
 	 *  Load the dynamic value

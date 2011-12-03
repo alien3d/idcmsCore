@@ -143,21 +143,21 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `iFinancial`.`generalLedgerBudget`
 					(
-						`iFinancial`.`generalLedgerBudget`.`generalLedgerChartOfAccountId`,
-						`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetMonth`,
-						`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetYear`,
-						`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetAmount`,
-						`iFinancial`.`generalLedgerBudget`.`isDefault`,
-						`iFinancial`.`generalLedgerBudget`.`isNew`,													
-						`iFinancial`.`generalLedgerBudget`.`isDraft`,
-						`iFinancial`.`generalLedgerBudget`.`isUpdate`,													
-						`iFinancial`.`generalLedgerBudget`.`isDelete`,
-						`iFinancial`.`generalLedgerBudget`.`isActive`,													
-						`iFinancial`.`generalLedgerBudget`.`isApproved`,
-						`iFinancial`.`generalLedgerBudget`.`isReview`,                      		  	 				
-						`iFinancial`.`generalLedgerBudget`.`isPost`,
-						`iFinancial`.`generalLedgerBudget`.`executeBy`,												
-						`iFinancial`.`generalLedgerBudget`.`executeTime`
+						`generalLedgerChartOfAccountId`,
+						`generalLedgerBudgetMonth`,
+						`generalLedgerBudgetYear`,
+						`generalLedgerBudgetAmount`,
+						`isDefault`,
+						`isNew`,													
+						`isDraft`,
+						`isUpdate`,													
+						`isDelete`,
+						`isActive`,													
+						`isApproved`,
+						`isReview`,                      		  	 				
+						`isPost`,
+						`executeBy`,												
+						`executeTime`
 					)
 			VALUES
 					(
@@ -925,33 +925,33 @@ class GeneralLedgerbudgetClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE 	`iFinancial`.`generalLedgerBudget`.`generalLedgerBudget`
-				SET 	`iFinancial`.`generalLedgerBudget`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`iFinancial`.`generalLedgerBudget`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`iFinancial`.`generalLedgerBudget`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`iFinancial`.`generalLedgerBudget`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`iFinancial`.`generalLedgerBudget`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`iFinancial`.`generalLedgerBudget`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`iFinancial`.`generalLedgerBudget`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`iFinancial`.`generalLedgerBudget`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`iFinancial`.`generalLedgerBudget`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`iFinancial`.`generalLedgerBudget`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`iFinancial`.`generalLedgerBudget`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`iFinancial`.`generalLedgerBudget`.`generalLedgerBudgetId`		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`generalLedgerBudgetId`		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	[iFinancial].[generalLedgerBudget].[generalLedgerBudget]
-				SET 	[iFinancial].[generalLedgerBudget].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[iFinancial].[generalLedgerBudget].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[iFinancial].[generalLedgerBudget].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[iFinancial].[generalLedgerBudget].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[iFinancial].[generalLedgerBudget].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[iFinancial].[generalLedgerBudget].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[iFinancial].[generalLedgerBudget].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[iFinancial].[generalLedgerBudget].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[iFinancial].[generalLedgerBudget].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[iFinancial].[generalLedgerBudget].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[iFinancial].[generalLedgerBudget].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[iFinancial].[generalLedgerBudget].[generalLedgerBudgetId]		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
+				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[generalLedgerBudgetId]		=	'" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERBUDGET

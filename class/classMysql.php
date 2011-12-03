@@ -41,7 +41,7 @@ class Vendor {
 	 */
 	private $socket;
 	// public property
-	
+
 
 	/**
 	 * sql statement
@@ -143,38 +143,38 @@ class Vendor {
 	 */
 	public $insertId;
 	/**
-	 *  Core database 
+	 *  Core database
 	 *  @var string
 	 */
-	 public $coreDatabase;
-	 /**
-	  *  Financial Database
-	  *  @var string
-	  */
-	  public $financialDatabase;
-	  /**
-	  *  Fix Asset Database
-	  *  @var string
-	  */
-	  public $fixAssetDatabase;
-	  /**
-	  *  Payroll Database
-	  *  @var string
-	  */
-	  public $payrollDatabase;
-	  /**
-	  *  Human Resources Database
-	  *  @var string
-	  */
-	  public $humanResourcesDatabase;
-	  /**
-	  *  Common Database
-	  *  @var string
-	  */
-	  public $commonDatabase;
-	  
-	
-	
+	public $coreDatabase;
+	/**
+	 *  Financial Database
+	 *  @var string
+	 */
+	public $financialDatabase;
+	/**
+	 *  Fix Asset Database
+	 *  @var string
+	 */
+	public $fixAssetDatabase;
+	/**
+	 *  Payroll Database
+	 *  @var string
+	 */
+	public $payrollDatabase;
+	/**
+	 *  Human Resources Database
+	 *  @var string
+	 */
+	public $humanResourcesDatabase;
+	/**
+	 *  Common Database
+	 *  @var string
+	 */
+	public $commonDatabase;
+	 
+
+
 	public function __construct() {
 	}
 	/**
@@ -197,18 +197,18 @@ class Vendor {
 		$this->username = $username;
 		/**
 		 * @depreciated
-		 */ 
+		 */
 		//$this->databaseName = $database;
 		/**
 		 * Overide above using core database.
-		 */ 
-		 $this->coreDatabase = 'iCore';
-		 $this->financialDatabase = 'iFinancial';
-		 $this->fixAssetDatabase= 'iFixAsset';
-		 $this->payrollDatabase='iPayroll';
-		 $this->humanResourceDatabase = 'iHumanResources';
-		 $this->commonDatabase ='iCommon';
-		 $this->databaseName  = $this->coreDatabase;  // overide above
+		 */
+		$this->coreDatabase = 'iCore';
+		$this->financialDatabase = 'iFinancial';
+		$this->fixAssetDatabase= 'iFixAsset';
+		$this->payrollDatabase='iPayroll';
+		$this->humanResourceDatabase = 'iHumanResources';
+		$this->commonDatabase ='iCommon';
+		$this->databaseName  = $this->coreDatabase;  // overide above
 		$this->password = $password;
 		$this->link = mysqli_connect ( $this->connection, $this->username, $this->password, $this->databaseName, $this->port, $this->socket );
 		if (! $this->link) {
@@ -256,7 +256,7 @@ class Vendor {
 			$error = 1;
 		}
 		if ($error == 1) {
-			
+				
 			$sql_log = "
 			INSERT	INTO	`ilog`.`log`
 					(
@@ -281,7 +281,7 @@ class Vendor {
 				$this->responce = $sql_log . "<br>" . mysqli_error ( $this->link ) . "<br> Error Code :y " . mysqli_errno ( $this->link );
 			}
 		}
-		
+
 		//	$this->rollback();
 		return 0;
 	}
@@ -293,7 +293,7 @@ class Vendor {
 	private function module($operation) {
 		// for more secure option must SET at mysql access grant level
 		// if 1 access granted which mean 1 record if null no mean no access to the db level
-		
+
 		$result_row = NULL;
 		$this->operation = NULL;
 		$sql = "
@@ -315,7 +315,7 @@ class Vendor {
 		} elseif ($result_row == 0) {
 			$access = 'Denied';
 		}
-		
+
 		if ($result_row == 0 || $this->log == 1) {
 			$logError = $this->responce;
 			$sql_log = "
@@ -342,7 +342,7 @@ class Vendor {
 				$this->responce = $sql_log . "[" . mysqli_error ( $this->link ) . "]";
 			}
 		}
-	
+
 		$result_row=1;
 		return ($result_row);
 	}
@@ -385,15 +385,15 @@ class Vendor {
 					$this->insertId = $this->lastInsertId();
 				}
 				if ($this->audit == 1) {
-					
-					$logAdvanceType = 'C'; 
+						
+					$logAdvanceType = 'C';
 					$sqlColumn = "SHOW COLUMNS FROM `" . $this->tableName . "`";
 					$resultColumn = mysqli_query ( $this->link, $sqlColumn );
 					if (! $resultColumn) {
 						$this->execute = 'fail';
-						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlColumn."]";						
-					} else {						
-						while ( ($rowColumn = mysqli_fetch_array ( $resultColumn )) == TRUE ) {							
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlColumn."]";
+					} else {
+						while ( ($rowColumn = mysqli_fetch_array ( $resultColumn )) == TRUE ) {
 							$fieldValue [] = $rowColumn ['Field'];
 						}
 					}
@@ -404,8 +404,8 @@ class Vendor {
 					$resultPrevious = mysqli_query ( $this->link, $sqlPrevious );
 					if (! $resultPrevious) {
 						$this->execute = 'fail';
-						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlPrevious."]";						
-					} else {						
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlPrevious."]";
+					} else {
 						while ( ($rowPrevious = mysqli_fetch_array ( $resultPrevious )) == TRUE ) {
 							foreach ( $fieldValue as $field ) {
 								$text .= "'" . $field . "':'" . $rowPrevious [$field] . "',";
@@ -414,7 +414,7 @@ class Vendor {
 						}
 					}
 					$text = $this->removeComa ( $text );
-					$text = "{" . $text . "}"; 
+					$text = "{" . $text . "}";
 					$sqlLogAdvance = "
 					INSERT INTO	`iLog`.`logAdvance`
 							(
@@ -437,7 +437,7 @@ class Vendor {
 					$resultLogAdvance = mysqli_query ( $this->link, $sqlLogAdvance );
 					if (! $resultLogAdvance) {
 						$this->execute = 'fail';
-						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlLogAdvance."]";												
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlLogAdvance."]";
 					}
 				}
 			} else {
@@ -469,14 +469,14 @@ class Vendor {
 		if (strlen ( $sql ) > 0) {
 			if ($this->module ( 'leafAccessUpdateValue' ) == 1) {
 				if ($this->audit == 1) {
-					$logAdvanceType = 'U'; 
+					$logAdvanceType = 'U';
 					$sqlColumn = "SHOW COLUMNS FROM `" . $this->tableName . "`";
 					$resultColumn = mysqli_query ( $this->link, $sqlColumn );
 					if (! $resultColumn) {
 						$this->execute = 'fail';
-						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlColumn."]";						
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlColumn."]";
 					} else  {
-						while ( ($rowColumn = mysqli_fetch_array ( $resultColumn )) == TRUE ) {						
+						while ( ($rowColumn = mysqli_fetch_array ( $resultColumn )) == TRUE ) {
 							$fieldValue [] = $rowColumn ['Field'];
 						}
 					}
@@ -487,8 +487,8 @@ class Vendor {
 					$resultPrevious = mysqli_query ( $this->link, $sqlPrevious );
 					if (! $resultPrevious) {
 						$this->execute = 'fail';
-						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlPrevious."]";						
-						
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlPrevious."]";
+
 					} else {
 						while ( ($rowPrevious = mysqli_fetch_array ( $resultPrevious )) == TRUE ) {
 							foreach ( $fieldValue as $field ) {
@@ -516,14 +516,14 @@ class Vendor {
 					)";
 					$resultLogAdvance = mysqli_query ( $this->link, $sqlLogAdvance );
 					if ($resultLogAdvance) {
-						$logAdvanceId = mysqli_insert_id ( $this->link ); 
+						$logAdvanceId = mysqli_insert_id ( $this->link );
 					} else {
 						$this->execute = 'fail';
-						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlLogAdvance."]";																		
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlLogAdvance."]";
 					}
 				}
 				$this->query ( $this->sql );
-				$recordAffected = $this->affectedRows (); 
+				$recordAffected = $this->affectedRows ();
 				if ($this->audit == 1) {
 					$sqlCurrent = "
 					SELECT 	*
@@ -532,25 +532,25 @@ class Vendor {
 					$resultCurrent = mysqli_query ( $this->link, $sqlCurrent );
 					if (!$resultCurrent) {
 						$this->execute = 'fail';
-						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlCurrent."]";												
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sqlCurrent."]";
 					} else {
 						while ( ($rowCurrent = mysqli_fetch_array ( $resultCurrent )) == TRUE ) {
 							$textComparision .= $this->compare ( $fieldValue, $rowCurrent, $previous );
 						}
-					} 
-					$textComparision = substr ( $textComparision, 0, - 1 ); 
-					$textComparision = "{ \"tablename\":'" . $this->tableName . "',\"leafId\":'" . $this->primaryKeyValue . "'," . $textComparision . "}";				
+					}
+					$textComparision = substr ( $textComparision, 0, - 1 );
+					$textComparision = "{ \"tablename\":'" . $this->tableName . "',\"leafId\":'" . $this->primaryKeyValue . "'," . $textComparision . "}";
 					$sql = "
 					UPDATE	`iLog`.`logAdvance`
 					SET 	`iLog`.`logAdvance`.`logAdvanceComparision`	=	'" . $this->realEscapeString ( $textComparision ) . "',
 							`iLog`.`logAdvance`.`executeBy`					=   '" . $this->staffId . "',
 							`iLog`.`logAdvance`.`executeTime`					=	'" . date ( "Y-m-d H:i:s" ) . "'
 					WHERE 	`iLog`.`logAdvance`.`logAdvanceId`			=	'" . $logAdvanceId . "'";
-					
+						
 					$result = mysqli_query ( $this->link, $sql );
 					if (! $result) {
 						$this->execute = 'fail';
-						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sql."]";												
+						$this->responce = "Error Message : [ ".mysqli_error ( $this->link ) . "]. Error Code : [" . mysqli_errno ( $this->link )." ]. Error Sql Statement : [".$sql."]";
 					}
 				}
 				return $recordAffected;
@@ -558,7 +558,7 @@ class Vendor {
 				$this->execute = 'fail';
 				$this->responce = 'access denied lol';
 			}
-			
+				
 		} else {
 			$this->execute = 'fail';
 			$this->responce = "Where's the query forgot Ya!";
@@ -611,7 +611,7 @@ class Vendor {
 			if (! $result) {
 				$this->execute = 'fail';
 				$this->responce = "Sql Stament Error" . $this->sql . " \n\r" . mysqli_error ( $this->link ) . " <br> Error Code :x " . mysqli_errno ( $this->link);
-			
+					
 			} else {
 				return $result;
 			}
@@ -636,7 +636,7 @@ class Vendor {
 			if (! $result) {
 				$this->execute = 'fail';
 				$this->responce = "Sql Stament Error" . $this->sql . " \n\r" . mysqli_error ($this->link  ) . " <br> Error Code :x " . mysqli_errno ($this->link );
-				
+
 			} else {
 				return $result;
 			}
@@ -671,7 +671,7 @@ class Vendor {
 			$this->execute='fail';
 			$this->responce= "Maybe you should check out previous sql statement".$this->sql;
 		}
-		
+
 	}
 	/**
 	 * Retrieves the ID generated for an AUTO_INCREMENT column by the previous query (usually INSERT).
@@ -682,7 +682,7 @@ class Vendor {
 		if(!($this->insertId)){
 			$this->insertId = mysqli_insert_id ( $this->link );
 		}
-		return $this->insertId;		
+		return $this->insertId;
 	}
 	/**
 	 * Get the number of affected rows by the last INSERT, UPDATE, REPLACE or DELETE query associated with link_identifier.
@@ -690,7 +690,7 @@ class Vendor {
 	 */
 	public function affectedRows() {
 		return mysqli_affected_rows ( $this->link );
-	
+
 		// no information from sql server
 	}
 	/**
@@ -858,30 +858,42 @@ class Vendor {
 	 * @return string filter
 	 */
 	public function quickSearch($tableArray, $filterArray) {
+		// initilize dummy value
 		$i = 0;
+		$key=0;
 		$strSearch = null;
 		$strSearch = "AND ( ";
 		foreach ( $tableArray as $tableSearch ) {
-			$sql = "DESCRIBE	`".$this->databaseRequest."`.`" . $tableSearch . "`";
+			$key=0;
+			$i=0;
+			$sql = "DESCRIBE	`".$this->getRequestDatabase()."`.`" . $tableSearch . "`";
 			$result = mysqli_query ( $this->link, $sql );
-			if (mysqli_num_rows ( $result ) > 0) {
-				while ( ($row = mysqli_fetch_array ( $result )) == TRUE ) {
-					$strField = "`" . $tableSearch . "`.`" . $row ['Field'] . "`";
-					$key = array_search ( $strField, $filterArray, TRUE );
-					if ($i > 0 && strlen ( $key ) == 0) {
-						$strSearch .= " OR  ";
+			if($result){
+				if (@mysqli_num_rows ( $result ) > 0) {
+					while ( ($row = mysqli_fetch_array ( $result )) == TRUE ) {
+						$strField = "`" . $tableSearch . "`.`" . $row ['Field'] . "`";
+						$key = array_search ( $strField, $filterArray, TRUE );
+						if (strlen ( $key ) == 0) {
+							$strSearch .= " OR  ";
+							$i ++;
+							$d++;
+							$strSearch .= $strField . " like '%" . $this->fieldQuery . "%'";
+							if($i==1 && $d==1){
+								$strSearch = str_replace("OR","",$strSearch);
+							}
+						}
+						
+						
 					}
-					if (strlen ( $key ) == 0) {
-						$strSearch .= $strField . " like '%" . $this->fieldQuery . "%'";
-					}
-					$i ++;
 				}
 			} else {
-				echo "something wrong here";
+				$this->execute = 'fail';
+				$this->responce = "Sql Stament Error" . $this->sql . " \n\r" . mysqli_error ( $this->link ) . " <br> Error Code :x " . mysqli_errno ( $this->link);
+					
 			}
 		}
 		$strSearch .= ")";
-	
+
 		return $strSearch;
 	}
 	/**
@@ -943,10 +955,10 @@ class Vendor {
 						break;
 				}
 			}
-		
-		//$where .= $qs;
+
+			//$where .= $qs;
 		}
-		
+
 		if (isset ( $qs )) {
 			return $qs;
 		}

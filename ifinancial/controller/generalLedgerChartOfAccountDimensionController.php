@@ -331,7 +331,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 						" . $this->model->getExecuteTime() . "
 					)";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		//advance logging future
@@ -346,7 +346,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Record Created", "generalLedgerChartOfAccountDimensionId" => $generalLedgerChartOfAccountDimensionId));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getCreateMessage(), "generalLedgerChartOfAccountDimensionId" => $generalLedgerChartOfAccountDimensionId));
 		exit();
 	}
 
@@ -369,7 +369,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	GeneralLedgerChartOfAccountDimension.ISACTIVE	=	1	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		} else if ($this->isAdmin == 1) {
@@ -384,7 +384,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			} else if ($this->q->vendor == self::POSTGRESS) {
 				$this->auditFilter = "	1	=	1 	";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -477,7 +477,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		} else if ($this->q->vendor == self::POSTGRESS) {
 
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -507,7 +507,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -528,7 +528,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= $this->q->searching();
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -559,7 +559,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -661,7 +661,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql .= " LIMIT  " . $this->getStart() . " OFFSET " . $this->getLimit() . " ";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 		}
@@ -738,7 +738,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -843,7 +843,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 				WHERE 		GeneralLedgerChartOfAccountDimensionID			=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 			
@@ -855,7 +855,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Updated"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
 	}
 
@@ -899,7 +899,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$result = $this->q->fast($sql);
@@ -984,7 +984,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
 				WHERE 	GeneralLedgerChartOfAccountDimensionID		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else {
-				echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
 			
@@ -995,7 +995,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" => "Deleted"));
+		echo json_encode(array("success" => true, "message" => $this->systemString->getDeleteMessage()));
 		exit();
 	}
 
@@ -1031,7 +1031,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 
@@ -1058,7 +1058,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1082,7 +1082,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1106,7 +1106,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1130,7 +1130,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1154,7 +1154,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1178,7 +1178,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1202,7 +1202,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1226,7 +1226,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1250,7 +1250,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							} else if ($this->getVendor() == self::POSTGRESS) {
 								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
-								echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
@@ -1279,7 +1279,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			$sql .= "
 			WHERE " . strtoupper($this->model->getPrimaryKeyName()) . "  IN (" . $this->model->getPrimaryKeyAll() . ")";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->update($sql);
@@ -1289,9 +1289,9 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		}
 		$this->q->commit();
 		if ($this->getIsAdmin()) {
-			$message = "Updated";
+			$message = $this->systemString->getUpdateMessage();
 		} else {
-			$message = "deleted";
+			$message = $this->systemString->getDeleteMessage();
 		}
 		echo json_encode(array("success" => true, "message" => $message,
             "isAdmin" => $this->getIsAdmin()
@@ -1342,7 +1342,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 			WHERE 	GENERALLEDGERCHARTOFACCOUNTDIMENSIONTITLE 	= 	'" . $this->model->getGeneralLedgerChartOfAccountDimensionTitle() . "'
 			AND		ISACTIVE		=	1";
 		} else {
-			echo json_encode(array("success" => false, "message" => "Unsupported Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		$this->q->read($sql);

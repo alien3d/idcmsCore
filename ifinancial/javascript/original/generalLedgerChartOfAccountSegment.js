@@ -480,7 +480,8 @@ Ext.onReady(function () {
 				leafId : leafId,
 				isAdmin : isAdmin,
 				start : 0,
-				perPage : perPage
+				perPage : perPage,
+				database : 'iFinancial'
 			},
 			root : 'data',
 			fields : [{

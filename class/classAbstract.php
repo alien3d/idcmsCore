@@ -156,9 +156,7 @@ abstract class ConfigClass
 	function __construct ()
 	{
 		//optional
-		if (isset($_SESSION['database'])) {
-			$this->setDatabase($_SESSION['database']);
-		}
+		
 		if (isset($_SESSION['vendor'])) {
 			$this->setVendor($_SESSION['vendor']);
 		}

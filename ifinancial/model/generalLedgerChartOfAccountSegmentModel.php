@@ -8,32 +8,42 @@ require_once ("../../class/classValidation.php");
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package generalLedgerChartOfAccountSegment
+ * @package General Ledger
+ * @subpackage Chart Of Account Segment
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class GeneralLedgerChartOfAccountSegmentModel extends ValidationClass {
-
 	/**
+	 * Auto Increment Number Of Segment
 	 * @var int
 	 */
 	private $generalLedgerChartOfAccountSegmentId;
 	/**
+	 * Data Type For Segment.Either numeric,alphanumeric,alphabetic
+	 * @var int
+	 */
+	private $generalLedgerChartOfAccountSegmentTypeId;
+	/**
+	 * Number/Sequence Number Of Segment
 	 * @var string
 	 */
 	private $generalLedgerChartOfAccountSegmentNo;
 	/**
+	 * Length Segment Detail
 	 * @var int
 	 */
 	private $generalLedgerChartOfAccountSegmentLength;
 	/**
+	 * Description Of Segment.E.g First Segment Company .Second Segment Branch. Third Segment Department. Fourth Segment Location.Fived Segment Chart Of Account Detail
 	 * @var string
 	 */
-	private $generalLedgerChartOfAccountSegmentNoTitle;
+	private $generalLedgerChartOfAccountSegmentTitle;
 	/**
+	 * Description Of Segment.E.g First Segment Company .Second Segment Branch. Third Segment Department. Fourth Segment Location.Fived Segment Chart Of Account Detail
 	 * @var string
 	 */
-	private $generalLedgerChartOfAccountSegmentNoDesc;
+	private $generalLedgerChartOfAccountSegmentDesc;
 
 
 
@@ -53,17 +63,20 @@ class GeneralLedgerChartOfAccountSegmentModel extends ValidationClass {
 		if (isset($_POST ['generalLedgerChartOfAccountSegmentId'])) {
 			$this->setGeneralLedgerChartOfAccountSegmentId($this->strict($_POST ['generalLedgerChartOfAccountSegmentId'], 'numeric'), 0, 'single');
 		}
+		if (isset($_POST ['generalLedgerChartOfAccountSegmentTypeId'])) {
+			$this->setGeneralLedgerChartOfAccountSegmentTypeId($this->strict($_POST ['generalLedgerChartOfAccountSegmentTypeId'], 'numeric'), 0, 'single');
+		}
 		if (isset($_POST ['generalLedgerChartOfAccountSegmentNo'])) {
 			$this->setGeneralLedgerChartOfAccountSegmentNo($this->strict($_POST ['generalLedgerChartOfAccountSegmentNo'], 'string'));
 		}
 		if (isset($_POST ['generalLedgerChartOfAccountSegmentLength'])) {
 			$this->setGeneralLedgerChartOfAccountSegmentLength($this->strict($_POST ['generalLedgerChartOfAccountSegmentLength'], 'numeric'));
 		}
-		if (isset($_POST ['generalLedgerChartOfAccountSegmentNoTitle'])) {
-			$this->setGeneralLedgerChartOfAccountNoRangeOne($this->strict($_POST ['generalLedgerChartOfAccountSegmentNoTitle'], 'string'));
+		if (isset($_POST ['generalLedgerChartOfAccountSegmentTitle'])) {
+			$this->setGeneralLedgerChartOfAccountSegmentTitle($this->strict($_POST ['generalLedgerChartOfAccountSegmentTitle'], 'string'));
 		}
-		if (isset($_POST ['generalLedgerChartOfAccountSegmentNoDesc'])) {
-			$this->setGeneralLedgerChartOfAccountNoRangeTwo($this->strict($_POST ['generalLedgerChartOfAccountSegmentNoDesc'], 'string'));
+		if (isset($_POST ['generalLedgerChartOfAccountSegmentDesc'])) {
+			$this->setGeneralLedgerChartOfAccountSegmentDesc($this->strict($_POST ['generalLedgerChartOfAccountSegmentDesc'], 'string'));
 		}
 
 		/**
@@ -352,6 +365,24 @@ class GeneralLedgerChartOfAccountSegmentModel extends ValidationClass {
 			exit();
 		}
 	}
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerChartOfAccountSegmentTypeId()
+	{
+	    return $this->generalLedgerChartOfAccountSegmentTypeId;
+	}
+
+	/**
+	 * 
+	 * @param $generalLedgerChartOfAccountSegmentTypeId
+	 */
+	public function setGeneralLedgerChartOfAccountSegmentTypeId($generalLedgerChartOfAccountSegmentTypeId)
+	{
+	    $this->generalLedgerChartOfAccountSegmentTypeId = $generalLedgerChartOfAccountSegmentTypeId;
+	}
+
 
 
 
@@ -395,36 +426,36 @@ class GeneralLedgerChartOfAccountSegmentModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getGeneralLedgerChartOfAccountSegmentNoTitle()
+	public function getGeneralLedgerChartOfAccountSegmentTitle()
 	{
-	    return $this->generalLedgerChartOfAccountSegmentNoTitle;
+	    return $this->generalLedgerChartOfAccountSegmentTitle;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartOfAccountSegmentNoTitle
+	 * @param $generalLedgerChartOfAccountSegmentTitle
 	 */
-	public function setGeneralLedgerChartOfAccountSegmentNoTitle($generalLedgerChartOfAccountSegmentNoTitle)
+	public function setGeneralLedgerChartOfAccountSegmentTitle($generalLedgerChartOfAccountSegmentTitle)
 	{
-	    $this->generalLedgerChartOfAccountSegmentNoTitle = $generalLedgerChartOfAccountSegmentNoTitle;
+	    $this->generalLedgerChartOfAccountSegmentTitle = $generalLedgerChartOfAccountSegmentTitle;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getGeneralLedgerChartOfAccountSegmentNoDesc()
+	public function getGeneralLedgerChartOfAccountSegmentDesc()
 	{
-	    return $this->generalLedgerChartOfAccountSegmentNoDesc;
+	    return $this->generalLedgerChartOfAccountSegmentDesc;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartOfAccountSegmentNoDesc
+	 * @param $generalLedgerChartOfAccountSegmentDesc
 	 */
-	public function setGeneralLedgerChartOfAccountSegmentNoDesc($generalLedgerChartOfAccountSegmentNoDesc)
+	public function setGeneralLedgerChartOfAccountSegmentDesc($generalLedgerChartOfAccountSegmentDesc)
 	{
-	    $this->generalLedgerChartOfAccountSegmentNoDesc = $generalLedgerChartOfAccountSegmentNoDesc;
+	    $this->generalLedgerChartOfAccountSegmentDesc = $generalLedgerChartOfAccountSegmentDesc;
 	}
 }
 
