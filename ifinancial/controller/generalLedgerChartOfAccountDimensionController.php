@@ -9,12 +9,12 @@ require_once ("../../class/classSystemString.php");
 require_once ("../model/generalLedgerChartOfAccountDimensionModel.php");
 
 /**
- * this is generalLedgerChartOfAccountDimension setting files.This sample template file for master record
+ * Chart Of Account Dimension.Filtering Based Range or Formula
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package generalLedgerChartOfAccountDimension
- * @subpackage generalLedgerChartOfAccountDimensionv1,v2,v3,v4,v5
+ * @package General Ledger
+ * @subpackage Chart Of Account Dimension
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

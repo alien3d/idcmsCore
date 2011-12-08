@@ -172,7 +172,7 @@ class Vendor {
 	 *  @var string
 	 */
 	public $commonDatabase;
-	 
+
 
 
 	public function __construct() {
@@ -256,7 +256,7 @@ class Vendor {
 			$error = 1;
 		}
 		if ($error == 1) {
-				
+
 			$sql_log = "
 			INSERT	INTO	`ilog`.`log`
 					(
@@ -385,7 +385,7 @@ class Vendor {
 					$this->insertId = $this->lastInsertId();
 				}
 				if ($this->audit == 1) {
-						
+
 					$logAdvanceType = 'C';
 					$sqlColumn = "SHOW COLUMNS FROM `" . $this->tableName . "`";
 					$resultColumn = mysqli_query ( $this->link, $sqlColumn );
@@ -546,7 +546,7 @@ class Vendor {
 							`iLog`.`logAdvance`.`executeBy`					=   '" . $this->staffId . "',
 							`iLog`.`logAdvance`.`executeTime`					=	'" . date ( "Y-m-d H:i:s" ) . "'
 					WHERE 	`iLog`.`logAdvance`.`logAdvanceId`			=	'" . $logAdvanceId . "'";
-						
+
 					$result = mysqli_query ( $this->link, $sql );
 					if (! $result) {
 						$this->execute = 'fail';
@@ -558,7 +558,7 @@ class Vendor {
 				$this->execute = 'fail';
 				$this->responce = 'access denied lol';
 			}
-				
+
 		} else {
 			$this->execute = 'fail';
 			$this->responce = "Where's the query forgot Ya!";
@@ -882,8 +882,8 @@ class Vendor {
 								$strSearch = str_replace("OR","",$strSearch);
 							}
 						}
-						
-						
+
+
 					}
 				}
 			} else {
@@ -961,6 +961,100 @@ class Vendor {
 
 		if (isset ( $qs )) {
 			return $qs;
+		}
+	}
+	/**
+	 * Enter description here ...
+	 * @param unknown_type $sql
+	
+	 * @param unknown_type $type
+	 * @return string
+	 */
+	function dateFilter($sql,$tablename,$rowname,$startDate,$endDate,$dateFilterType) {
+
+		$this->dateFilterType=NULL;
+		$this->rowname=NULL;
+		$this->date1=NULL;
+		$this->sql=NULL;
+		$this->type=$type;
+		$this->rowname=$rowname;
+		$this->startDate=$date1;
+		$this->sql=$sql;
+
+		//get variable date
+		// get len of date
+		$checkLengthDate=strlen($this->getStartDate());
+
+		if($checkLengthDate==6) {
+
+			$day=substr($this->getStartDate(),6,2);
+			$month=substr($this->getStartDate(),4,2);
+			$year=substr($this->getStartDate(),0,4);
+		}
+		elseif($checkLengthDate==10) {
+
+			$day=substr($this->getStartDate(),8,2);
+			$month=substr($this->getStartDate(),5,2);
+			$year=substr($this->getStartDate(),0,4);
+
+		}
+
+		if($this->type=='day') {
+			//echo $this->sql;
+			// june 25 log change date to exact day search matching
+			/*
+			 	
+			// this below code are not stable
+			return($this->sql."
+			and
+			(
+			day(`".$this->tablename."`.`".$this->rowname."`='".$day."') )
+			and
+			(
+			month(`".$this->tablename."`.`".$this->rowname."`)='".$month."')
+			and
+			(
+			year(`".$this->tablename."`.`".$rowname."`)='".$year."')");
+
+			*/
+			// before using equal but when date time column it wouldn't parse it
+			return($this->sql." and `".$this->tableName."`.`".$this->fieldname."` like '%".$this->getStartDate()."%'");
+		}
+		elseif($this->type=='month') {
+
+			return($this->sql." and (month(`".$this->tablename."`.`".$this->rowname."`)='".$month."')  and (year(`".$this->tablename."`.`".$rowname."`)='".$year."')");
+				
+		}
+		elseif($this->type=='year') {
+
+			return($this->sql." and (year(`".$this->tablename."`.`".$this->rowname."`)='".$year."')");
+				
+		}
+		elseif($this->type=='between') {
+
+			// change Ext date to mysql proper date
+			$month_start=substr($_GET['start_date'],0,2);
+			$day_start=substr($_GET['start_date'],3,2);
+			$year_start=substr($_GET['start_date'],6,2);
+				
+			$month_end=substr($_GET['end_date'],0,2);
+			$day_end=substr($_GET['end_date'],3,2);
+			$year_end=substr($_GET['end_date'],6,2);
+				
+				
+			if(( $year_start >= 79) && ($year_start <= 99)) {  $_GET['start_date']='19'.$year_start.$month_start.$day_start; }
+			else { $_GET['start_date']='20'.$year_start.$month_start.$day_start; }
+				
+			if(( $year_end >= 79) && ($year_end <= 99)) {  $_GET['end_date']='19'.$year_end.$month_end.$day_end; }
+			else { $_GET['end_date']='20'.$year_end.$month_end.$day_end; }
+				
+			$_GET['end_date']='20'.$year_end.$month_end.$day_end;
+			return($sql."and `".$this->tablename."`.`".$this->rowname."` between '".$_GET['start_date']."' and '".$_GET['end_date']."' ");
+				
+		}
+		elseif($this->type=='week') {
+			// eventhough same as above better rename it
+			return($sql."and `".$this->tablename."`.`".$this->rowname."` between '".$_GET['start_date']."' and '".$_GET['end_date']."' ");
 		}
 	}
 	/**

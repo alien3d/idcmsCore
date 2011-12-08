@@ -9,16 +9,16 @@ require_once ("../../class/classSystemString.php");
 require_once ("../model/generalLedgerBudgetModel.php");
 
 /**
- * this is generalLedgerBudget setting files.This sample template file for master record
+ * Monthly Style Budget Controller
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package General Ledger
- * @subpackage General Ledger Budget
+ * @subpackage Budget
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralLedgerbudgetClass extends ConfigClass {
+class GeneralLedgerBudgetClass extends ConfigClass {
 
 	/**
 	 * Connection to the database

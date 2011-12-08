@@ -13,8 +13,8 @@ require_once ("../model/generalLedgerChartOfAccountTypeModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package generalLedgerChartOfAccountType
- * @subpackage generalLedgerChartOfAccountTypev1,v2,v3,v4,v5
+ * @package General Ledger
+ * @subpackageChart Of Account Type
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

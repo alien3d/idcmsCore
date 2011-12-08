@@ -14,7 +14,7 @@ require_once ("../model/generalLedgerJournalDetailModel.php");
  * @version 2
  * @author hafizan
  * @package General Ledger
- * @subpackage General Ledger Journal Detail
+ * @subpackage Journal Detail
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

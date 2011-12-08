@@ -8,7 +8,8 @@ require_once ("../../class/classValidation.php");
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package adjustment
+ * @package Account Receivable / Account Payable Invoice 
+ * @subpackage adjustment
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

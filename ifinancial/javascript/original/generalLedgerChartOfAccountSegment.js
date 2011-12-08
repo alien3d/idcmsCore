@@ -415,7 +415,7 @@ Ext.onReady(function () {
 				scrollDelay : false
 			})
 		}); // end log Advance Request
-	// popup  window for normal log and advance log
+	// popup window for normal log and advance log
 	var auditWindow = new Ext.Window({
 			name : 'auditWindow',
 			id : 'auditWindow',
@@ -716,8 +716,51 @@ Ext.onReady(function () {
 				}
 			},
 			tbar : {
-				items : [{
-						text : CheckAllLabel,
+				items : [ {
+					xtype:'button',
+					text : ' ',
+					tooltip : addToolbarLabel,
+					iconCls : 'add',
+					id : 'pageCreate',
+					
+					handler : function () {
+						viewPort.items.get(1).expand();
+					}
+				},
+				'-', {
+					xtype:'button',
+					text : ' ',
+					tooltip : excelToolbarLabel,
+					iconCls : 'page_excel',
+					id : 'page_excel',
+					
+					handler : function () {
+						Ext.Ajax.request({
+							url : '../controller/generalLedgerChartOfAccountSegmentController.php',
+							method : 'GET',
+							params : {
+								method : 'report',
+								mode : 'excel',
+								limit : perPage,
+								leafId : leafId
+							},
+							success : function (response, options) {
+								jsonResponse = Ext.decode(response.responseText);
+								if (jsonResponse.success == true) {
+									window.open('../../basic/document/excel/' + jsonResponse.filename);
+								} else {
+									Ext.MessageBox.alert(successLabel, jsonResponse.message);
+								}
+							},
+							failure : function (response, options) {
+								Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+							}
+						});
+					}
+				},'-',{
+						xtype:'button',
+						text:' ',
+						tooltip : CheckAllLabel,
 						iconCls : 'row-check-sprite-check',
 						listeners : {
 							'click' : function (button, e) {
@@ -728,9 +771,10 @@ Ext.onReady(function () {
 								});
 							}
 						}
-					}, {
+					},'-', {
 						xtype : 'button',
-						text : ClearAllLabel,
+						text:' ',
+						tooltip : ClearAllLabel,
 						iconCls : 'row-check-sprite-uncheck',
 						listeners : {
 							'click' : function (button, e) {
@@ -741,9 +785,10 @@ Ext.onReady(function () {
 								});
 							}
 						}
-					}, {
+					},'-', {
 						xtype : 'button',
-						text : saveButtonLabel,
+						text:' ',
+						tooltip : saveButtonLabel,
 						iconCls : 'bullet_disk',
 						listeners : {
 							'click' : function (button, e) {
@@ -809,8 +854,12 @@ Ext.onReady(function () {
 								});
 							}
 						}
-					}
-				]
+					},
+					'-',{ xtype:'button', text:'A', tooltip:'A', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'A' } }); } },'-',{ xtype:'button', text:'B', tooltip:'B', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'B' } }); } },'-',{ xtype:'button', text:'C', tooltip:'C', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'C' } }); } },'-',{ xtype:'button', text:'D', tooltip:'D', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'D' } }); } },'-',{ xtype:'button', text:'E', tooltip:'E', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'E' } }); } },'-',{ xtype:'button', text:'F', tooltip:'F', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'F' } }); } },'-',{ xtype:'button', text:'G', tooltip:'G', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'G' } }); } },'-',{ xtype:'button', text:'H', tooltip:'H', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'H' } }); } },'-',{ xtype:'button', text:'I', tooltip:'I', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'I' } }); } },'-',{ xtype:'button', text:'J', tooltip:'J', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'J' } }); } },'-',{ xtype:'button', text:'K', tooltip:'K', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'K' } }); } },'-',{ xtype:'button', text:'L', tooltip:'L', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'L' } }); } },'-',{ xtype:'button', text:'M', tooltip:'M', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'M' } }); } },'-',{ xtype:'button', text:'N', tooltip:'N', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'N' } }); } },'-',{ xtype:'button', text:'O', tooltip:'O', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'O' } }); } },'-',{ xtype:'button', text:'P', tooltip:'P', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'P' } }); } },'-',{ xtype:'button', text:'Q', tooltip:'Q', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'Q' } }); } },'-',{ xtype:'button', text:'R', tooltip:'R', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'R' } }); } },'-',{ xtype:'button', text:'S', tooltip:'S', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'S' } }); } },'-',{ xtype:'button', text:'T', tooltip:'T', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'T' } }); } },'-',{ xtype:'button', text:'U', tooltip:'U', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'U' } }); } },'-',{ xtype:'button', text:'V', tooltip:'V', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'V' } }); } },'-',{ xtype:'button', text:'W', tooltip:'W', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'W' } }); } },'-',{ xtype:'button', text:'X', tooltip:'X', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'X' } }); } },'-',{ xtype:'button', text:'Y', tooltip:'Y', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'Y' } }); } },'-',{ xtype:'button', text:'Z', tooltip:'Z', handler: function (button,e) { generalLedgerChartOfAccountSegmentStore.reload({ params : { leafId : leafId, start : 0, limit : perPage, character : 'Z' } }); } }
+					,'->', new Ext.ux.form.SearchField({
+						store : generalLedgerChartOfAccountSegmentStore,
+						width : 320
+					})]
 			},
 			bbar : new Ext.PagingToolbar({
 				store : generalLedgerChartOfAccountSegmentStore,
@@ -821,57 +870,7 @@ Ext.onReady(function () {
 	var gridPanel = new Ext.Panel({
 			title : leafNative,
 			iconCls : 'application_view_detail',
-			layout : 'fit',
-			tbar : [{
-					text : reloadToolbarLabel,
-					iconCls : 'database_refresh',
-					id : 'pageReload',
-					handler : function () {
-						generalLedgerChartOfAccountSegmentStore.reload();
-					}
-				},
-				'-', {
-					text : addToolbarLabel,
-					iconCls : 'add',
-					id : 'pageCreate',
-					
-					handler : function () {
-						viewPort.items.get(1).expand();
-					}
-				},
-				'-', {
-					text : excelToolbarLabel,
-					iconCls : 'page_excel',
-					id : 'page_excel',
-					
-					handler : function () {
-						Ext.Ajax.request({
-							url : '../controller/generalLedgerChartOfAccountSegmentController.php',
-							method : 'GET',
-							params : {
-								method : 'report',
-								mode : 'excel',
-								limit : perPage,
-								leafId : leafId
-							},
-							success : function (response, options) {
-								jsonResponse = Ext.decode(response.responseText);
-								if (jsonResponse.success == true) {
-									window.open('../../basic/document/excel/' + jsonResponse.filename);
-								} else {
-									Ext.MessageBox.alert(successLabel, jsonResponse.message);
-								}
-							},
-							failure : function (response, options) {
-								Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
-							}
-						});
-					}
-				},
-				'-', new Ext.ux.form.SearchField({
-					store : generalLedgerChartOfAccountSegmentStore,
-					width : 320
-				})],
+			layout : 'fit',			
 			items : [generalLedgerChartOfAccountSegmentGrid]
 		});
 	// form entry

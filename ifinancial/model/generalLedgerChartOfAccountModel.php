@@ -63,7 +63,7 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 		if (isset($_POST ['generalLedgerChartOfAccountDesc'])) {
 			$this->setGeneralLedgerChartOfAccountDesc($this->strict($_POST ['generalLedgerChartOfAccountDesc'], 'string'));
 		}
-		if (isset($_POST ['generalLedgerChartOfAccountNo'])) {
+		if (isset($_POST ['generalLedgerChartOfAccountNo'])) {			
 			$this->setGeneralLedgerChartOfAccountNo($this->strict($_POST ['generalLedgerChartOfAccountNo'], 'string'));
 		}
 		if (isset($_POST ['generalLedgerChartOfAccountTypeId'])) {

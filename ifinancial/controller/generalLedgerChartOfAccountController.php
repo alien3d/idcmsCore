@@ -9,12 +9,12 @@ require_once ("../../class/classSystemString.php");
 require_once ("../model/generalLedgerChartOfAccountModel.php");
 
 /**
- * this is generalLedgerChartOfAccount setting files.This sample template file for master record
+ * Chart Of Account .
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package generalLedgerChartOfAccount
- * @subpackage generalLedgerChartOfAccountv1,v2,v3,v4,v5
+ * @package General Ledger
+ * @subpackage Chart Of Account
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -143,22 +143,22 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 			$sql = "
 			INSERT INTO `iFinancial`.`generalLedgerChartOfAccount`
 					(
-						`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountTitle`,												
-						`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`,
-						`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountNo`,
-						`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerOfChartAccountTypeId`,
-						`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountReportType`,
-						`iFinancial`.`generalLedgerChartOfAccount`.`isDefault`,
-						`iFinancial`.`generalLedgerChartOfAccount`.`isNew`,													
-						`iFinancial`.`generalLedgerChartOfAccount`.`isDraft`,
-						`iFinancial`.`generalLedgerChartOfAccount`.`isUpdate`,													
-						`iFinancial`.`generalLedgerChartOfAccount`.`isDelete`,
-						`iFinancial`.`generalLedgerChartOfAccount`.`isActive`,													
-						`iFinancial`.`generalLedgerChartOfAccount`.`isApproved`,
-						`iFinancial`.`generalLedgerChartOfAccount`.`isReview`,                      		  	 				
-						`iFinancial`.`generalLedgerChartOfAccount`.`isPost`,
-						`iFinancial`.`generalLedgerChartOfAccount`.`executeBy`,												
-						`iFinancial`.`generalLedgerChartOfAccount`.`executeTime`
+						`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountTitle`,												
+						`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`,
+						`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountNo`,
+						`generalLedgerChartOfAccount`.`generalLedgerOfChartAccountTypeId`,
+						`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountReportType`,
+						`generalLedgerChartOfAccount`.`isDefault`,
+						`generalLedgerChartOfAccount`.`isNew`,													
+						`generalLedgerChartOfAccount`.`isDraft`,
+						`generalLedgerChartOfAccount`.`isUpdate`,													
+						`generalLedgerChartOfAccount`.`isDelete`,
+						`generalLedgerChartOfAccount`.`isActive`,													
+						`generalLedgerChartOfAccount`.`isApproved`,
+						`generalLedgerChartOfAccount`.`isReview`,                      		  	 				
+						`generalLedgerChartOfAccount`.`isPost`,
+						`generalLedgerChartOfAccount`.`executeBy`,												
+						`generalLedgerChartOfAccount`.`executeTime`
 					)
 			VALUES
 					(

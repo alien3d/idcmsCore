@@ -9,7 +9,7 @@ require_once ("../../class/classValidation.php");
  * @version 2
  * @author hafizan
  * @package General Ledger
- * @subpackage General Ledger Chart Of Account Type
+ * @subpackage Chart Of Account Type
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

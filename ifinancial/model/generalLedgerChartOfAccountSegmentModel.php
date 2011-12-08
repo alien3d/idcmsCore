@@ -57,6 +57,8 @@ class GeneralLedgerChartOfAccountSegmentModel extends ValidationClass {
 		 */
 		$this->setTableName('generalLedgerChartOfAccountSegment');
 		$this->setPrimaryKeyName('generalLedgerChartOfAccountSegmentId');
+		$this->setFilterCharacter('generalLedgerChartOfAccountSegmentDesc');
+		//$this->setFilterDate($filterDate);
 		/**
 		 * All the $_POST enviroment.
 		 */

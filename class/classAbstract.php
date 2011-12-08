@@ -63,6 +63,26 @@ abstract class ConfigClass
 	 */
 	private $gridQuery;
 	/**
+	 * Character Based Query Style
+	 * @var string
+	 */
+	private $characterQuery;
+	/**
+	 * Date Filtering Query Style
+	 * @var date
+	 */
+	private $dateRangeStartQuery;
+	/**
+	 * Date Filtering Query Style
+	 * @var date
+	 */
+	private $dateRangeEndQuery;
+	/**
+	 * Day,Week,Month,Year
+	 * @var string
+	 */
+	private $DateRangeType;
+	/**
 	 * Start
 	 * @var string
 	 */
@@ -686,5 +706,79 @@ abstract class ConfigClass
 		$this->requestDatabase = $requestDatabase;
 	}
 
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getCharacterQuery()
+	{
+	    return $this->characterQuery;
+	}
+
+	/**
+	 * 
+	 * @param $characterQuery
+	 */
+	public function setCharacterQuery($characterQuery)
+	{
+	    $this->characterQuery = $characterQuery;
+	}
+
+	
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getDateRangeStartQuery()
+	{
+	    return $this->dateRangeStartQuery;
+	}
+
+	/**
+	 * 
+	 * @param $dateRangeStartQuery
+	 */
+	public function setDateRangeStartQuery($dateRangeStartQuery)
+	{
+	    $this->dateRangeStartQuery = $dateRangeStartQuery;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getDateRangeEndQuery()
+	{
+	    return $this->dateRangeEndQuery;
+	}
+
+	/**
+	 * 
+	 * @param $dateRangeEndQuery
+	 */
+	public function setDateRangeEndQuery($dateRangeEndQuery)
+	{
+	    $this->dateRangeEndQuery = $dateRangeEndQuery;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getDateRangeType()
+	{
+	    return $this->DateRangeType;
+	}
+
+	/**
+	 * 
+	 * @param $DateRangeType
+	 */
+	public function setDateRangeType($DateRangeType)
+	{
+	    $this->DateRangeType = $DateRangeType;
+	}
 }
 ?>

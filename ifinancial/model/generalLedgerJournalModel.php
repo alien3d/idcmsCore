@@ -8,7 +8,8 @@ require_once ("../../class/classValidation.php");
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package generalLedgerJournal
+ * @package General Ledger
+ * @subpackage Journal
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

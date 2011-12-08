@@ -3,12 +3,12 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is generalledger model file.This is to ensure strict setting enable for all variable enter to database
- *
+ * General Ledger Transaction.All Transaction  From Subside Account Will Be put here.Subside Account- Account Payable,Account Receivable,Fix Asset,Payroll etc
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package generalledger
+ * @package General Ledger
+ * @subpackage General Ledger
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */

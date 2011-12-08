@@ -702,7 +702,7 @@ Ext.onReady(function() {
 												var modified = applicationAccessStore.getModifiedRecords();												
 												for ( var i = 0; i < modified.length; i++) {													
 													var dataChanges = modified[i].getChanges();	
-															.getAt(i);
+														
 													sub_url = sub_url
 													+ ' & applicationAccessId[] = '
 													+ modified[i]

@@ -13,8 +13,8 @@ require_once ("../model/generalLedgerJournalModel.php");
  * @name IDCMS
  * @version 2
  * @author hafizan
- * @package generalLedgerJournal
- * @subpackage generalLedgerJournalv1,v2,v3,v4,v5
+ * @package General Ledger
+ * @subpackage Journal
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
