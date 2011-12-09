@@ -129,7 +129,7 @@ class folderTranslateClass extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -150,7 +150,7 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -274,7 +274,7 @@ class folderTranslateClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"folderTranslateId" => $lastId, 
 					"message" => $this->systemString->getCreateMessage(),
 					"time"=>$time));
@@ -290,7 +290,7 @@ class folderTranslateClass extends ConfigClass {
 		$start = microtime(true);
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -450,6 +450,29 @@ class folderTranslateClass extends ConfigClass {
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -645,7 +668,7 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -786,7 +809,7 @@ class folderTranslateClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time));
 		exit();
@@ -800,7 +823,7 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -930,9 +953,9 @@ class folderTranslateClass extends ConfigClass {
 		}
 		$this->q->commit();
 		$end = microtime(true);
-			$time = $end - $start;
+		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time));
 		exit();
@@ -945,7 +968,7 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1264,7 +1287,7 @@ class folderTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1312,7 +1335,7 @@ class folderTranslateClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-				array(	"success" => true, 
+			array(	"success" => true,
 						"message" => $this->systemString->getFileGenerateMessage(),
 						"time"=>$time));
 			exit();
@@ -1368,7 +1391,7 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$folderTranslateObject->setGridQuery($_POST ['filter']);
 	}
-if (isset($_POST ['character'])) {
+	if (isset($_POST ['character'])) {
 		$folderTranslateObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {

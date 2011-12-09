@@ -318,7 +318,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$generalLedgerChartOfAccountTypeId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -329,7 +329,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getCreateMessage(), 
 					"generalLedgerChartOfAccountTypeId" => $generalLedgerChartOfAccountTypeId,
         			"time"=>$time));
@@ -462,6 +462,29 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -822,7 +845,7 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -962,8 +985,8 @@ class GeneralLedgerChartOfAccountTypeClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
-			
+				
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1457,7 +1480,7 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$generalLedgerChartOfAccountTypeObject->setGridQuery($_POST ['filter']);
 	}
-if (isset($_POST ['character'])) {
+	if (isset($_POST ['character'])) {
 		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {

@@ -94,7 +94,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->model = new TableMappingTranslateModel ();
 		$this->model->setVendor ( $this->getVendor () );
 		$this->model->execute ();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -117,7 +117,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-	
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
@@ -137,7 +137,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -218,8 +218,8 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"tableMappingTranslationTranslationId" => $lastId, 
 					"message" => $this->systemString->getCreateMessage(),
 					"time"=>$time ) );
@@ -231,9 +231,9 @@ class TableMappingTranslateClass extends ConfigClass {
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-	
+
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -263,6 +263,29 @@ class TableMappingTranslateClass extends ConfigClass {
 			if ($this->model->getTableMappingTranslationTranslationId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getTableMappingTranslationTranslationId ( 0, 'single' ) . "'";
 			}
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -394,8 +417,8 @@ class TableMappingTranslateClass extends ConfigClass {
 		if ($this->getTableMappingTranslationTranslationId ( 0, 'single' )) {
 			$end = microtime(true);
 			$time = $end - $start;
-			$json_encode = json_encode ( 
-				array (	'success' => true, 
+			$json_encode = json_encode (
+			array (	'success' => true,
 						'total' => $total, 
 						'time'=>$time,
 						'data' => $items ) );
@@ -408,8 +431,8 @@ class TableMappingTranslateClass extends ConfigClass {
 			}
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode ( 
-				array (	'success' => true, 
+			echo json_encode (
+			array (	'success' => true,
 						'total' => $total,
 						'time'=>$time, 
 						'data' => $items ) );
@@ -425,7 +448,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -488,8 +511,8 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -502,7 +525,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -560,8 +583,8 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array ("success" =>true, 
+		echo json_encode (
+		array ("success" =>true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -575,13 +598,13 @@ class TableMappingTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
 		}
-				$this->q->start();
-		
+		$this->q->start();
+
 		$loop = $this->model->getTotal ();
 
 		if ($this->getVendor () == self::MYSQL) {
@@ -690,8 +713,8 @@ class TableMappingTranslateClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -716,7 +739,7 @@ class TableMappingTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-			
+				
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -767,8 +790,8 @@ class TableMappingTranslateClass extends ConfigClass {
 		if ($file) {
 			$end = microtime(true);
 			$time = $end - $start;
-			echo json_encode ( 
-				array (	"success" =>true, 
+			echo json_encode (
+			array (	"success" =>true,
 						"message" => $this->systemString->getFileGenerateMessage(),
 						"time"=>$time ) );
 		} else {
@@ -804,7 +827,7 @@ if (isset ( $_POST ['method'] )) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$religionSampleObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

@@ -109,12 +109,12 @@ class StaffClass extends ConfigClass {
 		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect ( $this->getConnection (), $this->getUsername (), $this->getDatabase (), $this->getPassword () );
 
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
@@ -125,7 +125,7 @@ class StaffClass extends ConfigClass {
 		$this->documentTrail->setStaffId ( $this->getStaffId () );
 		$this->documentTrail->setLanguageId ( $this->getLanguageId () );
 
-		
+
 
 		$this->excel = new PHPExcel ();
 	}
@@ -600,7 +600,7 @@ class StaffClass extends ConfigClass {
 			}
 		}
 
-		
+
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
@@ -706,8 +706,31 @@ class StaffClass extends ConfigClass {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getStaffId ( 0, 'single' ) . "'";
 			}
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "Undefine Database Vendor" ) );
+			echo json_encode ( array ("success" => false, "message" => $this->systemString->getNonSupportedDatabase() ) );
 			exit ();
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -1869,7 +1892,7 @@ if (isset ( $_POST ['method'] )) {
 	if (isset ( $_POST ['filter'] )) {
 		$staffObject->setGridQuery ( $_POST ['filter'] );
 	}
-if (isset($_POST ['character'])) {
+	if (isset($_POST ['character'])) {
 		$staffObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {

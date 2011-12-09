@@ -94,7 +94,7 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 		$this->model = new GeneralLedgerBudgetModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -140,7 +140,7 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 		$this->q->start();
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
-			 
+
 			$sql = "
 			INSERT INTO `iFinancial`.`generalLedgerBudget`
 					(
@@ -344,11 +344,11 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$generalLedgerBudgetId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
-			echo json_encode(array("success" => false, 
+			echo json_encode(array("success" => false,
 			"message" => $this->q->responce));
 			exit();
 		}
@@ -356,7 +356,7 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getCreateMessage(), 
 					"generalLedgerBudgetId" => $generalLedgerBudgetId));
 		exit();
@@ -492,6 +492,29 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -707,7 +730,7 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 			$end = microtime(true);
 			$time = $end - $start;
 			echo json_encode(
-			array('success' => true, 
+			array('success' => true,
 			      'total' => $total, 
 			      'message' =>  $this->systemString->getReadMessage(),
 				  'time' => $time, 
@@ -874,19 +897,19 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
-				
+
 				echo json_encode(
-					array("success" => false, 
+				array("success" => false,
 					      "message" => $this->q->responce
-					      ));
+				));
 				exit();
-		
+
 			}
 		}
-		
+
 		$this->q->commit();
 		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
@@ -1020,7 +1043,7 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1067,7 +1090,7 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 
 		/**
 		 * System Validation Checking
@@ -1339,61 +1362,61 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
 		/*
-		if ($this->getVendor() == self::MYSQL) {
+		 if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
-		}
-		if ($this->getVendor() == self::MYSQL) {
+			}
+			if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`documentNo`
 			FROM 	`generalLedgerBudget`
 			WHERE 	`documentNo` 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		`isActive`		=	1";
-		} else if ($this->getVendor() == self::MSSQL) {
+			} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[documentNo]
 			FROM 	[generalLedgerBudget]
 			WHERE 	[documentNo] 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		[isActive]		=	1";
-		} else if ($this->getVendor() == self::ORACLE) {
+			} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	DOCUMENTNO
 			FROM 	GENERALLEDGERBUDGET
 			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		ISACTIVE		=	1";
-		} else if ($this->getVendor() == self::DB2) {
+			} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	DOCUMENTNO
 			FROM 	GENERALLEDGERBUDGET
 			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		ISACTIVE		=	1";
-		} else if ($this->getVendor() == self::POSTGRESS) {
+			} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	DOCUMENTNO
 			FROM 	GENERALLEDGERBUDGET
 			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
 			AND		ISACTIVE		=	1";
-		} else {
+			} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
-		}
-		$this->q->read($sql);
-		$total = 0;
-		$total = $this->q->numberRows();
-		if ($this->q->execute == 'fail') {
+			}
+			$this->q->read($sql);
+			$total = 0;
+			$total = $this->q->numberRows();
+			if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
-		}
-		if ($total > 0) {
+			}
+			if ($total > 0) {
 			$row = $this->q->fetchArray();
 			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "generalLedgerBudgetDesc" => $row ['generalLedgerBudgetDesc']));
 			exit();
-		} else {
+			} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
 			exit();
-		}
-		*/
+			}
+			*/
 	}
 
 	function firstRecord($value) {

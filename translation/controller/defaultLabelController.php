@@ -233,7 +233,7 @@ class DefaultLabelClass extends ConfigClass {
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		
+
 		if ($this->getVendor () == self::MYSQL) {
 
 			$sql = "SET NAMES \"utf8\"";
@@ -264,6 +264,29 @@ class DefaultLabelClass extends ConfigClass {
 			if ($this->model->getDefaultLabelId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "`." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getDefaultLabelId ( 0, 'single' ) . "'";
 			}
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -481,8 +504,8 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" => true, 
+		echo json_encode (
+		array (	"success" => true,
 					"message" => $this->systemString->getUpdateMessage(),
 					"time"=>$time ) );
 		exit ();
@@ -548,13 +571,13 @@ class DefaultLabelClass extends ConfigClass {
 		$this->q->commit ();
 		$end = microtime(true);
 		$time = $end - $start;
-		echo json_encode ( 
-			array (	"success" =>true, 
+		echo json_encode (
+		array (	"success" =>true,
 					"message" => $this->systemString->getDeleteMessage(),
 					"time"=>$time ) );
 		exit ();
 	}
-/**
+	/**
 	 * To Update flag Status
 	 */
 	function updateStatus() {
@@ -1014,7 +1037,7 @@ if (isset ( $_GET ['method'] )) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$languageObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

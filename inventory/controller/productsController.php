@@ -93,7 +93,7 @@ class ProductsClass extends ConfigClass {
 		$this->model = new productsModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -107,7 +107,7 @@ class ProductsClass extends ConfigClass {
 		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-		
+
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -137,7 +137,7 @@ class ProductsClass extends ConfigClass {
 		$this->q->start();
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
-			 
+
 			$sql = "
 			INSERT INTO `northwindgood`.`products`
 					(
@@ -384,7 +384,7 @@ class ProductsClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$productsId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -554,6 +554,29 @@ class ProductsClass extends ConfigClass {
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -994,7 +1017,7 @@ class ProductsClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1134,7 +1157,7 @@ class ProductsClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1142,11 +1165,11 @@ class ProductsClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-				echo json_encode(array(	"success" => true,"message" => $this->systemString->getDeleteMessage(),"time"=>$time));
+		echo json_encode(array(	"success" => true,"message" => $this->systemString->getDeleteMessage(),"time"=>$time));
 		exit();
 	}
 
-/**
+	/**
 	 * To Update flag Status
 	 */
 	function updateStatus() {
@@ -1616,7 +1639,7 @@ if (isset($_POST ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_POST ['databaseRequest'])) {
+	if (isset($_POST ['databaseRequest'])) {
 		$productsObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
@@ -1637,7 +1660,7 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$productsObject->setGridQuery($_POST ['filter']);
 	}
-if (isset($_POST ['character'])) {
+	if (isset($_POST ['character'])) {
 		$productsObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {
@@ -1694,7 +1717,7 @@ if (isset($_GET ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$productsObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

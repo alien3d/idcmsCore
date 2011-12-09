@@ -141,7 +141,7 @@ class TableMappingClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -318,9 +318,9 @@ class TableMappingClass extends ConfigClass {
 			}
 		}
 
-		
+
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -351,6 +351,29 @@ class TableMappingClass extends ConfigClass {
 			if ($this->model->gettableMappingId ( 0, 'single' )) {
 				$sql .= " AND " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->gettableMappingId ( 0, 'single' ) . "'";
 			}
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -539,7 +562,7 @@ class TableMappingClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -631,7 +654,7 @@ class TableMappingClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -716,7 +739,7 @@ class TableMappingClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor () == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
 
@@ -882,7 +905,7 @@ if (isset ( $_GET ['method'] )) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$religionSampleObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

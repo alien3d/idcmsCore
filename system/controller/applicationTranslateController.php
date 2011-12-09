@@ -124,7 +124,7 @@ class applicationTranslateClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -150,7 +150,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -290,7 +290,7 @@ class applicationTranslateClass extends ConfigClass {
 		$start = microtime(true);
 		$items = array();
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -452,6 +452,29 @@ class applicationTranslateClass extends ConfigClass {
 			exit();
 		}
 		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
+		}
+		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
 		 * @variables $filterArray;
@@ -495,7 +518,7 @@ class applicationTranslateClass extends ConfigClass {
 				$sql .= $this->q->searching();
 			}
 		}
-		
+
 		$this->q->read($sql);
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -515,7 +538,7 @@ class applicationTranslateClass extends ConfigClass {
 				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . "  " . strtoupper($this->getOrder()) . " ";
 			}
 		}
-		$_SESSION ['sql'] = $sql; 
+		$_SESSION ['sql'] = $sql;
 		$_SESSION ['start'] = $this->getStart();
 		$_SESSION ['limit'] = $this->getLimit();
 		if ($this->getStart() && $this->getLimit()) {
@@ -644,7 +667,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -799,7 +822,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -944,7 +967,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1267,7 +1290,7 @@ class applicationTranslateClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1365,7 +1388,7 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$applicationTranslateObject->setGridQuery($_POST ['filter']);
 	}
-if (isset($_POST ['character'])) {
+	if (isset($_POST ['character'])) {
 		$applicationTranslateObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {

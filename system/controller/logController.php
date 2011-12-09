@@ -114,12 +114,12 @@ class LogClass extends ConfigClass {
 		$this->recordSet->setTableName ( $this->model->getTableName () );
 		$this->recordSet->setPrimaryKeyName ( $this->model->getPrimaryKeyName () );
 		$this->recordSet->execute ();
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -148,7 +148,7 @@ class LogClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -198,6 +198,29 @@ class LogClass extends ConfigClass {
 			if ($this->model->getLeafId()) {
 				$sql .= " AND LOG.LEAFID='" . $this->model->getLeafId() . "'";
 			}
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -423,7 +446,7 @@ class LogClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -533,7 +556,7 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$logObject->setGridQuery($_POST ['filter']);
 	}
-if (isset($_POST ['character'])) {
+	if (isset($_POST ['character'])) {
 		$logObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {

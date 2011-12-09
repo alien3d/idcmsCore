@@ -128,7 +128,7 @@ class leafTranslateClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -278,7 +278,7 @@ class leafTranslateClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"leafTranslateId" => $lastId, 
 					"message" => $this->systemString->getCreateMessage(),
 					"time"=>$time));
@@ -292,7 +292,7 @@ class leafTranslateClass extends ConfigClass {
 	function read() {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
-		
+
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "SET NAMES \"utf8\"";
@@ -327,7 +327,7 @@ class leafTranslateClass extends ConfigClass {
 			if ($this->model->getLeafTranslateId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getLeafTranslateId(0, 'single') . "'";
 			}
-			
+				
 			if ($this->model->getLeafIdTemp() && $this->model->getLeafId()) {
 				$sql.= " AND `leafTranslate`.`leafId`='" . $this->model->getLeafId() . "'";
 			}
@@ -460,7 +460,29 @@ class leafTranslateClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
+		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
@@ -987,7 +1009,7 @@ class leafTranslateClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		/**
 		 * System Validation Checking
 		 * @var $access
@@ -1380,7 +1402,7 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$leafTranslateObject->setGridQuery($_POST ['filter']);
 	}
-if (isset($_POST ['character'])) {
+	if (isset($_POST ['character'])) {
 		$leafTranslateObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {

@@ -314,7 +314,7 @@ class LanguageClass extends ConfigClass {
 				$sql .= " AND  " . strtoupper ( $this->model->getTableName () ) . "." . strtoupper ( $this->model->getPrimaryKeyName () ) . "='" . $this->model->getLanguageId ( 0, 'single' ) . "'";
 			}
 		} else {
-			echo json_encode ( array ("success" => false, "message" => "Undefine Database Vendor" ) );
+			echo json_encode ( array ("success" => false, "message" => $this->systemString->getNonSupportedDatabase() ) );
 			exit ();
 		}
 		/**

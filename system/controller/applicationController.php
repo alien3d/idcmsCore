@@ -121,7 +121,7 @@ class ApplicationClass extends ConfigClass {
 		$this->security->setVendor($this->getVendor());
 		$this->security->setLeafId($this->getLeafId());
 		$this->security->execute();
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -488,7 +488,7 @@ class ApplicationClass extends ConfigClass {
 			if ($this->model->getApplicationId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getApplicationId(0, 'single') . "'";
 			}
-			
+				
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 					SELECT	[application].[applicationId],
@@ -602,8 +602,31 @@ class ApplicationClass extends ConfigClass {
 				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getApplicationId(0, 'single') . "'";
 			}
 		}else {
-			echo json_encode(array("success" => false, "message" => "Undefine Database Vendor"));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -775,7 +798,7 @@ class ApplicationClass extends ConfigClass {
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
 		} else {
-			
+				
 			if (count($items) == 0) {
 				$items = '';
 			}
@@ -1522,7 +1545,7 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$applicationObject->setGridQuery($_POST ['filter']);
 	}
-if (isset($_POST ['character'])) {
+	if (isset($_POST ['character'])) {
 		$applicationObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {

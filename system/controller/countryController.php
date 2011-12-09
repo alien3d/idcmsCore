@@ -14,7 +14,7 @@ require_once ("../model/countryModel.php");
  * @version 2
  * @author Maq,Hafizan
  * @package common application
- * @subpackage country 
+ * @subpackage country
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -265,7 +265,7 @@ class CountryClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$countryId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -403,6 +403,29 @@ class CountryClass extends ConfigClass {
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
+		}
+		/**
+		 * filter column based on first character
+		 */
+		if($this->getCharacterQuery()){
+			if($this->q->vendor==self::MYSQL){
+				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
+			} else if($this->q->vendor==self::MSSQL){
+				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
+			} else if ($this->q->vendor==self::ORACLE){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::DB2){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			} else if ($this->q->vendor==self::POSTGRESS){
+				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
+			}
+		}
+		/**
+		 * filter column based on Range Of Date
+		 * Example Day,Week,Month,Year
+		 */
+		if($this->getDateRangeQuery()){
+			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
@@ -602,8 +625,8 @@ class CountryClass extends ConfigClass {
 		}
 		if ($this->model->getCountryId(0, 'single')) {
 			$this->q->commit();
-		$end = microtime(true);
-		$time = $end - $start;
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getCountryId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getCountryId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
@@ -613,8 +636,8 @@ class CountryClass extends ConfigClass {
 				$items = '';
 			}
 			$this->q->commit();
-		$end = microtime(true);
-		$time = $end - $start;
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
 			exit();
 		}
@@ -629,7 +652,7 @@ class CountryClass extends ConfigClass {
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
-			$this->q->fast($sql);			
+			$this->q->fast($sql);
 		}
 		$this->q->start();
 		$this->model->update();
@@ -908,7 +931,7 @@ class CountryClass extends ConfigClass {
 				exit();
 			}
 		}
-	
+
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
@@ -1294,7 +1317,7 @@ class CountryClass extends ConfigClass {
             			"total" => $total, 
             			"message" => $this->systemString->getNonDuplicateMessage(),
             			"time"=>$time));
-		}	
+		}
 			
 	}
 
@@ -1425,7 +1448,7 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$countryObject->setGridQuery($_POST ['filter']);
 	}
-if (isset($_POST ['character'])) {
+	if (isset($_POST ['character'])) {
 		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {
@@ -1482,7 +1505,7 @@ if (isset($_GET ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$countryObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*
