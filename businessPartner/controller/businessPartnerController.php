@@ -93,7 +93,7 @@ class BusinesspartnerClass extends ConfigClass {
 		// audit property
 		$this->audit = 0;
 		$this->log = 1;
-		
+
 		$this->model = new BusinessPartnerModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
@@ -109,7 +109,7 @@ class BusinesspartnerClass extends ConfigClass {
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		
+
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -515,7 +515,7 @@ class BusinesspartnerClass extends ConfigClass {
 			if ($this->model->getBusinessPartnerId(0, 'single')) {
 				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getBusinessPartnerId(0, 'single') . "'";
 			}
-			
+				
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[businessPartner].[businessPartnerId],
@@ -1655,10 +1655,10 @@ class BusinesspartnerClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
+			echo json_encode(array("success" =>true, "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
 			exit();
 		} else {
-			echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
+			echo json_encode(array("success" =>false, "message" => $this->systemString->getFileNotGenerateMessage()));
 			exit();
 		}
 	}
@@ -1700,6 +1700,18 @@ if (isset($_POST ['method'])) {
 	}
 	if (isset($_POST ['filter'])) {
 		$businessPartnerObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering

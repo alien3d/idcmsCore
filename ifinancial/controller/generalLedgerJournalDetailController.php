@@ -9,13 +9,14 @@ require_once ("../../class/classSystemString.php");
 require_once ("../model/generalLedgerJournalDetailModel.php");
 
 /**
- * this is generalLedgerJournalDetail setting files.This sample template file for master record
+The general journal is where double entry bookkeeping entries are recorded by debiting one or more accounts and crediting another one or more accounts with the same total amount. The total amount debited and the total amount credited should always be equal, thereby ensuring the accounting equation is maintained.Depending on the business's accounting information system, specialized journals may be used in conjunction with the general journal for record-keeping. In such case, use of the general journal may be limited to non-routine and adjusting entries.
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package General Ledger
  * @subpackage Journal Detail
  * @link http://www.idcms.org
+ * @link http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class GeneralLedgerJournalDetailClass extends ConfigClass {
@@ -334,19 +335,19 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$generalLedgerJournalDetailId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
-		
+
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array("success" => true, 
+		array("success" => true,
 			      "message" => $this->systemString->getCreateMessage(), 
 			      "generalLedgerJournalDetailId" => $generalLedgerJournalDetailId,
         		  "time"=>$time));
@@ -784,7 +785,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 							[iFinancial].[generalLedgerJournalDetail].[executeTime]							=	" . $this->model->getExecuteTime() . "
 			WHERE 			[iFinancial].[generalLedgerJournalDetail].[generalLedgerJournalDetailId]		=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
-					$sql = "
+				$sql = "
 			UPDATE		IFINANCIAL.GENERALLEDGERJOURNALDETAIL
 			SET 		IFINANCIAL.GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALID						=	'" . $this->model->getGeneralLedgerJournalId() . "',
 						IFINANCIAL.GENERALLEDGERJOURNALDETAIL.GENERALLEDGERCHARTOFACCOUNTID					=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
@@ -802,9 +803,9 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 						IFINANCIAL.GENERALLEDGERJOURNALDETAIL.EXECUTEBY										=	'" . $this->model->getExecuteBy() . "',
 						IFINANCIAL.GENERALLEDGERJOURNALDETAIL.EXECUTETIME									=	" . $this->model->getExecuteTime() . "
 			WHERE 		IFINANCIAL.GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILID					=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
-			
+					
 			} else if ($this->getVendor() == self::DB2) {
-									$sql = "
+				$sql = "
 			UPDATE		IFINANCIAL.GENERALLEDGERJOURNALDETAIL
 			SET 		IFINANCIAL.GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALID						=	'" . $this->model->getGeneralLedgerJournalId() . "',
 						IFINANCIAL.GENERALLEDGERJOURNALDETAIL.GENERALLEDGERCHARTOFACCOUNTID					=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
@@ -823,7 +824,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 						IFINANCIAL.GENERALLEDGERJOURNALDETAIL.EXECUTETIME									=	" . $this->model->getExecuteTime() . "
 			WHERE 		IFINANCIAL.GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALDETAILID					=	'" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
-										$sql = "
+				$sql = "
 			UPDATE		IFINANCIAL.GENERALLEDGERJOURNALDETAIL
 			SET 		IFINANCIAL.GENERALLEDGERJOURNALDETAIL.GENERALLEDGERJOURNALID						=	'" . $this->model->getGeneralLedgerJournalId() . "',
 						IFINANCIAL.GENERALLEDGERJOURNALDETAIL.GENERALLEDGERCHARTOFACCOUNTID					=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
@@ -845,7 +846,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -986,7 +987,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1305,61 +1306,61 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
 		/**
-		$start = microtime(true);
-		if ($this->getVendor() == self::MYSQL) {
+		 $start = microtime(true);
+		 if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
-		}
-		if ($this->getVendor() == self::MYSQL) {
+			}
+			if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`generalLedgerJournalId`
 			FROM 	`generalLedgerJournalDetail`
 			WHERE 	`generalLedgerJournalId` 	= 	'" . $this->model->getGeneralLedgerJournalId() . "'
 			AND		`isActive`		=	1";
-		} else if ($this->getVendor() == self::MSSQL) {
+			} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[generalLedgerJournalId]
 			FROM 	[iFinancial][generalLedgerJournalDetail]
 			WHERE 	[generalLedgerJournalId] 	= 	'" . $this->model->getGeneralLedgerJournalId() . "'
 			AND		[isActive]		=	1";
-		} else if ($this->getVendor() == self::ORACLE) {
+			} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	GENERALLEDGERJOURNALID
 			FROM 	GENERALLEDGERJOURNALDETAIL
 			WHERE 	GENERALLEDGERJOURNALID 	= 	'" . $this->model->getGeneralLedgerJournalId() . "'
 			AND		ISACTIVE		=	1";
-		} else if ($this->getVendor() == self::DB2) {
+			} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	GENERALLEDGERJOURNALID
 			FROM 	GENERALLEDGERJOURNALDETAIL
 			WHERE 	GENERALLEDGERJOURNALID 	= 	'" . $this->model->getGeneralLedgerJournalId() . "'
 			AND		ISACTIVE		=	1";
-		} else if ($this->getVendor() == self::POSTGRESS) {
+			} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	GENERALLEDGERJOURNALID
 			FROM 	GENERALLEDGERJOURNALDETAIL
 			WHERE 	GENERALLEDGERJOURNALID 	= 	'" . $this->model->getGeneralLedgerJournalId() . "'
 			AND		ISACTIVE		=	1";
-		} else {
+			} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
-		}
-		$this->q->read($sql);
-		$total = 0;
-		$total = $this->q->numberRows();
-		if ($this->q->execute == 'fail') {
+			}
+			$this->q->read($sql);
+			$total = 0;
+			$total = $this->q->numberRows();
+			if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
-		}
-		if ($total > 0) {
+			}
+			if ($total > 0) {
 			$row = $this->q->fetchArray();
 			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "generalLedgerJournalDetailDesc" => $row ['generalLedgerJournalDetailDesc']));
 			exit();
-		} else {
+			} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
 			exit();
-		}
-		**/
+			}
+			**/
 	}
 
 	function firstRecord($value) {
@@ -1436,10 +1437,10 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
+			echo json_encode(array("success" =>true, "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
 			exit();
 		} else {
-			echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
+			echo json_encode(array("success" =>false, "message" => $this->systemString->getFileNotGenerateMessage()));
 			exit();
 		}
 	}
@@ -1481,6 +1482,18 @@ if (isset($_POST ['method'])) {
 	}
 	if (isset($_POST ['filter'])) {
 		$generalLedgerJournalDetailObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering

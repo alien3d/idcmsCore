@@ -846,8 +846,8 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
-			
+				
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -987,7 +987,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1005,7 +1005,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getVendor() == self::MYSQL) {
-		
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1436,10 +1436,10 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
+			echo json_encode(array("success" =>true, "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
 			exit();
 		} else {
-			echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
+			echo json_encode(array("success" =>false, "message" => $this->systemString->getFileNotGenerateMessage()));
 			exit();
 		}
 	}
@@ -1481,6 +1481,18 @@ if (isset($_POST ['method'])) {
 	}
 	if (isset($_POST ['filter'])) {
 		$generalLedgerChartOfAccountDimensionObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering

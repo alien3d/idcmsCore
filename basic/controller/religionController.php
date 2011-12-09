@@ -362,7 +362,7 @@ class ReligionSampleClass extends ConfigClass {
 				SELECT local_a.col1, local_a.col2, rmt_a.col5
 				FROM local_table local_a, remote_table@<name of link> rmt_a
 				WHERE local_a.key = rmt_a.key;
-			*/
+				*/
 			$sql = "
 			SELECT		RELIGIONSAMPLE.RELIGIONSAMPLEID   		 	AS 	\"religionSampleId\",
 						RELIGIONSAMPLE.RELIGIONSAMPLEDESC 			AS 	\"religionSampleDesc\",
@@ -526,12 +526,12 @@ class ReligionSampleClass extends ConfigClass {
 			} else if ($this->getVendor() == self::ORACLE) {
 				/**
 				 * Oracle using derived table also
-				 *	CREATE DATABASE LINK dblink_name 
+				 *	CREATE DATABASE LINK dblink_name
 				 *	CONNECT TO username IDENTIFIED BY password
 				 *	USING 'service_name';
-				 *  SELECT host_name, instance_nmame FROM v$instance@dblink_name;				
-				*/
-				
+				 *  SELECT host_name, instance_nmame FROM v$instance@dblink_name;
+				 */
+
 				$sql = "
 						SELECT *
 						FROM ( SELECT	a.*,
@@ -1423,7 +1423,7 @@ if (isset($_POST ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_POST ['databaseRequest'])) {
+	if (isset($_POST ['databaseRequest'])) {
 		$religionSampleObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
@@ -1443,6 +1443,18 @@ if (isset($_POST ['method'])) {
 	}
 	if (isset($_POST ['filter'])) {
 		$religionSampleObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering
@@ -1489,7 +1501,7 @@ if (isset($_GET ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$religionSampleObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

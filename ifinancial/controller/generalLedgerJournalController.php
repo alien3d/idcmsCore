@@ -9,13 +9,14 @@ require_once ("../../class/classSystemString.php");
 require_once ("../model/generalLedgerJournalModel.php");
 
 /**
- * this is generalLedgerJournal setting files.This sample template file for master record
+ * The general journal is where double entry bookkeeping entries are recorded by debiting one or more accounts and crediting another one or more accounts with the same total amount. The total amount debited and the total amount credited should always be equal, thereby ensuring the accounting equation is maintained.Depending on the business's accounting information system, specialized journals may be used in conjunction with the general journal for record-keeping. In such case, use of the general journal may be limited to non-routine and adjusting entries.
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package General Ledger
  * @subpackage Journal
  * @link http://www.idcms.org
+ * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class GeneralLedgerJournalClass extends ConfigClass {
@@ -93,7 +94,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$this->model = new GeneralLedgerJournalModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -139,7 +140,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$this->q->start();
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
-			 
+
 			$sql = "
 			INSERT INTO `iFinancial`.`generalLedgerJournal`
 					(
@@ -324,7 +325,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$generalLedgerJournalId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -335,7 +336,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array("success" => true, 
+		array("success" => true,
 			      "message" => $this->systemString->getCreateMessage(), 
 			      "generalLedgerJournalId" => $generalLedgerJournalId,
         		  "time"=>$time));
@@ -854,7 +855,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -994,7 +995,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1041,7 +1042,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 
 		/**
 		 * System Validation Checking
@@ -1443,10 +1444,10 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
+			echo json_encode(array("success" =>true, "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
 			exit();
 		} else {
-			echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
+			echo json_encode(array("success" =>false, "message" => $this->systemString->getFileNotGenerateMessage()));
 			exit();
 		}
 	}
@@ -1488,6 +1489,18 @@ if (isset($_POST ['method'])) {
 	}
 	if (isset($_POST ['filter'])) {
 		$generalLedgerJournalObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering

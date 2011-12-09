@@ -9,13 +9,14 @@ require_once ("../../class/classSystemString.php");
 require_once ("../model/generalLedgerForecastModel.php");
 
 /**
- * this is generalLedgerForecast setting files.This sample template file for master record
+ * A financial forecast is normally an estimate of future financial outcomes for a company or country (for futures and currency markets). Using historical internal accounting and sales data, in addition to external market and economic indicators, a financial forecast is an economist's best guess of what will happen to a company in financial terms over a given time period—which is usually one year. See Financial modeling.
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package General Ledger
  * @subpackage Forecast
  * @link http://www.idcms.org
+ * @linkt http://en.wikipedia.org/wiki/Financial_forecast
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class GeneralLedgerForecastClass extends ConfigClass {
@@ -93,7 +94,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		$this->model = new GeneralLedgerForecastModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -139,7 +140,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		$this->q->start();
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
-			 
+
 			$sql = "
 			INSERT INTO `iFinancial`.`generalLedgerForecast`
 					(
@@ -324,7 +325,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$generalLedgerForecastId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -335,7 +336,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		$end = microtime(true);
 		$time = $end - $start;
 		echo json_encode(
-			array(	"success" => true, 
+		array(	"success" => true,
 					"message" => $this->systemString->getCreateMessage(), 
 					"generalLedgerForecastId" => $generalLedgerForecastId,
         			"time"=>$time));
@@ -829,8 +830,8 @@ class GeneralLedgerForecastClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-	
-		
+
+
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -970,8 +971,8 @@ class GeneralLedgerForecastClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
-		
+				
+
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1019,7 +1020,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 
 		/**
 		 * System Validation Checking
@@ -1420,10 +1421,10 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
+			echo json_encode(array("success" =>true, "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
 			exit();
 		} else {
-			echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
+			echo json_encode(array("success" =>false, "message" => $this->systemString->getFileNotGenerateMessage()));
 			exit();
 		}
 	}
@@ -1465,6 +1466,18 @@ if (isset($_POST ['method'])) {
 	}
 	if (isset($_POST ['filter'])) {
 		$generalLedgerForecastObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering

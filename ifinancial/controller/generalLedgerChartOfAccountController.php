@@ -9,13 +9,14 @@ require_once ("../../class/classSystemString.php");
 require_once ("../model/generalLedgerChartOfAccountModel.php");
 
 /**
- * Chart Of Account .
+ * A chart of accounts (COA) is a created list of the accounts used by a business entity to define each class of items for which money or the equivalent is spent or received. It is used to organize the finances of the entity and to segregate expenditures, revenue, assets and liabilities in order to give interested parties a better understanding of the financial health of the entity.The list can be numerical, alphabetic, or alpha-numeric. The structure and headings of accounts should assist in consistent posting of transactions. Each nominal ledger account is unique to allow its ledger to be located. The list is typically arranged in the order of the customary appearance of accounts in the financial statements, profit and loss accounts followed by balance sheet accounts.
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package General Ledger
  * @subpackage Chart Of Account
  * @link http://www.idcms.org
+ * @link http://en.wikipedia.org/wiki/Chart_of_accounts
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class GeneralLedgerChartOfAccountClass extends ConfigClass {
@@ -1452,10 +1453,10 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
+			echo json_encode(array("success" =>true, "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
 			exit();
 		} else {
-			echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
+			echo json_encode(array("success" =>false, "message" => $this->systemString->getFileNotGenerateMessage()));
 			exit();
 		}
 	}

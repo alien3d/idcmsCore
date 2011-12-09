@@ -756,7 +756,7 @@ Ext.onReady(function() {
             dataIndex: 'executeBy',
             column: 'execiteBy',
             table: 'religion',
-			database :'iCore',
+            database :'iCore',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true

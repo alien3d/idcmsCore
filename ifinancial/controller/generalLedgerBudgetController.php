@@ -9,13 +9,14 @@ require_once ("../../class/classSystemString.php");
 require_once ("../model/generalLedgerBudgetModel.php");
 
 /**
- * Monthly Style Budget Controller
+ * Monthly Style Budget.A budget (from old French bougette, purse) is a financial plan and a list of all planned expenses and revenues. It is a plan for saving, borrowing and spending.[1] A budget is an important concept in microeconomics, which uses a budget line to illustrate the trade-offs between two or more goods. In other terms, a budget is an organizational plan stated in monetary terms.
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package General Ledger
  * @subpackage Budget
  * @link http://www.idcms.org
+ * @link http://en.wikipedia.org/wiki/Budgeting
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class GeneralLedgerBudgetClass extends ConfigClass {
@@ -347,7 +348,8 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 		$this->q->create($sql);
 		$generalLedgerBudgetId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
-			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			echo json_encode(array("success" => false, 
+			"message" => $this->q->responce));
 			exit();
 		}
 		$this->q->commit();
@@ -738,14 +740,14 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`iFinancial`.`" . $this->model->getTableName() . "`
+			WHERE   " . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			SELECT	[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
-			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -875,10 +877,16 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 			
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
-				echo json_encode(array("success => false, "message" => $this->q->responce));
+				
+				echo json_encode(
+					array("success" => false, 
+					      "message" => $this->q->responce
+					      ));
 				exit();
+		
 			}
 		}
+		
 		$this->q->commit();
 		echo json_encode(array("success" => true, "message" => $this->systemString->getUpdateMessage()));
 		exit();
@@ -1462,10 +1470,10 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
+			echo json_encode(array("success" => true, "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
 			exit();
 		} else {
-			echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getFileNotGenerateMessage()));
 			exit();
 		}
 	}
@@ -1507,6 +1515,18 @@ if (isset($_POST ['method'])) {
 	}
 	if (isset($_POST ['filter'])) {
 		$generalLedgerBudgetObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering
@@ -1598,5 +1618,5 @@ if (isset($_GET ['method'])) {
 			$generalLedgerBudgetObject->excel();
 		}
 	}
-}
+}s
 ?>
