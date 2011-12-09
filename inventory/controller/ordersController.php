@@ -1723,6 +1723,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['perPage'])) {
 		$ordersObject->setLimit($_POST ['perPage']);
 	}
+if (isset($_POST ['character'])) {
+		$ordersObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$ordersObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$ordersObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$ordersObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 *  Filtering
 	 */

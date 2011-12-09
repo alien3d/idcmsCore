@@ -530,6 +530,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$logAdvanceObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$logAdvanceObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$logAdvanceObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$logAdvanceObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$logAdvanceObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

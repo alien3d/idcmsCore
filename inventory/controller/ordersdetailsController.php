@@ -1519,7 +1519,7 @@ class OrdersDetailsClass extends ConfigClass {
 
 }
 
-$ordersdetailsObject = new OrdersdetailsClass ();
+$ordersDetailsObject = new OrdersdetailsClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1529,13 +1529,13 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$ordersdetailsObject->setLeafId($_POST ['leafId']);
+		$ordersDetailsObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$ordersdetailsObject->setIsAdmin($_POST ['isAdmin']);
+		$ordersDetailsObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/**
 	 * Database Request
@@ -1547,47 +1547,59 @@ if (isset($_POST ['method'])) {
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$ordersdetailsObject->setStart($_POST ['start']);
+		$ordersDetailsObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$ordersdetailsObject->setLimit($_POST ['perPage']);
+		$ordersDetailsObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$ordersdetailsObject->setFieldQuery($_POST ['query']);
+		$ordersDetailsObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$ordersdetailsObject->setGridQuery($_POST ['filter']);
+		$ordersDetailsObject->setGridQuery($_POST ['filter']);
+	}
+if (isset($_POST ['character'])) {
+		$ordersDetailsObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$ordersDetailsObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$ordersDetailsObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$ordersDetailsObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$ordersdetailsObject->setOrder($_POST ['order']);
+		$ordersetailsObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$ordersdetailsObject->setSortField($_POST ['sortField']);
+		$ordersDetailsObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$ordersdetailsObject->execute();
+	$ordersDetailsObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$ordersdetailsObject->create();
+		$ordersDetailsObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$ordersdetailsObject->update();
+		$ordersDetailsObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$ordersdetailsObject->read();
+		$ordersDetailsObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$ordersdetailsObject->delete();
+		$ordersDetailsObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1595,35 +1607,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$ordersdetailsObject->setLeafId($_GET ['leafId']);
+		$ordersDetailsObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$ordersdetailsObject->setIsAdmin($_GET ['isAdmin']);
+		$ordersDetailsObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$ordersdetailsObject->execute();
+	$ordersDetailsObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$ordersdetailsObject->staff();
+			$ordersDetailsObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$ordersdetailsObject->updateStatus();
+		$ordersDetailsObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
 	if (isset($_GET ['ordersdetailsDesc'])) {
 		if (strlen($_GET ['ordersdetailsDesc']) > 0) {
-			$ordersdetailsObject->duplicate();
+			$ordersDetailsObject->duplicate();
 		}
 	}
 	/**
@@ -1631,16 +1643,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$ordersdetailsObject->firstRecord('json');
+			$ordersDetailsObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$ordersdetailsObject->previousRecord('json', 0);
+			$ordersDetailsObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$ordersdetailsObject->nextRecord('json', 0);
+			$ordersDetailsObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$ordersdetailsObject->lastRecord('json');
+			$ordersDetailsObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1648,7 +1660,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$ordersdetailsObject->excel();
+			$ordersDetailsObject->excel();
 		}
 	}
 }

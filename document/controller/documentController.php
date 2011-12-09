@@ -124,7 +124,7 @@ class DocumentClass extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet =  new RecordSet();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -355,7 +355,7 @@ class DocumentClass extends ConfigClass {
 			}
 		}
 
-		
+
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast ( $sql );
@@ -1365,7 +1365,7 @@ if (isset ( $_POST ['method'] )) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_POST ['databaseRequest'])) {
+	if (isset($_POST ['databaseRequest'])) {
 		$documentObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
@@ -1385,6 +1385,18 @@ if (isset ( $_POST ['method'] )) {
 	}
 	if (isset ( $_POST ['filter'] )) {
 		$documentObject->setGridQuery ( $_POST ['filter'] );
+	}
+	if (isset($_POST ['character'])) {
+		$documentObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$documentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$documentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$documentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 *  Ordering

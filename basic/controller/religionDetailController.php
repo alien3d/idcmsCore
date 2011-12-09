@@ -251,7 +251,7 @@ class ReligionDetailSampleClass extends ConfigClass {
 			}
 		}
 
-	
+
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -751,7 +751,7 @@ class ReligionDetailSampleClass extends ConfigClass {
 					EXECUTETIME			=	" . $this->model->getExecuteTime() . "
 			WHERE 	RELIGIONDETAILID	=	'" . $this->model->getReligionDetailId(0, 'single') . "'";
 			}
-				
+
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1275,6 +1275,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['sortField'])) {
 		$religionDetailSampleObject->setSortField($_POST ['sortField']);
 	}
+	if (isset($_POST ['character'])) {
+		$religionDetailSampleObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$religionDetailSampleObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$religionDetailSampleObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$religionDetailSampleObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 *  Load the dynamic value
 	 */
@@ -1311,7 +1323,7 @@ if (isset($_GET ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$religionDetailSampleObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

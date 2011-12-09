@@ -1284,6 +1284,18 @@ if(isset($_POST['method']))	{
 
 		$themeObject->setGridQuery($_POST['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$themeObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$themeObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$themeObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$themeObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/**
 	 * Ordering
 	 */

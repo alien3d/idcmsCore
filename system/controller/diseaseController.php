@@ -1442,6 +1442,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$diseaseObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$diseaseObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$diseaseObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$diseaseObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$diseaseObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

@@ -93,7 +93,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		$this->model = new PurchaseOrdersStatusModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -107,7 +107,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-		
+
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -137,7 +137,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 		$this->q->start();
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
-			 
+
 			$sql = "
 			INSERT INTO `northwindgood`.`purchaseOrdersStatus`
 					(
@@ -262,7 +262,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-		
+
 		$this->q->create($sql);
 		$purchaseOrdersStatusId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
@@ -747,7 +747,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -887,7 +887,7 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -895,12 +895,12 @@ class PurchaseOrdersStatusClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
-				echo json_encode(array(	"success" => true,"message" => $this->systemString->getDeleteMessage(),"time"=>$time));
+		echo json_encode(array(	"success" => true,"message" => $this->systemString->getDeleteMessage(),"time"=>$time));
 		exit();
 	}
 
 
-/**
+	/**
 	 * To Update flag Status
 	 */
 	function updateStatus() {
@@ -1369,7 +1369,7 @@ if (isset($_POST ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_POST ['databaseRequest'])) {
+	if (isset($_POST ['databaseRequest'])) {
 		$purchaseOrdersStatusObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
@@ -1389,6 +1389,18 @@ if (isset($_POST ['method'])) {
 	}
 	if (isset($_POST ['filter'])) {
 		$purchaseOrdersStatusObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$purchaseOrdersStatusObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$purchaseOrdersStatusObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$purchaseOrdersStatusObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$purchaseOrdersStatusObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering

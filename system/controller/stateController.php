@@ -1433,6 +1433,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$stateObject->setGridQuery($_POST ['filter']);
 	}
+	if (isset($_POST ['character'])) {
+		$stateObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$stateObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$stateObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$stateObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */
@@ -1478,7 +1490,7 @@ if (isset($_GET ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$stateObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

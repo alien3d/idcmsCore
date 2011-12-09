@@ -1530,16 +1530,16 @@ if (isset($_POST ['method'])) {
 		$inventoryTransactionsObject->setGridQuery($_POST ['filter']);
 	}
 	if (isset($_POST ['character'])) {
-		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+		$inventoryTransactionsObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {
-		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+		$inventoryTransactionsObject->setDateRangeStartQuery($_POST['dateRangeStart']);
 	}
 	if (isset($_POST ['dateRangeEnd'])) {
-		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+		$inventoryTransactionsObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
 	}
 	if (isset($_POST ['dateRangeType'])) {
-		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+		$inventoryTransactionsObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering

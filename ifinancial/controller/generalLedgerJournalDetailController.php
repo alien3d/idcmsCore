@@ -1484,16 +1484,16 @@ if (isset($_POST ['method'])) {
 		$generalLedgerJournalDetailObject->setGridQuery($_POST ['filter']);
 	}
 	if (isset($_POST ['character'])) {
-		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+		$generalLedgerJournalDetailObject->setCharacterQuery($_POST['character']);
 	}
 	if (isset($_POST ['dateRangeStart'])) {
-		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+		$generalLedgerJournalDetailObject->setDateRangeStartQuery($_POST['dateRangeStart']);
 	}
 	if (isset($_POST ['dateRangeEnd'])) {
-		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+		$generalLedgerJournalDetailObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
 	}
 	if (isset($_POST ['dateRangeType'])) {
-		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+		$generalLedgerJournalDetailObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering

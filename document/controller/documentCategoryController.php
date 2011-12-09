@@ -114,7 +114,7 @@ class DocumentCategoryClass extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
-		
+
 		$this->recordSet = new RecordSet();
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
@@ -137,7 +137,7 @@ class DocumentCategoryClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -256,7 +256,7 @@ class DocumentCategoryClass extends ConfigClass {
 			}
 		}
 
-	
+
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -547,7 +547,7 @@ class DocumentCategoryClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -637,7 +637,7 @@ class DocumentCategoryClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -711,7 +711,7 @@ class DocumentCategoryClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1015,7 +1015,7 @@ class DocumentCategoryClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
-				
+
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
 		}
@@ -1245,7 +1245,7 @@ if (isset($_POST ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_POST ['databaseRequest'])) {
+	if (isset($_POST ['databaseRequest'])) {
 		$documentCategoryObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
@@ -1265,6 +1265,18 @@ if (isset($_POST ['method'])) {
 	}
 	if (isset($_POST ['filter'])) {
 		$documentCategoryObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$documentCategoryObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$documentCategoryObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$documentCategoryObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$documentCategoryObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering

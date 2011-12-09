@@ -1425,6 +1425,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$familyObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$familyObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$familyObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$familyObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$familyObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

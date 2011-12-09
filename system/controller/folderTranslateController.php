@@ -1368,6 +1368,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$folderTranslateObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$folderTranslateObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$folderTranslateObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$folderTranslateObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$folderTranslateObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

@@ -1480,6 +1480,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$bankObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$bankObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$bankObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$bankObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$bankObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

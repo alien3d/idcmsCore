@@ -106,7 +106,7 @@ class SkillClass extends ConfigClass {
 		$this->q->audit = $this->audit;
 		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
-		 
+			
 		$this->systemString = new SystemString();
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
@@ -606,8 +606,8 @@ class SkillClass extends ConfigClass {
 		}
 		if ($this->model->getSkillId(0, 'single')) {
 			$this->q->commit();
-		$end = microtime(true);
-		$time = $end - $start;
+			$end = microtime(true);
+			$time = $end - $start;
 			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getSkillId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getSkillId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
@@ -617,8 +617,8 @@ class SkillClass extends ConfigClass {
 				$items = '';
 			}
 			$this->q->commit();
-		$end = microtime(true);
-		$time = $end - $start;
+			$end = microtime(true);
+			$time = $end - $start;
 			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
 			exit();
 		}
@@ -915,7 +915,7 @@ class SkillClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1306,7 +1306,7 @@ class SkillClass extends ConfigClass {
             			"total" => $total, 
             			"message" => $this->systemString->getNonDuplicateMessage(),
             			"time"=>$time));
-		}		
+		}
 	}
 
 	function firstRecord($value) {
@@ -1442,6 +1442,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$skillObject->setGridQuery($_POST ['filter']);
 	}
+	if (isset($_POST ['character'])) {
+		$skillObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$skillObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$skillObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$skillObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */
@@ -1487,7 +1499,7 @@ if (isset($_GET ['method'])) {
 	/**
 	 * Database Request
 	 */
-	 if (isset($_GET ['databaseRequest'])) {
+	if (isset($_GET ['databaseRequest'])) {
 		$skillObject->setDatabaseRequest($_GET ['databaseRequest']);
 	}
 	/*

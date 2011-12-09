@@ -6,15 +6,15 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/ordersstatusModel.php");
+require_once ("../model/ordersStatusModel.php");
 
 /**
- * this is ordersstatus setting files.This sample template file for master record
+ * this is ordersStatus setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package account receivable
- * @subpackage ordersstatus
+ * @subpackage ordersStatus
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
@@ -139,16 +139,16 @@ class OrdersStatusClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			 
 			$sql = "
-			INSERT INTO `northwindgood`.`ordersstatus`
+			INSERT INTO `northwindgood`.`ordersStatus`
 					(
-						`northwindgood`.`ordersstatus`.`ordersStatusName`,												
+						`northwindgood`.`ordersStatus`.`ordersStatusName`,												
 						
-						`northwindgood`.`ordersstatus`.`isDefault`,
-						`northwindgood`.`ordersstatus`.`isNew`,												   `northwindgood`.`ordersstatus`.`isDraft`,
-						`northwindgood`.`ordersstatus`.`isUpdate`,											   `northwindgood`.`ordersstatus`.`isDelete`,
-						`northwindgood`.`ordersstatus`.`isActive`,											   `northwindgood`.`ordersstatus`.`isApproved`,
-						`northwindgood`.`ordersstatus`.`isReview`,                      		  	 			`northwindgood`.`ordersstatus`.`isPost`,
-						`northwindgood`.`ordersstatus`.`executeBy`,												`northwindgood`.`ordersstatus`.`executeTime`
+						`northwindgood`.`ordersStatus`.`isDefault`,
+						`northwindgood`.`ordersStatus`.`isNew`,												   `northwindgood`.`ordersStatus`.`isDraft`,
+						`northwindgood`.`ordersStatus`.`isUpdate`,											   `northwindgood`.`ordersStatus`.`isDelete`,
+						`northwindgood`.`ordersStatus`.`isActive`,											   `northwindgood`.`ordersStatus`.`isApproved`,
+						`northwindgood`.`ordersStatus`.`isReview`,                      		  	 			`northwindgood`.`ordersStatus`.`isPost`,
+						`northwindgood`.`ordersStatus`.`executeBy`,												`northwindgood`.`ordersStatus`.`executeTime`
 					)
 			VALUES
 					(
@@ -167,13 +167,13 @@ class OrdersStatusClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [ordersstatus]
+			INSERT INTO [ordersStatus]
 					(
 						[receiptNo],												
 						[membershipId],
-						[ordersstatusType],
-						[ordersstatusDate],
-						[ordersstatusAmount],													
+						[ordersStatusType],
+						[ordersStatusDate],
+						[ordersStatusAmount],													
 						
 						[isDefault],
 						[isNew],														[isDraft],
@@ -291,13 +291,13 @@ class OrdersStatusClass extends ConfigClass {
 		}
 		
 		$this->q->create($sql);
-		$ordersstatusId = $this->q->lastInsertId();
+		$ordersStatusId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "ordersstatusId" => $ordersstatusId));
+		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "ordersStatusId" => $ordersStatusId));
 		exit();
 	}
 
@@ -309,9 +309,9 @@ class OrdersStatusClass extends ConfigClass {
 		header('Content-Type:application/json; charset=utf-8');
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	`ordersstatus`.`isActive`		=	1	";
+				$this->auditFilter = "	`ordersStatus`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	[ordersstatus].[isActive]		=	1	";
+				$this->auditFilter = "	[ordersStatus].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	ORDERSTATUS.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
@@ -346,66 +346,66 @@ class OrdersStatusClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`ordersstatus`.`ordersstatusId`,
-						`ordersstatus`.`receiptNo`,
-						`ordersstatus`.`membershipId`,
-						`ordersstatus`.`ordersstatusType`,
-						`ordersstatus`.`ordersstatusDate`,
-						`ordersstatus`.`ordersstatusAmount`,
-						`ordersstatus`.`isDefault`,
-						`ordersstatus`.`isNew`,
-						`ordersstatus`.`isDraft`,
-						`ordersstatus`.`isUpdate`,
-						`ordersstatus`.`isDelete`,
-						`ordersstatus`.`isActive`,
-						`ordersstatus`.`isApproved`,
-						`ordersstatus`.`isReview`,
-						`ordersstatus`.`isPost`,
-						`ordersstatus`.`executeBy`,
-						`ordersstatus`.`executeTime`,
+			SELECT		`ordersStatus`.`ordersStatusId`,
+						`ordersStatus`.`receiptNo`,
+						`ordersStatus`.`membershipId`,
+						`ordersStatus`.`ordersStatusType`,
+						`ordersStatus`.`ordersStatusDate`,
+						`ordersStatus`.`ordersStatusAmount`,
+						`ordersStatus`.`isDefault`,
+						`ordersStatus`.`isNew`,
+						`ordersStatus`.`isDraft`,
+						`ordersStatus`.`isUpdate`,
+						`ordersStatus`.`isDelete`,
+						`ordersStatus`.`isActive`,
+						`ordersStatus`.`isApproved`,
+						`ordersStatus`.`isReview`,
+						`ordersStatus`.`isPost`,
+						`ordersStatus`.`executeBy`,
+						`ordersStatus`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`ordersstatus`
+			FROM 	`ordersStatus`
 			JOIN	`staff`
-			ON		`ordersstatus`.`executeBy` = `staff`.`staffId`
+			ON		`ordersStatus`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getOrdersStatusId(0, 'single')) {
 				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getOrdersStatusId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[ordersstatus].[ordersstatusId],
-						[ordersstatus].[receiptNo],
-						[ordersstatus].[membershipId],
-						[ordersstatus].[ordersstatusType],
-						[ordersstatus].[ordersstatusDate],
-						[ordersstatus].[ordersstatusAmount],
-						[ordersstatus].[isDefault],
-						[ordersstatus].[isNew],
-						[ordersstatus].[isDraft],
-						[ordersstatus].[isUpdate],
-						[ordersstatus].[isDelete],
-						[ordersstatus].[isActive],
-						[ordersstatus].[isApproved],
-						[ordersstatus].[isReview],
-						[ordersstatus].[isPost],
-						[ordersstatus].[executeBy],
-						[ordersstatus].[executeTime],
+			SELECT	[ordersStatus].[ordersStatusId],
+						[ordersStatus].[receiptNo],
+						[ordersStatus].[membershipId],
+						[ordersStatus].[ordersStatusType],
+						[ordersStatus].[ordersStatusDate],
+						[ordersStatus].[ordersStatusAmount],
+						[ordersStatus].[isDefault],
+						[ordersStatus].[isNew],
+						[ordersStatus].[isDraft],
+						[ordersStatus].[isUpdate],
+						[ordersStatus].[isDelete],
+						[ordersStatus].[isActive],
+						[ordersStatus].[isApproved],
+						[ordersStatus].[isReview],
+						[ordersStatus].[isPost],
+						[ordersStatus].[executeBy],
+						[ordersStatus].[executeTime],
 						[staff].[staffName]
-			FROM 	[ordersstatus]
+			FROM 	[ordersStatus]
 			JOIN		[staff]
-			ON		[ordersstatus].[executeBy] = [staff].[staffId]
+			ON		[ordersStatus].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getOrdersStatusId(0, 'single')) {
 				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getOrdersStatusId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		ORDERSTATUS.ORDERSTATUSID   		 	AS 	\"ordersstatusId\",
+			SELECT		ORDERSTATUS.ORDERSTATUSID   		 	AS 	\"ordersStatusId\",
 						ORDERSTATUS.RECEIPTNO 				AS 	\"receiptNo\",
 						ORDERSTATUS.MEMBERSHIPID 			AS 	\"membershipId\",
-						ORDERSTATUS.ORDERSTATUSTYPE 			AS 	\"ordersstatusType\",
-						ORDERSTATUS.ORDERSTATUSDATE 			AS 	\"ordersstatusDate\",
-						ORDERSTATUS.ORDERSTATUSAMOUNT 			AS 	\"ordersstatusAmount\",
+						ORDERSTATUS.ORDERSTATUSTYPE 			AS 	\"ordersStatusType\",
+						ORDERSTATUS.ORDERSTATUSDATE 			AS 	\"ordersStatusDate\",
+						ORDERSTATUS.ORDERSTATUSAMOUNT 			AS 	\"ordersStatusAmount\",
 						ORDERSTATUS.ISDEFAULT    			AS	\"isDefault\",
 						ORDERSTATUS.ISNEW		  			AS	\"isNew\",
 						ORDERSTATUS.ISDRAFT	  				AS	\"isDraft\",
@@ -439,13 +439,13 @@ class OrdersStatusClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('ordersstatusId');
+		$filterArray = array('ordersStatusId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('ordersstatus');
+		$tableArray = array('ordersStatus');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -536,33 +536,33 @@ class OrdersStatusClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [ordersstatusDerived] AS
+							WITH [ordersStatusDerived] AS
 							(
-								SELECT 		[ordersstatus].[ordersstatusId],
-											[ordersstatus].[receiptNo],
-											[ordersstatus].[membershipId],
-											[ordersstatus].[ordersstatusType],
-											[ordersstatus].[ordersstatusDate],
-											[ordersstatus].[ordersstatusAmount],
-											[ordersstatus].[isDefault],
-											[ordersstatus].[isNew],
-											[ordersstatus].[isDraft],
-											[ordersstatus].[isUpdate],
-											[ordersstatus].[isDelete],
-											[ordersstatus].[isApproved],
-											[ordersstatus].[isReview],
-											[ordersstatus].[isPost],
-											[ordersstatus].[executeBy],
-											[ordersstatus].[executeTime],
+								SELECT 		[ordersStatus].[ordersStatusId],
+											[ordersStatus].[receiptNo],
+											[ordersStatus].[membershipId],
+											[ordersStatus].[ordersStatusType],
+											[ordersStatus].[ordersStatusDate],
+											[ordersStatus].[ordersStatusAmount],
+											[ordersStatus].[isDefault],
+											[ordersStatus].[isNew],
+											[ordersStatus].[isDraft],
+											[ordersStatus].[isUpdate],
+											[ordersStatus].[isDelete],
+											[ordersStatus].[isApproved],
+											[ordersStatus].[isReview],
+											[ordersStatus].[isPost],
+											[ordersStatus].[executeBy],
+											[ordersStatus].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [ordersstatusId]) AS 'RowNumber'
-								FROM 	[ordersstatus]
+								ROW_NUMBER() OVER (ORDER BY [ordersStatusId]) AS 'RowNumber'
+								FROM 	[ordersStatus]
 								JOIN		[staff]
-								ON		[ordersstatus].[executeBy] = [staff].[staffId]
+								ON		[ordersStatus].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[ordersstatusDerived]
+							FROM 		[ordersStatusDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -575,12 +575,12 @@ class OrdersStatusClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	ORDERSTATUS.ORDERSTATUSID   		AS 	\"ordersstatusId\",
+								SELECT	ORDERSTATUS.ORDERSTATUSID   		AS 	\"ordersStatusId\",
 										ORDERSTATUS.RECEIPTNO 			AS 	\"receiptNo\",
 										ORDERSTATUS.MEMBERSHIPID 		AS 	\"membershipId\",
-										ORDERSTATUS.ORDERSTATUSTYPE 		AS 	\"ordersstatusType\",
-										ORDERSTATUS.ORDERSTATUSDATE 		AS 	\"ordersstatusDate\",
-										ORDERSTATUS.ORDERSTATUSAMOUNT 		AS 	\"ordersstatusAmount\",
+										ORDERSTATUS.ORDERSTATUSTYPE 		AS 	\"ordersStatusType\",
+										ORDERSTATUS.ORDERSTATUSDATE 		AS 	\"ordersStatusDate\",
+										ORDERSTATUS.ORDERSTATUSAMOUNT 		AS 	\"ordersStatusAmount\",
 										ORDERSTATUS.ISDEFAULT    		AS	\"isDefault\",
 										ORDERSTATUS.ISNEW		  		AS	\"isNew\",
 										ORDERSTATUS.ISDRAFT	 			AS	\"isDraft\",
@@ -704,12 +704,12 @@ class OrdersStatusClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`ordersstatus`
+				UPDATE		`ordersStatus`
 				SET 		`receiptNo`		=	'" . $this->model->getReceiptNo() . "',
 							`membershipId`		=	'" . $this->model->getMembershipId() . "',
-							`ordersstatusType`		=	'" . $this->model->getOrdersStatusType() . "',
-							`ordersstatusDate`		=	'" . $this->model->getOrdersStatusDate() . "',
-							`ordersstatusAmount`		=	'" . $this->model->getOrdersStatusAmount() . "',				
+							`ordersStatusType`		=	'" . $this->model->getOrdersStatusType() . "',
+							`ordersStatusDate`		=	'" . $this->model->getOrdersStatusDate() . "',
+							`ordersStatusAmount`		=	'" . $this->model->getOrdersStatusAmount() . "',				
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -721,15 +721,15 @@ class OrdersStatusClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`ordersstatusId`		=	'" . $this->model->getOrdersStatusId(0, 'single') . "'";
+				WHERE 		`ordersStatusId`		=	'" . $this->model->getOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[ordersstatus]
+				UPDATE 		[ordersStatus]
 				SET 		[receiptNo]		=	'" . $this->model->getReceiptNo() . "',
 							[membershipId]		=	'" . $this->model->getMembershipId() . "',
-							[ordersstatusType]		=	'" . $this->model->getOrdersStatusType() . "',
-							[ordersstatusDate]		=	'" . $this->model->getOrdersStatusDate() . "',
-							[ordersstatusAmount]		=	'" . $this->model->getOrdersStatusAmount() . "',	
+							[ordersStatusType]		=	'" . $this->model->getOrdersStatusType() . "',
+							[ordersStatusDate]		=	'" . $this->model->getOrdersStatusDate() . "',
+							[ordersStatusAmount]		=	'" . $this->model->getOrdersStatusAmount() . "',	
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -741,7 +741,7 @@ class OrdersStatusClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[ordersstatusId]			=	'" . $this->model->getOrdersStatusId(0, 'single') . "'";
+			WHERE 		[ordersStatusId]			=	'" . $this->model->getOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		ORDERSTATUS
@@ -869,7 +869,7 @@ class OrdersStatusClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`ordersstatus`
+				UPDATE 	`ordersStatus`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -881,10 +881,10 @@ class OrdersStatusClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`ordersstatusId`		=	'" . $this->model->getOrdersStatusId(0, 'single') . "'";
+				WHERE 	`ordersStatusId`		=	'" . $this->model->getOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[ordersstatus]
+				UPDATE 	[ordersStatus]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -896,7 +896,7 @@ class OrdersStatusClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[ordersstatusId]		=	'" . $this->model->getOrdersStatusId(0, 'single') . "'";
+				WHERE 	[ordersStatusId]		=	'" . $this->model->getOrdersStatusId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	ORDERSTATUS
@@ -1275,13 +1275,13 @@ class OrdersStatusClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	`receiptNo`
-			FROM 	`ordersstatus`
+			FROM 	`ordersStatus`
 			WHERE 	`receiptNo` 	= 	'" . $this->model->getReceiptNo() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[receiptNo]
-			FROM 	[ordersstatus]
+			FROM 	[ordersStatus]
 			WHERE 	[receiptNo] 	= 	'" . $this->model->getReceiptNo() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
@@ -1315,7 +1315,7 @@ class OrdersStatusClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "ordersstatusDesc" => $row ['ordersstatusDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "ordersStatusDesc" => $row ['ordersStatusDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
@@ -1382,7 +1382,7 @@ class OrdersStatusClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['ordersstatusDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['ordersStatusDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1391,7 +1391,7 @@ class OrdersStatusClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "ordersstatus" . rand(0, 10000000) . ".xlsx";
+		$filename = "ordersStatus" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1407,7 +1407,7 @@ class OrdersStatusClass extends ConfigClass {
 
 }
 
-$ordersstatusObject = new OrdersStatusClass ();
+$ordersStatusObject = new OrdersStatusClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1417,65 +1417,77 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$ordersstatusObject->setLeafId($_POST ['leafId']);
+		$ordersStatusObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$ordersstatusObject->setIsAdmin($_POST ['isAdmin']);
+		$ordersStatusObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/**
 	 * Database Request
 	 */
 	 if (isset($_POST ['databaseRequest'])) {
-		$ordersstatusObject->setDatabaseRequest($_POST ['databaseRequest']);
+		$ordersStatusObject->setDatabaseRequest($_POST ['databaseRequest']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$ordersstatusObject->setStart($_POST ['start']);
+		$ordersStatusObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$ordersstatusObject->setLimit($_POST ['perPage']);
+		$ordersStatusObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$ordersstatusObject->setFieldQuery($_POST ['query']);
+		$ordersStatusObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$ordersstatusObject->setGridQuery($_POST ['filter']);
+		$ordersStatusObject->setGridQuery($_POST ['filter']);
+	}
+	if (isset($_POST ['character'])) {
+		$ordersStatusObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$ordersStatusObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$ordersStatusObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$ordersStatusObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$ordersstatusObject->setOrder($_POST ['order']);
+		$ordersStatusObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$ordersstatusObject->setSortField($_POST ['sortField']);
+		$ordersStatusObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$ordersstatusObject->execute();
+	$ordersStatusObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$ordersstatusObject->create();
+		$ordersStatusObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$ordersstatusObject->update();
+		$ordersStatusObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$ordersstatusObject->read();
+		$ordersStatusObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$ordersstatusObject->delete();
+		$ordersStatusObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1483,13 +1495,13 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$ordersstatusObject->setLeafId($_GET ['leafId']);
+		$ordersStatusObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$ordersstatusObject->setIsAdmin($_GET ['isAdmin']);
+		$ordersStatusObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/**
 	 * Database Request
@@ -1500,24 +1512,24 @@ if (isset($_GET ['method'])) {
 	/*
 	 *  Load the dynamic value
 	 */
-	$ordersstatusObject->execute();
+	$ordersStatusObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$ordersstatusObject->staff();
+			$ordersStatusObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$ordersstatusObject->updateStatus();
+		$ordersStatusObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['ordersstatusDesc'])) {
-		if (strlen($_GET ['ordersstatusDesc']) > 0) {
-			$ordersstatusObject->duplicate();
+	if (isset($_GET ['ordersStatusDesc'])) {
+		if (strlen($_GET ['ordersStatusDesc']) > 0) {
+			$ordersStatusObject->duplicate();
 		}
 	}
 	/**
@@ -1525,16 +1537,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$ordersstatusObject->firstRecord('json');
+			$ordersStatusObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$ordersstatusObject->previousRecord('json', 0);
+			$ordersStatusObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$ordersstatusObject->nextRecord('json', 0);
+			$ordersStatusObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$ordersstatusObject->lastRecord('json');
+			$ordersStatusObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1542,7 +1554,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$ordersstatusObject->excel();
+			$ordersStatusObject->excel();
 		}
 	}
 }

@@ -1508,6 +1508,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['sortField'])) {
 		$generalLedgerChartOfAccountObject->setSortField($_POST ['sortField']);
 	}
+	if (isset($_POST ['character'])) {
+		$generalLedgerChartOfAccountObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$generalLedgerChartOfAccountObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$generalLedgerChartOfAccountObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$generalLedgerChartOfAccountObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 *  Load the dynamic value
 	 */

@@ -1420,6 +1420,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$leafObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$leafObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$leafObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$leafObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$leafObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 *  Ordering
 	 */

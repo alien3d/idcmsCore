@@ -1443,6 +1443,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$impairObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$impairObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$impairObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$impairObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$impairObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

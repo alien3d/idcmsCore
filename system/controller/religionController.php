@@ -1442,6 +1442,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$religionObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$religionObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$religionObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$religionObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$religionObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

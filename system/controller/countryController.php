@@ -1425,6 +1425,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$countryObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$generalLedgerChartOfAccountSegmentObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

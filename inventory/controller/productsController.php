@@ -1637,6 +1637,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$productsObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$productsObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$productsObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$productsObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$productsObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

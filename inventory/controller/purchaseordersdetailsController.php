@@ -1505,6 +1505,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$purchaseOrdersDetailsObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$purchaseOrdersDetailsObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$purchaseOrdersDetailsObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$purchaseOrdersDetailsObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$purchaseOrdersDetailsObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */

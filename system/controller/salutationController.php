@@ -1442,6 +1442,18 @@ if (isset($_POST ['method'])) {
 	if (isset($_POST ['filter'])) {
 		$salutationObject->setGridQuery($_POST ['filter']);
 	}
+if (isset($_POST ['character'])) {
+		$salutationObject->setCharacterQuery($_POST['character']);
+	}
+	if (isset($_POST ['dateRangeStart'])) {
+		$salutationObject->setDateRangeStartQuery($_POST['dateRangeStart']);
+	}
+	if (isset($_POST ['dateRangeEnd'])) {
+		$salutationObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
+	}
+	if (isset($_POST ['dateRangeType'])) {
+		$salutationObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+	}
 	/*
 	 * Ordering
 	 */
