@@ -278,13 +278,13 @@ class Security extends ConfigClass {
 			exit ();
 		}
 		if ($total == 1) {
-			$jsonEncode = json_encode ( array ('success' => TRUE, 'total' => $total, 'department' => $items ) );
+			$jsonEncode = json_encode ( array ('success' => true, 'total' => $total, 'department' => $items ) );
 			//$jsonEncode = str_replace ( "[", "", $jsonEncode );
 			//$jsonEncode = str_replace ( "]", "", $jsonEncode );
 			echo $jsonEncode;
 			exit ();
 		} else {
-			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'department' => $items ) );
+			echo json_encode ( array ('success' => true, 'total' => $total, 'department' => $items ) );
 			exit ();
 		}
 	}
@@ -427,13 +427,13 @@ class Security extends ConfigClass {
 			}
 		}
 		if ($total == 1) {
-			$jsonEncode = json_encode ( array ('success' => TRUE, 'total' => $total, 'module' => $items, 'message' => "data loaded" ) );
+			$jsonEncode = json_encode ( array ('success' => true, 'total' => $total, 'module' => $items, 'message' => "data loaded" ) );
 			//$jsonEncode = str_replace ( "[", "", $jsonEncode );
 			//$jsonEncode = str_replace ( "]", "", $jsonEncode );
 			echo $jsonEncode;
 			exit ();
 		} else {
-			echo json_encode ( array ('success' => TRUE, 'total' => $total, 'module' => $items, 'message' => "data loaded" ) );
+			echo json_encode ( array ('success' => true, 'total' => $total, 'module' => $items, 'message' => "data loaded" ) );
 			exit ();
 		}
 	}

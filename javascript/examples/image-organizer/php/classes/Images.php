@@ -47,7 +47,7 @@ class Images {
 //            $db->queryExec('INSERT INTO Albums_Images (image_id, album_id) VALUES ("'.$images[$i].'","'.$album.'")');
             $db->queryExec('UPDATE Images SET album_id = "'.$album.'" WHERE id ="'.$images[$i].'"');
         }
-        return array('success' => TRUE, 'images' => $images, 'album' => $album);
+        return array('success' => true, 'images' => $images, 'album' => $album);
     }
 
     function tagImage($data) {
@@ -63,7 +63,7 @@ class Images {
         for ($i = 0;$i < sizeof($images);$i++) {
             $db->queryExec('INSERT INTO Images_Tags (image_id, tag_id) VALUES ("'.$images[$i].'","'.$tag.'")');
         }
-        return array('success' => TRUE, 'images' => $images, 'tag' => $tag);
+        return array('success' => true, 'images' => $images, 'tag' => $tag);
     }
 
     function rename($data) {

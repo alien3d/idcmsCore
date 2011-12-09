@@ -696,7 +696,7 @@ class InventoryTransactionsClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getInventoryTransactionsId(0, 'single')) {
-			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getInventoryTransactionsId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getInventoryTransactionsId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getInventoryTransactionsId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getInventoryTransactionsId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -1395,10 +1395,10 @@ class InventoryTransactionsClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Record", "inventoryTransactionsDesc" => $row ['inventoryTransactionsDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "inventoryTransactionsDesc" => $row ['inventoryTransactionsDesc']));
 			exit();
 		} else {
-			echo json_encode(array("success" => true, "total" => $total, "message" => "Duplicate Non"));
+			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
 			exit();
 		}
 	}
@@ -1477,10 +1477,10 @@ class InventoryTransactionsClass extends ConfigClass {
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" => 'TRUE', "message" => "File generated", "filename" => $filename));
+			echo json_encode(array("success" => 'TRUE', "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
 			exit();
 		} else {
-			echo json_encode(array("success" => 'FALSE', "message" => "File not generated"));
+			echo json_encode(array("success" => 'FALSE', "message" => $this->systemString->getFileNotGenerateMessage()));
 			exit();
 		}
 	}

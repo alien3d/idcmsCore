@@ -130,7 +130,7 @@ class RecordSet extends ConfigClass {
 		if ($value == 'value') {
 			return intval ( $nextRecord );
 		} else {
-			echo $json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'nextRecord' => $nextRecord ) );
+			echo $json_encode = json_encode ( array ('success' => true, 'total' => $total, 'nextRecord' => $nextRecord ) );
 			exit ();
 		}
 	}
@@ -181,7 +181,7 @@ class RecordSet extends ConfigClass {
 		if ($value == 'value') {
 			return intval ( $previousRecord );
 		} else {
-			echo $json_encode = json_encode ( array ('success' => TRUE, 'total' => $total, 'previousRecord' => $previousRecord ) );
+			echo $json_encode = json_encode ( array ('success' => true, 'total' => $total, 'previousRecord' => $previousRecord ) );
 			exit ();
 		}
 	}
