@@ -1048,7 +1048,7 @@ Ext.onReady(function () {
 
 	var generalLedgerChartOfAccountIdStart = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
-        fieldLabel: generalLedgerChartOfAccountIdLabel,
+        fieldLabel: 'y',
         name: ' generalLedgerChartOfAccountIdStart',
         hiddenName: ' generalLedgerChartOfAccountIdStart',
         valueField: 'generalLedgerChartOfAccountId',
@@ -1075,10 +1075,10 @@ Ext.onReady(function () {
 	
 	var generalLedgerChartOfAccountIdEnd = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
-        fieldLabel: generalLedgerChartOfAccountIdLabel,
+        fieldLabel: 'z',
         name: 'generalLedgerChartOfAccountIdEnd',
         hiddenName: 'generalLedgerChartOfAccountIdEnd',
-        valueField: 'generalLedgerChartOfAccountIdEnd',
+        valueField: 'generalLedgerChartOfAccountId',
         hiddenId: 'generalLedgerChartOfAccountIdEnd_fake',
         id: 'generalLedgerlChartOfAccountIdEnd',
         displayField: 'generalLedgerChartOfAccountDesc',

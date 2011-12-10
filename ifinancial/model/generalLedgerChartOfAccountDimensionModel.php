@@ -30,11 +30,11 @@ class GeneralledgerchartofaccountdimensionModel extends ValidationClass {
 	/**
 	 * @var varchar
 	 */
-	private $generalLedgerChartAccountNoRangeOne;
+	private $generalLedgerChartOfAccountIdStart;
 	/**
 	 * @var varchar
 	 */
-	private $generalLedgerChartAccountNoRangeTwo;
+	private $generalLedgerChartOfAccountIdEnd;
 
 
 
@@ -60,17 +60,17 @@ class GeneralledgerchartofaccountdimensionModel extends ValidationClass {
 		if (isset($_POST ['generalLedgerChartOfAccountDimensionDesc'])) {
 			$this->setGeneralLedgerChartOfAccountDimensionDesc($this->strict($_POST ['generalLedgerChartOfAccountDimensionDesc'], 'string'));
 		}
-		if (isset($_POST ['generalLedgerChartAccountNoRangeOne'])) {
-			$this->setGeneralLedgerChartOfAccountNoRangeOne($this->strict($_POST ['generalLedgerChartAccountNoRangeOne'], 'string'));
+		if (isset($_POST ['generalLedgerChartOfAccountIdStart'])) {
+			$this->setGeneralLedgerChartOfAccountIdStart($this->strict($_POST ['generalLedgerChartOfAccountIdStart'], 'string'));
 		}
-		if (isset($_POST ['generalLedgerChartAccountNoRangeTwo'])) {
-			$this->setGeneralLedgerChartOfAccountNoRangeTwo($this->strict($_POST ['generalLedgerChartAccountNoRangeTwo'], 'string'));
+		if (isset($_POST ['generalLedgerChartOfAccountIdEnd'])) {
+			$this->setGeneralLedgerChartOfAccountIdEnd($this->strict($_POST ['generalLedgerChartOfAccountIdEnd'], 'string'));
 		}
 
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['generalledgerchartofaccountdimensionId'])) {
+		if (isset($_GET ['generalLedgerChartOfAccountDimensionId'])) {
 			$this->setTotal(count($_GET ['generalLedgerChartOfAccountDimensionId']));
 		}
 
@@ -396,36 +396,36 @@ class GeneralledgerchartofaccountdimensionModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getGeneralLedgerChartAccountNoRangeOne()
+	public function getGeneralLedgerChartOfAccountIdStart()
 	{
-	    return $this->generalLedgerChartAccountNoRangeOne;
+	    return $this->generalLedgerChartOfAccountIdStart;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartAccountNoRangeOne
+	 * @param $generalLedgerChartOfAccountIdStart
 	 */
-	public function setGeneralLedgerChartAccountNoRangeOne($generalLedgerChartAccountNoRangeOne)
+	public function setGeneralLedgerChartOfAccountIdStart($generalLedgerChartOfAccountIdStart)
 	{
-	    $this->generalLedgerChartAccountNoRangeOne = $generalLedgerChartAccountNoRangeOne;
+	    $this->generalLedgerChartOfAccountIdStart = $generalLedgerChartOfAccountIdStart;
 	}
 
 	/**
 	 * 
 	 * @return 
 	 */
-	public function getGeneralLedgerChartAccountNoRangeTwo()
+	public function getGeneralLedgerChartOfAccountIdEnd()
 	{
-	    return $this->generalLedgerChartAccountNoRangeTwo;
+	    return $this->generalLedgerChartOfAccountIdEnd;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartAccountNoRangeTwo
+	 * @param $generalLedgerChartOfAccountIdEnd
 	 */
-	public function setGeneralLedgerChartAccountNoRangeTwo($generalLedgerChartAccountNoRangeTwo)
+	public function setGeneralLedgerChartOfAccountIdEnd($generalLedgerChartOfAccountIdEnd)
 	{
-	    $this->generalLedgerChartAccountNoRangeTwo = $generalLedgerChartAccountNoRangeTwo;
+	    $this->generalLedgerChartOfAccountIdEnd = $generalLedgerChartOfAccountIdEnd;
 	}
 }
 

@@ -37,7 +37,7 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 	/**
 	 * @var string
 	 */
-	private $generalLedgerChartOfAccountReportType;
+	private $generalLedgerChartOfAccountReportTypeId;
 
 
 
@@ -51,6 +51,8 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 		 */
 		$this->setTableName('generalledgerchartofaccount');
 		$this->setPrimaryKeyName('generalLedgerChartOfAccountId');
+		$this->setFilterCharacter('generalLedgerChartOfAccountNo');
+		//$this->setFilterCharacter('generalLedgerChartOfAccountNo');
 		/**
 		 * All the $_POST enviroment.
 		 */
@@ -69,8 +71,8 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 		if (isset($_POST ['generalLedgerChartOfAccountTypeId'])) {
 			$this->setGeneralLedgerChartOfAccountDate($this->strict($_POST ['generalLedgerChartOfAccountTypeId'], 'numeric'));
 		}
-		if (isset($_POST ['generalLedgerChartOfAccountReportType'])) {
-			$this->setGeneralLedgerChartOfAccountAmount($this->strict($_POST ['generalLedgerChartOfAccountReportType'], 'string'));
+		if (isset($_POST ['generalLedgerChartOfAccountReportTypeId'])) {
+			$this->setGeneralLedgerChartOfAccountAmount($this->strict($_POST ['generalLedgerChartOfAccountReportTypeId'], 'string'));
 		}
 
 		/**
@@ -440,16 +442,16 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 	 */
 	public function getGeneralLedgerChartOfAccountReportType()
 	{
-	    return $this->generalLedgerChartOfAccountReportType;
+	    return $this->generalLedgerChartOfAccountReportTypeId;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartOfAccountReportType
+	 * @param $generalLedgerChartOfAccountReportTypeId
 	 */
-	public function setGeneralLedgerChartOfAccountReportType($generalLedgerChartOfAccountReportType)
+	public function setGeneralLedgerChartOfAccountReportType($generalLedgerChartOfAccountReportTypeId)
 	{
-	    $this->generalLedgerChartOfAccountReportType = $generalLedgerChartOfAccountReportType;
+	    $this->generalLedgerChartOfAccountReportTypeId = $generalLedgerChartOfAccountReportTypeId;
 	}
 }
 

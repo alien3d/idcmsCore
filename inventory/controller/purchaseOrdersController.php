@@ -456,7 +456,7 @@ class PaymentClass extends ConfigClass {
 		 * filter column based on Range Of Date
 		 * Example Day,Week,Month,Year
 		 */
-		if($this->getDateRangeQuery()){
+		if($this->getDateRangeStartQuery()){
 			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
