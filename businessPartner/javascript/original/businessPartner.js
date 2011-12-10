@@ -1217,8 +1217,7 @@ Ext.onReady(function () {
 	var gridPanel = new Ext.Panel({
 			title : leafNative,
 			iconCls : 'application_view_detail',
-			layout : 'fit',
-		
+			layout : 'fit',		
 			items : [businessPartnerGrid]
 		});
 	// form entry
