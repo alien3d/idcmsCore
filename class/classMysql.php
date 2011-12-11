@@ -172,6 +172,11 @@ class Vendor {
 	 *  @var string
 	 */
 	public $commonDatabase;
+	/**
+	 *  Management Database
+	 *  @var string
+	 */
+	public $managementDatabase;
 
 
 
@@ -202,12 +207,13 @@ class Vendor {
 		/**
 		 * Overide above using core database.
 		 */
-		$this->coreDatabase = 'iCore';
-		$this->financialDatabase = 'iFinancial';
-		$this->fixAssetDatabase= 'iFixAsset';
-		$this->payrollDatabase='iPayroll';
-		$this->humanResourceDatabase = 'iHumanResources';
-		$this->commonDatabase ='iCommon';
+		$this->setCoreDatabase('iCore');
+		$this->setFinancialDatabase('iFinancial');
+		$this->setFixAssetDatabase('iFixAsset');
+		$this->setPayrollDatabase('iPayroll');
+		$this->setHumanResourcesDatabase('iHumanResources');
+		$this->setManagementDatabase('imanagement');
+		$this->setCommonDatabase('iCommon');
 		$this->databaseName  = $this->coreDatabase;  // overide above
 		$this->password = $password;
 		$this->link = mysqli_connect ( $this->connection, $this->username, $this->password, $this->databaseName, $this->port, $this->socket );
@@ -1090,6 +1096,132 @@ class Vendor {
 	 */
 	public function setRequestDatabase($requestDatabase) {
 		$this->requestDatabase = $requestDatabase;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getCoreDatabase()
+	{
+	    return $this->coreDatabase;
+	}
+
+	/**
+	 * 
+	 * @param $coreDatabase
+	 */
+	public function setCoreDatabase($coreDatabase)
+	{
+	    $this->coreDatabase = $coreDatabase;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getFinancialDatabase()
+	{
+	    return $this->financialDatabase;
+	}
+
+	/**
+	 * 
+	 * @param $financialDatabase
+	 */
+	public function setFinancialDatabase($financialDatabase)
+	{
+	    $this->financialDatabase = $financialDatabase;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getFixAssetDatabase()
+	{
+	    return $this->fixAssetDatabase;
+	}
+
+	/**
+	 * 
+	 * @param $fixAssetDatabase
+	 */
+	public function setFixAssetDatabase($fixAssetDatabase)
+	{
+	    $this->fixAssetDatabase = $fixAssetDatabase;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getPayrollDatabase()
+	{
+	    return $this->payrollDatabase;
+	}
+
+	/**
+	 * 
+	 * @param $payrollDatabase
+	 */
+	public function setPayrollDatabase($payrollDatabase)
+	{
+	    $this->payrollDatabase = $payrollDatabase;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getHumanResourcesDatabase()
+	{
+	    return $this->humanResourcesDatabase;
+	}
+
+	/**
+	 * 
+	 * @param $humanResourcesDatabase
+	 */
+	public function setHumanResourcesDatabase($humanResourcesDatabase)
+	{
+	    $this->humanResourcesDatabase = $humanResourcesDatabase;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getCommonDatabase()
+	{
+	    return $this->commonDatabase;
+	}
+
+	/**
+	 * 
+	 * @param $commonDatabase
+	 */
+	public function setCommonDatabase($commonDatabase)
+	{
+	    $this->commonDatabase = $commonDatabase;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getManagementDatabase()
+	{
+	    return $this->managementDatabase;
+	}
+
+	/**
+	 * 
+	 * @param $managementDatabase
+	 */
+	public function setManagementDatabase($managementDatabase)
+	{
+	    $this->managementDatabase = $managementDatabase;
 	}
 }
 ?>

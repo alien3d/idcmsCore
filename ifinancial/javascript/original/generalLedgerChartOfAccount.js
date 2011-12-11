@@ -1271,7 +1271,33 @@ Ext
 				items : [ generalLedgerChartOfAccountGrid ]
 			});
 			// form entry
-
+			var generalLedgerChartOfAccountReportTypeId  = new Ext.ux.form.ComboBoxMatch({
+                labelAlign: 'left',
+                fieldLabel: generalLedgerChartOfAccountReportTypeIdLabel,
+                name: 'stateId',
+                hiddenName: 'generalLedgerChartOfAccountReportTypeId',
+                valueField: 'generalLedgerChartOfAccountReportTypeId',
+                hiddenId: 'generalLedgerChartOfAccountReportTypeId_fake',
+                id: 'generalLedgerChartOfAccountReportTypeId',
+                displayField: 'generalLedgerChartOfAccountReportTypeDesc',
+                typeAhead: false,
+                triggerAction: 'all',
+                store: generalLedgerChartOfAccountReportTypeStore,
+                anchor: '95%',
+                selectOnFocus: true,
+                mode: 'local',
+                allowBlank: false,
+                blankText: blankTextLabel,
+                createValueMatcher: function(value) {
+                    value = String(value).replace(/\s*/g, '');
+                    if (Ext.isEmpty(value, false)) {
+                        return new RegExp('^');
+                    }
+                    value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+                    return new RegExp('\b(' + value + ')', 'i');
+                }
+            });
+			
 			var generalLedgerChartOfAccountTypeId = new Ext.ux.form.ComboBoxMatch(
 					{
 						labelAlign : 'left',
@@ -1331,34 +1357,7 @@ Ext
 				anchor : '40%'
 			});
 
-			var generalLedgerChartOfAccountReportTypeId = new Ext.ux.form.ComboBoxMatch(
-					{
-						labelAlign : 'left',
-						fieldLabel : generalLedgerChartOfAccountReportTypeIdLabel,
-						name : 'generalLedgerChartOfAccountReportTypeId',
-						hiddenName : 'generalLedgerChartOfAccountType',
-						valueField : 'generalLedgerChartOfAccountType',
-						hiddenId : 'generalLedgerChartOfAccountType_fake',
-						id : 'generalLedgerChartOfAccountTypeId',
-						typeAhead : false,
-						triggerAction : 'all',
-						store : [ [ 'Balance Sheet', 'Balance Sheet' ],
-								[ 'P&L Statement', 'P&L Statement' ] ],
-						anchor : '95%',
-						selectOnFocus : true,
-						mode : 'local',
-						allowBlank : false,
-						blankText : blankTextLabel,
-						createValueMatcher : function(value) {
-							value = String(value).replace(/\s*/g, '');
-							if (Ext.isEmpty(value, false)) {
-								return new RegExp('^');
-							}
-							value = Ext.escapeRe(value.split('').join('\\s*'))
-									.replace(/\\\\s\\\*/g, '\\s*');
-							return new RegExp('\\b(' + value + ')', 'i');
-						}
-					});
+			
 
 			var generalLedgerChartOfAccountNo = new Ext.form.TextField({
 				labelAlign : 'left',
@@ -1564,10 +1563,11 @@ Ext
 							title : 'Form Entry',
 							items : [
 									generalLedgerChartOfAccountId,
+									generalLedgerChartOfAccountReportTypeId,
 									generalLedgerChartOfAccountTypeId,
 									generalLedgerChartOfAccountTitle,
 									generalLedgerChartOfAccountDesc,
-									generalLedgerChartOfAccountReportTypeId,
+									
 									{
 										xtype : 'compositefield',
 										items : [

@@ -683,7 +683,7 @@ class folderTranslateClass extends ConfigClass {
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFoundMessage()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
@@ -838,7 +838,7 @@ class folderTranslateClass extends ConfigClass {
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFoundMessage()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {

@@ -77,33 +77,30 @@ class SystemString  extends ConfigClass {
 			$sql="
 			SELECT  `systemStringTranslate`.`systemStringCode`,
 					`systemStringTranslate`.`systemStringNative`
-			FROM 	`systemStringTranslate`
-			WHERE	`systemStringTranslate`.`languageId`='".$this->getLanguageId()."'";
+			FROM 	`systemStringTranslate`";
 		} else if ($this->getVendor()==self::MSSQL){
 			$sql="
 			SELECT  [systemStringTranslate].[systemStringCode],
 					[systemStringTranslate].[systemStringNative]
-			FROM 	[systemStringTranslate]
-			WHERE	[systemStringTranslate].[languageId]='".$this->getLanguageId()."'";
+			FROM 	[systemStringTranslate]";
 		} else if ($this->getVendor()==self::ORACLE){
 			$sql="
 			SELECT  SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGCODE,
 					SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGNATIVE
 			FROM 	SYSTEMSTRINGTRANSLATE
-			ON		SYSTEMSTRING.SYSTEMSTRINGID=SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGID 
-			WHERE	SYSTEMSTRINGTRANSLATE.LANGUAGEID='".$this->getLanguageId()."'";
+			ON		SYSTEMSTRING.SYSTEMSTRINGID=SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGID ";
 		} else if ($this->getVendor()==self::DB2){
 			$sql="
 			SELECT  SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGCODE,
 					SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGNATIVE
 			FROM 	SYSTEMSTRINGTRANSLATE
-			WHERE	SYSTEMSTRINGTRANSLATE.LANGUAGEID='".$this->getLanguageId()."'";
+			ON		SYSTEMSTRING.SYSTEMSTRINGID=SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGID ";
 		} else if ($this->getVendor()==self::POSTGRESS){
 			$sql="
 			SELECT  SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGCODE,
 					SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGNATIVE
 			FROM 	SYSTEMSTRINGTRANSLATE
-			WHERE	SYSTEMSTRINGTRANSLATE.LANGUAGEID='".$this->getLanguageId()."'";
+			ON		SYSTEMSTRING.SYSTEMSTRINGID=SYSTEMSTRINGTRANSLATE.SYSTEMSTRINGID ";
 		}
 		$result = $this->q->fast($sql);
 		if ($this->q->execute == 'fail') {
@@ -175,198 +172,203 @@ class SystemString  extends ConfigClass {
 
 
 
+	
+
 	/**
-	 * Return Create
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getCreateMessage()
 	{
-		return $this->createMessage;
+	    return $this->createMessage;
 	}
 
 	/**
-	 * Set Create
-	 * @param string $createMessage
+	 * 
+	 * @param $createMessage
 	 */
 	public function setCreateMessage($createMessage)
 	{
-		$this->createMessage = $createMessage;
+	    $this->createMessage = $createMessage;
 	}
 
 	/**
-	 * Return Read
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getReadMessage()
 	{
-		return $this->readMessage;
+	    return $this->readMessage;
 	}
 
 	/**
-	 * Set Read
-	 * @param string $readMessage
+	 * 
+	 * @param $readMessage
 	 */
 	public function setReadMessage($readMessage)
 	{
-		$this->readMessage = $readMessage;
+	    $this->readMessage = $readMessage;
 	}
 
 	/**
-	 * Return Update
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getUpdateMessage()
 	{
-		return $this->updateMessage;
+	    return $this->updateMessage;
 	}
 
 	/**
-	 * Set Update
-	 * @param string $updateMessage
+	 * 
+	 * @param $updateMessage
 	 */
 	public function setUpdateMessage($updateMessage)
 	{
-		$this->updateMessage = $updateMessage;
+	    $this->updateMessage = $updateMessage;
 	}
 
 	/**
-	 * Return  Delete
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getDeleteMessage()
 	{
-		return $this->deleteMessage;
+	    return $this->deleteMessage;
 	}
 
 	/**
-	 * Set Delete
-	 * @param string $deleteMessage
+	 * 
+	 * @param $deleteMessage
 	 */
 	public function setDeleteMessage($deleteMessage)
 	{
-		$this->deleteMessage = $deleteMessage;
+	    $this->deleteMessage = $deleteMessage;
 	}
 
 	/**
-	 * Set Duplicate Code
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getDuplicateMessage()
 	{
-		return $this->duplicateMessage;
+	    return $this->duplicateMessage;
 	}
 
 	/**
-	 * Set Duplicate Code
-	 * @param string $duplicate
+	 * 
+	 * @param $duplicateMessage
 	 */
 	public function setDuplicateMessage($duplicateMessage)
 	{
-		$this->duplicateMessage = $duplicateMessage;
+	    $this->duplicateMessage = $duplicateMessage;
 	}
 
 	/**
-	 * Return Non  Duplicate Code
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getNonDuplicateMessage()
 	{
-		return $this->nonDuplicateMessage;
+	    return $this->nonDuplicateMessage;
 	}
 
 	/**
-	 * Set Non Duplicate Code
-	 * @param string $nonDuplicate
+	 * 
+	 * @param $nonDuplicateMessage
 	 */
 	public function setNonDuplicateMessage($nonDuplicateMessage)
 	{
-		$this->nonDuplicateMessage = $nonDuplicateMessage;
+	    $this->nonDuplicateMessage = $nonDuplicateMessage;
 	}
 
 	/**
-	 * Return Non Supported Database
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getNonSupportedDatabaseMessage()
 	{
-		return $this->nonSupportedDatabaseMessage;
+	    return $this->nonSupportedDatabaseMessage;
 	}
 
 	/**
-	 * Set Non Supported Database
-	 * @param string $nonSupportedDatabase
+	 * 
+	 * @param $nonSupportedDatabaseMessage
 	 */
 	public function setNonSupportedDatabaseMessage($nonSupportedDatabaseMessage)
 	{
-		$this->nonSupportedDatabaseMessage = $nonSupportedDatabaseMessage;
+	    $this->nonSupportedDatabaseMessage = $nonSupportedDatabaseMessage;
 	}
 
 	/**
-	 * Return File Not Found
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getFileFoundMessage()
 	{
-		return $this->fileFoundMessage;
+	    return $this->fileFoundMessage;
 	}
 
 	/**
-	 * Set File  Found
-	 * @param string $fileFoundMessage
+	 * 
+	 * @param $fileFoundMessage
 	 */
 	public function setFileFoundMessage($fileFoundMessage)
 	{
-		$this->fileFoundMessage = $fileFoundMessage;
+	    $this->fileFoundMessage = $fileFoundMessage;
 	}
 
 	/**
-	 * Return File Not Found
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getFileNotFoundMessage()
 	{
-		return $this->fileNotFoundMessage;
+	    return $this->fileNotFoundMessage;
 	}
 
 	/**
-	 * Set File Not Found
-	 * @param string $fileNotFoundMessage
+	 * 
+	 * @param $fileNotFoundMessage
 	 */
 	public function setFileNotFoundMessage($fileNotFoundMessage)
 	{
-		$this->fileNotFoundMessage = $fileNotFoundMessage;
-	}
-	/**
-	 * Return Record Found
-	 * @return string
-	 */
-	public function getRecordFoundMessage()
-	{
-		return $this->recordFoundMessage;
+	    $this->fileNotFoundMessage = $fileNotFoundMessage;
 	}
 
 	/**
-	 * Set Record  Found
-	 * @param string $recordFoundMessage
+	 * 
+	 * @return 
+	 */
+	public function getRecordFoundMessage()
+	{
+	    return $this->recordFoundMessage;
+	}
+
+	/**
+	 * 
+	 * @param $recordFoundMessage
 	 */
 	public function setRecordFoundMessage($recordFoundMessage)
 	{
-		$this->recordFoundMessage = $recordFoundMessage;
+	    $this->recordFoundMessage = $recordFoundMessage;
 	}
+
 	/**
-	 * Return Record Not Found
-	 * @return string
+	 * 
+	 * @return 
 	 */
 	public function getRecordNotFoundMessage()
 	{
-		return $this->recordNotFoundMessage;
+	    return $this->recordNotFoundMessage;
 	}
+
 	/**
-	 * Set Record Not Found
-	 * @param string $recordNotFoundMessage
+	 * 
+	 * @param $recordNotFoundMessage
 	 */
 	public function setRecordNotFoundMessage($recordNotFoundMessage)
 	{
-		$this->recordNotFoundMessage = $recordNotFoundMessage;
+	    $this->recordNotFoundMessage = $recordNotFoundMessage;
 	}
 }

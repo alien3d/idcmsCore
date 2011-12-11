@@ -3,7 +3,7 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is generalledgerjournaldetail model file.This is to ensure strict setting enable for all variable enter to database
+ * The general journal is where double entry bookkeeping entries are recorded by debiting one or more accounts and crediting another one or more accounts with the same total amount. The total amount debited and the total amount credited should always be equal, thereby ensuring the accounting equation is maintained.Depending on the business's accounting information system, specialized journals may be used in conjunction with the general journal for record-keeping. In such case, use of the general journal may be limited to non-routine and adjusting entries.
  *
  * @name IDCMS.
  * @version 2
@@ -11,6 +11,7 @@ require_once ("../../class/classValidation.php");
  * @package General Ledger
  * @subpackage Journal Detail
  * @link http://www.idcms.org
+ * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class GeneralledgerjournaldetailModel extends ValidationClass {

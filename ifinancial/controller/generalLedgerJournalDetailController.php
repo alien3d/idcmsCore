@@ -113,6 +113,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		$this->systemString->execute();
 
 		$this->recordSet = new RecordSet ();
+		$this->recordSet->setRequestDatabase($this->q->getFinancialDatabase());
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
 		$this->recordSet->execute();
@@ -400,28 +401,28 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`iFinancial`.`generalLedgerJournalDetail`.`generalLedgerJournalDetailId`,
-						`iFinancial`.`generalLedgerJournalDetail`.`generalLedgerJournalId`,
-						`iFinancial`.`generalLedgerJournalDetail`.`generalLedgerChartOfAccountId`,
-						`iFinancial`.`generalLedgerJournalDetail`.`gAmount`,
-						`iFinancial`.`generalLedgerJournalDetail`.`isDefault`,
-						`iFinancial`.`generalLedgerJournalDetail`.`isNew`,
-						`iFinancial`.`generalLedgerJournalDetail`.`isDraft`,
-						`iFinancial`.`generalLedgerJournalDetail`.`isUpdate`,
-						`iFinancial`.`generalLedgerJournalDetail`.`isDelete`,
-						`iFinancial`.`generalLedgerJournalDetail`.`isActive`,
-						`iFinancial`.`generalLedgerJournalDetail`.`isApproved`,
-						`iFinancial`.`generalLedgerJournalDetail`.`isReview`,
-						`iFinancial`.`iFinancial`.`generalLedgerJournalDetail`.`isPost`,
-						`iFinancial`.`generalLedgerJournalDetail`.`executeBy`,
-						`iFinancial`.`generalLedgerJournalDetail`.`executeTime`,
-						`iManagement`.`staff`.`staffName`
-			FROM 	`iFinancial`.`generalLedgerJournalDetail`
-			JOIN	`iManagement`.`staff`
-			ON		`iFinancial`.`generalLedgerJournalDetail`.`executeBy` = `iManagement`.`staff`.`staffId`
+			SELECT		`generalLedgerJournalDetail`.`generalLedgerJournalDetailId`,`generalLedgerJournalDetail`.`generalLedgerJournalId`,`generalLedgerJournalDetail`.`generalLedgerChartOfAccountId`,`generalLedgerJournalDetail`.`countryCurrencyId`,`generalLedgerJournalDetail`.`generalLedgerJournalDetailAmount`,
+						`generalLedgerJournalDetail`.`isDefault`,
+						`generalLedgerJournalDetail`.`isNew`,
+						`generalLedgerJournalDetail`.`isDraft`,
+						`generalLedgerJournalDetail`.`isUpdate`,
+						`generalLedgerJournalDetail`.`isDelete`,
+						`generalLedgerJournalDetail`.`isActive`,
+						`generalLedgerJournalDetail`.`isApproved`,
+						`generalLedgerJournalDetail`.`isReview`,
+						`generalLedgerJournalDetail`.`isPost`,
+						`generalLedgerJournalDetail`.`executeBy`,
+						`generalLedgerJournalDetail`.`executeTime`,
+						`staff`.`staffName`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalDetail`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
+			ON		`generalLedgerJournalDetail`.`executeBy` = `iManagement`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
+			if ($this->model->getGeneralLedgerJournalDetailId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
+			}
 			if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
-				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
+				$sql .= " AND `" . $this->model->getTableName() . "`.`generalLedgerJournalId`='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -691,7 +692,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getGeneralLedgerJournalId(0, 'single'))) {
+		if (!($this->model->getGeneralLedgerJournalDetailId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -702,8 +703,17 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getGeneralLedgerJournalDetailId(0, 'single')) {
+			$json_encode = json_encode(
+			array('success' => true, 
+			      'total' => $total, 
+			      'message' =>  $this->systemString->getReadMessage(), 
+			      
+			      'firstRecord' => $this->recordSet->firstRecord('value'), 
+			      'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 
+			      'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 
+			      'lastRecord' => $this->recordSet->lastRecord('value'),
+				  'data' => $items ));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -711,7 +721,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
+			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'datas' => $items));
 			exit();
 		}
 	}
@@ -766,7 +776,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFoundMessage()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
@@ -928,7 +938,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFoundMessage()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {

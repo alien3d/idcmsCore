@@ -52,7 +52,7 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 		$this->setTableName('generalledgerchartofaccount');
 		$this->setPrimaryKeyName('generalLedgerChartOfAccountId');
 		$this->setFilterCharacter('generalLedgerChartOfAccountNo');
-		//$this->setFilterCharacter('generalLedgerChartOfAccountNo');
+		//$this->setFilterDate('generalLedgerChartOfAccountNo');
 		/**
 		 * All the $_POST enviroment.
 		 */
@@ -69,10 +69,10 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 			$this->setGeneralLedgerChartOfAccountNo($this->strict($_POST ['generalLedgerChartOfAccountNo'], 'string'));
 		}
 		if (isset($_POST ['generalLedgerChartOfAccountTypeId'])) {
-			$this->setGeneralLedgerChartOfAccountDate($this->strict($_POST ['generalLedgerChartOfAccountTypeId'], 'numeric'));
+			$this->setGeneralLedgerChartOfAccountTypeId($this->strict($_POST ['generalLedgerChartOfAccountTypeId'], 'numeric'));
 		}
 		if (isset($_POST ['generalLedgerChartOfAccountReportTypeId'])) {
-			$this->setGeneralLedgerChartOfAccountAmount($this->strict($_POST ['generalLedgerChartOfAccountReportTypeId'], 'string'));
+			$this->setGeneralLedgerChartOfAccountReportTypeId($this->strict($_POST ['generalLedgerChartOfAccountReportTypeId'], 'numeric'));
 		}
 
 		/**
@@ -450,6 +450,24 @@ class GeneralledgerchartofaccountModel extends ValidationClass {
 	 * @param $generalLedgerChartOfAccountReportTypeId
 	 */
 	public function setGeneralLedgerChartOfAccountReportType($generalLedgerChartOfAccountReportTypeId)
+	{
+	    $this->generalLedgerChartOfAccountReportTypeId = $generalLedgerChartOfAccountReportTypeId;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerChartOfAccountReportTypeId()
+	{
+	    return $this->generalLedgerChartOfAccountReportTypeId;
+	}
+
+	/**
+	 * 
+	 * @param $generalLedgerChartOfAccountReportTypeId
+	 */
+	public function setGeneralLedgerChartOfAccountReportTypeId($generalLedgerChartOfAccountReportTypeId)
 	{
 	    $this->generalLedgerChartOfAccountReportTypeId = $generalLedgerChartOfAccountReportTypeId;
 	}

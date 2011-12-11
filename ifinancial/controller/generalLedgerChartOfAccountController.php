@@ -111,8 +111,10 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 		$this->systemString->setVendor($this->getVendor());
 		$this->systemString->setLeafId($this->getLeafId());
 		$this->systemString->execute();
+	
 
 		$this->recordSet = new RecordSet ();
+		$this->recordSet->setRequestDatabase($this->q->getFinancialDatabase());
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
 		$this->recordSet->execute();
@@ -404,25 +406,25 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountId`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountTitle`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountNo`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountTypeId`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountReportTypeId`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`isDefault`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`isNew`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`isDraft`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`isUpdate`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`isDelete`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`isActive`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`isApproved`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`isReview`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`isPost`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`executeBy`,
-					`iFinancial`.`generalLedgerChartOfAccount`.`executeTime`,
+			SELECT	`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountId`,
+					`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountTitle`,
+					`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`,
+					`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountNo`,
+					`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountTypeId`,
+					`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountReportTypeId`,
+					`generalLedgerChartOfAccount`.`isDefault`,
+					`generalLedgerChartOfAccount`.`isNew`,
+					`generalLedgerChartOfAccount`.`isDraft`,
+					`generalLedgerChartOfAccount`.`isUpdate`,
+					`generalLedgerChartOfAccount`.`isDelete`,
+					`generalLedgerChartOfAccount`.`isActive`,
+					`generalLedgerChartOfAccount`.`isApproved`,
+					`generalLedgerChartOfAccount`.`isReview`,
+					`generalLedgerChartOfAccount`.`isPost`,
+					`generalLedgerChartOfAccount`.`executeBy`,
+					`generalLedgerChartOfAccount`.`executeTime`,
 					`iManagement`.`staff`.`staffName`
-			FROM 	`iFinancial`.`generalLedgerChartOfAccount`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`
 			JOIN	`iManagement`.`staff`
 			ON		`iFinancial`.`generalLedgerChartOfAccount`.`executeBy` = `iManagement`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
@@ -750,14 +752,14 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[iFinancial].[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
-			WHERE  	[iFinancial].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "' ";
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -780,49 +782,52 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
+			echo json_encode(
+			array("success" => false, 
+			      "sql"=>$sql,  
+			     "message" => $this->systemString->getRecordNotFoundMessage()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`iFinancial`.`generalLedgerChartOfAccount`
-				SET 		`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountTitle`		=	'" . $this->model->getGeneralLedgerChartOfAccountTitle() . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountDesc() . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountNo`		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId() . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountReportTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountReportTypeId() . "',				
-							`iFinancial`.`generalLedgerChartOfAccount`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`iFinancial`.`generalLedgerChartOfAccount`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountId`		=	'" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`
+				SET 		`generalLedgerChartOfAccountTitle`		=	'" . $this->model->getGeneralLedgerChartOfAccountTitle() . "',
+							`generalLedgerChartOfAccountDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountDesc() . "',
+							`generalLedgerChartOfAccountNo`		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+							`generalLedgerChartOfAccountTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId() . "',
+							`generalLedgerChartOfAccountReportTypeId`		=	'" . $this->model->getGeneralLedgerChartOfAccountReportTypeId() . "',				
+							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`generalLedgerChartOfAccountId`		=	'" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[iFinancial].[generalLedgerChartOfAccount]
-				SET 		[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountTitle]		=	'" . $this->model->getGeneralLedgerChartOfAccountTitle() . "',
-							[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountDesc]		=	'" . $this->model->getGeneralLedgerChartOfAccountDesc() . "',
-							[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountNo]		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
-							[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountTypeId]		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId() . "',
-							[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountReportTypeId]		=	'" . $this->model->getGeneralLedgerChartOfAccountReportTypeId() . "',	
-							[iFinancial].[generalLedgerChartOfAccount].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							[iFinancial].[generalLedgerChartOfAccount].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							[iFinancial].[generalLedgerChartOfAccount].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							[iFinancial].[generalLedgerChartOfAccount].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							[iFinancial].[generalLedgerChartOfAccount].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							[iFinancial].[generalLedgerChartOfAccount].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							[iFinancial].[generalLedgerChartOfAccount].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							[iFinancial].[generalLedgerChartOfAccount].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							[iFinancial].[generalLedgerChartOfAccount].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							[iFinancial].[generalLedgerChartOfAccount].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							[iFinancial].[generalLedgerChartOfAccount].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountId]			=	'" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[generalLedgerChartOfAccount]
+				SET 		[generalLedgerChartOfAccountTitle]		=	'" . $this->model->getGeneralLedgerChartOfAccountTitle() . "',
+							[generalLedgerChartOfAccountDesc]		=	'" . $this->model->getGeneralLedgerChartOfAccountDesc() . "',
+							[generalLedgerChartOfAccountNo]		=	'" . $this->model->getGeneralLedgerChartOfAccountNo() . "',
+							[generalLedgerChartOfAccountTypeId]		=	'" . $this->model->getGeneralLedgerChartOfAccountTypeId() . "',
+							[generalLedgerChartOfAccountReportTypeId]		=	'" . $this->model->getGeneralLedgerChartOfAccountReportTypeId() . "',	
+							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+							[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+							[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 		[generalLedgerChartOfAccountId]			=	'" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERCHARTOFACCOUNT
@@ -915,14 +920,14 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.	`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "' ";
+			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
-			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "' ";
+			SELECT	[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -945,39 +950,39 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFoundMessage()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccount`
-				SET 	`iFinancial`.`generalLedgerChartOfAccount`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`iFinancial`.`generalLedgerChartOfAccount`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`iFinancial`.`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountId`		=	'" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`
+				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`generalLedgerChartOfAccountId`		=	'" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[iFinancial].[generalLedgerChartOfAccount]
-				SET 	[iFinancial].[generalLedgerChartOfAccount].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccount].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccount].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccount].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccount].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccount].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccount].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccount].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccount].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccount].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[iFinancial].[generalLedgerChartOfAccount].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountId]		=	'" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
+				UPDATE 	[".$this->q->getFinancialDatabase()."].[generalLedgerChartOfAccount]
+				SET 	[generalLedgerChartOfAccount].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[generalLedgerChartOfAccount].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[generalLedgerChartOfAccount].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[generalLedgerChartOfAccount].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[generalLedgerChartOfAccount].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[generalLedgerChartOfAccount].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[generalLedgerChartOfAccount].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[generalLedgerChartOfAccount].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[generalLedgerChartOfAccount].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[generalLedgerChartOfAccount].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[generalLedgerChartOfAccount].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[generalLedgerChartOfAccount].[generalLedgerChartOfAccountId]		=	'" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERCHARTOFACCOUNT

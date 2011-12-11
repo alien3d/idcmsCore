@@ -3,7 +3,7 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is generalLedgerJournal model file.This is to ensure strict setting enable for all variable enter to database
+ * The general journal is where double entry bookkeeping entries are recorded by debiting one or more accounts and crediting another one or more accounts with the same total amount. The total amount debited and the total amount credited should always be equal, thereby ensuring the accounting equation is maintained.Depending on the business's accounting information system, specialized journals may be used in conjunction with the general journal for record-keeping. In such case, use of the general journal may be limited to non-routine and adjusting entries.
  *
  * @name IDCMS.
  * @version 2
@@ -11,14 +11,19 @@ require_once ("../../class/classValidation.php");
  * @package General Ledger
  * @subpackage Journal
  * @link http://www.idcms.org
+ * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralledgerjournalModel extends ValidationClass {
+class GeneralLedgerJournalModel extends ValidationClass {
 
 	/**
 	 * @var int
 	 */
 	private $generalLedgerJournalId;
+	/**
+	 * @var int
+	 */
+	private $generalLedgerJournalTypeId;
 	/**
 	* @var string
 	*/
@@ -53,16 +58,22 @@ class GeneralledgerjournalModel extends ValidationClass {
 	 */
 
 	public function execute() {
+		$this->setTotal(0); // overide testing
 		/*
 		 *  Basic Information Table
 		 */
 		$this->setTableName('generalLedgerJournal');
 		$this->setPrimaryKeyName('generalLedgerJournalId');
+		//$this->setFilterCharacter($filterCharacter);
+		$this->setFilterDate('generalLedgerJournal');
 		/**
 		 * All the $_POST enviroment.
 		 */
 		if (isset($_POST ['generalLedgerJournalId'])) {
 			$this->setGeneralLedgerJournalId($this->strict($_POST ['generalLedgerJournalId'], 'numeric'), 0, 'single');
+		}
+		if (isset($_POST ['generalLedgerJournalTypeId'])) {
+			$this->setGeneralLedgerJournalTypeId($this->strict($_POST ['generalLedgerJournalTypeId'], 'numeric'));
 		}
 		if (isset($_POST ['documentNo'])) {
 			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
@@ -139,9 +150,10 @@ class GeneralledgerjournalModel extends ValidationClass {
 			}
 		}
 		$primaryKeyAll = '';
+		
 		for ($i = 0; $i < $this->getTotal(); $i++) {
 			if (isset($_GET ['generalLedgerJournalId'])) {
-				$this->setGeneralLedgerJournalId($this->strict($_GET ['generalLedgerJournalId'] [$i], 'numeric'), $i, 'array');
+				$this->setGeneralLedgerJournalId($this->strict($_GET ['generalLedgerJournalId'] [$i], 'numeric'), $i, 'array');				
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -206,7 +218,7 @@ class GeneralledgerjournalModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getGeneralledgerjournalId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getGeneralLedgerJournalId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -340,7 +352,7 @@ class GeneralledgerjournalModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Generalledgerjournal Identification  Value
+	 * Set GeneralLedgerJournal Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
@@ -351,13 +363,13 @@ class GeneralledgerjournalModel extends ValidationClass {
 		} else if ($type == 'array') {
 			$this->generalLedgerJournalId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setGeneralledgerjournalId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setGeneralLedgerJournalId ?"));
 			exit();
 		}
 	}
 
 	/**
-	 * Return Generalledgerjournal Identification  Value
+	 * Return GeneralLedgerJournal Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
@@ -368,7 +380,7 @@ class GeneralledgerjournalModel extends ValidationClass {
 		} else if ($type == 'array') {
 			return $this->generalLedgerJournalId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getGeneralledgerjournalId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getGeneralLedgerJournalId ?"));
 			exit();
 		}
 	}
@@ -499,6 +511,24 @@ class GeneralledgerjournalModel extends ValidationClass {
 	{
 	    $this->generalLedgerJournalAmount = $generalLedgerJournalAmount;
 	}	
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getGeneralLedgerJournalTypeId()
+	{
+	    return $this->generalLedgerJournalTypeId;
+	}
+
+	/**
+	 * 
+	 * @param $generalLedgerJournalTypeId
+	 */
+	public function setGeneralLedgerJournalTypeId($generalLedgerJournalTypeId)
+	{
+	    $this->generalLedgerJournalTypeId = $generalLedgerJournalTypeId;
+	}
 }
 
 ?>

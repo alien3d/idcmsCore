@@ -1,10 +1,21 @@
 <?php 
 	
-
-	$targetDb="ifinancial";
-	$targetTable ='generalLedgerChartOfAccount';
-	$targetFolder='iFinancial';
+    $targetFolder='iFinancial';
 	$targetDatabase='mysql';
+	$targetDb="ifinancial";
+	$targetTable ='generalLedgerJournalDetail';
+	$managementDb="imanagement";
+	$mysqlOpenTag="`";
+	$mysqlCloseTag="`";
+	$mssqlOpenTag="[";
+	$mssqlCloseTag="]";
+	if($_GET['tag']=='mysql'){
+		$openTag = $mysqlOpenTag;
+		$closeTag = $mysqlCloseTag;
+	} else {
+		$openTag = $mssqlOpenTag;
+		$closeTag = $mssqlCloseTag;
+	}
 	mysql_connect("localhost","root","123456");
 	
 	mysql_select_db($targetDb);
@@ -370,13 +381,18 @@ AND  column_name ='".$columnName."'		";
 	$insertStatement.="
 	\$sql=\"INSERT INTO `".$targetDb."`.`".$targetTable."` ( ";
 	foreach($columnNameArray as $columnNameMysql) { 
-		$insertStatementField.="	`".$columnNameMysql."`,";
+		$insertStatementAField.="	`".$columnNameMysql."`,";
 	}
-	$insertStatementField.= (substr($insertStatementField,0,-1));
+	$insertStatementField.= (substr($insertStatementAField,0,-1));
 	$insertStatement.=$insertStatementField;
 	$insertStatement.=") VALUES ( ";
 	foreach($columnNameArray as $columnNameMysql) {
-		if($columnNameMysql !='isDefault' &&
+		$i++;
+		if($i==1){
+			$insertStatementInsideValue.="null,";
+		}else if ($columnNameMysql=='executeTime'){
+			$insertStatementInsideValue.=" \".\$this->model->get".ucFirst($columnNameMysql)."().\",\n";
+		}else if($columnNameMysql !='isDefault' &&
 			   $columnNameMysql !='isNew' &&
 			   $columnNameMysql !='isDraft'&&
 			   $columnNameMysql !='isUpdate'&&
@@ -387,12 +403,12 @@ AND  column_name ='".$columnName."'		";
 			   $columnNameMysql !='isPost'&&
 			   $columnNameMysql !='isSeperated'&&
 			   $columnNameMysql !='isConsolidation') {	
-				$insertStatementValue.=" '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',";
+				$insertStatementInsideValue.=" '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
 		}  else {
-			$insertStatementValue.=" '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',";
+			$insertStatementInsideValue.=" '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
 		}
 	}
-	$insertStatementValue.=(substr($insertStatementValue,0,-1));
+	$insertStatementValue.=(substr($insertStatementInsideValue,0,-2));
 	$insertStatement.=$insertStatementValue;
 	$insertStatement.=");\";";
 	
@@ -409,12 +425,12 @@ AND  column_name ='".$columnName."'		";
 			   $columnNameMysql !='isPost'&&
 			   $columnNameMysql !='isSeperated'&&
 			   $columnNameMysql !='isConsolidation') {	
-			$updateStatementValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',";
+			$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
 		} else {
-			$updateStatementValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',";
+			$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
 		}
 	}
-	$updateStatementValue.=(substr($updateStatementValue,0,-1));
+	$updateStatementValue.=(substr($updateStatementInsideValue,0,-2));
 	
 	$updateStatement.=$updateStatementValue;
 	$updateStatement.=" WHERE `".($targetTable)."Id`='\".get".ucfirst($targetTable)."Id('0','single').\"'\";";
@@ -439,10 +455,10 @@ AND  column_name ='".$columnName."'		";
 			}	
 			$readStatement.=(substr($readInsideStatement,0,-1));		
 			$readStatement.="
-					`iManagement`.`staff`.`staffName`
+					,`iManagement`.`staff`.`staffName`
 			FROM 	`".$targetDb."`.`".$targetTable."`
-			JOIN	`iManagement`.`staff`
-			ON		`".$targetTable."`.`executeBy` = `iManagement`.`staff`.`staffId`
+			JOIN	`".$managementDb."`.`staff`
+			ON		`".$targetTable."`.`executeBy` = `staff`.`staffId`
 			WHERE 	;";
 			
 			$gridPanel.=

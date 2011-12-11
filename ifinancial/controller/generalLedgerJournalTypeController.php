@@ -6,20 +6,19 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/generalLedgerForecastModel.php");
+require_once ("../model/generalLedgerJournalTypeModel.php");
 
 /**
- * A financial forecast is normally an estimate of future financial outcomes for a company or country (for futures and currency markets). Using historical internal accounting and sales data, in addition to external market and economic indicators, a financial forecast is an economist's best guess of what will happen to a company in financial terms over a given time period—which is usually one year. See Financial modeling.
+ * this is generalLedgerJournalType setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
  * @package General Ledger
- * @subpackage Forecast
+ * @subpackage Journal Type
  * @link http://www.idcms.org
- * @linkt http://en.wikipedia.org/wiki/Financial_forecast
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralLedgerForecastClass extends ConfigClass {
+class GeneralLedgerJournalTypeClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -91,7 +90,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new GeneralLedgerForecastModel ();
+		$this->model = new GeneralLedgerJournalTypeModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -113,9 +112,9 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		$this->systemString->execute();
 
 		$this->recordSet = new RecordSet ();
-		$this->recordSet->setRequestDatabase($this->q->getFinancialDatabase());
 		$this->recordSet->setTableName($this->model->getTableName());
 		$this->recordSet->setPrimaryKeyName($this->model->getPrimaryKeyName());
+		$this->recordSet->setRequestDatabase($this->q->getFinancialDatabase());
 		$this->recordSet->execute();
 
 		$this->documentTrail = new DocumentTrailClass ();
@@ -143,99 +142,95 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "
-			INSERT INTO `iFinancial`.`generalLedgerForecast`
+			INSERT INTO `".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`
 					(
-						
-						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastMonth`,
-						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastYear`,
-						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastAmount`,
-						`iFinancial`.`generalLedgerForecast`.`isDefault`,
-						`iFinancial`.`generalLedgerForecast`.`isNew`,													
-						`iFinancial`.`generalLedgerForecast`.`isDraft`,
-						`iFinancial`.`generalLedgerForecast`.`isUpdate`,													
-						`iFinancial`.`generalLedgerForecast`.`isDelete`,
-						`iFinancial`.`generalLedgerForecast`.`isActive`,													
-						`iFinancial`.`generalLedgerForecast`.`isApproved`,
-						`iFinancial`.`generalLedgerForecast`.`isReview`,                      		  	 				
-						`iFinancial`.`generalLedgerForecast`.`isPost`,
-						`iFinancial`.`generalLedgerForecast`.`executeBy`,												
-						`iFinancial`.`generalLedgerForecast`.`executeTime`
+						`generalLedgerJournalTypeSequence`,												
+						`generalLedgerJournalTypeCode`,
+						`generalLedgerJournalTypeDesc`,
+						`isDefault`,
+						`isNew`,													
+						`isDraft`,
+						`isUpdate`,													
+						`isDelete`,
+						`isActive`,													
+						`isApproved`,
+						`isReview`,                      		  	 				
+						`isPost`,
+						`executeBy`,												
+						`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerForecastMonth() . "',
-						'" . $this->model->getGeneralLedgerForecastYear() . "',
-						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
+						'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-             			'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',			
+						'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		
+						'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		
+						'" . $this->model->getIsApproved(0, 'single') . "',
+             			'" . $this->model->getIsReview(0, 'single') . "',		
+             			'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',					
+						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [iFinancial].[generalLedgerForecast]
+			INSERT INTO [".$this->q->getFinancialDatabase()."].[generalLedgerJournalType]
 					(
-						
-						[iFinancial].[generalLedgerForecast].[generalLedgerForecastMonth],
-						[iFinancial].[generalLedgerForecast].[generalLedgerForecastYear],
-						[iFinancial].[generalLedgerForecast].[generalLedgerForecastAmount],													
-						[iFinancial].[generalLedgerForecast].[isDefault],
-						[iFinancial].[generalLedgerForecast].[isNew],														
-						[iFinancial].[generalLedgerForecast].[isDraft],
-						[iFinancial].[generalLedgerForecast].[isUpdate],														
-						[iFinancial].[generalLedgerForecast].[isDelete],
-						[iFinancial].[generalLedgerForecast].[isActive],														
-						[iFinancial].[generalLedgerForecast].[isApproved],
-						[iFinancial].[generalLedgerForecast].[isReview],														
-						[iFinancial].[generalLedgerForecast].[isPost],
-						[iFinancial].[generalLedgerForecast].[executeBy],													
-						[iFinancial].[generalLedgerForecast].[executeTime]
+						[generalLedgerJournalTypeSequence],												
+						[generalLedgerJournalTypeCode],
+						[generalLedgerJournalTypeDesc],
+						[isDefault],
+						[isNew],														
+						[isDraft],
+						[isUpdate],														
+						[isDelete],
+						[isActive],														
+						[isApproved],
+						[isReview],														
+						[isPost],
+						[executeBy],													[executeTime]
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerForecastMonth() . "',
-						'" . $this->model->getGeneralLedgerForecastYear() . "',
-						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
+						'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
-						'" . $this->model->getIsNew(0, 'single') . "',				
-						'" . $this->model->getIsDraft(0, 'single') . "',
-						'" . $this->model->getIsUpdate(0, 'single') . "',			
-						'" . $this->model->getIsDelete(0, 'single') . "',
-						'" . $this->model->getIsActive(0, 'single') . "',			
-						'" . $this->model->getIsApproved(0, 'single') . "',
-						'" . $this->model->getIsReview(0, 'single') . "',			
-						'" . $this->model->getIsPost(0, 'single') . "',
-						'" . $this->model->getExecuteBy() . "',						
-						" . $this->model->getExecuteTime() . "
+						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',			'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',						" . $this->model->getExecuteTime() . "
 					);";
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERFORECAST
+			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE
 					(
-						
-						IFINANCIAL.GENERALLEDGERFORECAST.GENERALLEDGERFORECASTMONTH,
-						IFINANCIAL.GENERALLEDGERFORECAST.	GENERALLEDGERFORECASTYEAR,
-						IFINANCIAL.GENERALLEDGERFORECAST.GENERALLEDGERFORECASTAMOUNT,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISNEW,														
-						IFINANCIAL.GENERALLEDGERFORECAST.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISUPDATE,													
-						IFINANCIAL.GENERALLEDGERFORECAST.ISDELETE,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISACTIVE,													
-						IFINANCIAL.GENERALLEDGERFORECAST.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISREVIEW,													
-						IFINANCIAL.GENERALLEDGERFORECAST.ISPOST,
-						IFINANCIAL.GENERALLEDGERFORECAST.EXECUTEBY,													
-						IFINANCIAL.GENERALLEDGERFORECAST.EXECUTETIME
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerForecastMonth() . "',
-						'" . $this->model->getGeneralLedgerForecastYear() . "',
-						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
+						'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -250,29 +245,28 @@ class GeneralLedgerForecastClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERFORECAST
+			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE
 					(
-						
-						IFINANCIAL.GENERALLEDGERFORECAST.GENERALLEDGERFORECASTMONTH,
-						IFINANCIAL.GENERALLEDGERFORECAST.	GENERALLEDGERFORECASTYEAR,
-						IFINANCIAL.GENERALLEDGERFORECAST.GENERALLEDGERFORECASTAMOUNT,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISNEW,														
-						IFINANCIAL.GENERALLEDGERFORECAST.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISUPDATE,													
-						IFINANCIAL.GENERALLEDGERFORECAST.ISDELETE,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISACTIVE,													
-						IFINANCIAL.GENERALLEDGERFORECAST.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISREVIEW,													
-						IFINANCIAL.GENERALLEDGERFORECAST.ISPOST,
-						IFINANCIAL.GENERALLEDGERFORECAST.EXECUTEBY,													
-						IFINANCIAL.GENERALLEDGERFORECAST.EXECUTETIME
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerForecastMonth() . "',
-						'" . $this->model->getGeneralLedgerForecastYear() . "',
-						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
+						'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -287,29 +281,28 @@ class GeneralLedgerForecastClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERFORECAST
+			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE
 					(
-						
-						IFINANCIAL.GENERALLEDGERFORECAST.GENERALLEDGERFORECASTMONTH,
-						IFINANCIAL.GENERALLEDGERFORECAST.	GENERALLEDGERFORECASTYEAR,
-						IFINANCIAL.GENERALLEDGERFORECAST.GENERALLEDGERFORECASTAMOUNT,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISNEW,														
-						IFINANCIAL.GENERALLEDGERFORECAST.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISUPDATE,													
-						IFINANCIAL.GENERALLEDGERFORECAST.ISDELETE,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISACTIVE,													
-						IFINANCIAL.GENERALLEDGERFORECAST.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERFORECAST.ISREVIEW,													
-						IFINANCIAL.GENERALLEDGERFORECAST.ISPOST,
-						IFINANCIAL.GENERALLEDGERFORECAST.EXECUTEBY,													
-						IFINANCIAL.GENERALLEDGERFORECAST.EXECUTETIME
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
+						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getGeneralLedgerForecastMonth() . "',
-						'" . $this->model->getGeneralLedgerForecastYear() . "',
-						'" . $this->model->getGeneralLedgerForecastAmount() . "',					
+						'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+						'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -328,7 +321,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		}
 
 		$this->q->create($sql);
-		$generalLedgerForecastId = $this->q->lastInsertId();
+		$generalLedgerJournalTypeId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
@@ -339,7 +332,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		echo json_encode(
 		array(	"success" => true,
 					"message" => $this->systemString->getCreateMessage(), 
-					"generalLedgerForecastId" => $generalLedgerForecastId,
+					"generalLedgerJournalTypeId" => $generalLedgerJournalTypeId,
         			"time"=>$time));
 		exit();
 	}
@@ -353,15 +346,15 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	`generalLedgerForecast`.`isActive`		=	1	";
+				$this->auditFilter = "  `generalLedgerJournalType`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	[generalLedgerForecast].[isActive]		=	1	";
+				$this->auditFilter = "  [generalLedgerJournalType].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	GENERALLEDGERFORECAST.ISACTIVE	=	1	";
+				$this->auditFilter = " GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	GENERALLEDGERFORECAST.ISACTIVE	=	1	";
+				$this->auditFilter = "  GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	GENERALLEDGERFORECAST.ISACTIVE	=	1	";
+				$this->auditFilter = "	GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -390,78 +383,50 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastId`,
-						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastMonth`,
-						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastYear`,
-						`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastAmount`,
-						`iFinancial`.`generalLedgerForecast`.`isDefault`,
-						`iFinancial`.`generalLedgerForecast`.`isNew`,
-						`iFinancial`.`generalLedgerForecast`.`isDraft`,
-						`iFinancial`.`generalLedgerForecast`.`isUpdate`,
-						`iFinancial`.`generalLedgerForecast`.`isDelete`,
-						`iFinancial`.`generalLedgerForecast`.`isActive`,
-						`iFinancial`.`generalLedgerForecast`.`isApproved`,
-						`iFinancial`.`generalLedgerForecast`.`isReview`,
-						`iFinancial`.`generalLedgerForecast`.`isPost`,
-						`iFinancial`.`generalLedgerForecast`.`executeBy`,
-						`iFinancial`.`generalLedgerForecast`.`executeTime`,
-						`iManagement`.`staff`.`staffName`
-			FROM 	`iFinancial`.`generalLedgerForecast`
-			JOIN	`iManagement`.`staff`
-			ON		`generalLedgerForecast`.`executeBy` =`iManagement`.`staff`.`staffId`
-			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
-				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+			SELECT	`generalLedgerJournalType`.`generalLedgerJournalTypeId`,`generalLedgerJournalType`.`generalLedgerJournalTypeSequence`,`generalLedgerJournalType`.`generalLedgerJournalCode`,`generalLedgerJournalType`.`generalLedgerJournalTypeDesc`,`generalLedgerJournalType`.`isDefault`,`generalLedgerJournalType`.`isNew`,`generalLedgerJournalType`.`isDraft`,`generalLedgerJournalType`.`isUpdate`,`generalLedgerJournalType`.`isDelete`,`generalLedgerJournalType`.`isActive`,`generalLedgerJournalType`.`isApproved`,`generalLedgerJournalType`.`isReview`,`generalLedgerJournalType`.`isPost`,`generalLedgerJournalType`.`executeBy`,`generalLedgerJournalType`.`executeTime`
+                    ,`iManagement`.`staff`.`staffName`
+            FROM    `".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`
+            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
+            ON      `generalLedgerJournalType`.`executeBy` = `iManagement`.`staff`.`staffId`
+            WHERE  	" . $this->auditFilter;
+			if ($this->model->getGeneralLedgerJournalTypeId(0, 'single')) {
+				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[iFinancial].[generalLedgerForecast].[generalLedgerForecastId],
-						[iFinancial].[generalLedgerForecast].[generalLedgerForecastMonth],
-						[iFinancial].[generalLedgerForecast].[generalLedgerForecastYear],
-						[iFinancial].[generalLedgerForecast].[generalLedgerForecastAmount],
-						[iFinancial].[generalLedgerForecast].[isDefault],
-						[iFinancial].[generalLedgerForecast].[isNew],
-						[iFinancial].[generalLedgerForecast].[isDraft],
-						[iFinancial].[generalLedgerForecast].[isUpdate],
-						[iFinancial].[generalLedgerForecast].[isDelete],
-						[iFinancial].[generalLedgerForecast].[isActive],
-						[iFinancial].[generalLedgerForecast].[isApproved],
-						[iFinancial].[generalLedgerForecast].[isReview],
-						[iFinancial].[generalLedgerForecast].[isPost],
-						[iFinancial].[generalLedgerForecast].[executeBy],
-						[iFinancial].[generalLedgerForecast].[executeTime],
-						[iManagement].[staff].[staffName]
-			FROM 	[iFinancial].[generalLedgerForecast]
-			JOIN	[iManagement].[staff]
-			ON		[iFinancial].[generalLedgerForecast].[executeBy] = [iManagement].[staff].[staffId]
-			WHERE 	" . $this->auditFilter;
-			if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
-				$sql .= " AND [iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+			SELECT`generalLedgerJournalType`.`generalLedgerJournalTypeId`,`generalLedgerJournalType`.`generalLedgerJournalTypeSequence`,`generalLedgerJournalType`.`generalLedgerJournalCode`,`generalLedgerJournalType`.`generalLedgerJournalTypeDesc`,`generalLedgerJournalType`.`isDefault`,`generalLedgerJournalType`.`isNew`,`generalLedgerJournalType`.`isDraft`,`generalLedgerJournalType`.`isUpdate`,`generalLedgerJournalType`.`isDelete`,`generalLedgerJournalType`.`isActive`,`generalLedgerJournalType`.`isApproved`,`generalLedgerJournalType`.`isReview`,`generalLedgerJournalType`.`isPost`,`generalLedgerJournalType`.`executeBy`,`generalLedgerJournalType`.`executeTime`
+                    `iManagement`.`staff`.`staffName`
+            FROM    `".$this->q->getFixAssetDatabase()."`.`generalLedgerJournalType`
+            JOIN    `".$this->q->getManagementDatabase()."`.`staff`
+            ON      `generalLedgerJournalType`.`executeBy` = `iManagement`.`staff`.`staffId`
+            WHERE  	" . $this->auditFilter;
+			if ($this->model->getGeneralLedgerJournalTypeId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		GENERALLEDGERFORECAST.GENERALLEDGERFORECASTID   		 	AS 	\"generalLedgerForecastId\",
-						GENERALLEDGERFORECAST.GENERALLEDGERFORECASTMONTH 			AS 	\"generalLedgerForecastMonth\",
-						GENERALLEDGERFORECAST.GENERALLEDGERFORECASTYEAR 			AS 	\"generalLedgerForecastYear\",
-						GENERALLEDGERFORECAST.GENERALLEDGERFORECASTAMOUNT 			AS 	\"generalLedgerForecastAmount\",
-						GENERALLEDGERFORECAST.ISDEFAULT    			AS	\"isDefault\",
-						GENERALLEDGERFORECAST.ISNEW		  			AS	\"isNew\",
-						GENERALLEDGERFORECAST.ISDRAFT	  				AS	\"isDraft\",
-						GENERALLEDGERFORECAST.ISUPDATE     			AS	\"isUpdate\",
-						GENERALLEDGERFORECAST.ISDELETE	  			AS	\"isDelete\",
-						GENERALLEDGERFORECAST.ISACTIVE	  			AS	\"isActive\",
-						GENERALLEDGERFORECAST.ISAPPROVED   			AS	\"isApproved\",
-						GENERALLEDGERFORECAST.ISREVIEW	  			AS	\"isReview\",
-						GENERALLEDGERFORECAST.ISPOST  	  			AS	\"isPost\",
-						GENERALLEDGERFORECAST.EXECUTEBY    			AS	\"executeBy\",
-						GENERALLEDGERFORECAST.EXECUTETIME  			AS	\"executeTime\",
+			SELECT		GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEID   		 	AS 	\"generalLedgerJournalTypeId\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 				AS 	\"generalLedgerJournalTypeSequence\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE 			AS 	\"generalLedgerJournalTypeCode\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC 			AS 	\"generalLedgerJournalTypeDesc\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT    			AS	\"isDefault\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW		  			AS	\"isNew\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT	  				AS	\"isDraft\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE     			AS	\"isUpdate\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE	  			AS	\"isDelete\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	  			AS	\"isActive\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED   			AS	\"isApproved\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW	  			AS	\"isReview\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST  	  			AS	\"isPost\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY    			AS	\"executeBy\",
+						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME  			AS	\"executeTime\",
 						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		GENERALLEDGERFORECAST
+			FROM 		GENERALLEDGERCHARTOFACCOUNTTYPE
 			JOIN		STAFF
-			ON			GENERALLEDGERFORECAST.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerJournalTypeId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -495,41 +460,18 @@ class GeneralLedgerForecastClass extends ConfigClass {
 			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
 		}
 		/**
-		 * filter column based on first character
-		 */
-		if($this->getCharacterQuery()){
-			if($this->q->vendor==self::MYSQL){
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
-			} else if($this->q->vendor==self::MSSQL){
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
-			} else if ($this->q->vendor==self::ORACLE){
-				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
-			} else if ($this->q->vendor==self::DB2){
-				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
-			} else if ($this->q->vendor==self::POSTGRESS){
-				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
-			}
-		}
-		/**
-		 * filter column based on Range Of Date
-		 * Example Day,Week,Month,Year
-		 */
-		if($this->getDateRangeStartQuery()){
-			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
-		}
-		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('generalLedgerForecastId');
+		$filterArray = array('generalLedgerJournalTypeId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('generalLedgerForecast');
+		$tableArray = array('generalLedgerJournalType');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -620,31 +562,31 @@ class GeneralLedgerForecastClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [generalLedgerForecastDerived] AS
+							WITH [generalLedgerJournalTypeDerived] AS
 							(
-								SELECT 		[iFinancial].[generalLedgerForecast].[generalLedgerForecastId],
-											[iFinancial].[generalLedgerForecast].[generalLedgerForecastMonth],
-											[iFinancial].[generalLedgerForecast].[generalLedgerForecastYear],
-											[iFinancial].[generalLedgerForecast].[generalLedgerForecastAmount],
-											[iFinancial].[generalLedgerForecast].[isDefault],
-											[iFinancial].[generalLedgerForecast].[isNew],
-											[iFinancial].[generalLedgerForecast].[isDraft],
-											[iFinancial].[generalLedgerForecast].[isUpdate],
-											[iFinancial].[generalLedgerForecast].[isDelete],
-											[iFinancial].[generalLedgerForecast].[isApproved],
-											[iFinancial].[generalLedgerForecast].[isReview],
-											[iFinancial].[generalLedgerForecast].[isPost],
-											[iFinancial].[generalLedgerForecast].[executeBy],
-											[iFinancial].[generalLedgerForecast].[executeTime],
+								SELECT 		[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeId],
+											[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeSequence],
+											[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeCode],
+											[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeDesc],
+											[iFinancial].[generalLedgerJournalType].[isDefault],
+											[iFinancial].[generalLedgerJournalType].[isNew],
+											[iFinancial].[generalLedgerJournalType].[isDraft],
+											[iFinancial].[generalLedgerJournalType].[isUpdate],
+											[iFinancial].[generalLedgerJournalType].[isDelete],
+											[iFinancial].[generalLedgerJournalType].[isApproved],
+											[iFinancial].[generalLedgerJournalType].[isReview],
+											[iFinancial].[generalLedgerJournalType].[isPost],
+											[iFinancial].[generalLedgerJournalType].[executeBy],
+											[iFinancial].[generalLedgerJournalType].[executeTime],
 											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerForecast].[generalLedgerForecastId]) AS 'RowNumber'
-								FROM 	[iFinancial].[generalLedgerForecast]
-								JOIN		[iManagement].[staff]
-								ON		[iFinancial].[generalLedgerForecast].[executeBy] = [iManagement].[staff].[staffId]
+								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeId]) AS 'RowNumber'
+								FROM 	[iFinancial].[generalLedgerJournalType]
+								JOIN	[iManagement].[staff]
+								ON		[iFinancial].[generalLedgerJournalType].[executeBy] = [iManagement].[staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[generalLedgerForecastDerived]
+							FROM 		[generalLedgerJournalTypeDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -657,26 +599,25 @@ class GeneralLedgerForecastClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	GENERALLEDGERFORECAST.GENERALLEDGERFORECASTID   		AS 	\"generalLedgerForecastId\",
-										GENERALLEDGERFORECAST.GENERALLEDGERFORECASTMONTH 		AS 	\"generalLedgerForecastMonth\",
-										GENERALLEDGERFORECAST.GENERALLEDGERFORECASTMONTH 		AS 	\"generalLedgerForecastMonth\",
-										GENERALLEDGERFORECAST.GENERALLEDGERFORECASTYEAR 		AS 	\"generalLedgerForecastYear\",
-										GENERALLEDGERFORECAST.GENERALLEDGERFORECASTAMOUNT 		AS 	\"generalLedgerForecastAmount\",
-										GENERALLEDGERFORECAST.ISDEFAULT    		AS	\"isDefault\",
-										GENERALLEDGERFORECAST.ISNEW		  		AS	\"isNew\",
-										GENERALLEDGERFORECAST.ISDRAFT	 			AS	\"isDraft\",
-										GENERALLEDGERFORECAST.ISUPDATE     		AS	\"isUpdate\",
-										GENERALLEDGERFORECAST.ISDELETE	  		AS	\"isDelete\",
-										GENERALLEDGERFORECAST.ISACTIVE	  		AS	\"isActive\",
-										GENERALLEDGERFORECAST.ISAPPROVED   		AS	\"isApproved\",
-										GENERALLEDGERFORECAST.ISREVIEW	  		AS 	\"isReview\",
-										GENERALLEDGERFORECAST.ISPOST		  		AS	\"isPost\",
-										GENERALLEDGERFORECAST.EXECUTEBY    		AS	\"executeBy\",
-										GENERALLEDGERFORECAST.EXECUTETIME  		AS	\"executeTime\",
-										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	GENERALLEDGERFORECAST
+								SELECT	GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEID   		AS 	\"generalLedgerJournalTypeId\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 			AS 	\"generalLedgerJournalTypeSequence\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE 		AS 	\"generalLedgerJournalTypeCode\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC 		AS 	\"generalLedgerJournalTypeDesc\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT    		AS	\"isDefault\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW		  		AS	\"isNew\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT	 			AS	\"isDraft\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE     		AS	\"isUpdate\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE	  		AS	\"isDelete\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	  		AS	\"isActive\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED   		AS	\"isApproved\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW	  		AS 	\"isReview\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST		  		AS	\"isPost\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY    		AS	\"executeBy\",
+										GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME  		AS	\"executeTime\",
+										STAFF.STAFFNAME		  								AS	\"staffName\"	
+								FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
 								JOIN	STAFF
-								ON		GENERALLEDGERFORECAST.EXECUTEBY 	  	=	STAFF.STAFFID
+								ON		GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -705,7 +646,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getGeneralLedgerForecastId(0, 'single'))) {
+		if (!($this->model->getGeneralLedgerJournalTypeId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -716,8 +657,8 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getGeneralLedgerForecastId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerForecastId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerForecastId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getGeneralLedgerJournalTypeId(0, 'single')) {
+			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerJournalTypeId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerJournalTypeId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -752,27 +693,27 @@ class GeneralLedgerForecastClass extends ConfigClass {
 			$sql = "
 			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
+			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -785,46 +726,46 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`generalLedgerForecast`
-				SET 		`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastMonth`		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
-							`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastYear`		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
-							`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastAmount`		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',				
-							`iFinancial`.`generalLedgerForecast`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`iFinancial`.`generalLedgerForecast`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`iFinancial`.`generalLedgerForecast`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`iFinancial`.`generalLedgerForecast`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`iFinancial`.`generalLedgerForecast`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`iFinancial`.`generalLedgerForecast`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`iFinancial`.`generalLedgerForecast`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`iFinancial`.`generalLedgerForecast`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`iFinancial`.`generalLedgerForecast`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`iFinancial`.`generalLedgerForecast`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`iFinancial`.`generalLedgerForecast`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastId`		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				UPDATE		`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalType`
+				SET 		`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeSequence`		=	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+							`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeCode`		=	'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+							`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeDesc`		=	'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
+							`iFinancial`.`generalLedgerJournalType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`iFinancial`.`generalLedgerJournalType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`iFinancial`.`generalLedgerJournalType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`iFinancial`.`generalLedgerJournalType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`iFinancial`.`generalLedgerJournalType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`iFinancial`.`generalLedgerJournalType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`iFinancial`.`generalLedgerJournalType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`iFinancial`.`generalLedgerJournalType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`iFinancial`.`generalLedgerJournalType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`iFinancial`.`generalLedgerJournalType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`iFinancial`.`generalLedgerJournalType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeId`		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[generalLedgerForecast]
-				SET 		[iFinancial].[generalLedgerForecast].[generalLedgerForecastMonth]		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
-							[iFinancial].[generalLedgerForecast].[generalLedgerForecastYear]		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
-							[iFinancial].[generalLedgerForecast].[generalLedgerForecastAmount]		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',	
-							[iFinancial].[generalLedgerForecast].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							[iFinancial].[generalLedgerForecast].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							[iFinancial].[generalLedgerForecast].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							[iFinancial].[generalLedgerForecast].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							[iFinancial].[generalLedgerForecast].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							[iFinancial].[generalLedgerForecast].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							[iFinancial].[generalLedgerForecast].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							[iFinancial].[generalLedgerForecast].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							[iFinancial].[generalLedgerForecast].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							[iFinancial].[generalLedgerForecast].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							[iFinancial].[generalLedgerForecast].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[generalLedgerForecastId]			=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				UPDATE 		[generalLedgerJournalType]
+				SET 		[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeSequence]		=	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+							[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeCode]		=	'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+							[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeDesc]		=	'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
+							[iFinancial].[generalLedgerJournalType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							[iFinancial].[generalLedgerJournalType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+							[iFinancial].[generalLedgerJournalType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							[iFinancial].[generalLedgerJournalType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							[iFinancial].[generalLedgerJournalType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							[iFinancial].[generalLedgerJournalType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+							[iFinancial].[generalLedgerJournalType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							[iFinancial].[generalLedgerJournalType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+							[iFinancial].[generalLedgerJournalType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							[iFinancial].[generalLedgerJournalType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+							[iFinancial].[generalLedgerJournalType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 		[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeId]			=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		GENERALLEDGERFORECAST
-				SET 		GENERALLEDGERFORECASTMONTH		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
-							GENERALLEDGERFORECASTYEAR		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
-							GENERALLEDGERFORECASTAMOUNT		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',									
+				UPDATE		GENERALLEDGERCHARTOFACCOUNTTYPE
+				SET 		GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -836,13 +777,13 @@ class GeneralLedgerForecastClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERFORECASTID		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE	GENERALLEDGERFORECAST
-			SET 			GENERALLEDGERFORECASTMONTH		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
-							GENERALLEDGERFORECASTYEAR		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
-							GENERALLEDGERFORECASTAMOUNT		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',
+			UPDATE			GENERALLEDGERCHARTOFACCOUNTTYPE
+			SET 			GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -854,13 +795,13 @@ class GeneralLedgerForecastClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERFORECASTID		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE		GENERALLEDGERFORECAST
-				SET 		GENERALLEDGERFORECASTMONTH		=	'" . $this->model->getGeneralLedgerForecastMonth() . "',
-							GENERALLEDGERFORECASTYEAR		=	'" . $this->model->getGeneralLedgerForecastYear() . "',
-							GENERALLEDGERFORECASTAMOUNT		=	'" . $this->model->getGeneralLedgerForecastAmount() . "',
+				UPDATE		GENERALLEDGERCHARTOFACCOUNTTYPE
+				SET 		GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -872,13 +813,12 @@ class GeneralLedgerForecastClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		GENERALLEDGERFORECASTID			=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID			=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-
-
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -906,29 +846,29 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`" . $this->model->getPrimaryKeyName() . "`
+			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
+			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -941,37 +881,37 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`iFinancial`.`generalLedgerForecast`.`generalLedgerForecast`
-				SET 	`iFinancial`.`generalLedgerForecast`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`iFinancial`.`generalLedgerForecast`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`iFinancial`.`generalLedgerForecast`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`iFinancial`.`generalLedgerForecast`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`iFinancial`.`generalLedgerForecast`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`iFinancial`.`generalLedgerForecast`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`iFinancial`.`generalLedgerForecast`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`iFinancial`.`generalLedgerForecast`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`iFinancial`.`generalLedgerForecast`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`iFinancial`.`generalLedgerForecast`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`iFinancial`.`generalLedgerForecast`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`iFinancial`.`generalLedgerForecast`.`generalLedgerForecastId`		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				UPDATE 	`generalLedgerJournalType`
+				SET 	`iFinancial`.`generalLedgerJournalType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`iFinancial`.`generalLedgerJournalType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`iFinancial`.`generalLedgerJournalType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`iFinancial`.`generalLedgerJournalType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`iFinancial`.`generalLedgerJournalType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`iFinancial`.`generalLedgerJournalType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`iFinancial`.`generalLedgerJournalType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`iFinancial`.`generalLedgerJournalType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`iFinancial`.`generalLedgerJournalType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`iFinancial`.`generalLedgerJournalType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`iFinancial`.`generalLedgerJournalType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeId`		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[generalLedgerForecast]
-				SET 	[iFinancial].[generalLedgerForecast].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[iFinancial].[generalLedgerForecast].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[iFinancial].[generalLedgerForecast].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[iFinancial].[generalLedgerForecast].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[iFinancial].[generalLedgerForecast].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[iFinancial].[generalLedgerForecast].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[iFinancial].[generalLedgerForecast].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[iFinancial].[generalLedgerForecast].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[iFinancial].[generalLedgerForecast].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[iFinancial].[generalLedgerForecast].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[iFinancial].[generalLedgerForecast].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[iFinancial].[generalLedgerForecast].[generalLedgerForecastId]		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				UPDATE 	[iFinancial].[generalLedgerJournalType].[generalLedgerJournalType]
+				SET 	[iFinancial].[generalLedgerJournalType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[iFinancial].[generalLedgerJournalType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[iFinancial].[generalLedgerJournalType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[iFinancial].[generalLedgerJournalType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[iFinancial].[generalLedgerJournalType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[iFinancial].[generalLedgerJournalType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[iFinancial].[generalLedgerJournalType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[iFinancial].[generalLedgerJournalType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[iFinancial].[generalLedgerJournalType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[iFinancial].[generalLedgerJournalType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[iFinancial].[generalLedgerJournalType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeId]		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE 	GENERALLEDGERFORECAST
+				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -983,10 +923,10 @@ class GeneralLedgerForecastClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERFORECASTID		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE 	GENERALLEDGERFORECAST
+				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -998,10 +938,10 @@ class GeneralLedgerForecastClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERFORECASTID		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE 	GENERALLEDGERFORECAST
+				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1013,13 +953,13 @@ class GeneralLedgerForecastClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERFORECASTID		=	'" . $this->model->getGeneralLedgerForecastId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-
-
+				
+				
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -1036,7 +976,6 @@ class GeneralLedgerForecastClass extends ConfigClass {
 	 */
 	function updateStatus() {
 		header('Content-Type:application/json; charset=utf-8');
-		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1095,7 +1034,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerForecastId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1119,7 +1058,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerForecastId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1143,7 +1082,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerForecastId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1167,7 +1106,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerForecastId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1191,7 +1130,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerForecastId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1215,7 +1154,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerForecastId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1239,7 +1178,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getGeneralLedgerForecastId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerJournalTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1263,7 +1202,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getGeneralLedgerForecastId($i, 'array') . "'
+                            WHEN '" . $this->model->getGeneralLedgerJournalTypeId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1287,7 +1226,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getGeneralLedgerForecastId($i, 'array') . "'
+                                WHEN '" . $this->model->getGeneralLedgerJournalTypeId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1345,33 +1284,33 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`documentNo`
-			FROM 	`generalLedgerForecast`
-			WHERE 	`documentNo` 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	`generalLedgerJournalTypeSequence`
+			FROM 	`generalLedgerJournalType`
+			WHERE 	`generalLedgerJournalTypeSequence` 	= 	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[documentNo]
-			FROM 	[generalLedgerForecast]
-			WHERE 	[documentNo] 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	[generalLedgerJournalTypeSequence]
+			FROM 	[generalLedgerJournalType]
+			WHERE 	[generalLedgerJournalTypeSequence] 	= 	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	DOCUMENTNO
-			FROM 	GENERALLEDGERFORECAST
-			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE
+			FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
+			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			SELECT	DOCUMENTNO
-			FROM 	GENERALLEDGERFORECAST
-			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE
+			FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
+			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			SELECT	DOCUMENTNO
-			FROM 	GENERALLEDGERFORECAST
-			WHERE 	DOCUMENTNO 	= 	'" . $this->model->getDocumentNo() . "'
+			SELECT	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE
+			FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
+			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1386,7 +1325,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "generalLedgerForecastDesc" => $row ['generalLedgerForecastDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "generalLedgerJournalTypeDesc" => $row ['generalLedgerJournalTypeDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
@@ -1416,7 +1355,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -1453,7 +1392,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerForecastDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerJournalTypeDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1462,7 +1401,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "generalLedgerForecast" . rand(0, 10000000) . ".xlsx";
+		$filename = "generalLedgerJournalType" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1478,7 +1417,7 @@ class GeneralLedgerForecastClass extends ConfigClass {
 
 }
 
-$generalLedgerForecastObject = new GeneralLedgerForecastClass ();
+$generalLedgerJournalTypeObject = new GeneralLedgerJournalTypeClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1488,31 +1427,31 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$generalLedgerForecastObject->setLeafId($_POST ['leafId']);
+		$generalLedgerJournalTypeObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$generalLedgerForecastObject->setIsAdmin($_POST ['isAdmin']);
+		$generalLedgerJournalTypeObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$generalLedgerForecastObject->setStart($_POST ['start']);
+		$generalLedgerJournalTypeObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$generalLedgerForecastObject->setLimit($_POST ['perPage']);
+		$generalLedgerJournalTypeObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$generalLedgerForecastObject->setFieldQuery($_POST ['query']);
+		$generalLedgerJournalTypeObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$generalLedgerForecastObject->setGridQuery($_POST ['filter']);
+		$generalLedgerJournalTypeObject->setGridQuery($_POST ['filter']);
 	}
 	if (isset($_POST ['character'])) {
 		$generalLedgerChartOfAccountSegmentObject->setCharacterQuery($_POST['character']);
@@ -1530,29 +1469,29 @@ if (isset($_POST ['method'])) {
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$generalLedgerForecastObject->setOrder($_POST ['order']);
+		$generalLedgerJournalTypeObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$generalLedgerForecastObject->setSortField($_POST ['sortField']);
+		$generalLedgerJournalTypeObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalLedgerForecastObject->execute();
+	$generalLedgerJournalTypeObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$generalLedgerForecastObject->create();
+		$generalLedgerJournalTypeObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$generalLedgerForecastObject->update();
+		$generalLedgerJournalTypeObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$generalLedgerForecastObject->read();
+		$generalLedgerJournalTypeObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$generalLedgerForecastObject->delete();
+		$generalLedgerJournalTypeObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1560,35 +1499,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$generalLedgerForecastObject->setLeafId($_GET ['leafId']);
+		$generalLedgerJournalTypeObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$generalLedgerForecastObject->setIsAdmin($_GET ['isAdmin']);
+		$generalLedgerJournalTypeObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$generalLedgerForecastObject->execute();
+	$generalLedgerJournalTypeObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$generalLedgerForecastObject->staff();
+			$generalLedgerJournalTypeObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$generalLedgerForecastObject->updateStatus();
+		$generalLedgerJournalTypeObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['generalLedgerForecastDesc'])) {
-		if (strlen($_GET ['generalLedgerForecastDesc']) > 0) {
-			$generalLedgerForecastObject->duplicate();
+	if (isset($_GET ['generalLedgerJournalTypeDesc'])) {
+		if (strlen($_GET ['generalLedgerJournalTypeDesc']) > 0) {
+			$generalLedgerJournalTypeObject->duplicate();
 		}
 	}
 	/**
@@ -1596,16 +1535,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$generalLedgerForecastObject->firstRecord('json');
+			$generalLedgerJournalTypeObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$generalLedgerForecastObject->previousRecord('json', 0);
+			$generalLedgerJournalTypeObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$generalLedgerForecastObject->nextRecord('json', 0);
+			$generalLedgerJournalTypeObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$generalLedgerForecastObject->lastRecord('json');
+			$generalLedgerJournalTypeObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1613,7 +1552,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$generalLedgerForecastObject->excel();
+			$generalLedgerJournalTypeObject->excel();
 		}
 	}
 }

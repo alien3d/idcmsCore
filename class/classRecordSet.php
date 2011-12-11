@@ -12,8 +12,10 @@ class RecordSet extends ConfigClass {
 	private $q;
 	private $PrimaryKeyName;
 	private $TableName;
+
 	// end basic access database
 	public function execute() {
+		
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor ();
 		$this->q->leafId = $this->getLeafId ();
@@ -49,14 +51,15 @@ class RecordSet extends ConfigClass {
 	 */
 	public function firstRecord($value) {
 		$first = 0;
+		
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 	SELECT 	MIN(`" . $this->getPrimaryKeyName () . "`) AS `firstRecord`
-	FROM 	`" . $this->getTableName () . "`";
+	FROM 	`".$this->getRequestDatabase()."`.`" . $this->getTableName () . "`";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 	SELECT 	MIN([" . $this->getPrimaryKeyName () . "]) AS [firstRecord]
-	FROM 	[" . $this->getTableName () . "]";
+	FROM 	[".$this->getRequestDatabase()."].[" . $this->getTableName () . "]";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 	SELECT 	MIN(" . strtoupper ( $this->getPrimaryKeyName () ) . ") AS \"firstRecord\"
@@ -96,13 +99,13 @@ class RecordSet extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 		SELECT (`" . $this->getPrimaryKeyName () . "`) AS `nextRecord`
-		FROM 	`" . $this->getTableName () . "`
+		FROM 	`".$this->getRequestDatabase()."`.`" . $this->getTableName () . "`
 		WHERE 	`" . $this->getPrimaryKeyName () . "` > " . $primaryKeyValue . "
 		LIMIT 	1";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 		SELECT  TOP 1 ([" . $this->getPrimaryKeyName () . "]) AS [nextRecord]
-		FROM 	[" . $this->getTableName () . "]
+		FROM 	[".$this->getRequestDatabase()."].[" . $this->getTableName () . "]
 		WHERE 	[" . $this->getPrimaryKeyName () . "] > " . $primaryKeyValue . " ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -145,13 +148,13 @@ class RecordSet extends ConfigClass {
 			$sql = "
 			SELECT (`" . $this->getPrimaryKeyName () . "`) AS `previousRecord`
 					FROM 	`" . $this->getTableName () . "`
-					WHERE 	`" . $this->getPrimaryKeyName () . "` < " . $primaryKeyValue . "
+					WHERE 	`".$this->getRequestDatabase()."`.`" . $this->getPrimaryKeyName () . "` < " . $primaryKeyValue . "
 					ORDER BY `". $this->getPrimaryKeyName ()."` DESC
 					LIMIT 	1";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 						SELECT TOP 1 ([" . $this->getPrimaryKeyName () . "]) AS [previousRecord]
-						FROM 	[" . $this->getTableName () . "]
+						FROM 	[".$this->getRequestDatabase()."].[" . $this->getTableName () . "]
 						WHERE 	[" . $this->getPrimaryKeyName () . "] < " . $primaryKeyValue . " ";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
@@ -194,11 +197,11 @@ class RecordSet extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 							SELECT	MAX(`" . $this->getPrimaryKeyName () . "`) AS `lastRecord`
-									FROM 	`" . $this->getTableName () . "`";
+									FROM 	`".$this->getRequestDatabase()."`.`" . $this->getTableName () . "`";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 									SELECT	MAX([" . $this->getPrimaryKeyName () . "]) AS [lastRecord]
-							FROM 	[" . $this->getTableName () . "]";
+							FROM 	[".$this->getRequestDatabase()."].[" . $this->getTableName () . "]";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
 								SELECT	MAX(" . strtoupper ( $this->getPrimaryKeyName () ) . ") AS \"lastRecord\"
@@ -248,12 +251,12 @@ class RecordSet extends ConfigClass {
 		if ($this->getVendor () == self::MYSQL) {
 			$sql = "
 			SELECT 	(MAX(`" . $this->getTableName() . "Sequence`)+1) AS `nextSequence`
-			FROM 	`" .  $this->getTableName() . "`
+			FROM 	`".$this->getRequestDatabase()."`.`" .  $this->getTableName() . "`
 			WHERE	`isActive` = 1";
 		} else if ($this->getVendor () == self::MSSQL) {
 			$sql = "
 			SELECT 	(MAX([" .  $this->getTableName() . "Sequence])+1) AS [nextSequence]
-			FROM 	[" .  $this->getTableName() . "]
+			FROM 	[".$this->getRequestDatabase()."].[" .  $this->getTableName() . "]
 			WHERE 	[isActive]=1";
 		} else if ($this->getVendor () == self::ORACLE) {
 			$sql = "
