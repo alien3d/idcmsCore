@@ -1473,6 +1473,8 @@ Ext.onReady(function() {
     function zeroFill(value) {
         if (value.length == 1) {
             return "0" + value;
+        } else {
+        	return value;
         }
     }
     function forwardDate(dateReceive, dateRangeType) {
@@ -1590,6 +1592,14 @@ Ext.onReady(function() {
                 }
                 Ext.getCmp('dateRangeStart').setValue(previousDate(Ext.getCmp('dateRangeStart').getValue(), Ext.getCmp('dateRangeType').getValue()));
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
+                var dateRangeStartArray = Ext.getCmp('dateRangeStart').getValue();
+                var dateRangeStartArrayData = dateRangeStartArray.split("-");
+                var dayDateRangeStartArrayData = dateRangeStartArrayData[2];
+                var monthDateRangeStartArrayData = dateRangeStartArrayData[1];
+                var yearDateRangeStartArrayData = dateRangeStartArrayData[0];
+                Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
+                Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
+                Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
                 generalLedgerJournalStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
@@ -1608,7 +1618,9 @@ Ext.onReady(function() {
                 if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
                     dateRangeStartValue = new Date();
                     Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
-                    dateRangeStartValue = Ext.getCmp('dateRangeStart').getValue();
+                    Ext.getCmp('filterDay').setText('Filter Day : ' + (dateRangeStartValue.getDate()));
+                    Ext.getCmp('filterMonth').setText('Filter Month : ' + (dateRangeStartValue.getMonth() + 1));
+                    Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
                 }
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
                 generalLedgerJournalStore.reload({
@@ -1626,18 +1638,9 @@ Ext.onReady(function() {
             iconCls: 'calendar',
             handler: function(button, e) {
                 Ext.getCmp('dateRangeType').setValue('week');
-                var curr = new Date(); // get current
-                // date
-                var first = curr.getDate() - curr.getDay(); // First day
-                // is the
-                // day of
-                // the month
-                // - the day
-                // of the
-                // week
-                var last = first + 6; // last day is
-                // the first day
-                // + 6
+                var curr = new Date();
+                var first = curr.getDate() - curr.getDay();
+                var last = first + 6;
                 var f = new Date(curr.setDate(first));
                 var l = new Date(curr.setDate(last));
                 Ext.getCmp('dateRangeStart').setValue(f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate());
@@ -1662,6 +1665,9 @@ Ext.onReady(function() {
                 if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
                     dateRangeStartValue = new Date();
                     Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+                    Ext.getCmp('filterDay').setText('Filter Day : ' + (dateRangeStartValue.getDate()));
+                    Ext.getCmp('filterMonth').setText('Filter Month : ' + (dateRangeStartValue.getMonth() + 1));
+                    Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
                 }
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
                 generalLedgerJournalStore.reload({
@@ -1682,6 +1688,9 @@ Ext.onReady(function() {
                 if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
                     dateRangeStartValue = new Date();
                     Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+                    Ext.getCmp('filterDay').setText('Filter Day : ' + (dateRangeStartValue.getDate()));
+                    Ext.getCmp('filterMonth').setText('Filter Month : ' + (dateRangeStartValue.getMonth() + 1));
+                    Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
                 }
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
                 generalLedgerJournalStore.reload({
@@ -1702,7 +1711,7 @@ Ext.onReady(function() {
             xtype: 'label',
             name: 'filterDay',
             id: 'filterDay',
-            text: 'Filter Day : ' 
+            text: 'Filter Day : '
         },
         '-', {
             xtype: 'label',
@@ -1773,6 +1782,22 @@ Ext.onReady(function() {
                 }
                 Ext.getCmp('dateRangeStart').setValue(forwardDate(Ext.getCmp('dateRangeStart').getValue(), Ext.getCmp('dateRangeType').getValue()));
                 Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
+                var dateRangeStartArray = Ext.getCmp('dateRangeStart').getValue();
+                var dateRangeStartArrayData = dateRangeStartArray.split("|");
+                var dayDateRangeStartArrayData = dateRangeStartArrayData[2];
+                var monthDateRangeStartArrayData = dateRangeStartArrayData[1];
+                var yearDateRangeStartArrayData = dateRangeStartArrayData[0];
+                Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
+                Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
+                Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
+                var dateRangeStartArray = Ext.getCmp('dateRangeStart').getValue();
+                var dateRangeStartArrayData = dateRangeStartArray.split("-");
+                var dayDateRangeStartArrayData = dateRangeStartArrayData[2];
+                var monthDateRangeStartArrayData = dateRangeStartArrayData[1];
+                var yearDateRangeStartArrayData = dateRangeStartArrayData[0];
+                Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
+                Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
+                Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
                 generalLedgerJournalStore.reload({
                     params: {
                         dateRangeType: Ext.getCmp('dateRangeType').getValue(),
@@ -2909,12 +2934,10 @@ Ext.onReady(function() {
                                         }
                                     });
                                     if (jsonResponse.trialBalance > 0) {
-                                        Ext.getCmp('postButton').disable();
-                                      //  Ext.MessageBox.alert(systemErrorLabel, "Trial Balance no tally");
+                                        Ext.getCmp('postButton').disable(); //  Ext.MessageBox.alert(systemErrorLabel, "Trial Balance no tally");
                                     }
                                     if (jsonResponse.tally > 0) {
-                                        Ext.getCmp('postButton').disable();
-                                       // Ext.MessageBox.alert(systemErrorLabel, "Total Debit and Credit not Tally");
+                                        Ext.getCmp('postButton').disable(); // Ext.MessageBox.alert(systemErrorLabel, "Total Debit and Credit not Tally");
                                     }
                                     if (jsonResponse.tally == 0 && jsonResponse.trialBalance == 0) {
                                         Ext.getCmp('postButton').enable();
@@ -2929,14 +2952,16 @@ Ext.onReady(function() {
                         });
                     }
                 }
-            },'-',{
-            	xtype:'label',
-            	name:'trialBalanceStatus',
-            	text:'Trial Balance Status : '
-            },'-',{
-            	xtype:'label',
-            	name:'tallyStatus',
-            	text:'Tally Status : '
+            },
+            '-', {
+                xtype: 'label',
+                name: 'trialBalanceStatus',
+                text: 'Trial Balance Status : '
+            },
+            '-', {
+                xtype: 'label',
+                name: 'tallyStatus',
+                text: 'Tally Status : '
             }]
         },
         bbar: new Ext.PagingToolbar({
@@ -3047,7 +3072,6 @@ Ext.onReady(function() {
                             Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
                             Ext.getCmp('generalLedgerJournalId').setValue(action.result.generalLedgerJournalId);
-
                             generalLedgerJournalStore.reload({
                                 params: {
                                     leafId: leafId,
@@ -3080,15 +3104,13 @@ Ext.onReady(function() {
             iconCls: 'bullet_disk',
             disabled: true,
             handler: function() {
-               
-                
                 var method = 'save';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
                     params: {
                         method: method,
                         leafId: leafId,
-                        generalLedgerJournalId:Ext.getCmp('generalLedgerJournalId').getValue()
+                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
                     },
                     success: function(form, action) {
                         if (action.result.success == true) {
@@ -3208,9 +3230,9 @@ Ext.onReady(function() {
                     method: 'GET',
                     params: {
                         method: 'posting',
-                        leafId : leafId,
-                        isAdmin  : isAdmin,
-                        generalLedgerJournalId : Ext.getCmp('generaLedgerJournalId').getValue()
+                        leafId: leafId,
+                        isAdmin: isAdmin,
+                        generalLedgerJournalId: Ext.getCmp('generaLedgerJournalId').getValue()
                     },
                     success: function(response, options) {
                         jsonResponse = Ext.decode(response.responseText);
