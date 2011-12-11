@@ -742,6 +742,9 @@ class SystemStringTranslateClass extends ConfigClass {
 							WHEN '" . $this->model->$this->model->systemStringTranslate($i, 'array') . "'
 							THEN '0'";
 									$sqlLooping .= " END,";
+							
+									
+							}
 								}
 									
 						}
