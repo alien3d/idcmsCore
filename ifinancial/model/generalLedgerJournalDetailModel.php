@@ -29,6 +29,11 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 	*/
 	private $generalLedgerChartOfAccountId;
 	/**
+	 * Transaction Mode D -Debit C - Credit
+	 * @var string 
+	 */
+	private $transactionMode;
+	/**
 	* @var string
 	*/
 	private $countryId;
@@ -58,6 +63,9 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 		}
 		if (isset($_POST ['generalLedgerChartOfAccountId'])) {
 			$this->setGeneralLedgerChartOfAccountId($this->strict($_POST ['generalLedgerChartOfAccountId'], 'numeric'));
+		}
+		if (isset($_POST ['transactionMode'])) {
+			$this->setTransactionMode($this->strict($_POST ['transactionMode'], 'string'));
 		}
 		if (isset($_POST ['countryId'])) {
 			$this->setCountryId($this->strict($_POST ['countryId'], 'numeric'));
@@ -425,6 +433,24 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 	public function setGeneralLedgerJournalDetailAmount($generalLedgerJournalDetailAmount)
 	{
 	    $this->generalLedgerJournalDetailAmount = $generalLedgerJournalDetailAmount;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getTransactionMode()
+	{
+	    return $this->transactionMode;
+	}
+
+	/**
+	 * 
+	 * @param $transactionMode
+	 */
+	public function setTransactionMode($transactionMode)
+	{
+	    $this->transactionMode = $transactionMode;
 	}
 }
 

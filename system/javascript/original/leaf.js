@@ -2314,7 +2314,7 @@ Ext.onReady(function() {
             iconCls: 'bullet_disk',
             disabled: true,
             handler: function() {
-                var id = Ext.getCmp('leafId').getValue();
+               
                 var method = 'save';
                 formPanel.getForm().submit({
                     waitTitle: systemLabel,
@@ -2322,6 +2322,7 @@ Ext.onReady(function() {
                     params: {
                         method: method,
                         leafIdTemp: leafIdTemp,
+                        leafId : Ext.getCmp('leafId').getValue(),
                         isAdmin: isAdmin
                     },
                     success: function(form, action) {

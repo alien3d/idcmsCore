@@ -1434,11 +1434,37 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$this->q->start();
 		$sqlGeneralLedgerJournalDetail="
 		SELECT `generalLedgerJournalDetailId`, 
-			  `generalLedgerJournalId`, `generalLedgerChartOfAccountId`, `countryId`, `transactionMode`, `generalLedgerJournalDetailAmount`, `isDefault`, `isNew`, `isDraft`, `isUpdate`, `isDelete`, `isActive`, `isApproved`, `isReview`, `isPost`, `executeBy`, `executeTime` FROM `generalLedgerJournalDetail` WHERE 1";
+			   `generalLedgerJournalId`, 
+			   `generalLedgerChartOfAccountId`, 
+			   `countryId`, 
+			   `transactionMode`, 
+			   `generalLedgerJournalDetailAmount`, 
+			   `isDefault`, 
+			   `isNew`, 
+			   `isDraft`, 
+			   `isUpdate`,
+			   `isDelete`, 
+			   `isActive`, 
+			   `isApproved`,
+			    `isReview`, 
+			    `isPost`, 
+			    `executeBy`, 
+			    `executeTime` 
+		FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalDetail` 
+		WHERE  `generalLedgerJournalDetail`.`generalLedgerJournalId`='".$this->model->getGeneralLedgerJournalId(0,'string')."'";
 		
 		$resultGeneralLedgerJournalDetail=$this->q->fast($sqlGeneralLedgerJournalDetail);
 		while($row = $this->q->fetchArray()) {
-			$sqlGeneralLedger="INSERT INTO `generalLedger`(`generalLedgerId`, `documentNo`, `invoiceNo`, `paymentNo`, `adjustmentNo`, `depositNo`, `generalLedgerTitle`, `generalLedgerDesc`, `generalLedgerDate`, `countryId`, `countryCurrencyCode`, `transactionMode`, `generalLedgerForeignAmount`, `generalLedgerLocalAmount`, `generalLedgerChartOfAccountCategoryId`, `generalLedgerChartOfAccountTypeId`, `generalLedgerChartOfAccountId`, `generalLedgerChartOfAccountNo`, `generalLedgerChartOfAccountDesc`, `businessPartnerId`, `businessPartnerDesc`, `isDefault`, `isNew`, `isDraft`, `isUpdate`, `isDelete`, `isActive`, `isApproved`, `isReview`, `isPost`, `isAuthorized`, `executeBy`, `executeTime`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9],[value-10],[value-11],[value-12],[value-13],[value-14],[value-15],[value-16],[value-17],[value-18],[value-19],[value-20],[value-21],[value-22],[value-23],[value-24],[value-25],[value-26],[value-27],[value-28],[value-29],[value-30],[value-31],[value-32],[value-33])";
+			$sqlGeneralLedger="
+			INSERT INTO `".$this->q->getFinancialDatabase()."`.`generalLedger`
+			(
+				`generalLedgerId`, 
+				`documentNo`, 
+				`invoiceNo`, 
+				`paymentNo`, 
+				`adjustmentNo`, 
+				`depositNo`, 
+				`generalLedgerTitle`, `generalLedgerDesc`, `generalLedgerDate`, `countryId`, `countryCurrencyCode`, `transactionMode`, `generalLedgerForeignAmount`, `generalLedgerLocalAmount`, `generalLedgerChartOfAccountCategoryId`, `generalLedgerChartOfAccountTypeId`, `generalLedgerChartOfAccountId`, `generalLedgerChartOfAccountNo`, `generalLedgerChartOfAccountDesc`, `businessPartnerId`, `businessPartnerDesc`, `isDefault`, `isNew`, `isDraft`, `isUpdate`, `isDelete`, `isActive`, `isApproved`, `isReview`, `isPost`, `isAuthorized`, `executeBy`, `executeTime`) VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7],[value-8],[value-9],[value-10],[value-11],[value-12],[value-13],[value-14],[value-15],[value-16],[value-17],[value-18],[value-19],[value-20],[value-21],[value-22],[value-23],[value-24],[value-25],[value-26],[value-27],[value-28],[value-29],[value-30],[value-31],[value-32],[value-33])";
 		}
 		/*
 		 * Update The main Header Table isPost =1
@@ -1454,93 +1480,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 	function firstRecord($value) {
 		$this->recordSet->firstRecord($value);
 	}
-/**
-	 * To check Total Chart Of Account Categoris  Equal Both Side  So can Post  To General Ledger
-	 * @return number
-	 */
-	function trialBalanceChecking(){
-		// sum all asset amount
-		$sqlAsset="
-		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
-		FROM 	`generalLedgerJournalDetail`
-		JOIN	`generalLedgerChartOfAccount`
-		USING	(`generalLedgerChartOfAccountId`)
-		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
-		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
-		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
-		$resultAsset = $this->q->fast($sql);
-		$rowAsset  = $this->q->fetchArray($resultAsset);
-		$asset 	 	= $row['total'];
-		// sum all liability amount
-		$sqlLiability="
-		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
-		FROM 	`generalLedgerJournalDetail`
-		JOIN	`generalLedgerChartOfAccount`
-		USING	(`generalLedgerChartOfAccountId`)
-		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
-		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
-		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
-		$resultLiability = $this->q->fast($sqlLiability);
-		$rowLiability  = $this->q->fetchArray($resultLiability);
-		$liability 	 	= $row['total'];
-		// sum all income amount
-		$sqlIncome="
-		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
-		FROM 	`generalLedgerJournalDetail`
-		JOIN	`generalLedgerChartOfAccount`
-		USING	(`generalLedgerChartOfAccountId`)
-		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
-		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
-		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
-		$resultIncome = $this->q->fast($sqlIncome);
-		$rowIncome  = $this->q->fetchArray($resultIncome);
-		$income 	 	= $row['total'];
-		// sum all expenses amount
-		$sqlExpenses="
-		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
-		FROM 	`generalLedgerJournalDetail`
-		JOIN	`generalLedgerChartOfAccount`
-		USING	(`generalLedgerChartOfAccountId`)
-		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
-		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
-		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
-		$resultExpenses= $this->q->fast($sqlExpenses);
-		$rowExpenses  = $this->q->fetchArray($resultAsset);
-		$expenses 	 	= $row['total'];
-		return(($asset - $liabilty)  + ($income - $expenses));
-		
-	}
-	/**
-	 * To check Total Debit  and Credit  Equal Both Side  So can Post  To General Ledger
-	 * @return number
-	 */
-	function tallyChecking(){
-		// sum all debit amount
-		$sqlDebit="
-		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
-		FROM 	`generalLedgerJournalDetail`
-		JOIN	`generalLedgerChartOfAccount`
-		USING	(`generalLedgerChartOfAccountId`)
-		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
-		AND		`generalLedgerJournalDetail`.`transactionMode`='D'
-		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
-		$resultDebit = $this->q->fast($sqlDebit);
-		$rowDebit  = $this->q->fetchArray($resultDebit);
-		$debit 	 	= $rowDebit['total'];
-		// sum all credit amount
-		$sqlAsset="
-		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
-		FROM 	`generalLedgerJournalDetail`
-		JOIN	`generalLedgerChartOfAccount`
-		USING	(`generalLedgerChartOfAccountId`)
-		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
-		AND		`generalLedgerJournalDetail`.`transactionMode`='C'
-		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
-		$resultCredit = $this->q->fast($sqlCredit);
-		$rowCredit  = $this->q->fetchArray($resultCredit);
-		$credit	 	= $rowCredit['total'];
-		return ($debit - $credit); 
-	}
+
 	function nextRecord($value, $primaryKeyValue) {
 		$this->recordSet->nextRecord($value, $primaryKeyValue);
 	}

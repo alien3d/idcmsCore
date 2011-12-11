@@ -148,6 +148,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 					(
 						`generalLedgerJournalId`,												
 						`generalLedgerChartOfAccountId`,
+						`transactionMode`,
 						`countryId`,
 						`generalLedgerJournalDetailAmount`,
 						`isDefault`,
@@ -166,6 +167,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 					(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
+						'".$this->model->getTransactionMode()."',
 						'" . $this->model->getCountryId() . "',
 						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
@@ -204,6 +206,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 					(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
+						'".$this->model->getTransactionMode()."',
 						'" . $this->model->getCountryId() . "',
 						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
@@ -243,6 +246,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 					(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
+						'".$this->model->getTransactionMode()."',
 						'" . $this->model->getCountryId() . "',
 						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
@@ -281,6 +285,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 					(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
+						'".$this->model->getTransactionMode()."',
 						'" . $this->model->getCountryId() . "',
 						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
@@ -319,6 +324,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 					(
 						'" . $this->model->getGeneralLedgerJournalId() . "',
 						'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
+						'".$this->model->getTransactionMode()."',
 						'" . $this->model->getCountryId() . "',
 						'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
@@ -352,7 +358,9 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		array("success" => true,
 			      "message" => $this->systemString->getCreateMessage(), 
 			      "generalLedgerJournalDetailId" => $generalLedgerJournalDetailId,
-        		  "time"=>$time));
+        		  "time"=>$time,
+				  "trialBalance"=>$this->trialBalanceChecking(),
+				  "tally"=>$this->tallyChecking()));
 		exit();
 	}
 
@@ -402,8 +410,25 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			
-			$sql = "SELECT`generalLedgerJournalDetail`.`generalLedgerJournalDetailId`,`generalLedgerJournalDetail`.`generalLedgerJournalId`,`generalLedgerJournalDetail`.`generalLedgerChartOfAccountId`,`generalLedgerJournalDetail`.`countryId`,`generalLedgerJournalDetail`.`generalLedgerJournalDetailAmount`,`generalLedgerJournalDetail`.`isDefault`,`generalLedgerJournalDetail`.`isNew`,`generalLedgerJournalDetail`.`isDraft`,`generalLedgerJournalDetail`.`isUpdate`,`generalLedgerJournalDetail`.`isDelete`,`generalLedgerJournalDetail`.`isActive`,`generalLedgerJournalDetail`.`isApproved`,`generalLedgerJournalDetail`.`isReview`,`generalLedgerJournalDetail`.`isPost`,`generalLedgerJournalDetail`.`executeBy`,`generalLedgerJournalDetail`.`executeTime`
-                    ,`iManagement`.`staff`.`staffName`
+			$sql = "
+			SELECT	`generalLedgerJournalDetail`.`generalLedgerJournalDetailId`,
+					`generalLedgerJournalDetail`.`generalLedgerJournalId`,
+					`generalLedgerJournalDetail`.`generalLedgerChartOfAccountId`,
+					`generalLedgerJournalDetail`.`countryId`,
+					`generalLedgerJournalDetail`.`transactionMode`,
+					`generalLedgerJournalDetail`.`generalLedgerJournalDetailAmount`,
+					`generalLedgerJournalDetail`.`isDefault`,
+					`generalLedgerJournalDetail`.`isNew`,
+					`generalLedgerJournalDetail`.`isDraft`,
+					`generalLedgerJournalDetail`.`isUpdate`,
+					`generalLedgerJournalDetail`.`isDelete`,
+					`generalLedgerJournalDetail`.`isActive`,
+					`generalLedgerJournalDetail`.`isApproved`,
+					`generalLedgerJournalDetail`.`isReview`,
+					`generalLedgerJournalDetail`.`isPost`,
+					`generalLedgerJournalDetail`.`executeBy`,
+					`generalLedgerJournalDetail`.`executeTime`,
+					`iManagement`.`staff`.`staffName`
             FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalDetail`
 			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
             ON      `generalLedgerJournalDetail`.`executeBy` = `staff`.`staffId`
@@ -779,6 +804,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 				UPDATE		`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalDetail`
 				SET 		`generalLedgerJournalId`				=	'" . $this->model->getGeneralLedgerJournalId() . "',
 							`generalLedgerChartOfAccountId`		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
+							`transactionMode`					= '".$this->model->getTransactionMode()."',	
 							`countryId`					=	'" . $this->model->getCountryId() . "',
 							`generalLedgerJournalDetailAmount`	=	'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
 							`isDefault`							=	'" . $this->model->getIsDefault(0, 'single') . "',
@@ -796,9 +822,10 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[".$this->q->getFinancialDatabase()."].[generalLedgerJournalDetail]
-				SET 		[generalLedgerJournalId]				=	'" . $this->model->getGeneralLedgerJournalId() . "',
+				SET 		[generalLedgerJournalId]			=	'" . $this->model->getGeneralLedgerJournalId() . "',
 							[generalLedgerChartOfAccountId]		=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
-							[countryId]					=	'" . $this->model->getCountryId()  . "',
+							[transactionMode]					=  '".$this->model->getTransactionMode()."',
+							[countryId]							=	'" . $this->model->getCountryId()  . "',
 							[generalLedgerJournalDetailAmount]	=	'" . $this->model->getGeneralLedgerJournalDetailAmount() . "',
 							[isDefault]							=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]								=	'" . $this->model->getIsNew(0, 'single') . "',
@@ -1023,6 +1050,8 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
 		echo json_encode(
 			array(	"success" => true, 
 				 	"message" => $this->systemString->getDeleteMessage(),

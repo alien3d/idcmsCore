@@ -31,6 +31,10 @@ class GeneralLedgerJournalModel extends ValidationClass {
 	/**
 	* @var string
 	*/
+	private $referenceNo;
+	/**
+	* @var string
+	*/
 	private $generalLedgerJournalTitle;
 	/**
 	* @var string
@@ -77,6 +81,9 @@ class GeneralLedgerJournalModel extends ValidationClass {
 		}
 		if (isset($_POST ['documentNo'])) {
 			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
+		}
+		if (isset($_POST ['referenceNo'])) {
+			$this->setReferenceNo($this->strict($_POST ['referenceNo'], 'string'));
 		}
 		if (isset($_POST ['generalLedgerJournalTitle'])) {
 			$this->setGeneralLedgerJournalTitle($this->strict($_POST ['generalLedgerJournalTitle'], 'string'));
@@ -403,6 +410,24 @@ class GeneralLedgerJournalModel extends ValidationClass {
 	{
 	    $this->documentNo = $documentNo;
 	}
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getReferenceNo()
+	{
+	    return $this->referenceNo;
+	}
+
+	/**
+	 * 
+	 * @param $referenceNo
+	 */
+	public function setReferenceNo($referenceNo)
+	{
+	    $this->referenceNo = $referenceNo;
+	}
+
 
 	/**
 	 * 

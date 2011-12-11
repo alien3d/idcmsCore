@@ -1472,7 +1472,7 @@ Ext.onReady(function() {
             type: 'button',
             iconCls: 'new',
             handler: function() {
-                var id = Ext.getCmp('religionId').getValue();
+                
                 var method = 'create';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
@@ -1484,8 +1484,11 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
-                            Ext.getCmp('religionDetailGrid').enable();
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
+                            Ext.getCmp('religionDetailGrid').enable();
+                            Ext.getCmp('religionId').setValue(action.result.religionId);
                             religionStore.reload({
                                 params: {
                                     leafId: leafId,
@@ -1493,7 +1496,7 @@ Ext.onReady(function() {
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('religionId').setValue(action.result.religionId);
+                            
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -1519,15 +1522,14 @@ Ext.onReady(function() {
             iconCls: 'bullet_disk',
             disabled: true,
             handler: function() {
-                Ext.getCmp('newButton').disable();
-                var id = Ext.getCmp('religionId').getValue();
+                 
                 var method = 'save';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
                     params: {
                         method: method,
                         leafId: leafId,
-                        page: 'master'
+                        religionId : Ext.getCmp('religionId').getValue()
                     },
                     success: function(form, action) {
                         if (action.result.success == true) {
@@ -1541,6 +1543,10 @@ Ext.onReady(function() {
                                     limit: perPage
                                 }
                             });
+                            Ext.getCmp('newButton').disable();                            
+                            Ext.getCmp('saveButton').disable();
+                            Ext.getCmp('nextButton').disable();
+                            Ext.getCmp('previousButton').disable();
                             Ext.getCmp('religionId').setValue(action.result.religionId);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
@@ -1596,7 +1602,9 @@ Ext.onReady(function() {
                                                 limit: perPage
                                             }
                                         });
+                                        
                                         Ext.getCmp('religionDetail').disable();
+                                        Ext.getCmp('newButton').disable();
                                         Ext.getCmp('saveButton').disable();
                                         Ext.getCmp('nextButton').disable();
                                         Ext.getCmp('previousButton').disable();

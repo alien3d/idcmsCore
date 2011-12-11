@@ -308,7 +308,7 @@ abstract class ConfigClass
 		// this is to generate doc_no
 		$sql="
 		UPDATE	`documentSequence`
-		SET     `documentSequence_num` = `documentSequence_num` + 1
+		SET     `documentSequenceNumber` =`documentSequenceNumber` + 1
 		WHERE   `documentSequenceId` =
 		(
 		 	SELECT  `documentSequenceId`
