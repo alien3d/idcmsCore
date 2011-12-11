@@ -770,12 +770,7 @@ class FamilyClass extends ConfigClass {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			/*
-			 *  require three variable below to track  table audit
-			 */
-			$this->q->tableName = $this->model->getTableName();
-			$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
-			$this->q->primaryKeyValue = $this->model->getFamilyId(0, 'single');
+			
 			$this->q->audit = $this->audit;
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
@@ -783,7 +778,7 @@ class FamilyClass extends ConfigClass {
 				exit();
 			}
 		}
-		$this->q->commit();
+	
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;

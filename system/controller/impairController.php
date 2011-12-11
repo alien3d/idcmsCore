@@ -803,7 +803,7 @@ class ImpairClass extends ConfigClass {
 				exit();
 			}
 		}
-		$this->q->commit();
+	
 		$this->q->commit();
 		$end = microtime(true);
 		$time = $end - $start;
@@ -997,6 +997,8 @@ class ImpairClass extends ConfigClass {
 		 * @var $access
 		 */
 		$access = array("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost");
+						$accessClear = array("isDefault", "isNew", "isDraft", "isUpdate",  "isActive", "isApproved", "isReview", "isPost");
+
 		foreach ($access as $systemCheck) {
 
 			switch ($systemCheck) {
