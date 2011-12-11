@@ -1220,6 +1220,8 @@ class SuppliersClass extends ConfigClass {
 		 * @var $access
 		 */
 		$access = array("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost");
+				$accessClear = array("isDefault", "isNew", "isDraft", "isUpdate",  "isActive", "isApproved", "isReview", "isPost");
+		
 		foreach ($access as $systemCheck) {
 
 			switch ($systemCheck) {

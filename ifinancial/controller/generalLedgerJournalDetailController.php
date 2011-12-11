@@ -183,21 +183,21 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			$sql = "
 			INSERT INTO [iFinancial].[generalLedgerJournalDetail]
 					(
-						[iFinancial].[generalLedgerJournalDetail].[generalLedgerJournalId],												
-						[iFinancial].[generalLedgerJournalDetail].[generalLedgerChartOfAccountId],
-						[iFinancial].[generalLedgerJournalDetail].[countryCurrencyId],
-						[iFinancial].[generalLedgerJournalDetail].[generalLedgerJournalDetailAmount],
-						[iFinancial].[generalLedgerJournalDetail].[isDefault],
-						[iFinancial].[generalLedgerJournalDetail].[isNew],														
-						[iFinancial].[generalLedgerJournalDetail].[isDraft],
-						[iFinancial].[generalLedgerJournalDetail].[isUpdate],														
-						[iFinancial].[generalLedgerJournalDetail].[isDelete],
-						[iFinancial].[generalLedgerJournalDetail].[isActive],														
-						[iFinancial].[generalLedgerJournalDetail].[isApproved],
-						[iFinancial].[generalLedgerJournalDetail].[isReview],														
-						[iFinancial].[generalLedgerJournalDetail].[isPost],
-						[iFinancial].[generalLedgerJournalDetail].[executeBy],													
-						[iFinancial].[generalLedgerJournalDetail].[executeTime]
+						[generalLedgerJournalId],												
+						[generalLedgerChartOfAccountId],
+						[countryCurrencyId],
+						[generalLedgerJournalDetailAmount],
+						[isDefault],
+						[isNew],														
+						[isDraft],
+						[isUpdate],														
+						[isDelete],
+						[isActive],														
+						[isApproved],
+						[isReview],														
+						[isPost],
+						[executeBy],													
+						[executeTime]
 					)
 			VALUES
 					(
@@ -1074,6 +1074,8 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		 * @var $access
 		 */
 		$access = array("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost");
+				$accessClear = array("isDefault", "isNew", "isDraft", "isUpdate",  "isActive", "isApproved", "isReview", "isPost");
+		
 		foreach ($access as $systemCheck) {
 
 			switch ($systemCheck) {
