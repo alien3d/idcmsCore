@@ -302,6 +302,36 @@ abstract class ConfigClass
         'staff' => $items));
 	}
 	/**
+	 *	Generate Document no
+	 */
+	function documentNumbering(){
+		// this is to generate doc_no
+		$sql="
+		UPDATE	`documentSequence`
+		SET     `documentSequence_num` = `documentSequence_num` + 1
+		WHERE   `documentSequenceId` =
+		(
+		 	SELECT  `documentSequenceId`
+			FROM  	`documentSetting`
+			WHERE 	`leafId`='".$this->getleafId()."'
+		)";
+		$this->q->update($sql);
+		
+		$sql="
+		SELECT	CONCAT(`documentSequenceCode`,`documentSequenceNumber`) AS `documentNumber`
+		FROM  	`documentSequence`
+		WHERE	`documentSequenceId` =
+		(
+		 	SELECT  `documentSequenceId`
+			FROM  	`documentSetting`
+			WHERE 	`leafId`='".$this->getleafId()."'
+		)
+		";
+		$result=$this->q->fast($sql);		
+		$row = $this->q->fetchArray($result);
+		return $row['documentNumber'];
+	}
+	/**
 	 * to filter data type.
 	 * @param value $v
 	 * value variable come from server request or variable

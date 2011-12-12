@@ -140,6 +140,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		}
 		$this->q->start();
 		$this->model->create();
+		$this->model->getDocumentNo($this->documentNumbering()); //override document numbering
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql="INSERT INTO `ifinancial`.`generalLedgerJournal` (     `generalLedgerJournalId`,   `generalLedgerJournalTypeId`,   `documentNo`,   `generalLedgerJournalTitle`,    `generalLedgerJournalDesc`, `generalLedgerJournalDate`, `generalLedgerJournalStartDate`,    `generalLedgerJournalEndDate`,  `generalLedgerJournalAmount`,   `isDefault`,    `isNew`,    `isDraft`,  `isUpdate`, `isDelete`, `isActive`, `isApproved`,   `isReview`, `isPost`,   `executeBy`,    `executeTime`) VALUES ( null, '".$this->model->getGeneralLedgerJournalTypeId()."',
@@ -165,14 +166,14 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			$sql = "
 			INSERT INTO [iFinancial].[generalLedgerJournal]
 					(
-						[iFinancial].[generalLedgerJournal].[documentNo],												
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalTitle],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalDesc],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalDate],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalAmount],													
-						[iFinancial].[generalLedgerJournal].[isDefault],
-						[iFinancial].[generalLedgerJournal].[isNew],														
-						[iFinancial].[generalLedgerJournal].[isDraft],
+						[documentNo],												
+						[generalLedgerJournalTitle],
+						[generalLedgerJournalDesc],
+						[generalLedgerJournalDate],
+						[generalLedgerJournalAmount],													
+						[isDefault],
+						[isNew],														
+						[isDraft],
 						[isUpdate],														
 						[isDelete],
 						[isActive],														

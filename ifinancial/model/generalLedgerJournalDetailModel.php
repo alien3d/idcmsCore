@@ -27,7 +27,11 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 	/**
 	* @var string
 	*/
-	private $generalLedgerChartOfAccountNo;
+	private $generalLedgerChartOfAccountId;
+	/**
+	* @var string
+	*/
+	private $countryId;
 	/**
 	* @var float
 	*/
@@ -52,8 +56,11 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 		if (isset($_POST ['generalLedgerJournalId'])) {
 			$this->setGeneralLedgerJournalId($this->strict($_POST ['generalLedgerJournalId'], 'numeric'));
 		}
-		if (isset($_POST ['generalLedgerChartOfAccountNo'])) {
-			$this->setGeneralLedgerChartOfAccountNo($this->strict($_POST ['generalLedgerChartOfAccountNo'], 'string'));
+		if (isset($_POST ['generalLedgerChartOfAccountId'])) {
+			$this->setGeneralLedgerChartOfAccountId($this->strict($_POST ['generalLedgerChartOfAccountId'], 'numeric'));
+		}
+		if (isset($_POST ['countryId'])) {
+			$this->setCountryId($this->strict($_POST ['countryId'], 'numeric'));
 		}
 		if (isset($_POST ['generalLedgerJournalDetailAmount'])) {
 			$this->setGeneralLedgerJournalDetailAmount($this->strict($_POST ['generalLedgerJournalDetailAmount'], 'float'));
@@ -62,7 +69,7 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 		/**
 		 * All the $_GET enviroment.
 		 */
-		if (isset($_GET ['generalledgerjournaldetailId'])) {
+		if (isset($_GET ['generalLedgerJournalDetailId'])) {
 			$this->setTotal(count($_GET ['generalLedgerJournalDetailId']));
 		}
 
@@ -179,7 +186,7 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 					$this->setIsPost(0, $i, 'array');
 				}
 			}
-			$primaryKeyAll .= $this->getGeneralledgerjournaldetailId($i, 'array') . ",";
+			$primaryKeyAll .= $this->getGeneralLedgerJournalDetailId($i, 'array') . ",";
 		}
 		$this->setPrimaryKeyAll((substr($primaryKeyAll, 0, - 1)));
 		/**
@@ -324,7 +331,7 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 		} else if ($type == 'array') {
 			$this->generalLedgerJournalDetailId [$key] = $value;
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setGeneralledgerjournaldetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:setGeneralLedgerJournalDetailId ?"));
 			exit();
 		}
 	}
@@ -341,11 +348,11 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 		} else if ($type == 'array') {
 			return $this->generalLedgerJournalDetailId [$key];
 		} else {
-			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getGeneralledgerjournaldetailId ?"));
+			echo json_encode(array("success" => false, "message" => "Cannot Identifiy Type String Or Array:getGeneralLedgerJournalDetailId ?"));
 			exit();
 		}
 	}
-
+	
 
 
 	/**
@@ -370,18 +377,36 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 	 * 
 	 * @return 
 	 */
-	public function getGeneralLedgerChartOfAccountNo()
+	public function getGeneralLedgerChartOfAccountId()
 	{
-	    return $this->generalLedgerChartOfAccountNo;
+	    return $this->generalLedgerChartOfAccountId;
 	}
 
 	/**
 	 * 
-	 * @param $generalLedgerChartOfAccountNo
+	 * @param $generalLedgerChartOfAccountId
 	 */
-	public function setGeneralLedgerChartOfAccountNo($generalLedgerChartOfAccountNo)
+	public function setGeneralLedgerChartOfAccountId($generalLedgerChartOfAccountId)
 	{
-	    $this->generalLedgerChartOfAccountNo = $generalLedgerChartOfAccountNo;
+	    $this->generalLedgerChartOfAccountId = $generalLedgerChartOfAccountId;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getCountryId()
+	{
+	    return $this->countryId;
+	}
+
+	/**
+	 * 
+	 * @param $countryId
+	 */
+	public function setCountryId($countryId)
+	{
+	    $this->countryId = $countryId;
 	}
 
 	/**

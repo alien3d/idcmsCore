@@ -628,7 +628,7 @@ Ext.onReady(function() {
     }); // end General Ledger Chart of account request
     // start currency code request
     var countryProxy = new Ext.data.HttpProxy({
-        url: '../../system/controller/countryController.php',
+        url: '../controller/countryController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -1457,450 +1457,7 @@ Ext.onReady(function() {
             rowHeight: 34,
             scrollDelay: false
         })
-    }); // start General Ledger Journal Detail request
-    var generalLedgerJournalDetailProxy = new Ext.data.HttpProxy({
-        url: '../controller/generalLedgerJournalDetailController.php',
-        method: 'POST',
-        success: function(response, options) {
-            jsonResponse = Ext.decode(response.responseText);
-            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-            } else {
-                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-            }
-        },
-        failure: function(response, options) {
-            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
-        }
-    });
-    var generalLedgerJournalDetailReader = new Ext.data.JsonReader({
-        totalProperty: 'total',
-        successProperty: 'success',
-        messageProperty: 'message',
-        idProperty: 'generalLedgerJournalDetailId'
-    });
-    var generalLedgerJournalDetailStore = new Ext.data.JsonStore({
-        proxy: generalLedgerJournalDetailProxy,
-        reader: generalLedgerJournalDetailReader,
-        autoLoad: false,
-        autoDestroy: true,
-        baseParams: {
-            method: 'read',
-            leafId: leafId,
-            isAdmin: isAdmin,
-            start: 0,
-            limit: perPage,
-            perPage: perPage
-        },
-        root: 'dataDetail',
-        fields: [{
-            name: 'generalLedgerJournalDetailId',
-            type: 'int'
-        },
-        {
-            name: 'generalLedgerJournalId',
-            type: 'int'
-        },
-        {
-            name: 'generalLedgerChartOfAccountId',
-            type: 'string'
-        },
-        {
-            name: 'countryCurrencyCode',
-            type: 'string'
-        },
-        {
-            name: 'generalLedgerJournalDetailAmount',
-            type: 'string'
-        },
-        {
-            name: 'staffName',
-            type: 'string'
-        },
-        {
-            name: 'isDefault',
-            type: 'boolean'
-        },
-        {
-            name: 'isNew',
-            type: 'boolean'
-        },
-        {
-            name: 'isDraft',
-            type: 'boolean'
-        },
-        {
-            name: 'isUpdate',
-            type: 'boolean'
-        },
-        {
-            name: 'isDelete',
-            type: 'boolean'
-        },
-        {
-            name: 'isActive',
-            type: 'boolean'
-        },
-        {
-            name: 'isApproved',
-            type: 'boolean'
-        },
-        {
-            name: 'isReview',
-            type: 'boolean'
-        },
-        {
-            name: 'isPost',
-            type: 'boolean'
-        },
-        {
-            name: 'executeBy',
-            type: 'int'
-        },
-        {
-            name: 'executeTime',
-            type: 'date',
-            dateFormat: 'Y-m-d H:i:s'
-        }]
-    });
-    var generalLedgerJournalDetailColumnModel = [new Ext.grid.RowNumberer(), {
-        dataIndex: 'generalLedgerChartOfAccountId',
-        header: generalLedgerChartOfAccountIdLabel,
-        hidden: false,
-        width: 100
-    },
-    {
-        dataIndex: 'countryCurrencyCode',
-        header: 'generalLedgerJournal Title',
-        hidden: false,
-        width: 100,
-        editor: {
-            xtype: 'textfield',
-            id: 'generalLedgerJournalDetailTitle'
-        }
-    },
-    {
-        dataIndex: 'generalLedgerJournalDetailAmount',
-        header: generalLedgerJournalDetailAmountLabel,
-        hidden: false,
-        width: 100,
-        editor: {
-            xtype: 'textfield',
-            id: 'generalLedgerJournalDetailAmount'
-        }
-    },
-    isDefaultGridDetail, isNewGridDetail, isDraftGridDetail, isUpdateGridDetail, isDeleteGridDetail, isActiveGridDetail, isApprovedGridDetail, isReviewGridDetail, isPostGridDetail, {
-        dataIndex: 'executeBy',
-        header: executeByLabel,
-        hidden: true,
-        width: 100
-    },
-    {
-        dataIndex: 'executeTime',
-        header: executeTimeLabel,
-        type: 'date',
-        hidden: true,
-        width: 100
-    }];
-    var generalLedgerJournalDetailEditor = new Ext.ux.grid.RowEditor({
-        saveText: saveButtonLabel,
-        cancelText: cancelButtonLabel,
-        listeners: {
-            cancelEdit: function(rowEditor, changes, record, rowIndex) {
-                generalLedgerJournalDetailStore.reload();
-            },
-            afteredit: function(rowEditor, changes, record, rowIndex) {
-                var method;
-                this.save = true; // update record manually
-                var record = this.grid.getStore().getAt(rowIndex);
-                if (parseInt(record.get('generalLedgerJournalDetailId')) == 'NaN') {
-                    method = 'create';
-                } else if (record.get('generalLedgerJournalDetailId') == '') {
-                    method = 'create';
-                } else if (record.get('generalLedgerJournalDetailId') == undefined) {
-                    method = 'create';
-                } else if (record.get('generalLedgerJournalDetailId') > 0) {
-                    method = 'save';
-                } else {
-                    method = 'create';
-                }
-                Ext.Ajax.request({
-                    url: '../controller/generalLedgerJournalDetailController.php',
-                    method: 'POST',
-                    params: {
-                        leafId: leafId,
-                        method: method,
-                        generalLedgerJournalDetailId: record.get('generalLedgerJournalDetailId'),
-                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue(),
-                        countryCurrencyCode: Ext.getCmp('countryCurrencyCode').getValue(),
-                        generalLedgerJournalDetailAmount: Ext.getCmp('generalLedgerJournalDetailAmount').getValue()
-                    },
-                    success: function(response, options) {
-                        jsonResponse = Ext.decode(response.responseText);
-                        if (jsonResponse.success == false) {
-                            Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                        } else {
-                            generalLedgerJournalDetailStore.reload({
-                                params: {
-                                    leafId: leafId,
-                                    isAdmin: isAdmin,
-                                    generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
-                                }
-                            });
-                        }
-                    },
-                    failure: function(response, options) {
-                        Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + response.statusText);
-                    }
-                });
-            }
-        }
-    });
-    var generalLedgerJournalDetailEntity = Ext.data.Record.create([{
-        name: 'generalLedgerJournalDetailId',
-        type: 'int'
-    },
-    {
-        name: 'generalLedgerJournalId',
-        type: 'int'
-    },
-    {
-        name: 'generalLedgerChartOfAccountId',
-        type: 'string'
-    },
-    {
-        name: 'countryCurrencyCode',
-        type: 'int'
-    },
-    {
-        name: 'generalLedgerJournalDetailAmount',
-        type: 'string'
-    },
-    {
-        name: 'executeBy',
-        type: 'int'
-    },
-    {
-        name: 'staffName',
-        type: 'string'
-    },
-    {
-        name: 'isDefault',
-        type: 'boolean'
-    },
-    {
-        name: 'isNew',
-        type: 'boolean'
-    },
-    {
-        name: 'isDraft',
-        type: 'boolean'
-    },
-    {
-        name: 'isUpdate',
-        type: 'boolean'
-    },
-    {
-        name: 'isDelete',
-        type: 'boolean'
-    },
-    {
-        name: 'isActive',
-        type: 'boolean'
-    },
-    {
-        name: 'isApproved',
-        type: 'boolean'
-    },
-    {
-        name: 'isReview',
-        type: 'boolean'
-    },
-    {
-        name: 'isPost',
-        type: 'boolean'
-    },
-    {
-        name: 'executeTime',
-        type: 'date',
-        dateFormat: 'Y-m-d H:i:s'
-    }]);
-    var generalLedgerJournalDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    var generalLedgerJournalDetailGrid = new Ext.grid.GridPanel({
-        id: 'generalLedgerJournalDetailGrid',
-        border: false,
-        store: generalLedgerJournalDetailStore,
-        autoScroll: true,
-        columns: generalLedgerJournalDetailColumnModel,
-        frame: true,
-        forceLayout: true,
-        disabled: true,
-        selModel: new Ext.grid.RowSelectionModel({
-            singleSelect: true
-        }),
-        viewConfig: {
-            forceFit: true,
-            emptyText: emptyTextLabel
-        },
-        height: 275,
-        plugins: [generalLedgerJournalDetailEditor],
-        tbar: {
-            items: [{
-                xtype: 'button',
-                iconCls: 'add',
-                id: 'add_record',
-                name: 'add_record',
-                text: newButtonLabel + "aa",
-                handler: function() {
-                    var e = new generalLedgerJournalDetailEntity({
-                        generalLedgerJournalDetailId: '',
-                        generalLedgerJournalId: '',
-                        currencyCode: '',
-                        generalLedgerJournalDetailAmount: '',
-                        executeBy: '',
-                        staffName: '',
-                        isDefault: '',
-                        isNew: '',
-                        isDraft: '',
-                        isUpdate: '',
-                        isReview: '',
-                        isPost: '',
-                        isDelete: '',
-                        isActive: '',
-                        isApproved: '',
-                        executeTime: ''
-                    });
-                    generalLedgerJournalDetailEditor.stopEditing();
-                    generalLedgerJournalDetailStore.insert(0, e);
-                    generalLedgerJournalDetailGrid.getSelectionModel().getSelections();
-                    generalLedgerJournalDetailEditor.startEditing(0);
-                }
-            },
-            {
-                text: CheckAllLabel,
-                iconCls: 'row-check-sprite-check',
-                listeners: {
-                    'click': function() {
-                        generalLedgerJournalDetailStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalDetailFlagArray) {
-                                record.set(generalLedgerJournalDetailFlagArray[access], true);
-                            }
-                        });
-                    }
-                }
-            },
-            {
-                text: ClearAllLabel,
-                iconCls: 'row-check-sprite-uncheck',
-                listeners: {
-                    'click': function() {
-                        generalLedgerJournalDetailStore.each(function(record, fn, scope) {
-                            for (var access in generalLedgerJournalDetailFlagArray) {
-                                record.set(generalLedgerJournalDetailFlagArray[access], false);
-                            }
-                        });
-                    }
-                }
-            },
-            {
-                text: saveButtonLabel,
-                iconCls: 'bullet_disk',
-                listeners: {
-                    'click': function(c) {
-                        var url = '../controller/generalLedgerJournalDetailController.php?';
-                        var sub_url = '';
-                        var modified = generalLedgerJournalDetailStore.getModifiedRecords();
-                        for (var i = 0; i < modified.length; i++) {
-                            var dataChanges = modified[i].getChanges();
-                            sub_url = sub_url + '&generalLedgerJournalDetailId[]=' + modified[i].get('generalLedgerJournalDetailId');
-                            if (isAdmin == 1) {
-                                if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
-                                    sub_url = sub_url + '&isDefault[]=' + modified[i].get('isDefault');
-                                }
-                                if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
-                                    sub_url = sub_url + '&isDraft[]=' + modified[i].get('isDraft');
-                                }
-                                if (dataChanges.isNew == true || dataChanges.isNew == false) {
-                                    sub_url = sub_url + '&isNew[]=' + modified[i].get('isNew');
-                                }
-                                if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
-                                    sub_url = sub_url + '&isUpdate[]=' + modified[i].get('isUpdate');
-                                }
-                            }
-                            if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
-                                sub_url = sub_url + '&isDelete[]=' + modified[i].get('isDelete');
-                            }
-                            if (isAdmin == 1) {
-                                if (dataChanges.isActive == true || dataChanges.isActive == false) {
-                                    ssub_url = sub_url + '&isActive[]=' + modified[i].get('isActive');
-                                }
-                                if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
-                                    sub_url = sub_url + '&isApproved[]=' + modified[i].get('isApproved');
-                                }
-                                if (dataChanges.isReview == true || dataChanges.isReview == false) {
-                                    sub_url = sub_url + '&isReview[]=' + modified[i].get('isReview');
-                                }
-                                if (dataChanges.isPost == true || dataChanges.isPost == false) {
-                                    sub_url = sub_url + '&isPost[]=' + modified[i].get('isPost');
-                                }
-                            }
-                        }
-                        url = url + sub_url;
-                        Ext.Ajax.request({
-                            url: url,
-                            method: 'GET',
-                            params: {
-                                leafId: leafId,
-                                isAdmin: isAdmin,
-                                method: 'updateStatus'
-                            },
-                            success: function(response, options) {
-                                jsonResponse = Ext.decode(response.responseText);
-                                if (jsonResponse.success == true) {
-                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    generalLedgerJournalDetailStore.reload();
-                                } else if (jsonResponse.success == false) {
-                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-                                }
-                            },
-                            failure: function(response, options) {
-                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
-                            }
-                        }); // refresh the store
-                    }
-                }
-            },
-            '-', {
-                text: excelToolbarLabel,
-                iconCls: 'page_excel',
-                id: 'page_excel',
-                handler: function() {
-                    Ext.Ajax.request({
-                        url: '../generalLedgerJournalController.php?method=report&mode=excel&limit=' + perPage + '&leafId=' + leafId,
-                        method: 'GET',
-                        success: function(response, options) {
-                            jsonResponse = Ext.decode(response.responseText);
-                            if (jsonResponse == true) {
-                                window.open('../basic/document/excel/generalLedgerJournal.xlsx');
-                            } else {
-                                Ext.MessageBox.alert(successLabel, jsonResponse.message);
-                            }
-                        },
-                        failure: function(response, options) {
-                            Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
-                        }
-                    });
-                }
-            }]
-        },
-        bbar: new Ext.PagingToolbar({
-            store: generalLedgerJournalDetailStore,
-            pageSize: perPage
-        }),
-        view: new Ext.ux.grid.BufferView({
-            rowHeight: 34,
-            scrollDelay: false
-        })
-    });
+    }); 
     var gridPanel = new Ext.Panel({
         title: leafNative,
         height: 50,
@@ -1983,7 +1540,7 @@ Ext.onReady(function() {
     });
     var generalLedgerJournalTypeId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
-        fieldLabel: generalLedgerJournalTypeIdLabel,
+        fieldLabel: generalLedgerJournalTypeForeignKeyLabel,
         name: 'stateId',
         hiddenName: 'generalLedgerJournalTypeId',
         valueField: 'generalLedgerJournalTypeId',
@@ -2005,7 +1562,19 @@ Ext.onReady(function() {
             }
             value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
             return new RegExp('\b(' + value + ')', 'i');
-        }
+        },
+		 listeners: {
+            'select': function(index, scrollIntoView) {
+				if(this.value==2) {
+					Ext.getCmp('generalLedgerJournalStartDate').enable();
+					Ext.getCmp('generalLedgerJournalEndDate').enable();
+				}else{
+					Ext.getCmp('generalLedgerJournalStartDate').disable();
+					Ext.getCmp('generalLedgerJournalEndDate').disable();
+				}
+			 }
+			
+		}
     });
     var documentNo = new Ext.form.TextField({
         labelAlign: 'left',
@@ -2065,6 +1634,7 @@ Ext.onReady(function() {
         hiddenName: 'generalLedgerJournalStartDate',
         name: 'generalLedgerJournalStartDate',
         id: 'generalLedgerJournalStartDate',
+		disabled:true,
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -2078,6 +1648,7 @@ Ext.onReady(function() {
         hiddenName: 'generalLedgerJournalEndDate',
         name: 'generalLedgerJournalEndDate',
         id: 'generalLedgerJournalEndDate',
+		disabled:true,
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
@@ -2133,7 +1704,857 @@ Ext.onReady(function() {
         id: 'endRecord',
         value: ''
     }); // end of hidden value for navigation button
-    var formPanel = new Ext.form.FormPanel({
+    
+	 // start generalLedgerJournalDetail request
+   
+  var generalLedgerJournalDetailProxy = new Ext.data.HttpProxy({
+          url : '../controller/generalLedgerJournalDetailController.php',
+          method : 'POST',
+          success : function (response, options) {
+              jsonResponse = Ext.decode(response.responseText);
+              if (jsonResponse.success == true) {
+               
+              // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+               
+              } else {
+                  Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+              }
+          },
+          failure : function (response, options) {
+              Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+          }
+      });
+       
+  var generalLedgerJournalDetailReader = new Ext.data.JsonReader({
+          totalProperty : 'total',
+          successProperty : 'success',
+          messageProperty : 'message',
+          idProperty : 'generalLedgerJournalDetailId'
+      });
+       
+  var generalLedgerJournalDetailStore = new Ext.data.JsonStore({
+          proxy : generalLedgerJournalDetailProxy,
+          reader : generalLedgerJournalDetailReader,
+          autoLoad : false,
+          autoDestroy : true,
+          pruneModifiedRecords : true,
+          baseParams : {
+              method : 'read',
+              leafId : leafId,
+              isAdmin : isAdmin,
+              start : 0,
+              perPage : perPage
+          },
+          root : 'data',
+          id : 'generalLedgerJournalDetailId',
+          fields : [{
+          key :'PRI',
+          foreignKey : 'no',
+          name : 'generalLedgerJournalDetailId',
+          type : 'int'},{
+          key :'MUL',
+          foreignKey : 'yes',
+          name : 'generalLedgerJournalId',
+          type : 'int'},{
+          key :'MUL',
+          foreignKey : 'yes',
+          name : 'generalLedgerChartOfAccountId',
+          type : 'int'},{
+          key :'MUL',
+          foreignKey : 'yes',
+          name : 'countryId',
+          type : 'int'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'generalLedgerJournalDetailAmount',
+          type : 'float'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isDefault',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isNew',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isDraft',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isUpdate',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isDelete',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isActive',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isApproved',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isReview',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isPost',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'executeBy',
+          type : 'int'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'executeTime',
+          type : 'date',dateFormat : 'Y-m-d H:i:s'}
+          ]
+      });
+   
+  // end generalLedgerJournalDetail request
+  var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters(
+                  {
+                      encode : false,
+                      local : false,
+                      filters : [
+              {
+                  type : 'int',
+                  dataIndex : 'generalLedgerJournalDetailId',
+                  column : 'generalLedgerJournalDetailId',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              ,{
+                  type : 'list',
+                  dataIndex : 'generalLedgerJournalId',
+                  column : 'generalLedgerJournalId',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial',
+                  labelField : 'generalLedgerJournalDesc',
+                  store : generalLedgerJournalStore,
+                  phpMode : true
+              }, 
+               
+              ,{
+                  type : 'list',
+                  dataIndex : 'generalLedgerChartOfAccountId',
+                  column : 'generalLedgerChartOfAccountId',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial',
+                  labelField : 'generalLedgerChartOfAccountDesc',
+                  store : generalLedgerChartOfAccountStore,
+                  phpMode : true
+              }, 
+               
+              ,{
+                  type : 'list',
+                  dataIndex : 'countryId',
+                  column : 'countryId',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial',
+                  labelField : 'countryCurrencyCodeDesc',
+                  store : countryStore,
+                  phpMode : true
+              }, 
+               
+              {
+                  type : 'float',
+                  dataIndex : 'generalLedgerJournalDetailAmount',
+                  column : 'generalLedgerJournalDetailAmount',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isDefault',
+                  column : 'isDefault',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isNew',
+                  column : 'isNew',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isDraft',
+                  column : 'isDraft',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isUpdate',
+                  column : 'isUpdate',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isDelete',
+                  column : 'isDelete',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isActive',
+                  column : 'isActive',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isApproved',
+                  column : 'isApproved',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isReview',
+                  column : 'isReview',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isPost',
+                  column : 'isPost',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },{
+                  type : 'list',
+                  dataIndex : 'executeBy',
+                  column : 'executeBy',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial',
+                  labelField : 'staffName',
+                  store : staffByStore,
+                  phpMode : true
+              },
+              {
+                  type : 'date',
+                  dataIndex : 'executeTime',
+                  column : 'executeTime',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'int',
+                  dataIndex : 'generalLedgerJournalDetailId',
+                  column : 'generalLedgerJournalDetailId',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              ,{
+                  type : 'list',
+                  dataIndex : 'generalLedgerJournalId',
+                  column : 'generalLedgerJournalId',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial',
+                  labelField : 'generalLedgerJournalDesc',
+                  store : generalLedgerJournalStore,
+                  phpMode : true
+              }, 
+               
+              ,{
+                  type : 'list',
+                  dataIndex : 'generalLedgerChartOfAccountId',
+                  column : 'generalLedgerChartOfAccountId',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial',
+                  labelField : 'generalLedgerChartOfAccountDesc',
+                  store : generalLedgerChartOfAccountStore,
+                  phpMode : true
+              }, 
+               
+              ,{
+                  type : 'list',
+                  dataIndex : 'countryId',
+                  column : 'countryId',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial',
+                  labelField : 'countryDesc',
+                  store : countryStore,
+                  phpMode : true
+              }, 
+               
+              {
+                  type : 'float',
+                  dataIndex : 'generalLedgerJournalDetailAmount',
+                  column : 'generalLedgerJournalDetailAmount',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isDefault',
+                  column : 'isDefault',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isNew',
+                  column : 'isNew',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isDraft',
+                  column : 'isDraft',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isUpdate',
+                  column : 'isUpdate',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isDelete',
+                  column : 'isDelete',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isActive',
+                  column : 'isActive',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isApproved',
+                  column : 'isApproved',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isReview',
+                  column : 'isReview',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },
+              {
+                  type : 'boolean',
+                  dataIndex : 'isPost',
+                  column : 'isPost',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              },{
+                  type : 'list',
+                  dataIndex : 'executeBy',
+                  column : 'executeBy',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial',
+                  labelField : 'staffName',
+                  store : staffByStore,
+                  phpMode : true
+              },
+              {
+                  type : 'date',
+                  dataIndex : 'executeTime',
+                  column : 'executeTime',
+                  table : 'generalLedgerJournalDetail',
+                  database : 'ifinancial'
+              }]});var generalLedgerJournalDetailId  =  new Ext.form.Hidden({
+          name : 'generalLedgerJournalDetailId',
+          id : 'generalLedgerJournalDetailId'
+          });var generalLedgerChartOfAccountId  = new Ext.ux.form.ComboBoxMatch({
+                 
+                      labelAlign: 'left',
+                      fieldLabel: generalLedgerChartOfAccountIdLabel,
+                      name: 'stateId',
+                      hiddenName: 'generalLedgerChartOfAccountId',
+                      valueField: 'generalLedgerChartOfAccountId',
+                      hiddenId: 'generalLedgerChartOfAccountId_fake',
+                      id: 'generalLedgerChartOfAccountId',
+                      displayField: 'generalLedgerChartOfAccountDesc',
+                      typeAhead: false,
+                      triggerAction: 'all',
+                      store: generalLedgerChartOfAccountStore,
+                      anchor: '95%',
+                      selectOnFocus: true,
+                      mode: 'local',
+                      allowBlank: false,
+                      blankText: blankTextLabel,
+                      createValueMatcher: function(value) {
+                          value = String(value).replace(/\s*/g, '');
+                          if (Ext.isEmpty(value, false)) {
+                              return new RegExp('^');
+                          }
+                          value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+                          return new RegExp('\b(' + value + ')', 'i');
+                      }
+                  });var countryId  = new Ext.ux.form.ComboBoxMatch({
+              
+                      labelAlign: 'left',
+                      fieldLabel: countryIdLabel,
+                      name: 'stateId',
+                      hiddenName: 'countryId',
+                      valueField: 'countryId',
+                      hiddenId: 'countryId_fake',
+                      id: 'countryId',
+                      displayField: 'countryCurrencyCodeDesc',
+                      typeAhead: false,
+                      triggerAction: 'all',
+                      store: countryStore,
+                      anchor: '95%',
+                      selectOnFocus: true,
+                      mode: 'local',
+                      allowBlank: false,
+                      blankText: blankTextLabel,
+                      createValueMatcher: function(value) {
+                          value = String(value).replace(/\s*/g, '');
+                          if (Ext.isEmpty(value, false)) {
+                              return new RegExp('^');
+                          }
+                          value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+                          return new RegExp('\b(' + value + ')', 'i');
+                      }
+                  });var generalLedgerJournalDetailAmount = new Ext.form.TextField({
+                          labelAlign : 'left',
+                      fieldLabel : generalLedgerJournalDetailAmountLabel + '<span style="\'color:" red;\'="">*</span>',
+                      hiddenName : 'generalLedgerJournalDetailAmount',
+                      name : 'generalLedgerJournalDetailAmount',
+                      id : 'generalLedgerJournalDetailAmount',
+                      allowBlank : false,
+                      blankText : blankTextLabel,
+                      style : {
+                          textTransform : 'uppercase'
+                      },
+                      anchor : '40%',
+                      decimalPrecision: 2,
+                      vtype: 'dollar',
+                      listeners: {
+                          blur: function() {
+                              var value = Ext.getCmp('generalLedgerJournalDetailAmount').getValue();
+                              value = value.replace(",", "");
+                              value = value.replace(" ", "");                    
+                              Ext.getCmp('generalLedgerJournalDetailAmount').setValue(value);
+                          }
+                      }
+                  });
+           
+  var isDefaultGridDetail = new Ext.ux.grid.CheckColumn({
+      header: isDefaultLabel,
+      dataIndex: 'isDefault',
+      hidden: isDefaultHidden
+  });
+  var isNewGridDetail = new Ext.ux.grid.CheckColumn({
+      header: isNewLabel,
+      dataIndex: 'isNew',
+      hidden: isNewHidden
+  });
+  var isDraftGridDetail = new Ext.ux.grid.CheckColumn({
+      header: isDraftLabel,
+      dataIndex: 'isDraft',
+      hidden: isDraftHidden
+  });
+  var isUpdateGridDetail = new Ext.ux.grid.CheckColumn({
+      header: isUpdateLabel,
+      dataIndex: 'isUpdate',
+      hidden: isUpdateHidden
+  });
+  var isDeleteGridDetail = new Ext.ux.grid.CheckColumn({
+      header: isDeleteLabel,
+      dataIndex: 'isDelete'
+  });
+  var isActiveGridDetail = new Ext.ux.grid.CheckColumn({
+      header: isActiveLabel,
+      dataIndex: 'isActive',
+      hidden: isActiveHidden
+  });
+  var isApprovedGridDetail = new Ext.ux.grid.CheckColumn({
+      header: isApprovedLabel,
+      dataIndex: 'isApproved',
+      hidden: isApprovedHidden
+  });
+  var isReviewGridDetail = new Ext.ux.grid.CheckColumn({
+      header: isReviewLabel,
+      dataIndex: 'isReview',
+      hidden: isReviewHidden
+  });
+  var isPostGridDetail = new Ext.ux.grid.CheckColumn({
+      header: isPostLabel,
+      dataIndex: 'isPost',
+      hidden: isPostHidden
+  });
+      Ext.util.Format.comboRenderer = function(combo) {
+              return function(value) {
+                  var record = combo.findRecord(combo.valueField
+                          || combo.displayField, value);
+                  if (record) {
+                      // remove special character
+ 
+                      res = record.get(combo.displayField);
+                      // res = res.replace(/[^a-zA-Z 0-9]+/g, '-');
+                  } else {
+                      // res = ("hmm, not found:" + value);
+                      res = (value);
+                  }
+                  return res;
+              };
+          };var generalLedgerJournalDetailColumnModel = [
+                  new Ext.grid.RowNumberer(),{
+                              dataIndex : 'generalLedgerChartOfAccountId',
+                          header : generalLedgerChartOfAccountForeignKeyLabel,
+                              width : 200,
+                              sortable : true,
+                              editor : generalLedgerChartOfAccountId,
+                              renderer : Ext.util.Format.comboRenderer(generalLedgerChartOfAccountId),
+                              hidden : false,
+                              jsonType:'int'
+                          },{
+                              dataIndex : 'countryId',
+                          header : countryForeignKeyLabel,
+                              width : 200,
+                              sortable : true,
+                              editor : countryId,
+                              renderer : Ext.util.Format.comboRenderer(countryId),
+                              hidden : false,
+                              jsonType:'int'
+                          },{
+                                  dataIndex : 'generalLedgerJournalDetailAmount',
+                                  header : generalLedgerJournalDetailAmountLabel,
+                                  width : 75,
+                                  sortable : true,
+                                  summaryType : 'sum',
+                                  renderer : function(value) {
+                                      return ' RM ' + Ext.util.Format.number(value, '0,0.00');
+                                  },
+                                  editor : {
+                                      xtype : 'textfield',
+                                      labelAlign : 'left',
+                                      fieldLabel : generalLedgerJournalDetailAmountLabel,
+                                      hiddenName : 'generalLedgerJournalDetailAmount',
+                                      name : 'generalLedgerJournalDetailAmount',
+                                      id : 'generalLedgerJournalDetailAmount',
+ 
+                                      blankText : blankTextLabel,
+                                      decimalPrecision : 2,
+                                      vtype : 'dollar',
+                                      anchor : '95%',
+                                      listeners : {
+                                          blur : function() {
+                                              var value = Ext.getCmp('generalLedgerJournalDetailAmount').getValue();
+                                              value = value.replace(",", "");
+                                              value = Ext.util.Format.usMoney(value);
+                                              value = value.replace(" ", "");
+                                              Ext.getCmp('generalLedgerJournalDetailAmount').setValue(value);
+                                          }
+                                      }
+                                  }
+                              },isDefaultGridDetail,isNewGridDetail,isDraftGridDetail,isUpdateGridDetail,isDeleteGridDetail,isActiveGridDetail,isApprovedGridDetail,isReviewGridDetail,isPostGridDetail,
+                      {
+                      dataIndex : 'executeBy',
+                      header : executeByLabel,
+                      sortable : true,
+                      hidden : false,
+                      renderer : function(value, metaData, record, rowIndex,
+                              colIndex, store) {
+                          return record.data.staffName;
+                      }
+                  },
+                  {
+                      dataIndex : 'executeTime',
+                      header : executeTimeLabel,
+                      sortable : true,
+                      hidden : false,
+                      renderer : function(value, metaData, record, rowIndex,
+                              colIndex, store) {
+                          return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+                      }
+                  }];var generalLedgerJournalDetailEditor = new Ext.ux.grid.RowEditor({
+      saveText: saveButtonLabel,
+      cancelText: cancelButtonLabel,
+      listeners: {
+          cancelEdit: function (rowEditor, changes, record, rowIndex) {
+              generalLedgerJournalDetailStore.reload({
+									params :{
+										generalLedgerJournalId : Ext.getCmp('generalLedgerJournalId').getValue()
+									}
+								  });
+          },
+          afteredit: function (rowEditor, changes, record, rowIndex) {
+              this.save = true;
+              var record = this.grid.getStore().getAt(rowIndex);
+              if (parseInt(record.get('generalLedgerJournalDetailId')) == 'NaN') {
+                  method = 'create';
+              } else if (record.get('generalLedgerJournalDetailId') == '') {
+                  method = 'create';
+              } else if (record.get('generalLedgerJournalDetailId') == undefined) {
+                  method = 'create';
+              } else if (parseInt(record.get('generalLedgerJournalDetailId')) > 0) {
+                  method = 'save';
+              } else {
+                  method = 'create';
+              }
+              Ext.Ajax.request({
+                  url: '../controller/generalLedgerJournalDetailController.php',
+                  method: 'POST',
+                  params: {
+                      leafId: leafId,
+                      isAdmin: isAdmin,
+                      method: method,  
+					  generalLedgerJournalDetailId: record.get('generalLedgerJournalDetailId'),  
+					  generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue(),  
+					  generalLedgerChartOfAccountId: record.get('generalLedgerChartOfAccountId'), 
+					  countryId: record.get('countryId'),  
+					  generalLedgerJournalDetailAmount: record.get('generalLedgerJournalDetailAmount')},
+                  success: function (response, options) {
+                      jsonResponse = Ext.decode(response.responseText);
+                      if (jsonResponse.success == false) {
+                          Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                      }else {
+                          generalLedgerJournalDetailStore.reload({
+                                  params :{
+                                      generalLedgerJournalId : Ext.getCmp('generalLedgerJournalId').getValue()
+                                  }
+                                });
+                      }
+                  },
+                  failure: function (response, options) {
+                      Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
+                  }
+              });
+          }
+      }
+  });var generalLedgerJournalDetailEntity = Ext.data.Record.create([{
+          key :'PRI',
+          foreignKey : 'no',
+          name : 'generalLedgerJournalDetailId',
+          type : 'int'},{
+          key :'MUL',
+          foreignKey : 'yes',
+          name : 'generalLedgerJournalId',
+          type : 'int'},{
+          key :'MUL',
+          foreignKey : 'yes',
+          name : 'generalLedgerChartOfAccountId',
+          type : 'int'},{
+          key :'MUL',
+          foreignKey : 'yes',
+          name : 'countryId',
+          type : 'int'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'generalLedgerJournalDetailAmount',
+          type : 'float'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isDefault',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isNew',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isDraft',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isUpdate',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isDelete',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isActive',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isApproved',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isReview',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'isPost',
+          type : 'boolean'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'executeBy',
+          type : 'int'},{
+          key :'',
+          foreignKey : 'no',
+          name : 'executeTime',
+          type : 'date',dateFormat : 'Y-m-d H:i:s'}]);
+		  var generalLedgerJournalDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+  var generalLedgerJournalDetailGrid = new Ext.grid.GridPanel({
+      name: 'generalLedgerJournalDetailGrid',
+      id: 'generalLedgerJournalDetailGrid',
+      border: false,
+      store: generalLedgerJournalDetailStore,
+      height: 250,
+      autoScroll: true,
+      columns: generalLedgerJournalDetailColumnModel,
+      viewConfig: {
+          autoFill: true,
+          forceFit: true,
+          emptyRow : emptyRowLabel
+      },
+      layout: 'fit',
+      disabled: true,
+      plugins: [generalLedgerJournalDetailEditor],
+      tbar: {
+          items: [{
+              xtype: 'button',
+              iconCls: 'add',
+              id: 'add_record',
+              name: 'add_record',
+              text: newButtonLabel,
+              handler: function () {var newRecord = new generalLedgerJournalDetailEntity({  generalLedgerJournalDetailId: '',
+generalLedgerJournalId: '',
+generalLedgerChartOfAccountId: '',
+countryId: '',
+generalLedgerJournalDetailAmount: '',
+isDefault: '',
+isNew: '',
+isDraft: '',
+isUpdate: '',
+isDelete: '',
+isActive: '',
+isApproved: '',
+isReview: '',
+isPost: '',
+executeBy: '',
+executeTime: '', });
+                  generalLedgerJournalDetailEditor.stopEditing();
+                  generalLedgerJournalDetailStore.insert(0, newRecord);
+                  generalLedgerJournalDetailGrid.getSelectionModel().getSelections();
+                  generalLedgerJournalDetailEditor.startEditing(0);
+              }
+          }, {
+              xtype: 'button',
+              text: CheckAllLabel,
+              iconCls: 'row-check-sprite-check',
+              listeners: {
+                  'click': function (button, e) {
+                      generalLedgerJournalDetailStore.each(function (record,fn,scope) {
+                          for (var access in generalLedgerJournalDetailFlagArray) {
+											 	
+                              record.set(generalLedgerJournalDetailFlagArray[access], true);
+                          }
+                      });
+                  }
+              }
+          }, {
+              text: ClearAllLabel,
+              iconCls: 'row-check-sprite-uncheck',
+              listeners: {
+                  'click': function (button, e) {
+                      generalLedgerJournalDetailStore.each(function (record,fn,scope) {
+                          for (var access in generalLedgerJournalDetailFlagArray) {
+                              record.set(generalLedgerJournalDetailFlagArray[access], false);
+                          }
+                      });
+                  }
+              }
+          }, {
+              xtype: 'button',
+              text: saveButtonLabel,
+              iconCls: 'bullet_disk',
+              listeners: {
+                  'click': function (button, e) {
+                      var url = '../controller/generalLedgerJournalDetailController.php?';
+                      var sub_url = '';
+                      var modified = generalLedgerJournalDetailStore.getModifiedRecords();
+                      for (var i = 0; i < modified.length; i++) {
+                          var dataChanges = modified[i].getChanges();
+                          sub_url = sub_url + '&generalLedgerJournalDetailId[]=' + modified[i].get('generalLedgerJournalDetailId');
+                          if (isAdmin == 1) {
+                              if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
+                                  sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
+                              }
+                              if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
+                                  sub_url = sub_url + '&isDraft[]=' +modified[i].get('isDraft');
+                              }
+                              if (dataChanges.isNew == true || dataChanges.isNew == false) {
+                                  sub_url = sub_url + '&isNew[]=' +modified[i].get('isNew');
+                              }
+                              if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
+                                  sub_url = sub_url + '&isUpdate[]=' +modified[i].get('isUpdate');
+                              }
+                          }
+                          if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
+                              sub_url = sub_url + '&isDelete[]=' +modified[i].get('isDelete');
+                          }
+                          if (isAdmin == 1) {
+                              if (dataChanges.isActive == true || dataChanges.isActive == false) {
+                                  ssub_url = sub_url + '&isActive[]=' +modified[i].get('isActive');
+                              }
+                              if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
+                                  sub_url = sub_url + '&isApproved[]=' +modified[i].get('isApproved');
+                              }
+                              if (dataChanges.isReview == true || dataChanges.isReview == false) {
+                                  sub_url = sub_url + '&isReview[]=' +modified[i].get('isReview');
+                              }
+                              if (dataChanges.isPost == true || dataChanges.isPost == false) {
+                                  sub_url = sub_url + '&isPost[]=' +modified[i].get('isPost');
+                              }
+                          }
+                      }
+                      url = url + sub_url;
+                      Ext.Ajax.request({
+                          url: url,
+                          method: 'GET',
+                          params: {
+                              leafId: leafId,
+                              isAdmin: isAdmin,
+                              method: 'updateStatus'
+                          },
+                          success: function (response, options) {
+                              jsonResponse = Ext.decode(response.responseText);
+                              if (jsonResponse.success == true) {
+                                  Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                                  generalLedgerJournalDetailStore.reload({
+									params :{
+										generalLedgerJournalId : Ext.getCmp('generalLedgerJournalId').getValue()
+									}
+								  });
+                              } else if (jsonResponse.success == false) {
+                                  Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+                              }
+                          },
+                          failure: function (response, options) {
+                              Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+                          }
+                      });
+                  }
+              }
+          }]
+      },
+      bbar: new Ext.PagingToolbar({
+          store: generalLedgerJournalDetailStore,
+          pageSize: perPage
+      }),
+      view: new Ext.ux.grid.BufferView({
+          rowHeight: 34,
+          scrollDelay: false
+      })
+  });
+	var formPanel = new Ext.form.FormPanel({
         url: '../controller/generalLedgerJournalController.php',
         name: 'formPanel',
         id: 'formPanel',
@@ -2150,7 +2571,7 @@ Ext.onReady(function() {
                 bodyStyle: 'padding:5px',
                 border: true,
                 frame: true,
-                items: [generalLedgerJournalId, generalLedgerJournalTypeId, documentNo, generalLedgerJournalTitle, generalLedgerJournalDesc, generalLedgerJournalDate, generalLedgerJournalStartDate, generalLedgerJournalEndDate, generalLedgerJournalAmount]
+                items: [generalLedgerJournalId, generalLedgerJournalTypeId,  generalLedgerJournalTitle, generalLedgerJournalDesc, generalLedgerJournalDate, generalLedgerJournalStartDate, generalLedgerJournalEndDate, generalLedgerJournalAmount]
             }]
         },
         generalLedgerJournalDetailGrid],
@@ -2170,8 +2591,8 @@ Ext.onReady(function() {
             id: 'auditButtonLabel',
             type: 'button',
             iconCls: 'key',
-            disabled: auditButtonLabelDisabled,
-            handler: function() {
+			disabled: auditButtonLabelDisabled,
+            handler: function () { // reload the store
                 if (auditWindow) {
                     generalLedgerJournalStore.reload();
                     generalLedgerJournalDetailStore.reload();

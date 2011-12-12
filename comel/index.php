@@ -4,6 +4,9 @@
 	$targetDatabase='mysql';
 	$targetDb="ifinancial";
 	$targetTable ='generalLedgerJournalDetail';
+	$targetTableId = $targetTable."Id";
+	$targetMasterTable='generalLedgerJournalId'; // parent primary key
+	$targetGridType="second"; // first -normal table ,second -edit in grid table
 	$managementDb="imanagement";
 	$mysqlOpenTag="`";
 	$mysqlCloseTag="`";
@@ -130,6 +133,7 @@ AND  column_name ='".$columnName."'		";
 						}
 					},";
 				} else if ($foreignKey=='yes') { 
+					if($targetGridType=='first') {
 					$str4.="
 						{
 						dataIndex : '".$columnName."',
@@ -142,14 +146,69 @@ AND  column_name ='".$columnName."'		";
 						}
 					},
 					";
+					} else {
+							if($columnName !=$targetMasterTable){
+							$str4.="{
+								dataIndex : '".$columnName."',
+							header : ".str_replace("Id","",$columnName)."DescLabel,
+								width : 200,
+								sortable : true,
+								editor : ".$columnName.",
+								renderer : Ext.util.Format.comboRenderer(".$columnName."),
+								hidden : false,
+								jsonType:'".$jsonType."'
+							},";
+						    }
+					}
 				
-				} else { 
-				$str4.="{
-					dataIndex : '".$columnName."',
-					header : ".$columnName."Label,
-					sortable : true,
-					hidden : false
-				},";	
+				} else if($jsonType=='float'){
+								$str4.="{
+									dataIndex : '".$columnName."',
+									header : ".$columnName."Label,
+									width : 75,
+									sortable : true,
+									summaryType : 'sum',
+									renderer : function(value) {
+										return ' RM ' + Ext.util.Format.number(value, '0,0.00');
+									},
+									editor : {
+										xtype : 'textfield',
+										labelAlign : 'left',
+										fieldLabel : ".$columnName."Label,
+										hiddenName : '".$columnName."',
+										name : '".$columnName."',
+										id : '".$columnName."',
+
+										blankText : blankTextLabel,
+										decimalPrecision : 2,
+										vtype : 'dollar',
+										anchor : '95%',
+										listeners : {
+											blur : function() {
+												var value = Ext.getCmp('".$columnName."').getValue();
+												value = value.replace(\",\", \"\"); 
+												value = Ext.util.Format.usMoney(value);
+												value = value.replace(\" \", \"\"); 
+												Ext.getCmp('".$columnName."').setValue(value);
+											}
+										}
+									}
+								},";
+						} else if ($jsonType=='boolean') { 
+							if($targetTableType=='first') {
+								$str4.=$columnName.","; // checkbox is outside
+							} else {
+								$str4.=$columnName."GridDetail,"; // checkbox is outside
+							}
+						}else { 
+								if($columnName != $targetTableId) { 
+								$str4.="{
+									dataIndex : '".$columnName."',
+									header : ".$columnName."Label,
+									sortable : true,
+									hidden : false
+								},";
+								}								
 				}
 		if($foreignKey=='no' && ($key=='MUL' || $key=='')) { 
 			if($columnName !='isDefault' &&
@@ -165,7 +224,7 @@ AND  column_name ='".$columnName."'		";
 			   $columnName !='executeTime') {
 			   
 				if($jsonType=='float') {
-					$str3.="var ".$columnName." = new Ext.form.".$formType."Field({
+					$formItem.="var ".$columnName." = new Ext.form.".$formType."Field({
 							labelAlign : 'left',
 						fieldLabel : ".$columnName."Label + '<span style=\'color: red;\'>*</span>',
 						hiddenName : '".$columnName."',
@@ -191,7 +250,7 @@ AND  column_name ='".$columnName."'		";
 				
 				} else{
 			   
-					$str3.="var ".$columnName." = new Ext.form.".$formType."Field({
+					$formItem.="var ".$columnName." = new Ext.form.".$formType."Field({
 						labelAlign : 'left',
 						fieldLabel : ".$columnName."Label + '<span style=\'color: red;\'>*</span>',
 						hiddenName : '".$columnName."',
@@ -233,7 +292,7 @@ AND  column_name ='".$columnName."'		";
 		
 		}  else if ($key=='PRI') {
 			
-			$str3.="var ".$columnName."  =  new Ext.form.Hidden({
+			$formItem.="var ".$columnName."  =  new Ext.form.Hidden({
 			name : '".$columnName."',
 			id : '".$columnName."'
 			});";
@@ -249,33 +308,64 @@ AND  column_name ='".$columnName."'		";
 				},";
 		}else {
 		// asume foreign key  only used combo box 
-				$str3.="var ".$columnName."  = new Ext.ux.form.ComboBoxMatch({
-					labelAlign: 'left',
-					fieldLabel: ".$columnName."Label,
-					name: 'stateId',
-					hiddenName: '".$columnName."',
-					valueField: '".$columnName."',
-					hiddenId: '".$columnName."_fake',
-					id: '".$columnName."',
-					displayField: '".str_replace("Id","",$columnName)."Desc',
-					typeAhead: false,
-					triggerAction: 'all',
-					store: ".str_replace("Id","",$columnName)."Store,
-					anchor: '95%',
-					selectOnFocus: true,
-					mode: 'local',
-					allowBlank: false,
-					blankText: blankTextLabel,
-					createValueMatcher: function(value) {
-						value = String(value).replace(/\s*/g, '');
-						if (Ext.isEmpty(value, false)) {
-							return new RegExp('^');
+				if($columnName !=$targetMasterTable && $targetGridType!='first'){
+					$formItem.="var ".$columnName."  = new Ext.ux.form.ComboBoxMatch({
+					
+						labelAlign: 'left',
+						fieldLabel: ".$columnName."Label,
+						name: 'stateId',
+						hiddenName: '".$columnName."',
+						valueField: '".$columnName."',
+						hiddenId: '".$columnName."_fake',
+						id: '".$columnName."',
+						displayField: '".str_replace("Id","",$columnName)."Desc',
+						typeAhead: false,
+						triggerAction: 'all',
+						store: ".str_replace("Id","",$columnName)."Store,
+						anchor: '95%',
+						selectOnFocus: true,
+						mode: 'local',
+						allowBlank: false,
+						blankText: blankTextLabel,
+						createValueMatcher: function(value) {
+							value = String(value).replace(/\s*/g, '');
+							if (Ext.isEmpty(value, false)) {
+								return new RegExp('^');
+							}
+							value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+							return new RegExp('\\b(' + value + ')', 'i');
 						}
-						value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-						return new RegExp('\\b(' + value + ')', 'i');
-					}
-				});";
-				
+					});";
+				}
+				if($targetGridType=='first'){
+					$formItem.="var ".$columnName."  = new Ext.ux.form.ComboBoxMatch({
+						$targetGridType
+						labelAlign: 'left',
+						fieldLabel: ".$columnName."Label,
+						name: 'stateId',
+						hiddenName: '".$columnName."',
+						valueField: '".$columnName."',
+						hiddenId: '".$columnName."_fake',
+						id: '".$columnName."',
+						displayField: '".str_replace("Id","",$columnName)."Desc',
+						typeAhead: false,
+						triggerAction: 'all',
+						store: ".str_replace("Id","",$columnName)."Store,
+						anchor: '95%',
+						selectOnFocus: true,
+						mode: 'local',
+						allowBlank: false,
+						blankText: blankTextLabel,
+						createValueMatcher: function(value) {
+							value = String(value).replace(/\s*/g, '');
+							if (Ext.isEmpty(value, false)) {
+								return new RegExp('^');
+							}
+							value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+							return new RegExp('\\b(' + value + ')', 'i');
+						}
+					});";
+				}
 					
 				$str5.="
 				,{
@@ -353,20 +443,20 @@ AND  column_name ='".$columnName."'		";
 	$str5.=substr($str5,0,-1);
 	
 	
-	$str5x.="var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters(
+	$gridFilterJs.="var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters(
 					{
 						encode : false,
 						local : false,
 						filters : [";
-	$str5x.=(substr($str5,0,-1));
-	$str5x.="]});";
+	$gridFilterJs.=$str5;
+	$gridFilterJs.="]});";
 
-	$str4.=(substr($str4,0,-1));
+	$str4=(substr($str4,0,-1));
 	
-	$str41.="var ".$targetTable."ColumnModel = [
+	$columnModelJs.="var ".$targetTable."ColumnModel = [
 					new Ext.grid.RowNumberer(),";
-	$str41.=(substr($str4,0,-1));
-	$str41.="];";				
+	$columnModelJs.=$str4;
+	$columnModelJs.="];";				
 	
 
 	
@@ -460,7 +550,7 @@ AND  column_name ='".$columnName."'		";
 			JOIN	`".$managementDb."`.`staff`
 			ON		`".$targetTable."`.`executeBy` = `staff`.`staffId`
 			WHERE 	;";
-			
+			if($targetGridType=='first') { 
 			$gridPanel.=
 			"var ".$targetTable."FlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
 	var ".$targetTable."Grid = new Ext.grid.GridPanel({
@@ -649,7 +739,7 @@ AND  column_name ='".$columnName."'		";
 					$a = range('A','Z');
 					//$a = range(1,12);
 					foreach($a as $z) {
-						$gridFilter.="{ xtype:'button', text:'".$z."', handler: function (button,e) { 
+						$gridPanel.="{ xtype:'button', text:'".$z."', handler: function (button,e) { 
 						
 								".$targetTable."Store
 													.reload({
@@ -667,7 +757,7 @@ AND  column_name ='".$columnName."'		";
 				}
 						
 
-				$gridFilter.="'->', new Ext.ux.form.SearchField({
+				$gridPanel.="'->', new Ext.ux.form.SearchField({
 					store : ".$targetTable."Store,
 					width : 200
 				})]
@@ -684,7 +774,161 @@ AND  column_name ='".$columnName."'		";
 			layout : 'fit',		
 			items : [".$targetTable."Grid]
 		});";
+		} else {
 		
+			$gridPanel.="var ".$targetTable."FlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var ".$targetTable."Grid = new Ext.grid.GridPanel({
+        name: '".$targetTable."Grid',
+        id: '".$targetTable."Grid',
+        border: false,
+        store: ".$targetTable."Store,
+        height: 250,
+        autoScroll: true,
+        columns: ".$targetTable."ColumnModel,
+        viewConfig: {
+            autoFill: true,
+            forceFit: true,
+			emptyRow : emptyRowLabel
+        },
+        layout: 'fit',
+        disabled: true,
+        plugins: [".$targetTable."Editor],
+        tbar: {
+            items: [{
+                xtype: 'button',
+                iconCls: 'add',
+                id: 'add_record',
+                name: 'add_record',
+                text: newButtonLabel,
+                handler: function () {";
+                    $gridPanel.="var newRecord = new ".$targetTable."Entity({";
+                        foreach($columnNameArray as $columnNameMysql) {
+		
+			$gridPanelInsideValue.="  ".$columnNameMysql.": '', \n";
+		
+	}
+	$gridPanel.=substr($gridPanelInsideValue,0,-1);
+                      
+					$gridPanel.="});
+                    ".$targetTable."Editor.stopEditing();
+                    ".$targetTable."Store.insert(0, newRecord);
+                    ".$targetTable."Grid.getSelectionModel().getSelections();
+                    ".$targetTable."Editor.startEditing(0);
+                }
+            }, {
+                xtype: 'button',
+                text: CheckAllLabel,
+                iconCls: 'row-check-sprite-check',
+                listeners: {
+                    'click': function (button, e) {
+                        ".$targetTable."Store.each(function (record,fn,scope) {
+                            for (var access in ".$targetTable."FlagArray) {
+                                record.set(".$targetTable."FlagArray[access], true);
+                            }
+                        });
+                    }
+                }
+            }, {
+                text: ClearAllLabel,
+                iconCls: 'row-check-sprite-uncheck',
+                listeners: {
+                    'click': function (button, e) {
+                        ".$targetTable."Store.each(function (record,fn,scope) {
+                            for (var access in ".$targetTable."FlagArray) {
+                                record.set(".$targetTable."FlagArray[access], false);
+                            }
+                        });
+                    }
+                }
+            }, {
+                xtype: 'button',
+                text: saveButtonLabel,
+                iconCls: 'bullet_disk',
+                listeners: {
+                    'click': function (button, e) {
+                        var url = '../controller/".$targetTable."Controller.php?';
+                        var sub_url = '';
+                        var modified = ".$targetTable."Store.getModifiedRecords();
+                        for (var i = 0; i < modified.length; i++) {
+                            var dataChanges = modified[i].getChanges();
+                            sub_url = sub_url + '&".$targetTable."Id[]=' + modified[i].get('".$targetTable."Id');
+                            if (isAdmin == 1) {
+                                if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
+                                    sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
+                                }
+                                if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
+                                    sub_url = sub_url + '&isDraft[]=' +modified[i].get('isDraft');
+                                }
+                                if (dataChanges.isNew == true || dataChanges.isNew == false) {
+                                    sub_url = sub_url + '&isNew[]=' +modified[i].get('isNew');
+                                }
+                                if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
+                                    sub_url = sub_url + '&isUpdate[]=' +modified[i].get('isUpdate');
+                                }
+                            }
+                            if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
+                                sub_url = sub_url + '&isDelete[]=' +modified[i].get('isDelete');
+                            }
+                            if (isAdmin == 1) {
+                                if (dataChanges.isActive == true || dataChanges.isActive == false) {
+                                    ssub_url = sub_url + '&isActive[]=' +modified[i].get('isActive');
+                                }
+                                if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
+                                    sub_url = sub_url + '&isApproved[]=' +modified[i].get('isApproved');
+                                }
+                                if (dataChanges.isReview == true || dataChanges.isReview == false) {
+                                    sub_url = sub_url + '&isReview[]=' +modified[i].get('isReview');
+                                }
+                                if (dataChanges.isPost == true || dataChanges.isPost == false) {
+                                    sub_url = sub_url + '&isPost[]=' +modified[i].get('isPost');
+                                }
+                            }
+                        }
+                        url = url + sub_url;
+                        Ext.Ajax.request({
+                            url: url,
+                            method: 'GET',
+                            params: {
+                                leafId: leafId,
+                                isAdmin: isAdmin,
+                                method: 'updateStatus'
+                            },
+                            success: function (response, options) {
+                                jsonResponse = Ext.decode(response.responseText);
+                                if (jsonResponse.success == true) {
+                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                                    ".$targetTable."Store.reload({
+									params :{
+										".$targetMasterTable." : Ext.getCmp('".$targetMasterTable."').getValue()
+									}
+								  });
+                                } else if (jsonResponse.success == false) {
+                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+                                }
+                            },
+                            failure: function (response, options) {
+                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+                            }
+                        }); 
+                    }
+                }
+            }]
+        },
+        bbar: new Ext.PagingToolbar({
+            store: ".$targetTable."Store,
+            pageSize: perPage
+        }),
+        view: new Ext.ux.grid.BufferView({
+            rowHeight: 34,
+            scrollDelay: false
+        })
+    });";
+		}
+		   $entity.="var ".$targetTable."Entity = Ext.data.Record.create([";
+			$entity.=substr($str,0,-1);
+	$entity.=substr($entityInside,0,-1);
+                      
+					$entity.="]);";
 		$formPanel.="var formPanel = new Ext.form.FormPanel({
 			url : '../controller/".$targetTable."Controller.php',
 			name : 'formPanel',
@@ -1748,6 +1992,199 @@ AND  column_name ='".$columnName."'		";
 			items : [gridPanel, formPanel]
 		});
 });";
+
+$comboRenderer.="Ext.util.Format.comboRenderer = function(combo) {
+				return function(value) {
+					var record = combo.findRecord(combo.valueField
+							|| combo.displayField, value);
+					if (record) {
+						// remove special character
+
+						res = record.get(combo.displayField);
+						// res = res.replace(/[^a-zA-Z 0-9]+/g, '-');
+					} else {
+						// res = (\"hmm, not found:\" + value);
+						res = (value);
+					}
+					return res;
+				};
+			};";
+			
+	if($targetGridType=='first') {
+		$systemCheckBox="
+	var isDefaultGrid = new Ext.ux.grid.CheckColumn({
+        header: isDefaultLabel,
+        dataIndex: 'isDefault',
+        hidden: isDefaultHidden
+    });
+    var isNewGrid = new Ext.ux.grid.CheckColumn({
+        header: 'New',
+        dataIndex: 'isNew',
+        hidden: isNewHidden
+    });
+    var isDraftGrid = new Ext.ux.grid.CheckColumn({
+        header: isDraftLabel,
+        dataIndex: 'isDraft',
+        hidden: isDraftHidden
+    });
+    var isUpdateGrid = new Ext.ux.grid.CheckColumn({
+        header: isUpdateLabel,
+        dataIndex: 'isUpdate',
+        hidden: isUpdateHidden
+    });
+    var isDeleteGrid = new Ext.ux.grid.CheckColumn({
+        header: isDeleteLabel,
+        dataIndex: 'isDelete'
+    });
+    var isActiveGrid = new Ext.ux.grid.CheckColumn({
+        header: isActiveLabel,
+        dataIndex: 'isActive',
+        hidden: isActiveHidden
+    });
+    var isApprovedGrid = new Ext.ux.grid.CheckColumn({
+        header: isApprovedLabel,
+        dataIndex: 'isApproved',
+        hidden: isApprovedHidden
+    });
+    var isReviewGrid = new Ext.ux.grid.CheckColumn({
+        header: isReviewLabel,
+        dataIndex: 'isReview',
+        hidden: isReviewHidden
+    });
+    var isPostGrid = new Ext.ux.grid.CheckColumn({
+        header: 'Post',
+        dataIndex: 'isPost',
+        hidden: isPostHidden
+    });
+    
+	";
+	}  else {
+	
+		$systemCheckbox="
+			
+    var isDefaultGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isDefaultLabel,
+        dataIndex: 'isDefault',
+        hidden: isDefaultHidden
+    });
+    var isNewGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isNewLabel,
+        dataIndex: 'isNew',
+        hidden: isNewHidden
+    });
+    var isDraftGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isDraftLabel,
+        dataIndex: 'isDraft',
+        hidden: isDraftHidden
+    });
+    var isUpdateGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isUpdateLabel,
+        dataIndex: 'isUpdate',
+        hidden: isUpdateHidden
+    });
+    var isDeleteGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isDeleteLabel,
+        dataIndex: 'isDelete'
+    });
+    var isActiveGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isActiveLabel,
+        dataIndex: 'isActive',
+        hidden: isActiveHidden
+    });
+    var isApprovedGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isApprovedLabel,
+        dataIndex: 'isApproved',
+        hidden: isApprovedHidden
+    });
+    var isReviewGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isReviewLabel,
+        dataIndex: 'isReview',
+        hidden: isReviewHidden
+    });
+    var isPostGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isPostLabel,
+        dataIndex: 'isPost',
+        hidden: isPostHidden
+    });
+		";
+		
+		$jsonWriter="var ".$targetTable."Editor = new Ext.ux.grid.RowEditor({
+        saveText: saveButtonLabel,
+        cancelText: cancelButtonLabel,
+        listeners: {
+            cancelEdit: function (rowEditor, changes, record, rowIndex) {
+               
+				".$targetTable."Store.reload({
+									params :{
+										".$targetMasterTable." : Ext.getCmp('".$targetMasterTable."').getValue()
+									}
+								  });
+            },
+            afteredit: function (rowEditor, changes, record, rowIndex) {
+                this.save = true;
+                var record = this.grid.getStore().getAt(rowIndex);
+				if (parseInt(record.get('".$targetTable."Id')) == 'NaN') {
+                    method = 'create';
+                } else if (record.get('".$targetTable."Id') == '') {
+                    method = 'create';
+                } else if (record.get('".$targetTable."Id') == undefined) {
+                    method = 'create';
+                } else if (parseInt(record.get('".$targetTable."Id')) > 0) {
+                    method = 'save';
+                } else {
+                    method = 'create';
+                }
+                Ext.Ajax.request({
+                    url: '../controller/".$targetTable."Controller.php',
+                    method: 'POST',
+                    params: {
+                        leafId: leafId,
+                        isAdmin: isAdmin,
+                        method: method,";
+                        
+						foreach($columnNameArray as $columnNameMysql) {
+		if($columnNameMysql !='isDefault' &&
+			   $columnNameMysql !='isNew' &&
+			   $columnNameMysql !='isDraft'&&
+			   $columnNameMysql !='isUpdate'&&
+			   $columnNameMysql !='isDelete'&&
+			   $columnNameMysql !='isActive'&&
+			   $columnNameMysql !='isApproved'&&
+			   $columnNameMysql !='isReview'&&
+			   $columnNameMysql !='isPost'&&
+			   $columnNameMysql !='isSeperated'&&
+			   $columnNameMysql !='isConsolidation'&&
+			   $columnNameMysql !='isReconciled' &&
+			   $columnNameMysql !='executeBy'&&
+			   $columnNameMysql !='executeTime' &&
+			   $columnNameMysql !=$targetMasterTable) {	
+			$jsonWriterInsideValue.="  ".$columnNameMysql.": record.get('". $columnNameMysql."'),";
+		} else if ($columnNameMysql == $targetMasterTable) {
+			$jsonWriterInsideValue.="  ".$columnNameMysql.": Ext.getCmp('". $columnNameMysql."').getValue(),";
+		}		}
+			$jsonWriter.=substr($jsonWriterInsideValue,0,-1);
+			
+					$jsonWriter.="},
+                    success: function (response, options) {
+                        jsonResponse = Ext.decode(response.responseText);
+                        if (jsonResponse.success == false) {
+                            Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                        } else {
+							".$targetTable."Store.reload({
+									params :{
+										".$targetMasterTable." : Ext.getCmp('".$targetMasterTable."').getValue()
+									}
+								  });
+						}
+                    },
+                    failure: function (response, options) {
+                        Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + \":\" + response.statusText);
+                    }
+                });
+            }
+        }
+    });";
+}	
 ?>
 		
 		
@@ -1766,49 +2203,58 @@ AND  column_name ='".$columnName."'		";
 <body style="background: white; font-family: Helvetica">
 <?php if($_GET['type']=='javascript') { ?>	
 <?php if($_GET['mode']=='copy') { ?>
+<a name="copyJsonStore"></a>
 <h1>Copy To Json Store</h1>
 <pre class="brush: js;">
 <?php echo (substr($str,0,-1)); ?>
 </pre>
+<a name="copyGridFilter"></a>
 <h1>Copy To GridFilter</h1>
 <pre class="brush: js;">
 <?php echo $str5; ?>
 </pre>
+<a name="copyColumnModel"></a>
 <h1>Copy To ColumnModel</h1>
 <pre class="brush: js;">
 <?php echo $str4; ?>
 </pre>
+<a name="copyFormItem"></a>
 <h1>Copy To Form Item</h1>
 <pre class="brush: js;">
 <?php echo $str2; ?>
 </pre>
 <?php } ?>
+<a name="jsonRequest"></a>
 <h1>Request,Reader,JsonStore</h1>
 <pre class="brush: js;">
 <?php echo $jsonStoreString; ?>
 </pre>
-
+<a name="gridFilter"></a>
 <h1>GridFilter</h1>
 <pre class="brush: js;">
-<?php echo $str5x; ?>
+<?php echo $gridFilterJs; ?>
 </pre>
-
+<a name="columnModel"></a>
 <h1>ColumnModel</h1>
 <pre class="brush: js;">
-<?php echo $str41; ?>
+<?php echo $columnModelJs; ?>
 </pre>
+<a name="gridPanel"></a>
 <h1>GridPanel</h1>
 <pre class="brush: js;">
 <?php echo $gridPanel; ?>
 </pre>
+<a name="copyFormItem"></a>
 <h1>Copy To Form Item</h1>
 <pre class="brush: js;">
-<?php echo $str3; ?>
+<?php echo $formItem; ?>
 </pre>
+<a name="systemValidation"></a>
 <h1>System Validation</h1>
 <pre class="brush: js;">
 <?php echo $systemValidation; ?>
 </pre>
+<a name="formPanel"></a>
 <h1>Form Panel</h1>
 <pre class="brush: js;">
 <?php echo $formPanel; ?>
@@ -1816,32 +2262,49 @@ AND  column_name ='".$columnName."'		";
 <?php } ?>
 <?php if($_GET['type']=='fulljs') { ?>
 <h1>Full Javascript</h1>
+<?php 
+if($targetTableType=='first') { 
+echo $firstCodeJs.$jsonStoreString.$gridFilterJs.$systemCheckbox.$columnModelJs.$gridPanel.$formItem.$systemValidation.$formPanel.$lastCodeJs;
+} else {
+echo $jsonStoreString.$gridFilterJs.$formItem.$systemCheckbox.$comboRenderer.$columnModelJs.$jsonWriter.$entity.$gridPanel;
+
+} ?>
+<a name="fulljs"></a>
 <pre class="brush: js;">
-<?php //echo $firstCodeJs.$jsonCodeString.$str5x.$str41.$gridPanel.$str3.$systemValidation.$formPanel.$lastCodeJs; ?>
+
+<?php 
+if($targetTableType=='first') { 
+echo $firstCodeJs.$jsonStoreString.$gridFilterJs.$systemCheckbox.$columnModelJs.$gridPanel.$formItem.$systemValidation.$formPanel.$lastCodeJs;
+} else {
+echo $jsonStoreString.$gridFilterJs.$formItem.$systemCheckbox.$comboRenderer.$columnModelJs.$jsonWriter.$entity.$gridPanel;
+
+} ?>
 </pre>
-<pre>
-<?php //echo $firstCodeJs.$jsonCodeString.$str5x.$str41.$gridPanel.$str3.$systemValidation.$formPanel.$lastCodeJs; ?>
-</pre>
-<?php echo $firstCodeJs.$jsonCodeString.$str5x.$str41.$gridPanel.$str3.$systemValidation.$formPanel.$lastCodeJs; ?>
+
 
 <?php } ?>
 <?php if ($_GET['type']=='controller') { ?>
+<a name="createStatement"></a>
 <h1>Create Statement</h1>
 <pre class="brush: php;">
 <?php echo $insertStatement; ?>
 </pre>
+<a name="readStatement"></a>
 <h1>Read Statement</h1>
 <pre class="brush: php;">
 <?php echo $readStatement; ?>
 </pre>
+<a name="updateStatement"></a>
 <h1>Update Statement</h1>
 <pre class="brush: php;">
 <?php echo $updateStatement; ?>
 </pre>
+<a name="deletStatement"></a>
 <h1>Delete Statement</h1>
 <pre class="brush: php;">
 <?php echo $deleteStatement; ?>
 </pre>
+<a name="updateStatus"></a>
 <h1>Update Status Statement</h1>
 <pre class="brush: php;">
 <?php //echo $deleteStatement; ?>

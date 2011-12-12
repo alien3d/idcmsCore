@@ -48,6 +48,44 @@ $result = $q->fast ( $sql );
 while ( ($row = $q->fetchAssoc ( $result )) == TRUE ) {
 	echo "var " . $row ['tableMappingColumnName'] . "Label = '" . $row ['tableMappingNative'] . "';\n";
 }
+
+if ($q->vendor == sharedx::MYSQL) {
+	// future
+	$sql = "
+                SELECT 			`tableMappingForeignKey`.`tableMappingForeignKeyName`,
+                                 `tableMappingForeignKeyTranslate`.`tableMappingForeignKeyNative`
+                FROM 			`tableMappingForeignKey`
+                JOIN			`tableMappingForeignKeyTranslate`
+                USING			(`tableMappingForeignKeyId`)
+                WHERE 			`tableMappingForeignKeyTranslate`.`languageId`='" . $_SESSION ['languageId'] . "'";
+	
+} else if ($q->vendor == sharedx::MSSQL) {
+	$sql = "
+                SELECT 			[tableMapping].[tableMappingColumnName],
+                                [tableMappingTranslate].[tableMappingNative]
+                FROM 			[tableMapping]
+                JOIN			[tableMappingTranslate]
+                USING			[tableMapping].[tableMappingId]=[tableMappingTranslate].[tableMappingId]
+                WHERE 			[tableMapping].[languageId]='" . $_SESSION ['languageId'] . "'";
+	
+} else if ($q->vendor == sharedx::ORACLE) {
+	$sql = "
+                SELECT DISTINCT TABLEMAPPING.TABLEMAPPINGCOLUMNNAME 			AS 	\"tableMappingColumnName\",
+                                TABLEMAPPINGTRANSLATE.TABLEMAPPINGNATIVELABEL	AS	\"tableMappingNative\"
+                FROM 			TABLEMAPPING
+                JOIN			TABLEMAPPINGTRANSLATE
+                USING			(TABLEMAPPINGID)
+                WHERE 			TABLEMAPPING.LANGUAGEID='" . $_SESSION ['languageId'] . "'";
+	
+} else if ($q->vendor ==sharedx::DB2) {
+} else if ($q->vendor ==sharedx::POSTGRESS) {
+}	
+
+$result = $q->fast ( $sql );
+
+while ( ($row = $q->fetchAssoc ( $result )) == TRUE ) {
+	echo "var " . $row ['tableMappingForeignKeyName'] . "ForeignKeyLabel = '" . $row ['tableMappingForeignKeyNative'] . "';\n";
+}
 /**
  * language pack javascript default
  * */
