@@ -6,19 +6,19 @@ require_once ("../../class/classRecordSet.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/purchaseordersdetailsModel.php");
+require_once ("../model/countryModel.php");
 
 /**
- * this is purchaseOrdersDetails setting files.This sample template file for master record
+ * this is country setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
- * @author Maq,hafizan
- * @package account payable or purchase order
- * @subpackage purchaseOrdersDetails
+ * @author Maq,Hafizan
+ * @package common application
+ * @subpackage country
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class PurchaseOrdersDetailsClass extends ConfigClass {
+class CountryClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -90,10 +90,10 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new PurchaseOrderDetailsModel ();
+		$this->model = new CountryModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
-		
+
 		$this->q = new Vendor ();
 		$this->q->vendor = $this->getVendor();
 		$this->q->leafId = $this->getLeafId();
@@ -104,10 +104,13 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		$this->q->primaryKeyName = $this->model->getPrimaryKeyName();
 		$this->q->log = $this->log;
 		$this->q->audit = $this->audit;
-		$this->q->setRequestDatabase($this->getRequestDatabase());
 		$this->q->connect($this->getConnection(), $this->getUsername(), $this->getDatabase(), $this->getPassword());
 
-		
+		$this->systemString = new SystemString();
+		$this->systemString->setVendor($this->getVendor());
+		$this->systemString->setLeafId($this->getLeafId());
+		$this->systemString->execute();
+
 
 		$this->recordSet = new RecordSet ();
 		$this->recordSet->setTableName($this->model->getTableName());
@@ -129,7 +132,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 
 	public function create() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -137,36 +140,23 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		$this->q->start();
 		$this->model->create();
 		if ($this->getVendor() == self::MYSQL) {
-			 
 			$sql = "
-			INSERT INTO `northwindgood`.`purchaseordersdetails`
+			INSERT INTO `country`
 					(
-						`northwindgood`.`purchaseordersdetails`.`purchaseOrdersId`,												
-						`northwindgood`.`purchaseordersdetails`.`productsId`,
-						`northwindgood`.`purchaseordersdetails`.`purchaseOrdersDetailsQty`,
-						`northwindgood`.`purchaseordersdetails`.`purchaseOrdersDetailsUnitCost`,
-						`northwindgood`.`purchaseordersdetails`.`purchaseOrdersDetailsDateRec`,
-						`northwindgood`.`purchaseordersdetails`.`postedToInventory`,
-						`northwindgood`.`purchaseordersdetails`.`inventoryId`,	
-						
-						`northwindgood`.`purchaseordersdetails`.`isDefault`,
-						`northwindgood`.`purchaseordersdetails`.`isNew`,													`northwindgood`.`purchaseordersdetails`.`isDraft`,
-						`northwindgood`.`purchaseordersdetails`.`isUpdate`,													`northwindgood`.`purchaseordersdetails`.`isDelete`,
-						`northwindgood`.`purchaseordersdetails`.`isActive`,													`northwindgood`.`purchaseordersdetails`.`isApproved`,
-						`northwindgood`.`purchaseordersdetails`.`isReview`,                      		  	 				`northwindgood`.`purchaseordersdetails`.`isPost`,
-						`northwindgood`.`purchaseordersdetails`.`executeBy`,												`northwindgood`.`purchaseordersdetails`.`executeTime`
+						`countryCode`,
+						`countryDesc`,				
+						`isDefault`,
+						`isNew`,													`isDraft`,
+						`isUpdate`,													`isDelete`,
+						`isActive`,													`isApproved`,
+						`isReview`,                      		  	 				`isPost`,
+						`executeBy`,												`executeTime`
 					)
 			VALUES
 					(
-						'" . $this->model->getPurchaseOrdersId() . "',
-						'" . $this->model->getProductsId() . "',
-						'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-						'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-						'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-						'" . $this->model->getPostedToInventory() . "',
-						'" . $this->model->getInventoryId() . "',					
-															
-												'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getCountryCode() . "',
+						'" . $this->model->getCountryDesc() . "',					
+						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
@@ -175,16 +165,10 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [purchaseOrdersDetails]
+			INSERT INTO [country]
 					(
-						[purchaseOrdersId],
-						[productsId],
-						[purchaseOrdersDetailsQty],
-						[purchaseOrdersDetailsUnitCost],
-						[purchaseOrdersDetailsDateRec],
-						[postedToInventory],
-						[inventoryId],													
-						
+						[countryCode],
+						[countryDesc],														
 						[isDefault],
 						[isNew],														[isDraft],
 						[isUpdate],														[isDelete],
@@ -194,15 +178,9 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getPurchaseOrdersId() . "',
-						'" . $this->model->getProductsId() . "',
-						'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-						'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-						'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-						'" . $this->model->getPostedToInventory() . "',
-						'" . $this->model->getInventoryId() . "',
-											
-												'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getCountryCode() . "',
+						'" . $this->model->getCountryDesc() . "',			
+						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',			'" . $this->model->getIsApproved(0, 'single') . "',
@@ -212,15 +190,11 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	PURCHASEORDERDETAILS
+			INSERT INTO	COUNTRY
 					(
-						PRODUCTSID,
-						PURCHASEORDERSDETAILSQTY,
-						PURCHASEORDERSDETAILSUNITCOST,
-						PURCHASEORDERSDETAILSDATEREC,
-						POSTEDTOINVENTORY,
-						INVENTORYID,
-																		ISDEFAULT,
+						COUNTRYCODE,
+						COUNTRYDESC,						
+						ISDEFAULT,
 						ISNEW,														ISDRAFT,
 						ISUPDATE,													ISDELETE,
 						ISACTIVE,													ISAPPROVED,
@@ -229,15 +203,9 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getPurchaseOrdersId() . "',
-						'" . $this->model->getProductsId() . "',
-						'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-						'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-						'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-						'" . $this->model->getPostedToInventory() . "',
-						'" . $this->model->getInventoryId() . "',	
-
-											'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getCountryCode() . "',
+						'" . $this->model->getCountryDesc() . "',
+						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
 						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
@@ -246,69 +214,51 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	PURCHASEORDERDETAILS
+			INSERT INTO	COUNTRY
 			(
-						PRODUCTSID,
-						PURCHASEORDERSDETAILSQTY,
-						PURCHASEORDERSDETAILSUNITCOST,
-						PURCHASEORDERSDETAILSDATEREC,
-						POSTEDTOINVENTORY,
-						INVENTORYID,												ISDEFAULT,
-			ISNEW,														ISDRAFT,
-			ISUPDATE,													ISDELETE,
-			ISACTIVE,													ISAPPROVED,
-			ISREVIEW,													ISPOST,
-			EXECUTEBY,													EXECUTETIME
+						COUNTRYCODE,
+						COUNTRYDESC,												
+						ISDEFAULT,
+						ISNEW,														ISDRAFT,
+						ISUPDATE,													ISDELETE,
+						ISACTIVE,													ISAPPROVED,
+						ISREVIEW,													ISPOST,
+						EXECUTEBY,													EXECUTETIME
 			)
 			VALUES
 			(
-						'" . $this->model->getPurchaseOrdersId() . "',
-						'" . $this->model->getProductsId() . "',
-						'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-						'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-						'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-						'" . $this->model->getPostedToInventory() . "',
-						'" . $this->model->getInventoryId() . "',	
-											
-											'" . $this->model->getIsDefault(0, 'single') . "',
-			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-			'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-			'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-			'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-			'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getCountryCode() . "',
+						'" . $this->model->getCountryDesc() . "',			
+						'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	PURCHASEORDERDETAILS
+			INSERT INTO	COUNTRY
 			(
-						PRODUCTSID,
-						PURCHASEORDERSDETAILSQTY,
-						PURCHASEORDERSDETAILSUNITCOST,
-						PURCHASEORDERSDETAILSDATEREC,
-						POSTEDTOINVENTORY,
-						INVENTORYID,											ISDEFAULT,
-			ISNEW,														ISDRAFT,
-			ISUPDATE,													ISDELETE,
-			ISACTIVE,													ISAPPROVED,
-			ISREVIEW,													ISPOST,
-			EXECUTEBY,													EXECUTETIME
+						COUNTRYCODE,
+						COUNTRYDESC,
+						ISDEFAULT,
+						ISNEW,														ISDRAFT,
+						ISUPDATE,													ISDELETE,
+						ISACTIVE,													ISAPPROVED,
+						ISREVIEW,													ISPOST,
+						EXECUTEBY,													EXECUTETIME
 			)
 			VALUES
 			(
-						'" . $this->model->getPurchaseOrdersId() . "',
-						'" . $this->model->getProductsId() . "',
-						'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-						'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-						'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-						'" . $this->model->getPostedToInventory() . "',
-						'" . $this->model->getInventoryId() . "',
-											
-											'" . $this->model->getIsDefault(0, 'single') . "',
-			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
-			'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
-			'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
-			'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
-			'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
+						'" . $this->model->getCountryCode() . "',
+						'" . $this->model->getCountryDesc() . "',
+						'" . $this->model->getIsDefault(0, 'single') . "',
+						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
+						'" . $this->model->getIsUpdate(0, 'single') . "',		'" . $this->model->getIsDelete(0, 'single') . "',
+						'" . $this->model->getIsActive(0, 'single') . "',		'" . $this->model->getIsApproved(0, 'single') . "',
+						'" . $this->model->getIsReview(0, 'single') . "',		'" . $this->model->getIsPost(0, 'single') . "',
+						'" . $this->model->getExecuteBy() . "',					" . $this->model->getExecuteTime() . "
 			)";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -316,13 +266,16 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		}
 		
 		$this->q->create($sql);
-		$purchaseOrdersDetailsId = $this->q->lastInsertId();
+		$countryId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
 		}
 		$this->q->commit();
-		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "purchaseOrdersDetailsId" => $purchaseOrdersDetailsId));
+		$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(array("success" => true, "message" =>  $this->systemString->getCreateMessage(), "countryId" => $countryId));
 		exit();
 	}
 
@@ -332,17 +285,18 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 
 	public function read() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getIsAdmin() == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "	`purchaseOrdersDetails`.`isActive`		=	1	";
+				$this->auditFilter = "	`country`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	[purchaseOrdersDetails].[isActive]		=	1	";
+				$this->auditFilter = "	[country].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = "	PURCHASEORDERDETAILS.ISACTIVE	=	1	";
+				$this->auditFilter = "	COUNTRY.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "	PURCHASEORDERDETAILS.ISACTIVE	=	1	";
+				$this->auditFilter = "	COUNTRY.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	PURCHASEORDERDETAILS.ISACTIVE	=	1	";
+				$this->auditFilter = "	COUNTRY.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -370,94 +324,64 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 			$this->q->fast($sql);
 		}
 		if ($this->getVendor() == self::MYSQL) {
-			$sql = "
-			SELECT		`purchaseordersdetails`.`purchaseOrdersDetailsId`,
-						`purchaseordersdetails`.`purchaseOrdersId`,
-						`purchaseordersdetails`.`productsId`,
-						`purchaseordersdetails`.`purchaseOrdersDetailsQty`,
-						`purchaseordersdetails`.`purchaseOrdersDetailsUnitCost`,
-						`purchaseordersdetails`.`purchaseOrdersDetailsDateRec`,
-						`purchaseordersdetails`.`postedToInventory`,
-						`purchaseordersdetails`.`inventoryId`,
-						
-						`purchaseordersdetails`.`isDefault`,
-						`purchaseordersdetails`.`isNew`,
-						`purchaseordersdetails`.`isDraft`,
-						`purchaseordersdetails`.`isUpdate`,
-						`purchaseordersdetails`.`isDelete`,
-						`purchaseordersdetails`.`isActive`,
-						`purchaseordersdetails`.`isApproved`,
-						`purchaseordersdetails`.`isReview`,
-						`purchaseordersdetails`.`isPost`,
-						`purchaseordersdetails`.`executeBy`,
-						`purchaseordersdetails`.`executeTime`,
-						`staff`.`staffName`
-			FROM 	`purchaseOrdersDetails`
-			JOIN	`staff`
-			ON		`purchaseOrdersDetails`.`executeBy` = `staff`.`staffId`
-			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getPurchaseOrderDetailsId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+			
+			$sql = "SELECT`country`.`countryId`,`country`.`countrySequence`,`country`.`countryCode`,`country`.`countryCurrencyCode`,`country`.`countryCurrencyCodeDesc`,`country`.`countryDesc`,`country`.`isDefault`,`country`.`isNew`,`country`.`isDraft`,`country`.`isUpdate`,`country`.`isDelete`,`country`.`isActive`,`country`.`isApproved`,`country`.`isReview`,`country`.`isPost`,`country`.`executeBy`,`country`.`executeTime`
+                    ,`iManagement`.`staff`.`staffName`
+           
+			  FROM 	`".$this->q->getFinancialDatabase()."`.`country`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
+            ON      `country`.`executeBy` = `staff`.`staffId`
+            WHERE   " . $this->auditFilter;
+			if ($this->model->getCountryId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getCountryId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[purchaseOrdersDetails].[purchaseOrdersDetailsId],
-						[purchaseordersdetails].[purchaseOrdersId],
-						[purchaseordersdetails].[productsId],
-						[purchaseordersdetails].[purchaseOrdersDetailsQty],
-						[purchaseordersdetails].[purchaseOrdersDetailsUnitCost],
-						[purchaseordersdetails].[purchaseOrdersDetailsDateRec],
-						[purchaseordersdetails].[postedToInventory],
-						[purchaseordersdetails].[inventoryId],		
-						
-						[purchaseOrdersDetails].[isDefault],
-						[purchaseOrdersDetails].[isNew],
-						[purchaseOrdersDetails].[isDraft],
-						[purchaseOrdersDetails].[isUpdate],
-						[purchaseOrdersDetails].[isDelete],
-						[purchaseOrdersDetails].[isActive],
-						[purchaseOrdersDetails].[isApproved],
-						[purchaseOrdersDetails].[isReview],
-						[purchaseOrdersDetails].[isPost],
-						[purchaseOrdersDetails].[executeBy],
-						[purchaseOrdersDetails].[executeTime],
+			SELECT		[country].[countryId],
+						[country].[countryCode],
+						[country].[countryDesc],			
+						[country].[isDefault],
+						[country].[isNew],
+						[country].[isDraft],
+						[country].[isUpdate],
+						[country].[isDelete],
+						[country].[isActive],
+						[country].[isApproved],
+						[country].[isReview],
+						[country].[isPost],
+						[country].[executeBy],
+						[country].[executeTime],
 						[staff].[staffName]
-			FROM 	[purchaseOrdersDetails]
+			FROM 		[country]
 			JOIN		[staff]
-			ON		[purchaseOrdersDetails].[executeBy] = [staff].[staffId]
+			ON			[country].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getPurchaseOrderDetailsId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+			if ($this->model->getCountryId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getCountryId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		PURCHASEORDERDETAILS.PURCHASEORDERSDETAILSID   		 	AS 	\"purchaseOrdersDetailsId\",
-						PURCHASEORDERDETAILS.PURCHASEORDERSID   		 		AS 	\"purchaseOrdersId\",
-						PURCHASEORDERDETAILS.PRODUCTSID 						AS 	\"productsId\",
-						PURCHASEORDERDETAILS.PURCHASEORDERSDETAILSQTY 			AS 	\"purchaseOrdersDetailsQty\",
-						PURCHASEORDERDETAILS.PURCHASEORDERSDETAILSUNITCOST 		AS 	\"purchaseOrdersDetailsUnitCost\",
-						PURCHASEORDERDETAILS.PURCHASEORDERSDETAILSDATEREC 		AS 	\"purchaseOrdersDetailsDateRec\",
-						PURCHASEORDERDETAILS.POSTEDTOINVENTORY 					AS 	\"postedToInventory\",
-						PURCHASEORDERDETAILS.INVENTORYID						AS 	\"inventoryId\",
-						
-						PURCHASEORDERDETAILS.ISDEFAULT    			AS	\"isDefault\",
-						PURCHASEORDERDETAILS.ISNEW		  			AS	\"isNew\",
-						PURCHASEORDERDETAILS.ISDRAFT	  				AS	\"isDraft\",
-						PURCHASEORDERDETAILS.ISUPDATE     			AS	\"isUpdate\",
-						PURCHASEORDERDETAILS.ISDELETE	  			AS	\"isDelete\",
-						PURCHASEORDERDETAILS.ISACTIVE	  			AS	\"isActive\",
-						PURCHASEORDERDETAILS.ISAPPROVED   			AS	\"isApproved\",
-						PURCHASEORDERDETAILS.ISREVIEW	  			AS	\"isReview\",
-						PURCHASEORDERDETAILS.ISPOST  	  			AS	\"isPost\",
-						PURCHASEORDERDETAILS.EXECUTEBY    			AS	\"executeBy\",
-						PURCHASEORDERDETAILS.EXECUTETIME  			AS	\"executeTime\",
+			SELECT		COUNTRY.COUNTRYID   		 	AS 	\"countryId\",
+						COUNTRY.COUNTRYCODE			AS 	\"countryCode\",
+						COUNTRY.COUNTRYDESC	AS 	\"countryDesc\",							
+						COUNTRY.ISDEFAULT    			AS	\"isDefault\",
+						COUNTRY.ISNEW		  			AS	\"isNew\",
+						COUNTRY.ISDRAFT	  			AS	\"isDraft\",
+						COUNTRY.ISUPDATE     			AS	\"isUpdate\",
+						COUNTRY.ISDELETE	  			AS	\"isDelete\",
+						COUNTRY.ISACTIVE	  			AS	\"isActive\",
+						COUNTRY.ISAPPROVED   			AS	\"isApproved\",
+						COUNTRY.ISREVIEW	  			AS	\"isReview\",
+						COUNTRY.ISPOST  	  			AS	\"isPost\",
+						COUNTRY.EXECUTEBY    			AS	\"executeBy\",
+						COUNTRY.EXECUTETIME  			AS	\"executeTime\",
 						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		PURCHASEORDERDETAILS
+			FROM 		COUNTRY
 			JOIN		STAFF
-			ON			PURCHASEORDERDETAILS.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			COUNTRY.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getPurchaseOrderDetailsId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+			if ($this->model->getCountryId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getCountryId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -467,42 +391,19 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
-	/**
-		 * filter column based on first character
-		 */
-		if($this->getCharacterQuery()){
-			if($this->q->vendor==self::MYSQL){
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
-			} else if($this->q->vendor==self::MSSQL){
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
-			} else if ($this->q->vendor==self::ORACLE){
-				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
-			} else if ($this->q->vendor==self::DB2){
-				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
-			} else if ($this->q->vendor==self::POSTGRESS){
-				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
-			}
-		}
-		/**
-		 * filter column based on Range Of Date
-		 * Example Day,Week,Month,Year
-		 */
-		if($this->getDateRangeStartQuery()){
-			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
-		}
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('purchaseOrdersDetailsId');
+		$filterArray = array('countryId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('purchaseOrdersDetails');
+		$tableArray = array('country');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -593,36 +494,30 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [purchaseOrdersDetailsDerived] AS
+							WITH [countryDerived] AS
 							(
-								SELECT 		[purchaseOrdersDetails].[purchaseOrdersDetailsId],
-											[purchaseordersdetails].[purchaseOrdersId],
-											[purchaseordersdetails].[productsId],
-											[purchaseordersdetails].[purchaseOrdersDetailsQty],
-											[purchaseordersdetails].[purchaseOrdersDetailsUnitCost],
-											[purchaseordersdetails].[purchaseOrdersDetailsDateRec],
-											[purchaseordersdetails].[postedToInventory],
-											[purchaseordersdetails].[inventoryId],
-											
-											[purchaseOrdersDetails].[isDefault],
-											[purchaseOrdersDetails].[isNew],
-											[purchaseOrdersDetails].[isDraft],
-											[purchaseOrdersDetails].[isUpdate],
-											[purchaseOrdersDetails].[isDelete],
-											[purchaseOrdersDetails].[isApproved],
-											[purchaseOrdersDetails].[isReview],
-											[purchaseOrdersDetails].[isPost],
-											[purchaseOrdersDetails].[executeBy],
-											[purchaseOrdersDetails].[executeTime],
+								SELECT 		[country].[countryId],
+											[country].[countryCode],
+											[country].[countryDesc],
+											[country].[isDefault],
+											[country].[isNew],
+											[country].[isDraft],
+											[country].[isUpdate],
+											[country].[isDelete],
+											[country].[isApproved],
+											[country].[isReview],
+											[country].[isPost],
+											[country].[executeBy],
+											[country].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [purchaseOrdersDetailsId]) AS 'RowNumber'
-								FROM 	[purchaseOrdersDetails]
+								ROW_NUMBER() OVER (ORDER BY [countryId]) AS 'RowNumber'
+								FROM 	[country]
 								JOIN		[staff]
-								ON		[purchaseOrdersDetails].[executeBy] = [staff].[staffId]
+								ON		[country].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[purchaseOrdersDetailsDerived]
+							FROM 		[countryDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -635,31 +530,24 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	PURCHASEORDERDETAILS.PURCHASEORDERDETAILSID   			AS 	\"purchaseOrdersDetailsId\",
-										PURCHASEORDERDETAILS.PURCHASEORDERSDETAILSID   		 	AS 	\"purchaseOrdersDetailsId\",
-										PURCHASEORDERDETAILS.PURCHASEORDERSID   		 		AS 	\"purchaseOrdersId\",
-										PURCHASEORDERDETAILS.PRODUCTSID 						AS 	\"productsId\",
-										PURCHASEORDERDETAILS.PURCHASEORDERSDETAILSQTY 			AS 	\"purchaseOrdersDetailsQty\",
-										PURCHASEORDERDETAILS.PURCHASEORDERSDETAILSUNITCOST 		AS 	\"purchaseOrdersDetailsUnitCost\",
-										PURCHASEORDERDETAILS.PURCHASEORDERSDETAILSDATEREC 		AS 	\"purchaseOrdersDetailsDateRec\",
-										PURCHASEORDERDETAILS.POSTEDTOINVENTORY 					AS 	\"postedToInventory\",
-										PURCHASEORDERDETAILS.INVENTORYID						AS 	\"inventoryId\",
-										
-										PURCHASEORDERDETAILS.ISDEFAULT    		AS	\"isDefault\",
-										PURCHASEORDERDETAILS.ISNEW		  		AS	\"isNew\",
-										PURCHASEORDERDETAILS.ISDRAFT	 			AS	\"isDraft\",
-										PURCHASEORDERDETAILS.ISUPDATE     		AS	\"isUpdate\",
-										PURCHASEORDERDETAILS.ISDELETE	  		AS	\"isDelete\",
-										PURCHASEORDERDETAILS.ISACTIVE	  		AS	\"isActive\",
-										PURCHASEORDERDETAILS.ISAPPROVED   		AS	\"isApproved\",
-										PURCHASEORDERDETAILS.ISREVIEW	  		AS 	\"isReview\",
-										PURCHASEORDERDETAILS.ISPOST		  		AS	\"isPost\",
-										PURCHASEORDERDETAILS.EXECUTEBY    		AS	\"executeBy\",
-										PURCHASEORDERDETAILS.EXECUTETIME  		AS	\"executeTime\",
+								SELECT	COUNTRY.COUNTRYID   		AS 	\"countryId\",
+										COUNTRY.COUNTRYCODE		AS 	\"countryCode\",
+										COUNTRY.COUNTRYDESC		AS 	\"countryDesc\",		
+										COUNTRY.ISDEFAULT    		AS	\"isDefault\",
+										COUNTRY.ISNEW		  		AS	\"isNew\",
+										COUNTRY.ISDRAFT	 		AS	\"isDraft\",
+										COUNTRY.ISUPDATE     		AS	\"isUpdate\",
+										COUNTRY.ISDELETE	  		AS	\"isDelete\",
+										COUNTRY.ISACTIVE	  		AS	\"isActive\",
+										COUNTRY.ISAPPROVED   		AS	\"isApproved\",
+										COUNTRY.ISREVIEW	  		AS 	\"isReview\",
+										COUNTRY.ISPOST		  		AS	\"isPost\",
+										COUNTRY.EXECUTEBY    		AS	\"executeBy\",
+										COUNTRY.EXECUTETIME  		AS	\"executeTime\",
 										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	PURCHASEORDERDETAILS
+								FROM 	COUNTRY
 								JOIN	STAFF
-								ON		PURCHASEORDERDETAILS.EXECUTEBY 	  	=	STAFF.STAFFID
+								ON		COUNTRY.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -688,7 +576,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getPurchaseOrderDetailsId(0, 'single'))) {
+		if (!($this->model->getCountryId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -699,8 +587,11 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getPurchaseOrderDetailsId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getPurchaseOrderDetailsId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getPurchaseOrderDetailsId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getCountryId(0, 'single')) {
+			$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
+			$json_encode = json_encode(array('success' => TRUE, 'total' => $total, 'message' => 'Data Loaded', 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getCountryId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getCountryId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -708,7 +599,10 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
+			$this->q->commit();
+		$end = microtime(true);
+		$time = $end - $start;
+			echo json_encode(array('success' => true, 'total' => $total, 'message' => 'data loaded', 'data' => $items));
 			exit();
 		}
 	}
@@ -719,14 +613,10 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 
 	function update() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
-			$this->q->fast($sql);
-			if ($this->q->execute == 'fail') {
-				echo json_encode(array("success" => false, "message" => $this->q->responce));
-				exit();
-			}
+			$this->q->fast($sql);			
 		}
 		$this->q->start();
 		$this->model->update();
@@ -735,27 +625,27 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -763,20 +653,14 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFoundMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`purchaseordersdetails`
-				SET 		`purchaseOrdersId`				=	'" . $this->model->getPurchaseOrdersId() . "',
-							`productsId`					=	'" . $this->model->getProductsId() . "',
-							`purchaseOrdersDetailsQty`		=	'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-							`purchaseOrdersDetailsUnitCost`	=	'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-							`purchaseOrdersDetailsDateRec`	=	'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-							`postedToInventory`				=	'" . $this->model->getPostedToInventory() . "',
-							`inventoryId`					=	'" . $this->model->getInventoryId() . "',
-											
+				UPDATE		`country`
+				SET 		`countryCode`		=	'" . $this->model->getCountryCode() . "',
+							`countryDesc`			=	'" . $this->model->getCountryDesc() . "',
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -788,18 +672,12 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`purchaseOrdersDetailsId`		=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+				WHERE 		`countryId`		=	'" . $this->model->getCountryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[purchaseordersdetails]
-				SET 		[purchaseOrdersId]				=	'" . $this->model->getPurchaseOrdersId() . "',
-							[productsId]					=	'" . $this->model->getProductsId() . "',
-							[purchaseOrdersDetailsQty]		=	'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-							[purchaseOrdersDetailsUnitCost]	=	'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-							[purchaseOrdersDetailsDateRec]	=	'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-							[postedToInventory]				=	'" . $this->model->getPostedToInventory() . "',
-							[inventoryId]					=	'" . $this->model->getInventoryId() . "',
-								
+				UPDATE 		[country]
+				SET 		[countryCode]		=	'" . $this->model->getCountryCode() . "',
+							[countryDesc]		=	'" . $this->model->getCountryDesc() . "',
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -811,64 +689,12 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[purchaseOrdersDetailsId]			=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+			WHERE 		[countryId]			=	'" . $this->model->getCountryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		PURCHASEORDERDETAILS
-				SET 		PURCHASEORDERSID				=	'" . $this->model->getPurchaseOrdersId() . "',
-							PRODUCTSID						=	'" . $this->model->getProductsId() . "',
-							PURCHASEORDERSDETAILSQTY		=	'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-							PURCHASEORDERSDETAILSUNITCOST	=	'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-							PURCHASEORDERSDETAILSDATEREC	=	'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-							POSTEDTOINVENTORY				=	'" . $this->model->getPostedToInventory() . "',
-							INVENTORYID						=	'" . $this->model->getInventoryId() . "',
-																
-							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		PURCHASEORDERDETAILSID		=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
-			} else if ($this->getVendor() == self::DB2) {
-				$sql = "
-			UPDATE	PURCHASEORDERDETAILS
-			SET 			PURCHASEORDERSID				=	'" . $this->model->getPurchaseOrdersId() . "',
-							PRODUCTSID						=	'" . $this->model->getProductsId() . "',
-							PURCHASEORDERSDETAILSQTY		=	'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-							PURCHASEORDERSDETAILSUNITCOST	=	'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-							PURCHASEORDERSDETAILSDATEREC	=	'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-							POSTEDTOINVENTORY				=	'" . $this->model->getPostedToInventory() . "',
-							INVENTORYID						=	'" . $this->model->getInventoryId() . "',
-							
-							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
-							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
-							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
-							ISAPPROVED		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
-							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
-							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
-							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		PURCHASEORDERDETAILSID		=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
-			} else if ($this->getVendor() == self::POSTGRESS) {
-				$sql = "
-				UPDATE		PURCHASEORDERDETAILS
-				SET 		PURCHASEORDERSID				=	'" . $this->model->getPurchaseOrdersId() . "',
-							PRODUCTSID						=	'" . $this->model->getProductsId() . "',
-							PURCHASEORDERSDETAILSQTY		=	'" . $this->model->getPurchaseOrdersDetailsQty() . "',
-							PURCHASEORDERSDETAILSUNITCOST	=	'" . $this->model->getPurchaseOrdersDetailsUnitCost() . "',
-							PURCHASEORDERSDETAILSDATEREC	=	'" . $this->model->getPurchaseOrdersDetailsDateRec() . "',
-							POSTEDTOINVENTORY				=	'" . $this->model->getPostedToInventory() . "',
-							INVENTORYID						=	'" . $this->model->getInventoryId() . "',
-							
+				UPDATE		COUNTRY
+				SET		 	COUNTRYCODE 		=	'" . $this->model->getCountryCode() . "',	
+							COUNTRYDESC				=	'" . $this->model->getCountryDesc() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -880,12 +706,46 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		PURCHASEORDERDETAILSID			=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+			WHERE 			COUNTRYID			=	'" . $this->model->getCountryId(0, 'single') . "'";
+			} else if ($this->getVendor() == self::DB2) {
+				$sql = "
+			UPDATE			COUNTRY
+			SET 			COUNTRYCODE 		=	'" . $this->model->getCountryCode() . "',	
+							COUNTRYDESC				=	'" . $this->model->getCountryDesc() . "',
+							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
+							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+							ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
+							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
+							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+			WHERE 			COUNTRYID			=	'" . $this->model->getCountryId(0, 'single') . "'";
+			} else if ($this->getVendor() == self::POSTGRESS) {
+				$sql = "
+				UPDATE		COUNTRY
+				SET 		COUNTRYCODE 		=	'" . $this->model->getCountryCode() . "',	
+							COUNTRYDESC		=	'" . $this->model->getCountryDesc() . "',
+							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
+							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
+							ISUPDATE			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							ISDELETE			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							ISACTIVE			=	'" . $this->model->getIsActive(0, 'single') . "',
+							ISAPPROVED			=	'" . $this->model->getIsApproved(0, 'single') . "',
+							ISREVIEW			=	'" . $this->model->getIsReview(0, 'single') . "',
+							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
+							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
+							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
+				WHERE 		COUNTRYID			=	'" . $this->model->getCountryId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -893,6 +753,9 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 			}
 		}
 		$this->q->commit();
+		
+		$end = microtime(true);
+		$time = $end - $start;
 		echo json_encode(array(	"success" => true,"message" => $this->systemString->getUpdateMessage(),"time"=>$time));
 		exit();
 	}
@@ -903,7 +766,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 
 	function delete() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -915,27 +778,27 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getCountryId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -943,12 +806,12 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		$result = $this->q->fast($sql);
 		$total = $this->q->numberRows($result, $sql);
 		if ($total == 0) {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFoundMessage()));
+			echo json_encode(array("success" => false, "message" => $this->systemString->getRecordNotFound()));
 			exit();
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`purchaseordersdetails`
+				UPDATE 	`country`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -960,10 +823,10 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`purchaseOrdersDetailsId`		=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+				WHERE 	`countryId`		=	'" . $this->model->getCountryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[purchaseordersdetails]
+				UPDATE 	[country]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -975,10 +838,10 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[purchaseOrdersDetailsId]		=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+				WHERE 	[countryId]		=	'" . $this->model->getCountryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE 	PURCHASEORDERDETAILS
+				UPDATE 	COUNTRY
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -990,10 +853,10 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	PURCHASEORDERDETAILSID		=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+				WHERE 	COUNTRYID		=	'" . $this->model->getCountryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE 	PURCHASEORDERDETAILS
+				UPDATE 	COUNTRY
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1005,10 +868,10 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	PURCHASEORDERDETAILSID		=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+				WHERE 	COUNTRYID		=	'" . $this->model->getCountryId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE 	PURCHASEORDERDETAILS
+				UPDATE 	COUNTRY
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1020,24 +883,30 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	PURCHASEORDERDETAILSID		=	'" . $this->model->getPurchaseOrderDetailsId(0, 'single') . "'";
+				WHERE 	COUNTRYID		=	'" . $this->model->getCountryId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
 			}
-			
+
 			$this->q->update($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
 				exit();
 			}
 		}
+	
 		$this->q->commit();
-				echo json_encode(array(	"success" => true,"message" => $this->systemString->getDeleteMessage(),"time"=>$time));
+		$end = microtime(true);
+		$time = $end - $start;
+		echo json_encode(
+		array(	"success" => true,
+        			"message" => $this->systemString->getDeleteMessage(),
+        			"time"=>$time));
 		exit();
 	}
 
-/**
+	/**
 	 * To Update flag Status
 	 */
 	function updateStatus() {
@@ -1051,23 +920,23 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `iCore`.`" . $this->model->getTableName() . "`
+			UPDATE `" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			UPDATE 	[iCore].[" . $this->model->getTableName() . "]
+			UPDATE 	[" . $this->model->getTableName() . "]
 			SET 	";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			UPDATE ICORE." . strtoupper($this->model->getTableName()) . "
+			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			UPDATE ICORE." . strtoupper($this->model->getTableName()) . "
+			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			UPDATE ICORE." . strtoupper($this->model->getTableName()) . "
+			UPDATE " . strtoupper($this->model->getTableName()) . "
 			SET    ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1078,8 +947,6 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		 * @var $access
 		 */
 		$access = array("isDefault", "isNew", "isDraft", "isUpdate", "isDelete", "isActive", "isApproved", "isReview", "isPost");
-				$accessClear = array("isDefault", "isNew", "isDraft", "isUpdate",  "isActive", "isApproved", "isReview", "isPost");
-		
 		foreach ($access as $systemCheck) {
 
 			switch ($systemCheck) {
@@ -1087,21 +954,21 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsDefault($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`.`" . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
-								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." .strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+							WHEN '" . $this->model->getCountryId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1111,21 +978,21 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsNew($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`."  . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
-								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+							WHEN '" . $this->model->getCountryId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1135,21 +1002,21 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsDraft($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`.`" . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
-								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+							WHEN '" . $this->model->getCountryId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1159,22 +1026,22 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsUpdate($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`.`" . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
-								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+							WHEN '" . $this->model->getCountryId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1184,69 +1051,45 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsDelete($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`.`" . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
-								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) .  " = CASE ICORE." .strtoupper($this->model->getTableName()). strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+							WHEN '" . $this->model->getCountryId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
-							if(!$this->getIsAdmin()){
-								foreach ($accessClear as $clear){
-									// update delete status = 1
-									if ($this->getVendor() == self::MYSQL) {
-										$sqlLooping .= " `" . $clear . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
-									} else if ($this->getVendor() == self::MSSQL) {
-										$sqlLooping .= "  [" . $clear. "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
-									} else if ($this->getVendor() == self::ORACLE) {
-										$sqlLooping .= "	" . $clear . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-									} else if ($this->getVendor() == self::DB2) {
-										$sqlLooping .= "	" . $clear . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-									} else if ($this->getVendor() == self::POSTGRESS) {
-										$sqlLooping .= "	" .$clear . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
-									} else {
-										echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
-										exit();
-									}
-									$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
-							THEN '0'";
-									$sqlLooping .= " END,";
-								}
-									
 						}
-					}
 					}
 					break;
 				case 'isActive' :
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsActive($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`.`" . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
-								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+							WHEN '" . $this->model->getCountryId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1256,21 +1099,21 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsApproved($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`.`" . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
-								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+							WHEN '" . $this->model->getCountryId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1280,21 +1123,21 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsReview($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`.`" . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
-								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+                            WHEN '" . $this->model->getCountryId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1304,21 +1147,21 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 					for ($i = 0; $i < $loop; $i++) {
 						if (strlen($this->model->getIsPost($i, 'array')) > 0) {
 							if ($this->getVendor() == self::MYSQL) {
-								$sqlLooping .= " `" . $systemCheck . "` = CASE `iCore`.`".$this->model->getTableName()."`.`" . $this->model->getPrimaryKeyName() . "`";
+								$sqlLooping .= " `" . $systemCheck . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
 							} else if ($this->getVendor() == self::MSSQL) {
-								$sqlLooping .= "  [" . $systemCheck . "] = CASE [iCore].[".$this->model->getTableName()."].[" . $this->model->getPrimaryKeyName() . "]";
+								$sqlLooping .= "  [" . $systemCheck . "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
 							} else if ($this->getVendor() == self::ORACLE) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::DB2) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else if ($this->getVendor() == self::POSTGRESS) {
-								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE ICORE." . strtoupper($this->model->getTableName()).strtoupper($this->model->getPrimaryKeyName()) . " ";
+								$sqlLooping .= "	" . strtoupper($systemCheck) . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
 							} else {
 								echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+                                WHEN '" . $this->model->getCountryId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1372,6 +1215,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 	 */
 	function duplicate() {
 		header('Content-Type:application/json; charset=utf-8');
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			//UTF8
 			$sql = "SET NAMES \"utf8\"";
@@ -1379,33 +1223,33 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`purchaseOrdersId`
-			FROM 	`purchaseOrdersDetails`
-			WHERE 	`purchaseOrdersId` 	= 	'" . $this->model->getPurchaseOrdersId() . "'
+			SELECT	`countryCode`
+			FROM 	`country`
+			WHERE 	`countryCode` 	= 	'" . $this->model->getCountryCode() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[purchaseOrdersId]
-			FROM 	[purchaseOrdersDetails]
-			WHERE 	[purchaseOrdersId] 	= 	'" . $this->model->getPurchaseOrdersId() . "'
+			SELECT	[countryCode]
+			FROM 	[country]
+			WHERE 	[countryCode] 	= 	'" . $this->model->getCountryCode() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	PURCHASEORDERSID
-			FROM 	PURCHASEORDERDETAILS
-			WHERE 	PURCHASEORDERSID 	= 	'" . $this->model->getPurchaseOrdersId() . "'
+			SELECT	COUNTRYCODE
+			FROM 	COUNTRY
+			WHERE 	COUNTRYCODE 	= 	'" . $this->model->getCountryCode() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			SELECT	PURCHASEORDERSID
-			FROM 	PURCHASEORDERDETAILS
-			WHERE 	PURCHASEORDERSID 	= 	'" . $this->model->getPurchaseOrdersId() . "'
+			SELECT	COUNTRYCODE
+			FROM 	COUNTRY
+			WHERE 	COUNTRYCODE 	= 	'" . $this->model->getCountryCode() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			SELECT	PURCHASEORDERSID
-			FROM 	PURCHASEORDERDETAILS
-			WHERE 	PURCHASEORDERSID 	= 	'" . $this->model->getPurchaseOrdersId() . "'
+			SELECT	COUNTRYCODE
+			FROM 	COUNTRY
+			WHERE 	COUNTRYCODE 	= 	'" . $this->model->getCountryCode() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1420,12 +1264,25 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "purchaseOrdersDetailsDesc" => $row ['purchaseOrdersDetailsDesc']));
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+			array(	"success" => true,
+            				"total" => $total, 
+            				"message" => $this->systemString->getDuplicateMessage(), 
+            				"countryCode" => $row ['countryCode'],
+            				"time"=>$time));
 			exit();
 		} else {
-			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
-			exit();
-		}
+			$end = microtime(true);
+			$time = $end - $start;
+			echo json_encode(
+			array(	"success" => true,
+            			"total" => $total, 
+            			"message" => $this->systemString->getNonDuplicateMessage(),
+            			"time"=>$time));
+		}	
+			
 	}
 
 	function firstRecord($value) {
@@ -1450,7 +1307,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 
 	function excel() {
 		header('Content-Type:application/json; charset=utf-8');
-		//UTF8
+		$start = microtime(true);
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "SET NAMES \"utf8\"";
 			$this->q->fast($sql);
@@ -1487,7 +1344,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['purchaseOrdersDetailsDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['countryDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1496,23 +1353,30 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "purchaseOrdersDetails" . rand(0, 10000000) . ".xlsx";
+		$filename = "country" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
-		$this->documentTrail->create_trail($this->leafId, $path, $filename);
+		$this->documentTrail->create_trail($this->getLeafId(), $path, $filename);
 		$objWriter->save($path);
 		$file = fopen($path, 'r');
 		if ($file) {
-			echo json_encode(array("success" =>true, "message" => $this->systemString->getFileGenerateMessage(), "filename" => $filename));
+			echo json_encode(
+			array(	"success" =>true,
+            			"message" => $this->systemString->getFileGenerateMessage(), 
+            			"filename" => $filename,
+            			"time"=>$time));
 			exit();
 		} else {
-			echo json_encode(array("success" =>false, "message" => $this->systemString->getFileNotGenerateMessage()));
+			echo json_encode(
+			array(	"success" => false,
+            				"message" => $this->systemString->getFileNotGenerateMessage(),
+            				"time"=>$time));
 			exit();
 		}
 	}
 
 }
 
-$purchaseOrdersDetailsObject = new PurchaseOrderDetailsClass ();
+$countryObject = new CountryClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1522,77 +1386,59 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$purchaseOrdersDetailsObject->setLeafId($_POST ['leafId']);
+		$countryObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$purchaseOrdersDetailsObject->setIsAdmin($_POST ['isAdmin']);
-	}
-	/**
-	 * Database Request
-	 */
-	 if (isset($_POST ['databaseRequest'])) {
-		$purchaseOrdersDetailsObject->setDatabaseRequest($_POST ['databaseRequest']);
+		$countryObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$purchaseOrdersDetailsObject->setStart($_POST ['start']);
+		$countryObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$purchaseOrdersDetailsObject->setLimit($_POST ['perPage']);
+		$countryObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$purchaseOrdersDetailsObject->setFieldQuery($_POST ['query']);
+		$countryObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$purchaseOrdersDetailsObject->setGridQuery($_POST ['filter']);
-	}
-if (isset($_POST ['character'])) {
-		$purchaseOrdersDetailsObject->setCharacterQuery($_POST['character']);
-	}
-	if (isset($_POST ['dateRangeStart'])) {
-		$purchaseOrdersDetailsObject->setDateRangeStartQuery($_POST['dateRangeStart']);
-	}
-	if (isset($_POST ['dateRangeEnd'])) {
-		$purchaseOrdersDetailsObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
-	}
-	if (isset($_POST ['dateRangeType'])) {
-		$purchaseOrdersDetailsObject->setDateRangeTypeQuery($_POST['dateRangeType']);
+		$countryObject->setGridQuery($_POST ['filter']);
 	}
 	/*
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$purchaseOrdersDetailsObject->setOrder($_POST ['order']);
+		$countryObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$purchaseOrdersDetailsObject->setSortField($_POST ['sortField']);
+		$countryObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$purchaseOrdersDetailsObject->execute();
+	$countryObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$purchaseOrdersDetailsObject->create();
+		$countryObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$purchaseOrdersDetailsObject->update();
+		$countryObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$purchaseOrdersDetailsObject->read();
+		$countryObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$purchaseOrdersDetailsObject->delete();
+		$countryObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1600,41 +1446,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$purchaseOrdersDetailsObject->setLeafId($_GET ['leafId']);
+		$countryObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$purchaseOrdersDetailsObject->setIsAdmin($_GET ['isAdmin']);
-	}
-	/**
-	 * Database Request
-	 */
-	 if (isset($_GET ['databaseRequest'])) {
-		$purchaseOrdersDetailsObject->setDatabaseRequest($_GET ['databaseRequest']);
+		$countryObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$purchaseOrdersDetailsObject->execute();
+	$countryObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$purchaseOrdersDetailsObject->staff();
+			$countryObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$purchaseOrdersDetailsObject->updateStatus();
+		$countryObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['purchaseOrdersDetailsDesc'])) {
-		if (strlen($_GET ['purchaseOrdersDetailsDesc']) > 0) {
-			$purchaseOrdersDetailsObject->duplicate();
+	if (isset($_GET ['countryDesc'])) {
+		if (strlen($_GET ['countryDesc']) > 0) {
+			$countryObject->duplicate();
 		}
 	}
 	/**
@@ -1642,16 +1482,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$purchaseOrdersDetailsObject->firstRecord('json');
+			$countryObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$purchaseOrdersDetailsObject->previousRecord('json', 0);
+			$countryObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$purchaseOrdersDetailsObject->nextRecord('json', 0);
+			$countryObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$purchaseOrdersDetailsObject->lastRecord('json');
+			$countryObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1659,7 +1499,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$purchaseOrdersDetailsObject->excel();
+			$countryObject->excel();
 		}
 	}
 }

@@ -719,9 +719,7 @@ class SystemStringTranslateClass extends ConfigClass {
 							WHEN '" . $this->model->systemStringTranslate($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
-							
-						}
-						if(!$this->getIsAdmin()){
+							if(!$this->getIsAdmin()){
 								foreach ($accessClear as $clear){
 									// update delete status = 1
 									if ($this->getVendor() == self::MYSQL) {
@@ -746,9 +744,10 @@ class SystemStringTranslateClass extends ConfigClass {
 									
 							}
 								}
-									
 						}
-					}
+						
+					}				
+						
 					break;
 				case 'isActive' :
 					for ($i = 0; $i < $loop; $i++) {
