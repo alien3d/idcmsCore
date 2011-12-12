@@ -31,6 +31,12 @@ class SystemString  extends ConfigClass {
 	 */
 	private $deleteMessage;
 	/**
+	 * Posting
+	 * @var string
+	 */
+	private $postingMessage;
+	
+	/**
 	 * Duplicate Code Message
 	 * @var string
 	 */
@@ -121,6 +127,9 @@ class SystemString  extends ConfigClass {
 				case 'delete':
 					$this->setDeleteMessage($row['systemStringNative']);
 					break;
+				case 'posting':
+					$this->setPostingMessage($row['systemStringNative']);
+					break;	
 				case 'duplicate':
 					$this->setDuplicateMessage($row['systemStringNative']);
 					break;
@@ -370,5 +379,23 @@ class SystemString  extends ConfigClass {
 	public function setRecordNotFoundMessage($recordNotFoundMessage)
 	{
 	    $this->recordNotFoundMessage = $recordNotFoundMessage;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getPostingMessage()
+	{
+	    return $this->postingMessage;
+	}
+
+	/**
+	 * 
+	 * @param $postingMessage
+	 */
+	public function setPostingMessage($postingMessage)
+	{
+	    $this->postingMessage = $postingMessage;
 	}
 }

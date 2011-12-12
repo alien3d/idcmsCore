@@ -176,7 +176,7 @@ abstract class ConfigClass
 	function __construct ()
 	{
 		//optional
-		
+
 		if (isset($_SESSION['vendor'])) {
 			$this->setVendor($_SESSION['vendor']);
 		}
@@ -306,7 +306,7 @@ abstract class ConfigClass
 	 */
 	function documentNumbering(){
 		// this is to generate doc_no
-		$sql="
+		$sqlDocumentNumberingUpdate="
 		UPDATE	`documentSequence`
 		SET     `documentSequenceNumber` =`documentSequenceNumber` + 1
 		WHERE   `documentSequenceId` =
@@ -315,9 +315,12 @@ abstract class ConfigClass
 			FROM  	`documentSetting`
 			WHERE 	`leafId`='".$this->getleafId()."'
 		)";
-		$this->q->update($sql);
-		
-		$sql="
+		$this->q->update($sqlDocumentNumberingUpdate);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		$sqlDocumentNumbering="
 		SELECT	CONCAT(`documentSequenceCode`,`documentSequenceNumber`) AS `documentNumber`
 		FROM  	`documentSequence`
 		WHERE	`documentSequenceId` =
@@ -327,9 +330,15 @@ abstract class ConfigClass
 			WHERE 	`leafId`='".$this->getleafId()."'
 		)
 		";
-		$result=$this->q->fast($sql);		
-		$row = $this->q->fetchArray($result);
-		return $row['documentNumber'];
+		
+		$resultDocumentNumbering=$this->q->fast($sqlDocumentNumbering);
+		if ($this->q->execute == 'fail') {
+			echo json_encode(array("success" => false, "message" => $this->q->responce));
+			exit();
+		}
+		$rowDocumentNumbering = $this->q->fetchArray($resultDocumentNumbering);
+			
+		return $rowDocumentNumbering['documentNumber'];
 	}
 	/**
 	 * to filter data type.
@@ -384,7 +393,7 @@ abstract class ConfigClass
 				$this->value = null;
 				return ($this->value);
 			} else {
-				
+
 				//$this->value=trim(strtoupper($this->value)); // trim any space better for searching issue
 				$this->value = addslashes($this->value);
 				return $this->value;
@@ -738,77 +747,77 @@ abstract class ConfigClass
 
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getCharacterQuery()
 	{
-	    return $this->characterQuery;
+		return $this->characterQuery;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $characterQuery
 	 */
 	public function setCharacterQuery($characterQuery)
 	{
-	    $this->characterQuery = $characterQuery;
+		$this->characterQuery = $characterQuery;
 	}
 
-	
+
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getDateRangeStartQuery()
 	{
-	    return $this->dateRangeStartQuery;
+		return $this->dateRangeStartQuery;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $dateRangeStartQuery
 	 */
 	public function setDateRangeStartQuery($dateRangeStartQuery)
 	{
-	    $this->dateRangeStartQuery = $dateRangeStartQuery;
+		$this->dateRangeStartQuery = $dateRangeStartQuery;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getDateRangeEndQuery()
 	{
-	    return $this->dateRangeEndQuery;
+		return $this->dateRangeEndQuery;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $dateRangeEndQuery
 	 */
 	public function setDateRangeEndQuery($dateRangeEndQuery)
 	{
-	    $this->dateRangeEndQuery = $dateRangeEndQuery;
+		$this->dateRangeEndQuery = $dateRangeEndQuery;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getDateRangeTypeQuery()
 	{
-	    return $this->dateRangeTypeQuery;
+		return $this->dateRangeTypeQuery;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $DateRangeTypeQuery
 	 */
 	public function setDateRangeTypeQuery($dateRangeTypeQuery)
 	{
-	    $this->dateRangeTypeQuery = $dateRangeTypeQuery;
+		$this->dateRangeTypeQuery = $dateRangeTypeQuery;
 	}
 }
 ?>

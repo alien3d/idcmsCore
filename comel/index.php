@@ -1,16 +1,16 @@
 <?php 
 		class Generator {
-			$targetName;
-			$managementDatabase;
-			$tableName;
-			$tableNameId;
-			$parentTableName;
-			$parentTableNameId;
-			$columnName;
-			$formType;
-			$jsonType;
-			$findMe;
-			$gridType;
+			public $targetName;
+			public  $managementDatabase;
+			public $tableName;
+			public $tableNameId;
+			public $parentTableName;
+			public $parentTableNameId;
+			public $columnName;
+			public $formType;
+			public $jsonType;
+			public $findMe;
+			public $gridType;
 			function execute(){
 			}
 			function isForeignKey(){

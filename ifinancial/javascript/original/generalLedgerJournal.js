@@ -964,6 +964,18 @@ Ext.onReady(function() {
             name: 'executeTime',
             type: 'date',
             dateFormat: 'Y-m-d H:i:s'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalTypeDesc',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'staffNo',
+            type: 'string'
         }]
     });
     var generalLedgerJournalFilters = new Ext.ux.grid.GridFilters({
@@ -1203,7 +1215,7 @@ Ext.onReady(function() {
     });
     var generalLedgerJournalColumnModel = [{
         dataIndex: 'generalLedgerJournalTypeId',
-        header: generalLedgerJournalTypeIdLabel,
+        header: generalLedgerJournalTypeForeignKeyLabel,
         sortable: true,
         hidden: false,
         renderer: function(value, metaData, record, rowIndex, colIndex, store) {
@@ -1326,6 +1338,17 @@ Ext.onReady(function() {
                             Ext.getCmp('nextButton').disable();
                         }
                         generalLedgerJournalDetailGrid.enable();
+                        if (action.result.trialBalance > 0) {
+                            Ext.getCmp('postButton').disable();
+                            Ext.MessageBox.alert(systemErrorLabel, "Trial Balance no tally");
+                        }
+                        if (action.result.tally > 0) {
+                            Ext.getCmp('postButton').disable();
+                            Ext.MessageBox.alert(systemErrorLabel, "Total Debit and Credit not Tally");
+                        }
+                        if (action.result.tally == 0 && action.result.trialBalance == 0) {
+                            Ext.getCmp('postButton').enable();
+                        }
                         viewPort.items.get(1).expand();
                     },
                     failure: function(form, action) {
@@ -1767,8 +1790,16 @@ Ext.onReady(function() {
                     }
                 });
             }
-        },
-        '->', {
+        },'-',{
+        	xtype:'button',
+        	name :'resetFilterDate',
+        	id :'resetFilterDate',
+        	text : 'Reset Date',
+        	handler : function(button,e){
+        		   dateRangeStartValue = new Date();
+                   Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+        	}
+        },'->', {
             xtype: 'button',
             iconCls: 'resultset_last',
             handler: function(button, e) {
@@ -2053,6 +2084,11 @@ Ext.onReady(function() {
             foreignKey: 'yes',
             name: 'countryId',
             type: 'int'
+        }, {
+            key: '',
+            foreignKey: 'no',
+            name: 'transactionMode',
+            type: 'string'
         },
         {
             key: '',
@@ -2410,9 +2446,11 @@ Ext.onReady(function() {
             return new RegExp('\b(' + value + ')', 'i');
         }
     });
-    var transactionModeArrayData = [['D', 'DEBIT'], ['C', 'CREDIT']];
+    var transactionModeArrayData = [
+                                    ['D', 'DEBIT'], 
+                                    ['C', 'CREDIT']];
     var transactionModeRecord = Ext.data.Record.create([{
-        name: 'mod'
+        name: 'mode'
     },
     {
         name: 'modFlag'
@@ -2677,6 +2715,10 @@ Ext.onReady(function() {
                                     generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
                                 }
                             });
+                            if (jsonResponse.masterDetail > 0) {
+                                Ext.getCmp('postButton').disable();
+                                Ext.MessageBox.alert(systemErrorLabel, "Master Amount and Detail Amount not tally");
+                            }
                             if (jsonResponse.trialBalance > 0) {
                                 Ext.getCmp('postButton').disable();
                                 Ext.MessageBox.alert(systemErrorLabel, "Trial Balance no tally");
@@ -2685,7 +2727,7 @@ Ext.onReady(function() {
                                 Ext.getCmp('postButton').disable();
                                 Ext.MessageBox.alert(systemErrorLabel, "Total Debit and Credit not Tally");
                             }
-                            if (jsonResponse.tally == 0 && jsonResponse.trialBalance == 0) {
+                            if (jsonResponse.tally == 0 && jsonResponse.trialBalance == 0 && jsonResponse.masterDetail == 0 ) {
                                 Ext.getCmp('postButton').enable();
                             }
                         }
@@ -3185,6 +3227,13 @@ Ext.onReady(function() {
                                         Ext.getCmp('saveButton').disable();
                                         Ext.getCmp('nextButton').disable();
                                         Ext.getCmp('previousButton').disable();
+                                        generalLedgerJournalStore.reload({
+                                            params: {
+                                                leafId: leafId,
+                                                start: 0,
+                                                limit: perPage
+                                            }
+                                        })
                                     } else {
                                         Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
@@ -3210,6 +3259,7 @@ Ext.onReady(function() {
                 Ext.getCmp('deleteButton').disable();
                 Ext.getCmp('postButton').disable();
                 Ext.getCmp('generalLedgerJournalDetailGrid').disable();
+                generalLedgerJournalDetailGrid.store.removeAll();
                 formPanel.getForm().reset();
             }
         },
@@ -3221,25 +3271,37 @@ Ext.onReady(function() {
             iconCls: 'lock',
             disabled: true,
             handler: function() {
-                Ext.getCmp('newButton').disable();
-                Ext.getCmp('saveButton').disable();
-                Ext.getCmp('deleteButton').disable();
-                Ext.getCmp('postButton').disable();
+                
                 Ext.Ajax.request({
-                    url: '../controller/generalLedgerJournal.php',
-                    method: 'GET',
+                    url: '../controller/generalLedgerJournalController.php',
+                    method: 'POST',
                     params: {
                         method: 'posting',
                         leafId: leafId,
                         isAdmin: isAdmin,
-                        generalLedgerJournalId: Ext.getCmp('generaLedgerJournalId').getValue()
+                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                                                           				
                     },
                     success: function(response, options) {
                         jsonResponse = Ext.decode(response.responseText);
                         if (jsonResponse.success == false) {
                             Ext.MessageBox.alert(systemLabel, jsonResponse.message);
                         } else {
-                            Ext.getCmp('folderSequence').setValue(jsonResponse.nextSequence);
+                        	Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                        	Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').disable();
+                            Ext.getCmp('deleteButton').disable();
+                            Ext.getCmp('postButton').disable();
+                            Ext.getCmp('generalLedgerJournalDetailGrid').disable();
+                            formPanel.getForm().reset();
+                            generalLedgerJournalDetailGrid.store.removeAll();
+                            generalLedgerJournalStore.reload({
+                                params: {
+                                    leafId: leafId,
+                                    start: 0,
+                                    limit: perPage
+                                }
+                            });
                         }
                     },
                     failure: function(response, options) {

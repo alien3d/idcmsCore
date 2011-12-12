@@ -739,12 +739,14 @@ class Vendor {
 	 * version 0.1 added result future
 	 */
 	public function fetchArray($result = null) {
+		// overide first
+		if ($result) {
+			return mysqli_fetch_array ( $result );
+		}
 		if ($this->result) {
 			return @mysqli_fetch_array ( $this->result );
 		}
-		if ($result) {
-			return @mysqli_fetch_array ( $result );
-		}
+
 	}
 	/**
 	 *
@@ -772,13 +774,14 @@ class Vendor {
 	 * @return array
 	 */
 	public function fetchAssoc($result = null) {
-		// tried consept push to array and sending array back
-		if ($this->result && is_null ( $result )) {
-			return mysqli_fetch_assoc ( $this->result );
-		}
+		// overide first
 		if ($result) {
 			return mysqli_fetch_assoc ( $result );
 		}
+		if ($this->result && is_null ( $result )) {
+			return mysqli_fetch_assoc ( $this->result );
+		}
+		
 	}
 	/**
 	 * Frees the memory associated with the result.
@@ -997,7 +1000,7 @@ class Vendor {
 		$this->setColumnName($columnName);
 		$this->setStartDate($startDate);
 		$this->setEndDate($endDate);
-		
+
 		$this->setDateFilterTypeQuery($dateFilterTypeQuery);
 
 		$dayStart=substr($this->getStartDate(),8,2);
@@ -1010,7 +1013,7 @@ class Vendor {
 			$yearEnd=substr($this->getEndDate(),0,4);
 		}
 		if($this->getDateFilterTypeQuery()=='day') {
-			
+				
 			return(" and `".$this->getTableName()."`.`".$this->getColumnName()."` like '%".$this->getStartDate()."%'");
 		}
 		elseif($this->getDateFilterTypeQuery()=='month') {
