@@ -1101,7 +1101,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1125,7 +1125,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1149,7 +1149,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1174,7 +1174,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1198,9 +1198,32 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
+							if(!$this->getIsAdmin()){
+								foreach ($accessClear as $clear){
+									// update delete status = 1
+									if ($this->getVendor() == self::MYSQL) {
+										$sqlLooping .= " `" . $clear . "` = CASE `" . $this->model->getPrimaryKeyName() . "`";
+									} else if ($this->getVendor() == self::MSSQL) {
+										$sqlLooping .= "  [" . $clear. "] = CASE [" . $this->model->getPrimaryKeyName() . "]";
+									} else if ($this->getVendor() == self::ORACLE) {
+										$sqlLooping .= "	" . $clear . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+									} else if ($this->getVendor() == self::DB2) {
+										$sqlLooping .= "	" . $clear . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+									} else if ($this->getVendor() == self::POSTGRESS) {
+										$sqlLooping .= "	" .$clear . " = CASE " . strtoupper($this->model->getPrimaryKeyName()) . " ";
+									} else {
+										echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+										exit();
+									}
+									$sqlLooping .= "
+							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
+							THEN '0'";
+									$sqlLooping .= " END,";
+								}
+									
 						}
 					}
 					break;
@@ -1222,7 +1245,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1246,7 +1269,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1270,7 +1293,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getReligionId($i, 'array') . "'
+                            WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1294,7 +1317,7 @@ class PurchaseOrdersDetailsClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getReligionId($i, 'array') . "'
+                                WHEN '" . $this->model->getPurchaseOrdersDetailsId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}

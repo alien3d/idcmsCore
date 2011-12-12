@@ -170,23 +170,23 @@ class SuppliersClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getSuppliersCompany() . "',
-						'" . $this->model->getSuppliersLastName() . "',
-						'" . $this->model->getSuppliersFirstName() . "',
-						'" . $this->model->getSuppliersEmail() . "',
-						'" . $this->model->getSuppliersJobTitle() . "',
-						'" . $this->model->getSuppliersBusinessPhone() . "',
-						'" . $this->model->getSuppliersHomePhone() . "',
-						'" . $this->model->getSuppliersMobilePhone() . "',
-						'" . $this->model->getSuppliersFaxNum() . "',
-						'" . $this->model->getSuppliersAddress() . "',
-						'" . $this->model->getSuppliersCity() . "',
-						'" . $this->model->getSuppliersState() . "',
-						'" . $this->model->getSuppliersPostcode() . "',
-						'" . $this->model->getSuppliersCountry() . "',
-						'" . $this->model->getSuppliersWebPage() . "',
-						'" . $this->model->getSuppliersNotes() . "',
-						'" . $this->model->getSuppliersAttachments() . "',					
+						'" . $this->model->getSuppliersIdCompany() . "',
+						'" . $this->model->getSuppliersIdLastName() . "',
+						'" . $this->model->getSuppliersIdFirstName() . "',
+						'" . $this->model->getSuppliersIdEmail() . "',
+						'" . $this->model->getSuppliersIdJobTitle() . "',
+						'" . $this->model->getSuppliersIdBusinessPhone() . "',
+						'" . $this->model->getSuppliersIdHomePhone() . "',
+						'" . $this->model->getSuppliersIdMobilePhone() . "',
+						'" . $this->model->getSuppliersIdFaxNum() . "',
+						'" . $this->model->getSuppliersIdAddress() . "',
+						'" . $this->model->getSuppliersIdCity() . "',
+						'" . $this->model->getSuppliersIdState() . "',
+						'" . $this->model->getSuppliersIdPostcode() . "',
+						'" . $this->model->getSuppliersIdCountry() . "',
+						'" . $this->model->getSuppliersIdWebPage() . "',
+						'" . $this->model->getSuppliersIdNotes() . "',
+						'" . $this->model->getSuppliersIdAttachments() . "',					
 															
 												'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -226,23 +226,23 @@ class SuppliersClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getSuppliersCompany() . "',
-						'" . $this->model->getSuppliersLastName() . "',
-						'" . $this->model->getSuppliersFirstName() . "',
-						'" . $this->model->getSuppliersEmail() . "',
-						'" . $this->model->getSuppliersJobTitle() . "',
-						'" . $this->model->getSuppliersBusinessPhone() . "',
-						'" . $this->model->getSuppliersHomePhone() . "',
-						'" . $this->model->getSuppliersMobilePhone() . "',
-						'" . $this->model->getSuppliersFaxNum() . "',
-						'" . $this->model->getSuppliersAddress() . "',
-						'" . $this->model->getSuppliersCity() . "',
-						'" . $this->model->getSuppliersState() . "',
-						'" . $this->model->getSuppliersPostcode() . "',
-						'" . $this->model->getSuppliersCountry() . "',
-						'" . $this->model->getSuppliersWebPage() . "',
-						'" . $this->model->getSuppliersNotes() . "',
-						'" . $this->model->getSuppliersAttachments() . "',
+						'" . $this->model->getSuppliersIdCompany() . "',
+						'" . $this->model->getSuppliersIdLastName() . "',
+						'" . $this->model->getSuppliersIdFirstName() . "',
+						'" . $this->model->getSuppliersIdEmail() . "',
+						'" . $this->model->getSuppliersIdJobTitle() . "',
+						'" . $this->model->getSuppliersIdBusinessPhone() . "',
+						'" . $this->model->getSuppliersIdHomePhone() . "',
+						'" . $this->model->getSuppliersIdMobilePhone() . "',
+						'" . $this->model->getSuppliersIdFaxNum() . "',
+						'" . $this->model->getSuppliersIdAddress() . "',
+						'" . $this->model->getSuppliersIdCity() . "',
+						'" . $this->model->getSuppliersIdState() . "',
+						'" . $this->model->getSuppliersIdPostcode() . "',
+						'" . $this->model->getSuppliersIdCountry() . "',
+						'" . $this->model->getSuppliersIdWebPage() . "',
+						'" . $this->model->getSuppliersIdNotes() . "',
+						'" . $this->model->getSuppliersIdAttachments() . "',
 											
 												'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
@@ -283,23 +283,23 @@ class SuppliersClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getSuppliersCompany() . "',
-						'" . $this->model->getSuppliersLastName() . "',
-						'" . $this->model->getSuppliersFirstName() . "',
-						'" . $this->model->getSuppliersEmail() . "',
-						'" . $this->model->getSuppliersJobTitle() . "',
-						'" . $this->model->getSuppliersBusinessPhone() . "',
-						'" . $this->model->getSuppliersHomePhone() . "',
-						'" . $this->model->getSuppliersMobilePhone() . "',
-						'" . $this->model->getSuppliersFaxNum() . "',
-						'" . $this->model->getSuppliersAddress() . "',
-						'" . $this->model->getSuppliersCity() . "',
-						'" . $this->model->getSuppliersState() . "',
-						'" . $this->model->getSuppliersPostcode() . "',
-						'" . $this->model->getSuppliersCountry() . "',
-						'" . $this->model->getSuppliersWebPage() . "',
-						'" . $this->model->getSuppliersNotes() . "',
-						'" . $this->model->getSuppliersAttachments() . "',
+						'" . $this->model->getSuppliersIdCompany() . "',
+						'" . $this->model->getSuppliersIdLastName() . "',
+						'" . $this->model->getSuppliersIdFirstName() . "',
+						'" . $this->model->getSuppliersIdEmail() . "',
+						'" . $this->model->getSuppliersIdJobTitle() . "',
+						'" . $this->model->getSuppliersIdBusinessPhone() . "',
+						'" . $this->model->getSuppliersIdHomePhone() . "',
+						'" . $this->model->getSuppliersIdMobilePhone() . "',
+						'" . $this->model->getSuppliersIdFaxNum() . "',
+						'" . $this->model->getSuppliersIdAddress() . "',
+						'" . $this->model->getSuppliersIdCity() . "',
+						'" . $this->model->getSuppliersIdState() . "',
+						'" . $this->model->getSuppliersIdPostcode() . "',
+						'" . $this->model->getSuppliersIdCountry() . "',
+						'" . $this->model->getSuppliersIdWebPage() . "',
+						'" . $this->model->getSuppliersIdNotes() . "',
+						'" . $this->model->getSuppliersIdAttachments() . "',
 											
 											'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -337,23 +337,23 @@ class SuppliersClass extends ConfigClass {
 			)
 			VALUES
 			(
-						'" . $this->model->getSuppliersCompany() . "',
-						'" . $this->model->getSuppliersLastName() . "',
-						'" . $this->model->getSuppliersFirstName() . "',
-						'" . $this->model->getSuppliersEmail() . "',
-						'" . $this->model->getSuppliersJobTitle() . "',
-						'" . $this->model->getSuppliersBusinessPhone() . "',
-						'" . $this->model->getSuppliersHomePhone() . "',
-						'" . $this->model->getSuppliersMobilePhone() . "',
-						'" . $this->model->getSuppliersFaxNum() . "',
-						'" . $this->model->getSuppliersAddress() . "',
-						'" . $this->model->getSuppliersCity() . "',
-						'" . $this->model->getSuppliersState() . "',
-						'" . $this->model->getSuppliersPostcode() . "',
-						'" . $this->model->getSuppliersCountry() . "',
-						'" . $this->model->getSuppliersWebPage() . "',
-						'" . $this->model->getSuppliersNotes() . "',
-						'" . $this->model->getSuppliersAttachments() . "',
+						'" . $this->model->getSuppliersIdCompany() . "',
+						'" . $this->model->getSuppliersIdLastName() . "',
+						'" . $this->model->getSuppliersIdFirstName() . "',
+						'" . $this->model->getSuppliersIdEmail() . "',
+						'" . $this->model->getSuppliersIdJobTitle() . "',
+						'" . $this->model->getSuppliersIdBusinessPhone() . "',
+						'" . $this->model->getSuppliersIdHomePhone() . "',
+						'" . $this->model->getSuppliersIdMobilePhone() . "',
+						'" . $this->model->getSuppliersIdFaxNum() . "',
+						'" . $this->model->getSuppliersIdAddress() . "',
+						'" . $this->model->getSuppliersIdCity() . "',
+						'" . $this->model->getSuppliersIdState() . "',
+						'" . $this->model->getSuppliersIdPostcode() . "',
+						'" . $this->model->getSuppliersIdCountry() . "',
+						'" . $this->model->getSuppliersIdWebPage() . "',
+						'" . $this->model->getSuppliersIdNotes() . "',
+						'" . $this->model->getSuppliersIdAttachments() . "',
 											
 											'" . $this->model->getIsDefault(0, 'single') . "',
 			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -393,23 +393,23 @@ class SuppliersClass extends ConfigClass {
 			)
 			VALUES
 			(
-						'" . $this->model->getSuppliersCompany() . "',
-						'" . $this->model->getSuppliersLastName() . "',
-						'" . $this->model->getSuppliersFirstName() . "',
-						'" . $this->model->getSuppliersEmail() . "',
-						'" . $this->model->getSuppliersJobTitle() . "',
-						'" . $this->model->getSuppliersBusinessPhone() . "',
-						'" . $this->model->getSuppliersHomePhone() . "',
-						'" . $this->model->getSuppliersMobilePhone() . "',
-						'" . $this->model->getSuppliersFaxNum() . "',
-						'" . $this->model->getSuppliersAddress() . "',
-						'" . $this->model->getSuppliersCity() . "',
-						'" . $this->model->getSuppliersState() . "',
-						'" . $this->model->getSuppliersPostcode() . "',
-						'" . $this->model->getSuppliersCountry() . "',
-						'" . $this->model->getSuppliersWebPage() . "',
-						'" . $this->model->getSuppliersNotes() . "',
-						'" . $this->model->getSuppliersAttachments() . "',
+						'" . $this->model->getSuppliersIdCompany() . "',
+						'" . $this->model->getSuppliersIdLastName() . "',
+						'" . $this->model->getSuppliersIdFirstName() . "',
+						'" . $this->model->getSuppliersIdEmail() . "',
+						'" . $this->model->getSuppliersIdJobTitle() . "',
+						'" . $this->model->getSuppliersIdBusinessPhone() . "',
+						'" . $this->model->getSuppliersIdHomePhone() . "',
+						'" . $this->model->getSuppliersIdMobilePhone() . "',
+						'" . $this->model->getSuppliersIdFaxNum() . "',
+						'" . $this->model->getSuppliersIdAddress() . "',
+						'" . $this->model->getSuppliersIdCity() . "',
+						'" . $this->model->getSuppliersIdState() . "',
+						'" . $this->model->getSuppliersIdPostcode() . "',
+						'" . $this->model->getSuppliersIdCountry() . "',
+						'" . $this->model->getSuppliersIdWebPage() . "',
+						'" . $this->model->getSuppliersIdNotes() . "',
+						'" . $this->model->getSuppliersIdAttachments() . "',
 											
 											'" . $this->model->getIsDefault(0, 'single') . "',
 			'" . $this->model->getIsNew(0, 'single') . "',			'" . $this->model->getIsDraft(0, 'single') . "',
@@ -514,8 +514,8 @@ class SuppliersClass extends ConfigClass {
 			JOIN	`staff`
 			ON		`suppliers`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getSuppliersId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getSuppliersId(0, 'single') . "'";
+			if ($this->model->getSuppliersIdId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -554,8 +554,8 @@ class SuppliersClass extends ConfigClass {
 			JOIN		[staff]
 			ON		[suppliers].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getSuppliersId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getSuppliersId(0, 'single') . "'";
+			if ($this->model->getSuppliersIdId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -594,8 +594,8 @@ class SuppliersClass extends ConfigClass {
 			JOIN		STAFF
 			ON			SUPPLIERS.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getSuppliersId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getSuppliersId(0, 'single') . "'";
+			if ($this->model->getSuppliersIdId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -845,7 +845,7 @@ class SuppliersClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getSuppliersId(0, 'single'))) {
+		if (!($this->model->getSuppliersIdId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -856,8 +856,8 @@ class SuppliersClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getSuppliersId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getSuppliersId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getSuppliersId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getSuppliersIdId(0, 'single')) {
+			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getSuppliersIdId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getSuppliersIdId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -892,27 +892,27 @@ class SuppliersClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -928,9 +928,9 @@ class SuppliersClass extends ConfigClass {
 				UPDATE		`suppliers`
 				SET 		`receiptNo`		=	'" . $this->model->getReceiptNo() . "',
 							`membershipId`		=	'" . $this->model->getMembershipId() . "',
-							`suppliersType`		=	'" . $this->model->getSuppliersType() . "',
-							`suppliersDate`		=	'" . $this->model->getSuppliersDate() . "',
-							`suppliersAmount`		=	'" . $this->model->getSuppliersAmount() . "',				
+							`suppliersType`		=	'" . $this->model->getSuppliersIdType() . "',
+							`suppliersDate`		=	'" . $this->model->getSuppliersIdDate() . "',
+							`suppliersAmount`		=	'" . $this->model->getSuppliersIdAmount() . "',				
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -942,15 +942,15 @@ class SuppliersClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`suppliersId`		=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+				WHERE 		`suppliersId`		=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[suppliers]
 				SET 		[receiptNo]		=	'" . $this->model->getReceiptNo() . "',
 							[membershipId]		=	'" . $this->model->getMembershipId() . "',
-							[suppliersType]		=	'" . $this->model->getSuppliersType() . "',
-							[suppliersDate]		=	'" . $this->model->getSuppliersDate() . "',
-							[suppliersAmount]		=	'" . $this->model->getSuppliersAmount() . "',	
+							[suppliersType]		=	'" . $this->model->getSuppliersIdType() . "',
+							[suppliersDate]		=	'" . $this->model->getSuppliersIdDate() . "',
+							[suppliersAmount]		=	'" . $this->model->getSuppliersIdAmount() . "',	
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -962,15 +962,15 @@ class SuppliersClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[suppliersId]			=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+			WHERE 		[suppliersId]			=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		SUPPLIERS
 				SET 		RECEIPTNO	=	'" . $this->model->getReceiptNo() . "',
 							MEMBERSHIPID		=	'" . $this->model->getMembershipId() . "',
-							SUPPLIERSTYPE		=	'" . $this->model->getSuppliersType() . "',
-							SUPPLIERSDATE		=	'" . $this->model->getSuppliersDate() . "',
-							SUPPLIERSAMOUNT		=	'" . $this->model->getSuppliersAmount() . "',									
+							SUPPLIERSTYPE		=	'" . $this->model->getSuppliersIdType() . "',
+							SUPPLIERSDATE		=	'" . $this->model->getSuppliersIdDate() . "',
+							SUPPLIERSAMOUNT		=	'" . $this->model->getSuppliersIdAmount() . "',									
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -982,15 +982,15 @@ class SuppliersClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		SUPPLIERSID		=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+			WHERE 		SUPPLIERSID		=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 			UPDATE	SUPPLIERS
 			SET 			RECEIPTNO	=	'" . $this->model->getReceiptNo() . "',
 							MEMBERSHIPID		=	'" . $this->model->getMembershipId() . "',
-							SUPPLIERSTYPE		=	'" . $this->model->getSuppliersType() . "',
-							SUPPLIERSDATE		=	'" . $this->model->getSuppliersDate() . "',
-							SUPPLIERSAMOUNT		=	'" . $this->model->getSuppliersAmount() . "',
+							SUPPLIERSTYPE		=	'" . $this->model->getSuppliersIdType() . "',
+							SUPPLIERSDATE		=	'" . $this->model->getSuppliersIdDate() . "',
+							SUPPLIERSAMOUNT		=	'" . $this->model->getSuppliersIdAmount() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1002,15 +1002,15 @@ class SuppliersClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		SUPPLIERSID		=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+			WHERE 		SUPPLIERSID		=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE		SUPPLIERS
 				SET 		RECEIPTNO	=	'" . $this->model->getReceiptNo() . "',
 							MEMBERSHIPID		=	'" . $this->model->getMembershipId() . "',
-							SUPPLIERSTYPE		=	'" . $this->model->getSuppliersType() . "',
-							SUPPLIERSDATE		=	'" . $this->model->getSuppliersDate() . "',
-							SUPPLIERSAMOUNT		=	'" . $this->model->getSuppliersAmount() . "',
+							SUPPLIERSTYPE		=	'" . $this->model->getSuppliersIdType() . "',
+							SUPPLIERSDATE		=	'" . $this->model->getSuppliersIdDate() . "',
+							SUPPLIERSAMOUNT		=	'" . $this->model->getSuppliersIdAmount() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1022,7 +1022,7 @@ class SuppliersClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		SUPPLIERSID			=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+				WHERE 		SUPPLIERSID			=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -1057,27 +1057,27 @@ class SuppliersClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getSuppliersIdId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -1102,7 +1102,7 @@ class SuppliersClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`suppliersId`		=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+				WHERE 	`suppliersId`		=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	[suppliers]
@@ -1117,7 +1117,7 @@ class SuppliersClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[suppliersId]		=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+				WHERE 	[suppliersId]		=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	SUPPLIERS
@@ -1132,7 +1132,7 @@ class SuppliersClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	SUPPLIERSID		=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+				WHERE 	SUPPLIERSID		=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 				UPDATE 	SUPPLIERS
@@ -1147,7 +1147,7 @@ class SuppliersClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	SUPPLIERSID		=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+				WHERE 	SUPPLIERSID		=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE 	SUPPLIERS
@@ -1162,7 +1162,7 @@ class SuppliersClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	SUPPLIERSID		=	'" . $this->model->getSuppliersId(0, 'single') . "'";
+				WHERE 	SUPPLIERSID		=	'" . $this->model->getSuppliersIdId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -1243,7 +1243,7 @@ class SuppliersClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getSuppliersId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1267,7 +1267,7 @@ class SuppliersClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getSuppliersId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1291,7 +1291,7 @@ class SuppliersClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getSuppliersId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1316,7 +1316,7 @@ class SuppliersClass extends ConfigClass {
 
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getSuppliersId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1340,7 +1340,7 @@ class SuppliersClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getSuppliersId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1364,7 +1364,7 @@ class SuppliersClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getSuppliersId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1388,7 +1388,7 @@ class SuppliersClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getSuppliersId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1412,7 +1412,7 @@ class SuppliersClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getReligionId($i, 'array') . "'
+                            WHEN '" . $this->model->getSuppliersId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1436,7 +1436,7 @@ class SuppliersClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getReligionId($i, 'array') . "'
+                                WHEN '" . $this->model->getSuppliersId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1499,31 +1499,31 @@ class SuppliersClass extends ConfigClass {
 			$sql = "
 			SELECT	`suppliersCompany`
 			FROM 	`suppliers`
-			WHERE 	`suppliersCompany` 	= 	'" . $this->model->getSuppliersCompany() . "'
+			WHERE 	`suppliersCompany` 	= 	'" . $this->model->getSuppliersIdCompany() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[suppliersCompany]
 			FROM 	[suppliers]
-			WHERE 	[suppliersCompany] 	= 	'" . $this->model->getSuppliersCompany() . "'
+			WHERE 	[suppliersCompany] 	= 	'" . $this->model->getSuppliersIdCompany() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	SUPPLIERSCOMPANY
 			FROM 	SUPPLIERS
-			WHERE 	SUPPLIERSCOMPANY 	= 	'" . $this->model->getSuppliersCompany() . "'
+			WHERE 	SUPPLIERSCOMPANY 	= 	'" . $this->model->getSuppliersIdCompany() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	SUPPLIERSCOMPANY
 			FROM 	SUPPLIERS
-			WHERE 	SUPPLIERSCOMPANY 	= 	'" . $this->model->getSuppliersCompany() . "'
+			WHERE 	SUPPLIERSCOMPANY 	= 	'" . $this->model->getSuppliersIdCompany() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	SUPPLIERSCOMPANY
 			FROM 	SUPPLIERS
-			WHERE 	SUPPLIERSCOMPANY 	= 	'" . $this->model->getSuppliersCompany() . "'
+			WHERE 	SUPPLIERSCOMPANY 	= 	'" . $this->model->getSuppliersIdCompany() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));

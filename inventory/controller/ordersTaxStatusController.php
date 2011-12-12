@@ -991,7 +991,7 @@ class OrdersTaxStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getOrdersTaxStatusId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1015,7 +1015,7 @@ class OrdersTaxStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getOrdersTaxStatusId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1039,7 +1039,7 @@ class OrdersTaxStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getOrdersTaxStatusId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1064,7 +1064,7 @@ class OrdersTaxStatusClass extends ConfigClass {
 
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getOrdersTaxStatusId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1088,7 +1088,7 @@ class OrdersTaxStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getOrdersTaxStatusId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1112,7 +1112,7 @@ class OrdersTaxStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getOrdersTaxStatusId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1136,7 +1136,7 @@ class OrdersTaxStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getReligionId($i, 'array') . "'
+							WHEN '" . $this->model->getOrdersTaxStatusId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1160,7 +1160,7 @@ class OrdersTaxStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getReligionId($i, 'array') . "'
+                            WHEN '" . $this->model->getOrdersTaxStatusId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1184,7 +1184,7 @@ class OrdersTaxStatusClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getReligionId($i, 'array') . "'
+                                WHEN '" . $this->model->getOrdersTaxStatusId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
