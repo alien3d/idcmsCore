@@ -35,6 +35,121 @@
 		$mystring=$rowFieldTable['Type'];
 		$key  = $rowFieldTable['Key'];
 		
+		// kita start isi model kat sini standard  create read update delete lallalala
+		$crud="/* (non-PHPdoc)
+	 * @see ValidationClass::create()
+	 */
+
+	public function create() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(1, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::update()
+	 */
+
+	public function update() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(0, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(1, '', 'single');
+		\$this->setIsActive(1, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::delete()
+	 */
+
+	public function delete() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(0, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, '', 'single');
+		\$this->setIsDelete(1, '', 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::draft()
+	 */
+
+	public function draft() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(1, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::approved()
+	 */
+
+	public function approved() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(1, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::review()
+	 */
+
+	public function review() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(1, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::post()
+	 */
+
+	public function post() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(1, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(1, 0, 'single');
+	}";
+		// end disini..
+		
+		
 		$sql="
 		SELECT table_schema, table_name, column_name, referenced_table_schema, referenced_table_name, referenced_column_name
 FROM information_schema.KEY_COLUMN_USAGE
@@ -107,6 +222,24 @@ AND  column_name ='".$columnName."'		";
 		$str.="},";
 		
 		$str2.=$columnName.",";
+		if($columnName !='isDefault' &&
+			   $columnName !='isNew' &&
+			   $columnName !='isDraft'&&
+			   $columnName !='isUpdate'&&
+			   $columnName !='isDelete'&&
+			   $columnName !='isActive'&&
+			   $columnName !='isApproved'&&
+			   $columnName !='isReview'&&
+			   $columnName !='isPost'&&
+			   $columnName !='executeBy'&&
+			   $columnName !='executeTime') {
+		$mainModelInside.="
+		\n
+		/**
+		* @var ".$jsonType."
+		*/
+		private ".$columnName." ";
+		}
 				
 				if($columnName=='executeBy') {
 					$str4.="
@@ -224,6 +357,9 @@ AND  column_name ='".$columnName."'		";
 			   $columnName !='executeTime') {
 			   
 				if($jsonType=='float') {
+					$executeDalam.="if (isset(\$_POST ['".$columnName."'])) {
+						\$this->set".ucfirst($columnName)."Id(\$this->strict(\$_POST ['".$columnName."'], '".$jsonType."'));
+					}\n";
 					$formItem.="var ".$columnName." = new Ext.form.".$formType."Field({
 							labelAlign : 'left',
 						fieldLabel : ".$columnName."Label + '<span style=\'color: red;\'>*</span>',
@@ -249,7 +385,7 @@ AND  column_name ='".$columnName."'		";
 					}); ";
 				
 				} else{
-			   
+					
 					$formItem.="var ".$columnName." = new Ext.form.".$formType."Field({
 						labelAlign : 'left',
 						fieldLabel : ".$columnName."Label + '<span style=\'color: red;\'>*</span>',
@@ -291,6 +427,9 @@ AND  column_name ='".$columnName."'		";
 			
 		
 		}  else if ($key=='PRI') {
+			$executeDalam.="if (isset(\$_POST ['".$columnName."'])) {
+				\$this->set".ucfirst($columnName)."(\$this->strict(\$_POST ['".$columnName."'], 'numeric'), 0, 'single');
+			}\n";
 			
 			$formItem.="var ".$columnName."  =  new Ext.form.Hidden({
 			name : '".$columnName."',
@@ -306,7 +445,46 @@ AND  column_name ='".$columnName."'		";
 					table : '".$targetTable."',
 					database : '".$targetDb."'
 				},";
+				
+			$model ="/**
+	 * Set ".$targetTable." Identification  Value
+	 * @param int|array \$value
+	 * @param array[int]int \$key List Of Primary Key.
+	 * @param array[int]string \$type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function set".ucfirst($columnName)." (\$value, \$key, \$type) {
+		if (\$type == 'single') {
+			\$this->".ucfirst($columnName)." = \$value;
+		} else if (\$type == 'array') {
+			\$this->".ucfirst($columnName)." [\$key] = \$value;
+		} else {
+			echo json_encode(array(\"success\" => false, \"message\" => \"Cannot Identifiy Type String Or Array:set".ucfirst($columnName)." ?\"));
+			exit();
+		}
+	}
+
+	/**
+	 * Return ".$targetTable." Identification  Value
+	 * @param array[int]int \$key List Of Primary Key.
+	 * @param array[int]string \$type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function get".ucfirst($columnName)."(\$key, \$type) {
+		if (\$type == 'single') {
+			return \$this->".ucfirst($columnName).";
+		} else if (\$type == 'array') {
+			return \$this->".ucfirst($columnName)." [\$key];
+		} else {
+			echo json_encode(array(\"success\" => false, \"message\" => \"Cannot Identifiy Type String Or Array:get".ucfirst($columnName)." ?\"));
+			exit();
+		}
+	}";
+
+	
 		}else {
+			$executeDalam.="if (isset(\$_POST ['".$columnName."'])) {
+						\$this->set".ucfirst($columnName)."(\$this->strict(\$_POST ['".$columnName."'], '".$jsonType."'));
+					}\n";
 		// asume foreign key  only used combo box 
 				if($columnName !=$targetMasterTable && $targetGridType!='first'){
 					$formItem.="var ".$columnName."  = new Ext.ux.form.ComboBoxMatch({
@@ -2185,6 +2363,224 @@ $comboRenderer.="Ext.util.Format.comboRenderer = function(combo) {
         }
     });";
 }	
+
+		foreach($columnNameArray as $columnNameMysql) {
+		if($columnNameMysql !='isDefault' &&
+			   $columnNameMysql !='isNew' &&
+			   $columnNameMysql !='isDraft'&&
+			   $columnNameMysql !='isUpdate'&&
+			   $columnNameMysql !='isDelete'&&
+			   $columnNameMysql !='isActive'&&
+			   $columnNameMysql !='isApproved'&&
+			   $columnNameMysql !='isReview'&&
+			   $columnNameMysql !='isPost'&&
+			   $columnNameMysql !='isSeperated'&&
+			   $columnNameMysql !='isConsolidation'&&
+			   $columnNameMysql !='isReconciled' &&
+			   $columnNameMysql !='executeBy'&&
+			   $columnNameMysql !='executeTime' &&
+			   $columnNameMysql !=$targetTableId) {	
+
+	$getterSetter.="/**
+	 * 
+	 * @return 
+	 */
+	public function get".ucfirst($columnNameMysql)."()
+	{
+	    return \$this->".$columnNameMysql.";
+	}
+
+	/**
+	 * 
+	 * @param $countryDesc
+	 */
+	public function set".ucfirst($columnNameMysql)."(".$columnNameMysql.")
+	{
+	    \$this->".$columnNameMysql." = ".$columnNameMysql.";
+	}";
+	}
+	}
+	
+$execute="
+/* (non-PHPdoc)
+	 * @see ValidationClass::execute()
+	 */
+
+	public function execute() {
+		/*
+		 *  Basic Information Table
+		 */
+		\$this->setTableName('".$targetTable."');
+		\$this->setPrimaryKeyName('".$targetTableId."');
+		/**
+		 * All the $_POST enviroment.
+		 */ ";
+			
+		$execute.=$executeDalam;	
+		$execute.="
+		/**
+		 * All the \$_GET enviroment.
+		 */
+		if (isset(\$_GET ['".$targetTableId."'])) {
+			\$this->setTotal(count(\$_GET ['".$targetTableId."']));
+		}
+
+		if (isset(\$_GET ['isDefault'])) {
+			if (is_array(\$_GET ['isDefault'])) {
+				\$this->isDefault = array();
+			}
+		}
+		if (isset(\$_GET ['isNew'])) {
+			if (is_array($_GET ['isNew'])) {
+				\$this->isNew = array();
+			}
+		}
+		if (isset(\$_GET ['isDraft'])) {
+			if (is_array(\$_GET ['isDraft'])) {
+				\$this->isDraft = array();
+			}
+		}
+		if (isset(\$_GET ['isUpdate'])) {
+			if (is_array(\$_GET ['isUpdate'])) {
+				\$this->isUpdate = array();
+			}
+		}
+		if (isset(\$_GET ['isDelete'])) {
+			if (is_array(\$_GET ['isDelete'])) {
+				\$this->isDelete = array();
+			}
+		}
+		if (isset(\$_GET ['isActive'])) {
+			if (is_array(\$_GET ['isActive'])) {
+				\$this->isActive = array();
+			}
+		}
+		if (isset(\$_GET ['isApproved'])) {
+			if (is_array(\$_GET ['isApproved'])) {
+				\$this->isApproved = array();
+			}
+		}
+		if (isset(\$_GET ['isReview'])) {
+			if (is_array(\$_GET ['isReview'])) {
+				\$this->isReview = array();
+			}
+		}
+		if (isset(\$_GET ['isPost'])) {
+			if (is_array(\$_GET ['isPost'])) {
+				\$this->isPost = array();
+			}
+		}
+		\$primaryKeyAll = '';
+		for (\$i = 0; \$i < \$this->getTotal(); \$i++) {
+			
+			if (isset(\$_GET ['".$targetTableId."'])) {
+				\$this->set".ucfirst($targetTableId)."(\$this->strict(\$_GET ['".$targetTableId."'] [\$i], 'numeric'), \$i, 'array');
+			}
+			
+			if (isset(\$_GET ['isDefault'])) {
+				if (\$_GET ['isDefault'] [\$i] == 'true') {
+					\$this->setIsDefault(1, \$i, 'array');
+				} else if (\$_GET ['isDefault'] [\$i] == 'false') {
+					\$this->setIsDefault(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isNew'])) {
+				if (\$_GET ['isNew'] [\$i] == 'true') {
+					\$this->setIsNew(1, \$i, 'array');
+				} else if (\$_GET ['isNew'] [\$i] == 'false') {
+					\$this->setIsNew(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isDraft'])) {
+				if (\$_GET ['isDraft'] [\$i] == 'true') {
+					\$this->setIsDraft(1, \$i, 'array');
+				} else if (\$_GET ['isDraft'] [\$i] == 'false') {
+					\$this->setIsDraft(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isUpdate'])) {
+				if (\$_GET ['isUpdate'] [\$i] == 'true') {
+					\$this->setIsUpdate(1, \$i, 'array');
+				} if (\$_GET ['isUpdate'] [\$i] == 'false') {
+					\$this->setIsUpdate(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isDelete'])) {
+				if (\$_GET ['isDelete'] [\$i] == 'true') {
+					\$this->setIsDelete(1, \$i, 'array');
+				} else if (\$_GET ['isDelete'] [\$i] == 'false') {
+					\$this->setIsDelete(0, $i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isActive'])) {
+				if (\$_GET ['isActive'] [\$i] == 'true') {
+					\$this->setIsActive(1, \$i, 'array');
+				} else if (\$_GET ['isActive'] [\$i] == 'false') {
+					\$this->setIsActive(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isApproved'])) {
+				if (\$_GET ['isApproved'] [\$i] == 'true') {
+					\$this->setIsApproved(1, \$i, 'array');
+				} else if (\$_GET ['isApproved'] [\$i] == 'false') {
+					\$this->setIsApproved(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isReview'])) {
+				if (\$_GET ['isReview'] [\$i] == 'true') {
+					\$this->setIsReview(1, \$i, 'array');
+				} else if (\$_GET ['isReview'] [\$i] == 'false') {
+					\$this->setIsReview(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isPost'])) {
+				if (\$_GET ['isPost'] [\$i] == 'true') {
+					\$this->setIsPost(1, \$i, 'array');
+				} else if (\$_GET ['isPost'] [\$i] == 'false') {
+					\$this->setIsPost(0, \$i, 'array');
+				}
+			}
+			\$primaryKeyAll .= \$this->getAdjustmentId(\$i, 'array') . \",\";
+		}
+		\$this->setPrimaryKeyAll((substr(\$primaryKeyAll, 0, - 1)));
+		/**
+		 * All the \$_SESSION enviroment.
+		 */
+		if (isset(\$_SESSION ['staffId'])) {
+			\$this->setExecuteBy(\$_SESSION ['staffId']);
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if (\$this->getVendor() == self::MYSQL) {
+			\$this->setExecuteTime(\"'\" . date(\"Y-m-d H:i:s\") . \"'\");
+		} else if (\$this->getVendor() == self::MSSQL) {
+			\$this->setExecuteTime(\"'\" . date(\"Y-m-d H:i:s.u\") . \"'\");
+		} else if (\$this->getVendor() == self::ORACLE) {
+			\$this->setExecuteTime(\"to_date('\" . date(\"Y-m-d H:i:s\") . \"','YYYY-MM-DD HH24:MI:SS')\");
+		}
+	}
+";
+
+$mainModel.="
+
+require_once (\"../../class/classValidation.php\");
+
+/**
+ * this is ".$targetTable." model file.This is to ensure strict setting enable for all variable enter to database
+ *
+ * @name IDCMS.
+ * @version 2
+ * @author hafizan
+ * @package Account Receivable / Account Payable Invoice 
+ * @subpackage adjustment
+ * @link http://www.idcms.org
+ * @license http://www.gnu.org/copyleft/lesser.html LGPL
+ */
+class ".ucfirst($targetTable)."Model extends ValidationClass { ";
+
+
+
 ?>
 		
 		
@@ -2308,6 +2704,12 @@ echo $jsonStoreString.$gridFilterJs.$formItem.$systemCheckbox.$comboRenderer.$co
 <h1>Update Status Statement</h1>
 <pre class="brush: php;">
 <?php //echo $deleteStatement; ?>
+</pre>
+<?php } ?>
+<?php if ($_GET['type']=='model') { ?>
+<h1>haha Statement</h1>
+<pre class="brush: php;">
+<?php echo $mainModel.$mainModelInside.$execute.$crud.$model.$getterSetter." \n} "; ?>
 </pre>
 <?php } ?>
 </html>

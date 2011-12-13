@@ -1360,12 +1360,24 @@ Ext.onReady(function () {
 					xtype : 'button',
 					iconCls : 'resultset_first',
 					handler : function (button, e) {
+							if(Ext.getCmp('currentDate').getValue()==''){
+								Ext.getCmp('currentdate').setValue(new Date());
+								currentDateValue = Ext.getCmp('currentDate').getvalue();
+							} else {
+								currentDateValue =Ext.getCmp('currentDate').getValue();
+							}
+						    if(Ext.getCmp('calendarType').getValue()==''){
+						    	Ext.getCmp('calendarType').setValue('day');
+						    	calendarType = Ext.getCmp('calendarType').getValue();
+						    } else {
+						    	calendarType = Ext.getCmp('calendarType').getValue();
+						    }
+						    dateRangeStart = currentDateValue.getFullYear() + "-" + (currentDateValue.getMonth() + 1) + "-" + currentDateValue.getDate();
+						
 						generalLedgerJournalStore.reload({
 							params :{
-								dateRangeType : 'week',
-								currentDate : curr,
-								dateRangeStart : s,
-								dateRangeEnd : e
+								calendarType : calendarType,
+								dateRangeStart : dateRangeStart
 							}
 						});
 					}
@@ -1374,12 +1386,23 @@ Ext.onReady(function () {
 					xtype : 'button',
 					iconCls : 'resultset_previous',
 					handler : function (button, e) {
+						if (now.getMonth() == 0) {
+						    currentDateValue = new Date(now.getFullYear() - 1, 0, 1);
+						} else {
+						    currentDateValue = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+						}
+						 if(Ext.getCmp('calendarType').getValue()==''){
+						    	Ext.getCmp('calendarType').setValue('day');
+						    	calendarType = Ext.getCmp('calendarType').getValue();
+						    } else {
+						    	calendarType = Ext.getCmp('calendarType').getValue();
+						    }
+						    dateRangeStart = currentDateValue.getFullYear() + "-" + (currentDateValue.getMonth() + 1) + "-" + currentDateValue.getDate();
+						
 						generalLedgerJournalStore.reload({
 							params :{
-								dateRangeType : 'week',
-								currentDate : curr,
-								dateRangeStart : s,
-								dateRangeEnd : e
+								calendarType : calendarType, 
+								dateRangeStart : dateRangeStart
 							}
 						});
 					}
@@ -1451,6 +1474,13 @@ Ext.onReady(function () {
 					xtype : 'button',
 					iconCls : 'resultset_next',
 					handler : function (button, e) {
+						now = new Date();
+						if (now.getMonth() == 11) {
+						    current = new Date(now.getFullYear() + 1, 0, 1);
+						} else {
+						    current = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+						}
+
 						generalLedgerJournalStore.reload({
 							params :{
 								dateRangeType : 'week',
@@ -2412,7 +2442,7 @@ Ext.onReady(function () {
 									isReview : '',
 									isPost : '',
 									executeBy : '',
-									executeTime : '',
+									executeTime : ''
 								});
 							generalLedgerJournalDetailEditor.stopEditing();
 							generalLedgerJournalDetailStore.insert(0, newRecord);
