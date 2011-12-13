@@ -3,6 +3,7 @@
 session_start();
 require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
+require_once ("../../class/classDate.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
@@ -143,8 +144,9 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		$this->model->getDocumentNo($this->documentNumbering()); //override document numbering
 		if ($this->getVendor() == self::MYSQL) {
 
-			$sql="INSERT INTO `ifinancial`.`generalLedgerJournal` (     `generalLedgerJournalId`,   `generalLedgerJournalTypeId`,   `documentNo`,   `generalLedgerJournalTitle`,    `generalLedgerJournalDesc`, `generalLedgerJournalDate`, `generalLedgerJournalStartDate`,    `generalLedgerJournalEndDate`,  `generalLedgerJournalAmount`,   `isDefault`,    `isNew`,    `isDraft`,  `isUpdate`, `isDelete`, `isActive`, `isApproved`,   `isReview`, `isPost`,   `executeBy`,    `executeTime`) VALUES ( null, '".$this->model->getGeneralLedgerJournalTypeId()."',
+			$sql="INSERT INTO `ifinancial`.`generalLedgerJournal` (     `generalLedgerJournalId`,   `generalLedgerJournalTypeId`,   `documentNo`,`referenceNo`,   `generalLedgerJournalTitle`,    `generalLedgerJournalDesc`, `generalLedgerJournalDate`, `generalLedgerJournalStartDate`,    `generalLedgerJournalEndDate`,  `generalLedgerJournalAmount`,   `isDefault`,    `isNew`,    `isDraft`,  `isUpdate`, `isDelete`, `isActive`, `isApproved`,   `isReview`, `isPost`,   `executeBy`,    `executeTime`) VALUES ( null, '".$this->model->getGeneralLedgerJournalTypeId()."',
 '".$this->model->getDocumentNo()."',
+'".$this->model->getReferenceNo()."',
 '".$this->model->getGeneralLedgerJournalTitle()."',
 '".$this->model->getGeneralLedgerJournalDesc()."',
 '".$this->model->getGeneralLedgerJournalDate()."',

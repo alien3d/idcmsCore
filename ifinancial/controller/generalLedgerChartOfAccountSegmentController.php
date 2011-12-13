@@ -3,6 +3,7 @@
 session_start();
 require_once ("../../class/classAbstract.php");
 require_once ("../../class/classRecordSet.php");
+require_once ("../../class/classDate.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
@@ -787,8 +788,8 @@ class GeneralLedgerChartOfAccountSegmentClass extends ConfigClass {
 				     'message' => $this->systemString->getReadMessage(),
 				     'time' => $time, 
             	'firstRecord' => $this->recordSet->firstRecord('value'), 
-            	'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
-            	'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            	'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single')), 
+            	'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerChartOfAccountSegmentId(0, 'single')), 
             	'lastRecord' => $this->recordSet->lastRecord('value'), 
 				     'data' => $items));
 			exit();
