@@ -14,7 +14,7 @@ require_once ("../../class/classValidation.php");
  * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class GeneralledgerjournaldetailModel extends ValidationClass {
+class GeneralLedgerJournalDetailModel extends ValidationClass {
 
 	/**
 	 * @var int
@@ -328,7 +328,7 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 	}
 
 	/**
-	 * Set Generalledgerjournaldetail Identification  Value
+	 * Set GeneralLedgerJournalDetail Identification  Value
 	 * @param int|array $value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
@@ -345,7 +345,7 @@ class GeneralledgerjournaldetailModel extends ValidationClass {
 	}
 
 	/**
-	 * Return Generalledgerjournaldetail Identification  Value
+	 * Return GeneralLedgerJournalDetail Identification  Value
 	 * @param array[int]int $key List Of Primary Key.
 	 * @param array[int]string $type  List Of Type.0 As 'single' 1 As 'array'
 	 * @return bool|array
