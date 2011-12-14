@@ -3,14 +3,15 @@
 require_once ("../../class/classValidation.php");
 
 /**
- * this is adjustment model file.This is to ensure strict setting enable for all variable enter to database
+ * The general journal is where double entry bookkeeping entries are recorded by debiting one or more accounts and crediting another one or more accounts with the same total amount. The total amount debited and the total amount credited should always be equal, thereby ensuring the accounting equation is maintained.Depending on the business's accounting information system, specialized journals may be used in conjunction with the general journal for record-keeping. In such case, use of the general journal may be limited to non-routine and adjusting entries.
  *
  * @name IDCMS.
  * @version 2
  * @author hafizan
- * @package Account Receivable / Account Payable Invoice 
- * @subpackage adjustment
+ * @package General Ledger
+ * @subpackage Journal
  * @link http://www.idcms.org
+ * @http://en.wikipedia.org/wiki/Journal_%28accounting%29
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
 class AdjustmentModel extends ValidationClass {
@@ -19,24 +20,90 @@ class AdjustmentModel extends ValidationClass {
 	 * @var int
 	 */
 	private $adjustmentId;
-
+	/**
+	 * @var int
+	 */
+	private $adjustmentTypeId;
+	/**
+	* @var string
+	*/
+	private $documentNo;
+	/**
+	* @var string
+	*/
+	private $referenceNo;
+	/**
+	* @var string
+	*/
+	private $adjustmentTitle;
+	/**
+	* @var string
+	*/
+	private $adjustmentDesc;
+	/**
+	* @var date
+	*/
+	private $adjustmentDate;
+	/**
+	* @var date
+	*/
+	private $adjustmentStartDate;
+	/**
+	* @var date
+	*/
+	private $adjustmentEndDate;
+	/**
+	* @var float
+	*/
+	private $adjustmentAmount;
 
 	/* (non-PHPdoc)
 	 * @see ValidationClass::execute()
 	 */
 
 	public function execute() {
+		$this->setTotal(0); // overide testing
 		/*
 		 *  Basic Information Table
 		 */
 		$this->setTableName('adjustment');
 		$this->setPrimaryKeyName('adjustmentId');
+		//$this->setFilterCharacter($filterCharacter);
+		$this->setFilterDate('adjustmentDate');
 		/**
 		 * All the $_POST enviroment.
 		 */
 		if (isset($_POST ['adjustmentId'])) {
 			$this->setAdjustmentId($this->strict($_POST ['adjustmentId'], 'numeric'), 0, 'single');
 		}
+		if (isset($_POST ['adjustmentTypeId'])) {
+			$this->setAdjustmentTypeId($this->strict($_POST ['adjustmentTypeId'], 'numeric'));
+		}
+		if (isset($_POST ['documentNo'])) {
+			$this->setDocumentNo($this->strict($_POST ['documentNo'], 'string'));
+		}
+		if (isset($_POST ['referenceNo'])) {
+			$this->setReferenceNo($this->strict($_POST ['referenceNo'], 'string'));
+		}
+		if (isset($_POST ['adjustmentTitle'])) {
+			$this->setAdjustmentTitle($this->strict($_POST ['adjustmentTitle'], 'string'));
+		}
+		if (isset($_POST ['adjustmentDesc'])) {
+			$this->setAdjustmentDesc($this->strict($_POST ['adjustmentDesc'], 'string'));
+		}
+		if (isset($_POST ['adjustmentDate'])) {
+			$this->setAdjustmentDate($this->strict($_POST ['adjustmentDate'], 'date'));
+		}
+		if (isset($_POST ['adjustmentStartDate'])) {
+			$this->setAdjustmentStartDate($this->strict($_POST ['adjustmentStartDate'], 'date'));
+		}
+		if (isset($_POST ['adjustmentEndDate'])) {
+			$this->setAdjustmentEndDate($this->strict($_POST ['adjustmentEndDate'], 'date'));
+		}
+		if (isset($_POST ['adjustmentAmount'])) {
+			$this->setAdjustmentAmount($this->strict($_POST ['adjustmentAmount'], 'float'));
+		}
+		
 		/**
 		 * All the $_GET enviroment.
 		 */
@@ -90,9 +157,10 @@ class AdjustmentModel extends ValidationClass {
 			}
 		}
 		$primaryKeyAll = '';
+		
 		for ($i = 0; $i < $this->getTotal(); $i++) {
 			if (isset($_GET ['adjustmentId'])) {
-				$this->setAdjustmentId($this->strict($_GET ['adjustmentId'] [$i], 'numeric'), $i, 'array');
+				$this->setAdjustmentId($this->strict($_GET ['adjustmentId'] [$i], 'numeric'), $i, 'array');				
 			}
 			if (isset($_GET ['isDefault'])) {
 				if ($_GET ['isDefault'] [$i] == 'true') {
@@ -324,6 +392,168 @@ class AdjustmentModel extends ValidationClass {
 		}
 	}
 
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getDocumentNo()
+	{
+	    return $this->documentNo;
+	}
+
+	/**
+	 * 
+	 * @param $documentNo
+	 */
+	public function setDocumentNo($documentNo)
+	{
+	    $this->documentNo = $documentNo;
+	}
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getReferenceNo()
+	{
+	    return $this->referenceNo;
+	}
+
+	/**
+	 * 
+	 * @param $referenceNo
+	 */
+	public function setReferenceNo($referenceNo)
+	{
+	    $this->referenceNo = $referenceNo;
+	}
+
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getAdjustmentTitle()
+	{
+	    return $this->adjustmentTitle;
+	}
+
+	/**
+	 * 
+	 * @param $adjustmentTitle
+	 */
+	public function setAdjustmentTitle($adjustmentTitle)
+	{
+	    $this->adjustmentTitle = $adjustmentTitle;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getAdjustmentDesc()
+	{
+	    return $this->adjustmentDesc;
+	}
+
+	/**
+	 * 
+	 * @param $adjustmentDesc
+	 */
+	public function setAdjustmentDesc($adjustmentDesc)
+	{
+	    $this->adjustmentDesc = $adjustmentDesc;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getAdjustmentDate()
+	{
+	    return $this->adjustmentDate;
+	}
+
+	/**
+	 * 
+	 * @param $adjustmentDate
+	 */
+	public function setAdjustmentDate($adjustmentDate)
+	{
+	    $this->adjustmentDate = $adjustmentDate;
+	}
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getAdjustmentStartDate()
+	{
+	    return $this->adjustmentStartDate;
+	}
+
+	/**
+	 * 
+	 * @param $adjustmentStartDate
+	 */
+	public function setAdjustmentStartDate($adjustmentStartDate)
+	{
+	    $this->adjustmentStartDate = $adjustmentStartDate;
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getAdjustmentEndDate()
+	{
+	    return $this->adjustmentEndDate;
+	}
+
+	/**
+	 * 
+	 * @param $adjustmentDate
+	 */
+	public function setAdjustmentEndDate($adjustmentEndDate)
+	{
+	    $this->adjustmentEndDate = $adjustmentEndDate;
+	}
+	
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getAdjustmentAmount()
+	{
+	    return $this->adjustmentAmount;
+	}
+
+	/**
+	 * 
+	 * @param $adjustmentAmount
+	 */
+	public function setAdjustmentAmount($adjustmentAmount)
+	{
+	    $this->adjustmentAmount = $adjustmentAmount;
+	}	
+
+	/**
+	 * 
+	 * @return 
+	 */
+	public function getAdjustmentTypeId()
+	{
+	    return $this->adjustmentTypeId;
+	}
+
+	/**
+	 * 
+	 * @param $adjustmentTypeId
+	 */
+	public function setAdjustmentTypeId($adjustmentTypeId)
+	{
+	    $this->adjustmentTypeId = $adjustmentTypeId;
+	}
 }
 
 ?>

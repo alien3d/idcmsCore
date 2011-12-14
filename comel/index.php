@@ -1,553 +1,572 @@
 <?php 
-		class Generator {
-			public $targetName;
-			public  $managementDatabase;
-			public $tableName;
-			public $tableNameId;
-			public $parentTableName;
-			public $parentTableNameId;
-			public $columnName;
-			public $formType;
-			public $jsonType;
-			public $findMe;
-			public $gridType;
-			function execute(){
-			}
-			function isForeignKey(){
-				$sql="
-				SELECT 	table_schema, 
-						table_name, 
-						column_name, 
-						referenced_table_schema, 
-						referenced_table_name, 
-						referenced_column_name
-				FROM 	information_schema.KEY_COLUMN_USAGE
-				WHERE 	table_schema='".$targetDb."'
-				AND 	table_name = '".$targetTable."'
-				AND  	column_name ='".$columnName."'		";
-					
-						$resultForeignKey = mysql_query($sql) or die(mysql_error());
-						$rowForeignKey  = mysql_fetch_array($resultForeignKey);
-						if($rowForeignKey['referenced_table_schema'] != null  && $rowForeignKey['referenced_table_name'] != null && $rowForeignKey['referenced_column_name'] != null) {
-					
-							$foreignKey='yes';
-						} else {
-							$foreignKey='no';
-						}
-			}
-			function jsonType(){
-				$findme='varchar';
-				$pos = strpos($mystring, $findme);
-				if ($pos !== false) {
-					$formType="Text";
-					$jsonType='string';
-				}
-				$findme='text';
-				$pos = strpos($mystring, $findme);
-				if ($pos !== false) {
-					$formType="Text";
-					$jsonType='string';
-				}
-				$findme='int';
-				$pos = strpos($mystring, $findme);
-				if ($pos !== false) {
-					$formType="Number";
-					$jsonType='int';
-				}
-				$findme='date';
-				$pos = strpos($mystring, $findme);
-				if ($pos !== false) {
-					$formType="Date";
-					$dateType='Y-m-d';
-					$jsonType='date';
-				}
-				$findme='datetime';	
-				$pos = strpos($mystring, $findme);
-				if ($pos !== false) {
-					$formType="Date";
-					$dateType='Y-m-d H:i:s';
-					$jsonType='date';
-				}
-				$findme='tiny';
-				$pos = strpos($mystring, $findme);
-				if ($pos !== false) {
-					$formType="Number";
-					$jsonType='boolean';
-				}
+	//include("controller.php");// file
+    $targetFolder='iFinancial';
+	$targetDatabase='mysql';
+	$targetDb="ifinancial";
+	$targetTable ='country';
+	$targetTableId = $targetTable."Id";
+	$targetMasterTable='generalLedgerJournalId'; // parent primary key
+	$targetGridType="second"; // first -normal table ,second -edit in grid table
+	$managementDb="imanagement";
+	$mysqlOpenTag="`";
+	$mysqlCloseTag="`";
+	$mssqlOpenTag="[";
+	$mssqlCloseTag="]";
+	if($_GET['tag']=='mysql'){
+		$openTag = $mysqlOpenTag;
+		$closeTag = $mysqlCloseTag;
+	} else {
+		$openTag = $mssqlOpenTag;
+		$closeTag = $mssqlCloseTag;
+	}
+	mysql_connect("localhost","root","123456");
+	
+	mysql_select_db($targetDb);
+	mysql_query("SET autocommit=0");
+	
+
+	$resultTable= mysql_query($sqlTable);
+	$sqlFieldTable     ="describe `".$targetDb."`.`".$targetTable."`";
+
+	$resultFieldTable  = mysql_query($sqlFieldTable);
+	while($rowFieldTable = mysql_fetch_array($resultFieldTable)) {
+		$columnName=$rowFieldTable['Field'];
+		$columnNameArray[]=$columnName;
+		$mystring=$rowFieldTable['Type'];
+		$key  = $rowFieldTable['Key'];
+		
+		// kita start isi model kat sini standard  create read update delete lallalala
+		$crud="/* (non-PHPdoc)
+	 * @see ValidationClass::create()
+	 */
+
+	public function create() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(1, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::update()
+	 */
+
+	public function update() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(0, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(1, '', 'single');
+		\$this->setIsActive(1, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::delete()
+	 */
+
+	public function delete() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(0, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, '', 'single');
+		\$this->setIsDelete(1, '', 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::draft()
+	 */
+
+	public function draft() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(1, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::approved()
+	 */
+
+	public function approved() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(1, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::review()
+	 */
+
+	public function review() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(0, 0, 'single');
+		\$this->setIsReview(1, 0, 'single');
+		\$this->setIsPost(0, 0, 'single');
+	}
+
+	/* (non-PHPdoc)
+	 * @see ValidationClass::post()
+	 */
+
+	public function post() {
+		\$this->setIsDefault(0, 0, 'single');
+		\$this->setIsNew(1, 0, 'single');
+		\$this->setIsDraft(0, 0, 'single');
+		\$this->setIsUpdate(0, 0, 'single');
+		\$this->setIsActive(0, 0, 'single');
+		\$this->setIsDelete(0, 0, 'single');
+		\$this->setIsApproved(1, 0, 'single');
+		\$this->setIsReview(0, 0, 'single');
+		\$this->setIsPost(1, 0, 'single');
+	}";
+		// end disini..
+		
+		
+		$sql="
+		SELECT table_schema, table_name, column_name, referenced_table_schema, referenced_table_name, referenced_column_name
+FROM information_schema.KEY_COLUMN_USAGE
+WHERE 
+table_schema='".$targetDb."'
+AND table_name = '".$targetTable."'
+AND  column_name ='".$columnName."'		";
+	
+		$resultForeignKey = mysql_query($sql) or die(mysql_error());
+		$rowForeignKey  = mysql_fetch_array($resultForeignKey);
+		if($rowForeignKey['referenced_table_schema'] != null  && $rowForeignKey['referenced_table_name'] != null && $rowForeignKey['referenced_column_name'] != null) {
+	
+			$foreignKey='yes';
+		} else {
+			$foreignKey='no';
+		}
+		$findme='varchar';
+		$pos = strpos($mystring, $findme);
+		if ($pos !== false) {
+			$formType="Text";
+			$jsonType='string';
+		}
+		$findme='text';
+		$pos = strpos($mystring, $findme);
+		if ($pos !== false) {
+			$formType="Text";
+			$jsonType='string';
+		}
+		$findme='int';
+		$pos = strpos($mystring, $findme);
+		if ($pos !== false) {
+			$formType="Number";
+			$jsonType='int';
+		}
+		$findme='date';
+		$pos = strpos($mystring, $findme);
+		if ($pos !== false) {
+			$formType="Date";
+			$dateType='Y-m-d';
+			$jsonType='date';
+		}
+		$findme='datetime';	
+		$pos = strpos($mystring, $findme);
+		if ($pos !== false) {
+			$formType="Date";
+			$dateType='Y-m-d H:i:s';
+			$jsonType='date';
+		}
+		$findme='tiny';
+		$pos = strpos($mystring, $findme);
+		if ($pos !== false) {
+			$formType="Number";
+			$jsonType='boolean';
+		}
+		
+		$findme='double';
+		$pos = strpos($mystring, $findme);
+		if ($pos !== false) {
+			$formType="Text";
+			$jsonType='float';
+		}
+		$str.="{
+			key :'".$key."',
+			foreignKey : '".$foreignKey."',
+			name : '".$columnName."',
+			type : '".$jsonType."'";
+		if($jsonType=='date') {
+			$str.=",dateFormat : '".$dateType."'";
+		}
+		$str.="},";
+		
+		$str2.=$columnName.",";
+		if($columnName !='isDefault' &&
+			   $columnName !='isNew' &&
+			   $columnName !='isDraft'&&
+			   $columnName !='isUpdate'&&
+			   $columnName !='isDelete'&&
+			   $columnName !='isActive'&&
+			   $columnName !='isApproved'&&
+			   $columnName !='isReview'&&
+			   $columnName !='isPost'&&
+			   $columnName !='executeBy'&&
+			   $columnName !='executeTime') {
+		$mainModelInside.="
+		\n
+		/**
+		* @var ".$jsonType."
+		*/
+		private ".$columnName." ";
+		}
 				
-				$findme='double';
-				$pos = strpos($mystring, $findme);
-				if ($pos !== false) {
-					$formType="Text";
-					$jsonType='float';
-				}
-				$str.="{
-					key :'".$key."',
-					foreignKey : '".$foreignKey."',
-					name : '".$columnName."',
-					type : '".$jsonType."'";
-				if($jsonType=='date') {
-					$str.=",dateFormat : '".$dateType."'";
-				}
-				$str.="},";
-			}
-		}
-		class javascript extends Generator(){
-			function execute(){}
-			function start(){
-				$firstCodeJs.="
-		Ext.onReady(function () {
-	Ext.QuickTips.init();
-	Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
-	Ext.form.Field.prototype.msgTarget = 'under';
-	Ext.Ajax.timeout = 90000;
-	var perPage = 15;
-	var encode = false;
-	var local = false;
-	var jsonResponse;
-	var duplicate = 0;
-	// common Proxy,Reader,Store,Filter,Grid
-	// start Staff Request
-	var staffByProxy = new Ext.data.HttpProxy({
-			url : '../controller/".$targetTable."Controller.php?',
-			method : 'GET',
-			success : function (response, options) {
-				jsonResponse = Ext.decode(response.responseText);
-				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
-				} else {
-					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-				}
-			},
-			failure : function (response, options) {
-				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
-			}
-		});
-	var staffByReader = new Ext.data.JsonReader({
-			totalProperty : 'total',
-			successProperty : 'success',
-			messageProperty : 'message',
-			idProperty : 'staffId'
-		});
-	var staffByStore = new Ext.data.JsonStore({
-			proxy : staffByProxy,
-			reader : staffByReader,
-			autoLoad : true,
-			autoDestroy : true,
-			pruneModifiedRecords : true,
-			baseParams : {
-				method : 'read',
-				field : 'staffId',
-				leafId : leafId
-			},
-			root : 'staff',
-			id : 'staffId',
-			fields : [{
-					name : 'staffId',
-					type : 'int'
-				}, {
-					name : 'staffName',
-					type : 'string'
-				}
-			]
-		}); // end Staff Request
-	// start log Request
-	var logProxy = new Ext.data.HttpProxy({
-			url : '../../security/controller/logController.php?',
-			method : 'POST',
-			success : function (response, options) {
-				jsonResponse = Ext.decode(response.responseText);
-				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
-				} else {
-					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-				}
-			},
-			failure : function (response, options) {
-				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
-			}
-		});
-	var logReader = new Ext.data.JsonReader({
-			totalProperty : 'total',
-			successProperty : 'success',
-			messageProperty : 'message',
-			idProperty : 'logId'
-		});
-	var logStore = new Ext.data.JsonStore({
-			proxy : logProxy,
-			reader : logReader,
-			autoLoad : false,
-			autoDestroy : true,
-			pruneModifiedRecords : true,
-			baseParams : {
-				method : 'read',
-				leafId : leafId,
-				isAdmin : isAdmin,
-				start : 0,
-				limit : perPage,
-				perPage : perPage
-			},
-			root : 'data',
-			fields : [{
-					name : 'logId',
-					type : 'int'
-				}, {
-					name : 'leafId',
-					type : 'int'
-				}, {
-					name : 'operation',
-					type : 'string'
-				}, {
-					name : 'sql',
-					type : 'string'
-				}, {
-					name : 'date',
-					type : 'date',
-					dateFormat : 'Y-m-d'
-				}, {
-					name : 'staffId',
-					type : 'int'
-				}, {
-					name : 'access',
-					type : 'string'
-				}, {
-					name : 'logError',
-					type : 'string'
-				}
-			]
-		});
-	var logFilters = new Ext.ux.grid.GridFilters({
-			encode : encode,
-			local : local,
-			filters : [{
-					type : 'numeric',
-					dataIndex : 'logId',
-					column : 'logId',
-					table : 'log'
-				}, {
-					type : 'numeric',
-					dataIndex : 'leafId',
-					column : 'leafId',
-					table : 'log'
-				}, {
-					type : 'string',
-					dataIndex : 'operation',
-					column : 'operation',
-					table : 'log'
-				}, {
-					type : 'string',
-					dataIndex : 'sql',
-					column : 'sql',
-					table : 'log'
-				}, {
-					type : 'date',
-					dataIndex : 'date',
-					column : 'date',
-					table : 'log'
-				}, {
-					type : 'numeric',
-					dataIndex : 'staffId',
-					column : 'staffId',
-					table : 'log'
-				}, {
-					type : 'string',
-					dataIndex : 'access',
-					column : 'access',
-					table : 'log'
-				}, {
-					type : 'string',
-					dataIndex : 'logError',
-					column : 'logError',
-					table : 'log'
-				}
-			]
-		});
-	var logExpander = new Ext.ux.grid.RowExpander({
-			tpl : new Ext.Template('<br><p><b>Operation:</b> {operation}</p><br>', '<p><b>SQL STATEMENT:</b> {sql}</p><br>')
-		});
-	var logColumnModel = [logExpander, new Ext.grid.RowNumberer(), {
-			dataIndex : 'logId',
-			header : logIdLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'leafId',
-			header : leafIdLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'operation',
-			header : operationLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'sql',
-			header : sqlLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'date',
-			header : dateLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'staffId',
-			header : staffIdLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'access',
-			header : accessLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'logError',
-			header : logErrorLabel,
-			sortable : true,
-			hidden : false
-		}
-	];
-	var logGrid = new Ext.grid.GridPanel({
-			border : false,
-			store : logStore,
-			autoHeight : false,
-			height : 400,
-			columns : logColumnModel,
-			loadMask : true,
-			plugins : [logFilters, logExpander],
-			collapsible : true,
-			animCollapse : false,
-			selModel : new Ext.grid.RowSelectionModel({
-				singleSelect : true
-			}),
-			viewConfig : {
-				emptyText : emptyTextLabel
-			},
-			iconCls : 'application_view_detail',
-			listeners : {
-				render : {
-					fn : function () {
-						logStore.load({
-							params : {
-								start : 0,
-								limit : perPage,
-								method : 'read',
-								mode : 'view',
-								plugin : [logFilters]
-							}
-						});
+				if($columnName=='executeBy') {
+					$str4.="
+						{
+						dataIndex : 'executeBy',
+						header : executeByLabel,
+						sortable : true,
+						hidden : false,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							return record.data.staffName;
+						}
+					},
+					";
+				} else if ($columnName=='executeTime') {
+					$str4.="{
+						dataIndex : 'executeTime',
+						header : executeTimeLabel,
+						sortable : true,
+						hidden : false,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+						}
+					},";
+				} else if ($foreignKey=='yes') { 
+					if($targetGridType=='first') {
+					$str4.="
+						{
+						dataIndex : '".$columnName."',
+						header : ".str_replace("Id","",$columnName)."DescLabel,
+						sortable : true,
+						hidden : false,
+						renderer : function(value, metaData, record, rowIndex,
+								colIndex, store) {
+							return record.data.".str_replace("Id","",$columnName)."Desc;
+						}
+					},
+					";
+					} else {
+							if($columnName !=$targetMasterTable){
+							$str4.="{
+								dataIndex : '".$columnName."',
+							header : ".str_replace("Id","",$columnName)."DescLabel,
+								width : 200,
+								sortable : true,
+								editor : ".$columnName.",
+								renderer : Ext.util.Format.comboRenderer(".$columnName."),
+								hidden : false,
+								jsonType:'".$jsonType."'
+							},";
+						    }
 					}
+				
+				} else if($jsonType=='float'){
+								$str4.="{
+									dataIndex : '".$columnName."',
+									header : ".$columnName."Label,
+									width : 75,
+									sortable : true,
+									summaryType : 'sum',
+									renderer : function(value) {
+										return ' RM ' + Ext.util.Format.number(value, '0,0.00');
+									},
+									editor : {
+										xtype : 'textfield',
+										labelAlign : 'left',
+										fieldLabel : ".$columnName."Label,
+										hiddenName : '".$columnName."',
+										name : '".$columnName."',
+										id : '".$columnName."',
+
+										blankText : blankTextLabel,
+										decimalPrecision : 2,
+										vtype : 'dollar',
+										anchor : '95%',
+										listeners : {
+											blur : function() {
+												var value = Ext.getCmp('".$columnName."').getValue();
+												value = value.replace(\",\", \"\"); 
+												value = Ext.util.Format.usMoney(value);
+												value = value.replace(\" \", \"\"); 
+												Ext.getCmp('".$columnName."').setValue(value);
+											}
+										}
+									}
+								},";
+						} else if ($jsonType=='boolean') { 
+							if($targetTableType=='first') {
+								$str4.=$columnName.","; // checkbox is outside
+							} else {
+								$str4.=$columnName."GridDetail,"; // checkbox is outside
+							}
+						}else { 
+								if($columnName != $targetTableId) { 
+								$str4.="{
+									dataIndex : '".$columnName."',
+									header : ".$columnName."Label,
+									sortable : true,
+									hidden : false
+								},";
+								}								
 				}
-			},
-			bbar : new Ext.PagingToolbar({
-				store : logStore,
-				pageSize : perPage,
-				plugins : [new Ext.ux.plugins.PageComboResizer()]
-			})
-		}); // end log Request
-	// start Log Advance Request
-	var logAdvanceProxy = new Ext.data.HttpProxy({
-			url : '../../security/controller/logAdvanceController.php?',
-			method : 'POST',
-			success : function (response, options) {
-				jsonResponse = Ext.decode(response.responseText);
-				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
-				} else {
-					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-				}
-			},
-			failure : function (response, options) {
-				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
-			}
-		});
-	var logAdvanceReader = new Ext.data.JsonReader({
-			totalProperty : 'total',
-			successProperty : 'success',
-			messageProperty : 'message',
-			idProperty : 'logAdvanceId'
-		});
-	var logAdvanceStore = new Ext.data.JsonStore({
-			proxy : logAdvanceProxy,
-			reader : logAdvanceReader,
-			autoLoad : false,
-			autoDestroy : true,
-			pruneModifiedRecords : true,
-			method : 'POST',
-			baseParams : {
-				method : 'read',
-				leafId : leafId,
-				isAdmin : isAdmin,
-				start : 0,
-				limit : perPage,
-				perPage : perPage
-			},
-			root : 'data',
-			fields : [{
-					name : 'logAdvanceId',
-					type : 'int'
-				}, {
-					name : 'logAdvanceText',
-					type : 'string'
-				}, {
-					name : 'logAdvanceType',
-					type : 'string'
-				}, {
-					name : 'logAdvanceComparison',
-					type : 'string'
-				}, {
-					name : 'refTableName',
-					type : 'int'
-				}, {
-					name : 'leafId',
-					type : 'int'
-				}
-			]
-		});
-	var logAdvanceFilters = new Ext.ux.grid.GridFilters({
-			encode : encode,
-			local : local,
-			filters : [{
-					type : 'numeric',
-					dataIndex : 'logAdvanceId',
-					column : 'logAdvanceId',
-					table : 'logAdvance'
-				}, {
-					type : 'string',
-					dataIndex : 'logAdvanceText',
-					column : 'logAdvanceText',
-					table : 'logAdvance'
-				}, {
-					type : 'string',
-					dataIndex : 'logAdvanceType',
-					column : 'logAdvanceType',
-					table : 'logAdvance'
-				}, {
-					type : 'string',
-					dataIndex : 'logAdvanceComparison',
-					column : 'logAdvanceComparison',
-					table : 'logAdvance'
-				}, {
-					type : 'numeric',
-					dataIndex : 'refTableName',
-					column : 'refTableName',
-					table : 'logAdvance'
-				}, {
+		if($foreignKey=='no' && ($key=='MUL' || $key=='')) { 
+			if($columnName !='isDefault' &&
+			   $columnName !='isNew' &&
+			   $columnName !='isDraft'&&
+			   $columnName !='isUpdate'&&
+			   $columnName !='isDelete'&&
+			   $columnName !='isActive'&&
+			   $columnName !='isApproved'&&
+			   $columnName !='isReview'&&
+			   $columnName !='isPost'&&
+			   $columnName !='executeBy'&&
+			   $columnName !='executeTime') {
+			   
+				if($jsonType=='float') {
+					$executeDalam.="if (isset(\$_POST ['".$columnName."'])) {
+						\$this->set".ucfirst($columnName)."Id(\$this->strict(\$_POST ['".$columnName."'], '".$jsonType."'));
+					}\n";
+					$formItem.="var ".$columnName." = new Ext.form.".$formType."Field({
+							labelAlign : 'left',
+						fieldLabel : ".$columnName."Label + '<span style=\'color: red;\'>*</span>',
+						hiddenName : '".$columnName."',
+						name : '".$columnName."',
+						id : '".$columnName."',
+						allowBlank : false,
+						blankText : blankTextLabel,
+						style : {
+							textTransform : 'uppercase'
+						},
+						anchor : '40%',
+						decimalPrecision: 2,
+						vtype: 'dollar',
+						listeners: {
+							blur: function() {
+								var value = Ext.getCmp('".$columnName."').getValue();
+								value = value.replace(\",\", \"\"); 
+								value = value.replace(\" \", \"\"); 					
+								Ext.getCmp('".$columnName."').setValue(value);
+							}
+						}
+					}); ";
+				
+				} else{
+					
+					$formItem.="var ".$columnName." = new Ext.form.".$formType."Field({
+						labelAlign : 'left',
+						fieldLabel : ".$columnName."Label + '<span style=\'color: red;\'>*</span>',
+						hiddenName : '".$columnName."',
+						name : '".$columnName."',
+						id : '".$columnName."',
+						allowBlank : false,
+						blankText : blankTextLabel,
+						style : {
+							textTransform : 'uppercase'
+						},
+						anchor : '40%'
+					});";
+				}	
+		}
+	
+			if($columnName=='executeBy') { 
+				$str5.="{
 					type : 'list',
-					dataIndex : 'executeBy',
-					column : 'executeBy',
-					table : 'logAdvance',
+					dataIndex : '".$columnName."',
+					column : '".$columnName."',
+					table : '".$targetTable."',
+					database : '".$targetDb."',
 					labelField : 'staffName',
 					store : staffByStore,
 					phpMode : true
-				}, {
-					type : 'date',
-					dataIndex : 'executeTime',
-					column : 'executeTime',
-					table : 'logAdvance'
-				}
-			]
-		});
-	var logAdvanceColumnModel = [new Ext.grid.RowNumberer(), {
-			dataIndex : 'logAdvanceId',
-			header : logAdvanceIdLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'logAdvanceText',
-			header : logAdvanceTextLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'logAdvanceType',
-			header : logAdvanceTypeLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'logAdvanceComparision',
-			header : logAdvanceComparisionLabel,
-			sortable : true,
-			hidden : false
-		}, {
-			dataIndex : 'refTableName',
-			header : refTableNameLabel,
-			sortable : true,
-			hidden : false
-		}
-	];
-	var logAdvanceGrid = new Ext.grid.GridPanel({
-			border : false,
-			store : logAdvanceStore,
-			autoHeight : false,
-			height : 400,
-			columns : logAdvanceColumnModel,
-			loadMask : true,
-			plugins : [logAdvanceFilters],
-			selModel : new Ext.grid.RowSelectionModel({
-				singleSelect : true
-			}),
-			viewConfig : {
-				forceFit : true,
-				emptyText : emptyTextLabel
-			},
-			iconCls : 'application_view_detail',
-			listeners : {
-				render : {
-					fn : function () {
-						logAdvanceStore.load({
-							params : {
-								start : 0,
-								limit : perPage,
-								method : 'read',
-								mode : 'view',
-								plugin : [logAdvanceFilters]
-							}
-						});
-					}
-				}
-			},
-			bbar : new Ext.PagingToolbar({
-				store : logAdvanceStore,
-				pageSize : perPage,
-				plugins : [new Ext.ux.plugins.PageComboResizer()]
-			}),
-			view : new Ext.ux.grid.BufferView({
-				rowHeight : 34,
-				scrollDelay : false
-			})
-		}); // end log Advance Request
-	// popup  window for normal log and advance log
-	var auditWindow = new Ext.Window({
-			name : 'auditWindow',
-			id : 'auditWindow',
-			layout : 'fit',
-			width : 500,
-			height : 300,
-			closeAction : 'hide',
-			plain : true,
-			items : {
-				xtype : 'tabpanel',
-				activeTab : 0,
-				items : [{
-						xtype : 'panel',
-						layout : 'fit',
-						title : 'Log Sql Statement',
-						items : [logGrid]
-					}, {
-						xtype : 'panel',
-						layout : 'fit',
-						title : 'Log Sql Statement',
-						items : [logAdvanceGrid]
-					}
-				]
-			},
-			title : 'Sql Statement audit',
-			maximizable : true,
-			autoScroll : true
-		}); // end popup window for normal log and advance log
-	// end common Proxy ,Reader,Store,Filter,Grid
-	// start additional Proxy ,Reader,Store,Filter,Grid
-	";	
+				},";
+			}  else {
+			$str5.="
+				{
+					type : '".$jsonType."',
+					dataIndex : '".$columnName."',
+					column : '".$columnName."',
+					table : '".$targetTable."',
+					database : '".$targetDb."'
+				},";
 			}
-			function request(){
-				$jsonStoreString="
+			
+			
+		
+		}  else if ($key=='PRI') {
+			$executeDalam.="if (isset(\$_POST ['".$columnName."'])) {
+				\$this->set".ucfirst($columnName)."(\$this->strict(\$_POST ['".$columnName."'], 'numeric'), 0, 'single');
+			}\n";
+			
+			$formItem.="var ".$columnName."  =  new Ext.form.Hidden({
+			name : '".$columnName."',
+			id : '".$columnName."'
+			});";
+			
+			
+			$str5.="
+				{
+					type : '".$jsonType."',
+					dataIndex : '".$columnName."',
+					column : '".$columnName."',
+					table : '".$targetTable."',
+					database : '".$targetDb."'
+				},";
+				
+			$model ="/**
+	 * Set ".$targetTable." Identification  Value
+	 * @param int|array \$value
+	 * @param array[int]int \$key List Of Primary Key.
+	 * @param array[int]string \$type  List Of Type.0 As 'single' 1 As 'array'
+	 */
+	public function set".ucfirst($columnName)." (\$value, \$key, \$type) {
+		if (\$type == 'single') {
+			\$this->".ucfirst($columnName)." = \$value;
+		} else if (\$type == 'array') {
+			\$this->".ucfirst($columnName)." [\$key] = \$value;
+		} else {
+			echo json_encode(array(\"success\" => false, \"message\" => \"Cannot Identifiy Type String Or Array:set".ucfirst($columnName)." ?\"));
+			exit();
+		}
+	}
+
+	/**
+	 * Return ".$targetTable." Identification  Value
+	 * @param array[int]int \$key List Of Primary Key.
+	 * @param array[int]string \$type  List Of Type.0 As 'single' 1 As 'array'
+	 * @return bool|array
+	 */
+	public function get".ucfirst($columnName)."(\$key, \$type) {
+		if (\$type == 'single') {
+			return \$this->".ucfirst($columnName).";
+		} else if (\$type == 'array') {
+			return \$this->".ucfirst($columnName)." [\$key];
+		} else {
+			echo json_encode(array(\"success\" => false, \"message\" => \"Cannot Identifiy Type String Or Array:get".ucfirst($columnName)." ?\"));
+			exit();
+		}
+	}";
+
+	
+		}else {
+			$executeDalam.="if (isset(\$_POST ['".$columnName."'])) {
+						\$this->set".ucfirst($columnName)."(\$this->strict(\$_POST ['".$columnName."'], '".$jsonType."'));
+					}\n";
+		// asume foreign key  only used combo box 
+				if($columnName !=$targetMasterTable && $targetGridType!='first'){
+					$formItem.="var ".$columnName."  = new Ext.ux.form.ComboBoxMatch({
+					
+						labelAlign: 'left',
+						fieldLabel: ".$columnName."Label,
+						name: 'stateId',
+						hiddenName: '".$columnName."',
+						valueField: '".$columnName."',
+						hiddenId: '".$columnName."_fake',
+						id: '".$columnName."',
+						displayField: '".str_replace("Id","",$columnName)."Desc',
+						typeAhead: false,
+						triggerAction: 'all',
+						store: ".str_replace("Id","",$columnName)."Store,
+						anchor: '95%',
+						selectOnFocus: true,
+						mode: 'local',
+						allowBlank: false,
+						blankText: blankTextLabel,
+						createValueMatcher: function(value) {
+							value = String(value).replace(/\s*/g, '');
+							if (Ext.isEmpty(value, false)) {
+								return new RegExp('^');
+							}
+							value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+							return new RegExp('\\b(' + value + ')', 'i');
+						}
+					});";
+				}
+				if($targetGridType=='first'){
+					$formItem.="var ".$columnName."  = new Ext.ux.form.ComboBoxMatch({
+						$targetGridType
+						labelAlign: 'left',
+						fieldLabel: ".$columnName."Label,
+						name: 'stateId',
+						hiddenName: '".$columnName."',
+						valueField: '".$columnName."',
+						hiddenId: '".$columnName."_fake',
+						id: '".$columnName."',
+						displayField: '".str_replace("Id","",$columnName)."Desc',
+						typeAhead: false,
+						triggerAction: 'all',
+						store: ".str_replace("Id","",$columnName)."Store,
+						anchor: '95%',
+						selectOnFocus: true,
+						mode: 'local',
+						allowBlank: false,
+						blankText: blankTextLabel,
+						createValueMatcher: function(value) {
+							value = String(value).replace(/\s*/g, '');
+							if (Ext.isEmpty(value, false)) {
+								return new RegExp('^');
+							}
+							value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+							return new RegExp('\\b(' + value + ')', 'i');
+						}
+					});";
+				}
+					
+				$str5.="
+				,{
+					type : 'list',
+					dataIndex : '".$columnName."',
+					column : '".$columnName."',
+					table : '".$targetTable."',
+					database : '".$targetDb."',
+					labelField : '".str_replace("Id","",$columnName)."Desc',
+					store : ".str_replace("Id","",$columnName)."Store,
+					phpMode : true
+				},	
+				";
+			
+					
+				
+	
+		}
+	
+	}
+	
+	
+	$jsonStoreString="
 	// start ".$targetTable." request
 	
 	var ".$targetTable."Proxy = new Ext.data.HttpProxy({
@@ -596,176 +615,73 @@
 	
 	// end ".$targetTable." request
 	";
-			}
-			function filter(){
-					$gridFilterJs.="var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters(
+	
+	
+
+	$str5.=substr($str5,0,-1);
+	
+	
+	$gridFilterJs.="var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters(
 					{
 						encode : false,
 						local : false,
 						filters : [";
-	$gridFilterJs.=substr($str5,0,-1);
+	$gridFilterJs.=$str5;
 	$gridFilterJs.="]});";
-			}
-			function checkBox(){
-				if($targetGridType=='first') {
-		$systemCheckBox="
-	var isDefaultGrid = new Ext.ux.grid.CheckColumn({
-        header: isDefaultLabel,
-        dataIndex: 'isDefault',
-        hidden: isDefaultHidden
-    });
-    var isNewGrid = new Ext.ux.grid.CheckColumn({
-        header: 'New',
-        dataIndex: 'isNew',
-        hidden: isNewHidden
-    });
-    var isDraftGrid = new Ext.ux.grid.CheckColumn({
-        header: isDraftLabel,
-        dataIndex: 'isDraft',
-        hidden: isDraftHidden
-    });
-    var isUpdateGrid = new Ext.ux.grid.CheckColumn({
-        header: isUpdateLabel,
-        dataIndex: 'isUpdate',
-        hidden: isUpdateHidden
-    });
-    var isDeleteGrid = new Ext.ux.grid.CheckColumn({
-        header: isDeleteLabel,
-        dataIndex: 'isDelete'
-    });
-    var isActiveGrid = new Ext.ux.grid.CheckColumn({
-        header: isActiveLabel,
-        dataIndex: 'isActive',
-        hidden: isActiveHidden
-    });
-    var isApprovedGrid = new Ext.ux.grid.CheckColumn({
-        header: isApprovedLabel,
-        dataIndex: 'isApproved',
-        hidden: isApprovedHidden
-    });
-    var isReviewGrid = new Ext.ux.grid.CheckColumn({
-        header: isReviewLabel,
-        dataIndex: 'isReview',
-        hidden: isReviewHidden
-    });
-    var isPostGrid = new Ext.ux.grid.CheckColumn({
-        header: 'Post',
-        dataIndex: 'isPost',
-        hidden: isPostHidden
-    });
-    
-	";
-	}  else {
-	
-		$systemCheckbox="
-			
-    var isDefaultGridDetail = new Ext.ux.grid.CheckColumn({
-        header: isDefaultLabel,
-        dataIndex: 'isDefault',
-        hidden: isDefaultHidden
-    });
-    var isNewGridDetail = new Ext.ux.grid.CheckColumn({
-        header: isNewLabel,
-        dataIndex: 'isNew',
-        hidden: isNewHidden
-    });
-    var isDraftGridDetail = new Ext.ux.grid.CheckColumn({
-        header: isDraftLabel,
-        dataIndex: 'isDraft',
-        hidden: isDraftHidden
-    });
-    var isUpdateGridDetail = new Ext.ux.grid.CheckColumn({
-        header: isUpdateLabel,
-        dataIndex: 'isUpdate',
-        hidden: isUpdateHidden
-    });
-    var isDeleteGridDetail = new Ext.ux.grid.CheckColumn({
-        header: isDeleteLabel,
-        dataIndex: 'isDelete'
-    });
-    var isActiveGridDetail = new Ext.ux.grid.CheckColumn({
-        header: isActiveLabel,
-        dataIndex: 'isActive',
-        hidden: isActiveHidden
-    });
-    var isApprovedGridDetail = new Ext.ux.grid.CheckColumn({
-        header: isApprovedLabel,
-        dataIndex: 'isApproved',
-        hidden: isApprovedHidden
-    });
-    var isReviewGridDetail = new Ext.ux.grid.CheckColumn({
-        header: isReviewLabel,
-        dataIndex: 'isReview',
-        hidden: isReviewHidden
-    });
-    var isPostGridDetail = new Ext.ux.grid.CheckColumn({
-        header: isPostLabel,
-        dataIndex: 'isPost',
-        hidden: isPostHidden
-    });
-		";
-	}	
-			}
-			function columnModel(){
-					$columnModelJs.="var ".$targetTable."ColumnModel = [
-					new Ext.grid.RowNumberer(),";
-	$columnModelJs.=(substr($str4,0,-1));
-	$columnModelJs.="];";	
-			}
-			function comboRenderer(){
-				$comboRenderer.="Ext.util.Format.comboRenderer = function(combo) {
-				return function(value) {
-					var record = combo.findRecord(combo.valueField
-							|| combo.displayField, value);
-					if (record) {
-						// remove special character
 
-						res = record.get(combo.displayField);
-						// res = res.replace(/[^a-zA-Z 0-9]+/g, '-');
-					} else {
-						// res = (\"hmm, not found:\" + value);
-						res = (value);
-					}
-					return res;
-				};
-			};";
-			}
-			function jsonWriter(){
-				$jsonWriter="var ".$targetTable."Editor = new Ext.ux.grid.RowEditor({
-        saveText: saveButtonLabel,
-        cancelText: cancelButtonLabel,
-        listeners: {
-            cancelEdit: function (rowEditor, changes, record, rowIndex) {
-               
-				".$targetTable."Store.reload({
-									params :{
-										".$targetMasterTable." : Ext.getCmp('".$targetMasterTable."').getValue()
-									}
-								  });
-            },
-            afteredit: function (rowEditor, changes, record, rowIndex) {
-                this.save = true;
-                var record = this.grid.getStore().getAt(rowIndex);
-				if (parseInt(record.get('".$targetTable."Id')) == 'NaN') {
-                    method = 'create';
-                } else if (record.get('".$targetTable."Id') == '') {
-                    method = 'create';
-                } else if (record.get('".$targetTable."Id') == undefined) {
-                    method = 'create';
-                } else if (parseInt(record.get('".$targetTable."Id')) > 0) {
-                    method = 'save';
-                } else {
-                    method = 'create';
-                }
-                Ext.Ajax.request({
-                    url: '../controller/".$targetTable."Controller.php',
-                    method: 'POST',
-                    params: {
-                        leafId: leafId,
-                        isAdmin: isAdmin,
-                        method: method,";
-                        
-						foreach($columnNameArray as $columnNameMysql) {
+	$str4=(substr($str4,0,-1));
+	
+	$columnModelJs.="var ".$targetTable."ColumnModel = [
+					new Ext.grid.RowNumberer(),";
+	$columnModelJs.=$str4;
+	$columnModelJs.="];";				
+	
+
+	
+
+	$filterItem=array('isDefault','isNew','isDraft','isUpdate','isDelete','isActive','isApproved','isReview','isPost','executeBy','executeTime'); 
+	foreach ($filterItem as $item) {
+		$str2= str_replace($item.",",'',$str2);
+	}
+	$str2.=(substr($str2,0,-1));
+	
+	
+	$insertStatement.="
+	\$sql=\"INSERT INTO `".$targetDb."`.`".$targetTable."` ( ";
+	foreach($columnNameArray as $columnNameMysql) { 
+		$insertStatementAField.="	`".$columnNameMysql."`,";
+	}
+	$insertStatementField.= (substr($insertStatementAField,0,-1));
+	$insertStatement.=$insertStatementField;
+	$insertStatement.=") VALUES ( ";
+	foreach($columnNameArray as $columnNameMysql) {
+		$i++;
+		if($i==1){
+			$insertStatementInsideValue.="null,";
+		}else if ($columnNameMysql=='executeTime'){
+			$insertStatementInsideValue.=" \".\$this->model->get".ucFirst($columnNameMysql)."().\",\n";
+		}else if($columnNameMysql !='isDefault' &&
+			   $columnNameMysql !='isNew' &&
+			   $columnNameMysql !='isDraft'&&
+			   $columnNameMysql !='isUpdate'&&
+			   $columnNameMysql !='isDelete'&&
+			   $columnNameMysql !='isActive'&&
+			   $columnNameMysql !='isApproved'&&
+			   $columnNameMysql !='isReview'&&
+			   $columnNameMysql !='isPost'&&
+			   $columnNameMysql !='isSeperated'&&
+			   $columnNameMysql !='isConsolidation') {	
+				$insertStatementInsideValue.=" '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
+		}  else {
+			$insertStatementInsideValue.=" '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
+		}
+	}
+	$insertStatementValue.=(substr($insertStatementInsideValue,0,-2));
+	$insertStatement.=$insertStatementValue;
+	$insertStatement.=");\";";
+	
+	$updateStatement="\$sql=\"UPDATE `".$targetDb."`.`".$targetTable."` SET ";
+	foreach($columnNameArray as $columnNameMysql) {
 		if($columnNameMysql !='isDefault' &&
 			   $columnNameMysql !='isNew' &&
 			   $columnNameMysql !='isDraft'&&
@@ -776,42 +692,43 @@
 			   $columnNameMysql !='isReview'&&
 			   $columnNameMysql !='isPost'&&
 			   $columnNameMysql !='isSeperated'&&
-			   $columnNameMysql !='isConsolidation'&&
-			   $columnNameMysql !='isReconciled' &&
-			   $columnNameMysql !='executeBy'&&
-			   $columnNameMysql !='executeTime' &&
-			   $columnNameMysql !=$targetMasterTable) {	
-			$jsonWriterInsideValue.="  ".$columnNameMysql.": record.get('". $columnNameMysql."'),";
-		} else if ($columnNameMysql == $targetMasterTable) {
-			$jsonWriterInsideValue.="  ".$columnNameMysql.": Ext.getCmp('". $columnNameMysql."').getValue(),";
-		}		}
-			$jsonWriter.=substr($jsonWriterInsideValue,0,-1);
-			
-					$jsonWriter.="},
-                    success: function (response, options) {
-                        jsonResponse = Ext.decode(response.responseText);
-                        if (jsonResponse.success == false) {
-                            Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                        } else {
-							".$targetTable."Store.reload({
-									params :{
-										".$targetMasterTable." : Ext.getCmp('".$targetMasterTable."').getValue()
-									}
-								  });
-						}
-                    },
-                    failure: function (response, options) {
-                        Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + \":\" + response.statusText);
-                    }
-                });
-            }
-        }
-    });";
-}	
-			}
-		
-			function grid(){
-				if($targetGridType=='first') { 
+			   $columnNameMysql !='isConsolidation') {	
+			$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
+		} else {
+			$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
+		}
+	}
+	$updateStatementValue.=(substr($updateStatementInsideValue,0,-2));
+	
+	$updateStatement.=$updateStatementValue;
+	$updateStatement.=" WHERE `".($targetTable)."Id`='\".get".ucfirst($targetTable)."Id('0','single').\"'\";";
+	$deleteStatement = "
+	\$sql=\"  	UPDATE 	`".$targetDb."`.`".$targetTable."`
+				SET 	`isDefault`				=	'\" . \$this->model->getIsDefault(0, 'single') . \"',
+						`isNew`					=	'\" . \$this->model->getIsNew(0, 'single') . \"',
+						`isDraft`				=	'\" . \$this->model->getIsDraft(0, 'single') . \"',
+						`isUpdate`				=	'\" . \$this->model->getIsUpdate(0, 'single') . \"',
+						`isDelete`				=	'\" . \$this->model->getIsDelete(0, 'single') . \"',
+						`isActive`				=	'\" . \$this->model->getIsActive(0, 'single') . \"',
+						`isApproved`			=	'\" . \$this->model->getIsApproved(0, 'single') . \"',
+						`isReview`				=	'\" . \$this->model->getIsReview(0, 'single') . \"',
+						`isPost`				=	'\" . \$this->model->getIsPost(0, 'single') . \"',
+						`executeBy`				=	'\" . \$this->model->getExecuteBy() . \"',
+						`executeTime`			=	\" . \$this->model->getExecuteTime() . \"
+				WHERE 	`".$targetTable."Id`	=  '\" . \$this->model->getGeneralLedgerChartOfAccountId(0, 'single') . \"'\";";
+	
+	$readStatement.="\$sql = \"SELECT";
+			foreach($columnNameArray as $columnNameMysql) {
+				$readInsideStatement.="`".$targetTable."`.`".$columnNameMysql."`,";
+			}	
+			$readStatement.=(substr($readInsideStatement,0,-1));		
+			$readStatement.="
+					,`iManagement`.`staff`.`staffName`
+			FROM 	`".$targetDb."`.`".$targetTable."`
+			JOIN	`".$managementDb."`.`staff`
+			ON		`".$targetTable."`.`executeBy` = `staff`.`staffId`
+			WHERE 	;";
+			if($targetGridType=='first') { 
 			$gridPanel.=
 			"var ".$targetTable."FlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
 	var ".$targetTable."Grid = new Ext.grid.GridPanel({
@@ -1185,95 +1102,12 @@
         })
     });";
 		}
-			}
-			function item(){}
-			function validation (){
-				$systemValidation.="
-			// start System Validation
-	var isDefault = new Ext.form.Checkbox({
-			name : 'isDefault',
-			id : 'isDefault',
-			fieldLabel : isDefaultLabel,
-			hidden : isDefaultHidden
-		});
-	var isNew = new Ext.form.Checkbox({
-			name : 'isNew',
-			id : 'isNew',
-			fieldLabel : isNewLabel,
-			hidden : isNewHidden
-		});
-	var isDraft = new Ext.form.Checkbox({
-			name : 'isDraft',
-			id : 'isDraft',
-			fieldLabel : isDraftLabel,
-			hidden : isDraftHidden
-		});
-	var isUpdate = new Ext.form.Checkbox({
-			name : 'isUpdate',
-			id : 'isUpdate',
-			fieldLabel : isUpdateLabel,
-			hidden : isUpdateHidden
-		});
-	var isDelete = new Ext.form.Checkbox({
-			name : 'isDelete',
-			id : 'isDelete',
-			fieldLabel : isDeleteLabel,
-			hidden : isDeleteHidden
-		});
-	var isActive = new Ext.form.Checkbox({
-			name : 'isActive',
-			id : 'isActive',
-			fieldLabel : isActiveLabel,
-			hidden : isActiveHidden
-		});
-	var isApproved = new Ext.form.Checkbox({
-			name : 'isApproved',
-			id : 'isApproved',
-			fieldLabel : isApprovedLabel,
-			hidden : isApprovedHidden
-		});
-	var isReview = new Ext.form.Checkbox({
-			name : 'isReview',
-			id : 'isReview',
-			fieldLabel : isReviewLabel,
-			hidden : isReviewHidden
-		});
-	var isPost = new Ext.form.Checkbox({
-			name : 'isPost',
-			id : 'isPost',
-			fieldLabel : isPostLabel,
-			hidden : isPostHidden
-		}); // hidden value for navigation button
-	var firstRecord = new Ext.form.Hidden({
-			name : 'firstRecord',
-			id : 'firstRecord',
-			value : ''
-		});
-	var nextRecord = new Ext.form.Hidden({
-			name : 'nextRecord',
-			id : 'nextRecord',
-			value : ''
-		});
-	var previousRecord = new Ext.form.Hidden({
-			name : 'previousRecord',
-			id : 'previousRecord',
-			value : ''
-		});
-	var lastRecord = new Ext.form.Hidden({
-			name : 'lastRecord',
-			id : 'lastRecord',
-			value : ''
-		});
-	var endRecord = new Ext.form.Hidden({
-			name : 'endRecord',
-			id : 'endRecord',
-			value : ''
-		}); // end of hidden value for navigation button
-	// end System Validation
-		";
-			}
-			function form(){
-				$formPanel.="var formPanel = new Ext.form.FormPanel({
+		   $entity.="var ".$targetTable."Entity = Ext.data.Record.create([";
+			$entity.=substr($str,0,-1);
+	$entity.=substr($entityInside,0,-1);
+                      
+					$entity.="]);";
+		$formPanel.="var formPanel = new Ext.form.FormPanel({
 			url : '../controller/".$targetTable."Controller.php',
 			name : 'formPanel',
 			id : 'formPanel',
@@ -1788,9 +1622,543 @@
 				}
 			]
 		});";
+		
+		$systemValidation.="
+			// start System Validation
+	var isDefault = new Ext.form.Checkbox({
+			name : 'isDefault',
+			id : 'isDefault',
+			fieldLabel : isDefaultLabel,
+			hidden : isDefaultHidden
+		});
+	var isNew = new Ext.form.Checkbox({
+			name : 'isNew',
+			id : 'isNew',
+			fieldLabel : isNewLabel,
+			hidden : isNewHidden
+		});
+	var isDraft = new Ext.form.Checkbox({
+			name : 'isDraft',
+			id : 'isDraft',
+			fieldLabel : isDraftLabel,
+			hidden : isDraftHidden
+		});
+	var isUpdate = new Ext.form.Checkbox({
+			name : 'isUpdate',
+			id : 'isUpdate',
+			fieldLabel : isUpdateLabel,
+			hidden : isUpdateHidden
+		});
+	var isDelete = new Ext.form.Checkbox({
+			name : 'isDelete',
+			id : 'isDelete',
+			fieldLabel : isDeleteLabel,
+			hidden : isDeleteHidden
+		});
+	var isActive = new Ext.form.Checkbox({
+			name : 'isActive',
+			id : 'isActive',
+			fieldLabel : isActiveLabel,
+			hidden : isActiveHidden
+		});
+	var isApproved = new Ext.form.Checkbox({
+			name : 'isApproved',
+			id : 'isApproved',
+			fieldLabel : isApprovedLabel,
+			hidden : isApprovedHidden
+		});
+	var isReview = new Ext.form.Checkbox({
+			name : 'isReview',
+			id : 'isReview',
+			fieldLabel : isReviewLabel,
+			hidden : isReviewHidden
+		});
+	var isPost = new Ext.form.Checkbox({
+			name : 'isPost',
+			id : 'isPost',
+			fieldLabel : isPostLabel,
+			hidden : isPostHidden
+		}); // hidden value for navigation button
+	var firstRecord = new Ext.form.Hidden({
+			name : 'firstRecord',
+			id : 'firstRecord',
+			value : ''
+		});
+	var nextRecord = new Ext.form.Hidden({
+			name : 'nextRecord',
+			id : 'nextRecord',
+			value : ''
+		});
+	var previousRecord = new Ext.form.Hidden({
+			name : 'previousRecord',
+			id : 'previousRecord',
+			value : ''
+		});
+	var lastRecord = new Ext.form.Hidden({
+			name : 'lastRecord',
+			id : 'lastRecord',
+			value : ''
+		});
+	var endRecord = new Ext.form.Hidden({
+			name : 'endRecord',
+			id : 'endRecord',
+			value : ''
+		}); // end of hidden value for navigation button
+	// end System Validation
+		";
+		
+	$firstCodeJs.="
+		Ext.onReady(function () {
+	Ext.QuickTips.init();
+	Ext.BLANK_IMAGE_URL = '../../javascript/resources/images/s.gif';
+	Ext.form.Field.prototype.msgTarget = 'under';
+	Ext.Ajax.timeout = 90000;
+	var perPage = 15;
+	var encode = false;
+	var local = false;
+	var jsonResponse;
+	var duplicate = 0;
+	// common Proxy,Reader,Store,Filter,Grid
+	// start Staff Request
+	var staffByProxy = new Ext.data.HttpProxy({
+			url : '../controller/".$targetTable."Controller.php?',
+			method : 'GET',
+			success : function (response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+				}
+			},
+			failure : function (response, options) {
+				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
 			}
-			function end() {
-					$lastCodejs.="var viewPort = new Ext.Viewport({
+		});
+	var staffByReader = new Ext.data.JsonReader({
+			totalProperty : 'total',
+			successProperty : 'success',
+			messageProperty : 'message',
+			idProperty : 'staffId'
+		});
+	var staffByStore = new Ext.data.JsonStore({
+			proxy : staffByProxy,
+			reader : staffByReader,
+			autoLoad : true,
+			autoDestroy : true,
+			pruneModifiedRecords : true,
+			baseParams : {
+				method : 'read',
+				field : 'staffId',
+				leafId : leafId
+			},
+			root : 'staff',
+			id : 'staffId',
+			fields : [{
+					name : 'staffId',
+					type : 'int'
+				}, {
+					name : 'staffName',
+					type : 'string'
+				}
+			]
+		}); // end Staff Request
+	// start log Request
+	var logProxy = new Ext.data.HttpProxy({
+			url : '../../security/controller/logController.php?',
+			method : 'POST',
+			success : function (response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+				}
+			},
+			failure : function (response, options) {
+				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+			}
+		});
+	var logReader = new Ext.data.JsonReader({
+			totalProperty : 'total',
+			successProperty : 'success',
+			messageProperty : 'message',
+			idProperty : 'logId'
+		});
+	var logStore = new Ext.data.JsonStore({
+			proxy : logProxy,
+			reader : logReader,
+			autoLoad : false,
+			autoDestroy : true,
+			pruneModifiedRecords : true,
+			baseParams : {
+				method : 'read',
+				leafId : leafId,
+				isAdmin : isAdmin,
+				start : 0,
+				limit : perPage,
+				perPage : perPage
+			},
+			root : 'data',
+			fields : [{
+					name : 'logId',
+					type : 'int'
+				}, {
+					name : 'leafId',
+					type : 'int'
+				}, {
+					name : 'operation',
+					type : 'string'
+				}, {
+					name : 'sql',
+					type : 'string'
+				}, {
+					name : 'date',
+					type : 'date',
+					dateFormat : 'Y-m-d'
+				}, {
+					name : 'staffId',
+					type : 'int'
+				}, {
+					name : 'access',
+					type : 'string'
+				}, {
+					name : 'logError',
+					type : 'string'
+				}
+			]
+		});
+	var logFilters = new Ext.ux.grid.GridFilters({
+			encode : encode,
+			local : local,
+			filters : [{
+					type : 'numeric',
+					dataIndex : 'logId',
+					column : 'logId',
+					table : 'log'
+				}, {
+					type : 'numeric',
+					dataIndex : 'leafId',
+					column : 'leafId',
+					table : 'log'
+				}, {
+					type : 'string',
+					dataIndex : 'operation',
+					column : 'operation',
+					table : 'log'
+				}, {
+					type : 'string',
+					dataIndex : 'sql',
+					column : 'sql',
+					table : 'log'
+				}, {
+					type : 'date',
+					dataIndex : 'date',
+					column : 'date',
+					table : 'log'
+				}, {
+					type : 'numeric',
+					dataIndex : 'staffId',
+					column : 'staffId',
+					table : 'log'
+				}, {
+					type : 'string',
+					dataIndex : 'access',
+					column : 'access',
+					table : 'log'
+				}, {
+					type : 'string',
+					dataIndex : 'logError',
+					column : 'logError',
+					table : 'log'
+				}
+			]
+		});
+	var logExpander = new Ext.ux.grid.RowExpander({
+			tpl : new Ext.Template('<br><p><b>Operation:</b> {operation}</p><br>', '<p><b>SQL STATEMENT:</b> {sql}</p><br>')
+		});
+	var logColumnModel = [logExpander, new Ext.grid.RowNumberer(), {
+			dataIndex : 'logId',
+			header : logIdLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'leafId',
+			header : leafIdLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'operation',
+			header : operationLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'sql',
+			header : sqlLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'date',
+			header : dateLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'staffId',
+			header : staffIdLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'access',
+			header : accessLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'logError',
+			header : logErrorLabel,
+			sortable : true,
+			hidden : false
+		}
+	];
+	var logGrid = new Ext.grid.GridPanel({
+			border : false,
+			store : logStore,
+			autoHeight : false,
+			height : 400,
+			columns : logColumnModel,
+			loadMask : true,
+			plugins : [logFilters, logExpander],
+			collapsible : true,
+			animCollapse : false,
+			selModel : new Ext.grid.RowSelectionModel({
+				singleSelect : true
+			}),
+			viewConfig : {
+				emptyText : emptyTextLabel
+			},
+			iconCls : 'application_view_detail',
+			listeners : {
+				render : {
+					fn : function () {
+						logStore.load({
+							params : {
+								start : 0,
+								limit : perPage,
+								method : 'read',
+								mode : 'view',
+								plugin : [logFilters]
+							}
+						});
+					}
+				}
+			},
+			bbar : new Ext.PagingToolbar({
+				store : logStore,
+				pageSize : perPage,
+				plugins : [new Ext.ux.plugins.PageComboResizer()]
+			})
+		}); // end log Request
+	// start Log Advance Request
+	var logAdvanceProxy = new Ext.data.HttpProxy({
+			url : '../../security/controller/logAdvanceController.php?',
+			method : 'POST',
+			success : function (response, options) {
+				jsonResponse = Ext.decode(response.responseText);
+				if (jsonResponse.success == true) { // Ext.MessageBox.alert(successLabel,jsonResponse.message);
+				} else {
+					Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+				}
+			},
+			failure : function (response, options) {
+				Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+			}
+		});
+	var logAdvanceReader = new Ext.data.JsonReader({
+			totalProperty : 'total',
+			successProperty : 'success',
+			messageProperty : 'message',
+			idProperty : 'logAdvanceId'
+		});
+	var logAdvanceStore = new Ext.data.JsonStore({
+			proxy : logAdvanceProxy,
+			reader : logAdvanceReader,
+			autoLoad : false,
+			autoDestroy : true,
+			pruneModifiedRecords : true,
+			method : 'POST',
+			baseParams : {
+				method : 'read',
+				leafId : leafId,
+				isAdmin : isAdmin,
+				start : 0,
+				limit : perPage,
+				perPage : perPage
+			},
+			root : 'data',
+			fields : [{
+					name : 'logAdvanceId',
+					type : 'int'
+				}, {
+					name : 'logAdvanceText',
+					type : 'string'
+				}, {
+					name : 'logAdvanceType',
+					type : 'string'
+				}, {
+					name : 'logAdvanceComparison',
+					type : 'string'
+				}, {
+					name : 'refTableName',
+					type : 'int'
+				}, {
+					name : 'leafId',
+					type : 'int'
+				}
+			]
+		});
+	var logAdvanceFilters = new Ext.ux.grid.GridFilters({
+			encode : encode,
+			local : local,
+			filters : [{
+					type : 'numeric',
+					dataIndex : 'logAdvanceId',
+					column : 'logAdvanceId',
+					table : 'logAdvance'
+				}, {
+					type : 'string',
+					dataIndex : 'logAdvanceText',
+					column : 'logAdvanceText',
+					table : 'logAdvance'
+				}, {
+					type : 'string',
+					dataIndex : 'logAdvanceType',
+					column : 'logAdvanceType',
+					table : 'logAdvance'
+				}, {
+					type : 'string',
+					dataIndex : 'logAdvanceComparison',
+					column : 'logAdvanceComparison',
+					table : 'logAdvance'
+				}, {
+					type : 'numeric',
+					dataIndex : 'refTableName',
+					column : 'refTableName',
+					table : 'logAdvance'
+				}, {
+					type : 'list',
+					dataIndex : 'executeBy',
+					column : 'executeBy',
+					table : 'logAdvance',
+					labelField : 'staffName',
+					store : staffByStore,
+					phpMode : true
+				}, {
+					type : 'date',
+					dataIndex : 'executeTime',
+					column : 'executeTime',
+					table : 'logAdvance'
+				}
+			]
+		});
+	var logAdvanceColumnModel = [new Ext.grid.RowNumberer(), {
+			dataIndex : 'logAdvanceId',
+			header : logAdvanceIdLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'logAdvanceText',
+			header : logAdvanceTextLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'logAdvanceType',
+			header : logAdvanceTypeLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'logAdvanceComparision',
+			header : logAdvanceComparisionLabel,
+			sortable : true,
+			hidden : false
+		}, {
+			dataIndex : 'refTableName',
+			header : refTableNameLabel,
+			sortable : true,
+			hidden : false
+		}
+	];
+	var logAdvanceGrid = new Ext.grid.GridPanel({
+			border : false,
+			store : logAdvanceStore,
+			autoHeight : false,
+			height : 400,
+			columns : logAdvanceColumnModel,
+			loadMask : true,
+			plugins : [logAdvanceFilters],
+			selModel : new Ext.grid.RowSelectionModel({
+				singleSelect : true
+			}),
+			viewConfig : {
+				forceFit : true,
+				emptyText : emptyTextLabel
+			},
+			iconCls : 'application_view_detail',
+			listeners : {
+				render : {
+					fn : function () {
+						logAdvanceStore.load({
+							params : {
+								start : 0,
+								limit : perPage,
+								method : 'read',
+								mode : 'view',
+								plugin : [logAdvanceFilters]
+							}
+						});
+					}
+				}
+			},
+			bbar : new Ext.PagingToolbar({
+				store : logAdvanceStore,
+				pageSize : perPage,
+				plugins : [new Ext.ux.plugins.PageComboResizer()]
+			}),
+			view : new Ext.ux.grid.BufferView({
+				rowHeight : 34,
+				scrollDelay : false
+			})
+		}); // end log Advance Request
+	// popup  window for normal log and advance log
+	var auditWindow = new Ext.Window({
+			name : 'auditWindow',
+			id : 'auditWindow',
+			layout : 'fit',
+			width : 500,
+			height : 300,
+			closeAction : 'hide',
+			plain : true,
+			items : {
+				xtype : 'tabpanel',
+				activeTab : 0,
+				items : [{
+						xtype : 'panel',
+						layout : 'fit',
+						title : 'Log Sql Statement',
+						items : [logGrid]
+					}, {
+						xtype : 'panel',
+						layout : 'fit',
+						title : 'Log Sql Statement',
+						items : [logAdvanceGrid]
+					}
+				]
+			},
+			title : 'Sql Statement audit',
+			maximizable : true,
+			autoScroll : true
+		}); // end popup window for normal log and advance log
+	// end common Proxy ,Reader,Store,Filter,Grid
+	// start additional Proxy ,Reader,Store,Filter,Grid
+	";	
+	
+	$lastCodejs.="var viewPort = new Ext.Viewport({
 			id : 'viewport',
 			region : 'center',
 			layout : 'accordion',
@@ -1803,230 +2171,156 @@
 		});
 });";
 
-			}
-			function full(){}
-		}
-		class model      extends Generator(){
-			function execute(){}
-			function variableStart(){
-				$mainModelInside.="
-		\n
-		/**
-		* @var ".$jsonType."
-		*/
-		private ".$columnName." ";
-		}
-			}
-			function start(){
-				$mainModel.="
+$comboRenderer.="Ext.util.Format.comboRenderer = function(combo) {
+				return function(value) {
+					var record = combo.findRecord(combo.valueField
+							|| combo.displayField, value);
+					if (record) {
+						// remove special character
 
-require_once (\"../../class/classValidation.php\");
-
-/**
- * this is ".$targetTable." model file.This is to ensure strict setting enable for all variable enter to database
- *
- * @name IDCMS.
- * @version 2
- * @author hafizan
- * @package Account Receivable / Account Payable Invoice 
- * @subpackage adjustment
- * @link http://www.idcms.org
- * @license http://www.gnu.org/copyleft/lesser.html LGPL
- */
-class ".ucfirst($targetTable)."Model extends ValidationClass { ";
-			}
-			function crud(){
-						$crud="/* (non-PHPdoc)
-	 * @see ValidationClass::create()
-	 */
-
-	public function create() {
-		\$this->setIsDefault(0, 0, 'single');
-		\$this->setIsNew(1, 0, 'single');
-		\$this->setIsDraft(0, 0, 'single');
-		\$this->setIsUpdate(0, 0, 'single');
-		\$this->setIsActive(1, 0, 'single');
-		\$this->setIsDelete(0, 0, 'single');
-		\$this->setIsApproved(0, 0, 'single');
-		\$this->setIsReview(0, 0, 'single');
-		\$this->setIsPost(0, 0, 'single');
-	}
-
-	/* (non-PHPdoc)
-	 * @see ValidationClass::update()
-	 */
-
-	public function update() {
-		\$this->setIsDefault(0, 0, 'single');
-		\$this->setIsNew(0, 0, 'single');
-		\$this->setIsDraft(0, 0, 'single');
-		\$this->setIsUpdate(1, '', 'single');
-		\$this->setIsActive(1, 0, 'single');
-		\$this->setIsDelete(0, 0, 'single');
-		\$this->setIsApproved(0, 0, 'single');
-		\$this->setIsReview(0, 0, 'single');
-		\$this->setIsPost(0, 0, 'single');
-	}
-
-	/* (non-PHPdoc)
-	 * @see ValidationClass::delete()
-	 */
-
-	public function delete() {
-		\$this->setIsDefault(0, 0, 'single');
-		\$this->setIsNew(0, 0, 'single');
-		\$this->setIsDraft(0, 0, 'single');
-		\$this->setIsUpdate(0, 0, 'single');
-		\$this->setIsActive(0, '', 'single');
-		\$this->setIsDelete(1, '', 'single');
-		\$this->setIsApproved(0, 0, 'single');
-		\$this->setIsReview(0, 0, 'single');
-		\$this->setIsPost(0, 0, 'single');
-	}
-
-	/* (non-PHPdoc)
-	 * @see ValidationClass::draft()
-	 */
-
-	public function draft() {
-		\$this->setIsDefault(0, 0, 'single');
-		\$this->setIsNew(1, 0, 'single');
-		\$this->setIsDraft(1, 0, 'single');
-		\$this->setIsUpdate(0, 0, 'single');
-		\$this->setIsActive(0, 0, 'single');
-		\$this->setIsDelete(0, 0, 'single');
-		\$this->setIsApproved(0, 0, 'single');
-		\$this->setIsReview(0, 0, 'single');
-		\$this->setIsPost(0, 0, 'single');
-	}
-
-	/* (non-PHPdoc)
-	 * @see ValidationClass::approved()
-	 */
-
-	public function approved() {
-		\$this->setIsDefault(0, 0, 'single');
-		\$this->setIsNew(1, 0, 'single');
-		\$this->setIsDraft(0, 0, 'single');
-		\$this->setIsUpdate(0, 0, 'single');
-		\$this->setIsActive(0, 0, 'single');
-		\$this->setIsDelete(0, 0, 'single');
-		\$this->setIsApproved(1, 0, 'single');
-		\$this->setIsReview(0, 0, 'single');
-		\$this->setIsPost(0, 0, 'single');
-	}
-
-	/* (non-PHPdoc)
-	 * @see ValidationClass::review()
-	 */
-
-	public function review() {
-		\$this->setIsDefault(0, 0, 'single');
-		\$this->setIsNew(1, 0, 'single');
-		\$this->setIsDraft(0, 0, 'single');
-		\$this->setIsUpdate(0, 0, 'single');
-		\$this->setIsActive(0, 0, 'single');
-		\$this->setIsDelete(0, 0, 'single');
-		\$this->setIsApproved(0, 0, 'single');
-		\$this->setIsReview(1, 0, 'single');
-		\$this->setIsPost(0, 0, 'single');
-	}
-
-	/* (non-PHPdoc)
-	 * @see ValidationClass::post()
-	 */
-
-	public function post() {
-		\$this->setIsDefault(0, 0, 'single');
-		\$this->setIsNew(1, 0, 'single');
-		\$this->setIsDraft(0, 0, 'single');
-		\$this->setIsUpdate(0, 0, 'single');
-		\$this->setIsActive(0, 0, 'single');
-		\$this->setIsDelete(0, 0, 'single');
-		\$this->setIsApproved(1, 0, 'single');
-		\$this->setIsReview(0, 0, 'single');
-		\$this->setIsPost(1, 0, 'single');
-	}";
-			}
-			function executeModel(){
-				
-			}
-			function getterAndSetter(){
-					$getterSetter.="/**
-	 * 
-	 * @return 
-	 */
-	public function get".ucfirst($columnNameMysql)."()
-	{
-	    return \$this->".$columnNameMysql.";
-	}
-
-	/**
-	 * 
-	 * @param $countryDesc
-	 */
-	public function set".ucfirst($columnNameMysql)."(".$columnNameMysql.")
-	{
-	    \$this->".$columnNameMysql." = ".$columnNameMysql.";
-	}";
-			}
-			function end(){}
-			function full(){}
-		}
-		class controller extends Generator(){
-			function execute(){}
-			function start(){}
-			function createStatement(){
-				$insertStatement.="
-	\$sql=\"INSERT INTO `".$targetDb."`.`".$targetTable."` ( ";
-	foreach($columnNameArray as $columnNameMysql) { 
-		$insertStatementAField.="	`".$columnNameMysql."`,";
-	}
-	$insertStatementField.= (substr($insertStatementAField,0,-1));
-	$insertStatement.=$insertStatementField;
-	$insertStatement.=") VALUES ( ";
-	foreach($columnNameArray as $columnNameMysql) {
-		$i++;
-		if($i==1){
-			$insertStatementInsideValue.="null,";
-		}else if ($columnNameMysql=='executeTime'){
-			$insertStatementInsideValue.=" \".\$this->model->get".ucFirst($columnNameMysql)."().\",\n";
-		}else if($columnNameMysql !='isDefault' &&
-			   $columnNameMysql !='isNew' &&
-			   $columnNameMysql !='isDraft'&&
-			   $columnNameMysql !='isUpdate'&&
-			   $columnNameMysql !='isDelete'&&
-			   $columnNameMysql !='isActive'&&
-			   $columnNameMysql !='isApproved'&&
-			   $columnNameMysql !='isReview'&&
-			   $columnNameMysql !='isPost'&&
-			   $columnNameMysql !='isSeperated'&&
-			   $columnNameMysql !='isConsolidation') {	
-				$insertStatementInsideValue.=" '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
-		}  else {
-			$insertStatementInsideValue.=" '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
-		}
-	}
-	$insertStatementValue.=(substr($insertStatementInsideValue,0,-2));
-	$insertStatement.=$insertStatementValue;
-	$insertStatement.=");\";";
-			}
-			function readStatement(){
-					$readStatement.="\$sql = \"SELECT";
-			foreach($columnNameArray as $columnNameMysql) {
-				$readInsideStatement.="`".$targetTable."`.`".$columnNameMysql."`,";
-			}	
-			$readStatement.=(substr($readInsideStatement,0,-1));		
-			$readStatement.="
-					,`iManagement`.`staff`.`staffName`
-			FROM 	`".$targetDb."`.`".$targetTable."`
-			JOIN	`".$managementDb."`.`staff`
-			ON		`".$targetTable."`.`executeBy` = `staff`.`staffId`
-			WHERE 	;";
-			}
-			function updateStatement(){
-				$updateStatement="\$sql=\"UPDATE `".$targetDb."`.`".$targetTable."` SET ";
-	foreach($columnNameArray as $columnNameMysql) {
+						res = record.get(combo.displayField);
+						// res = res.replace(/[^a-zA-Z 0-9]+/g, '-');
+					} else {
+						// res = (\"hmm, not found:\" + value);
+						res = (value);
+					}
+					return res;
+				};
+			};";
+			
+	if($targetGridType=='first') {
+		$systemCheckBox="
+	var isDefaultGrid = new Ext.ux.grid.CheckColumn({
+        header: isDefaultLabel,
+        dataIndex: 'isDefault',
+        hidden: isDefaultHidden
+    });
+    var isNewGrid = new Ext.ux.grid.CheckColumn({
+        header: 'New',
+        dataIndex: 'isNew',
+        hidden: isNewHidden
+    });
+    var isDraftGrid = new Ext.ux.grid.CheckColumn({
+        header: isDraftLabel,
+        dataIndex: 'isDraft',
+        hidden: isDraftHidden
+    });
+    var isUpdateGrid = new Ext.ux.grid.CheckColumn({
+        header: isUpdateLabel,
+        dataIndex: 'isUpdate',
+        hidden: isUpdateHidden
+    });
+    var isDeleteGrid = new Ext.ux.grid.CheckColumn({
+        header: isDeleteLabel,
+        dataIndex: 'isDelete'
+    });
+    var isActiveGrid = new Ext.ux.grid.CheckColumn({
+        header: isActiveLabel,
+        dataIndex: 'isActive',
+        hidden: isActiveHidden
+    });
+    var isApprovedGrid = new Ext.ux.grid.CheckColumn({
+        header: isApprovedLabel,
+        dataIndex: 'isApproved',
+        hidden: isApprovedHidden
+    });
+    var isReviewGrid = new Ext.ux.grid.CheckColumn({
+        header: isReviewLabel,
+        dataIndex: 'isReview',
+        hidden: isReviewHidden
+    });
+    var isPostGrid = new Ext.ux.grid.CheckColumn({
+        header: 'Post',
+        dataIndex: 'isPost',
+        hidden: isPostHidden
+    });
+    
+	";
+	}  else {
+	
+		$systemCheckbox="
+			
+    var isDefaultGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isDefaultLabel,
+        dataIndex: 'isDefault',
+        hidden: isDefaultHidden
+    });
+    var isNewGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isNewLabel,
+        dataIndex: 'isNew',
+        hidden: isNewHidden
+    });
+    var isDraftGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isDraftLabel,
+        dataIndex: 'isDraft',
+        hidden: isDraftHidden
+    });
+    var isUpdateGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isUpdateLabel,
+        dataIndex: 'isUpdate',
+        hidden: isUpdateHidden
+    });
+    var isDeleteGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isDeleteLabel,
+        dataIndex: 'isDelete'
+    });
+    var isActiveGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isActiveLabel,
+        dataIndex: 'isActive',
+        hidden: isActiveHidden
+    });
+    var isApprovedGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isApprovedLabel,
+        dataIndex: 'isApproved',
+        hidden: isApprovedHidden
+    });
+    var isReviewGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isReviewLabel,
+        dataIndex: 'isReview',
+        hidden: isReviewHidden
+    });
+    var isPostGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isPostLabel,
+        dataIndex: 'isPost',
+        hidden: isPostHidden
+    });
+		";
+		
+		$jsonWriter="var ".$targetTable."Editor = new Ext.ux.grid.RowEditor({
+        saveText: saveButtonLabel,
+        cancelText: cancelButtonLabel,
+        listeners: {
+            cancelEdit: function (rowEditor, changes, record, rowIndex) {
+               
+				".$targetTable."Store.reload({
+									params :{
+										".$targetMasterTable." : Ext.getCmp('".$targetMasterTable."').getValue()
+									}
+								  });
+            },
+            afteredit: function (rowEditor, changes, record, rowIndex) {
+                this.save = true;
+                var record = this.grid.getStore().getAt(rowIndex);
+				if (parseInt(record.get('".$targetTable."Id')) == 'NaN') {
+                    method = 'create';
+                } else if (record.get('".$targetTable."Id') == '') {
+                    method = 'create';
+                } else if (record.get('".$targetTable."Id') == undefined) {
+                    method = 'create';
+                } else if (parseInt(record.get('".$targetTable."Id')) > 0) {
+                    method = 'save';
+                } else {
+                    method = 'create';
+                }
+                Ext.Ajax.request({
+                    url: '../controller/".$targetTable."Controller.php',
+                    method: 'POST',
+                    params: {
+                        leafId: leafId,
+                        isAdmin: isAdmin,
+                        method: method,";
+                        
+						foreach($columnNameArray as $columnNameMysql) {
 		if($columnNameMysql !='isDefault' &&
 			   $columnNameMysql !='isNew' &&
 			   $columnNameMysql !='isDraft'&&
@@ -2037,469 +2331,38 @@ class ".ucfirst($targetTable)."Model extends ValidationClass { ";
 			   $columnNameMysql !='isReview'&&
 			   $columnNameMysql !='isPost'&&
 			   $columnNameMysql !='isSeperated'&&
-			   $columnNameMysql !='isConsolidation') {	
-			$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."().\"',\n";
-		} else {
-			$updateStatementInsideValue.=" `".$columnNameMysql."` = '\".\$this->model->get".ucFirst($columnNameMysql)."(0, 'single').\"',\n";
-		}
-	}
-	$updateStatementValue.=(substr($updateStatementInsideValue,0,-2));
-	
-	$updateStatement.=$updateStatementValue;
-	$updateStatement.=" WHERE `".($targetTable)."Id`='\".get".ucfirst($targetTable)."Id('0','single').\"'\";";
-			}
-			function deleteStatement(){
-				$deleteStatement = "
-	\$sql=\"  	UPDATE 	`".$targetDb."`.`".$targetTable."`
-				SET 	`isDefault`				=	'\" . \$this->model->getIsDefault(0, 'single') . \"',
-						`isNew`					=	'\" . \$this->model->getIsNew(0, 'single') . \"',
-						`isDraft`				=	'\" . \$this->model->getIsDraft(0, 'single') . \"',
-						`isUpdate`				=	'\" . \$this->model->getIsUpdate(0, 'single') . \"',
-						`isDelete`				=	'\" . \$this->model->getIsDelete(0, 'single') . \"',
-						`isActive`				=	'\" . \$this->model->getIsActive(0, 'single') . \"',
-						`isApproved`			=	'\" . \$this->model->getIsApproved(0, 'single') . \"',
-						`isReview`				=	'\" . \$this->model->getIsReview(0, 'single') . \"',
-						`isPost`				=	'\" . \$this->model->getIsPost(0, 'single') . \"',
-						`executeBy`				=	'\" . \$this->model->getExecuteBy() . \"',
-						`executeTime`			=	\" . \$this->model->getExecuteTime() . \"
-				WHERE 	`".$targetTable."Id`	=  '\" . \$this->model->getGeneralLedgerChartOfAccountId(0, 'single') . \"'\";";
-	
-
-			}
-			function updateStatus(){}
-			function duplicateCode(){}
+			   $columnNameMysql !='isConsolidation'&&
+			   $columnNameMysql !='isReconciled' &&
+			   $columnNameMysql !='executeBy'&&
+			   $columnNameMysql !='executeTime' &&
+			   $columnNameMysql !=$targetMasterTable) {	
+			$jsonWriterInsideValue.="  ".$columnNameMysql.": record.get('". $columnNameMysql."'),";
+		} else if ($columnNameMysql == $targetMasterTable) {
+			$jsonWriterInsideValue.="  ".$columnNameMysql.": Ext.getCmp('". $columnNameMysql."').getValue(),";
+		}		}
+			$jsonWriter.=substr($jsonWriterInsideValue,0,-1);
 			
-			
-			function end(){}
-			function full(){}
-		}
-		
-	
-    $targetFolder='iFinancial';
-	$targetDatabase='mysql';
-	$targetDb="ifinancial";
-	$targetTable ='generalLedgerJournalDetail';
-	$targetTableId = $targetTable."Id";
-	$targetMasterTable='generalLedgerJournalId'; // parent primary key
-	$targetGridType="second"; // first -normal table ,second -edit in grid table
-	$managementDb="imanagement";
-	$mysqlOpenTag="`";
-	$mysqlCloseTag="`";
-	$mssqlOpenTag="[";
-	$mssqlCloseTag="]";
-	if($_GET['tag']=='mysql'){
-		$openTag = $mysqlOpenTag;
-		$closeTag = $mysqlCloseTag;
-	} else {
-		$openTag = $mssqlOpenTag;
-		$closeTag = $mssqlCloseTag;
-	}
-	mysql_connect("localhost","root","123456");
-	
-	mysql_select_db($targetDb);
-	mysql_query("SET autocommit=0");
-	
-
-	$resultTable= mysql_query($sqlTable);
-	$sqlFieldTable     ="describe `".$targetDb."`.`".$targetTable."`";
-
-	$resultFieldTable  = mysql_query($sqlFieldTable);
-	while($rowFieldTable = mysql_fetch_array($resultFieldTable)) {
-		$columnName=$rowFieldTable['Field'];
-		$columnNameArray[]=$columnName;
-		$mystring=$rowFieldTable['Type'];
-		$key  = $rowFieldTable['Key'];
-		
-		// kita start isi model kat sini standard  create read update delete lallalala
-
-		// end disini..
-		
-		
-	
-		
-		
-		$str2.=$columnName.",";
-		if($columnName !='isDefault' &&
-			   $columnName !='isNew' &&
-			   $columnName !='isDraft'&&
-			   $columnName !='isUpdate'&&
-			   $columnName !='isDelete'&&
-			   $columnName !='isActive'&&
-			   $columnName !='isApproved'&&
-			   $columnName !='isReview'&&
-			   $columnName !='isPost'&&
-			   $columnName !='executeBy'&&
-			   $columnName !='executeTime') {
-		
-				
-				if($columnName=='executeBy') {
-					$str4.="
-						{
-						dataIndex : 'executeBy',
-						header : executeByLabel,
-						sortable : true,
-						hidden : false,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							return record.data.staffName;
-						}
-					},
-					";
-				} else if ($columnName=='executeTime') {
-					$str4.="{
-						dataIndex : 'executeTime',
-						header : executeTimeLabel,
-						sortable : true,
-						hidden : false,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							return Ext.util.Format.date(value, 'd-m-Y H:i:s');
-						}
-					},";
-				} else if ($foreignKey=='yes') { 
-					if($targetGridType=='first') {
-					$str4.="
-						{
-						dataIndex : '".$columnName."',
-						header : ".str_replace("Id","",$columnName)."DescLabel,
-						sortable : true,
-						hidden : false,
-						renderer : function(value, metaData, record, rowIndex,
-								colIndex, store) {
-							return record.data.".str_replace("Id","",$columnName)."Desc;
-						}
-					},
-					";
-					} else {
-							if($columnName !=$targetMasterTable){
-							$str4.="{
-								dataIndex : '".$columnName."',
-							header : ".str_replace("Id","",$columnName)."DescLabel,
-								width : 200,
-								sortable : true,
-								editor : ".$columnName.",
-								renderer : Ext.util.Format.comboRenderer(".$columnName."),
-								hidden : false,
-								jsonType:'".$jsonType."'
-							},";
-						    }
-					}
-				
-				} else if($jsonType=='float'){
-								$str4.="{
-									dataIndex : '".$columnName."',
-									header : ".$columnName."Label,
-									width : 75,
-									sortable : true,
-									summaryType : 'sum',
-									renderer : function(value) {
-										return ' RM ' + Ext.util.Format.number(value, '0,0.00');
-									},
-									editor : {
-										xtype : 'textfield',
-										labelAlign : 'left',
-										fieldLabel : ".$columnName."Label,
-										hiddenName : '".$columnName."',
-										name : '".$columnName."',
-										id : '".$columnName."',
-
-										blankText : blankTextLabel,
-										decimalPrecision : 2,
-										vtype : 'dollar',
-										anchor : '95%',
-										listeners : {
-											blur : function() {
-												var value = Ext.getCmp('".$columnName."').getValue();
-												value = value.replace(\",\", \"\"); 
-												value = Ext.util.Format.usMoney(value);
-												value = value.replace(\" \", \"\"); 
-												Ext.getCmp('".$columnName."').setValue(value);
-											}
-										}
+					$jsonWriter.="},
+                    success: function (response, options) {
+                        jsonResponse = Ext.decode(response.responseText);
+                        if (jsonResponse.success == false) {
+                            Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                        } else {
+							".$targetTable."Store.reload({
+									params :{
+										".$targetMasterTable." : Ext.getCmp('".$targetMasterTable."').getValue()
 									}
-								},";
-						} else if ($jsonType=='boolean') { 
-							if($targetTableType=='first') {
-								$str4.=$columnName.","; // checkbox is outside
-							} else {
-								$str4.=$columnName."GridDetail,"; // checkbox is outside
-							}
-						}else { 
-								if($columnName != $targetTableId) { 
-								$str4.="{
-									dataIndex : '".$columnName."',
-									header : ".$columnName."Label,
-									sortable : true,
-									hidden : false
-								},";
-								}								
-				}
-		if($foreignKey=='no' && ($key=='MUL' || $key=='')) { 
-			if($columnName !='isDefault' &&
-			   $columnName !='isNew' &&
-			   $columnName !='isDraft'&&
-			   $columnName !='isUpdate'&&
-			   $columnName !='isDelete'&&
-			   $columnName !='isActive'&&
-			   $columnName !='isApproved'&&
-			   $columnName !='isReview'&&
-			   $columnName !='isPost'&&
-			   $columnName !='executeBy'&&
-			   $columnName !='executeTime') {
-			   
-				if($jsonType=='float') {
-					$executeDalam.="if (isset(\$_POST ['".$columnName."'])) {
-						\$this->set".ucfirst($columnName)."Id(\$this->strict(\$_POST ['".$columnName."'], '".$jsonType."'));
-					}\n";
-					$formItem.="var ".$columnName." = new Ext.form.".$formType."Field({
-							labelAlign : 'left',
-						fieldLabel : ".$columnName."Label + '<span style=\'color: red;\'>*</span>',
-						hiddenName : '".$columnName."',
-						name : '".$columnName."',
-						id : '".$columnName."',
-						allowBlank : false,
-						blankText : blankTextLabel,
-						style : {
-							textTransform : 'uppercase'
-						},
-						anchor : '40%',
-						decimalPrecision: 2,
-						vtype: 'dollar',
-						listeners: {
-							blur: function() {
-								var value = Ext.getCmp('".$columnName."').getValue();
-								value = value.replace(\",\", \"\"); 
-								value = value.replace(\" \", \"\"); 					
-								Ext.getCmp('".$columnName."').setValue(value);
-							}
+								  });
 						}
-					}); ";
-				
-				} else{
-					
-					$formItem.="var ".$columnName." = new Ext.form.".$formType."Field({
-						labelAlign : 'left',
-						fieldLabel : ".$columnName."Label + '<span style=\'color: red;\'>*</span>',
-						hiddenName : '".$columnName."',
-						name : '".$columnName."',
-						id : '".$columnName."',
-						allowBlank : false,
-						blankText : blankTextLabel,
-						style : {
-							textTransform : 'uppercase'
-						},
-						anchor : '40%'
-					});";
-				}	
-		}
-	
-			if($columnName=='executeBy') { 
-				$str5.="{
-					type : 'list',
-					dataIndex : '".$columnName."',
-					column : '".$columnName."',
-					table : '".$targetTable."',
-					database : '".$targetDb."',
-					labelField : 'staffName',
-					store : staffByStore,
-					phpMode : true
-				},";
-			}  else {
-			$str5.="
-				{
-					type : '".$jsonType."',
-					dataIndex : '".$columnName."',
-					column : '".$columnName."',
-					table : '".$targetTable."',
-					database : '".$targetDb."'
-				},";
-			}
-			
-			
-		
-		}  else if ($key=='PRI') {
-			$executeDalam.="if (isset(\$_POST ['".$columnName."'])) {
-				\$this->set".ucfirst($columnName)."(\$this->strict(\$_POST ['".$columnName."'], 'numeric'), 0, 'single');
-			}\n";
-			
-			$formItem.="var ".$columnName."  =  new Ext.form.Hidden({
-			name : '".$columnName."',
-			id : '".$columnName."'
-			});";
-			
-			
-			$str5.="
-				{
-					type : '".$jsonType."',
-					dataIndex : '".$columnName."',
-					column : '".$columnName."',
-					table : '".$targetTable."',
-					database : '".$targetDb."'
-				},";
-				
-			$model ="/**
-	 * Set ".$targetTable." Identification  Value
-	 * @param int|array \$value
-	 * @param array[int]int \$key List Of Primary Key.
-	 * @param array[int]string \$type  List Of Type.0 As 'single' 1 As 'array'
-	 */
-	public function set".ucfirst($columnName)." (\$value, \$key, \$type) {
-		if (\$type == 'single') {
-			\$this->".ucfirst($columnName)." = \$value;
-		} else if (\$type == 'array') {
-			\$this->".ucfirst($columnName)." [\$key] = \$value;
-		} else {
-			echo json_encode(array(\"success\" => false, \"message\" => \"Cannot Identifiy Type String Or Array:set".ucfirst($columnName)." ?\"));
-			exit();
-		}
-	}
-
-	/**
-	 * Return ".$targetTable." Identification  Value
-	 * @param array[int]int \$key List Of Primary Key.
-	 * @param array[int]string \$type  List Of Type.0 As 'single' 1 As 'array'
-	 * @return bool|array
-	 */
-	public function get".ucfirst($columnName)."(\$key, \$type) {
-		if (\$type == 'single') {
-			return \$this->".ucfirst($columnName).";
-		} else if (\$type == 'array') {
-			return \$this->".ucfirst($columnName)." [\$key];
-		} else {
-			echo json_encode(array(\"success\" => false, \"message\" => \"Cannot Identifiy Type String Or Array:get".ucfirst($columnName)." ?\"));
-			exit();
-		}
-	}";
-
-	
-		}else {
-			$executeDalam.="if (isset(\$_POST ['".$columnName."'])) {
-						\$this->set".ucfirst($columnName)."(\$this->strict(\$_POST ['".$columnName."'], '".$jsonType."'));
-					}\n";
-		// asume foreign key  only used combo box 
-				if($columnName !=$targetMasterTable && $targetGridType!='first'){
-					$formItem.="var ".$columnName."  = new Ext.ux.form.ComboBoxMatch({
-					
-						labelAlign: 'left',
-						fieldLabel: ".$columnName."Label,
-						name: 'stateId',
-						hiddenName: '".$columnName."',
-						valueField: '".$columnName."',
-						hiddenId: '".$columnName."_fake',
-						id: '".$columnName."',
-						displayField: '".str_replace("Id","",$columnName)."Desc',
-						typeAhead: false,
-						triggerAction: 'all',
-						store: ".str_replace("Id","",$columnName)."Store,
-						anchor: '95%',
-						selectOnFocus: true,
-						mode: 'local',
-						allowBlank: false,
-						blankText: blankTextLabel,
-						createValueMatcher: function(value) {
-							value = String(value).replace(/\s*/g, '');
-							if (Ext.isEmpty(value, false)) {
-								return new RegExp('^');
-							}
-							value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-							return new RegExp('\\b(' + value + ')', 'i');
-						}
-					});";
-				}
-				if($targetGridType=='first'){
-					$formItem.="var ".$columnName."  = new Ext.ux.form.ComboBoxMatch({
-						$targetGridType
-						labelAlign: 'left',
-						fieldLabel: ".$columnName."Label,
-						name: 'stateId',
-						hiddenName: '".$columnName."',
-						valueField: '".$columnName."',
-						hiddenId: '".$columnName."_fake',
-						id: '".$columnName."',
-						displayField: '".str_replace("Id","",$columnName)."Desc',
-						typeAhead: false,
-						triggerAction: 'all',
-						store: ".str_replace("Id","",$columnName)."Store,
-						anchor: '95%',
-						selectOnFocus: true,
-						mode: 'local',
-						allowBlank: false,
-						blankText: blankTextLabel,
-						createValueMatcher: function(value) {
-							value = String(value).replace(/\s*/g, '');
-							if (Ext.isEmpty(value, false)) {
-								return new RegExp('^');
-							}
-							value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
-							return new RegExp('\\b(' + value + ')', 'i');
-						}
-					});";
-				}
-					
-				$str5.="
-				,{
-					type : 'list',
-					dataIndex : '".$columnName."',
-					column : '".$columnName."',
-					table : '".$targetTable."',
-					database : '".$targetDb."',
-					labelField : '".str_replace("Id","",$columnName)."Desc',
-					store : ".str_replace("Id","",$columnName)."Store,
-					phpMode : true
-				},	
-				";
-			
-					
-				
-	
-		}
-	
-	}
-	
-	
-	
-	
-	
-
-	
-	
-
-
-	
-	
-			
-	
-
-	
-
-	$filterItem=array('isDefault','isNew','isDraft','isUpdate','isDelete','isActive','isApproved','isReview','isPost','executeBy','executeTime'); 
-	foreach ($filterItem as $item) {
-		$str2= str_replace($item.",",'',$str2);
-	}
-	$str2.=(substr($str2,0,-1));
-	
-	
-	
-	
-	
-	
-			
-		   $entity.="var ".$targetTable."Entity = Ext.data.Record.create([";
-			$entity.=substr($str,0,-1);
-	$entity.=substr($entityInside,0,-1);
-                      
-					$entity.="]);";
-		
-		
-		
-		
-	
-	
-
-
-			
-	
-		
+                    },
+                    failure: function (response, options) {
+                        Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + \":\" + response.statusText);
+                    }
+                });
+            }
+        }
+    });";
+}	
 
 		foreach($columnNameArray as $columnNameMysql) {
 		if($columnNameMysql !='isDefault' &&
@@ -2518,13 +2381,203 @@ class ".ucfirst($targetTable)."Model extends ValidationClass { ";
 			   $columnNameMysql !='executeTime' &&
 			   $columnNameMysql !=$targetTableId) {	
 
+	$getterSetter.="/**
+	 * 
+	 * @return 
+	 */
+	public function get".ucfirst($columnNameMysql)."()
+	{
+	    return \$this->".$columnNameMysql.";
+	}
 
+	/**
+	 * 
+	 * @param $countryDesc
+	 */
+	public function set".ucfirst($columnNameMysql)."(".$columnNameMysql.")
+	{
+	    \$this->".$columnNameMysql." = ".$columnNameMysql.";
+	}";
 	}
 	}
 	
+$execute="
+/* (non-PHPdoc)
+	 * @see ValidationClass::execute()
+	 */
 
+	public function execute() {
+		/*
+		 *  Basic Information Table
+		 */
+		\$this->setTableName('".$targetTable."');
+		\$this->setPrimaryKeyName('".$targetTableId."');
+		/**
+		 * All the $_POST enviroment.
+		 */ ";
+			
+		$execute.=$executeDalam;	
+		$execute.="
+		/**
+		 * All the \$_GET enviroment.
+		 */
+		if (isset(\$_GET ['".$targetTableId."'])) {
+			\$this->setTotal(count(\$_GET ['".$targetTableId."']));
+		}
 
+		if (isset(\$_GET ['isDefault'])) {
+			if (is_array(\$_GET ['isDefault'])) {
+				\$this->isDefault = array();
+			}
+		}
+		if (isset(\$_GET ['isNew'])) {
+			if (is_array($_GET ['isNew'])) {
+				\$this->isNew = array();
+			}
+		}
+		if (isset(\$_GET ['isDraft'])) {
+			if (is_array(\$_GET ['isDraft'])) {
+				\$this->isDraft = array();
+			}
+		}
+		if (isset(\$_GET ['isUpdate'])) {
+			if (is_array(\$_GET ['isUpdate'])) {
+				\$this->isUpdate = array();
+			}
+		}
+		if (isset(\$_GET ['isDelete'])) {
+			if (is_array(\$_GET ['isDelete'])) {
+				\$this->isDelete = array();
+			}
+		}
+		if (isset(\$_GET ['isActive'])) {
+			if (is_array(\$_GET ['isActive'])) {
+				\$this->isActive = array();
+			}
+		}
+		if (isset(\$_GET ['isApproved'])) {
+			if (is_array(\$_GET ['isApproved'])) {
+				\$this->isApproved = array();
+			}
+		}
+		if (isset(\$_GET ['isReview'])) {
+			if (is_array(\$_GET ['isReview'])) {
+				\$this->isReview = array();
+			}
+		}
+		if (isset(\$_GET ['isPost'])) {
+			if (is_array(\$_GET ['isPost'])) {
+				\$this->isPost = array();
+			}
+		}
+		\$primaryKeyAll = '';
+		for (\$i = 0; \$i < \$this->getTotal(); \$i++) {
+			
+			if (isset(\$_GET ['".$targetTableId."'])) {
+				\$this->set".ucfirst($targetTableId)."(\$this->strict(\$_GET ['".$targetTableId."'] [\$i], 'numeric'), \$i, 'array');
+			}
+			
+			if (isset(\$_GET ['isDefault'])) {
+				if (\$_GET ['isDefault'] [\$i] == 'true') {
+					\$this->setIsDefault(1, \$i, 'array');
+				} else if (\$_GET ['isDefault'] [\$i] == 'false') {
+					\$this->setIsDefault(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isNew'])) {
+				if (\$_GET ['isNew'] [\$i] == 'true') {
+					\$this->setIsNew(1, \$i, 'array');
+				} else if (\$_GET ['isNew'] [\$i] == 'false') {
+					\$this->setIsNew(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isDraft'])) {
+				if (\$_GET ['isDraft'] [\$i] == 'true') {
+					\$this->setIsDraft(1, \$i, 'array');
+				} else if (\$_GET ['isDraft'] [\$i] == 'false') {
+					\$this->setIsDraft(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isUpdate'])) {
+				if (\$_GET ['isUpdate'] [\$i] == 'true') {
+					\$this->setIsUpdate(1, \$i, 'array');
+				} if (\$_GET ['isUpdate'] [\$i] == 'false') {
+					\$this->setIsUpdate(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isDelete'])) {
+				if (\$_GET ['isDelete'] [\$i] == 'true') {
+					\$this->setIsDelete(1, \$i, 'array');
+				} else if (\$_GET ['isDelete'] [\$i] == 'false') {
+					\$this->setIsDelete(0, $i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isActive'])) {
+				if (\$_GET ['isActive'] [\$i] == 'true') {
+					\$this->setIsActive(1, \$i, 'array');
+				} else if (\$_GET ['isActive'] [\$i] == 'false') {
+					\$this->setIsActive(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isApproved'])) {
+				if (\$_GET ['isApproved'] [\$i] == 'true') {
+					\$this->setIsApproved(1, \$i, 'array');
+				} else if (\$_GET ['isApproved'] [\$i] == 'false') {
+					\$this->setIsApproved(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isReview'])) {
+				if (\$_GET ['isReview'] [\$i] == 'true') {
+					\$this->setIsReview(1, \$i, 'array');
+				} else if (\$_GET ['isReview'] [\$i] == 'false') {
+					\$this->setIsReview(0, \$i, 'array');
+				}
+			}
+			if (isset(\$_GET ['isPost'])) {
+				if (\$_GET ['isPost'] [\$i] == 'true') {
+					\$this->setIsPost(1, \$i, 'array');
+				} else if (\$_GET ['isPost'] [\$i] == 'false') {
+					\$this->setIsPost(0, \$i, 'array');
+				}
+			}
+			\$primaryKeyAll .= \$this->getAdjustmentId(\$i, 'array') . \",\";
+		}
+		\$this->setPrimaryKeyAll((substr(\$primaryKeyAll, 0, - 1)));
+		/**
+		 * All the \$_SESSION enviroment.
+		 */
+		if (isset(\$_SESSION ['staffId'])) {
+			\$this->setExecuteBy(\$_SESSION ['staffId']);
+		}
+		/**
+		 * TimeStamp Value.
+		 */
+		if (\$this->getVendor() == self::MYSQL) {
+			\$this->setExecuteTime(\"'\" . date(\"Y-m-d H:i:s\") . \"'\");
+		} else if (\$this->getVendor() == self::MSSQL) {
+			\$this->setExecuteTime(\"'\" . date(\"Y-m-d H:i:s.u\") . \"'\");
+		} else if (\$this->getVendor() == self::ORACLE) {
+			\$this->setExecuteTime(\"to_date('\" . date(\"Y-m-d H:i:s\") . \"','YYYY-MM-DD HH24:MI:SS')\");
+		}
+	}
+";
 
+$mainModel.="
+
+require_once (\"../../class/classValidation.php\");
+
+/**
+ * this is ".$targetTable." model file.This is to ensure strict setting enable for all variable enter to database
+ *
+ * @name IDCMS.
+ * @version 2
+ * @author hafizan
+ * @package Account Receivable / Account Payable Invoice 
+ * @subpackage adjustment
+ * @link http://www.idcms.org
+ * @license http://www.gnu.org/copyleft/lesser.html LGPL
+ */
+class ".ucfirst($targetTable)."Model extends ValidationClass { ";
 
 
 
@@ -2627,6 +2680,11 @@ echo $jsonStoreString.$gridFilterJs.$formItem.$systemCheckbox.$comboRenderer.$co
 
 <?php } ?>
 <?php if ($_GET['type']=='controller') { ?>
+<a name="createStatement"></a>
+<h1>Full Controller</h1>
+<pre class="brush: php;">
+<?php echo $fullController; ?>
+</pre>
 <a name="createStatement"></a>
 <h1>Create Statement</h1>
 <pre class="brush: php;">

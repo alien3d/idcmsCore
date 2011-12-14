@@ -7,11 +7,10 @@ Ext.onReady(function() {
     var encode = false;
     var local = false;
     var jsonResponse;
-    var duplicate = 0;
-     // common Proxy,Reader,Store,Filter,Grid
+    var duplicate = 0; // common Proxy,Reader,Store,Filter,Grid
     // start Staff Request
     var staffByProxy = new Ext.data.HttpProxy({
-        url: '../controller/religionController.php?',
+        url: '../controller/generalLedgerJournalController.php?',
         method: 'GET',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -42,7 +41,7 @@ Ext.onReady(function() {
             leafId: leafId
         },
         root: 'staff',
-        id:'staffId',
+        id: 'staffId',
         fields: [{
             name: 'staffId',
             type: 'int'
@@ -76,7 +75,7 @@ Ext.onReady(function() {
     var logStore = new Ext.data.JsonStore({
         proxy: logProxy,
         reader: logReader,
-        autoLoad: true,
+        autoLoad: false,
         autoDestroy: true,
         pruneModifiedRecords: true,
         baseParams: {
@@ -287,7 +286,7 @@ Ext.onReady(function() {
     var logAdvanceStore = new Ext.data.JsonStore({
         proxy: logAdvanceProxy,
         reader: logAdvanceReader,
-        autoLoad: true,
+        autoLoad: false,
         autoDestroy: true,
         pruneModifiedRecords: true,
         method: 'POST',
@@ -325,7 +324,7 @@ Ext.onReady(function() {
             type: 'int'
         }]
     });
-    var  logAdvanceFilters = new Ext.ux.grid.GridFilters({
+    var logAdvanceFilters = new Ext.ux.grid.GridFilters({
         encode: encode,
         local: local,
         filters: [{
@@ -411,7 +410,7 @@ Ext.onReady(function() {
         height: 400,
         columns: logAdvanceColumnModel,
         loadMask: true,
-        plugins: [ logAdvanceFilters],
+        plugins: [logAdvanceFilters],
         selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
         }),
@@ -429,7 +428,7 @@ Ext.onReady(function() {
                             limit: perPage,
                             method: 'read',
                             mode: 'view',
-                            plugin: [ logAdvanceFilters]
+                            plugin: [logAdvanceFilters]
                         }
                     });
                 }
@@ -445,7 +444,7 @@ Ext.onReady(function() {
             scrollDelay: false
         })
     }); // end log Advance Request
-    // popup  window for normal log and advance log
+    // popup window for normal log and advance log
     var auditWindow = new Ext.Window({
         name: 'auditWindow',
         id: 'auditWindow',
@@ -475,11 +474,10 @@ Ext.onReady(function() {
         autoScroll: true
     }); // end popup window for normal log and advance log
     // end common Proxy ,Reader,Store,Filter,Grid
-    // atart additional Proxy ,Reader,Store,Filter,Grid
-    // end additional Proxy ,Reader,Store,Filter,Grid
-    // start application Proxy ,Reader,Store,Filter,Grid
-    var religionProxy = new Ext.data.HttpProxy({
-        url: '../controller/religionController.php',
+    // start additional Proxy ,Reader,Store,Filter,Grid
+    // start chart of account request
+    var generalLedgerChartOfAccountProxy = new Ext.data.HttpProxy({
+        url: '../controller/generalLedgerChartOfAccountController.php',
         method: 'POST',
         success: function(response, options) {
             jsonResponse = Ext.decode(response.responseText);
@@ -492,15 +490,344 @@ Ext.onReady(function() {
             Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
         }
     });
-    var religionReader = new Ext.data.JsonReader({
+    var generalLedgerChartOfAccountReader = new Ext.data.JsonReader({
         totalProperty: 'total',
         successProperty: 'success',
         messageProperty: 'message',
-        idProperty: 'religionId'
+        idProperty: 'generalLedgerChartOfAccountId'
     });
-    var religionStore = new Ext.data.JsonStore({
-        proxy: religionProxy,
-        reader: religionReader,
+    var generalLedgerChartOfAccountStore = new Ext.data.JsonStore({
+        proxy: generalLedgerChartOfAccountProxy,
+        reader: generalLedgerChartOfAccountReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: 'data',
+        fields: [{
+            key: 'PRI',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountId',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountTitle',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountDesc',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountNo',
+            type: 'string'
+        },
+        {
+            key: 'MUL',
+            foreignKey: 'yes',
+            name: 'generalLedgerChartOfAccountTypeId',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerChartOfAccountReportType',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDefault',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isNew',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDraft',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isUpdate',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDelete',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isActive',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isApproved',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isReview',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isPost',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isConsolidation',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isSeperated',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'executeBy',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'executeTime',
+            type: 'date',
+            dateFormat: 'Y-m-d H:i:s'
+        }]
+    }); // end General Ledger Chart of account request
+    // start currency code request
+    var countryProxy = new Ext.data.HttpProxy({
+        url: '../controller/countryController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var countryReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'countryId'
+    });
+    var countryStore = new Ext.data.JsonStore({
+        proxy: countryProxy,
+        reader: countryReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: 'data',
+        id: 'countryCurrencyCode',
+        fields: [{
+            name: 'countryId',
+            type: 'string'
+        },
+        {
+            name: 'countryCurrencyCode',
+            type: 'string'
+        },
+        {
+            name: 'countryCurrencyCodeDesc',
+            type: 'string'
+        }]
+    }); // end currency code request
+    // start generalLedgerJournalType request
+    var generalLedgerJournalTypeProxy = new Ext.data.HttpProxy({
+        url: '../../iFinancial/controller/generalLedgerJournalTypeController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var generalLedgerJournalTypeReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'generalLedgerJournalTypeId'
+    });
+    var generalLedgerJournalTypeStore = new Ext.data.JsonStore({
+        proxy: generalLedgerJournalTypeProxy,
+        reader: generalLedgerJournalTypeReader,
+        autoLoad: true,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: 'data',
+        id: 'generalLedgerJournalTypeId',
+        fields: [{
+            key: 'PRI',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalTypeId',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalTypeSequence',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalCode',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalTypeDesc',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDefault',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isNew',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDraft',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isUpdate',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDelete',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isActive',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isApproved',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isReview',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isPost',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'executeBy',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'executeTime',
+            type: 'date',
+            dateFormat: 'Y-m-d H:i:s'
+        }]
+    }); // end of general ledger journal type
+    // end additional Proxy ,Reader,Store,Filter,Grid
+    // start application Proxy ,Reader,Store,Filter,Grid
+    var generalLedgerJournalProxy = new Ext.data.HttpProxy({
+        url: '../controller/generalLedgerJournalController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var generalLedgerJournalReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'generalLedgerJournalId'
+    });
+    var generalLedgerJournalStore = new Ext.data.JsonStore({
+        proxy: generalLedgerJournalProxy,
+        reader: generalLedgerJournalReader,
         autoLoad: true,
         autoDestroy: true,
         pruneModifiedRecords: true,
@@ -514,91 +841,278 @@ Ext.onReady(function() {
         },
         root: 'data',
         fields: [{
-            name: 'religionId',
+            key: 'PRI',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalId',
             type: 'int'
         },
         {
-            name: 'religionDesc',
-            type: 'string'
-        },
-        {
-            name: 'executeBy',
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalTypeId',
             type: 'int'
         },
         {
-            name: 'staffName',
+            key: '',
+            foreignKey: 'no',
+            name: 'documentNo',
             type: 'string'
         },
         {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalTitle',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalDesc',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalDate',
+            type: 'date',
+            dateFormat: 'Y-m-d'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalStartDate',
+            type: 'date',
+            dateFormat: 'Y-m-d'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalEndDate',
+            type: 'date',
+            dateFormat: 'Y-m-d'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalAmount',
+            type: 'date',
+            dateFormat: 'Y-m-d'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
             name: 'isDefault',
             type: 'boolean'
         },
         {
+            key: '',
+            foreignKey: 'no',
             name: 'isNew',
             type: 'boolean'
         },
         {
+            key: '',
+            foreignKey: 'no',
             name: 'isDraft',
             type: 'boolean'
         },
         {
+            key: '',
+            foreignKey: 'no',
             name: 'isUpdate',
             type: 'boolean'
         },
         {
+            key: '',
+            foreignKey: 'no',
             name: 'isDelete',
             type: 'boolean'
         },
         {
+            key: '',
+            foreignKey: 'no',
             name: 'isActive',
             type: 'boolean'
         },
         {
+            key: '',
+            foreignKey: 'no',
             name: 'isApproved',
             type: 'boolean'
         },
         {
-            name: 'isActive',
-            type: 'boolean'
-        },
-        {
-            name: 'isApproved',
-            type: 'boolean'
-        },
-        {
+            key: '',
+            foreignKey: 'no',
             name: 'isReview',
             type: 'boolean'
         },
         {
+            key: '',
+            foreignKey: 'no',
             name: 'isPost',
             type: 'boolean'
         },
         {
+            key: '',
+            foreignKey: 'no',
             name: 'executeBy',
             type: 'int'
         },
         {
+            key: '',
+            foreignKey: 'no',
             name: 'executeTime',
             type: 'date',
             dateFormat: 'Y-m-d H:i:s'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalTypeDesc',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'staffNo',
+            type: 'string'
         }]
     });
-	var religionFilters = new Ext.ux.grid.GridFilters({
+    var generalLedgerJournalFilters = new Ext.ux.grid.GridFilters({
         encode: encode,
         local: local,
         filters: [{
+            type: 'int',
+            dataIndex: 'generalLedgerJournalId',
+            column: 'generalLedgerJournalId',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'int',
+            dataIndex: 'generalLedgerJournalTypeId',
+            column: 'generalLedgerJournalTypeId',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
             type: 'string',
-            dataIndex: 'religionDesc',
-            column: 'religionDesc',
-            table: 'religion',
-			database :'iCore'
+            dataIndex: 'documentNo',
+            column: 'documentNo',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'string',
+            dataIndex: 'generalLedgerJournalTitle',
+            column: 'generalLedgerJournalTitle',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'string',
+            dataIndex: 'generalLedgerJournalDesc',
+            column: 'generalLedgerJournalDesc',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'date',
+            dataIndex: 'generalLedgerJournalDate',
+            column: 'generalLedgerJournalDate',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'date',
+            dataIndex: 'generalLedgerJournalStartDate',
+            column: 'generalLedgerJournalStartDate',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'date',
+            dataIndex: 'generalLedgerJournalEndDate',
+            column: 'generalLedgerJournalEndDate',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'date',
+            dataIndex: 'generalLedgerJournalAmount',
+            column: 'generalLedgerJournalAmount',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isDefault',
+            column: 'isDefault',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isNew',
+            column: 'isNew',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isDraft',
+            column: 'isDraft',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isUpdate',
+            column: 'isUpdate',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isDelete',
+            column: 'isDelete',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isActive',
+            column: 'isActive',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isApproved',
+            column: 'isApproved',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isReview',
+            column: 'isReview',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isPost',
+            column: 'isPost',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
         },
         {
             type: 'list',
             dataIndex: 'executeBy',
             column: 'executeBy',
-            table: 'religion',
-			database :'iCore',
+            table: 'generalLedgerJournal',
+            database: 'ifinancial',
             labelField: 'staffName',
             store: staffByStore,
             phpMode: true
@@ -607,112 +1121,8 @@ Ext.onReady(function() {
             type: 'date',
             dataIndex: 'executeTime',
             column: 'executeTime',
-            table: 'religion',
-			database :'iCore'
-        }]
-    });
-    var religionDetailProxy = new Ext.data.HttpProxy({
-        url: '../controller/religionDetailController.php',
-        method: 'POST',
-        success: function(response, options) {
-            jsonResponse = Ext.decode(response.responseText);
-            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
-            } else {
-                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-            }
-        },
-        failure: function(response, options) {
-            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
-        }
-    });
-    var religionDetailReader = new Ext.data.JsonReader({
-        totalProperty: 'total',
-        successProperty: 'success',
-        messageProperty: 'message',
-        idProperty: 'religionDetailId'
-    });
-    var religionDetailStore = new Ext.data.JsonStore({
-        proxy: religionDetailProxy,
-        reader: religionDetailReader,
-        autoLoad: false,
-        autoDestroy: true,
-        baseParams: {
-            method: 'read',
-            leafId: leafId,
-            isAdmin: isAdmin,
-            start: 0,
-            limit: perPage,
-            perPage: perPage
-        },
-        root: 'dataDetail',
-        fields: [{
-            name: 'religionDetailId',
-            type: 'int'
-        },
-        {
-            name: 'religionId',
-            type: 'int'
-        },
-        {
-            name: 'religionDesc',
-            type: 'string'
-        },
-        {
-            name: 'religionDetailTitle',
-            type: 'string'
-        },
-        {
-            name: 'religionDetailDesc',
-            type: 'string'
-        },
-        {
-            name: 'staffName',
-            type: 'string'
-        },
-        {
-            name: 'isDefault',
-            type: 'boolean'
-        },
-        {
-            name: 'isNew',
-            type: 'boolean'
-        },
-        {
-            name: 'isDraft',
-            type: 'boolean'
-        },
-        {
-            name: 'isUpdate',
-            type: 'boolean'
-        },
-        {
-            name: 'isDelete',
-            type: 'boolean'
-        },
-        {
-            name: 'isActive',
-            type: 'boolean'
-        },
-        {
-            name: 'isApproved',
-            type: 'boolean'
-        },
-        {
-            name: 'isReview',
-            type: 'boolean'
-        },
-        {
-            name: 'isPost',
-            type: 'boolean'
-        },
-        {
-            name: 'executeBy',
-            type: 'int'
-        },
-        {
-            name: 'executeTime',
-            type: 'date',
-            dateFormat: 'Y-m-d H:i:s'
+            table: 'generalLedgerJournal',
+            database: 'ifinancial'
         }]
     });
     var isDefaultGrid = new Ext.ux.grid.CheckColumn({
@@ -803,74 +1213,83 @@ Ext.onReady(function() {
         dataIndex: 'isPost',
         hidden: isPostHidden
     });
-    var religionColumnModel = [new Ext.grid.RowNumberer(), {
-        dataIndex: 'religionDesc',
-        header: religionDescLabel,
+    var generalLedgerJournalColumnModel = [{
+        dataIndex: 'generalLedgerJournalTypeId',
+        header: generalLedgerJournalTypeForeignKeyLabel,
+        sortable: true,
         hidden: false,
-        width: 100
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return record.data.generalLedgerJournalTypeDesc;
+        }
+    },
+    {
+        dataIndex: 'documentNo',
+        header: documentNoLabel,
+        sortable: true,
+        hidden: false
+    },
+    {
+        dataIndex: 'generalLedgerJournalTitle',
+        header: generalLedgerJournalTitleLabel,
+        sortable: true,
+        hidden: false
+    },
+    {
+        dataIndex: 'generalLedgerJournalDesc',
+        header: generalLedgerJournalDescLabel,
+        sortable: true,
+        hidden: false
+    },
+    {
+        dataIndex: 'generalLedgerJournalDate',
+        header: generalLedgerJournalDateLabel,
+        sortable: true,
+        hidden: false
+    },
+    {
+        dataIndex: 'generalLedgerJournalStartDate',
+        header: generalLedgerJournalStartDateLabel,
+        sortable: true,
+        hidden: false
+    },
+    {
+        dataIndex: 'generalLedgerJournalEndDate',
+        header: generalLedgerJournalEndDateLabel,
+        sortable: true,
+        hidden: false
+    },
+    {
+        dataIndex: 'generalLedgerJournalAmount',
+        header: generalLedgerJournalAmountLabel,
+        sortable: true,
+        hidden: false
     },
     isDefaultGrid, isNewGrid, isDraftGrid, isUpdateGrid, isDeleteGrid, isActiveGrid, isApprovedGrid, isReviewGrid, isPostGrid, {
         dataIndex: 'executeBy',
         header: executeByLabel,
-        hidden: true,
-        width: 100
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return record.data.staffName;
+        }
     },
     {
         dataIndex: 'executeTime',
         header: executeTimeLabel,
-        type: 'date',
-        hidden: true,
-        width: 100
-    }];
-    var religionDetailColumnModel = [new Ext.grid.RowNumberer(), {
-        dataIndex: 'religionDesc',
-        header: 'Religion Desc',
+        sortable: true,
         hidden: false,
-        width: 100
-    },
-    {
-        dataIndex: 'religionDetailTitle',
-        header: 'Religion Title',
-        hidden: false,
-        width: 100,
-        editor: {
-            xtype: 'textfield',
-            id: 'religionDetailTitle'
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return Ext.util.Format.date(value, 'd-m-Y H:i:s');
         }
-    },
-    {
-        dataIndex: 'religionDetailDesc',
-        header: 'religion Detail Description',
-        hidden: false,
-        width: 100,
-        editor: {
-            xtype: 'textfield',
-            id: 'religionDetailDesc'
-        }
-    },
-    isDefaultGridDetail, isNewGridDetail, isDraftGridDetail, isUpdateGridDetail, isDeleteGridDetail, isActiveGridDetail, isApprovedGridDetail, isReviewGridDetail, isPostGridDetail, {
-        dataIndex: 'executeBy',
-        header: executeByLabel,
-        hidden: true,
-        width: 100
-    },
-    {
-        dataIndex: 'executeTime',
-        header: executeTimeLabel,
-        type: 'date',
-        hidden: true,
-        width: 100
     }];
-    var religionFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-    
-    
-	var religionGrid = new Ext.grid.GridPanel({
+    var generalLedgerJournalFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var generalLedgerJournalGrid = new Ext.grid.GridPanel({
         border: false,
-        store: religionStore,
+        store: generalLedgerJournalStore,
         autoHeight: false,
-        columns: religionColumnModel,
+        columns: generalLedgerJournalColumnModel,
         loadMask: true,
-        plugins: [religionFilters],
+        plugins: [generalLedgerJournalFilters],
         autoScroll: true,
         selModel: new Ext.grid.RowSelectionModel({
             singleSelect: true
@@ -882,34 +1301,34 @@ Ext.onReady(function() {
         iconCls: 'application_view_detail',
         listeners: {
             'rowclick': function(object, rowIndex, e) {
-                var record = religionStore.getAt(rowIndex);
+                var record = generalLedgerJournalStore.getAt(rowIndex);
                 formPanel.getForm().reset();
                 formPanel.form.load({
-                    url: '../controller/religionController.php',
+                    url: '../controller/generalLedgerJournalController.php',
                     method: 'POST',
                     waitTitle: systemLabel,
                     waitMsg: waitMessageLabel,
                     params: {
                         method: 'read',
                         mode: 'update',
-                        religionId: record.data.religionId,
+                        generalLedgerJournalId: record.data.generalLedgerJournalId,
                         leafId: leafId,
                         isAdmin: isAdmin
                     },
                     success: function(form, action) {
-                    	Ext.getCmp('newButton').disable();
-						Ext.getCmp('saveButton').enable();
-						Ext.getCmp('deleteButton').enable();
+                        Ext.getCmp('newButton').disable();
+                        Ext.getCmp('saveButton').enable();
+                        Ext.getCmp('deleteButton').enable();
                         Ext.getCmp('firstRecord').setValue(action.result.firstRecord);
                         Ext.getCmp('previousRecord').setValue(action.result.previousRecord);
                         Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                         Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                         Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                        religionDetailStore.load({
+                        generalLedgerJournalDetailStore.load({
                             params: {
                                 leafId: leafId,
                                 isAdmin: isAdmin,
-                                religionId: record.data.religionId
+                                generalLedgerJournalId: record.data.generalLedgerJournalId
                             }
                         });
                         if (Ext.getCmp('previousRecord').getValue() == 0) {
@@ -918,7 +1337,18 @@ Ext.onReady(function() {
                         if (Ext.getCmp('nextRecord').getValue() == 0) {
                             Ext.getCmp('nextButton').disable();
                         }
-                        religionDetailGrid.enable();
+                        generalLedgerJournalDetailGrid.enable();
+                        if (action.result.trialBalance > 0) {
+                            Ext.getCmp('postButton').disable();
+                            Ext.MessageBox.alert(systemErrorLabel, "Trial Balance no tally");
+                        }
+                        if (action.result.tally > 0) {
+                            Ext.getCmp('postButton').disable();
+                            Ext.MessageBox.alert(systemErrorLabel, "Total Debit and Credit not Tally");
+                        }
+                        if (action.result.tally == 0 && action.result.trialBalance == 0) {
+                            Ext.getCmp('postButton').enable();
+                        }
                         viewPort.items.get(1).expand();
                     },
                     failure: function(form, action) {
@@ -929,76 +1359,84 @@ Ext.onReady(function() {
         },
         tbar: {
             items: [{
-            	xtype:'button',
+                text: addToolbarLabel,
+                iconCls: 'add',
+                id: 'pageCreate',
+                iconCls: 'add',
+                xtype: 'button',
+                handler: function() {
+                    viewPort.items.get(1).expand();
+                }
+            },
+            {
+                xtype: 'button',
                 text: CheckAllLabel,
                 iconCls: 'row-check-sprite-check',
                 listeners: {
-                    'click': function(button,e) {
-                        religionStore.each(function(record,fn,scope) {
-                            for (var access in religionFlagArray) {
-                                record.set(religionFlagArray[access], true);
+                    'click': function(button, e) {
+                        generalLedgerJournalStore.each(function(record, fn, scope) {
+                            for (var access in generalLedgerJournalFlagArray) {
+                                record.set(generalLedgerJournalFlagArray[access], true);
                             }
                         });
                     }
                 }
             },
             {
-                xtype:'button',
-            	text: ClearAllLabel,
+                xtype: 'button',
+                text: ClearAllLabel,
                 iconCls: 'row-check-sprite-uncheck',
                 listeners: {
-                    'click': function(button,e) {
-                        religionStore.each(function(record,fn,scope) {
-                            for (var access in religionFlagArray) {
-                                record.set(religionFlagArray[access], false);
+                    'click': function(button, e) {
+                        generalLedgerJournalStore.each(function(record, fn, scope) {
+                            for (var access in generalLedgerJournalFlagArray) {
+                                record.set(generalLedgerJournalFlagArray[access], false);
                             }
                         });
                     }
                 }
             },
             {
-                xtype:'button',
-            	text: saveButtonLabel,
+                xtype: 'button',
+                text: saveButtonLabel,
                 iconCls: 'bullet_disk',
                 listeners: {
-                    'click': function(button,e) {
-                        var url = '../controller/religionController.php?';
+                    'click': function(button, e) {
+                        var url = '../controller/generalLedgerJournalController.php?';
                         var sub_url = '';
-                        var modified = religionStore.getModifiedRecords();
+                        var modified = generalLedgerJournalStore.getModifiedRecords();
                         for (var i = 0; i < modified.length; i++) {
                             var dataChanges = modified[i].getChanges();
-                            if (record.get('religionId')) {
-                                sub_url = sub_url + '&religionId[]=' + modified[i].get('religionId');
-                            }
+                            sub_url = sub_url + '&generalLedgerJournalId[]=' + modified[i].get('generalLedgerJournalId');
                             if (isAdmin == 1) {
                                 if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
-                                    sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
+                                    sub_url = sub_url + '&isDefault[]=' + modified[i].get('isDefault');
                                 }
                                 if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
-                                    sub_url = sub_url + '&isDraft[]=' +modified[i].get('isDraft');
+                                    sub_url = sub_url + '&isDraft[]=' + modified[i].get('isDraft');
                                 }
                                 if (dataChanges.isNew == true || dataChanges.isNew == false) {
-                                    sub_url = sub_url + '&isNew[]=' +modified[i].get('isNew');
+                                    sub_url = sub_url + '&isNew[]=' + modified[i].get('isNew');
                                 }
                                 if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
-                                    sub_url = sub_url + '&isUpdate[]=' +modified[i].get('isUpdate');
+                                    sub_url = sub_url + '&isUpdate[]=' + modified[i].get('isUpdate');
                                 }
                             }
                             if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
-                                sub_url = sub_url + '&isDelete[]=' +modified[i].get('isDelete');
+                                sub_url = sub_url + '&isDelete[]=' + modified[i].get('isDelete');
                             }
                             if (isAdmin == 1) {
                                 if (dataChanges.isActive == true || dataChanges.isActive == false) {
-                                    ssub_url = sub_url + '&isActive[]=' +modified[i].get('isActive');
+                                    ssub_url = sub_url + '&isActive[]=' + modified[i].get('isActive');
                                 }
                                 if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
-                                    sub_url = sub_url + '&isApproved[]=' +modified[i].get('isApproved');
+                                    sub_url = sub_url + '&isApproved[]=' + modified[i].get('isApproved');
                                 }
                                 if (dataChanges.isReview == true || dataChanges.isReview == false) {
-                                    sub_url = sub_url + '&isReview[]=' +modified[i].get('isReview');
+                                    sub_url = sub_url + '&isReview[]=' + modified[i].get('isReview');
                                 }
                                 if (dataChanges.isPost == true || dataChanges.isPost == false) {
-                                    sub_url = sub_url + '&isPost[]=' +modified[i].get('isPost');
+                                    sub_url = sub_url + '&isPost[]=' + modified[i].get('isPost');
                                 }
                             }
                         }
@@ -1015,7 +1453,7 @@ Ext.onReady(function() {
                                 jsonResponse = Ext.decode(response.responseText);
                                 if (jsonResponse.success == true) {
                                     Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    religionStore.reload();
+                                    generalLedgerJournalStore.reload();
                                 } else if (jsonResponse.success == false) {
                                     Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                 }
@@ -1026,10 +1464,14 @@ Ext.onReady(function() {
                         });
                     }
                 }
-            }]
+            },
+            '->', new Ext.ux.form.SearchField({
+                store: generalLedgerJournalStore,
+                width: 320
+            })]
         },
         bbar: new Ext.PagingToolbar({
-            store: religionStore,
+            store: generalLedgerJournalStore,
             pageSize: perPage
         }),
         view: new Ext.ux.grid.BufferView({
@@ -1037,363 +1479,527 @@ Ext.onReady(function() {
             scrollDelay: false
         })
     });
-    var religionDetailEditor = new Ext.ux.grid.RowEditor({
-        saveText: saveButtonLabel,
-        cancelText: cancelButtonLabel,
-        listeners: {
-            cancelEdit: function(rowEditor, changes, record, rowIndex) {
-                religionDetailStore.reload();
-            },
-            afteredit: function(rowEditor, changes, record, rowIndex) {
-                var method;
-                this.save = true; // update record manually
-                var record = this.grid.getStore().getAt(rowIndex);
-                if (parseInt(record.get('religionDetailId')) == 'NaN') {
-                    method = 'create';
-                } else if (record.get('religionDetailId') == '') {
-                    method = 'create';
-                } else if (record.get('religionDetailId') == undefined) {
-                    method = 'create';
-                } else if (record.get('religionDetailId') > 0) {
-                    method = 'save';
-                } else {
-                    method = 'create';
-                }
-                Ext.Ajax.request({
-                    url: '../controller/religionDetailController.php',
-                    method: 'POST',
-                    params: {
-                        leafId: leafId,
-                        method: method,
-                        page: 'detail',
-                        religionDetailId: record.get('religionDetailId'),
-                        religionId: Ext.getCmp('religionId').getValue(),
-                        religionDetailTitle: Ext.getCmp('religionDetailTitle').getValue(),
-                        religionDetailDesc: Ext.getCmp('religionDetailDesc').getValue()
-                    },
-                    success: function(response, options) {
-                        jsonResponse = Ext.decode(response.responseText);
-                        if (jsonResponse.success == false) {
-                            Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                        } else {
-                            religionDetailStore.reload({
-                                params: {
-                                    leafId: leafId,
-                                    isAdmin: isAdmin,
-                                    religionId: Ext.getCmp('religionId').getValue()
-                                }
-                            });
-                        }
-                    },
-                    failure: function(response, options) {
-                        Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + response.statusText);
-                    }
-                });
-            }
+    var dateRangeStart = new Ext.form.Hidden({
+        name: 'dateRangeStart',
+        id: 'dateRangeStart',
+        value: ''
+    });
+    var dateRangeEnd = new Ext.form.Hidden({
+        name: 'dateRangeEnd',
+        id: 'dateRangeEnd',
+        value: ''
+    });
+    var dateRangeType = new Ext.form.Hidden({
+        name: 'dateRangeType',
+        id: 'dateRangeType'
+    });
+    function zeroFill(value) {
+        if (value.length == 1) {
+            return "0" + value;
+        } else {
+        	return value;
         }
-    });
-    var religionDetailEntity = Ext.data.Record.create([{
-        name: 'religionDetailId',
-        type: 'int'
-    },
-    {
-        name: 'religionId',
-        type: 'int'
-    },
-    {
-        name: 'religionDetail',
-        type: 'string'
-    },
-    {
-        name: 'religionDetailTitle',
-        type: 'int'
-    },
-    {
-        name: 'religionDetailDesc',
-        type: 'string'
-    },
-    {
-        name: 'executeBy',
-        type: 'int'
-    },
-    {
-        name: 'staffName',
-        type: 'string'
-    },
-    {
-        name: 'isDefault',
-        type: 'boolean'
-    },
-    {
-        name: 'isNew',
-        type: 'boolean'
-    },
-    {
-        name: 'isDraft',
-        type: 'boolean'
-    },
-    {
-        name: 'isUpdate',
-        type: 'boolean'
-    },
-    {
-        name: 'isDelete',
-        type: 'boolean'
-    },
-    {
-        name: 'isActive',
-        type: 'boolean'
-    },
-    {
-        name: 'isApproved',
-        type: 'boolean'
-    },
-    {
-        name: 'isReview',
-        type: 'boolean'
-    },
-    {
-        name: 'isPost',
-        type: 'boolean'
-    },
-    {
-        name: 'executeTime',
-        type: 'date',
-        dateFormat: 'Y-m-d H:i:s'
-    }]);
-    
-	var religionDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
-
-    var religionDetailGrid = new Ext.grid.GridPanel({
-        id: 'religionDetailGrid',
-        border: false,
-        store: religionDetailStore,
-        autoScroll: true,
-        columns: religionDetailColumnModel,
-        frame: true,
-        forceLayout: true,
-        disabled: true,
-        selModel: new Ext.grid.RowSelectionModel({
-            singleSelect: true
-        }),
-        viewConfig: {
-            forceFit: true,
-            emptyText:emptyTextLabel
-        },
-        height: 275,
-        plugins: [religionDetailEditor],
-       
-        tbar: {
-            items: [{
-                iconCls: 'add',
-                id: 'add_record',
-                name: 'add_record',
-                text: newButtonLabel,
-                handler: function() {
-                    var e = new religionDetailEntity({
-                        religionDetailId: '',
-                        religionId: '',
-                        religionDetailTitle: '',
-                        religionDetailDesc: '',
-                        executeBy: '',
-                        staffName: '',
-                        isDefault: '',
-                        isNew: '',
-                        isDraft: '',
-                        isUpdate: '',
-                        isReview: '',
-                        isPost: '',
-                        isDelete: '',
-                        isActive: '',
-                        isApproved: '',
-                        executeTime: ''
-                    });
-                    religionDetailEditor.stopEditing();
-                    religionDetailStore.insert(0, e);
-                    religionDetailGrid.getSelectionModel().getSelections();
-                    religionDetailEditor.startEditing(0);
+    }
+    function forwardDate(dateReceive, dateRangeType) {
+        var explodeDate = dateReceive.split("-");
+        var dayReceive = parseInt(explodeDate[2]);
+        var monthReceive = parseInt(explodeDate[1]);
+        var yearReceive = parseInt(explodeDate[0]);
+        totalDayInMonth = 32 - new Date(yearReceive, monthReceive - 2, 32).getDate();
+        if (dateRangeType == 'day') {
+            dayReceive++;
+            if (dayReceive >= totalDayInMonth) {
+                dayReceive = 1;
+                monthReceive++;
+                if (monthReceive == 13) {
+                    monthReceive = 1;
+                    yearReceive++;
+                } else {
+                    monthReceive++;
                 }
-            },
-            {
-                text: CheckAllLabel,
-                iconCls: 'row-check-sprite-check',
-                listeners: {
-                    'click': function() {
-                        religionDetailStore.each(function(record,fn,scope) {
-                            for (var access in religionDetailFlagArray) {
-                                record.set(religionDetailFlagArray[access], true);
-                            }
-                        });
-                    }
+            }
+            return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+        } else if (dateRangeType == 'week') {
+            if (dayReceive > totalDayInMonth) {
+                dayReceive = 1 + 7;
+                if (monthReceive == 13) {
+                    yearReceive++;
+                    monthReceive = 1;
+                } else {
+                    monthReceive++;
                 }
-            },
-            {
-                text: ClearAllLabel,
-                iconCls: 'row-check-sprite-uncheck',
-                listeners: {
-                    'click': function() {
-                        religionDetailStore.each(function(record,fn,scope) {
-                            for (var access in religionDetailFlagArray) {
-                                record.set(religionDetailFlagArray[access], false);
-                            }
-                        });
-                    }
+            } else {
+                dayReceive = dayReceive + 7;
+                if (dayReceive > totalDayInMonth) {
+                    dayReceive = dayReceive - totalDayInMonth;
                 }
-            },
-            {
-                text: saveButtonLabel,
-                iconCls: 'bullet_disk',
-                listeners: {
-                    'click': function(c) {
-                        var url = '../controller/religionDetailController.php?';
-                        var sub_url = '';
-                        var modified = religionDetailStore.getModifiedRecords();
-                        for (var i = 0; i < modified.length; i++) {
-                            var dataChanges = modified[i].getChanges();                   
-                            sub_url = sub_url + '&religionDetailId[]=' + modified[i].get('religionDetailId');
-                            if (isAdmin == 1) {
-                                if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
-                                    sub_url = sub_url + '&isDefault[]=' +modified[i].get('isDefault');
-                                }
-                                if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
-                                    sub_url = sub_url + '&isDraft[]=' +modified[i].get('isDraft');
-                                }
-                                if (dataChanges.isNew == true || dataChanges.isNew == false) {
-                                    sub_url = sub_url + '&isNew[]=' +modified[i].get('isNew');
-                                }
-                                if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
-                                    sub_url = sub_url + '&isUpdate[]=' +modified[i].get('isUpdate');
-                                }
-                            }
-                            if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
-                                sub_url = sub_url + '&isDelete[]=' +modified[i].get('isDelete');
-                            }
-                            if (isAdmin == 1) {
-                                if (dataChanges.isActive == true || dataChanges.isActive == false) {
-                                    ssub_url = sub_url + '&isActive[]=' +modified[i].get('isActive');
-                                }
-                                if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
-                                    sub_url = sub_url + '&isApproved[]=' +modified[i].get('isApproved');
-                                }
-                                if (dataChanges.isReview == true || dataChanges.isReview == false) {
-                                    sub_url = sub_url + '&isReview[]=' +modified[i].get('isReview');
-                                }
-                                if (dataChanges.isPost == true || dataChanges.isPost == false) {
-                                    sub_url = sub_url + '&isPost[]=' +modified[i].get('isPost');
-                                }
-                            }
-                        }
-                        url = url + sub_url;
-                        Ext.Ajax.request({
-                            url: url,
-                            method: 'GET',
-                            params: {
-                                leafId: leafId,
-                                isAdmin:isAdmin,
-                                method: 'updateStatus'
-                            },
-                            success: function(response, options) {
-                                jsonResponse = Ext.decode(response.responseText);
-                                if (jsonResponse.success == true) {
-                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                    religionDetailStore.reload();
-                                } else if (jsonResponse.success == false) {
-                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
-                                }
-                            },
-                            failure: function(response, options) {
-                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
-                            }
-                        }); // refresh the store
-                    }
-                }
-            }]
-        },
-        bbar: new Ext.PagingToolbar({
-            store: religionDetailStore,
-            pageSize: perPage
-        }),
-        view: new Ext.ux.grid.BufferView({
-            rowHeight: 34,
-            scrollDelay: false
-        })
-    });
+            }
+            return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+        } else if (dateRangeType == 'month') {
+            alert("v" + monthReceive);
+            if (monthReceive == 12) {
+                yearReceive++;
+                monthReceive = 1;
+                alert("ddd" + monthReceive);
+            } else {
+                alert("e" + monthReceive);
+                monthReceive++;
+                alert("aaa" + monthReceive);
+            }
+            alert(yearReceive + "-" + monthReceive + "-" + dayReceive);
+            return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+        } else if (dateRangeType == 'year') {
+            yearReceive++;
+            return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+        }
+    }
+    function previousDate(dateReceive, dateRangeType) {
+        var explodeDate = dateReceive.split("-");
+        var dayReceive = parseInt(explodeDate[2]);
+        var monthReceive = parseInt(explodeDate[1]);
+        var yearReceive = parseInt(explodeDate[0]);
+        if (dateRangeType == 'day') {
+            dayReceive--;
+            if (dayReceive == 0) {
+                monthReceive--;
+                dayReceive = 32 - new Date(yearReceive, monthReceive - 2, 32).getDate();
+            }
+            return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+        } else if (dateRangeType == 'week') {
+            date_day = dayReceive;
+            dayReceive = parseInt(dayReceive - 7);
+            if (dayReceive <= 0) {
+                monthReceive--;
+            }
+            dayReceive = 32 - new Date(yearReceive, monthReceive - 2, 32).getDate();
+            dayReceive = parseInt(dayReceive - 7 + date_day);
+            if (monthReceive == 0 || monthReceive == '00') {
+                dayReceive = 31;
+                monthReceive = 12;
+                yearReceive--;
+            }
+            return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+        } else if (dateRangeType == 'month') {
+            monthReceive--;
+            if (monthReceive == 0) {
+                monthReceive = 12;
+                yearReceive--;
+            }
+            dayReceive = 32 - new Date(yearReceive, monthReceive - 2, 32).getDate();
+            return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+        } else if (dateRangeType == 'year') {
+            yearReceive--;
+            return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+        }
+    }
+    function currentDay() {
+        dateRangeStartValue = new Date();
+        return dateRangeStartValue.getDate() + '-' + (dateRangeStartValue.getMonth() + 1) + '-' + dateRangeStartValue.getFullYear();
+    }
     var gridPanel = new Ext.Panel({
         title: leafNative,
         height: 50,
         layout: 'fit',
         iconCls: 'application_view_detail',
-        tbar: [' ', {
-            text: reloadToolbarLabel,
-            iconCls: 'database_refresh',
-            id: 'pageReload',
-            
-            handler: function() {
-                religionStore.reload();
-            }
-        },
-        '-', {
-            text: addToolbarLabel,
-            iconCls: 'add',
-            id: 'pageCreate',
-            
+        tbar: [{
             xtype: 'button',
-            handler: function() {
-                viewPort.items.get(1).expand();
-            }
-        },
-        '-', {
-            text: excelToolbarLabel,
-            iconCls: 'page_excel',
-            id: 'page_excel',
-            
-            handler: function() {
-                Ext.Ajax.request({
-                    url: '../religionController.php?method=report&mode=excel&limit=' + perPage + '&leafId=' + leafId,
-                    method: 'GET',
-                    success: function(response, options) {
-                        jsonResponse = Ext.decode(response.responseText);
-                        if (jsonResponse == true) {
-                            window.open('../basic/document/excel/religion.xlsx');
-                        } else {
-                            Ext.MessageBox.alert(successLabel, jsonResponse.message);
-                        }
-                    },
-                    failure: function(response, options) {
-                        Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+            iconCls: 'resultset_first',
+            handler: function(button, e) {
+                var dateRangeStartValue = '';
+                if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
+                    dateRangeStartValue = new Date();
+                    Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+                }
+                if (Ext.getCmp('dateRangeType').getValue() == '' || Ext.getCmp('dateRangeType').getValue() == undefined) {
+                    Ext.getCmp('dateRangeType').setValue('day');
+                }
+                Ext.getCmp('dateRangeStart').setValue(previousDate(Ext.getCmp('dateRangeStart').getValue(), Ext.getCmp('dateRangeType').getValue()));
+                Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
+                var dateRangeStartArray = Ext.getCmp('dateRangeStart').getValue();
+                var dateRangeStartArrayData = dateRangeStartArray.split("-");
+                var dayDateRangeStartArrayData = dateRangeStartArrayData[2];
+                var monthDateRangeStartArrayData = dateRangeStartArrayData[1];
+                var yearDateRangeStartArrayData = dateRangeStartArrayData[0];
+                Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
+                Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
+                Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
+                generalLedgerJournalStore.reload({
+                    params: {
+                        dateRangeType: Ext.getCmp('dateRangeType').getValue(),
+                        dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
                     }
                 });
             }
         },
-        '->', new Ext.ux.form.SearchField({
-            store: religionStore,
-            width: 320
-        })],
-        items: [religionGrid]
+        '-', {
+            xtype: 'button',
+            text: 'Day',
+            tooltip: 'Day',
+            iconCls: 'calendar',
+            handler: function(button, e) {
+                Ext.getCmp('dateRangeType').setValue('day');
+                if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
+                    dateRangeStartValue = new Date();
+                    Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+                    Ext.getCmp('filterDay').setText('Filter Day : ' + (dateRangeStartValue.getDate()));
+                    Ext.getCmp('filterMonth').setText('Filter Month : ' + (dateRangeStartValue.getMonth() + 1));
+                    Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
+                }
+                Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
+                generalLedgerJournalStore.reload({
+                    params: {
+                        dateRangeType: Ext.getCmp('dateRangeType').getValue(),
+                        dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
+                    }
+                });
+            }
+        },
+        '-', {
+            xtype: 'button',
+            text: 'Week',
+            tooltip: 'Week',
+            iconCls: 'calendar',
+            handler: function(button, e) {
+                Ext.getCmp('dateRangeType').setValue('week');
+                var curr = new Date();
+                var first = curr.getDate() - curr.getDay();
+                var last = first + 6;
+                var f = new Date(curr.setDate(first));
+                var l = new Date(curr.setDate(last));
+                Ext.getCmp('dateRangeStart').setValue(f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate());
+                Ext.getCmp('dateRangeEnd').setValue(l.getFullYear() + "-" + (l.getMonth() + 1) + "-" + l.getDate());
+                Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
+                generalLedgerJournalStore.reload({
+                    params: {
+                        dateRangeType: Ext.getCmp('dateRangeType').getValue(),
+                        dateRangeStart: Ext.getCmp('dateRangeStart').getValue(),
+                        dateRangeEnd: Ext.getCmp('dateRangeEnd').getValue()
+                    }
+                });
+            }
+        },
+        '-', {
+            xtype: 'button',
+            text: 'Month',
+            tooltip: 'Month',
+            iconCls: 'calendar',
+            handler: function(button, e) {
+                Ext.getCmp('dateRangeType').setValue('month');
+                if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
+                    dateRangeStartValue = new Date();
+                    Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+                    Ext.getCmp('filterDay').setText('Filter Day : ' + (dateRangeStartValue.getDate()));
+                    Ext.getCmp('filterMonth').setText('Filter Month : ' + (dateRangeStartValue.getMonth() + 1));
+                    Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
+                }
+                Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
+                generalLedgerJournalStore.reload({
+                    params: {
+                        dateRangeType: Ext.getCmp('dateRangeType').getValue(),
+                        dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
+                    }
+                });
+            }
+        },
+        '-', {
+            xtype: 'button',
+            text: 'Year',
+            tooltip: 'Year',
+            iconCls: 'calendar',
+            handler: function(button, e) {
+                Ext.getCmp('dateRangeType').setValue('year');
+                if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
+                    dateRangeStartValue = new Date();
+                    Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+                    Ext.getCmp('filterDay').setText('Filter Day : ' + (dateRangeStartValue.getDate()));
+                    Ext.getCmp('filterMonth').setText('Filter Month : ' + (dateRangeStartValue.getMonth() + 1));
+                    Ext.getCmp('filterYear').setText('Filter Year:' + dateRangeStartValue.getFullYear());
+                }
+                Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
+                generalLedgerJournalStore.reload({
+                    params: {
+                        dateRangeType: Ext.getCmp('dateRangeType').getValue(),
+                        dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
+                    }
+                });
+            }
+        },
+        '-', {
+            xtype: 'label',
+            name: 'currentDay',
+            id: 'currentDay',
+            text: 'Current Day : ' + currentDay()
+        },
+        '-', {
+            xtype: 'label',
+            name: 'filterDay',
+            id: 'filterDay',
+            text: 'Filter Day : '
+        },
+        '-', {
+            xtype: 'label',
+            name: 'filterMonth',
+            id: 'filterMonth',
+            text: 'Filter Month : '
+        },
+        '-', {
+            xtype: 'label',
+            name: 'filterYear',
+            id: 'filterYear',
+            text: 'Filter Year : '
+        },
+        '-', {
+            xtype: 'label',
+            name: 'currentDateRangeType',
+            id: 'currentDateRangeType',
+            text: 'Filter : '
+        },
+        '-', {
+            xtype: 'label',
+            name: 'startdate',
+            id: 'startdate',
+            text: 'Start'
+        },
+        '-', {
+            xtype: 'datefield',
+            name: 'dateRangeBetweenStart',
+            id: 'dateRangeBetweenStart'
+        },
+        '-', {
+            xtype: 'label',
+            name: 'endDate',
+            id: 'endDate',
+            text: 'End'
+        },
+        '-', {
+            xtype: 'datefield',
+            name: 'dateRangeBetweenEnd',
+            id: 'dateRangeBetweenEnd'
+        },
+        '-', {
+            xtype: 'button',
+            name: 'filterBetweenButton',
+            id: 'filterBetweenButton',
+            text: 'Search Between Date',
+            handler: function(e, a) {
+                generalLedgerJournalStore.reload({
+                    params: {
+                        dateRangeType: Ext.getCmp('dateRangeType').getValue(),
+                        dateRangeStart: Ext.getCmp('dateRangeBetweenStart').getValue(),
+                        dateRangeEnd: Ext.getCmp('dateRangeBetweenEnd').getValue()
+                    }
+                });
+            }
+        },'-',{
+        	xtype:'button',
+        	name :'resetFilterDate',
+        	id :'resetFilterDate',
+        	text : 'Reset Date',
+        	handler : function(button,e){
+        		   dateRangeStartValue = new Date();
+                   Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+        	}
+        },'->', {
+            xtype: 'button',
+            iconCls: 'resultset_last',
+            handler: function(button, e) {
+                if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
+                    dateRangeStartValue = new Date();
+                    Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+                }
+                dateRangeStartValue = Ext.getCmp('dateRangeStart').getValue();
+                if (Ext.getCmp('dateRangeType').getValue() == '' || Ext.getCmp('dateRangeType').getValue() == undefined) {
+                    Ext.getCmp('dateRangeType').setValue('day');
+                }
+                Ext.getCmp('dateRangeStart').setValue(forwardDate(Ext.getCmp('dateRangeStart').getValue(), Ext.getCmp('dateRangeType').getValue()));
+                Ext.getCmp('currentDateRangeType').setText('Filter : ' + Ext.getCmp('dateRangeType').getValue());
+                var dateRangeStartArray = Ext.getCmp('dateRangeStart').getValue();
+                var dateRangeStartArrayData = dateRangeStartArray.split("|");
+                var dayDateRangeStartArrayData = dateRangeStartArrayData[2];
+                var monthDateRangeStartArrayData = dateRangeStartArrayData[1];
+                var yearDateRangeStartArrayData = dateRangeStartArrayData[0];
+                Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
+                Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
+                Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
+                var dateRangeStartArray = Ext.getCmp('dateRangeStart').getValue();
+                var dateRangeStartArrayData = dateRangeStartArray.split("-");
+                var dayDateRangeStartArrayData = dateRangeStartArrayData[2];
+                var monthDateRangeStartArrayData = dateRangeStartArrayData[1];
+                var yearDateRangeStartArrayData = dateRangeStartArrayData[0];
+                Ext.getCmp('filterDay').setText('Filter Day : ' + dayDateRangeStartArrayData);
+                Ext.getCmp('filterMonth').setText('Filter Month : ' + monthDateRangeStartArrayData);
+                Ext.getCmp('filterYear').setText('Filter Year:' + yearDateRangeStartArrayData);
+                generalLedgerJournalStore.reload({
+                    params: {
+                        dateRangeType: Ext.getCmp('dateRangeType').getValue(),
+                        dateRangeStart: Ext.getCmp('dateRangeStart').getValue()
+                    }
+                });
+            }
+        }],
+        items: [generalLedgerJournalGrid]
     }); // viewport just save information,items will do separate
     // start form entry
-    var religionDescTemp = new Ext.form.Hidden({
-        name: 'religionDescTemp',
-        id: 'religionDescTemp'
+    var documentNoTemp = new Ext.form.Hidden({
+        name: 'documentNoTemp',
+        id: 'documentNoTemp'
     });
-    var religionDesc = new Ext.form.TextField({
+    var generalLedgerJournalId = new Ext.form.Hidden({
+        name: 'generalLedgerJournalId',
+        id: 'generalLedgerJournalId'
+    });
+    var generalLedgerJournalTypeId = new Ext.ux.form.ComboBoxMatch({
         labelAlign: 'left',
-        fieldLabel: religionDescLabel + '<span style=\'color: red;\'>*</span>',
-        hiddenName: 'religionDesc',
-        name: 'religionDesc',
-        id: 'religionDesc',
+        fieldLabel: generalLedgerJournalTypeForeignKeyLabel,
+        name: 'stateId',
+        hiddenName: 'generalLedgerJournalTypeId',
+        valueField: 'generalLedgerJournalTypeId',
+        hiddenId: 'generalLedgerJournalTypeId_fake',
+        id: 'generalLedgerJournalTypeId',
+        displayField: 'generalLedgerJournalTypeDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: generalLedgerJournalTypeStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        },
+        listeners: {
+            'select': function(index, scrollIntoView) {
+                if (this.value == 2) {
+                    Ext.getCmp('generalLedgerJournalStartDate').enable();
+                    Ext.getCmp('generalLedgerJournalEndDate').enable();
+                } else {
+                    Ext.getCmp('generalLedgerJournalStartDate').disable();
+                    Ext.getCmp('generalLedgerJournalEndDate').disable();
+                }
+            }
+        }
+    });
+    var documentNo = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: documentNoLabel + '*',
+        hiddenName: 'documentNo',
+        name: 'documentNo',
+        id: 'documentNo',
         allowBlank: false,
         blankText: blankTextLabel,
         style: {
             textTransform: 'uppercase'
         },
-        anchor: '95%'
+        anchor: '90%'
     });
-    var religionId = new Ext.form.Hidden({
-        name: 'religionId',
-        id: 'religionId',
-        value: ''
-    }); // hidden value for navigation button
+    var referenceNo = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: referenceNoLabel + '*',
+        hiddenName: 'referenceNo',
+        name: 'referenceNo',
+        id: 'referenceNo',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '90%'
+    });
+    var generalLedgerJournalTitle = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: generalLedgerJournalTitleLabel + '*',
+        hiddenName: 'generalLedgerJournalTitle',
+        name: 'generalLedgerJournalTitle',
+        id: 'generalLedgerJournalTitle',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '90%'
+    });
+    var generalLedgerJournalDesc = new Ext.form.HtmlEditor({
+        labelAlign: 'top',
+        fieldLabel: generalLedgerJournalDescLabel,
+        hiddenName: 'generalLedgerJournalDesc',
+        name: 'generalLedgerJournalDesc',
+        id: 'generalLedgerJournalDesc',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '90%',
+        height: 55
+    });
+    var generalLedgerJournalDate = new Ext.form.DateField({
+        labelAlign: 'left',
+        fieldLabel: generalLedgerJournalDateLabel + '*',
+        hiddenName: 'generalLedgerJournalDate',
+        name: 'generalLedgerJournalDate',
+        id: 'generalLedgerJournalDate',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '90%'
+    });
+    var generalLedgerJournalStartDate = new Ext.form.DateField({
+        labelAlign: 'left',
+        fieldLabel: generalLedgerJournalStartDateLabel + '*',
+        hiddenName: 'generalLedgerJournalStartDate',
+        name: 'generalLedgerJournalStartDate',
+        id: 'generalLedgerJournalStartDate',
+        disabled: true,
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        }
+    });
+    var generalLedgerJournalEndDate = new Ext.form.DateField({
+        labelAlign: 'left',
+        fieldLabel: generalLedgerJournalEndDateLabel + '*',
+        hiddenName: 'generalLedgerJournalEndDate',
+        name: 'generalLedgerJournalEndDate',
+        id: 'generalLedgerJournalEndDate',
+        disabled: true,
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        }
+    });
+    var generalLedgerJournalAmount = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: generalLedgerJournalAmountLabel + '*',
+        hiddenName: 'generalLedgerJournalAmount',
+        name: 'generalLedgerJournalAmount',
+        id: 'generalLedgerJournalAmount',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '90%',
+        decimalPrecision: 2,
+        vtype: 'dollar',
+        listeners: {
+            blur: function() {
+                var value = Ext.getCmp('generalLedgerJournalAmount').getValue();
+                value = value.replace(",", "");
+                value = value.replace(" ", "");
+                Ext.getCmp('generalLedgerJournalAmount').setValue(value);
+            }
+        }
+    });
     var firstRecord = new Ext.form.Hidden({
         name: 'firstRecord',
         id: 'firstRecord',
@@ -1419,8 +2025,998 @@ Ext.onReady(function() {
         id: 'endRecord',
         value: ''
     }); // end of hidden value for navigation button
+    // start generalLedgerJournalDetail request
+    var generalLedgerJournalDetailProxy = new Ext.data.HttpProxy({
+        url: '../controller/generalLedgerJournalDetailController.php',
+        method: 'POST',
+        success: function(response, options) {
+            jsonResponse = Ext.decode(response.responseText);
+            if (jsonResponse.success == true) { // Ext.MessageBox.alert(systemLabel,jsonResponse.message);
+            } else {
+                Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+            }
+        },
+        failure: function(response, options) {
+            Ext.MessageBox.alert(systemErrorLabel, escape(response.Status) + ':' + escape(response.statusText));
+        }
+    });
+    var generalLedgerJournalDetailReader = new Ext.data.JsonReader({
+        totalProperty: 'total',
+        successProperty: 'success',
+        messageProperty: 'message',
+        idProperty: 'generalLedgerJournalDetailId'
+    });
+    var generalLedgerJournalDetailStore = new Ext.data.JsonStore({
+        proxy: generalLedgerJournalDetailProxy,
+        reader: generalLedgerJournalDetailReader,
+        autoLoad: false,
+        autoDestroy: true,
+        pruneModifiedRecords: true,
+        baseParams: {
+            method: 'read',
+            leafId: leafId,
+            isAdmin: isAdmin,
+            start: 0,
+            perPage: perPage
+        },
+        root: 'data',
+        id: 'generalLedgerJournalDetailId',
+        fields: [{
+            key: 'PRI',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalDetailId',
+            type: 'int'
+        },
+        {
+            key: 'MUL',
+            foreignKey: 'yes',
+            name: 'generalLedgerJournalId',
+            type: 'int'
+        },
+        {
+            key: 'MUL',
+            foreignKey: 'yes',
+            name: 'generalLedgerChartOfAccountId',
+            type: 'int'
+        },
+        {
+            key: 'MUL',
+            foreignKey: 'yes',
+            name: 'countryId',
+            type: 'int'
+        }, {
+            key: '',
+            foreignKey: 'no',
+            name: 'transactionMode',
+            type: 'string'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'generalLedgerJournalDetailAmount',
+            type: 'float'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDefault',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isNew',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDraft',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isUpdate',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isDelete',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isActive',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isApproved',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isReview',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'isPost',
+            type: 'boolean'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'executeBy',
+            type: 'int'
+        },
+        {
+            key: '',
+            foreignKey: 'no',
+            name: 'executeTime',
+            type: 'date',
+            dateFormat: 'Y-m-d H:i:s'
+        }]
+    }); // end generalLedgerJournalDetail request
+    var generalLedgerChartOfAccountFilters = new Ext.ux.grid.GridFilters({
+        encode: false,
+        local: false,
+        filters: [{
+            type: 'int',
+            dataIndex: 'generalLedgerJournalDetailId',
+            column: 'generalLedgerJournalDetailId',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        , {
+            type: 'list',
+            dataIndex: 'generalLedgerJournalId',
+            column: 'generalLedgerJournalId',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial',
+            labelField: 'generalLedgerJournalDesc',
+            store: generalLedgerJournalStore,
+            phpMode: true
+        },
+        , {
+            type: 'list',
+            dataIndex: 'generalLedgerChartOfAccountId',
+            column: 'generalLedgerChartOfAccountId',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial',
+            labelField: 'generalLedgerChartOfAccountDesc',
+            store: generalLedgerChartOfAccountStore,
+            phpMode: true
+        },
+        , {
+            type: 'list',
+            dataIndex: 'countryId',
+            column: 'countryId',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial',
+            labelField: 'countryCurrencyCodeDesc',
+            store: countryStore,
+            phpMode: true
+        },
+        {
+            type: 'float',
+            dataIndex: 'generalLedgerJournalDetailAmount',
+            column: 'generalLedgerJournalDetailAmount',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isDefault',
+            column: 'isDefault',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isNew',
+            column: 'isNew',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isDraft',
+            column: 'isDraft',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isUpdate',
+            column: 'isUpdate',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isDelete',
+            column: 'isDelete',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isActive',
+            column: 'isActive',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isApproved',
+            column: 'isApproved',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isReview',
+            column: 'isReview',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isPost',
+            column: 'isPost',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'list',
+            dataIndex: 'executeBy',
+            column: 'executeBy',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial',
+            labelField: 'staffName',
+            store: staffByStore,
+            phpMode: true
+        },
+        {
+            type: 'date',
+            dataIndex: 'executeTime',
+            column: 'executeTime',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'int',
+            dataIndex: 'generalLedgerJournalDetailId',
+            column: 'generalLedgerJournalDetailId',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        , {
+            type: 'list',
+            dataIndex: 'generalLedgerJournalId',
+            column: 'generalLedgerJournalId',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial',
+            labelField: 'generalLedgerJournalDesc',
+            store: generalLedgerJournalStore,
+            phpMode: true
+        },
+        , {
+            type: 'list',
+            dataIndex: 'generalLedgerChartOfAccountId',
+            column: 'generalLedgerChartOfAccountId',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial',
+            labelField: 'generalLedgerChartOfAccountDesc',
+            store: generalLedgerChartOfAccountStore,
+            phpMode: true
+        },
+        , {
+            type: 'list',
+            dataIndex: 'countryId',
+            column: 'countryId',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial',
+            labelField: 'countryDesc',
+            store: countryStore,
+            phpMode: true
+        },
+        {
+            type: 'float',
+            dataIndex: 'generalLedgerJournalDetailAmount',
+            column: 'generalLedgerJournalDetailAmount',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isDefault',
+            column: 'isDefault',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isNew',
+            column: 'isNew',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isDraft',
+            column: 'isDraft',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isUpdate',
+            column: 'isUpdate',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isDelete',
+            column: 'isDelete',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isActive',
+            column: 'isActive',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isApproved',
+            column: 'isApproved',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isReview',
+            column: 'isReview',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'boolean',
+            dataIndex: 'isPost',
+            column: 'isPost',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        },
+        {
+            type: 'list',
+            dataIndex: 'executeBy',
+            column: 'executeBy',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial',
+            labelField: 'staffName',
+            store: staffByStore,
+            phpMode: true
+        },
+        {
+            type: 'date',
+            dataIndex: 'executeTime',
+            column: 'executeTime',
+            table: 'generalLedgerJournalDetail',
+            database: 'ifinancial'
+        }]
+    });
+    var generalLedgerJournalDetailId = new Ext.form.Hidden({
+        name: 'generalLedgerJournalDetailId',
+        id: 'generalLedgerJournalDetailId'
+    });
+    var generalLedgerChartOfAccountId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: generalLedgerChartOfAccountIdLabel,
+        name: 'stateId',
+        hiddenName: 'generalLedgerChartOfAccountId',
+        valueField: 'generalLedgerChartOfAccountId',
+        hiddenId: 'generalLedgerChartOfAccountId_fake',
+        id: 'generalLedgerChartOfAccountId',
+        displayField: 'generalLedgerChartOfAccountDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: generalLedgerChartOfAccountStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        }
+    });
+    var transactionModeArrayData = [
+                                    ['D', 'DEBIT'], 
+                                    ['C', 'CREDIT']];
+    var transactionModeRecord = Ext.data.Record.create([{
+        name: 'mode'
+    },
+    {
+        name: 'modFlag'
+    }]);
+    var transactionModeArrayReader = new Ext.data.ArrayReader({},
+    transactionModeRecord);
+    var transactionModeMemoryProxy = new Ext.data.MemoryProxy(transactionModeArrayData);
+    var transactionModeStore = new Ext.data.Store({
+        reader: transactionModeArrayReader,
+        proxy: transactionModeMemoryProxy
+    });
+    transactionModeStore.load();
+    var transactionMode = new Ext.ux.form.ComboBoxMatch({
+        fieldLabel: 'Mod',
+        labelAlign: 'left',
+        name: 'transactionMode',
+        id: 'transactionMode',
+        valueField: 'mode',
+        displayField: 'modFlag',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: transactionModeStore,
+        width: '50',
+        selectOnFocus: true,
+        mode: 'local',
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\\s*')).replace(/\\\\s\\\*/g, '\\s*');
+            return new RegExp('\\b(' + value + ')', 'i');
+        }
+    });
+    var countryId = new Ext.ux.form.ComboBoxMatch({
+        labelAlign: 'left',
+        fieldLabel: countryIdLabel,
+        name: 'stateId',
+        hiddenName: 'countryId',
+        valueField: 'countryId',
+        hiddenId: 'countryId_fake',
+        id: 'countryId',
+        displayField: 'countryCurrencyCodeDesc',
+        typeAhead: false,
+        triggerAction: 'all',
+        store: countryStore,
+        anchor: '95%',
+        selectOnFocus: true,
+        mode: 'local',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        createValueMatcher: function(value) {
+            value = String(value).replace(/\s*/g, '');
+            if (Ext.isEmpty(value, false)) {
+                return new RegExp('^');
+            }
+            value = Ext.escapeRe(value.split('').join('\s*')).replace(/\\s\\*/g, '\s*');
+            return new RegExp('\b(' + value + ')', 'i');
+        }
+    });
+    var generalLedgerJournalDetailAmount = new Ext.form.TextField({
+        labelAlign: 'left',
+        fieldLabel: generalLedgerJournalDetailAmountLabel + '<span style="\'color:" red;\'="">*</span>',
+        hiddenName: 'generalLedgerJournalDetailAmount',
+        name: 'generalLedgerJournalDetailAmount',
+        id: 'generalLedgerJournalDetailAmount',
+        allowBlank: false,
+        blankText: blankTextLabel,
+        style: {
+            textTransform: 'uppercase'
+        },
+        anchor: '40%',
+        decimalPrecision: 2,
+        vtype: 'dollar',
+        listeners: {
+            blur: function() {
+                var value = Ext.getCmp('generalLedgerJournalDetailAmount').getValue();
+                value = value.replace(",", "");
+                value = value.replace(" ", "");
+                Ext.getCmp('generalLedgerJournalDetailAmount').setValue(value);
+            }
+        }
+    });
+    var isDefaultGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isDefaultLabel,
+        dataIndex: 'isDefault',
+        hidden: isDefaultHidden
+    });
+    var isNewGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isNewLabel,
+        dataIndex: 'isNew',
+        hidden: isNewHidden
+    });
+    var isDraftGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isDraftLabel,
+        dataIndex: 'isDraft',
+        hidden: isDraftHidden
+    });
+    var isUpdateGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isUpdateLabel,
+        dataIndex: 'isUpdate',
+        hidden: isUpdateHidden
+    });
+    var isDeleteGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isDeleteLabel,
+        dataIndex: 'isDelete'
+    });
+    var isActiveGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isActiveLabel,
+        dataIndex: 'isActive',
+        hidden: isActiveHidden
+    });
+    var isApprovedGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isApprovedLabel,
+        dataIndex: 'isApproved',
+        hidden: isApprovedHidden
+    });
+    var isReviewGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isReviewLabel,
+        dataIndex: 'isReview',
+        hidden: isReviewHidden
+    });
+    var isPostGridDetail = new Ext.ux.grid.CheckColumn({
+        header: isPostLabel,
+        dataIndex: 'isPost',
+        hidden: isPostHidden
+    });
+    Ext.util.Format.comboRenderer = function(combo) {
+        return function(value) {
+            var record = combo.findRecord(combo.valueField || combo.displayField, value);
+            if (record) { // remove special character
+                res = record.get(combo.displayField); // res = res.replace(/[^a-zA-Z 0-9]+/g, '-');
+            } else { // res = ("hmm, not found:" + value);
+                res = (value);
+            }
+            return res;
+        };
+    };
+    var generalLedgerJournalDetailColumnModel = [new Ext.grid.RowNumberer(), {
+        dataIndex: 'generalLedgerChartOfAccountId',
+        header: generalLedgerChartOfAccountForeignKeyLabel,
+        width: 200,
+        sortable: true,
+        editor: generalLedgerChartOfAccountId,
+        renderer: Ext.util.Format.comboRenderer(generalLedgerChartOfAccountId),
+        hidden: false,
+        jsonType: 'int'
+    },
+    {
+        dataIndex: 'countryId',
+        header: countryForeignKeyLabel,
+        width: 200,
+        sortable: true,
+        editor: countryId,
+        renderer: Ext.util.Format.comboRenderer(countryId),
+        hidden: false,
+        jsonType: 'int'
+    },
+    {
+        dataIndex: 'transactionMode',
+        header: transactionModeLabel,
+        width: 200,
+        sortable: true,
+        editor: transactionMode,
+        renderer: Ext.util.Format.comboRenderer(transactionMode)
+    },
+    {
+        dataIndex: 'generalLedgerJournalDetailAmount',
+        header: generalLedgerJournalDetailAmountLabel,
+        width: 75,
+        sortable: true,
+        summaryType: 'sum',
+        renderer: function(value) {
+            return ' RM ' + Ext.util.Format.number(value, '0,0.00');
+        },
+        editor: {
+            xtype: 'textfield',
+            labelAlign: 'left',
+            fieldLabel: generalLedgerJournalDetailAmountLabel,
+            hiddenName: 'generalLedgerJournalDetailAmount',
+            name: 'generalLedgerJournalDetailAmount',
+            id: 'generalLedgerJournalDetailAmount',
+            blankText: blankTextLabel,
+            decimalPrecision: 2,
+            vtype: 'dollar',
+            anchor: '95%',
+            listeners: {
+                blur: function() {
+                    var value = Ext.getCmp('generalLedgerJournalDetailAmount').getValue();
+                    value = value.replace(",", "");
+                    value = Ext.util.Format.usMoney(value);
+                    value = value.replace(" ", "");
+                    Ext.getCmp('generalLedgerJournalDetailAmount').setValue(value);
+                }
+            }
+        }
+    },
+    isDefaultGridDetail, isNewGridDetail, isDraftGridDetail, isUpdateGridDetail, isDeleteGridDetail, isActiveGridDetail, isApprovedGridDetail, isReviewGridDetail, isPostGridDetail, {
+        dataIndex: 'executeBy',
+        header: executeByLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return record.data.staffName;
+        }
+    },
+    {
+        dataIndex: 'executeTime',
+        header: executeTimeLabel,
+        sortable: true,
+        hidden: false,
+        renderer: function(value, metaData, record, rowIndex, colIndex, store) {
+            return Ext.util.Format.date(value, 'd-m-Y H:i:s');
+        }
+    }];
+    var generalLedgerJournalDetailEditor = new Ext.ux.grid.RowEditor({
+        saveText: saveButtonLabel,
+        cancelText: cancelButtonLabel,
+        listeners: {
+            cancelEdit: function(rowEditor, changes, record, rowIndex) {
+                generalLedgerJournalDetailStore.reload({
+                    params: {
+                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                    }
+                });
+            },
+            afteredit: function(rowEditor, changes, record, rowIndex) {
+                this.save = true;
+                var record = this.grid.getStore().getAt(rowIndex);
+                if (parseInt(record.get('generalLedgerJournalDetailId')) == 'NaN') {
+                    method = 'create';
+                } else if (record.get('generalLedgerJournalDetailId') == '') {
+                    method = 'create';
+                } else if (record.get('generalLedgerJournalDetailId') == undefined) {
+                    method = 'create';
+                } else if (parseInt(record.get('generalLedgerJournalDetailId')) > 0) {
+                    method = 'save';
+                } else {
+                    method = 'create';
+                }
+                Ext.Ajax.request({
+                    url: '../controller/generalLedgerJournalDetailController.php',
+                    method: 'POST',
+                    params: {
+                        leafId: leafId,
+                        isAdmin: isAdmin,
+                        method: method,
+                        generalLedgerJournalDetailId: record.get('generalLedgerJournalDetailId'),
+                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue(),
+                        generalLedgerChartOfAccountId: record.get('generalLedgerChartOfAccountId'),
+                        transactionMode: record.get('transactionMode'),
+                        countryId: record.get('countryId'),
+                        generalLedgerJournalDetailAmount: record.get('generalLedgerJournalDetailAmount')
+                    },
+                    success: function(response, options) {
+                        jsonResponse = Ext.decode(response.responseText);
+                        if (jsonResponse.success == false) {
+                            Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                        } else {
+                            generalLedgerJournalDetailStore.reload({
+                                params: {
+                                    generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                                }
+                            });
+                            if (jsonResponse.masterDetail > 0) {
+                                Ext.getCmp('postButton').disable();
+                                Ext.MessageBox.alert(systemErrorLabel, "Master Amount and Detail Amount not tally");
+                            }
+                            if (jsonResponse.trialBalance > 0) {
+                                Ext.getCmp('postButton').disable();
+                                Ext.MessageBox.alert(systemErrorLabel, "Trial Balance no tally");
+                            }
+                            if (jsonResponse.tally > 0) {
+                                Ext.getCmp('postButton').disable();
+                                Ext.MessageBox.alert(systemErrorLabel, "Total Debit and Credit not Tally");
+                            }
+                            if (jsonResponse.tally == 0 && jsonResponse.trialBalance == 0 && jsonResponse.masterDetail == 0 ) {
+                                Ext.getCmp('postButton').enable();
+                            }
+                        }
+                    },
+                    failure: function(response, options) {
+                        Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ":" + response.statusText);
+                    }
+                });
+            }
+        }
+    });
+    var generalLedgerJournalDetailEntity = Ext.data.Record.create([{
+        key: 'PRI',
+        foreignKey: 'no',
+        name: 'generalLedgerJournalDetailId',
+        type: 'int'
+    },
+    {
+        key: 'MUL',
+        foreignKey: 'yes',
+        name: 'generalLedgerJournalId',
+        type: 'int'
+    },
+    {
+        key: 'MUL',
+        foreignKey: 'yes',
+        name: 'generalLedgerChartOfAccountId',
+        type: 'int'
+    },
+    {
+        key: 'MUL',
+        foreignKey: 'yes',
+        name: 'countryId',
+        type: 'int'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'generalLedgerJournalDetailAmount',
+        type: 'float'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'isDefault',
+        type: 'boolean'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'isNew',
+        type: 'boolean'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'isDraft',
+        type: 'boolean'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'isUpdate',
+        type: 'boolean'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'isDelete',
+        type: 'boolean'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'isActive',
+        type: 'boolean'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'isApproved',
+        type: 'boolean'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'isReview',
+        type: 'boolean'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'isPost',
+        type: 'boolean'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'executeBy',
+        type: 'int'
+    },
+    {
+        key: '',
+        foreignKey: 'no',
+        name: 'executeTime',
+        type: 'date',
+        dateFormat: 'Y-m-d H:i:s'
+    }]);
+    var generalLedgerJournalDetailFlagArray = ['isDefault', 'isNew', 'isDraft', 'isUpdate', 'isDelete', 'isActive', 'isApproved', 'isReview', 'isPost'];
+    var generalLedgerJournalDetailGrid = new Ext.grid.GridPanel({
+        name: 'generalLedgerJournalDetailGrid',
+        id: 'generalLedgerJournalDetailGrid',
+        border: false,
+        store: generalLedgerJournalDetailStore,
+        height: 250,
+        autoScroll: true,
+        columns: generalLedgerJournalDetailColumnModel,
+        viewConfig: {
+            autoFill: true,
+            forceFit: true,
+            emptyRow: emptyRowLabel
+        },
+        layout: 'fit',
+        disabled: true,
+        plugins: [generalLedgerJournalDetailEditor],
+        tbar: {
+            items: [{
+                xtype: 'button',
+                iconCls: 'add',
+                id: 'add_record',
+                name: 'add_record',
+                text: newButtonLabel,
+                handler: function() {
+                    var newRecord = new generalLedgerJournalDetailEntity({
+                        generalLedgerJournalDetailId: '',
+                        generalLedgerJournalId: '',
+                        generalLedgerChartOfAccountId: '',
+                        countryId: '',
+                        generalLedgerJournalDetailAmount: '',
+                        isDefault: '',
+                        isNew: '',
+                        isDraft: '',
+                        isUpdate: '',
+                        isDelete: '',
+                        isActive: '',
+                        isApproved: '',
+                        isReview: '',
+                        isPost: '',
+                        executeBy: '',
+                        executeTime: ''
+                    });
+                    generalLedgerJournalDetailEditor.stopEditing();
+                    generalLedgerJournalDetailStore.insert(0, newRecord);
+                    generalLedgerJournalDetailGrid.getSelectionModel().getSelections();
+                    generalLedgerJournalDetailEditor.startEditing(0);
+                }
+            },
+            {
+                xtype: 'button',
+                text: CheckAllLabel,
+                iconCls: 'row-check-sprite-check',
+                listeners: {
+                    'click': function(button, e) {
+                        generalLedgerJournalDetailStore.each(function(record, fn, scope) {
+                            for (var access in generalLedgerJournalDetailFlagArray) {
+                                record.set(generalLedgerJournalDetailFlagArray[access], true);
+                            }
+                        });
+                    }
+                }
+            },
+            {
+                text: ClearAllLabel,
+                iconCls: 'row-check-sprite-uncheck',
+                listeners: {
+                    'click': function(button, e) {
+                        generalLedgerJournalDetailStore.each(function(record, fn, scope) {
+                            for (var access in generalLedgerJournalDetailFlagArray) {
+                                record.set(generalLedgerJournalDetailFlagArray[access], false);
+                            }
+                        });
+                    }
+                }
+            },
+            {
+                xtype: 'button',
+                text: saveButtonLabel,
+                iconCls: 'bullet_disk',
+                listeners: {
+                    'click': function(button, e) {
+                        var url = '../controller/generalLedgerJournalDetailController.php?';
+                        var sub_url = '';
+                        var modified = generalLedgerJournalDetailStore.getModifiedRecords();
+                        for (var i = 0; i < modified.length; i++) {
+                            var dataChanges = modified[i].getChanges();
+                            sub_url = sub_url + '&generalLedgerJournalDetailId[]=' + modified[i].get('generalLedgerJournalDetailId');
+                            if (isAdmin == 1) {
+                                if (dataChanges.isDefault == true || dataChanges.isDefault == false) {
+                                    sub_url = sub_url + '&isDefault[]=' + modified[i].get('isDefault');
+                                }
+                                if (dataChanges.isDraft == true || dataChanges.isDraft == false) {
+                                    sub_url = sub_url + '&isDraft[]=' + modified[i].get('isDraft');
+                                }
+                                if (dataChanges.isNew == true || dataChanges.isNew == false) {
+                                    sub_url = sub_url + '&isNew[]=' + modified[i].get('isNew');
+                                }
+                                if (dataChanges.isUpdate == true || dataChanges.isUpdate == false) {
+                                    sub_url = sub_url + '&isUpdate[]=' + modified[i].get('isUpdate');
+                                }
+                            }
+                            if (dataChanges.isDelete == true || dataChanges.isDelete == false) {
+                                sub_url = sub_url + '&isDelete[]=' + modified[i].get('isDelete');
+                            }
+                            if (isAdmin == 1) {
+                                if (dataChanges.isActive == true || dataChanges.isActive == false) {
+                                    ssub_url = sub_url + '&isActive[]=' + modified[i].get('isActive');
+                                }
+                                if (dataChanges.isApproved == true || dataChanges.isApproved == false) {
+                                    sub_url = sub_url + '&isApproved[]=' + modified[i].get('isApproved');
+                                }
+                                if (dataChanges.isReview == true || dataChanges.isReview == false) {
+                                    sub_url = sub_url + '&isReview[]=' + modified[i].get('isReview');
+                                }
+                                if (dataChanges.isPost == true || dataChanges.isPost == false) {
+                                    sub_url = sub_url + '&isPost[]=' + modified[i].get('isPost');
+                                }
+                            }
+                        }
+                        url = url + sub_url;
+                        Ext.Ajax.request({
+                            url: url,
+                            method: 'GET',
+                            params: {
+                                leafId: leafId,
+                                isAdmin: isAdmin,
+                                generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue(),
+                                method: 'updateStatus'
+                            },
+                            success: function(response, options) {
+                                jsonResponse = Ext.decode(response.responseText);
+                                if (jsonResponse.success == true) {
+                                    Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                                    generalLedgerJournalDetailStore.reload({
+                                        params: {
+                                            generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                                        }
+                                    });
+                                    if (jsonResponse.trialBalance > 0) {
+                                        Ext.getCmp('postButton').disable(); //  Ext.MessageBox.alert(systemErrorLabel, "Trial Balance no tally");
+                                    }
+                                    if (jsonResponse.tally > 0) {
+                                        Ext.getCmp('postButton').disable(); // Ext.MessageBox.alert(systemErrorLabel, "Total Debit and Credit not Tally");
+                                    }
+                                    if (jsonResponse.tally == 0 && jsonResponse.trialBalance == 0) {
+                                        Ext.getCmp('postButton').enable();
+                                    }
+                                } else if (jsonResponse.success == false) {
+                                    Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
+                                }
+                            },
+                            failure: function(response, options) {
+                                Ext.MessageBox.alert(systemErrorLabel, escape(response.status) + ':' + escape(response.statusText));
+                            }
+                        });
+                    }
+                }
+            },
+            '-', {
+                xtype: 'label',
+                name: 'trialBalanceStatus',
+                text: 'Trial Balance Status : '
+            },
+            '-', {
+                xtype: 'label',
+                name: 'tallyStatus',
+                text: 'Tally Status : '
+            }]
+        },
+        bbar: new Ext.PagingToolbar({
+            store: generalLedgerJournalDetailStore,
+            pageSize: perPage
+        }),
+        view: new Ext.ux.grid.BufferView({
+            rowHeight: 34,
+            scrollDelay: false
+        })
+    });
     var formPanel = new Ext.form.FormPanel({
-        url: '../controller/religionController.php',
+        url: '../controller/generalLedgerJournalController.php',
         name: 'formPanel',
         id: 'formPanel',
         method: 'post',
@@ -1436,10 +3032,40 @@ Ext.onReady(function() {
                 bodyStyle: 'padding:5px',
                 border: true,
                 frame: true,
-                items: [religionId, religionDesc, religionDescTemp]
+                items: [generalLedgerJournalId, generalLedgerJournalTypeId, {
+                    xtype: 'fieldset',
+                    title: 'Date Range',
+                    items: [{
+                        xtype: 'compositefield',
+                        fieldLabel: 'Date Range',
+                        msgTarget: 'side',
+                        anchor: '-20',
+                        defaults: {
+                            flex: 1
+                        },
+                        items: [generalLedgerJournalStartDate, generalLedgerJournalStartDate, generalLedgerJournalEndDate]
+                    }]
+                },
+                {
+                    layout: 'column',
+                    border: false,
+                    items: [{
+                        columnWidth: .5,
+                        layout: 'form',
+                        border: false,
+                        items: [generalLedgerJournalTitle, generalLedgerJournalDesc, generalLedgerJournalDate, generalLedgerJournalAmount, referenceNo]
+                    },
+                    {
+                        columnWidth: .5,
+                        layout: 'form',
+                        border: false,
+                        labelAlign: 'top',
+                        items: [generalLedgerJournalDesc]
+                    }]
+                }]
             }]
         },
-        religionDetailGrid],
+        generalLedgerJournalDetailGrid],
         buttonVAlign: 'top',
         buttonAlign: 'left',
         iconCls: 'application_form',
@@ -1457,10 +3083,10 @@ Ext.onReady(function() {
             type: 'button',
             iconCls: 'key',
             disabled: auditButtonLabelDisabled,
-            handler: function() {
+            handler: function() { // reload the store
                 if (auditWindow) {
-                    religionStore.reload();
-                    religionDetailStore.reload();
+                    generalLedgerJournalStore.reload();
+                    generalLedgerJournalDetailStore.reload();
                     auditWindow.show().center();
                 }
             }
@@ -1472,7 +3098,6 @@ Ext.onReady(function() {
             type: 'button',
             iconCls: 'new',
             handler: function() {
-                var id = Ext.getCmp('religionId').getValue();
                 var method = 'create';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
@@ -1484,16 +3109,18 @@ Ext.onReady(function() {
                     success: function(form, action) {
                         if (action.result.success == true) {
                             Ext.MessageBox.alert(systemLabel, action.result.message);
-                            Ext.getCmp('religionDetailGrid').enable();
+                            Ext.getCmp('generalLedgerJournalDetailGrid').enable();
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            religionStore.reload({
+                            Ext.getCmp('generalLedgerJournalId').setValue(action.result.generalLedgerJournalId);
+                            generalLedgerJournalStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('religionId').setValue(action.result.religionId);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -1519,29 +3146,29 @@ Ext.onReady(function() {
             iconCls: 'bullet_disk',
             disabled: true,
             handler: function() {
-                Ext.getCmp('newButton').disable();
-                var id = Ext.getCmp('religionId').getValue();
                 var method = 'save';
                 formPanel.getForm().submit({
                     waitMsg: waitMessageLabel,
                     params: {
                         method: method,
                         leafId: leafId,
-                        page: 'master'
+                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
                     },
                     success: function(form, action) {
                         if (action.result.success == true) {
-                            Ext.MessageBox.alert(title, action.result.message);
-                            Ext.getCmp('religionDetailGrid').enable();
+                            Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                            Ext.getCmp('generalLedgerJournalDetailGrid').enable();
+                            Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').enable();
                             Ext.getCmp('deleteButton').enable();
-                            religionStore.reload({
+                            generalLedgerJournalStore.reload({
                                 params: {
                                     leafId: leafId,
                                     start: 0,
                                     limit: perPage
                                 }
                             });
-                            Ext.getCmp('religionId').setValue(action.result.religionId);
+                            Ext.getCmp('generalLedgerJournalId').setValue(action.result.generalLedgerJournalId);
                         } else {
                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                         }
@@ -1568,7 +3195,6 @@ Ext.onReady(function() {
             iconCls: 'trash',
             disabled: true,
             handler: function() {
-                Ext.getCmp('newButton').disable();
                 Ext.Msg.show({
                     title: deleteRecordTitleMessageLabel,
                     msg: deleteRecordMessageLabel,
@@ -1578,10 +3204,10 @@ Ext.onReady(function() {
                     fn: function(response) {
                         if ('yes' == response) {
                             Ext.Ajax.request({
-                                url: '../controller/religionController.php',
+                                url: '../controller/generalLedgerJournalController.php',
                                 params: {
                                     method: 'delete',
-                                    religionId: record.data.religionId,
+                                    generalLedgerJournalId: record.data.generalLedgerJournalId,
                                     leafId: leafId,
                                     isAdmin: isAdmin
                                 },
@@ -1589,17 +3215,25 @@ Ext.onReady(function() {
                                     jsonResponse = Ext.decode(response.responseText);
                                     if (jsonResponse.success == true) {
                                         Ext.MessageBox.alert(systemLabel, jsonResponse.message);
-                                        religionStore.reload({
+                                        generalLedgerJournalStore.reload({
                                             params: {
                                                 leafId: leafId,
                                                 start: 0,
                                                 limit: perPage
                                             }
                                         });
-                                        Ext.getCmp('religionDetail').disable();
+                                        Ext.getCmp('generalLedgerJournalDetail').disable();
+                                        Ext.getCmp('newButton').disable();
                                         Ext.getCmp('saveButton').disable();
                                         Ext.getCmp('nextButton').disable();
                                         Ext.getCmp('previousButton').disable();
+                                        generalLedgerJournalStore.reload({
+                                            params: {
+                                                leafId: leafId,
+                                                start: 0,
+                                                limit: perPage
+                                            }
+                                        })
                                     } else {
                                         Ext.MessageBox.alert(systemErrorLabel, jsonResponse.message);
                                     }
@@ -1620,11 +3254,12 @@ Ext.onReady(function() {
             id: 'resetButton',
             iconCls: 'database_refresh',
             handler: function() {
-            	Ext.getCmp('newButton').enable();
+                Ext.getCmp('newButton').enable();
                 Ext.getCmp('saveButton').disable();
                 Ext.getCmp('deleteButton').disable();
                 Ext.getCmp('postButton').disable();
-                Ext.getCmp('religionDetailGrid').disable();
+                Ext.getCmp('generalLedgerJournalDetailGrid').disable();
+                generalLedgerJournalDetailGrid.store.removeAll();
                 formPanel.getForm().reset();
             }
         },
@@ -1634,9 +3269,45 @@ Ext.onReady(function() {
             name: 'postButton',
             id: 'postButton',
             iconCls: 'lock',
-            disable: true,
+            disabled: true,
             handler: function() {
-                Ext.getCmp('newButton').disable();
+                
+                Ext.Ajax.request({
+                    url: '../controller/generalLedgerJournalController.php',
+                    method: 'POST',
+                    params: {
+                        method: 'posting',
+                        leafId: leafId,
+                        isAdmin: isAdmin,
+                        generalLedgerJournalId: Ext.getCmp('generalLedgerJournalId').getValue()
+                                                           				
+                    },
+                    success: function(response, options) {
+                        jsonResponse = Ext.decode(response.responseText);
+                        if (jsonResponse.success == false) {
+                            Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                        } else {
+                        	Ext.MessageBox.alert(systemLabel, jsonResponse.message);
+                        	Ext.getCmp('newButton').disable();
+                            Ext.getCmp('saveButton').disable();
+                            Ext.getCmp('deleteButton').disable();
+                            Ext.getCmp('postButton').disable();
+                            Ext.getCmp('generalLedgerJournalDetailGrid').disable();
+                            formPanel.getForm().reset();
+                            generalLedgerJournalDetailGrid.store.removeAll();
+                            generalLedgerJournalStore.reload({
+                                params: {
+                                    leafId: leafId,
+                                    start: 0,
+                                    limit: perPage
+                                }
+                            });
+                        }
+                    },
+                    failure: function(response, options) {
+                        Ext.MessageBox.alert(systemLabel, escape(response.status) + ':' + escape(response.statusText));
+                    }
+                });
                 formPanel.getForm().reset();
             }
         },
@@ -1661,7 +3332,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('firstRecord').getValue() == '') {
                     Ext.Ajax.request({
-                        url: '../controller/religionController.php',
+                        url: '../controller/generalLedgerJournalController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -1673,13 +3344,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
                                 formPanel.form.load({
-                                    url: '../controller/religionController.php',
+                                    url: '../controller/generalLedgerJournalController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        religionId: Ext.getCmp('firstRecord').getValue(),
+                                        generalLedgerJournalId: Ext.getCmp('firstRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -1696,14 +3367,14 @@ Ext.onReady(function() {
                                             Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                             Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
                                             Ext.getCmp('previousButton').disable();
-                                            religionDetailStore.load({
+                                            generalLedgerJournalDetailStore.load({
                                                 params: {
                                                     leafId: leafId,
                                                     isAdmin: isAdmin,
-                                                    religionId: action.result.data.religionId
+                                                    generalLedgerJournalId: action.result.data.generalLedgerJournalId
                                                 }
                                             });
-                                            religionDetailGrid.enable();
+                                            generalLedgerJournalDetailGrid.enable();
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -1722,13 +3393,13 @@ Ext.onReady(function() {
                     });
                 } else {
                     formPanel.form.load({
-                        url: '../controller/religionController.php',
+                        url: '../controller/generalLedgerJournalController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            religionId: Ext.getCmp('firstRecord').getValue(),
+                            generalLedgerJournalId: Ext.getCmp('firstRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1745,14 +3416,14 @@ Ext.onReady(function() {
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
                                 Ext.getCmp('previousButton').disable();
-                                religionDetailStore.load({
+                                generalLedgerJournalDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        religionId: action.result.data.religionId
+                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
                                     }
                                 });
-                                religionDetailGrid.enable();
+                                generalLedgerJournalDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -1778,13 +3449,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('firstRecord').getValue() >= 1) {
                     formPanel.form.load({
-                        url: '../controller/religionController.php',
+                        url: '../controller/generalLedgerJournalController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            religionId: Ext.getCmp('previousRecord').getValue(),
+                            generalLedgerJournalId: Ext.getCmp('previousRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1795,17 +3466,17 @@ Ext.onReady(function() {
                                 Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                religionDetailStore.load({
+                                generalLedgerJournalDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        religionId: action.result.data.religionId
+                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
                                     }
                                 });
                                 if (Ext.getCmp('previousRecord').getValue() == 0) {
                                     Ext.getCmp('previousButton').disable();
                                 }
-                                religionDetailGrid.enable();
+                                generalLedgerJournalDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -1833,13 +3504,13 @@ Ext.onReady(function() {
                 }
                 if (Ext.getCmp('nextRecord').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/religionController.php',
+                        url: '../controller/generalLedgerJournalController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            religionId: Ext.getCmp('nextRecord').getValue(),
+                            generalLedgerJournalId: Ext.getCmp('nextRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1850,11 +3521,11 @@ Ext.onReady(function() {
                                 Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                religionDetailStore.load({
+                                generalLedgerJournalDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        religionId: action.result.data.religionId
+                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
                                     }
                                 });
                                 if (Ext.getCmp('nextRecord').getValue() > Ext.getCmp('lastRecord').getValue()) {
@@ -1864,7 +3535,7 @@ Ext.onReady(function() {
                                     Ext.getCmp('nextButton').disable();
                                 }
                                 Ext.getCmp('previousButton').enable();
-                                religionDetailGrid.enable();
+                                generalLedgerJournalDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }
@@ -1888,7 +3559,7 @@ Ext.onReady(function() {
                 Ext.getCmp('newButton').disable();
                 if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
                     Ext.Ajax.request({
-                        url: '../controller/religionController.php',
+                        url: '../controller/generalLedgerJournalController.php',
                         method: 'GET',
                         params: {
                             method: 'dataNavigationRequest',
@@ -1900,13 +3571,13 @@ Ext.onReady(function() {
                             if (jsonResponse.success == true) {
                                 Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
                                 formPanel.form.load({
-                                    url: '../controller/religionController.php',
+                                    url: '../controller/generalLedgerJournalController.php',
                                     method: 'POST',
                                     waitTitle: systemLabel,
                                     waitMsg: waitMessageLabel,
                                     params: {
                                         method: 'read',
-                                        religionId: Ext.getCmp('lastRecord').getValue(),
+                                        generalLedgerJournalId: Ext.getCmp('lastRecord').getValue(),
                                         leafId: leafId,
                                         isAdmin: isAdmin
                                     },
@@ -1922,16 +3593,16 @@ Ext.onReady(function() {
                                             Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                             Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                             Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                            religionDetailStore.load({
+                                            generalLedgerJournalDetailStore.load({
                                                 params: {
                                                     leafId: leafId,
                                                     isAdmin: isAdmin,
-                                                    religionId: action.result.data.religionId
+                                                    generalLedgerJournalId: action.result.data.generalLedgerJournalId
                                                 }
                                             });
                                             Ext.getCmp('nextButton').disable();
                                             Ext.getCmp('previousButton').enable();
-                                            religionDetailGrid.enable();
+                                            generalLedgerJournalDetailGrid.enable();
                                         } else {
                                             Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                                         }
@@ -1949,15 +3620,15 @@ Ext.onReady(function() {
                         }
                     });
                 }
-                if (Ext.getCmp('religionId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
+                if (Ext.getCmp('generalLedgerJournalId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
                     formPanel.form.load({
-                        url: '../controller/religionController.php',
+                        url: '../controller/generalLedgerJournalController.php',
                         method: 'POST',
                         waitTitle: systemLabel,
                         waitMsg: waitMessageLabel,
                         params: {
                             method: 'read',
-                            religionId: Ext.getCmp('lastRecord').getValue(),
+                            generalLedgerJournalId: Ext.getCmp('lastRecord').getValue(),
                             leafId: leafId,
                             isAdmin: isAdmin
                         },
@@ -1973,16 +3644,16 @@ Ext.onReady(function() {
                                 Ext.getCmp('nextRecord').setValue(action.result.nextRecord);
                                 Ext.getCmp('lastRecord').setValue(action.result.lastRecord);
                                 Ext.getCmp('endRecord').setValue((action.result.lastRecord + 1));
-                                religionDetailStore.load({
+                                generalLedgerJournalDetailStore.load({
                                     params: {
                                         leafId: leafId,
                                         isAdmin: isAdmin,
-                                        religionId: action.result.data.religionId
+                                        generalLedgerJournalId: action.result.data.generalLedgerJournalId
                                     }
                                 });
                                 Ext.getCmp('nextButton').disable();
                                 Ext.getCmp('previousButton').enable();
-                                religionDetailGrid.enable();
+                                generalLedgerJournalDetailGrid.enable();
                             } else {
                                 Ext.MessageBox.alert(systemErrorLabel, action.result.message);
                             }

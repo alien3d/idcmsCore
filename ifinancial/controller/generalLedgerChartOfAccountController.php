@@ -145,7 +145,7 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "
-			INSERT INTO `iFinancial`.`generalLedgerChartOfAccount`
+			INSERT INTO `".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`
 					(
 						`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountTitle`,												
 						`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountDesc`,
@@ -185,24 +185,24 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [iFinancial].[generalLedgerChartOfAccount]
+			INSERT INTO ['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccount]
 					(
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountTitle],												
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountDesc],
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountNo],
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountTypeId],
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountReportTypeId],													
-						[iFinancial].[generalLedgerChartOfAccount].[isDefault],
-						[iFinancial].[generalLedgerChartOfAccount].[isNew],														
-						[iFinancial].[generalLedgerChartOfAccount].[isDraft],
-						[iFinancial].[generalLedgerChartOfAccount].[isUpdate],														
-						[iFinancial].[generalLedgerChartOfAccount].[isDelete],
-						[iFinancial].[generalLedgerChartOfAccount].[isActive],														
-						[iFinancial].[generalLedgerChartOfAccount].[isApproved],
-						[iFinancial].[generalLedgerChartOfAccount].[isReview],														
-						[iFinancial].[generalLedgerChartOfAccount].[isPost],
-						[iFinancial].[generalLedgerChartOfAccount].[executeBy],													
-						[iFinancial].[generalLedgerChartOfAccount].[executeTime]
+						[generalLedgerChartOfAccountTitle],												
+						[generalLedgerChartOfAccountDesc],
+						[generalLedgerChartOfAccountNo],
+						[generalLedgerChartOfAccountTypeId],
+						[generalLedgerChartOfAccountReportTypeId],													
+						[isDefault],
+						[isNew],														
+						[isDraft],
+						[isUpdate],														
+						[isDelete],
+						[isActive],														
+						[isApproved],
+						[isReview],														
+						[isPost],
+						[executeBy],													
+						[executeTime]
 					)
 			VALUES
 					(
@@ -221,24 +221,24 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT
+			INSERT INTO	GENERALLEDGERCHARTOFACCOUNT
 					(
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTTITLE,												
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTDESC,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTNO,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTTYPEID,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTREPORTTYPEID,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISNEW,														
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISUPDATE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISDELETE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISACTIVE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISREVIEW,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISPOST,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.EXECUTEBY,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.EXECUTETIME
+						GENERALLEDGERCHARTOFACCOUNTTITLE,												
+						GENERALLEDGERCHARTOFACCOUNTDESC,
+						GENERALLEDGERCHARTOFACCOUNTNO,
+						GENERALLEDGERCHARTOFACCOUNTTYPEID,
+						GENERALLEDGERCHARTOFACCOUNTREPORTTYPEID,
+						ISDEFAULT,
+						ISNEW,														
+						ISDRAFT,
+						ISUPDATE,													
+						ISDELETE,
+						ISACTIVE,													
+						ISAPPROVED,
+						ISREVIEW,													
+						ISPOST,
+						EXECUTEBY,													
+						EXECUTETIME
 					)
 			VALUES
 					(
@@ -261,24 +261,24 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT
+			INSERT INTO	GENERALLEDGERCHARTOFACCOUNT
 					(
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTTITLE,												
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTDESC,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTNO,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTTYPEID,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTREPORTTYPEID,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISNEW,														
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISUPDATE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISDELETE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISACTIVE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISREVIEW,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISPOST,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.EXECUTEBY,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.EXECUTETIME
+						GENERALLEDGERCHARTOFACCOUNTTITLE,												
+						GENERALLEDGERCHARTOFACCOUNTDESC,
+						GENERALLEDGERCHARTOFACCOUNTNO,
+						GENERALLEDGERCHARTOFACCOUNTTYPEID,
+						GENERALLEDGERCHARTOFACCOUNTREPORTTYPEID,
+						ISDEFAULT,
+						ISNEW,														
+						ISDRAFT,
+						ISUPDATE,													
+						ISDELETE,
+						ISACTIVE,													
+						ISAPPROVED,
+						ISREVIEW,													
+						ISPOST,
+						EXECUTEBY,													
+						EXECUTETIME
 					)
 			VALUES
 					(
@@ -301,24 +301,24 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT
+			INSERT INTO	GENERALLEDGERCHARTOFACCOUNT
 					(
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTTITLE,												
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTDESC,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTNO,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTTYPEID,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.GENERALLEDGERCHARTOFACCOUNTREPORTTYPEID,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISNEW,														
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISUPDATE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISDELETE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISACTIVE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISREVIEW,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.ISPOST,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.EXECUTEBY,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNT.EXECUTETIME
+						GENERALLEDGERCHARTOFACCOUNTTITLE,												
+						GENERALLEDGERCHARTOFACCOUNTDESC,
+						GENERALLEDGERCHARTOFACCOUNTNO,
+						GENERALLEDGERCHARTOFACCOUNTTYPEID,
+						GENERALLEDGERCHARTOFACCOUNTREPORTTYPEID,
+						ISDEFAULT,
+						ISNEW,														
+						ISDRAFT,
+						ISUPDATE,													
+						ISDELETE,
+						ISACTIVE,													
+						ISAPPROVED,
+						ISREVIEW,													
+						ISPOST,
+						EXECUTEBY,													
+						EXECUTETIME
 					)
 			VALUES
 					(
@@ -427,37 +427,37 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 					`iManagement`.`staff`.`staffName`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`
 			JOIN	`iManagement`.`staff`
-			ON		`iFinancial`.`generalLedgerChartOfAccount`.`executeBy` = `iManagement`.`staff`.`staffId`
+			ON		`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccount`.`executeBy` = `iManagement`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountId(0, 'single')) {
-				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
+				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountId],
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountTitle],
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountDesc],
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountNo],
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountTypeId],
-						[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountReportTypeId],
-						[iFinancial].[generalLedgerChartOfAccount].[isDefault],
-						[iFinancial].[generalLedgerChartOfAccount].[isNew],
-						[iFinancial].[generalLedgerChartOfAccount].[isDraft],
-						[iFinancial].[generalLedgerChartOfAccount].[isUpdate],
-						[iFinancial].[generalLedgerChartOfAccount].[isDelete],
-						[iFinancial].[generalLedgerChartOfAccount].[isActive],
-						[iFinancial].[generalLedgerChartOfAccount].[isApproved],
-						[iFinancial].[generalLedgerChartOfAccount].[isReview],
-						[iFinancial].[generalLedgerChartOfAccount].[isPost],
-						[iFinancial].[generalLedgerChartOfAccount].[executeBy],
-						[iFinancial].[generalLedgerChartOfAccount].[executeTime],
+			SELECT		[generalLedgerChartOfAccountId],
+						[generalLedgerChartOfAccountTitle],
+						[generalLedgerChartOfAccountDesc],
+						[generalLedgerChartOfAccountNo],
+						[generalLedgerChartOfAccountTypeId],
+						[generalLedgerChartOfAccountReportTypeId],
+						[isDefault],
+						[isNew],
+						[isDraft],
+						[isUpdate],
+						[isDelete],
+						[isActive],
+						[isApproved],
+						[isReview],
+						[isPost],
+						[executeBy],
+						[executeTime],
 						[iManagement].[staff].[staffName]
-			FROM 	[iFinancial].[generalLedgerChartOfAccount]
+			FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccount]
 			JOIN	[iManagement].[staff]
-			ON		[iFinancial].[generalLedgerChartOfAccount].[executeBy] = [iManagement].[staff].[staffId]
+			ON		[executeBy] = [iManagement].[staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountId(0, 'single')) {
-				$sql .= " AND [iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
+				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -622,27 +622,27 @@ class GeneralLedgerChartOfAccountClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerChartOfAccountDerived] AS
 							(
-								SELECT 		[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountId],
-											[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountTitle],
-											[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountDesc],
-											[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountNo],
-											[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountTypeId],
-											[iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountReportTypeId],
-											[iFinancial].[generalLedgerChartOfAccount].[isDefault],
-											[iFinancial].[generalLedgerChartOfAccount].[isNew],
-											[iFinancial].[generalLedgerChartOfAccount].[isDraft],
-											[iFinancial].[generalLedgerChartOfAccount].[isUpdate],
-											[iFinancial].[generalLedgerChartOfAccount].[isDelete],
-											[iFinancial].[generalLedgerChartOfAccount].[isApproved],
-											[iFinancial].[generalLedgerChartOfAccount].[isReview],
-											[iFinancial].[generalLedgerChartOfAccount].[isPost],
-											[iFinancial].[generalLedgerChartOfAccount].[executeBy],
-											[iFinancial].[generalLedgerChartOfAccount].[executeTime],
+								SELECT 		[generalLedgerChartOfAccountId],
+											[generalLedgerChartOfAccountTitle],
+											[generalLedgerChartOfAccountDesc],
+											[generalLedgerChartOfAccountNo],
+											[generalLedgerChartOfAccountTypeId],
+											[generalLedgerChartOfAccountReportTypeId],
+											[isDefault],
+											[isNew],
+											[isDraft],
+											[isUpdate],
+											[isDelete],
+											[isApproved],
+											[isReview],
+											[isPost],
+											[executeBy],
+											[executeTime],
 											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerChartOfAccount].[generalLedgerChartOfAccountId]) AS 'RowNumber'
-								FROM 	[iFinancial].[generalLedgerChartOfAccount]
+								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountId]) AS 'RowNumber'
+								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccount]
 								JOIN	[iManagement].[staff]
-								ON		[iFinancial].[generalLedgerChartOfAccount].[executeBy] = [iManagement].[staff].[staffId]
+								ON		[executeBy] = [iManagement].[staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*

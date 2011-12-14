@@ -145,7 +145,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql="
-			INSERT INTO `ifinancial`.`generalLedgerJournal` 
+			INSERT INTO `".$this->q->getFinancialDatabase()."`.`generalLedgerJournal` 
 				(    
 						`generalLedgerJournalId`,   `generalLedgerJournalTypeId`,   `documentNo`,`referenceNo`,   `generalLedgerJournalTitle`,    `generalLedgerJournalDesc`, `generalLedgerJournalDate`, `generalLedgerJournalStartDate`,    `generalLedgerJournalEndDate`,  `generalLedgerJournalAmount`,   `isDefault`,    `isNew`,    `isDraft`,  `isUpdate`, `isDelete`, `isActive`, `isApproved`,   `isReview`, `isPost`,   `executeBy`,    `executeTime`) VALUES ( null, '".$this->model->getGeneralLedgerJournalTypeId()."',
 '".$this->model->getDocumentNo()."',
@@ -169,7 +169,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 ".$this->model->getExecuteTime().");";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [iFinancial].[generalLedgerJournal]
+			INSERT INTO [".$this->q->getFinancialDatabase()."].[generalLedgerJournal]
 					(
 						[documentNo],												
 						[generalLedgerJournalTitle],
@@ -210,7 +210,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERJOURNAL
+			INSERT INTO	GENERALLEDGERJOURNAL
 					(
 						DOCUMENTNO,												
 						GENERALLEDGERJOURNALTITLE,
@@ -245,7 +245,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERJOURNAL
+			INSERT INTO	GENERALLEDGERJOURNAL
 					(
 						DOCUMENTNO,												
 						GENERALLEDGERJOURNALTITLE,
@@ -280,7 +280,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERJOURNAL
+			INSERT INTO	GENERALLEDGERJOURNAL
 					(
 						DOCUMENTNO,												
 						GENERALLEDGERJOURNALTITLE,
@@ -423,30 +423,30 @@ class GeneralLedgerJournalClass extends ConfigClass {
 
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[iFinancial].[generalLedgerJournal].[generalLedgerJournalId],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalTypeId],
-						[iFinancial].[generalLedgerJournal].[documentNo],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalTitle],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalDesc],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalDate],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalStartDate],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalEndDate],
-						[iFinancial].[generalLedgerJournal].[generalLedgerJournalAmount],
-						[iFinancial].[generalLedgerJournal].[isDefault],
-						[iFinancial].[generalLedgerJournal].[isNew],
-						[iFinancial].[generalLedgerJournal].[isDraft],
-						[iFinancial].[generalLedgerJournal].[isUpdate],
-						[iFinancial].[generalLedgerJournal].[isDelete],
-						[iFinancial].[generalLedgerJournal].[isActive],
-						[iFinancial].[generalLedgerJournal].[isApproved],
-						[iFinancial].[generalLedgerJournal].[isReview],
-						[iFinancial].[generalLedgerJournal].[isPost],
-						[iFinancial].[generalLedgerJournal].[executeBy],
-						[iFinancial].[generalLedgerJournal].[executeTime],
+			SELECT		[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalId],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalTypeId],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[documentNo],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalTitle],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalDesc],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalDate],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalStartDate],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalEndDate],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalAmount],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isDefault],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isNew],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isDraft],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isUpdate],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isDelete],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isActive],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isApproved],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isReview],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isPost],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[executeBy],
+						[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[executeTime],
 						[iManagement].[staff].[staffName]
-			FROM 	[iFinancial].[generalLedgerJournal]
+			FROM 	[".$this->q->getFinancialDatabase()."].[generalLedgerJournal]
 			JOIN	[iManagement].[staff]
-			ON		[iFinancial].[generalLedgerJournal].[executeBy] = [iManagement].[staff].[staffId]
+			ON		[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[executeBy] = [iManagement].[staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			//	if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
 			//	$sql .= " AND [" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
@@ -617,27 +617,27 @@ class GeneralLedgerJournalClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerJournalDerived] AS
 							(
-								SELECT 		[iFinancial].[generalLedgerJournal].[generalLedgerJournalId],
-											[iFinancial].[generalLedgerJournal].[documentNo],
-											[iFinancial].[generalLedgerJournal].[generalLedgerJournalTitle],
-											[iFinancial].[generalLedgerJournal].[generalLedgerJournalDesc],
-											[iFinancial].[generalLedgerJournal].[generalLedgerJournalDate],
-											[iFinancial].[generalLedgerJournal].[generalLedgerJournalAmount],
-											[iFinancial].[generalLedgerJournal].[isDefault],
-											[iFinancial].[generalLedgerJournal].[isNew],
-											[iFinancial].[generalLedgerJournal].[isDraft],
-											[iFinancial].[generalLedgerJournal].[isUpdate],
-											[iFinancial].[generalLedgerJournal].[isDelete],
-											[iFinancial].[generalLedgerJournal].[isApproved],
-											[iFinancial].[generalLedgerJournal].[isReview],
-											[iFinancial].[generalLedgerJournal].[isPost],
-											[iFinancial].[generalLedgerJournal].[executeBy],
-											[iFinancial].[generalLedgerJournal].[executeTime],
+								SELECT 		[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalId],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[documentNo],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalTitle],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalDesc],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalDate],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalAmount],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isDefault],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isNew],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isDraft],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isUpdate],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isDelete],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isApproved],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isReview],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[isPost],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[executeBy],
+											[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[executeTime],
 											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerJournal].[generalLedgerJournalId]) AS 'RowNumber'
-								FROM 	[iFinancial].[generalLedgerJournal]
+								ROW_NUMBER() OVER (ORDER BY [".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[generalLedgerJournalId]) AS 'RowNumber'
+								FROM 	[".$this->q->getFinancialDatabase()."].[generalLedgerJournal]
 								JOIN		[iManagement].[staff]
-								ON		[iFinancial].[generalLedgerJournal].[executeBy] = [iManagement].[staff].[staffId]
+								ON		[".$this->q->getFinancialDatabase()."].[generalLedgerJournal].[executeBy] = [iManagement].[staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -780,7 +780,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			$sql = "
 			SELECT	[" . $this->model->getTableName() . "]	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
-			WHERE  	[iFinancial].[" . $this->model->getTableName() . "][" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
+			WHERE  	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "][" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -954,7 +954,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "]
-			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
+			WHERE  	[".$this->q->getFinancialDatabase()."].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "

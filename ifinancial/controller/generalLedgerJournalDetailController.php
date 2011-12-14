@@ -92,7 +92,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new GeneralledgerjournaldetailModel ();
+		$this->model = new GeneralLedgerJournalDetailModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -382,7 +382,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			if ($this->q->vendor == self::MYSQL) {
 				$this->auditFilter = "	`generalLedgerJournalDetail`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "	[iFinancial].[generalLedgerJournalDetail].[isActive]		=	1	";
+				$this->auditFilter = "	['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = "	ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
@@ -469,7 +469,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			ON		[generalLedgerJournalDetail].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
-				$sql .= " AND [iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
+				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerJournalId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -489,7 +489,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 						EXECUTEBY    			AS	\"executeBy\",
 						EXECUTETIME  			AS	\"executeTime\",
 						IMANAGEMENT.STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		IFINANCIAL.GENERALLEDGERJOURNALDETAIL
+			FROM 		GENERALLEDGERJOURNALDETAIL
 			JOIN		IMANAGEMENT.STAFF
 			ON			EXECUTEBY 	  	=	IMANAGEMENT.STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
@@ -598,13 +598,13 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= "	ORDER BY `" . $this->getSortField() . "` " . $this->getOrder() . " ";
 			} else if ($this->getVendor() == self::MSSQL) {
-				$sql .= "	ORDER BY [iFinancial].[" . $this->getSortField() . "] " . $this->getOrder() . " ";
+				$sql .= "	ORDER BY ['".$this->q->getFinancialDatabase()."'].[" . $this->getSortField() . "] " . $this->getOrder() . " ";
 			} else if ($this->getVendor() == self::ORACLE) {
-				$sql .= "	ORDER BY IFINANCIAL." . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else if ($this->getVendor() == self::DB2) {
-				$sql .= "	ORDER BY IFINANCIAL." . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else if ($this->getVendor() == self::POSTGRESS) {
-				$sql .= "	ORDER BY IFINANCIAL." . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
+				$sql .= "	ORDER BY " . strtoupper($this->getSortField()) . " " . strtoupper($this->getOrder()) . " ";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -632,25 +632,25 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerJournalDetailDerived] AS
 							(
-								SELECT 		[iFinancial].[generalLedgerJournalDetail].[generalLedgerJournalDetailId],
-											[iFinancial].[generalLedgerJournalDetail].[generalLedgerJournalId],
-											[iFinancial].[generalLedgerJournalDetail].[generalLedgerChartOfAccountId],
-											[iFinancial].[generalLedgerJournalDetail].[gAmount],
-											[iFinancial].[generalLedgerJournalDetail].[isDefault],
-											[iFinancial].[generalLedgerJournalDetail].[isNew],
-											[iFinancial].[generalLedgerJournalDetail].[isDraft],
-											[iFinancial].[generalLedgerJournalDetail].[isUpdate],
-											[iFinancial].[generalLedgerJournalDetail].[isDelete],
-											[iFinancial].[generalLedgerJournalDetail].[isApproved],
-											[iFinancial].[generalLedgerJournalDetail].[isReview],
-											[iFinancial].[generalLedgerJournalDetail].[isPost],
-											[iFinancial].[generalLedgerJournalDetail].[executeBy],
-											[iFinancial].[generalLedgerJournalDetail].[executeTime],
+								SELECT 		['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[generalLedgerJournalDetailId],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[generalLedgerJournalId],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[generalLedgerChartOfAccountId],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[gAmount],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isDefault],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isNew],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isDraft],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isUpdate],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isDelete],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isApproved],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isReview],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[isPost],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[executeBy],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[executeTime],
 											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerJournalDetail].[generalLedgerJournalDetailId]) AS 'RowNumber'
-								FROM 	[iFinancial].[generalLedgerJournalDetail]
+								ROW_NUMBER() OVER (ORDER BY ['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[generalLedgerJournalDetailId]) AS 'RowNumber'
+								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail]
 								JOIN		[iManagement].[staff]
-								ON		[iFinancial].[generalLedgerJournalDetail].[executeBy] = [iManagement].[staff].[staffId]
+								ON		['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalDetail].[executeBy] = [iManagement].[staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -683,7 +683,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 										EXECUTEBY    		AS	\"executeBy\",
 										EXECUTETIME  		AS	\"executeTime\",
 										STAFF.STAFFNAME		  		AS	\"staffName\"	
-								FROM 	IFINANCIAL.GENERALLEDGERJOURNALDETAIL
+								FROM 	GENERALLEDGERJOURNALDETAIL
 								JOIN	STAFF
 								ON		EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
@@ -783,19 +783,19 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	IFINANCIAL." . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "
-			FROM 	IFINANCIAL." . strtoupper($this->model->getTableName()) . "
-			WHERE  	IFINANCIAL." . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			SELECT	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "
+			FROM 	" . strtoupper($this->model->getTableName()) . "
+			WHERE  	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			SELECT	IFINANCIAL." . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "
-			FROM 	IFINANCIAL." . strtoupper($this->model->getTableName()) . "
-			WHERE  	IFINANCIAL." . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			SELECT	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "
+			FROM 	" . strtoupper($this->model->getTableName()) . "
+			WHERE  	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			SELECT	IFINANCIAL." . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "
-			FROM 	IFINANCIAL." . strtoupper($this->model->getTableName()) . "
-			WHERE  	IFINANCIAL." . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
+			SELECT	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "
+			FROM 	" . strtoupper($this->model->getTableName()) . "
+			WHERE  	" . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -850,7 +850,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			WHERE 			[generalLedgerJournalDetailId]		=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-			UPDATE		IFINANCIAL.GENERALLEDGERJOURNALDETAIL
+			UPDATE		GENERALLEDGERJOURNALDETAIL
 			SET 		GENERALLEDGERJOURNALID						=	'" . $this->model->getGeneralLedgerJournalId() . "',
 						GENERALLEDGERCHARTOFACCOUNTID					=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						COUNTRYID								=	'" . $this->model->getCountryId()  . "',
@@ -871,7 +871,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 					
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE		IFINANCIAL.GENERALLEDGERJOURNALDETAIL
+			UPDATE		GENERALLEDGERJOURNALDETAIL
 			SET 		GENERALLEDGERJOURNALID						=	'" . $this->model->getGeneralLedgerJournalId() . "',
 						GENERALLEDGERCHARTOFACCOUNTID					=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						COUNTRYID								=	'" . $this->model->getCountryId()  . "',
@@ -892,7 +892,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			WHERE 		GENERALLEDGERJOURNALDETAILID					=	'" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-			UPDATE		IFINANCIAL.GENERALLEDGERJOURNALDETAIL
+			UPDATE		GENERALLEDGERJOURNALDETAIL
 			SET 		GENERALLEDGERJOURNALID						=	'" . $this->model->getGeneralLedgerJournalId() . "',
 						GENERALLEDGERCHARTOFACCOUNTID					=	'" . $this->model->getGeneralLedgerChartOfAccountId() . "',
 						COUNTRYID								=	'" . $this->model->getCountryId()  . "',
@@ -963,17 +963,17 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
-			FROM 	IFINANCIAL." . strtoupper($this->model->getTableName()) . "
+			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
-			FROM 	IFINANCIAL." . strtoupper($this->model->getTableName()) . "
+			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
-			FROM 	IFINANCIAL." . strtoupper($this->model->getTableName()) . "
+			FROM 	" . strtoupper($this->model->getTableName()) . "
 			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" .$this->model->getGeneralLedgerJournalDetailId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1017,7 +1017,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 				WHERE 	[generalLedgerJournalDetail].[generalLedgerJournalDetailId]		=	'" .getGeneralLedgerJournalDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE IFINANCIAL.GENERALLEDGERJOURNALDETAIL
+				UPDATE GENERALLEDGERJOURNALDETAIL
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1032,7 +1032,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 				WHERE 	GENERALLEDGERJOURNALDETAILID		=	'" . getGeneralLedgerJournalDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE IFINANCIAL.GENERALLEDGERJOURNALDETAIL
+				UPDATE GENERALLEDGERJOURNALDETAIL
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1047,7 +1047,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 				WHERE 	GENERALLEDGERJOURNALDETAILID		=	'" . getGeneralLedgerJournalDetailId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE IFINANCIAL.GENERALLEDGERJOURNALDETAIL
+				UPDATE GENERALLEDGERJOURNALDETAIL
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -1431,7 +1431,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 			} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[generalLedgerJournalId]
-			FROM 	[iFinancial][generalLedgerJournalDetail]
+			FROM 	['".$this->q->getFinancialDatabase()."'][generalLedgerJournalDetail]
 			WHERE 	[generalLedgerJournalId] 	= 	'" . $this->model->getGeneralLedgerJournalId() . "'
 			AND		[isActive]		=	1";
 			} else if ($this->getVendor() == self::ORACLE) {
@@ -1676,7 +1676,7 @@ class GeneralLedgerJournalDetailClass extends ConfigClass {
 
 }
 
-$generalLedgerJournalDetailObject = new GeneralledgerjournaldetailClass ();
+$generalLedgerJournalDetailObject = new GeneralLedgerJournalDetailClass ();
 
 /**
  * crud -create,read,update,delete

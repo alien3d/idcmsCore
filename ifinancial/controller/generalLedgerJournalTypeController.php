@@ -210,22 +210,22 @@ class GeneralLedgerJournalTypeClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE
+			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTTYPE
 					(
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
 					)
 			VALUES
 					(
@@ -246,22 +246,22 @@ class GeneralLedgerJournalTypeClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE
+			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTTYPE
 					(
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
 					)
 			VALUES
 					(
@@ -282,22 +282,22 @@ class GeneralLedgerJournalTypeClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE
+			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTTYPE
 					(
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
+						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
+						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
 					)
 			VALUES
 					(
@@ -391,7 +391,7 @@ class GeneralLedgerJournalTypeClass extends ConfigClass {
             ON      `generalLedgerJournalType`.`executeBy` = `iManagement`.`staff`.`staffId`
             WHERE  	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerJournalTypeId(0, 'single')) {
-				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
+				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -565,25 +565,25 @@ class GeneralLedgerJournalTypeClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerJournalTypeDerived] AS
 							(
-								SELECT 		[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeId],
-											[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeSequence],
-											[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeCode],
-											[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeDesc],
-											[iFinancial].[generalLedgerJournalType].[isDefault],
-											[iFinancial].[generalLedgerJournalType].[isNew],
-											[iFinancial].[generalLedgerJournalType].[isDraft],
-											[iFinancial].[generalLedgerJournalType].[isUpdate],
-											[iFinancial].[generalLedgerJournalType].[isDelete],
-											[iFinancial].[generalLedgerJournalType].[isApproved],
-											[iFinancial].[generalLedgerJournalType].[isReview],
-											[iFinancial].[generalLedgerJournalType].[isPost],
-											[iFinancial].[generalLedgerJournalType].[executeBy],
-											[iFinancial].[generalLedgerJournalType].[executeTime],
+								SELECT 		['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeId],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeSequence],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeCode],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeDesc],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isDefault],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isNew],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isDraft],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isUpdate],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isDelete],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isApproved],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isReview],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isPost],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[executeBy],
+											['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[executeTime],
 											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeId]) AS 'RowNumber'
-								FROM 	[iFinancial].[generalLedgerJournalType]
+								ROW_NUMBER() OVER (ORDER BY ['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeId]) AS 'RowNumber'
+								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType]
 								JOIN	[iManagement].[staff]
-								ON		[iFinancial].[generalLedgerJournalType].[executeBy] = [iManagement].[staff].[staffId]
+								ON		['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[executeBy] = [iManagement].[staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -692,14 +692,14 @@ class GeneralLedgerJournalTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
+			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
+			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
+			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
+			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -727,40 +727,40 @@ class GeneralLedgerJournalTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalType`
-				SET 		`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeSequence`		=	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
-							`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeCode`		=	'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
-							`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeDesc`		=	'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
-							`iFinancial`.`generalLedgerJournalType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`iFinancial`.`generalLedgerJournalType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`iFinancial`.`generalLedgerJournalType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`iFinancial`.`generalLedgerJournalType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`iFinancial`.`generalLedgerJournalType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`iFinancial`.`generalLedgerJournalType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`iFinancial`.`generalLedgerJournalType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`iFinancial`.`generalLedgerJournalType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`iFinancial`.`generalLedgerJournalType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`iFinancial`.`generalLedgerJournalType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`iFinancial`.`generalLedgerJournalType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeId`		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`generalLedgerJournalType`
+				SET 		`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`generalLedgerJournalTypeSequence`		=	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`generalLedgerJournalTypeCode`		=	'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`generalLedgerJournalTypeDesc`		=	'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`generalLedgerJournalTypeId`		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[generalLedgerJournalType]
-				SET 		[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeSequence]		=	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
-							[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeCode]		=	'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
-							[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeDesc]		=	'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
-							[iFinancial].[generalLedgerJournalType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							[iFinancial].[generalLedgerJournalType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-							[iFinancial].[generalLedgerJournalType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							[iFinancial].[generalLedgerJournalType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							[iFinancial].[generalLedgerJournalType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							[iFinancial].[generalLedgerJournalType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-							[iFinancial].[generalLedgerJournalType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							[iFinancial].[generalLedgerJournalType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-							[iFinancial].[generalLedgerJournalType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-							[iFinancial].[generalLedgerJournalType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-							[iFinancial].[generalLedgerJournalType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeId]			=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
+				SET 		['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeSequence]		=	'" . $this->model->getGeneralLedgerJournalTypeSequence() . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeCode]		=	'" . $this->model->getGeneralLedgerJournalTypeCode() . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeDesc]		=	'" . $this->model->getGeneralLedgerJournalTypeDesc() . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+							['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 		['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeId]			=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERCHARTOFACCOUNTTYPE
@@ -847,14 +847,14 @@ class GeneralLedgerJournalTypeClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
+			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`" . $this->model->getTableName() . "`
-			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
+			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
-			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
+			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
+			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -883,33 +883,33 @@ class GeneralLedgerJournalTypeClass extends ConfigClass {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
 				UPDATE 	`generalLedgerJournalType`
-				SET 	`iFinancial`.`generalLedgerJournalType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`iFinancial`.`generalLedgerJournalType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`iFinancial`.`generalLedgerJournalType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`iFinancial`.`generalLedgerJournalType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`iFinancial`.`generalLedgerJournalType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`iFinancial`.`generalLedgerJournalType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`iFinancial`.`generalLedgerJournalType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`iFinancial`.`generalLedgerJournalType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`iFinancial`.`generalLedgerJournalType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`iFinancial`.`generalLedgerJournalType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`iFinancial`.`generalLedgerJournalType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`iFinancial`.`generalLedgerJournalType`.`generalLedgerJournalTypeId`		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
+				SET 	`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`".$this->q->getFinancialDatabase()."`.`generalLedgerJournalType`.`generalLedgerJournalTypeId`		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[iFinancial].[generalLedgerJournalType].[generalLedgerJournalType]
-				SET 	[iFinancial].[generalLedgerJournalType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[iFinancial].[generalLedgerJournalType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[iFinancial].[generalLedgerJournalType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[iFinancial].[generalLedgerJournalType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[iFinancial].[generalLedgerJournalType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[iFinancial].[generalLedgerJournalType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[iFinancial].[generalLedgerJournalType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[iFinancial].[generalLedgerJournalType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[iFinancial].[generalLedgerJournalType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[iFinancial].[generalLedgerJournalType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[iFinancial].[generalLedgerJournalType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[iFinancial].[generalLedgerJournalType].[generalLedgerJournalTypeId]		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
+				UPDATE 	['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalType]
+				SET 	['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	['".$this->q->getFinancialDatabase()."'].[generalLedgerJournalType].[generalLedgerJournalTypeId]		=	'" . $this->model->getGeneralLedgerJournalTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE

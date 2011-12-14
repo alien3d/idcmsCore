@@ -143,23 +143,23 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "
-			INSERT INTO `iFinancial`.`generalLedgerChartOfAccountDimension`
+			INSERT INTO `".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountDimension`
 					(
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionTitle`,												
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionDesc`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountIdStart`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountIdEnd`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDefault`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isNew`,													
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDraft`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isUpdate`,													
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDelete`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isActive`,													
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isApproved`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isReview`,                      		  	 				
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isPost`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeBy`,												
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeTime`
+						`generalLedgerChartOfAccountDimensionTitle`,												
+						`generalLedgerChartOfAccountDimensionDesc`,
+						`generalLedgerChartOfAccountIdStart`,
+						`generalLedgerChartOfAccountIdEnd`,
+						`isDefault`,
+						`isNew`,													
+						`isDraft`,
+						`isUpdate`,													
+						`isDelete`,
+						`isActive`,													
+						`isApproved`,
+						`isReview`,                      		  	 				
+						`isPost`,
+						`executeBy`,												
+						`executeTime`
 					)
 			VALUES
 					(
@@ -181,23 +181,23 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO [iFinancial].[generalLedgerChartOfAccountDimension]
+			INSERT INTO ['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountDimension]
 					(
-						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionTitle],												
-						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionDesc],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountIdStart],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountIdEnd],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDefault],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isNew],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDraft],						
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isUpdate],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDelete],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isActive],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isApproved],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isReview],	
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isPost],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[executeTime]
+						[generalLedgerChartOfAccountDimensionTitle],												
+						[generalLedgerChartOfAccountDimensionDesc],
+						[generalLedgerChartOfAccountIdStart],
+						[generalLedgerChartOfAccountIdEnd],
+						[isDefault],
+						[isNew],
+						[isDraft],						
+						[isUpdate],
+						[isDelete],
+						[isActive],
+						[isApproved],
+						[isReview],	
+						[isPost],
+						[executeBy],
+						[executeTime]
 					)
 			VALUES
 					(
@@ -220,23 +220,23 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION
+			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTDIMENSION
 					(
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSIONTITLE,												
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GeneralLedgerChartOfAccountDimensionDESC,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTACCOUNTIDSTART,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTIDEND,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISNEW,														
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISUPDATE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDELETE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISACTIVE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISREVIEW,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISPOST,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTEBY,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTETIME
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSIONTITLE,												
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GeneralLedgerChartOfAccountDimensionDESC,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTACCOUNTIDSTART,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTIDEND,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDEFAULT,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISNEW,														
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDRAFT,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISUPDATE,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDELETE,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISACTIVE,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISAPPROVED,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISREVIEW,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISPOST,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTEBY,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTETIME
 					)
 			VALUES
 					(
@@ -258,23 +258,23 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION
+			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTDIMENSION
 					(
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSIONTITLE,												
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GeneralLedgerChartOfAccountDimensionDESC,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTACCOUNTIDSTART,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTIDEND,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISNEW,														
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISUPDATE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDELETE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISACTIVE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISREVIEW,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISPOST,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTEBY,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTETIME
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSIONTITLE,												
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GeneralLedgerChartOfAccountDimensionDESC,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTACCOUNTIDSTART,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTIDEND,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDEFAULT,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISNEW,														
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDRAFT,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISUPDATE,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDELETE,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISACTIVE,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISAPPROVED,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISREVIEW,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISPOST,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTEBY,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTETIME
 					)
 			VALUES
 					(
@@ -296,23 +296,23 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION
+			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTDIMENSION
 					(
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSIONTITLE,												
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GeneralLedgerChartOfAccountDimensionDESC,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTACCOUNTIDSTART,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTIDEND,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDEFAULT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISNEW,														
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDRAFT,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISUPDATE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDELETE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISACTIVE,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISAPPROVED,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISREVIEW,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISPOST,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTEBY,
-						IFINANCIAL.GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTETIME
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSIONTITLE,												
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTDIMENSION.GeneralLedgerChartOfAccountDimensionDESC,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTACCOUNTIDSTART,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.GENERALLEDGERCHARTOFACCOUNTIDEND,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDEFAULT,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISNEW,														
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDRAFT,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISUPDATE,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISDELETE,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISACTIVE,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISAPPROVED,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISREVIEW,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.ISPOST,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTEBY,
+						GENERALLEDGERCHARTOFACCOUNTDIMENSION.EXECUTETIME
 					)
 			VALUES
 					(
@@ -398,55 +398,55 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionId`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionTitle`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionDesc`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountIdStart`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountIdEnd`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDefault`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isNew`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDraft`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isUpdate`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDelete`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isActive`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isApproved`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isReview`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isPost`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeBy`,
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeTime`,
+			SELECT		`generalLedgerChartOfAccountDimensionId`,
+						`generalLedgerChartOfAccountDimensionTitle`,
+						`generalLedgerChartOfAccountDimensionDesc`,
+						`generalLedgerChartOfAccountIdStart`,
+						`generalLedgerChartOfAccountIdEnd`,
+						`isDefault`,
+						`isNew`,
+						`isDraft`,
+						`isUpdate`,
+						`isDelete`,
+						`isActive`,
+						`isApproved`,
+						`isReview`,
+						`isPost`,
+						`executeBy`,
+						`executeTime`,
 						`iManagement`.`staff`.`staffName`
-			FROM 	`iFinancial`.`generalLedgerChartOfAccountDimension`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountDimension`
 			JOIN	`iManagement`.`staff`
-			ON		`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeBy` = `iManagement`.`staff`.`staffId`
+			ON		`executeBy` = `iManagement`.`staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')) {
-				$sql .= " AND `iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
+				$sql .= " AND `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionId],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionTitle],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionDesc],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountIdStart],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountIdEnd],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDefault],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isNew],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDraft],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isUpdate],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDelete],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isActive],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isApproved],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isReview],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isPost],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy],
-						[iFinancial].[generalLedgerChartOfAccountDimension].[executeTime],
+			SELECT		[generalLedgerChartOfAccountDimensionId],
+						[generalLedgerChartOfAccountDimensionTitle],
+						[generalLedgerChartOfAccountDimensionDesc],
+						[generalLedgerChartOfAccountIdStart],
+						[generalLedgerChartOfAccountIdEnd],
+						[isDefault],
+						[isNew],
+						[isDraft],
+						[isUpdate],
+						[isDelete],
+						[isActive],
+						[isApproved],
+						[isReview],
+						[isPost],
+						[executeBy],
+						[executeTime],
 						[iManagement].[staff].[staffName]
-			FROM 		[iFinancial].[generalLedgerChartOfAccountDimension]
+			FROM 		['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountDimension]
 			JOIN		[iManagement].[staff]
-			ON			[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy] = [iManagement].[staff].[staffId]
+			ON			[executeBy] = [iManagement].[staff].[staffId]
 			WHERE 	" . $this->auditFilter;
 			if ($this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single')) {
-				$sql .= " AND [iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
+				$sql .= " AND ['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
@@ -574,7 +574,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		$total = $this->q->numberRows();
 		if ($this->getOrder() && $this->getSortField()) {
 			if ($this->getVendor() == self::MYSQL) {
-				$sql .= "	ORDER BY `iFinancial`.`" . $this->getSortField() . "` " . $this->getOrder() . " ";
+				$sql .= "	ORDER BY `".$this->q->getFinancialDatabase()."`.`" . $this->getSortField() . "` " . $this->getOrder() . " ";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql .= "	ORDER BY [" . $this->getSortField() . "] " . $this->getOrder() . " ";
 			} else if ($this->getVendor() == self::ORACLE) {
@@ -610,26 +610,26 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 				$sql = "
 							WITH [generalLedgerChartOfAccountDimensionDerived] AS
 							(
-								SELECT 		[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionId],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionTitle],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionDesc],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[GENERALLEDGERCHARTACCOUNTIDSTART],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountIdEnd],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[isDefault],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[isNew],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[isDraft],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[isUpdate],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[isDelete],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[isApproved],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[isReview],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[isPost],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy],
-											[iFinancial].[generalLedgerChartOfAccountDimension].[executeTime],
+								SELECT 		[generalLedgerChartOfAccountDimensionId],
+											[generalLedgerChartOfAccountDimensionTitle],
+											[generalLedgerChartOfAccountDimensionDesc],
+											[GENERALLEDGERCHARTACCOUNTIDSTART],
+											[generalLedgerChartOfAccountIdEnd],
+											[isDefault],
+											[isNew],
+											[isDraft],
+											[isUpdate],
+											[isDelete],
+											[isApproved],
+											[isReview],
+											[isPost],
+											[executeBy],
+											[executeTime],
 											[iManagement].[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionId]) AS 'RowNumber'
-								FROM 	[iFinancial].[generalLedgerChartOfAccountDimension]
+								ROW_NUMBER() OVER (ORDER BY [generalLedgerChartOfAccountDimensionId]) AS 'RowNumber'
+								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerChartOfAccountDimension]
 								JOIN	[iManagement].[staff]
-								ON		[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy] = [iManagement].[staff].[staffId]
+								ON		[executeBy] = [iManagement].[staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
@@ -739,14 +739,14 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`iFinancial`.`" . $this->model->getTableName() . "`
-			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
+			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
-			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
+			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
+			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -774,23 +774,23 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`iFinancial`.`generalLedgerChartOfAccountDimension`
-				SET 		`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionTitle`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionTitle() . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionDesc() . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`GENERALLEDGERCHARTACCOUNTIDSTART`		=	'" . $this->model->getGeneralLedgerChartOfAccountIdStart() . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountIdEnd`		=	'" . $this->model->getGeneralLedgerChartOfAccountIdEnd() . "',				
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-							`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`iFinancial`.`generalLedgerChartOfAccountDimensionId`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountDimension`
+				SET 		`generalLedgerChartOfAccountDimensionTitle`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionTitle() . "',
+							`generalLedgerChartOfAccountDimensionDesc`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionDesc() . "',
+							`GENERALLEDGERCHARTACCOUNTIDSTART`		=	'" . $this->model->getGeneralLedgerChartOfAccountIdStart() . "',
+							`generalLedgerChartOfAccountIdEnd`		=	'" . $this->model->getGeneralLedgerChartOfAccountIdEnd() . "',				
+							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+							`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+							`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+							`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+							`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+							`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+							`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 		`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountDimensionId`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 		[generalLedgerChartOfAccountDimension]
@@ -800,16 +800,16 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 							[generalLedgerChartOfAccountIdEnd]		=	'" . $this->model->getGeneralLedgerChartOfAccountIdEnd() . "',
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[iFinancial].[generalLedgerChartOfAccountDimension].[generalLedgerChartOfAccountDimensionId]			=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
+						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 		[generalLedgerChartOfAccountDimensionId]			=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERCHARTOFACCOUNTDIMENSION
@@ -900,14 +900,14 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		// before updating check the id exist or not . if exist continue to update else warning the user
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
-			FROM 	`iFinancial`.`" . $this->model->getTableName() . "`
-			WHERE  	`iFinancial`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
+			SELECT	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
+			WHERE  	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`.`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
-			FROM 	[iFinancial].[" . $this->model->getTableName() . "]
-			WHERE  	[iFinancial].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
+			SELECT	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "]
+			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
+			WHERE  	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
@@ -935,33 +935,33 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`iFinancial`.`generalLedgerChartOfAccountDimension`
-				SET 	`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeBy`			=	'" . $this->model->getExecuteBy() . "',
-						`iFinancial`.`generalLedgerChartOfAccountDimension`.`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionId`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountDimension`
+				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
+						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						`isUpdate`			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						`isDelete`			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						`isActive`			=	'" . $this->model->getIsActive(0, 'single') . "',
+						`isApproved`		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						`isReview`			=	'" . $this->model->getIsReview(0, 'single') . "',
+						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
+						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
+						`executeTime`		=	" . $this->model->getExecuteTime() . "
+				WHERE 	`generalLedgerChartOfAccountDimensionId`		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
 				UPDATE 	[generalLedgerChartOfAccountDimension]
-				SET 	[iFinancial].[generalLedgerChartOfAccountDimension].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[iFinancial].[generalLedgerChartOfAccountDimension].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[executeTime]		=	" . $this->model->getExecuteTime() . "
 				WHERE 	[generalLedgerChartOfAccountDimensionId]		=	'" . $this->model->getGeneralLedgerChartOfAccountDimensionId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
@@ -1037,7 +1037,7 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		$loop = $this->model->getTotal();
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			UPDATE `iFinancial`.`" . $this->model->getTableName() . "`
+			UPDATE `".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
 			SET";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
@@ -1338,10 +1338,10 @@ class GeneralLedgerChartOfAccountDimensionClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionTitle`
-			FROM 	`iFinancial`.`generalLedgerChartOfAccountDimension`
-			WHERE 	`iFinancial`.`generalLedgerChartOfAccountDimension`.`generalLedgerChartOfAccountDimensionTitle` 	= 	'" . $this->model->getGeneralLedgerChartOfAccountDimensionTitle() . "'
-			AND		`iFinancial`.`generalLedgerChartOfAccountDimension`.`isActive`		=	1";
+			SELECT	`generalLedgerChartOfAccountDimensionTitle`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerChartOfAccountDimension`
+			WHERE 	`generalLedgerChartOfAccountDimensionTitle` 	= 	'" . $this->model->getGeneralLedgerChartOfAccountDimensionTitle() . "'
+			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[generalLedgerChartOfAccountDimensionTitle]

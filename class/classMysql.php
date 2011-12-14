@@ -169,6 +169,11 @@ class Vendor {
 	 */
 	public $coreDatabase;
 	/**
+	 *  Audit Trail Log (Sql Version)
+	 *  @var string
+	 */
+	public $logDatabase;
+	/**
 	 *  Financial Database
 	 *  @var string
 	 */
@@ -230,11 +235,12 @@ class Vendor {
 		 */
 		$this->setCoreDatabase('iCore');
 		$this->setFinancialDatabase('iFinancial');
-		$this->setFixAssetDatabase('iFixAsset');
-		$this->setPayrollDatabase('iPayroll');
-		$this->setHumanResourcesDatabase('iHumanResources');
+		$this->setFixAssetDatabase('ifixAsset');
+		$this->setPayrollDatabase('ipayroll');
+		$this->setHumanResourcesDatabase('ihumanResources');
 		$this->setManagementDatabase('imanagement');
-		$this->setCommonDatabase('iCommon');
+		$this->setCommonDatabase('icommon');
+		$this->setLogDatabase('ilog');
 		$this->databaseName  = $this->coreDatabase;  // overide above
 		$this->password = $password;
 		$this->link = mysqli_connect ( $this->connection, $this->username, $this->password, $this->databaseName, $this->port, $this->socket );
@@ -285,14 +291,14 @@ class Vendor {
 		if ($error == 1) {
 
 			$sql_log = "
-			INSERT	INTO	`ilog`.`log`
+			INSERT	INTO	`".$this->getLogDatabase()."`.`log`
 					(
-							`iLog`.`log`.`leafId`,
-							`iLog`.`log`.`operation`,
-							`iLog`.`log`.`sql`,
-							`iLog`.`log`.`date`,
-							`iLog`.`log`.`staffId`,
-							`iLog`.`log`.`logError`
+							`leafId`,
+							`operation`,
+							`sql`,
+							`date`,
+							`staffId`,
+							`logError`
 					)
 			values
 					(
@@ -346,15 +352,15 @@ class Vendor {
 		if ($result_row == 0 || $this->log == 1) {
 			$logError = $this->responce;
 			$sql_log = "
-			INSERT INTO `iLog`.`log`
+			INSERT INTO `".$this->getLogDatabase()."`.`log`
 					(
-						`iLog`.`log`.`leafId`,		
-						`iLog`.`log`.`operation`,
-						`iLog`.`log`.`sql`,			
-						`iLog`.`log`.`date`,
-						`iLog`.`log`.`staffId`,		
-						`iLog`.`log`.`access`,
-						`iLog`.`log`.`logError`
+						`leafId`,		
+						`operation`,
+						`sql`,			
+						`date`,
+						`staffId`,		
+						`access`,
+						`logError`
 					)
 			values
 					(
@@ -443,14 +449,14 @@ class Vendor {
 					$text = $this->removeComa ( $text );
 					$text = "{" . $text . "}";
 					$sqlLogAdvance = "
-					INSERT INTO	`iLog`.`logAdvance`
+					INSERT INTO	`".$this->getLogDatabase()."`.`logAdvance`
 							(
-								`iLog`.`logAdvance`.`logAdvanceText`,
-								`iLog`.`logAdvance`.`logAdvanceType`,
-								`iLog`.`logAdvance`.`refTableName`,
-								`iLog`.`logAdvance`.`leafId`,
-								`iLog`.`logAdvance`.`executeBy`,
-								`iLog`.`logAdvance`.`executeTime`
+								`logAdvanceText`,
+								`logAdvanceType`,
+								`refTableName`,
+								`leafId`,
+								`executeBy`,
+								`executeTime`
 							)
 					VALUES
 							(
@@ -527,12 +533,12 @@ class Vendor {
 					$text = $this->removeComa ( $text );
 					$text = "{" . $text . "}";
 					$sqlLogAdvance = "
-					INSERT INTO	`iLog`.`logAdvance`
+					INSERT INTO	`".$this->getLogDatabase()."`.`logAdvance`
 							(
-								`iLog`.`logAdvance`.`logAdvanceText`,
-								`iLog`.`logAdvance`.`logAdvanceType`,
-								`iLog`.`logAdvance`.`refTableName`,
-								`iLog`.`logAdvance`.`leafId`
+								`logAdvanceText`,
+								`logAdvanceType`,
+								`refTableName`,
+								`leafId`
 							)
 					VALUES
 							(
@@ -568,11 +574,11 @@ class Vendor {
 					$textComparision = substr ( $textComparision, 0, - 1 );
 					$textComparision = "{ \"tablename\":'" . $this->tableName . "',\"leafId\":'" . $this->primaryKeyValue . "'," . $textComparision . "}";
 					$sql = "
-					UPDATE	`iLog`.`logAdvance`
-					SET 	`iLog`.`logAdvance`.`logAdvanceComparision`	=	'" . $this->realEscapeString ( $textComparision ) . "',
-							`iLog`.`logAdvance`.`executeBy`					=   '" . $this->staffId . "',
-							`iLog`.`logAdvance`.`executeTime`					=	'" . date ( "Y-m-d H:i:s" ) . "'
-					WHERE 	`iLog`.`logAdvance`.`logAdvanceId`			=	'" . $logAdvanceId . "'";
+					UPDATE	`".$this->getLogDatabase()."`.`logAdvance`
+					SET 	`logAdvanceComparision`	=	'" . $this->realEscapeString ( $textComparision ) . "',
+							`executeBy`					=   '" . $this->staffId . "',
+							`executeTime`					=	'" . date ( "Y-m-d H:i:s" ) . "'
+					WHERE 	`logAdvanceId`			=	'" . $logAdvanceId . "'";
 
 					$result = mysqli_query ( $this->link, $sql );
 					if (! $result) {
@@ -1318,6 +1324,16 @@ class Vendor {
 	public function setDateFilterTypeQuery($dateFilterTypeQuery)
 	{
 		$this->dateFilterTypeQuery = $dateFilterTypeQuery;
+	}
+
+	public function getLogDatabase()
+	{
+	    return $this->logDatabase;
+	}
+
+	public function setLogDatabase($logDatabase)
+	{
+	    $this->logDatabase = $logDatabase;
 	}
 }
 ?>

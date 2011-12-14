@@ -150,10 +150,10 @@ class LogAdvanceClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	`logAdvance`
-			JOIN	`leaf`
+			FROM 	`".$this->q->getLogDatabase()."`.`logAdvance`
+			JOIN	`".$this->q->getCoreDatabase()."`.`leaf`
 			USING	(`leafId`)
-			JOIN	`staff`
+			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
 			ON		`staff`.`staffId` = `logAdvance`.`executeBy`
 			WHERE  1 ";
 			if ($this->model->getLogAdvanceId(0, 'single')) {
@@ -165,10 +165,10 @@ class LogAdvanceClass extends ConfigClass {
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	*
-			FROM 	[logAdvance]
-			JOIN	[leaf]
+			FROM 	[".$this->q->getLogDatabase()."].[logAdvance]
+			JOIN	[".$this->q->getCoreDatabase()."].[leaf]
 			ON		[logAdvance].[leafId] = [leaf].[leafId]
-			JOIN	[staff]
+			JOIN	[".$this->q->getManagementDatabase()."].[staff]
 			ON		[logAdvance].[executeBy]= [staff].[staffId]
 			WHERE ";
 			if ($this->model->getLogAdvanceId(0, 'single')) {
