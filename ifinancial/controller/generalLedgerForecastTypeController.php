@@ -7,10 +7,10 @@ require_once ("../../class/classDate.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/forecastTypeModel.php");
+require_once ("../model/generalLedgerForecastTypeModel.php");
 
 /**
- * this is forecastType setting files.This sample template file for master record
+ * this is generalLedgerForecastType setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
@@ -19,7 +19,7 @@ require_once ("../model/forecastTypeModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class ForecastTypeClass extends ConfigClass {
+class GeneralLedgerForecastTypeClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -91,7 +91,7 @@ class ForecastTypeClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new ForecastTypeModel ();
+		$this->model = new GeneralLedgerForecastTypeModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -143,11 +143,11 @@ class ForecastTypeClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "
-			INSERT INTO `".$this->q->getFinancialDatabase()."`.`forecastType`
+			INSERT INTO `".$this->q->getFinancialDatabase()."`.`generalLedgerForecastType`
 					(
-						`forecastTypeSequence`,												
-						`forecastTypeCode`,
-						`forecastTypeDesc`,
+						`generalLedgerForecastTypeSequence`,												
+						`generalLedgerForecastTypeCode`,
+						`generalLedgerForecastTypeDesc`,
 						`isDefault`,
 						`isNew`,													
 						`isDraft`,
@@ -162,9 +162,9 @@ class ForecastTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getForecastTypeSequence() . "',
-						'" . $this->model->getForecastTypeCode() . "',
-						'" . $this->model->getForecastTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -179,11 +179,11 @@ class ForecastTypeClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO ['".$this->q->getFinancialDatabase()."'].[forecastType]
+			INSERT INTO ['".$this->q->getFinancialDatabase()."'].[generalLedgerForecastType]
 					(
-						[forecastTypeSequence],												
-						[forecastTypeCode],
-						[forecastTypeDesc],
+						[generalLedgerForecastTypeSequence],												
+						[generalLedgerForecastTypeCode],
+						[generalLedgerForecastTypeDesc],
 						[isDefault],
 						[isNew],														
 						[isDraft],
@@ -197,9 +197,9 @@ class ForecastTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getForecastTypeSequence() . "',
-						'" . $this->model->getForecastTypeCode() . "',
-						'" . $this->model->getForecastTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
@@ -229,9 +229,9 @@ class ForecastTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getForecastTypeSequence() . "',
-						'" . $this->model->getForecastTypeCode() . "',
-						'" . $this->model->getForecastTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -265,9 +265,9 @@ class ForecastTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getForecastTypeSequence() . "',
-						'" . $this->model->getForecastTypeCode() . "',
-						'" . $this->model->getForecastTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -301,9 +301,9 @@ class ForecastTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getForecastTypeSequence() . "',
-						'" . $this->model->getForecastTypeCode() . "',
-						'" . $this->model->getForecastTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+						'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -322,7 +322,7 @@ class ForecastTypeClass extends ConfigClass {
 		}
 
 		$this->q->create($sql);
-		$forecastTypeId = $this->q->lastInsertId();
+		$generalLedgerForecastTypeId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
@@ -333,7 +333,7 @@ class ForecastTypeClass extends ConfigClass {
 		echo json_encode(
 		array(	"success" => true,
 					"message" => $this->systemString->getCreateMessage(), 
-					"forecastTypeId" => $forecastTypeId,
+					"generalLedgerForecastTypeId" => $generalLedgerForecastTypeId,
         			"time"=>$time));
 		exit();
 	}
@@ -347,9 +347,9 @@ class ForecastTypeClass extends ConfigClass {
 		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "  `forecastType`.`isActive`		=	1	";
+				$this->auditFilter = "  `generalLedgerForecastType`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "  [forecastType].[isActive]		=	1	";
+				$this->auditFilter = "  [generalLedgerForecastType].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
 				$this->auditFilter = " GENERALLEDGERFORECASTTYPE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
@@ -384,60 +384,60 @@ class ForecastTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`forecastType`.`forecastTypeId`,
-						`forecastType`.`forecastTypeSequence`,
-						`forecastType`.`forecastTypeCode`,
-						`forecastType`.`forecastTypeDesc`,
-						`forecastType`.`isDefault`,
-						`forecastType`.`isNew`,
-						`forecastType`.`isDraft`,
-						`forecastType`.`isUpdate`,
-						`forecastType`.`isDelete`,
-						`forecastType`.`isActive`,
-						`forecastType`.`isApproved`,
-						`forecastType`.`isReview`,
-						`forecastType`.`isPost`,
-						`forecastType`.`executeBy`,
-						`forecastType`.`executeTime`,
+			SELECT		`generalLedgerForecastType`.`generalLedgerForecastTypeId`,
+						`generalLedgerForecastType`.`generalLedgerForecastTypeSequence`,
+						`generalLedgerForecastType`.`generalLedgerForecastTypeCode`,
+						`generalLedgerForecastType`.`generalLedgerForecastTypeDesc`,
+						`generalLedgerForecastType`.`isDefault`,
+						`generalLedgerForecastType`.`isNew`,
+						`generalLedgerForecastType`.`isDraft`,
+						`generalLedgerForecastType`.`isUpdate`,
+						`generalLedgerForecastType`.`isDelete`,
+						`generalLedgerForecastType`.`isActive`,
+						`generalLedgerForecastType`.`isApproved`,
+						`generalLedgerForecastType`.`isReview`,
+						`generalLedgerForecastType`.`isPost`,
+						`generalLedgerForecastType`.`executeBy`,
+						`generalLedgerForecastType`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`".$this->q->getFinancialDatabase()."`.`forecastType`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerForecastType`
 			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
-			ON		`forecastType`.`executeBy` = `staff`.`staffId`
+			ON		`generalLedgerForecastType`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getForecastTypeId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getForecastTypeId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerForecastTypeId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[forecastType].[forecastTypeId],
-						[forecastType].[forecastTypeSequence],
-						[forecastType].[forecastTypeCode],
-						[forecastType].[forecastTypeDesc],
-						[forecastType].[isDefault],
-						[forecastType].[isNew],
-						[forecastType].[isDraft],
-						[forecastType].[isUpdate],
-						[forecastType].[isDelete],
-						[forecastType].[isActive],
-						[forecastType].[isApproved],
-						[forecastType].[isReview],
-						[forecastType].[isPost],
-						[forecastType].[executeBy],
-						[forecastType].[executeTime],
+			SELECT		[generalLedgerForecastType].[generalLedgerForecastTypeId],
+						[generalLedgerForecastType].[generalLedgerForecastTypeSequence],
+						[generalLedgerForecastType].[generalLedgerForecastTypeCode],
+						[generalLedgerForecastType].[generalLedgerForecastTypeDesc],
+						[generalLedgerForecastType].[isDefault],
+						[generalLedgerForecastType].[isNew],
+						[generalLedgerForecastType].[isDraft],
+						[generalLedgerForecastType].[isUpdate],
+						[generalLedgerForecastType].[isDelete],
+						[generalLedgerForecastType].[isActive],
+						[generalLedgerForecastType].[isApproved],
+						[generalLedgerForecastType].[isReview],
+						[generalLedgerForecastType].[isPost],
+						[generalLedgerForecastType].[executeBy],
+						[generalLedgerForecastType].[executeTime],
 						[staff].[staffName]
-			FROM 	['".$this->q->getFinancialDatabase()."'].[forecastType]
+			FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerForecastType]
 			JOIN		[".$this->q->getManagementDatabase()."].[staff]
-			ON		[forecastType].[executeBy] = [staff].[staffId]
+			ON		[generalLedgerForecastType].[executeBy] = [staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getForecastTypeId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getForecastTypeId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerForecastTypeId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPEID   		 	AS 	\"forecastTypeId\",
-						GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPESEQUENCE 				AS 	\"forecastTypeSequence\",
-						GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPECODE 			AS 	\"forecastTypeCode\",
-						GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPEDESC 			AS 	\"forecastTypeDesc\",
+			SELECT		GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPEID   		 	AS 	\"generalLedgerForecastTypeId\",
+						GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPESEQUENCE 				AS 	\"generalLedgerForecastTypeSequence\",
+						GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPECODE 			AS 	\"generalLedgerForecastTypeCode\",
+						GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPEDESC 			AS 	\"generalLedgerForecastTypeDesc\",
 						GENERALLEDGERFORECASTTYPE.ISDEFAULT    			AS	\"isDefault\",
 						GENERALLEDGERFORECASTTYPE.ISNEW		  			AS	\"isNew\",
 						GENERALLEDGERFORECASTTYPE.ISDRAFT	  				AS	\"isDraft\",
@@ -454,8 +454,8 @@ class ForecastTypeClass extends ConfigClass {
 			JOIN		STAFF
 			ON			GENERALLEDGERFORECASTTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getForecastTypeId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getForecastTypeId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerForecastTypeId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -494,13 +494,13 @@ class ForecastTypeClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('forecastTypeId');
+		$filterArray = array('generalLedgerForecastTypeId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('forecastType');
+		$tableArray = array('generalLedgerForecastType');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -591,31 +591,31 @@ class ForecastTypeClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [forecastTypeDerived] AS
+							WITH [generalLedgerForecastTypeDerived] AS
 							(
-								SELECT 		[forecastType].[forecastTypeId],
-											[forecastType].[forecastTypeSequence],
-											[forecastType].[forecastTypeCode],
-											[forecastType].[forecastTypeDesc],
-											[forecastType].[isDefault],
-											[forecastType].[isNew],
-											[forecastType].[isDraft],
-											[forecastType].[isUpdate],
-											[forecastType].[isDelete],
-											[forecastType].[isApproved],
-											[forecastType].[isReview],
-											[forecastType].[isPost],
-											[forecastType].[executeBy],
-											[forecastType].[executeTime],
+								SELECT 		[generalLedgerForecastType].[generalLedgerForecastTypeId],
+											[generalLedgerForecastType].[generalLedgerForecastTypeSequence],
+											[generalLedgerForecastType].[generalLedgerForecastTypeCode],
+											[generalLedgerForecastType].[generalLedgerForecastTypeDesc],
+											[generalLedgerForecastType].[isDefault],
+											[generalLedgerForecastType].[isNew],
+											[generalLedgerForecastType].[isDraft],
+											[generalLedgerForecastType].[isUpdate],
+											[generalLedgerForecastType].[isDelete],
+											[generalLedgerForecastType].[isApproved],
+											[generalLedgerForecastType].[isReview],
+											[generalLedgerForecastType].[isPost],
+											[generalLedgerForecastType].[executeBy],
+											[generalLedgerForecastType].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [forecastType].[forecastTypeId]) AS 'RowNumber'
-								FROM 	['".$this->q->getFinancialDatabase()."'].[forecastType]
+								ROW_NUMBER() OVER (ORDER BY [generalLedgerForecastType].[generalLedgerForecastTypeId]) AS 'RowNumber'
+								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerForecastType]
 								JOIN	[".$this->q->getManagementDatabase()."].[staff]
-								ON		[forecastType].[executeBy] = [staff].[staffId]
+								ON		[generalLedgerForecastType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[forecastTypeDerived]
+							FROM 		[generalLedgerForecastTypeDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -628,10 +628,10 @@ class ForecastTypeClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPEID   		AS 	\"forecastTypeId\",
-										GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPESEQUENCE 			AS 	\"forecastTypeSequence\",
-										GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPECODE 		AS 	\"forecastTypeCode\",
-										GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPEDESC 		AS 	\"forecastTypeDesc\",
+								SELECT	GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPEID   		AS 	\"generalLedgerForecastTypeId\",
+										GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPESEQUENCE 			AS 	\"generalLedgerForecastTypeSequence\",
+										GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPECODE 		AS 	\"generalLedgerForecastTypeCode\",
+										GENERALLEDGERFORECASTTYPE.GENERALLEDGERFORECASTTYPEDESC 		AS 	\"generalLedgerForecastTypeDesc\",
 										GENERALLEDGERFORECASTTYPE.ISDEFAULT    		AS	\"isDefault\",
 										GENERALLEDGERFORECASTTYPE.ISNEW		  		AS	\"isNew\",
 										GENERALLEDGERFORECASTTYPE.ISDRAFT	 			AS	\"isDraft\",
@@ -675,7 +675,7 @@ class ForecastTypeClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getForecastTypeId(0, 'single'))) {
+		if (!($this->model->getGeneralLedgerForecastTypeId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -686,8 +686,8 @@ class ForecastTypeClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getForecastTypeId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getForecastTypeId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getForecastTypeId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getGeneralLedgerForecastTypeId(0, 'single')) {
+			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerForecastTypeId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerForecastTypeId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -722,27 +722,27 @@ class ForecastTypeClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -755,10 +755,10 @@ class ForecastTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`".$this->q->getFinancialDatabase()."`.`forecastType`
-				SET 		`forecastTypeSequence`		=	'" . $this->model->getForecastTypeSequence() . "',
-							`forecastTypeCode`		=	'" . $this->model->getForecastTypeCode() . "',
-							`forecastTypeDesc`		=	'" . $this->model->getForecastTypeDesc() . "',
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`generalLedgerForecastType`
+				SET 		`generalLedgerForecastTypeSequence`		=	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+							`generalLedgerForecastTypeCode`		=	'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+							`generalLedgerForecastTypeDesc`		=	'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -770,13 +770,13 @@ class ForecastTypeClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`forecastTypeId`		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+				WHERE 		`generalLedgerForecastTypeId`		=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		[".$this->q->getFinancialDatabase()."].[forecastType]
-				SET 		[forecastTypeSequence]		=	'" . $this->model->getForecastTypeSequence() . "',
-							[forecastTypeCode]		=	'" . $this->model->getForecastTypeCode() . "',
-							[forecastTypeDesc]		=	'" . $this->model->getForecastTypeDesc() . "',
+				UPDATE 		[".$this->q->getFinancialDatabase()."].[generalLedgerForecastType]
+				SET 		[generalLedgerForecastTypeSequence]		=	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+							[generalLedgerForecastTypeCode]		=	'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+							[generalLedgerForecastTypeDesc]		=	'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 							[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 							[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -788,13 +788,13 @@ class ForecastTypeClass extends ConfigClass {
 							[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 							[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 							[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[forecastTypeId]			=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+			WHERE 		[generalLedgerForecastTypeId]			=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE		GENERALLEDGERFORECASTTYPE
-				SET 		GENERALLEDGERFORECASTTYPESEQUENCE	=	'" . $this->model->getForecastTypeSequence() . "',
-							GENERALLEDGERFORECASTTYPECODE		=	'" . $this->model->getForecastTypeCode() . "',
-							GENERALLEDGERFORECASTTYPEDESC		=	'" . $this->model->getForecastTypeDesc() . "',
+				SET 		GENERALLEDGERFORECASTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+							GENERALLEDGERFORECASTTYPECODE		=	'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+							GENERALLEDGERFORECASTTYPEDESC		=	'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -806,13 +806,13 @@ class ForecastTypeClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 			UPDATE			GENERALLEDGERFORECASTTYPE
-			SET 			GENERALLEDGERFORECASTTYPESEQUENCE	=	'" . $this->model->getForecastTypeSequence() . "',
-							GENERALLEDGERFORECASTTYPECODE		=	'" . $this->model->getForecastTypeCode() . "',
-							GENERALLEDGERFORECASTTYPEDESC		=	'" . $this->model->getForecastTypeDesc() . "',
+			SET 			GENERALLEDGERFORECASTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+							GENERALLEDGERFORECASTTYPECODE		=	'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+							GENERALLEDGERFORECASTTYPEDESC		=	'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -824,13 +824,13 @@ class ForecastTypeClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE		GENERALLEDGERFORECASTTYPE
-				SET 		GENERALLEDGERFORECASTTYPESEQUENCE	=	'" . $this->model->getForecastTypeSequence() . "',
-							GENERALLEDGERFORECASTTYPECODE		=	'" . $this->model->getForecastTypeCode() . "',
-							GENERALLEDGERFORECASTTYPEDESC		=	'" . $this->model->getForecastTypeDesc() . "',
+				SET 		GENERALLEDGERFORECASTTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "',
+							GENERALLEDGERFORECASTTYPECODE		=	'" . $this->model->getGeneralLedgerForecastTypeCode() . "',
+							GENERALLEDGERFORECASTTYPEDESC		=	'" . $this->model->getGeneralLedgerForecastTypeDesc() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -842,7 +842,7 @@ class ForecastTypeClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		GENERALLEDGERFORECASTTYPEID			=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+				WHERE 		GENERALLEDGERFORECASTTYPEID			=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -877,27 +877,27 @@ class ForecastTypeClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getForecastTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -910,7 +910,7 @@ class ForecastTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`".$this->q->getFinancialDatabase()."`.`forecastType`
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`generalLedgerForecastType`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -922,10 +922,10 @@ class ForecastTypeClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`forecastTypeId`		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+				WHERE 	`generalLedgerForecastTypeId`		=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	[".$this->q->getFinancialDatabase()."].[forecastType]
+				UPDATE 	[".$this->q->getFinancialDatabase()."].[generalLedgerForecastType]
 				SET 	[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
 						[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -937,7 +937,7 @@ class ForecastTypeClass extends ConfigClass {
 						[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
 						[executeBy]			=	'" . $this->model->getExecuteBy() . "',
 						[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[forecastTypeId]		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+				WHERE 	[generalLedgerForecastTypeId]		=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
 				UPDATE 	GENERALLEDGERFORECASTTYPE
@@ -952,7 +952,7 @@ class ForecastTypeClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
 				UPDATE 	GENERALLEDGERFORECASTTYPE
@@ -967,7 +967,7 @@ class ForecastTypeClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
 				UPDATE 	GENERALLEDGERFORECASTTYPE
@@ -982,7 +982,7 @@ class ForecastTypeClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getForecastTypeId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERFORECASTTYPEID		=	'" . $this->model->getGeneralLedgerForecastTypeId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -1065,7 +1065,7 @@ class ForecastTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1089,7 +1089,7 @@ class ForecastTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1113,7 +1113,7 @@ class ForecastTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1137,7 +1137,7 @@ class ForecastTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1161,7 +1161,7 @@ class ForecastTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 							if(!$this->getIsAdmin()){
@@ -1182,7 +1182,7 @@ class ForecastTypeClass extends ConfigClass {
 										exit();
 									}
 									$sqlLooping .= "
-							WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
 							THEN '0'";
 									$sqlLooping .= " END,";
 								}
@@ -1209,7 +1209,7 @@ class ForecastTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1233,7 +1233,7 @@ class ForecastTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1257,7 +1257,7 @@ class ForecastTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+                            WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1281,7 +1281,7 @@ class ForecastTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getForecastTypeId($i, 'array') . "'
+                                WHEN '" . $this->model->getGeneralLedgerForecastTypeId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1339,33 +1339,33 @@ class ForecastTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`forecastTypeSequence`
-			FROM 	`forecastType`
-			WHERE 	`forecastTypeSequence` 	= 	'" . $this->model->getForecastTypeSequence() . "'
+			SELECT	`generalLedgerForecastTypeSequence`
+			FROM 	`generalLedgerForecastType`
+			WHERE 	`generalLedgerForecastTypeSequence` 	= 	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[forecastTypeSequence]
-			FROM 	[forecastType]
-			WHERE 	[forecastTypeSequence] 	= 	'" . $this->model->getForecastTypeSequence() . "'
+			SELECT	[generalLedgerForecastTypeSequence]
+			FROM 	[generalLedgerForecastType]
+			WHERE 	[generalLedgerForecastTypeSequence] 	= 	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	GENERALLEDGERFORECASTTYPESEQUENCE
 			FROM 	GENERALLEDGERFORECASTTYPE
-			WHERE 	GENERALLEDGERFORECASTTYPESEQUENCE 	= 	'" . $this->model->getForecastTypeSequence() . "'
+			WHERE 	GENERALLEDGERFORECASTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	GENERALLEDGERFORECASTTYPESEQUENCE
 			FROM 	GENERALLEDGERFORECASTTYPE
-			WHERE 	GENERALLEDGERFORECASTTYPESEQUENCE 	= 	'" . $this->model->getForecastTypeSequence() . "'
+			WHERE 	GENERALLEDGERFORECASTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	GENERALLEDGERFORECASTTYPESEQUENCE
 			FROM 	GENERALLEDGERFORECASTTYPE
-			WHERE 	GENERALLEDGERFORECASTTYPESEQUENCE 	= 	'" . $this->model->getForecastTypeSequence() . "'
+			WHERE 	GENERALLEDGERFORECASTTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerForecastTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1380,7 +1380,7 @@ class ForecastTypeClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "forecastTypeDesc" => $row ['forecastTypeDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "generalLedgerForecastTypeDesc" => $row ['generalLedgerForecastTypeDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
@@ -1447,7 +1447,7 @@ class ForecastTypeClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['forecastTypeDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerForecastTypeDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1456,7 +1456,7 @@ class ForecastTypeClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "forecastType" . rand(0, 10000000) . ".xlsx";
+		$filename = "generalLedgerForecastType" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1472,7 +1472,7 @@ class ForecastTypeClass extends ConfigClass {
 
 }
 
-$forecastTypeObject = new ForecastTypeClass ();
+$generalLedgerForecastTypeObject = new GeneralLedgerForecastTypeClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1482,31 +1482,31 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$forecastTypeObject->setLeafId($_POST ['leafId']);
+		$generalLedgerForecastTypeObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$forecastTypeObject->setIsAdmin($_POST ['isAdmin']);
+		$generalLedgerForecastTypeObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$forecastTypeObject->setStart($_POST ['start']);
+		$generalLedgerForecastTypeObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$forecastTypeObject->setLimit($_POST ['perPage']);
+		$generalLedgerForecastTypeObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$forecastTypeObject->setFieldQuery($_POST ['query']);
+		$generalLedgerForecastTypeObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$forecastTypeObject->setGridQuery($_POST ['filter']);
+		$generalLedgerForecastTypeObject->setGridQuery($_POST ['filter']);
 	}
 	if (isset($_POST ['character'])) {
 		$forecastSegmentObject->setCharacterQuery($_POST['character']);
@@ -1524,29 +1524,29 @@ if (isset($_POST ['method'])) {
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$forecastTypeObject->setOrder($_POST ['order']);
+		$generalLedgerForecastTypeObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$forecastTypeObject->setSortField($_POST ['sortField']);
+		$generalLedgerForecastTypeObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$forecastTypeObject->execute();
+	$generalLedgerForecastTypeObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$forecastTypeObject->create();
+		$generalLedgerForecastTypeObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$forecastTypeObject->update();
+		$generalLedgerForecastTypeObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$forecastTypeObject->read();
+		$generalLedgerForecastTypeObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$forecastTypeObject->delete();
+		$generalLedgerForecastTypeObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1554,35 +1554,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$forecastTypeObject->setLeafId($_GET ['leafId']);
+		$generalLedgerForecastTypeObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$forecastTypeObject->setIsAdmin($_GET ['isAdmin']);
+		$generalLedgerForecastTypeObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$forecastTypeObject->execute();
+	$generalLedgerForecastTypeObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$forecastTypeObject->staff();
+			$generalLedgerForecastTypeObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$forecastTypeObject->updateStatus();
+		$generalLedgerForecastTypeObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['forecastTypeDesc'])) {
-		if (strlen($_GET ['forecastTypeDesc']) > 0) {
-			$forecastTypeObject->duplicate();
+	if (isset($_GET ['generalLedgerForecastTypeDesc'])) {
+		if (strlen($_GET ['generalLedgerForecastTypeDesc']) > 0) {
+			$generalLedgerForecastTypeObject->duplicate();
 		}
 	}
 	/**
@@ -1590,16 +1590,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$forecastTypeObject->firstRecord('json');
+			$generalLedgerForecastTypeObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$forecastTypeObject->previousRecord('json', 0);
+			$generalLedgerForecastTypeObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$forecastTypeObject->nextRecord('json', 0);
+			$generalLedgerForecastTypeObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$forecastTypeObject->lastRecord('json');
+			$generalLedgerForecastTypeObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1607,7 +1607,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$forecastTypeObject->excel();
+			$generalLedgerForecastTypeObject->excel();
 		}
 	}
 }

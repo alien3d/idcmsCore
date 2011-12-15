@@ -387,7 +387,7 @@ class LateInterestTypeClass extends ConfigClass {
 			$sql = "
 			SELECT	`lateInterestType`.`lateInterestTypeId`,
 					`lateInterestType`.`lateInterestTypeSequence`,
-					`lateInterestType`.`lateInterestCode`,
+					`lateInterestType`.`lateInterestTypeCode`,
 					`lateInterestType`.`lateInterestTypeDesc`,
 					`lateInterestType`.`isDefault`,
 					`lateInterestType`.`isNew`,
@@ -412,7 +412,7 @@ class LateInterestTypeClass extends ConfigClass {
 			$sql = "
 			SELECT	[lateInterestType].[lateInterestTypeId],
 					[lateInterestType].[lateInterestTypeSequence],
-					[lateInterestType].[lateInterestCode],
+					[lateInterestType].[lateInterestTypeCode],
 					[lateInterestType].[lateInterestTypeDesc],
 					[lateInterestType].[isDefault],
 					[lateInterestType].[isNew],

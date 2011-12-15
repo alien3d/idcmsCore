@@ -492,7 +492,7 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 		} else if ($this->q->vendor == self::POSTGRESS) {
 
 		} else {
-			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
+			echo json_encode(array("sql"=>$sql,"success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
 		}
 		/**
@@ -737,8 +737,8 @@ class GeneralLedgerBudgetClass extends ConfigClass {
 			      'message' =>  $this->systemString->getReadMessage(),
 				  'time' => $time, 
             	'firstRecord' => $this->recordSet->firstRecord('value'), 
-            	'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getReligionId(0, 'single')), 
-            	'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getReligionId(0, 'single')), 
+            	'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerBudgetId(0, 'single')), 
+            	'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerBudgetId(0, 'single')), 
             	'lastRecord' => $this->recordSet->lastRecord('value'), 	 
 			      'data' => $items));
 			exit();

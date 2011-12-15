@@ -76,5 +76,5 @@ if (isset($_SESSION['theme'])) { ?>
     <script type="text/javascript"
     src="../../javascript/examples/ux/RowExpander.js"></script>
     <script  type="text/javascript"
-    src="../javascript/original/generalLedgerBudget.js?<?php echo time(); ?>"></script>
+    src="../javascript/original/generalLedgerBudgetType.js?<?php echo time(); ?>"></script>
 </html>

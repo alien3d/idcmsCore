@@ -11,7 +11,7 @@ Ext.onReady(function () {
 	// common Proxy,Reader,Store,Filter,Grid
 	// start Staff Request
 	var staffByProxy = new Ext.data.HttpProxy({
-			url : '../controller/generalLedgerForecastController.php?',
+			url : '../controller/generalLedgerForecastTypeController.php?',
 			method : 'GET',
 			success : function (response, options) {
 				jsonResponse = Ext.decode(response.responseText);
@@ -450,7 +450,7 @@ Ext.onReady(function () {
 	// end additional Proxy ,Reader,Store,Filter,Grid
 	// start application Proxy ,Reader,Store,Filter,Grid
 	var generalLedgerForecastTypeProxy = new Ext.data.HttpProxy({
-			url : '../controller/generalLedgerForecastController.php',
+			url : '../controller/generalLedgerForecastTypeController.php',
 			method : 'POST',
 			success : function (response, options) {
 				jsonResponse = Ext.decode(response.responseText);
@@ -692,7 +692,7 @@ Ext.onReady(function () {
 					var record = generalLedgerForecastTypeStore.getAt(rowIndex);
 					formPanel.getForm().reset();
 					formPanel.form.load({
-						url : '../controller/generalLedgerForecastController.php',
+						url : '../controller/generalLedgerForecastTypeController.php',
 						method : 'POST',
 						waitTitle : systemLabel,
 						waitMsg : waitMessageLabel,
@@ -749,7 +749,7 @@ Ext.onReady(function () {
 						iconCls : 'bullet_disk',
 						listeners : {
 							'click' : function (button, e) {
-								var url = '../controller/generalLedgerForecastController.php?';
+								var url = '../controller/generalLedgerForecastTypeController.php?';
 								var sub_url = '';
 								var modified = generalLedgerForecastTypeStore.getModifiedRecords();
 								for (var i = 0; i < modified.length; i++) {
@@ -848,7 +848,7 @@ Ext.onReady(function () {
 					
 					handler : function () {
 						Ext.Ajax.request({
-							url : '../controller/generalLedgerForecastController.php',
+							url : '../controller/generalLedgerForecastTypeController.php',
 							method : 'GET',
 							params : {
 								method : 'report',
@@ -1008,7 +1008,7 @@ Ext.onReady(function () {
 		}); // end of hidden value for navigation button
 	// end System Validation
 	var formPanel = new Ext.form.FormPanel({
-			url : '../controller/generalLedgerForecastController.php',
+			url : '../controller/generalLedgerForecastTypeController.php',
 			name : 'formPanel',
 			id : 'formPanel',
 			method : 'post',
@@ -1182,7 +1182,7 @@ Ext.onReady(function () {
 							fn : function (response) {
 								if ('yes' == response) {
 									Ext.Ajax.request({
-										url : '../controller/generalLedgerForecastController.php',
+										url : '../controller/generalLedgerForecastTypeController.php',
 										params : {
 											method : 'delete',
 											generalLedgerForecastTypeId : Ext.getCmp('generalLedgerForecastTypeId').getValue(),
@@ -1260,7 +1260,7 @@ Ext.onReady(function () {
 						Ext.getCmp('newButton').disable();
 						if (Ext.getCmp('firstRecord').getValue() == '') {
 							Ext.Ajax.request({
-								url : '../controller/generalLedgerForecastController.php',
+								url : '../controller/generalLedgerForecastTypeController.php',
 								method : 'GET',
 								params : {
 									method : 'dataNavigationRequest',
@@ -1272,7 +1272,7 @@ Ext.onReady(function () {
 									if (jsonResponse.success == true) {
 										Ext.getCmp('firstRecord').setValue(jsonResponse.firstRecord);
 										formPanel.form.load({
-											url : '../controller/generalLedgerForecastController.php',
+											url : '../controller/generalLedgerForecastTypeController.php',
 											method : 'POST',
 											waitTitle : systemLabel,
 											waitMsg : waitMessageLabel,
@@ -1313,7 +1313,7 @@ Ext.onReady(function () {
 							});
 						} else {
 							formPanel.form.load({
-								url : '../controller/generalLedgerForecastController.php',
+								url : '../controller/generalLedgerForecastTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
@@ -1360,7 +1360,7 @@ Ext.onReady(function () {
 						}
 						if (Ext.getCmp('firstRecord').getValue() >= 1) {
 							formPanel.form.load({
-								url : '../controller/generalLedgerForecastController.php',
+								url : '../controller/generalLedgerForecastTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
@@ -1406,7 +1406,7 @@ Ext.onReady(function () {
 						}
 						if (Ext.getCmp('nextRecord').getValue() <= Ext.getCmp('lastRecord').getValue()) {
 							formPanel.form.load({
-								url : '../controller/generalLedgerForecastController.php',
+								url : '../controller/generalLedgerForecastTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,
@@ -1452,7 +1452,7 @@ Ext.onReady(function () {
 						Ext.getCmp('newButton').disable();
 						if (Ext.getCmp('lastRecord').getValue() == '' || Ext.getCmp('lastRecord').getValue() == undefined) {
 							Ext.Ajax.request({
-								url : '../controller/generalLedgerForecastController.php',
+								url : '../controller/generalLedgerForecastTypeController.php',
 								method : 'GET',
 								params : {
 									method : 'dataNavigationRequest',
@@ -1464,7 +1464,7 @@ Ext.onReady(function () {
 									if (jsonResponse.success == true) {
 										Ext.getCmp('lastRecord').setValue(jsonResponse.lastRecord);
 										formPanel.form.load({
-											url : '../controller/generalLedgerForecastController.php',
+											url : '../controller/generalLedgerForecastTypeController.php',
 											method : 'POST',
 											waitTitle : systemLabel,
 											waitMsg : waitMessageLabel,
@@ -1507,7 +1507,7 @@ Ext.onReady(function () {
 						}
 						if (Ext.getCmp('generalLedgerForecastTypeId').getValue() <= Ext.getCmp('lastRecord').getValue()) {
 							formPanel.form.load({
-								url : '../controller/generalLedgerForecastController.php',
+								url : '../controller/generalLedgerForecastTypeController.php',
 								method : 'POST',
 								waitTitle : systemLabel,
 								waitMsg : waitMessageLabel,

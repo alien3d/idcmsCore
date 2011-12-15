@@ -7,10 +7,10 @@ require_once ("../../class/classDate.php");
 require_once ("../../document/class/classDocumentTrail.php");
 require_once ("../../document/model/documentModel.php");
 require_once ("../../class/classSystemString.php");
-require_once ("../model/budgetTypeModel.php");
+require_once ("../model/generalLedgerBudgetTypeModel.php");
 
 /**
- * this is budgetType setting files.This sample template file for master record
+ * this is generalLedgerBudgetType setting files.This sample template file for master record
  * @name IDCMS
  * @version 2
  * @author hafizan
@@ -19,7 +19,7 @@ require_once ("../model/budgetTypeModel.php");
  * @link http://www.idcms.org
  * @license http://www.gnu.org/copyleft/lesser.html LGPL
  */
-class BudgetTypeClass extends ConfigClass {
+class GeneralLedgerBudgetTypeClass extends ConfigClass {
 
 	/**
 	 * Connection to the database
@@ -91,7 +91,7 @@ class BudgetTypeClass extends ConfigClass {
 		$this->audit = 0;
 		$this->log = 1;
 
-		$this->model = new BudgetTypeModel ();
+		$this->model = new GeneralLedgerBudgetTypeModel ();
 		$this->model->setVendor($this->getVendor());
 		$this->model->execute();
 
@@ -143,11 +143,11 @@ class BudgetTypeClass extends ConfigClass {
 		if ($this->getVendor() == self::MYSQL) {
 
 			$sql = "
-			INSERT INTO `".$this->q->getFinancialDatabase()."`.`budgetType`
+			INSERT INTO `".$this->q->getFinancialDatabase()."`.`generalLedgerBudgetType`
 					(
-						`budgetTypeSequence`,												
-						`budgetTypeCode`,
-						`budgetTypeDesc`,
+						`generalLedgerBudgetTypeSequence`,												
+						`generalLedgerBudgetTypeCode`,
+						`generalLedgerBudgetTypeDesc`,
 						`isDefault`,
 						`isNew`,													
 						`isDraft`,
@@ -162,9 +162,9 @@ class BudgetTypeClass extends ConfigClass {
 					)
 			VALUES
 					(
-						'" . $this->model->getBudgetTypeSequence() . "',
-						'" . $this->model->getBudgetTypeCode() . "',
-						'" . $this->model->getBudgetTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -179,27 +179,27 @@ class BudgetTypeClass extends ConfigClass {
 					);";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			INSERT INTO ['".$this->q->getFinancialDatabase()."'].[budgetType]
+			INSERT INTO ['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType]
 					(
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeSequence],												
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeCode],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetTypeDesc],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isDefault],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isNew],														
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isDraft],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isUpdate],														
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isDelete],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isActive],														
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isApproved],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isReview],														
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[isPost],
-						['".$this->q->getFinancialDatabase()."'].[budgetType].[executeBy],													[executeTime]
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[generalLedgerBudgetTypeSequence],												
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[generalLedgerBudgetTypeCode],
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[generalLedgerBudgetTypeDesc],
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[isDefault],
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[isNew],														
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[isDraft],
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[isUpdate],														
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[isDelete],
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[isActive],														
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[isApproved],
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[isReview],														
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[isPost],
+						['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[executeBy],													[executeTime]
 					)
 			VALUES
 					(
-						'" . $this->model->getBudgetTypeSequence() . "',
-						'" . $this->model->getBudgetTypeCode() . "',
-						'" . $this->model->getBudgetTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',				'" . $this->model->getIsDraft(0, 'single') . "',
 						'" . $this->model->getIsUpdate(0, 'single') . "',			'" . $this->model->getIsDelete(0, 'single') . "',
@@ -210,28 +210,28 @@ class BudgetTypeClass extends ConfigClass {
 		} else if ($this->getVendor() == self::ORACLE) {
 
 			$sql = "
-			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTTYPE
+			INSERT INTO	GENERALLEDGERBUDGETTYPE
 					(
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPESEQUENCE,												
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPECODE,
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPEDESC,
+						GENERALLEDGERBUDGETTYPE.ISDEFAULT,
+						GENERALLEDGERBUDGETTYPE.ISNEW,														
+						GENERALLEDGERBUDGETTYPE.ISDRAFT,
+						GENERALLEDGERBUDGETTYPE.ISUPDATE,													
+						GENERALLEDGERBUDGETTYPE.ISDELETE,
+						GENERALLEDGERBUDGETTYPE.ISACTIVE,													
+						GENERALLEDGERBUDGETTYPE.ISAPPROVED,
+						GENERALLEDGERBUDGETTYPE.ISREVIEW,													
+						GENERALLEDGERBUDGETTYPE.ISPOST,
+						GENERALLEDGERBUDGETTYPE.EXECUTEBY,													
+						GENERALLEDGERBUDGETTYPE.EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getBudgetTypeSequence() . "',
-						'" . $this->model->getBudgetTypeCode() . "',
-						'" . $this->model->getBudgetTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -246,28 +246,28 @@ class BudgetTypeClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTTYPE
+			INSERT INTO	GENERALLEDGERBUDGETTYPE
 					(
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPESEQUENCE,												
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPECODE,
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPEDESC,
+						GENERALLEDGERBUDGETTYPE.ISDEFAULT,
+						GENERALLEDGERBUDGETTYPE.ISNEW,														
+						GENERALLEDGERBUDGETTYPE.ISDRAFT,
+						GENERALLEDGERBUDGETTYPE.ISUPDATE,													
+						GENERALLEDGERBUDGETTYPE.ISDELETE,
+						GENERALLEDGERBUDGETTYPE.ISACTIVE,													
+						GENERALLEDGERBUDGETTYPE.ISAPPROVED,
+						GENERALLEDGERBUDGETTYPE.ISREVIEW,													
+						GENERALLEDGERBUDGETTYPE.ISPOST,
+						GENERALLEDGERBUDGETTYPE.EXECUTEBY,													
+						GENERALLEDGERBUDGETTYPE.EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getBudgetTypeSequence() . "',
-						'" . $this->model->getBudgetTypeCode() . "',
-						'" . $this->model->getBudgetTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -282,28 +282,28 @@ class BudgetTypeClass extends ConfigClass {
 					)";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			INSERT INTO	GENERALLEDGERCHARTOFACCOUNTTYPE
+			INSERT INTO	GENERALLEDGERBUDGETTYPE
 					(
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE,												
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW,														
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST,
-						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY,													
-						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPESEQUENCE,												
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPECODE,
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPEDESC,
+						GENERALLEDGERBUDGETTYPE.ISDEFAULT,
+						GENERALLEDGERBUDGETTYPE.ISNEW,														
+						GENERALLEDGERBUDGETTYPE.ISDRAFT,
+						GENERALLEDGERBUDGETTYPE.ISUPDATE,													
+						GENERALLEDGERBUDGETTYPE.ISDELETE,
+						GENERALLEDGERBUDGETTYPE.ISACTIVE,													
+						GENERALLEDGERBUDGETTYPE.ISAPPROVED,
+						GENERALLEDGERBUDGETTYPE.ISREVIEW,													
+						GENERALLEDGERBUDGETTYPE.ISPOST,
+						GENERALLEDGERBUDGETTYPE.EXECUTEBY,													
+						GENERALLEDGERBUDGETTYPE.EXECUTETIME
 					)
 			VALUES
 					(
-						'" . $this->model->getBudgetTypeSequence() . "',
-						'" . $this->model->getBudgetTypeCode() . "',
-						'" . $this->model->getBudgetTypeDesc() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+						'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
 						'" . $this->model->getIsDefault(0, 'single') . "',
 						'" . $this->model->getIsNew(0, 'single') . "',			
 						'" . $this->model->getIsDraft(0, 'single') . "',
@@ -322,7 +322,7 @@ class BudgetTypeClass extends ConfigClass {
 		}
 
 		$this->q->create($sql);
-		$budgetTypeId = $this->q->lastInsertId();
+		$generalLedgerBudgetTypeId = $this->q->lastInsertId();
 		if ($this->q->execute == 'fail') {
 			echo json_encode(array("success" => false, "message" => $this->q->responce));
 			exit();
@@ -333,7 +333,7 @@ class BudgetTypeClass extends ConfigClass {
 		echo json_encode(
 		array(	"success" => true,
 					"message" => $this->systemString->getCreateMessage(), 
-					"budgetTypeId" => $budgetTypeId,
+					"generalLedgerBudgetTypeId" => $generalLedgerBudgetTypeId,
         			"time"=>$time));
 		exit();
 	}
@@ -347,15 +347,15 @@ class BudgetTypeClass extends ConfigClass {
 		$start = microtime(true);
 		if ($this->isAdmin == 0) {
 			if ($this->q->vendor == self::MYSQL) {
-				$this->auditFilter = "  `budgetType`.`isActive`		=	1	";
+				$this->auditFilter = "  `generalLedgerBudgetType`.`isActive`		=	1	";
 			} else if ($this->q->vendor == self::MSSQL) {
-				$this->auditFilter = "  [budgetType].[isActive]		=	1	";
+				$this->auditFilter = "  [generalLedgerBudgetType].[isActive]		=	1	";
 			} else if ($this->q->vendor == self::ORACLE) {
-				$this->auditFilter = " GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
+				$this->auditFilter = " GENERALLEDGERBUDGETTYPE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::DB2) {
-				$this->auditFilter = "  GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
+				$this->auditFilter = "  GENERALLEDGERBUDGETTYPE.ISACTIVE	=	1	";
 			} else if ($this->q->vendor == self::POSTGRESS) {
-				$this->auditFilter = "	GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	=	1	";
+				$this->auditFilter = "	GENERALLEDGERBUDGETTYPE.ISACTIVE	=	1	";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -384,78 +384,78 @@ class BudgetTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT		`budgetType`.`budgetTypeId`,
-						`budgetType`.`budgetTypeSequence`,
-						`budgetType`.`budgetTypeCode`,
-						`budgetType`.`budgetTypeDesc`,
-						`budgetType`.`isDefault`,
-						`budgetType`.`isNew`,
-						`budgetType`.`isDraft`,
-						`budgetType`.`isUpdate`,
-						`budgetType`.`isDelete`,
-						`budgetType`.`isActive`,
-						`budgetType`.`isApproved`,
-						`budgetType`.`isReview`,
-						`budgetType`.`isPost`,
-						`budgetType`.`executeBy`,
-						`budgetType`.`executeTime`,
+			SELECT		`generalLedgerBudgetType`.`generalLedgerBudgetTypeId`,
+						`generalLedgerBudgetType`.`generalLedgerBudgetTypeSequence`,
+						`generalLedgerBudgetType`.`generalLedgerBudgetTypeCode`,
+						`generalLedgerBudgetType`.`generalLedgerBudgetTypeDesc`,
+						`generalLedgerBudgetType`.`isDefault`,
+						`generalLedgerBudgetType`.`isNew`,
+						`generalLedgerBudgetType`.`isDraft`,
+						`generalLedgerBudgetType`.`isUpdate`,
+						`generalLedgerBudgetType`.`isDelete`,
+						`generalLedgerBudgetType`.`isActive`,
+						`generalLedgerBudgetType`.`isApproved`,
+						`generalLedgerBudgetType`.`isReview`,
+						`generalLedgerBudgetType`.`isPost`,
+						`generalLedgerBudgetType`.`executeBy`,
+						`generalLedgerBudgetType`.`executeTime`,
 						`staff`.`staffName`
-			FROM 	`".$this->q->getFinancialDatabase()."`.`budgetType`
+			FROM 	`".$this->q->getFinancialDatabase()."`.`generalLedgerBudgetType`
 			JOIN	`".$this->q->getManagementDatabase()."`.`staff`
-			ON		`budgetType`.`executeBy` = `staff`.`staffId`
+			ON		`generalLedgerBudgetType`.`executeBy` = `staff`.`staffId`
 			WHERE 	 " . $this->auditFilter;
-			if ($this->model->getBudgetTypeId(0, 'single')) {
-				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getBudgetTypeId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerBudgetTypeId(0, 'single')) {
+				$sql .= " AND `" . $this->model->getPrimaryKeyName() . "`='" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT		[budgetType].[budgetTypeId],
-						[budgetType].[budgetTypeSequence],
-						[budgetType].[budgetTypeCode],
-						[budgetType].[budgetTypeDesc],
-						[budgetType].[isDefault],
-						[budgetType].[isNew],
-						[budgetType].[isDraft],
-						[budgetType].[isUpdate],
-						[budgetType].[isDelete],
-						[budgetType].[isActive],
-						[budgetType].[isApproved],
-						[budgetType].[isReview],
-						[budgetType].[isPost],
-						[budgetType].[executeBy],
-						[budgetType].[executeTime],
+			SELECT		[generalLedgerBudgetType].[generalLedgerBudgetTypeId],
+						[generalLedgerBudgetType].[generalLedgerBudgetTypeSequence],
+						[generalLedgerBudgetType].[generalLedgerBudgetTypeCode],
+						[generalLedgerBudgetType].[generalLedgerBudgetTypeDesc],
+						[generalLedgerBudgetType].[isDefault],
+						[generalLedgerBudgetType].[isNew],
+						[generalLedgerBudgetType].[isDraft],
+						[generalLedgerBudgetType].[isUpdate],
+						[generalLedgerBudgetType].[isDelete],
+						[generalLedgerBudgetType].[isActive],
+						[generalLedgerBudgetType].[isApproved],
+						[generalLedgerBudgetType].[isReview],
+						[generalLedgerBudgetType].[isPost],
+						[generalLedgerBudgetType].[executeBy],
+						[generalLedgerBudgetType].[executeTime],
 						[staff].[staffName]
-			FROM 	['".$this->q->getFinancialDatabase()."'].[budgetType]
+			FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType]
 			JOIN		[".$this->q->getManagementDatabase()."].[staff]
-			ON		[budgetType].[executeBy] =[staff].[staffId]
+			ON		[generalLedgerBudgetType].[executeBy] =[staff].[staffId]
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getBudgetTypeId(0, 'single')) {
-				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getBudgetTypeId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerBudgetTypeId(0, 'single')) {
+				$sql .= " AND [" . $this->model->getPrimaryKeyName() . "]='" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			}
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT		GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEID   		 	AS 	\"budgetTypeId\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 				AS 	\"budgetTypeSequence\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE 			AS 	\"budgetTypeCode\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC 			AS 	\"budgetTypeDesc\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT    			AS	\"isDefault\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW		  			AS	\"isNew\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT	  				AS	\"isDraft\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE     			AS	\"isUpdate\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE	  			AS	\"isDelete\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	  			AS	\"isActive\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED   			AS	\"isApproved\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW	  			AS	\"isReview\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST  	  			AS	\"isPost\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY    			AS	\"executeBy\",
-						GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME  			AS	\"executeTime\",
+			SELECT		GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPEID   		 	AS 	\"generalLedgerBudgetTypeId\",
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPESEQUENCE 				AS 	\"generalLedgerBudgetTypeSequence\",
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPECODE 			AS 	\"generalLedgerBudgetTypeCode\",
+						GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPEDESC 			AS 	\"generalLedgerBudgetTypeDesc\",
+						GENERALLEDGERBUDGETTYPE.ISDEFAULT    			AS	\"isDefault\",
+						GENERALLEDGERBUDGETTYPE.ISNEW		  			AS	\"isNew\",
+						GENERALLEDGERBUDGETTYPE.ISDRAFT	  				AS	\"isDraft\",
+						GENERALLEDGERBUDGETTYPE.ISUPDATE     			AS	\"isUpdate\",
+						GENERALLEDGERBUDGETTYPE.ISDELETE	  			AS	\"isDelete\",
+						GENERALLEDGERBUDGETTYPE.ISACTIVE	  			AS	\"isActive\",
+						GENERALLEDGERBUDGETTYPE.ISAPPROVED   			AS	\"isApproved\",
+						GENERALLEDGERBUDGETTYPE.ISREVIEW	  			AS	\"isReview\",
+						GENERALLEDGERBUDGETTYPE.ISPOST  	  			AS	\"isPost\",
+						GENERALLEDGERBUDGETTYPE.EXECUTEBY    			AS	\"executeBy\",
+						GENERALLEDGERBUDGETTYPE.EXECUTETIME  			AS	\"executeTime\",
 						STAFF.STAFFNAME		  			AS	\"staffName\"	
-			FROM 		GENERALLEDGERCHARTOFACCOUNTTYPE
+			FROM 		GENERALLEDGERBUDGETTYPE
 			JOIN		STAFF
-			ON			GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
+			ON			GENERALLEDGERBUDGETTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
 			WHERE 	" . $this->auditFilter;
-			if ($this->model->getBudgetTypeId(0, 'single')) {
-				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getBudgetTypeId(0, 'single') . "'";
+			if ($this->model->getGeneralLedgerBudgetTypeId(0, 'single')) {
+				$sql .= " AND " . strtoupper($this->model->getTableName()) . "." . strtoupper($this->model->getPrimaryKeyName()) . "='" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			}
 		} else if ($this->q->vendor == self::DB2) {
 
@@ -494,13 +494,13 @@ class BudgetTypeClass extends ConfigClass {
 		 * @variables $filterArray;
 		 */
 		$filterArray = null;
-		$filterArray = array('budgetTypeId');
+		$filterArray = array('generalLedgerBudgetTypeId');
 		/**
 		 * filter table
 		 * @variables $tableArray
 		 */
 		$tableArray = null;
-		$tableArray = array('budgetType');
+		$tableArray = array('generalLedgerBudgetType');
 		if ($this->getFieldQuery()) {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql .= $this->q->quickSearch($tableArray, $filterArray);
@@ -591,31 +591,31 @@ class BudgetTypeClass extends ConfigClass {
 				 *
 				 */
 				$sql = "
-							WITH [budgetTypeDerived] AS
+							WITH [generalLedgerBudgetTypeDerived] AS
 							(
-								SELECT 		[budgetType].[budgetTypeId],
-											[budgetType].[budgetTypeSequence],
-											[budgetType].[budgetTypeCode],
-											[budgetType].[budgetTypeDesc],
-											[budgetType].[isDefault],
-											[budgetType].[isNew],
-											[budgetType].[isDraft],
-											[budgetType].[isUpdate],
-											[budgetType].[isDelete],
-											[budgetType].[isApproved],
-											[budgetType].[isReview],
-											[budgetType].[isPost],
-											[budgetType].[executeBy],
-											[budgetType].[executeTime],
+								SELECT 		[generalLedgerBudgetType].[generalLedgerBudgetTypeId],
+											[generalLedgerBudgetType].[generalLedgerBudgetTypeSequence],
+											[generalLedgerBudgetType].[generalLedgerBudgetTypeCode],
+											[generalLedgerBudgetType].[generalLedgerBudgetTypeDesc],
+											[generalLedgerBudgetType].[isDefault],
+											[generalLedgerBudgetType].[isNew],
+											[generalLedgerBudgetType].[isDraft],
+											[generalLedgerBudgetType].[isUpdate],
+											[generalLedgerBudgetType].[isDelete],
+											[generalLedgerBudgetType].[isApproved],
+											[generalLedgerBudgetType].[isReview],
+											[generalLedgerBudgetType].[isPost],
+											[generalLedgerBudgetType].[executeBy],
+											[generalLedgerBudgetType].[executeTime],
 											[staff].[staffName],
-								ROW_NUMBER() OVER (ORDER BY [budgetType].[budgetTypeId]) AS 'RowNumber'
-								FROM 	['".$this->q->getFinancialDatabase()."'].[budgetType]
+								ROW_NUMBER() OVER (ORDER BY [generalLedgerBudgetType].[generalLedgerBudgetTypeId]) AS 'RowNumber'
+								FROM 	['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType]
 								JOIN	[".$this->q->getManagementDatabase()."].[staff]
-								ON		[budgetType].[executeBy] = [staff].[staffId]
+								ON		[generalLedgerBudgetType].[executeBy] = [staff].[staffId]
 								WHERE " . $this->auditFilter . $tempSql . $tempSql2 . "
 							)
 							SELECT		*
-							FROM 		[budgetTypeDerived]
+							FROM 		[generalLedgerBudgetTypeDerived]
 							WHERE 		[RowNumber]
 							BETWEEN	" . ($this->getStart() + 1) . "
 							AND 			" . ($this->getStart() + $this->getLimit()) . ";";
@@ -628,25 +628,25 @@ class BudgetTypeClass extends ConfigClass {
 						FROM ( SELECT	a.*,
 												rownum r
 						FROM (
-								SELECT	GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEID   		AS 	\"budgetTypeId\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 			AS 	\"budgetTypeSequence\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPECODE 		AS 	\"budgetTypeCode\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.GENERALLEDGERCHARTOFACCOUNTTYPEDESC 		AS 	\"budgetTypeDesc\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.ISDEFAULT    		AS	\"isDefault\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.ISNEW		  		AS	\"isNew\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.ISDRAFT	 			AS	\"isDraft\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.ISUPDATE     		AS	\"isUpdate\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.ISDELETE	  		AS	\"isDelete\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.ISACTIVE	  		AS	\"isActive\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.ISAPPROVED   		AS	\"isApproved\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.ISREVIEW	  		AS 	\"isReview\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.ISPOST		  		AS	\"isPost\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY    		AS	\"executeBy\",
-										GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTETIME  		AS	\"executeTime\",
+								SELECT	GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPEID   		AS 	\"generalLedgerBudgetTypeId\",
+										GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPESEQUENCE 			AS 	\"generalLedgerBudgetTypeSequence\",
+										GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPECODE 		AS 	\"generalLedgerBudgetTypeCode\",
+										GENERALLEDGERBUDGETTYPE.GENERALLEDGERBUDGETTYPEDESC 		AS 	\"generalLedgerBudgetTypeDesc\",
+										GENERALLEDGERBUDGETTYPE.ISDEFAULT    		AS	\"isDefault\",
+										GENERALLEDGERBUDGETTYPE.ISNEW		  		AS	\"isNew\",
+										GENERALLEDGERBUDGETTYPE.ISDRAFT	 			AS	\"isDraft\",
+										GENERALLEDGERBUDGETTYPE.ISUPDATE     		AS	\"isUpdate\",
+										GENERALLEDGERBUDGETTYPE.ISDELETE	  		AS	\"isDelete\",
+										GENERALLEDGERBUDGETTYPE.ISACTIVE	  		AS	\"isActive\",
+										GENERALLEDGERBUDGETTYPE.ISAPPROVED   		AS	\"isApproved\",
+										GENERALLEDGERBUDGETTYPE.ISREVIEW	  		AS 	\"isReview\",
+										GENERALLEDGERBUDGETTYPE.ISPOST		  		AS	\"isPost\",
+										GENERALLEDGERBUDGETTYPE.EXECUTEBY    		AS	\"executeBy\",
+										GENERALLEDGERBUDGETTYPE.EXECUTETIME  		AS	\"executeTime\",
 										STAFF.STAFFNAME		  								AS	\"staffName\"	
-								FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
+								FROM 	GENERALLEDGERBUDGETTYPE
 								JOIN	STAFF
-								ON		GENERALLEDGERCHARTOFACCOUNTTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
+								ON		GENERALLEDGERBUDGETTYPE.EXECUTEBY 	  	=	STAFF.STAFFID
 								WHERE 	" . $this->auditFilter . $tempSql . $tempSql2 . "
 								 ) a
 						where rownum <= '" . ($this->getStart() + $this->getLimit()) . "' )
@@ -675,7 +675,7 @@ class BudgetTypeClass extends ConfigClass {
 		/*
 		 *  Only Execute One Query
 		 */
-		if (!($this->model->getBudgetTypeId(0, 'single'))) {
+		if (!($this->model->getGeneralLedgerBudgetTypeId(0, 'single'))) {
 			$this->q->read($sql);
 			if ($this->q->execute == 'fail') {
 				echo json_encode(array("success" => false, "message" => $this->q->responce));
@@ -686,8 +686,8 @@ class BudgetTypeClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			$items [] = $row;
 		}
-		if ($this->model->getBudgetTypeId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getBudgetTypeId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getBudgetTypeId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
+		if ($this->model->getGeneralLedgerBudgetTypeId(0, 'single')) {
+			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items, 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerBudgetTypeId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerBudgetTypeId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value')));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -695,7 +695,8 @@ class BudgetTypeClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
+			echo json_encode(
+			array('SQL'=>$sql,'success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'data' => $items));
 			exit();
 		}
 	}
@@ -722,27 +723,27 @@ class BudgetTypeClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "].[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getTableName() . "].[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -755,10 +756,10 @@ class BudgetTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE		`".$this->q->getFinancialDatabase()."`.`budgetType`
-				SET 		`budgetTypeSequence`		=	'" . $this->model->getBudgetTypeSequence() . "',
-							`budgetTypeCode`		=	'" . $this->model->getBudgetTypeCode() . "',
-							`budgetTypeDesc`		=	'" . $this->model->getBudgetTypeDesc() . "',
+				UPDATE		`".$this->q->getFinancialDatabase()."`.`generalLedgerBudgetType`
+				SET 		`generalLedgerBudgetTypeSequence`		=	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+							`generalLedgerBudgetTypeCode`		=	'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+							`generalLedgerBudgetTypeDesc`		=	'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
 							`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 							`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -770,31 +771,31 @@ class BudgetTypeClass extends ConfigClass {
 							`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 							`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 							`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 		`budgetTypeId`		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				WHERE 		`generalLedgerBudgetTypeId`		=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 		['".$this->q->getFinancialDatabase()."'].[budgetType]
-				SET 	[budgetType].[budgetTypeSequence]		=	'" . $this->model->getBudgetTypeSequence() . "',
-						[budgetType].[budgetTypeCode]		=	'" . $this->model->getBudgetTypeCode() . "',
-						[budgetType].[budgetTypeDesc]		=	'" . $this->model->getBudgetTypeDesc() . "',
-						[budgetType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[budgetType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[budgetType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[budgetType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[budgetType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[budgetType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[budgetType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[budgetType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[budgetType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[budgetType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[budgetType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-			WHERE 		[budgetType].[budgetTypeId]			=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				UPDATE 		['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType]
+				SET 	[generalLedgerBudgetType].[generalLedgerBudgetTypeSequence]		=	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+						[generalLedgerBudgetType].[generalLedgerBudgetTypeCode]		=	'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+						[generalLedgerBudgetType].[generalLedgerBudgetTypeDesc]		=	'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
+						[generalLedgerBudgetType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[generalLedgerBudgetType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[generalLedgerBudgetType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[generalLedgerBudgetType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[generalLedgerBudgetType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[generalLedgerBudgetType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[generalLedgerBudgetType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[generalLedgerBudgetType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[generalLedgerBudgetType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[generalLedgerBudgetType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[generalLedgerBudgetType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+			WHERE 		[generalLedgerBudgetType].[generalLedgerBudgetTypeId]			=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE		GENERALLEDGERCHARTOFACCOUNTTYPE
-				SET 		GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getBudgetTypeSequence() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getBudgetTypeCode() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getBudgetTypeDesc() . "',
+				UPDATE		GENERALLEDGERBUDGETTYPE
+				SET 		GENERALLEDGERBUDGETTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+							GENERALLEDGERBUDGETTYPECODE		=	'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+							GENERALLEDGERBUDGETTYPEDESC		=	'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -806,13 +807,13 @@ class BudgetTypeClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERBUDGETTYPEID		=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-			UPDATE			GENERALLEDGERCHARTOFACCOUNTTYPE
-			SET 			GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getBudgetTypeSequence() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getBudgetTypeCode() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getBudgetTypeDesc() . "',
+			UPDATE			GENERALLEDGERBUDGETTYPE
+			SET 			GENERALLEDGERBUDGETTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+							GENERALLEDGERBUDGETTYPECODE		=	'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+							GENERALLEDGERBUDGETTYPEDESC		=	'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
 							ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -824,13 +825,13 @@ class BudgetTypeClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME	=	" . $this->model->getExecuteTime() . "
-			WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+			WHERE 		GENERALLEDGERBUDGETTYPEID		=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE		GENERALLEDGERCHARTOFACCOUNTTYPE
-				SET 		GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE	=	'" . $this->model->getBudgetTypeSequence() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPECODE		=	'" . $this->model->getBudgetTypeCode() . "',
-							GENERALLEDGERCHARTOFACCOUNTTYPEDESC		=	'" . $this->model->getBudgetTypeDesc() . "',
+				UPDATE		GENERALLEDGERBUDGETTYPE
+				SET 		GENERALLEDGERBUDGETTYPESEQUENCE	=	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "',
+							GENERALLEDGERBUDGETTYPECODE		=	'" . $this->model->getGeneralLedgerBudgetTypeCode() . "',
+							GENERALLEDGERBUDGETTYPEDESC		=	'" . $this->model->getGeneralLedgerBudgetTypeDesc() . "',
 							ISDEFAULT			=	'" . $this->model->getIsDefault(0, 'single') . "',
 							ISNEW				=	'" . $this->model->getIsNew(0, 'single') . "',
 							ISDRAFT				=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -842,7 +843,7 @@ class BudgetTypeClass extends ConfigClass {
 							ISPOST				=	'" . $this->model->getIsPost(0, 'single') . "',
 							EXECUTEBY			=	'" . $this->model->getExecuteBy() . "',
 							EXECUTETIME			=	" . $this->model->getExecuteTime() . "
-				WHERE 		GENERALLEDGERCHARTOFACCOUNTTYPEID			=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				WHERE 		GENERALLEDGERBUDGETTYPEID			=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -877,27 +878,27 @@ class BudgetTypeClass extends ConfigClass {
 			$sql = "
 			SELECT	`" . $this->model->getPrimaryKeyName() . "`
 			FROM 	`".$this->q->getFinancialDatabase()."`.`" . $this->model->getTableName() . "`
-			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	`" . $this->model->getPrimaryKeyName() . "` = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
 			SELECT	[" . $this->model->getPrimaryKeyName() . "]
 			FROM 	['".$this->q->getFinancialDatabase()."'].[" . $this->model->getTableName() . "]
-			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	[" . $this->model->getPrimaryKeyName() . "] = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
 			SELECT	" . strtoupper($this->model->getPrimaryKeyName()) . "
 			FROM 	" . strtoupper($this->model->getTableName()) . "
-			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getBudgetTypeId(0, 'single') . "' ";
+			WHERE  	" . strtoupper($this->model->getPrimaryKeyName()) . " = '" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "' ";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 			exit();
@@ -910,7 +911,7 @@ class BudgetTypeClass extends ConfigClass {
 		} else {
 			if ($this->getVendor() == self::MYSQL) {
 				$sql = "
-				UPDATE 	`".$this->q->getFinancialDatabase()."`.`budgetType`
+				UPDATE 	`".$this->q->getFinancialDatabase()."`.`generalLedgerBudgetType`
 				SET 	`isDefault`			=	'" . $this->model->getIsDefault(0, 'single') . "',
 						`isNew`				=	'" . $this->model->getIsNew(0, 'single') . "',
 						`isDraft`			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -922,25 +923,25 @@ class BudgetTypeClass extends ConfigClass {
 						`isPost`			=	'" . $this->model->getIsPost(0, 'single') . "',
 						`executeBy`			=	'" . $this->model->getExecuteBy() . "',
 						`executeTime`		=	" . $this->model->getExecuteTime() . "
-				WHERE 	`budgetTypeId`		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				WHERE 	`generalLedgerBudgetTypeId`		=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::MSSQL) {
 				$sql = "
-				UPDATE 	['".$this->q->getFinancialDatabase()."'].[budgetType].[budgetType]
-				SET 	[budgetType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
-						[budgetType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
-						[budgetType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
-						[budgetType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
-						[budgetType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
-						[budgetType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
-						[budgetType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
-						[budgetType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
-						[budgetType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
-						[budgetType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
-						[budgetType].[executeTime]		=	" . $this->model->getExecuteTime() . "
-				WHERE 	[budgetType].[budgetTypeId]		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				UPDATE 	['".$this->q->getFinancialDatabase()."'].[generalLedgerBudgetType].[generalLedgerBudgetType]
+				SET 	[generalLedgerBudgetType].[isDefault]			=	'" . $this->model->getIsDefault(0, 'single') . "',
+						[generalLedgerBudgetType].[isNew]				=	'" . $this->model->getIsNew(0, 'single') . "',
+						[generalLedgerBudgetType].[isDraft]			=	'" . $this->model->getIsDraft(0, 'single') . "',
+						[generalLedgerBudgetType].[isUpdate]			=	'" . $this->model->getIsUpdate(0, 'single') . "',
+						[generalLedgerBudgetType].[isDelete]			=	'" . $this->model->getIsDelete(0, 'single') . "',
+						[generalLedgerBudgetType].[isActive]			=	'" . $this->model->getIsActive(0, 'single') . "',
+						[generalLedgerBudgetType].[isApproved]		=	'" . $this->model->getIsApproved(0, 'single') . "',
+						[generalLedgerBudgetType].[isReview]			=	'" . $this->model->getIsReview(0, 'single') . "',
+						[generalLedgerBudgetType].[isPost]			=	'" . $this->model->getIsPost(0, 'single') . "',
+						[generalLedgerBudgetType].[executeBy]			=	'" . $this->model->getExecuteBy() . "',
+						[generalLedgerBudgetType].[executeTime]		=	" . $this->model->getExecuteTime() . "
+				WHERE 	[generalLedgerBudgetType].[generalLedgerBudgetTypeId]		=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::ORACLE) {
 				$sql = "
-				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
+				UPDATE 	GENERALLEDGERBUDGETTYPE
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -952,10 +953,10 @@ class BudgetTypeClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERBUDGETTYPEID		=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::DB2) {
 				$sql = "
-				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
+				UPDATE 	GENERALLEDGERBUDGETTYPE
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -967,10 +968,10 @@ class BudgetTypeClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERBUDGETTYPEID		=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else if ($this->getVendor() == self::POSTGRESS) {
 				$sql = "
-				UPDATE 	GENERALLEDGERCHARTOFACCOUNTTYPE
+				UPDATE 	GENERALLEDGERBUDGETTYPE
 				SET 	ISDEFAULT		=	'" . $this->model->getIsDefault(0, 'single') . "',
 						ISNEW			=	'" . $this->model->getIsNew(0, 'single') . "',
 						ISDRAFT			=	'" . $this->model->getIsDraft(0, 'single') . "',
@@ -982,7 +983,7 @@ class BudgetTypeClass extends ConfigClass {
 						ISPOST			=	'" . $this->model->getIsPost(0, 'single') . "',
 						EXECUTEBY		=	'" . $this->model->getExecuteBy() . "',
 						EXECUTETIME		=	" . $this->model->getExecuteTime() . "
-				WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPEID		=	'" . $this->model->getBudgetTypeId(0, 'single') . "'";
+				WHERE 	GENERALLEDGERBUDGETTYPEID		=	'" . $this->model->getGeneralLedgerBudgetTypeId(0, 'single') . "'";
 			} else {
 				echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
 				exit();
@@ -1065,7 +1066,7 @@ class BudgetTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsDefault($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1089,7 +1090,7 @@ class BudgetTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsNew($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1113,7 +1114,7 @@ class BudgetTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsDraft($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1137,7 +1138,7 @@ class BudgetTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsUpdate($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1161,7 +1162,7 @@ class BudgetTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsDelete($i, 'array') . "'";
 							$sqlLooping .= " END,";
 							if(!$this->getIsAdmin()){
@@ -1182,7 +1183,7 @@ class BudgetTypeClass extends ConfigClass {
 										exit();
 									}
 									$sqlLooping .= "
-							WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
 							THEN '0'";
 									$sqlLooping .= " END,";
 								}
@@ -1209,7 +1210,7 @@ class BudgetTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsActive($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1233,7 +1234,7 @@ class BudgetTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-							WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+							WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
 							THEN '" . $this->model->getIsApproved($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1257,7 +1258,7 @@ class BudgetTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                            WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+                            WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
                             THEN '" . $this->model->getIsReview($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1281,7 +1282,7 @@ class BudgetTypeClass extends ConfigClass {
 								exit();
 							}
 							$sqlLooping .= "
-                                WHEN '" . $this->model->getBudgetTypeId($i, 'array') . "'
+                                WHEN '" . $this->model->getGeneralLedgerBudgetTypeId($i, 'array') . "'
                                 THEN '" . $this->model->getIsPost($i, 'array') . "'";
 							$sqlLooping .= " END,";
 						}
@@ -1339,33 +1340,33 @@ class BudgetTypeClass extends ConfigClass {
 		}
 		if ($this->getVendor() == self::MYSQL) {
 			$sql = "
-			SELECT	`budgetTypeSequence`
-			FROM 	`budgetType`
-			WHERE 	`budgetTypeSequence` 	= 	'" . $this->model->getBudgetTypeSequence() . "'
+			SELECT	`generalLedgerBudgetTypeSequence`
+			FROM 	`generalLedgerBudgetType`
+			WHERE 	`generalLedgerBudgetTypeSequence` 	= 	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "'
 			AND		`isActive`		=	1";
 		} else if ($this->getVendor() == self::MSSQL) {
 			$sql = "
-			SELECT	[budgetTypeSequence]
-			FROM 	[budgetType]
-			WHERE 	[budgetTypeSequence] 	= 	'" . $this->model->getBudgetTypeSequence() . "'
+			SELECT	[generalLedgerBudgetTypeSequence]
+			FROM 	[generalLedgerBudgetType]
+			WHERE 	[generalLedgerBudgetTypeSequence] 	= 	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "'
 			AND		[isActive]		=	1";
 		} else if ($this->getVendor() == self::ORACLE) {
 			$sql = "
-			SELECT	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE
-			FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
-			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getBudgetTypeSequence() . "'
+			SELECT	GENERALLEDGERBUDGETTYPESEQUENCE
+			FROM 	GENERALLEDGERBUDGETTYPE
+			WHERE 	GENERALLEDGERBUDGETTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::DB2) {
 			$sql = "
-			SELECT	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE
-			FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
-			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getBudgetTypeSequence() . "'
+			SELECT	GENERALLEDGERBUDGETTYPESEQUENCE
+			FROM 	GENERALLEDGERBUDGETTYPE
+			WHERE 	GENERALLEDGERBUDGETTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else if ($this->getVendor() == self::POSTGRESS) {
 			$sql = "
-			SELECT	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE
-			FROM 	GENERALLEDGERCHARTOFACCOUNTTYPE
-			WHERE 	GENERALLEDGERCHARTOFACCOUNTTYPESEQUENCE 	= 	'" . $this->model->getBudgetTypeSequence() . "'
+			SELECT	GENERALLEDGERBUDGETTYPESEQUENCE
+			FROM 	GENERALLEDGERBUDGETTYPE
+			WHERE 	GENERALLEDGERBUDGETTYPESEQUENCE 	= 	'" . $this->model->getGeneralLedgerBudgetTypeSequence() . "'
 			AND		ISACTIVE		=	1";
 		} else {
 			echo json_encode(array("success" => false, "message" => $this->systemString->getNonSupportedDatabase()));
@@ -1380,7 +1381,7 @@ class BudgetTypeClass extends ConfigClass {
 		}
 		if ($total > 0) {
 			$row = $this->q->fetchArray();
-			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "budgetTypeDesc" => $row ['budgetTypeDesc']));
+			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getDuplicateMessage(), "generalLedgerBudgetTypeDesc" => $row ['generalLedgerBudgetTypeDesc']));
 			exit();
 		} else {
 			echo json_encode(array("success" => true, "total" => $total, "message" => $this->systemString->getNonDuplicateMessage()));
@@ -1447,7 +1448,7 @@ class BudgetTypeClass extends ConfigClass {
 		while (($row = $this->q->fetchAssoc()) == TRUE) {
 			//	echo print_r($row);
 			$this->excel->getActiveSheet()->setCellValue('B' . $loopRow, ++$i);
-			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['budgetTypeDesc']);
+			$this->excel->getActiveSheet()->setCellValue('C' . $loopRow, 'a' . $row ['generalLedgerBudgetTypeDesc']);
 			$loopRow++;
 			$lastRow = 'C' . $loopRow;
 		}
@@ -1456,7 +1457,7 @@ class BudgetTypeClass extends ConfigClass {
 		$formula = $from . ":" . $to;
 		$this->excel->getActiveSheet()->getStyle($formula)->applyFromArray($styleThinBlackBorderOutline);
 		$objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel2007');
-		$filename = "budgetType" . rand(0, 10000000) . ".xlsx";
+		$filename = "generalLedgerBudgetType" . rand(0, 10000000) . ".xlsx";
 		$path = $_SERVER ['DOCUMENT_ROOT'] . "/" . $this->application . "/basic/document/excel/" . $filename;
 		$this->documentTrail->create_trail($this->leafId, $path, $filename);
 		$objWriter->save($path);
@@ -1472,7 +1473,7 @@ class BudgetTypeClass extends ConfigClass {
 
 }
 
-$budgetTypeObject = new BudgetTypeClass ();
+$generalLedgerBudgetTypeObject = new GeneralLedgerBudgetTypeClass ();
 
 /**
  * crud -create,read,update,delete
@@ -1482,31 +1483,31 @@ if (isset($_POST ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_POST ['leafId'])) {
-		$budgetTypeObject->setLeafId($_POST ['leafId']);
+		$generalLedgerBudgetTypeObject->setLeafId($_POST ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_POST ['isAdmin'])) {
-		$budgetTypeObject->setIsAdmin($_POST ['isAdmin']);
+		$generalLedgerBudgetTypeObject->setIsAdmin($_POST ['isAdmin']);
 	}
 	/*
 	 *  Paging
 	 */
 	if (isset($_POST ['start'])) {
-		$budgetTypeObject->setStart($_POST ['start']);
+		$generalLedgerBudgetTypeObject->setStart($_POST ['start']);
 	}
 	if (isset($_POST ['perPage'])) {
-		$budgetTypeObject->setLimit($_POST ['perPage']);
+		$generalLedgerBudgetTypeObject->setLimit($_POST ['perPage']);
 	}
 	/*
 	 *  Filtering
 	 */
 	if (isset($_POST ['query'])) {
-		$budgetTypeObject->setFieldQuery($_POST ['query']);
+		$generalLedgerBudgetTypeObject->setFieldQuery($_POST ['query']);
 	}
 	if (isset($_POST ['filter'])) {
-		$budgetTypeObject->setGridQuery($_POST ['filter']);
+		$generalLedgerBudgetTypeObject->setGridQuery($_POST ['filter']);
 	}
 	if (isset($_POST ['character'])) {
 		$budgetSegmentObject->setCharacterQuery($_POST['character']);
@@ -1524,29 +1525,29 @@ if (isset($_POST ['method'])) {
 	 * Ordering
 	 */
 	if (isset($_POST ['order'])) {
-		$budgetTypeObject->setOrder($_POST ['order']);
+		$generalLedgerBudgetTypeObject->setOrder($_POST ['order']);
 	}
 	if (isset($_POST ['sortField'])) {
-		$budgetTypeObject->setSortField($_POST ['sortField']);
+		$generalLedgerBudgetTypeObject->setSortField($_POST ['sortField']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$budgetTypeObject->execute();
+	$generalLedgerBudgetTypeObject->execute();
 	/*
 	 *  Crud Operation (Create Read Update Delete/Destory)
 	 */
 	if ($_POST ['method'] == 'create') {
-		$budgetTypeObject->create();
+		$generalLedgerBudgetTypeObject->create();
 	}
 	if ($_POST ['method'] == 'save') {
-		$budgetTypeObject->update();
+		$generalLedgerBudgetTypeObject->update();
 	}
 	if ($_POST ['method'] == 'read') {
-		$budgetTypeObject->read();
+		$generalLedgerBudgetTypeObject->read();
 	}
 	if ($_POST ['method'] == 'delete') {
-		$budgetTypeObject->delete();
+		$generalLedgerBudgetTypeObject->delete();
 	}
 }
 if (isset($_GET ['method'])) {
@@ -1554,35 +1555,35 @@ if (isset($_GET ['method'])) {
 	 *  Initilize Value before load in the loader
 	 */
 	if (isset($_GET ['leafId'])) {
-		$budgetTypeObject->setLeafId($_GET ['leafId']);
+		$generalLedgerBudgetTypeObject->setLeafId($_GET ['leafId']);
 	}
 	/*
 	 * Admin Only
 	 */
 	if (isset($_GET ['isAdmin'])) {
-		$budgetTypeObject->setIsAdmin($_GET ['isAdmin']);
+		$generalLedgerBudgetTypeObject->setIsAdmin($_GET ['isAdmin']);
 	}
 	/*
 	 *  Load the dynamic value
 	 */
-	$budgetTypeObject->execute();
+	$generalLedgerBudgetTypeObject->execute();
 	if (isset($_GET ['field'])) {
 		if ($_GET ['field'] == 'staffId') {
-			$budgetTypeObject->staff();
+			$generalLedgerBudgetTypeObject->staff();
 		}
 	}
 	/*
 	 * Update Status of The Table. Admin Level Only
 	 */
 	if ($_GET ['method'] == 'updateStatus') {
-		$budgetTypeObject->updateStatus();
+		$generalLedgerBudgetTypeObject->updateStatus();
 	}
 	/*
 	 *  Checking Any Duplication  Key
 	 */
-	if (isset($_GET ['budgetTypeDesc'])) {
-		if (strlen($_GET ['budgetTypeDesc']) > 0) {
-			$budgetTypeObject->duplicate();
+	if (isset($_GET ['generalLedgerBudgetTypeDesc'])) {
+		if (strlen($_GET ['generalLedgerBudgetTypeDesc']) > 0) {
+			$generalLedgerBudgetTypeObject->duplicate();
 		}
 	}
 	/**
@@ -1590,16 +1591,16 @@ if (isset($_GET ['method'])) {
 	 */
 	if ($_GET ['method'] == 'dataNavigationRequest') {
 		if ($_GET ['dataNavigation'] == 'firstRecord') {
-			$budgetTypeObject->firstRecord('json');
+			$generalLedgerBudgetTypeObject->firstRecord('json');
 		}
 		if ($_GET ['dataNavigation'] == 'previousRecord') {
-			$budgetTypeObject->previousRecord('json', 0);
+			$generalLedgerBudgetTypeObject->previousRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'nextRecord') {
-			$budgetTypeObject->nextRecord('json', 0);
+			$generalLedgerBudgetTypeObject->nextRecord('json', 0);
 		}
 		if ($_GET ['dataNavigation'] == 'lastRecord') {
-			$budgetTypeObject->lastRecord('json');
+			$generalLedgerBudgetTypeObject->lastRecord('json');
 		}
 	}
 	/*
@@ -1607,7 +1608,7 @@ if (isset($_GET ['method'])) {
 	 */
 	if (isset($_GET ['mode'])) {
 		if ($_GET ['mode'] == 'excel') {
-			$budgetTypeObject->excel();
+			$generalLedgerBudgetTypeObject->excel();
 		}
 	}
 }
