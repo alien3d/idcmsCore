@@ -74,6 +74,27 @@ class Vendor {
 	 */
 	public $primaryKeyValue;
 	/**
+	 * tablename for advance loging purpose
+	 * @var string
+	 */
+	public $columnName;
+	/**
+	 * Date Filtering Type.E.g Day,Week,Month,Year,Between
+	 * @var string
+	 */
+	public $dateFilterTypeQuery;
+	/**
+	 * Date Filtering Start
+	 * @var date
+	 */
+	public $startDate;
+	/**
+	 * Date Filtering End
+	 * @var date
+	 */
+	public $endDate;
+
+	/**
 	 * Audit Row Trail  1 Audit  0 for not
 	 * @var boolean $audit
 	 */
@@ -969,98 +990,44 @@ class Vendor {
 			return $qs;
 		}
 	}
-	/**
-	 * Enter description here ...
-	 * @param unknown_type $sql
-	
-	 * @param unknown_type $type
-	 * @return string
-	 */
-	function dateFilter($sql,$tablename,$rowname,$startDate,$endDate,$dateFilterType) {
 
-		$this->dateFilterType=NULL;
-		$this->rowname=NULL;
-		$this->date1=NULL;
-		$this->sql=NULL;
-		$this->type=$type;
-		$this->rowname=$rowname;
-		$this->startDate=$date1;
-		$this->sql=$sql;
+	function dateFilter($tableName,$columnName,$startDate,$endDate,$dateFilterTypeQuery) {
+		$sql="";
+		$this->setTableName($tableName);
+		$this->setColumnName($columnName);
+		$this->setStartDate($startDate);
+		$this->setEndDate($endDate);
+		
+		$this->setDateFilterTypeQuery($dateFilterTypeQuery);
 
-		//get variable date
-		// get len of date
-		$checkLengthDate=strlen($this->getStartDate());
-
-		if($checkLengthDate==6) {
-
-			$day=substr($this->getStartDate(),6,2);
-			$month=substr($this->getStartDate(),4,2);
-			$year=substr($this->getStartDate(),0,4);
+		$dayStart=substr($this->getStartDate(),8,2);
+		$monthStart=substr($this->getStartDate(),5,2);
+		$yearStart=substr($this->getStartDate(),0,4);
+			
+		if($this->getEndDate()){
+			$dayEnd=substr($this->getEndDate(),8,2);
+			$monthEnd=substr($this->getEndDate(),5,2);
+			$yearEnd=substr($this->getEndDate(),0,4);
 		}
-		elseif($checkLengthDate==10) {
+		if($this->getDateFilterTypeQuery()=='day') {
+			
+			return(" and `".$this->getTableName()."`.`".$this->getColumnName()."` like '%".$this->getStartDate()."%'");
+		}
+		elseif($this->getDateFilterTypeQuery()=='month') {
 
-			$day=substr($this->getStartDate(),8,2);
-			$month=substr($this->getStartDate(),5,2);
-			$year=substr($this->getStartDate(),0,4);
+			return(" and (month(`".$this->getTableName()."`.`".$this->getColumnName()."`)='".$monthStart."')  and (year(`".$this->getTableName()."`.`".$this->getColumnName()."`)='".$yearStart."')");
 
 		}
+		elseif($this->getDateFilterTypeQuery()=='year') {
 
-		if($this->type=='day') {
-			//echo $this->sql;
-			// june 25 log change date to exact day search matching
-			/*
-			 	
-			// this below code are not stable
-			return($this->sql."
-			and
-			(
-			day(`".$this->tablename."`.`".$this->rowname."`='".$day."') )
-			and
-			(
-			month(`".$this->tablename."`.`".$this->rowname."`)='".$month."')
-			and
-			(
-			year(`".$this->tablename."`.`".$rowname."`)='".$year."')");
+			return(" and (year(`".$this->getTableName()."`.`".$this->getColumnName()."`)='".$yearStart."')");
 
-			*/
-			// before using equal but when date time column it wouldn't parse it
-			return($this->sql." and `".$this->tableName."`.`".$this->fieldname."` like '%".$this->getStartDate()."%'");
 		}
-		elseif($this->type=='month') {
+		elseif($this->getDateFilterTypeQuery()=='between' || $this->getDateFilterTypeQuery()=='week') {
+			//echo ($sql." and `".$this->getTableName()."`.`".$this->getColumnName()."` between '".$this->getStartDate()."' and '".$this->getEndDate()."' ");
 
-			return($this->sql." and (month(`".$this->tablename."`.`".$this->rowname."`)='".$month."')  and (year(`".$this->tablename."`.`".$rowname."`)='".$year."')");
-				
-		}
-		elseif($this->type=='year') {
+			return($sql." and (`".$this->getTableName()."`.`".$this->getColumnName()."` between '".$this->getStartDate()."' and '".$this->getEndDate()."')");
 
-			return($this->sql." and (year(`".$this->tablename."`.`".$this->rowname."`)='".$year."')");
-				
-		}
-		elseif($this->type=='between') {
-
-			// change Ext date to mysql proper date
-			$month_start=substr($_GET['start_date'],0,2);
-			$day_start=substr($_GET['start_date'],3,2);
-			$year_start=substr($_GET['start_date'],6,2);
-				
-			$month_end=substr($_GET['end_date'],0,2);
-			$day_end=substr($_GET['end_date'],3,2);
-			$year_end=substr($_GET['end_date'],6,2);
-				
-				
-			if(( $year_start >= 79) && ($year_start <= 99)) {  $_GET['start_date']='19'.$year_start.$month_start.$day_start; }
-			else { $_GET['start_date']='20'.$year_start.$month_start.$day_start; }
-				
-			if(( $year_end >= 79) && ($year_end <= 99)) {  $_GET['end_date']='19'.$year_end.$month_end.$day_end; }
-			else { $_GET['end_date']='20'.$year_end.$month_end.$day_end; }
-				
-			$_GET['end_date']='20'.$year_end.$month_end.$day_end;
-			return($sql."and `".$this->tablename."`.`".$this->rowname."` between '".$_GET['start_date']."' and '".$_GET['end_date']."' ");
-				
-		}
-		elseif($this->type=='week') {
-			// eventhough same as above better rename it
-			return($sql."and `".$this->tablename."`.`".$this->rowname."` between '".$_GET['start_date']."' and '".$_GET['end_date']."' ");
 		}
 	}
 	/**
@@ -1099,129 +1066,255 @@ class Vendor {
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getCoreDatabase()
 	{
-	    return $this->coreDatabase;
+		return $this->coreDatabase;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $coreDatabase
 	 */
 	public function setCoreDatabase($coreDatabase)
 	{
-	    $this->coreDatabase = $coreDatabase;
+		$this->coreDatabase = $coreDatabase;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getFinancialDatabase()
 	{
-	    return $this->financialDatabase;
+		return $this->financialDatabase;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $financialDatabase
 	 */
 	public function setFinancialDatabase($financialDatabase)
 	{
-	    $this->financialDatabase = $financialDatabase;
+		$this->financialDatabase = $financialDatabase;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getFixAssetDatabase()
 	{
-	    return $this->fixAssetDatabase;
+		return $this->fixAssetDatabase;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $fixAssetDatabase
 	 */
 	public function setFixAssetDatabase($fixAssetDatabase)
 	{
-	    $this->fixAssetDatabase = $fixAssetDatabase;
+		$this->fixAssetDatabase = $fixAssetDatabase;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getPayrollDatabase()
 	{
-	    return $this->payrollDatabase;
+		return $this->payrollDatabase;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $payrollDatabase
 	 */
 	public function setPayrollDatabase($payrollDatabase)
 	{
-	    $this->payrollDatabase = $payrollDatabase;
+		$this->payrollDatabase = $payrollDatabase;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getHumanResourcesDatabase()
 	{
-	    return $this->humanResourcesDatabase;
+		return $this->humanResourcesDatabase;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $humanResourcesDatabase
 	 */
 	public function setHumanResourcesDatabase($humanResourcesDatabase)
 	{
-	    $this->humanResourcesDatabase = $humanResourcesDatabase;
+		$this->humanResourcesDatabase = $humanResourcesDatabase;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getCommonDatabase()
 	{
-	    return $this->commonDatabase;
+		return $this->commonDatabase;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $commonDatabase
 	 */
 	public function setCommonDatabase($commonDatabase)
 	{
-	    $this->commonDatabase = $commonDatabase;
+		$this->commonDatabase = $commonDatabase;
 	}
 
 	/**
-	 * 
-	 * @return 
+	 *
+	 * @return
 	 */
 	public function getManagementDatabase()
 	{
-	    return $this->managementDatabase;
+		return $this->managementDatabase;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param $managementDatabase
 	 */
 	public function setManagementDatabase($managementDatabase)
 	{
-	    $this->managementDatabase = $managementDatabase;
+		$this->managementDatabase = $managementDatabase;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getTableName()
+	{
+		return $this->tableName;
+	}
+
+	/**
+	 *
+	 * @param $tableName
+	 */
+	public function setTableName($tableName)
+	{
+		$this->tableName = $tableName;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getPrimaryKeyName()
+	{
+		return $this->primaryKeyName;
+	}
+
+	/**
+	 *
+	 * @param $primaryKeyName
+	 */
+	public function setPrimaryKeyName($primaryKeyName)
+	{
+		$this->primaryKeyName = $primaryKeyName;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getPrimaryKeyValue()
+	{
+		return $this->primaryKeyValue;
+	}
+
+	/**
+	 *
+	 * @param $primaryKeyValue
+	 */
+	public function setPrimaryKeyValue($primaryKeyValue)
+	{
+		$this->primaryKeyValue = $primaryKeyValue;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getColumnName()
+	{
+		return $this->columnName;
+	}
+
+	/**
+	 *
+	 * @param $columnName
+	 */
+	public function setColumnName($columnName)
+	{
+		$this->columnName = $columnName;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getStartDate()
+	{
+		return $this->startDate;
+	}
+
+	/**
+	 *
+	 * @param $startDate
+	 */
+	public function setStartDate($startDate)
+	{
+		$this->startDate = $startDate;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getEndDate()
+	{
+		return $this->endDate;
+	}
+
+	/**
+	 *
+	 * @param $endDate
+	 */
+	public function setEndDate($endDate)
+	{
+		$this->endDate = $endDate;
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public function getDateFilterTypeQuery()
+	{
+		return $this->dateFilterTypeQuery;
+	}
+
+	/**
+	 *
+	 * @param $dateFilterTypeQuery
+	 */
+	public function setDateFilterTypeQuery($dateFilterTypeQuery)
+	{
+		$this->dateFilterTypeQuery = $dateFilterTypeQuery;
 	}
 }
 ?>

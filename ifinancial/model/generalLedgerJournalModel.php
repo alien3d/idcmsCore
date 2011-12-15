@@ -65,7 +65,7 @@ class GeneralLedgerJournalModel extends ValidationClass {
 		$this->setTableName('generalLedgerJournal');
 		$this->setPrimaryKeyName('generalLedgerJournalId');
 		//$this->setFilterCharacter($filterCharacter);
-		$this->setFilterDate('generalLedgerJournal');
+		$this->setFilterDate('generalLedgerJournalDate');
 		/**
 		 * All the $_POST enviroment.
 		 */

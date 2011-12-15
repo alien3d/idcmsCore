@@ -476,31 +476,11 @@ class GeneralLedgerJournalClass extends ConfigClass {
 		 * Example Day,Week,Month,Year
 		 */
 		if($this->getDateRangeStartQuery()){
-			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
+			
+			$sql.=$this->q->dateFilter($this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeTypeQuery());
+			
 		}
-		/**
-		 * filter column based on first character
-		 */
-		if($this->getCharacterQuery()){
-			if($this->q->vendor==self::MYSQL){
-				$sql.=" AND `".$this->model->getTableName()."`.`".$this->model->getFilterCharacter()."` like '".$this->getCharacterQuery()."%'";
-			} else if($this->q->vendor==self::MSSQL){
-				$sql.=" AND [".$this->model->getTableName()."].[".$this->model->getFilterCharacter()."] like '".$this->getCharacterQuery()."%'";
-			} else if ($this->q->vendor==self::ORACLE){
-				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
-			} else if ($this->q->vendor==self::DB2){
-				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
-			} else if ($this->q->vendor==self::POSTGRESS){
-				$sql.=" AND ".strtoupper($this->model->getTableName()).".".strtoupper($this->model->getFilterCharacter())." = '".$this->getCharacterQuery()."'";
-			}
-		}
-		/**
-		 * filter column based on Range Of Date
-		 * Example Day,Week,Month,Year
-		 */
-		if($this->getDateRangeStartQuery()){
-			$sql.=$this->q->dateFilter($sql, $this->model->getTableName(),$this->model->getFilterDate(),$this->getDateRangeStartQuery(),$this->getDateRangeEndQuery(),$this->getDateRangeType());
-		}
+		
 		/**
 		 * filter column don't want to filter.Example may contain  sensetive information or unwanted to be search.
 		 * E.g  $filterArray=array('`leaf`.`leafId`');
@@ -704,7 +684,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			$items [] = $row;
 		}
 		if ($this->model->getGeneralLedgerJournalId(0, 'single')) {
-			$json_encode = json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(),'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value'), 'data' => $items ));
+			$json_encode = json_encode(array('sql'=>$sql,'success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(),'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value'), 'data' => $items ));
 			$json_encode = str_replace("[", "", $json_encode);
 			$json_encode = str_replace("]", "", $json_encode);
 			echo $json_encode;
@@ -712,7 +692,7 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			if (count($items) == 0) {
 				$items = '';
 			}
-			echo json_encode(array('success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value'),'data' => $items));
+			echo json_encode(array('sql'=>$sql,'success' => true, 'total' => $total, 'message' =>  $this->systemString->getReadMessage(), 'firstRecord' => $this->recordSet->firstRecord('value'), 'previousRecord' => $this->recordSet->previousRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'nextRecord' => $this->recordSet->nextRecord('value', $this->model->getGeneralLedgerJournalId(0, 'single')), 'lastRecord' => $this->recordSet->lastRecord('value'),'data' => $items));
 			exit();
 		}
 	}
@@ -1422,7 +1402,101 @@ class GeneralLedgerJournalClass extends ConfigClass {
 			exit();
 		}
 	}
-
+	
+	/**
+	 * To Post data To General Ledger
+	 */
+	function posting() {
+		
+	}
+	/**
+	 * To check Total Chart Of Account Categoris  Equal Both Side  So can Post  To General Ledger
+	 * @return number
+	 */
+	function trialBalanceChecking(){
+		// sum all asset amount
+		$sqlAsset="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultAsset = $this->q->fast($sql);
+		$rowAsset  = $this->q->fetchArray($resultAsset);
+		$asset 	 	= $row['total'];
+		// sum all liability amount
+		$sqlAsset="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultAsset = $this->q->fast($sql);
+		$rowAsset  = $this->q->fetchArray($resultAsset);
+		$asset 	 	= $row['total'];
+		// sum all income amount
+		$sqlAsset="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultAsset = $this->q->fast($sql);
+		$rowAsset  = $this->q->fetchArray($resultAsset);
+		$asset 	 	= $row['total'];
+		// sum all expenses amount
+		$sqlAsset="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerChartOfAccount`.`generalLedgerChartOfAccountCategoryId`=1  
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultAsset = $this->q->fast($sql);
+		$rowAsset  = $this->q->fetchArray($resultAsset);
+		$asset 	 	= $row['total'];
+		return(($asset - $liabilty)  + ($income - $expenses));
+		
+	}
+	/**
+	 * To check Total Debit  and Credit  Equal Both Side  So can Post  To General Ledger
+	 * @return number
+	 */
+	function tallyChecking(){
+		// sum all debit amount
+		$sqlDebit="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerJournalDetail`.`transactionMode`='D'
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultDebit = $this->q->fast($sqlDebit);
+		$rowDebit  = $this->q->fetchArray($resultDebit);
+		$debit 	 	= $rowDebit['total'];
+		// sum all credit amount
+		$sqlAsset="
+		SELECT 	SUM(`generalLedgerJournalDetailamount`) as `total`
+		FROM 	`generalLedgerJournalDetail`
+		JOIN	`generalLedgerChartOfAccount`
+		USING	(`generalLedgerChartOfAccountId`)
+		WHERE	`generalLedgerChartOfAccount`.`isActive`=1
+		AND		`generalLedgerJournalDetail`.`transactionMode`='C'
+		AND		`generalLedgerJournalDetail`.`isActive`=1 ";
+		$resultCredit = $this->q->fast($sqlCredit);
+		$rowCredit  = $this->q->fetchArray($resultCredit);
+		$credit	 	= $rowCredit['total'];
+		return ($debit - $credit); 
+	}
+	
 	function firstRecord($value) {
 		$this->recordSet->firstRecord($value);
 	}
@@ -1553,6 +1627,7 @@ if (isset($_POST ['method'])) {
 		$generalLedgerJournalObject->setDateRangeEndQuery($_POST['dateRangeEnd']);
 	}
 	if (isset($_POST ['dateRangeType'])) {
+	
 		$generalLedgerJournalObject->setDateRangeTypeQuery($_POST['dateRangeType']);
 	}
 	/*

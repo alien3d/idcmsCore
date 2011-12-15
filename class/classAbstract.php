@@ -81,7 +81,7 @@ abstract class ConfigClass
 	 * Day,Week,Month,Year
 	 * @var string
 	 */
-	private $DateRangeType;
+	private $dateRangeTypeQuery;
 	/**
 	 * Start
 	 * @var string
@@ -797,18 +797,18 @@ abstract class ConfigClass
 	 * 
 	 * @return 
 	 */
-	public function getDateRangeType()
+	public function getDateRangeTypeQuery()
 	{
-	    return $this->DateRangeType;
+	    return $this->dateRangeTypeQuery;
 	}
 
 	/**
 	 * 
-	 * @param $DateRangeType
+	 * @param $DateRangeTypeQuery
 	 */
-	public function setDateRangeType($DateRangeType)
+	public function setDateRangeTypeQuery($dateRangeTypeQuery)
 	{
-	    $this->DateRangeType = $DateRangeType;
+	    $this->dateRangeTypeQuery = $dateRangeTypeQuery;
 	}
 }
 ?>

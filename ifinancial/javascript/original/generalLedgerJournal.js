@@ -1351,6 +1351,130 @@ Ext.onReady(function () {
 				scrollDelay : false
 			})
 		});
+	var dateRangeStart = new Ext.form.Hidden({
+			name : 'dateRangeStart',
+			id : 'dateRangeStart',
+			value : ''
+		});
+		
+	var dateRangeEnd = new Ext.form.Hidden({
+			name : 'dateRangeEnd',
+			id : 'dateRangeEnd',
+			value : ''
+		});	
+	
+	var dateRangeType = new Ext.form.Hidden({
+			name : 'dateRangeType',
+			id : 'dateRangeType'
+		});
+	function zeroFill(value){
+		if(value.length==1){
+			return "0"+value;
+		}
+	}
+	function forwardDate(dateReceive, dateRangeType) {
+		
+		var explodeDate = dateReceive.split("-");
+		var dayReceive = parseInt(explodeDate[2]);
+		var monthReceive = parseInt(explodeDate[1]);
+		var yearReceive = parseInt(explodeDate[0]);
+		
+		totalDayInMonth = 32 - new Date(yearReceive, monthReceive - 2, 32).getDate();
+		if (dateRangeType == 'day') {
+			dayReceive++;
+			if (dayReceive >= totalDayInMonth) {
+				dayReceive = 1;
+				monthReceive++;
+				if (monthReceive == 13) {
+					monthReceive = 1;
+					yearReceive++;
+				} else {
+					monthReceive++;
+				}
+			}
+			return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+		} else if (dateRangeType == 'week') {
+			if (dayReceive > totalDayInMonth) {
+				dayReceive = 1 + 7;
+				if (monthReceive == 13) {
+					yearReceive++;
+					monthReceive = 1;
+				} else {
+					monthReceive++;
+				}
+			} else {
+				dayReceive = dayReceive + 7;
+				if (dayReceive > totalDayInMonth) {
+					dayReceive = dayReceive - totalDayInMonth;
+				}
+			}
+			return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+		} else if (dateRangeType == 'month') {
+			alert("v"+monthReceive);
+			if (monthReceive == 12) {
+				yearReceive++;
+				monthReceive = 1;
+				alert("ddd"+monthReceive);
+			} else {
+				alert("e"+monthReceive);
+				monthReceive++;
+				alert("aaa"+monthReceive);
+			}
+			alert(yearReceive + "-" + monthReceive + "-" + dayReceive);
+			return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+			
+		} else if (dateRangeType == 'year') {
+			yearReceive++;
+			return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+		}
+	}
+	
+	function previousDate(dateReceive, dateRangeType) {
+		var explodeDate = dateReceive.split("-");
+		var dayReceive = parseInt(explodeDate[2]);
+		var monthReceive = parseInt(explodeDate[1]);
+		var yearReceive = parseInt(explodeDate[0]);
+		
+		if (dateRangeType == 'day') {
+			dayReceive--;
+			if (dayReceive == 0) {
+				monthReceive--;
+				dayReceive = 32 - new Date(yearReceive, monthReceive - 2, 32).getDate();
+			}
+			return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+		} else if (dateRangeType == 'week') {
+			date_day = dayReceive;
+			dayReceive = parseInt(dayReceive - 7);
+			if (dayReceive <= 0) {
+				monthReceive--;
+			}
+			dayReceive = 32 - new Date(yearReceive, monthReceive - 2, 32).getDate();
+			dayReceive = parseInt(dayReceive - 7 + date_day);
+			if (monthReceive == 0 || monthReceive == '00') {
+				dayReceive = 31;
+				monthReceive = 12;
+				yearReceive--;
+			}
+			return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+		} else if (dateRangeType == 'month') {
+			monthReceive--;
+			if (monthReceive == 0) {
+				monthReceive = 12;
+				yearReceive--;
+			}
+			dayReceive = 32 - new Date(yearReceive, monthReceive - 2, 32).getDate();
+			return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+			
+		} else if (dateRangeType == 'year') {
+			yearReceive--;
+			return (yearReceive + "-" + zeroFill(monthReceive) + "-" + zeroFill(dayReceive));
+		}
+	}
+	function currentDay() {
+		dateRangeStartValue = new Date();
+		return  dateRangeStartValue.getDate()+'-'+(dateRangeStartValue.getMonth() + 1)+'-'+dateRangeStartValue.getFullYear() ;
+
+	}
 	var gridPanel = new Ext.Panel({
 			title : leafNative,
 			height : 50,
@@ -1360,86 +1484,67 @@ Ext.onReady(function () {
 					xtype : 'button',
 					iconCls : 'resultset_first',
 					handler : function (button, e) {
-							if(Ext.getCmp('currentDate').getValue()==''){
-								Ext.getCmp('currentdate').setValue(new Date());
-								currentDateValue = Ext.getCmp('currentDate').getvalue();
-							} else {
-								currentDateValue =Ext.getCmp('currentDate').getValue();
-							}
-						    if(Ext.getCmp('calendarType').getValue()==''){
-						    	Ext.getCmp('calendarType').setValue('day');
-						    	calendarType = Ext.getCmp('calendarType').getValue();
-						    } else {
-						    	calendarType = Ext.getCmp('calendarType').getValue();
-						    }
-						    dateRangeStart = currentDateValue.getFullYear() + "-" + (currentDateValue.getMonth() + 1) + "-" + currentDateValue.getDate();
-						
-						generalLedgerJournalStore.reload({
-							params :{
-								calendarType : calendarType,
-								dateRangeStart : dateRangeStart
-							}
-						});
-					}
-				},
-				'-', {
-					xtype : 'button',
-					iconCls : 'resultset_previous',
-					handler : function (button, e) {
-						if (now.getMonth() == 0) {
-						    currentDateValue = new Date(now.getFullYear() - 1, 0, 1);
-						} else {
-						    currentDateValue = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+						var dateRangeStartValue = '';
+						if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {							
+							dateRangeStartValue = new Date();
+							Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
 						}
-						 if(Ext.getCmp('calendarType').getValue()==''){
-						    	Ext.getCmp('calendarType').setValue('day');
-						    	calendarType = Ext.getCmp('calendarType').getValue();
-						    } else {
-						    	calendarType = Ext.getCmp('calendarType').getValue();
-						    }
-						    dateRangeStart = currentDateValue.getFullYear() + "-" + (currentDateValue.getMonth() + 1) + "-" + currentDateValue.getDate();
+
 						
+						if (Ext.getCmp('dateRangeType').getValue() == '' || Ext.getCmp('dateRangeType').getValue()==undefined) {
+							Ext.getCmp('dateRangeType').setValue('day');
+						}
+						
+						
+						Ext.getCmp('dateRangeStart').setValue(previousDate(Ext.getCmp('dateRangeStart').getValue(),Ext.getCmp('dateRangeType').getValue()));
+						Ext.getCmp('currentDateRangeType').setText('Filter : '+Ext.getCmp('dateRangeType').getValue());
 						generalLedgerJournalStore.reload({
-							params :{
-								calendarType : calendarType, 
-								dateRangeStart : dateRangeStart
+							params : {
+								dateRangeType : Ext.getCmp('dateRangeType').getValue(),
+								dateRangeStart : Ext.getCmp('dateRangeStart').getValue()
 							}
 						});
 					}
-				},
-				'-', {
+				},'-', {
 					xtype : 'button',
 					text : 'Day',
 					tooltip : 'Day',
 					iconCls : 'calendar',
 					handler : function (button, e) {
+						Ext.getCmp('dateRangeType').setValue('day');
+						if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
+							dateRangeStartValue = new Date();
+							Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+							dateRangeStartValue = Ext.getCmp('dateRangeStart').getValue();
+						}
+						Ext.getCmp('currentDateRangeType').setText('Filter : '+Ext.getCmp('dateRangeType').getValue());
 						generalLedgerJournalStore.reload({
-							params :{
-								dateRangeType : 'day'
+							params : {
+								dateRangeType : Ext.getCmp('dateRangeType').getValue(),
+								dateRangeStart : Ext.getCmp('dateRangeStart').getValue()
 							}
 						});
 					}
-				},
-				'-', {
+				},'-', {
 					xtype : 'button',
 					text : 'Week',
 					tooltip : 'Week',
 					iconCls : 'calendar',
 					handler : function (button, e) {
+						Ext.getCmp('dateRangeType').setValue('week');
 						var curr = new Date(); // get current date
 						var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
 						var last = first + 6; // last day is the first day + 6
 						var f = new Date(curr.setDate(first));
-						var l = new Date(curr.setDate(last));
-						var s = f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate();
-						var e = l.getFullYear() + "-" + (l.getMonth() + 1) + "-" + l.getDate();
-						alert("Start Date "+s +"End Date"+e);
+						var l = new Date(curr.setDate(last));					
+						Ext.getCmp('dateRangeStart').setValue( f.getFullYear() + "-" + (f.getMonth() + 1) + "-" + f.getDate());
+						Ext.getCmp('dateRangeEnd').setValue(l.getFullYear() + "-" + (l.getMonth() + 1) + "-" + l.getDate());
+						Ext.getCmp('currentDateRangeType').setText('Filter : '+Ext.getCmp('dateRangeType').getValue());
 						generalLedgerJournalStore.reload({
-							params :{
-								dateRangeType : 'week',
-								currentDate : curr,
-								dateRangeStart : s,
-								dateRangeEnd : e
+							params : {
+								dateRangeType : Ext.getCmp('dateRangeType').getValue(),
+								dateRangeStart : Ext.getCmp('dateRangeStart').getValue(),
+								dateRangeEnd : Ext.getCmp('dateRangeEnd').getValue()
 							}
 						});
 					}
@@ -1450,9 +1555,16 @@ Ext.onReady(function () {
 					tooltip : 'Month',
 					iconCls : 'calendar',
 					handler : function (button, e) {
+						Ext.getCmp('dateRangeType').setValue('month');
+						if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
+							dateRangeStartValue = new Date();
+							Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+						} 
+						Ext.getCmp('currentDateRangeType').setText('Filter : '+Ext.getCmp('dateRangeType').getValue());
 						generalLedgerJournalStore.reload({
-							params :{
-								dateRangeType : 'month'
+							params : {
+								dateRangeType : Ext.getCmp('dateRangeType').getValue(),
+								dateRangeStart : Ext.getCmp('dateRangeStart').getValue()
 							}
 						});
 					}
@@ -1463,44 +1575,83 @@ Ext.onReady(function () {
 					tooltip : 'Year',
 					iconCls : 'calendar',
 					handler : function (button, e) {
+						Ext.getCmp('dateRangeType').setValue('year');
+						if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
+							dateRangeStartValue = new Date();
+							Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());							
+						} 
+						Ext.getCmp('currentDateRangeType').setText('Filter : '+Ext.getCmp('dateRangeType').getValue());
 						generalLedgerJournalStore.reload({
-							params :{
-								dateRangeType : 'year'
+							params : {
+								dateRangeType : Ext.getCmp('dateRangeType').getValue(),
+								dateRangeStart : Ext.getCmp('dateRangeStart').getValue()
+							}
+						});
+					}
+				},'-',{
+					xtype:'label',
+					name:'currentDay',
+					id:'currentDay',
+					text: 'Current Day : '+currentDay()
+				},'-',{
+					xtype:'label',
+					name :'currentDateRangeType',
+					id:'currentDateRangeType',
+					text:'Filter : '
+				},'-',{
+					xtype :'label',
+					name : 'startdate',
+					id :'startdate',
+					text :'Start'
+				},'-',{
+					xtype:'datefield',
+					name :'dateRangeBetweenStart',
+					id : 'dateRangeBetweenStart'
+				},'-',{
+					xtype :'label',
+					name : 'endDate',
+					id :'endDate',
+					text :'End'
+				},'-',{
+					xtype:'datefield',
+					name :'dateRangeBetweenEnd',
+					id : 'dateRangeBetweenEnd'
+				},'-',{
+					xtype :'button',
+					name : 'filterBetweenButton',
+					id :'filterBetweenButton',
+					text :'Search Between Date',
+					handler : function(e,a){
+						generalLedgerJournalStore.reload({
+							params : {
+								dateRangeType : Ext.getCmp('dateRangeType').getValue(),
+								dateRangeStart : Ext.getCmp('dateRangeBetweenStart').getValue(),
+								dateRangeEnd : Ext.getCmp('dateRangeBetweenEnd').getValue()
 							}
 						});
 					}
 				},
-				'-', {
-					xtype : 'button',
-					iconCls : 'resultset_next',
-					handler : function (button, e) {
-						now = new Date();
-						if (now.getMonth() == 11) {
-						    current = new Date(now.getFullYear() + 1, 0, 1);
-						} else {
-						    current = new Date(now.getFullYear(), now.getMonth() + 1, 1);
-						}
-
-						generalLedgerJournalStore.reload({
-							params :{
-								dateRangeType : 'week',
-								currentDate : curr,
-								dateRangeStart : s,
-								dateRangeEnd : e
-							}
-						});
-					}
-				},
-				'-', {
+				'->',
+				{
 					xtype : 'button',
 					iconCls : 'resultset_last',
 					handler : function (button, e) {
+						if (Ext.getCmp('dateRangeStart').getValue() == '' || Ext.getCmp('dateRangeStart').getValue() == undefined) {
+							dateRangeStartValue = new Date();
+							Ext.getCmp('dateRangeStart').setValue(dateRangeStartValue.getFullYear() + "-" + (dateRangeStartValue.getMonth() + 1) + "-" + dateRangeStartValue.getDate());
+						}
+						dateRangeStartValue = Ext.getCmp('dateRangeStart').getValue();
+						
+						if (Ext.getCmp('dateRangeType').getValue() == '' || Ext.getCmp('dateRangeType').getValue() == undefined) {
+							Ext.getCmp('dateRangeType').setValue('day');
+						}
+												
+						Ext.getCmp('dateRangeStart').setValue(forwardDate(Ext.getCmp('dateRangeStart').getValue(), Ext.getCmp('dateRangeType').getValue()));					
+						Ext.getCmp('currentDateRangeType').setText('Filter : '+Ext.getCmp('dateRangeType').getValue());
 						generalLedgerJournalStore.reload({
-							params :{
-								dateRangeType : 'week',
-								currentDate : curr,
-								dateRangeStart : s,
-								dateRangeEnd : e
+							params : {
+								dateRangeType : Ext.getCmp('dateRangeType').getValue(),
+								dateRangeStart : Ext.getCmp('dateRangeStart').getValue()
 							}
 						});
 					}
@@ -1513,9 +1664,10 @@ Ext.onReady(function () {
 			name : 'documentNoTemp',
 			id : 'documentNoTemp'
 		});
+	
 	var generalLedgerJournalId = new Ext.form.Hidden({
-			name : 'generalLedgerJournalId',
-			id : 'generalLedgerJournalId'
+			name : 'dateRangeType',
+			id : 'dateRangeType'
 		});
 	var generalLedgerJournalTypeId = new Ext.ux.form.ComboBoxMatch({
 			labelAlign : 'left',
@@ -1567,7 +1719,7 @@ Ext.onReady(function () {
 				textTransform : 'uppercase'
 			},
 			anchor : '90%'
-	});
+		});
 	
 	var referenceNo = new Ext.form.TextField({
 			labelAlign : 'left',
@@ -1581,7 +1733,7 @@ Ext.onReady(function () {
 				textTransform : 'uppercase'
 			},
 			anchor : '90%'
-	});
+		});
 	var generalLedgerJournalTitle = new Ext.form.TextField({
 			labelAlign : 'left',
 			fieldLabel : generalLedgerJournalTitleLabel + '*',
@@ -1606,8 +1758,8 @@ Ext.onReady(function () {
 			style : {
 				textTransform : 'uppercase'
 			},
-			anchor : '90%'  ,
-			height: 55
+			anchor : '90%',
+			height : 55
 		});
 	var generalLedgerJournalDate = new Ext.form.DateField({
 			labelAlign : 'left',
@@ -1861,8 +2013,7 @@ Ext.onReady(function () {
 					labelField : 'countryCurrencyCodeDesc',
 					store : countryStore,
 					phpMode : true
-				},
-				{
+				}, {
 					type : 'float',
 					dataIndex : 'generalLedgerJournalDetailAmount',
 					column : 'generalLedgerJournalDetailAmount',
@@ -1970,8 +2121,7 @@ Ext.onReady(function () {
 					labelField : 'countryDesc',
 					store : countryStore,
 					phpMode : true
-				},
-				{
+				}, {
 					type : 'float',
 					dataIndex : 'generalLedgerJournalDetailAmount',
 					column : 'generalLedgerJournalDetailAmount',
@@ -2577,8 +2727,7 @@ Ext.onReady(function () {
 							border : true,
 							frame : true,
 							items : [generalLedgerJournalId,
-								generalLedgerJournalTypeId,
-								{
+								generalLedgerJournalTypeId, {
 									xtype : 'fieldset',
 									title : 'Date Range',
 									items : [{
@@ -2593,7 +2742,7 @@ Ext.onReady(function () {
 										}
 									]
 									
-								},{
+								}, {
 									layout : 'column',
 									border : false,
 									items : [{
@@ -2609,12 +2758,13 @@ Ext.onReady(function () {
 											columnWidth : .5,
 											layout : 'form',
 											border : false,
-											labelAlign:'top',
+											labelAlign : 'top',
 											items : [generalLedgerJournalDesc]
 										}
 									]
 									
-								}]
+								}
+							]
 						}
 					]
 				},
